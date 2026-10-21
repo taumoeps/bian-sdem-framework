@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0
+
+- New `sdmm-trace` command: walk approved mappings downstream (what an entity depends on) or upstream (what depends on it), as a tree or JSON with every hop carrying its `mapping_id`. Superseded and proposed records are excluded unless `--status` includes them. Pure Python, no dependencies.
+- Docs: v0.4 entity metamodel specification and roadmap track.
+
 ## 0.2.1
 
 Validator hardening, in response to external review.

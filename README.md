@@ -243,7 +243,7 @@ A knowledge graph needs three components. SDMM supplies one of them.
 |---|---|---|---|
 | **Nodes** | the entities — capabilities, domains, applications, servers | your L0–L3 models | yes, in your EA tooling |
 | **Arrows** | the approved mappings between entities in adjacent levels | **this repository's `mappings.json` files** | yes |
-| **Engine** | something that loads the arrows, attaches each end to its node, and walks the result | a graph database and query service | no — roadmap v0.3 |
+| **Engine** | something that loads the arrows, attaches each end to its node, and walks the result | `sdmm-trace` walks the arrows today (v0.3); a persistent graph store and query service are roadmap |
 
 When the engine loads the Card Fraud Alerts arrows and attaches them to their nodes, this is what it holds:
 
@@ -263,7 +263,7 @@ and it can then answer questions in either direction, without any extra arrows b
 
 The design specification calls this the **federated knowledge graph**: *federated* because the nodes stay in four different models owned by four different teams; SDMM owns only the arrows between them.
 
-**So, today:** the arrows exist, as records in files. The nodes exist, in your own tools. The engine that joins them does not exist yet, so there is no live knowledge graph yet — only the arrows it will be built from. Walking the chain today means a small script over the files (the walkthrough in `examples/card-fraud-alerts/README.md` does exactly that). When the engine arrives, the records will not need to change; they are already the right shape.
+**So, today:** the arrows exist, as records in files, and `sdmm-trace` walks them in either direction from the command line, naming the mapping that justifies each hop. The nodes exist in your own tools. What does not exist yet is a persistent graph store with a query service and impact classification — that is the roadmap. When it arrives, the records will not need to change; they are already the right shape.
 
 ### The six concepts, side by side
 
@@ -313,6 +313,7 @@ flowchart LR
 | CI | `.github/workflows/validate.yml` on every push | Repo gate; a broken document cannot merge |
 | Library | `from sdmm.validate import validate` | Developer embedding the check in another tool |
 | History | `python -m sdmm.diff --git HEAD~1 path/to/mappings.json` | CI, to block edits to approved records and illegal status changes |
+| Trace | `python -m sdmm.trace CAP-310 path/to/mappings.json` | Architect asking what an entity depends on, or what depends on it |
 
 There is no server, no database, no scheduler and no UI. A production deployment would wrap this in whatever hosts your other EA tooling.
 
@@ -327,8 +328,8 @@ flowchart TB
     RULES["SDMM Mapping Metamodel & Rules<br/>BUILT: schema/"]
     ENGINE["SDMM Mapping Engine<br/>Process / Information / Architecture analysis<br/>NOT BUILT: v0.4"]
     VALID["SDMM Validation & Approval<br/>BUILT: sdmm/validate.py"]
-    FED[("Federated Knowledge Graph<br/>Cross-layer Mapping Registry & Traceability<br/>DATA ONLY: mappings.json files<br/>graph store NOT BUILT: v0.3")]
-    IMPACT["Bidirectional impact traversal<br/>& generated views<br/>NOT BUILT: v0.3"]
+    FED[("Federated Knowledge Graph<br/>Cross-layer Mapping Registry & Traceability<br/>DATA: mappings.json files + sdmm-trace<br/>persistent graph store NOT BUILT")]
+    IMPACT["Bidirectional impact traversal<br/>& generated views<br/>TRAVERSAL BUILT: sdmm-trace<br/>impact classification NOT BUILT: v0.5"]
 
     subgraph LEVELS["Independently governed architecture models<br/>EXTERNAL: owned by the bank, referenced by id only"]
       L0[(L0 Business)]
@@ -368,11 +369,11 @@ Green = built. Amber = data present, engine absent. Blue = interface defined, im
 |---|---|---|
 | **Mapping Metamodel & Rules** | Which cross-layer links are legal; what a record must contain | **Built** — `schema/relationship-types.json`, `schema/mapping.schema.json` |
 | **Validation & Approval** | Deterministic checks, then architect sign-off | **Checks built** — `sdmm/validate.py` (structure, registry, evidence, anchoring) and `sdmm/diff.py` (transitions, immutability). Approval is recorded as fields (`status`, `reviewer_id`, `approved_at`), not a workflow system |
-| **Federated Knowledge Graph / Mapping Registry** | Store of approved cross-layer edges, queryable in both directions | **Data only** — each `mappings.json` record *is* one edge of this graph, held as a flat file in git. The graph store and traversal engine are not built (v0.3) |
+| **Federated Knowledge Graph / Mapping Registry** | Store of approved cross-layer edges, queryable in both directions | **Data + traversal** — each `mappings.json` record is one edge, held as a flat file in git; `sdmm-trace` queries them both ways with provenance. A persistent graph store is not built |
 | **BIAN Reference Repository** | Licensed BIAN definitions by release | **Interface only** — `ReferenceResolver` in `sdmm/reference.py`; you implement it |
 | **Mapping Engine** | Reads L0–L3 and proposes mappings | **Not built** (v0.4). `status: proposed` + `confidence` reserve its output slot |
 | **Historical Design Repository** | Legacy documents and patterns | **Not built** |
-| **Bidirectional impact traversal & generated views** | Upstream/downstream queries, impact classification, diagrams projected from the graph | **Not built** (v0.3) |
+| **Bidirectional impact traversal & generated views** | Upstream/downstream queries, impact classification, diagrams projected from the graph | **Traversal built** (`sdmm-trace`); impact classification and generated views not built (v0.5) |
 | **L0–L3 models** | The bank's own capability, domain, application and infrastructure models | **External, never in scope.** SDMM references their entity IDs; it never copies the entities. An `EntityResolver` (file catalogue or your adapter) lets the validator confirm the IDs exist |
 
 ## Quick start
@@ -383,11 +384,12 @@ Requires Python 3.10+; no third-party dependencies.
 python -m sdmm.validate --strict examples/*/mappings.json                 # structure, registry, evidence, anchoring
 python -m sdmm.validate --catalogue examples/card-fraud-alerts/entities.json examples/card-fraud-alerts/mappings.json
 python -m sdmm.diff --git HEAD~1 examples/*/mappings.json                 # transitions and immutability vs last commit
+python -m sdmm.trace CAP-310 examples/card-fraud-alerts/mappings.json     # what it depends on / what depends on it
 python -m sdmm.validate --json examples/*/mappings.json                   # machine-readable report
 python -m unittest discover -s tests -v
 ```
 
-Or install it: `pip install -e .` gives you `sdmm-validate` and `sdmm-diff` commands. Exit codes: `0` valid, `1` issues found, `2` usage/registry error.
+Or install it: `pip install -e .` gives you `sdmm-validate`, `sdmm-diff` and `sdmm-trace` commands. Exit codes: `0` valid, `1` issues found, `2` usage/registry error.
 
 What the validator checks is listed under *What goes in and what comes out* above; `--registry` points it at your own registry and `validate(..., resolver=)` attaches a licensed BIAN lookup. It is **not a certification of BIAN conformance** or of architectural correctness.
 
@@ -396,7 +398,7 @@ What the validator checks is listed under *What goes in and what comes out* abov
 - `docs/`: reference methodology and governance
 - `schema/`: SDMM cross-layer relationship registry + JSON Schema
 - `examples/`: synthetic mappings — `customer-onboarding` (full vertical slice) and `card-fraud-alerts` (a change event with supersession)
-- `sdmm/`: validator, document diff, and the `ReferenceResolver` / `EntityResolver` adapter interfaces
+- `sdmm/`: validator, document diff, traceability walker, and the `ReferenceResolver` / `EntityResolver` adapter interfaces
 - `tests/`: basic automated tests
 - `.github/workflows/`: CI validation
 

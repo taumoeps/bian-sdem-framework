@@ -294,3 +294,49 @@ class DiffTests(unittest.TestCase):
 
     def test_new_record_is_fine(self):
         self.assertEqual(self.changed(lambda d: d['mappings'].append(copy.deepcopy(d['mappings'][8]) | {'mapping_id': 'NEW-1'})), [])
+
+
+class TraceTests(unittest.TestCase):
+    def setUp(self):
+        from sdmm.trace import load_edges, walk, paths
+        self.load_edges, self.walk, self.paths = load_edges, walk, paths
+        self.fraud = json.loads((ROOT / 'examples/card-fraud-alerts/mappings.json').read_text())
+        self.edges = load_edges([self.fraud])
+
+    def chain(self, tree):
+        return [i for i, _ in self.paths(tree)[0]]
+
+    def test_only_approved_edges_by_default(self):
+        self.assertEqual(sorted(e['mapping_id'] for e in self.edges), ['FRD-001', 'FRD-002', 'FRD-005'])
+
+    def test_downstream_reaches_new_host_not_old(self):
+        chain = self.chain(self.walk(self.edges, 'CAP-310', 'down'))
+        self.assertEqual(chain, ['CAP-310', 'SD-044', 'APP-FRAUD-ENGINE', 'INF-CLOUD-K8S-PROD'])
+        self.assertNotIn('INF-ONPREM-VM-CLUSTER-B', chain)
+
+    def test_upstream_from_new_host_reaches_capability(self):
+        self.assertEqual(self.chain(self.walk(self.edges, 'INF-CLOUD-K8S-PROD', 'up')),
+                         ['INF-CLOUD-K8S-PROD', 'APP-FRAUD-ENGINE', 'SD-044', 'CAP-310'])
+
+    def test_old_host_has_no_upstream_when_only_superseded_edge_points_there(self):
+        self.assertEqual(self.walk(self.edges, 'INF-ONPREM-VM-CLUSTER-B', 'up')['children'], [])
+
+    def test_including_superseded_restores_history(self):
+        edges = self.load_edges([self.fraud], ('approved', 'superseded'))
+        self.assertEqual(self.chain(self.walk(edges, 'INF-ONPREM-VM-CLUSTER-B', 'up'))[-1], 'CAP-310')
+
+    def test_every_hop_carries_provenance(self):
+        for p in self.paths(self.walk(self.edges, 'CAP-310', 'down')):
+            self.assertTrue(all(v['mapping_id'] for _, v in p[1:]))
+
+    def test_cycle_is_cut(self):
+        edges = self.edges + [{'mapping_id': 'LOOP', 'relationship': 'X', 'status': 'approved', 'baseline_id': 'b',
+                               'source': {'id': 'INF-CLOUD-K8S-PROD', 'type': 'L3.X', 'version': '1'},
+                               'target': {'id': 'CAP-310', 'type': 'L0.X', 'version': '1'}}]
+        self.assertEqual(self.chain(self.walk(edges, 'CAP-310', 'down')), ['CAP-310', 'SD-044', 'APP-FRAUD-ENGINE', 'INF-CLOUD-K8S-PROD'])
+
+    def test_cli_unknown_entity_exit_code(self):
+        from sdmm.trace import main
+        import io, contextlib
+        with contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(main(['NOPE', str(ROOT / 'examples/card-fraud-alerts/mappings.json')]), 1)

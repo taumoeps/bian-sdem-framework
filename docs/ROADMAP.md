@@ -5,7 +5,7 @@
 | v0.1 | Mapping entity types, lifecycle, sample mappings, static validation | Example validates | done |
 | v0.2 | Full registry metadata, JSON-Schema enforcement, supersession rules, reference-adapter interface, two examples, packaging, CI matrix | 35 tests green on 3.10–3.12 | done |
 | v0.2.1 | Validator hardening: approval timestamps, canonical anchoring of BIAN-guided mappings, typed evidence against `required_evidence`, entity catalogue resolution, `sdmm-diff` for lifecycle transitions and immutability | Unanchored or edited-after-approval records are rejected in CI | done |
-| v0.3 | Graph reference implementation (`sdmm-trace`), pure Python, no new dependencies | Traverse approved L0→L3 mappings in both directions from the CLI | next |
+| v0.3 | Graph reference implementation (`sdmm-trace`), pure Python, no new dependencies | Traverse approved L0→L3 mappings in both directions from the CLI | done |
 | v0.4.0 | Entity metamodel (additive): 31-type core catalogue with `extends`/`abstract`, is-a registry matching, `DEPLOYED_AS`, per-mapping verdicts, `metamodel_version` pin — see `docs/SDMM_v0.4_Entity_Metamodel_Specification.md` | v0.2.1 examples validate unchanged; `DEPLOYED_ON → L3.Node` passes; unknown type fails | |
 | v0.4.1 | Bank Architecture Profiles (JSON, static rules) and `resolve_entity(ref)`; `example-bank` and `example-cloud` profiles | Bank types resolve through a profile; storage bucket → compute rejected | |
 | v0.4.2 | BIAN verification register: `evidence_status` computed from recorded checks against a named release | No `bian_reference` type confirmed without a register entry | |

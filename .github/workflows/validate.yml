@@ -21,5 +21,9 @@ jobs:
         run: python -m sdmm.validate --strict --catalogue examples/card-fraud-alerts/entities.json examples/card-fraud-alerts/mappings.json
       - name: Lifecycle and immutability against previous commit
         run: python -m sdmm.diff --git HEAD~1 examples/*/mappings.json
+      - name: Trace the fraud example both ways
+        run: |
+          python -m sdmm.trace CAP-310 examples/card-fraud-alerts/mappings.json
+          python -m sdmm.trace INF-CLOUD-K8S-PROD --direction up --json examples/card-fraud-alerts/mappings.json > /dev/null
       - run: python -m sdmm.validate --json examples/*/mappings.json
       - run: python -m unittest discover -s tests -v

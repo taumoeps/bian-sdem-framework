@@ -29,25 +29,10 @@ Try breaking it: remove `previous_mapping_id` from FRD-005 and the validator rep
 
 ## Walk the chain
 
-There is no graph engine yet, but the approved records are already connected arrows. This snippet loads them and answers the two traceability questions:
-
-```python
-import json
-doc = json.load(open("examples/card-fraud-alerts/mappings.json"))
-edges = [(m["source"]["id"], m["relationship"], m["target"]["id"])
-         for m in doc["mappings"] if m["status"] == "approved"]
-
-def walk(start, downstream=True):
-    frontier, seen = [start], []
-    while frontier:
-        n = frontier.pop()
-        for s, rel, t in edges:
-            if downstream and s == n:   seen.append(f"{s} -{rel}-> {t}"); frontier.append(t)
-            if not downstream and t == n: seen.append(f"{t} <-{rel}- {s}"); frontier.append(s)
-    return seen
-
-print("\n".join(walk("CAP-310")))                       # what does the capability depend on?
-print("\n".join(walk("INF-CLOUD-K8S-PROD", False)))     # what is affected if the platform changes?
+```bash
+python -m sdmm.trace CAP-310 examples/card-fraud-alerts/mappings.json                      # both directions
+python -m sdmm.trace INF-CLOUD-K8S-PROD --direction up examples/card-fraud-alerts/mappings.json
+python -m sdmm.trace INF-ONPREM-VM-CLUSTER-B --direction up --status approved,superseded examples/card-fraud-alerts/mappings.json
 ```
 
-Only `approved` arrows are followed, so the superseded on-prem deployment (FRD-003) and the unreviewed candidate (FRD-004) do not appear. This is the behaviour the v0.3 graph adapter will provide as a service.
+Only `approved` arrows are followed by default, so the superseded on-prem deployment (FRD-003) and the unreviewed candidate (FRD-004) do not appear; the third command includes history and shows the old host's former chain. Every hop prints the `mapping_id` that justifies it.
