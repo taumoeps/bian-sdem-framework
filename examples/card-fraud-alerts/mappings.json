@@ -1,0 +1,125 @@
+{
+  "registry_version": "0.2.0",
+  "mappings": [
+    {
+      "mapping_id": "FRD-001",
+      "source": {
+        "id": "CAP-310",
+        "type": "L0.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-044",
+        "type": "L1.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-FRAUD-DETECTION"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "BA-FRAUD-2026#s2"
+      ],
+      "rationale": "Fraud-alerting capability sits inside the selected fraud-detection domain's scope",
+      "bian_release": "BIAN-RELEASE-X",
+      "baseline_id": "BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "FRD-002",
+      "source": {
+        "id": "SD-044",
+        "type": "L1.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-FRAUD-ENGINE",
+        "type": "L2.ApplicationComponent",
+        "version": "4.2"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "AA-FRAUD-ENGINE-HLD#s3"
+      ],
+      "rationale": "Existing fraud engine covers real-time scoring and alert dispatch; case management is out of scope (separate component)",
+      "baseline_id": "BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "FRD-003",
+      "source": {
+        "id": "APP-FRAUD-ENGINE",
+        "type": "L2.ApplicationComponent",
+        "version": "4.2"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-ONPREM-VM-CLUSTER-B",
+        "type": "L3.InfrastructureComponent",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "superseded",
+      "evidence": [
+        "IA-FRAUD-DEPLOY-2024"
+      ],
+      "rationale": "Current production hosting",
+      "baseline_id": "BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22",
+      "valid_to": "2026-11-30"
+    },
+    {
+      "mapping_id": "FRD-004",
+      "source": {
+        "id": "SO-044-07",
+        "type": "L1.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "POST /fraud/alerts",
+        "type": "L2.APIOperation",
+        "version": "3.1"
+      },
+      "perspective": "architecture",
+      "status": "proposed",
+      "confidence": 0.71,
+      "evidence": [
+        "API-FRAUD-v3.1.yaml#/paths/~1fraud~1alerts"
+      ],
+      "rationale": "Engine candidate: endpoint name and payload resemble the alert-notification operation; semantic review pending",
+      "baseline_id": "BASE-2026-Q4",
+      "created_by": "SDMM Mapping Engine"
+    },
+    {
+      "mapping_id": "FRD-005",
+      "source": {
+        "id": "APP-FRAUD-ENGINE",
+        "type": "L2.ApplicationComponent",
+        "version": "4.2"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-CLOUD-K8S-PROD",
+        "type": "L3.InfrastructureComponent",
+        "version": "1.3"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "IA-FRAUD-MIGRATION-2026#s5"
+      ],
+      "rationale": "Re-hosted on managed Kubernetes; L1 functional semantics unchanged, so FRD-001/002 are untouched",
+      "baseline_id": "BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22",
+      "previous_mapping_id": "FRD-003",
+      "valid_from": "2026-12-01"
+    }
+  ]
+}

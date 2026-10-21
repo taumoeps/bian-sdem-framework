@@ -1,0 +1,111 @@
+{
+  "$schema_version": "0.2.0",
+  "perspectives": ["process", "information", "architecture"],
+  "authorities": ["bian_reference", "bian_alignment_guidance", "enterprise_rule"],
+  "relationships": [
+    {
+      "mapping_type_id": "CAPABILITY_SUPPORTED_BY_DOMAIN",
+      "source_type": "L0.BusinessCapability",
+      "relationship": "SUPPORTED_BY",
+      "target_type": "L1.ServiceDomain",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "bian_alignment_guidance",
+      "direction_semantics": "The capability's responsibilities are (partly) fulfilled by the functional scope of the selected Service Domain.",
+      "required_evidence": ["business_architecture_document", "domain_scope_assessment"],
+      "rule_version": "1.0",
+      "owner": "enterprise-architecture"
+    },
+    {
+      "mapping_type_id": "VALUE_STREAM_ALIGNED_TO_SCENARIO",
+      "source_type": "L0.ValueStream",
+      "relationship": "ALIGNED_TO",
+      "target_type": "L1.BusinessScenario",
+      "cardinality": "many_to_many",
+      "perspective": "process",
+      "authority": "bian_alignment_guidance",
+      "direction_semantics": "The value stream's stages are realised by the interactions described in the Business Scenario.",
+      "required_evidence": ["process_model", "scenario_suitability_review"],
+      "rule_version": "1.0",
+      "owner": "business-architecture"
+    },
+    {
+      "mapping_type_id": "PROCESS_USES_DOMAIN",
+      "source_type": "L0.BusinessProcess",
+      "relationship": "USES_DOMAIN",
+      "target_type": "L1.ServiceDomain",
+      "cardinality": "many_to_many",
+      "perspective": "process",
+      "authority": "enterprise_rule",
+      "direction_semantics": "A process activity invokes one or more Service Operations of the Service Domain.",
+      "required_evidence": ["process_model"],
+      "rule_version": "1.0",
+      "owner": "business-architecture"
+    },
+    {
+      "mapping_type_id": "BUSINESS_OBJECT_ALIGNED_TO_BIAN_OBJECT",
+      "source_type": "L0.BusinessObject",
+      "relationship": "ALIGNED_TO",
+      "target_type": "L1.BusinessObject",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "bian_alignment_guidance",
+      "direction_semantics": "The bank business concept carries the same meaning as (or specialises) the BIAN business object.",
+      "required_evidence": ["business_glossary", "object_alignment_review"],
+      "rule_version": "1.0",
+      "owner": "data-architecture"
+    },
+    {
+      "mapping_type_id": "DOMAIN_REALIZED_BY_COMPONENT",
+      "source_type": "L1.ServiceDomain",
+      "relationship": "REALIZED_BY",
+      "target_type": "L2.ApplicationComponent",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application component implements some or all of the Service Domain's functional responsibilities.",
+      "required_evidence": ["application_architecture_document"],
+      "rule_version": "1.0",
+      "owner": "application-architecture"
+    },
+    {
+      "mapping_type_id": "OPERATION_IMPLEMENTED_BY_API",
+      "source_type": "L1.ServiceOperation",
+      "relationship": "IMPLEMENTED_BY",
+      "target_type": "L2.APIOperation",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The API operation exposes the behaviour of the Service Operation; semantic gaps must be documented.",
+      "required_evidence": ["api_contract"],
+      "rule_version": "1.0",
+      "owner": "application-architecture"
+    },
+    {
+      "mapping_type_id": "BIAN_OBJECT_MAPPED_TO_DATA_ENTITY",
+      "source_type": "L1.BusinessObject",
+      "relationship": "MAPPED_TO",
+      "target_type": "L2.DataEntity",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application data entity stores (part of) the BIAN business object; transformations and partial coverage are recorded.",
+      "required_evidence": ["data_model"],
+      "rule_version": "1.0",
+      "owner": "data-architecture"
+    },
+    {
+      "mapping_type_id": "COMPONENT_DEPLOYED_ON_INFRASTRUCTURE",
+      "source_type": "L2.ApplicationComponent",
+      "relationship": "DEPLOYED_ON",
+      "target_type": "L3.InfrastructureComponent",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application component runs on the infrastructure component in a named environment.",
+      "required_evidence": ["deployment_design"],
+      "rule_version": "1.0",
+      "owner": "infrastructure-architecture"
+    }
+  ]
+}
