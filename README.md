@@ -400,7 +400,7 @@ What the validator checks is listed under *What goes in and what comes out* abov
 
 ## Contents
 
-- `docs/`: reference methodology and governance
+- `docs/`: reference methodology, governance, the v0.4 entity metamodel spec and `reference-architecture-provenance.md` (every entity traced to a public standard)
 - `schema/`: SDMM cross-layer relationship registry + JSON Schema
 - `examples/`: synthetic mappings — `customer-onboarding` (full vertical slice) and `card-fraud-alerts` (a change event with supersession)
 - `sdmm/`: validator, document diff, traceability walker, and the `ReferenceResolver` / `EntityResolver` adapter interfaces

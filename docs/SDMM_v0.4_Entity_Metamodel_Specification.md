@@ -38,6 +38,8 @@ Registry self-check (new): a rule with `bian_*` authority must have at least one
 
 ## 2. Reference architecture inventory
 
+Per-entity provenance — which public standard each of the 31 entities derives from, with the public source — is maintained in `docs/reference-architecture-provenance.md`.
+
 | Ref | Source | Contributes | SDMM use | Caveat |
 |---|---|---|---|---|
 | R1 | BIAN Service Landscape 14.0 — InSite portal, publicly browsable at https://bian.org/servicelandscape-14-0-0/ | Business Areas/Domains, Service Domains, Service Groups/Operations, Functional Patterns, Asset Types, Control Records, Wireframes, MetaModel Overview | A2 structural anchor | Browsable without login; **no licence text on the portal**, so reproduction of definitions, diagrams or datasets is treated as not permitted. Verification = reading and recording, never copying |
