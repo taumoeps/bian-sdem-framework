@@ -15,7 +15,84 @@ SDADM is a generic four-level design lifecycle; an institution's own numbering (
 
 **BIAN provides reference definitions and business-to-service alignment guidance; SDMM adds enterprise-specific A2→A3→A4 mappings and governance.** BIAN reference models and trademarks are not included in this repository.
 
-**In this README:** [Target state architecture](#target-state-architecture) · [Core concepts](#core-concepts-how-the-four-levels-become-data) · [What this repository ships](#what-this-repository-ships) · [Where this repository sits in the target architecture](#where-this-repository-sits-in-the-target-architecture) · [Quick start](#quick-start) · [Rules of use](#rules-of-use) · [Licenses](#licenses-and-attribution)
+## Reference architecture provenance
+
+Every entity in the SDMM vocabulary derives from a **publicly available reference architecture** — BIAN, ArchiMate 3.2 or TOGAF 10 — or is a documented SDMM extension of one. No entity is named after, defined by, or copied from any institution's architecture model; institution-specific entities belong in that institution's private profile, never here. Of the 31 core entities, **12 derive from BIAN, 19 from ArchiMate, 1 from TOGAF**. Full detail, including classification and the public URL for each, is in [`docs/reference-architecture-provenance.md`](docs/reference-architecture-provenance.md).
+
+| Key | Public source |
+|---|---|
+| **BIAN-SL** | [BIAN Service Landscape 14.0, InSite portal](https://bian.org/servicelandscape-14-0-0/) — publicly browsable |
+| **BIAN-BCM** | [BIAN BCM *Statement of Alignment with the Service Landscape*](https://bian.org/wp-content/uploads/2023/08/BIAN-BCM-Relationship-with-BIAN-Service-Landscape-Final.pdf) |
+| **BIAN-API** | [BIAN Semantic API Practitioner Guide](https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf) |
+| **AM** | [ArchiMate® 3.2 Specification](https://pubs.opengroup.org/architecture/archimate3-doc/) — ch. 6 Motivation, 7 Strategy, 8 Business, 9 Application, 10 Technology |
+| **TOGAF** | [TOGAF® Standard, 10th Edition](https://pubs.opengroup.org/togaf-standard/) |
+
+**A1 — Business Architecture**
+
+| Entity | Reference architecture | Concept | Source |
+|---|---|---|---|
+| `A1.BusinessCapability` | BIAN BCM; ArchiMate Strategy | Business Capability; Capability | BIAN-BCM; AM ch. 7 |
+| `A1.ValueStream` | ArchiMate Strategy | Value Stream | AM ch. 7; BIAN-BCM |
+| `A1.ValueStreamStage` | SDMM extension of Value Stream | — | AM ch. 7 (parent) |
+| `A1.BusinessProcess` | ArchiMate Business | Business Process | AM ch. 8 |
+| `A1.BusinessActivity` | SDMM extension of Business Process | — | AM ch. 8 (parent) |
+| `A1.BusinessService` | ArchiMate Business | Business Service | AM ch. 8 |
+| `A1.BusinessActor` | ArchiMate Business | Business Actor | AM ch. 8 |
+| `A1.BusinessRole` | ArchiMate Business | Business Role | AM ch. 8 |
+| `A1.BusinessObject` | ArchiMate Business; aligned to BIAN BOM | Business Object | AM ch. 8; BIAN-SL |
+| `A1.BusinessRequirement` | ArchiMate Motivation | Requirement | AM ch. 6 |
+
+**A2 — Service Domain Architecture** — all BIAN reference, all `pending_release_validation` until verified against release 14.0
+
+| Entity | Reference architecture | Concept | Source |
+|---|---|---|---|
+| `A2.BusinessArea` | BIAN Service Landscape | Business Area | BIAN-SL |
+| `A2.BusinessDomain` | BIAN Service Landscape | Business Domain | BIAN-SL |
+| `A2.ServiceDomain` | BIAN Service Landscape | Service Domain | BIAN-SL MetaModel Overview |
+| `A2.FunctionalPattern` | BIAN Service Landscape | Functional Pattern | BIAN-SL MetaModel Overview |
+| `A2.AssetType` | BIAN Service Landscape | Asset Type | BIAN-SL MetaModel Overview |
+| `A2.ControlRecord` | BIAN Control Record Model | Control Record | BIAN-SL Control Record Model |
+| `A2.ServiceGroup` | BIAN Service Landscape | Service Group | BIAN-SL MetaModel Overview |
+| `A2.ServiceOperation` | BIAN Service Landscape; Semantic APIs | Service Operation | BIAN-SL; BIAN-API |
+| `A2.BehaviorQualifier` | BIAN Service Landscape; Semantic APIs | Behavior Qualifier | BIAN-SL; BIAN-API |
+| `A2.BusinessScenario` | BIAN Business Scenarios | Business Scenario (illustrative) | BIAN-SL Business Scenarios |
+| `A2.BusinessObject` | BIAN Business Object Model | Business Object | BIAN-SL BOM |
+| `A2.BusinessObjectAttribute` | BIAN Business Object Model | BOM attribute | BIAN-SL BOM |
+| `A2.BOMModel`, `A2.Wireframe`, `A2.SemanticAPI` | BIAN model artefacts — citable as evidence, never mapping endpoints | — | BIAN-SL; BIAN-API |
+
+**A3 — Application Architecture**
+
+| Entity | Reference architecture | Concept | Source |
+|---|---|---|---|
+| `A3.ApplicationComponent` | ArchiMate Application | Application Component | AM ch. 9 |
+| `A3.ApplicationService` | ArchiMate Application | Application Service | AM ch. 9 |
+| `A3.ApplicationInterface` | ArchiMate Application | Application Interface | AM ch. 9 |
+| `A3.ApplicationFunction` | ArchiMate Application | Application Function | AM ch. 9 |
+| `A3.APIOperation` | SDMM extension; aligned to BIAN Semantic API / OpenAPI | — | BIAN-API |
+| `A3.DataEntity` | ArchiMate Application (related) | Data Object | AM ch. 9 |
+| `A3.Event` | ArchiMate Application (related) | Application Event | AM ch. 9 |
+| `A3.SolutionBuildingBlock` | TOGAF Architecture Content | Solution Building Block | TOGAF |
+
+**A4 — Technology Architecture**
+
+| Entity | Reference architecture | Concept | Source |
+|---|---|---|---|
+| `A4.InfrastructureComponent` *(abstract)* | SDMM compatibility supertype of every A4 entity | — | — |
+| `A4.Deployment` | SDMM extension of Artifact assigned to Node | — | AM ch. 10 (parents) |
+| `A4.DeploymentEnvironment` | SDMM extension of Node grouping | — | AM ch. 10 (parent) |
+| `A4.Node` | ArchiMate Technology | Node | AM ch. 10 |
+| `A4.Device` | ArchiMate Technology | Device | AM ch. 10 |
+| `A4.SystemSoftware` | ArchiMate Technology | System Software | AM ch. 10 |
+| `A4.TechnologyService` | ArchiMate Technology | Technology Service | AM ch. 10 |
+| `A4.TechnologyInterface` | ArchiMate Technology | Technology Interface | AM ch. 10 |
+| `A4.CommunicationNetwork` | ArchiMate Technology | Communication Network | AM ch. 10 |
+| `A4.Path` | ArchiMate Technology | Path | AM ch. 10 |
+| `A4.Artifact` | ArchiMate Technology | Artifact | AM ch. 10 |
+
+Cloud-specific entities (compute resource, container platform, storage, database platform, security control, …) are **not core**: they live in the `example-cloud` profile, each extending one of the ArchiMate-derived A4 entities above. Definitions in the catalogue are SDMM paraphrases; no text, diagram or dataset from BIAN or The Open Group is reproduced. BIAN®, ArchiMate® and TOGAF® are trademarks of their respective owners; SDMM is independent and not endorsed by either organisation.
+
+
+**In this README:** [Reference architecture provenance](#reference-architecture-provenance) · [Target state architecture](#target-state-architecture) · [Core concepts](#core-concepts-how-the-four-levels-become-data) · [What this repository ships](#what-this-repository-ships) · [Where this repository sits in the target architecture](#where-this-repository-sits-in-the-target-architecture) · [Quick start](#quick-start) · [Rules of use](#rules-of-use) · [Licenses](#licenses-and-attribution)
 
 ## Target state architecture
 
