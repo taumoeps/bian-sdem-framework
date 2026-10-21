@@ -92,7 +92,7 @@ Every entity in the SDMM vocabulary derives from a **publicly available referenc
 Cloud-specific entities (compute resource, container platform, storage, database platform, security control, …) are **not core**: they live in the `example-cloud` profile, each extending one of the ArchiMate-derived A4 entities above. Definitions in the catalogue are SDMM paraphrases; no text, diagram or dataset from BIAN or The Open Group is reproduced. BIAN®, ArchiMate® and TOGAF® are trademarks of their respective owners; SDMM is independent and not endorsed by either organisation.
 
 
-**In this README:** [Reference architecture provenance](#reference-architecture-provenance) · [Target state architecture](#target-state-architecture) · [Core concepts](#core-concepts-how-the-four-levels-become-data) · [Service Domain Mapping Model Validator](#service-domain-mapping-model-validator) · [Where this repository sits in the target architecture](#where-this-repository-sits-in-the-target-architecture) · [Quick start](#quick-start) · [Rules of use](#rules-of-use) · [Licenses](#licenses-and-attribution)
+**In this README:** [Reference architecture provenance](#reference-architecture-provenance) · [Target state architecture](#target-state-architecture) · [Core concepts](#core-concepts-how-the-four-levels-become-data) · [What this repository ships](#what-this-repository-ships) (Validator v0.2 · Query v0.3) · [Where this repository sits in the target architecture](#where-this-repository-sits-in-the-target-architecture) · [Quick start](#quick-start) · [Rules of use](#rules-of-use) · [Licenses](#licenses-and-attribution)
 
 ## Target state architecture
 
@@ -358,46 +358,80 @@ The design specification calls this the **federated knowledge graph**: *federate
 | **Validator** | The gate that rejects arrows that break the rules | `sdmm/validate.py` |
 | **Knowledge graph** | Nodes (your models) + arrows (the mappings) + an engine to walk them | Roadmap. This repo supplies the arrows only |
 
-## Service Domain Mapping Model Validator
+## What this repository ships
 
-If you are expecting to deploy something: there is nothing to deploy. This repository is **a rulebook, a file format, and a checker.**
+If you are expecting to deploy something: there is nothing to deploy. This repository is **a rulebook, a file format, and two command-line components** that work on files written to that rulebook.
 
-| What | In plain terms | Where |
-|---|---|---|
-| **The rulebook** | The eight permitted arrow types and the fields every mapping must carry | `schema/` |
-| **The files** | Mapping documents written to that rulebook. One per initiative, kept in git. This is the *only* data SDMM holds | `examples/*/mappings.json` and your own |
-| **The checker** | One script that reads a mapping document and says *OK* or lists what is wrong | `sdmm/validate.py` |
-| **The reasoning** | Why the rulebook is shaped this way, and the platform it is designed to grow into | `docs/` |
+| Component | Version | Commands | Job | Gives a verdict? |
+|---|---|---|---|---|
+| **Contract** | v0.2 | — | The rulebook: the eight permitted arrow types (`schema/relationship-types.json`) and the fields every mapping must carry (`schema/mapping.schema.json`) | — |
+| **Service Domain Mapping Model Validator** | v0.2 | `sdmm-validate`, `sdmm-diff` | **Gate.** Checks that a mapping document is well-formed and governed, and that its history has not been tampered with | yes — OK / errors |
+| **Service Domain Mapping Model Query** | v0.3 | `sdmm-trace` | **Query.** Answers traceability questions over approved mappings: what does X depend on, what depends on X | no — it reports, it does not judge |
 
-### What goes in and what comes out
+Both components read the same `mappings.json` files. The validator decides whether a file is acceptable; the query assumes it already is. Neither stores anything, transforms anything, or sends anything anywhere.
+
+### Service Domain Mapping Model Validator (v0.2)
 
 ```mermaid
 flowchart LR
-    IN["A mapping document<br/>(mappings.json)<br/>written by an architect"] --> CHK["The checker<br/>sdmm-validate"]
+    IN["A mapping document<br/>(mappings.json)"] --> CHK["sdmm-validate"]
+    CAT["Optional: catalogue of<br/>known entity instances"] -.-> CHK
     REF["Optional: your licensed<br/>BIAN reference lookup"] -.-> CHK
     CHK --> OK["OK"]
     CHK --> ERR["A list of problems,<br/>one line each"]
+    PREV["The same document<br/>at a previous commit"] --> DIFF["sdmm-diff"]
+    IN --> DIFF
+    DIFF --> OK2["OK"]
+    DIFF --> ERR2["Illegal transitions,<br/>edits to approved records"]
 ```
 
-**In:** a mapping document. It names entity instances by ID only (`CAP-310 SUPPORTED_BY SD-044`); the instances themselves stay in your EA tool, BIAN model and CMDB.
+**`sdmm-validate` — is this document acceptable?** It checks whether each arrow is one of the eight permitted types; whether the required fields are present; whether a reviewed arrow names its reviewer and date; whether a replaced arrow is linked to its replacement; whether a BIAN-guided arrow names the BIAN release it used and anchors its A2 end to a canonical id; whether the evidence cited covers the kinds the arrow's type requires. With a catalogue of known entity instances (`--catalogue`) it also confirms both ends exist. With a licensed BIAN lookup attached, it confirms canonical ids exist in the named release.
 
-**What the checker looks at:** whether each arrow is one of the eight permitted types; whether the required fields are present; whether a reviewed arrow names its reviewer and date; whether a replaced arrow is linked to its replacement; whether a BIAN-guided arrow names the BIAN release it used and anchors its A2 end to a canonical id; whether the evidence cited covers the kinds the arrow's type requires. With a catalogue of known entities (`--catalogue`) it also confirms both ends exist. A companion, `sdmm-diff`, compares two versions of a document and rejects illegal status transitions and edits to approved records.
+**`sdmm-diff` — has history been respected?** It compares a document with its previous version (a file, or a git revision such as `HEAD~1`) and rejects removed records, status transitions the lifecycle does not permit, and any edit to an `approved`, `rejected` or `superseded` record other than supersession itself.
 
-**What the checker does *not* look at:** whether the mapping is *right*. It cannot tell whether Fraud Detection is the correct domain for Card Fraud Alerts. That judgement is the architect's, and the record's `rationale` and `evidence` fields are where it is written down.
+**What the validator does *not* look at:** whether a mapping is *right*. It cannot tell whether Fraud Detection is the correct domain for Card Fraud Alerts. That judgement is the architect's, and the record's `rationale` and `evidence` fields are where it is written down.
 
-**Out:** *OK*, or a list of problems. Nothing is stored, transformed or sent anywhere. The approved records in your files are the result — a versioned, machine-readable set of arrows that later tooling (a graph loader, an impact engine, a diagram generator) can read.
+**In:** a mapping document naming entity instances by ID only (`CAP-310 SUPPORTED_BY SD-044`); the instances stay in your EA tool, BIAN model and CMDB. **Out:** *OK*, or a list of problems, with exit code `0` / `1`. The approved records in your files are the result — a versioned, machine-readable set of arrows that the query component and later tooling can read.
+
+### Service Domain Mapping Model Query (v0.3)
+
+```mermaid
+flowchart LR
+    IN["One or more<br/>mapping documents"] --> TR["sdmm-trace &lt;entity-id&gt;"]
+    TR --> DOWN["Downstream tree:<br/>what it depends on<br/>(toward A4)"]
+    TR --> UP["Upstream tree:<br/>what depends on it<br/>(toward A1)"]
+    TR -.->|--json| DATA["Paths with the<br/>mapping_id of every hop"]
+```
+
+**`sdmm-trace` — starting here, what is connected?** Give it an entity instance ID and it follows the approved arrows from there — forward toward Technology Architecture (*downstream*: what this depends on) or backward toward Business Architecture (*upstream*: what depends on this) — and prints the chain. Each hop names the `mapping_id` that justifies it, so a level-skipping answer such as "this capability runs on that Kubernetes platform" is always a derived path with provenance, never a stored record. Arrows are stored once, in their registry direction; upstream reads them backwards. Nothing is stored in reverse.
+
+**What counts as an arrow:** only `approved` records by default. Superseded records are history and proposed records are suggestions; `--status approved,superseded` or `--status approved,proposed` includes them explicitly, so neither can leak into a traceability answer unasked.
+
+**What the query does *not* do:** validate (it assumes the documents passed `sdmm-validate`), judge whether a mapping is correct, or decide what *must change* when something is reachable. Classifying reachable instances as `no_impact` / `review_required` / `design_change_required` is the v0.5 impact component.
+
+```bash
+python -m sdmm.trace CAP-310 --direction down examples/card-fraud-alerts/mappings.json
+```
+```
+CAP-310  [A1.BusinessCapability]
+└─ -SUPPORTED_BY-> SD-044  [A2.ServiceDomain]  (FRD-001)
+   └─ -REALIZED_BY-> APP-FRAUD-ENGINE  [A3.ApplicationComponent]  (FRD-002)
+      └─ -DEPLOYED_ON-> INF-CLOUD-K8S-PROD  [A4.InfrastructureComponent]  (FRD-005)
+```
 
 ### How it runs
 
-| Mode | Command | Typical user |
-|---|---|---|
-| Local | `python -m sdmm.validate path/to/mappings.json` | Architect authoring a document |
-| CI | `.github/workflows/validate.yml` on every push | Repo gate; a broken document cannot merge |
-| Library | `from sdmm.validate import validate` | Developer embedding the check in another tool |
-| History | `python -m sdmm.diff --git HEAD~1 path/to/mappings.json` | CI, to block edits to approved records and illegal status changes |
-| Trace | `python -m sdmm.trace CAP-310 path/to/mappings.json` | Architect asking what an entity instance depends on, or what depends on it |
+| Component | Mode | Command | Typical user |
+|---|---|---|---|
+| Validator | Local | `python -m sdmm.validate path/to/mappings.json` | Architect authoring a document |
+| Validator | CI | `.github/workflows/validate.yml` on every push | Repo gate; a broken document cannot merge |
+| Validator | History | `python -m sdmm.diff --git HEAD~1 path/to/mappings.json` | CI, to block edits to approved records and illegal status changes |
+| Validator | Library | `from sdmm.validate import validate` | Developer embedding the check in another tool |
+| Query | Local | `python -m sdmm.trace CAP-310 path/to/mappings.json` | Architect asking what an instance depends on, or what depends on it |
+| Query | Pipeline | `sdmm-trace INF-X --direction up` with exit code `1` meaning "nothing depends on it" | Decommissioning gate |
+| Query | Library | `from sdmm.trace import load_edges, walk` | Developer feeding a dashboard or diagram generator |
 
-There is no server, no database, no scheduler and no UI. A production deployment would wrap this in whatever hosts your other EA tooling.
+There is no server, no database, no scheduler and no UI. A production deployment would wrap these in whatever hosts your other EA tooling.
 
 ## Where this repository sits in the target architecture
 
