@@ -11,7 +11,7 @@ SDMM is a proposed methodology and typed cross-layer mapping model for tracing b
 | **A3** | Application Architecture | application components, interfaces, API operations |
 | **A4** | Technology Architecture | deployment, compute, networks and supporting infrastructure |
 
-SDADM is a generic four-level design lifecycle; an institution's own numbering (for example L0–L3) is one instance of it and is mapped by that institution's profile. Entities are prefixed with the level code (`A2.ServiceDomain`); the registry declares `L0.`–`L3.` as aliases, so documents written with the older prefixes continue to validate unchanged. "Service Domain Architecture" names both the whole (SDADM) and its second level (A2), in the same way BIAN's Service Landscape contains Service Domains.
+SDADM is a generic four-level design lifecycle; an institution's own level numbering is one instance of it and is mapped by that institution's profile. Entities are prefixed with the level code (`A2.ServiceDomain`). The registry can declare an institution's legacy prefixes as aliases of `A1.`–`A4.`, so documents written against an earlier numbering continue to validate unchanged. "Service Domain Architecture" names both the whole (SDADM) and its second level (A2), in the same way BIAN's Service Landscape contains Service Domains.
 
 **BIAN provides reference definitions and business-to-service alignment guidance; SDMM adds enterprise-specific A2→A3→A4 mappings and governance.** BIAN reference models and trademarks are not included in this repository.
 
