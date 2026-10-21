@@ -13,6 +13,8 @@ SDMM is a proposed methodology and typed cross-layer mapping model for tracing b
 
 **BIAN provides reference definitions and business-to-service alignment guidance; SDMM adds enterprise-specific L1→L2→L3 mappings and governance.** BIAN reference models and trademarks are not included in this repository.
 
+**In this README:** [Target state architecture](#target-state-architecture) · [Core concepts](#core-concepts-how-the-four-levels-become-data) · [What this repository ships](#what-this-repository-ships) · [Where this repository sits in the target architecture](#where-this-repository-sits-in-the-target-architecture) · [Quick start](#quick-start) · [Rules of use](#rules-of-use) · [Licenses](#licenses-and-attribution)
+
 ## Target state architecture
 
 The end state SDMM is designed for: four independently governed architecture models, a mapping engine that proposes cross-layer links from them, a rules-and-approval gate, and a federated knowledge graph holding the approved links for bidirectional traceability and impact analysis.
@@ -51,7 +53,7 @@ flowchart TB
     FED --> IMPACT
 ```
 
-Only part of this exists today. The next section says what this repository is in deployment terms, and the section after it marks each box above as built, data-only, interface-only or not built.
+Only part of this exists today. *What this repository ships* says what exists; *Where this repository sits in the target architecture* marks each box above as built, data-only, interface-only or not built.
 
 ## Core concepts: how the four levels become data
 
@@ -133,7 +135,7 @@ classDiagram
 |---|---|---|
 | **Level model** | One of the four architecture models (L0–L3) and the entities inside it | The level's own team and tooling. **Outside SDMM.** |
 | **Entity reference** | A pointer to one entity in one level model: its `id`, its level-prefixed `type`, and the `version` being referred to. Optionally the BIAN `canonical_id` it is based on | SDMM, as part of a mapping |
-| **Mapping type** | One permitted kind of cross-level relationship: which source type, which relationship word, which target type, whose authority it rests on, and what evidence it needs | SDMM governance. Eight exist; see §3 |
+| **Mapping type** | One permitted kind of cross-level relationship: which source type, which relationship word, which target type, whose authority it rests on, and what evidence it needs | SDMM governance. Eight exist; see *Mapping Types* below |
 | **Mapping** | One concrete relationship between a source entity reference and a target entity reference, conforming to exactly one mapping type, carrying evidence, rationale, status and approval | An architect (or, as `proposed`, a future engine) |
 | **Mapping document** | A set of mappings for one initiative, pinned to a registry version | An initiative team, in version control |
 | **BIAN reference** | A canonical BIAN definition in a named release, reachable through the bank's licensed adapter | BIAN; the bank holds the licence. **Outside SDMM.** |
@@ -176,7 +178,7 @@ Three mappings. The first one, as the record the model prescribes:
   "relationship": "SUPPORTED_BY",                                                        // + source/target types = mapping type
   "target":   { "id": "SD-044",  "type": "L1.ServiceDomain",      "version": "1.0",
                 "canonical_id": "<the BIAN id this domain is based on>" },               // entity reference, BIAN-anchored
-  "status":   "approved",                                                                // lifecycle (§5)
+  "status":   "approved",                                                                // lifecycle (see Mapping Lifecycle)
   "evidence": ["BA-FRAUD-2026#s2"],                                                      // where the claim is documented
   "rationale": "Fraud-alerting sits inside the selected domain's scope",
   "bian_release": "<the BIAN release consulted>",                                        // mandatory: this type's authority is BIAN guidance
@@ -188,7 +190,7 @@ Three mappings. The first one, as the record the model prescribes:
 
 The arrow in the diagram, the record in the file, and the `Mapping` element in the metamodel are one and the same thing seen three ways. Everything the record carries beyond the two IDs — evidence, rationale, release, reviewer, baseline — is what turns an opinion into an auditable architecture fact.
 
-### 3. Mapping Types
+#### Mapping Types
 
 A mapping type is one permitted kind of cross-level relationship. SDMM defines eight, and every mapping must conform to exactly one of them. In plain English:
 
@@ -211,11 +213,11 @@ Three consequences of this grammar:
 
 The authoritative list is `schema/relationship-types.json`. Adding a ninth kind of arrow means adding a row there first.
 
-### 4. Mapping Document
+#### Mapping Document
 
 Mappings are grouped into a **mapping document** (`mappings.json`) — typically one per initiative or design, held in version control. `examples/card-fraud-alerts/mappings.json` is the Card Fraud Alerts initiative: the three arrows above, plus a superseded deployment and one unreviewed candidate.
 
-### 5. Mapping Lifecycle
+#### Mapping Lifecycle
 
 ```
 proposed ──▶ validated ──▶ approved ──▶ superseded
@@ -233,7 +235,7 @@ proposed ──▶ validated ──▶ approved ──▶ superseded
 
 A proposal from an AI engine and an approved fact are therefore different *statuses on the same record shape*, not different systems. An engine can only ever add `proposed` rows.
 
-### 6. Knowledge Graph Composition
+### 3. Knowledge Graph Composition
 
 A knowledge graph needs three components. SDMM supplies one of them.
 
@@ -274,9 +276,9 @@ The design specification calls this the **federated knowledge graph**: *federate
 | **Validator** | The gate that rejects arrows that break the rules | `sdmm/validate.py` |
 | **Knowledge graph** | Nodes (your models) + arrows (the mappings) + an engine to walk them | Roadmap. This repo supplies the arrows only |
 
-## What this project is, in deployment terms
+## Service Domain Mapping Model Validator
 
-This repository is **a rulebook, a file format, and a checker.**
+If you are expecting to deploy something: there is nothing to deploy. This repository is **a rulebook, a file format, and a checker.**
 
 | What | In plain terms | Where |
 |---|---|---|
@@ -312,10 +314,6 @@ flowchart LR
 | Library | `from sdmm.validate import validate` | Developer embedding the check in another tool |
 
 There is no server, no database, no scheduler and no UI. A production deployment would wrap this in whatever hosts your other EA tooling.
-
-### Not in this repository (roadmap)
-
-The design specification describes a mapping engine, a federated knowledge graph and bidirectional impact traversal. Those are `docs/ROADMAP.md` items v0.3–v0.4, not current features. The `proposed` status and `confidence` field exist so that an engine, when built, has a defined place to put its output without it being mistaken for an approved fact.
 
 ## Where this repository sits in the target architecture
 
@@ -376,8 +374,6 @@ Green = built. Amber = data present, engine absent. Blue = interface defined, im
 | **Bidirectional impact traversal & generated views** | Upstream/downstream queries, impact classification, diagrams projected from the graph | **Not built** (v0.3) |
 | **L0–L3 models** | The bank's own capability, domain, application and infrastructure models | **External, never in scope.** SDMM references their entity IDs; it never copies the entities |
 
-**So, is `mappings.json` a knowledge graph?** It is the graph's *cross-layer edge data* in file form: every approved record is one typed edge whose two ends are IDs in the L0–L3 models. The federated knowledge graph is what you get when a graph engine loads those edges and joins them to the four external models. The nodes, the in-layer relationships and the query engine all live outside this repository.
-
 ## Quick start
 
 Requires Python 3.10+; no third-party dependencies.
@@ -390,7 +386,7 @@ python -m unittest discover -s tests -v
 
 Or install it: `pip install -e .` gives you an `sdmm-validate` command. Exit codes: `0` valid, `1` issues found, `2` usage/registry error.
 
-The validator checks each document against `schema/mapping.schema.json` (unknown fields, type prefixes, enums, bounds) and then against the relationship registry: permitted `(source, relationship, target)` triples, perspective consistency, `bian_release` on BIAN-grounded mappings, reviewer on reviewed statuses, supersession links, duplicate IDs across files, and registry-version pinning. Attach a `ReferenceResolver` (see `sdmm/reference.py`) to resolve canonical BIAN identifiers against a licensed release. It is **not a certification of BIAN conformance** or of architectural correctness.
+What the validator checks is listed under *What goes in and what comes out* above; `--registry` points it at your own registry and `validate(..., resolver=)` attaches a licensed BIAN lookup. It is **not a certification of BIAN conformance** or of architectural correctness.
 
 ## Contents
 
