@@ -45,12 +45,12 @@ The SDMM incorporates BIAN reference architecture definitions and alignment guid
 
 The bank's **existing design lifecycle** is A1 Business, A2 Conceptual, A3 High-Level Application and A4 Detailed Infrastructure. New designs replace the A2 conceptual approach with **BIAN Service Domain Architecture**. Existing designs remain unchanged as historical records, but can be discovered, referenced, compared, and reused as approved patterns.
 
-Each level maintains its **own design entity/schema and knowledge graph**. A **federated knowledge graph** provides a shared cross-layer query and traceability view. The BIAN reference architecture repository and Historical Design Repository are assumed to exist outside the primary diagram; they must be connected to SDMM even when not visually depicted.
+Each level maintains its **own design entity instances, schema and knowledge graph**. A **federated knowledge graph** provides a shared cross-layer query and traceability view. The BIAN reference architecture repository and Historical Design Repository are assumed to exist outside the primary diagram; they must be connected to SDMM even when not visually depicted.
 
 **Separation of concerns:**
 
 - The **BIAN Reference Model** defines canonical BIAN concepts and version-specific relationships.
-- Each **A1–A4 knowledge graph** owns bank-specific entities and in-layer relationships.
+- Each **A1–A4 knowledge graph** owns bank-specific entity instances and in-layer relationships.
 - The **SDMM mapping metamodel** defines which *cross-layer* relationships are permitted and their semantics.
 - The **SDMM mapping registry / federated knowledge graph** stores approved cross-layer mappings and may also retain proposed mappings in a separate state.
 - The **SDMM Mapping Engine** analyses sources and proposes mappings; it does not make unreviewed AI conclusions authoritative.
@@ -194,9 +194,9 @@ Production schema should also capture tenant/bank/project scope, security classi
 
 **Use case:** The bank introduces a new Digital Customer Onboarding design, reusing existing CRM/onboarding application patterns and infrastructure as evidence.
 
-### 6.1 Example entity chain
+### 6.1 Example entity instance chain
 
-| Level | Example entity | Illustrative identifier |
+| Level | Example entity instance | Illustrative identifier |
 |---|---|---|
 | A1 | Customer Onboarding Business Capability | `CAP-001` |
 | A2 | Selected BIAN-aligned Customer Onboarding Service Domain | `SD-001` (bank design identifier) |
@@ -233,7 +233,7 @@ flowchart TB
 1. **Identify scope:** choose initiative, impacted A1–A4 model versions, bank standards, and BIAN reference release.
 2. **Retrieve context:** query relevant level-specific graphs, approved mappings, BIAN reference definitions and historical design repository.
 3. **Analyse by perspective:** Process, Information and Architecture workflows extract evidence and propose candidate relationships.
-4. **Resolve identity:** map candidate object names to stable entity identifiers; distinguish canonical BIAN reference IDs from bank-specific IDs.
+4. **Resolve identity:** map candidate object names to stable entity instance identifiers; distinguish canonical BIAN reference IDs from bank-specific IDs.
 5. **Validate deterministically:** enforce mapping types, allowed endpoints, referenced versions, source authenticity and rule prerequisites.
 6. **Assess semantic suitability:** compare responsibility boundaries, process evidence and information meaning; flag uncertain or contradictory candidates.
 7. **Architect review:** approve, reject or revise proposed relationships, retaining the decision trail.
@@ -266,7 +266,7 @@ An edge is normally stored once, in its defined direction; **bidirectional queri
 3. Rules classify impacted objects as `design_change_required`, `review_required`, or `no_impact` based on the actual change type and relationship semantics (see `docs/04-governance-and-impact.md`).
 4. AI proposes changes to affected architecture models and documents, referencing original source evidence and patterns.
 5. Level owners validate and approve changes before a new consistent architecture baseline is published.
-6. Historical entity versions, prior mappings and old approved baselines remain queryable.
+6. Historical entity instance versions, prior mappings and old approved baselines remain queryable.
 
 **Example:** Moving an A3 application to a different A4 hosting platform may require A3 deployment and A4 infrastructure updates while leaving A2 functional semantics unchanged. Graph reachability alone is not proof that all levels must be modified.
 
@@ -280,7 +280,7 @@ An edge is normally stored once, in its defined direction; **bidirectional queri
 
 | Entity / record | Responsibility |
 |---|---|
-| `architecture_entity_ref` | Stable federated reference to level, entity type, ID, version, and authoritative graph. |
+| `architecture_entity_ref` | Stable federated reference to level, entity, ID, version, and authoritative graph. |
 | `mapping_type` | Versioned registry of legal relationship definitions and evidence requirements. |
 | `architecture_mapping` | Typed cross-layer relationship instance with lifecycle state. |
 | `mapping_evidence` | Source artefacts, citations, inferred justifications and validation evidence. |
@@ -293,7 +293,7 @@ An edge is normally stored once, in its defined direction; **bidirectional queri
 
 ### 9.1 Storage responsibilities
 
-- **A1–A4 graphs:** source of truth for their own entities and internal relationships.
+- **A1–A4 graphs:** source of truth for their own entity instances and internal relationships.
 - **Federated graph / SDMM registry:** source of truth for cross-layer mapping records and relationship metadata.
 - **BIAN reference repository:** source of truth for imported/licensed, versioned BIAN definitions and reference constraints.
 - **Historical repository:** source of truth for preserved prior documents/diagrams and pattern evidence.
@@ -307,7 +307,7 @@ Avoid copying all four layer graphs into an additional physical database unless 
 
 | Validation | Required behaviour |
 |---|---|
-| Schema/type validity | Check permitted source and target entity types for each mapping type. |
+| Schema/type validity | Check permitted source and target entities for each mapping type. |
 | Reference resolution | Check that both endpoints exist and specified versions are accessible. |
 | BIAN conformity | Resolve canonical IDs against the selected BIAN release and reject invented canonical definitions. |
 | Semantics | Check that mapping rationale matches functional boundaries, object meaning or implementation evidence. |
@@ -376,14 +376,14 @@ Connect SDMM to A1–A4 design generators so impact results can produce reviewab
 ## 13. Acceptance criteria
 
 1. Every published cross-layer relationship conforms to a versioned mapping type definition.
-2. An approved A1 capability can be traced through relevant A2 and A3 entities to A4 where actual relationships exist.
-3. An A4 deployment entity can be traversed upstream to affected A3, A2 and A1 entities.
+2. An approved A1 capability can be traced through relevant A2 and A3 entity instances to A4 where actual relationships exist.
+3. An A4 deployment instance can be traversed upstream to affected A3, A2 and A1 instances.
 4. Mappings support legitimate one-to-many and many-to-many relationships.
 5. Each mapping includes source and target versions, evidence, rationale and review state.
 6. Historical designs remain unchanged and referenceable alongside new BIAN-aligned designs.
 7. BIAN-specific mappings identify canonical definitions and their release version; custom extensions are labelled separately.
 8. AI-proposed mappings cannot publish as approved without validation and human approval.
-9. An impact event identifies affected entities, the traversal paths and whether actual design changes are required.
+9. An impact event identifies affected entity instances, the traversal paths and whether actual design changes are required.
 10. The platform can reconstruct an approved A1–A4 mapping view for a past baseline.
 
 ---
@@ -392,7 +392,7 @@ Connect SDMM to A1–A4 design generators so impact results can produce reviewab
 
 - **Physical graph strategy:** four databases, namespaces/subgraphs in one database, or another federated implementation.
 - **Mapping ownership:** dedicated SDMM service or a governed component within the existing federated graph service.
-- **Canonical identifiers:** entity ID and version formats across bank-owned and BIAN reference objects.
+- **Canonical identifiers:** entity instance ID and version formats across bank-owned and BIAN reference objects.
 - **Modelling standard:** which ArchiMate relationship semantics are adopted for bank-owned mappings and how they relate to SDMM labels.
 - **BIAN ingestion:** approved sources, licensing, structured metamodel extraction and reference-release upgrade procedure.
 - **Governance:** mapping approval authority, automated validation thresholds and exceptional override path.

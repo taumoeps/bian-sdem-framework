@@ -11,7 +11,7 @@ SDMM is a proposed methodology and typed cross-layer mapping model for tracing b
 | **A3** | Application Architecture | application components, interfaces, API operations |
 | **A4** | Technology Architecture | deployment, compute, networks and supporting infrastructure |
 
-SDADM is a generic four-level design lifecycle; an institution's own numbering (for example L0–L3) is one instance of it and is mapped by that institution's profile. Entity types are prefixed with the level code (`A2.ServiceDomain`); the registry declares `L0.`–`L3.` as aliases, so documents written with the older prefixes continue to validate unchanged. "Service Domain Architecture" names both the whole (SDADM) and its second level (A2), in the same way BIAN's Service Landscape contains Service Domains.
+SDADM is a generic four-level design lifecycle; an institution's own numbering (for example L0–L3) is one instance of it and is mapped by that institution's profile. Entities are prefixed with the level code (`A2.ServiceDomain`); the registry declares `L0.`–`L3.` as aliases, so documents written with the older prefixes continue to validate unchanged. "Service Domain Architecture" names both the whole (SDADM) and its second level (A2), in the same way BIAN's Service Landscape contains Service Domains.
 
 **BIAN provides reference definitions and business-to-service alignment guidance; SDMM adds enterprise-specific A2→A3→A4 mappings and governance.** BIAN reference models and trademarks are not included in this repository.
 
@@ -61,18 +61,20 @@ Only part of this exists today. *What this repository ships* says what exists; *
 
 Read this section first if you know enterprise architecture but not this repository. It uses one example — a bank adding a **Card Fraud Alerts** capability — and carries it from the business level to the infrastructure level.
 
-### 1. Entities live in the levels; SDMM does not store them
+### 1. Entity instances live in the levels; SDMM does not store them
 
-Each level already has its own model, owned by its own team, holding its own things:
+Two words, used precisely throughout: an **entity** is a kind of thing in the vocabulary (`A2.ServiceDomain`, one of 31); an **entity instance** is an actual thing of that kind in your bank (`SD-044`, the Fraud Detection domain). SDMM defines the entities. Your tools hold the instances.
 
-| Level | Owner (typically) | Example entity | ID in that model |
+Each level already has its own model, owned by its own team, holding its own instances:
+
+| Level | Owner (typically) | Example entity instance | ID in that model |
 |---|---|---|---|
 | A1 | Business architecture | the capability *Card Fraud Alerts* | `CAP-310` |
 | A2 | Domain / BIAN architecture | the selected BIAN-aligned *Fraud Detection* Service Domain | `SD-044` |
 | A3 | Application architecture | the *Fraud Engine* application | `APP-FRAUD-ENGINE` |
 | A4 | Infrastructure | the production *Kubernetes* platform | `INF-CLOUD-K8S-PROD` |
 
-SDMM never copies these entities. It only ever refers to them by ID. If you want to know what `CAP-310` *is*, you go to the A1 model.
+SDMM never copies these instances. It only ever refers to them by ID. If you want to know what `CAP-310` *is*, you go to the A1 model.
 
 ### 2. Service Domain Mapping Model
 
@@ -129,14 +131,14 @@ classDiagram
     Mapping "1" --> "1" EntityReference : target
     Mapping "many" ..> "1" MappingType : conforms to
     Mapping "0..1" --> "0..1" Mapping : previous_mapping_id
-    EntityReference ..> LevelModel : resolves to an entity in
+    EntityReference ..> LevelModel : resolves to an instance in
     EntityReference ..> BIANReference : canonical_id resolves in
 ```
 
 | Element | What it represents | Owned by |
 |---|---|---|
-| **Level model** | One of the four architecture models (A1–A4) and the entities inside it | The level's own team and tooling. **Outside SDMM.** |
-| **Entity reference** | A pointer to one entity in one level model: its `id`, its level-prefixed `type`, and the `version` being referred to. Optionally the BIAN `canonical_id` it is based on | SDMM, as part of a mapping |
+| **Level model** | One of the four architecture models (A1–A4) and the entity instances inside it | The level's own team and tooling. **Outside SDMM.** |
+| **Entity reference** | A pointer to one entity instance in one level model: its `id`, its entity (the level-prefixed `type` field), and the `version` being referred to. Optionally the BIAN `canonical_id` it is based on | SDMM, as part of a mapping |
 | **Mapping type** | One permitted kind of cross-level relationship: which source type, which relationship word, which target type, whose authority it rests on, and what evidence it needs | SDMM governance. Eight exist; see *Mapping Types* below |
 | **Mapping** | One concrete relationship between a source entity reference and a target entity reference, conforming to exactly one mapping type, carrying evidence, rationale, status and approval | An architect (or, as `proposed`, a future engine) |
 | **Mapping document** | A set of mappings for one initiative, pinned to a registry version | An initiative team, in version control |
@@ -150,7 +152,7 @@ Three rules hold the model together:
 
 #### The model instantiated
 
-The same model, populated for the Card Fraud Alerts initiative. Each box is an entity reference resolving into its level model; each arrow is one mapping, labelled with the relationship from its mapping type:
+The same model, populated for the Card Fraud Alerts initiative. Each box is an entity reference resolving to an instance in its level model; each arrow is one mapping, labelled with the relationship from its mapping type:
 
 ```mermaid
 flowchart LR
@@ -243,8 +245,8 @@ A knowledge graph needs three components. SDMM supplies one of them.
 
 | Ingredient | What it is | Who supplies it | Exists today? |
 |---|---|---|---|
-| **Nodes** | the entities — capabilities, domains, applications, servers | your A1–A4 models | yes, in your EA tooling |
-| **Arrows** | the approved mappings between entities in adjacent levels | **this repository's `mappings.json` files** | yes |
+| **Nodes** | the entity instances — capabilities, domains, applications, servers | your A1–A4 models | yes, in your EA tooling |
+| **Arrows** | the approved mappings between entity instances in adjacent levels | **this repository's `mappings.json` files** | yes |
 | **Engine** | something that loads the arrows, attaches each end to its node, and walks the result | `sdmm-trace` walks the arrows today (v0.3); a persistent graph store and query service are roadmap |
 
 When the engine loads the Card Fraud Alerts arrows and attaches them to their nodes, this is what it holds:
@@ -267,13 +269,14 @@ The design specification calls this the **federated knowledge graph**: *federate
 
 **So, today:** the arrows exist, as records in files, and `sdmm-trace` walks them in either direction from the command line, naming the mapping that justifies each hop. The nodes exist in your own tools. What does not exist yet is a persistent graph store with a query service and impact classification — that is the roadmap. When it arrives, the records will not need to change; they are already the right shape.
 
-### The six concepts, side by side
+### The seven concepts, side by side
 
 | Concept | In one sentence | In this repository |
 |---|---|---|
-| **Entity** | A thing in one level — a capability, a domain, an application, a server | Not here. Lives in the level's own model; SDMM refers to it by ID |
+| **Entity** | A kind of thing in one level — Business Capability, Service Domain, Application Component | `schema/relationship-types.json` today; the 31-entity catalogue in v0.4 |
+| **Entity instance** | An actual thing of that kind — *Card Fraud Alerts*, *Fraud Detection domain* | Not here. Lives in the level's own model; SDMM refers to it by ID |
 | **Mapping type** | One of the eight permitted kinds of arrow | `schema/relationship-types.json` |
-| **Mapping** | One actual arrow between two entities, with its evidence and approval | A record in a `mappings.json` file |
+| **Mapping** | One actual arrow between two entity instances, with its evidence and approval | A record in a `mappings.json` file |
 | **Mapping document** | All the arrows for one initiative | `examples/<initiative>/mappings.json` |
 | **Validator** | The gate that rejects arrows that break the rules | `sdmm/validate.py` |
 | **Knowledge graph** | Nodes (your models) + arrows (the mappings) + an engine to walk them | Roadmap. This repo supplies the arrows only |
@@ -299,7 +302,7 @@ flowchart LR
     CHK --> ERR["A list of problems,<br/>one line each"]
 ```
 
-**In:** a mapping document. It names entities by ID only (`CAP-310 SUPPORTED_BY SD-044`); the entities themselves stay in your EA tool, BIAN model and CMDB.
+**In:** a mapping document. It names entity instances by ID only (`CAP-310 SUPPORTED_BY SD-044`); the instances themselves stay in your EA tool, BIAN model and CMDB.
 
 **What the checker looks at:** whether each arrow is one of the eight permitted types; whether the required fields are present; whether a reviewed arrow names its reviewer and date; whether a replaced arrow is linked to its replacement; whether a BIAN-guided arrow names the BIAN release it used and anchors its A2 end to a canonical id; whether the evidence cited covers the kinds the arrow's type requires. With a catalogue of known entities (`--catalogue`) it also confirms both ends exist. A companion, `sdmm-diff`, compares two versions of a document and rejects illegal status transitions and edits to approved records.
 
@@ -315,7 +318,7 @@ flowchart LR
 | CI | `.github/workflows/validate.yml` on every push | Repo gate; a broken document cannot merge |
 | Library | `from sdmm.validate import validate` | Developer embedding the check in another tool |
 | History | `python -m sdmm.diff --git HEAD~1 path/to/mappings.json` | CI, to block edits to approved records and illegal status changes |
-| Trace | `python -m sdmm.trace CAP-310 path/to/mappings.json` | Architect asking what an entity depends on, or what depends on it |
+| Trace | `python -m sdmm.trace CAP-310 path/to/mappings.json` | Architect asking what an entity instance depends on, or what depends on it |
 
 There is no server, no database, no scheduler and no UI. A production deployment would wrap this in whatever hosts your other EA tooling.
 
@@ -376,7 +379,7 @@ Green = built. Amber = data present, engine absent. Blue = interface defined, im
 | **Mapping Engine** | Reads A1–A4 and proposes mappings | **Not built** (v0.4). `status: proposed` + `confidence` reserve its output slot |
 | **Historical Design Repository** | Legacy documents and patterns | **Not built** |
 | **Bidirectional impact traversal & generated views** | Upstream/downstream queries, impact classification, diagrams projected from the graph | **Traversal built** (`sdmm-trace`); impact classification and generated views not built (v0.5) |
-| **A1–A4 models** | The bank's own capability, domain, application and infrastructure models | **External, never in scope.** SDMM references their entity IDs; it never copies the entities. An `EntityResolver` (file catalogue or your adapter) lets the validator confirm the IDs exist |
+| **A1–A4 models** | The bank's own capability, domain, application and infrastructure models | **External, never in scope.** SDMM references their instance IDs; it never copies the instances. An `EntityResolver` (file catalogue or your adapter) lets the validator confirm the IDs exist |
 
 ## Quick start
 

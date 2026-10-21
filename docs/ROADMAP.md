@@ -2,7 +2,7 @@
 
 | Release | Deliverable | Acceptance test | Status |
 |---|---|---|---|
-| v0.1 | Mapping entity types, lifecycle, sample mappings, static validation | Example validates | done |
+| v0.1 | Mapping entities, lifecycle, sample mappings, static validation | Example validates | done |
 | v0.2 | Full registry metadata, JSON-Schema enforcement, supersession rules, reference-adapter interface, two examples, packaging, CI matrix | 35 tests green on 3.10–3.12 | done |
 | v0.2.1 | Validator hardening: approval timestamps, canonical anchoring of BIAN-guided mappings, typed evidence against `required_evidence`, entity catalogue resolution, `sdmm-diff` for lifecycle transitions and immutability | Unanchored or edited-after-approval records are rejected in CI | done |
 | v0.3 | Graph reference implementation (`sdmm-trace`), pure Python, no new dependencies | Traverse approved A1→A4 mappings in both directions from the CLI | done |

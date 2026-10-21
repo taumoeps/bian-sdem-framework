@@ -11,9 +11,9 @@
 
 ## 1. Purpose and outcome
 
-The v0.4 track gives SDMM a **bank-neutral, standards-traceable entity vocabulary** for all four levels, a **type hierarchy** so the existing relationship registry can accept specialised endpoint types, an **Architecture Profile** mechanism that maps an institution's own A1–A4 concepts onto that vocabulary, and a **verification register** that records how each BIAN-derived claim was checked without reproducing BIAN content.
+The v0.4 track gives SDMM a **bank-neutral, standards-traceable entity vocabulary** for all four levels, an **entity hierarchy** so the existing relationship registry can accept specialised endpoint entities, an **Architecture Profile** mechanism that maps an institution's own A1–A4 concepts onto that vocabulary, and a **verification register** that records how each BIAN-derived claim was checked without reproducing BIAN content.
 
-A successful v0.4 enables a sample bank to (a) register its own `BusinessFunction`, `SolutionBuildingBlock` and `CloudResource` types, (b) map them to SDMM core types through a profile, (c) resolve actual instance IDs and versions, (d) validate an authored A1→A4 chain, and (e) see, for every BIAN-derived type, whether its definition has been verified against a named release. It **does not** infer which BIAN domain is semantically correct, store within-level relationships, implement a persistent federated graph, or perform impact analysis.
+A successful v0.4 enables a sample bank to (a) register its own `BusinessFunction`, `SolutionBuildingBlock` and `CloudResource` types, (b) map them to SDMM core entities through a profile, (c) resolve actual instance IDs and versions, (d) validate an authored A1→A4 chain, and (e) see, for every BIAN-derived type, whether its definition has been verified against a named release. It **does not** infer which BIAN domain is semantically correct, store within-level relationships, implement a persistent federated graph, or perform impact analysis.
 
 ### 1.1 Normative boundary
 
@@ -29,7 +29,7 @@ SDMM's A1–A4 decomposition is local to SDMM and is not an official BIAN layeri
 
 | Taxonomy | Applies to | Values | Lives in |
 |---|---|---|---|
-| **`definition_source`** | entity **types** | `bian_reference`, `bian_aligned`, `archimate_native`, `archimate_aligned`, `togaf_informed`, `sdmm_extension`, `bank_extension` | `metamodel/` |
+| **`definition_source`** | **entities** (the vocabulary) | `bian_reference`, `bian_aligned`, `archimate_native`, `archimate_aligned`, `togaf_informed`, `sdmm_extension`, `bank_extension` | `metamodel/` |
 | **`authority`** (v0.2) | relationship **rules** | `bian_reference`, `bian_alignment_guidance`, `enterprise_rule` | `schema/relationship-types.json` |
 
 Registry self-check (new): a rule with `bian_*` authority must have at least one endpoint type whose `definition_source` is `bian_*`.
@@ -50,16 +50,18 @@ Registry self-check (new): a rule with `bian_*` authority must have at least one
 
 ---
 
-## 3. Entity type record
+## 3. Entity record
 
-Every type in `metamodel/` records:
+**Vocabulary.** An **entity** is an item of the SDMM vocabulary — a kind of thing, such as `A2.ServiceDomain`; there are 31 in core. An **entity instance** is an actual element of a bank's architecture of that kind — `SD-044`, the Fraud Detection domain — and lives in the bank's own level model. A mapping's endpoints are **entity references**: pointers to instances, carrying the instance's `id`, its entity (the `type` field) and its `version`.
+
+Every entity in `metamodel/` records:
 
 ```jsonc
 {
   "type": "A2.ServiceDomain",
   "level": "A2",
   "abstract": false,
-  "extends": null,                                   // parent SDMM type, or null
+  "extends": null,                                   // parent SDMM entity, or null
   "definition": "Discrete functional scope of the bank and its responsibilities",   // SDMM paraphrase, never quoted text
   "definition_source": "bian_reference",
   "alignment_kind": "exact",                         // exact | specialization | related | conceptual | none
@@ -74,7 +76,7 @@ Every type in `metamodel/` records:
 
 - `bian_reference` types ship as `pending_release_validation`. No row in this document is "confirmed"; confirmation is a register entry, not a spec assertion.
 - `artefact: true` types (BOM model, wireframe, Semantic API document) may be cited as evidence but may **not** be mapping endpoints.
-- Types are matched **is-a**: a registry rule naming `A4.InfrastructureComponent` accepts any type whose `extends` chain reaches it.
+- Entities are matched **is-a**: a registry rule naming `A4.InfrastructureComponent` accepts any type whose `extends` chain reaches it.
 
 ---
 
@@ -86,10 +88,10 @@ Unchanged from v0.2.1, with optional additions:
 |---|---|---|
 | `id`, `type`, `version` | yes | as v0.2.1 |
 | `canonical_id` | for A2 ends of `bian_*` rules | as v0.2.1 |
-| `source_system` | no | which level model / tool holds the entity; profiles may require it |
+| `source_system` | no | which level model / tool holds the instance; profiles may require it |
 | `source_entity_id` | no | the entity's native id if it differs from `id` |
 
-`lifecycle_status` is **not** a reference field: a reference is a pointer, and the entity's status belongs to the level model and is returned by the resolver.
+`lifecycle_status` is **not** a reference field: a reference is a pointer, and the instance's status belongs to the level model and is returned by the resolver.
 
 Document-level pins: `registry_version` (existing), **`metamodel_version`** and **`profile_id`** (new, optional).
 
@@ -168,7 +170,7 @@ Dropped from core: `A3.Application` (an application *system* is an `ApplicationC
 
 All ten concrete A4 types `extends: A4.InfrastructureComponent`.
 
-Moved to the **`example-cloud` profile** (§7): `ComputeResource`, `ContainerPlatform`, `NetworkSegment`, `NetworkComponent`, `StorageResource`, `DatabasePlatform`, `SecurityControl`, `IdentityAccessComponent`. Each extends the appropriate core type (e.g. `ContainerPlatform extends A4.SystemSoftware`). Rationale: the 0.3 draft's own caution — a cloud service may be a Technology Service, System Software or Node depending on purpose — is an argument for profile-level specialisation, not core types.
+Moved to the **`example-cloud` profile** (§7): `ComputeResource`, `ContainerPlatform`, `NetworkSegment`, `NetworkComponent`, `StorageResource`, `DatabasePlatform`, `SecurityControl`, `IdentityAccessComponent`. Each extends the appropriate core entity (e.g. `ContainerPlatform extends A4.SystemSoftware`). Rationale: the 0.3 draft's own caution — a cloud service may be a Technology Service, System Software or Node depending on purpose — is an argument for profile-level specialisation, not core entities.
 
 ---
 
@@ -186,7 +188,7 @@ v0.2.1's eight rules are retained verbatim. One rule is added:
 |---|---|---|---|---|
 | `A3.ApplicationComponent` | `DEPLOYED_AS` | `A4.Deployment` | architecture | `enterprise_rule` |
 
-`DEPLOYED_ON → A4.InfrastructureComponent` is retained; with is-a matching it now accepts any concrete A4 type. No mapping is migrated from `DEPLOYED_ON` to `DEPLOYED_AS` in place — immutability applies; a migration is a superseding record, and `sdmm-diff` enforces that.
+`DEPLOYED_ON → A4.InfrastructureComponent` is retained; with is-a matching it now accepts any concrete A4-entity. No mapping is migrated from `DEPLOYED_ON` to `DEPLOYED_AS` in place — immutability applies; a migration is a superseding record, and `sdmm-diff` enforces that.
 
 ### 6.3 Derived relationships
 
@@ -223,7 +225,7 @@ Level-skipping traceability (A1 requirement → A4 control) is a **query** over 
 
 **Decided:** no expression language. `where` is equality / set-membership on attributes; `include_ids` / `exclude_ids` are literal or glob. This satisfies the S3-bucket test (`kind: s3_bucket` matches no `where`; or it is excluded by id). Expressions are reconsidered only if real profiles demonstrate the need, and would never be evaluated with `eval`.
 
-A profile may add types (`types[]`, always `extends` a core type) and may require optional reference fields. It may not redefine a core type or any `bian_reference` type.
+A profile may add types (`types[]`, always `extends` a core entity) and may require optional reference fields. It may not redefine a core entity or any `bian_reference` entity.
 
 ### 7.2 Resolution interfaces
 
@@ -276,7 +278,7 @@ Verification is possible against the public InSite portal (R1). Reproduction is 
 }
 ```
 
-Rules: a type's `evidence_status` is computed from the register at load time, never hand-edited; a check without `verified_by` / `verified_at` is ignored; the register contains no definitions, diagrams or identifiers beyond the concept name needed to locate it. This is the employer's licensed seat doing the reading and the public repo recording that it was done.
+Rules: an entity's `evidence_status` is computed from the register at load time, never hand-edited; a check without `verified_by` / `verified_at` is ignored; the register contains no definitions, diagrams or identifiers beyond the concept name needed to locate it. This is the employer's licensed seat doing the reading and the public repo recording that it was done.
 
 ---
 
@@ -284,7 +286,7 @@ Rules: a type's `evidence_status` is computed from the register at load time, ne
 
 - v0.2.1 documents validate unchanged: new reference fields are optional; new document pins are optional; eight rules unchanged; `A4.InfrastructureComponent` remains a legal (now abstract) endpoint via is-a.
 - `tests/test_v02_compatibility.py` is a release gate: both shipped examples must pass under the v0.4 catalogue with zero issues and zero new warnings.
-- Unknown entity types become an **error** in v0.4.0 (today only the registry triple catches them). Example documents already use only catalogued types.
+- Unknown entities become an **error** in v0.4.0 (today only the registry triple catches them). Example documents already use only catalogued types.
 
 ---
 
@@ -305,7 +307,7 @@ Then v0.5 impact analysis, v0.6 BIAN reference adapter, v0.7 AI-assisted proposa
 
 ```text
 metamodel/
-├── entity-type.schema.json          # shape of a type record (§3)
+├── entity.schema.json          # shape of an entity record (§3)
 ├── l0-business.json
 ├── l1-bian.json                     # entities + artefacts
 ├── l2-application.json
@@ -351,9 +353,9 @@ Nothing from R1–R6 is reproduced in this repository. Type `definition` fields 
 
 | # | Question | Decision |
 |---|---|---|
-| 1 | Core type list | The 31 types in §5 are confirmed. `A3.Application` and `A3.Integration` are out of core; `A4.Deployment` is in |
+| 1 | Core entity list | The 31 types in §5 are confirmed. `A3.Application` and `A3.Integration` are out of core; `A4.Deployment` is in |
 | 2 | `DEPLOYED_AS` rule | `authority: enterprise_rule`, `perspective: architecture`, `required_evidence: ["deployment_design"]` — identical governance to `DEPLOYED_ON` |
 | 3 | Register `verified_by` | A **role** (e.g. `lead-domain-architect`) in the public register. An institution's private copy may record the individual |
 | 4 | `source_system` on references | Optional in core. Mandatory in the institution's own profile from first use, because it is trivial to add at authoring time and costly to backfill |
 
-**Approval criterion (unchanged):** no SDMM type may claim canonical-standard status without a release-specific verification record.
+**Approval criterion (unchanged):** no SDMM entity may claim canonical-standard status without a release-specific verification record.

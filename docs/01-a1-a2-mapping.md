@@ -16,7 +16,7 @@ Align a bank's business capabilities, processes/value streams and business conce
 - `ALIGNED_TO`: A1 Business Object → A2 BIAN Business Object (BIAN alignment guidance).
 
 ## Procedure
-1. Retrieve A1 entities and source documents with versioned evidence.
+1. Retrieve A1 entity instances and source documents with versioned evidence.
 2. Retrieve authoritative BIAN release-specific definitions through a separately licensed reference adapter.
 3. Generate candidate mappings with evidence citations and reasoned alternatives.
 4. Validate source/target type, terminology, release, scope and domain boundary.

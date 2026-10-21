@@ -33,13 +33,13 @@ Once a record is `approved`, `rejected` or `superseded` its fields are frozen. T
 Each registry entry lists `required_evidence` kinds. Cite evidence as `kind:reference`, e.g. `process_model:PM-2026-014`. When a mapping uses typed references, every required kind must be present or validation fails. Untyped references are accepted with a warning (`--strict` turns warnings into errors) so existing documents can be migrated gradually.
 
 - Only `approved` mappings are included in default traceability queries.
-- Source and target references point to immutable entity versions.
+- Source and target references point to immutable entity instance versions.
 - Store reviewer, evidence, rationale and applicability baseline.
 - Publish new mapping versions (via `previous_mapping_id`) instead of overwriting historical relationships.
 - Change detection traverses both outgoing and incoming edges without storing duplicate inverse edges.
 
 ## Impact classification
-Impact analysis classifies each reachable entity as one of:
+Impact analysis classifies each reachable entity instance as one of:
 
 - `no_impact` — reachable, but the change type does not affect this relationship's semantics.
 - `review_required` — potentially affected; an architect must assess.
