@@ -8,7 +8,7 @@ mapping document (a file, or a git revision) with the current one and reports:
 """
 from pathlib import Path
 import argparse, json, subprocess, sys
-from sdmm.validate import split_evidence
+from sdmm.validate import split_evidence, normalize_type, load_registry
 
 ALLOWED_TRANSITIONS = {
     'proposed':     {'validated', 'needs_review', 'rejected', 'approved'},
@@ -23,10 +23,13 @@ FROZEN_STATUSES = {'approved', 'rejected', 'superseded'}
 THAWED_ON_SUPERSEDE = {'status', 'valid_to'}
 
 
-def _frozen_view(field, value):
+def _frozen_view(field, value, registry):
     # Evidence may be re-typed ('kind:ref' added to an existing ref); the artefacts referenced may not change.
     if field == 'evidence' and isinstance(value, list):
         return frozenset(split_evidence(r)[1] for r in value if isinstance(r, str))
+    # Endpoint types may be rewritten through a registry alias (L1. -> A2.); the entity referenced may not change.
+    if field in ('source', 'target') and isinstance(value, dict):
+        return {**value, 'type': normalize_type(value.get('type'), registry)}
     return value
 
 EXIT_OK, EXIT_ISSUES, EXIT_USAGE = 0, 1, 2
@@ -36,8 +39,9 @@ def _by_id(payload):
     return {m['mapping_id']: m for m in payload.get('mappings', []) if isinstance(m, dict) and m.get('mapping_id')}
 
 
-def diff(old, new):
+def diff(old, new, registry=None):
     """Return a list of issue strings describing illegal changes from `old` to `new`."""
+    registry = registry or load_registry()
     issues = []
     before, after = _by_id(old), _by_id(new)
     for mid in sorted(set(before) - set(after)):
@@ -49,7 +53,7 @@ def diff(old, new):
             issues.append(f'{mid}: status transition {sa!r} -> {sb!r} is not permitted')
         if sa in FROZEN_STATUSES:
             allowed = THAWED_ON_SUPERSEDE if (sa == 'approved' and sb == 'superseded') else set()
-            changed = sorted(k for k in set(a) | set(b) if _frozen_view(k, a.get(k)) != _frozen_view(k, b.get(k)) and k not in allowed)
+            changed = sorted(k for k in set(a) | set(b) if _frozen_view(k, a.get(k), registry) != _frozen_view(k, b.get(k), registry) and k not in allowed)
             if changed:
                 issues.append(f'{mid}: {sa} record is immutable but field(s) changed: {changed}')
     return issues

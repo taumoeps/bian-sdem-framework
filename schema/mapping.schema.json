@@ -57,7 +57,7 @@
       "required": ["id", "type", "version"],
       "properties": {
         "id": {"type": "string", "minLength": 1},
-        "type": {"type": "string", "pattern": "^L[0-3]\\.[A-Za-z]+$"},
+        "type": {"type": "string", "pattern": "^(A[1-4]|L[0-3])\\.[A-Za-z]+$"},
         "version": {"type": "string", "minLength": 1},
         "canonical_id": {"type": "string", "minLength": 1}
       }

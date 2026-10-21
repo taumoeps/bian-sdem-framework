@@ -6,15 +6,15 @@ Where `customer-onboarding` shows a static chain, this example shows what happen
 
 | Record | Status | What it shows |
 |---|---|---|
-| FRD-001 | approved | L0 capability → L1 domain; BIAN-grounded, so it carries `bian_release` and a `canonical_id` |
-| FRD-002 | approved | L1 domain → L2 fraud engine; rationale records what is *out* of scope (case management) |
+| FRD-001 | approved | A1 capability → A2 domain; BIAN-grounded, so it carries `bian_release` and a `canonical_id` |
+| FRD-002 | approved | A2 domain → A3 fraud engine; rationale records what is *out* of scope (case management) |
 | FRD-003 | **superseded** | The original on-prem deployment, kept as history with `valid_to` |
 | FRD-005 | approved | The new cloud deployment; `previous_mapping_id: FRD-003` closes the supersession chain |
 | FRD-004 | proposed | Engine candidate at 0.71 confidence for an API-level link; not yet a fact |
 
 Things to notice:
 
-- **FRD-001 and FRD-002 were not touched** by the re-hosting. The change was L2/L3 only; reachability from L3 does not imply L1 must change.
+- **FRD-001 and FRD-002 were not touched** by the re-hosting. The change was A3/A4 only; reachability from A4 does not imply A2 must change.
 - **FRD-003 was not edited or deleted.** A baseline query for a date before `2026-12-01` still finds it.
 - **FRD-004 is excluded** from any "approved edges only" traversal until an architect sets `reviewer_id` and a reviewed status.
 

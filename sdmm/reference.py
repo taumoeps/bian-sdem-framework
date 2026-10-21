@@ -46,7 +46,7 @@ class EntityBinding:
 
 
 class EntityResolver(Protocol):
-    """Looks an entity reference up in the bank's own L0-L3 models."""
+    """Looks an entity reference up in the bank's own A1-A4 design models."""
     def resolve_entity(self, id: str, type: str, version: str) -> Optional[EntityBinding]: ...
 
 

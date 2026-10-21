@@ -49,10 +49,10 @@ An architect confirms the outcome. Graph reachability alone never implies a requ
 
 ## Authoritative and derived relationships
 
-Only adjacent-level edges (L0→L1, L1→L2, L2→L3) are ever **stored**; the registry self-check rejects anything else. A relationship that skips levels — a requirement traced straight to a security control at L3, say — is a **derived** relationship: computed by walking the stored edges, and reported with provenance to every approved edge on the path. Derived relationships are query results, never records. This keeps one authoritative chain while leaving traceability questions unrestricted.
+Only adjacent-level edges (A1→A2, A2→A3, A3→A4) are ever **stored**; the registry self-check rejects anything else. A relationship that skips levels — a requirement traced straight to a security control at A4, say — is a **derived** relationship: computed by walking the stored edges, and reported with provenance to every approved edge on the path. Derived relationships are query results, never records. This keeps one authoritative chain while leaving traceability questions unrestricted.
 
 ## Handling legacy designs
-Keep previous L1 conceptual architecture documents as immutable artefacts. Create derived map claims to current L1 BIAN-aligned design objects where justified; do not imply an old document was authored to BIAN standards.
+Keep previous A2 conceptual architecture documents as immutable artefacts. Create derived map claims to current A2 BIAN-aligned design objects where justified; do not imply an old document was authored to BIAN standards.
 
 ## Design approvals
 Enforce authorization and audit logs in any production deployment; this starter package intentionally does not implement identity management or a graph backend.

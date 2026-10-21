@@ -1,17 +1,17 @@
 {
-  "registry_version": "0.2.0",
+  "registry_version": "0.3.0",
   "mappings": [
     {
       "mapping_id": "MAP-001",
       "source": {
         "id": "CAP-001",
-        "type": "L0.BusinessCapability",
+        "type": "A1.BusinessCapability",
         "version": "1.0"
       },
       "relationship": "SUPPORTED_BY",
       "target": {
         "id": "SD-001",
-        "type": "L1.ServiceDomain",
+        "type": "A2.ServiceDomain",
         "version": "1.0",
         "canonical_id": "DEMO-BIAN-SD-ONBOARDING"
       },
@@ -31,13 +31,13 @@
       "mapping_id": "MAP-002",
       "source": {
         "id": "SD-001",
-        "type": "L1.ServiceDomain",
+        "type": "A2.ServiceDomain",
         "version": "1.0"
       },
       "relationship": "REALIZED_BY",
       "target": {
         "id": "APP-001",
-        "type": "L2.ApplicationComponent",
+        "type": "A3.ApplicationComponent",
         "version": "1.0"
       },
       "perspective": "architecture",
@@ -54,13 +54,13 @@
       "mapping_id": "MAP-003",
       "source": {
         "id": "APP-001",
-        "type": "L2.ApplicationComponent",
+        "type": "A3.ApplicationComponent",
         "version": "1.0"
       },
       "relationship": "DEPLOYED_ON",
       "target": {
         "id": "INF-001",
-        "type": "L3.InfrastructureComponent",
+        "type": "A4.InfrastructureComponent",
         "version": "1.0"
       },
       "perspective": "architecture",
@@ -78,13 +78,13 @@
       "mapping_id": "MAP-004",
       "source": {
         "id": "VS-001",
-        "type": "L0.ValueStream",
+        "type": "A1.ValueStream",
         "version": "1.0"
       },
       "relationship": "ALIGNED_TO",
       "target": {
         "id": "BS-001",
-        "type": "L1.BusinessScenario",
+        "type": "A2.BusinessScenario",
         "version": "1.0",
         "canonical_id": "DEMO-BIAN-SCENARIO-ONBOARD"
       },
@@ -104,13 +104,13 @@
       "mapping_id": "MAP-005",
       "source": {
         "id": "PRC-001",
-        "type": "L0.BusinessProcess",
+        "type": "A1.BusinessProcess",
         "version": "1.0"
       },
       "relationship": "USES_DOMAIN",
       "target": {
         "id": "SD-001",
-        "type": "L1.ServiceDomain",
+        "type": "A2.ServiceDomain",
         "version": "1.0"
       },
       "perspective": "process",
@@ -127,13 +127,13 @@
       "mapping_id": "MAP-006",
       "source": {
         "id": "BO-001",
-        "type": "L0.BusinessObject",
+        "type": "A1.BusinessObject",
         "version": "1.0"
       },
       "relationship": "ALIGNED_TO",
       "target": {
         "id": "BBO-001",
-        "type": "L1.BusinessObject",
+        "type": "A2.BusinessObject",
         "version": "1.0",
         "canonical_id": "DEMO-BIAN-BO-CUSTOMER-IDENTITY"
       },
@@ -153,13 +153,13 @@
       "mapping_id": "MAP-007",
       "source": {
         "id": "BBO-001",
-        "type": "L1.BusinessObject",
+        "type": "A2.BusinessObject",
         "version": "1.0"
       },
       "relationship": "MAPPED_TO",
       "target": {
         "id": "ENT-001",
-        "type": "L2.DataEntity",
+        "type": "A3.DataEntity",
         "version": "1.0"
       },
       "perspective": "information",
@@ -176,13 +176,13 @@
       "mapping_id": "MAP-008",
       "source": {
         "id": "APP-001",
-        "type": "L2.ApplicationComponent",
+        "type": "A3.ApplicationComponent",
         "version": "1.0"
       },
       "relationship": "DEPLOYED_ON",
       "target": {
         "id": "INF-000",
-        "type": "L3.InfrastructureComponent",
+        "type": "A4.InfrastructureComponent",
         "version": "1.0"
       },
       "perspective": "architecture",
@@ -200,13 +200,13 @@
       "mapping_id": "MAP-009",
       "source": {
         "id": "SO-001",
-        "type": "L1.ServiceOperation",
+        "type": "A2.ServiceOperation",
         "version": "1.0"
       },
       "relationship": "IMPLEMENTED_BY",
       "target": {
         "id": "API-001",
-        "type": "L2.APIOperation",
+        "type": "A3.APIOperation",
         "version": "2.3"
       },
       "perspective": "architecture",
@@ -223,13 +223,13 @@
       "mapping_id": "MAP-010",
       "source": {
         "id": "SO-002",
-        "type": "L1.ServiceOperation",
+        "type": "A2.ServiceOperation",
         "version": "1.0"
       },
       "relationship": "IMPLEMENTED_BY",
       "target": {
         "id": "API-002",
-        "type": "L2.APIOperation",
+        "type": "A3.APIOperation",
         "version": "2.3"
       },
       "perspective": "architecture",

@@ -1,8 +1,8 @@
-"""SDMM traceability: walk approved cross-layer mappings downstream (L0 -> L3) or upstream (L3 -> L0).
+"""SDMM traceability: walk approved cross-layer mappings downstream (A1 -> A4) or upstream (A4 -> A1).
 
 Edges are stored once, in their registry direction. Upstream traversal walks them backwards;
 no inverse edges exist. Every reported hop carries the mapping_id that justifies it, so a
-level-skipping answer (L0 -> L3) is always a derived path with provenance, never a stored record.
+level-skipping answer (A1 -> A4) is always a derived path with provenance, never a stored record.
 """
 from pathlib import Path
 import argparse, json, sys
@@ -80,11 +80,11 @@ def render(tree, direction):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdmm-trace', description='Trace approved SDMM mappings up or down the L0-L3 chain.')
+    parser = argparse.ArgumentParser(prog='sdmm-trace', description='Trace approved SDMM mappings up or down the A1-A4 chain.')
     parser.add_argument('entity', help='entity id to start from, e.g. CAP-310 or INF-CLOUD-K8S-PROD')
     parser.add_argument('paths', nargs='+', help='mapping JSON file(s)')
     parser.add_argument('--direction', choices=['down', 'up', 'both'], default='both',
-                        help='down = what this depends on (toward L3); up = what depends on this (toward L0)')
+                        help='down = what this depends on (toward A4 Technology); up = what depends on this (toward A1 Business)')
     parser.add_argument('--status', default=','.join(DEFAULT_STATUSES),
                         help='comma-separated statuses to include (default: approved)')
     parser.add_argument('--json', action='store_true', help='emit trees and derived paths as JSON')

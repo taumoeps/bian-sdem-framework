@@ -82,7 +82,7 @@ class RuleTests(unittest.TestCase):
         return data
 
     def test_reject_invalid_edge(self):
-        data = self.mutate(lambda d: d['mappings'][0]['target'].__setitem__('type', 'L3.InfrastructureComponent'))
+        data = self.mutate(lambda d: d['mappings'][0]['target'].__setitem__('type', 'A4.InfrastructureComponent'))
         self.assertIsNotNone(first_issue_matching(data, 'not in the registry'))
 
     def test_duplicate_mapping_id(self):
@@ -137,12 +137,12 @@ class RegistryRuleTests(unittest.TestCase):
         self.assertTrue(any('duplicate edge' in x for x in validate_registry(reg)))
 
     def test_non_adjacent_layers(self):
-        reg = self.mutate(lambda r: r['relationships'][0].__setitem__('target_type', 'L3.InfrastructureComponent'))
-        self.assertTrue(any('L(n) to L(n+1)' in x for x in validate_registry(reg)))
+        reg = self.mutate(lambda r: r['relationships'][0].__setitem__('target_type', 'A4.InfrastructureComponent'))
+        self.assertTrue(any('A(n) to A(n+1)' in x for x in validate_registry(reg)))
 
     def test_same_layer_rejected(self):
-        reg = self.mutate(lambda r: r['relationships'][0].__setitem__('target_type', 'L0.ValueStream'))
-        self.assertTrue(any('L(n) to L(n+1)' in x for x in validate_registry(reg)))
+        reg = self.mutate(lambda r: r['relationships'][0].__setitem__('target_type', 'A1.ValueStream'))
+        self.assertTrue(any('A(n) to A(n+1)' in x for x in validate_registry(reg)))
 
     def test_unknown_authority(self):
         reg = self.mutate(lambda r: r['relationships'][0].__setitem__('authority', 'BIAN_DEFINITION'))
@@ -206,7 +206,7 @@ class V021RuleTests(unittest.TestCase):
 
     def test_bian_mapping_requires_canonical_id_on_l1_endpoint(self):
         data = self.mutate(lambda d: d['mappings'][0]['target'].pop('canonical_id'))
-        self.assertIsNotNone(first_issue_matching(data, 'requires canonical_id on its L1 target'))
+        self.assertIsNotNone(first_issue_matching(data, 'requires canonical_id on its A2 target'))
 
     def test_enterprise_mapping_does_not_require_canonical_id(self):
         self.assertIsNone(first_issue_matching(DATA, 'requires canonical_id'))
@@ -331,8 +331,8 @@ class TraceTests(unittest.TestCase):
 
     def test_cycle_is_cut(self):
         edges = self.edges + [{'mapping_id': 'LOOP', 'relationship': 'X', 'status': 'approved', 'baseline_id': 'b',
-                               'source': {'id': 'INF-CLOUD-K8S-PROD', 'type': 'L3.X', 'version': '1'},
-                               'target': {'id': 'CAP-310', 'type': 'L0.X', 'version': '1'}}]
+                               'source': {'id': 'INF-CLOUD-K8S-PROD', 'type': 'A4.X', 'version': '1'},
+                               'target': {'id': 'CAP-310', 'type': 'A1.X', 'version': '1'}}]
         self.assertEqual(self.chain(self.walk(edges, 'CAP-310', 'down')), ['CAP-310', 'SD-044', 'APP-FRAUD-ENGINE', 'INF-CLOUD-K8S-PROD'])
 
     def test_cli_unknown_entity_exit_code(self):
@@ -340,3 +340,31 @@ class TraceTests(unittest.TestCase):
         import io, contextlib
         with contextlib.redirect_stderr(io.StringIO()):
             self.assertEqual(main(['NOPE', str(ROOT / 'examples/card-fraud-alerts/mappings.json')]), 1)
+
+
+class LevelAliasTests(unittest.TestCase):
+    """v0.3.1: L0-L3 prefixes are aliases of A1-A4; old documents validate and a rename is not an edit."""
+    def legacy(self):
+        import re
+        data = copy.deepcopy(DATA)
+        down = lambda t: re.sub(r'^A([1-4])\.', lambda m: f'L{int(m.group(1))-1}.', t)
+        for m in data['mappings']:
+            for end in ('source', 'target'):
+                m[end]['type'] = down(m[end]['type'])
+        return data
+
+    def test_registry_declares_levels_and_aliases(self):
+        self.assertEqual([lv['code'] for lv in REGISTRY['levels']], ['A1', 'A2', 'A3', 'A4'])
+        self.assertEqual(REGISTRY['type_aliases']['L1.'], 'A2.')
+
+    def test_legacy_prefixed_document_validates(self):
+        self.assertEqual(validate(self.legacy()), [])
+
+    def test_alias_rename_is_not_an_immutable_edit(self):
+        from sdmm.diff import diff
+        self.assertEqual(diff(self.legacy(), DATA), [])
+
+    def test_unknown_prefix_rejected(self):
+        data = copy.deepcopy(DATA)
+        data['mappings'][0]['source']['type'] = 'X9.BusinessCapability'
+        self.assertTrue(any('does not match pattern' in x for x in validate(data)))

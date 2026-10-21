@@ -2,16 +2,18 @@
 
 > **Status:** community proposal / starter reference implementation, **not** an official BIAN standard.
 
-SDMM is a proposed methodology and typed cross-layer mapping model for tracing banking architecture across four bank-defined design levels:
+SDMM is a proposed methodology and typed cross-layer mapping model for tracing banking architecture across the four design models of a **Service Domain Architecture Design Model (SDADM)**:
 
-| Level | Scope |
-|---|---|
-| L0 | Business Architecture — capabilities, value streams, processes, business information |
-| L1 | BIAN-aligned Service Domain Architecture — domains, operations, scenarios, Control Records and business objects |
-| L2 | High-Level Application Architecture — application components, interfaces, API operations |
-| L3 | Detailed Infrastructure Architecture — deployment, compute, networks and supporting infrastructure |
+| Code | Design model | Scope |
+|---|---|---|
+| **A1** | Business Architecture | capabilities, value streams, processes, business information |
+| **A2** | Service Domain Architecture | BIAN-aligned domains, operations, scenarios, Control Records and business objects |
+| **A3** | Application Architecture | application components, interfaces, API operations |
+| **A4** | Technology Architecture | deployment, compute, networks and supporting infrastructure |
 
-**BIAN provides reference definitions and business-to-service alignment guidance; SDMM adds enterprise-specific L1→L2→L3 mappings and governance.** BIAN reference models and trademarks are not included in this repository.
+SDADM is a generic four-level design lifecycle; an institution's own numbering (for example L0–L3) is one instance of it and is mapped by that institution's profile. Entity types are prefixed with the level code (`A2.ServiceDomain`); the registry declares `L0.`–`L3.` as aliases, so documents written with the older prefixes continue to validate unchanged. "Service Domain Architecture" names both the whole (SDADM) and its second level (A2), in the same way BIAN's Service Landscape contains Service Domains.
+
+**BIAN provides reference definitions and business-to-service alignment guidance; SDMM adds enterprise-specific A2→A3→A4 mappings and governance.** BIAN reference models and trademarks are not included in this repository.
 
 **In this README:** [Target state architecture](#target-state-architecture) · [Core concepts](#core-concepts-how-the-four-levels-become-data) · [What this repository ships](#what-this-repository-ships) · [Where this repository sits in the target architecture](#where-this-repository-sits-in-the-target-architecture) · [Quick start](#quick-start) · [Rules of use](#rules-of-use) · [Licenses](#licenses-and-attribution)
 
@@ -30,26 +32,26 @@ flowchart TB
     IMPACT["Bidirectional impact traversal<br/>& generated views"]
 
     subgraph LEVELS[Independently governed architecture models]
-      L0[(L0 Business)]
-      L1[(L1 BIAN Service Domain)]
-      L2[(L2 Application)]
-      L3[(L3 Infrastructure)]
+      A1[(A1 Business)]
+      A2[(A2 BIAN Service Domain)]
+      A3[(A3 Application)]
+      A4[(A4 Infrastructure)]
     end
 
-    L0 --> ENGINE
-    L1 --> ENGINE
-    L2 --> ENGINE
-    L3 --> ENGINE
+    A1 --> ENGINE
+    A2 --> ENGINE
+    A3 --> ENGINE
+    A4 --> ENGINE
     REF --> ENGINE
     HIST --> ENGINE
     ENGINE -->|proposed mappings| VALID
     RULES --> VALID
     REF --> VALID
     VALID -->|approved mappings| FED
-    FED <-->|federated references / queries| L0
-    FED <-->|federated references / queries| L1
-    FED <-->|federated references / queries| L2
-    FED <-->|federated references / queries| L3
+    FED <-->|federated references / queries| A1
+    FED <-->|federated references / queries| A2
+    FED <-->|federated references / queries| A3
+    FED <-->|federated references / queries| A4
     FED --> IMPACT
 ```
 
@@ -65,12 +67,12 @@ Each level already has its own model, owned by its own team, holding its own thi
 
 | Level | Owner (typically) | Example entity | ID in that model |
 |---|---|---|---|
-| L0 | Business architecture | the capability *Card Fraud Alerts* | `CAP-310` |
-| L1 | Domain / BIAN architecture | the selected BIAN-aligned *Fraud Detection* Service Domain | `SD-044` |
-| L2 | Application architecture | the *Fraud Engine* application | `APP-FRAUD-ENGINE` |
-| L3 | Infrastructure | the production *Kubernetes* platform | `INF-CLOUD-K8S-PROD` |
+| A1 | Business architecture | the capability *Card Fraud Alerts* | `CAP-310` |
+| A2 | Domain / BIAN architecture | the selected BIAN-aligned *Fraud Detection* Service Domain | `SD-044` |
+| A3 | Application architecture | the *Fraud Engine* application | `APP-FRAUD-ENGINE` |
+| A4 | Infrastructure | the production *Kubernetes* platform | `INF-CLOUD-K8S-PROD` |
 
-SDMM never copies these entities. It only ever refers to them by ID. If you want to know what `CAP-310` *is*, you go to the L0 model.
+SDMM never copies these entities. It only ever refers to them by ID. If you want to know what `CAP-310` *is*, you go to the A1 model.
 
 ### 2. Service Domain Mapping Model
 
@@ -97,7 +99,7 @@ classDiagram
     }
     class EntityReference {
       id
-      type  L0-L3 prefixed
+      type  A1-A4 prefixed
       version
       canonical_id
     }
@@ -112,10 +114,10 @@ classDiagram
       rule_version / owner
     }
     class LevelModel {
-      L0 Business
-      L1 BIAN Service Domain
-      L2 Application
-      L3 Infrastructure
+      A1 Business
+      A2 BIAN Service Domain
+      A3 Application
+      A4 Infrastructure
     }
     class BIANReference {
       canonical_id
@@ -133,7 +135,7 @@ classDiagram
 
 | Element | What it represents | Owned by |
 |---|---|---|
-| **Level model** | One of the four architecture models (L0–L3) and the entities inside it | The level's own team and tooling. **Outside SDMM.** |
+| **Level model** | One of the four architecture models (A1–A4) and the entities inside it | The level's own team and tooling. **Outside SDMM.** |
 | **Entity reference** | A pointer to one entity in one level model: its `id`, its level-prefixed `type`, and the `version` being referred to. Optionally the BIAN `canonical_id` it is based on | SDMM, as part of a mapping |
 | **Mapping type** | One permitted kind of cross-level relationship: which source type, which relationship word, which target type, whose authority it rests on, and what evidence it needs | SDMM governance. Eight exist; see *Mapping Types* below |
 | **Mapping** | One concrete relationship between a source entity reference and a target entity reference, conforming to exactly one mapping type, carrying evidence, rationale, status and approval | An architect (or, as `proposed`, a future engine) |
@@ -152,16 +154,16 @@ The same model, populated for the Card Fraud Alerts initiative. Each box is an e
 
 ```mermaid
 flowchart LR
-    subgraph L0[L0 Business]
+    subgraph A1[A1 Business]
       CAP["Card Fraud Alerts<br/>CAP-310"]
     end
-    subgraph L1[L1 BIAN Service Domain]
+    subgraph A2[A2 BIAN Service Domain]
       SD["Fraud Detection domain<br/>SD-044"]
     end
-    subgraph L2[L2 Application]
+    subgraph A3[A3 Application]
       APP["Fraud Engine<br/>APP-FRAUD-ENGINE"]
     end
-    subgraph L3[L3 Infrastructure]
+    subgraph A4[A4 Infrastructure]
       INF["Kubernetes prod<br/>INF-CLOUD-K8S-PROD"]
     end
     CAP -->|SUPPORTED_BY| SD
@@ -174,9 +176,9 @@ Three mappings. The first one, as the record the model prescribes:
 ```jsonc
 {
   "mapping_id": "FRD-001",
-  "source":   { "id": "CAP-310", "type": "L0.BusinessCapability", "version": "1.0" },   // entity reference
+  "source":   { "id": "CAP-310", "type": "A1.BusinessCapability", "version": "1.0" },   // entity reference
   "relationship": "SUPPORTED_BY",                                                        // + source/target types = mapping type
-  "target":   { "id": "SD-044",  "type": "L1.ServiceDomain",      "version": "1.0",
+  "target":   { "id": "SD-044",  "type": "A2.ServiceDomain",      "version": "1.0",
                 "canonical_id": "<the BIAN id this domain is based on>" },               // entity reference, BIAN-anchored
   "status":   "approved",                                                                // lifecycle (see Mapping Lifecycle)
   "evidence": ["BA-FRAUD-2026#s2"],                                                      // where the claim is documented
@@ -196,19 +198,19 @@ A mapping type is one permitted kind of cross-level relationship. SDMM defines e
 
 | From | Reads as | To | Whose rule |
 |---|---|---|---|
-| L0 Business Capability | *is supported by* | L1 Service Domain | BIAN alignment guidance |
-| L0 Value Stream | *is aligned to* | L1 Business Scenario | BIAN alignment guidance |
-| L0 Business Process | *uses* | L1 Service Domain | bank's own rule |
-| L0 Business Object | *is aligned to* | L1 BIAN Business Object | BIAN alignment guidance |
-| L1 Service Domain | *is realised by* | L2 Application Component | bank's own rule |
-| L1 Service Operation | *is implemented by* | L2 API Operation | bank's own rule |
-| L1 BIAN Business Object | *is mapped to* | L2 Data Entity | bank's own rule |
-| L2 Application Component | *is deployed on* | L3 Infrastructure Component | bank's own rule |
+| A1 Business Capability | *is supported by* | A2 Service Domain | BIAN alignment guidance |
+| A1 Value Stream | *is aligned to* | A2 Business Scenario | BIAN alignment guidance |
+| A1 Business Process | *uses* | A2 Service Domain | bank's own rule |
+| A1 Business Object | *is aligned to* | A2 BIAN Business Object | BIAN alignment guidance |
+| A2 Service Domain | *is realised by* | A3 Application Component | bank's own rule |
+| A2 Service Operation | *is implemented by* | A3 API Operation | bank's own rule |
+| A2 BIAN Business Object | *is mapped to* | A3 Data Entity | bank's own rule |
+| A3 Application Component | *is deployed on* | A4 Infrastructure Component | bank's own rule |
 
 Three consequences of this grammar:
 
-- **Arrows only cross one level boundary.** There is no L0 → L2 shortcut; a capability reaches an application *through* a Service Domain. Links *within* a level (app calls app, capability decomposes into capability) belong in that level's own model, not here.
-- **Every arrow into L1 leans on BIAN; every arrow out of L1 is the bank's.** That is the division of labour: BIAN tells you how business concepts align to Service Domains; only the bank knows which of its applications and servers realise them. Mappings of a BIAN-guided type must name the BIAN release they consulted.
+- **Arrows only cross one level boundary.** There is no A1 → A3 shortcut; a capability reaches an application *through* a Service Domain. Links *within* a level (app calls app, capability decomposes into capability) belong in that level's own model, not here.
+- **Every arrow into A2 leans on BIAN; every arrow out of A2 is the bank's.** That is the division of labour: BIAN tells you how business concepts align to Service Domains; only the bank knows which of its applications and servers realise them. Mappings of a BIAN-guided type must name the BIAN release they consulted.
 - **Many-to-many is normal.** One capability may be supported by several domains; one domain may be realised by several applications. A Service Domain is not a microservice.
 
 The authoritative list is `schema/relationship-types.json`. Adding a ninth kind of arrow means adding a row there first.
@@ -241,7 +243,7 @@ A knowledge graph needs three components. SDMM supplies one of them.
 
 | Ingredient | What it is | Who supplies it | Exists today? |
 |---|---|---|---|
-| **Nodes** | the entities — capabilities, domains, applications, servers | your L0–L3 models | yes, in your EA tooling |
+| **Nodes** | the entities — capabilities, domains, applications, servers | your A1–A4 models | yes, in your EA tooling |
 | **Arrows** | the approved mappings between entities in adjacent levels | **this repository's `mappings.json` files** | yes |
 | **Engine** | something that loads the arrows, attaches each end to its node, and walks the result | `sdmm-trace` walks the arrows today (v0.3); a persistent graph store and query service are roadmap |
 
@@ -249,9 +251,9 @@ When the engine loads the Card Fraud Alerts arrows and attaches them to their no
 
 ```mermaid
 flowchart LR
-    CAP["L0<br/>Card Fraud Alerts"] -->|supported by| SD["L1<br/>Fraud Detection domain"]
-    SD -->|realised by| APP["L2<br/>Fraud Engine"]
-    APP -->|deployed on| INF["L3<br/>Kubernetes prod"]
+    CAP["A1<br/>Card Fraud Alerts"] -->|supported by| SD["A2<br/>Fraud Detection domain"]
+    SD -->|realised by| APP["A3<br/>Fraud Engine"]
+    APP -->|deployed on| INF["A4<br/>Kubernetes prod"]
 ```
 
 and it can then answer questions in either direction, without any extra arrows being stored:
@@ -299,7 +301,7 @@ flowchart LR
 
 **In:** a mapping document. It names entities by ID only (`CAP-310 SUPPORTED_BY SD-044`); the entities themselves stay in your EA tool, BIAN model and CMDB.
 
-**What the checker looks at:** whether each arrow is one of the eight permitted types; whether the required fields are present; whether a reviewed arrow names its reviewer and date; whether a replaced arrow is linked to its replacement; whether a BIAN-guided arrow names the BIAN release it used and anchors its L1 end to a canonical id; whether the evidence cited covers the kinds the arrow's type requires. With a catalogue of known entities (`--catalogue`) it also confirms both ends exist. A companion, `sdmm-diff`, compares two versions of a document and rejects illegal status transitions and edits to approved records.
+**What the checker looks at:** whether each arrow is one of the eight permitted types; whether the required fields are present; whether a reviewed arrow names its reviewer and date; whether a replaced arrow is linked to its replacement; whether a BIAN-guided arrow names the BIAN release it used and anchors its A2 end to a canonical id; whether the evidence cited covers the kinds the arrow's type requires. With a catalogue of known entities (`--catalogue`) it also confirms both ends exist. A companion, `sdmm-diff`, compares two versions of a document and rejects illegal status transitions and edits to approved records.
 
 **What the checker does *not* look at:** whether the mapping is *right*. It cannot tell whether Fraud Detection is the correct domain for Card Fraud Alerts. That judgement is the architect's, and the record's `rationale` and `evidence` fields are where it is written down.
 
@@ -332,26 +334,26 @@ flowchart TB
     IMPACT["Bidirectional impact traversal<br/>& generated views<br/>TRAVERSAL BUILT: sdmm-trace<br/>impact classification NOT BUILT: v0.5"]
 
     subgraph LEVELS["Independently governed architecture models<br/>EXTERNAL: owned by the bank, referenced by id only"]
-      L0[(L0 Business)]
-      L1[(L1 BIAN Service Domain)]
-      L2[(L2 Application)]
-      L3[(L3 Infrastructure)]
+      A1[(A1 Business)]
+      A2[(A2 BIAN Service Domain)]
+      A3[(A3 Application)]
+      A4[(A4 Infrastructure)]
     end
 
-    L0 -.-> ENGINE
-    L1 -.-> ENGINE
-    L2 -.-> ENGINE
-    L3 -.-> ENGINE
+    A1 -.-> ENGINE
+    A2 -.-> ENGINE
+    A3 -.-> ENGINE
+    A4 -.-> ENGINE
     REF -.-> ENGINE
     HIST -.-> ENGINE
     ENGINE -.->|proposed mappings| VALID
     RULES -->|loaded by| VALID
     REF -.->|canonical_id lookup| VALID
     VALID -->|approved mappings| FED
-    FED <-.->|federated references / queries| L0
-    FED <-.->|federated references / queries| L1
-    FED <-.->|federated references / queries| L2
-    FED <-.->|federated references / queries| L3
+    FED <-.->|federated references / queries| A1
+    FED <-.->|federated references / queries| A2
+    FED <-.->|federated references / queries| A3
+    FED <-.->|federated references / queries| A4
     FED -.-> IMPACT
 
     style RULES fill:#2e7d32,color:#fff,stroke:#1b5e20
@@ -371,10 +373,10 @@ Green = built. Amber = data present, engine absent. Blue = interface defined, im
 | **Validation & Approval** | Deterministic checks, then architect sign-off | **Checks built** — `sdmm/validate.py` (structure, registry, evidence, anchoring) and `sdmm/diff.py` (transitions, immutability). Approval is recorded as fields (`status`, `reviewer_id`, `approved_at`), not a workflow system |
 | **Federated Knowledge Graph / Mapping Registry** | Store of approved cross-layer edges, queryable in both directions | **Data + traversal** — each `mappings.json` record is one edge, held as a flat file in git; `sdmm-trace` queries them both ways with provenance. A persistent graph store is not built |
 | **BIAN Reference Repository** | Licensed BIAN definitions by release | **Interface only** — `ReferenceResolver` in `sdmm/reference.py`; you implement it |
-| **Mapping Engine** | Reads L0–L3 and proposes mappings | **Not built** (v0.4). `status: proposed` + `confidence` reserve its output slot |
+| **Mapping Engine** | Reads A1–A4 and proposes mappings | **Not built** (v0.4). `status: proposed` + `confidence` reserve its output slot |
 | **Historical Design Repository** | Legacy documents and patterns | **Not built** |
 | **Bidirectional impact traversal & generated views** | Upstream/downstream queries, impact classification, diagrams projected from the graph | **Traversal built** (`sdmm-trace`); impact classification and generated views not built (v0.5) |
-| **L0–L3 models** | The bank's own capability, domain, application and infrastructure models | **External, never in scope.** SDMM references their entity IDs; it never copies the entities. An `EntityResolver` (file catalogue or your adapter) lets the validator confirm the IDs exist |
+| **A1–A4 models** | The bank's own capability, domain, application and infrastructure models | **External, never in scope.** SDMM references their entity IDs; it never copies the entities. An `EntityResolver` (file catalogue or your adapter) lets the validator confirm the IDs exist |
 
 ## Quick start
 

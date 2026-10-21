@@ -2,49 +2,49 @@
   "entities": [
     {
       "id": "APP-FRAUD-ENGINE",
-      "type": "L2.ApplicationComponent",
+      "type": "A3.ApplicationComponent",
       "versions": [
         "4.2"
       ]
     },
     {
       "id": "CAP-310",
-      "type": "L0.BusinessCapability",
+      "type": "A1.BusinessCapability",
       "versions": [
         "1.0"
       ]
     },
     {
       "id": "INF-CLOUD-K8S-PROD",
-      "type": "L3.InfrastructureComponent",
+      "type": "A4.InfrastructureComponent",
       "versions": [
         "1.3"
       ]
     },
     {
       "id": "INF-ONPREM-VM-CLUSTER-B",
-      "type": "L3.InfrastructureComponent",
+      "type": "A4.InfrastructureComponent",
       "versions": [
         "2.0"
       ]
     },
     {
       "id": "POST /fraud/alerts",
-      "type": "L2.APIOperation",
+      "type": "A3.APIOperation",
       "versions": [
         "3.1"
       ]
     },
     {
       "id": "SD-044",
-      "type": "L1.ServiceDomain",
+      "type": "A2.ServiceDomain",
       "versions": [
         "1.0"
       ]
     },
     {
       "id": "SO-044-07",
-      "type": "L1.ServiceOperation",
+      "type": "A2.ServiceOperation",
       "versions": [
         "1.0"
       ]

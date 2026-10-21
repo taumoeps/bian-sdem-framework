@@ -12,7 +12,7 @@ SCHEMA = ROOT / 'schema' / 'mapping.schema.json'
 
 STATUSES = {'proposed', 'validated', 'needs_review', 'approved', 'rejected', 'superseded'}
 REVIEWED_STATUSES = {'approved', 'rejected', 'superseded'}
-LAYER = re.compile(r'^L([0-3])\.')
+TYPE_PREFIX = re.compile(r'^([A-Za-z0-9]+)\.')
 
 EXIT_OK, EXIT_ISSUES, EXIT_USAGE = 0, 1, 2
 
@@ -23,6 +23,25 @@ def load_registry(path=RULES):
 
 def load_schema(path=SCHEMA):
     return json.loads(Path(path).read_text(encoding='utf-8'))
+
+
+def level_codes(registry):
+    return [lv['code'] if isinstance(lv, dict) else lv for lv in registry.get('levels', [])]
+
+
+def normalize_type(t, registry):
+    """Apply the registry's type_aliases (e.g. 'L1.' -> 'A2.') so older documents keep validating."""
+    if not isinstance(t, str):
+        return t
+    for old, new in registry.get('type_aliases', {}).items():
+        if t.startswith(old):
+            return new + t[len(old):]
+    return t
+
+
+def level_of(t, registry):
+    m = TYPE_PREFIX.match(normalize_type(t, registry) or '')
+    return m.group(1) if m else None
 
 
 # ---------------------------------------------------------------- JSON Schema subset
@@ -89,6 +108,8 @@ def validate_registry(registry):
     perspectives = set(registry.get('perspectives', []))
     authorities = set(registry.get('authorities', []))
     seen_edges, seen_ids = set(), set()
+    if not level_codes(registry):
+        issues.append('registry: missing ordered levels list')
     for pos, rule in enumerate(registry.get('relationships', []), 1):
         prefix = f"rule #{pos} ({rule.get('mapping_type_id', '?')})"
         for key in ('mapping_type_id', 'source_type', 'relationship', 'target_type', 'perspective',
@@ -103,11 +124,12 @@ def validate_registry(registry):
         if rule.get('mapping_type_id') in seen_ids:
             issues.append(f'{prefix}: duplicate mapping_type_id')
         seen_ids.add(rule.get('mapping_type_id'))
-        src, tgt = LAYER.match(rule.get('source_type') or ''), LAYER.match(rule.get('target_type') or '')
-        if not src or not tgt:
-            issues.append(f'{prefix}: source/target types must be prefixed L0.-L3.')
-        elif int(tgt.group(1)) - int(src.group(1)) != 1:
-            issues.append(f'{prefix}: cross-layer edges must point from L(n) to L(n+1)')
+        levels = level_codes(registry)
+        src, tgt = level_of(rule.get('source_type'), registry), level_of(rule.get('target_type'), registry)
+        if src not in levels or tgt not in levels:
+            issues.append(f'{prefix}: source/target types must be prefixed with a level code {levels}')
+        elif levels.index(tgt) - levels.index(src) != 1:
+            issues.append(f'{prefix}: cross-level edges must point from A(n) to A(n+1)')
         if rule.get('perspective') not in perspectives:
             issues.append(f'{prefix}: perspective must be one of {sorted(perspectives)}')
         if rule.get('authority') not in authorities:
@@ -155,7 +177,7 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
         if mid and ids.count(mid) > 1:
             issues.append(f'{prefix}: duplicate mapping_id')
         source, target = mapping.get('source') or {}, mapping.get('target') or {}
-        edge = (source.get('type'), mapping.get('relationship'), target.get('type'))
+        edge = (normalize_type(source.get('type'), registry), mapping.get('relationship'), normalize_type(target.get('type'), registry))
         rule = rules.get(edge)
         if rule is None:
             issues.append(f'{prefix}: relationship {edge} is not in the registry')
@@ -165,9 +187,10 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
             if rule['authority'].startswith('bian_'):
                 if not mapping.get('bian_release'):
                     issues.append(f"{prefix}: {rule['authority']} mapping requires bian_release")
+                bian_level = registry.get('bian_level', 'A2')
                 for label, ent in (('source', source), ('target', target)):
-                    if str(ent.get('type', '')).startswith('L1.') and not ent.get('canonical_id'):
-                        issues.append(f"{prefix}: {rule['authority']} mapping requires canonical_id on its L1 {label}")
+                    if level_of(ent.get('type'), registry) == bian_level and not ent.get('canonical_id'):
+                        issues.append(f"{prefix}: {rule['authority']} mapping requires canonical_id on its {bian_level} {label}")
             # evidence kinds: enforced when the author uses typed refs, advisory otherwise
             required = set(rule.get('required_evidence', []))
             refs = [r for r in mapping.get('evidence', []) if isinstance(r, str)]
@@ -198,8 +221,9 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
         if entity_resolver is not None:
             for label, ent in (('source', source), ('target', target)):
                 if all(isinstance(ent.get(k), str) for k in ('id', 'type', 'version')):
-                    if entity_resolver.resolve_entity(ent['id'], ent['type'], ent['version']) is None:
-                        issues.append(f"{prefix}: {label} {ent['type']} {ent['id']}@{ent['version']} not found in level model")
+                    ntype = normalize_type(ent['type'], registry)
+                    if entity_resolver.resolve_entity(ent['id'], ntype, ent['version']) is None:
+                        issues.append(f"{prefix}: {label} {ntype} {ent['id']}@{ent['version']} not found in level model")
     return issues
 
 
