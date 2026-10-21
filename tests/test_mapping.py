@@ -190,3 +190,107 @@ class MultiFileTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class V021RuleTests(unittest.TestCase):
+    """Validator hardening: approval timestamp, canonical anchoring, typed evidence, entity resolution."""
+    def mutate(self, fn):
+        data = copy.deepcopy(DATA)
+        fn(data)
+        return data
+
+    def test_reviewed_statuses_require_approved_at(self):
+        for idx, status in ((0, 'approved'), (7, 'superseded')):
+            data = self.mutate(lambda d: d['mappings'][idx].pop('approved_at'))
+            self.assertIsNotNone(first_issue_matching(data, f'{status} mapping requires approved_at'))
+
+    def test_bian_mapping_requires_canonical_id_on_l1_endpoint(self):
+        data = self.mutate(lambda d: d['mappings'][0]['target'].pop('canonical_id'))
+        self.assertIsNotNone(first_issue_matching(data, 'requires canonical_id on its L1 target'))
+
+    def test_enterprise_mapping_does_not_require_canonical_id(self):
+        self.assertIsNone(first_issue_matching(DATA, 'requires canonical_id'))
+
+    def test_unanchored_fake_domain_is_rejected(self):
+        # the reviewer's SD-NOT-REAL case: bian-guided, no canonical_id, no resolver
+        data = self.mutate(lambda d: (d['mappings'][0]['target'].__setitem__('id', 'SD-NOT-REAL'),
+                                      d['mappings'][0]['target'].pop('canonical_id')))
+        self.assertIsNotNone(first_issue_matching(data, 'requires canonical_id'))
+
+    def test_typed_evidence_missing_required_kind(self):
+        data = self.mutate(lambda d: d['mappings'][0].__setitem__('evidence', ['business_architecture_document:X']))
+        self.assertIsNotNone(first_issue_matching(data, "missing required kind(s) ['domain_scope_assessment']"))
+
+    def test_untyped_evidence_is_a_warning_not_an_error(self):
+        data = self.mutate(lambda d: d['mappings'][0].__setitem__('evidence', ['SOME-DOC']))
+        warnings = []
+        self.assertEqual([x for x in validate(data, warnings=warnings) if 'evidence' in x], [])
+        self.assertTrue(any('evidence is untyped' in w for w in warnings))
+
+    def test_example_evidence_is_fully_typed(self):
+        warnings = []
+        self.assertEqual(validate(DATA, warnings=warnings), [])
+        self.assertEqual(warnings, [])
+
+    def test_entity_resolver_flags_unknown_endpoint(self):
+        from sdmm.reference import CatalogueEntityResolver
+        fraud = ROOT / 'examples/card-fraud-alerts'
+        doc = json.loads((fraud / 'mappings.json').read_text())
+        resolver = CatalogueEntityResolver.from_file(fraud / 'entities.json')
+        self.assertEqual(validate(doc, entity_resolver=resolver), [])
+        doc['mappings'][0]['target']['id'] = 'SD-NOT-REAL'
+        doc['mappings'][0]['target']['canonical_id'] = 'X'
+        self.assertTrue(any('SD-NOT-REAL@1.0 not found in level model' in x for x in validate(doc, entity_resolver=resolver)))
+
+
+class DiffTests(unittest.TestCase):
+    def setUp(self):
+        from sdmm.diff import diff
+        self.diff = diff
+        self.old = copy.deepcopy(DATA)
+
+    def changed(self, fn):
+        new = copy.deepcopy(self.old)
+        fn(new)
+        return self.diff(self.old, new)
+
+    def test_identical_documents_are_clean(self):
+        self.assertEqual(self.diff(self.old, copy.deepcopy(self.old)), [])
+
+    def test_removed_record_is_flagged(self):
+        self.assertTrue(any('record removed' in x for x in self.changed(lambda d: d['mappings'].pop(0))))
+
+    def test_editing_approved_record_is_flagged(self):
+        issues = self.changed(lambda d: d['mappings'][0].__setitem__('rationale', 'edited after approval'))
+        self.assertTrue(any("approved record is immutable" in x and "['rationale']" in x for x in issues))
+
+    def test_approved_to_superseded_with_valid_to_is_allowed(self):
+        def fn(d):
+            d['mappings'][0]['status'] = 'superseded'; d['mappings'][0]['valid_to'] = '2026-12-31'
+        self.assertEqual(self.changed(fn), [])
+
+    def test_approved_back_to_proposed_is_illegal(self):
+        issues = self.changed(lambda d: d['mappings'][0].__setitem__('status', 'proposed'))
+        self.assertTrue(any("'approved' -> 'proposed' is not permitted" in x for x in issues))
+
+    def test_proposed_to_approved_is_allowed(self):
+        def fn(d):
+            m = d['mappings'][8]; m['status'] = 'approved'; m['reviewer_id'] = 'r'; m['approved_at'] = '2026-10-22'
+        self.assertEqual(self.changed(fn), [])
+
+    def test_rejected_is_terminal(self):
+        self.old['mappings'][8]['status'] = 'rejected'
+        issues = self.changed(lambda d: d['mappings'][8].__setitem__('status', 'proposed'))
+        self.assertTrue(any("'rejected' -> 'proposed' is not permitted" in x for x in issues))
+
+    def test_retyping_evidence_on_approved_record_is_allowed(self):
+        self.old['mappings'][0]['evidence'] = ['SYNTHETIC-BA-001']
+        issues = self.changed(lambda d: d['mappings'][0].__setitem__('evidence', ['business_architecture_document:SYNTHETIC-BA-001', 'domain_scope_assessment:SYNTHETIC-BA-001']))
+        self.assertEqual(issues, [])
+
+    def test_changing_evidence_artefact_on_approved_record_is_flagged(self):
+        issues = self.changed(lambda d: d['mappings'][0].__setitem__('evidence', ['business_architecture_document:OTHER-DOC']))
+        self.assertTrue(any("['evidence']" in x for x in issues))
+
+    def test_new_record_is_fine(self):
+        self.assertEqual(self.changed(lambda d: d['mappings'].append(copy.deepcopy(d['mappings'][8]) | {'mapping_id': 'NEW-1'})), [])

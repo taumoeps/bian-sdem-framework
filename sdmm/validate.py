@@ -117,10 +117,27 @@ def validate_registry(registry):
 
 # ---------------------------------------------------------------- mapping rules
 
-def validate(payload, registry=None, schema=None, resolver=None):
-    """Validate one mapping document. Returns a list of issue strings (empty = valid)."""
+EVIDENCE_KIND = re.compile(r'^[a-z][a-z0-9_]*$')
+
+
+def split_evidence(ref):
+    """'kind:REF' -> ('kind', 'REF'); anything else -> (None, ref). Kinds are snake_case tokens."""
+    kind, sep, rest = ref.partition(':')
+    if sep and EVIDENCE_KIND.match(kind) and rest.strip():
+        return kind, rest.strip()
+    return None, ref
+
+
+def validate(payload, registry=None, schema=None, resolver=None, entity_resolver=None, warnings=None):
+    """Validate one mapping document. Returns a list of issue strings (empty = valid).
+
+    `resolver`         optional ReferenceResolver: canonical_ids on BIAN-grounded mappings must resolve.
+    `entity_resolver`  optional EntityResolver: every endpoint must exist in the level models.
+    `warnings`         optional list; advisory findings are appended to it instead of being returned.
+    """
     registry = registry or load_registry()
     schema = schema or load_schema()
+    warnings = warnings if warnings is not None else []
     issues = check_schema(payload, schema)
     if not isinstance(payload, dict) or not isinstance(payload.get('mappings'), list):
         return issues  # structure too broken for rule checks
@@ -145,11 +162,27 @@ def validate(payload, registry=None, schema=None, resolver=None):
         else:
             if mapping.get('perspective') and mapping['perspective'] != rule['perspective']:
                 issues.append(f"{prefix}: perspective {mapping['perspective']!r} does not match registry {rule['perspective']!r}")
-            if rule['authority'].startswith('bian_') and not mapping.get('bian_release'):
-                issues.append(f"{prefix}: {rule['authority']} mapping requires bian_release")
+            if rule['authority'].startswith('bian_'):
+                if not mapping.get('bian_release'):
+                    issues.append(f"{prefix}: {rule['authority']} mapping requires bian_release")
+                for label, ent in (('source', source), ('target', target)):
+                    if str(ent.get('type', '')).startswith('L1.') and not ent.get('canonical_id'):
+                        issues.append(f"{prefix}: {rule['authority']} mapping requires canonical_id on its L1 {label}")
+            # evidence kinds: enforced when the author uses typed refs, advisory otherwise
+            required = set(rule.get('required_evidence', []))
+            refs = [r for r in mapping.get('evidence', []) if isinstance(r, str)]
+            kinds = {k for k, _ in map(split_evidence, refs) if k}
+            if required and kinds:
+                missing = sorted(required - kinds)
+                if missing:
+                    issues.append(f"{prefix}: evidence missing required kind(s) {missing}")
+            elif required and refs:
+                warnings.append(f"{prefix}: evidence is untyped; cannot confirm required kind(s) {sorted(required)} (use 'kind:ref')")
         status = mapping.get('status')
-        if status in REVIEWED_STATUSES and not mapping.get('reviewer_id'):
-            issues.append(f'{prefix}: {status} mapping requires reviewer_id')
+        if status in REVIEWED_STATUSES:
+            for field in ('reviewer_id', 'approved_at'):
+                if not mapping.get(field):
+                    issues.append(f'{prefix}: {status} mapping requires {field}')
         if status == 'superseded' and mid not in successors:
             issues.append(f'{prefix}: superseded mapping has no successor referencing it via previous_mapping_id')
         prev = mapping.get('previous_mapping_id')
@@ -162,13 +195,19 @@ def validate(payload, registry=None, schema=None, resolver=None):
                 cid = ent.get('canonical_id')
                 if cid and resolver.resolve(cid, mapping['bian_release']) is None:
                     issues.append(f"{prefix}: {label} canonical_id {cid!r} not found in BIAN release {mapping['bian_release']!r}")
+        if entity_resolver is not None:
+            for label, ent in (('source', source), ('target', target)):
+                if all(isinstance(ent.get(k), str) for k in ('id', 'type', 'version')):
+                    if entity_resolver.resolve_entity(ent['id'], ent['type'], ent['version']) is None:
+                        issues.append(f"{prefix}: {label} {ent['type']} {ent['id']}@{ent['version']} not found in level model")
     return issues
 
 
-def validate_files(paths, registry=None, schema=None, resolver=None):
+def validate_files(paths, registry=None, schema=None, resolver=None, entity_resolver=None, warnings=None):
     """Validate several documents; mapping_ids must be unique across all of them."""
     registry = registry or load_registry()
     schema = schema or load_schema()
+    warnings = warnings if warnings is not None else {}
     report, seen = {}, {}
     for path in paths:
         path = Path(path)
@@ -177,7 +216,10 @@ def validate_files(paths, registry=None, schema=None, resolver=None):
         except (OSError, ValueError) as exc:
             report[str(path)] = [f'cannot read: {exc}']
             continue
-        issues = validate(payload, registry, schema, resolver)
+        file_warnings = []
+        issues = validate(payload, registry, schema, resolver, entity_resolver, file_warnings)
+        if file_warnings:
+            warnings[str(path)] = file_warnings
         for m in (payload.get('mappings') or []) if isinstance(payload, dict) else []:
             mid = m.get('mapping_id') if isinstance(m, dict) else None
             if mid and mid in seen and seen[mid] != str(path):
@@ -192,26 +234,40 @@ def main(argv=None):
     parser = argparse.ArgumentParser(prog='sdmm-validate', description='Validate SDMM mapping documents.')
     parser.add_argument('paths', nargs='+', help='mapping JSON file(s)')
     parser.add_argument('--registry', default=RULES, help='relationship registry (default: bundled)')
+    parser.add_argument('--catalogue', help='entity catalogue JSON; every endpoint must exist in it')
+    parser.add_argument('--strict', action='store_true', help='treat warnings as errors')
     parser.add_argument('--json', action='store_true', help='emit a JSON report instead of text')
     args = parser.parse_args(argv)
     try:
         registry = load_registry(args.registry)
-    except (OSError, ValueError) as exc:
-        print(f'ERROR: cannot load registry {args.registry}: {exc}', file=sys.stderr)
+        entity_resolver = None
+        if args.catalogue:
+            from sdmm.reference import CatalogueEntityResolver
+            entity_resolver = CatalogueEntityResolver.from_file(args.catalogue)
+    except (OSError, ValueError, KeyError) as exc:
+        print(f'ERROR: cannot load inputs: {exc}', file=sys.stderr)
         return EXIT_USAGE
     registry_issues = validate_registry(registry)
-    report = validate_files(args.paths, registry)
+    warnings = {}
+    report = validate_files(args.paths, registry, entity_resolver=entity_resolver, warnings=warnings)
     if registry_issues:
         report = {'<registry>': registry_issues, **report}
+    if args.strict:
+        for path, ws in warnings.items():
+            report.setdefault(path, []).extend(ws)
+        warnings = {}
     failed = any(report.values())
     if args.json:
-        print(json.dumps({'ok': not failed, 'registry_version': registry.get('$schema_version'), 'files': report}, indent=2))
+        print(json.dumps({'ok': not failed, 'registry_version': registry.get('$schema_version'),
+                          'files': report, 'warnings': warnings}, indent=2))
     else:
         for path, issues in report.items():
             for issue in issues:
                 print(f'ERROR: {path}: {issue}')
+            for w in warnings.get(path, []):
+                print(f'WARNING: {path}: {w}')
             if not issues:
-                print(f'OK: {path}')
+                print(f'OK: {path}' + (' (with warnings)' if warnings.get(path) else ''))
     return EXIT_ISSUES if failed else EXIT_OK
 
 

@@ -18,11 +18,14 @@ Things to notice:
 - **FRD-003 was not edited or deleted.** A baseline query for a date before `2026-12-01` still finds it.
 - **FRD-004 is excluded** from any "approved edges only" traversal until an architect sets `reviewer_id` and a reviewed status.
 
+`entities.json` is a catalogue of every entity the mappings refer to — a stand-in for the bank's EA tool, BIAN model and CMDB. Evidence is cited as `kind:reference` so the validator can check each arrow carries the evidence kinds its type requires.
+
 ```bash
-python -m sdmm.validate examples/card-fraud-alerts/mappings.json
+python -m sdmm.validate --strict --catalogue examples/card-fraud-alerts/entities.json examples/card-fraud-alerts/mappings.json
+python -m sdmm.diff --git HEAD~1 examples/card-fraud-alerts/mappings.json
 ```
 
-Try breaking it: remove `previous_mapping_id` from FRD-005 and the validator reports that FRD-003 has no successor.
+Try breaking it: remove `previous_mapping_id` from FRD-005 and the validator reports that FRD-003 has no successor. Change FRD-001's `rationale` and `sdmm-diff` reports an edit to an approved record. Point FRD-001 at `SD-NOT-REAL` and the catalogue check fails.
 
 ## Walk the chain
 

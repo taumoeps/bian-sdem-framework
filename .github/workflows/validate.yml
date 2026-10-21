@@ -10,9 +10,16 @@ jobs:
         python-version: ['3.10', '3.11', '3.12']
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - run: python -m sdmm.validate examples/*/mappings.json
+      - name: Validate (warnings are errors)
+        run: python -m sdmm.validate --strict examples/*/mappings.json
+      - name: Validate against entity catalogue
+        run: python -m sdmm.validate --strict --catalogue examples/card-fraud-alerts/entities.json examples/card-fraud-alerts/mappings.json
+      - name: Lifecycle and immutability against previous commit
+        run: python -m sdmm.diff --git HEAD~1 examples/*/mappings.json
       - run: python -m sdmm.validate --json examples/*/mappings.json
       - run: python -m unittest discover -s tests -v

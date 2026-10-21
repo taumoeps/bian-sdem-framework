@@ -34,3 +34,39 @@ class StaticReferenceResolver:
 
     def resolve(self, canonical_id, release):
         return self._index.get((canonical_id, release))
+
+
+# ---------------------------------------------------------------- level-model entities
+
+@dataclass(frozen=True)
+class EntityBinding:
+    id: str
+    type: str
+    version: str
+
+
+class EntityResolver(Protocol):
+    """Looks an entity reference up in the bank's own L0-L3 models."""
+    def resolve_entity(self, id: str, type: str, version: str) -> Optional[EntityBinding]: ...
+
+
+class CatalogueEntityResolver:
+    """File-backed resolver over a plain catalogue of known entities.
+
+    Catalogue shape: {"entities": [{"id": "CAP-310", "type": "L0.BusinessCapability", "versions": ["1.0"]}, ...]}
+    A real deployment would replace this with an adapter onto the EA tool, BIAN model and CMDB.
+    """
+    def __init__(self, catalogue):
+        self._index = {}
+        for e in catalogue.get('entities', []):
+            for v in e.get('versions', []):
+                self._index[(e['id'], e['type'], v)] = EntityBinding(e['id'], e['type'], v)
+
+    @classmethod
+    def from_file(cls, path):
+        import json
+        from pathlib import Path
+        return cls(json.loads(Path(path).read_text(encoding='utf-8')))
+
+    def resolve_entity(self, id, type, version):
+        return self._index.get((id, type, version))

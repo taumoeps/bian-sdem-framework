@@ -18,7 +18,8 @@
       "perspective": "architecture",
       "status": "approved",
       "evidence": [
-        "BA-FRAUD-2026#s2"
+        "business_architecture_document:BA-FRAUD-2026#s2",
+        "domain_scope_assessment:BA-FRAUD-2026#s2"
       ],
       "rationale": "Fraud-alerting capability sits inside the selected fraud-detection domain's scope",
       "bian_release": "BIAN-RELEASE-X",
@@ -42,7 +43,7 @@
       "perspective": "architecture",
       "status": "approved",
       "evidence": [
-        "AA-FRAUD-ENGINE-HLD#s3"
+        "application_architecture_document:AA-FRAUD-ENGINE-HLD#s3"
       ],
       "rationale": "Existing fraud engine covers real-time scoring and alert dispatch; case management is out of scope (separate component)",
       "baseline_id": "BASE-2026-Q4",
@@ -65,7 +66,7 @@
       "perspective": "architecture",
       "status": "superseded",
       "evidence": [
-        "IA-FRAUD-DEPLOY-2024"
+        "deployment_design:IA-FRAUD-DEPLOY-2024"
       ],
       "rationale": "Current production hosting",
       "baseline_id": "BASE-2026-Q4",
@@ -90,7 +91,7 @@
       "status": "proposed",
       "confidence": 0.71,
       "evidence": [
-        "API-FRAUD-v3.1.yaml#/paths/~1fraud~1alerts"
+        "api_contract:API-FRAUD-v3.1.yaml#/paths/~1fraud~1alerts"
       ],
       "rationale": "Engine candidate: endpoint name and payload resemble the alert-notification operation; semantic review pending",
       "baseline_id": "BASE-2026-Q4",
@@ -112,7 +113,7 @@
       "perspective": "architecture",
       "status": "approved",
       "evidence": [
-        "IA-FRAUD-MIGRATION-2026#s5"
+        "deployment_design:IA-FRAUD-MIGRATION-2026#s5"
       ],
       "rationale": "Re-hosted on managed Kubernetes; L1 functional semantics unchanged, so FRD-001/002 are untouched",
       "baseline_id": "BASE-2026-Q4",
