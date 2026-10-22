@@ -1,0 +1,583 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "C2",
+  "mappings": [
+    {
+      "mapping_id": "TFC-025",
+      "source": {
+        "id": "FP-FULFIL",
+        "type": "A2.FunctionalPattern",
+        "version": "1.0"
+      },
+      "relationship": "S18",
+      "target": {
+        "id": "FN-LC-CAPTURE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S18",
+      "rationale": "derived: the function's APIs implement operations of a domain that applies the pattern"
+    },
+    {
+      "mapping_id": "TFC-026",
+      "source": {
+        "id": "FP-FULFIL",
+        "type": "A2.FunctionalPattern",
+        "version": "1.0"
+      },
+      "relationship": "S18",
+      "target": {
+        "id": "FN-LC-ISSUE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S18",
+      "rationale": "derived: the function's APIs implement operations of a domain that applies the pattern"
+    },
+    {
+      "mapping_id": "TFC-027",
+      "source": {
+        "id": "FP-ASSESS",
+        "type": "A2.FunctionalPattern",
+        "version": "1.0"
+      },
+      "relationship": "S18",
+      "target": {
+        "id": "FN-DOC-CHECK",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S18",
+      "rationale": "derived: the function's APIs implement operations of a domain that applies the pattern"
+    },
+    {
+      "mapping_id": "TFC-028",
+      "source": {
+        "id": "AT-LC",
+        "type": "A2.AssetType",
+        "version": "1.0"
+      },
+      "relationship": "S19",
+      "target": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S19",
+      "rationale": "asset alias token in the entity name"
+    },
+    {
+      "mapping_id": "TFC-029",
+      "source": {
+        "id": "AT-LC",
+        "type": "A2.AssetType",
+        "version": "1.0"
+      },
+      "relationship": "S19",
+      "target": {
+        "id": "ENT-LC-AMEND",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S19",
+      "rationale": "asset alias token in the entity name"
+    },
+    {
+      "mapping_id": "TFC-030",
+      "source": {
+        "id": "AT-DOCSET",
+        "type": "A2.AssetType",
+        "version": "1.0"
+      },
+      "relationship": "S19",
+      "target": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S19",
+      "rationale": "asset alias token in the entity name"
+    },
+    {
+      "mapping_id": "TFC-031",
+      "source": {
+        "id": "CR-LC",
+        "type": "A2.ControlRecord",
+        "version": "1.0"
+      },
+      "relationship": "S20",
+      "target": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S20",
+      "rationale": "8/9 attributes"
+    },
+    {
+      "mapping_id": "TFC-032",
+      "source": {
+        "id": "CR-DC",
+        "type": "A2.ControlRecord",
+        "version": "1.0"
+      },
+      "relationship": "S20",
+      "target": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S20",
+      "rationale": "5/5"
+    },
+    {
+      "mapping_id": "TFC-033",
+      "source": {
+        "id": "CR-LC",
+        "type": "A2.ControlRecord",
+        "version": "1.0"
+      },
+      "relationship": "S21",
+      "target": {
+        "id": "FN-LC-CAPTURE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S21",
+      "rationale": "derived: the function's APIs implement operations that act on the control record"
+    },
+    {
+      "mapping_id": "TFC-034",
+      "source": {
+        "id": "CR-LC",
+        "type": "A2.ControlRecord",
+        "version": "1.0"
+      },
+      "relationship": "S21",
+      "target": {
+        "id": "FN-LC-ISSUE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S21",
+      "rationale": "derived: the function's APIs implement operations that act on the control record"
+    },
+    {
+      "mapping_id": "TFC-035",
+      "source": {
+        "id": "CR-DC",
+        "type": "A2.ControlRecord",
+        "version": "1.0"
+      },
+      "relationship": "S21",
+      "target": {
+        "id": "FN-DOC-CHECK",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S21",
+      "rationale": "derived: the function's APIs implement operations that act on the control record"
+    },
+    {
+      "mapping_id": "TFC-036",
+      "source": {
+        "id": "SG-LC",
+        "type": "A2.ServiceGroup",
+        "version": "1.0"
+      },
+      "relationship": "S22",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S22",
+      "rationale": "derived from S24: the group's operations are implemented by APIs of the service's interface"
+    },
+    {
+      "mapping_id": "TFC-037",
+      "source": {
+        "id": "SG-DC",
+        "type": "A2.ServiceGroup",
+        "version": "1.0"
+      },
+      "relationship": "S22",
+      "target": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S22",
+      "rationale": "derived from S24: the group's operations are implemented by APIs of the service's interface"
+    },
+    {
+      "mapping_id": "TFC-038",
+      "source": {
+        "id": "SG-LC",
+        "type": "A2.ServiceGroup",
+        "version": "1.0"
+      },
+      "relationship": "S23",
+      "target": {
+        "id": "IFC-LC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S23",
+      "rationale": "derived from S24 over interface composition"
+    },
+    {
+      "mapping_id": "TFC-039",
+      "source": {
+        "id": "SG-DC",
+        "type": "A2.ServiceGroup",
+        "version": "1.0"
+      },
+      "relationship": "S23",
+      "target": {
+        "id": "IFC-DOC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S23",
+      "rationale": "derived from S24 over interface composition"
+    },
+    {
+      "mapping_id": "TFC-040",
+      "source": {
+        "id": "SO-LC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S25",
+      "rationale": "derived from S24: the implementing API belongs to the service's interface"
+    },
+    {
+      "mapping_id": "TFC-041",
+      "source": {
+        "id": "SO-LC-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S25",
+      "rationale": "derived from S24: the implementing API belongs to the service's interface"
+    },
+    {
+      "mapping_id": "TFC-042",
+      "source": {
+        "id": "SO-LC-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S25",
+      "rationale": "derived from S24: the implementing API belongs to the service's interface"
+    },
+    {
+      "mapping_id": "TFC-043",
+      "source": {
+        "id": "SO-LC-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S25",
+      "rationale": "derived from S24: the implementing API belongs to the service's interface"
+    },
+    {
+      "mapping_id": "TFC-044",
+      "source": {
+        "id": "SO-DC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S25",
+      "rationale": "derived from S24: the implementing API belongs to the service's interface"
+    },
+    {
+      "mapping_id": "TFC-045",
+      "source": {
+        "id": "SO-DC-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S25",
+      "rationale": "derived from S24: the implementing API belongs to the service's interface"
+    },
+    {
+      "mapping_id": "TFC-046",
+      "source": {
+        "id": "BQ-AMENDMENT",
+        "type": "A2.BehaviorQualifier",
+        "version": "1.0"
+      },
+      "relationship": "S26",
+      "target": {
+        "id": "API-LC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S26",
+      "rationale": "derived from S24 where check 3 passed: qualifier alias in path"
+    },
+    {
+      "mapping_id": "TFC-047",
+      "source": {
+        "id": "BQ-ISSUANCE",
+        "type": "A2.BehaviorQualifier",
+        "version": "1.0"
+      },
+      "relationship": "S26",
+      "target": {
+        "id": "API-LC-03",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S26",
+      "rationale": "qualifier alias in path"
+    },
+    {
+      "mapping_id": "TFC-048",
+      "source": {
+        "id": "BQ-AMENDMENT",
+        "type": "A2.BehaviorQualifier",
+        "version": "1.0"
+      },
+      "relationship": "S27",
+      "target": {
+        "id": "ENT-LC-AMEND",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S27",
+      "rationale": "qualifier alias token in the entity name; entity carries the amendment partition"
+    },
+    {
+      "mapping_id": "TFC-049",
+      "source": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "relationship": "S28",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S28",
+      "rationale": "derived: the scenario's operations are implemented by the service (S24 + S25)"
+    },
+    {
+      "mapping_id": "TFC-050",
+      "source": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "relationship": "S28",
+      "target": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S28",
+      "rationale": "derived: the scenario's operations are implemented by the service (S24 + S25)"
+    },
+    {
+      "mapping_id": "TFC-051",
+      "source": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "relationship": "S29",
+      "target": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S29",
+      "rationale": "derived: the scenario's operations belong to domains realised by the component (S17)"
+    },
+    {
+      "mapping_id": "TFC-052",
+      "source": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "relationship": "S29",
+      "target": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S29",
+      "rationale": "derived: the scenario's operations belong to domains realised by the component (S17)"
+    },
+    {
+      "mapping_id": "TFC-053",
+      "source": {
+        "id": "BBOA-CREDIT-AMOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "1.0"
+      },
+      "relationship": "S31",
+      "target": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S31",
+      "rationale": "derived from S30: the attribute's object is MAPPED_TO the entity and the entity carries the attribute"
+    },
+    {
+      "mapping_id": "TFC-054",
+      "source": {
+        "id": "BBOA-EXPIRY",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "1.0"
+      },
+      "relationship": "S31",
+      "target": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S31",
+      "rationale": "derived from S30: the attribute's object is MAPPED_TO the entity and the entity carries the attribute"
+    },
+    {
+      "mapping_id": "TFC-055",
+      "source": {
+        "id": "BBOA-COMPLIANCE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "1.0"
+      },
+      "relationship": "S31",
+      "target": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S31",
+      "rationale": "derived from S30: the attribute's object is MAPPED_TO the entity and the entity carries the attribute"
+    },
+    {
+      "mapping_id": "TFC-056",
+      "source": {
+        "id": "BBOA-DISCREPANCIES",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "1.0"
+      },
+      "relationship": "S31",
+      "target": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S31",
+      "rationale": "derived from S30: the attribute's object is MAPPED_TO the entity and the entity carries the attribute"
+    }
+  ]
+}

@@ -1,0 +1,341 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "C2",
+  "mappings": [
+    {
+      "mapping_id": "TF-101",
+      "source": {
+        "id": "CAP-TF",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-LETTER-OF-CREDIT"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-TF-2026#s2",
+        "domain_scope_assessment:DSA-TF-1"
+      ],
+      "rationale": "[S01] issuing credits is the credit domain's scope",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "TF-102",
+      "source": {
+        "id": "VS-LC",
+        "type": "A1.ValueStream",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0",
+        "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-LC-2026",
+        "scenario_suitability_review:SCN-LC-1"
+      ],
+      "rationale": "[S02] three stages cover the scenario's three operations",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "TF-103",
+      "source": {
+        "id": "PRC-LC-APPLY",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-LC-2026"
+      ],
+      "rationale": "[S04] invokes Initiate and Update",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-104",
+      "source": {
+        "id": "PRC-LC-ISSUE",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-DC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-LC-2026"
+      ],
+      "rationale": "[S04] invokes Evaluate",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-105",
+      "source": {
+        "id": "PRC-LC-ISSUE",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-LC-2026"
+      ],
+      "rationale": "[S04] invokes Execute Issuance",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-106",
+      "source": {
+        "id": "BO-LC",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-LC",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-LETTER-OF-CREDIT"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "business_glossary:GL-TF#letter-of-credit",
+        "object_alignment_review:OAR-TF-1"
+      ],
+      "rationale": "[S12] same meaning; 7 of 8 attributes align (lc_number = letter_of_credit_reference)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "TF-107",
+      "source": {
+        "id": "BO-DOCSET",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-DOCSET",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-DOCUMENT-SET"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "business_glossary:GL-TF#document-set",
+        "object_alignment_review:OAR-TF-2"
+      ],
+      "rationale": "[S12] same meaning; 4 of 5 attributes align",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "TF-118",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:TF-DD-2026#prod"
+      ],
+      "rationale": "[S32] manifest",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-119",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-DOC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:TF-DD-2026#prod"
+      ],
+      "rationale": "[S32] manifest",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-120",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:TF-DD-2026#prod"
+      ],
+      "rationale": "[S33] runtime hosts the component",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-121",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:TF-DD-2026#prod"
+      ],
+      "rationale": "[S33] runtime hosts the component",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-122",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "NODE-TF-PROD",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:TF-DD-2026#prod"
+      ],
+      "rationale": "[S34] node pool hosts the component (Node target — plan S34)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-123",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "NODE-TF-PROD",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:TF-DD-2026#prod"
+      ],
+      "rationale": "[S34] node pool hosts the component (Node target — plan S34)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-124",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "DEV-SCAN-01",
+        "type": "A4.Device",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:TF-DD-2026#branch"
+      ],
+      "rationale": "[S35] the capture module runs on the appliance (Device target — plan S35)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    }
+  ]
+}

@@ -1,0 +1,268 @@
+{
+  "level": "A4",
+  "model_id": "synthetic-bank-trade-a4",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-CMDB",
+  "instances": [
+    {
+      "id": "NODE-TF-PROD",
+      "type": "A4.Node",
+      "version": "1.0",
+      "name": "Trade finance node pool (production)",
+      "lifecycle_status": "active",
+      "description": "Production compute node pool.",
+      "attributes": {
+        "hosts": [
+          "APP-LC",
+          "APP-DOC"
+        ]
+      }
+    },
+    {
+      "id": "SYS-RUNTIME-TF",
+      "type": "A4.SystemSoftware",
+      "version": "1.30",
+      "name": "Container runtime — trade",
+      "lifecycle_status": "active",
+      "description": "Container runtime on the node pool.",
+      "attributes": {
+        "hosts": [
+          "APP-LC",
+          "APP-DOC"
+        ]
+      }
+    },
+    {
+      "id": "DEV-SCAN-01",
+      "type": "A4.Device",
+      "version": "1.0",
+      "name": "Document scanning appliance",
+      "lifecycle_status": "active",
+      "description": "Branch scanning appliance running DocCheck's capture module.",
+      "attributes": {
+        "hosts": [
+          "APP-DOC"
+        ]
+      }
+    },
+    {
+      "id": "SYS-DB-TF",
+      "type": "A4.SystemSoftware",
+      "version": "16",
+      "name": "PostgreSQL — trade",
+      "lifecycle_status": "active",
+      "description": "Production database."
+    },
+    {
+      "id": "TS-QUEUE",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "Messaging",
+      "lifecycle_status": "active",
+      "description": "Managed message broker."
+    },
+    {
+      "id": "TS-GATEWAY",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "API gateway",
+      "lifecycle_status": "active",
+      "description": "Managed API gateway."
+    },
+    {
+      "id": "TS-SIGNING",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "Digital signing",
+      "lifecycle_status": "active",
+      "description": "HSM-backed signing service."
+    },
+    {
+      "id": "TS-OCR",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "OCR",
+      "lifecycle_status": "active",
+      "description": "Managed document OCR service."
+    },
+    {
+      "id": "TI-INGRESS",
+      "type": "A4.TechnologyInterface",
+      "version": "1.0",
+      "name": "Gateway ingress trade.example",
+      "lifecycle_status": "active",
+      "description": "Public ingress of the API gateway for trade APIs.",
+      "attributes": {
+        "of_service": "TS-GATEWAY",
+        "exposes": [
+          "IFC-LC",
+          "IFC-DOC"
+        ]
+      }
+    },
+    {
+      "id": "TI-TOPIC-LC",
+      "type": "A4.TechnologyInterface",
+      "version": "1.0",
+      "name": "Topic lc-events",
+      "lifecycle_status": "active",
+      "description": "Broker topic for credit events.",
+      "attributes": {
+        "of_service": "TS-QUEUE",
+        "exposes": []
+      }
+    },
+    {
+      "id": "NET-TF",
+      "type": "A4.CommunicationNetwork",
+      "version": "1.0",
+      "name": "Trade finance network",
+      "lifecycle_status": "active",
+      "description": "Private segment for trade systems.",
+      "attributes": {
+        "connects": [
+          "NODE-TF-PROD",
+          "DEV-SCAN-01"
+        ]
+      }
+    },
+    {
+      "id": "PATH-TF-01",
+      "type": "A4.Path",
+      "version": "1.0",
+      "name": "Node pool to scanning appliance",
+      "lifecycle_status": "active",
+      "description": "Mutually authenticated path between the node pool and the branch appliance.",
+      "attributes": {
+        "from": "NODE-TF-PROD",
+        "to": "DEV-SCAN-01",
+        "network": "NET-TF",
+        "carries": [
+          "APP-DOC"
+        ]
+      }
+    },
+    {
+      "id": "ART-LC-IMG",
+      "type": "A4.Artifact",
+      "version": "3.0",
+      "name": "lc-manager:3.0",
+      "lifecycle_status": "active",
+      "description": "Container image.",
+      "attributes": {
+        "of_component": "APP-LC"
+      }
+    },
+    {
+      "id": "ART-DOC-IMG",
+      "type": "A4.Artifact",
+      "version": "3.0",
+      "name": "doccheck:3.0",
+      "lifecycle_status": "active",
+      "description": "Container image.",
+      "attributes": {
+        "of_component": "APP-DOC"
+      }
+    },
+    {
+      "id": "ART-DOC-STORE",
+      "type": "A4.Artifact",
+      "version": "1.0",
+      "name": "Document object store (bucket trade-docs)",
+      "lifecycle_status": "active",
+      "description": "Object store holding scanned documents."
+    },
+    {
+      "id": "ENV-TF-PROD",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "Production",
+      "lifecycle_status": "active",
+      "description": "Production environment."
+    },
+    {
+      "id": "DEP-LC-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "LC Manager — production",
+      "lifecycle_status": "active",
+      "description": "LC Manager 3.0 on the node pool.",
+      "attributes": {
+        "component_id": "APP-LC",
+        "environment_id": "ENV-TF-PROD",
+        "platform_id": "NODE-TF-PROD"
+      }
+    },
+    {
+      "id": "DEP-DOC-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "DocCheck — production",
+      "lifecycle_status": "active",
+      "description": "DocCheck 3.0 on the node pool.",
+      "attributes": {
+        "component_id": "APP-DOC",
+        "environment_id": "ENV-TF-PROD",
+        "platform_id": "NODE-TF-PROD"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "ENV-TF-PROD",
+      "kind": "aggregation",
+      "target": "DEP-LC-PROD"
+    },
+    {
+      "source": "ENV-TF-PROD",
+      "kind": "aggregation",
+      "target": "DEP-DOC-PROD"
+    },
+    {
+      "source": "NODE-TF-PROD",
+      "kind": "composition",
+      "target": "SYS-RUNTIME-TF"
+    },
+    {
+      "source": "TS-GATEWAY",
+      "kind": "composition",
+      "target": "TI-INGRESS"
+    },
+    {
+      "source": "TS-QUEUE",
+      "kind": "composition",
+      "target": "TI-TOPIC-LC"
+    },
+    {
+      "source": "NODE-TF-PROD",
+      "kind": "assignment",
+      "target": "NET-TF"
+    },
+    {
+      "source": "DEV-SCAN-01",
+      "kind": "assignment",
+      "target": "NET-TF"
+    },
+    {
+      "source": "NET-TF",
+      "kind": "composition",
+      "target": "PATH-TF-01"
+    },
+    {
+      "source": "ART-LC-IMG",
+      "kind": "assignment",
+      "target": "NODE-TF-PROD"
+    },
+    {
+      "source": "ART-DOC-IMG",
+      "kind": "assignment",
+      "target": "NODE-TF-PROD"
+    },
+    {
+      "source": "ART-DOC-IMG",
+      "kind": "assignment",
+      "target": "DEV-SCAN-01"
+    }
+  ]
+}

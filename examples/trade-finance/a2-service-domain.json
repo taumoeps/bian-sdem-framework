@@ -1,0 +1,581 @@
+{
+  "level": "A2",
+  "model_id": "synthetic-bank-trade-a2",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-BIAN-WORKBENCH",
+  "instances": [
+    {
+      "id": "BA-TRADE",
+      "type": "A2.BusinessArea",
+      "version": "1.0",
+      "name": "Trade Finance (synthetic area)",
+      "lifecycle_status": "active",
+      "description": "Synthetic business area grouping trade finance domains."
+    },
+    {
+      "id": "BD-TRADE",
+      "type": "A2.BusinessDomain",
+      "version": "1.0",
+      "name": "Documentary Trade (synthetic domain)",
+      "lifecycle_status": "active",
+      "description": "Synthetic business domain for documentary credits."
+    },
+    {
+      "id": "SD-LC",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Letter of Credit (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: handles a documentary letter of credit from application through amendment to issuance.",
+      "attributes": {
+        "asset_type": "AT-LC",
+        "functional_pattern": "FP-FULFIL"
+      },
+      "canonical_id": "BIAN-LETTER-OF-CREDIT"
+    },
+    {
+      "id": "SD-DC",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Document Checking (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: evaluates presented trade documents for compliance with a credit's terms and records discrepancies.",
+      "attributes": {
+        "asset_type": "AT-DOCSET",
+        "functional_pattern": "FP-ASSESS"
+      },
+      "canonical_id": "BIAN-DOCUMENT-CHECKING"
+    },
+    {
+      "id": "AT-LC",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Letter of Credit",
+      "lifecycle_status": "active",
+      "description": "The credit being handled.",
+      "attributes": {
+        "aliases": [
+          "lc",
+          "credit",
+          "letter"
+        ]
+      }
+    },
+    {
+      "id": "AT-DOCSET",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Document Set",
+      "lifecycle_status": "active",
+      "description": "The presented documents.",
+      "attributes": {
+        "aliases": [
+          "document",
+          "docset",
+          "docs"
+        ]
+      }
+    },
+    {
+      "id": "FP-FULFIL",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Fulfil",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: complete a request through a procedure."
+    },
+    {
+      "id": "FP-ASSESS",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Assess",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: evaluate something and record the result."
+    },
+    {
+      "id": "CR-LC",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Letter of Credit Procedure",
+      "lifecycle_status": "active",
+      "description": "Lifecycle of one credit.",
+      "attributes": {
+        "attributes": [
+          "letter_of_credit_reference",
+          "applicant_reference",
+          "beneficiary_reference",
+          "credit_amount",
+          "currency",
+          "expiry_date",
+          "application_status",
+          "issuance_reference",
+          "amendment_reference"
+        ],
+        "lifecycle_states": [
+          "applied",
+          "validated",
+          "amended",
+          "issued",
+          "expired"
+        ]
+      }
+    },
+    {
+      "id": "CR-DC",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Document Checking Assessment",
+      "lifecycle_status": "active",
+      "description": "One document check.",
+      "attributes": {
+        "attributes": [
+          "document_set_reference",
+          "letter_of_credit_reference",
+          "compliance_outcome",
+          "discrepancies",
+          "checked_at"
+        ],
+        "lifecycle_states": [
+          "received",
+          "checked",
+          "accepted",
+          "rejected"
+        ]
+      }
+    },
+    {
+      "id": "BQ-ISSUANCE",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Issuance",
+      "lifecycle_status": "active",
+      "description": "Issuing the credit.",
+      "attributes": {
+        "aliases": [
+          "issue",
+          "issuance"
+        ]
+      }
+    },
+    {
+      "id": "BQ-AMENDMENT",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Amendment",
+      "lifecycle_status": "active",
+      "description": "Amending the credit before issuance.",
+      "attributes": {
+        "aliases": [
+          "amend",
+          "amendment"
+        ]
+      }
+    },
+    {
+      "id": "SG-LC",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Credit",
+      "lifecycle_status": "active",
+      "description": "Credit operations."
+    },
+    {
+      "id": "SG-DC",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Checking",
+      "lifecycle_status": "active",
+      "description": "Checking operations."
+    },
+    {
+      "id": "SO-LC-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Initiate Letter of Credit",
+      "lifecycle_status": "active",
+      "description": "Start a credit from the application.",
+      "attributes": {
+        "action_term": "Initiate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "applicant_reference",
+          "beneficiary_reference",
+          "credit_amount",
+          "currency",
+          "expiry_date"
+        ],
+        "output_attributes": [
+          "letter_of_credit_reference",
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-LC-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Update Letter of Credit Amendment",
+      "lifecycle_status": "active",
+      "description": "Amend the credit before issuance.",
+      "attributes": {
+        "action_term": "Update",
+        "behavior_qualifier": "Amendment",
+        "input_attributes": [
+          "letter_of_credit_reference",
+          "credit_amount",
+          "expiry_date"
+        ],
+        "output_attributes": [
+          "amendment_reference",
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-LC-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Execute Letter of Credit Issuance",
+      "lifecycle_status": "active",
+      "description": "Issue the credit.",
+      "attributes": {
+        "action_term": "Execute",
+        "behavior_qualifier": "Issuance",
+        "input_attributes": [
+          "letter_of_credit_reference"
+        ],
+        "output_attributes": [
+          "issuance_reference",
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-LC-04",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Letter of Credit",
+      "lifecycle_status": "active",
+      "description": "Return the credit and its status.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "letter_of_credit_reference"
+        ],
+        "output_attributes": [
+          "application_status",
+          "credit_amount",
+          "currency",
+          "expiry_date",
+          "issuance_reference"
+        ]
+      }
+    },
+    {
+      "id": "SO-DC-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Evaluate Document Checking",
+      "lifecycle_status": "active",
+      "description": "Evaluate a document set against the credit.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "document_set_reference",
+          "letter_of_credit_reference"
+        ],
+        "output_attributes": [
+          "compliance_outcome",
+          "discrepancies"
+        ]
+      }
+    },
+    {
+      "id": "SO-DC-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Document Checking",
+      "lifecycle_status": "active",
+      "description": "Return a document check.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "document_set_reference"
+        ],
+        "output_attributes": [
+          "compliance_outcome",
+          "discrepancies",
+          "checked_at"
+        ]
+      }
+    },
+    {
+      "id": "BS-LC",
+      "type": "A2.BusinessScenario",
+      "version": "1.0",
+      "name": "Documentary credit issuance",
+      "lifecycle_status": "active",
+      "description": "Apply, check documents, issue.",
+      "attributes": {
+        "operation_sequence": [
+          "SO-LC-01",
+          "SO-DC-01",
+          "SO-LC-03"
+        ]
+      },
+      "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE"
+    },
+    {
+      "id": "BBO-LC",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Letter of Credit",
+      "lifecycle_status": "active",
+      "description": "Canonical.",
+      "attributes": {
+        "attributes": [
+          "letter_of_credit_reference",
+          "applicant_reference",
+          "beneficiary_reference",
+          "credit_amount",
+          "currency",
+          "expiry_date",
+          "application_status",
+          "issuance_reference"
+        ]
+      },
+      "canonical_id": "BIAN-BO-LETTER-OF-CREDIT"
+    },
+    {
+      "id": "BBO-DOCSET",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Document Set",
+      "lifecycle_status": "active",
+      "description": "Canonical.",
+      "attributes": {
+        "attributes": [
+          "document_set_reference",
+          "letter_of_credit_reference",
+          "compliance_outcome",
+          "discrepancies",
+          "checked_at"
+        ]
+      },
+      "canonical_id": "BIAN-BO-DOCUMENT-SET"
+    },
+    {
+      "id": "BBOA-CREDIT-AMOUNT",
+      "type": "A2.BusinessObjectAttribute",
+      "version": "1.0",
+      "name": "credit_amount",
+      "lifecycle_status": "active",
+      "description": "Amount of the credit."
+    },
+    {
+      "id": "BBOA-EXPIRY",
+      "type": "A2.BusinessObjectAttribute",
+      "version": "1.0",
+      "name": "expiry_date",
+      "lifecycle_status": "active",
+      "description": "Expiry of the credit."
+    },
+    {
+      "id": "BBOA-COMPLIANCE",
+      "type": "A2.BusinessObjectAttribute",
+      "version": "1.0",
+      "name": "compliance_outcome",
+      "lifecycle_status": "active",
+      "description": "Outcome of the check."
+    },
+    {
+      "id": "BBOA-DISCREPANCIES",
+      "type": "A2.BusinessObjectAttribute",
+      "version": "1.0",
+      "name": "discrepancies",
+      "lifecycle_status": "active",
+      "description": "Discrepancies found."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "BA-TRADE",
+      "kind": "composition",
+      "target": "BD-TRADE"
+    },
+    {
+      "source": "BD-TRADE",
+      "kind": "composition",
+      "target": "SD-LC"
+    },
+    {
+      "source": "BD-TRADE",
+      "kind": "composition",
+      "target": "SD-DC"
+    },
+    {
+      "source": "SD-LC",
+      "kind": "association",
+      "target": "AT-LC"
+    },
+    {
+      "source": "SD-DC",
+      "kind": "association",
+      "target": "AT-DOCSET"
+    },
+    {
+      "source": "SD-LC",
+      "kind": "association",
+      "target": "FP-FULFIL"
+    },
+    {
+      "source": "SD-DC",
+      "kind": "association",
+      "target": "FP-ASSESS"
+    },
+    {
+      "source": "SD-LC",
+      "kind": "aggregation",
+      "target": "CR-LC"
+    },
+    {
+      "source": "SD-DC",
+      "kind": "aggregation",
+      "target": "CR-DC"
+    },
+    {
+      "source": "CR-LC",
+      "kind": "composition",
+      "target": "BQ-ISSUANCE"
+    },
+    {
+      "source": "CR-LC",
+      "kind": "composition",
+      "target": "BQ-AMENDMENT"
+    },
+    {
+      "source": "CR-LC",
+      "kind": "association",
+      "target": "BBO-LC"
+    },
+    {
+      "source": "CR-DC",
+      "kind": "association",
+      "target": "BBO-DOCSET"
+    },
+    {
+      "source": "SD-LC",
+      "kind": "composition",
+      "target": "SG-LC"
+    },
+    {
+      "source": "SD-DC",
+      "kind": "composition",
+      "target": "SG-DC"
+    },
+    {
+      "source": "SG-LC",
+      "kind": "composition",
+      "target": "SO-LC-01"
+    },
+    {
+      "source": "SG-LC",
+      "kind": "composition",
+      "target": "SO-LC-02"
+    },
+    {
+      "source": "SG-LC",
+      "kind": "composition",
+      "target": "SO-LC-03"
+    },
+    {
+      "source": "SG-LC",
+      "kind": "composition",
+      "target": "SO-LC-04"
+    },
+    {
+      "source": "SG-DC",
+      "kind": "composition",
+      "target": "SO-DC-01"
+    },
+    {
+      "source": "SG-DC",
+      "kind": "composition",
+      "target": "SO-DC-02"
+    },
+    {
+      "source": "SO-LC-01",
+      "kind": "access",
+      "target": "CR-LC"
+    },
+    {
+      "source": "SO-LC-02",
+      "kind": "access",
+      "target": "CR-LC"
+    },
+    {
+      "source": "SO-LC-03",
+      "kind": "access",
+      "target": "CR-LC"
+    },
+    {
+      "source": "SO-LC-04",
+      "kind": "access",
+      "target": "CR-LC"
+    },
+    {
+      "source": "SO-DC-01",
+      "kind": "access",
+      "target": "CR-DC"
+    },
+    {
+      "source": "SO-DC-02",
+      "kind": "access",
+      "target": "CR-DC"
+    },
+    {
+      "source": "BS-LC",
+      "kind": "aggregation",
+      "target": "SO-LC-01"
+    },
+    {
+      "source": "BS-LC",
+      "kind": "aggregation",
+      "target": "SO-DC-01"
+    },
+    {
+      "source": "BS-LC",
+      "kind": "aggregation",
+      "target": "SO-LC-03"
+    },
+    {
+      "source": "BBO-LC",
+      "kind": "composition",
+      "target": "BBOA-CREDIT-AMOUNT"
+    },
+    {
+      "source": "BBO-LC",
+      "kind": "composition",
+      "target": "BBOA-EXPIRY"
+    },
+    {
+      "source": "BBO-DOCSET",
+      "kind": "composition",
+      "target": "BBOA-COMPLIANCE"
+    },
+    {
+      "source": "BBO-DOCSET",
+      "kind": "composition",
+      "target": "BBOA-DISCREPANCIES"
+    },
+    {
+      "source": "SD-LC",
+      "kind": "flow",
+      "target": "SD-DC"
+    }
+  ]
+}

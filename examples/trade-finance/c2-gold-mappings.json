@@ -1,0 +1,237 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "C2",
+  "mappings": [
+    {
+      "mapping_id": "TF-108",
+      "source": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:TF-HLD#lc"
+      ],
+      "rationale": "[S17] LC Manager implements all four credit operations",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-109",
+      "source": {
+        "id": "SD-DC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:TF-HLD#doc"
+      ],
+      "rationale": "[S17] DocCheck implements both checking operations",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-110",
+      "source": {
+        "id": "SO-LC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-LC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:trade-api-v3.yaml#API-LC-01"
+      ],
+      "rationale": "[S24] Initiate ↔ POST; 7/7",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-111",
+      "source": {
+        "id": "SO-LC-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-LC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:trade-api-v3.yaml#API-LC-02"
+      ],
+      "rationale": "[S24] Update/Amendment ↔ PATCH …/amendment; 5/5",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-112",
+      "source": {
+        "id": "SO-LC-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-LC-03",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:trade-api-v3.yaml#API-LC-03"
+      ],
+      "rationale": "[S24] Execute/Issuance ↔ PUT …/issuance; 3/3",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-113",
+      "source": {
+        "id": "SO-LC-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-LC-04",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:trade-api-v3.yaml#API-LC-04"
+      ],
+      "rationale": "[S24] Retrieve ↔ GET; 6/6",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-114",
+      "source": {
+        "id": "SO-DC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-DC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:trade-api-v3.yaml#API-DC-01"
+      ],
+      "rationale": "[S24] Evaluate ↔ POST; 4/4",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-115",
+      "source": {
+        "id": "SO-DC-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-DC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:trade-api-v3.yaml#API-DC-02"
+      ],
+      "rationale": "[S24] Retrieve ↔ GET; 4/4",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-116",
+      "source": {
+        "id": "BBO-LC",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:TF-DD#letters_of_credit"
+      ],
+      "rationale": "[S30] 8/8",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "TF-117",
+      "source": {
+        "id": "BBO-DOCSET",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:TF-DD#document_sets"
+      ],
+      "rationale": "[S30] 5/5",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    }
+  ]
+}

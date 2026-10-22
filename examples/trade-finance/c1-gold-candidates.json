@@ -1,0 +1,439 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "C1",
+  "mappings": [
+    {
+      "mapping_id": "TFC-001",
+      "source": {
+        "id": "VSS-T1",
+        "type": "A1.ValueStreamStage",
+        "version": "1.0"
+      },
+      "relationship": "S03",
+      "target": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S03",
+      "rationale": "stage covers Initiate (apply)"
+    },
+    {
+      "mapping_id": "TFC-002",
+      "source": {
+        "id": "VSS-T2",
+        "type": "A1.ValueStreamStage",
+        "version": "1.0"
+      },
+      "relationship": "S03",
+      "target": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S03",
+      "rationale": "stage covers Evaluate (check documents)"
+    },
+    {
+      "mapping_id": "TFC-003",
+      "source": {
+        "id": "VSS-T3",
+        "type": "A1.ValueStreamStage",
+        "version": "1.0"
+      },
+      "relationship": "S03",
+      "target": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S03",
+      "rationale": "stage covers Execute Issuance (issue)"
+    },
+    {
+      "mapping_id": "TFC-004",
+      "source": {
+        "id": "ACT-T1",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S06",
+      "target": {
+        "id": "SO-LC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S06",
+      "rationale": "activity invokes / names the operation"
+    },
+    {
+      "mapping_id": "TFC-005",
+      "source": {
+        "id": "ACT-T2",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S06",
+      "target": {
+        "id": "SO-LC-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S06",
+      "rationale": "activity invokes / names the operation"
+    },
+    {
+      "mapping_id": "TFC-006",
+      "source": {
+        "id": "ACT-T3",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S06",
+      "target": {
+        "id": "SO-DC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S06",
+      "rationale": "activity invokes / names the operation"
+    },
+    {
+      "mapping_id": "TFC-007",
+      "source": {
+        "id": "ACT-T4",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S06",
+      "target": {
+        "id": "SO-LC-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S06",
+      "rationale": "activity invokes / names the operation"
+    },
+    {
+      "mapping_id": "TFC-008",
+      "source": {
+        "id": "ACT-T1",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S07",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S07",
+      "rationale": "derived from S06: the operation's domain"
+    },
+    {
+      "mapping_id": "TFC-009",
+      "source": {
+        "id": "ACT-T2",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S07",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S07",
+      "rationale": "derived from S06: the operation's domain"
+    },
+    {
+      "mapping_id": "TFC-010",
+      "source": {
+        "id": "ACT-T3",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S07",
+      "target": {
+        "id": "SD-DC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S07",
+      "rationale": "derived from S06: the operation's domain"
+    },
+    {
+      "mapping_id": "TFC-011",
+      "source": {
+        "id": "ACT-T4",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S07",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S07",
+      "rationale": "derived from S06: the operation's domain"
+    },
+    {
+      "mapping_id": "TFC-012",
+      "source": {
+        "id": "BSV-LC-APP",
+        "type": "A1.BusinessService",
+        "version": "1.0"
+      },
+      "relationship": "S08",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S08",
+      "rationale": "step 5: letter of credit / application / credit shared; runner-up shares none"
+    },
+    {
+      "mapping_id": "TFC-013",
+      "source": {
+        "id": "BSV-DOC-CHECK",
+        "type": "A1.BusinessService",
+        "version": "1.0"
+      },
+      "relationship": "S08",
+      "target": {
+        "id": "SD-DC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S08",
+      "rationale": "step 5: document / compliance / discrepancies shared"
+    },
+    {
+      "mapping_id": "TFC-014",
+      "source": {
+        "id": "BSV-LC-APP",
+        "type": "A1.BusinessService",
+        "version": "1.0"
+      },
+      "relationship": "S09",
+      "target": {
+        "id": "SO-LC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S09",
+      "rationale": "service inputs ∪ outputs = the operation's I/O, 7/7"
+    },
+    {
+      "mapping_id": "TFC-015",
+      "source": {
+        "id": "BSV-DOC-CHECK",
+        "type": "A1.BusinessService",
+        "version": "1.0"
+      },
+      "relationship": "S09",
+      "target": {
+        "id": "SO-DC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S09",
+      "rationale": "4/4"
+    },
+    {
+      "mapping_id": "TFC-016",
+      "source": {
+        "id": "REQ-01",
+        "type": "A1.BusinessRequirement",
+        "version": "1.0"
+      },
+      "relationship": "S13",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S13",
+      "rationale": "derived from S04 over applies_to"
+    },
+    {
+      "mapping_id": "TFC-017",
+      "source": {
+        "id": "REQ-02",
+        "type": "A1.BusinessRequirement",
+        "version": "1.0"
+      },
+      "relationship": "S13",
+      "target": {
+        "id": "SD-DC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S13",
+      "rationale": "derived from S04 over applies_to"
+    },
+    {
+      "mapping_id": "TFC-018",
+      "source": {
+        "id": "REQ-03",
+        "type": "A1.BusinessRequirement",
+        "version": "1.0"
+      },
+      "relationship": "S13",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S13",
+      "rationale": "derived from S04 over applies_to"
+    },
+    {
+      "mapping_id": "TFC-019",
+      "source": {
+        "id": "REQ-02",
+        "type": "A1.BusinessRequirement",
+        "version": "1.0"
+      },
+      "relationship": "S14",
+      "target": {
+        "id": "SO-DC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S14",
+      "rationale": "derived from S06 over applies_to"
+    },
+    {
+      "mapping_id": "TFC-020",
+      "source": {
+        "id": "REQ-03",
+        "type": "A1.BusinessRequirement",
+        "version": "1.0"
+      },
+      "relationship": "S14",
+      "target": {
+        "id": "SO-LC-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S14",
+      "rationale": "derived from S06 over applies_to"
+    },
+    {
+      "mapping_id": "TFC-021",
+      "source": {
+        "id": "BA-TRADE",
+        "type": "A2.BusinessArea",
+        "version": "1.0"
+      },
+      "relationship": "S15",
+      "target": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S15",
+      "rationale": "derived from S17 over A2 composition (area → domain → SD)"
+    },
+    {
+      "mapping_id": "TFC-022",
+      "source": {
+        "id": "BA-TRADE",
+        "type": "A2.BusinessArea",
+        "version": "1.0"
+      },
+      "relationship": "S15",
+      "target": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S15",
+      "rationale": "derived from S17 over A2 composition (area → domain → SD)"
+    },
+    {
+      "mapping_id": "TFC-023",
+      "source": {
+        "id": "BD-TRADE",
+        "type": "A2.BusinessDomain",
+        "version": "1.0"
+      },
+      "relationship": "S16",
+      "target": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S16",
+      "rationale": "derived from S17 over A2 composition (domain → SD)"
+    },
+    {
+      "mapping_id": "TFC-024",
+      "source": {
+        "id": "BD-TRADE",
+        "type": "A2.BusinessDomain",
+        "version": "1.0"
+      },
+      "relationship": "S16",
+      "target": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S16",
+      "rationale": "derived from S17 over A2 composition (domain → SD)"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "C1",
+  "mappings": [
+    {
+      "mapping_id": "TF-106",
+      "source": {
+        "id": "BO-LC",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-LC",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-LETTER-OF-CREDIT"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "business_glossary:GL-TF#letter-of-credit",
+        "object_alignment_review:OAR-TF-1"
+      ],
+      "rationale": "[S12] same meaning; 7 of 8 attributes align (lc_number = letter_of_credit_reference)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "TF-107",
+      "source": {
+        "id": "BO-DOCSET",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-DOCSET",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-DOCUMENT-SET"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "business_glossary:GL-TF#document-set",
+        "object_alignment_review:OAR-TF-2"
+      ],
+      "rationale": "[S12] same meaning; 4 of 5 attributes align",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    }
+  ]
+}

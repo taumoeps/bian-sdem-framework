@@ -1,5 +1,5 @@
 {
-  "$schema_version": "0.5.7",
+  "$schema_version": "0.5.10",
   "note": "Conventional attribute keys on level-export instances. 'attributes' stays free-form in schema/level-model.schema.json; these are the keys the mapping steps (docs/mapping-execution.md §3) join on. Cross-level references are allowed ONLY as attributes (relationships stay within-level).",
   "conventions": {
     "A2.ServiceOperation": {
@@ -9,7 +9,8 @@
       "output_attributes": "list produced"
     },
     "A2.ControlRecord": {
-      "attributes": "list of attribute names (BIAN control-record make-up)"
+      "attributes": "list of attribute names (BIAN control-record make-up)",
+      "lifecycle_states": "ordered list of the record's lifecycle states (S21 reasoning; informational)"
     },
     "A2.BusinessObject": {
       "attributes": "list of BOM attribute names"
@@ -39,14 +40,16 @@
     },
     "A3.ApplicationComponent": {
       "deployed_on": "list of A4 platform/node ids (join key for DEPLOYED_ON, S36)",
-      "deployed_as": "list of A4.Deployment ids (join key for DEPLOYED_AS)"
+      "deployed_as": "list of A4.Deployment ids (join key for DEPLOYED_AS)",
+      "built_as": "list of A4.Artifact ids (S39)",
+      "network_zone": "A4.CommunicationNetwork id (S37)"
     },
     "A3.ApplicationService": {
       "consumes": "list of A4.TechnologyService ids (join key for S41)"
     },
     "A3.DataEntity": {
       "attributes": "list of attribute names",
-      "stored_in": "list of A4.SystemSoftware / A4.Artifact ids (join key for S50, S49)",
+      "stored_in": "list of A4 ids: A4.SystemSoftware (S50) or A4.Artifact such as an object store (S49)",
       "field_aliases": "optional map of column names to canonical attribute names; overrides the field_aliases inherited from the interfaces of components that access the entity"
     },
     "A4.Deployment": {
@@ -71,7 +74,44 @@
       "aliases": "list of tokens the institution's APIs use for this qualifier (step-2 check 3); e.g. Closure → close"
     },
     "A3.ApplicationInterface": {
-      "field_aliases": "map of the interface's product field names to canonical attribute names (step-2 check 4, S30/S20 step 4); e.g. sender → debtor_account_reference. Institution data from interviews or contract review, never inferred"
+      "field_aliases": "map of the interface's product field names to canonical attribute names (step-2 check 4, S30/S20 step 4); e.g. sender → debtor_account_reference. Institution data from interviews or contract review, never inferred",
+      "exposed_through": "list of A4.TechnologyInterface ids — gateway ingress, listener (S43; S44, S48 derived)"
+    },
+    "A1.BusinessService": {
+      "inputs": "attribute names the service takes (S09: matched against operation input_attributes)",
+      "outputs": "attribute names the service returns (S09: matched against output_attributes)"
+    },
+    "A1.BusinessRequirement": {
+      "applies_to": "list of A1.BusinessProcess / A1.BusinessActivity ids the requirement constrains (S13 via S04, S14 via S06)"
+    },
+    "A3.ApplicationFunction": {
+      "exposed_through": "list of A3.APIOperation ids the function is reached through (S18, S21 via S24)",
+      "consumes": "list of A4.TechnologyService ids (S45; S46 derived)"
+    },
+    "A3.Event": {
+      "published_to": "list of A4.TechnologyService ids — broker (S51)"
+    },
+    "A3.SolutionBuildingBlock": {
+      "components": "list of A3.ApplicationComponent ids the block aggregates (S52–S54 derived)"
+    },
+    "A4.Device": {
+      "hosts": "list of A3.ApplicationComponent ids (S35; DEPLOYED_ON with a Device target)"
+    },
+    "A4.CommunicationNetwork": {
+      "connects": "list of A4.Node / A4.Device ids on the network (S37 with the component's network_zone)"
+    },
+    "A4.Path": {
+      "from": "A4 endpoint id",
+      "to": "A4 endpoint id",
+      "network": "A4.CommunicationNetwork id",
+      "carries": "list of A3.ApplicationComponent ids whose traffic uses the path (S38)"
+    },
+    "A4.TechnologyInterface": {
+      "of_service": "A4.TechnologyService id the interface belongs to (S42, S44 derived)",
+      "exposes": "list of A3.ApplicationInterface ids reachable through it (S43)"
+    },
+    "A4.Artifact": {
+      "of_component": "A3.ApplicationComponent id the artefact is a build of (S39)"
     }
   },
   "bian_action_terms": {

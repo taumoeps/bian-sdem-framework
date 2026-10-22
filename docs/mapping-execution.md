@@ -182,6 +182,18 @@ Alongside the proposal file, write `examples/<example>/<uc>-inference-log.json`:
 
 `sdmm-eval` scores proposals against **approved** gold only. If a case lists a connection whose gold record is `proposed`, it will be scored false — the case must either approve it in the gold or exclude it from the precision criterion (M0 finding 2).
 
+## 4c. Candidate-rule reports as a scored file
+
+Rows the plan marks `candidate_rule`, `conditional_rule`, `institution_only` or `derived_path` never become registry proposals — but they are tested. Write every candidate report to `examples/<example>/<uc>-candidates.json` in the mapping-document shape with **`relationship` = the plan ID** (e.g. `"S06"`), `status: proposed`, `created_by: candidate_rule:<ID>`, the plan's band as `confidence`, and the working in `rationale`. The file is not a registry document and is not validated by `sdmm-validate`; it is scored:
+
+```
+python -m sdmm.evaluate examples/<example>/<uc>-gold-candidates.json --proposals examples/<example>/<uc>-candidates.json
+```
+
+which reports precision / recall per plan ID. The same refusal discipline applies: no working, no report.
+
+**`DEPLOYED_ON` by target entity.** Log a `DEPLOYED_ON` attempt under S33 when the A4 target is `SystemSoftware` (S36 is subsumed there), under **S34** when it is a `Node`, under **S35** when it is a `Device`. One registry rule, three plan rows.
+
 ## 5. Judge, then score
 
 ```bash

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.10 — coverage cases C1–C3 for the 42 untested plan rows
+
+- `examples/trade-finance`: one estate carrying every entity the plan's unexercised rows need; registry gold and 100 candidate-rule gold reports; three cases by level pair.
+- Guide §4c: candidate-rule reports as a scored file (`relationship` = plan ID); `DEPLOYED_ON` logged under S33 / S34 / S35 by target entity.
+- Export conventions 0.5.10: join keys for business services, requirements, functions, events, solution building blocks, devices, networks, paths, technology interfaces and artefacts; plan `data_needed` made concrete for the 42 rows.
+
 ## 0.5.9 — after M2 (12 of 12); suite closed
 
 - Guide: *Design targets* section — the one place instances may be created, and how they are labelled.

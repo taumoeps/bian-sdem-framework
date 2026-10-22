@@ -51,6 +51,10 @@ jobs:
         run: |
           python -m sdmm.graph check examples/digital-lending/a*.json examples/digital-lending/mappings.json
           python -m sdmm.validate --strict examples/digital-lending/mappings.json
+      - name: Trade Finance (C1–C3) exports and mappings
+        run: |
+          python -m sdmm.graph check examples/trade-finance/a*.json examples/trade-finance/mappings.json
+          python -m sdmm.validate --strict examples/trade-finance/mappings.json
       - name: Trace the fraud example both ways
         run: |
           python -m sdmm.trace CAP-310 examples/card-fraud-alerts/mappings.json

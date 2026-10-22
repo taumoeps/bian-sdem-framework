@@ -194,6 +194,56 @@
 
 **Pass.** Precision ≥ 0.9; recall ≈ 0.7 is **expected** (the gold's interview-only arrows are the measured cost of missing aliases and product field names); H2.1–H2.6 hold; `h2-inference-log.json` complete. **Status:** executed twice 2026-10-22 (run 1 on v0.5.5, run 2 on v0.5.6) — see Results.
 
+## C1 — Trade Finance, business layer (Coverage)
+
+**Why.** After the seven cases, 30 of the plan's 69 rows had never been exercised and 12 more had never had a gold target. The three **C** cases share one estate, `examples/trade-finance/` (85 instances: README in the folder), authored to carry every entity those 42 rows need — business services and requirements, business area and domain, BOM attributes, application functions, a solution building block, an event, a device, a network, a path, artefacts, technology interfaces. Each case hides one level pair and tests the rows that cross it; candidate rows are scored from `<uc>-candidates.json` against `<uc>-gold-candidates.json` (guide §4c).
+
+**Given.** `c1-mappings-given.json` — every registry arrow except object alignment (22). **Gold (sealed):** `c1-gold-mappings.json` — S12 ×2; `c1-gold-candidates.json` — 24 reports over S03, S06, S07, S08, S09, S13, S14, S15, S16.
+
+**Execution order.** S12 by attribute match (step 4; `lc_number` is not `letter_of_credit_reference` — 7/8 and 4/5). S06 by `invokes` (step 4). S07, S13, S14 derived (step 3). S09 by I/O attribute match. S08 by step 5 over the two domains plus the aliases — note the candidate set is only two domains: record *single-candidate* unless the threshold rule still separates them, and say which. S03 derived from S02 by stage ↔ action term. S15, S16 derived from S17 over A2 composition.
+
+| # | Check | Expected |
+|---|---|---|
+| C1.1 | S12 | 2 of 2 at medium with the attribute pairs named |
+| C1.2 | S06 / S07 / S13 / S14 | 4 / 4 / 3 / 2 — every derived report cites the S06 or S04 arrow it closed over |
+| C1.3 | S08 / S09 | S09 2 of 2 at medium; S08 2 of 2 at low **or** a reasoned *single-candidate, no report* — either is a pass if the write-up applies the step-5 rule as written |
+| C1.4 | S15 / S16 | 2 / 2 at high, derived, not proposed as registry arrows |
+| C1.5 | Negatives | ACTOR / ROLE → nothing (S10, S11 not a mapping); REQ-01 → no operation (it applies to a process) |
+
+**Pass.** Registry F1 = 1.0; candidate recall ≥ 0.9 at precision ≥ 0.9; C1.5 holds. **Status:** authored and validated (v0.5.10); **ready to execute**.
+
+## C2 — Trade Finance, application internals (Coverage)
+
+**Given.** `c2-mappings-given.json` — A1→A2 and A3→A4 arrows (14). **Gold (sealed):** `c2-gold-mappings.json` — S17 ×2, S24 ×6, S30 ×2; `c2-gold-candidates.json` — 32 reports over S18, S19, S20, S21, S22, S23, S25, S26, S27, S28, S29, S31.
+
+**Execution order.** Step 2 for S24 (all six at decision 1; the two qualifier paths pass check 3). Step 3: S17, S25, S22, S23, S28, S29. Step 4: S30, S20, S31 (attribute → entity through the S30 arrow), S19 and S27 (alias tokens in entity names), S18 and S21 through `exposed_through`. S26 from the step-2 log where check 3 passed.
+
+| # | Check | Expected |
+|---|---|---|
+| C2.1 | Registry | 10 of 10, no false |
+| C2.2 | Functions | S18 3, S21 3 — each cites the APIs and operations closed over; `FN-LC-CAPTURE` reaches CR-LC through three APIs |
+| C2.3 | Qualifiers | S26 2 (amendment, issuance); S27 1 (`lc_amendments`) and **not** `letters_of_credit` |
+| C2.4 | Scenario | S28 2, S29 2 |
+| C2.5 | Attributes | S31 4 — `credit_amount` to `letters_of_credit` only, not to `lc_amendments` (S31 is derived from S30) |
+| C2.6 | Negatives | `ENT-LC-AMEND` gets no S20/S30 (no object or record owns it); S19 does reach it through the `lc` alias |
+
+**Pass.** Registry F1 = 1.0; candidate recall ≥ 0.9 at precision ≥ 0.9. **Status:** ready to execute.
+
+## C3 — Trade Finance, technology estate (Coverage)
+
+**Given.** `c3-mappings-given.json` — A1→A2 and A2→A3 arrows (17). **Gold (sealed):** `c3-gold-mappings.json` — S32 ×2, S33 ×2 (runtime), S34 ×2 (node), S35 ×1 (device); `c3-gold-candidates.json` — 44 reports over S37–S54 except S36.
+
+**Execution order.** Step 1 joins: S32, S33/S34/S35 by target entity, S37, S38, S39, S41, S43, S45, S49, S50, S51. Step 3: S40, S42, S44, S46, S47, S48, S52, S53, S54.
+
+| # | Check | Expected |
+|---|---|---|
+| C3.1 | Registry | 7 of 7 — `DEPLOYED_ON` logged under S33, S34 or S35 by target entity |
+| C3.2 | Joins | S37 2, S38 1, S39 2, S41 3, S43 2, S45 2, S49 1, S50 3, S51 1 — each names the key read |
+| C3.3 | Derived | S40 2, S42 2, S44 2, S46 3, S47 6, S48 6, S52 3, S53 2, S54 1 — each cites the arrow closed over |
+| C3.4 | Negatives | `TI-TOPIC-LC` exposes nothing → no S43/S48; `ART-DOC-STORE` is nobody's build → no S39; `TS-SIGNING` / `TS-OCR` are consumed by functions, not services → no S41 to them |
+
+**Pass.** Registry F1 = 1.0; candidate recall ≥ 0.9 at precision ≥ 0.9; C3.4 holds. **Status:** ready to execute.
+
 ## What the six cases cover together
 
 | | E1 | E2 | M1 | M2 | H1 | H2 |
@@ -1310,7 +1360,7 @@ OVERALL            12   12  12   0   0   1.00  1.00  1.00
 
 ## Plan coverage after the suite — all 69 entries
 
-Built from `metamodel/new-mappings.json` and the eight inference logs; counts are attempts logged under each plan ID across all runs (E1 and E2 are query-only and log commands, not plan IDs). *n/a* rows were never candidates for a proposal by the plan's own decision. *Not exercised* rows need a case whose exports carry their entities — they are the suite's remaining work, not failures.
+Built from `metamodel/new-mappings.json` and the eight inference logs; counts are attempts logged under each plan ID across all runs (E1 and E2 are query-only and log commands, not plan IDs). *n/a* rows were never candidates for a proposal by the plan's own decision. *Not exercised* rows need a case whose exports carry their entities — **C1, C2 and C3 (`examples/trade-finance/`) were authored for exactly these 42 rows**; this table is regenerated after they run.
 
 | Verdict | Entries |
 |---|---|

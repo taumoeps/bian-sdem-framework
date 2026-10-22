@@ -1,3 +1,4 @@
+import re
 import copy, json, unittest
 from pathlib import Path
 from sdmm.graph import LevelGraph, FederatedGraph, IMPACT_RULES
@@ -289,3 +290,29 @@ class DesignTraceMarkerTests(unittest.TestCase):
         out = render_trace(fg.trace('CAP-LEND', 'down', ('approved', 'proposed')), 'down')
         self.assertIn('DSN-APP-SD-LO', out); self.assertIn('[DESIGN — planned, not observed]', out)
         self.assertNotIn('DESIGN', render_trace(fg.trace('CAP-LEND', 'down'), 'down'))
+
+
+class TradeFinanceCoverageTests(unittest.TestCase):
+    P = ROOT / 'examples/trade-finance'
+
+    def test_exports_and_registry_mappings_check_clean(self):
+        fg = FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
+        self.assertEqual({k: v for k, v in fg.check().items() if v}, {})
+
+    def test_cases_partition_the_registry_and_candidate_gold(self):
+        reg = {m['mapping_id'] for m in json.loads((self.P / 'mappings.json').read_text())['mappings']}
+        cand = json.loads((self.P / 'candidates.json').read_text())['mappings']
+        covered = set()
+        for uc in ('c1', 'c2', 'c3'):
+            g = {m['mapping_id'] for m in json.loads((self.P / f'{uc}-mappings-given.json').read_text())['mappings']}
+            d = {m['mapping_id'] for m in json.loads((self.P / f'{uc}-gold-mappings.json').read_text())['mappings']}
+            self.assertEqual(g | d, reg); self.assertEqual(g & d, set())
+            covered |= {m['relationship'] for m in json.loads((self.P / f'{uc}-gold-candidates.json').read_text())['mappings']}
+        self.assertEqual(covered, {m['relationship'] for m in cand})
+        self.assertEqual(len(covered), 39)
+
+    def test_every_previously_untested_plan_row_has_gold(self):
+        untested = set("S03 S07 S08 S09 S13 S14 S15 S16 S18 S19 S21 S26 S27 S28 S29 S31 S34 S35 S37 S38 S39 S42 S43 S44 S46 S48 S51 S52 S53 S54".split())
+        cand = {m['relationship'] for m in json.loads((self.P / 'candidates.json').read_text())['mappings']}
+        reg = {re.match(r'\[(S\d+)\]', m['rationale']).group(1) for m in json.loads((self.P / 'mappings.json').read_text())['mappings']}
+        self.assertEqual(untested - (cand | reg), set())

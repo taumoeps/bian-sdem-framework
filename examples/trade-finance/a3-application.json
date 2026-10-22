@@ -1,0 +1,477 @@
+{
+  "level": "A3",
+  "model_id": "synthetic-bank-trade-a3",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-APM",
+  "instances": [
+    {
+      "id": "SBB-TRADE",
+      "type": "A3.SolutionBuildingBlock",
+      "version": "1.0",
+      "name": "Trade Finance solution",
+      "lifecycle_status": "active",
+      "description": "The solution building block delivering documentary trade: credit manager plus document checker.",
+      "attributes": {
+        "components": [
+          "APP-LC",
+          "APP-DOC"
+        ]
+      }
+    },
+    {
+      "id": "APP-LC",
+      "type": "A3.ApplicationComponent",
+      "version": "3.0",
+      "name": "LC Manager",
+      "lifecycle_status": "active",
+      "description": "Manages letters of credit from application to issuance.",
+      "attributes": {
+        "deployed_on": [
+          "NODE-TF-PROD",
+          "SYS-RUNTIME-TF"
+        ],
+        "deployed_as": [
+          "DEP-LC-PROD"
+        ],
+        "built_as": [
+          "ART-LC-IMG"
+        ],
+        "network_zone": "NET-TF"
+      }
+    },
+    {
+      "id": "APP-DOC",
+      "type": "A3.ApplicationComponent",
+      "version": "3.0",
+      "name": "DocCheck",
+      "lifecycle_status": "active",
+      "description": "Evaluates presented trade documents; its capture module runs on the scanning appliance.",
+      "attributes": {
+        "deployed_on": [
+          "NODE-TF-PROD",
+          "SYS-RUNTIME-TF",
+          "DEV-SCAN-01"
+        ],
+        "deployed_as": [
+          "DEP-DOC-PROD"
+        ],
+        "built_as": [
+          "ART-DOC-IMG"
+        ],
+        "network_zone": "NET-TF"
+      }
+    },
+    {
+      "id": "SVC-LC",
+      "type": "A3.ApplicationService",
+      "version": "3.0",
+      "name": "Letter of credit service",
+      "lifecycle_status": "active",
+      "description": "Externally exposed credit behaviour.",
+      "attributes": {
+        "consumes": [
+          "TS-QUEUE",
+          "TS-GATEWAY"
+        ]
+      }
+    },
+    {
+      "id": "SVC-DOC",
+      "type": "A3.ApplicationService",
+      "version": "3.0",
+      "name": "Document checking service",
+      "lifecycle_status": "active",
+      "description": "Externally exposed checking behaviour.",
+      "attributes": {
+        "consumes": [
+          "TS-GATEWAY"
+        ]
+      }
+    },
+    {
+      "id": "IFC-LC",
+      "type": "A3.ApplicationInterface",
+      "version": "3.0",
+      "name": "LC API v3",
+      "lifecycle_status": "active",
+      "description": "REST.",
+      "attributes": {
+        "exposed_through": [
+          "TI-INGRESS"
+        ]
+      }
+    },
+    {
+      "id": "IFC-DOC",
+      "type": "A3.ApplicationInterface",
+      "version": "3.0",
+      "name": "Documents API v3",
+      "lifecycle_status": "active",
+      "description": "REST.",
+      "attributes": {
+        "exposed_through": [
+          "TI-INGRESS"
+        ]
+      }
+    },
+    {
+      "id": "API-LC-01",
+      "type": "A3.APIOperation",
+      "version": "3.0",
+      "name": "Create letter of credit",
+      "lifecycle_status": "active",
+      "description": "REST operation.",
+      "attributes": {
+        "method": "POST",
+        "path": "/letters-of-credit",
+        "payload_fields": [
+          "applicant_reference",
+          "beneficiary_reference",
+          "credit_amount",
+          "currency",
+          "expiry_date",
+          "letter_of_credit_reference",
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "API-LC-02",
+      "type": "A3.APIOperation",
+      "version": "3.0",
+      "name": "Amend letter of credit",
+      "lifecycle_status": "active",
+      "description": "REST operation.",
+      "attributes": {
+        "method": "PATCH",
+        "path": "/letters-of-credit/{id}/amendment",
+        "payload_fields": [
+          "letter_of_credit_reference",
+          "credit_amount",
+          "expiry_date",
+          "amendment_reference",
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "API-LC-03",
+      "type": "A3.APIOperation",
+      "version": "3.0",
+      "name": "Issue letter of credit",
+      "lifecycle_status": "active",
+      "description": "REST operation.",
+      "attributes": {
+        "method": "PUT",
+        "path": "/letters-of-credit/{id}/issuance",
+        "payload_fields": [
+          "letter_of_credit_reference",
+          "issuance_reference",
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "API-LC-04",
+      "type": "A3.APIOperation",
+      "version": "3.0",
+      "name": "Get letter of credit",
+      "lifecycle_status": "active",
+      "description": "REST operation.",
+      "attributes": {
+        "method": "GET",
+        "path": "/letters-of-credit/{id}",
+        "payload_fields": [
+          "letter_of_credit_reference",
+          "application_status",
+          "credit_amount",
+          "currency",
+          "expiry_date",
+          "issuance_reference"
+        ]
+      }
+    },
+    {
+      "id": "API-DC-01",
+      "type": "A3.APIOperation",
+      "version": "3.0",
+      "name": "Check document set",
+      "lifecycle_status": "active",
+      "description": "REST operation.",
+      "attributes": {
+        "method": "POST",
+        "path": "/document-sets/{id}/check",
+        "payload_fields": [
+          "document_set_reference",
+          "letter_of_credit_reference",
+          "compliance_outcome",
+          "discrepancies"
+        ]
+      }
+    },
+    {
+      "id": "API-DC-02",
+      "type": "A3.APIOperation",
+      "version": "3.0",
+      "name": "Get document set",
+      "lifecycle_status": "active",
+      "description": "REST operation.",
+      "attributes": {
+        "method": "GET",
+        "path": "/document-sets/{id}",
+        "payload_fields": [
+          "document_set_reference",
+          "compliance_outcome",
+          "discrepancies",
+          "checked_at"
+        ]
+      }
+    },
+    {
+      "id": "FN-LC-CAPTURE",
+      "type": "A3.ApplicationFunction",
+      "version": "3.0",
+      "name": "Application capture",
+      "lifecycle_status": "active",
+      "description": "Captures and amends credit applications; validates them.",
+      "attributes": {
+        "exposed_through": [
+          "API-LC-01",
+          "API-LC-02",
+          "API-LC-04"
+        ],
+        "consumes": []
+      }
+    },
+    {
+      "id": "FN-LC-ISSUE",
+      "type": "A3.ApplicationFunction",
+      "version": "3.0",
+      "name": "Issuance processing",
+      "lifecycle_status": "active",
+      "description": "Issues credits with dual authorisation and digital signing.",
+      "attributes": {
+        "exposed_through": [
+          "API-LC-03"
+        ],
+        "consumes": [
+          "TS-SIGNING"
+        ]
+      }
+    },
+    {
+      "id": "FN-DOC-CHECK",
+      "type": "A3.ApplicationFunction",
+      "version": "3.0",
+      "name": "Document compliance check",
+      "lifecycle_status": "active",
+      "description": "OCR and rule-based compliance checking of presented documents.",
+      "attributes": {
+        "exposed_through": [
+          "API-DC-01",
+          "API-DC-02"
+        ],
+        "consumes": [
+          "TS-OCR"
+        ]
+      }
+    },
+    {
+      "id": "ENT-LC",
+      "type": "A3.DataEntity",
+      "version": "3.0",
+      "name": "letters_of_credit",
+      "lifecycle_status": "active",
+      "description": "Credit table.",
+      "attributes": {
+        "attributes": [
+          "letter_of_credit_reference",
+          "applicant_reference",
+          "beneficiary_reference",
+          "credit_amount",
+          "currency",
+          "expiry_date",
+          "application_status",
+          "issuance_reference",
+          "created_by"
+        ],
+        "stored_in": [
+          "SYS-DB-TF"
+        ]
+      }
+    },
+    {
+      "id": "ENT-LC-AMEND",
+      "type": "A3.DataEntity",
+      "version": "3.0",
+      "name": "lc_amendments",
+      "lifecycle_status": "active",
+      "description": "Amendment history per credit.",
+      "attributes": {
+        "attributes": [
+          "amendment_reference",
+          "letter_of_credit_reference",
+          "credit_amount",
+          "expiry_date",
+          "amended_at"
+        ],
+        "stored_in": [
+          "SYS-DB-TF"
+        ]
+      }
+    },
+    {
+      "id": "ENT-DOCSET",
+      "type": "A3.DataEntity",
+      "version": "3.0",
+      "name": "document_sets",
+      "lifecycle_status": "active",
+      "description": "Document sets and their scans.",
+      "attributes": {
+        "attributes": [
+          "document_set_reference",
+          "letter_of_credit_reference",
+          "compliance_outcome",
+          "discrepancies",
+          "checked_at",
+          "scan_uri"
+        ],
+        "stored_in": [
+          "SYS-DB-TF",
+          "ART-DOC-STORE"
+        ]
+      }
+    },
+    {
+      "id": "EVT-LC-ISSUED",
+      "type": "A3.Event",
+      "version": "3.0",
+      "name": "LetterOfCreditIssued",
+      "lifecycle_status": "active",
+      "description": "Published when a credit is issued.",
+      "attributes": {
+        "published_to": [
+          "TS-QUEUE"
+        ]
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "SBB-TRADE",
+      "kind": "aggregation",
+      "target": "APP-LC"
+    },
+    {
+      "source": "SBB-TRADE",
+      "kind": "aggregation",
+      "target": "APP-DOC"
+    },
+    {
+      "source": "APP-LC",
+      "kind": "composition",
+      "target": "SVC-LC"
+    },
+    {
+      "source": "APP-DOC",
+      "kind": "composition",
+      "target": "SVC-DOC"
+    },
+    {
+      "source": "SVC-LC",
+      "kind": "composition",
+      "target": "IFC-LC"
+    },
+    {
+      "source": "SVC-DOC",
+      "kind": "composition",
+      "target": "IFC-DOC"
+    },
+    {
+      "source": "IFC-LC",
+      "kind": "composition",
+      "target": "API-LC-01"
+    },
+    {
+      "source": "IFC-LC",
+      "kind": "composition",
+      "target": "API-LC-02"
+    },
+    {
+      "source": "IFC-LC",
+      "kind": "composition",
+      "target": "API-LC-03"
+    },
+    {
+      "source": "IFC-LC",
+      "kind": "composition",
+      "target": "API-LC-04"
+    },
+    {
+      "source": "IFC-DOC",
+      "kind": "composition",
+      "target": "API-DC-01"
+    },
+    {
+      "source": "IFC-DOC",
+      "kind": "composition",
+      "target": "API-DC-02"
+    },
+    {
+      "source": "APP-LC",
+      "kind": "composition",
+      "target": "FN-LC-CAPTURE"
+    },
+    {
+      "source": "APP-LC",
+      "kind": "composition",
+      "target": "FN-LC-ISSUE"
+    },
+    {
+      "source": "APP-DOC",
+      "kind": "composition",
+      "target": "FN-DOC-CHECK"
+    },
+    {
+      "source": "FN-LC-CAPTURE",
+      "kind": "access",
+      "target": "ENT-LC"
+    },
+    {
+      "source": "FN-LC-CAPTURE",
+      "kind": "access",
+      "target": "ENT-LC-AMEND"
+    },
+    {
+      "source": "FN-LC-ISSUE",
+      "kind": "access",
+      "target": "ENT-LC"
+    },
+    {
+      "source": "FN-DOC-CHECK",
+      "kind": "access",
+      "target": "ENT-DOCSET"
+    },
+    {
+      "source": "APP-LC",
+      "kind": "access",
+      "target": "ENT-LC"
+    },
+    {
+      "source": "APP-LC",
+      "kind": "access",
+      "target": "ENT-LC-AMEND"
+    },
+    {
+      "source": "APP-DOC",
+      "kind": "access",
+      "target": "ENT-DOCSET"
+    },
+    {
+      "source": "APP-LC",
+      "kind": "triggering",
+      "target": "EVT-LC-ISSUED"
+    }
+  ]
+}

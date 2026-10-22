@@ -1,0 +1,799 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "C3",
+  "mappings": [
+    {
+      "mapping_id": "TFC-057",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S37",
+      "target": {
+        "id": "NET-TF",
+        "type": "A4.CommunicationNetwork",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S37",
+      "rationale": "component network_zone / network connects its node"
+    },
+    {
+      "mapping_id": "TFC-058",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S37",
+      "target": {
+        "id": "NET-TF",
+        "type": "A4.CommunicationNetwork",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S37",
+      "rationale": "component network_zone / network connects its node"
+    },
+    {
+      "mapping_id": "TFC-059",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S38",
+      "target": {
+        "id": "PATH-TF-01",
+        "type": "A4.Path",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S38",
+      "rationale": "path carries the component"
+    },
+    {
+      "mapping_id": "TFC-060",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S39",
+      "target": {
+        "id": "ART-LC-IMG",
+        "type": "A4.Artifact",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S39",
+      "rationale": "built_as / of_component"
+    },
+    {
+      "mapping_id": "TFC-061",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S39",
+      "target": {
+        "id": "ART-DOC-IMG",
+        "type": "A4.Artifact",
+        "version": "3.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S39",
+      "rationale": "built_as / of_component"
+    },
+    {
+      "mapping_id": "TFC-062",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S40",
+      "target": {
+        "id": "ENV-TF-PROD",
+        "type": "A4.DeploymentEnvironment",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S40",
+      "rationale": "derived from S32 over environment membership"
+    },
+    {
+      "mapping_id": "TFC-063",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S40",
+      "target": {
+        "id": "ENV-TF-PROD",
+        "type": "A4.DeploymentEnvironment",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S40",
+      "rationale": "derived from S32 over environment membership"
+    },
+    {
+      "mapping_id": "TFC-064",
+      "source": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "relationship": "S41",
+      "target": {
+        "id": "TS-QUEUE",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S41",
+      "rationale": "service consumes the technology service"
+    },
+    {
+      "mapping_id": "TFC-065",
+      "source": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "relationship": "S41",
+      "target": {
+        "id": "TS-GATEWAY",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S41",
+      "rationale": "service consumes the technology service"
+    },
+    {
+      "mapping_id": "TFC-066",
+      "source": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "relationship": "S41",
+      "target": {
+        "id": "TS-GATEWAY",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S41",
+      "rationale": "service consumes the technology service"
+    },
+    {
+      "mapping_id": "TFC-067",
+      "source": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "relationship": "S42",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S42",
+      "rationale": "derived from S41 over A4 composition (gateway composes the ingress)"
+    },
+    {
+      "mapping_id": "TFC-068",
+      "source": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "relationship": "S42",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S42",
+      "rationale": "derived from S41 over A4 composition (gateway composes the ingress)"
+    },
+    {
+      "mapping_id": "TFC-069",
+      "source": {
+        "id": "IFC-LC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "relationship": "S43",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S43",
+      "rationale": "interface exposed_through / ingress exposes"
+    },
+    {
+      "mapping_id": "TFC-070",
+      "source": {
+        "id": "IFC-DOC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "relationship": "S43",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S43",
+      "rationale": "interface exposed_through / ingress exposes"
+    },
+    {
+      "mapping_id": "TFC-071",
+      "source": {
+        "id": "IFC-LC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "relationship": "S44",
+      "target": {
+        "id": "TS-GATEWAY",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S44",
+      "rationale": "derived from S43: the ingress is of the gateway service"
+    },
+    {
+      "mapping_id": "TFC-072",
+      "source": {
+        "id": "IFC-DOC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "relationship": "S44",
+      "target": {
+        "id": "TS-GATEWAY",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S44",
+      "rationale": "derived from S43: the ingress is of the gateway service"
+    },
+    {
+      "mapping_id": "TFC-073",
+      "source": {
+        "id": "FN-LC-ISSUE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "relationship": "S45",
+      "target": {
+        "id": "TS-SIGNING",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S45",
+      "rationale": "function consumes the technology service"
+    },
+    {
+      "mapping_id": "TFC-074",
+      "source": {
+        "id": "FN-DOC-CHECK",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "relationship": "S45",
+      "target": {
+        "id": "TS-OCR",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S45",
+      "rationale": "function consumes the technology service"
+    },
+    {
+      "mapping_id": "TFC-075",
+      "source": {
+        "id": "FN-LC-CAPTURE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "relationship": "S46",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S46",
+      "rationale": "derived: the function's component is DEPLOYED_ON the system software"
+    },
+    {
+      "mapping_id": "TFC-076",
+      "source": {
+        "id": "FN-LC-ISSUE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "relationship": "S46",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S46",
+      "rationale": "derived: the function's component is DEPLOYED_ON the system software"
+    },
+    {
+      "mapping_id": "TFC-077",
+      "source": {
+        "id": "FN-DOC-CHECK",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "relationship": "S46",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S46",
+      "rationale": "derived: the function's component is DEPLOYED_ON the system software"
+    },
+    {
+      "mapping_id": "TFC-078",
+      "source": {
+        "id": "API-LC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S47",
+      "rationale": "derived from S24 + S32: the API's component's deployment"
+    },
+    {
+      "mapping_id": "TFC-079",
+      "source": {
+        "id": "API-LC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S47",
+      "rationale": "derived from S24 + S32: the API's component's deployment"
+    },
+    {
+      "mapping_id": "TFC-080",
+      "source": {
+        "id": "API-LC-03",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S47",
+      "rationale": "derived from S24 + S32: the API's component's deployment"
+    },
+    {
+      "mapping_id": "TFC-081",
+      "source": {
+        "id": "API-LC-04",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S47",
+      "rationale": "derived from S24 + S32: the API's component's deployment"
+    },
+    {
+      "mapping_id": "TFC-082",
+      "source": {
+        "id": "API-DC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-DOC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S47",
+      "rationale": "derived from S24 + S32: the API's component's deployment"
+    },
+    {
+      "mapping_id": "TFC-083",
+      "source": {
+        "id": "API-DC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-DOC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "created_by": "candidate_rule:S47",
+      "rationale": "derived from S24 + S32: the API's component's deployment"
+    },
+    {
+      "mapping_id": "TFC-084",
+      "source": {
+        "id": "API-LC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S48",
+      "rationale": "derived from S43: the API's interface is exposed through the ingress"
+    },
+    {
+      "mapping_id": "TFC-085",
+      "source": {
+        "id": "API-LC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S48",
+      "rationale": "derived from S43: the API's interface is exposed through the ingress"
+    },
+    {
+      "mapping_id": "TFC-086",
+      "source": {
+        "id": "API-LC-03",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S48",
+      "rationale": "derived from S43: the API's interface is exposed through the ingress"
+    },
+    {
+      "mapping_id": "TFC-087",
+      "source": {
+        "id": "API-LC-04",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S48",
+      "rationale": "derived from S43: the API's interface is exposed through the ingress"
+    },
+    {
+      "mapping_id": "TFC-088",
+      "source": {
+        "id": "API-DC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S48",
+      "rationale": "derived from S43: the API's interface is exposed through the ingress"
+    },
+    {
+      "mapping_id": "TFC-089",
+      "source": {
+        "id": "API-DC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S48",
+      "rationale": "derived from S43: the API's interface is exposed through the ingress"
+    },
+    {
+      "mapping_id": "TFC-090",
+      "source": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "relationship": "S49",
+      "target": {
+        "id": "ART-DOC-STORE",
+        "type": "A4.Artifact",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S49",
+      "rationale": "stored_in names an artefact (object store)"
+    },
+    {
+      "mapping_id": "TFC-091",
+      "source": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "relationship": "S50",
+      "target": {
+        "id": "SYS-DB-TF",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S50",
+      "rationale": "stored_in names the database"
+    },
+    {
+      "mapping_id": "TFC-092",
+      "source": {
+        "id": "ENT-LC-AMEND",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "relationship": "S50",
+      "target": {
+        "id": "SYS-DB-TF",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S50",
+      "rationale": "stored_in names the database"
+    },
+    {
+      "mapping_id": "TFC-093",
+      "source": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "relationship": "S50",
+      "target": {
+        "id": "SYS-DB-TF",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S50",
+      "rationale": "stored_in names the database"
+    },
+    {
+      "mapping_id": "TFC-094",
+      "source": {
+        "id": "EVT-LC-ISSUED",
+        "type": "A3.Event",
+        "version": "3.0"
+      },
+      "relationship": "S51",
+      "target": {
+        "id": "TS-QUEUE",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S51",
+      "rationale": "published_to names the broker"
+    },
+    {
+      "mapping_id": "TFC-095",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S52",
+      "target": {
+        "id": "NODE-TF-PROD",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S52",
+      "rationale": "derived: a component of the SBB is DEPLOYED_ON the infrastructure"
+    },
+    {
+      "mapping_id": "TFC-096",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S52",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S52",
+      "rationale": "derived: a component of the SBB is DEPLOYED_ON the infrastructure"
+    },
+    {
+      "mapping_id": "TFC-097",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S52",
+      "target": {
+        "id": "DEV-SCAN-01",
+        "type": "A4.Device",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S52",
+      "rationale": "derived: a component of the SBB is DEPLOYED_ON the infrastructure"
+    },
+    {
+      "mapping_id": "TFC-098",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S53",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S53",
+      "rationale": "derived from S32 over SBB composition"
+    },
+    {
+      "mapping_id": "TFC-099",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S53",
+      "target": {
+        "id": "DEP-DOC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.6,
+      "created_by": "candidate_rule:S53",
+      "rationale": "derived from S32 over SBB composition"
+    },
+    {
+      "mapping_id": "TFC-100",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S54",
+      "target": {
+        "id": "NODE-TF-PROD",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "created_by": "candidate_rule:S54",
+      "rationale": "derived from S34 over SBB composition"
+    }
+  ]
+}
