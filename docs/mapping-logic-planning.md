@@ -447,6 +447,8 @@ Every confirmed mapping with real guidance behind it sits on the **A2 → A3** b
 
 One row per mapping across both tiers: the claim (§1.2 or §2.3), its authority, the verification result (§2.6), and where it lands — in the registry, in the level-model constraints, as a candidate, as open, or as institution-only. IDs are stable: `B` = Official BIAN-Only (§1.2), `S` = Official BIAN with Support Framework (§2.3).
 
+**Machine-readable source:** `metamodel/official-mappings.json` holds all 69 entries with their tier, endpoints, authority, verification status and disposition. `tests/test_traceability.py` fails if this document's tables, the diagram in §4.2 or the registry drift from that file — so the file, not the prose, is the record.
+
 | ID | Tier | From → To | Authority | Verification | Disposition |
 |---|---|---|---|---|---|
 | B01 | BIAN-only | `A1.BusinessCapability` *aligns to* `A2.ServiceDomain` | BIAN | **unpublished** ([RN13] §3, [RN14] §3, [WQA26]) | not encodable — unpublished; SDMM `SUPPORTED_BY` rests on intent only |
