@@ -192,6 +192,8 @@ python -m sdmm.evaluate examples/<example>/<uc>-gold-candidates.json --proposals
 
 which reports precision / recall per plan ID. The same refusal discipline applies: no working, no report.
 
+**`DEPLOYED_ON` fans out per host layer.** A component on a node pool, a runtime on that pool and an appliance has three `DEPLOYED_ON` arrows; each is approved on its own evidence. **Network zone wins.** When `A3.ApplicationComponent.network_zone` and `A4.CommunicationNetwork.connects` disagree, report S37 on the zone and record the disagreement as a finding.
+
 **`DEPLOYED_ON` by target entity.** Log a `DEPLOYED_ON` attempt under S33 when the A4 target is `SystemSoftware` (S36 is subsumed there), under **S34** when it is a `Node`, under **S35** when it is a `Device`. One registry rule, three plan rows.
 
 ## 5. Judge, then score

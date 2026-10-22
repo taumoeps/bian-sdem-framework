@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.13 — after C3 (51 of 51 registry + candidates, one false fixed by rule); suite closed
+
+- S42 derived over exposure (S43/S44), not consumption; DEPLOYED_ON fan-out and network-zone precedence noted; 69-row coverage table regenerated.
+
 ## 0.5.12 — after C2 (42 of 42)
 
 - S18 / S21 at step 3; gate stop list gains structural nouns; check 3 ignores non-qualifier segments; S20 partition note.

@@ -1360,178 +1360,85 @@ OVERALL            12   12  12   0   0   1.00  1.00  1.00
 
 ## Plan coverage after the suite — all 69 entries
 
-Built from `metamodel/new-mappings.json` and the eight inference logs; counts are attempts logged under each plan ID across all runs (E1 and E2 are query-only and log commands, not plan IDs). *n/a* rows were never candidates for a proposal by the plan's own decision. *Not exercised* rows need a case whose exports carry their entities — **C1, C2 and C3 (`examples/trade-finance/`) were authored for exactly these 42 rows**; this table is regenerated after they run.
+Regenerated after C3 (2026-10-23) from `metamodel/new-mappings.json` and the eleven inference logs; counts are attempts logged under each plan ID across all runs. *n/a* rows were never candidates for a proposal by the plan's own decision: 14 are inside A2 and checked structurally on every export, 5 are not mappings.
 
 | Verdict | Entries |
 |---|---|
-| not exercised | 30 |
+| validated | 45 |
 | n/a | 19 |
-| report-only by rule | 7 |
-| refusals only | 5 |
-| validated with findings | 4 |
-| validated | 4 |
+| validated with findings | 5 |
 
 | ID | Connection | Decision | Step | Plan conf. | Exercised in | hit / false / miss / no-proposal | Verdict |
 |---|---|---|---|---|---|---|---|
 | B01 | BusinessCapability → ServiceDomain (aligns to) | not encodable | 3 | low | — | — | n/a — not encodable |
-| B02 | BusinessArea → BusinessDomain (contains) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B03 | BusinessDomain → ServiceDomain (contains) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B04 | ServiceDomain → FunctionalPattern (applies) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B05 | ServiceDomain → AssetType (manages) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B06 | ServiceDomain → ControlRecord (governs) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B07 | ControlRecord → BehaviorQualifier (is partitioned by) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B08 | ControlRecord → BusinessObject (attributes typed by) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B09 | ServiceDomain → ServiceGroup (offers) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B10 | ServiceGroup → ServiceOperation (contains) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B11 | ServiceOperation → ControlRecord (acts on) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B12 | ServiceDomain → ServiceDomain (connects to) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B13 | BusinessScenario → ServiceOperation (sequences) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B14 | Wireframe → ServiceDomain (depicts) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| B15 | SemanticAPI → ServiceDomain (derived from) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
-| S01 | BusinessCapability → ServiceDomain (SUPPORTED_BY) | registry rule | 3 | medium | H1, H2, H2 r2, M0, M1, M2 | 4 / 1 / 0 / 9 | **validated with findings** — 1 false / 0 missed, each with a named cause, fixed in the guide or data |
-| S02 | ValueStream → BusinessScenario (ALIGNED_TO) | registry rule | 4 | medium | H1, H2, H2 r2, M0, M1, M2 | 1 / 0 / 0 / 7 | **validated** — every gold arrow hit, no false |
-| S03 | ValueStreamStage → BusinessScenario (candidate) | derived path | 4 | low | — | — | **not exercised** — no case carried the data |
-| S04 | BusinessProcess → ServiceDomain (USES_DOMAIN) | registry rule | 3 | medium | H1, H2, H2 r2, M0, M1, M2 | 1 / 0 / 0 / 8 | **validated** — every gold arrow hit, no false |
-| S05 | BusinessProcess → BusinessScenario (candidate) | historical method | 4 | low | — | — | n/a — historical method |
-| S06 | BusinessActivity → ServiceOperation (candidate) | institution only | 4 | medium | H1, H2, H2 r2, M1 | 0 / 0 / 0 / 7 | report-only by rule — reported as a candidate, never proposed |
-| S07 | BusinessActivity → ServiceDomain (candidate) | derived path | 3 | medium | — | — | **not exercised** — no case carried the data |
-| S08 | BusinessService → ServiceDomain (candidate) | institution only | 5 | low | — | — | **not exercised** — no case carried the data |
-| S09 | BusinessService → ServiceOperation (candidate) | institution only | 4 | low | — | — | **not exercised** — no case carried the data |
-| S10 | BusinessActor → BusinessScenario (candidate) | not a mapping |  | low | — | — | n/a — not a mapping |
-| S11 | BusinessRole → BusinessScenario (candidate) | not a mapping |  | low | — | — | n/a — not a mapping |
-| S12 | BusinessObject → BusinessObject (ALIGNED_TO) | registry rule | 4 | medium | H1, H2, H2 r2, M1 | 0 / 0 / 0 / 5 | refusals only — no gold arrow to reach in those cases |
-| S13 | BusinessRequirement → ServiceDomain (candidate) | institution only | 3 | low | — | — | **not exercised** — no case carried the data |
-| S14 | BusinessRequirement → ServiceOperation (candidate) | institution only | 3 | low | — | — | **not exercised** — no case carried the data |
-| S15 | BusinessArea → ApplicationComponent (candidate) | derived path | 3 | high | — | — | **not exercised** — no case carried the data |
-| S16 | BusinessDomain → ApplicationComponent (candidate) | derived path | 3 | high | — | — | **not exercised** — no case carried the data |
-| S17 | ServiceDomain → ApplicationComponent (REALIZED_BY) | registry rule | 3 | high | H1, H2, H2 r2, M0, M1, M2 | 18 / 0 / 0 / 28 | **validated** — every gold arrow hit, no false |
-| S18 | FunctionalPattern → ApplicationFunction (candidate) | institution only | 4 | low | — | — | **not exercised** — no case carried the data |
-| S19 | AssetType → DataEntity (candidate) | institution only | 4 | low | — | — | **not exercised** — no case carried the data |
-| S20 | ControlRecord → DataEntity (candidate) | candidate rule | 4 | high | H1, H2, H2 r2, M1, M2 | 0 / 0 / 0 / 62 | report-only by rule — reported as a candidate, never proposed |
-| S21 | ControlRecord → ApplicationFunction (candidate) | candidate rule | 4 | medium | — | — | **not exercised** — no case carried the data |
-| S22 | ServiceGroup → ApplicationService (candidate) | derived path | 3 | medium | M1 | 0 / 0 / 0 / 1 | refusals only — no gold arrow to reach in those cases |
-| S23 | ServiceGroup → ApplicationInterface (candidate) | derived path | 3 | medium | H1, H2, H2 r2, M0, M1 | 0 / 0 / 0 / 8 | refusals only — no gold arrow to reach in those cases |
-| S24 | ServiceOperation → APIOperation (IMPLEMENTED_BY) | registry rule | 2 | high | H1, H2, H2 r2, M0, M1, M2 | 54 / 0 / 8 / 387 | **validated with findings** — 0 false / 8 missed, each with a named cause, fixed in the guide or data |
-| S25 | ServiceOperation → ApplicationService (candidate) | candidate rule | 3 | high | H1, H2, H2 r2, M0, M1, M2 | 0 / 0 / 0 / 10 | report-only by rule — reported as a candidate, never proposed |
-| S26 | BehaviorQualifier → APIOperation (candidate) | derived path | 2 | high | — | — | **not exercised** — no case carried the data |
-| S27 | BehaviorQualifier → DataEntity (candidate) | derived path | 4 | medium | — | — | **not exercised** — no case carried the data |
-| S28 | BusinessScenario → ApplicationService (candidate) | candidate rule | 3 | medium | — | — | **not exercised** — no case carried the data |
-| S29 | BusinessScenario → ApplicationComponent (candidate) | candidate rule | 3 | medium | — | — | **not exercised** — no case carried the data |
-| S30 | BusinessObject → DataEntity (MAPPED_TO) | registry rule | 4 | high | H1, H2, H2 r2, M1, M2 | 14 / 0 / 1 / 54 | **validated with findings** — 0 false / 1 missed, each with a named cause, fixed in the guide or data |
-| S31 | BusinessObjectAttribute → DataEntity (candidate) | derived path | 4 | high | — | — | **not exercised** — no case carried the data |
-| S32 | ApplicationComponent → Deployment (DEPLOYED_AS) | registry rule | 1 | high | H1, H2, H2 r2, M0, M1, M2 | 21 / 0 / 0 / 7 | **validated** — every gold arrow hit, no false |
-| S33 | ApplicationComponent → InfrastructureComponent (DEPLOYED_ON) | registry rule | 1 | high | H1, H2, H2 r2, M0, M1, M2 | 18 / 1 / 0 / 10 | **validated with findings** — 1 false / 0 missed, each with a named cause, fixed in the guide or data |
-| S34 | ApplicationComponent → Node (candidate) | conditional rule | 1 | low | — | — | **not exercised** — no case carried the data |
-| S35 | ApplicationComponent → Device (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
-| S36 | ApplicationComponent → SystemSoftware (candidate) | subsumed | 1 | high | H1, H2, H2 r2, M0, M1, M2 | 0 / 0 / 0 / 6 | n/a — subsumed |
-| S37 | ApplicationComponent → CommunicationNetwork (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
-| S38 | ApplicationComponent → Path (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
-| S39 | ApplicationComponent → Artifact (candidate) | conditional rule | 1 | medium | — | — | **not exercised** — no case carried the data |
-| S40 | ApplicationComponent → DeploymentEnvironment (candidate) | derived path | 3 | high | H1, H2, H2 r2, M0, M1 | 0 / 0 / 0 / 5 | refusals only — no gold arrow to reach in those cases |
-| S41 | ApplicationService → TechnologyService (candidate) | conditional rule | 1 | medium | H1, H2, H2 r2, M1, M2 | 0 / 0 / 0 / 6 | report-only by rule — reported as a candidate, never proposed |
-| S42 | ApplicationService → TechnologyInterface (candidate) | derived path | 3 | low | — | — | **not exercised** — no case carried the data |
-| S43 | ApplicationInterface → TechnologyInterface (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
-| S44 | ApplicationInterface → TechnologyService (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
-| S45 | ApplicationFunction → TechnologyService (candidate) | conditional rule | 1 | medium | M1 | 0 / 0 / 0 / 1 | report-only by rule — reported as a candidate, never proposed |
-| S46 | ApplicationFunction → SystemSoftware (candidate) | derived path | 3 | low | — | — | **not exercised** — no case carried the data |
-| S47 | APIOperation → Deployment (candidate) | derived path | 3 | high | H1, H2, H2 r2, M0, M1 | 0 / 0 / 0 / 5 | refusals only — no gold arrow to reach in those cases |
-| S48 | APIOperation → TechnologyInterface (candidate) | derived path | 3 | medium | — | — | **not exercised** — no case carried the data |
-| S49 | DataEntity → Artifact (candidate) | conditional rule | 1 | medium | H1, H2, M1 | 0 / 0 / 0 / 3 | report-only by rule — reported as a candidate, never proposed |
-| S50 | DataEntity → SystemSoftware (candidate) | institution only | 1 | medium | H1, H2, H2 r2, M0, M1, M2 | 0 / 0 / 0 / 26 | report-only by rule — reported as a candidate, never proposed |
-| S51 | Event → TechnologyService (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
-| S52 | SolutionBuildingBlock → InfrastructureComponent (candidate) | derived path | 3 | medium | — | — | **not exercised** — no case carried the data |
-| S53 | SolutionBuildingBlock → Deployment (candidate) | derived path | 3 | medium | — | — | **not exercised** — no case carried the data |
-| S54 | SolutionBuildingBlock → Node (candidate) | derived path | 3 | low | — | — | **not exercised** — no case carried the data |
-
-### C1 — results (2026-10-22, fable-executor)
-
-**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.10 including §4c. **Given.** `c1-mappings-given.json` — 22 approved registry arrows, everything except object alignment; the four trade-finance exports. **Gold.** `c1-gold-mappings.json` and `c1-gold-candidates.json` (and `mappings.json`, `candidates.json`) were not opened until phase 5. **Files.** `examples/trade-finance/c1-proposals.json` (2 registry records), `c1-candidates.json` (24 candidate reports, `relationship` = plan ID, `created_by: candidate_rule:<ID>`), `c1-inference-log.json` (57 attempts, 21 plan IDs).
-
-**Readings and conventions, marked.** **C1-R1 (S13)** — a requirement whose `applies_to` names an *activity* closes over that activity's S06/S07 chain, not over the parent process's S04 arrows; the parent of ACT-T3 and ACT-T4 (PRC-LC-ISSUE) uses two domains, so the process route would give REQ-02 and REQ-03 two domains each. **C1-C1 (S09)** — the plan's threshold (≥ 50 %, ≥ 2) alone admits five service → operation pairs; only each service's unique best is reported, as the step-2 and S30 rules already do. **S08** — two domains are the full exported A2 landscape, so the step-5 rule's first condition holds and the ranking is not vacuous; the threshold (≥ 2 non-generic shared concepts, lead ≥ 1) was applied and met for both services. **S03** — `apply ≈ initiate` was used for the first stage (not in the guide's synonym list).
-
-#### Registry proposals (`c1-proposals.json`)
-
-| Proposal | Plan ID | Connection | Step | Confidence | Working |
-|---|---|---|---|---|---|
-| P-C1-001 | S12 | BO-LC `ALIGNED_TO` BBO-LC | 4 | 0.6 | 7/8 BIAN attributes matched by name (applicant_reference, beneficiary_reference, credit_amount, currency, expiry_date, application_status, issuance_reference); `letter_of_credit_reference` unmatched — the bank's `lc_number` has no alias in the export; one-to-one fixpoint |
-| P-C1-002 | S12 | BO-DOCSET `ALIGNED_TO` BBO-DOCSET | 4 | 0.6 | **3/5** (document_set_reference, compliance_outcome, discrepancies); `letter_of_credit_reference` (bank: `lc_number`) and `checked_at` (bank: `presented_at`) unmatched; cross pairs 0/8 and 0/5 |
-
-#### Candidate-rule reports (`c1-candidates.json`)
-
-| Reports | Plan ID | Connections | Step | Confidence | Working |
-|---|---|---|---|---|---|
-| C-C1-001…004 | S06 | ACT-T1→SO-LC-01, ACT-T2→SO-LC-02, ACT-T3→SO-DC-01, ACT-T4→SO-LC-03 | 4 assigned, **1 used** | 0.6 | `invokes` on each activity states the pair; the activity name agrees with the action term |
-| C-C1-005…008 | S07 | ACT-T1→SD-LC, ACT-T2→SD-LC, ACT-T3→SD-DC, ACT-T4→SD-LC | 3 | 0.6 | each cites its S06 report and the B10/B09 composition |
-| C-C1-009, 011, 013 | S13 | REQ-01→SD-LC (over given S04 TF-103); REQ-02→SD-DC and REQ-03→SD-LC (over S06 C-C1-003/004 and S07, reading C1-R1) | 3 | 0.4 | `applies_to` → S04 for the process-level requirement; → S06/S07 for the two activity-level ones |
-| C-C1-010, 012 | S14 | REQ-02→SO-DC-01, REQ-03→SO-LC-03 | 3 | 0.4 | `applies_to` → S06 reports; **REQ-01 gets no S14** — it applies to a process (C1.5) |
-| C-C1-014, 015 | S09 | BSV-LC-APP→SO-LC-01 (7/7), BSV-DOC-CHECK→SO-DC-01 (4/4) | 4 | 0.4 | inputs ∪ outputs vs the operation's I/O; unique best. Suppressed above threshold (C1-C1): BSV-LC-APP→SO-LC-04 5/7, →SO-LC-02 4/7; BSV-DOC-CHECK→SO-DC-02 3/4 |
-| C-C1-016, 017 | S08 | BSV-LC-APP→SD-LC, BSV-DOC-CHECK→SD-DC | 5 | 0.4 | shared non-generic concepts with the asset type and aliases; runner-up at least one behind, both services |
-| C-C1-018…020 | S03 | VSS-T1, VSS-T2, VSS-T3 → BS-LC | 3 (from approved S02 TF-102) | 0.4 | stage verb ↔ operation action term in sequence: apply ≈ Initiate (marked), check ≈ Evaluate, issue = Issuance alias |
-| C-C1-021…024 | S15, S16 | BA-TRADE→APP-LC/APP-DOC; BD-TRADE→APP-LC/APP-DOC | 3 | 0.8 | A2 composition area → domain → service domain (B02, B03) over the given S17 arrows TF-108/109; derived paths reported as candidates, never as registry arrows |
-
-#### sdmm-eval (both files)
-
-```
-$ python -m sdmm.graph check examples/trade-finance/a*.json examples/trade-finance/c1-mappings-given.json examples/trade-finance/c1-proposals.json
-OK: level A1 … A4; OK: mappings #1; OK: mappings #2
-$ python -m sdmm.validate --strict examples/trade-finance/c1-proposals.json
-WARNING ×2 (bian_release required; evidence kinds); OK (with warnings)
-
-$ python -m sdmm.evaluate examples/trade-finance/c1-gold-mappings.json --proposals examples/trade-finance/c1-proposals.json
-relationship     gold prop  tp  fp  fn   prec   rec    f1
-ALIGNED_TO          2    2   2   0   0   1.00  1.00  1.00
-OVERALL             2    2   2   0   0   1.00  1.00  1.00
-
-$ python -m sdmm.evaluate examples/trade-finance/c1-gold-candidates.json --proposals examples/trade-finance/c1-candidates.json
-relationship     gold prop  tp  fp  fn   prec   rec    f1
-S03                 3    3   3   0   0   1.00  1.00  1.00
-S06                 4    4   4   0   0   1.00  1.00  1.00
-S07                 4    4   4   0   0   1.00  1.00  1.00
-S08                 2    2   2   0   0   1.00  1.00  1.00
-S09                 2    2   2   0   0   1.00  1.00  1.00
-S13                 3    3   3   0   0   1.00  1.00  1.00
-S14                 2    2   2   0   0   1.00  1.00  1.00
-S15                 2    2   2   0   0   1.00  1.00  1.00
-S16                 2    2   2   0   0   1.00  1.00  1.00
-OVERALL            24   24  24   0   0   1.00  1.00  1.00
-```
-
-#### Tests
-
-| # | Expected | Observed | Verdict |
-|---|---|---|---|
-| C1.1 | S12 2 of 2 at medium, attribute pairs named | 2 of 2 at 0.6; pairs named; scores 7/8 and **3/5** (the case text says 4/5 — finding 1) | **holds** |
-| C1.2 | S06 / S07 / S13 / S14 = 4 / 4 / 3 / 2, each derived report citing its S06 or S04 arrow | 4 / 4 / 3 / 2; every S07, S13, S14 report names the C-C1 or TF record it closed over | **holds** |
-| C1.3 | S09 2 of 2 at medium; S08 2 of 2 at low **or** a reasoned single-candidate refusal | S09 2 of 2 at **low** (the plan's band; the case says medium — finding 2); S08 2 of 2 at low with the full-landscape reading stated | **holds** |
-| C1.4 | S15 / S16 2 / 2 at high, derived, not registry | 2 / 2 at 0.8 in the candidates file only | **holds** |
-| C1.5 | ACTOR / ROLE nothing; REQ-01 no operation | S10, S11 logged as not-a-mapping, no report; REQ-01 → no S14, its S13 only | **holds** |
-
-**Pass criteria.** Registry F1 1.00; candidate precision 1.00, recall 1.00 (≥ 0.9 required); C1.5 holds.
-
-#### Findings
-
-| # | Plan ID | What happened | Why | Proposed change |
-|---|---|---|---|---|
-| 1 | S12, case, gold | the executor scores BO-DOCSET → BBO-DOCSET at 3/5; the case says 4/5 and the gold TF-106 rationale reads "lc_number = letter_of_credit_reference" | the architect applied a glossary alias the export does not carry; the case text itself says lc_number is *not* the reference, which is consistent with 7/8 but gives 3/5, not 4/5, for the document set | `export-conventions.json`: `A1.BusinessObject.attributes.field_aliases` (glossary term → BOM attribute), the A1 counterpart of the interface field aliases; S12 reads it. Fix the case cell to 3/5 or add the alias and make it 8/8 and 4/5 |
-| 2 | S03, S09, S13, S14 (gold bands) | the gold reports carry 0.6 where the plan says low (0.4); the case text also says "S09 at medium" | the gold was authored at medium for derivations whose inputs are medium or approved; the plan's bands for institution-only rows are low by default | decide per row: either raise the plan bands for S09 (a structural match at 100 % is not low evidence) and for S13/S14/S03 when derived over approved inputs, or correct the gold to the plan. The scorer ignores confidence, so this is a consistency fix, not a score change |
-| 3 | S13 | `data_needed` says "applies_to → S04 instances"; the gold's REQ-02 and REQ-03 targets follow the activity's own operation (one domain each), which the S04 route cannot produce when the parent process uses two domains | requirements on activities are finer than S04 | S13 `data_needed`: "process-level `applies_to` → S04; activity-level `applies_to` → S06/S07 (the activity's operation's domain)" — reading C1-R1 |
-| 4 | S09 | the threshold alone admits five pairs; three would have been false | small I/O sets overlap generic attributes (reference, status, amount) across sibling operations | S09 `data_needed`: add "unique best match per service, one-to-one as S30" (C1-C1); same clause as every other attribute-overlap rule now has |
-| 5 | S06 | filed by the `invokes` key at step 1 grade while the plan still assigns step 4 | the plan's `data_needed` already names `invokes` first | S06 `fill_step` 1 with step 4 as the fallback when `invokes` is absent (M1 finding 6, still open) |
-| 6 | S03, guide step 4 synonyms | `apply ≈ initiate` was needed for the first stage and is not in the guide's list | the list has capture, validate, execute, confirm | add apply/submit/request ≈ initiate/create to the S02/S03 synonym list |
-| 7 | S08, guide step 5 | the rule's two conditions ("full exported landscape" **or** "≥ 3 domains") disagree when the landscape has two domains; the case flagged exactly this | the first condition was written for the A1 side where the export may be partial | state the precedence: a complete landscape qualifies at any size; the ≥ 3 floor applies only when the export is known to be a selection |
-
-#### No-proposal register
-
-| Plan ID | Instances | Why |
-|---|---|---|
-| S09 | BSV-LC-APP → SO-LC-04 (5/7), SO-LC-02 (4/7); BSV-DOC-CHECK → SO-DC-02 (3/4) | above threshold but not the service's best — suppressed by C1-C1; would be reported under the rule as written |
-| S14 | REQ-01 | applies to a process; S14 closes over activity-level S06 only |
-| S12 | BO-LC → BBO-DOCSET, BO-DOCSET → BBO-LC | 0/5, 0/8 |
-| S10, S11 | ACTOR-TRADE-OPS, ROLE-TRADE-OFFICER | not a mapping (plan) |
-| S05 | — | historical method; not in C1's rows |
-| S01, S02, S04, S17, S24, S30, S32, S33/S34/S35 | the 22 given arrows | given |
-
-**Summary.** The first coverage case puts nine previously untested candidate rows and the one untested registry row through the steps, and all 26 targets are reached with nothing false: registry 2 of 2, candidates 24 of 24. Three readings had to be stated where the plan or guide is loose — activity-level requirements close through their own operation, service-to-operation matching must be one-to-one, two domains are a full landscape — and each is a one-line fix to `data_needed` or the guide. The one data gap is the A1 side's missing glossary alias, which is why the document-set alignment scores 3 of 5 rather than the architect's 4 of 5.
+| B02 | BusinessArea → BusinessDomain (contains) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B03 | BusinessDomain → ServiceDomain (contains) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B04 | ServiceDomain → FunctionalPattern (applies) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B05 | ServiceDomain → AssetType (manages) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B06 | ServiceDomain → ControlRecord (governs) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B07 | ControlRecord → BehaviorQualifier (is partitioned by) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B08 | ControlRecord → BusinessObject (attributes typed by) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B09 | ServiceDomain → ServiceGroup (offers) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B10 | ServiceGroup → ServiceOperation (contains) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B11 | ServiceOperation → ControlRecord (acts on) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B12 | ServiceDomain → ServiceDomain (connects to) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B13 | BusinessScenario → ServiceOperation (sequences) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B14 | Wireframe → ServiceDomain (depicts) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| B15 | SemanticAPI → ServiceDomain (derived from) | bian internal | 0 | high | — | — | n/a — inside A2; A2 relationship constraint checked by `sdmm-graph check` on every A2 export |
+| S01 | BusinessCapability → ServiceDomain (SUPPORTED_BY) | registry rule | 3 | medium | C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 | 4 / 1 / 0 / 12 | **validated with findings** — 1 false / 0 missed, each with a named cause, fixed |
+| S02 | ValueStream → BusinessScenario (ALIGNED_TO) | registry rule | 4 | medium | C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 | 1 / 0 / 0 / 14 | **validated** — every gold target hit, no false |
+| S03 | ValueStreamStage → BusinessScenario (candidate) | derived path | 4 | low | C1 | 3 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S04 | BusinessProcess → ServiceDomain (USES_DOMAIN) | registry rule | 3 | medium | C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 | 1 / 0 / 0 / 17 | **validated** — every gold target hit, no false |
+| S05 | BusinessProcess → BusinessScenario (candidate) | historical method | 4 | low | C1 | 0 / 0 / 0 / 1 | n/a — historical method |
+| S06 | BusinessActivity → ServiceOperation (candidate) | institution only | 1 | medium | C1, H1, H2, H2 r2, M1 | 4 / 0 / 0 / 7 | **validated** — every gold target hit, no false |
+| S07 | BusinessActivity → ServiceDomain (candidate) | derived path | 3 | medium | C1 | 4 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S08 | BusinessService → ServiceDomain (candidate) | institution only | 5 | low | C1 | 2 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S09 | BusinessService → ServiceOperation (candidate) | institution only | 4 | low | C1 | 2 / 0 / 0 / 3 | **validated** — every gold target hit, no false |
+| S10 | BusinessActor → BusinessScenario (candidate) | not a mapping |  | low | C1 | 0 / 0 / 0 / 1 | n/a — not a mapping |
+| S11 | BusinessRole → BusinessScenario (candidate) | not a mapping |  | low | C1 | 0 / 0 / 0 / 1 | n/a — not a mapping |
+| S12 | BusinessObject → BusinessObject (ALIGNED_TO) | registry rule | 4 | medium | C1, H1, H2, H2 r2, M1 | 2 / 0 / 0 / 7 | **validated** — every gold target hit, no false |
+| S13 | BusinessRequirement → ServiceDomain (candidate) | institution only | 3 | low | C1 | 3 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S14 | BusinessRequirement → ServiceOperation (candidate) | institution only | 3 | low | C1 | 2 / 0 / 0 / 1 | **validated** — every gold target hit, no false |
+| S15 | BusinessArea → ApplicationComponent (candidate) | derived path | 3 | high | C1 | 2 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S16 | BusinessDomain → ApplicationComponent (candidate) | derived path | 3 | high | C1 | 2 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S17 | ServiceDomain → ApplicationComponent (REALIZED_BY) | registry rule | 3 | high | C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 | 20 / 0 / 0 / 32 | **validated** — every gold target hit, no false |
+| S18 | FunctionalPattern → ApplicationFunction (candidate) | institution only | 3 | low | C2 | 3 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S19 | AssetType → DataEntity (candidate) | institution only | 4 | low | C2 | 3 / 0 / 0 / 3 | **validated** — every gold target hit, no false |
+| S20 | ControlRecord → DataEntity (candidate) | candidate rule | 4 | high | C2, H1, H2, H2 r2, M1, M2 | 2 / 0 / 0 / 66 | **validated** — every gold target hit, no false |
+| S21 | ControlRecord → ApplicationFunction (candidate) | candidate rule | 3 | medium | C2 | 3 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S22 | ServiceGroup → ApplicationService (candidate) | derived path | 3 | medium | C2, M1 | 2 / 0 / 0 / 1 | **validated** — every gold target hit, no false |
+| S23 | ServiceGroup → ApplicationInterface (candidate) | derived path | 3 | medium | C2, H1, H2, H2 r2, M0, M1 | 2 / 0 / 0 / 8 | **validated** — every gold target hit, no false |
+| S24 | ServiceOperation → APIOperation (IMPLEMENTED_BY) | registry rule | 2 | high | C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 | 60 / 0 / 8 / 415 | **validated with findings** — 0 false / 8 missed, each with a named cause, fixed |
+| S25 | ServiceOperation → ApplicationService (candidate) | candidate rule | 3 | high | C2, H1, H2, H2 r2, M0, M1, M2 | 6 / 0 / 0 / 10 | **validated** — every gold target hit, no false |
+| S26 | BehaviorQualifier → APIOperation (candidate) | derived path | 2 | high | C2 | 2 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S27 | BehaviorQualifier → DataEntity (candidate) | derived path | 4 | medium | C2 | 1 / 0 / 0 / 5 | **validated** — every gold target hit, no false |
+| S28 | BusinessScenario → ApplicationService (candidate) | candidate rule | 3 | medium | C2 | 2 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S29 | BusinessScenario → ApplicationComponent (candidate) | candidate rule | 3 | medium | C2 | 2 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S30 | BusinessObject → DataEntity (MAPPED_TO) | registry rule | 4 | high | C1, C2, C3, H1, H2, H2 r2, M1, M2 | 16 / 0 / 1 / 62 | **validated with findings** — 0 false / 1 missed, each with a named cause, fixed |
+| S31 | BusinessObjectAttribute → DataEntity (candidate) | derived path | 4 | high | C2 | 4 / 0 / 0 / 2 | **validated** — every gold target hit, no false |
+| S32 | ApplicationComponent → Deployment (DEPLOYED_AS) | registry rule | 1 | high | C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 | 23 / 0 / 0 / 11 | **validated** — every gold target hit, no false |
+| S33 | ApplicationComponent → InfrastructureComponent (DEPLOYED_ON) | registry rule | 1 | high | C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 | 20 / 1 / 0 / 20 | **validated with findings** — 1 false / 0 missed, each with a named cause, fixed |
+| S34 | ApplicationComponent → Node (candidate) | conditional rule | 1 | low | C3 | 2 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S35 | ApplicationComponent → Device (candidate) | institution only | 1 | low | C3 | 1 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S36 | ApplicationComponent → SystemSoftware (candidate) | subsumed | 1 | high | C3, H1, H2, H2 r2, M0, M1, M2 | 0 / 0 / 0 / 7 | n/a — subsumed |
+| S37 | ApplicationComponent → CommunicationNetwork (candidate) | institution only | 1 | low | C3 | 2 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S38 | ApplicationComponent → Path (candidate) | institution only | 1 | low | C3 | 1 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S39 | ApplicationComponent → Artifact (candidate) | conditional rule | 1 | medium | C3 | 2 / 0 / 0 / 1 | **validated** — every gold target hit, no false |
+| S40 | ApplicationComponent → DeploymentEnvironment (candidate) | derived path | 3 | high | C3, H1, H2, H2 r2, M0, M1 | 2 / 0 / 0 / 5 | **validated** — every gold target hit, no false |
+| S41 | ApplicationService → TechnologyService (candidate) | conditional rule | 1 | medium | C3, H1, H2, H2 r2, M1, M2 | 3 / 0 / 0 / 8 | **validated** — every gold target hit, no false |
+| S42 | ApplicationService → TechnologyInterface (candidate) | derived path | 3 | low | C3 | 2 / 1 / 0 / 0 | **validated with findings** — 1 false / 0 missed, each with a named cause, fixed |
+| S43 | ApplicationInterface → TechnologyInterface (candidate) | institution only | 1 | low | C3 | 2 / 0 / 0 / 1 | **validated** — every gold target hit, no false |
+| S44 | ApplicationInterface → TechnologyService (candidate) | institution only | 1 | low | C3 | 2 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S45 | ApplicationFunction → TechnologyService (candidate) | conditional rule | 1 | medium | C3, M1 | 2 / 0 / 0 / 2 | **validated** — every gold target hit, no false |
+| S46 | ApplicationFunction → SystemSoftware (candidate) | derived path | 3 | low | C3 | 3 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S47 | APIOperation → Deployment (candidate) | derived path | 3 | high | C3, H1, H2, H2 r2, M0, M1 | 6 / 0 / 0 / 5 | **validated** — every gold target hit, no false |
+| S48 | APIOperation → TechnologyInterface (candidate) | derived path | 3 | medium | C3 | 6 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S49 | DataEntity → Artifact (candidate) | conditional rule | 1 | medium | C3, H1, H2, M1 | 1 / 0 / 0 / 3 | **validated** — every gold target hit, no false |
+| S50 | DataEntity → SystemSoftware (candidate) | institution only | 1 | medium | C3, H1, H2, H2 r2, M0, M1, M2 | 3 / 0 / 0 / 26 | **validated** — every gold target hit, no false |
+| S51 | Event → TechnologyService (candidate) | institution only | 1 | low | C3 | 1 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S52 | SolutionBuildingBlock → InfrastructureComponent (candidate) | derived path | 3 | medium | C3 | 3 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S53 | SolutionBuildingBlock → Deployment (candidate) | derived path | 3 | medium | C3 | 2 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+| S54 | SolutionBuildingBlock → Node (candidate) | derived path | 3 | low | C3 | 1 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
 
 ### C1 — actions taken on the findings (v0.5.11)
 
@@ -1734,3 +1641,13 @@ mappings to supersede: P-C3-002, P-C3-006
 | S01, S02, S04, S12, S17, S24, S30 | the 17 given arrows | given |
 
 **Summary.** The technology estate is the most mechanical of the three coverage cases and it behaves that way: eleven of the eighteen rows are pure joins on the new export keys and nine are closures over this run's own step-1 proposals, and all 51 targets are reached. The one false report is instructive rather than accidental: S42's rule text derives "the interfaces of the services I consume", while the architect meant "the interface I am exposed through", and the broker topic is exactly where the two readings part. The three coverage cases together put every one of the 42 previously unexercised plan rows through the steps; across C1–C3 the registry files score 19 of 19 and the candidate files 100 of 101, with the one false pointing at a one-line fix to S42.
+
+### C3 — actions taken on the findings (v0.5.13)
+
+| Finding | Action |
+|---|---|
+| 1 — S42 reached the broker topic through consumption | S42 rewritten: derived over S43 / S44 (exposure), never over S41 + composition (consumption). The one false report disappears under the rule as now written |
+| 2 — `DEPLOYED_ON` fan-out | Guide and S33 note: one arrow per host layer, each on its own evidence |
+| 3 — zone vs connects | Network zone wins; a disagreement is a finding |
+
+**The suite is closed: ten cases, eleven runs.** Every plan row that can be a proposal or a candidate report is validated.
