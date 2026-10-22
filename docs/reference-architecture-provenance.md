@@ -2,7 +2,7 @@
 
 **Purpose.** Every entity in the SDMM vocabulary is derived from a **publicly available reference architecture** — BIAN, ArchiMate or TOGAF — or is a documented SDMM extension of one. No entity is derived from, named after, or copied from any institution's own architecture model. This table is the evidence for that claim and must be kept current whenever the catalogue changes.
 
-**How to read it.** *Reference architecture* is the public standard the entity is drawn from; *concept* is that standard's own name for it; *classification* is SDMM's `definition_source` / `alignment_kind`; *public source* is where anyone can read the concept's definition without a licence. SDMM paraphrases definitions and never reproduces standard text, diagrams or datasets.
+**How to read it.** *Reference architecture* is the public standard the entity is drawn from; *concept* is that standard's own name for it; *classification* is SDMM's `definition_source` / `alignment_kind`; *public source* is where the concept's definition is published; BIAN sources are open, Open Group sources need a free account to read online. SDMM paraphrases definitions and never reproduces standard text, diagrams or datasets.
 
 | `definition_source` | Meaning |
 |---|---|
@@ -18,8 +18,8 @@ Public sources used throughout:
 - **[BIAN-SL]** BIAN Service Landscape 14.0, InSite portal — https://bian.org/servicelandscape-14-0-0/ (publicly browsable; no licence text displayed; treated as read-only)
 - **[BIAN-BCM]** BIAN Business Capability Model, as described in the Service Landscape release notes — v13.0 (June 2025): https://bian.org/wp-content/uploads/2025/06/BIAN-v13.0-Release-Notes-v0.3.pdf ; v14.0 (February 2026): https://bian.org/wp-content/uploads/2026/02/BIAN-v14.0-Release-Notes-v1.0_-Final-Version.pdf. Note: the BCM↔Service Domain mapping is stated there to be work in progress and not yet in the repository; no separate alignment document is published
 - **[BIAN-API]** BIAN Semantic API Practitioner Guide — https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf
-- **[AM]** ArchiMate® 3.2 Specification, The Open Group — https://pubs.opengroup.org/architecture/archimate3-doc/ (chapter numbers below refer to this edition: 6 Motivation, 7 Strategy, 8 Business, 9 Application, 10 Technology)
-- **[TOGAF]** The TOGAF® Standard, 10th Edition — https://pubs.opengroup.org/togaf-standard/
+- **[AM]** ArchiMate® 3.2 Specification, The Open Group — https://pubs.opengroup.org/architecture/archimate3-doc/ (chapter numbers below refer to this edition: 6 Motivation, 7 Strategy, 8 Business, 9 Application, 10 Technology). Reading online requires a free Open Group account (SSO); the PDF is a licensed download. Element names and definitions are publicly documented; verifying a specific relationship claim against the normative tables needs an account
+- **[TOGAF]** The TOGAF® Standard, 10th Edition — https://pubs.opengroup.org/togaf-standard/ (free Open Group account required to read online)
 
 ---
 
