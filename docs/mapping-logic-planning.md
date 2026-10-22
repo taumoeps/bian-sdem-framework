@@ -552,9 +552,9 @@ Counts: A1 10 · A2 15 (12 entities + 3 artefacts) · A3 8 · A4 11 (10 concrete
 
 ### 4.2 The 24 official connectors
 
-Only the mappings that are officially sourced *and verified* (§3): the 14 BIAN-internal relationships (B02–B15, blue) and the 10 cross-level mappings with BIAN guidance (green; dashed where BIAN gives only intent or a target). Nothing unverified or institution-only is drawn. Source: `docs/diagrams/official-mappings.puml`, generated from `metamodel/` and the §2.3 verification column.
+Only the mappings that are officially sourced *and verified* (§3): the 14 BIAN-internal relationships (B02–B15, blue) and the 10 cross-level mappings with BIAN guidance (green; dashed where BIAN gives only intent or a target). Nothing unverified or institution-only is drawn. Source: `metamodel/official-mappings.puml`, **generated from `metamodel/official-mappings.json`** by `python -m sdmm.diagram` (the test suite fails if the committed diagram is stale).
 
-Rendering: `.vscode/settings.json` points the VS Code PlantUML extension at the public PlantUML server, so the block below renders in Markdown preview without a local Java install (the diagram contains only public catalogue names). To export an SVG for GitHub: open the `.puml`, run *PlantUML: Export Current Diagram* (it lands in `docs/diagrams/`), or install Java and run `plantuml -tsvg docs/diagrams/official-mappings.puml`.
+Rendering: `.vscode/settings.json` points the VS Code PlantUML extension at the public PlantUML server, so the block below renders in Markdown preview without a local Java install (the diagram contains only public catalogue names). To export an SVG for GitHub: open the `.puml`, run *PlantUML: Export Current Diagram* (it lands in `metamodel/`), or install Java and run `plantuml -tsvg metamodel/official-mappings.puml`.
 
 ```plantuml
 @startuml official-mappings
@@ -572,88 +572,88 @@ skinparam ArrowFontSize 10
 title Official mappings — 24 verified connectors (B = BIAN-internal, S = cross-level with BIAN guidance)
 
 package "A1 Business Architecture" as A1 {
-  rectangle "A1.BusinessCapability" as a1_01
-  rectangle "A1.ValueStream" as a1_02
-  rectangle "A1.ValueStreamStage" as a1_03
-  rectangle "A1.BusinessProcess" as a1_04
-  rectangle "A1.BusinessActivity" as a1_05
-  rectangle "A1.BusinessService" as a1_06
-  rectangle "A1.BusinessActor" as a1_07
-  rectangle "A1.BusinessRole" as a1_08
-  rectangle "A1.BusinessObject" as a1_09
-  rectangle "A1.BusinessRequirement" as a1_10
+  rectangle "A1.BusinessCapability" as a1_businesscapability
+  rectangle "A1.ValueStream" as a1_valuestream
+  rectangle "A1.ValueStreamStage" as a1_valuestreamstage
+  rectangle "A1.BusinessProcess" as a1_businessprocess
+  rectangle "A1.BusinessActivity" as a1_businessactivity
+  rectangle "A1.BusinessService" as a1_businessservice
+  rectangle "A1.BusinessActor" as a1_businessactor
+  rectangle "A1.BusinessRole" as a1_businessrole
+  rectangle "A1.BusinessObject" as a1_businessobject
+  rectangle "A1.BusinessRequirement" as a1_businessrequirement
 }
 
 package "A2 Service Domain Architecture" as A2 {
-  rectangle "A2.BusinessArea" as a2_01
-  rectangle "A2.BusinessDomain" as a2_02
-  rectangle "A2.ServiceDomain" as a2_03
-  rectangle "A2.FunctionalPattern" as a2_04
-  rectangle "A2.AssetType" as a2_05
-  rectangle "A2.ControlRecord" as a2_06
-  rectangle "A2.ServiceGroup" as a2_07
-  rectangle "A2.ServiceOperation" as a2_08
-  rectangle "A2.BehaviorQualifier" as a2_09
-  rectangle "A2.BusinessScenario" as a2_10
-  rectangle "A2.BusinessObject" as a2_11
-  rectangle "A2.BusinessObjectAttribute" as a2_12
-  rectangle "A2.BOMModel\n(artefact)" as a2_13
-  rectangle "A2.Wireframe\n(artefact)" as a2_14
-  rectangle "A2.SemanticAPI\n(artefact)" as a2_15
+  rectangle "A2.BusinessArea" as a2_businessarea
+  rectangle "A2.BusinessDomain" as a2_businessdomain
+  rectangle "A2.ServiceDomain" as a2_servicedomain
+  rectangle "A2.FunctionalPattern" as a2_functionalpattern
+  rectangle "A2.AssetType" as a2_assettype
+  rectangle "A2.ControlRecord" as a2_controlrecord
+  rectangle "A2.ServiceGroup" as a2_servicegroup
+  rectangle "A2.ServiceOperation" as a2_serviceoperation
+  rectangle "A2.BehaviorQualifier" as a2_behaviorqualifier
+  rectangle "A2.BusinessScenario" as a2_businessscenario
+  rectangle "A2.BusinessObject" as a2_businessobject
+  rectangle "A2.BusinessObjectAttribute" as a2_businessobjectattribute
+  rectangle "A2.BOMModel\n(artefact)" as a2_bommodel
+  rectangle "A2.Wireframe\n(artefact)" as a2_wireframe
+  rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi
 }
 
 package "A3 Application Architecture" as A3 {
-  rectangle "A3.ApplicationComponent" as a3_01
-  rectangle "A3.ApplicationService" as a3_02
-  rectangle "A3.ApplicationInterface" as a3_03
-  rectangle "A3.ApplicationFunction" as a3_04
-  rectangle "A3.APIOperation" as a3_05
-  rectangle "A3.DataEntity" as a3_06
-  rectangle "A3.Event" as a3_07
-  rectangle "A3.SolutionBuildingBlock" as a3_08
+  rectangle "A3.ApplicationComponent" as a3_applicationcomponent
+  rectangle "A3.ApplicationService" as a3_applicationservice
+  rectangle "A3.ApplicationInterface" as a3_applicationinterface
+  rectangle "A3.ApplicationFunction" as a3_applicationfunction
+  rectangle "A3.APIOperation" as a3_apioperation
+  rectangle "A3.DataEntity" as a3_dataentity
+  rectangle "A3.Event" as a3_event
+  rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
 }
 
 package "A4 Technology Architecture" as A4 {
-  rectangle "A4.InfrastructureComponent\n(abstract)" as a4_01
-  rectangle "A4.Deployment" as a4_02
-  rectangle "A4.DeploymentEnvironment" as a4_03
-  rectangle "A4.Node" as a4_04
-  rectangle "A4.Device" as a4_05
-  rectangle "A4.SystemSoftware" as a4_06
-  rectangle "A4.TechnologyService" as a4_07
-  rectangle "A4.TechnologyInterface" as a4_08
-  rectangle "A4.CommunicationNetwork" as a4_09
-  rectangle "A4.Path" as a4_10
-  rectangle "A4.Artifact" as a4_11
+  rectangle "A4.InfrastructureComponent\n(abstract)" as a4_infrastructurecomponent
+  rectangle "A4.Deployment" as a4_deployment
+  rectangle "A4.DeploymentEnvironment" as a4_deploymentenvironment
+  rectangle "A4.Node" as a4_node
+  rectangle "A4.Device" as a4_device
+  rectangle "A4.SystemSoftware" as a4_systemsoftware
+  rectangle "A4.TechnologyService" as a4_technologyservice
+  rectangle "A4.TechnologyInterface" as a4_technologyinterface
+  rectangle "A4.CommunicationNetwork" as a4_communicationnetwork
+  rectangle "A4.Path" as a4_path
+  rectangle "A4.Artifact" as a4_artifact
 }
 
 ' --- B: BIAN's own relationships inside A2 (14)
-a2_01 -[#1565C0]-> a2_02 : B02 contains
-a2_02 -[#1565C0]-> a2_03 : B03 contains
-a2_03 -[#1565C0]-> a2_04 : B04 applies
-a2_03 -[#1565C0]-> a2_05 : B05 manages
-a2_03 -[#1565C0]-> a2_06 : B06 governs
-a2_06 -[#1565C0]-> a2_09 : B07 partitioned by
-a2_06 -[#1565C0]-> a2_11 : B08 attributes typed by
-a2_03 -[#1565C0]-> a2_07 : B09 offers
-a2_07 -[#1565C0]-> a2_08 : B10 contains
-a2_08 -[#1565C0]-> a2_06 : B11 acts on
-a2_03 -[#1565C0]-> a2_03 : B12 connects to
-a2_10 -[#1565C0]-> a2_08 : B13 sequences
-a2_14 -[#1565C0]-> a2_03 : B14 depicts
-a2_15 -[#1565C0]-> a2_03 : B15 derived from
+a2_businessarea -[#1565C0]-> a2_businessdomain : B02 contains
+a2_businessdomain -[#1565C0]-> a2_servicedomain : B03 contains
+a2_servicedomain -[#1565C0]-> a2_functionalpattern : B04 applies
+a2_servicedomain -[#1565C0]-> a2_assettype : B05 manages
+a2_servicedomain -[#1565C0]-> a2_controlrecord : B06 governs
+a2_controlrecord -[#1565C0]-> a2_behaviorqualifier : B07 is partitioned by
+a2_controlrecord -[#1565C0]-> a2_businessobject : B08 attributes typed by
+a2_servicedomain -[#1565C0]-> a2_servicegroup : B09 offers
+a2_servicegroup -[#1565C0]-> a2_serviceoperation : B10 contains
+a2_serviceoperation -[#1565C0]-> a2_controlrecord : B11 acts on
+a2_servicedomain -[#1565C0]-> a2_servicedomain : B12 connects to
+a2_businessscenario -[#1565C0]-> a2_serviceoperation : B13 sequences
+a2_wireframe -[#1565C0]-> a2_servicedomain : B14 depicts
+a2_semanticapi -[#1565C0]-> a2_servicedomain : B15 derived from
 
-' --- S: cross-level mappings with BIAN guidance (10); dashed = intent/target only
-a1_01 -[#2E7D32,dashed]-> a2_03 : S01 SUPPORTED_BY (intent)
-a1_09 -[#2E7D32,dashed]-> a2_11 : S12 ALIGNED_TO (target)
-a2_03 -[#2E7D32]-> a3_01 : S17 REALIZED_BY
-a2_06 -[#2E7D32]-> a3_06 : S20 guidance
-a2_06 -[#2E7D32]-> a3_04 : S21 guidance
-a2_08 -[#2E7D32]-> a3_05 : S24 IMPLEMENTED_BY
-a2_08 -[#2E7D32]-> a3_02 : S25 guidance
-a2_10 -[#2E7D32]-> a3_02 : S28 guidance
-a2_10 -[#2E7D32]-> a3_01 : S29 guidance
-a2_11 -[#2E7D32]-> a3_06 : S30 MAPPED_TO
+' --- S: cross-level mappings with BIAN guidance (8 solid, 2 dashed = intent/target only)
+a2_servicedomain -[#2E7D32]-> a3_applicationcomponent : S17 REALIZED_BY
+a2_controlrecord -[#2E7D32]-> a3_dataentity : S20 guidance
+a2_controlrecord -[#2E7D32]-> a3_applicationfunction : S21 guidance
+a2_serviceoperation -[#2E7D32]-> a3_apioperation : S24 IMPLEMENTED_BY
+a2_serviceoperation -[#2E7D32]-> a3_applicationservice : S25 guidance
+a2_businessscenario -[#2E7D32]-> a3_applicationservice : S28 guidance
+a2_businessscenario -[#2E7D32]-> a3_applicationcomponent : S29 guidance
+a2_businessobject -[#2E7D32]-> a3_dataentity : S30 MAPPED_TO
+a1_businesscapability -[#2E7D32,dashed]-> a2_servicedomain : S01 SUPPORTED_BY (intent)
+a1_businessobject -[#2E7D32,dashed]-> a2_businessobject : S12 ALIGNED_TO (target)
 
 legend right
   Blue solid: BIAN-internal (B02–B15, 14)

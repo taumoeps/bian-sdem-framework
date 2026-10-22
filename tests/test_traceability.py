@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DATA = json.loads((ROOT / 'metamodel/official-mappings.json').read_text())
 DOC = (ROOT / 'docs/mapping-logic-planning.md').read_text()
-PUML = (ROOT / 'docs/diagrams/official-mappings.puml').read_text()
+PUML = (ROOT / 'metamodel/official-mappings.puml').read_text()
 IDS = {m['id'] for m in DATA['mappings']}
 
 
@@ -31,6 +31,14 @@ class TraceabilityTests(unittest.TestCase):
         expected = {m['id'] for m in DATA['mappings'] if m['verification'] in ('verified', 'verified_intent_or_target_only') and m['id'] != 'B01'}
         self.assertEqual(set(drawn), expected)
         self.assertEqual(len(expected), 24)
+
+    def test_committed_diagram_equals_render_from_json(self):
+        from sdmm.diagram import render
+        self.assertEqual(PUML, render())
+
+    def test_document_embeds_the_committed_diagram(self):
+        a = DOC.index('```plantuml\n') + len('```plantuml\n'); b = DOC.index('```', a)
+        self.assertEqual(DOC[a:b].strip(), PUML.strip())
 
     def test_every_entity_in_file_exists_in_catalogue(self):
         from sdmm.metamodel import Metamodel
