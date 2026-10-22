@@ -705,9 +705,9 @@ endlegend
 
 ArchiMate cannot reach A1→A2 directly: it has no BIAN concepts. The one lever is that BIAN publishes the Service Landscape in ArchiMate 3.2 ([RN14] §1.2). If BIAN types a Service Domain as a specific ArchiMate element, that element's cross-layer rules would apply. **To check on the portal** (MetaModel Overview): which ArchiMate element types BIAN assigns to Service Domain, Business Capability and Business Scenario.
 
-#### The ladder — lowest rung that works, inference last
+#### Five steps, in order of preference — inference last
 
-| Rung | Mechanism | Inference? | Arrows it fills |
+| Step | Mechanism | Inference? | Arrows it fills |
 |---|---|---|---|
 | 1 | **Data join** — the institution's own records: CMDB, deployment manifests, API gateway inventory, data catalogue | none | `DEPLOYED_ON`, `DEPLOYED_AS`; most of `MAPPED_TO` |
 | 2 | **Rule application** — BIAN's published REST mapping: action term, behaviour qualifier, control-record resource, HTTP method ([SAPG] §3.5) | none, deterministic | `IMPLEMENTED_BY` |
@@ -715,15 +715,33 @@ ArchiMate cannot reach A1→A2 directly: it has no BIAN concepts. The one lever 
 | 4 | **Structural matching** — attribute names and types against BOM attributes; API paths against operation names | light, fully explainable | `ALIGNED_TO` (object), residual `IMPLEMENTED_BY` |
 | 5 | **Text inference** — description similarity; model-assisted ranking with cited rationale | yes | only what is left: cold-start `SUPPORTED_BY`, `ALIGNED_TO` (value stream) |
 
-Reading down: **A4 is filled entirely by rung 1**; A2→A3 by rungs 2–3; A1→A2 objects by rung 4. The one arrow that genuinely needs rung 5 is capability → Service Domain — the mapping BIAN itself has not finished — and even there the minimal-inference options come first: author it (a capability map is ~100 entries, not 10,000), derive it by rung 3 once processes are mapped, or wait for BIAN's working group to publish ([WQA26]).
+Reading down: **A4 is filled entirely by step 1**; A2→A3 by steps 2–3; A1→A2 objects by step 4. The one arrow that genuinely needs step 5 is capability → Service Domain — the mapping BIAN itself has not finished — and even there the minimal-inference options come first: author it (a capability map is ~100 entries, not 10,000), derive it by step 3 once processes are mapped, or wait for BIAN's working group to publish ([WQA26]).
+
+#### Direction of fill
+
+The steps are chosen per arrow, but because of where the facts live the fill runs from two anchors toward A1:
+
+```
+A1  ◀─── derived from processes and operations (step 3) ───┐   ◀── last: text inference (step 5)
+A2  ════ BIAN anchor: fully known (B02–B15) ════════════════╪══
+A3  ◀── BIAN API rules push down (step 2) ──┐  ◀── derived from A3→A4 and API facts (step 3)
+A4  ════ data anchor: deployment records (step 1) ═══════════   ◀── first
+```
+
+- **A4 first** — pure data; CMDB and manifests say what runs where. No inference, no BIAN.
+- **A2 already full** — BIAN supplies it.
+- **A2 → A3 next**, from both anchors meeting: BIAN's REST rules decide which API implements which operation (step 2); once operations are placed, which application realises a domain *follows* from which application hosts those APIs (step 3).
+- **A1 → A2 last, mostly upward**: a process invoking operations of domain D uses D; a capability whose processes all land in D is supported by D. Only a capability with no mapped processes needs step 5 — and authoring, or waiting for BIAN's working group, come before it.
+
+Data at the bottom, BIAN in the middle, inference only at the top and only for what nothing else reached. The single top-down move is step 2, BIAN's A2 rules applied to A3.
 
 #### Design rules that follow
 
-1. **Rungs 1–3 are the engine's tier 1.** They produce proposals with no semantic judgement, so they can carry high default confidence and cite the data or the approved record they were derived from.
-2. **Rung 4 is tier 1 with a score.** Explainable, bounded, cites the attributes matched.
-3. **Rung 5 is tier 2, opt-in per arrow type**, and only runs on pairs no lower rung could settle. Its proposals carry low confidence and the strictest evidence requirement.
-4. **A rung-3 derivation is never auto-approved either.** It is still `proposed`: the architect confirms that the closure holds semantically, not just structurally.
-5. **Type-level gaps are closed by registry changes, not by the engine.** When the ArchiMate rows verify, `DEPLOYED_ON` / `DEPLOYED_AS` move from `enterprise_rule` to `archimate_native` authority; the engine's behaviour on them is unchanged (still rung 1).
+1. **Steps 1–3 are the engine's tier 1.** They produce proposals with no semantic judgement, so they can carry high default confidence and cite the data or the approved record they were derived from.
+2. **Step 4 is tier 1 with a score.** Explainable, bounded, cites the attributes matched.
+3. **Step 5 is tier 2, opt-in per arrow type**, and only runs on pairs no earlier step could settle. Its proposals carry low confidence and the strictest evidence requirement.
+4. **A step-3 derivation is never auto-approved either.** It is still `proposed`: the architect confirms that the closure holds semantically, not just structurally.
+5. **Type-level gaps are closed by registry changes, not by the engine.** When the ArchiMate rows verify, `DEPLOYED_ON` / `DEPLOYED_AS` move from `enterprise_rule` to `archimate_native` authority; the engine's behaviour on them is unchanged (still step 1).
 
 ### 5.3 Per-arrow design *(next)*
 
