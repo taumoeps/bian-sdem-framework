@@ -2,7 +2,7 @@
 
 Generated from the records by `python -m sdmm.spec`; the test suite checks it is current. This specification merges the three records — the entity catalogue, the within-level structure (`metamodel/level-relationships.json`) and the cross-level mapping model (`schema/relationship-types.json`, `metamodel/new-mappings.json`) — with the export conventions, the mapping procedure and the test results, into one statement of **what a mapping engine must consume, do, refuse and produce**. Every requirement names the record rows it derives from and the use-case runs that validated it; nothing here claims more than a record and a run support.
 
-Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.
+The companion diagram `docs/mapping-model-design-diagram.puml` draws every within-level row and cross-level mapping with its ID. Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.
 
 ## 1. Purpose, scope and non-goals
 
@@ -14,14 +14,54 @@ Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped thi
 
 ## 2. Vocabulary — the entity catalogue
 
-44 entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: ArchiMate 21, BIAN 17, SDMM extension 5, TOGAF 1.
+44 entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: ArchiMate 21, BIAN 17, SDMM extension 5, TOGAF 1. **The entity ID is its type string** (e.g. `A3.ApplicationComponent`); every mapping, relationship row and export instance refers to it by that string.
 
-| Level | Entities |
-|---|---|
-| A1 Business Architecture | BusinessCapability, ValueStream, ValueStreamStage, BusinessProcess, BusinessActivity, BusinessService, BusinessActor, BusinessRole, BusinessObject, BusinessRequirement |
-| A2 Service Domain Architecture | BusinessArea, BusinessDomain, ServiceDomain, FunctionalPattern, AssetType, ControlRecord, ServiceGroup, ServiceOperation, BehaviorQualifier, BusinessScenario, BusinessObject, BusinessObjectAttribute, BOMModel *(artefact)*, Wireframe *(artefact)*, SemanticAPI *(artefact)* |
-| A3 Application Architecture | ApplicationComponent, ApplicationService, ApplicationInterface, ApplicationFunction, APIOperation, DataEntity, Event, SolutionBuildingBlock |
-| A4 Technology Architecture | InfrastructureComponent *(abstract)*, Deployment, DeploymentEnvironment, Node, Device, SystemSoftware, TechnologyService, TechnologyInterface, CommunicationNetwork, Path, Artifact |
+| ID | Level | Kind | Extends | Reference concept |
+|---|---|---|---|---|
+| `A1.BusinessCapability` | A1 | concrete | — | BIAN BCM: Business Capability |
+| `A1.ValueStream` | A1 | concrete | — | ArchiMate 3.2: Value Stream |
+| `A1.ValueStreamStage` | A1 | concrete | A1.ValueStream | SDMM: Value Stream Stage |
+| `A1.BusinessProcess` | A1 | concrete | — | ArchiMate 3.2: Business Process |
+| `A1.BusinessActivity` | A1 | concrete | A1.BusinessProcess | SDMM: Business Activity |
+| `A1.BusinessService` | A1 | concrete | — | ArchiMate 3.2: Business Service |
+| `A1.BusinessActor` | A1 | concrete | — | ArchiMate 3.2: Business Actor |
+| `A1.BusinessRole` | A1 | concrete | — | ArchiMate 3.2: Business Role |
+| `A1.BusinessObject` | A1 | concrete | — | ArchiMate 3.2: Business Object |
+| `A1.BusinessRequirement` | A1 | concrete | — | ArchiMate 3.2: Requirement |
+| `A2.BusinessArea` | A2 | concrete | — | BIAN Service Landscape: Business Area |
+| `A2.BusinessDomain` | A2 | concrete | — | BIAN Service Landscape: Business Domain |
+| `A2.ServiceDomain` | A2 | concrete | — | BIAN Service Landscape: Service Domain |
+| `A2.FunctionalPattern` | A2 | concrete | — | BIAN Service Landscape: Functional Pattern |
+| `A2.AssetType` | A2 | concrete | — | BIAN Service Landscape: Asset Type |
+| `A2.ControlRecord` | A2 | concrete | — | BIAN Service Landscape: Control Record |
+| `A2.ServiceGroup` | A2 | concrete | — | BIAN Service Landscape: Service Group |
+| `A2.ServiceOperation` | A2 | concrete | — | BIAN Service Landscape: Service Operation |
+| `A2.BehaviorQualifier` | A2 | concrete | — | BIAN Service Landscape: Behavior Qualifier |
+| `A2.BusinessScenario` | A2 | concrete | — | BIAN Service Landscape: Business Scenario |
+| `A2.BusinessObject` | A2 | concrete | — | BIAN Service Landscape: Business Object |
+| `A2.BusinessObjectAttribute` | A2 | concrete | — | BIAN Service Landscape: Business Object attribute |
+| `A2.BOMModel` | A2 | artefact | — | BIAN Service Landscape: Business Object Model |
+| `A2.Wireframe` | A2 | artefact | — | BIAN Service Landscape: Wireframe |
+| `A2.SemanticAPI` | A2 | artefact | — | BIAN Semantic API: Semantic API |
+| `A3.ApplicationComponent` | A3 | concrete | — | ArchiMate 3.2: Application Component |
+| `A3.ApplicationService` | A3 | concrete | — | ArchiMate 3.2: Application Service |
+| `A3.ApplicationInterface` | A3 | concrete | — | ArchiMate 3.2: Application Interface |
+| `A3.ApplicationFunction` | A3 | concrete | — | ArchiMate 3.2: Application Function |
+| `A3.APIOperation` | A3 | concrete | — | BIAN Semantic API: Service Operation (API) |
+| `A3.DataEntity` | A3 | concrete | — | ArchiMate 3.2: Data Object |
+| `A3.Event` | A3 | concrete | — | ArchiMate 3.2: Application Event |
+| `A3.SolutionBuildingBlock` | A3 | concrete | — | TOGAF: Solution Building Block |
+| `A4.InfrastructureComponent` | A4 | abstract | — | SDMM: Infrastructure Component |
+| `A4.Deployment` | A4 | concrete | A4.InfrastructureComponent | SDMM: Deployment |
+| `A4.DeploymentEnvironment` | A4 | concrete | A4.InfrastructureComponent | SDMM: Deployment Environment |
+| `A4.Node` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Node |
+| `A4.Device` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Device |
+| `A4.SystemSoftware` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: System Software |
+| `A4.TechnologyService` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Technology Service |
+| `A4.TechnologyInterface` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Technology Interface |
+| `A4.CommunicationNetwork` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Communication Network |
+| `A4.Path` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Path |
+| `A4.Artifact` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Artifact |
 
 ## 3. Within-level structure — what an export may contain
 
@@ -33,6 +73,160 @@ Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped thi
 | A2 | BIAN Service Landscape metamodel (B02–B15) | 17 | area ⊃ domain ⊃ Service Domain; a domain has an asset type, a functional pattern, a control record and service groups of operations; operations act on the control record and may be qualified; scenarios sequence operations; objects type the control record |
 | A3 | ArchiMate 3.2 ch. 9; TOGAF (SBB) | 31 | a component composes interfaces (which compose API operations) and sub-components, is assigned to functions, realises services; interfaces are assigned to services; behaviour accesses data entities and triggers events; a solution building block aggregates components |
 | A4 | ArchiMate 3.2 ch. 10; SDMM deployment extensions | 36 | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |
+
+### 3.1 All within-level rows
+
+Full description, source, reasoning, inference and confidence per row: `docs/relationships-planning.md`.
+
+| ID | Official | Source | Kind | Target | Verification |
+|---|---|---|---|---|---|
+| RA2-01 | B02 | A2.BusinessArea | composition | A2.BusinessDomain | verified |
+| RA2-02 | B03 | A2.BusinessDomain | composition | A2.ServiceDomain | verified |
+| RA2-03 | B09 | A2.ServiceDomain | composition | A2.ServiceGroup | verified |
+| RA2-04 | B10 | A2.ServiceGroup | composition | A2.ServiceOperation | verified |
+| RA2-05 | B06 | A2.ServiceDomain | aggregation | A2.ControlRecord | verified |
+| RA2-06 | B04 | A2.ServiceDomain | association | A2.FunctionalPattern | verified |
+| RA2-07 | B05 | A2.ServiceDomain | association | A2.AssetType | verified |
+| RA2-08 | — | A2.ServiceOperation | association | A2.BehaviorQualifier | verified |
+| RA2-09 | B13 | A2.BusinessScenario | aggregation | A2.ServiceOperation | verified |
+| RA2-10 | — | A2.BusinessObject | composition | A2.BusinessObjectAttribute | verified |
+| RA2-11 | B07 | A2.ControlRecord | composition | A2.BehaviorQualifier | verified |
+| RA2-12 | B08 | A2.ControlRecord | association | A2.BusinessObject | verified |
+| RA2-13 | B11 | A2.ServiceOperation | access | A2.ControlRecord | verified |
+| RA2-14 | B12 | A2.ServiceDomain | flow | A2.ServiceDomain | verified |
+| RA2-15 | B14 | A2.Wireframe | association | A2.ServiceDomain | verified (not enforceable) |
+| RA2-16 | B15 | A2.SemanticAPI | realization | A2.ServiceDomain | verified (not enforceable) |
+| RA2-17 | — | A2.BOMModel | aggregation | A2.BusinessObject | sdmm_reading (not enforceable) |
+| RA1-01 | — | A1.BusinessCapability | composition | A1.BusinessCapability | verified_against_archi |
+| RA1-02 | — | A1.BusinessCapability | aggregation | A1.BusinessCapability | verified_against_archi |
+| RA1-03 | — | A1.BusinessCapability | serving | A1.ValueStream | verified_against_archi |
+| RA1-04 | — | A1.BusinessCapability | serving | A1.ValueStreamStage | verified_against_archi |
+| RA1-05 | — | A1.ValueStream | composition | A1.ValueStreamStage | verified_against_archi |
+| RA1-06 | — | A1.ValueStreamStage | triggering | A1.ValueStreamStage | verified_against_archi |
+| RA1-07 | — | A1.ValueStreamStage | flow | A1.ValueStreamStage | verified_against_archi |
+| RA1-08 | — | A1.BusinessProcess | realization | A1.BusinessCapability | verified_against_archi |
+| RA1-09 | — | A1.BusinessProcess | realization | A1.ValueStream | verified_against_archi |
+| RA1-10 | — | A1.BusinessProcess | realization | A1.ValueStreamStage | verified_against_archi |
+| RA1-11 | — | A1.BusinessProcess | realization | A1.BusinessService | verified_against_archi |
+| RA1-12 | — | A1.BusinessProcess | access | A1.BusinessObject | verified_against_archi |
+| RA1-13 | — | A1.BusinessProcess | realization | A1.BusinessRequirement | verified_against_archi |
+| RA1-14 | — | A1.BusinessProcess | triggering | A1.BusinessProcess | verified_against_archi |
+| RA1-15 | — | A1.BusinessProcess | flow | A1.BusinessProcess | verified_against_archi |
+| RA1-16 | — | A1.BusinessActivity | realization | A1.BusinessCapability | verified_against_archi |
+| RA1-17 | — | A1.BusinessActivity | realization | A1.ValueStream | verified_against_archi |
+| RA1-18 | — | A1.BusinessActivity | realization | A1.ValueStreamStage | verified_against_archi |
+| RA1-19 | — | A1.BusinessActivity | realization | A1.BusinessService | verified_against_archi |
+| RA1-20 | — | A1.BusinessActivity | access | A1.BusinessObject | verified_against_archi |
+| RA1-21 | — | A1.BusinessActivity | realization | A1.BusinessRequirement | verified_against_archi |
+| RA1-22 | — | A1.BusinessActivity | triggering | A1.BusinessActivity | verified_against_archi |
+| RA1-23 | — | A1.BusinessActivity | flow | A1.BusinessActivity | verified_against_archi |
+| RA1-24 | — | A1.BusinessProcess | composition | A1.BusinessActivity | verified_against_archi |
+| RA1-25 | — | A1.BusinessProcess | composition | A1.BusinessProcess | verified_against_archi |
+| RA1-26 | — | A1.BusinessActivity | composition | A1.BusinessActivity | verified_against_archi |
+| RA1-27 | — | A1.BusinessService | serving | A1.BusinessProcess | verified_against_archi |
+| RA1-28 | — | A1.BusinessService | serving | A1.BusinessActivity | verified_against_archi |
+| RA1-29 | — | A1.BusinessService | serving | A1.BusinessRole | verified_against_archi |
+| RA1-30 | — | A1.BusinessService | serving | A1.BusinessActor | verified_against_archi |
+| RA1-31 | — | A1.BusinessService | composition | A1.BusinessService | verified_against_archi |
+| RA1-32 | — | A1.BusinessService | access | A1.BusinessObject | verified_against_archi |
+| RA1-33 | — | A1.BusinessService | realization | A1.BusinessRequirement | verified_against_archi |
+| RA1-34 | — | A1.BusinessCapability | realization | A1.BusinessRequirement | verified_against_archi |
+| RA1-35 | — | A1.BusinessActor | assignment | A1.BusinessRole | verified_against_archi |
+| RA1-36 | — | A1.BusinessRole | assignment | A1.BusinessProcess | verified_against_archi |
+| RA1-37 | — | A1.BusinessRole | assignment | A1.BusinessActivity | verified_against_archi |
+| RA1-38 | — | A1.BusinessActor | assignment | A1.BusinessProcess | verified_against_archi |
+| RA1-39 | — | A1.BusinessActor | assignment | A1.BusinessActivity | verified_against_archi |
+| RA1-40 | — | A1.BusinessActor | composition | A1.BusinessActor | verified_against_archi |
+| RA1-41 | — | A1.BusinessActor | aggregation | A1.BusinessActor | verified_against_archi |
+| RA1-42 | — | A1.BusinessRole | composition | A1.BusinessRole | verified_against_archi |
+| RA1-43 | — | A1.BusinessRole | aggregation | A1.BusinessRole | verified_against_archi |
+| RA1-44 | — | A1.BusinessObject | composition | A1.BusinessObject | verified_against_archi |
+| RA1-45 | — | A1.BusinessObject | aggregation | A1.BusinessObject | verified_against_archi |
+| RA1-46 | — | A1.BusinessObject | specialization | A1.BusinessObject | verified_against_archi |
+| RA1-47 | — | A1.BusinessRequirement | composition | A1.BusinessRequirement | verified_against_archi |
+| RA1-48 | — | A1.BusinessRequirement | specialization | A1.BusinessRequirement | verified_against_archi |
+| RA3-01 | — | A3.ApplicationComponent | composition | A3.ApplicationComponent | verified_against_archi |
+| RA3-02 | — | A3.ApplicationComponent | aggregation | A3.ApplicationComponent | verified_against_archi |
+| RA3-03 | — | A3.ApplicationComponent | composition | A3.ApplicationInterface | verified_against_archi |
+| RA3-04 | — | A3.ApplicationComponent | assignment | A3.ApplicationFunction | verified_against_archi |
+| RA3-05 | — | A3.ApplicationFunction | realization | A3.ApplicationService | verified_against_archi |
+| RA3-06 | — | A3.ApplicationComponent | realization | A3.ApplicationService | verified_against_archi |
+| RA3-07 | — | A3.ApplicationInterface | assignment | A3.ApplicationService | verified_against_archi |
+| RA3-08 | — | A3.ApplicationService | serving | A3.ApplicationComponent | verified_against_archi |
+| RA3-09 | — | A3.ApplicationService | serving | A3.ApplicationFunction | verified_against_archi |
+| RA3-10 | — | A3.ApplicationComponent | flow | A3.ApplicationComponent | verified_against_archi |
+| RA3-11 | — | A3.ApplicationComponent | serving | A3.ApplicationComponent | verified_against_archi |
+| RA3-12 | — | A3.ApplicationComponent | triggering | A3.ApplicationComponent | verified_against_archi |
+| RA3-13 | — | A3.ApplicationFunction | composition | A3.ApplicationFunction | verified_against_archi |
+| RA3-14 | — | A3.ApplicationFunction | triggering | A3.ApplicationFunction | verified_against_archi |
+| RA3-15 | — | A3.ApplicationFunction | flow | A3.ApplicationFunction | verified_against_archi |
+| RA3-16 | — | A3.ApplicationComponent | access | A3.DataEntity | verified_against_archi |
+| RA3-17 | — | A3.ApplicationFunction | access | A3.DataEntity | verified_against_archi |
+| RA3-18 | — | A3.ApplicationService | access | A3.DataEntity | verified_against_archi |
+| RA3-19 | — | A3.DataEntity | composition | A3.DataEntity | verified_against_archi |
+| RA3-20 | — | A3.DataEntity | aggregation | A3.DataEntity | verified_against_archi |
+| RA3-21 | — | A3.DataEntity | specialization | A3.DataEntity | verified_against_archi |
+| RA3-22 | — | A3.ApplicationComponent | triggering | A3.Event | verified_against_archi |
+| RA3-23 | — | A3.ApplicationFunction | triggering | A3.Event | verified_against_archi |
+| RA3-24 | — | A3.Event | triggering | A3.ApplicationFunction | verified_against_archi |
+| RA3-25 | — | A3.Event | triggering | A3.ApplicationComponent | verified_against_archi |
+| RA3-26 | — | A3.Event | access | A3.DataEntity | verified_against_archi |
+| RA3-27 | — | A3.ApplicationInterface | composition | A3.APIOperation | verified_against_archi |
+| RA3-28 | — | A3.ApplicationComponent | composition | A3.APIOperation | verified_against_archi |
+| RA3-29 | — | A3.APIOperation | access | A3.DataEntity | verified_against_archi |
+| RA3-30 | — | A3.SolutionBuildingBlock | aggregation | A3.ApplicationComponent | unverified_togaf |
+| RA3-31 | — | A3.SolutionBuildingBlock | composition | A3.SolutionBuildingBlock | unverified_togaf |
+| RA4-01 | — | A4.Node | composition | A4.Node | verified_against_archi |
+| RA4-02 | — | A4.Node | aggregation | A4.Node | verified_against_archi |
+| RA4-03 | — | A4.Node | aggregation | A4.Device | verified_against_archi |
+| RA4-04 | — | A4.Node | assignment | A4.SystemSoftware | verified_against_archi |
+| RA4-05 | — | A4.Device | assignment | A4.SystemSoftware | verified_against_archi |
+| RA4-06 | — | A4.SystemSoftware | assignment | A4.SystemSoftware | verified_against_archi |
+| RA4-07 | — | A4.Node | assignment | A4.Artifact | verified_against_archi |
+| RA4-08 | — | A4.Node | realization | A4.TechnologyService | verified_against_archi |
+| RA4-09 | — | A4.Node | composition | A4.TechnologyInterface | verified_against_archi |
+| RA4-10 | — | A4.TechnologyService | serving | A4.Node | verified_against_archi |
+| RA4-11 | — | A4.Node | assignment | A4.Deployment | verified_against_archi |
+| RA4-12 | — | A4.Device | assignment | A4.Artifact | verified_against_archi |
+| RA4-13 | — | A4.Device | realization | A4.TechnologyService | verified_against_archi |
+| RA4-14 | — | A4.Device | composition | A4.TechnologyInterface | verified_against_archi |
+| RA4-15 | — | A4.TechnologyService | serving | A4.Device | verified_against_archi |
+| RA4-16 | — | A4.Device | assignment | A4.Deployment | verified_against_archi |
+| RA4-17 | — | A4.SystemSoftware | assignment | A4.Artifact | verified_against_archi |
+| RA4-18 | — | A4.SystemSoftware | realization | A4.TechnologyService | verified_against_archi |
+| RA4-19 | — | A4.SystemSoftware | composition | A4.TechnologyInterface | verified_against_archi |
+| RA4-20 | — | A4.TechnologyService | serving | A4.SystemSoftware | verified_against_archi |
+| RA4-21 | — | A4.SystemSoftware | assignment | A4.Deployment | verified_against_archi |
+| RA4-22 | — | A4.TechnologyInterface | assignment | A4.TechnologyService | verified_against_archi |
+| RA4-23 | — | A4.TechnologyService | composition | A4.TechnologyService | verified_against_archi |
+| RA4-24 | — | A4.Node | flow | A4.Node | verified_against_archi |
+| RA4-25 | — | A4.Node | triggering | A4.Node | verified_against_archi |
+| RA4-26 | — | A4.CommunicationNetwork | realization | A4.Path | verified_against_archi |
+| RA4-27 | — | A4.CommunicationNetwork | composition | A4.CommunicationNetwork | verified_against_archi |
+| RA4-28 | — | A4.Artifact | composition | A4.Artifact | verified_against_archi |
+| RA4-29 | — | A4.Artifact | aggregation | A4.Artifact | verified_against_archi |
+| RA4-30 | — | A4.Device | aggregation | A4.Device | verified_against_archi |
+| RA4-31 | — | A4.DeploymentEnvironment | aggregation | A4.Deployment | verified_against_archi |
+| RA4-32 | — | A4.DeploymentEnvironment | aggregation | A4.Node | verified_against_archi |
+| RA4-33 | — | A4.DeploymentEnvironment | aggregation | A4.Device | verified_against_archi |
+| RA4-34 | — | A4.DeploymentEnvironment | aggregation | A4.SystemSoftware | verified_against_archi |
+| RA4-35 | — | A4.Deployment | aggregation | A4.Artifact | verified_against_archi |
+| RA4-36 | — | A4.Device | composition | A4.Device | verified_against_archi |
+
+| ID | Entity | extends |
+|---|---|---|
+| XA1-01 | A1.ValueStreamStage | A1.ValueStream |
+| XA1-02 | A1.BusinessActivity | A1.BusinessProcess |
+| XA4-01 | A4.Deployment | A4.InfrastructureComponent |
+| XA4-02 | A4.DeploymentEnvironment | A4.InfrastructureComponent |
+| XA4-03 | A4.Node | A4.InfrastructureComponent |
+| XA4-04 | A4.Device | A4.InfrastructureComponent |
+| XA4-05 | A4.SystemSoftware | A4.InfrastructureComponent |
+| XA4-06 | A4.TechnologyService | A4.InfrastructureComponent |
+| XA4-07 | A4.TechnologyInterface | A4.InfrastructureComponent |
+| XA4-08 | A4.CommunicationNetwork | A4.InfrastructureComponent |
+| XA4-09 | A4.Path | A4.InfrastructureComponent |
+| XA4-10 | A4.Artifact | A4.InfrastructureComponent |
 
 ## 4. Cross-level mapping model
 
@@ -125,60 +319,60 @@ Every cross-level pair the model considers (`metamodel/new-mappings.json`; reaso
 
 Join keys the exports must carry for the steps to run without inference (`metamodel/export-conventions.json`). A key absent from an export is a *no proposal* for the rows that need it, reported as such — never guessed.
 
-| Entity | Key | Purpose |
-|---|---|---|
-| A2.ServiceOperation | `action_term` | one of BIAN's 17 action terms |
-| A2.ServiceOperation | `behavior_qualifier` | qualifier name or null |
-| A2.ServiceOperation | `input_attributes` | list of control-record attribute names consumed |
-| A2.ServiceOperation | `output_attributes` | list produced |
-| A2.ControlRecord | `attributes` | list of attribute names (BIAN control-record make-up) |
-| A2.ControlRecord | `lifecycle_states` | ordered list of the record's lifecycle states (S21 reasoning; informational) |
-| A2.BusinessObject | `attributes` | list of BOM attribute names |
-| A2.BusinessScenario | `operation_sequence` | ordered list of A2.ServiceOperation ids |
-| A1.BusinessCapability | `description` | scope statement (schema field, not attribute) |
-| A1.BusinessProcess | `invokes` | list of A2.ServiceOperation ids the process steps call (optional; enables step 3 for USES_DOMAIN) |
-| A1.BusinessActivity | `invokes` | list of A2.ServiceOperation ids |
-| A1.ValueStream | `stages` | ordered list of A1.ValueStreamStage ids |
-| A1.BusinessObject | `attributes` | list of attribute names from the business glossary |
-| A1.BusinessObject | `field_aliases` | map of the bank's glossary attribute names to canonical attribute names (S12 step 4), e.g. lc_number → letter_of_credit_reference; institution data |
-| A3.APIOperation | `method` | HTTP method |
-| A3.APIOperation | `path` | resource path |
-| A3.APIOperation | `payload_fields` | list of request/response field names |
-| A3.ApplicationComponent | `deployed_on` | list of A4 platform/node ids (join key for DEPLOYED_ON, S36) |
-| A3.ApplicationComponent | `deployed_as` | list of A4.Deployment ids (join key for DEPLOYED_AS) |
-| A3.ApplicationComponent | `built_as` | list of A4.Artifact ids (S39) |
-| A3.ApplicationComponent | `network_zone` | A4.CommunicationNetwork id (S37) |
-| A3.ApplicationService | `consumes` | list of A4.TechnologyService ids (join key for S41) |
-| A3.DataEntity | `attributes` | list of attribute names |
-| A3.DataEntity | `stored_in` | list of A4 ids: A4.SystemSoftware (S50) or A4.Artifact such as an object store (S49) |
-| A3.DataEntity | `field_aliases` | optional map of column names to canonical attribute names; overrides the field_aliases inherited from the interfaces of components that access the entity |
-| A4.Deployment | `component_id` | the A3.ApplicationComponent deployed |
-| A4.Deployment | `environment_id` | A4.DeploymentEnvironment id |
-| A4.Deployment | `platform_id` | A4 platform/node id |
-| A4.SystemSoftware | `hosts` | list of A3.ApplicationComponent ids (alternative join key) |
-| A4.Node | `hosts` | list of A3.ApplicationComponent ids |
-| A2.ServiceDomain | `asset_type` | id of the A2.AssetType the domain manages (join key for step 2 rule 1 reverse and S17 step-4 fallback) |
-| A2.ServiceDomain | `functional_pattern` | id of the A2.FunctionalPattern |
-| A2.AssetType | `aliases` | list of tokens the institution's estate uses for this asset (join key for the step-2 boundary gate and the S17 fallback); e.g. Financial Position → balance, position, posting, ledger |
-| A2.BehaviorQualifier | `aliases` | list of tokens the institution's APIs use for this qualifier (step-2 check 3); e.g. Closure → close |
-| A3.ApplicationInterface | `field_aliases` | map of the interface's product field names to canonical attribute names (step-2 check 4, S30/S20 step 4); e.g. sender → debtor_account_reference. Institution data from interviews or contract review, never inferred |
-| A3.ApplicationInterface | `exposed_through` | list of A4.TechnologyInterface ids — gateway ingress, listener (S43; S44, S48 derived) |
-| A1.BusinessService | `inputs` | attribute names the service takes (S09: matched against operation input_attributes) |
-| A1.BusinessService | `outputs` | attribute names the service returns (S09: matched against output_attributes) |
-| A1.BusinessRequirement | `applies_to` | list of A1.BusinessProcess / A1.BusinessActivity ids the requirement constrains (S13 via S04, S14 via S06) |
-| A3.ApplicationFunction | `exposed_through` | list of A3.APIOperation ids the function is reached through (S18, S21 via S24) |
-| A3.ApplicationFunction | `consumes` | list of A4.TechnologyService ids (S45; S46 derived) |
-| A3.Event | `published_to` | list of A4.TechnologyService ids — broker (S51) |
-| A3.SolutionBuildingBlock | `components` | list of A3.ApplicationComponent ids the block aggregates (S52–S54 derived) |
-| A4.Device | `hosts` | list of A3.ApplicationComponent ids (S35; DEPLOYED_ON with a Device target) |
-| A4.CommunicationNetwork | `connects` | list of A4.Node / A4.Device ids on the network (S37 with the component's network_zone) |
-| A4.Path | `from` | A4 endpoint id |
-| A4.Path | `to` | A4 endpoint id |
-| A4.Path | `network` | A4.CommunicationNetwork id |
-| A4.Path | `carries` | list of A3.ApplicationComponent ids whose traffic uses the path (S38) |
-| A4.TechnologyInterface | `of_service` | A4.TechnologyService id the interface belongs to (S42, S44 derived) |
-| A4.TechnologyInterface | `exposes` | list of A3.ApplicationInterface ids reachable through it (S43) |
-| A4.Artifact | `of_component` | A3.ApplicationComponent id the artefact is a build of (S39) |
+| ID | Entity | Key | Purpose |
+|---|---|---|---|
+| KA2-01 | A2.ServiceOperation | `action_term` | one of BIAN's 17 action terms |
+| KA2-02 | A2.ServiceOperation | `behavior_qualifier` | qualifier name or null |
+| KA2-03 | A2.ServiceOperation | `input_attributes` | list of control-record attribute names consumed |
+| KA2-04 | A2.ServiceOperation | `output_attributes` | list produced |
+| KA2-05 | A2.ControlRecord | `attributes` | list of attribute names (BIAN control-record make-up) |
+| KA2-06 | A2.ControlRecord | `lifecycle_states` | ordered list of the record's lifecycle states (S21 reasoning; informational) |
+| KA2-07 | A2.BusinessObject | `attributes` | list of BOM attribute names |
+| KA2-08 | A2.BusinessScenario | `operation_sequence` | ordered list of A2.ServiceOperation ids |
+| KA1-01 | A1.BusinessCapability | `description` | scope statement (schema field, not attribute) |
+| KA1-02 | A1.BusinessProcess | `invokes` | list of A2.ServiceOperation ids the process steps call (optional; enables step 3 for USES_DOMAIN) |
+| KA1-03 | A1.BusinessActivity | `invokes` | list of A2.ServiceOperation ids |
+| KA1-04 | A1.ValueStream | `stages` | ordered list of A1.ValueStreamStage ids |
+| KA1-05 | A1.BusinessObject | `attributes` | list of attribute names from the business glossary |
+| KA1-06 | A1.BusinessObject | `field_aliases` | map of the bank's glossary attribute names to canonical attribute names (S12 step 4), e.g. lc_number → letter_of_credit_reference; institution data |
+| KA3-01 | A3.APIOperation | `method` | HTTP method |
+| KA3-02 | A3.APIOperation | `path` | resource path |
+| KA3-03 | A3.APIOperation | `payload_fields` | list of request/response field names |
+| KA3-04 | A3.ApplicationComponent | `deployed_on` | list of A4 platform/node ids (join key for DEPLOYED_ON, S36) |
+| KA3-05 | A3.ApplicationComponent | `deployed_as` | list of A4.Deployment ids (join key for DEPLOYED_AS) |
+| KA3-06 | A3.ApplicationComponent | `built_as` | list of A4.Artifact ids (S39) |
+| KA3-07 | A3.ApplicationComponent | `network_zone` | A4.CommunicationNetwork id (S37) |
+| KA3-08 | A3.ApplicationService | `consumes` | list of A4.TechnologyService ids (join key for S41) |
+| KA3-09 | A3.DataEntity | `attributes` | list of attribute names |
+| KA3-10 | A3.DataEntity | `stored_in` | list of A4 ids: A4.SystemSoftware (S50) or A4.Artifact such as an object store (S49) |
+| KA3-11 | A3.DataEntity | `field_aliases` | optional map of column names to canonical attribute names; overrides the field_aliases inherited from the interfaces of components that access the entity |
+| KA4-01 | A4.Deployment | `component_id` | the A3.ApplicationComponent deployed |
+| KA4-02 | A4.Deployment | `environment_id` | A4.DeploymentEnvironment id |
+| KA4-03 | A4.Deployment | `platform_id` | A4 platform/node id |
+| KA4-04 | A4.SystemSoftware | `hosts` | list of A3.ApplicationComponent ids (alternative join key) |
+| KA4-05 | A4.Node | `hosts` | list of A3.ApplicationComponent ids |
+| KA2-09 | A2.ServiceDomain | `asset_type` | id of the A2.AssetType the domain manages (join key for step 2 rule 1 reverse and S17 step-4 fallback) |
+| KA2-10 | A2.ServiceDomain | `functional_pattern` | id of the A2.FunctionalPattern |
+| KA2-11 | A2.AssetType | `aliases` | list of tokens the institution's estate uses for this asset (join key for the step-2 boundary gate and the S17 fallback); e.g. Financial Position → balance, position, posting, ledger |
+| KA2-12 | A2.BehaviorQualifier | `aliases` | list of tokens the institution's APIs use for this qualifier (step-2 check 3); e.g. Closure → close |
+| KA3-12 | A3.ApplicationInterface | `field_aliases` | map of the interface's product field names to canonical attribute names (step-2 check 4, S30/S20 step 4); e.g. sender → debtor_account_reference. Institution data from interviews or contract review, never inferred |
+| KA3-13 | A3.ApplicationInterface | `exposed_through` | list of A4.TechnologyInterface ids — gateway ingress, listener (S43; S44, S48 derived) |
+| KA1-07 | A1.BusinessService | `inputs` | attribute names the service takes (S09: matched against operation input_attributes) |
+| KA1-08 | A1.BusinessService | `outputs` | attribute names the service returns (S09: matched against output_attributes) |
+| KA1-09 | A1.BusinessRequirement | `applies_to` | list of A1.BusinessProcess / A1.BusinessActivity ids the requirement constrains (S13 via S04, S14 via S06) |
+| KA3-14 | A3.ApplicationFunction | `exposed_through` | list of A3.APIOperation ids the function is reached through (S18, S21 via S24) |
+| KA3-15 | A3.ApplicationFunction | `consumes` | list of A4.TechnologyService ids (S45; S46 derived) |
+| KA3-16 | A3.Event | `published_to` | list of A4.TechnologyService ids — broker (S51) |
+| KA3-17 | A3.SolutionBuildingBlock | `components` | list of A3.ApplicationComponent ids the block aggregates (S52–S54 derived) |
+| KA4-06 | A4.Device | `hosts` | list of A3.ApplicationComponent ids (S35; DEPLOYED_ON with a Device target) |
+| KA4-07 | A4.CommunicationNetwork | `connects` | list of A4.Node / A4.Device ids on the network (S37 with the component's network_zone) |
+| KA4-08 | A4.Path | `from` | A4 endpoint id |
+| KA4-09 | A4.Path | `to` | A4 endpoint id |
+| KA4-10 | A4.Path | `network` | A4.CommunicationNetwork id |
+| KA4-11 | A4.Path | `carries` | list of A3.ApplicationComponent ids whose traffic uses the path (S38) |
+| KA4-12 | A4.TechnologyInterface | `of_service` | A4.TechnologyService id the interface belongs to (S42, S44 derived) |
+| KA4-13 | A4.TechnologyInterface | `exposes` | list of A3.ApplicationInterface ids reachable through it (S43) |
+| KA4-14 | A4.Artifact | `of_component` | A3.ApplicationComponent id the artefact is a build of (S39) |
 
 **BIAN action terms.** [SAPG] §3.2.5 Figure 14 — 17 action terms in four categories; §3.5: Retrieve maps to HTTP GET; Notify is not used in the BIAN REST mapping
 
@@ -200,12 +394,12 @@ The steps are specified in `docs/mapping-execution.md` §3 exactly as the execut
 
 ## 7. Outputs, scoring and governance
 
-| Output | File | Content | Scored by |
-|---|---|---|---|
-| Proposals | `<uc>-proposals.json` | registry records, `status: proposed`, plan band, typed evidence, rationale with the working | `sdmm-eval` against `<uc>-gold-mappings.json` (approved) — P / R / F1 per relationship |
-| Candidate reports | `<uc>-candidates.json` | one record per candidate / conditional / institution-only / derived row, `relationship` = plan ID | `sdmm-eval` against `<uc>-gold-candidates.json` — per plan ID |
-| Inference log | `<uc>-inference-log.json` | every attempt: plan ID, data read, rule values, step assigned / used, fallback, confidence predicted / given, outcome; no-proposal register; findings | the coverage table in `docs/use-case-testing.md` is regenerated from it |
-| Design exports | `<uc>-design-a3.json`, `-a4.json` | planned instances (M2 only) | `sdmm-graph check`; trace marks design hops |
+| ID | Output | File | Content | Scored by |
+|---|---|---|---|---|
+| OUT-01 | Proposals | `<uc>-proposals.json` | registry records, `status: proposed`, plan band, typed evidence, rationale with the working | `sdmm-eval` against `<uc>-gold-mappings.json` (approved) — P / R / F1 per relationship |
+| OUT-02 | Candidate reports | `<uc>-candidates.json` | one record per candidate / conditional / institution-only / derived row, `relationship` = plan ID | `sdmm-eval` against `<uc>-gold-candidates.json` — per plan ID |
+| OUT-03 | Inference log | `<uc>-inference-log.json` | every attempt: plan ID, data read, rule values, step assigned / used, fallback, confidence predicted / given, outcome; no-proposal register; findings | the coverage table in `docs/use-case-testing.md` is regenerated from it |
+| OUT-04 | Design exports | `<uc>-design-a3.json`, `-a4.json` | planned instances (M2 only) | `sdmm-graph check`; trace marks design hops |
 
 Governance stays outside the engine: `sdmm-validate` (structure, registry, evidence, anchoring), `sdmm-diff` (lifecycle transitions, immutability of approved records; supersession via `previous_mapping_id`), impact classification per `schema/impact-rules.json` (modify, replace, retire, rehost).
 
@@ -213,28 +407,28 @@ Governance stays outside the engine: `sdmm-validate` (structure, registry, evide
 
 The eleven executor runs are the acceptance test: the engine, given the same inputs, must reach the same proposals and candidate reports and score at least the same against the sealed gold (`docs/use-case-testing.md` › Results and Plan coverage).
 
-| Case | Estate | Hidden | Executor result |
-|---|---|---|---|
-| E1, E2 | card-fraud-alerts, customer-onboarding | nothing (query and governance) | all checks exact |
-| M0 | card-fraud-alerts | 6 arrows | run 2: 6 of 6, 1 false (rule withdrawn) |
-| M1 | payment-initiation (68 instances) | 12 → 13 arrows, planted mismatch | 13 of 13 under the restated gold; mismatch caught |
-| H1 | legacy-core-ledger (87; SOAP, all POST; empty given) | 28 arrows | 28 of 28, 0 false |
-| H2 | acquired-fintech (116; no A1; hostile names) | 41 arrows | run 1: 32 of 41, 0 false; run 2 with aliases: 41 of 41 |
-| M2 | digital-lending (greenfield, no A3/A4) | 12 design arrows | 12 of 12; boundary stated |
-| C1, C2, C3 | trade-finance (85; one estate, three level pairs) | 19 registry + 100 candidate | 19 of 19; 100 of 101 (one fixed by rule) |
+| ID | Case | Estate | Hidden | Executor result |
+|---|---|---|---|---|
+| ACC-01 | E1, E2 | card-fraud-alerts, customer-onboarding | nothing (query and governance) | all checks exact |
+| ACC-02 | M0 | card-fraud-alerts | 6 arrows | run 2: 6 of 6, 1 false (rule withdrawn) |
+| ACC-03 | M1 | payment-initiation (68 instances) | 12 → 13 arrows, planted mismatch | 13 of 13 under the restated gold; mismatch caught |
+| ACC-04 | H1 | legacy-core-ledger (87; SOAP, all POST; empty given) | 28 arrows | 28 of 28, 0 false |
+| ACC-05 | H2 | acquired-fintech (116; no A1; hostile names) | 41 arrows | run 1: 32 of 41, 0 false; run 2 with aliases: 41 of 41 |
+| ACC-06 | M2 | digital-lending (greenfield, no A3/A4) | 12 design arrows | 12 of 12; boundary stated |
+| ACC-07 | C1, C2, C3 | trade-finance (85; one estate, three level pairs) | 19 registry + 100 candidate | 19 of 19; 100 of 101 (one fixed by rule) |
 
 Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: 131 rows enforced, 113 verified against the Archi oracle, 0 contradicted.
 
 ## 9. Verification status and open items
 
-| Item | Status |
-|---|---|
-| A2 structure and B rows | verified on public BIAN pages; `pending_release_validation` against a licensed release remains |
-| A1 / A3 / A4 within-level rows | 113 verified against the open-source Archi relationship matrix (commit cited in the record); 2 TOGAF rows unverified |
-| Official S rows citing ArchiMate / W135 (S34, S39, S41, S45, S49; S04, S05) | unverified: login-gated; the five ArchiMate rows can be checked against the Archi oracle next |
-| API contention tie-break (step 2 clause 4) | **proposed** — chosen with a gold already seen; validated only when it decides a pair on an unseen gold |
-| One-author caveat | all estates and gold authored by SDMM; one blind case (data and gold by someone else) retires it |
-| Confidence bands | assigned by hand and calibrated conservative (every low inference confirmed); could be re-derived from the logs' predicted-vs-observed outcomes |
+| ID | Item | Status |
+|---|---|---|
+| OPEN-01 | A2 structure and B rows | verified on public BIAN pages; `pending_release_validation` against a licensed release remains |
+| OPEN-02 | A1 / A3 / A4 within-level rows | 113 verified against the open-source Archi relationship matrix (commit cited in the record); 2 TOGAF rows unverified |
+| OPEN-03 | Official S rows citing ArchiMate / W135 (S34, S39, S41, S45, S49; S04, S05) | unverified: login-gated; the five ArchiMate rows can be checked against the Archi oracle next |
+| OPEN-04 | API contention tie-break (step 2 clause 4) | **proposed** — chosen with a gold already seen; validated only when it decides a pair on an unseen gold |
+| OPEN-05 | One-author caveat | all estates and gold authored by SDMM; one blind case (data and gold by someone else) retires it |
+| OPEN-06 | Confidence bands | assigned by hand and calibrated conservative (every low inference confirmed); could be re-derived from the logs' predicted-vs-observed outcomes |
 
 ## 10. Requirements index
 

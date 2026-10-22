@@ -196,3 +196,23 @@ class DesignSpecTests(unittest.TestCase):
         nm = {m['id'] for m in json.loads((ROOT / 'metamodel/new-mappings.json').read_text(encoding='utf-8'))['mappings'] if m['rule_decision'] == 'registry_rule'}
         for pid in nm:
             self.assertIn(f"{pid}: propose", idx)
+
+
+class DesignDiagramTests(unittest.TestCase):
+    def test_design_diagram_equals_render_and_carries_every_id(self):
+        from sdmm.spec import render_diagram
+        from sdmm.diagram import load_new, new_entries
+        text = (ROOT / 'docs/mapping-model-design-diagram.puml').read_text(encoding='utf-8')
+        self.assertEqual(text, render_diagram())
+        lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
+        for c in lr['constraints']:
+            self.assertIn(c['id'], text)
+        for m in new_entries(load_new()):
+            self.assertIn(f": {m['id']}", text)
+
+    def test_every_convention_key_has_an_id_in_the_record_and_the_spec(self):
+        conv = json.loads((ROOT / 'metamodel/export-conventions.json').read_text(encoding='utf-8'))
+        doc = (ROOT / 'docs/mapping-model-design-spec.md').read_text(encoding='utf-8')
+        for ent, keys in conv['conventions'].items():
+            for k in keys:
+                kid = conv['key_ids'][f'{ent}.{k}']; self.assertIn(f"| {kid} | {ent} | `{k}` |", doc)

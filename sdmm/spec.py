@@ -49,7 +49,7 @@ def render():
 
     out = ['# SDMM Mapping Model Design Specification — engine input (v0.6 draft)', '',
            'Generated from the records by `python -m sdmm.spec`; the test suite checks it is current. This specification merges the three records — the entity catalogue, the within-level structure (`metamodel/level-relationships.json`) and the cross-level mapping model (`schema/relationship-types.json`, `metamodel/new-mappings.json`) — with the export conventions, the mapping procedure and the test results, into one statement of **what a mapping engine must consume, do, refuse and produce**. Every requirement names the record rows it derives from and the use-case runs that validated it; nothing here claims more than a record and a run support.', '',
-           'Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.', '']
+           'The companion diagram `docs/mapping-model-design-diagram.puml` draws every within-level row and cross-level mapping with its ID. Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.', '']
 
     # ---- 1 scope
     out += ['## 1. Purpose, scope and non-goals', '',
@@ -62,11 +62,13 @@ def render():
     for t, e in ents.items():
         std = (e.get('reference') or {}).get('standard', '') or ''
         prov['BIAN' if 'BIAN' in std else 'ArchiMate' if 'ArchiMate' in std or 'AM' in std else 'TOGAF' if 'TOGAF' in std else 'SDMM extension'] += 1
-    out += ['## 2. Vocabulary — the entity catalogue', '', f"{len(ents)} entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: " + ', '.join(f"{k} {v}" for k, v in prov.most_common()) + '.', '',
-            '| Level | Entities |', '|---|---|']
+    out += ['## 2. Vocabulary — the entity catalogue', '', f"{len(ents)} entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: " + ', '.join(f"{k} {v}" for k, v in prov.most_common()) + '. **The entity ID is its type string** (e.g. `A3.ApplicationComponent`); every mapping, relationship row and export instance refers to it by that string.', '',
+            '| ID | Level | Kind | Extends | Reference concept |', '|---|---|---|---|---|']
     for l in ('A1', 'A2', 'A3', 'A4'):
-        names = [t.split('.')[1] + (' *(abstract)*' if e.get('abstract') else ' *(artefact)*' if e.get('artefact') else '') for t, e in ents.items() if e['level'] == l]
-        out.append(f"| {LEVEL_NAMES[l]} | {', '.join(names)} |")
+        for t, e in ents.items():
+            if e['level'] != l: continue
+            kind = 'abstract' if e.get('abstract') else 'artefact' if e.get('artefact') else 'concrete'
+            out.append(f"| `{t}` | {l} | {kind} | {e.get('extends') or '—'} | {(e.get('reference') or {}).get('standard', '—')}: {(e.get('reference') or {}).get('concept', '—')} |")
     r1 = req('V', 'Resolve every instance type in an export to a catalogue entity, through `extends` (is-a) and the registry\'s type aliases; reject unknown types, instantiated abstract entities and artefacts used as mapping endpoints.', 'entity catalogue; `schema/relationship-types.json` type_aliases', 'E1, E2 (every example export loads); relationships test T4.6')
     out.append('')
 
@@ -78,7 +80,15 @@ def render():
             '| A1 | ArchiMate 3.2 ch. 6–8 | ' + str(byl['A1']) + ' | capabilities serve value streams; processes (and activities, is-a process) realise capabilities, value streams, services and requirements, access objects, compose activities; actors assigned to roles assigned to processes |',
             '| A2 | BIAN Service Landscape metamodel (B02–B15) | ' + str(byl['A2']) + ' | area ⊃ domain ⊃ Service Domain; a domain has an asset type, a functional pattern, a control record and service groups of operations; operations act on the control record and may be qualified; scenarios sequence operations; objects type the control record |',
             '| A3 | ArchiMate 3.2 ch. 9; TOGAF (SBB) | ' + str(byl['A3']) + ' | a component composes interfaces (which compose API operations) and sub-components, is assigned to functions, realises services; interfaces are assigned to services; behaviour accesses data entities and triggers events; a solution building block aggregates components |',
-            '| A4 | ArchiMate 3.2 ch. 10; SDMM deployment extensions | ' + str(byl['A4']) + ' | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |', '']
+            '| A4 | ArchiMate 3.2 ch. 10; SDMM deployment extensions | ' + str(byl['A4']) + ' | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |', '',
+            '### 3.1 All within-level rows', '', 'Full description, source, reasoning, inference and confidence per row: `docs/relationships-planning.md`.', '',
+            '| ID | Official | Source | Kind | Target | Verification |', '|---|---|---|---|---|---|']
+    for c in lr['constraints']:
+        out.append(f"| {c['id']} | {c.get('official_id') or '—'} | {c['source_type']} | {c['kind']} | {c['target_type']} | {c['verification']}{' (not enforceable)' if c.get('enforceable') is False else ''} |")
+    out += ['', '| ID | Entity | extends |', '|---|---|---|']
+    for x in lr['inheritance']:
+        out.append(f"| {x['id']} | {x['entity']} | {x['extends']} |")
+    out.append('')
     req('S', 'Accept a within-level relationship only when its (source entity, kind, target entity) matches a constraint row for that level through inheritance, or its kind is `association`; report the offending triple and the level\'s basis otherwise.', 'RA1-01 … RA4-36', 'relationships test T4.1–T4.9 (131 accepted, 25 rejected); `examples/reference-structure` (129 rows on committed data)')
     req('S', 'Walk within-level part-whole links (composition, aggregation) in traces and derivations — part → whole downstream, whole → parts upstream — and never assignment or realization.', 'rows of kind composition / aggregation; `sdmm-graph trace --follow-composition`', 'H1 (module → ledger → platform); C3 (API → interface → component → deployment → environment)')
     req('S', 'Treat the three A2 artefact rows as provenance only: Wireframe, Semantic API and BOM artefacts are never instantiated and never mapping endpoints.', 'RA2-15, RA2-16, RA2-17 (enforceable=false)', 'relationships test T4 (not testable by construction)')
@@ -111,9 +121,10 @@ def render():
 
     # ---- 5 data
     out += ['## 5. Data requirements — the export conventions', '', 'Join keys the exports must carry for the steps to run without inference (`metamodel/export-conventions.json`). A key absent from an export is a *no proposal* for the rows that need it, reported as such — never guessed.', '',
-            '| Entity | Key | Purpose |', '|---|---|---|']
+            '| ID | Entity | Key | Purpose |', '|---|---|---|---|']
+    kid = conv.get('key_ids', {})
     for ent, keys in conv['conventions'].items():
-        for k, desc in keys.items(): out.append(f"| {ent} | `{k}` | {desc} |")
+        for k, desc in keys.items(): out.append(f"| {kid.get(f'{ent}.{k}', '—')} | {ent} | `{k}` | {desc} |")
     out += ['', f"**BIAN action terms.** {conv['bian_action_terms']['source']}", '']
     req('D', 'Read every join key listed in §5 by exact name; treat a missing key as *no proposal* for the rows that depend on it, recorded in the no-proposal register with the key named.', 'metamodel/export-conventions.json', 'E1 (missing `deployed_on` found and added), M1–C3 (keys present)')
     req('D', 'Read institution aliases as data, never invent them: asset-type aliases (boundary gate), behaviour-qualifier aliases (check 3), interface and data-entity field aliases (check 4, S30/S20), business-object glossary aliases (S12).', 'A2.AssetType.aliases; A2.BehaviorQualifier.aliases; A3.ApplicationInterface.field_aliases; A3.DataEntity.field_aliases; A1.BusinessObject.field_aliases', 'H1 (token gate), H2 run 1 → run 2 (recall 0.78 → 1.00 with aliases supplied), C1')
@@ -138,35 +149,35 @@ def render():
 
     # ---- 7 outputs
     out += ['## 7. Outputs, scoring and governance', '',
-            '| Output | File | Content | Scored by |', '|---|---|---|---|',
-            '| Proposals | `<uc>-proposals.json` | registry records, `status: proposed`, plan band, typed evidence, rationale with the working | `sdmm-eval` against `<uc>-gold-mappings.json` (approved) — P / R / F1 per relationship |',
-            '| Candidate reports | `<uc>-candidates.json` | one record per candidate / conditional / institution-only / derived row, `relationship` = plan ID | `sdmm-eval` against `<uc>-gold-candidates.json` — per plan ID |',
-            '| Inference log | `<uc>-inference-log.json` | every attempt: plan ID, data read, rule values, step assigned / used, fallback, confidence predicted / given, outcome; no-proposal register; findings | the coverage table in `docs/use-case-testing.md` is regenerated from it |',
-            '| Design exports | `<uc>-design-a3.json`, `-a4.json` | planned instances (M2 only) | `sdmm-graph check`; trace marks design hops |', '',
+            '| ID | Output | File | Content | Scored by |', '|---|---|---|---|---|',
+            '| OUT-01 | Proposals | `<uc>-proposals.json` | registry records, `status: proposed`, plan band, typed evidence, rationale with the working | `sdmm-eval` against `<uc>-gold-mappings.json` (approved) — P / R / F1 per relationship |',
+            '| OUT-02 | Candidate reports | `<uc>-candidates.json` | one record per candidate / conditional / institution-only / derived row, `relationship` = plan ID | `sdmm-eval` against `<uc>-gold-candidates.json` — per plan ID |',
+            '| OUT-03 | Inference log | `<uc>-inference-log.json` | every attempt: plan ID, data read, rule values, step assigned / used, fallback, confidence predicted / given, outcome; no-proposal register; findings | the coverage table in `docs/use-case-testing.md` is regenerated from it |',
+            '| OUT-04 | Design exports | `<uc>-design-a3.json`, `-a4.json` | planned instances (M2 only) | `sdmm-graph check`; trace marks design hops |', '',
             'Governance stays outside the engine: `sdmm-validate` (structure, registry, evidence, anchoring), `sdmm-diff` (lifecycle transitions, immutability of approved records; supersession via `previous_mapping_id`), impact classification per `schema/impact-rules.json` (' + ', '.join(imp['kinds']) + ').', '']
     req('O', 'Write the three output files in the shapes above; never write `approved`; never edit an existing mapping document; proposals must pass `sdmm-validate --strict` with draft warnings only.', 'guide §4, §4b, §4c', 'every run')
     req('O', 'Log every attempt, not only proposals: the inference log is the evidence base for the coverage table and for confidence calibration.', 'guide §4b', 'eleven logs, 812+ attempts')
 
     # ---- 8 acceptance
     out += ['## 8. Acceptance — the runs the engine must reproduce', '', 'The eleven executor runs are the acceptance test: the engine, given the same inputs, must reach the same proposals and candidate reports and score at least the same against the sealed gold (`docs/use-case-testing.md` › Results and Plan coverage).', '',
-            '| Case | Estate | Hidden | Executor result |', '|---|---|---|---|',
-            '| E1, E2 | card-fraud-alerts, customer-onboarding | nothing (query and governance) | all checks exact |',
-            '| M0 | card-fraud-alerts | 6 arrows | run 2: 6 of 6, 1 false (rule withdrawn) |', '| M1 | payment-initiation (68 instances) | 12 → 13 arrows, planted mismatch | 13 of 13 under the restated gold; mismatch caught |',
-            '| H1 | legacy-core-ledger (87; SOAP, all POST; empty given) | 28 arrows | 28 of 28, 0 false |', '| H2 | acquired-fintech (116; no A1; hostile names) | 41 arrows | run 1: 32 of 41, 0 false; run 2 with aliases: 41 of 41 |',
-            '| M2 | digital-lending (greenfield, no A3/A4) | 12 design arrows | 12 of 12; boundary stated |', '| C1, C2, C3 | trade-finance (85; one estate, three level pairs) | 19 registry + 100 candidate | 19 of 19; 100 of 101 (one fixed by rule) |', '',
+            '| ID | Case | Estate | Hidden | Executor result |', '|---|---|---|---|---|',
+            '| ACC-01 | E1, E2 | card-fraud-alerts, customer-onboarding | nothing (query and governance) | all checks exact |',
+            '| ACC-02 | M0 | card-fraud-alerts | 6 arrows | run 2: 6 of 6, 1 false (rule withdrawn) |', '| ACC-03 | M1 | payment-initiation (68 instances) | 12 → 13 arrows, planted mismatch | 13 of 13 under the restated gold; mismatch caught |',
+            '| ACC-04 | H1 | legacy-core-ledger (87; SOAP, all POST; empty given) | 28 arrows | 28 of 28, 0 false |', '| ACC-05 | H2 | acquired-fintech (116; no A1; hostile names) | 41 arrows | run 1: 32 of 41, 0 false; run 2 with aliases: 41 of 41 |',
+            '| ACC-06 | M2 | digital-lending (greenfield, no A3/A4) | 12 design arrows | 12 of 12; boundary stated |', '| ACC-07 | C1, C2, C3 | trade-finance (85; one estate, three level pairs) | 19 registry + 100 candidate | 19 of 19; 100 of 101 (one fixed by rule) |', '',
             'Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: 131 rows enforced, 113 verified against the Archi oracle, 0 contradicted.', '']
     req('A', 'Reproduce every executor run from the committed inputs with precision ≥ the executor\'s and recall ≥ the executor\'s on each sealed gold; any difference is a finding on the engine or on the guide.', 'docs/use-case-testing.md', 'baseline established by the eleven runs')
     req('A', 'Validate every example export and `examples/reference-structure` clean, and reject the relationships-test probes (reversed, mistyped, abstract, cross-level, uncatalogued).', '§3 rows; relationships test T4', 'Phase 1 probes; CI')
 
     # ---- 9 open
     out += ['## 9. Verification status and open items', '',
-            '| Item | Status |', '|---|---|',
-            '| A2 structure and B rows | verified on public BIAN pages; `pending_release_validation` against a licensed release remains |',
-            '| A1 / A3 / A4 within-level rows | 113 verified against the open-source Archi relationship matrix (commit cited in the record); 2 TOGAF rows unverified |',
-            '| Official S rows citing ArchiMate / W135 (S34, S39, S41, S45, S49; S04, S05) | unverified: login-gated; the five ArchiMate rows can be checked against the Archi oracle next |',
-            '| API contention tie-break (step 2 clause 4) | **proposed** — chosen with a gold already seen; validated only when it decides a pair on an unseen gold |',
-            '| One-author caveat | all estates and gold authored by SDMM; one blind case (data and gold by someone else) retires it |',
-            '| Confidence bands | assigned by hand and calibrated conservative (every low inference confirmed); could be re-derived from the logs\' predicted-vs-observed outcomes |', '']
+            '| ID | Item | Status |', '|---|---|---|',
+            '| OPEN-01 | A2 structure and B rows | verified on public BIAN pages; `pending_release_validation` against a licensed release remains |',
+            '| OPEN-02 | A1 / A3 / A4 within-level rows | 113 verified against the open-source Archi relationship matrix (commit cited in the record); 2 TOGAF rows unverified |',
+            '| OPEN-03 | Official S rows citing ArchiMate / W135 (S34, S39, S41, S45, S49; S04, S05) | unverified: login-gated; the five ArchiMate rows can be checked against the Archi oracle next |',
+            '| OPEN-04 | API contention tie-break (step 2 clause 4) | **proposed** — chosen with a gold already seen; validated only when it decides a pair on an unseen gold |',
+            '| OPEN-05 | One-author caveat | all estates and gold authored by SDMM; one blind case (data and gold by someone else) retires it |',
+            '| OPEN-06 | Confidence bands | assigned by hand and calibrated conservative (every low inference confirmed); could be re-derived from the logs\' predicted-vs-observed outcomes |', '']
 
     # ---- 10 index
     out += ['## 10. Requirements index', '', f"{len(REQ)} requirements. Groups: V vocabulary, S structure, M mapping model, D data, P procedure, O outputs, A acceptance.", '',
@@ -177,15 +188,28 @@ def render():
     return '\n'.join(out) + '\n'
 
 
+DIAGRAM = ROOT / 'docs' / 'mapping-model-design-diagram.puml'
+
+
+def render_diagram():
+    """The design diagram is the merged view (within-level rows by ID + cross-level plan rows by ID) under the spec's title."""
+    from sdmm.diagram import render_merged
+    text = render_merged()
+    return text.replace('@startuml merged-mappings', '@startuml mapping-model-design-diagram', 1).replace('title Merged view — ', 'title Mapping Model Design — every within-level row and cross-level mapping, by ID: ', 1)
+
+
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdmm-spec', description='Render docs/mapping-model-design-spec.md from the records.')
+    parser = argparse.ArgumentParser(prog='sdmm-spec', description='Render docs/mapping-model-design-spec.md and docs/mapping-model-design-diagram.puml from the records.')
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args(argv)
-    text = render()
-    if args.check:
-        ok = DOC.exists() and DOC.read_text(encoding='utf-8') == text
-        print('up to date' if ok else 'STALE: regenerate with python -m sdmm.spec'); return 0 if ok else 1
-    DOC.write_text(text, encoding='utf-8'); print(f'wrote {DOC}'); return 0
+    rc = 0
+    for path, text in ((DOC, render()), (DIAGRAM, render_diagram())):
+        if args.check:
+            ok = path.exists() and path.read_text(encoding='utf-8') == text; rc |= 0 if ok else 1
+            print(f"{path.name}: {'up to date' if ok else 'STALE: regenerate with python -m sdmm.spec'}")
+        else:
+            path.write_text(text, encoding='utf-8'); print(f'wrote {path}')
+    return rc
 
 
 if __name__ == '__main__':
