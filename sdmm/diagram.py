@@ -185,14 +185,66 @@ def render_levels(metamodel=None, level_rels=None, examples_dir=None):
     return '\n'.join(out) + '\n'
 
 
+def render_merged(new=None, metamodel=None, level_rels=None, examples_dir=None):
+    """Render metamodel/merged-mappings.puml: the within-level structure (as level-relationships.puml) and
+    every cross-level plan connection (as new-mappings.puml) on one canvas. Within-level arrows are thin
+    and unlabelled by ID; cross-level arrows carry their plan ID and decision colour."""
+    new = new or load_new()
+    mm = metamodel or Metamodel.load()
+    lr = level_rels or json.loads(LEVEL_RELS.read_text(encoding='utf-8'))
+    alias = {t: f"{e['level'].lower()}_{t.split('.')[1].lower()}" for t, e in mm.entities.items()}
+    entries = new_entries(new)
+    rule_of = {m['id']: m.get('sdmm_rule') for m in load_official()['mappings']}
+    ends = {m['source'] for m in entries} | {m['target'] for m in entries}
+    a2 = [(c['source_type'], c['kind'], c['target_type']) for c in lr['constraints'] if c['level'] == 'A2']
+    obs = observed_patterns(examples_dir)
+    within = len(a2) + sum(1 for (l, *_r) in obs if l != 'A2')
+    out = ['@startuml merged-mappings', 'left to right direction',
+           'skinparam rectangle {', '  BackgroundColor White', '  BorderColor #424242', '}',
+           'skinparam package {', '  BackgroundColor #F5F5F5', '  BorderColor #9E9E9E', '}', 'skinparam ArrowFontSize 9',
+           f"title Merged view — {within} within-level links (thin, kind only) and {len(entries)} cross-level mappings (plan ID, coloured by decision)", '']
+    for lvl in ('A1', 'A2', 'A3', 'A4'):
+        out.append(f'package "{LEVEL_NAMES[lvl]}" as {lvl} {{')
+        for t, e in mm.entities.items():
+            if e['level'] != lvl: continue
+            tag = '\\n(artefact)' if e.get('artefact') else '\\n(abstract)' if e.get('abstract') else ''
+            if t in ends: out.append(f'  rectangle "{t}{tag}" as {alias[t]}')
+            else: out.append(f'  rectangle "{t}{tag}" as {alias[t]} #EEEEEE')
+        if lvl == 'A2':
+            out.append(f"  ' within A2 — BIAN-fixed constraints ({len(a2)})")
+            for s_, k, t_ in a2:
+                out.append(f"  {alias[s_]} -[#B0BEC5]-> {alias[t_]} : <size:8>{k}</size>")
+        else:
+            rows = sorted((s_, k, t_) for (l, s_, k, t_) in obs if l == lvl)
+            out.append(f"  ' within {lvl} — observed in the examples ({len(rows)})")
+            for s_, k, t_ in rows:
+                out.append(f"  {alias[s_]} -[#B0BEC5]-> {alias[t_]} : <size:8>{k}</size>")
+        out.append('}'); out.append('')
+    for dec, (colour, style, label) in DECISION_STYLE.items():
+        rows = [m for m in entries if m['rule_decision'] == dec]
+        out.append(f"' --- cross-level: {label} ({len(rows)})")
+        for m in rows:
+            rule = m.get('sdmm_rule') or rule_of.get(m['id'])
+            text = f"{m['id']} {rule}" if dec == 'registry_rule' and rule else f"{m['id']}"
+            spec = f"#{colour.lstrip('#')}" + (f",{style}" if style else '')
+            out.append(f"{alias[m['source']]} -[{spec}]-> {alias[m['target']]} : {text}")
+        out.append('')
+    out += ['legend right', '  Light grey thin arrows: within-level structure (ArchiMate kind as label); A2 = BIAN constraints, A1/A3/A4 = observed in the examples']
+    for dec, (colour, style, label) in DECISION_STYLE.items():
+        n = sum(1 for m in entries if m['rule_decision'] == dec)
+        out.append(f"  <color:{colour}>{(style or 'solid').capitalize()}</color>: cross-level {label} ({n})")
+    out += ['  Grey entity: no cross-level mapping by decision', '  Detail: official-mappings.puml, new-mappings.puml, level-relationships.puml', 'endlegend', '@enduml']
+    return '\n'.join(out) + '\n'
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(prog='sdmm-diagram', description='Render metamodel/official-mappings.puml and metamodel/new-mappings.puml from their JSON records.')
-    parser.add_argument('--which', choices=['official', 'new', 'levels', 'both', 'all'], default='all')
+    parser.add_argument('--which', choices=['official', 'new', 'levels', 'merged', 'both', 'all'], default='all')
     parser.add_argument('--check', action='store_true', help='exit 1 if a committed file differs from the rendered output')
     args = parser.parse_args(argv)
-    jobs = {'official': (MM_DIR / 'official-mappings.puml', render), 'new': (MM_DIR / 'new-mappings.puml', render_new), 'levels': (MM_DIR / 'level-relationships.puml', render_levels)}
+    jobs = {'official': (MM_DIR / 'official-mappings.puml', render), 'new': (MM_DIR / 'new-mappings.puml', render_new), 'levels': (MM_DIR / 'level-relationships.puml', render_levels), 'merged': (MM_DIR / 'merged-mappings.puml', render_merged)}
     rc = 0
-    for name in ({'both': ['official', 'new'], 'all': ['official', 'new', 'levels']}.get(args.which, [args.which])):
+    for name in ({'both': ['official', 'new'], 'all': ['official', 'new', 'levels', 'merged']}.get(args.which, [args.which])):
         out, fn = jobs[name]; text = fn()
         if args.check:
             current = out.read_text(encoding='utf-8') if out.exists() else ''

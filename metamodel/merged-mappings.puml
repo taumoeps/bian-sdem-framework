@@ -1,0 +1,192 @@
+@startuml merged-mappings
+left to right direction
+skinparam rectangle {
+  BackgroundColor White
+  BorderColor #424242
+}
+skinparam package {
+  BackgroundColor #F5F5F5
+  BorderColor #9E9E9E
+}
+skinparam ArrowFontSize 9
+title Merged view — 48 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
+
+package "A1 Business Architecture" as A1 {
+  rectangle "A1.BusinessCapability" as a1_businesscapability
+  rectangle "A1.ValueStream" as a1_valuestream
+  rectangle "A1.ValueStreamStage" as a1_valuestreamstage
+  rectangle "A1.BusinessProcess" as a1_businessprocess
+  rectangle "A1.BusinessActivity" as a1_businessactivity
+  rectangle "A1.BusinessService" as a1_businessservice
+  rectangle "A1.BusinessActor" as a1_businessactor #EEEEEE
+  rectangle "A1.BusinessRole" as a1_businessrole #EEEEEE
+  rectangle "A1.BusinessObject" as a1_businessobject
+  rectangle "A1.BusinessRequirement" as a1_businessrequirement
+  ' within A1 — observed in the examples (11)
+  a1_businessactor -[#B0BEC5]-> a1_businessrole : <size:8>assignment</size>
+  a1_businesscapability -[#B0BEC5]-> a1_businesscapability : <size:8>composition</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businessobject : <size:8>access</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businessactivity : <size:8>composition</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businesscapability : <size:8>realization</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businessservice : <size:8>realization</size>
+  a1_businessrequirement -[#B0BEC5]-> a1_businessactivity : <size:8>association</size>
+  a1_businessrequirement -[#B0BEC5]-> a1_businessprocess : <size:8>association</size>
+  a1_businessrole -[#B0BEC5]-> a1_businessprocess : <size:8>assignment</size>
+  a1_valuestream -[#B0BEC5]-> a1_valuestreamstage : <size:8>composition</size>
+  a1_valuestream -[#B0BEC5]-> a1_businesscapability : <size:8>realization</size>
+}
+
+package "A2 Service Domain Architecture" as A2 {
+  rectangle "A2.BusinessArea" as a2_businessarea
+  rectangle "A2.BusinessDomain" as a2_businessdomain
+  rectangle "A2.ServiceDomain" as a2_servicedomain
+  rectangle "A2.FunctionalPattern" as a2_functionalpattern
+  rectangle "A2.AssetType" as a2_assettype
+  rectangle "A2.ControlRecord" as a2_controlrecord
+  rectangle "A2.ServiceGroup" as a2_servicegroup
+  rectangle "A2.ServiceOperation" as a2_serviceoperation
+  rectangle "A2.BehaviorQualifier" as a2_behaviorqualifier
+  rectangle "A2.BusinessScenario" as a2_businessscenario
+  rectangle "A2.BusinessObject" as a2_businessobject
+  rectangle "A2.BusinessObjectAttribute" as a2_businessobjectattribute
+  rectangle "A2.BOMModel\n(artefact)" as a2_bommodel #EEEEEE
+  rectangle "A2.Wireframe\n(artefact)" as a2_wireframe #EEEEEE
+  rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi #EEEEEE
+  ' within A2 — BIAN-fixed constraints (14)
+  a2_businessarea -[#B0BEC5]-> a2_businessdomain : <size:8>composition</size>
+  a2_businessdomain -[#B0BEC5]-> a2_servicedomain : <size:8>composition</size>
+  a2_servicedomain -[#B0BEC5]-> a2_servicegroup : <size:8>composition</size>
+  a2_servicegroup -[#B0BEC5]-> a2_serviceoperation : <size:8>composition</size>
+  a2_servicedomain -[#B0BEC5]-> a2_controlrecord : <size:8>aggregation</size>
+  a2_servicedomain -[#B0BEC5]-> a2_functionalpattern : <size:8>association</size>
+  a2_servicedomain -[#B0BEC5]-> a2_assettype : <size:8>association</size>
+  a2_serviceoperation -[#B0BEC5]-> a2_behaviorqualifier : <size:8>association</size>
+  a2_businessscenario -[#B0BEC5]-> a2_serviceoperation : <size:8>aggregation</size>
+  a2_businessobject -[#B0BEC5]-> a2_businessobjectattribute : <size:8>composition</size>
+  a2_controlrecord -[#B0BEC5]-> a2_behaviorqualifier : <size:8>composition</size>
+  a2_controlrecord -[#B0BEC5]-> a2_businessobject : <size:8>association</size>
+  a2_serviceoperation -[#B0BEC5]-> a2_controlrecord : <size:8>access</size>
+  a2_servicedomain -[#B0BEC5]-> a2_servicedomain : <size:8>flow</size>
+}
+
+package "A3 Application Architecture" as A3 {
+  rectangle "A3.ApplicationComponent" as a3_applicationcomponent
+  rectangle "A3.ApplicationService" as a3_applicationservice
+  rectangle "A3.ApplicationInterface" as a3_applicationinterface
+  rectangle "A3.ApplicationFunction" as a3_applicationfunction
+  rectangle "A3.APIOperation" as a3_apioperation
+  rectangle "A3.DataEntity" as a3_dataentity
+  rectangle "A3.Event" as a3_event
+  rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
+  ' within A3 — observed in the examples (12)
+  a3_applicationcomponent -[#B0BEC5]-> a3_dataentity : <size:8>access</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_apioperation : <size:8>composition</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>composition</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationfunction : <size:8>composition</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationinterface : <size:8>composition</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationservice : <size:8>composition</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>serving</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_event : <size:8>triggering</size>
+  a3_applicationfunction -[#B0BEC5]-> a3_dataentity : <size:8>access</size>
+  a3_applicationinterface -[#B0BEC5]-> a3_apioperation : <size:8>composition</size>
+  a3_applicationservice -[#B0BEC5]-> a3_applicationinterface : <size:8>composition</size>
+  a3_solutionbuildingblock -[#B0BEC5]-> a3_applicationcomponent : <size:8>aggregation</size>
+}
+
+package "A4 Technology Architecture" as A4 {
+  rectangle "A4.InfrastructureComponent\n(abstract)" as a4_infrastructurecomponent
+  rectangle "A4.Deployment" as a4_deployment
+  rectangle "A4.DeploymentEnvironment" as a4_deploymentenvironment
+  rectangle "A4.Node" as a4_node
+  rectangle "A4.Device" as a4_device
+  rectangle "A4.SystemSoftware" as a4_systemsoftware
+  rectangle "A4.TechnologyService" as a4_technologyservice
+  rectangle "A4.TechnologyInterface" as a4_technologyinterface
+  rectangle "A4.CommunicationNetwork" as a4_communicationnetwork
+  rectangle "A4.Path" as a4_path
+  rectangle "A4.Artifact" as a4_artifact
+  ' within A4 — observed in the examples (11)
+  a4_artifact -[#B0BEC5]-> a4_device : <size:8>assignment</size>
+  a4_artifact -[#B0BEC5]-> a4_node : <size:8>assignment</size>
+  a4_artifact -[#B0BEC5]-> a4_systemsoftware : <size:8>assignment</size>
+  a4_communicationnetwork -[#B0BEC5]-> a4_path : <size:8>composition</size>
+  a4_deploymentenvironment -[#B0BEC5]-> a4_deployment : <size:8>aggregation</size>
+  a4_deploymentenvironment -[#B0BEC5]-> a4_systemsoftware : <size:8>aggregation</size>
+  a4_device -[#B0BEC5]-> a4_communicationnetwork : <size:8>assignment</size>
+  a4_node -[#B0BEC5]-> a4_communicationnetwork : <size:8>assignment</size>
+  a4_node -[#B0BEC5]-> a4_systemsoftware : <size:8>composition</size>
+  a4_systemsoftware -[#B0BEC5]-> a4_communicationnetwork : <size:8>assignment</size>
+  a4_technologyservice -[#B0BEC5]-> a4_technologyinterface : <size:8>composition</size>
+}
+
+' --- cross-level: registry rule (SDMM relationship type) (9)
+a1_businesscapability -[#1565C0,bold]-> a2_servicedomain : S01 SUPPORTED_BY
+a1_valuestream -[#1565C0,bold]-> a2_businessscenario : S02 ALIGNED_TO
+a1_businessprocess -[#1565C0,bold]-> a2_servicedomain : S04 USES_DOMAIN
+a1_businessobject -[#1565C0,bold]-> a2_businessobject : S12 ALIGNED_TO
+a2_servicedomain -[#1565C0,bold]-> a3_applicationcomponent : S17 REALIZED_BY
+a2_serviceoperation -[#1565C0,bold]-> a3_apioperation : S24 IMPLEMENTED_BY
+a2_businessobject -[#1565C0,bold]-> a3_dataentity : S30 MAPPED_TO
+a3_applicationcomponent -[#1565C0,bold]-> a4_deployment : S32 DEPLOYED_AS
+a3_applicationcomponent -[#1565C0,bold]-> a4_infrastructurecomponent : S33 DEPLOYED_ON
+
+' --- cross-level: candidate rule (proposed for the registry) (5)
+a2_controlrecord -[#2E7D32]-> a3_dataentity : S20
+a2_controlrecord -[#2E7D32]-> a3_applicationfunction : S21
+a2_serviceoperation -[#2E7D32]-> a3_applicationservice : S25
+a2_businessscenario -[#2E7D32]-> a3_applicationservice : S28
+a2_businessscenario -[#2E7D32]-> a3_applicationcomponent : S29
+
+' --- cross-level: conditional rule (fires on institution data) (5)
+a3_applicationcomponent -[#EF6C00]-> a4_node : S34
+a3_applicationcomponent -[#EF6C00]-> a4_artifact : S39
+a3_applicationservice -[#EF6C00]-> a4_technologyservice : S41
+a3_applicationfunction -[#EF6C00]-> a4_technologyservice : S45
+a3_dataentity -[#EF6C00]-> a4_artifact : S49
+
+' --- cross-level: derived path (closure over other arrows, never proposed) (17)
+a1_valuestreamstage -[#616161,dashed]-> a2_businessscenario : S03
+a1_businessactivity -[#616161,dashed]-> a2_servicedomain : S07
+a2_businessarea -[#616161,dashed]-> a3_applicationcomponent : S15
+a2_businessdomain -[#616161,dashed]-> a3_applicationcomponent : S16
+a2_servicegroup -[#616161,dashed]-> a3_applicationservice : S22
+a2_servicegroup -[#616161,dashed]-> a3_applicationinterface : S23
+a2_behaviorqualifier -[#616161,dashed]-> a3_apioperation : S26
+a2_behaviorqualifier -[#616161,dashed]-> a3_dataentity : S27
+a2_businessobjectattribute -[#616161,dashed]-> a3_dataentity : S31
+a3_applicationcomponent -[#616161,dashed]-> a4_deploymentenvironment : S40
+a3_applicationservice -[#616161,dashed]-> a4_technologyinterface : S42
+a3_applicationfunction -[#616161,dashed]-> a4_systemsoftware : S46
+a3_apioperation -[#616161,dashed]-> a4_deployment : S47
+a3_apioperation -[#616161,dashed]-> a4_technologyinterface : S48
+a3_solutionbuildingblock -[#616161,dashed]-> a4_infrastructurecomponent : S52
+a3_solutionbuildingblock -[#616161,dashed]-> a4_deployment : S53
+a3_solutionbuildingblock -[#616161,dashed]-> a4_node : S54
+
+' --- cross-level: institution-only (reported from export keys) (14)
+a1_businessactivity -[#6A1B9A,dotted]-> a2_serviceoperation : S06
+a1_businessservice -[#6A1B9A,dotted]-> a2_servicedomain : S08
+a1_businessservice -[#6A1B9A,dotted]-> a2_serviceoperation : S09
+a1_businessrequirement -[#6A1B9A,dotted]-> a2_servicedomain : S13
+a1_businessrequirement -[#6A1B9A,dotted]-> a2_serviceoperation : S14
+a2_functionalpattern -[#6A1B9A,dotted]-> a3_applicationfunction : S18
+a2_assettype -[#6A1B9A,dotted]-> a3_dataentity : S19
+a3_applicationcomponent -[#6A1B9A,dotted]-> a4_device : S35
+a3_applicationcomponent -[#6A1B9A,dotted]-> a4_communicationnetwork : S37
+a3_applicationcomponent -[#6A1B9A,dotted]-> a4_path : S38
+a3_applicationinterface -[#6A1B9A,dotted]-> a4_technologyinterface : S43
+a3_applicationinterface -[#6A1B9A,dotted]-> a4_technologyservice : S44
+a3_dataentity -[#6A1B9A,dotted]-> a4_systemsoftware : S50
+a3_event -[#6A1B9A,dotted]-> a4_technologyservice : S51
+
+legend right
+  Light grey thin arrows: within-level structure (ArchiMate kind as label); A2 = BIAN constraints, A1/A3/A4 = observed in the examples
+  <color:#1565C0>Bold</color>: cross-level registry rule (SDMM relationship type) (9)
+  <color:#2E7D32>Solid</color>: cross-level candidate rule (proposed for the registry) (5)
+  <color:#EF6C00>Solid</color>: cross-level conditional rule (fires on institution data) (5)
+  <color:#616161>Dashed</color>: cross-level derived path (closure over other arrows, never proposed) (17)
+  <color:#6A1B9A>Dotted</color>: cross-level institution-only (reported from export keys) (14)
+  Grey entity: no cross-level mapping by decision
+  Detail: official-mappings.puml, new-mappings.puml, level-relationships.puml
+endlegend
+@enduml

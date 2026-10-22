@@ -100,3 +100,18 @@ class LevelStructureDiagramTests(unittest.TestCase):
         text = (ROOT / 'metamodel/level-relationships.puml').read_text(encoding='utf-8')
         a2 = text[text.index('package "A2'):text.index('package "A3')]
         self.assertEqual(a2.count(']-> '), sum(1 for c in lr['constraints'] if c['level'] == 'A2'))
+
+
+class MergedDiagramTests(unittest.TestCase):
+    def test_committed_merged_diagram_equals_render(self):
+        from sdmm.diagram import render_merged
+        self.assertEqual((ROOT / 'metamodel/merged-mappings.puml').read_text(encoding='utf-8'), render_merged())
+
+    def test_merged_holds_every_cross_level_id_and_the_a2_constraints(self):
+        from sdmm.diagram import load_new, new_entries
+        text = (ROOT / 'metamodel/merged-mappings.puml').read_text(encoding='utf-8')
+        for m in new_entries(load_new()):
+            self.assertIn(f": {m['id']}", text)
+        lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
+        a2 = text[text.index('package "A2'):text.index('package "A3')]
+        self.assertEqual(a2.count('#B0BEC5'), sum(1 for c in lr['constraints'] if c['level'] == 'A2'))
