@@ -25,7 +25,7 @@ Do **not** read the use case's gold set (`<uc>-gold-mappings.json` or `gold-mapp
 |---|---|
 | **Use only the connections in the plan.** | A proposal must correspond to an ID in `new-mappings.json`. The `source`/`target` entity types of your proposal must be the ID's `source`/`target` (or, for A4, a concrete descendant of `A4.InfrastructureComponent`). |
 | **New connections are allowed but quarantined.** | If the data clearly supports a connection that no ID covers, record it in the **New connection candidates** section of the report, not in the proposal document. Give its entity pair, the step that found it, reasoning and confidence. It is a proposed addition to the plan, not a result. |
-| **Follow the step the plan assigns.** | Use the ID's `fill_step`. You may fall back to a *higher-numbered* step only if the assigned step cannot produce the connection from the data, and you must say so in the working. Never use a lower step than assigned (e.g. do not "derive" what the plan says must come from data). |
+| **Follow the step the plan assigns.** | Use the ID's `fill_step`. You may fall back to a *higher-numbered* step only if the assigned step cannot produce the connection from the data, and you must say so in the working. Never use a lower step than assigned (e.g. do not "derive" what the plan says must come from data) — **except** an optional step the plan's `reasoning` for that ID explicitly lists (e.g. S02's step-3 derivation); use it only after the assigned step has failed, label the proposal `optional-step`, and give it the band the plan states for that option. |
 | **Show the working for every proposal.** | Step 1: the export record(s) joined. Step 2: the rule(s) fired and the values compared. Step 3: the approved arrows closed over, by `mapping_id`. Step 4: the attributes/paths/positions matched and the score. Step 5: the texts compared and why. No working → no proposal. |
 | **Never approve.** | Every record is `status: proposed`. You do not set `reviewer_id` or `approved_at`. |
 | **Never invent instances.** | Every `source.id` and `target.id` must exist in a level export. If the connection needs an instance that is not there, that is a finding ("no instance to map to"), not a proposal. |
@@ -74,7 +74,7 @@ Closure rules. Cite the `mapping_id` of every arrow used.
 | S25 | operation O `IMPLEMENTED_BY` API a; a exposed by application service S (A3 composition) ⇒ O → S |
 | S22 / S23 | the service/interface exposing the APIs of a group's operations |
 | S04 `USES_DOMAIN` | process P (or one of its activities) has `attributes.invokes` naming operation O, or an S06 proposal; O in domain D (B09/B10) ⇒ P `USES_DOMAIN` D. A process exported without activities may be matched directly to operations by the S06 verb+noun rule (step 4) |
-| S01 `SUPPORTED_BY` (candidate) | every process of capability K (A1 relationship) `USES_DOMAIN` D ⇒ candidate K `SUPPORTED_BY` D, confidence medium; if only some processes, low. Optional: a capability whose composed child capability is `SUPPORTED_BY` D is a candidate for D, low |
+| S01 `SUPPORTED_BY` (candidate) | every process of capability K (A1 relationship) `USES_DOMAIN` D ⇒ candidate K `SUPPORTED_BY` D, confidence medium; if only some processes, low. **Report-only:** a parent capability whose composed child is `SUPPORTED_BY` D is listed under *New connection candidates*, never proposed — whether a parent's scope is covered by a child's domain is a judgement, not a derivation (M0 run 2) |
 | S02 `ALIGNED_TO` (optional step 3) | value stream V realises capability K (A1 `realization`); a process of K invokes operation O; O in scenario S's `operation_sequence` ⇒ candidate V `ALIGNED_TO` S, low. Step 4 (stages vs sequence) remains the primary route |
 | S07, S15, S16, S40, S42, S46, S47, S48, S52–S54 | derived paths — report as **queries** (the chain of arrows), not as proposal records |
 
@@ -85,7 +85,7 @@ Only for the IDs the plan assigns to step 4, or as a declared fallback.
 |---|---|---|
 | S30 `MAPPED_TO`, S20, S31 | BOM / control-record attribute names vs data entity attribute names (normalise case, underscores, plural) | ≥ 50 % of the BIAN object's attributes matched; score = matched / BIAN attributes |
 | S12 `ALIGNED_TO` (object) | bank glossary attributes vs BOM attributes | as above |
-| S02 `ALIGNED_TO` (value stream) | stage sequence vs scenario operation sequence: same number of stages ± 1 and ≥ 60 % of stages name-match an operation or domain in order | score = ordered matches / stages |
+| S02 `ALIGNED_TO` (value stream) | **coverage of the scenario's operations**: each operation in `operation_sequence`, in order, is matched by a stage whose name shares the operation's verb or asset-type noun. A stream may have more stages than the scenario has operations — that is normal | score = covered operations / operations in the scenario; propose when ≥ 60 % |
 | S06 | activity name vs operation name (action verb + asset noun) | both verb and noun match |
 | S18, S19, S21, S27 | as the plan's `data_needed` states | state the score |
 

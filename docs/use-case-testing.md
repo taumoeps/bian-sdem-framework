@@ -79,14 +79,14 @@
 | S32 | APP-FRAUD-ENGINE `DEPLOYED_AS` DEP-FRAUD-PROD | 1 | `component_id` / `deployed_as` | high |
 | S36 | APP-FRAUD-ENGINE → INF-CLOUD-K8S-PROD (SystemSoftware) | 1 | same key — **subsumed by S33** since v0.5.2; not a separate proposal | — |
 | S24 | SO-044-07 `IMPLEMENTED_BY` POST /fraud/alerts | 2 | action term **Notify** — unused in the REST mapping, so rule 2 is untestable; rules 1 (via `asset_type`), 3, 4 testable | medium (3 of 4); the executor must say rule 2 could not be tested |
-| S17 | SD-044 `REALIZED_BY` APP-FRAUD-ENGINE | 3, else 4 | derived from S24 if proposed; else asset-noun "alert" in `/fraud/alerts` | high (3) or medium (4) |
+| S17 | SD-044 `REALIZED_BY` APP-FRAUD-ENGINE | 3, else 4 | derived from S24 if proposed; else asset-type name "Fraud Alert" in `/fraud/alerts` | **medium** — the derivation is capped at its S24 input (3 of 4 REST rules, medium); high only where the API arrow is approved |
 | S04 | PRC-310-01 `USES_DOMAIN` SD-044 | 3 | `invokes: [SO-044-07]` → domain via B10/B09 | medium |
-| S02 | VS-CARD-USE `ALIGNED_TO` BS-FRAUD-ALERT | 4 | `stages` (4 stage instances since v0.5.2) vs `operation_sequence` | medium |
-| S01 | CAP-300 `SUPPORTED_BY` SD-044 | 5 | single candidate domain → **no proposal** (step-5 rule) | none |
+| S02 | VS-CARD-USE `ALIGNED_TO` BS-FRAUD-ALERT | 4 | `stages` vs `operation_sequence`, scored as **coverage of the scenario's operations** (v0.5.3 rule), not a stage count — one operation, covered by stage "Alert the cardholder" | medium |
+| S01 | CAP-300 `SUPPORTED_BY` SD-044 | 5 | single candidate domain → **no proposal** (step-5 rule). The parent-capability rule is report-only since v0.5.3 and must not produce a proposal | none |
 
 **Negative tests.** CMP-SCORING has no `deployed_on` → no `DEPLOYED_ON`; IFC-FRAUD-API is an interface, not a component → not an S17 target; no record for S50 → no proposal.
 
-**Pass.** All four approved arrows re-derived at their assigned step (or a declared fallback with the lower band); `sdmm-eval` precision ≥ 0.8; every attempted connection has a row in `inference-log.json`; S01 recorded as single-candidate no-proposal. **Status:** executed twice 2026-10-22 (v0.5.1, then v0.5.2) — see Results.
+**Pass.** All six approved arrows re-derived at their assigned step (or a declared fallback / optional step with the lower band); `sdmm-eval` precision ≥ 0.8 over the IDs the gold approves; every attempted connection has a row in `m0-inference-log.json`; S01 for CAP-300 recorded as no-proposal. **Status:** executed twice — v0.5.1 gold (P 0.60 R 0.75) and v0.5.2 gold (P 0.86 R 1.00, F1 0.92); see Results. **Complete** — remaining findings applied in v0.5.3; the one false proposal (S01 parent rule) is withdrawn.
 
 ## M1 — Payment Initiation, brownfield (Medium)
 
@@ -187,7 +187,7 @@
 | Negative tests | ● | ● | ● | ● | ● | ● |
 | Perspectives: architecture / process / information | A | A P I | A P I | A | A I | A I |
 
-**Order of execution:** E1 (done once; re-run after v0.5.1); **M0 now** — inference on existing data; E2 after its exports are authored; M1 next (it exercises most of the plan); then H1, H2; M2 last (it tests a boundary, not the plan's core).
+**Order of execution:** E1 (done); M0 (done, two runs); **M1 next** — author to the export conventions, then run; E2 after its exports are authored; then H1, H2; M2 last (it tests a boundary, not the plan's core).
 
 ## Results
 
@@ -573,3 +573,14 @@ VS-CARD-USE -ALIGNED_TO-> BS-FRAUD-ALERT (P-M0-006)
 | S23, S40, S47 | as listed | derived paths — queries by plan design |
 
 **Summary.** On v0.5.2 the data carries every approved arrow and the steps reach all of them: recall 1.0, precision 0.86, F1 0.92, against 0.67 on v0.5.1. Two of the v0.5.2 additions did the work (asset type for rule 1; FRD-004 and FRD-008 in the gold), one worked as intended (the confidence cap), and two optional rules cut both ways: the S02 derivation rescued an arrow the stage rule could not reach, and the S01 parent rule produced the only false proposal. Next for the plan: reshape the S02 stage rule as coverage (finding 1) and drop the S01 parent rule (finding 2). Next for the data: M1 needs multi-operation scenarios so the stage rule is actually tested.
+
+### M0 — actions taken on the second-run findings (v0.5.3)
+
+| Finding | Action |
+|---|---|
+| 1 — S02 stage rule | Guide step 4: value stream ↔ scenario is scored as **coverage of the scenario's operations** — each operation in `operation_sequence` matched, in order, by a stage whose name shares the operation's verb or asset; score = covered operations / operations; threshold ≥ 60 %. A stream with more stages than the scenario has operations is normal, not a failure |
+| 2 — parent-capability rule | Withdrawn as a proposal source. It is a scope judgement; kept **report-only**: a parent whose child is `SUPPORTED_BY` D goes to *New connection candidates*, never to the proposal file. `new-mappings.json` S01 updated |
+| 3 — lower-step conflict | Guide §2: an optional step the plan lists for that ID in `reasoning` may be used even when numbered lower than the assigned step; the proposal is labelled `optional-step` and takes the band the plan gives it (low for S02's step-3 derivation) |
+| 4 — case text | Pass criterion says six arrows; S17 predicted medium under the cap; S02 and S01 rows restated |
+
+**M0 is complete.** Both runs are recorded; the plan, guide, exports and gold are consistent. Next: author M1 (Payment Initiation, brownfield) to the export conventions and run it.

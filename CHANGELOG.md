@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.3 — after M0 run 2 (P 0.86, R 1.00)
+
+- Guide: value stream ↔ scenario scored as coverage of the scenario's operations (not a stage count); optional lower-numbered steps allowed when the plan lists them for the ID, labelled `optional-step`; parent-capability inheritance is report-only.
+- Plan: S01 parent rule withdrawn as a proposal source; S02 `data_needed` restated.
+- M0 case text corrected (six arrows; S17 medium under the derivation cap). M0 complete.
+
 ## 0.5.2 — after M0 (first inference run)
 
 - Export conventions: `A2.ServiceDomain.attributes.asset_type` / `functional_pattern`; fraud A2 export gains asset type and functional pattern instances, A1 export gains value-stream stages.
