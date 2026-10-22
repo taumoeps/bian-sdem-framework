@@ -685,8 +685,13 @@ endlegend
 @enduml
 ```
 
-| Colour | Connectors | Count |
+#### What the diagram shows, by boundary
+
+| Boundary | Connectors drawn | What they are |
 |---|---|---|
-| Blue solid | B02–B15 — BIAN's own relationships inside A2 | 14 |
-| Green solid | S17 `REALIZED_BY`, S24 `IMPLEMENTED_BY`, S30 `MAPPED_TO`, S20, S21, S25, S28, S29 (guidance, not in registry) | 8 |
-| Green dashed | S01 `SUPPORTED_BY` (intent only), S12 `ALIGNED_TO` (target only) | 2 |
+| **Inside A2** | **14** blue solid | B02–B15, BIAN's own structure — all verified, as expected |
+| **A1 → A2** | **2** green dashed | S01 `SUPPORTED_BY` (intent only — the capability mapping is unpublished) and S12 `ALIGNED_TO` (target only — the BOM is published, the method is not). Dashed because neither is a real mapping |
+| **A2 → A3** | **8** green solid | S17 `REALIZED_BY`, S24 `IMPLEMENTED_BY`, S30 `MAPPED_TO` (registry rules) plus S20, S21, S25, S28, S29 (BIAN guidance, not yet rules) |
+| **A3 → A4** | **0** | Nothing official. BIAN publishes no mapping to infrastructure; the five ArchiMate candidates (S34, S39, S44, S48, S50) are unverified, and the registry rules `DEPLOYED_ON` / `DEPLOYED_AS` are SDMM's own definitions — correctly not drawn |
+
+**Reading:** A2 is complete; A2→A3 is partially covered on the API and information path; A1→A2 has intent only; A4 is empty. A4 can only ever gain official connectors from ArchiMate — never from BIAN — and only once the five open rows are verified.
