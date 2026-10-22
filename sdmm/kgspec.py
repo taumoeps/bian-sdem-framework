@@ -141,20 +141,70 @@ def render():
                      ('A local graph is rebuilt in full from its export; incremental update is an optimisation, not a requirement.', 'built (full rebuild)'),
                      ('A failed export validation leaves the previous local graph in place and raises an alert.', 'not built'),
                      ('The federated graph is rebuilt whenever a local graph or the mapping set changes.', 'built (rebuilt on every run)'),
-                     ('The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§9 DEC-02).', 'not built')):
+                     ('The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§11 DEC-02).', 'not built')):
         rid = req('R', text, '§7', st); out.append(f"| {rid} | {text} | {st} |")
     out.append('')
 
-    # ---- 8 governance
-    out += ['## 8. Governance boundary', '', '| Actor | May | May not |', '|---|---|---|',
+    # ---- 8 components and dependencies
+    out += ['## 8. Components and dependencies', '', 'Every component the local and federated graphs depend on to be built, updated and changed: what it reads, what it writes, what it needs first, where it lives, and whether it exists.', '',
+            '```mermaid', 'flowchart LR',
+            '    MODEL[Model records<br/>catalogue · relationship rows<br/>registry · conventions]', '    TOOL[Source tool]', '    ADP[Adapter]', '    EXP[Level export]', '    CHK[Export validator<br/>sdmm-graph check]', '    LDR[Graph loader]', '    LG[(Local graph)]',
+            '    DIFF[Export diff]', '    ENG[Engine]', '    PROP[Proposals]', '    VAL[Mapping validator<br/>sdmm-validate]', '    ARCH[Architect]', '    MS[[Mapping set]]', '    HIST[History guard<br/>sdmm-diff]', '    FED[(Federated graph)]', '    QRY[Query tools<br/>trace · impact · unmapped]', '    AG[Assistant]', '    TRG[Refresh trigger]',
+            '    MODEL --> ADP', '    MODEL --> CHK', '    MODEL --> ENG', '    TOOL --> ADP --> EXP --> CHK --> LDR --> LG', '    TRG --> ADP', '    EXP --> DIFF --> ENG', '    LG --> ENG', '    FED --> ENG', '    ENG --> PROP --> VAL --> ARCH --> MS', '    MS --> HIST', '    MS --> LDR', '    LDR --> FED', '    LG --> FED', '    FED --> QRY --> AG', '    AG -.->|runs| ENG', '```', '']
+    C = [
+     ('C-01', 'Model records', 'the entity catalogue, `level-relationships.json`, `relationship-types.json`, `export-conventions.json`, `impact-rules.json`', 'SDMM model owner\'s edits', 'the rules every other component applies', '—', '`metamodel/`, `schema/`', 'built'),
+     ('C-02', 'Source tool', 'the institution\'s system of record for one level', 'its users', 'its own records', '—', 'institution', 'external'),
+     ('C-03', 'Adapter', 'extract, translate to SDMM entities and keys, write the export', 'C-02; C-01 (catalogue and conventions)', 'one level export', 'C-01, C-02', 'institution\'s private repository', 'not built (examples hand-written; `sdmm/structure.py` is the one generator)'),
+     ('C-04', 'Level export', 'the file a local graph is built from', 'C-03', '—', 'C-03', '`examples/*/a[1-4]-*.json` (stand-ins)', 'built (format); schema `level-model.schema.json`'),
+     ('C-05', 'Export validator', 'checks an export against C-01', 'C-04, C-01', 'pass, or every failure', 'C-01, C-04', '`sdmm-graph check` (`LevelGraph`)', 'built'),
+     ('C-06', 'Graph loader', 'rebuilds local graphs from exports and the federated graph from the mapping set; records the baseline', 'C-04 (validated), C-09', 'local graphs, federated graph', 'C-05, C-09', '`sdmm/graph.py` (`LevelGraph`, `FederatedGraph`)', 'built in memory; persistence and baselines not built'),
+     ('C-07', 'Export diff', 'compares a new export with the last loaded one: added, removed, changed instances and links', 'two versions of C-04', 'a change list', 'C-04', '—', 'not built'),
+     ('C-08', 'Engine', 'proposes cross-level links for what changed, with evidence and confidence', 'local graphs, federated graph, C-07, C-01', 'proposals, candidate reports, inference log', 'C-06, C-07, C-01', '`sdmm/engine.py` protocol; logic proven by executor runs', 'partly built (protocol, baseline, eval); step logic not built'),
+     ('C-09', 'Mapping set', 'the register of cross-level links with status and evidence', 'C-08 proposals; architect decisions', '—', 'C-08, C-11', '`examples/*/mappings.json`; schema `mapping.schema.json`', 'built'),
+     ('C-10', 'Mapping validator', 'checks proposals and the mapping set: registry, evidence, anchoring', 'C-09, C-01', 'pass, or every failure', 'C-01', '`sdmm-validate`', 'built'),
+     ('C-11', 'Architect approval', 'approves, rejects or supersedes mapping records', 'validated proposals; impact reports', 'status changes in C-09', 'C-10, C-14', 'a person; recorded as fields', 'built (as fields); review queue not built'),
+     ('C-12', 'History guard', 'rejects edits to approved records and invalid status transitions', 'two versions of C-09', 'pass, or every violation', 'C-09', '`sdmm-diff`', 'built'),
+     ('C-13', 'Local graphs, federated graph', 'the graphs themselves', 'C-06', '—', 'C-06', 'in memory', 'built in memory; store is DEC-01'),
+     ('C-14', 'Query tools', 'trace, impact, check, stats; unmapped and history to come', 'C-13', 'answers with mapping ids', 'C-13', '`sdmm-graph`, `sdmm-trace`', 'built (unmapped, history not built)'),
+     ('C-15', 'Refresh trigger', 'decides when C-03 and C-06 run: on demand, scheduled, event, refresh-on-read', 'source events or queries', 'runs', 'C-03, C-06', '—', 'not built (on demand only)'),
+     ('C-16', 'Assistant', 'answers design questions from C-14; runs C-08 and C-10 on request', 'C-14 answers', 'proposals via C-08 only', 'C-14, C-08', 'per DEC-04', 'not built (Opus executor runs stood in)'),
+     ('C-17', 'Generators and CI', 'regenerate documents, diagrams and the reference-structure estate from C-01; fail the build if any is stale; rerun acceptance cases', 'C-01', 'generated files; pass / fail', 'C-01', '`sdmm/diagram.py`, `relationships.py`, `structure.py`, `spec.py`, `kgspec.py`; `.github/workflows/validate.yml`', 'built'),
+    ]
+    out += ['| ID | Component | Does | Reads | Writes | Depends on | Lives in | Status |', '|---|---|---|---|---|---|---|---|']
+    for row in C: out.append('| ' + ' | '.join(row) + ' |')
+    out.append('')
+    req('C', 'Build an adapter (C-03) per source tool that writes a valid level export and fails loudly rather than writing a partial one.', 'C-03', 'not built')
+    req('C', 'Build the export diff (C-07) so the engine re-checks only changed instances and removals are routed to impact and supersession.', 'C-07', 'not built')
+    req('C', 'Build the engine step logic (C-08) to the mapping-model design specification, accepted by reproducing the eleven executor runs.', 'C-08; mapping-model-design-spec §8', 'not built')
+    req('C', 'Provide a review queue for C-11 that lists proposals and pending supersessions with their evidence and impact.', 'C-11', 'not built')
+    out += ['### 8.1 Component requirements'] + inline('C')
+
+    # ---- 9 change workflows
+    out += ['## 9. Change workflows — which components run for each change', '', '| Change | Example | Components, in order | Human step |', '|---|---|---|---|']
+    W = [
+     ('Model structure', 'a new entity kind, relationship row or join key', 'C-01 edit → C-17 regenerate and test → C-03 updated to emit it → C-04 → C-05 → C-06', 'model owner decides; adapter maintainer updates the translation'),
+     ('Instance added', 'a new API operation appears', 'C-15 → C-03 → C-04 → C-05 → C-06 (local) → C-07 → C-08 → C-10 → C-11 → C-12 → C-06 (federated)', 'approve the proposals'),
+     ('Instance removed or retired', 'a platform is decommissioned', 'C-15 → C-03 → C-04 → C-05 → C-06 (local) → C-07 → C-14 impact → C-11 supersede → C-12 → C-06 (federated)', 'confirm the supersessions'),
+     ('Instance attributes changed', 'an API path or a table\'s columns change', 'C-03 → C-04 → C-05 → C-06 → C-07 → C-08 re-checks dependent mappings', 'only if an approved mapping no longer holds'),
+     ('Within-level link changed', 'a process gains an activity', 'C-03 → C-04 → C-05 → C-06', 'none; derived paths recompute'),
+     ('Instance re-keyed in its tool', 'an application gets a new id', 'as removed + added, then C-11 supersedes the old mappings with new ones (KG-I-02)', 'approve the replacements'),
+     ('Mapping approved, rejected or superseded', 'an architect reviews the queue', 'C-11 → C-09 → C-10 → C-12 → C-06 (federated)', 'the decision itself'),
+     ('Mapping rule changed', 'a threshold or alias convention', 'C-01 → C-17 (acceptance cases rerun and scored) → C-08 on affected estates → C-11', 'model owner adopts the rule only if the scores hold'),
+     ('BIAN release', 'a new Service Landscape version', 'C-01 (A2 rows and catalogue) → C-03 for A2 → C-04 → C-05 → C-06 → C-07 → C-08 → C-11', 'review changed A2 mappings'),
+    ]
+    for row in W: out.append('| ' + ' | '.join(row) + ' |')
+    out += ['', 'Every workflow ends with C-06 rebuilding the graphs; no component edits a graph in place.', '']
+
+    # ---- 10 governance
+    out += ['## 10. Governance boundary', '', '| Actor | May | May not |', '|---|---|---|',
             '| Level owner | change its source tool; publish a new export | write federated edges |', '| Engine | read local graphs and approved edges; write proposals | approve; write to any graph |',
             '| Architect | approve, reject or supersede mapping records | edit an approved record |', '| Agent (assistant) | query the graphs; run the engine and validators | approve; write to any graph or mapping set |',
             '| Graph loader | rebuild graphs from exports and the mapping set | change any input |', '']
     req('G', 'Only an architect action sets `approved`; no automated component, engine or agent may.', 'mapping-execution.md §2; registry enterprise_rule', 'built (convention; validator requires reviewer_id and approved_at)')
     out += inline('G')
 
-    # ---- 9 decisions
-    out += ['## 9. Open design decisions', '', '| ID | Decision | Options | SDMM default |', '|---|---|---|---|',
+    # ---- 11 decisions
+    out += ['## 11. Open design decisions', '', '| ID | Decision | Options | SDMM default |', '|---|---|---|---|',
             '| DEC-01 | Graph store | in memory from files (today); property graph (e.g. Neo4j: nodes and edges map one-to-one to §2 and §3); RDF store (named graph per local graph, edges as reified statements with PROV) | in memory until a team needs persistent queries; then property graph |',
             '| DEC-02 | Refresh trigger per source | on demand; scheduled; event-driven (webhook); refresh-on-read | on demand now; event-driven where the tool supports it |',
             '| DEC-03 | One store or five | one store with a partition per local graph plus the federated edges; or separate stores per team federated by id | one store, partitioned, until teams need independent operation |',
@@ -163,7 +213,7 @@ def render():
 
     # ---- 10 index
     status = Counter(r[4].split(' ')[0] for r in REQ)
-    out += ['## 10. Requirements index', '', f"{len(REQ)} requirements — " + ', '.join(f"{k} {v}" for k, v in status.most_common()) + '. Groups: A architecture, L local graph, F federated graph, I identity, V versions, Q queries, R load and refresh, G governance.', '',
+    out += ['## 12. Requirements index', '', f"{len(REQ)} requirements — " + ', '.join(f"{k} {v}" for k, v in status.most_common()) + '. Groups: A architecture, L local graph, F federated graph, I identity, V versions, Q queries, R load and refresh, C components, G governance.', '',
             '| ID | Requirement | Basis | Status |', '|---|---|---|---|']
     for rid, g, text, basis, st in REQ:
         out.append(f"| {rid} | {text} | {basis} | {st} |")
