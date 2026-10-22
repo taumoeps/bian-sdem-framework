@@ -410,7 +410,7 @@
       "fill_step": null,
       "data_needed": "scenario participants",
       "confidence": "low",
-      "reasoning": "As S10 — roles are context, not endpoints."
+      "reasoning": "Roles appear in scenario sequence diagrams as the parties performing steps, informally. Like actors (S10), they are context for a process mapping rather than a mapping endpoint; no registry rule is proposed."
     },
     {
       "id": "S12",
@@ -815,7 +815,7 @@
       "fill_step": 1,
       "data_needed": "network path records",
       "confidence": "low",
-      "reasoning": "As S37 for paths."
+      "reasoning": "Component→network path: as S37, ArchiMate reaches a Path only through the nodes it connects, and estates record routes against nodes, not applications. Institution-only; data-filled from network records where they exist."
     },
     {
       "id": "S39",
@@ -1040,7 +1040,7 @@
       "fill_step": 3,
       "data_needed": "SBB composition; S32 instances",
       "confidence": "medium",
-      "reasoning": "As S52 for deployments."
+      "reasoning": "A solution building block's deployments follow from its member components' DEPLOYED_AS instances (S32) via the SBB's composition in the A3 export. Derived, never stored."
     },
     {
       "id": "S54",
