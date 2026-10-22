@@ -37,7 +37,7 @@ Before designing any inference, establish what the reference architecture itself
 
 ### 1.4 BIAN mapping scope by entity
 
-All 44 catalogue entities. **Covered by BIAN** is "Yes" when BIAN defines the concept and publishes its instances; blank otherwise. **BIAN mapping to next level** says whether BIAN publishes a way to map this entity across the boundary below it: Yes (a published rule or method), Partial, Method only, No, or — where no arrow exists. Entities not covered by BIAN are listed with blank BIAN columns so the scope is visible in one table.
+All 44 catalogue entities. **Covered by BIAN** is "Yes" when BIAN defines the concept and publishes its instances, "No" otherwise. **BIAN mapping to next level** says whether BIAN publishes a way to map this entity across the boundary below it: Yes (a published rule or method), Partial, Method only, No, or — where no arrow exists. Entities not covered by BIAN show "n/a" in the BIAN columns so the scope is visible in one table.
 
 Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 release notes · **[SAPG]** Semantic API Practitioner Guide v8.1 · **[APIP]** BIAN Semantic API portal. (What BIAN offers as *guidance* for the uncovered entities is in Appendix A.1.)
 
@@ -47,15 +47,15 @@ Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 rel
 | Entity | Covered by BIAN | BIAN concept | BIAN source | BIAN mapping to next level |
 |---|---|---|---|---|
 | `A1.BusinessCapability` | Yes | Business Capability (BCM) | [SL14] Business Capability Map | No — capability→Service Domain mapping is work in progress, unpublished ([RN14] §3) |
-| `A1.ValueStream` |  |  |  |  |
-| `A1.ValueStreamStage` |  |  |  |  |
-| `A1.BusinessProcess` |  |  |  |  |
-| `A1.BusinessActivity` |  |  |  |  |
-| `A1.BusinessService` |  |  |  |  |
-| `A1.BusinessActor` |  |  |  |  |
-| `A1.BusinessRole` |  |  |  |  |
-| `A1.BusinessObject` |  |  |  |  |
-| `A1.BusinessRequirement` |  |  |  |  |
+| `A1.ValueStream` | No | n/a | n/a | n/a |
+| `A1.ValueStreamStage` | No | n/a | n/a | n/a |
+| `A1.BusinessProcess` | No | n/a | n/a | n/a |
+| `A1.BusinessActivity` | No | n/a | n/a | n/a |
+| `A1.BusinessService` | No | n/a | n/a | n/a |
+| `A1.BusinessActor` | No | n/a | n/a | n/a |
+| `A1.BusinessRole` | No | n/a | n/a | n/a |
+| `A1.BusinessObject` | No | n/a | n/a | n/a |
+| `A1.BusinessRequirement` | No | n/a | n/a | n/a |
 
 #### A2 — Service Domain Architecture — 15 of 15 covered by BIAN
 
@@ -81,30 +81,30 @@ Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 rel
 
 | Entity | Covered by BIAN | BIAN concept | BIAN source | BIAN mapping to next level |
 |---|---|---|---|---|
-| `A3.ApplicationComponent` |  |  |  |  |
-| `A3.ApplicationService` |  |  |  |  |
-| `A3.ApplicationInterface` |  |  |  |  |
-| `A3.ApplicationFunction` |  |  |  |  |
-| `A3.APIOperation` |  |  |  |  |
-| `A3.DataEntity` |  |  |  |  |
-| `A3.Event` |  |  |  |  |
-| `A3.SolutionBuildingBlock` |  |  |  |  |
+| `A3.ApplicationComponent` | No | n/a | n/a | n/a |
+| `A3.ApplicationService` | No | n/a | n/a | n/a |
+| `A3.ApplicationInterface` | No | n/a | n/a | n/a |
+| `A3.ApplicationFunction` | No | n/a | n/a | n/a |
+| `A3.APIOperation` | No | n/a | n/a | n/a |
+| `A3.DataEntity` | No | n/a | n/a | n/a |
+| `A3.Event` | No | n/a | n/a | n/a |
+| `A3.SolutionBuildingBlock` | No | n/a | n/a | n/a |
 
 #### A4 — Technology Architecture — 0 of 11 covered by BIAN
 
 | Entity | Covered by BIAN | BIAN concept | BIAN source | BIAN mapping to next level |
 |---|---|---|---|---|
-| `A4.InfrastructureComponent` *(abstract)* |  |  |  |  |
-| `A4.Deployment` |  |  |  |  |
-| `A4.DeploymentEnvironment` |  |  |  |  |
-| `A4.Node` |  |  |  |  |
-| `A4.Device` |  |  |  |  |
-| `A4.SystemSoftware` |  |  |  |  |
-| `A4.TechnologyService` |  |  |  |  |
-| `A4.TechnologyInterface` |  |  |  |  |
-| `A4.CommunicationNetwork` |  |  |  |  |
-| `A4.Path` |  |  |  |  |
-| `A4.Artifact` |  |  |  |  |
+| `A4.InfrastructureComponent` *(abstract)* | No | n/a | n/a | n/a |
+| `A4.Deployment` | No | n/a | n/a | n/a |
+| `A4.DeploymentEnvironment` | No | n/a | n/a | n/a |
+| `A4.Node` | No | n/a | n/a | n/a |
+| `A4.Device` | No | n/a | n/a | n/a |
+| `A4.SystemSoftware` | No | n/a | n/a | n/a |
+| `A4.TechnologyService` | No | n/a | n/a | n/a |
+| `A4.TechnologyInterface` | No | n/a | n/a | n/a |
+| `A4.CommunicationNetwork` | No | n/a | n/a | n/a |
+| `A4.Path` | No | n/a | n/a | n/a |
+| `A4.Artifact` | No | n/a | n/a | n/a |
 
 **Totals: 16 of 44 entities covered by BIAN** — one at A1, all fifteen at A2, none at A3, none at A4. Of the sixteen, only the A2→A3 information and API entities (`ControlRecord`, `ServiceOperation`, `BehaviorQualifier`, `BusinessObject`, `BusinessObjectAttribute`) have a published BIAN mapping to the next level; the capability's mapping to Service Domains — the one most expected — is not published.
 
