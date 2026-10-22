@@ -35,7 +35,81 @@ Before designing any inference, establish what the reference architecture itself
 
 5. **Existing approved mappings are the best evidence of all.** "Domain X is realised by application Y" makes "operation X.op is implemented by Y's API" far more likely. The engine should always read the federated graph before reading any description.
 
-### 1.4 Coverage at entity level
+### 1.4 BIAN mapping scope by entity
+
+Which of the 44 catalogue entities are BIAN's, and which are not. An entity is **in BIAN scope** when BIAN defines the concept and publishes its instances on the public portal. Everything else is **not covered by BIAN**: the entity comes from ArchiMate, TOGAF or SDMM, and its instances are the institution's. (Guidance BIAN offers for mapping *to* non-BIAN entities is detailed in Appendix A.1; it does not make those entities BIAN's.)
+
+#### In BIAN scope — 16 entities
+
+| Level | Entity | BIAN concept | BIAN source |
+|---|---|---|---|
+| A1 | `A1.BusinessCapability` | Business Capability (BCM) | [SL14] Business Capability Map — Top Level View, Capability Views |
+| A2 | `A2.BusinessArea` | Business Area | [SL14] Service Landscape V14.0 views |
+| A2 | `A2.BusinessDomain` | Business Domain | [SL14] Service Landscape views; InSite Business Domain pages |
+| A2 | `A2.ServiceDomain` | Service Domain | [SL14] landscape views and per-domain pages; [SAPG] §2.4–2.5, §3.1–3.2 |
+| A2 | `A2.FunctionalPattern` | Functional Pattern | [SL14] MetaModel Overview; [SAPG] §3.2.1 |
+| A2 | `A2.AssetType` | Asset Type | [SL14] MetaModel Overview; [SAPG] §3.2.2 |
+| A2 | `A2.ControlRecord` | Control Record | [SL14] Control Record Model Overview; [SAPG] §3.2.3 |
+| A2 | `A2.ServiceGroup` | Service Group | [SL14] MetaModel Overview |
+| A2 | `A2.ServiceOperation` | Service Operation | [SL14] per-domain operations with I/O parameters; [SAPG] §3.2.5 |
+| A2 | `A2.BehaviorQualifier` | Behavior Qualifier | [SL14] MetaModel Overview; [SAPG] §3.2.4 |
+| A2 | `A2.BusinessScenario` | Business Scenario | [SL14] Business Scenarios; [SAPG] §3.3 |
+| A2 | `A2.BusinessObject` | Business Object (BOM) | [SL14] Business Object Model Overview; [SAPG] §3.2.7 |
+| A2 | `A2.BusinessObjectAttribute` | Business Object attribute | [SL14] Business Object Model Overview |
+| A2 | `A2.BOMModel` *(artefact)* | Business Object Model | [SL14] Business Object Model Overview |
+| A2 | `A2.Wireframe` *(artefact)* | Wireframe | [SL14] Wireframes Overview; [SAPG] §3.4 |
+| A2 | `A2.SemanticAPI` *(artefact)* | Semantic API | [APIP]; [SAPG] §3.5 |
+
+One A1 entity and all fifteen A2 entities. Nothing at A3 or A4.
+
+#### Not covered by BIAN — 28 entities
+
+| Level | Entities | Defined by instead |
+|---|---|---|
+| A1 | `ValueStream`, `BusinessProcess`, `BusinessService`, `BusinessActor`, `BusinessRole`, `BusinessObject`, `BusinessRequirement` | ArchiMate 3.2 |
+| A1 | `ValueStreamStage`, `BusinessActivity` | SDMM |
+| A3 | `ApplicationComponent`, `ApplicationService`, `ApplicationInterface`, `ApplicationFunction`, `DataEntity`, `Event` | ArchiMate 3.2 |
+| A3 | `APIOperation` | SDMM (BIAN publishes *reference* API definitions, but the institution's API operations are its own) |
+| A3 | `SolutionBuildingBlock` | TOGAF 10 |
+| A4 | `Node`, `Device`, `SystemSoftware`, `TechnologyService`, `TechnologyInterface`, `CommunicationNetwork`, `Path`, `Artifact` | ArchiMate 3.2 |
+| A4 | `InfrastructureComponent`, `Deployment`, `DeploymentEnvironment` | SDMM |
+
+#### The scope in one line
+
+**BIAN covers the Service Domain Architecture (A2) completely and one Business Architecture concept (the capability). It covers nothing in Application or Technology Architecture.** Every arrow SDMM draws therefore has at most one BIAN end: the A2 end. The other end — a capability's process, an application, an API, a server — is always the institution's.
+
+### 1.5 Coverage at arrow level
+
+| Arrow (registry rule) | BIAN source side | BIAN target side | BIAN mapping guidance | Engine approach | Default confidence band |
+|---|---|---|---|---|---|
+| `A1.BusinessCapability SUPPORTED_BY A2.ServiceDomain` | ● BCM instances | ● domains | ○ unpublished | Text + structure inference; strongest evidence required | **low** |
+| `A1.ValueStream ALIGNED_TO A2.BusinessScenario` | ○ | ● scenarios | ◐ scenarios only | Stage text vs scenario interactions | low–medium |
+| `A1.BusinessProcess USES_DOMAIN A2.ServiceDomain` | ○ | ● domains | ◐ scenarios as templates | Step text vs operation descriptions; scenario participation | medium |
+| `A1.BusinessObject ALIGNED_TO A2.BusinessObject` | ○ | ● BOM | ● BOM attributes | Name + attribute match | medium–high |
+| `A2.ServiceDomain REALIZED_BY A3.ApplicationComponent` | ● | ○ | ◐ functional-partition method | Description overlap + composition + existing arrows | medium |
+| `A2.ServiceOperation IMPLEMENTED_BY A3.APIOperation` | ● with I/O params | ◐ reference APIs | ● REST mapping rules | Rule-based: action term, qualifier, method, payload attributes; emits findings | **high** |
+| `A2.BusinessObject MAPPED_TO A3.DataEntity` | ● BOM | ○ | ● information profile | Attribute-level match | medium–high |
+| `A3.ApplicationComponent DEPLOYED_ON A4.InfrastructureComponent` | ○ | ○ | ◐ deployment patterns ([SAPG] §4.1–4.3), no mapping method | Structural: deployment data in the A4 export; BIAN pattern as a prior | high *if* data present, else no proposal |
+| `A3.ApplicationComponent DEPLOYED_AS A4.Deployment` | ○ | ○ | ◐ as above — the domain-as-container expectation is this arrow's pattern | As above | As above |
+
+Reading across: **A2 is the only level BIAN fills.** Three of the nine arrows have a published BIAN method on their A2 side (operation→API, object→entity, object→BOM); two have a method only (domain→application, process→domain); the capability arrow — the one most people expect BIAN to answer — has none published; the two A4 arrows have deployment *patterns* but no vocabulary, no data and no mapping method, and need no text at all.
+
+### 1.3 Corrections to the repository arising from this review
+
+- `docs/reference-architecture-provenance.md`, the README and the v0.4 spec cite a "BIAN BCM *Statement of Alignment with the Service Landscape* (2023)" PDF. That URL returns 404 and BIAN's release notes describe the alignment as unfinished and unpublished. The citation is replaced by the v13 and v14 release notes, and `A1.BusinessCapability` keeps `evidence_status: interpreted_from_official_source` with that basis.
+- The registry's `SUPPORTED_BY` and `ALIGNED_TO` (value stream) rules carry `authority: bian_alignment_guidance`. That remains correct — BIAN *intends* to provide this guidance and the BCM exists — but the planning assumption that an engine could consult a published alignment is withdrawn.
+
+---
+
+## 2. Engine architecture *(next: to be planned)*
+
+Tier 1 deterministic candidates per boundary, tier 2 model-assisted ranking, evidence and confidence policy, evaluation on a held-out set. Sections 2–5 follow once §1 is agreed.
+
+---
+
+## Appendix A — reference detail
+
+### A.1 Entity coverage in detail (definitions, instances, guidance)
 
 One row per entity. Columns, read left to right:
 
@@ -121,29 +195,3 @@ No A4 entity is BIAN's; they are ArchiMate's and SDMM's, and BIAN publishes no i
 | `A4.Path` | ArchiMate (Technology) | ○ | ○ | — | ○ | A4 export only |
 | `A4.Artifact` | ArchiMate (Technology) | ○ | ○ build systems | **guidance only:** [SAPG] §4.1 (domain functionality packaged as a service container) | ◐ the container *is* the artefact in BIAN's pattern | Artefact identity from build/deploy data |
 
-### 1.5 Coverage at arrow level
-
-| Arrow (registry rule) | BIAN source side | BIAN target side | BIAN mapping guidance | Engine approach | Default confidence band |
-|---|---|---|---|---|---|
-| `A1.BusinessCapability SUPPORTED_BY A2.ServiceDomain` | ● BCM instances | ● domains | ○ unpublished | Text + structure inference; strongest evidence required | **low** |
-| `A1.ValueStream ALIGNED_TO A2.BusinessScenario` | ○ | ● scenarios | ◐ scenarios only | Stage text vs scenario interactions | low–medium |
-| `A1.BusinessProcess USES_DOMAIN A2.ServiceDomain` | ○ | ● domains | ◐ scenarios as templates | Step text vs operation descriptions; scenario participation | medium |
-| `A1.BusinessObject ALIGNED_TO A2.BusinessObject` | ○ | ● BOM | ● BOM attributes | Name + attribute match | medium–high |
-| `A2.ServiceDomain REALIZED_BY A3.ApplicationComponent` | ● | ○ | ◐ functional-partition method | Description overlap + composition + existing arrows | medium |
-| `A2.ServiceOperation IMPLEMENTED_BY A3.APIOperation` | ● with I/O params | ◐ reference APIs | ● REST mapping rules | Rule-based: action term, qualifier, method, payload attributes; emits findings | **high** |
-| `A2.BusinessObject MAPPED_TO A3.DataEntity` | ● BOM | ○ | ● information profile | Attribute-level match | medium–high |
-| `A3.ApplicationComponent DEPLOYED_ON A4.InfrastructureComponent` | ○ | ○ | ◐ deployment patterns ([SAPG] §4.1–4.3), no mapping method | Structural: deployment data in the A4 export; BIAN pattern as a prior | high *if* data present, else no proposal |
-| `A3.ApplicationComponent DEPLOYED_AS A4.Deployment` | ○ | ○ | ◐ as above — the domain-as-container expectation is this arrow's pattern | As above | As above |
-
-Reading across: **A2 is the only level BIAN fills.** Three of the nine arrows have a published BIAN method on their A2 side (operation→API, object→entity, object→BOM); two have a method only (domain→application, process→domain); the capability arrow — the one most people expect BIAN to answer — has none published; the two A4 arrows have deployment *patterns* but no vocabulary, no data and no mapping method, and need no text at all.
-
-### 1.3 Corrections to the repository arising from this review
-
-- `docs/reference-architecture-provenance.md`, the README and the v0.4 spec cite a "BIAN BCM *Statement of Alignment with the Service Landscape* (2023)" PDF. That URL returns 404 and BIAN's release notes describe the alignment as unfinished and unpublished. The citation is replaced by the v13 and v14 release notes, and `A1.BusinessCapability` keeps `evidence_status: interpreted_from_official_source` with that basis.
-- The registry's `SUPPORTED_BY` and `ALIGNED_TO` (value stream) rules carry `authority: bian_alignment_guidance`. That remains correct — BIAN *intends* to provide this guidance and the BCM exists — but the planning assumption that an engine could consult a published alignment is withdrawn.
-
----
-
-## 2. Engine architecture *(next: to be planned)*
-
-Tier 1 deterministic candidates per boundary, tier 2 model-assisted ranking, evidence and confidence policy, evaluation on a held-out set. Sections 2–5 follow once §1 is agreed.
