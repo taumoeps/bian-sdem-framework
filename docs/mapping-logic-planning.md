@@ -542,9 +542,42 @@ One row per mapping across both tiers: the claim (§1.2 or §2.3), its authority
 
 **One arrow of nine is covered by a BIAN mapping; one is partially covered; one has a BIAN method; six have nothing.** The rest of §3 follows this row by row.
 
-### 4.2 Per-arrow design *(next)*
+### 4.2 Gap-fill strategy — minimal inference
 
-Tier 1 deterministic candidates per arrow, tier 2 model-assisted ranking, evidence and confidence policy, evaluation on a held-out set.
+§3 and §5.2 show the official picture: A2 complete, A2→A3 partial, A1→A2 intent only, A4 empty. Filling the rest is two different problems, and only one of them ever needs inference.
+
+#### Two gaps, two fillers
+
+| Gap | Question | Who can fill it |
+|---|---|---|
+| **Mapping types** | Is this *kind* of arrow legitimate, and on whose authority? | Standards. BIAN for anything touching A2. **ArchiMate** for A3→A4: SDMM's A3 and A4 entities are ArchiMate-native, so ArchiMate's cross-layer rules apply directly (pending the five verifications S34, S39, S44, S48, S50). TOGAF supplies vocabulary (ABB/SBB) and ADM placement, not relationship rules |
+| **Mapping instances** | Does *this* application run on *that* platform? | Never a standard. Always the institution: its data, its architects, or — last — inference |
+
+ArchiMate cannot reach A1→A2 directly: it has no BIAN concepts. The one lever is that BIAN publishes the Service Landscape in ArchiMate 3.2 ([RN14] §1.2). If BIAN types a Service Domain as a specific ArchiMate element, that element's cross-layer rules would apply. **To check on the portal** (MetaModel Overview): which ArchiMate element types BIAN assigns to Service Domain, Business Capability and Business Scenario.
+
+#### The ladder — lowest rung that works, inference last
+
+| Rung | Mechanism | Inference? | Arrows it fills |
+|---|---|---|---|
+| 1 | **Data join** — the institution's own records: CMDB, deployment manifests, API gateway inventory, data catalogue | none | `DEPLOYED_ON`, `DEPLOYED_AS`; most of `MAPPED_TO` |
+| 2 | **Rule application** — BIAN's published REST mapping: action term, behaviour qualifier, control-record resource, HTTP method ([SAPG] §3.5) | none, deterministic | `IMPLEMENTED_BY` |
+| 3 | **Derivation from approved arrows** — closure over records architects already approved: an application implementing operations of domain D realises D; a process using operations of D uses D; a capability whose processes all use D is a *candidate* for D | none; graph closure | `REALIZED_BY`, `USES_DOMAIN`, candidate `SUPPORTED_BY` |
+| 4 | **Structural matching** — attribute names and types against BOM attributes; API paths against operation names | light, fully explainable | `ALIGNED_TO` (object), residual `IMPLEMENTED_BY` |
+| 5 | **Text inference** — description similarity; model-assisted ranking with cited rationale | yes | only what is left: cold-start `SUPPORTED_BY`, `ALIGNED_TO` (value stream) |
+
+Reading down: **A4 is filled entirely by rung 1**; A2→A3 by rungs 2–3; A1→A2 objects by rung 4. The one arrow that genuinely needs rung 5 is capability → Service Domain — the mapping BIAN itself has not finished — and even there the minimal-inference options come first: author it (a capability map is ~100 entries, not 10,000), derive it by rung 3 once processes are mapped, or wait for BIAN's working group to publish ([WQA26]).
+
+#### Design rules that follow
+
+1. **Rungs 1–3 are the engine's tier 1.** They produce proposals with no semantic judgement, so they can carry high default confidence and cite the data or the approved record they were derived from.
+2. **Rung 4 is tier 1 with a score.** Explainable, bounded, cites the attributes matched.
+3. **Rung 5 is tier 2, opt-in per arrow type**, and only runs on pairs no lower rung could settle. Its proposals carry low confidence and the strictest evidence requirement.
+4. **A rung-3 derivation is never auto-approved either.** It is still `proposed`: the architect confirms that the closure holds semantically, not just structurally.
+5. **Type-level gaps are closed by registry changes, not by the engine.** When the ArchiMate rows verify, `DEPLOYED_ON` / `DEPLOYED_AS` move from `enterprise_rule` to `archimate_native` authority; the engine's behaviour on them is unchanged (still rung 1).
+
+### 4.3 Per-arrow design *(next)*
+
+Each of the nine arrows: which rung applies, what data it needs from the level exports, what it proposes, and its default confidence band.
 
 ## 5. Mapping Diagram
 
