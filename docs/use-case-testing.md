@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** seven use cases defined; E1, M0, M1 and H1 executed 2026-10-22 (see Results); H2 authored and ready; E2, M2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** seven use cases defined; E1, M0, M1, H1 and H2 executed 2026-10-22 (see Results); E2 and M2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -187,7 +187,7 @@
 | S20 | control records → tables | 4 | candidate-rule reports, same four |
 | S50 | tables → PostgreSQL / Redis | 1 | institution-only report |
 
-**Pass.** Precision ≥ 0.9; recall ≈ 0.7 is **expected** (the gold's interview-only arrows are the measured cost of missing aliases and product field names); H2.1–H2.6 hold; `h2-inference-log.json` complete. **Status:** data authored and validated (v0.5.5); **ready to execute**.
+**Pass.** Precision ≥ 0.9; recall ≈ 0.7 is **expected** (the gold's interview-only arrows are the measured cost of missing aliases and product field names); H2.1–H2.6 hold; `h2-inference-log.json` complete. **Status:** executed 2026-10-22 — see Results.
 
 ## What the six cases cover together
 
@@ -886,3 +886,136 @@ None. The three BATCH jobs overlap no control record at ≥ 50 % (JOB-INTEREST v
 | 5 — trace stops at the module | `sdmm-graph trace --follow-composition` continues a chain through within-level composition (module → its whole downstream; whole → parts upstream), rendered as `PART_OF` / `COMPOSES` structural hops |
 
 **H1 is complete:** 28 of 28 from nothing approved, no false proposal, every refusal held. Under the guide as it stood, recall would have been 0.79; the three conventions the executor had to invent are now rules.
+
+### H2 — results (2026-10-22, fable-executor)
+
+**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.5. **Given.** `h2-mappings-given.json` — empty; the three v0.5.5 exports (116 instances); **no A1 export**. **Gold.** `h2-gold-mappings.json` and `mappings.json` were not opened until phase 5. The case text states the gold's size and that several arrows were reached by interview; the instances were not known. **Baseline.** None defined; proposals carry `H2-BASE-2026-Q4`. **Files.** `examples/acquired-fintech/h2-proposals.json` (32 records) and `examples/acquired-fintech/h2-inference-log.json` (239 attempts, 20 plan IDs; every gated operation × endpoint pair, every failed gate per domain and service, every missed gold arrow with its cause).
+
+**Conventions and one guide conflict, marked.** **H2-C1** — the `MAPPED_TO` rule (≥ 50 % of the BIAN object's attributes) has no one-to-one clause; applied literally it files three cross pairs (Payment Transaction → flows 4/8, Current Account → vaults 4/8, Savings → pots 4/8). The executor resolved S30 and S20 one-to-one to a fixpoint exactly as step-2 clause 4 does (finding 1). **Guide conflict** — the S17 row in step 3 permits description comparison as a step-5 fallback two bands lower; the step-5 heading restricts step 5 to S01. The S17 row was followed, with the step-5 threshold, and produced one proposal (P-H2-028; finding 2).
+
+#### Proposals
+
+| Proposal | Plan ID | Connection | Step | Confidence | Working |
+|---|---|---|---|---|---|
+| P-H2-001…014 | S33 ×7, S32 ×7 | svc-flow, svc-zap, svc-pots, svc-buddies, svc-vaults, svc-perks, svc-shield `DEPLOYED_ON` INF-EKS-ZIPPA-PROD and `DEPLOYED_AS` their DEP-*-PROD | 1 | 0.8 | `deployed_on` + `hosts` + `platform_id` (three records) and `deployed_as` + `component_id` (two) for every service; naming does not touch step 1 |
+| P-H2-015 | S24 | SO-PI-01 Initiate `IMPLEMENTED_BY` EP-01 POST /v2/moneyflows | 2 | 0.8 | gate via {flow, moneyflow}; Initiate ⇔ POST; neutral; **7/8** fields (`flow_id` stands for the instruction reference) |
+| P-H2-016 | S24 | SO-PI-02 Update ← EP-03 PATCH /v2/moneyflows/{id} | 2 | 0.8 | Update ⇔ PATCH; neutral; 4/5 |
+| P-H2-017 | S24 | SO-PI-03 Retrieve ← EP-02 GET /v2/moneyflows/{id} | 2 | 0.8 | Retrieve ⇔ GET; neutral; 5/6 |
+| P-H2-018 | S24 | SO-CA-01 Initiate ← EP-08 POST /v2/pots | 2 | 0.8 | gate via {pot}; POST; neutral; 3/6 (customer_reference, currency, account_status) |
+| P-H2-019 | S24 | SO-CA-02 Retrieve ← EP-09 GET /v2/pots/{id} | 2 | 0.8 | GET; neutral; 4/6 |
+| P-H2-020 | S24 | SO-CA-04 Control ← EP-10 PUT /v2/pots/{id}/freeze | 2 | 0.8 | Control ⇔ PUT; neutral; **1/2** (account_status only; `pot_id` ≠ account_reference) — the thinnest proposal filed (finding 7); EP-11 /close excluded by check 3 (Closure stem) |
+| P-H2-021 | S24 | SO-PRD-01 Register ← EP-13 POST /v2/members | 2 | 0.8 | gate via {buddy, member, profile}; POST; neutral; 2/4 (party_type, address; `display_name` ≠ party_name) |
+| P-H2-022 | S24 | SO-PRD-02 Retrieve ← EP-14 GET /v2/members/{id} | 2 | 0.8 | GET; neutral; 3/5 |
+| P-H2-023 | S24 | SO-PRD-03 Update ← EP-15 PUT /v2/members/{id} | 2 | 0.8 | PUT; neutral; 2/3 |
+| P-H2-024 | S17 | SD-PI `REALIZED_BY` svc-flow | 3 | 0.8 | over P-H2-015…017 (all decision 1) |
+| P-H2-025 | S17 | SD-CA `REALIZED_BY` svc-pots | 3 | 0.8 | over P-H2-018…020 |
+| P-H2-026 | S17 | SD-PRD `REALIZED_BY` svc-buddies | 3 | 0.8 | over P-H2-021…023 |
+| P-H2-027 | S17 | SD-PE `REALIZED_BY` svc-zap | 3 → **4** | 0.6 | no step-2 input (zap's fields match nothing); alias fallback: {zap, send, p2p} tokens in `/zap`, `/zap/{id}` and table `zaps` = 3/3; no other service scores > 0 |
+| P-H2-028 | S17 | SD-SA `REALIZED_BY` svc-vaults | 3 → 4 → **5** | 0.4 | no step-2 input (gate blocked); alias fallback 0 (no aliases); description comparison over all seven services: "interest-bearing savings accounts with goals" vs "Goal-based vaults with interest boosts" → shared {goal, interest} = 2, runner-up 0. The case predicted none |
+| P-H2-029 | S30 | BBO-PAY-INSTR `MAPPED_TO` ENT-FLOWS | 4 | 0.8 | 7/8 (`flow_id` for the reference; extension `created_by`) |
+| P-H2-030 | S30 | BBO-ACCOUNT `MAPPED_TO` ENT-POTS | 4 | 0.8 | 4/8 = 0.50 — tied with ENT-VAULTS at 4/8 under the rule; resolved in round 2 after ENT-VAULTS went to BBO-SAVINGS (H2-C1) |
+| P-H2-031 | S30 | BBO-PARTY `MAPPED_TO` ENT-MEMBERS | 4 | 0.8 | 4/6 |
+| P-H2-032 | S30 | BBO-SAVINGS `MAPPED_TO` ENT-VAULTS | 4 | 0.8 | 6/8 unique best — **the only route to Savings Account that the data supports structurally** |
+
+#### Candidate-rule and institution-only proposals (not in the proposal file)
+
+| Report id | Plan ID | Connection | Step | Confidence | Working |
+|---|---|---|---|---|---|
+| C-H2-001…008 | S50 | flows, zaps, pots, members, buddies, vaults, perks → INF-PG-ZIPPA-PROD; scores → INF-REDIS-ZIPPA-PROD | 1 | 0.6 | `stored_in` |
+| C-H2-009…012 | S20 | CR-PI → flows 7/8; CR-CA → pots 4/8; CR-PRD → members 4/6; CR-SA → vaults 6/8 | 4 | 0.8 | attribute match, resolved one-to-one (H2-C1); CR-PE → zaps 2/8 and CR-FD → scores 1/5 below threshold |
+
+Derived paths as queries: **S23** SG-PI/SG-CA/SG-PRD → IFC-flow/IFC-pots/IFC-buddies; **S40** seven services → ENV-ZIPPA-PROD; **S47** 23 endpoints → their service's deployment.
+
+#### sdmm-eval
+
+```
+$ python -m sdmm.graph check examples/acquired-fintech/a*.json examples/acquired-fintech/h2-mappings-given.json examples/acquired-fintech/h2-proposals.json
+OK: level A2, A3, A4; OK: mappings #1; OK: mappings #2
+
+$ python -m sdmm.validate --strict examples/acquired-fintech/h2-proposals.json
+WARNING ×32 (required evidence kinds on proposals); OK: examples/acquired-fintech/h2-proposals.json (with warnings)
+
+$ python -m sdmm.evaluate examples/acquired-fintech/h2-gold-mappings.json --proposals examples/acquired-fintech/h2-proposals.json
+relationship     gold prop  tp  fp  fn   prec   rec    f1
+DEPLOYED_AS         7    7   7   0   0   1.00  1.00  1.00
+DEPLOYED_ON         7    7   7   0   0   1.00  1.00  1.00
+IMPLEMENTED_BY     17    9   9   0   8   1.00  0.53  0.69
+MAPPED_TO           5    4   4   0   1   1.00  0.80  0.89
+REALIZED_BY         5    5   5   0   0   1.00  1.00  1.00
+OVERALL            41   32  32   0   9   1.00  0.78  0.88
+
+missed (approved, not proposed):
+  BBO-PAYMENT-TXN -MAPPED_TO-> ENT-ZAPS
+  SO-CA-05 -IMPLEMENTED_BY-> EP-11
+  SO-PE-01 -IMPLEMENTED_BY-> EP-06
+  SO-PE-02 -IMPLEMENTED_BY-> EP-07
+  SO-PI-04 -IMPLEMENTED_BY-> EP-04
+  SO-PI-05 -IMPLEMENTED_BY-> EP-05
+  SO-SA-01 -IMPLEMENTED_BY-> EP-18
+  SO-SA-02 -IMPLEMENTED_BY-> EP-19
+  SO-SA-03 -IMPLEMENTED_BY-> EP-20
+
+$ python -m sdmm.graph trace INF-EKS-ZIPPA-PROD --direction up … --status approved,proposed
+seven DEPLOYED_ON hops; five of them continue to a domain (SD-PI, SD-PE, SD-CA, SD-PRD, SD-SA); svc-perks and svc-shield end at A3
+$ … trace SD-SA --direction down …
+SD-SA -REALIZED_BY-> svc-vaults (P-H2-028) -DEPLOYED_ON-> INF-EKS-ZIPPA-PROD; -DEPLOYED_AS-> DEP-VAULTS-PROD
+```
+
+**The nine misses, by cause** (each is a miss record in the log):
+
+| Cause | Missed arrows | What would recover them |
+|---|---|---|
+| **Gate: no alias** for Savings Account | SO-SA-01/02/03 ← EP-18/19/20 | one alias (`vault`); the pairs would then be decision 1 at 4/6, 5/6, 2/3 — three high proposals from one word |
+| **Field vocabulary** (sender, recipient, outcome, rail_ref, settled_at) | SO-PE-01 ← EP-06 (2/6), SO-PE-02 ← EP-07 (0/4), BBO-PAYMENT-TXN → zaps (2/8) | a field-alias table decoded by the integration architect (`sender` → debtor_account_reference …), consumed by check 4 and by S30 |
+| **Deviations the procedure refuses by design** | SO-PI-04 Control ← DELETE (tie with /release, both check-2 fail); SO-PI-05 Execute/Execution ← POST /release (check 3 fail: release ≠ Execution); SO-CA-05 Closure ← POST /close (check 4 fail 1/3) | a DELETE mapping for Control, qualifier aliases (`release` for Execution), and field aliases; each is an interview fact encoded as data |
+
+**Pass criteria.** Precision 1.00 ≥ 0.9. Recall 0.78 against the expected ≈ 0.7 — the nine misses are exactly the interview-only arrows. H2.1: the two blocked domains are recorded per service and no vaults or shield endpoint is proposed at step 2. H2.2: every proposal names the fields or attributes matched with its score. H2.3: nothing for perks, shield, `/ledger` (EP-12, 1/6 for Retrieve) or the two `/buddies` endpoints. H2.4: EP-04 and EP-05 tie at 1/2 for Control with check 2 failed on both → no proposal, both named; `/close` fails check 4; both zap endpoints fail check 4. H2.5: 14 deployment arrows at high. H2.6: A1 "requires authoring", one log record per A1-side ID.
+
+#### Predicted vs observed, per plan ID
+
+| Plan ID | Predicted | Observed | Verdict |
+|---|---|---|---|
+| S33 ×7, S32 ×7 | high | 14/14 hit | **holds** |
+| S24 | 9 proposals (PI ×3, CA ×3, PRD ×3), none for PI Control/Execute, PE ×2, CA Closure, SA ×3, perks/shield/ledger/buddies | exactly the nine, all hits, and exactly those refusals | **holds** |
+| S17 | high PI, CA, PRD; medium PE via alias fallback; **none** for SA | PI, CA, PRD 0.8; PE 0.6 via `/zap`; **SA 0.4 via the step-5 fallback the S17 row permits — a hit (ZP-125)** | **holds, plus one** — the case table and the guide disagree (finding 2) |
+| S30 | high PI, CA, PRD, SA (6/8); none PE, FD, perks, buddies | exactly that, 4/4 hits; **but the rule as written also files three cross pairs** | **holds with H2-C1** (finding 1) |
+| S20 | same four as reports | same four | holds |
+| S50 | eight reports | eight | holds |
+| A1 | requires authoring | recorded for S01, S02, S04, S06, S12 | holds |
+
+#### Findings against the plan
+
+| # | Plan ID | What happened | Why | Proposed change to `new-mappings.json` (or the guide / case) |
+|---|---|---|---|---|
+| 1 | S30, S20 (S12), guide §3 step 4 | the "≥ 50 % of the BIAN object's attributes" rule, applied literally, files **three cross pairs**: Payment Transaction → flows (4/8: debtor, creditor, amount, currency), Current Account → vaults (4/8), Savings Account → pots (4/8); the S20 analogues too | account-like and payment-like objects share four generic attributes; 50 % of eight is four | guide step 4: add the step-2 one-to-one clause — each BOM object takes its unique best entity, a resolved entity leaves other candidate sets, iterate to a fixpoint, ties → no proposal; and raise the threshold or require a reference attribute (a `*_reference`/id) among the matches. On this estate the fixpoint alone separates pots from vaults (6/8 beats 4/8) |
+| 2 | S17, guide §3 steps 3 and 5 | the S17 row allows description comparison "step 5, two bands lower"; the step-5 heading says step 5 is only for S01 and the A1 side. The executor followed the row and filed SD-SA → svc-vaults at 0.4 on {goal, interest}; the gold approves it | the two sections were written at different times; the case table followed the heading ("none for SA") | reconcile: step 5 heading lists S17 as a permitted fallback with the same threshold (≥ 2 non-generic shared concepts, lead ≥ 1, candidate set = all components); case H2 table: SA **low** via step 5 |
+| 3 | S17, new derivation | a structural route to SD-SA → svc-vaults exists that the plan does not use: svc-vaults `access` ENT-VAULTS, and BBO-SAVINGS (the domain's control-record object) `MAPPED_TO` ENT-VAULTS at 6/8 (P-H2-032) | step 3 for S17 closes only over `IMPLEMENTED_BY`; the information perspective is not consulted | add to the S17 step-3 rule: "or component C accesses data entity E and the BOM object of D's control record `MAPPED_TO` E (approved or step-4 proposal) ⇒ candidate D `REALIZED_BY` C, one band below the S30 input" — structural, medium, and reached without the description text. Quarantined below as a candidate |
+| 4 | S24 gate | the gate blocked Savings Account and Fraud Case for every service, as designed, and the cost is measurable: three gold arrows behind one missing alias (`vault`) | aliases are the institution's interview knowledge encoded; where absent the plan stops, correctly | no rule change; `export-conventions.json` already carries `aliases`. Record the cost: 3 of 9 misses are one alias. Recommend the write-up template report "misses recoverable by one alias" as a standing metric |
+| 5 | S24 check 4, S30 | five misses come from product field names (`sender`, `recipient`, `outcome`, `rail_ref`, `settled_at`, `pot_id`, `closed_at`) that are BIAN attributes under another name | check 4 and S30 compare names literally; `aliases` exists for asset types, not for attributes | `export-conventions.json`: `A3.APIOperation.attributes.field_aliases` / `A3.DataEntity.attributes.field_aliases` (product field → BIAN attribute), or an institution glossary file consumed by check 4, S30, S20 and S12. With the zap aliases the two PE pairs and the zaps table become decision 1 / 7–8 of 8 |
+| 6 | S24 checks 2 and 3 | three misses are deviations the procedure refuses on purpose: Control as DELETE (tie), Execute/Execution as POST `/release` (qualifier not in path), Closure as POST `/close` (fields) | the executor convention for check 2 has no DELETE row; qualifiers have no aliases | guide check 2: Control ⇔ PUT, PATCH **or DELETE** (cancel/hold by deletion is a common REST idiom); `A2.BehaviorQualifier.attributes.aliases` (Execution → `release`); with both, EP-05 resolves to SO-PI-05 at decision 2 and EP-04 to SO-PI-04 at decision 1, removing the tie |
+| 7 | S24 check 4 | SO-CA-04 Control → PUT /freeze was filed at **high on a single matched attribute** (`account_status`; 1/2 = 50 %) | a two-attribute operation passes the ratio test with one field; the ratio hides the absolute count | guide check 4: require ≥ 2 matched attributes **or** 100 % of a one-attribute set; a single-attribute match passes one band lower. The gold approves the pair, so the risk did not bite here |
+| 8 | S41 | TS-QUEUE is referenced by nothing; the estate has no `A3.ApplicationService`, so `consumes` has no carrier | microservice estates export components, not application services | `export-conventions.json`: allow `consumes` on `A3.ApplicationComponent` as well, and record S41's component variant |
+| 9 | gold text | ZP-101 says 6/8 fields (data: 7/8, `payment_status` matches); ZP-110 says 2/2 (data: 1/2 — `pot_id` is counted as account_reference by the architect, not by the rule) | the architect applied field aliases silently | fix the two rationales, or add the `pot_id` alias (finding 5) so rule and rationale agree |
+
+#### New connection candidates (outside the plan)
+
+| Pair / rule | Found by step | Reasoning | Confidence | Suggested ID |
+|---|---|---|---|---|
+| derivation: D `REALIZED_BY` C when C accesses E and D's BOM object `MAPPED_TO` E | 3 over a step-4 proposal | SD-SA → svc-vaults via ENT-VAULTS (6/8); structural, independent of names and descriptions; would also confirm PI → flow, CA → pots, PRD → buddies | medium | S17 step-3 rule extension (finding 3) |
+| SD-FD → svc-shield | — | the only candidate for Fraud Detection by role ("risk scoring sidecar", `risk_score` in `scores`), but gate blocked (no alias), step-4 fallback 0, step-5 shares 0 non-generic concepts; the gold does **not** map it either | none | no proposal — recorded so the refusal is visible |
+
+#### No-proposal register
+
+| Plan ID | Instances considered | Why no proposal |
+|---|---|---|
+| S24 | 115 gated operation × endpoint pairs (all in the log) | 9 proposed; 94 at decision 3; 12 decision-1/2 candidates excluded by one-to-one resolution; SO-PI-04: tie EP-04 / EP-05 at 1/2, both check 2 fail — **no proposal, both named** |
+| S24 (gate) | 35 domain × service gates fail (SD-SA and SD-FD against all seven; the alias domains against the services they do not name) | token gate: no asset token or alias in the interface; 1 of these records hide gold arrows (the Savings endpoints) |
+| S24 | EP-12 `/ledger`, EP-16/17 `/buddies`, EP-21/22 perks, EP-23 shield | no gated operation reaches 50 % of its attributes in these payloads, or the gate is closed (shield) |
+| S17 | SD-FD × every service | step 3 nothing; alias fallback 0; step 5 0 shared concepts |
+| S17 | svc-perks, svc-shield | realise no domain in this estate |
+| S30 / S20 | BBO-PAYMENT-TXN / CR-PE → zaps 2/8; BBO-FRAUD-CASE / CR-FD → scores 1/5; perks, buddies tables | below 50 % |
+| S30 / S20 | PAYMENT-TXN → flows 4/8, ACCOUNT → vaults 4/8, SAVINGS → pots 4/8 (and CR analogues) | ≥ 50 % but not the object's unique best — suppressed by H2-C1; **would be filed under the rule as written** |
+| S25, S41, S49 | — | no `A3.ApplicationService`, no `consumes`, no artifact |
+| S01, S02, S04, S06, S12 | — | **requires authoring**: no A1 export |
+
+**Summary.** Under hostile naming the plan did what the case asked: it proposed nothing wrong. Precision 1.00 over 32 proposals, and the nine misses are exactly the arrows the architect reached by interview. The misses are now measurable by cause — three behind one missing asset alias, five behind product field names, three behind deviations the procedure refuses by design — and each cause has a data-side remedy (asset aliases, field aliases, qualifier aliases, a DELETE row) rather than a looser rule. Two rule findings matter beyond this case: the `MAPPED_TO` threshold needs the same one-to-one resolution step 2 already has, or it files cross pairs between account-like objects; and the realisation rule should be allowed to close over the information perspective, which reaches Savings Account structurally where step 2 cannot. The suite's six cases are now all executed except E2 and M2.

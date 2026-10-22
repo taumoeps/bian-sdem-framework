@@ -1,0 +1,721 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "fable-executor/2026-10-22",
+  "use_case": "H2",
+  "mappings": [
+    {
+      "mapping_id": "P-H2-001",
+      "source": {
+        "id": "svc-flow",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join; a3 svc-flow.deployed_on lists INF-EKS-ZIPPA-PROD; a4 INF-EKS-ZIPPA-PROD.hosts lists svc-flow; a4 DEP-FLOW-PROD.platform_id = INF-EKS-ZIPPA-PROD; 3 records, no inference"
+      ],
+      "rationale": "The manifest places flow-svc on EKS cluster zippa-prod",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-002",
+      "source": {
+        "id": "svc-flow",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-FLOW-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S32 step1 data join; a3 svc-flow.deployed_as lists DEP-FLOW-PROD; a4 DEP-FLOW-PROD.component_id = svc-flow (environment ENV-ZIPPA-PROD, platform INF-EKS-ZIPPA-PROD); both sides"
+      ],
+      "rationale": "The deployment record and the service name each other",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-003",
+      "source": {
+        "id": "svc-zap",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join; a3 svc-zap.deployed_on lists INF-EKS-ZIPPA-PROD; a4 INF-EKS-ZIPPA-PROD.hosts lists svc-zap; a4 DEP-ZAP-PROD.platform_id = INF-EKS-ZIPPA-PROD; 3 records, no inference"
+      ],
+      "rationale": "The manifest places zap-svc on EKS cluster zippa-prod",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-004",
+      "source": {
+        "id": "svc-zap",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-ZAP-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S32 step1 data join; a3 svc-zap.deployed_as lists DEP-ZAP-PROD; a4 DEP-ZAP-PROD.component_id = svc-zap (environment ENV-ZIPPA-PROD, platform INF-EKS-ZIPPA-PROD); both sides"
+      ],
+      "rationale": "The deployment record and the service name each other",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-005",
+      "source": {
+        "id": "svc-pots",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join; a3 svc-pots.deployed_on lists INF-EKS-ZIPPA-PROD; a4 INF-EKS-ZIPPA-PROD.hosts lists svc-pots; a4 DEP-POTS-PROD.platform_id = INF-EKS-ZIPPA-PROD; 3 records, no inference"
+      ],
+      "rationale": "The manifest places pots-svc on EKS cluster zippa-prod",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-006",
+      "source": {
+        "id": "svc-pots",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-POTS-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S32 step1 data join; a3 svc-pots.deployed_as lists DEP-POTS-PROD; a4 DEP-POTS-PROD.component_id = svc-pots (environment ENV-ZIPPA-PROD, platform INF-EKS-ZIPPA-PROD); both sides"
+      ],
+      "rationale": "The deployment record and the service name each other",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-007",
+      "source": {
+        "id": "svc-buddies",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join; a3 svc-buddies.deployed_on lists INF-EKS-ZIPPA-PROD; a4 INF-EKS-ZIPPA-PROD.hosts lists svc-buddies; a4 DEP-BUDDIES-PROD.platform_id = INF-EKS-ZIPPA-PROD; 3 records, no inference"
+      ],
+      "rationale": "The manifest places buddies-svc on EKS cluster zippa-prod",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-008",
+      "source": {
+        "id": "svc-buddies",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-BUDDIES-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S32 step1 data join; a3 svc-buddies.deployed_as lists DEP-BUDDIES-PROD; a4 DEP-BUDDIES-PROD.component_id = svc-buddies (environment ENV-ZIPPA-PROD, platform INF-EKS-ZIPPA-PROD); both sides"
+      ],
+      "rationale": "The deployment record and the service name each other",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-009",
+      "source": {
+        "id": "svc-vaults",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join; a3 svc-vaults.deployed_on lists INF-EKS-ZIPPA-PROD; a4 INF-EKS-ZIPPA-PROD.hosts lists svc-vaults; a4 DEP-VAULTS-PROD.platform_id = INF-EKS-ZIPPA-PROD; 3 records, no inference"
+      ],
+      "rationale": "The manifest places vaults-svc on EKS cluster zippa-prod",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-010",
+      "source": {
+        "id": "svc-vaults",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-VAULTS-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S32 step1 data join; a3 svc-vaults.deployed_as lists DEP-VAULTS-PROD; a4 DEP-VAULTS-PROD.component_id = svc-vaults (environment ENV-ZIPPA-PROD, platform INF-EKS-ZIPPA-PROD); both sides"
+      ],
+      "rationale": "The deployment record and the service name each other",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-011",
+      "source": {
+        "id": "svc-perks",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join; a3 svc-perks.deployed_on lists INF-EKS-ZIPPA-PROD; a4 INF-EKS-ZIPPA-PROD.hosts lists svc-perks; a4 DEP-PERKS-PROD.platform_id = INF-EKS-ZIPPA-PROD; 3 records, no inference"
+      ],
+      "rationale": "The manifest places perks-svc on EKS cluster zippa-prod",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-012",
+      "source": {
+        "id": "svc-perks",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-PERKS-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S32 step1 data join; a3 svc-perks.deployed_as lists DEP-PERKS-PROD; a4 DEP-PERKS-PROD.component_id = svc-perks (environment ENV-ZIPPA-PROD, platform INF-EKS-ZIPPA-PROD); both sides"
+      ],
+      "rationale": "The deployment record and the service name each other",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-013",
+      "source": {
+        "id": "svc-shield",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join; a3 svc-shield.deployed_on lists INF-EKS-ZIPPA-PROD; a4 INF-EKS-ZIPPA-PROD.hosts lists svc-shield; a4 DEP-SHIELD-PROD.platform_id = INF-EKS-ZIPPA-PROD; 3 records, no inference"
+      ],
+      "rationale": "The manifest places shield-svc on EKS cluster zippa-prod",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-014",
+      "source": {
+        "id": "svc-shield",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-SHIELD-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S32 step1 data join; a3 svc-shield.deployed_as lists DEP-SHIELD-PROD; a4 DEP-SHIELD-PROD.component_id = svc-shield (environment ENV-ZIPPA-PROD, platform INF-EKS-ZIPPA-PROD); both sides"
+      ],
+      "rationale": "The deployment record and the service name each other",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-015",
+      "source": {
+        "id": "SO-PI-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-01",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Payment Instruction' of SD-PI passes for svc-flow via tokens ['flow', 'moneyflow']. Check 2 PASS: Initiate <-> POST. Check 3 NEUTRAL: qualifier None, path '/v2/moneyflows'. Check 4 PASS: 7/8 input∪output attributes in payload_fields ['amount', 'creditor_account_reference', 'currency', 'debtor_account_reference', 'payment_status', 'remittance_information', 'value_date'] — the operation's best payload match. Disambiguation: decision 1, filed in round 1"
+      ],
+      "rationale": "POST /v2/moneyflows carries 7 of Initiate Payment Instruction's 8 attributes on the flow-svc interface",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-016",
+      "source": {
+        "id": "SO-PI-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-03",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Payment Instruction' of SD-PI passes for svc-flow via tokens ['flow', 'moneyflow']. Check 2 PASS: Update <-> PATCH. Check 3 NEUTRAL: qualifier None, path '/v2/moneyflows/{id}'. Check 4 PASS: 4/5 input∪output attributes in payload_fields ['amount', 'creditor_account_reference', 'payment_status', 'value_date'] — the operation's best payload match. Disambiguation: decision 1, filed in round 1"
+      ],
+      "rationale": "PATCH /v2/moneyflows/{id} carries 4 of Update Payment Instruction's 5 attributes on the flow-svc interface",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-017",
+      "source": {
+        "id": "SO-PI-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-02",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Payment Instruction' of SD-PI passes for svc-flow via tokens ['flow', 'moneyflow']. Check 2 PASS: Retrieve <-> GET. Check 3 NEUTRAL: qualifier None, path '/v2/moneyflows/{id}'. Check 4 PASS: 5/6 input∪output attributes in payload_fields ['amount', 'creditor_account_reference', 'currency', 'payment_status', 'value_date'] — the operation's best payload match. Disambiguation: decision 1, filed in round 1"
+      ],
+      "rationale": "GET /v2/moneyflows/{id} carries 5 of Retrieve Payment Instruction's 6 attributes on the flow-svc interface",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-018",
+      "source": {
+        "id": "SO-CA-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-08",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Current Account' of SD-CA passes for svc-pots via tokens ['pot']. Check 2 PASS: Initiate <-> POST. Check 3 NEUTRAL: qualifier None, path '/v2/pots'. Check 4 PASS: 3/6 input∪output attributes in payload_fields ['account_status', 'currency', 'customer_reference'] — the operation's best payload match. Disambiguation: decision 1, filed in round 1"
+      ],
+      "rationale": "POST /v2/pots carries 3 of Initiate Current Account's 6 attributes on the pots-svc interface",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-019",
+      "source": {
+        "id": "SO-CA-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-09",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Current Account' of SD-CA passes for svc-pots via tokens ['pot']. Check 2 PASS: Retrieve <-> GET. Check 3 NEUTRAL: qualifier None, path '/v2/pots/{id}'. Check 4 PASS: 4/6 input∪output attributes in payload_fields ['account_status', 'balance', 'currency', 'customer_reference'] — the operation's best payload match. Disambiguation: decision 1, filed in round 1"
+      ],
+      "rationale": "GET /v2/pots/{id} carries 4 of Retrieve Current Account's 6 attributes on the pots-svc interface",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-020",
+      "source": {
+        "id": "SO-CA-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-10",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Current Account' of SD-CA passes for svc-pots via tokens ['pot']. Check 2 PASS: Control <-> PUT. Check 3 NEUTRAL: qualifier None, path '/v2/pots/{id}/freeze'. Check 4 PASS: 1/2 input∪output attributes in payload_fields ['account_status'] — the operation's best payload match. Disambiguation: decision 1, filed in round 1"
+      ],
+      "rationale": "PUT /v2/pots/{id}/freeze carries 1 of Control Current Account's 2 attributes on the pots-svc interface",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-021",
+      "source": {
+        "id": "SO-PRD-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-13",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Party Reference' of SD-PRD passes for svc-buddies via tokens ['buddy', 'member', 'profile']. Check 2 PASS: Register <-> POST. Check 3 NEUTRAL: qualifier None, path '/v2/members'. Check 4 PASS: 2/4 input∪output attributes in payload_fields ['address', 'party_type'] — the operation's best payload match. Disambiguation: decision 1, filed in round 1"
+      ],
+      "rationale": "POST /v2/members carries 2 of Register Party Reference's 4 attributes on the buddies-svc interface",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-022",
+      "source": {
+        "id": "SO-PRD-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-14",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Party Reference' of SD-PRD passes for svc-buddies via tokens ['buddy', 'member', 'profile']. Check 2 PASS: Retrieve <-> GET. Check 3 NEUTRAL: qualifier None, path '/v2/members/{id}'. Check 4 PASS: 3/5 input∪output attributes in payload_fields ['address', 'kyc_status', 'party_type'] — the operation's best payload match. Disambiguation: decision 1, filed in round 1"
+      ],
+      "rationale": "GET /v2/members/{id} carries 3 of Retrieve Party Reference's 5 attributes on the buddies-svc interface",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-023",
+      "source": {
+        "id": "SO-PRD-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-15",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Party Reference' of SD-PRD passes for svc-buddies via tokens ['buddy', 'member', 'profile']. Check 2 PASS: Update <-> PUT. Check 3 NEUTRAL: qualifier None, path '/v2/members/{id}'. Check 4 PASS: 2/3 input∪output attributes in payload_fields ['address', 'contact_details'] — the operation's best payload match. Disambiguation: decision 1, filed in round 1"
+      ],
+      "rationale": "PUT /v2/members/{id} carries 2 of Update Party Reference's 3 attributes on the buddies-svc interface",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-024",
+      "source": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PAYMENT-INITIATION"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "svc-flow",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S17 step3 derivation over step-2 proposals ['P-H2-015', 'P-H2-016', 'P-H2-017'] (none approved): svc-flow -composition-> IFC-flow -composition-> ['EP-01', 'EP-03', 'EP-02']; operations ['SO-PI-01', 'SO-PI-02', 'SO-PI-03'] belong to SD-PI (B09/B10). Cap = strongest input = 0.8"
+      ],
+      "rationale": "flow-svc exposes the endpoints that implement 3 of the domain's operations",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-025",
+      "source": {
+        "id": "SD-CA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-CURRENT-ACCOUNT"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "svc-pots",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S17 step3 derivation over step-2 proposals ['P-H2-018', 'P-H2-019', 'P-H2-020'] (none approved): svc-pots -composition-> IFC-pots -composition-> ['EP-08', 'EP-09', 'EP-10']; operations ['SO-CA-01', 'SO-CA-02', 'SO-CA-04'] belong to SD-CA (B09/B10). Cap = strongest input = 0.8"
+      ],
+      "rationale": "pots-svc exposes the endpoints that implement 3 of the domain's operations",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-026",
+      "source": {
+        "id": "SD-PRD",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PARTY-REFERENCE"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "svc-buddies",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S17 step3 derivation over step-2 proposals ['P-H2-021', 'P-H2-022', 'P-H2-023'] (none approved): svc-buddies -composition-> IFC-buddies -composition-> ['EP-13', 'EP-14', 'EP-15']; operations ['SO-PRD-01', 'SO-PRD-02', 'SO-PRD-03'] belong to SD-PRD (B09/B10). Cap = strongest input = 0.8"
+      ],
+      "rationale": "buddies-svc exposes the endpoints that implement 3 of the domain's operations",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-027",
+      "source": {
+        "id": "SD-PE",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PAYMENT-EXECUTION"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "svc-zap",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S17 step4 FALLBACK (assigned step 3 produced nothing: no step-2 proposal for any operation of SD-PE); asset 'Payment Transaction' tokens+aliases ['p2p', 'payment', 'send', 'transaction', 'zap'] appear in svc-zap's API paths / data entity names: ['/zap', '/zap/{id}', 'zaps'] = 3/3 (threshold >= 1); no other component scores > 0: []. One band lower (high -> medium)"
+      ],
+      "rationale": "The zap-svc service's paths and table are named after the domain's asset alias",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-028",
+      "source": {
+        "id": "SD-SA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-SAVINGS-ACCOUNT"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "svc-vaults",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S17 step5 FALLBACK, two bands lower (high -> low): step 3 produced nothing and the step-4 alias fallback scored 0 for every component (Savings Account has aliases []). Description comparison, candidate set = all 7 components: SD-SA \"Synthetic stand-in: opens and maintains interest-bearing savings accounts with goals.\" + asset \"An interest-bearing savings account.\" vs svc-vaults \"Goal-based vaults with interest boosts.\": shared non-generic concepts ['goal', 'interest'] (2); runner-up svc-zap 0 []; threshold >= 2 and lead >= 1 met. NOTE: guide step 3 S17 row permits this; guide step 5 heading restricts step 5 to S01 — conflict reported"
+      ],
+      "rationale": "Goal-based vaults with interest boosts describe interest-bearing savings accounts with goals; textual match only",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-029",
+      "source": {
+        "id": "BBO-PAY-INSTR",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-FLOWS",
+        "type": "A3.DataEntity",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S30 step4 structural match; BBO-PAY-INSTR.attributes.attributes (8) vs ENT-FLOWS.attributes.attributes (9): 7/8 = 0.88 (threshold 0.5), matched ['amount', 'creditor_account_reference', 'currency', 'debtor_account_reference', 'payment_status', 'remittance_information', 'value_date']; unmatched BIAN attributes ['payment_instruction_reference']; other entities [('ENT-ZAPS', '2/8'), ('ENT-POTS', '1/8'), ('ENT-VAULTS', '1/8')]. One-to-one resolution by executor convention H2-C1 (round 1)"
+      ],
+      "rationale": "7 of the canonical Payment Instruction's 8 attributes are columns of the flows table",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-030",
+      "source": {
+        "id": "BBO-ACCOUNT",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-CURRENT-ACCOUNT"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-POTS",
+        "type": "A3.DataEntity",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S30 step4 structural match; BBO-ACCOUNT.attributes.attributes (8) vs ENT-POTS.attributes.attributes (8): 4/8 = 0.50 (threshold 0.5), matched ['account_status', 'balance', 'currency', 'customer_reference']; unmatched BIAN attributes ['account_reference', 'close_date', 'open_date', 'overdraft_limit']; other entities [('ENT-FLOWS', '1/8'), ('ENT-ZAPS', '1/8'), ('ENT-VAULTS', '4/8')]. One-to-one resolution by executor convention H2-C1 (round 2)"
+      ],
+      "rationale": "4 of the canonical Current Account's 8 attributes are columns of the pots table",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-031",
+      "source": {
+        "id": "BBO-PARTY",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-PARTY"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-MEMBERS",
+        "type": "A3.DataEntity",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S30 step4 structural match; BBO-PARTY.attributes.attributes (6) vs ENT-MEMBERS.attributes.attributes (7): 4/6 = 0.67 (threshold 0.5), matched ['address', 'contact_details', 'kyc_status', 'party_type']; unmatched BIAN attributes ['party_name', 'party_reference']; other entities []. One-to-one resolution by executor convention H2-C1 (round 1)"
+      ],
+      "rationale": "4 of the canonical Party's 6 attributes are columns of the members table",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H2-032",
+      "source": {
+        "id": "BBO-SAVINGS",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-SAVINGS-ACCOUNT"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-VAULTS",
+        "type": "A3.DataEntity",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S30 step4 structural match; BBO-SAVINGS.attributes.attributes (8) vs ENT-VAULTS.attributes.attributes (8): 6/8 = 0.75 (threshold 0.5), matched ['account_status', 'balance', 'currency', 'customer_reference', 'interest_rate', 'target_amount']; unmatched BIAN attributes ['account_reference', 'open_date']; other entities [('ENT-FLOWS', '1/8'), ('ENT-ZAPS', '1/8'), ('ENT-POTS', '4/8')]. One-to-one resolution by executor convention H2-C1 (round 1)"
+      ],
+      "rationale": "6 of the canonical Savings Account's 8 attributes are columns of the vaults table",
+      "baseline_id": "H2-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    }
+  ]
+}
