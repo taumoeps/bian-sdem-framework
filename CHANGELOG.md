@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.20 — Phase 2 result applied
+
+- 113 of 115 inferred rows verified against the Archi relationship matrix (commit cited in the record); zero contradicted; two TOGAF rows remain unverified. Inference calibration: every low-confidence row confirmed.
+
 ## 0.5.19 — inferred within-level rows made explicit
 
 - Every A1/A3/A4 row carries an `inference`: ArchiMate concepts of both ends, generic pattern, reasoning, confidence (66 high, 42 medium, 7 low) and the independent test.

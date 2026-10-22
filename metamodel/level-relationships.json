@@ -1,6 +1,6 @@
 {
   "metamodel_version": "0.4.0",
-  "note": "Within-level relationships are held by each level model, never by SDMM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects). 0.5.17: artefact rows flagged enforceable=false; device composition added (relationships test findings 1, 2).",
+  "note": "Within-level relationships are held by each level model, never by SDMM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects). 0.5.17: artefact rows flagged enforceable=false; device composition added (relationships test findings 1, 2). 0.5.20: Phase 2 — 113 rows verified_against_archi (112 direct, RA4-31 via its stated alternative); RA3-30/31 (TOGAF) remain unverified_togaf.",
   "kinds": [
     {
       "kind": "composition",
@@ -306,14 +306,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — capability structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Capability",
         "archimate_target": "Capability",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Capability).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Capability → Capability must list 'c' (composition)"
+        "test": "Archi relationship matrix: Capability → Capability must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -327,14 +328,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — capability structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Capability",
         "archimate_target": "Capability",
         "pattern": "same-concept aggregation",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Capability).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Capability → Capability must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Capability → Capability must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -348,14 +350,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — a capability serves a value stream.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Capability",
         "archimate_target": "Value Stream",
         "pattern": "capability serves value stream",
         "reasoning": "A capability serves (enables) a value stream or its stages.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Capability → Value Stream must list 'v' (serving)"
+        "test": "Archi relationship matrix: Capability → Value Stream must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -369,14 +372,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — a capability serves a value stream.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Capability",
         "archimate_target": "Value Stream",
         "pattern": "capability serves value stream",
         "reasoning": "A capability serves (enables) a value stream or its stages. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Capability → Value Stream must list 'v' (serving)"
+        "test": "Archi relationship matrix: Capability → Value Stream must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -390,14 +394,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — value stream composed of stages (ValueStreamStage is the SDMM extension).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Value Stream",
         "archimate_target": "Value Stream",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Value Stream). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Value Stream → Value Stream must list 'c' (composition)"
+        "test": "Archi relationship matrix: Value Stream → Value Stream must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -411,14 +416,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — stage sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Value Stream",
         "archimate_target": "Value Stream",
         "pattern": "triggering between behaviour elements",
         "reasoning": "Dynamic relationships (triggering) hold between behaviour elements (Value Stream → Value Stream). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Value Stream → Value Stream must list 't' (triggering)"
+        "test": "Archi relationship matrix: Value Stream → Value Stream must list 't' (triggering)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -432,14 +438,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — stage sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Value Stream",
         "archimate_target": "Value Stream",
         "pattern": "flow between behaviour elements",
         "reasoning": "Dynamic relationships (flow) hold between behaviour elements (Value Stream → Value Stream). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Value Stream → Value Stream must list 'f' (flow)"
+        "test": "Archi relationship matrix: Value Stream → Value Stream must list 'f' (flow)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -453,14 +460,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a capability.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Capability",
         "pattern": "core behaviour realises a strategy element",
         "reasoning": "A Business Process realises a Capability (capability or value stream) — strategy elements are realised by core behaviour.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Process → Capability must list 'r' (realization)"
+        "test": "Archi relationship matrix: Business Process → Capability must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -474,14 +482,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Value Stream",
         "pattern": "core behaviour realises a strategy element",
         "reasoning": "A Business Process realises a Value Stream (capability or value stream) — strategy elements are realised by core behaviour.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)"
+        "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -495,14 +504,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Value Stream",
         "pattern": "core behaviour realises a strategy element",
         "reasoning": "A Business Process realises a Value Stream (capability or value stream) — strategy elements are realised by core behaviour. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)"
+        "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -516,14 +526,15 @@
       "description": "Login-gated, unverified ch. 8 Business — behaviour realises a business service.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Business Service",
         "pattern": "behaviour realises a service",
         "reasoning": "Internal behaviour (Business Process) realises the externally visible service (Business Service).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Process → Business Service must list 'r' (realization)"
+        "test": "Archi relationship matrix: Business Process → Business Service must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -537,14 +548,15 @@
       "description": "Login-gated, unverified ch. 8 Business — behaviour accesses a business object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Business Object",
         "pattern": "behaviour accesses passive structure",
         "reasoning": "Behaviour (Business Process) accesses a passive structure element (Business Object).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Process → Business Object must list 'a' (access)"
+        "test": "Archi relationship matrix: Business Process → Business Object must list 'a' (access)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -558,14 +570,15 @@
       "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Requirement",
         "pattern": "core element realises a requirement",
         "reasoning": "Any core element (Business Process) may realise a requirement.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Process → Requirement must list 'r' (realization)"
+        "test": "Archi relationship matrix: Business Process → Requirement must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -579,14 +592,15 @@
       "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Business Process",
         "pattern": "triggering between behaviour elements",
         "reasoning": "Dynamic relationships (triggering) hold between behaviour elements (Business Process → Business Process).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Process → Business Process must list 't' (triggering)"
+        "test": "Archi relationship matrix: Business Process → Business Process must list 't' (triggering)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -600,14 +614,15 @@
       "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Business Process",
         "pattern": "flow between behaviour elements",
         "reasoning": "Dynamic relationships (flow) hold between behaviour elements (Business Process → Business Process).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Process → Business Process must list 'f' (flow)"
+        "test": "Archi relationship matrix: Business Process → Business Process must list 'f' (flow)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -621,14 +636,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a capability.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Capability",
         "pattern": "core behaviour realises a strategy element",
         "reasoning": "A Business Process realises a Capability (capability or value stream) — strategy elements are realised by core behaviour. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Process → Capability must list 'r' (realization)"
+        "test": "Archi relationship matrix: Business Process → Capability must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -642,14 +658,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Value Stream",
         "pattern": "core behaviour realises a strategy element",
         "reasoning": "A Business Process realises a Value Stream (capability or value stream) — strategy elements are realised by core behaviour. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)"
+        "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -663,14 +680,15 @@
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Value Stream",
         "pattern": "core behaviour realises a strategy element",
         "reasoning": "A Business Process realises a Value Stream (capability or value stream) — strategy elements are realised by core behaviour. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)"
+        "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -684,14 +702,15 @@
       "description": "Login-gated, unverified ch. 8 Business — behaviour realises a business service.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Business Service",
         "pattern": "behaviour realises a service",
         "reasoning": "Internal behaviour (Business Process) realises the externally visible service (Business Service). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Process → Business Service must list 'r' (realization)"
+        "test": "Archi relationship matrix: Business Process → Business Service must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -705,14 +724,15 @@
       "description": "Login-gated, unverified ch. 8 Business — behaviour accesses a business object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Business Object",
         "pattern": "behaviour accesses passive structure",
         "reasoning": "Behaviour (Business Process) accesses a passive structure element (Business Object). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Process → Business Object must list 'a' (access)"
+        "test": "Archi relationship matrix: Business Process → Business Object must list 'a' (access)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -726,14 +746,15 @@
       "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Requirement",
         "pattern": "core element realises a requirement",
         "reasoning": "Any core element (Business Process) may realise a requirement. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Process → Requirement must list 'r' (realization)"
+        "test": "Archi relationship matrix: Business Process → Requirement must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -747,14 +768,15 @@
       "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Business Process",
         "pattern": "triggering between behaviour elements",
         "reasoning": "Dynamic relationships (triggering) hold between behaviour elements (Business Process → Business Process). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Process → Business Process must list 't' (triggering)"
+        "test": "Archi relationship matrix: Business Process → Business Process must list 't' (triggering)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -768,14 +790,15 @@
       "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Business Process",
         "pattern": "flow between behaviour elements",
         "reasoning": "Dynamic relationships (flow) hold between behaviour elements (Business Process → Business Process). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Process → Business Process must list 'f' (flow)"
+        "test": "Archi relationship matrix: Business Process → Business Process must list 'f' (flow)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -789,14 +812,15 @@
       "description": "Login-gated, unverified ch. 8 Business — process composed of steps (BusinessActivity is the SDMM extension).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Business Process",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Business Process). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)"
+        "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -810,14 +834,15 @@
       "description": "Login-gated, unverified ch. 8 Business — process decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Business Process",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Business Process).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)"
+        "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -831,14 +856,15 @@
       "description": "Login-gated, unverified ch. 8 Business — activity decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
         "archimate_target": "Business Process",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Business Process). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)"
+        "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -852,14 +878,15 @@
       "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
         "archimate_target": "Business Process",
         "pattern": "service serves an element",
         "reasoning": "A service (Business Service) serves the behaviour or active structure that uses it (Business Process).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Service → Business Process must list 'v' (serving)"
+        "test": "Archi relationship matrix: Business Service → Business Process must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -873,14 +900,15 @@
       "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
         "archimate_target": "Business Process",
         "pattern": "service serves an element",
         "reasoning": "A service (Business Service) serves the behaviour or active structure that uses it (Business Process). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Service → Business Process must list 'v' (serving)"
+        "test": "Archi relationship matrix: Business Service → Business Process must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -894,14 +922,15 @@
       "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
         "archimate_target": "Business Role",
         "pattern": "service serves an element",
         "reasoning": "A service (Business Service) serves the behaviour or active structure that uses it (Business Role).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Service → Business Role must list 'v' (serving)"
+        "test": "Archi relationship matrix: Business Service → Business Role must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -915,14 +944,15 @@
       "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
         "archimate_target": "Business Actor",
         "pattern": "service serves an element",
         "reasoning": "A service (Business Service) serves the behaviour or active structure that uses it (Business Actor).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Service → Business Actor must list 'v' (serving)"
+        "test": "Archi relationship matrix: Business Service → Business Actor must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -936,14 +966,15 @@
       "description": "Login-gated, unverified ch. 8 Business — service decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
         "archimate_target": "Business Service",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Business Service).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Service → Business Service must list 'c' (composition)"
+        "test": "Archi relationship matrix: Business Service → Business Service must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -957,14 +988,15 @@
       "description": "Login-gated, unverified ch. 8 Business — a service accesses a business object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
         "archimate_target": "Business Object",
         "pattern": "behaviour accesses passive structure",
         "reasoning": "Behaviour (Business Service) accesses a passive structure element (Business Object).",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Service → Business Object must list 'a' (access)"
+        "test": "Archi relationship matrix: Business Service → Business Object must list 'a' (access)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -978,14 +1010,15 @@
       "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
         "archimate_target": "Requirement",
         "pattern": "core element realises a requirement",
         "reasoning": "Any core element (Business Service) may realise a requirement.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Service → Requirement must list 'r' (realization)"
+        "test": "Archi relationship matrix: Business Service → Requirement must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -999,14 +1032,15 @@
       "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Capability",
         "archimate_target": "Requirement",
         "pattern": "core element realises a requirement",
         "reasoning": "Any core element (Capability) may realise a requirement.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Capability → Requirement must list 'r' (realization)"
+        "test": "Archi relationship matrix: Capability → Requirement must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1020,14 +1054,15 @@
       "description": "Login-gated, unverified ch. 8 Business — an actor is assigned to a role.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Actor",
         "archimate_target": "Business Role",
         "pattern": "actor assigned to role",
         "reasoning": "A Business Actor is assigned to a Business Role.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Actor → Business Role must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Business Actor → Business Role must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1041,14 +1076,15 @@
       "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Role",
         "archimate_target": "Business Process",
         "pattern": "active structure assigned to behaviour",
         "reasoning": "An active structure element (Business Role) is assigned to the behaviour it performs (Business Process).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Role → Business Process must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Business Role → Business Process must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1062,14 +1098,15 @@
       "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Role",
         "archimate_target": "Business Process",
         "pattern": "active structure assigned to behaviour",
         "reasoning": "An active structure element (Business Role) is assigned to the behaviour it performs (Business Process). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Role → Business Process must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Business Role → Business Process must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1083,14 +1120,15 @@
       "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Actor",
         "archimate_target": "Business Process",
         "pattern": "active structure assigned to behaviour",
         "reasoning": "An active structure element (Business Actor) is assigned to the behaviour it performs (Business Process).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Actor → Business Process must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Business Actor → Business Process must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1104,14 +1142,15 @@
       "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Actor",
         "archimate_target": "Business Process",
         "pattern": "active structure assigned to behaviour",
         "reasoning": "An active structure element (Business Actor) is assigned to the behaviour it performs (Business Process). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Business Actor → Business Process must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Business Actor → Business Process must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1125,14 +1164,15 @@
       "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Actor",
         "archimate_target": "Business Actor",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Business Actor).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Actor → Business Actor must list 'c' (composition)"
+        "test": "Archi relationship matrix: Business Actor → Business Actor must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1146,14 +1186,15 @@
       "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Actor",
         "archimate_target": "Business Actor",
         "pattern": "same-concept aggregation",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Business Actor).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Actor → Business Actor must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Business Actor → Business Actor must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1167,14 +1208,15 @@
       "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Role",
         "archimate_target": "Business Role",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Business Role).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Role → Business Role must list 'c' (composition)"
+        "test": "Archi relationship matrix: Business Role → Business Role must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1188,14 +1230,15 @@
       "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Role",
         "archimate_target": "Business Role",
         "pattern": "same-concept aggregation",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Business Role).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Role → Business Role must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Business Role → Business Role must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1209,14 +1252,15 @@
       "description": "Login-gated, unverified ch. 8 Business — business object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Object",
         "archimate_target": "Business Object",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Business Object).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Object → Business Object must list 'c' (composition)"
+        "test": "Archi relationship matrix: Business Object → Business Object must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1230,14 +1274,15 @@
       "description": "Login-gated, unverified ch. 8 Business — business object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Object",
         "archimate_target": "Business Object",
         "pattern": "same-concept aggregation",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Business Object).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Object → Business Object must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Business Object → Business Object must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1251,14 +1296,15 @@
       "description": "Login-gated, unverified ch. 8 Business — business object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Object",
         "archimate_target": "Business Object",
         "pattern": "specialisation within a concept",
         "reasoning": "A Business Object may specialise another Business Object.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Business Object → Business Object must list 's' (specialization)"
+        "test": "Archi relationship matrix: Business Object → Business Object must list 's' (specialization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1272,14 +1318,15 @@
       "description": "Login-gated, unverified ch. 6 Motivation — requirement decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Requirement",
         "archimate_target": "Requirement",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Requirement).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Requirement → Requirement must list 'c' (composition)"
+        "test": "Archi relationship matrix: Requirement → Requirement must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1293,14 +1340,15 @@
       "description": "Login-gated, unverified ch. 6 Motivation — requirement decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Requirement",
         "archimate_target": "Requirement",
         "pattern": "specialisation within a concept",
         "reasoning": "A Requirement may specialise another Requirement.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Requirement → Requirement must list 's' (specialization)"
+        "test": "Archi relationship matrix: Requirement → Requirement must list 's' (specialization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1314,14 +1362,15 @@
       "description": "Login-gated, unverified ch. 9 Application — component decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
         "archimate_target": "Application Component",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Application Component).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Component → Application Component must list 'c' (composition)"
+        "test": "Archi relationship matrix: Application Component → Application Component must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1335,14 +1384,15 @@
       "description": "Login-gated, unverified ch. 9 Application — component decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
         "archimate_target": "Application Component",
         "pattern": "same-concept aggregation",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Application Component).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Component → Application Component must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Application Component → Application Component must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1356,14 +1406,15 @@
       "description": "Login-gated, unverified ch. 9 Application — a component is composed of its interfaces.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
         "archimate_target": "Application Interface",
         "pattern": "interface composed in its active structure element",
         "reasoning": "An interface (Application Interface) is part of the Application Component that exposes it.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Component → Application Interface must list 'c' (composition)"
+        "test": "Archi relationship matrix: Application Component → Application Interface must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1377,14 +1428,15 @@
       "description": "Login-gated, unverified ch. 9 Application — a component is assigned to the functions it performs.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
         "archimate_target": "Application Function",
         "pattern": "active structure assigned to behaviour",
         "reasoning": "An active structure element (Application Component) is assigned to the behaviour it performs (Application Function).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Component → Application Function must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Application Component → Application Function must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1398,14 +1450,15 @@
       "description": "Login-gated, unverified ch. 9 Application — a function realises a service.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
         "archimate_target": "Application Service",
         "pattern": "behaviour realises a service",
         "reasoning": "Internal behaviour (Application Function) realises the externally visible service (Application Service).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Function → Application Service must list 'r' (realization)"
+        "test": "Archi relationship matrix: Application Function → Application Service must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1419,14 +1472,15 @@
       "description": "Login-gated, unverified ch. 9 Application — derived: component realises a service through its functions.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
         "archimate_target": "Application Service",
         "pattern": "active structure realises a service (derived through its behaviour)",
         "reasoning": "A Application Component realises a Application Service through the function it is assigned to; ArchiMate lists this as a derived relationship.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Application Component → Application Service must list 'r' (realization)"
+        "test": "Archi relationship matrix: Application Component → Application Service must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1440,14 +1494,15 @@
       "description": "Login-gated, unverified ch. 9 Application — an interface is assigned to (exposes) a service.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Interface",
         "archimate_target": "Application Service",
         "pattern": "interface assigned to the service it exposes",
         "reasoning": "An interface (Application Interface) is assigned to the service it exposes (Application Service).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Interface → Application Service must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Application Interface → Application Service must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1461,14 +1516,15 @@
       "description": "Login-gated, unverified ch. 9 Application — a service serves a component or function.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Service",
         "archimate_target": "Application Component",
         "pattern": "service serves an element",
         "reasoning": "A service (Application Service) serves the behaviour or active structure that uses it (Application Component).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Service → Application Component must list 'v' (serving)"
+        "test": "Archi relationship matrix: Application Service → Application Component must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1482,14 +1538,15 @@
       "description": "Login-gated, unverified ch. 9 Application — a service serves a component or function.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Service",
         "archimate_target": "Application Function",
         "pattern": "service serves an element",
         "reasoning": "A service (Application Service) serves the behaviour or active structure that uses it (Application Function).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Service → Application Function must list 'v' (serving)"
+        "test": "Archi relationship matrix: Application Service → Application Function must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1503,14 +1560,15 @@
       "description": "Login-gated, unverified ch. 9 Application — component interaction (serving derived).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
         "archimate_target": "Application Component",
         "pattern": "flow between active structure (derived)",
         "reasoning": "ArchiMate permits flow between active structure elements as derived relationships (Application Component → Application Component).",
         "confidence": "low",
-        "test": "Archi relationship matrix: Application Component → Application Component must list 'f' (flow)"
+        "test": "Archi relationship matrix: Application Component → Application Component must list 'f' (flow)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1524,14 +1582,15 @@
       "description": "Login-gated, unverified ch. 9 Application — component interaction (serving derived).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
         "archimate_target": "Application Component",
         "pattern": "serving between active structure (derived)",
         "reasoning": "ArchiMate permits serving between active structure elements as a derived relationship (Application Component → Application Component).",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Application Component → Application Component must list 'v' (serving)"
+        "test": "Archi relationship matrix: Application Component → Application Component must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1545,14 +1604,15 @@
       "description": "Login-gated, unverified ch. 9 Application — component interaction (serving derived).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
         "archimate_target": "Application Component",
         "pattern": "triggering between active structure (derived)",
         "reasoning": "ArchiMate permits triggering between active structure elements as derived relationships (Application Component → Application Component).",
         "confidence": "low",
-        "test": "Archi relationship matrix: Application Component → Application Component must list 't' (triggering)"
+        "test": "Archi relationship matrix: Application Component → Application Component must list 't' (triggering)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1566,14 +1626,15 @@
       "description": "Login-gated, unverified ch. 9 Application — function decomposition / sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
         "archimate_target": "Application Function",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Application Function).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Function → Application Function must list 'c' (composition)"
+        "test": "Archi relationship matrix: Application Function → Application Function must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1587,14 +1648,15 @@
       "description": "Login-gated, unverified ch. 9 Application — function decomposition / sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
         "archimate_target": "Application Function",
         "pattern": "triggering between behaviour elements",
         "reasoning": "Dynamic relationships (triggering) hold between behaviour elements (Application Function → Application Function).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Function → Application Function must list 't' (triggering)"
+        "test": "Archi relationship matrix: Application Function → Application Function must list 't' (triggering)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1608,14 +1670,15 @@
       "description": "Login-gated, unverified ch. 9 Application — function decomposition / sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
         "archimate_target": "Application Function",
         "pattern": "flow between behaviour elements",
         "reasoning": "Dynamic relationships (flow) hold between behaviour elements (Application Function → Application Function).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Function → Application Function must list 'f' (flow)"
+        "test": "Archi relationship matrix: Application Function → Application Function must list 'f' (flow)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1629,14 +1692,15 @@
       "description": "Login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
         "archimate_target": "Data Object",
         "pattern": "active structure accesses passive structure (derived)",
         "reasoning": "A Application Component accesses a Data Object through its behaviour; ArchiMate lists this as derived.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Application Component → Data Object must list 'a' (access)"
+        "test": "Archi relationship matrix: Application Component → Data Object must list 'a' (access)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1650,14 +1714,15 @@
       "description": "Login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
         "archimate_target": "Data Object",
         "pattern": "behaviour accesses passive structure",
         "reasoning": "Behaviour (Application Function) accesses a passive structure element (Data Object).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Function → Data Object must list 'a' (access)"
+        "test": "Archi relationship matrix: Application Function → Data Object must list 'a' (access)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1671,14 +1736,15 @@
       "description": "Login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Service",
         "archimate_target": "Data Object",
         "pattern": "behaviour accesses passive structure",
         "reasoning": "Behaviour (Application Service) accesses a passive structure element (Data Object).",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Application Service → Data Object must list 'a' (access)"
+        "test": "Archi relationship matrix: Application Service → Data Object must list 'a' (access)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1692,14 +1758,15 @@
       "description": "Login-gated, unverified ch. 9 Application — data object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Data Object",
         "archimate_target": "Data Object",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Data Object).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Data Object → Data Object must list 'c' (composition)"
+        "test": "Archi relationship matrix: Data Object → Data Object must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1713,14 +1780,15 @@
       "description": "Login-gated, unverified ch. 9 Application — data object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Data Object",
         "archimate_target": "Data Object",
         "pattern": "same-concept aggregation",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Data Object).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Data Object → Data Object must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Data Object → Data Object must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1734,14 +1802,15 @@
       "description": "Login-gated, unverified ch. 9 Application — data object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Data Object",
         "archimate_target": "Data Object",
         "pattern": "specialisation within a concept",
         "reasoning": "A Data Object may specialise another Data Object.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Data Object → Data Object must list 's' (specialization)"
+        "test": "Archi relationship matrix: Data Object → Data Object must list 's' (specialization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1755,14 +1824,15 @@
       "description": "Login-gated, unverified ch. 9 Application — behaviour triggers an application event.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
         "archimate_target": "Application Event",
         "pattern": "active structure triggers an event (derived)",
         "reasoning": "An application component triggers an application event through the function it performs; ArchiMate lists triggering from active structure as derived.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Application Component → Application Event must list 't' (triggering)"
+        "test": "Archi relationship matrix: Application Component → Application Event must list 't' (triggering)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1776,14 +1846,15 @@
       "description": "Login-gated, unverified ch. 9 Application — behaviour triggers an application event.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
         "archimate_target": "Application Event",
         "pattern": "triggering with an event",
         "reasoning": "Dynamic relationships (triggering) hold between behaviour elements (Application Function → Application Event).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Function → Application Event must list 't' (triggering)"
+        "test": "Archi relationship matrix: Application Function → Application Event must list 't' (triggering)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1797,14 +1868,15 @@
       "description": "Login-gated, unverified ch. 9 Application — an event triggers behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Event",
         "archimate_target": "Application Function",
         "pattern": "triggering with an event",
         "reasoning": "Dynamic relationships (triggering) hold between behaviour elements (Application Event → Application Function).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Application Event → Application Function must list 't' (triggering)"
+        "test": "Archi relationship matrix: Application Event → Application Function must list 't' (triggering)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1818,14 +1890,15 @@
       "description": "Login-gated, unverified ch. 9 Application — an event triggers behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Event",
         "archimate_target": "Application Component",
         "pattern": "event triggers active structure (derived)",
         "reasoning": "An application event triggers the component whose function reacts to it; derived through the component's function.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Application Event → Application Component must list 't' (triggering)"
+        "test": "Archi relationship matrix: Application Event → Application Component must list 't' (triggering)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1839,14 +1912,15 @@
       "description": "Login-gated, unverified ch. 9 Application — an event accesses a data object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Event",
         "archimate_target": "Data Object",
         "pattern": "behaviour accesses passive structure",
         "reasoning": "Behaviour (Application Event) accesses a passive structure element (Data Object).",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Application Event → Data Object must list 'a' (access)"
+        "test": "Archi relationship matrix: Application Event → Data Object must list 'a' (access)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1860,14 +1934,15 @@
       "description": "An interface is composed of its API operations.",
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
-      "verification": "sdmm_definition",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Interface",
         "archimate_target": "Application Interface",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Application Interface). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Application Interface → Application Interface must list 'c' (composition)"
+        "test": "Archi relationship matrix: Application Interface → Application Interface must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1881,14 +1956,15 @@
       "description": "A component with no modelled interface composes its API operations.",
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
-      "verification": "sdmm_definition",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
         "archimate_target": "Application Interface",
         "pattern": "interface composed in its active structure element",
         "reasoning": "An interface (Application Interface) is part of the Application Component that exposes it. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Application Component → Application Interface must list 'c' (composition)"
+        "test": "Archi relationship matrix: Application Component → Application Interface must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1902,14 +1978,15 @@
       "description": "An operation accesses a data object.",
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
-      "verification": "sdmm_definition",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Interface",
         "archimate_target": "Data Object",
         "pattern": "active structure accesses passive structure (derived)",
         "reasoning": "A Application Interface accesses a Data Object through its behaviour; ArchiMate lists this as derived. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Application Interface → Data Object must list 'a' (access)"
+        "test": "Archi relationship matrix: Application Interface → Data Object must list 'a' (access)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1965,14 +2042,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — node decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Node",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Node).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Node → Node must list 'c' (composition)"
+        "test": "Archi relationship matrix: Node → Node must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -1986,14 +2064,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — node decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Node",
         "pattern": "same-concept aggregation",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Node).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Node → Node must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Node → Node must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2007,14 +2086,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — a node aggregates devices.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Device",
         "pattern": "node aggregates its specialisations",
         "reasoning": "Device is a specialisation of Node; what holds between nodes holds between a node and its specialisations.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Node → Device must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Node → Device must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2028,14 +2108,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — system software is assigned to a node or device.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "System Software",
         "pattern": "system software assigned to node",
         "reasoning": "System software is assigned to the node or device it runs on (Node → System Software).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Node → System Software must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Node → System Software must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2049,14 +2130,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — system software is assigned to a node or device.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
         "archimate_target": "System Software",
         "pattern": "system software assigned to node",
         "reasoning": "System software is assigned to the node or device it runs on (Device → System Software).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Device → System Software must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Device → System Software must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2070,14 +2152,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — system software assigned to system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "System Software",
         "archimate_target": "System Software",
         "pattern": "system software assigned to system software (derived)",
         "reasoning": "System software may run on other system software (a runtime on an operating system); ArchiMate permits assignment between system software elements.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: System Software → System Software must list 'i' (assignment)"
+        "test": "Archi relationship matrix: System Software → System Software must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2091,14 +2174,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Artifact",
         "pattern": "artifact assigned to the node it is deployed on",
         "reasoning": "An artifact is assigned to (deployed on) a node, device or system software; the relationship is drawn from the Node.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Node → Artifact must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Node → Artifact must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2112,14 +2196,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Technology Service",
         "pattern": "active structure realises a service (derived through its behaviour)",
         "reasoning": "A Node realises a Technology Service through the function it is assigned to; ArchiMate lists this as a derived relationship.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Node → Technology Service must list 'r' (realization)"
+        "test": "Archi relationship matrix: Node → Technology Service must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2133,14 +2218,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — a node is composed of its interfaces.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Technology Interface",
         "pattern": "interface composed in its active structure element",
         "reasoning": "An interface (Technology Interface) is part of the Node that exposes it.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Node → Technology Interface must list 'c' (composition)"
+        "test": "Archi relationship matrix: Node → Technology Interface must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2154,14 +2240,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Technology Service",
         "archimate_target": "Node",
         "pattern": "service serves an element",
         "reasoning": "A service (Technology Service) serves the behaviour or active structure that uses it (Node).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Technology Service → Node must list 'v' (serving)"
+        "test": "Archi relationship matrix: Technology Service → Node must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2175,14 +2262,15 @@
       "description": "A deployment is deployed on the platform.",
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
-      "verification": "sdmm_definition",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Artifact",
         "pattern": "artifact assigned to the node it is deployed on",
         "reasoning": "An artifact is assigned to (deployed on) a node, device or system software; the relationship is drawn from the Node. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Node → Artifact must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Node → Artifact must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2196,14 +2284,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
         "archimate_target": "Artifact",
         "pattern": "artifact assigned to the node it is deployed on",
         "reasoning": "An artifact is assigned to (deployed on) a node, device or system software; the relationship is drawn from the Device.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Device → Artifact must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Device → Artifact must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2217,14 +2306,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
         "archimate_target": "Technology Service",
         "pattern": "active structure realises a service (derived through its behaviour)",
         "reasoning": "A Device realises a Technology Service through the function it is assigned to; ArchiMate lists this as a derived relationship.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Device → Technology Service must list 'r' (realization)"
+        "test": "Archi relationship matrix: Device → Technology Service must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2238,14 +2328,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — a node is composed of its interfaces.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
         "archimate_target": "Technology Interface",
         "pattern": "interface composed in its active structure element",
         "reasoning": "An interface (Technology Interface) is part of the Device that exposes it.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Device → Technology Interface must list 'c' (composition)"
+        "test": "Archi relationship matrix: Device → Technology Interface must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2259,14 +2350,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Technology Service",
         "archimate_target": "Device",
         "pattern": "service serves an element",
         "reasoning": "A service (Technology Service) serves the behaviour or active structure that uses it (Device).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Technology Service → Device must list 'v' (serving)"
+        "test": "Archi relationship matrix: Technology Service → Device must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2280,14 +2372,15 @@
       "description": "A deployment is deployed on the platform.",
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
-      "verification": "sdmm_definition",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
         "archimate_target": "Artifact",
         "pattern": "artifact assigned to the node it is deployed on",
         "reasoning": "An artifact is assigned to (deployed on) a node, device or system software; the relationship is drawn from the Device. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Device → Artifact must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Device → Artifact must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2301,14 +2394,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "System Software",
         "archimate_target": "Artifact",
         "pattern": "artifact assigned to the node it is deployed on",
         "reasoning": "An artifact is assigned to (deployed on) a node, device or system software; the relationship is drawn from the System Software.",
         "confidence": "high",
-        "test": "Archi relationship matrix: System Software → Artifact must list 'i' (assignment)"
+        "test": "Archi relationship matrix: System Software → Artifact must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2322,14 +2416,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "System Software",
         "archimate_target": "Technology Service",
         "pattern": "active structure realises a service (derived through its behaviour)",
         "reasoning": "A System Software realises a Technology Service through the function it is assigned to; ArchiMate lists this as a derived relationship.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: System Software → Technology Service must list 'r' (realization)"
+        "test": "Archi relationship matrix: System Software → Technology Service must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2343,14 +2438,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — a node is composed of its interfaces.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "System Software",
         "archimate_target": "Technology Interface",
         "pattern": "interface composed in its active structure element",
         "reasoning": "An interface (Technology Interface) is part of the System Software that exposes it.",
         "confidence": "high",
-        "test": "Archi relationship matrix: System Software → Technology Interface must list 'c' (composition)"
+        "test": "Archi relationship matrix: System Software → Technology Interface must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2364,14 +2460,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Technology Service",
         "archimate_target": "System Software",
         "pattern": "service serves an element",
         "reasoning": "A service (Technology Service) serves the behaviour or active structure that uses it (System Software).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Technology Service → System Software must list 'v' (serving)"
+        "test": "Archi relationship matrix: Technology Service → System Software must list 'v' (serving)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2385,14 +2482,15 @@
       "description": "A deployment is deployed on the platform.",
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
-      "verification": "sdmm_definition",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "System Software",
         "archimate_target": "Artifact",
         "pattern": "artifact assigned to the node it is deployed on",
         "reasoning": "An artifact is assigned to (deployed on) a node, device or system software; the relationship is drawn from the System Software. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: System Software → Artifact must list 'i' (assignment)"
+        "test": "Archi relationship matrix: System Software → Artifact must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2406,14 +2504,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — an interface is assigned to (exposes) a technology service.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Technology Interface",
         "archimate_target": "Technology Service",
         "pattern": "interface assigned to the service it exposes",
         "reasoning": "An interface (Technology Interface) is assigned to the service it exposes (Technology Service).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Technology Interface → Technology Service must list 'i' (assignment)"
+        "test": "Archi relationship matrix: Technology Interface → Technology Service must list 'i' (assignment)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2427,14 +2526,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — service decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Technology Service",
         "archimate_target": "Technology Service",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Technology Service).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Technology Service → Technology Service must list 'c' (composition)"
+        "test": "Archi relationship matrix: Technology Service → Technology Service must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2448,14 +2548,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — node interaction.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Node",
         "pattern": "flow between active structure (derived)",
         "reasoning": "ArchiMate permits flow between active structure elements as derived relationships (Node → Node).",
         "confidence": "low",
-        "test": "Archi relationship matrix: Node → Node must list 'f' (flow)"
+        "test": "Archi relationship matrix: Node → Node must list 'f' (flow)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2469,14 +2570,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — node interaction.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Node",
         "pattern": "triggering between active structure (derived)",
         "reasoning": "ArchiMate permits triggering between active structure elements as derived relationships (Node → Node).",
         "confidence": "low",
-        "test": "Archi relationship matrix: Node → Node must list 't' (triggering)"
+        "test": "Archi relationship matrix: Node → Node must list 't' (triggering)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2490,14 +2592,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — a path is realised by a communication network.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Communication Network",
         "archimate_target": "Path",
         "pattern": "communication network realises a path",
         "reasoning": "A path is realised by one or more communication networks.",
         "confidence": "high",
-        "test": "Archi relationship matrix: Communication Network → Path must list 'r' (realization)"
+        "test": "Archi relationship matrix: Communication Network → Path must list 'r' (realization)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2511,14 +2614,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — network decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Communication Network",
         "archimate_target": "Communication Network",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Communication Network).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Communication Network → Communication Network must list 'c' (composition)"
+        "test": "Archi relationship matrix: Communication Network → Communication Network must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2532,14 +2636,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — artifact structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Artifact",
         "archimate_target": "Artifact",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Artifact).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Artifact → Artifact must list 'c' (composition)"
+        "test": "Archi relationship matrix: Artifact → Artifact must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2553,14 +2658,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — artifact structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Artifact",
         "archimate_target": "Artifact",
         "pattern": "same-concept aggregation",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Artifact).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Artifact → Artifact must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Artifact → Artifact must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2574,14 +2680,15 @@
       "description": "Login-gated, unverified ch. 10 Technology — device decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
         "archimate_target": "Device",
         "pattern": "same-concept aggregation",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Device).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Device → Device must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Device → Device must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2595,14 +2702,15 @@
       "description": "An environment groups deployments and the platform they run on.",
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
-      "verification": "sdmm_definition",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Artifact",
         "pattern": "SDMM: environment groups deployments (Node → Artifact)",
-        "reasoning": "A deployment environment is an SDMM grouping of nodes and the deployments on them; tested as Node → Artifact, where ArchiMate states assignment (deployed on) — accept 'g' or 'i'.",
+        "reasoning": "A deployment environment is an SDMM grouping of nodes and the deployments on them; tested as Node → Artifact, where ArchiMate states assignment (deployed on) — accept 'g' or 'i'. Oracle lists assignment, not aggregation, for Node → Artifact: the row stands as SDMM's grouping, verified through its stated alternative.",
         "confidence": "low",
-        "test": "Archi relationship matrix: Node → Artifact must list 'g' (aggregation) or 'i' (assignment)"
+        "test": "Archi relationship matrix: Node → Artifact must list 'g' (aggregation) or 'i' (assignment)",
+        "oracle_verdict": "confirmed, alternative accepted"
       }
     },
     {
@@ -2616,14 +2724,15 @@
       "description": "An environment groups deployments and the platform they run on.",
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
-      "verification": "sdmm_definition",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Node",
         "pattern": "same-concept aggregation",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Node). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Node → Node must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Node → Node must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2637,14 +2746,15 @@
       "description": "An environment groups deployments and the platform they run on.",
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
-      "verification": "sdmm_definition",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "Device",
         "pattern": "node aggregates its specialisations",
         "reasoning": "Device is a specialisation of Node; what holds between nodes holds between a node and its specialisations. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Node → Device must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Node → Device must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2658,14 +2768,15 @@
       "description": "An environment groups deployments and the platform they run on.",
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
-      "verification": "sdmm_definition",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
         "archimate_target": "System Software",
         "pattern": "node aggregates its specialisations",
         "reasoning": "System Software is a specialisation of Node; what holds between nodes holds between a node and its specialisations. One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Node → System Software must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Node → System Software must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2679,14 +2790,15 @@
       "description": "A deployment carries the artifacts deployed.",
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
-      "verification": "sdmm_definition",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Artifact",
         "archimate_target": "Artifact",
         "pattern": "same-concept aggregation",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Artifact). One end is an SDMM extension, tested through the ArchiMate concept it extends.",
         "confidence": "medium",
-        "test": "Archi relationship matrix: Artifact → Artifact must list 'g' (aggregation)"
+        "test": "Archi relationship matrix: Artifact → Artifact must list 'g' (aggregation)",
+        "oracle_verdict": "confirmed"
       }
     },
     {
@@ -2700,14 +2812,15 @@
       "reference_source": "[AM] ArchiMate 3.2 ch. 10 Technology",
       "reasoning": "ArchiMate's standard relationship between these concepts: a device specialises node, and nodes compose; added after the relationships test (finding 2) alongside the existing aggregation row.",
       "confidence": "medium",
-      "verification": "unverified_archimate",
+      "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
         "archimate_target": "Device",
         "pattern": "same-concept composition",
         "reasoning": "ArchiMate permits composition and aggregation between elements of the same concept (Device).",
         "confidence": "high",
-        "test": "Archi relationship matrix: Device → Device must list 'c' (composition)"
+        "test": "Archi relationship matrix: Device → Device must list 'c' (composition)",
+        "oracle_verdict": "confirmed"
       }
     }
   ],
@@ -2846,5 +2959,15 @@
       "verification": "sdmm_definition"
     }
   ],
-  "inference_note": "Rows outside A2 cite ArchiMate 3.2 / TOGAF 10, which are login-gated. Each carries an `inference`: the ArchiMate concept of both ends, the generic-metamodel pattern the row instantiates, the reasoning, SDMM's inference confidence (high = direct instance of a core rule; medium = derived or through an SDMM extension; low = weak or unmatched pattern), and the independent test to run. The test uses a public implementation of the specification's relationship matrix: the open-source Archi tool (github.com/archimatetool/archi, file relationships.xml under com.archimatetool.model) encodes, per source and target concept, the permitted relationship letters (c composition, g aggregation, i assignment, r realization, v serving, a access, f flow, t triggering, s specialization, o association). Verifying against it needs no Open Group account and reproduces no specification text."
+  "inference_note": "Rows outside A2 cite ArchiMate 3.2 / TOGAF 10, which are login-gated. Each carries an `inference`: the ArchiMate concept of both ends, the generic-metamodel pattern the row instantiates, the reasoning, SDMM's inference confidence (high = direct instance of a core rule; medium = derived or through an SDMM extension; low = weak or unmatched pattern), and the independent test to run. The test uses a public implementation of the specification's relationship matrix: the open-source Archi tool (github.com/archimatetool/archi, file relationships.xml under com.archimatetool.model) encodes, per source and target concept, the permitted relationship letters (c composition, g aggregation, i assignment, r realization, v serving, a access, f flow, t triggering, s specialization, o association). Verifying against it needs no Open Group account and reproduces no specification text.",
+  "verification_oracle": {
+    "name": "Archi relationship matrix (open-source implementation of the ArchiMate 3.2 relationship tables)",
+    "repo": "github.com/archimatetool/archi",
+    "path": "com.archimatetool.model/model/relationships.xml",
+    "commit_read": "9e6a014f9ef6a782a7dda604ef7b4d03d2c7819a",
+    "file_last_changed": "6d236081d9460f063076dbb6225f8645c5f5a7a5",
+    "declared_version": "3.2",
+    "date": "2026-10-23",
+    "note": "verified_against_archi = the row's concept pair and kind are listed by the oracle; distinct from verified (specification text), which needs Open Group access. Calibration: all 7 low-confidence inferences were confirmed — the low band was over-cautious for derived dynamic relationships."
+  }
 }
