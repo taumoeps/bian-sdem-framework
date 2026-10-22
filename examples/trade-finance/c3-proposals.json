@@ -1,0 +1,162 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "fable-executor/2026-10-23",
+  "use_case": "C3",
+  "mappings": [
+    {
+      "mapping_id": "P-C3-001",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S32 step1 data join; a3 APP-LC.deployed_as lists DEP-LC-PROD; a4 DEP-LC-PROD.component_id = APP-LC (environment ENV-TF-PROD, platform NODE-TF-PROD); both sides"
+      ],
+      "rationale": "The deployment record and the component name each other",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C3-002",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "NODE-TF-PROD",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S34 step1 data join, logged under S34 because the target is A4.Node; a3 APP-LC.deployed_on lists NODE-TF-PROD; a4 NODE-TF-PROD.hosts lists APP-LC; a4 DEP-LC-PROD.platform_id = NODE-TF-PROD; 3 record(s)"
+      ],
+      "rationale": "The CMDB places LC Manager on Trade finance node pool (production) (Node)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C3-003",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join, logged under S33 because the target is A4.SystemSoftware (S36 subsumed in S33); a3 APP-LC.deployed_on lists SYS-RUNTIME-TF; a4 SYS-RUNTIME-TF.hosts lists APP-LC; 2 record(s)"
+      ],
+      "rationale": "The CMDB places LC Manager on Container runtime — trade (SystemSoftware)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C3-004",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-DOC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S32 step1 data join; a3 APP-DOC.deployed_as lists DEP-DOC-PROD; a4 DEP-DOC-PROD.component_id = APP-DOC (environment ENV-TF-PROD, platform NODE-TF-PROD); both sides"
+      ],
+      "rationale": "The deployment record and the component name each other",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C3-005",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "DEV-SCAN-01",
+        "type": "A4.Device",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S35 step1 data join, logged under S35 because the target is A4.Device; a3 APP-DOC.deployed_on lists DEV-SCAN-01; a4 DEV-SCAN-01.hosts lists APP-DOC; 2 record(s)"
+      ],
+      "rationale": "The CMDB places DocCheck on Document scanning appliance (Device)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C3-006",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "NODE-TF-PROD",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S34 step1 data join, logged under S34 because the target is A4.Node; a3 APP-DOC.deployed_on lists NODE-TF-PROD; a4 NODE-TF-PROD.hosts lists APP-DOC; a4 DEP-DOC-PROD.platform_id = NODE-TF-PROD; 3 record(s)"
+      ],
+      "rationale": "The CMDB places DocCheck on Trade finance node pool (production) (Node)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C3-007",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join, logged under S33 because the target is A4.SystemSoftware (S36 subsumed in S33); a3 APP-DOC.deployed_on lists SYS-RUNTIME-TF; a4 SYS-RUNTIME-TF.hosts lists APP-DOC; 2 record(s)"
+      ],
+      "rationale": "The CMDB places DocCheck on Container runtime — trade (SystemSoftware)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** ten use cases defined; E1, E2, M0, M1, M2, H1, H2 (two runs), C1 and C2 executed (see Results); C3 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** ten use cases defined; all executed — E1, E2, M0, M1, M2, H1, H2 (two runs), C1, C2, C3 (see Results). **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -242,7 +242,7 @@
 | C3.3 | Derived | S40 2, S42 2, S44 2, S46 3, S47 6, S48 6, S52 3, S53 2, S54 1 — each cites the arrow closed over |
 | C3.4 | Negatives | `TI-TOPIC-LC` exposes nothing → no S43/S48; `ART-DOC-STORE` is nobody's build → no S39; `TS-SIGNING` / `TS-OCR` are consumed by functions, not services → no S41 to them |
 
-**Pass.** Registry F1 = 1.0; candidate recall ≥ 0.9 at precision ≥ 0.9; C3.4 holds. **Status:** ready to execute.
+**Pass.** Registry F1 = 1.0; candidate recall ≥ 0.9 at precision ≥ 0.9; C3.4 holds. **Status:** executed 2026-10-23 — see Results.
 
 ## What the six cases cover together
 
@@ -259,7 +259,7 @@
 | Negative tests | ● | ● | ● | ● | ● | ● |
 | Perspectives: architecture / process / information | A | A P I | A P I | A | A I | A I |
 
-**Order of execution:** E1, M0, M1, H1, H2 run 1 and run 2, E2, M2, C1, C2 (done); C3 next.
+**Order of execution:** E1, M0, M1, H1, H2 run 1 and run 2, E2, M2, C1, C2, C3 — all done.
 
 ## Results
 
@@ -1635,3 +1635,102 @@ OVERALL            32   32  32   0   0   1.00  1.00  1.00
 | 2 — partition tables | S20 reasoning states the fixpoint-not-threshold behaviour and the S27 claim |
 | 3 — generic gate token | Structural nouns added to the gate's stop list |
 | 4 — check 3 | A path segment that is neither a qualifier nor an alias is ignored |
+
+### C3 — results (2026-10-23, fable-executor)
+
+**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.12 including §4c. **Given.** `c3-mappings-given.json` — 17 approved arrows (A1→A2 and A2→A3); the four trade-finance exports. **Gold.** `c3-gold-mappings.json` and `c3-gold-candidates.json` (and `mappings.json`, `candidates.json`) were not opened until phase 5. **Files.** `examples/trade-finance/c3-proposals.json` (7 registry records), `c3-candidates.json` (45 candidate reports over eighteen plan IDs, `relationship` = plan ID), `c3-inference-log.json` (75 attempts, 29 plan IDs).
+
+#### Registry proposals (`c3-proposals.json`) — `DEPLOYED_ON` logged by target entity
+
+| Proposal | Plan row | Connection | Target entity | Records read | Confidence |
+|---|---|---|---|---|---|
+| P-C3-001, 004 | S32 | APP-LC `DEPLOYED_AS` DEP-LC-PROD; APP-DOC `DEPLOYED_AS` DEP-DOC-PROD | `A4.Deployment` | `deployed_as` + `component_id` | 0.8 |
+| P-C3-003, 007 | **S33** | APP-LC, APP-DOC `DEPLOYED_ON` SYS-RUNTIME-TF | `A4.SystemSoftware` (S36 subsumed) | `deployed_on` + `hosts` | 0.8 |
+| P-C3-002, 006 | **S34** | APP-LC, APP-DOC `DEPLOYED_ON` NODE-TF-PROD | `A4.Node` | `deployed_on` + `hosts` + `platform_id` | 0.8 |
+| P-C3-005 | **S35** | APP-DOC `DEPLOYED_ON` DEV-SCAN-01 | `A4.Device` | `deployed_on` + `hosts` | 0.8 |
+
+#### Candidate-rule reports (`c3-candidates.json`)
+
+| Reports | Plan ID | Connections | Step | Confidence | Key or arrow read |
+|---|---|---|---|---|---|
+| 2 | S37 | APP-LC, APP-DOC → NET-TF | 1 | 0.4 | `network_zone`; corroborated by `NET-TF.connects` naming the hosting node and device |
+| 1 | S38 | APP-DOC → PATH-TF-01 | 1 | 0.4 | `PATH-TF-01.carries` |
+| 2 | S39 | APP-LC → ART-LC-IMG; APP-DOC → ART-DOC-IMG | 1 | 0.6 | `built_as` + `of_component`; **ART-DOC-STORE is nobody's build — no report (C3.4)** |
+| 3 | S41 | SVC-LC → TS-QUEUE, TS-GATEWAY; SVC-DOC → TS-GATEWAY | 1 | 0.6 | `consumes`; **TS-SIGNING / TS-OCR are consumed by functions, not services — no S41 (C3.4)** |
+| 2 | S43 | IFC-LC, IFC-DOC → TI-INGRESS | 1 | 0.4 | `exposed_through` + `exposes`; **TI-TOPIC-LC exposes nothing — no S43, hence no S48 (C3.4)** |
+| 2 | S45 | FN-LC-ISSUE → TS-SIGNING; FN-DOC-CHECK → TS-OCR | 1 | 0.6 | `consumes` on the function; FN-LC-CAPTURE consumes nothing |
+| 1 | S49 | ENT-DOCSET → ART-DOC-STORE | 1 | 0.6 | `stored_in` naming an `A4.Artifact` |
+| 3 | S50 | ENT-LC, ENT-LC-AMEND, ENT-DOCSET → SYS-DB-TF | 1 | 0.6 | `stored_in` naming an `A4.SystemSoftware` |
+| 1 | S51 | EVT-LC-ISSUED → TS-QUEUE | 1 | 0.4 | `published_to` |
+| 2 | S40 | APP-LC, APP-DOC → ENV-TF-PROD | 3 | 0.8 | over P-C3-001/004 and `environment_id` |
+| **3** | S42 | SVC-LC → TI-INGRESS, **SVC-LC → TI-TOPIC-LC**, SVC-DOC → TI-INGRESS | 3 | 0.4 | over S41 and `TechnologyService → TechnologyInterface` composition, mechanically; the topic report is the run's one false (finding 1) |
+| 2 | S44 | IFC-LC, IFC-DOC → TS-GATEWAY | 3 | 0.4 | over S43 and `of_service` |
+| 3 | S46 | FN-LC-CAPTURE, FN-LC-ISSUE, FN-DOC-CHECK → SYS-RUNTIME-TF | 3 | 0.4 | the function's component `DEPLOYED_ON` a SystemSoftware (P-C3-003/007) |
+| 6 | S47 | API-LC-01…04 → DEP-LC-PROD; API-DC-01, 02 → DEP-DOC-PROD | 3 | 0.8 | A3 composition up to the component + P-C3-001/004 |
+| 6 | S48 | the six APIs → TI-INGRESS | 3 | 0.6 | over S43 for the API's interface |
+| 3 | S52 | SBB-TRADE → NODE-TF-PROD, SYS-RUNTIME-TF, DEV-SCAN-01 | 3 | 0.6 | `components` + the five `DEPLOYED_ON` proposals |
+| 2 | S53 | SBB-TRADE → DEP-LC-PROD, DEP-DOC-PROD | 3 | 0.6 | `components` + P-C3-001/004 |
+| 1 | S54 | SBB-TRADE → NODE-TF-PROD | 3 | 0.4 | `components` + the S34 proposals |
+
+#### sdmm-eval (both files)
+
+```
+$ python -m sdmm.graph check examples/trade-finance/a*.json examples/trade-finance/c3-mappings-given.json examples/trade-finance/c3-proposals.json
+OK: level A1 … A4; OK: mappings #1; OK: mappings #2
+$ python -m sdmm.validate --strict examples/trade-finance/c3-proposals.json
+WARNING ×7 (required evidence kinds); OK (with warnings)
+
+$ python -m sdmm.evaluate examples/trade-finance/c3-gold-mappings.json --proposals examples/trade-finance/c3-proposals.json
+relationship     gold prop  tp  fp  fn   prec   rec    f1
+DEPLOYED_AS         2    2   2   0   0   1.00  1.00  1.00
+DEPLOYED_ON         5    5   5   0   0   1.00  1.00  1.00
+OVERALL             7    7   7   0   0   1.00  1.00  1.00
+
+$ python -m sdmm.evaluate examples/trade-finance/c3-gold-candidates.json --proposals examples/trade-finance/c3-candidates.json
+relationship     gold prop  tp  fp  fn   prec   rec    f1
+S37 2 2 2 0 0   S38 1 1 1 0 0   S39 2 2 2 0 0   S40 2 2 2 0 0   S41 3 3 3 0 0   S43 2 2 2 0 0   S44 2 2 2 0 0   S45 2 2 2 0 0   S46 3 3 3 0 0
+S47 6 6 6 0 0   S48 6 6 6 0 0   S49 1 1 1 0 0   S50 3 3 3 0 0   S51 1 1 1 0 0   S52 3 3 3 0 0   S53 2 2 2 0 0   S54 1 1 1 0 0   (all 1.00)
+S42                 2    3   2   1   0   0.67  1.00  0.80
+OVERALL            44   45  44   1   0   0.98  1.00  0.99
+
+false proposals (proposed, not approved):
+  SVC-LC -S42-> TI-TOPIC-LC  conf=0.4  … the rule as written (S41 + TechnologyService -> TechnologyInterface composition) is applied mechanically — note TI-TOPIC-LC.exposes = []
+
+$ python -m sdmm.graph impact NODE-TF-PROD --change rehost --status approved,proposed …
+design_change_required  A4 NODE-TF-PROD; A3 APP-LC (via P-C3-002); A3 APP-DOC (via P-C3-006)
+no_impact               A2 SD-LC, SD-DC; A1 CAP-TF, PRC-LC-APPLY, PRC-LC-ISSUE
+mappings to supersede: P-C3-002, P-C3-006
+```
+
+#### Tests
+
+| # | Expected | Observed | Verdict |
+|---|---|---|---|
+| C3.1 | registry 7 of 7; `DEPLOYED_ON` logged under S33, S34 or S35 by target | 7 of 7; two S33 (SystemSoftware), two S34 (Node), one S35 (Device); S36 logged as subsumed | **holds** |
+| C3.2 | S37 2, S38 1, S39 2, S41 3, S43 2, S45 2, S49 1, S50 3, S51 1 — each names the key read | exactly those counts; every report quotes its export key | **holds** |
+| C3.3 | S40 2, S42 2, S44 2, S46 3, S47 6, S48 6, S52 3, S53 2, S54 1 — each cites the arrow closed over | all as expected **except S42 = 3**: the derivation as written also reaches TI-TOPIC-LC via TS-QUEUE | **holds except S42** (one false; finding 1) |
+| C3.4 | TI-TOPIC-LC → no S43 / S48; ART-DOC-STORE → no S39; TS-SIGNING / TS-OCR → no S41 | all three negatives hold and are logged with the key that is empty or absent | **holds** |
+
+**Pass criteria.** Registry F1 1.00; candidate precision 0.98 and recall 1.00 (≥ 0.9 required); C3.4 holds.
+
+#### Findings
+
+| # | Plan ID | What happened | Why | Proposed change |
+|---|---|---|---|---|
+| 1 | S42 | one false report: SVC-LC → TI-TOPIC-LC. The plan's `data_needed` ("S41 instances + A4 composition TechnologyService → TechnologyInterface") was applied mechanically; SVC-LC consumes TS-QUEUE, whose interface is the topic | the rule conflates two relations: the interfaces of the technology services a service *consumes*, and the interface through which the service is *exposed*. The gold means the second (TI-INGRESS, which `exposes` the service's interfaces) | S42 `data_needed`: "derived over S43 + S44 — the technology interface that exposes one of the application service's interfaces", or at minimum "interfaces with a non-empty `exposes`". Under either reading the run files 2 and the row scores 1.00 |
+| 2 | S33 / S34 / S35 | one registry rule, three plan rows, now logged by target entity as §4c requires; the component with three hosts (APP-DOC: node, runtime, device) produced three `DEPLOYED_ON` arrows at the same band | the data states all three; the plan has no notion of "primary" host | no change to the plan; note for the architect that `DEPLOYED_ON` fans out per host layer (node pool, runtime on the pool, appliance) and the environment is carried by `DEPLOYED_AS` |
+| 3 | S52 | the derived path's target type is the abstract `A4.InfrastructureComponent`; the three reports target a Node, a SystemSoftware and a Device, which the hierarchy accepts | — | no change; record that S52 is the union of S33/S34/S35 at block grain, as S54 is the S34 slice |
+| 4 | S37 | both `network_zone` on the component and `connects` on the network named the same segment; the rule accepts either | — | no change; when the two disagree the guide should say which wins (the component's own attribute) |
+
+#### No-proposal register
+
+| Plan ID | Instances | Why |
+|---|---|---|
+| S39 | → ART-DOC-STORE | nobody's build: no `of_component`, no `built_as` names it (C3.4); reached by S49 instead |
+| S41 | → TS-SIGNING, TS-OCR | consumed by functions (S45), not by application services (C3.4) |
+| S43, S48 | → TI-TOPIC-LC | `exposes` empty (C3.4); the topic is reached only by S51 (event published to its service) and, wrongly, by S42 |
+| S45 | FN-LC-CAPTURE | `consumes` empty |
+| S36 | — | subsumed; logged under S33 |
+| S01, S02, S04, S12, S17, S24, S30 | the 17 given arrows | given |
+
+**Summary.** The technology estate is the most mechanical of the three coverage cases and it behaves that way: eleven of the eighteen rows are pure joins on the new export keys and nine are closures over this run's own step-1 proposals, and all 51 targets are reached. The one false report is instructive rather than accidental: S42's rule text derives "the interfaces of the services I consume", while the architect meant "the interface I am exposed through", and the broker topic is exactly where the two readings part. The three coverage cases together put every one of the 42 previously unexercised plan rows through the steps; across C1–C3 the registry files score 19 of 19 and the candidate files 100 of 101, with the one false pointing at a one-line fix to S42.

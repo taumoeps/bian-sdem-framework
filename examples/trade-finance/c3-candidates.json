@@ -1,0 +1,999 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "fable-executor/2026-10-23",
+  "use_case": "C3",
+  "note": "candidate-rule reports (guide 4c): relationship = plan ID",
+  "mappings": [
+    {
+      "mapping_id": "C-C3-001",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S37",
+      "target": {
+        "id": "NET-TF",
+        "type": "A4.CommunicationNetwork",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S37 S37 step1 join: a3 APP-LC.network_zone = NET-TF; a4 NET-TF.connects names ['NODE-TF-PROD'] which host the component"
+      ],
+      "rationale": "S37 step1 join: a3 APP-LC.network_zone = NET-TF; a4 NET-TF.connects names ['NODE-TF-PROD'] which host the component",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S37"
+    },
+    {
+      "mapping_id": "C-C3-002",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S39",
+      "target": {
+        "id": "ART-LC-IMG",
+        "type": "A4.Artifact",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S39 S39 step1 join: a3 APP-LC.built_as lists ART-LC-IMG; a4 ART-LC-IMG.of_component = APP-LC; the artefact is the component's build"
+      ],
+      "rationale": "S39 step1 join: a3 APP-LC.built_as lists ART-LC-IMG; a4 ART-LC-IMG.of_component = APP-LC; the artefact is the component's build",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S39"
+    },
+    {
+      "mapping_id": "C-C3-003",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S37",
+      "target": {
+        "id": "NET-TF",
+        "type": "A4.CommunicationNetwork",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S37 S37 step1 join: a3 APP-DOC.network_zone = NET-TF; a4 NET-TF.connects names ['DEV-SCAN-01', 'NODE-TF-PROD'] which host the component"
+      ],
+      "rationale": "S37 step1 join: a3 APP-DOC.network_zone = NET-TF; a4 NET-TF.connects names ['DEV-SCAN-01', 'NODE-TF-PROD'] which host the component",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S37"
+    },
+    {
+      "mapping_id": "C-C3-004",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S39",
+      "target": {
+        "id": "ART-DOC-IMG",
+        "type": "A4.Artifact",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S39 S39 step1 join: a3 APP-DOC.built_as lists ART-DOC-IMG; a4 ART-DOC-IMG.of_component = APP-DOC; the artefact is the component's build"
+      ],
+      "rationale": "S39 step1 join: a3 APP-DOC.built_as lists ART-DOC-IMG; a4 ART-DOC-IMG.of_component = APP-DOC; the artefact is the component's build",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S39"
+    },
+    {
+      "mapping_id": "C-C3-005",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S38",
+      "target": {
+        "id": "PATH-TF-01",
+        "type": "A4.Path",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S38 S38 step1 join: a4 PATH-TF-01.carries lists APP-DOC; path NODE-TF-PROD -> DEV-SCAN-01 on NET-TF"
+      ],
+      "rationale": "S38 step1 join: a4 PATH-TF-01.carries lists APP-DOC; path NODE-TF-PROD -> DEV-SCAN-01 on NET-TF",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S38"
+    },
+    {
+      "mapping_id": "C-C3-006",
+      "source": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "relationship": "S41",
+      "target": {
+        "id": "TS-QUEUE",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S41 S41 step1 join: a3 SVC-LC.consumes lists TS-QUEUE (Messaging)"
+      ],
+      "rationale": "S41 step1 join: a3 SVC-LC.consumes lists TS-QUEUE (Messaging)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S41"
+    },
+    {
+      "mapping_id": "C-C3-007",
+      "source": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "relationship": "S41",
+      "target": {
+        "id": "TS-GATEWAY",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S41 S41 step1 join: a3 SVC-LC.consumes lists TS-GATEWAY (API gateway)"
+      ],
+      "rationale": "S41 step1 join: a3 SVC-LC.consumes lists TS-GATEWAY (API gateway)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S41"
+    },
+    {
+      "mapping_id": "C-C3-008",
+      "source": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "relationship": "S41",
+      "target": {
+        "id": "TS-GATEWAY",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S41 S41 step1 join: a3 SVC-DOC.consumes lists TS-GATEWAY (API gateway)"
+      ],
+      "rationale": "S41 step1 join: a3 SVC-DOC.consumes lists TS-GATEWAY (API gateway)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S41"
+    },
+    {
+      "mapping_id": "C-C3-009",
+      "source": {
+        "id": "IFC-LC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "relationship": "S43",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S43 S43 step1 join: a3 IFC-LC.exposed_through lists TI-INGRESS; a4 TI-INGRESS.exposes lists IFC-LC"
+      ],
+      "rationale": "S43 step1 join: a3 IFC-LC.exposed_through lists TI-INGRESS; a4 TI-INGRESS.exposes lists IFC-LC",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S43"
+    },
+    {
+      "mapping_id": "C-C3-010",
+      "source": {
+        "id": "IFC-DOC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "relationship": "S43",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S43 S43 step1 join: a3 IFC-DOC.exposed_through lists TI-INGRESS; a4 TI-INGRESS.exposes lists IFC-DOC"
+      ],
+      "rationale": "S43 step1 join: a3 IFC-DOC.exposed_through lists TI-INGRESS; a4 TI-INGRESS.exposes lists IFC-DOC",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S43"
+    },
+    {
+      "mapping_id": "C-C3-011",
+      "source": {
+        "id": "FN-LC-ISSUE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "relationship": "S45",
+      "target": {
+        "id": "TS-SIGNING",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S45 S45 step1 join: a3 FN-LC-ISSUE.consumes lists TS-SIGNING (Digital signing)"
+      ],
+      "rationale": "S45 step1 join: a3 FN-LC-ISSUE.consumes lists TS-SIGNING (Digital signing)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S45"
+    },
+    {
+      "mapping_id": "C-C3-012",
+      "source": {
+        "id": "FN-DOC-CHECK",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "relationship": "S45",
+      "target": {
+        "id": "TS-OCR",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S45 S45 step1 join: a3 FN-DOC-CHECK.consumes lists TS-OCR (OCR)"
+      ],
+      "rationale": "S45 step1 join: a3 FN-DOC-CHECK.consumes lists TS-OCR (OCR)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S45"
+    },
+    {
+      "mapping_id": "C-C3-013",
+      "source": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "relationship": "S50",
+      "target": {
+        "id": "SYS-DB-TF",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S50 S50 step1 join: a3 ENT-LC.stored_in lists SYS-DB-TF (A4.SystemSoftware 'PostgreSQL — trade')"
+      ],
+      "rationale": "S50 step1 join: a3 ENT-LC.stored_in lists SYS-DB-TF (A4.SystemSoftware 'PostgreSQL — trade')",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S50"
+    },
+    {
+      "mapping_id": "C-C3-014",
+      "source": {
+        "id": "ENT-LC-AMEND",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "relationship": "S50",
+      "target": {
+        "id": "SYS-DB-TF",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S50 S50 step1 join: a3 ENT-LC-AMEND.stored_in lists SYS-DB-TF (A4.SystemSoftware 'PostgreSQL — trade')"
+      ],
+      "rationale": "S50 step1 join: a3 ENT-LC-AMEND.stored_in lists SYS-DB-TF (A4.SystemSoftware 'PostgreSQL — trade')",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S50"
+    },
+    {
+      "mapping_id": "C-C3-015",
+      "source": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "relationship": "S50",
+      "target": {
+        "id": "SYS-DB-TF",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S50 S50 step1 join: a3 ENT-DOCSET.stored_in lists SYS-DB-TF (A4.SystemSoftware 'PostgreSQL — trade')"
+      ],
+      "rationale": "S50 step1 join: a3 ENT-DOCSET.stored_in lists SYS-DB-TF (A4.SystemSoftware 'PostgreSQL — trade')",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S50"
+    },
+    {
+      "mapping_id": "C-C3-016",
+      "source": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "relationship": "S49",
+      "target": {
+        "id": "ART-DOC-STORE",
+        "type": "A4.Artifact",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S49 S49 step1 join: a3 ENT-DOCSET.stored_in lists ART-DOC-STORE (A4.Artifact 'Document object store (bucket trade-docs)')"
+      ],
+      "rationale": "S49 step1 join: a3 ENT-DOCSET.stored_in lists ART-DOC-STORE (A4.Artifact 'Document object store (bucket trade-docs)')",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S49"
+    },
+    {
+      "mapping_id": "C-C3-017",
+      "source": {
+        "id": "EVT-LC-ISSUED",
+        "type": "A3.Event",
+        "version": "3.0"
+      },
+      "relationship": "S51",
+      "target": {
+        "id": "TS-QUEUE",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S51 S51 step1 join: a3 EVT-LC-ISSUED.published_to lists TS-QUEUE (Messaging)"
+      ],
+      "rationale": "S51 step1 join: a3 EVT-LC-ISSUED.published_to lists TS-QUEUE (Messaging)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S51"
+    },
+    {
+      "mapping_id": "C-C3-018",
+      "source": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S40",
+      "target": {
+        "id": "ENV-TF-PROD",
+        "type": "A4.DeploymentEnvironment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S40 S40 derived: P-C3-001 (APP-LC DEPLOYED_AS DEP-LC-PROD); a4 DEP-LC-PROD.environment_id = ENV-TF-PROD; a4 ENV-TF-PROD -aggregation-> DEP-LC-PROD; cap = input high"
+      ],
+      "rationale": "S40 derived: P-C3-001 (APP-LC DEPLOYED_AS DEP-LC-PROD); a4 DEP-LC-PROD.environment_id = ENV-TF-PROD; a4 ENV-TF-PROD -aggregation-> DEP-LC-PROD; cap = input high",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S40"
+    },
+    {
+      "mapping_id": "C-C3-019",
+      "source": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "relationship": "S40",
+      "target": {
+        "id": "ENV-TF-PROD",
+        "type": "A4.DeploymentEnvironment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S40 S40 derived: P-C3-004 (APP-DOC DEPLOYED_AS DEP-DOC-PROD); a4 DEP-DOC-PROD.environment_id = ENV-TF-PROD; a4 ENV-TF-PROD -aggregation-> DEP-DOC-PROD; cap = input high"
+      ],
+      "rationale": "S40 derived: P-C3-004 (APP-DOC DEPLOYED_AS DEP-DOC-PROD); a4 DEP-DOC-PROD.environment_id = ENV-TF-PROD; a4 ENV-TF-PROD -aggregation-> DEP-DOC-PROD; cap = input high",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S40"
+    },
+    {
+      "mapping_id": "C-C3-020",
+      "source": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "relationship": "S42",
+      "target": {
+        "id": "TI-TOPIC-LC",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S42 S42 derived: S41 C-C3-006 (SVC-LC -> TS-QUEUE); a4 composition TS-QUEUE -> TI-TOPIC-LC => SVC-LC -> TI-TOPIC-LC; the rule as written (S41 + TechnologyService -> TechnologyInterface composition) is applied mechanically — note TI-TOPIC-LC.exposes = []"
+      ],
+      "rationale": "S42 derived: S41 C-C3-006 (SVC-LC -> TS-QUEUE); a4 composition TS-QUEUE -> TI-TOPIC-LC => SVC-LC -> TI-TOPIC-LC; the rule as written (S41 + TechnologyService -> TechnologyInterface composition) is applied mechanically — note TI-TOPIC-LC.exposes = []",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S42"
+    },
+    {
+      "mapping_id": "C-C3-021",
+      "source": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "relationship": "S42",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S42 S42 derived: S41 C-C3-007 (SVC-LC -> TS-GATEWAY); a4 composition TS-GATEWAY -> TI-INGRESS => SVC-LC -> TI-INGRESS; the rule as written (S41 + TechnologyService -> TechnologyInterface composition) is applied mechanically — note TI-INGRESS.exposes = ['IFC-LC', 'IFC-DOC']"
+      ],
+      "rationale": "S42 derived: S41 C-C3-007 (SVC-LC -> TS-GATEWAY); a4 composition TS-GATEWAY -> TI-INGRESS => SVC-LC -> TI-INGRESS; the rule as written (S41 + TechnologyService -> TechnologyInterface composition) is applied mechanically — note TI-INGRESS.exposes = ['IFC-LC', 'IFC-DOC']",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S42"
+    },
+    {
+      "mapping_id": "C-C3-022",
+      "source": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "relationship": "S42",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S42 S42 derived: S41 C-C3-008 (SVC-DOC -> TS-GATEWAY); a4 composition TS-GATEWAY -> TI-INGRESS => SVC-DOC -> TI-INGRESS; the rule as written (S41 + TechnologyService -> TechnologyInterface composition) is applied mechanically — note TI-INGRESS.exposes = ['IFC-LC', 'IFC-DOC']"
+      ],
+      "rationale": "S42 derived: S41 C-C3-008 (SVC-DOC -> TS-GATEWAY); a4 composition TS-GATEWAY -> TI-INGRESS => SVC-DOC -> TI-INGRESS; the rule as written (S41 + TechnologyService -> TechnologyInterface composition) is applied mechanically — note TI-INGRESS.exposes = ['IFC-LC', 'IFC-DOC']",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S42"
+    },
+    {
+      "mapping_id": "C-C3-023",
+      "source": {
+        "id": "IFC-LC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "relationship": "S44",
+      "target": {
+        "id": "TS-GATEWAY",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S44 S44 derived: S43 C-C3-009 (IFC-LC -> TI-INGRESS); a4 TI-INGRESS.of_service = TS-GATEWAY => IFC-LC -> TS-GATEWAY"
+      ],
+      "rationale": "S44 derived: S43 C-C3-009 (IFC-LC -> TI-INGRESS); a4 TI-INGRESS.of_service = TS-GATEWAY => IFC-LC -> TS-GATEWAY",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S44"
+    },
+    {
+      "mapping_id": "C-C3-024",
+      "source": {
+        "id": "IFC-DOC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "relationship": "S44",
+      "target": {
+        "id": "TS-GATEWAY",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S44 S44 derived: S43 C-C3-010 (IFC-DOC -> TI-INGRESS); a4 TI-INGRESS.of_service = TS-GATEWAY => IFC-DOC -> TS-GATEWAY"
+      ],
+      "rationale": "S44 derived: S43 C-C3-010 (IFC-DOC -> TI-INGRESS); a4 TI-INGRESS.of_service = TS-GATEWAY => IFC-DOC -> TS-GATEWAY",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S44"
+    },
+    {
+      "mapping_id": "C-C3-025",
+      "source": {
+        "id": "FN-LC-CAPTURE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "relationship": "S46",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S46 S46 derived: a3 APP-LC -composition-> FN-LC-CAPTURE; P-C3-003 (APP-LC DEPLOYED_ON SYS-RUNTIME-TF, SystemSoftware, S33) => the function runs on SYS-RUNTIME-TF"
+      ],
+      "rationale": "S46 derived: a3 APP-LC -composition-> FN-LC-CAPTURE; P-C3-003 (APP-LC DEPLOYED_ON SYS-RUNTIME-TF, SystemSoftware, S33) => the function runs on SYS-RUNTIME-TF",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S46"
+    },
+    {
+      "mapping_id": "C-C3-026",
+      "source": {
+        "id": "FN-LC-ISSUE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "relationship": "S46",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S46 S46 derived: a3 APP-LC -composition-> FN-LC-ISSUE; P-C3-003 (APP-LC DEPLOYED_ON SYS-RUNTIME-TF, SystemSoftware, S33) => the function runs on SYS-RUNTIME-TF"
+      ],
+      "rationale": "S46 derived: a3 APP-LC -composition-> FN-LC-ISSUE; P-C3-003 (APP-LC DEPLOYED_ON SYS-RUNTIME-TF, SystemSoftware, S33) => the function runs on SYS-RUNTIME-TF",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S46"
+    },
+    {
+      "mapping_id": "C-C3-027",
+      "source": {
+        "id": "FN-DOC-CHECK",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "relationship": "S46",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S46 S46 derived: a3 APP-DOC -composition-> FN-DOC-CHECK; P-C3-007 (APP-DOC DEPLOYED_ON SYS-RUNTIME-TF, SystemSoftware, S33) => the function runs on SYS-RUNTIME-TF"
+      ],
+      "rationale": "S46 derived: a3 APP-DOC -composition-> FN-DOC-CHECK; P-C3-007 (APP-DOC DEPLOYED_ON SYS-RUNTIME-TF, SystemSoftware, S33) => the function runs on SYS-RUNTIME-TF",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S46"
+    },
+    {
+      "mapping_id": "C-C3-028",
+      "source": {
+        "id": "API-LC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S47 S47 derived: a3 composition APP-LC -> SVC-LC -> IFC-LC -> API-LC-01; P-C3-001 (APP-LC DEPLOYED_AS DEP-LC-PROD) => API-LC-01 -> DEP-LC-PROD"
+      ],
+      "rationale": "S47 derived: a3 composition APP-LC -> SVC-LC -> IFC-LC -> API-LC-01; P-C3-001 (APP-LC DEPLOYED_AS DEP-LC-PROD) => API-LC-01 -> DEP-LC-PROD",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S47"
+    },
+    {
+      "mapping_id": "C-C3-029",
+      "source": {
+        "id": "API-LC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S48 S48 derived: a3 IFC-LC -composition-> API-LC-01; S43 C-C3-009 (IFC-LC -> TI-INGRESS) => API-LC-01 -> TI-INGRESS"
+      ],
+      "rationale": "S48 derived: a3 IFC-LC -composition-> API-LC-01; S43 C-C3-009 (IFC-LC -> TI-INGRESS) => API-LC-01 -> TI-INGRESS",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S48"
+    },
+    {
+      "mapping_id": "C-C3-030",
+      "source": {
+        "id": "API-LC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S47 S47 derived: a3 composition APP-LC -> SVC-LC -> IFC-LC -> API-LC-02; P-C3-001 (APP-LC DEPLOYED_AS DEP-LC-PROD) => API-LC-02 -> DEP-LC-PROD"
+      ],
+      "rationale": "S47 derived: a3 composition APP-LC -> SVC-LC -> IFC-LC -> API-LC-02; P-C3-001 (APP-LC DEPLOYED_AS DEP-LC-PROD) => API-LC-02 -> DEP-LC-PROD",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S47"
+    },
+    {
+      "mapping_id": "C-C3-031",
+      "source": {
+        "id": "API-LC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S48 S48 derived: a3 IFC-LC -composition-> API-LC-02; S43 C-C3-009 (IFC-LC -> TI-INGRESS) => API-LC-02 -> TI-INGRESS"
+      ],
+      "rationale": "S48 derived: a3 IFC-LC -composition-> API-LC-02; S43 C-C3-009 (IFC-LC -> TI-INGRESS) => API-LC-02 -> TI-INGRESS",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S48"
+    },
+    {
+      "mapping_id": "C-C3-032",
+      "source": {
+        "id": "API-LC-03",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S47 S47 derived: a3 composition APP-LC -> SVC-LC -> IFC-LC -> API-LC-03; P-C3-001 (APP-LC DEPLOYED_AS DEP-LC-PROD) => API-LC-03 -> DEP-LC-PROD"
+      ],
+      "rationale": "S47 derived: a3 composition APP-LC -> SVC-LC -> IFC-LC -> API-LC-03; P-C3-001 (APP-LC DEPLOYED_AS DEP-LC-PROD) => API-LC-03 -> DEP-LC-PROD",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S47"
+    },
+    {
+      "mapping_id": "C-C3-033",
+      "source": {
+        "id": "API-LC-03",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S48 S48 derived: a3 IFC-LC -composition-> API-LC-03; S43 C-C3-009 (IFC-LC -> TI-INGRESS) => API-LC-03 -> TI-INGRESS"
+      ],
+      "rationale": "S48 derived: a3 IFC-LC -composition-> API-LC-03; S43 C-C3-009 (IFC-LC -> TI-INGRESS) => API-LC-03 -> TI-INGRESS",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S48"
+    },
+    {
+      "mapping_id": "C-C3-034",
+      "source": {
+        "id": "API-LC-04",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S47 S47 derived: a3 composition APP-LC -> SVC-LC -> IFC-LC -> API-LC-04; P-C3-001 (APP-LC DEPLOYED_AS DEP-LC-PROD) => API-LC-04 -> DEP-LC-PROD"
+      ],
+      "rationale": "S47 derived: a3 composition APP-LC -> SVC-LC -> IFC-LC -> API-LC-04; P-C3-001 (APP-LC DEPLOYED_AS DEP-LC-PROD) => API-LC-04 -> DEP-LC-PROD",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S47"
+    },
+    {
+      "mapping_id": "C-C3-035",
+      "source": {
+        "id": "API-LC-04",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S48 S48 derived: a3 IFC-LC -composition-> API-LC-04; S43 C-C3-009 (IFC-LC -> TI-INGRESS) => API-LC-04 -> TI-INGRESS"
+      ],
+      "rationale": "S48 derived: a3 IFC-LC -composition-> API-LC-04; S43 C-C3-009 (IFC-LC -> TI-INGRESS) => API-LC-04 -> TI-INGRESS",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S48"
+    },
+    {
+      "mapping_id": "C-C3-036",
+      "source": {
+        "id": "API-DC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-DOC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S47 S47 derived: a3 composition APP-DOC -> SVC-DOC -> IFC-DOC -> API-DC-01; P-C3-004 (APP-DOC DEPLOYED_AS DEP-DOC-PROD) => API-DC-01 -> DEP-DOC-PROD"
+      ],
+      "rationale": "S47 derived: a3 composition APP-DOC -> SVC-DOC -> IFC-DOC -> API-DC-01; P-C3-004 (APP-DOC DEPLOYED_AS DEP-DOC-PROD) => API-DC-01 -> DEP-DOC-PROD",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S47"
+    },
+    {
+      "mapping_id": "C-C3-037",
+      "source": {
+        "id": "API-DC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S48 S48 derived: a3 IFC-DOC -composition-> API-DC-01; S43 C-C3-010 (IFC-DOC -> TI-INGRESS) => API-DC-01 -> TI-INGRESS"
+      ],
+      "rationale": "S48 derived: a3 IFC-DOC -composition-> API-DC-01; S43 C-C3-010 (IFC-DOC -> TI-INGRESS) => API-DC-01 -> TI-INGRESS",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S48"
+    },
+    {
+      "mapping_id": "C-C3-038",
+      "source": {
+        "id": "API-DC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S47",
+      "target": {
+        "id": "DEP-DOC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S47 S47 derived: a3 composition APP-DOC -> SVC-DOC -> IFC-DOC -> API-DC-02; P-C3-004 (APP-DOC DEPLOYED_AS DEP-DOC-PROD) => API-DC-02 -> DEP-DOC-PROD"
+      ],
+      "rationale": "S47 derived: a3 composition APP-DOC -> SVC-DOC -> IFC-DOC -> API-DC-02; P-C3-004 (APP-DOC DEPLOYED_AS DEP-DOC-PROD) => API-DC-02 -> DEP-DOC-PROD",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S47"
+    },
+    {
+      "mapping_id": "C-C3-039",
+      "source": {
+        "id": "API-DC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "relationship": "S48",
+      "target": {
+        "id": "TI-INGRESS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S48 S48 derived: a3 IFC-DOC -composition-> API-DC-02; S43 C-C3-010 (IFC-DOC -> TI-INGRESS) => API-DC-02 -> TI-INGRESS"
+      ],
+      "rationale": "S48 derived: a3 IFC-DOC -composition-> API-DC-02; S43 C-C3-010 (IFC-DOC -> TI-INGRESS) => API-DC-02 -> TI-INGRESS",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S48"
+    },
+    {
+      "mapping_id": "C-C3-040",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S52",
+      "target": {
+        "id": "NODE-TF-PROD",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S52 S52 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; DEPLOYED_ON ['P-C3-002', 'P-C3-006'] => the block runs on NODE-TF-PROD (A4.Node)"
+      ],
+      "rationale": "S52 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; DEPLOYED_ON ['P-C3-002', 'P-C3-006'] => the block runs on NODE-TF-PROD (A4.Node)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S52"
+    },
+    {
+      "mapping_id": "C-C3-041",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S52",
+      "target": {
+        "id": "SYS-RUNTIME-TF",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S52 S52 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; DEPLOYED_ON ['P-C3-003', 'P-C3-007'] => the block runs on SYS-RUNTIME-TF (A4.SystemSoftware)"
+      ],
+      "rationale": "S52 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; DEPLOYED_ON ['P-C3-003', 'P-C3-007'] => the block runs on SYS-RUNTIME-TF (A4.SystemSoftware)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S52"
+    },
+    {
+      "mapping_id": "C-C3-042",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S52",
+      "target": {
+        "id": "DEV-SCAN-01",
+        "type": "A4.Device",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S52 S52 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; DEPLOYED_ON ['P-C3-005'] => the block runs on DEV-SCAN-01 (A4.Device)"
+      ],
+      "rationale": "S52 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; DEPLOYED_ON ['P-C3-005'] => the block runs on DEV-SCAN-01 (A4.Device)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S52"
+    },
+    {
+      "mapping_id": "C-C3-043",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S53",
+      "target": {
+        "id": "DEP-LC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S53 S53 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; DEPLOYED_AS ['P-C3-001'] => SBB-TRADE -> DEP-LC-PROD"
+      ],
+      "rationale": "S53 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; DEPLOYED_AS ['P-C3-001'] => SBB-TRADE -> DEP-LC-PROD",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S53"
+    },
+    {
+      "mapping_id": "C-C3-044",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S53",
+      "target": {
+        "id": "DEP-DOC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S53 S53 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; DEPLOYED_AS ['P-C3-004'] => SBB-TRADE -> DEP-DOC-PROD"
+      ],
+      "rationale": "S53 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; DEPLOYED_AS ['P-C3-004'] => SBB-TRADE -> DEP-DOC-PROD",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S53"
+    },
+    {
+      "mapping_id": "C-C3-045",
+      "source": {
+        "id": "SBB-TRADE",
+        "type": "A3.SolutionBuildingBlock",
+        "version": "1.0"
+      },
+      "relationship": "S54",
+      "target": {
+        "id": "NODE-TF-PROD",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S54 S54 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; S34 ['P-C3-002', 'P-C3-006'] (Node targets) => SBB-TRADE -> NODE-TF-PROD"
+      ],
+      "rationale": "S54 derived: a3 SBB-TRADE.components = ['APP-LC', 'APP-DOC']; S34 ['P-C3-002', 'P-C3-006'] (Node targets) => SBB-TRADE -> NODE-TF-PROD",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S54"
+    }
+  ]
+}
