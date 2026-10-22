@@ -92,7 +92,7 @@ Every entity in the SDMM vocabulary derives from a **publicly available referenc
 Cloud-specific entities (compute resource, container platform, storage, database platform, security control, …) are **not core**: they live in the `example-cloud` profile, each extending one of the ArchiMate-derived A4 entities above. Definitions in the catalogue are SDMM paraphrases; no text, diagram or dataset from BIAN or The Open Group is reproduced. BIAN®, ArchiMate® and TOGAF® are trademarks of their respective owners; SDMM is independent and not endorsed by either organisation.
 
 
-**In this README:** [Reference architecture provenance](#reference-architecture-provenance) · [Target state architecture](#target-state-architecture) · [Core concepts](#core-concepts-how-the-four-levels-become-data) · [What this repository ships](#what-this-repository-ships) (Validator v0.2 · Query v0.3) · [Where this repository sits in the target architecture](#where-this-repository-sits-in-the-target-architecture) · [Quick start](#quick-start) · [Rules of use](#rules-of-use) · [Licenses](#licenses-and-attribution)
+**In this README:** [Reference architecture provenance](#reference-architecture-provenance) · [Target state architecture](#target-state-architecture) · [Core concepts](#core-concepts-how-the-four-levels-become-data) · [What this repository ships](#what-this-repository-ships) (Validator v0.2 · Query v0.3) · [Where this repository sits in the target architecture](#where-this-repository-sits-in-the-target-architecture) · [Roadmap](#roadmap) · [Quick start](#quick-start) · [Rules of use](#rules-of-use) · [Licenses](#licenses-and-attribution)
 
 ## Target state architecture
 
@@ -511,6 +511,27 @@ Green = built. Amber = data present, engine absent. Blue = interface defined, im
 | **Historical Design Repository** | Legacy documents and patterns | **Not built** |
 | **Bidirectional impact traversal & generated views** | Upstream/downstream queries, impact classification, diagrams projected from the graph | **Traversal built** (`sdmm-trace`); impact classification and generated views not built (v0.5) |
 | **A1–A4 models** | The bank's own capability, domain, application and infrastructure models | **External, never in scope.** SDMM references their instance IDs; it never copies the instances. An `EntityResolver` (file catalogue or your adapter) lets the validator confirm the IDs exist |
+
+## Roadmap
+
+Each release adds one component and maps to one box of the target-state architecture. Shipped releases are tagged on GitHub; the full table with acceptance tests is in [`docs/ROADMAP.md`](docs/ROADMAP.md).
+
+| Release | Component | What it adds | Target-state box | Status |
+|---|---|---|---|---|
+| **v0.1** | Contract | Relationship registry, mapping schema, minimal validator, one example | *Mapping Metamodel & Rules* | shipped |
+| **v0.2** | Contract · Validator | Full registry metadata, JSON-Schema enforcement, supersession rules, `ReferenceResolver` interface, two examples, packaging, CI | *Mapping Metamodel & Rules* · *Validation & Approval* | shipped |
+| **v0.2.1** | Validator | Approval timestamps, canonical anchoring of BIAN-guided mappings, typed evidence, entity catalogue resolution, `sdmm-diff` for lifecycle transitions and immutability | *Validation & Approval* | shipped — `v0.2.1` |
+| **v0.3** | Query | `sdmm-trace`: downstream / upstream traversal of approved mappings with provenance on every hop | *Federated Knowledge Graph — Mapping Registry & Traceability* (traversal) | shipped — `v0.3.0` |
+| **v0.3.1** | Contract | SDADM level naming A1–A4 with legacy-prefix aliases; adjacency and BIAN-level rules driven by the registry | *Mapping Metamodel & Rules* | shipped — `v0.3.1` |
+| **v0.4.0** | Contract | Entity metamodel: 31-entity core catalogue with `extends` / `abstract`, is-a registry matching, `DEPLOYED_AS`, per-mapping verdicts — see [`docs/SDMM_v0.4_Entity_Metamodel_Specification.md`](docs/SDMM_v0.4_Entity_Metamodel_Specification.md) | *Mapping Metamodel & Rules* | next |
+| **v0.4.1** | Contract · Validator | Bank Architecture Profiles (JSON, static rules), `resolve_entity(ref)`, `example-bank` and `example-cloud` profiles | *Mapping Metamodel & Rules* · *Validation & Approval* | planned |
+| **v0.4.2** | Contract | BIAN verification register: `evidence_status` computed from recorded checks against a named release | *BIAN Reference Repository* (verification) | planned |
+| **v0.5** | Query | `sdmm-impact`: classify reachable instances as `no_impact` / `review_required` / `design_change_required` | *Bidirectional impact traversal & generated views* | planned |
+| **v0.6** | Reference | A concrete `ReferenceResolver` against an authorised BIAN release (no redistribution) | *BIAN Reference Repository* | planned |
+| **v0.7** | Engine | AI-assisted mapping proposals with evidence and explanations; output is always `proposed` | *SDMM Mapping Engine* | planned |
+| **v1.0** | — | Stable methodology specification, interoperability tests, versioned conformance requirements | — | planned |
+
+Not on the roadmap: a persistent graph database, a UI, identity or workflow management, or any guarantee of BIAN conformance.
 
 ## Quick start
 
