@@ -15,3 +15,5 @@
 | v0.7 | BIAN reference integration: a concrete `ReferenceResolver` against an authorised release, returning definition text for the engine (no redistribution) | Canonical ids validated and definitions readable inside the licensed environment | |
 | v0.8 | Generated views (matrices, diagrams) projected from the federated graph; baseline-aware impact | Capability-to-domain matrix generated from approved data only | |
 | v1.0 | Stable methodology specification, interoperability tests, versioned conformance requirements | Documented conformance profile | |
+
+**v0.6.0 (2026-10-23) — Mapping Model Design Specification.** `docs/mapping-model-design-spec.md`, generated from the records: 33 requirements traced to record rows and validating runs. Next: the engine, built to the specification and accepted by reproducing the eleven runs.

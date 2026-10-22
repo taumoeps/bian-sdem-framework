@@ -174,3 +174,25 @@ class PlanTableStepAndConfidenceTests(unittest.TestCase):
             self.assertEqual(step, '—' if m.get('fill_step') is None else str(m['fill_step']), mid)
             self.assertEqual(conf.strip('*'), m['confidence'], mid)
         self.assertEqual(seen, 69)
+
+
+class DesignSpecTests(unittest.TestCase):
+    def test_spec_equals_render_from_records(self):
+        from sdmm.spec import render
+        self.assertEqual((ROOT / 'docs/mapping-model-design-spec.md').read_text(encoding='utf-8'), render())
+
+    def test_every_requirement_is_traced(self):
+        import re
+        doc = (ROOT / 'docs/mapping-model-design-spec.md').read_text(encoding='utf-8')
+        idx = doc[doc.index('## 10. Requirements index'):]
+        rows = [l for l in idx.splitlines() if l.startswith('| REQ-')]
+        self.assertGreaterEqual(len(rows), 30)
+        ids = []
+        for l in rows:
+            cells = [c.strip() for c in l.strip().strip('|').split(' | ')]
+            self.assertGreaterEqual(len(cells), 4, l[:60]); ids.append(cells[0])
+            self.assertTrue(cells[-1] and cells[-2], cells[0])
+        self.assertEqual(len(ids), len(set(ids)))
+        nm = {m['id'] for m in json.loads((ROOT / 'metamodel/new-mappings.json').read_text(encoding='utf-8'))['mappings'] if m['rule_decision'] == 'registry_rule'}
+        for pid in nm:
+            self.assertIn(f"{pid}: propose", idx)
