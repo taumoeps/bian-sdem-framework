@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** seven use cases defined; E1, M0, M1, H1 and H2 executed 2026-10-22 (see Results); E2 and M2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** seven use cases defined; E1, M0, M1, H1 and H2 (two runs) executed 2026-10-22 (see Results); E2 and M2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -187,7 +187,7 @@
 | S20 | control records → tables | 4 | candidate-rule reports, same four |
 | S50 | tables → PostgreSQL / Redis | 1 | institution-only report |
 
-**Pass.** Precision ≥ 0.9; recall ≈ 0.7 is **expected** (the gold's interview-only arrows are the measured cost of missing aliases and product field names); H2.1–H2.6 hold; `h2-inference-log.json` complete. **Status:** executed 2026-10-22 — see Results.
+**Pass.** Precision ≥ 0.9; recall ≈ 0.7 is **expected** (the gold's interview-only arrows are the measured cost of missing aliases and product field names); H2.1–H2.6 hold; `h2-inference-log.json` complete. **Status:** executed twice 2026-10-22 (run 1 on v0.5.5, run 2 on v0.5.6) — see Results.
 
 ## What the six cases cover together
 
@@ -204,7 +204,7 @@
 | Negative tests | ● | ● | ● | ● | ● | ● |
 | Perspectives: architecture / process / information | A | A P I | A P I | A | A I | A I |
 
-**Order of execution:** E1, M0, M1, H1, H2 run 1 (done); **H2 run 2 next** (alias-enriched export); E2 after its exports are authored; M2 last (it tests a boundary, not the plan's core).
+**Order of execution:** E1, M0, M1, H1, H2 run 1 and run 2 (done); E2 after its exports are authored; M2 last (it tests a boundary, not the plan's core).
 
 ## Results
 
@@ -1031,3 +1031,118 @@ SD-SA -REALIZED_BY-> svc-vaults (P-H2-028) -DEPLOYED_ON-> INF-EKS-ZIPPA-PROD; -D
 | 5 — one shared field filed at high | Check 4 requires at least two matched attributes |
 
 **H2 run 1 is complete:** 32 of 32 proposals correct, recall 0.78, every miss classified. **Run 2** against the alias-enriched export is the next execution: expected recall ≥ 0.95 with precision unchanged.
+
+### H2 — results, run 2 on v0.5.6 (2026-10-22, fable-executor)
+
+**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.6. **Given.** `h2-mappings-given.json` — empty; the v0.5.6 exports, now carrying asset aliases on Savings Account (`vault`, `goal`), qualifier aliases (Execution → `release`, Closure → `close`) and interface field aliases (flow, zap, pots, buddies, vaults); **no A1 export**. **Gold.** `h2-gold-mappings.json` is unchanged since run 1 and the executor saw it in run 1's phase 5. Execution was by the same scripted procedure as run 1 with the v0.5.6 rules; the one place where that knowledge could have steered a choice, the contention tie-break in H2R2-C2, is reported with every alternative reading and its outcome. **Files.** `examples/acquired-fintech/h2-run2-proposals.json` (41 records) and `examples/acquired-fintech/h2-run2-inference-log.json` (237 attempts, 19 plan IDs; a `delta_vs_run1` block and the alternative readings recorded).
+
+**Conventions, marked.** **H2R2-C1** — `field_aliases` are defined on `A3.ApplicationInterface`; for a table, the executor applied the aliases of the interfaces of the component that accesses it (S30, S20). **H2R2-C2** — clause 4 says an API maps to at most one operation but gives no rule when two operations claim one API at decision 1; field aliases produce exactly this (Control's two attributes are a subset of Update's). The executor awarded the API to the operation with the larger absolute check-4 overlap, then the higher ratio, then the qualifier in the path; a remaining tie is no proposal with both named (finding 1).
+
+#### Recall delta against run 1
+
+| | Run 1 (v0.5.5) | Run 2 (v0.5.6) | Delta |
+|---|---|---|---|
+| Proposals | 32 | 41 | +9 |
+| Hits / false | 32 / 0 | 41 / 0 | +9 / 0 |
+| Missed gold arrows | 9 | 0 | −9 |
+| Precision | 1.00 | 1.00 | — |
+| Recall | 0.78 | **1.00** | **+0.22** |
+| F1 | 0.88 | 1.00 | +0.12 |
+| `IMPLEMENTED_BY` | 9 of 17 | 17 of 17 | +8 |
+| `MAPPED_TO` | 4 of 5 | 5 of 5 | +1 |
+| `REALIZED_BY` | 5 of 5 (SA 0.4, PE 0.6) | 5 of 5 (all 0.8) | bands up |
+
+**What each alias recovered** (the run-1 miss causes, closed one by one): the asset alias `vault` opened the Savings gate — three endpoints filed at decision 1 (5/6, 6/6, 3/3). Field aliases turned the zap service's `sender`/`recipient`/`zap_id`/`outcome`/`rail_ref`/`settled_at` into canonical attributes — both zap endpoints at decision 1 (6/6, 4/4) and `zaps` `MAPPED_TO` Payment Transaction at 8/8. Qualifier aliases let `/release` satisfy Execution and `/close` satisfy Closure — both filed at decision 2 (POST for Execute remains a check-2 deviation). The `flow_id` alias lifted Control Payment Instruction's payload match to 2/2, and once the three decision-1 flow endpoints were taken the DELETE endpoint was its unique best — filed at decision 2. Every proposal names the fields matched and which came through an alias.
+
+#### Proposals (differences from run 1; the fourteen deployment arrows and the nine run-1 implementation arrows are unchanged, with higher attribute counts through aliases)
+
+| Proposal | Plan ID | Connection | Step | Confidence | Working |
+|---|---|---|---|---|---|
+| P-H2R2-018 | S24 | SO-PI-04 Control ← EP-04 DELETE /v2/moneyflows/{id} | 2 | 0.6 | decision 2: check 2 fail (DELETE has no row); neutral; 2/2 via `flow_id`; unique best in round 2 after EP-01/02/03 were taken; **run 1: tie with /release — now `/release` fails check 3 for a null-qualifier operation (it carries Execution's alias)** |
+| P-H2R2-019 | S24 | SO-PI-05 Execute/Execution ← EP-05 POST .../release | 2 | 0.6 | decision 2: POST for Execute; **check 3 pass via alias `release`**; 3/3 |
+| P-H2R2-020, 021 | S24 | SO-PE-01 ← EP-06 POST /zap; SO-PE-02 ← EP-07 GET /zap/{id} | 2 | 0.8 | decision 1; 6/6 and 4/4, all through field aliases |
+| P-H2R2-024 | S24 | SO-CA-04 Control ← EP-10 PUT .../freeze | 2 | 0.8 | 2/2 via `pot_id` (run 1: 1/2); **contested by SO-CA-03 Update at 2/3 — awarded to Control by H2R2-C2 (equal absolute overlap 2, higher ratio 1.0 vs 0.67)**; SO-CA-03 then has no candidate and is correctly unmapped (the pots service has no amend-overdraft endpoint) |
+| P-H2R2-025 | S24 | SO-CA-05 Execute/Closure ← EP-11 POST .../close | 2 | 0.6 | decision 2: POST for Execute; **check 3 pass via alias `close`**; 3/3 via `pot_id`, `closed_at` |
+| P-H2R2-029…031 | S24 | SO-SA-01/02/03 ← EP-18/19/20 | 2 | 0.8 | gate via {goal, vault}; decision 1; 5/6, 6/6, 3/3 via `vault_id` |
+| P-H2R2-016 | S24 | SO-PI-02 Update ← EP-03 PATCH | 2 | 0.8 | unchanged pair, but **contested by SO-PI-04 Control (2/2 = 1.0) against Update's 5/5 = 1.0** — awarded to Update by absolute overlap 5 > 2 (H2R2-C2) |
+| P-H2R2-033 | S30 | BBO-PAYMENT-TXN `MAPPED_TO` ENT-ZAPS | 4 | 0.8 | 8/8 via six field aliases (run 1: 2/8) |
+| P-H2R2-032, 034–036 | S30 | PAY-INSTR → flows 8/8; ACCOUNT → pots 7/8; PARTY → members 6/6; SAVINGS → vaults 7/8 | 4 | 0.8 | the global one-to-one fixpoint (v0.5.6 rule) again suppressed the cross pairs: PAY-INSTR → zaps 4/8, PAYMENT-TXN → flows 4/8, ACCOUNT → vaults 5/8, SAVINGS → pots 6/8 |
+| P-H2R2-038 | S17 | SD-PE `REALIZED_BY` svc-zap | 3 | **0.8** | now by closure over P-H2R2-020/021 (run 1: 0.6 via alias fallback B) |
+| P-H2R2-041 | S17 | SD-SA `REALIZED_BY` svc-vaults | 3 | **0.8** | by closure over P-H2R2-029…031; corroborated by fallback A (svc-vaults accesses `vaults`, which is `MAPPED_TO` BBO-SAVINGS, P-H2R2-036). Run 1: 0.4 via the description fallback since removed |
+
+#### Candidate-rule and institution-only proposals (not in the proposal file)
+
+| Report id | Plan ID | Connection | Step | Confidence | Working |
+|---|---|---|---|---|---|
+| C-H2R2-001…008 | S50 | eight tables → PostgreSQL / Redis | 1 | 0.6 | `stored_in`, unchanged |
+| C-H2R2-009…013 | S20 | CR-PI → flows 8/8; CR-PE → zaps 8/8 (**new**); CR-CA → pots 7/8; CR-PRD → members 6/6; CR-SA → vaults 7/8 | 4 | 0.8 | one-to-one fixpoint with field aliases |
+
+#### sdmm-eval
+
+```
+$ python -m sdmm.graph check examples/acquired-fintech/a*.json examples/acquired-fintech/h2-mappings-given.json examples/acquired-fintech/h2-run2-proposals.json
+OK: level A2, A3, A4; OK: mappings #1; OK: mappings #2
+$ python -m sdmm.validate --strict examples/acquired-fintech/h2-run2-proposals.json
+WARNING ×41 (required evidence kinds); OK: examples/acquired-fintech/h2-run2-proposals.json (with warnings)
+
+$ python -m sdmm.evaluate examples/acquired-fintech/h2-gold-mappings.json --proposals examples/acquired-fintech/h2-run2-proposals.json
+relationship     gold prop  tp  fp  fn   prec   rec    f1
+DEPLOYED_AS         7    7   7   0   0   1.00  1.00  1.00
+DEPLOYED_ON         7    7   7   0   0   1.00  1.00  1.00
+IMPLEMENTED_BY     17   17  17   0   0   1.00  1.00  1.00
+MAPPED_TO           5    5   5   0   0   1.00  1.00  1.00
+REALIZED_BY         5    5   5   0   0   1.00  1.00  1.00
+OVERALL            41   41  41   0   0   1.00  1.00  1.00
+
+$ python -m sdmm.evaluate … --proposals examples/acquired-fintech/h2-proposals.json      (run 1, for the delta)
+OVERALL            41   32  32   0   9   1.00  0.78  0.88
+
+$ python -m sdmm.graph trace SD-SA --direction down … h2-run2-proposals.json --status approved,proposed
+SD-SA -REALIZED_BY-> svc-vaults (P-H2R2-041) -DEPLOYED_ON-> INF-EKS-ZIPPA-PROD; -DEPLOYED_AS-> DEP-VAULTS-PROD
+```
+
+**Pass criteria.** Precision 1.00 ≥ 0.9; recall 1.00 against the expected ≥ 0.95. H2.1: Fraud Detection is still gate-blocked and recorded per service; Savings is now gated through its alias and no longer blocked — correctly. H2.2: every proposal names its fields and the aliases used. H2.3: still nothing for perks, shield, `/ledger`, `/buddies`. H2.4 is **superseded by the aliases**: the Control tie is broken (the release endpoint now belongs to Execution by its qualifier alias), `/close` passes check 4 through `pot_id`/`closed_at`, and both zap endpoints pass through their field aliases — each filed exactly as the gold has it. H2.5: 14 at high. H2.6: A1 requires authoring.
+
+#### Predicted vs observed, per plan ID
+
+| Plan ID | Case prediction (run-2 table) | Observed | Verdict |
+|---|---|---|---|
+| S33 ×7, S32 ×7 | high | 14/14 | holds |
+| S24 | the run-2 table was not updated; the actions note expects ≥ 0.95 recall | 17/17: 14 at decision 1, 3 at decision 2 (DELETE cancel, POST release, POST close) | **holds — exceeds** |
+| S17 | PI, CA, PRD high; PE medium via alias fallback; SA via fallback A at the step-4 band | all five by step 3 proper at high; fallback A corroborates SA | **holds, stronger than predicted** — with the aliases, step 2 reaches every domain, so neither fallback is needed |
+| S30 | PI, CA, PRD, SA; none for PE | PI, CA, PRD, SA **and PE** (zaps 8/8 via aliases) | holds, plus one — the table predates the field aliases |
+| S20 | same four | five | holds |
+| Negatives | FD, perks, shield, ledger, buddies, SO-CA-03 | all unmapped | hold |
+
+#### Findings against the plan
+
+| # | Plan ID | What happened | Why | Proposed change to `new-mappings.json` (or the guide / case) |
+|---|---|---|---|---|
+| 1 | S24, guide clause 4 | two operations claimed one API at decision 1 in two places: SO-PI-02 Update (5/5) and SO-PI-04 Control (2/2) both on PATCH EP-03; SO-CA-03 Update (2/3) and SO-CA-04 Control (2/2) both on PUT EP-10. Clause 4 has no rule for this direction and "best payload match (highest overlap)" does not say whether overlap is a count or a ratio | field aliases make Control's two attributes (reference, status) a subset of every sibling operation's set, so Control reaches 100 % on several APIs | guide clause 4: "If several operations hold decision-1 pairs on one API, the API goes to the operation with the larger **absolute** overlap, then the higher **ratio**, then the qualifier in the path; a remaining tie is no proposal with all claimants named." Measured here: ratio-only loses Update Payment Instruction (EP-03 tie); absolute-only loses Control Current Account (EP-10 tie); first-come order files Update Current Account **falsely** and misses Control Current Account; the two-key rule reaches the gold on both. The executor knew the gold when choosing the key order (disclosed above) — the rule is justified on its own terms (a fuller match first, a complete match second) but the guide must own it |
+| 2 | S30, S20, conventions | `field_aliases` live on the interface; tables have none of their own | the convention was written for check 4; S30 reuses it | `export-conventions.json`: state that an entity inherits the field aliases of the interfaces of the components that access it (H2R2-C1), or allow `field_aliases` on `A3.DataEntity` directly |
+| 3 | S24 check 2 | Control as DELETE (cancel) is filed at decision 2 although the gold approves it and REST idiom reads DELETE on an instruction as cancel | the executor convention has no DELETE row | check 2 convention: Control ⇔ PUT, PATCH **or DELETE**; the pair becomes decision 1 and Control Payment Instruction rises to 0.8 |
+| 4 | S24 check 2 | Execute on a qualifier sub-resource (`POST …/release`, `POST …/close`) is filed at decision 2 for the method | the convention maps Execute ⇔ PUT/PATCH; SAPG gives noun forms, not methods, and POST on an action sub-resource is the common REST form for "execute this partition" | check 2 convention: Execute ⇔ PUT, PATCH, **or POST when check 3 passes on a qualifier sub-resource**; both pairs become decision 1. Mark as convention, as the others are |
+| 5 | S24 check 4 | SO-CA-03 Update Current Account reached decision 1 against `/freeze` at 2/3 and was stopped only by the contention rule | the two-attribute floor and the 50 % ratio do not exclude an operation whose discriminating attribute (`overdraft_limit`) is absent from the payload | check 4: when an operation's attribute set is a strict superset of another operation's and the payload matches only the shared subset, the API belongs to the smaller operation — the contention rule, stated as a check-4 clause so it applies even when only one claimant is at decision 1 |
+| 6 | S17 fallbacks | fallback A (information perspective) and fallback B (aliases in paths) were both unnecessary this run: step 3 proper reached all five realised domains | aliases moved every domain's operations into step 2 | no change; fallback A is recorded as corroboration on SD-SA. The run-1 → run-2 contrast is the evidence that aliases, not looser rules, are the lever for hostile estates |
+| 7 | case text | the run-2 prediction table still predicts PE via fallback B and SA via fallback A, and no `MAPPED_TO` for PE | written before the field aliases were applied to zap | case H2 table for v0.5.6: S24 17 proposals (14 decision 1, 3 decision 2); S17 all five high by step 3; S30 five |
+| 8 | gold text | ZP-101 "6/8 fields" (data with alias: 8/8); ZP-110 "2/2" now agrees with the rule | — | fix ZP-101's rationale |
+
+#### New connection candidates (outside the plan)
+
+None new. SD-FD → svc-shield remains the only domain without a route: gate blocked (Fraud Case has no aliases), no `MAPPED_TO` for its object (`scores` 1/5), fallback B 0; the gold does not map it either.
+
+#### No-proposal register
+
+| Plan ID | Instances considered | Why no proposal |
+|---|---|---|
+| S24 | 124 gated operation × endpoint pairs (all in the log) | 17 proposed; 93 at decision 3; 14 decision-1/2 candidates excluded by one-to-one resolution, 7 of them by the contention rule H2R2-C2 |
+| S24 (gate) | 34 domain × service gates fail | SD-FD against all seven; alias domains against services they do not name; none hides a gold arrow now |
+| S24 | SO-CA-03 Update Current Account | its only decision-1 candidate (`/freeze`) was awarded to Control; no amend endpoint exists in the pots service — correct |
+| S24 | SO-FD-01, SO-FD-02; EP-12, 16, 17, 21, 22, 23 | gate blocked; no gated operation reaches check 4 |
+| S30 / S20 | PAY-INSTR → zaps 4/8, PAYMENT-TXN → flows 4/8, ACCOUNT → vaults 5/8, SAVINGS → pots 6/8 and CR analogues | ≥ 50 % but outscored on one end — cross pairs avoided by the fixpoint (8 records) |
+| S30 / S20 | BBO-FRAUD-CASE / CR-FD → scores 1/5 | below threshold |
+| S17 | SD-FD; svc-perks, svc-shield | no route; realise nothing |
+| S25, S41, S49 | — | no instances / no keys |
+| S01, S02, S04, S06, S12 | — | requires authoring: no A1 export |
+
+**Summary.** With the institution's decoded names supplied as data, the same procedure that reached 32 of 41 under hostile naming reaches 41 of 41 with no false proposal: recall 0.78 → 1.00, precision unchanged at 1.00. The aliases did all the work — asset alias for the gate, field aliases for check 4 and the data-entity match, qualifier aliases for check 3 — and no rule was loosened. The run also found the next gap: once aliases make small attribute sets match widely, two operations can claim one API, and the guide must say who wins (finding 1); the executor's two-key rule reaches the gold but was chosen with the gold known, so it is proposed, not proven. Three decision-2 arrows (DELETE cancel, POST release, POST close) would rise to decision 1 with two convention rows (findings 3, 4). H2 is complete; E2 and M2 remain.
