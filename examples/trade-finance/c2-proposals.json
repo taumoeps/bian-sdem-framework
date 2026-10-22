@@ -1,0 +1,232 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "fable-executor/2026-10-23",
+  "use_case": "C2",
+  "mappings": [
+    {
+      "mapping_id": "P-C2-001",
+      "source": {
+        "id": "SO-LC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-LC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Gate: asset tokens ['credit', 'lc', 'letter'] in APP-LC. Check 2 PASS: Initiate <-> POST. Check 3 NEUTRAL: qualifier None, path '/letters-of-credit'. Check 4 PASS: 7/7 ['applicant_reference', 'application_status', 'beneficiary_reference', 'credit_amount', 'currency', 'expiry_date', 'letter_of_credit_reference'], best, >= 2. Disambiguation: decision 1, round 1"
+      ],
+      "rationale": "Create letter of credit carries all 7 attributes of Initiate Letter of Credit with the prescribed method",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C2-002",
+      "source": {
+        "id": "SO-LC-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-LC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Gate: asset tokens ['credit', 'lc', 'letter'] in APP-LC. Check 2 PASS: Update <-> PATCH. Check 3 PASS: qualifier Amendment, path '/letters-of-credit/{id}/amendment' (qualifier alias in path). Check 4 PASS: 5/5 ['amendment_reference', 'application_status', 'credit_amount', 'expiry_date', 'letter_of_credit_reference'], best, >= 2. Disambiguation: decision 1, round 1"
+      ],
+      "rationale": "Amend letter of credit carries all 5 attributes of Update Letter of Credit Amendment with the prescribed method and the qualifier in the path",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C2-003",
+      "source": {
+        "id": "SO-LC-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-LC-03",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Gate: asset tokens ['credit', 'lc', 'letter'] in APP-LC. Check 2 PASS: Execute <-> PUT. Check 3 PASS: qualifier Issuance, path '/letters-of-credit/{id}/issuance' (qualifier alias in path). Check 4 PASS: 3/3 ['application_status', 'issuance_reference', 'letter_of_credit_reference'], best, >= 2. Disambiguation: decision 1, round 1"
+      ],
+      "rationale": "Issue letter of credit carries all 3 attributes of Execute Letter of Credit Issuance with the prescribed method and the qualifier in the path",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C2-004",
+      "source": {
+        "id": "SO-LC-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-LC-04",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Gate: asset tokens ['credit', 'lc', 'letter'] in APP-LC. Check 2 PASS: Retrieve <-> GET. Check 3 NEUTRAL: qualifier None, path '/letters-of-credit/{id}'. Check 4 PASS: 6/6 ['application_status', 'credit_amount', 'currency', 'expiry_date', 'issuance_reference', 'letter_of_credit_reference'], best, >= 2. Disambiguation: decision 1, round 1"
+      ],
+      "rationale": "Get letter of credit carries all 6 attributes of Retrieve Letter of Credit with the prescribed method",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C2-005",
+      "source": {
+        "id": "SO-DC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-DC-01",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Gate: asset tokens ['doc', 'document', 'set'] in APP-DOC. Check 2 PASS: Evaluate <-> POST. Check 3 NEUTRAL: qualifier None, path '/document-sets/{id}/check'. Check 4 PASS: 4/4 ['compliance_outcome', 'discrepancies', 'document_set_reference', 'letter_of_credit_reference'], best, >= 2. Disambiguation: decision 1, round 1"
+      ],
+      "rationale": "Check document set carries all 4 attributes of Evaluate Document Checking with the prescribed method",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C2-006",
+      "source": {
+        "id": "SO-DC-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-DC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 decision 1. Gate: asset tokens ['doc', 'document', 'set'] in APP-DOC. Check 2 PASS: Retrieve <-> GET. Check 3 NEUTRAL: qualifier None, path '/document-sets/{id}'. Check 4 PASS: 4/4 ['checked_at', 'compliance_outcome', 'discrepancies', 'document_set_reference'], best, >= 2. Disambiguation: decision 1, round 1"
+      ],
+      "rationale": "Get document set carries all 4 attributes of Retrieve Document Checking with the prescribed method",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C2-007",
+      "source": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-LETTER-OF-CREDIT"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S17 step3 derivation over step-2 proposals ['P-C2-001', 'P-C2-002', 'P-C2-003', 'P-C2-004']: APP-LC -> ['SVC-LC', 'FN-LC-CAPTURE', 'FN-LC-ISSUE'] -> … -> ['API-LC-01', 'API-LC-02', 'API-LC-03', 'API-LC-04'] implement ['SO-LC-01', 'SO-LC-02', 'SO-LC-03', 'SO-LC-04'] of SD-LC; cap = strongest input 0.8"
+      ],
+      "rationale": "LC Manager exposes the APIs that implement 4 of the domain's operations",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C2-008",
+      "source": {
+        "id": "SD-DC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-DOCUMENT-CHECKING"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S17 step3 derivation over step-2 proposals ['P-C2-005', 'P-C2-006']: APP-DOC -> ['SVC-DOC', 'FN-DOC-CHECK'] -> … -> ['API-DC-01', 'API-DC-02'] implement ['SO-DC-01', 'SO-DC-02'] of SD-DC; cap = strongest input 0.8"
+      ],
+      "rationale": "DocCheck exposes the APIs that implement 2 of the domain's operations",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C2-009",
+      "source": {
+        "id": "BBO-LC",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-LETTER-OF-CREDIT"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S30 S30 step4 structural match: BBO-LC.attributes (8) vs ENT-LC.attributes (9): 8/8 = 1.00 matched ['applicant_reference', 'application_status', 'beneficiary_reference', 'credit_amount', 'currency', 'expiry_date', 'issuance_reference', 'letter_of_credit_reference']; BIAN attributes absent []; entity extensions ['created_by']; one-to-one fixpoint"
+      ],
+      "rationale": "8 of the canonical Letter of Credit's 8 attributes are columns of letters_of_credit",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    },
+    {
+      "mapping_id": "P-C2-010",
+      "source": {
+        "id": "BBO-DOCSET",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-DOCUMENT-SET"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S30 S30 step4 structural match: BBO-DOCSET.attributes (5) vs ENT-DOCSET.attributes (6): 5/5 = 1.00 matched ['checked_at', 'compliance_outcome', 'discrepancies', 'document_set_reference', 'letter_of_credit_reference']; BIAN attributes absent []; entity extensions ['scan_uri']; one-to-one fixpoint"
+      ],
+      "rationale": "5 of the canonical Document Set's 5 attributes are columns of document_sets",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-23"
+    }
+  ]
+}

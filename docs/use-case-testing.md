@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** ten use cases defined; E1, E2, M0, M1, M2, H1, H2 (two runs) and C1 executed 2026-10-22 (see Results); C2 and C3 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** ten use cases defined; E1, E2, M0, M1, M2, H1, H2 (two runs), C1 and C2 executed (see Results); C3 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -227,7 +227,7 @@
 | C2.5 | Attributes | S31 4 — `credit_amount` to `letters_of_credit` only, not to `lc_amendments` (S31 is derived from S30) |
 | C2.6 | Negatives | `ENT-LC-AMEND` gets no S20/S30 (no object or record owns it); S19 does reach it through the `lc` alias |
 
-**Pass.** Registry F1 = 1.0; candidate recall ≥ 0.9 at precision ≥ 0.9. **Status:** ready to execute.
+**Pass.** Registry F1 = 1.0; candidate recall ≥ 0.9 at precision ≥ 0.9. **Status:** executed 2026-10-23 — see Results.
 
 ## C3 — Trade Finance, technology estate (Coverage)
 
@@ -259,7 +259,7 @@
 | Negative tests | ● | ● | ● | ● | ● | ● |
 | Perspectives: architecture / process / information | A | A P I | A P I | A | A I | A I |
 
-**Order of execution:** E1, M0, M1, H1, H2 run 1 and run 2, E2, M2, C1 (done); C2 and C3 next.
+**Order of execution:** E1, M0, M1, H1, H2 run 1 and run 2, E2, M2, C1, C2 (done); C3 next.
 
 ## Results
 
@@ -1541,3 +1541,88 @@ OVERALL            24   24  24   0   0   1.00  1.00  1.00
 | 2 — gold bands | Every candidate gold confidence set to the plan's band for its ID |
 | 3 — plan data | S13 activity route and S09 one-to-one written into `data_needed`; S06 moved to step 1 when `invokes` is present |
 | 4 — synonyms / precedence | apply, submit, check, issue, release added; full landscape takes precedence over the three-domain floor |
+
+### C2 — results (2026-10-23, fable-executor)
+
+**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.11 including §4c. **Given.** `c2-mappings-given.json` — 14 approved arrows (A1→A2 and A3→A4); the four trade-finance exports. **Gold.** `c2-gold-mappings.json` and `c2-gold-candidates.json` (and `mappings.json`, `candidates.json`) were not opened until phase 5. **Files.** `examples/trade-finance/c2-proposals.json` (10 registry records), `c2-candidates.json` (32 candidate reports over twelve plan IDs, `relationship` = plan ID), `c2-inference-log.json` (90 attempts, 21 plan IDs).
+
+#### Registry proposals (`c2-proposals.json`)
+
+| Proposal | Plan ID | Connection | Step | Confidence | Working |
+|---|---|---|---|---|---|
+| P-C2-001…004 | S24 | SO-LC-01 Initiate → API-LC-01 POST /letters-of-credit (7/7); SO-LC-02 Update/Amendment → API-LC-02 PATCH …/amendment (check 3 **pass** via alias, 5/5); SO-LC-03 Execute/Issuance → API-LC-03 PUT …/issuance (pass, 3/3); SO-LC-04 Retrieve → API-LC-04 GET (6/6) | 2 | 0.8 | gate via {credit, lc, letter}; all decision 1 |
+| P-C2-005, 006 | S24 | SO-DC-01 Evaluate → API-DC-01 POST /document-sets/{id}/check (4/4; `check` is no qualifier, so check 3 neutral); SO-DC-02 Retrieve → API-DC-02 GET (4/4) | 2 | 0.8 | gate via {doc, document, set}; decision 1 |
+| P-C2-007, 008 | S17 | SD-LC `REALIZED_BY` APP-LC; SD-DC `REALIZED_BY` APP-DOC | 3 | 0.8 | closure over the step-2 proposals; strongest input high |
+| P-C2-009, 010 | S30 | BBO-LC `MAPPED_TO` ENT-LC 8/8; BBO-DOCSET `MAPPED_TO` ENT-DOCSET 5/5 | 4 | 0.8 | one-to-one fixpoint; BBO-LC → ENT-LC-AMEND 3/8 below threshold |
+
+#### Candidate-rule reports (`c2-candidates.json`)
+
+| Reports | Plan ID | Connections | Step | Confidence | Working |
+|---|---|---|---|---|---|
+| C-C2-003…008 | S25 | SO-LC-01…04 → SVC-LC; SO-DC-01, 02 → SVC-DOC | 3 | 0.8 | each step-2 proposal's API is composed in the interface of that service |
+| C-C2-009…012 | S22, S23 | SG-LC → SVC-LC / IFC-LC; SG-DC → SVC-DOC / IFC-DOC | 3 | 0.6 | derived paths over the group's operations' APIs |
+| C-C2-013, 014 | S20 | CR-LC → ENT-LC **8/9** (`amendment_reference` absent); CR-DC → ENT-DOCSET 5/5 | 4 | 0.8 | one-to-one; **CR-LC → ENT-LC-AMEND 4/9 = 0.44, below threshold (C2.6)** |
+| C-C2-015…018 | S31 | BBOA-CREDIT-AMOUNT, BBOA-EXPIRY → ENT-LC; BBOA-COMPLIANCE, BBOA-DISCREPANCIES → ENT-DOCSET | 4 | 0.8 | through the object's S30 arrow only; **`credit_amount` is also a column of `lc_amendments` and is not reported there (C2.5)** |
+| C-C2-019…021 | S19 | AT-LC → ENT-LC ({credit, letter}), AT-LC → **ENT-LC-AMEND** ({lc}), AT-DOCSET → ENT-DOCSET ({document, set}) | 4 | 0.4 | asset tokens and aliases in entity names (C2.6: the `lc` alias reaches the amendment table) |
+| C-C2-022 | S27 | BQ-AMENDMENT → ENT-LC-AMEND | 4 | 0.6 | alias `amendment` in `lc_amendments`; **not `letters_of_credit`** (C2.3); BQ-ISSUANCE names no table |
+| C-C2-001, 002 | S26 | BQ-AMENDMENT → API-LC-02; BQ-ISSUANCE → API-LC-03 | 2 | 0.8 | the two step-2 pairs where check 3 passed (C2.3) |
+| C-C2-023, 025, 027 | S18 | FP-FULFIL → FN-LC-CAPTURE, FN-LC-ISSUE; FP-ASSESS → FN-DOC-CHECK | 4 assigned, **3 used** | 0.4 | `exposed_through` → step-2 proposals → operations → domain → `functional_pattern` |
+| C-C2-024, 026, 028 | S21 | CR-LC → FN-LC-CAPTURE (**through three APIs**, C2.2), CR-LC → FN-LC-ISSUE, CR-DC → FN-DOC-CHECK | 4 assigned, **3 used** | 0.6 | `exposed_through` → step-2 proposals → operations `access` the control record (B11) |
+| C-C2-029…032 | S28, S29 | BS-LC → SVC-LC, SVC-DOC; BS-LC → APP-LC, APP-DOC | 3 | 0.6 | the scenario's three operations through S25 / through S17 over their domains (C2.4) |
+
+#### sdmm-eval (both files)
+
+```
+$ python -m sdmm.graph check examples/trade-finance/a*.json examples/trade-finance/c2-mappings-given.json examples/trade-finance/c2-proposals.json
+OK: level A1 … A4; OK: mappings #1; OK: mappings #2
+$ python -m sdmm.validate --strict examples/trade-finance/c2-proposals.json
+WARNING ×10 (required evidence kinds); OK (with warnings)
+
+$ python -m sdmm.evaluate examples/trade-finance/c2-gold-mappings.json --proposals examples/trade-finance/c2-proposals.json
+relationship     gold prop  tp  fp  fn   prec   rec    f1
+IMPLEMENTED_BY      6    6   6   0   0   1.00  1.00  1.00
+MAPPED_TO           2    2   2   0   0   1.00  1.00  1.00
+REALIZED_BY         2    2   2   0   0   1.00  1.00  1.00
+OVERALL            10   10  10   0   0   1.00  1.00  1.00
+
+$ python -m sdmm.evaluate examples/trade-finance/c2-gold-candidates.json --proposals examples/trade-finance/c2-candidates.json
+relationship     gold prop  tp  fp  fn   prec   rec    f1
+S18 3 3 3 0 0 1.00 1.00 1.00   S19 3 3 3 0 0   S20 2 2 2 0 0   S21 3 3 3 0 0   S22 2 2 2 0 0   S23 2 2 2 0 0
+S25 6 6 6 0 0 1.00 1.00 1.00   S26 2 2 2 0 0   S27 1 1 1 0 0   S28 2 2 2 0 0   S29 2 2 2 0 0   S31 4 4 4 0 0
+OVERALL            32   32  32   0   0   1.00  1.00  1.00
+```
+
+#### Tests
+
+| # | Expected | Observed | Verdict |
+|---|---|---|---|
+| C2.1 | registry 10 of 10, no false | 10 of 10, none false; all six S24 at decision 1 | **holds** |
+| C2.2 | S18 3, S21 3, each citing the APIs and operations closed over; FN-LC-CAPTURE reaches CR-LC through three APIs | 3 and 3; each report lists `exposed_through` and the P-C2 ids; FN-LC-CAPTURE via API-LC-01/02/04 | **holds** |
+| C2.3 | S26 2 (amendment, issuance); S27 1 (`lc_amendments`), not `letters_of_credit` | S26 2; S27 1 on ENT-LC-AMEND only | **holds** |
+| C2.4 | S28 2, S29 2 | 2 and 2 | **holds** |
+| C2.5 | S31 4; `credit_amount` to `letters_of_credit` only | 4; the `lc_amendments` column logged as not reported | **holds** |
+| C2.6 | ENT-LC-AMEND no S20/S30; S19 reaches it through `lc` | CR-LC → ENT-LC-AMEND 4/9 and BBO-LC → ENT-LC-AMEND 3/8 below threshold; S19 AT-LC → ENT-LC-AMEND via `lc` | **holds** |
+
+**Pass criteria.** Registry F1 1.00; candidate precision 1.00, recall 1.00 (≥ 0.9 required). The gold's bands equal the plan's bands on every report, unlike C1.
+
+#### Findings
+
+| # | Plan ID | What happened | Proposed change |
+|---|---|---|---|
+| 1 | S18, S21 | both are filled by derivation — function → `exposed_through` APIs → step-2 proposals → operations → pattern / control record — yet the plan assigns step 4 | `fill_step` 3 for both; `data_needed` already describes the derivation. Step 4 (description match) remains the fallback when `exposed_through` is absent |
+| 2 | S20 | CR-LC → ENT-LC-AMEND scored 4/9 = 0.44, close to the 50 % threshold; a control record with one more shared attribute would cross it, and only the one-to-one fixpoint would then keep the amendment table out | no change to the threshold; record that the fixpoint, not the threshold, is what separates a partition table from the main table — S27 is the rule that claims partitions (it did) |
+| 3 | S24 gate | the asset-type name "Document Set" yields the token `set`, which is generic; it matched `document_sets` here but would match any `*_sets` table elsewhere | add common structural nouns (`set`, `record`, `item`, `list`) to the gate's stop list, or gate on the asset name's head noun and aliases only |
+| 4 | S24 check 3 | `POST /document-sets/{id}/check` is an action sub-resource on a null-qualifier operation; check 3 is neutral because `check` is no qualifier, which is right, but the guide does not say that non-qualifier action segments are tolerated | guide check 3: "a path segment that is neither a qualifier nor a qualifier alias is ignored" |
+
+#### No-proposal register
+
+| Plan ID | Instances | Why |
+|---|---|---|
+| S24 | 14 gated pairs not filed (all in the log) | decision 3 (method or payload) or excluded one-to-one; the two cross-domain gates (SD-LC × APP-DOC, SD-DC × APP-LC) fail |
+| S20, S30 | CR-LC / BBO-LC → ENT-LC-AMEND | 4/9, 3/8 below threshold |
+| S31 | BBOA-CREDIT-AMOUNT → ENT-LC-AMEND | column present but not the object's S30 entity |
+| S27 | BQ-ISSUANCE → any; BQ-AMENDMENT → ENT-LC | no alias token in the name |
+| S19 | AT-DOCSET → ENT-LC, ENT-LC-AMEND; AT-LC → ENT-DOCSET | no token |
+| S01, S02, S04, S12, S32, S33/S34/S35 | the 14 given arrows | given |
+
+**Summary.** The application-internals case reaches every one of its 42 targets with nothing false and every band equal to the plan's. Twelve candidate rows that had never run now have working behind them, and the two negatives the case planted on the amendment table came out right for the right reasons: the attribute rules keep it out, the asset-alias and qualifier rules bring it in as a partition. The only plan corrections are two step labels and a stop-word.

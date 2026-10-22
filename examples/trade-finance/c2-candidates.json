@@ -1,0 +1,717 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "fable-executor/2026-10-23",
+  "use_case": "C2",
+  "note": "candidate-rule reports (guide 4c): relationship = plan ID",
+  "mappings": [
+    {
+      "mapping_id": "C-C2-001",
+      "source": {
+        "id": "BQ-AMENDMENT",
+        "type": "A2.BehaviorQualifier",
+        "version": "1.0"
+      },
+      "relationship": "S26",
+      "target": {
+        "id": "API-LC-02",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S26 S26 derived from step 2: P-C2-002 (SO-LC-02 IMPLEMENTED_BY API-LC-02) passed check 3 — qualifier 'Amendment' alias in path '/letters-of-credit/{id}/amendment'; the qualifier is part of the REST resource path (SAPG §3.5 p.55)"
+      ],
+      "rationale": "S26 derived from step 2: P-C2-002 (SO-LC-02 IMPLEMENTED_BY API-LC-02) passed check 3 — qualifier 'Amendment' alias in path '/letters-of-credit/{id}/amendment'; the qualifier is part of the REST resource path (SAPG §3.5 p.55)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S26"
+    },
+    {
+      "mapping_id": "C-C2-002",
+      "source": {
+        "id": "BQ-ISSUANCE",
+        "type": "A2.BehaviorQualifier",
+        "version": "1.0"
+      },
+      "relationship": "S26",
+      "target": {
+        "id": "API-LC-03",
+        "type": "A3.APIOperation",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S26 S26 derived from step 2: P-C2-003 (SO-LC-03 IMPLEMENTED_BY API-LC-03) passed check 3 — qualifier 'Issuance' alias in path '/letters-of-credit/{id}/issuance'; the qualifier is part of the REST resource path (SAPG §3.5 p.55)"
+      ],
+      "rationale": "S26 derived from step 2: P-C2-003 (SO-LC-03 IMPLEMENTED_BY API-LC-03) passed check 3 — qualifier 'Issuance' alias in path '/letters-of-credit/{id}/issuance'; the qualifier is part of the REST resource path (SAPG §3.5 p.55)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S26"
+    },
+    {
+      "mapping_id": "C-C2-003",
+      "source": {
+        "id": "SO-LC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S25 S25 derived: P-C2-001 (SO-LC-01 IMPLEMENTED_BY API-LC-01); a3 composition SVC-LC -> IFC-LC -> API-LC-01 => SO-LC-01 -> SVC-LC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band"
+      ],
+      "rationale": "S25 derived: P-C2-001 (SO-LC-01 IMPLEMENTED_BY API-LC-01); a3 composition SVC-LC -> IFC-LC -> API-LC-01 => SO-LC-01 -> SVC-LC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S25"
+    },
+    {
+      "mapping_id": "C-C2-004",
+      "source": {
+        "id": "SO-LC-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S25 S25 derived: P-C2-002 (SO-LC-02 IMPLEMENTED_BY API-LC-02); a3 composition SVC-LC -> IFC-LC -> API-LC-02 => SO-LC-02 -> SVC-LC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band"
+      ],
+      "rationale": "S25 derived: P-C2-002 (SO-LC-02 IMPLEMENTED_BY API-LC-02); a3 composition SVC-LC -> IFC-LC -> API-LC-02 => SO-LC-02 -> SVC-LC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S25"
+    },
+    {
+      "mapping_id": "C-C2-005",
+      "source": {
+        "id": "SO-LC-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S25 S25 derived: P-C2-003 (SO-LC-03 IMPLEMENTED_BY API-LC-03); a3 composition SVC-LC -> IFC-LC -> API-LC-03 => SO-LC-03 -> SVC-LC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band"
+      ],
+      "rationale": "S25 derived: P-C2-003 (SO-LC-03 IMPLEMENTED_BY API-LC-03); a3 composition SVC-LC -> IFC-LC -> API-LC-03 => SO-LC-03 -> SVC-LC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S25"
+    },
+    {
+      "mapping_id": "C-C2-006",
+      "source": {
+        "id": "SO-LC-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S25 S25 derived: P-C2-004 (SO-LC-04 IMPLEMENTED_BY API-LC-04); a3 composition SVC-LC -> IFC-LC -> API-LC-04 => SO-LC-04 -> SVC-LC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band"
+      ],
+      "rationale": "S25 derived: P-C2-004 (SO-LC-04 IMPLEMENTED_BY API-LC-04); a3 composition SVC-LC -> IFC-LC -> API-LC-04 => SO-LC-04 -> SVC-LC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S25"
+    },
+    {
+      "mapping_id": "C-C2-007",
+      "source": {
+        "id": "SO-DC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S25 S25 derived: P-C2-005 (SO-DC-01 IMPLEMENTED_BY API-DC-01); a3 composition SVC-DOC -> IFC-DOC -> API-DC-01 => SO-DC-01 -> SVC-DOC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band"
+      ],
+      "rationale": "S25 derived: P-C2-005 (SO-DC-01 IMPLEMENTED_BY API-DC-01); a3 composition SVC-DOC -> IFC-DOC -> API-DC-01 => SO-DC-01 -> SVC-DOC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S25"
+    },
+    {
+      "mapping_id": "C-C2-008",
+      "source": {
+        "id": "SO-DC-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "S25",
+      "target": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S25 S25 derived: P-C2-006 (SO-DC-02 IMPLEMENTED_BY API-DC-02); a3 composition SVC-DOC -> IFC-DOC -> API-DC-02 => SO-DC-02 -> SVC-DOC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band"
+      ],
+      "rationale": "S25 derived: P-C2-006 (SO-DC-02 IMPLEMENTED_BY API-DC-02); a3 composition SVC-DOC -> IFC-DOC -> API-DC-02 => SO-DC-02 -> SVC-DOC (SAPG §3.5 p.52: operations make up the service's program interface); cap = input band",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S25"
+    },
+    {
+      "mapping_id": "C-C2-009",
+      "source": {
+        "id": "SG-LC",
+        "type": "A2.ServiceGroup",
+        "version": "1.0"
+      },
+      "relationship": "S22",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S22 S22 derived path: operations ['SO-LC-01', 'SO-LC-02', 'SO-LC-03', 'SO-LC-04'] of SG-LC (B10) are implemented by APIs ['API-LC-01', 'API-LC-02', 'API-LC-03', 'API-LC-04'] (['P-C2-001', 'P-C2-002', 'P-C2-003', 'P-C2-004']) exposed through SVC-LC; a query, not a stored arrow"
+      ],
+      "rationale": "S22 derived path: operations ['SO-LC-01', 'SO-LC-02', 'SO-LC-03', 'SO-LC-04'] of SG-LC (B10) are implemented by APIs ['API-LC-01', 'API-LC-02', 'API-LC-03', 'API-LC-04'] (['P-C2-001', 'P-C2-002', 'P-C2-003', 'P-C2-004']) exposed through SVC-LC; a query, not a stored arrow",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S22"
+    },
+    {
+      "mapping_id": "C-C2-010",
+      "source": {
+        "id": "SG-LC",
+        "type": "A2.ServiceGroup",
+        "version": "1.0"
+      },
+      "relationship": "S23",
+      "target": {
+        "id": "IFC-LC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S23 S23 derived path: the group's APIs are composed in IFC-LC; a query"
+      ],
+      "rationale": "S23 derived path: the group's APIs are composed in IFC-LC; a query",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S23"
+    },
+    {
+      "mapping_id": "C-C2-011",
+      "source": {
+        "id": "SG-DC",
+        "type": "A2.ServiceGroup",
+        "version": "1.0"
+      },
+      "relationship": "S22",
+      "target": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S22 S22 derived path: operations ['SO-DC-01', 'SO-DC-02'] of SG-DC (B10) are implemented by APIs ['API-DC-01', 'API-DC-02'] (['P-C2-005', 'P-C2-006']) exposed through SVC-DOC; a query, not a stored arrow"
+      ],
+      "rationale": "S22 derived path: operations ['SO-DC-01', 'SO-DC-02'] of SG-DC (B10) are implemented by APIs ['API-DC-01', 'API-DC-02'] (['P-C2-005', 'P-C2-006']) exposed through SVC-DOC; a query, not a stored arrow",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S22"
+    },
+    {
+      "mapping_id": "C-C2-012",
+      "source": {
+        "id": "SG-DC",
+        "type": "A2.ServiceGroup",
+        "version": "1.0"
+      },
+      "relationship": "S23",
+      "target": {
+        "id": "IFC-DOC",
+        "type": "A3.ApplicationInterface",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S23 S23 derived path: the group's APIs are composed in IFC-DOC; a query"
+      ],
+      "rationale": "S23 derived path: the group's APIs are composed in IFC-DOC; a query",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S23"
+    },
+    {
+      "mapping_id": "C-C2-013",
+      "source": {
+        "id": "CR-LC",
+        "type": "A2.ControlRecord",
+        "version": "1.0"
+      },
+      "relationship": "S20",
+      "target": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S20 S20 step4 structural match: CR-LC.attributes (9) vs ENT-LC.attributes (9): 8/9 = 0.89 matched ['applicant_reference', 'application_status', 'beneficiary_reference', 'credit_amount', 'currency', 'expiry_date', 'issuance_reference', 'letter_of_credit_reference']; BIAN attributes absent ['amendment_reference']; entity extensions ['created_by']; one-to-one fixpoint (SAPG §4.2.2: the logical design extends the control record)"
+      ],
+      "rationale": "S20 step4 structural match: CR-LC.attributes (9) vs ENT-LC.attributes (9): 8/9 = 0.89 matched ['applicant_reference', 'application_status', 'beneficiary_reference', 'credit_amount', 'currency', 'expiry_date', 'issuance_reference', 'letter_of_credit_reference']; BIAN attributes absent ['amendment_reference']; entity extensions ['created_by']; one-to-one fixpoint (SAPG §4.2.2: the logical design extends the control record)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S20"
+    },
+    {
+      "mapping_id": "C-C2-014",
+      "source": {
+        "id": "CR-DC",
+        "type": "A2.ControlRecord",
+        "version": "1.0"
+      },
+      "relationship": "S20",
+      "target": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S20 S20 step4 structural match: CR-DC.attributes (5) vs ENT-DOCSET.attributes (6): 5/5 = 1.00 matched ['checked_at', 'compliance_outcome', 'discrepancies', 'document_set_reference', 'letter_of_credit_reference']; BIAN attributes absent []; entity extensions ['scan_uri']; one-to-one fixpoint (SAPG §4.2.2: the logical design extends the control record)"
+      ],
+      "rationale": "S20 step4 structural match: CR-DC.attributes (5) vs ENT-DOCSET.attributes (6): 5/5 = 1.00 matched ['checked_at', 'compliance_outcome', 'discrepancies', 'document_set_reference', 'letter_of_credit_reference']; BIAN attributes absent []; entity extensions ['scan_uri']; one-to-one fixpoint (SAPG §4.2.2: the logical design extends the control record)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S20"
+    },
+    {
+      "mapping_id": "C-C2-015",
+      "source": {
+        "id": "BBOA-CREDIT-AMOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "1.0"
+      },
+      "relationship": "S31",
+      "target": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S31 S31 derived from S30 P-C2-009 (BBO-LC MAPPED_TO ENT-LC): attribute 'credit_amount' of BBO-LC (B14 composition) is a column of ENT-LC; the attribute is NOT reported against other entities that happen to carry the column name (['ENT-LC-AMEND']) because S31 is a refinement inside S30"
+      ],
+      "rationale": "S31 derived from S30 P-C2-009 (BBO-LC MAPPED_TO ENT-LC): attribute 'credit_amount' of BBO-LC (B14 composition) is a column of ENT-LC; the attribute is NOT reported against other entities that happen to carry the column name (['ENT-LC-AMEND']) because S31 is a refinement inside S30",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S31"
+    },
+    {
+      "mapping_id": "C-C2-016",
+      "source": {
+        "id": "BBOA-EXPIRY",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "1.0"
+      },
+      "relationship": "S31",
+      "target": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S31 S31 derived from S30 P-C2-009 (BBO-LC MAPPED_TO ENT-LC): attribute 'expiry_date' of BBO-LC (B14 composition) is a column of ENT-LC; the attribute is NOT reported against other entities that happen to carry the column name (['ENT-LC-AMEND']) because S31 is a refinement inside S30"
+      ],
+      "rationale": "S31 derived from S30 P-C2-009 (BBO-LC MAPPED_TO ENT-LC): attribute 'expiry_date' of BBO-LC (B14 composition) is a column of ENT-LC; the attribute is NOT reported against other entities that happen to carry the column name (['ENT-LC-AMEND']) because S31 is a refinement inside S30",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S31"
+    },
+    {
+      "mapping_id": "C-C2-017",
+      "source": {
+        "id": "BBOA-COMPLIANCE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "1.0"
+      },
+      "relationship": "S31",
+      "target": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S31 S31 derived from S30 P-C2-010 (BBO-DOCSET MAPPED_TO ENT-DOCSET): attribute 'compliance_outcome' of BBO-DOCSET (B14 composition) is a column of ENT-DOCSET; the attribute is NOT reported against other entities that happen to carry the column name ([]) because S31 is a refinement inside S30"
+      ],
+      "rationale": "S31 derived from S30 P-C2-010 (BBO-DOCSET MAPPED_TO ENT-DOCSET): attribute 'compliance_outcome' of BBO-DOCSET (B14 composition) is a column of ENT-DOCSET; the attribute is NOT reported against other entities that happen to carry the column name ([]) because S31 is a refinement inside S30",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S31"
+    },
+    {
+      "mapping_id": "C-C2-018",
+      "source": {
+        "id": "BBOA-DISCREPANCIES",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "1.0"
+      },
+      "relationship": "S31",
+      "target": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S31 S31 derived from S30 P-C2-010 (BBO-DOCSET MAPPED_TO ENT-DOCSET): attribute 'discrepancies' of BBO-DOCSET (B14 composition) is a column of ENT-DOCSET; the attribute is NOT reported against other entities that happen to carry the column name ([]) because S31 is a refinement inside S30"
+      ],
+      "rationale": "S31 derived from S30 P-C2-010 (BBO-DOCSET MAPPED_TO ENT-DOCSET): attribute 'discrepancies' of BBO-DOCSET (B14 composition) is a column of ENT-DOCSET; the attribute is NOT reported against other entities that happen to carry the column name ([]) because S31 is a refinement inside S30",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S31"
+    },
+    {
+      "mapping_id": "C-C2-019",
+      "source": {
+        "id": "AT-LC",
+        "type": "A2.AssetType",
+        "version": "1.0"
+      },
+      "relationship": "S19",
+      "target": {
+        "id": "ENT-LC",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S19 S19 step4 structural: asset-type 'Letter of Credit' tokens/aliases ['credit', 'lc', 'letter'] appear in entity name 'letters_of_credit' as ['credit', 'letter']"
+      ],
+      "rationale": "S19 step4 structural: asset-type 'Letter of Credit' tokens/aliases ['credit', 'lc', 'letter'] appear in entity name 'letters_of_credit' as ['credit', 'letter']",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S19"
+    },
+    {
+      "mapping_id": "C-C2-020",
+      "source": {
+        "id": "AT-LC",
+        "type": "A2.AssetType",
+        "version": "1.0"
+      },
+      "relationship": "S19",
+      "target": {
+        "id": "ENT-LC-AMEND",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S19 S19 step4 structural: asset-type 'Letter of Credit' tokens/aliases ['credit', 'lc', 'letter'] appear in entity name 'lc_amendments' as ['lc']"
+      ],
+      "rationale": "S19 step4 structural: asset-type 'Letter of Credit' tokens/aliases ['credit', 'lc', 'letter'] appear in entity name 'lc_amendments' as ['lc']",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S19"
+    },
+    {
+      "mapping_id": "C-C2-021",
+      "source": {
+        "id": "AT-DOCSET",
+        "type": "A2.AssetType",
+        "version": "1.0"
+      },
+      "relationship": "S19",
+      "target": {
+        "id": "ENT-DOCSET",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S19 S19 step4 structural: asset-type 'Document Set' tokens/aliases ['doc', 'docset', 'document', 'set'] appear in entity name 'document_sets' as ['document', 'set']"
+      ],
+      "rationale": "S19 step4 structural: asset-type 'Document Set' tokens/aliases ['doc', 'docset', 'document', 'set'] appear in entity name 'document_sets' as ['document', 'set']",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S19"
+    },
+    {
+      "mapping_id": "C-C2-022",
+      "source": {
+        "id": "BQ-AMENDMENT",
+        "type": "A2.BehaviorQualifier",
+        "version": "1.0"
+      },
+      "relationship": "S27",
+      "target": {
+        "id": "ENT-LC-AMEND",
+        "type": "A3.DataEntity",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S27 S27 step4 structural: qualifier 'Amendment' aliases ['amend', 'amendment'] appear in entity name 'lc_amendments' as ['amendment']; the qualifier partitions the control record and so the data (follows S20)"
+      ],
+      "rationale": "S27 step4 structural: qualifier 'Amendment' aliases ['amend', 'amendment'] appear in entity name 'lc_amendments' as ['amendment']; the qualifier partitions the control record and so the data (follows S20)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S27"
+    },
+    {
+      "mapping_id": "C-C2-023",
+      "source": {
+        "id": "FP-FULFIL",
+        "type": "A2.FunctionalPattern",
+        "version": "1.0"
+      },
+      "relationship": "S18",
+      "target": {
+        "id": "FN-LC-CAPTURE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S18 S18 derived: FN-LC-CAPTURE.exposed_through = ['API-LC-01', 'API-LC-02', 'API-LC-04']; S24 ['P-C2-001', 'P-C2-002', 'P-C2-004'] place them on ['SO-LC-01', 'SO-LC-02', 'SO-LC-04'] of SD-LC, whose functional_pattern is FP-FULFIL ('Fulfil'); the function is classified by the pattern of the domain it serves"
+      ],
+      "rationale": "S18 derived: FN-LC-CAPTURE.exposed_through = ['API-LC-01', 'API-LC-02', 'API-LC-04']; S24 ['P-C2-001', 'P-C2-002', 'P-C2-004'] place them on ['SO-LC-01', 'SO-LC-02', 'SO-LC-04'] of SD-LC, whose functional_pattern is FP-FULFIL ('Fulfil'); the function is classified by the pattern of the domain it serves",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S18"
+    },
+    {
+      "mapping_id": "C-C2-024",
+      "source": {
+        "id": "CR-LC",
+        "type": "A2.ControlRecord",
+        "version": "1.0"
+      },
+      "relationship": "S21",
+      "target": {
+        "id": "FN-LC-CAPTURE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S21 S21 derived: FN-LC-CAPTURE.exposed_through = ['API-LC-01', 'API-LC-02', 'API-LC-04'] -> S24 ['P-C2-001', 'P-C2-002', 'P-C2-004'] -> operations ['SO-LC-01', 'SO-LC-02', 'SO-LC-04'] access CR-LC (B11); the function drives the control record's lifecycle ['applied', 'validated', 'amended', 'issued', 'expired'] (SAPG §4.2.2)"
+      ],
+      "rationale": "S21 derived: FN-LC-CAPTURE.exposed_through = ['API-LC-01', 'API-LC-02', 'API-LC-04'] -> S24 ['P-C2-001', 'P-C2-002', 'P-C2-004'] -> operations ['SO-LC-01', 'SO-LC-02', 'SO-LC-04'] access CR-LC (B11); the function drives the control record's lifecycle ['applied', 'validated', 'amended', 'issued', 'expired'] (SAPG §4.2.2)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S21"
+    },
+    {
+      "mapping_id": "C-C2-025",
+      "source": {
+        "id": "FP-FULFIL",
+        "type": "A2.FunctionalPattern",
+        "version": "1.0"
+      },
+      "relationship": "S18",
+      "target": {
+        "id": "FN-LC-ISSUE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S18 S18 derived: FN-LC-ISSUE.exposed_through = ['API-LC-03']; S24 ['P-C2-003'] place them on ['SO-LC-03'] of SD-LC, whose functional_pattern is FP-FULFIL ('Fulfil'); the function is classified by the pattern of the domain it serves"
+      ],
+      "rationale": "S18 derived: FN-LC-ISSUE.exposed_through = ['API-LC-03']; S24 ['P-C2-003'] place them on ['SO-LC-03'] of SD-LC, whose functional_pattern is FP-FULFIL ('Fulfil'); the function is classified by the pattern of the domain it serves",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S18"
+    },
+    {
+      "mapping_id": "C-C2-026",
+      "source": {
+        "id": "CR-LC",
+        "type": "A2.ControlRecord",
+        "version": "1.0"
+      },
+      "relationship": "S21",
+      "target": {
+        "id": "FN-LC-ISSUE",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S21 S21 derived: FN-LC-ISSUE.exposed_through = ['API-LC-03'] -> S24 ['P-C2-003'] -> operations ['SO-LC-03'] access CR-LC (B11); the function drives the control record's lifecycle ['applied', 'validated', 'amended', 'issued', 'expired'] (SAPG §4.2.2)"
+      ],
+      "rationale": "S21 derived: FN-LC-ISSUE.exposed_through = ['API-LC-03'] -> S24 ['P-C2-003'] -> operations ['SO-LC-03'] access CR-LC (B11); the function drives the control record's lifecycle ['applied', 'validated', 'amended', 'issued', 'expired'] (SAPG §4.2.2)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S21"
+    },
+    {
+      "mapping_id": "C-C2-027",
+      "source": {
+        "id": "FP-ASSESS",
+        "type": "A2.FunctionalPattern",
+        "version": "1.0"
+      },
+      "relationship": "S18",
+      "target": {
+        "id": "FN-DOC-CHECK",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S18 S18 derived: FN-DOC-CHECK.exposed_through = ['API-DC-01', 'API-DC-02']; S24 ['P-C2-005', 'P-C2-006'] place them on ['SO-DC-01', 'SO-DC-02'] of SD-DC, whose functional_pattern is FP-ASSESS ('Assess'); the function is classified by the pattern of the domain it serves"
+      ],
+      "rationale": "S18 derived: FN-DOC-CHECK.exposed_through = ['API-DC-01', 'API-DC-02']; S24 ['P-C2-005', 'P-C2-006'] place them on ['SO-DC-01', 'SO-DC-02'] of SD-DC, whose functional_pattern is FP-ASSESS ('Assess'); the function is classified by the pattern of the domain it serves",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S18"
+    },
+    {
+      "mapping_id": "C-C2-028",
+      "source": {
+        "id": "CR-DC",
+        "type": "A2.ControlRecord",
+        "version": "1.0"
+      },
+      "relationship": "S21",
+      "target": {
+        "id": "FN-DOC-CHECK",
+        "type": "A3.ApplicationFunction",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S21 S21 derived: FN-DOC-CHECK.exposed_through = ['API-DC-01', 'API-DC-02'] -> S24 ['P-C2-005', 'P-C2-006'] -> operations ['SO-DC-01', 'SO-DC-02'] access CR-DC (B11); the function drives the control record's lifecycle ['received', 'checked', 'accepted', 'rejected'] (SAPG §4.2.2)"
+      ],
+      "rationale": "S21 derived: FN-DOC-CHECK.exposed_through = ['API-DC-01', 'API-DC-02'] -> S24 ['P-C2-005', 'P-C2-006'] -> operations ['SO-DC-01', 'SO-DC-02'] access CR-DC (B11); the function drives the control record's lifecycle ['received', 'checked', 'accepted', 'rejected'] (SAPG §4.2.2)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S21"
+    },
+    {
+      "mapping_id": "C-C2-029",
+      "source": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0",
+        "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE"
+      },
+      "relationship": "S28",
+      "target": {
+        "id": "SVC-DOC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S28 S28 derived: scenario BS-LC operation_sequence ['SO-LC-01', 'SO-DC-01', 'SO-LC-03']; S24/S25 place ['SO-DC-01'] on SVC-DOC (SAPG §3.3–3.4: the services implementing the scenario's operations realise it)"
+      ],
+      "rationale": "S28 derived: scenario BS-LC operation_sequence ['SO-LC-01', 'SO-DC-01', 'SO-LC-03']; S24/S25 place ['SO-DC-01'] on SVC-DOC (SAPG §3.3–3.4: the services implementing the scenario's operations realise it)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S28"
+    },
+    {
+      "mapping_id": "C-C2-030",
+      "source": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0",
+        "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE"
+      },
+      "relationship": "S28",
+      "target": {
+        "id": "SVC-LC",
+        "type": "A3.ApplicationService",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S28 S28 derived: scenario BS-LC operation_sequence ['SO-LC-01', 'SO-DC-01', 'SO-LC-03']; S24/S25 place ['SO-LC-01', 'SO-LC-03'] on SVC-LC (SAPG §3.3–3.4: the services implementing the scenario's operations realise it)"
+      ],
+      "rationale": "S28 derived: scenario BS-LC operation_sequence ['SO-LC-01', 'SO-DC-01', 'SO-LC-03']; S24/S25 place ['SO-LC-01', 'SO-LC-03'] on SVC-LC (SAPG §3.3–3.4: the services implementing the scenario's operations realise it)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S28"
+    },
+    {
+      "mapping_id": "C-C2-031",
+      "source": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0",
+        "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE"
+      },
+      "relationship": "S29",
+      "target": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S29 S29 derived: the scenario's operations belong to ['SD-DC', 'SD-LC']; S17 ['P-C2-008'] realise APP-DOC"
+      ],
+      "rationale": "S29 derived: the scenario's operations belong to ['SD-DC', 'SD-LC']; S17 ['P-C2-008'] realise APP-DOC",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S29"
+    },
+    {
+      "mapping_id": "C-C2-032",
+      "source": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0",
+        "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE"
+      },
+      "relationship": "S29",
+      "target": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S29 S29 derived: the scenario's operations belong to ['SD-DC', 'SD-LC']; S17 ['P-C2-007'] realise APP-LC"
+      ],
+      "rationale": "S29 derived: the scenario's operations belong to ['SD-DC', 'SD-LC']; S17 ['P-C2-007'] realise APP-LC",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S29"
+    }
+  ]
+}
