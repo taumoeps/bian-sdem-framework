@@ -23,54 +23,54 @@ package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessObject" as a1_businessobject
   rectangle "A1.BusinessRequirement" as a1_businessrequirement
   ' within A1 — constraint rows (48)
-  a1_businesscapability -[#B0BEC5]-> a1_businesscapability : <size:8>composition</size>
-  a1_businesscapability -[#B0BEC5]-> a1_businesscapability : <size:8>aggregation</size>
-  a1_businesscapability -[#B0BEC5]-> a1_valuestream : <size:8>serving</size>
-  a1_businesscapability -[#B0BEC5]-> a1_valuestreamstage : <size:8>serving</size>
-  a1_valuestream -[#B0BEC5]-> a1_valuestreamstage : <size:8>composition</size>
-  a1_valuestreamstage -[#B0BEC5]-> a1_valuestreamstage : <size:8>triggering</size>
-  a1_valuestreamstage -[#B0BEC5]-> a1_valuestreamstage : <size:8>flow</size>
-  a1_businessprocess -[#B0BEC5]-> a1_businesscapability : <size:8>realization</size>
-  a1_businessprocess -[#B0BEC5]-> a1_valuestream : <size:8>realization</size>
-  a1_businessprocess -[#B0BEC5]-> a1_valuestreamstage : <size:8>realization</size>
-  a1_businessprocess -[#B0BEC5]-> a1_businessservice : <size:8>realization</size>
-  a1_businessprocess -[#B0BEC5]-> a1_businessobject : <size:8>access</size>
-  a1_businessprocess -[#B0BEC5]-> a1_businessrequirement : <size:8>realization</size>
-  a1_businessprocess -[#B0BEC5]-> a1_businessprocess : <size:8>triggering</size>
-  a1_businessprocess -[#B0BEC5]-> a1_businessprocess : <size:8>flow</size>
-  a1_businessactivity -[#B0BEC5]-> a1_businesscapability : <size:8>realization</size>
-  a1_businessactivity -[#B0BEC5]-> a1_valuestream : <size:8>realization</size>
-  a1_businessactivity -[#B0BEC5]-> a1_valuestreamstage : <size:8>realization</size>
-  a1_businessactivity -[#B0BEC5]-> a1_businessservice : <size:8>realization</size>
-  a1_businessactivity -[#B0BEC5]-> a1_businessobject : <size:8>access</size>
-  a1_businessactivity -[#B0BEC5]-> a1_businessrequirement : <size:8>realization</size>
-  a1_businessactivity -[#B0BEC5]-> a1_businessactivity : <size:8>triggering</size>
-  a1_businessactivity -[#B0BEC5]-> a1_businessactivity : <size:8>flow</size>
-  a1_businessprocess -[#B0BEC5]-> a1_businessactivity : <size:8>composition</size>
-  a1_businessprocess -[#B0BEC5]-> a1_businessprocess : <size:8>composition</size>
-  a1_businessactivity -[#B0BEC5]-> a1_businessactivity : <size:8>composition</size>
-  a1_businessservice -[#B0BEC5]-> a1_businessprocess : <size:8>serving</size>
-  a1_businessservice -[#B0BEC5]-> a1_businessactivity : <size:8>serving</size>
-  a1_businessservice -[#B0BEC5]-> a1_businessrole : <size:8>serving</size>
-  a1_businessservice -[#B0BEC5]-> a1_businessactor : <size:8>serving</size>
-  a1_businessservice -[#B0BEC5]-> a1_businessservice : <size:8>composition</size>
-  a1_businessservice -[#B0BEC5]-> a1_businessobject : <size:8>access</size>
-  a1_businessservice -[#B0BEC5]-> a1_businessrequirement : <size:8>realization</size>
-  a1_businesscapability -[#B0BEC5]-> a1_businessrequirement : <size:8>realization</size>
-  a1_businessactor -[#B0BEC5]-> a1_businessrole : <size:8>assignment</size>
-  a1_businessrole -[#B0BEC5]-> a1_businessprocess : <size:8>assignment</size>
-  a1_businessrole -[#B0BEC5]-> a1_businessactivity : <size:8>assignment</size>
-  a1_businessactor -[#B0BEC5]-> a1_businessprocess : <size:8>assignment</size>
-  a1_businessactor -[#B0BEC5]-> a1_businessactivity : <size:8>assignment</size>
-  a1_businessactor -[#B0BEC5]-> a1_businessactor : <size:8>composition</size>
-  a1_businessactor -[#B0BEC5]-> a1_businessactor : <size:8>aggregation</size>
-  a1_businessrole -[#B0BEC5]-> a1_businessrole : <size:8>composition</size>
-  a1_businessrole -[#B0BEC5]-> a1_businessrole : <size:8>aggregation</size>
-  a1_businessobject -[#B0BEC5]-> a1_businessobject : <size:8>composition</size>
-  a1_businessobject -[#B0BEC5]-> a1_businessobject : <size:8>aggregation</size>
-  a1_businessobject -[#B0BEC5]-> a1_businessobject : <size:8>specialization</size>
-  a1_businessrequirement -[#B0BEC5]-> a1_businessrequirement : <size:8>composition</size>
-  a1_businessrequirement -[#B0BEC5]-> a1_businessrequirement : <size:8>specialization</size>
+  a1_businesscapability -[#B0BEC5]-> a1_businesscapability : <size:8>RA1-01 composition</size>
+  a1_businesscapability -[#B0BEC5]-> a1_businesscapability : <size:8>RA1-02 aggregation</size>
+  a1_businesscapability -[#B0BEC5]-> a1_valuestream : <size:8>RA1-03 serving</size>
+  a1_businesscapability -[#B0BEC5]-> a1_valuestreamstage : <size:8>RA1-04 serving</size>
+  a1_valuestream -[#B0BEC5]-> a1_valuestreamstage : <size:8>RA1-05 composition</size>
+  a1_valuestreamstage -[#B0BEC5]-> a1_valuestreamstage : <size:8>RA1-06 triggering</size>
+  a1_valuestreamstage -[#B0BEC5]-> a1_valuestreamstage : <size:8>RA1-07 flow</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businesscapability : <size:8>RA1-08 realization</size>
+  a1_businessprocess -[#B0BEC5]-> a1_valuestream : <size:8>RA1-09 realization</size>
+  a1_businessprocess -[#B0BEC5]-> a1_valuestreamstage : <size:8>RA1-10 realization</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businessservice : <size:8>RA1-11 realization</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businessobject : <size:8>RA1-12 access</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businessrequirement : <size:8>RA1-13 realization</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businessprocess : <size:8>RA1-14 triggering</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businessprocess : <size:8>RA1-15 flow</size>
+  a1_businessactivity -[#B0BEC5]-> a1_businesscapability : <size:8>RA1-16 realization</size>
+  a1_businessactivity -[#B0BEC5]-> a1_valuestream : <size:8>RA1-17 realization</size>
+  a1_businessactivity -[#B0BEC5]-> a1_valuestreamstage : <size:8>RA1-18 realization</size>
+  a1_businessactivity -[#B0BEC5]-> a1_businessservice : <size:8>RA1-19 realization</size>
+  a1_businessactivity -[#B0BEC5]-> a1_businessobject : <size:8>RA1-20 access</size>
+  a1_businessactivity -[#B0BEC5]-> a1_businessrequirement : <size:8>RA1-21 realization</size>
+  a1_businessactivity -[#B0BEC5]-> a1_businessactivity : <size:8>RA1-22 triggering</size>
+  a1_businessactivity -[#B0BEC5]-> a1_businessactivity : <size:8>RA1-23 flow</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businessactivity : <size:8>RA1-24 composition</size>
+  a1_businessprocess -[#B0BEC5]-> a1_businessprocess : <size:8>RA1-25 composition</size>
+  a1_businessactivity -[#B0BEC5]-> a1_businessactivity : <size:8>RA1-26 composition</size>
+  a1_businessservice -[#B0BEC5]-> a1_businessprocess : <size:8>RA1-27 serving</size>
+  a1_businessservice -[#B0BEC5]-> a1_businessactivity : <size:8>RA1-28 serving</size>
+  a1_businessservice -[#B0BEC5]-> a1_businessrole : <size:8>RA1-29 serving</size>
+  a1_businessservice -[#B0BEC5]-> a1_businessactor : <size:8>RA1-30 serving</size>
+  a1_businessservice -[#B0BEC5]-> a1_businessservice : <size:8>RA1-31 composition</size>
+  a1_businessservice -[#B0BEC5]-> a1_businessobject : <size:8>RA1-32 access</size>
+  a1_businessservice -[#B0BEC5]-> a1_businessrequirement : <size:8>RA1-33 realization</size>
+  a1_businesscapability -[#B0BEC5]-> a1_businessrequirement : <size:8>RA1-34 realization</size>
+  a1_businessactor -[#B0BEC5]-> a1_businessrole : <size:8>RA1-35 assignment</size>
+  a1_businessrole -[#B0BEC5]-> a1_businessprocess : <size:8>RA1-36 assignment</size>
+  a1_businessrole -[#B0BEC5]-> a1_businessactivity : <size:8>RA1-37 assignment</size>
+  a1_businessactor -[#B0BEC5]-> a1_businessprocess : <size:8>RA1-38 assignment</size>
+  a1_businessactor -[#B0BEC5]-> a1_businessactivity : <size:8>RA1-39 assignment</size>
+  a1_businessactor -[#B0BEC5]-> a1_businessactor : <size:8>RA1-40 composition</size>
+  a1_businessactor -[#B0BEC5]-> a1_businessactor : <size:8>RA1-41 aggregation</size>
+  a1_businessrole -[#B0BEC5]-> a1_businessrole : <size:8>RA1-42 composition</size>
+  a1_businessrole -[#B0BEC5]-> a1_businessrole : <size:8>RA1-43 aggregation</size>
+  a1_businessobject -[#B0BEC5]-> a1_businessobject : <size:8>RA1-44 composition</size>
+  a1_businessobject -[#B0BEC5]-> a1_businessobject : <size:8>RA1-45 aggregation</size>
+  a1_businessobject -[#B0BEC5]-> a1_businessobject : <size:8>RA1-46 specialization</size>
+  a1_businessrequirement -[#B0BEC5]-> a1_businessrequirement : <size:8>RA1-47 composition</size>
+  a1_businessrequirement -[#B0BEC5]-> a1_businessrequirement : <size:8>RA1-48 specialization</size>
 }
 
 package "A2 Service Domain Architecture" as A2 {
@@ -90,23 +90,23 @@ package "A2 Service Domain Architecture" as A2 {
   rectangle "A2.Wireframe\n(artefact)" as a2_wireframe #EEEEEE
   rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi #EEEEEE
   ' within A2 — constraint rows (17)
-  a2_businessarea -[#B0BEC5]-> a2_businessdomain : <size:8>composition</size>
-  a2_businessdomain -[#B0BEC5]-> a2_servicedomain : <size:8>composition</size>
-  a2_servicedomain -[#B0BEC5]-> a2_servicegroup : <size:8>composition</size>
-  a2_servicegroup -[#B0BEC5]-> a2_serviceoperation : <size:8>composition</size>
-  a2_servicedomain -[#B0BEC5]-> a2_controlrecord : <size:8>aggregation</size>
-  a2_servicedomain -[#B0BEC5]-> a2_functionalpattern : <size:8>association</size>
-  a2_servicedomain -[#B0BEC5]-> a2_assettype : <size:8>association</size>
-  a2_serviceoperation -[#B0BEC5]-> a2_behaviorqualifier : <size:8>association</size>
-  a2_businessscenario -[#B0BEC5]-> a2_serviceoperation : <size:8>aggregation</size>
-  a2_businessobject -[#B0BEC5]-> a2_businessobjectattribute : <size:8>composition</size>
-  a2_controlrecord -[#B0BEC5]-> a2_behaviorqualifier : <size:8>composition</size>
-  a2_controlrecord -[#B0BEC5]-> a2_businessobject : <size:8>association</size>
-  a2_serviceoperation -[#B0BEC5]-> a2_controlrecord : <size:8>access</size>
-  a2_servicedomain -[#B0BEC5]-> a2_servicedomain : <size:8>flow</size>
-  a2_wireframe -[#B0BEC5]-> a2_servicedomain : <size:8>association</size>
-  a2_semanticapi -[#B0BEC5]-> a2_servicedomain : <size:8>realization</size>
-  a2_bommodel -[#B0BEC5]-> a2_businessobject : <size:8>aggregation</size>
+  a2_businessarea -[#B0BEC5]-> a2_businessdomain : <size:8>RA2-01 composition</size>
+  a2_businessdomain -[#B0BEC5]-> a2_servicedomain : <size:8>RA2-02 composition</size>
+  a2_servicedomain -[#B0BEC5]-> a2_servicegroup : <size:8>RA2-03 composition</size>
+  a2_servicegroup -[#B0BEC5]-> a2_serviceoperation : <size:8>RA2-04 composition</size>
+  a2_servicedomain -[#B0BEC5]-> a2_controlrecord : <size:8>RA2-05 aggregation</size>
+  a2_servicedomain -[#B0BEC5]-> a2_functionalpattern : <size:8>RA2-06 association</size>
+  a2_servicedomain -[#B0BEC5]-> a2_assettype : <size:8>RA2-07 association</size>
+  a2_serviceoperation -[#B0BEC5]-> a2_behaviorqualifier : <size:8>RA2-08 association</size>
+  a2_businessscenario -[#B0BEC5]-> a2_serviceoperation : <size:8>RA2-09 aggregation</size>
+  a2_businessobject -[#B0BEC5]-> a2_businessobjectattribute : <size:8>RA2-10 composition</size>
+  a2_controlrecord -[#B0BEC5]-> a2_behaviorqualifier : <size:8>RA2-11 composition</size>
+  a2_controlrecord -[#B0BEC5]-> a2_businessobject : <size:8>RA2-12 association</size>
+  a2_serviceoperation -[#B0BEC5]-> a2_controlrecord : <size:8>RA2-13 access</size>
+  a2_servicedomain -[#B0BEC5]-> a2_servicedomain : <size:8>RA2-14 flow</size>
+  a2_wireframe -[#B0BEC5]-> a2_servicedomain : <size:8>RA2-15 association</size>
+  a2_semanticapi -[#B0BEC5]-> a2_servicedomain : <size:8>RA2-16 realization</size>
+  a2_bommodel -[#B0BEC5]-> a2_businessobject : <size:8>RA2-17 aggregation</size>
 }
 
 package "A3 Application Architecture" as A3 {
@@ -119,37 +119,37 @@ package "A3 Application Architecture" as A3 {
   rectangle "A3.Event" as a3_event
   rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
   ' within A3 — constraint rows (31)
-  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>composition</size>
-  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>aggregation</size>
-  a3_applicationcomponent -[#B0BEC5]-> a3_applicationinterface : <size:8>composition</size>
-  a3_applicationcomponent -[#B0BEC5]-> a3_applicationfunction : <size:8>assignment</size>
-  a3_applicationfunction -[#B0BEC5]-> a3_applicationservice : <size:8>realization</size>
-  a3_applicationcomponent -[#B0BEC5]-> a3_applicationservice : <size:8>realization</size>
-  a3_applicationinterface -[#B0BEC5]-> a3_applicationservice : <size:8>assignment</size>
-  a3_applicationservice -[#B0BEC5]-> a3_applicationcomponent : <size:8>serving</size>
-  a3_applicationservice -[#B0BEC5]-> a3_applicationfunction : <size:8>serving</size>
-  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>flow</size>
-  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>serving</size>
-  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>triggering</size>
-  a3_applicationfunction -[#B0BEC5]-> a3_applicationfunction : <size:8>composition</size>
-  a3_applicationfunction -[#B0BEC5]-> a3_applicationfunction : <size:8>triggering</size>
-  a3_applicationfunction -[#B0BEC5]-> a3_applicationfunction : <size:8>flow</size>
-  a3_applicationcomponent -[#B0BEC5]-> a3_dataentity : <size:8>access</size>
-  a3_applicationfunction -[#B0BEC5]-> a3_dataentity : <size:8>access</size>
-  a3_applicationservice -[#B0BEC5]-> a3_dataentity : <size:8>access</size>
-  a3_dataentity -[#B0BEC5]-> a3_dataentity : <size:8>composition</size>
-  a3_dataentity -[#B0BEC5]-> a3_dataentity : <size:8>aggregation</size>
-  a3_dataentity -[#B0BEC5]-> a3_dataentity : <size:8>specialization</size>
-  a3_applicationcomponent -[#B0BEC5]-> a3_event : <size:8>triggering</size>
-  a3_applicationfunction -[#B0BEC5]-> a3_event : <size:8>triggering</size>
-  a3_event -[#B0BEC5]-> a3_applicationfunction : <size:8>triggering</size>
-  a3_event -[#B0BEC5]-> a3_applicationcomponent : <size:8>triggering</size>
-  a3_event -[#B0BEC5]-> a3_dataentity : <size:8>access</size>
-  a3_applicationinterface -[#B0BEC5]-> a3_apioperation : <size:8>composition</size>
-  a3_applicationcomponent -[#B0BEC5]-> a3_apioperation : <size:8>composition</size>
-  a3_apioperation -[#B0BEC5]-> a3_dataentity : <size:8>access</size>
-  a3_solutionbuildingblock -[#B0BEC5]-> a3_applicationcomponent : <size:8>aggregation</size>
-  a3_solutionbuildingblock -[#B0BEC5]-> a3_solutionbuildingblock : <size:8>composition</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-01 composition</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-02 aggregation</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationinterface : <size:8>RA3-03 composition</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationfunction : <size:8>RA3-04 assignment</size>
+  a3_applicationfunction -[#B0BEC5]-> a3_applicationservice : <size:8>RA3-05 realization</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationservice : <size:8>RA3-06 realization</size>
+  a3_applicationinterface -[#B0BEC5]-> a3_applicationservice : <size:8>RA3-07 assignment</size>
+  a3_applicationservice -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-08 serving</size>
+  a3_applicationservice -[#B0BEC5]-> a3_applicationfunction : <size:8>RA3-09 serving</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-10 flow</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-11 serving</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-12 triggering</size>
+  a3_applicationfunction -[#B0BEC5]-> a3_applicationfunction : <size:8>RA3-13 composition</size>
+  a3_applicationfunction -[#B0BEC5]-> a3_applicationfunction : <size:8>RA3-14 triggering</size>
+  a3_applicationfunction -[#B0BEC5]-> a3_applicationfunction : <size:8>RA3-15 flow</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_dataentity : <size:8>RA3-16 access</size>
+  a3_applicationfunction -[#B0BEC5]-> a3_dataentity : <size:8>RA3-17 access</size>
+  a3_applicationservice -[#B0BEC5]-> a3_dataentity : <size:8>RA3-18 access</size>
+  a3_dataentity -[#B0BEC5]-> a3_dataentity : <size:8>RA3-19 composition</size>
+  a3_dataentity -[#B0BEC5]-> a3_dataentity : <size:8>RA3-20 aggregation</size>
+  a3_dataentity -[#B0BEC5]-> a3_dataentity : <size:8>RA3-21 specialization</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_event : <size:8>RA3-22 triggering</size>
+  a3_applicationfunction -[#B0BEC5]-> a3_event : <size:8>RA3-23 triggering</size>
+  a3_event -[#B0BEC5]-> a3_applicationfunction : <size:8>RA3-24 triggering</size>
+  a3_event -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-25 triggering</size>
+  a3_event -[#B0BEC5]-> a3_dataentity : <size:8>RA3-26 access</size>
+  a3_applicationinterface -[#B0BEC5]-> a3_apioperation : <size:8>RA3-27 composition</size>
+  a3_applicationcomponent -[#B0BEC5]-> a3_apioperation : <size:8>RA3-28 composition</size>
+  a3_apioperation -[#B0BEC5]-> a3_dataentity : <size:8>RA3-29 access</size>
+  a3_solutionbuildingblock -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-30 aggregation</size>
+  a3_solutionbuildingblock -[#B0BEC5]-> a3_solutionbuildingblock : <size:8>RA3-31 composition</size>
 }
 
 package "A4 Technology Architecture" as A4 {
@@ -165,41 +165,41 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.Path" as a4_path
   rectangle "A4.Artifact" as a4_artifact
   ' within A4 — constraint rows (35)
-  a4_node -[#B0BEC5]-> a4_node : <size:8>composition</size>
-  a4_node -[#B0BEC5]-> a4_node : <size:8>aggregation</size>
-  a4_node -[#B0BEC5]-> a4_device : <size:8>aggregation</size>
-  a4_node -[#B0BEC5]-> a4_systemsoftware : <size:8>assignment</size>
-  a4_device -[#B0BEC5]-> a4_systemsoftware : <size:8>assignment</size>
-  a4_systemsoftware -[#B0BEC5]-> a4_systemsoftware : <size:8>assignment</size>
-  a4_node -[#B0BEC5]-> a4_artifact : <size:8>assignment</size>
-  a4_node -[#B0BEC5]-> a4_technologyservice : <size:8>realization</size>
-  a4_node -[#B0BEC5]-> a4_technologyinterface : <size:8>composition</size>
-  a4_technologyservice -[#B0BEC5]-> a4_node : <size:8>serving</size>
-  a4_node -[#B0BEC5]-> a4_deployment : <size:8>assignment</size>
-  a4_device -[#B0BEC5]-> a4_artifact : <size:8>assignment</size>
-  a4_device -[#B0BEC5]-> a4_technologyservice : <size:8>realization</size>
-  a4_device -[#B0BEC5]-> a4_technologyinterface : <size:8>composition</size>
-  a4_technologyservice -[#B0BEC5]-> a4_device : <size:8>serving</size>
-  a4_device -[#B0BEC5]-> a4_deployment : <size:8>assignment</size>
-  a4_systemsoftware -[#B0BEC5]-> a4_artifact : <size:8>assignment</size>
-  a4_systemsoftware -[#B0BEC5]-> a4_technologyservice : <size:8>realization</size>
-  a4_systemsoftware -[#B0BEC5]-> a4_technologyinterface : <size:8>composition</size>
-  a4_technologyservice -[#B0BEC5]-> a4_systemsoftware : <size:8>serving</size>
-  a4_systemsoftware -[#B0BEC5]-> a4_deployment : <size:8>assignment</size>
-  a4_technologyinterface -[#B0BEC5]-> a4_technologyservice : <size:8>assignment</size>
-  a4_technologyservice -[#B0BEC5]-> a4_technologyservice : <size:8>composition</size>
-  a4_node -[#B0BEC5]-> a4_node : <size:8>flow</size>
-  a4_node -[#B0BEC5]-> a4_node : <size:8>triggering</size>
-  a4_communicationnetwork -[#B0BEC5]-> a4_path : <size:8>realization</size>
-  a4_communicationnetwork -[#B0BEC5]-> a4_communicationnetwork : <size:8>composition</size>
-  a4_artifact -[#B0BEC5]-> a4_artifact : <size:8>composition</size>
-  a4_artifact -[#B0BEC5]-> a4_artifact : <size:8>aggregation</size>
-  a4_device -[#B0BEC5]-> a4_device : <size:8>aggregation</size>
-  a4_deploymentenvironment -[#B0BEC5]-> a4_deployment : <size:8>aggregation</size>
-  a4_deploymentenvironment -[#B0BEC5]-> a4_node : <size:8>aggregation</size>
-  a4_deploymentenvironment -[#B0BEC5]-> a4_device : <size:8>aggregation</size>
-  a4_deploymentenvironment -[#B0BEC5]-> a4_systemsoftware : <size:8>aggregation</size>
-  a4_deployment -[#B0BEC5]-> a4_artifact : <size:8>aggregation</size>
+  a4_node -[#B0BEC5]-> a4_node : <size:8>RA4-01 composition</size>
+  a4_node -[#B0BEC5]-> a4_node : <size:8>RA4-02 aggregation</size>
+  a4_node -[#B0BEC5]-> a4_device : <size:8>RA4-03 aggregation</size>
+  a4_node -[#B0BEC5]-> a4_systemsoftware : <size:8>RA4-04 assignment</size>
+  a4_device -[#B0BEC5]-> a4_systemsoftware : <size:8>RA4-05 assignment</size>
+  a4_systemsoftware -[#B0BEC5]-> a4_systemsoftware : <size:8>RA4-06 assignment</size>
+  a4_node -[#B0BEC5]-> a4_artifact : <size:8>RA4-07 assignment</size>
+  a4_node -[#B0BEC5]-> a4_technologyservice : <size:8>RA4-08 realization</size>
+  a4_node -[#B0BEC5]-> a4_technologyinterface : <size:8>RA4-09 composition</size>
+  a4_technologyservice -[#B0BEC5]-> a4_node : <size:8>RA4-10 serving</size>
+  a4_node -[#B0BEC5]-> a4_deployment : <size:8>RA4-11 assignment</size>
+  a4_device -[#B0BEC5]-> a4_artifact : <size:8>RA4-12 assignment</size>
+  a4_device -[#B0BEC5]-> a4_technologyservice : <size:8>RA4-13 realization</size>
+  a4_device -[#B0BEC5]-> a4_technologyinterface : <size:8>RA4-14 composition</size>
+  a4_technologyservice -[#B0BEC5]-> a4_device : <size:8>RA4-15 serving</size>
+  a4_device -[#B0BEC5]-> a4_deployment : <size:8>RA4-16 assignment</size>
+  a4_systemsoftware -[#B0BEC5]-> a4_artifact : <size:8>RA4-17 assignment</size>
+  a4_systemsoftware -[#B0BEC5]-> a4_technologyservice : <size:8>RA4-18 realization</size>
+  a4_systemsoftware -[#B0BEC5]-> a4_technologyinterface : <size:8>RA4-19 composition</size>
+  a4_technologyservice -[#B0BEC5]-> a4_systemsoftware : <size:8>RA4-20 serving</size>
+  a4_systemsoftware -[#B0BEC5]-> a4_deployment : <size:8>RA4-21 assignment</size>
+  a4_technologyinterface -[#B0BEC5]-> a4_technologyservice : <size:8>RA4-22 assignment</size>
+  a4_technologyservice -[#B0BEC5]-> a4_technologyservice : <size:8>RA4-23 composition</size>
+  a4_node -[#B0BEC5]-> a4_node : <size:8>RA4-24 flow</size>
+  a4_node -[#B0BEC5]-> a4_node : <size:8>RA4-25 triggering</size>
+  a4_communicationnetwork -[#B0BEC5]-> a4_path : <size:8>RA4-26 realization</size>
+  a4_communicationnetwork -[#B0BEC5]-> a4_communicationnetwork : <size:8>RA4-27 composition</size>
+  a4_artifact -[#B0BEC5]-> a4_artifact : <size:8>RA4-28 composition</size>
+  a4_artifact -[#B0BEC5]-> a4_artifact : <size:8>RA4-29 aggregation</size>
+  a4_device -[#B0BEC5]-> a4_device : <size:8>RA4-30 aggregation</size>
+  a4_deploymentenvironment -[#B0BEC5]-> a4_deployment : <size:8>RA4-31 aggregation</size>
+  a4_deploymentenvironment -[#B0BEC5]-> a4_node : <size:8>RA4-32 aggregation</size>
+  a4_deploymentenvironment -[#B0BEC5]-> a4_device : <size:8>RA4-33 aggregation</size>
+  a4_deploymentenvironment -[#B0BEC5]-> a4_systemsoftware : <size:8>RA4-34 aggregation</size>
+  a4_deployment -[#B0BEC5]-> a4_artifact : <size:8>RA4-35 aggregation</size>
 }
 
 ' --- cross-level: registry rule (SDMM relationship type) (9)

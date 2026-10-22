@@ -23,54 +23,54 @@ package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessObject" as a1_businessobject
   rectangle "A1.BusinessRequirement" as a1_businessrequirement
   ' constraints from ArchiMate 3.2 ch. 6–8 (48)
-  a1_businesscapability -[#1565C0]-> a1_businesscapability : composition
-  a1_businesscapability -[#1565C0,dashed]-> a1_businesscapability : aggregation
-  a1_businesscapability -[#EF6C00]-> a1_valuestream : serving
-  a1_businesscapability -[#EF6C00]-> a1_valuestreamstage : serving
-  a1_valuestream -[#1565C0]-> a1_valuestreamstage : composition
-  a1_valuestreamstage -[#EF6C00,dotted]-> a1_valuestreamstage : triggering
-  a1_valuestreamstage -[#EF6C00,dashed]-> a1_valuestreamstage : flow
-  a1_businessprocess -[#2E7D32,dashed]-> a1_businesscapability : realization
-  a1_businessprocess -[#2E7D32,dashed]-> a1_valuestream : realization
-  a1_businessprocess -[#2E7D32,dashed]-> a1_valuestreamstage : realization
-  a1_businessprocess -[#2E7D32,dashed]-> a1_businessservice : realization
-  a1_businessprocess -[#616161,dotted]-> a1_businessobject : access
-  a1_businessprocess -[#2E7D32,dashed]-> a1_businessrequirement : realization
-  a1_businessprocess -[#EF6C00,dotted]-> a1_businessprocess : triggering
-  a1_businessprocess -[#EF6C00,dashed]-> a1_businessprocess : flow
-  a1_businessactivity -[#2E7D32,dashed]-> a1_businesscapability : realization
-  a1_businessactivity -[#2E7D32,dashed]-> a1_valuestream : realization
-  a1_businessactivity -[#2E7D32,dashed]-> a1_valuestreamstage : realization
-  a1_businessactivity -[#2E7D32,dashed]-> a1_businessservice : realization
-  a1_businessactivity -[#616161,dotted]-> a1_businessobject : access
-  a1_businessactivity -[#2E7D32,dashed]-> a1_businessrequirement : realization
-  a1_businessactivity -[#EF6C00,dotted]-> a1_businessactivity : triggering
-  a1_businessactivity -[#EF6C00,dashed]-> a1_businessactivity : flow
-  a1_businessprocess -[#1565C0]-> a1_businessactivity : composition
-  a1_businessprocess -[#1565C0]-> a1_businessprocess : composition
-  a1_businessactivity -[#1565C0]-> a1_businessactivity : composition
-  a1_businessservice -[#EF6C00]-> a1_businessprocess : serving
-  a1_businessservice -[#EF6C00]-> a1_businessactivity : serving
-  a1_businessservice -[#EF6C00]-> a1_businessrole : serving
-  a1_businessservice -[#EF6C00]-> a1_businessactor : serving
-  a1_businessservice -[#1565C0]-> a1_businessservice : composition
-  a1_businessservice -[#616161,dotted]-> a1_businessobject : access
-  a1_businessservice -[#2E7D32,dashed]-> a1_businessrequirement : realization
-  a1_businesscapability -[#2E7D32,dashed]-> a1_businessrequirement : realization
-  a1_businessactor -[#6A1B9A]-> a1_businessrole : assignment
-  a1_businessrole -[#6A1B9A]-> a1_businessprocess : assignment
-  a1_businessrole -[#6A1B9A]-> a1_businessactivity : assignment
-  a1_businessactor -[#6A1B9A]-> a1_businessprocess : assignment
-  a1_businessactor -[#6A1B9A]-> a1_businessactivity : assignment
-  a1_businessactor -[#1565C0]-> a1_businessactor : composition
-  a1_businessactor -[#1565C0,dashed]-> a1_businessactor : aggregation
-  a1_businessrole -[#1565C0]-> a1_businessrole : composition
-  a1_businessrole -[#1565C0,dashed]-> a1_businessrole : aggregation
-  a1_businessobject -[#1565C0]-> a1_businessobject : composition
-  a1_businessobject -[#1565C0,dashed]-> a1_businessobject : aggregation
-  a1_businessobject -[#424242]-> a1_businessobject : specialization
-  a1_businessrequirement -[#1565C0]-> a1_businessrequirement : composition
-  a1_businessrequirement -[#424242]-> a1_businessrequirement : specialization
+  a1_businesscapability -[#1565C0]-> a1_businesscapability : RA1-01 composition
+  a1_businesscapability -[#1565C0,dashed]-> a1_businesscapability : RA1-02 aggregation
+  a1_businesscapability -[#EF6C00]-> a1_valuestream : RA1-03 serving
+  a1_businesscapability -[#EF6C00]-> a1_valuestreamstage : RA1-04 serving
+  a1_valuestream -[#1565C0]-> a1_valuestreamstage : RA1-05 composition
+  a1_valuestreamstage -[#EF6C00,dotted]-> a1_valuestreamstage : RA1-06 triggering
+  a1_valuestreamstage -[#EF6C00,dashed]-> a1_valuestreamstage : RA1-07 flow
+  a1_businessprocess -[#2E7D32,dashed]-> a1_businesscapability : RA1-08 realization
+  a1_businessprocess -[#2E7D32,dashed]-> a1_valuestream : RA1-09 realization
+  a1_businessprocess -[#2E7D32,dashed]-> a1_valuestreamstage : RA1-10 realization
+  a1_businessprocess -[#2E7D32,dashed]-> a1_businessservice : RA1-11 realization
+  a1_businessprocess -[#616161,dotted]-> a1_businessobject : RA1-12 access
+  a1_businessprocess -[#2E7D32,dashed]-> a1_businessrequirement : RA1-13 realization
+  a1_businessprocess -[#EF6C00,dotted]-> a1_businessprocess : RA1-14 triggering
+  a1_businessprocess -[#EF6C00,dashed]-> a1_businessprocess : RA1-15 flow
+  a1_businessactivity -[#2E7D32,dashed]-> a1_businesscapability : RA1-16 realization
+  a1_businessactivity -[#2E7D32,dashed]-> a1_valuestream : RA1-17 realization
+  a1_businessactivity -[#2E7D32,dashed]-> a1_valuestreamstage : RA1-18 realization
+  a1_businessactivity -[#2E7D32,dashed]-> a1_businessservice : RA1-19 realization
+  a1_businessactivity -[#616161,dotted]-> a1_businessobject : RA1-20 access
+  a1_businessactivity -[#2E7D32,dashed]-> a1_businessrequirement : RA1-21 realization
+  a1_businessactivity -[#EF6C00,dotted]-> a1_businessactivity : RA1-22 triggering
+  a1_businessactivity -[#EF6C00,dashed]-> a1_businessactivity : RA1-23 flow
+  a1_businessprocess -[#1565C0]-> a1_businessactivity : RA1-24 composition
+  a1_businessprocess -[#1565C0]-> a1_businessprocess : RA1-25 composition
+  a1_businessactivity -[#1565C0]-> a1_businessactivity : RA1-26 composition
+  a1_businessservice -[#EF6C00]-> a1_businessprocess : RA1-27 serving
+  a1_businessservice -[#EF6C00]-> a1_businessactivity : RA1-28 serving
+  a1_businessservice -[#EF6C00]-> a1_businessrole : RA1-29 serving
+  a1_businessservice -[#EF6C00]-> a1_businessactor : RA1-30 serving
+  a1_businessservice -[#1565C0]-> a1_businessservice : RA1-31 composition
+  a1_businessservice -[#616161,dotted]-> a1_businessobject : RA1-32 access
+  a1_businessservice -[#2E7D32,dashed]-> a1_businessrequirement : RA1-33 realization
+  a1_businesscapability -[#2E7D32,dashed]-> a1_businessrequirement : RA1-34 realization
+  a1_businessactor -[#6A1B9A]-> a1_businessrole : RA1-35 assignment
+  a1_businessrole -[#6A1B9A]-> a1_businessprocess : RA1-36 assignment
+  a1_businessrole -[#6A1B9A]-> a1_businessactivity : RA1-37 assignment
+  a1_businessactor -[#6A1B9A]-> a1_businessprocess : RA1-38 assignment
+  a1_businessactor -[#6A1B9A]-> a1_businessactivity : RA1-39 assignment
+  a1_businessactor -[#1565C0]-> a1_businessactor : RA1-40 composition
+  a1_businessactor -[#1565C0,dashed]-> a1_businessactor : RA1-41 aggregation
+  a1_businessrole -[#1565C0]-> a1_businessrole : RA1-42 composition
+  a1_businessrole -[#1565C0,dashed]-> a1_businessrole : RA1-43 aggregation
+  a1_businessobject -[#1565C0]-> a1_businessobject : RA1-44 composition
+  a1_businessobject -[#1565C0,dashed]-> a1_businessobject : RA1-45 aggregation
+  a1_businessobject -[#424242]-> a1_businessobject : RA1-46 specialization
+  a1_businessrequirement -[#1565C0]-> a1_businessrequirement : RA1-47 composition
+  a1_businessrequirement -[#424242]-> a1_businessrequirement : RA1-48 specialization
   ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) (2)
   a1_valuestreamstage -[#424242]-|> a1_valuestream : extends
   a1_businessactivity -[#424242]-|> a1_businessprocess : extends
@@ -93,23 +93,23 @@ package "A2 Service Domain Architecture" as A2 {
   rectangle "A2.Wireframe\n(artefact)" as a2_wireframe
   rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi
   ' constraints from BIAN Service Landscape metamodel (17)
-  a2_businessarea -[#1565C0]-> a2_businessdomain : composition
-  a2_businessdomain -[#1565C0]-> a2_servicedomain : composition
-  a2_servicedomain -[#1565C0]-> a2_servicegroup : composition
-  a2_servicegroup -[#1565C0]-> a2_serviceoperation : composition
-  a2_servicedomain -[#1565C0,dashed]-> a2_controlrecord : aggregation
-  a2_servicedomain -[#9E9E9E,dotted]-> a2_functionalpattern : association
-  a2_servicedomain -[#9E9E9E,dotted]-> a2_assettype : association
-  a2_serviceoperation -[#9E9E9E,dotted]-> a2_behaviorqualifier : association
-  a2_businessscenario -[#1565C0,dashed]-> a2_serviceoperation : aggregation
-  a2_businessobject -[#1565C0]-> a2_businessobjectattribute : composition
-  a2_controlrecord -[#1565C0]-> a2_behaviorqualifier : composition
-  a2_controlrecord -[#9E9E9E,dotted]-> a2_businessobject : association
-  a2_serviceoperation -[#616161,dotted]-> a2_controlrecord : access
-  a2_servicedomain -[#EF6C00,dashed]-> a2_servicedomain : flow
-  a2_wireframe -[#9E9E9E,dotted]-> a2_servicedomain : association
-  a2_semanticapi -[#2E7D32,dashed]-> a2_servicedomain : realization
-  a2_bommodel -[#1565C0,dashed]-> a2_businessobject : aggregation
+  a2_businessarea -[#1565C0]-> a2_businessdomain : RA2-01 composition
+  a2_businessdomain -[#1565C0]-> a2_servicedomain : RA2-02 composition
+  a2_servicedomain -[#1565C0]-> a2_servicegroup : RA2-03 composition
+  a2_servicegroup -[#1565C0]-> a2_serviceoperation : RA2-04 composition
+  a2_servicedomain -[#1565C0,dashed]-> a2_controlrecord : RA2-05 aggregation
+  a2_servicedomain -[#9E9E9E,dotted]-> a2_functionalpattern : RA2-06 association
+  a2_servicedomain -[#9E9E9E,dotted]-> a2_assettype : RA2-07 association
+  a2_serviceoperation -[#9E9E9E,dotted]-> a2_behaviorqualifier : RA2-08 association
+  a2_businessscenario -[#1565C0,dashed]-> a2_serviceoperation : RA2-09 aggregation
+  a2_businessobject -[#1565C0]-> a2_businessobjectattribute : RA2-10 composition
+  a2_controlrecord -[#1565C0]-> a2_behaviorqualifier : RA2-11 composition
+  a2_controlrecord -[#9E9E9E,dotted]-> a2_businessobject : RA2-12 association
+  a2_serviceoperation -[#616161,dotted]-> a2_controlrecord : RA2-13 access
+  a2_servicedomain -[#EF6C00,dashed]-> a2_servicedomain : RA2-14 flow
+  a2_wireframe -[#9E9E9E,dotted]-> a2_servicedomain : RA2-15 association
+  a2_semanticapi -[#2E7D32,dashed]-> a2_servicedomain : RA2-16 realization
+  a2_bommodel -[#1565C0,dashed]-> a2_businessobject : RA2-17 aggregation
 }
 
 package "A3 Application Architecture" as A3 {
@@ -122,37 +122,37 @@ package "A3 Application Architecture" as A3 {
   rectangle "A3.Event" as a3_event
   rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
   ' constraints from ArchiMate 3.2 ch. 9; TOGAF (SBB) (31)
-  a3_applicationcomponent -[#1565C0]-> a3_applicationcomponent : composition
-  a3_applicationcomponent -[#1565C0,dashed]-> a3_applicationcomponent : aggregation
-  a3_applicationcomponent -[#1565C0]-> a3_applicationinterface : composition
-  a3_applicationcomponent -[#6A1B9A]-> a3_applicationfunction : assignment
-  a3_applicationfunction -[#2E7D32,dashed]-> a3_applicationservice : realization
-  a3_applicationcomponent -[#2E7D32,dashed]-> a3_applicationservice : realization
-  a3_applicationinterface -[#6A1B9A]-> a3_applicationservice : assignment
-  a3_applicationservice -[#EF6C00]-> a3_applicationcomponent : serving
-  a3_applicationservice -[#EF6C00]-> a3_applicationfunction : serving
-  a3_applicationcomponent -[#EF6C00,dashed]-> a3_applicationcomponent : flow
-  a3_applicationcomponent -[#EF6C00]-> a3_applicationcomponent : serving
-  a3_applicationcomponent -[#EF6C00,dotted]-> a3_applicationcomponent : triggering
-  a3_applicationfunction -[#1565C0]-> a3_applicationfunction : composition
-  a3_applicationfunction -[#EF6C00,dotted]-> a3_applicationfunction : triggering
-  a3_applicationfunction -[#EF6C00,dashed]-> a3_applicationfunction : flow
-  a3_applicationcomponent -[#616161,dotted]-> a3_dataentity : access
-  a3_applicationfunction -[#616161,dotted]-> a3_dataentity : access
-  a3_applicationservice -[#616161,dotted]-> a3_dataentity : access
-  a3_dataentity -[#1565C0]-> a3_dataentity : composition
-  a3_dataentity -[#1565C0,dashed]-> a3_dataentity : aggregation
-  a3_dataentity -[#424242]-> a3_dataentity : specialization
-  a3_applicationcomponent -[#EF6C00,dotted]-> a3_event : triggering
-  a3_applicationfunction -[#EF6C00,dotted]-> a3_event : triggering
-  a3_event -[#EF6C00,dotted]-> a3_applicationfunction : triggering
-  a3_event -[#EF6C00,dotted]-> a3_applicationcomponent : triggering
-  a3_event -[#616161,dotted]-> a3_dataentity : access
-  a3_applicationinterface -[#1565C0]-> a3_apioperation : composition
-  a3_applicationcomponent -[#1565C0]-> a3_apioperation : composition
-  a3_apioperation -[#616161,dotted]-> a3_dataentity : access
-  a3_solutionbuildingblock -[#1565C0,dashed]-> a3_applicationcomponent : aggregation
-  a3_solutionbuildingblock -[#1565C0]-> a3_solutionbuildingblock : composition
+  a3_applicationcomponent -[#1565C0]-> a3_applicationcomponent : RA3-01 composition
+  a3_applicationcomponent -[#1565C0,dashed]-> a3_applicationcomponent : RA3-02 aggregation
+  a3_applicationcomponent -[#1565C0]-> a3_applicationinterface : RA3-03 composition
+  a3_applicationcomponent -[#6A1B9A]-> a3_applicationfunction : RA3-04 assignment
+  a3_applicationfunction -[#2E7D32,dashed]-> a3_applicationservice : RA3-05 realization
+  a3_applicationcomponent -[#2E7D32,dashed]-> a3_applicationservice : RA3-06 realization
+  a3_applicationinterface -[#6A1B9A]-> a3_applicationservice : RA3-07 assignment
+  a3_applicationservice -[#EF6C00]-> a3_applicationcomponent : RA3-08 serving
+  a3_applicationservice -[#EF6C00]-> a3_applicationfunction : RA3-09 serving
+  a3_applicationcomponent -[#EF6C00,dashed]-> a3_applicationcomponent : RA3-10 flow
+  a3_applicationcomponent -[#EF6C00]-> a3_applicationcomponent : RA3-11 serving
+  a3_applicationcomponent -[#EF6C00,dotted]-> a3_applicationcomponent : RA3-12 triggering
+  a3_applicationfunction -[#1565C0]-> a3_applicationfunction : RA3-13 composition
+  a3_applicationfunction -[#EF6C00,dotted]-> a3_applicationfunction : RA3-14 triggering
+  a3_applicationfunction -[#EF6C00,dashed]-> a3_applicationfunction : RA3-15 flow
+  a3_applicationcomponent -[#616161,dotted]-> a3_dataentity : RA3-16 access
+  a3_applicationfunction -[#616161,dotted]-> a3_dataentity : RA3-17 access
+  a3_applicationservice -[#616161,dotted]-> a3_dataentity : RA3-18 access
+  a3_dataentity -[#1565C0]-> a3_dataentity : RA3-19 composition
+  a3_dataentity -[#1565C0,dashed]-> a3_dataentity : RA3-20 aggregation
+  a3_dataentity -[#424242]-> a3_dataentity : RA3-21 specialization
+  a3_applicationcomponent -[#EF6C00,dotted]-> a3_event : RA3-22 triggering
+  a3_applicationfunction -[#EF6C00,dotted]-> a3_event : RA3-23 triggering
+  a3_event -[#EF6C00,dotted]-> a3_applicationfunction : RA3-24 triggering
+  a3_event -[#EF6C00,dotted]-> a3_applicationcomponent : RA3-25 triggering
+  a3_event -[#616161,dotted]-> a3_dataentity : RA3-26 access
+  a3_applicationinterface -[#1565C0]-> a3_apioperation : RA3-27 composition
+  a3_applicationcomponent -[#1565C0]-> a3_apioperation : RA3-28 composition
+  a3_apioperation -[#616161,dotted]-> a3_dataentity : RA3-29 access
+  a3_solutionbuildingblock -[#1565C0,dashed]-> a3_applicationcomponent : RA3-30 aggregation
+  a3_solutionbuildingblock -[#1565C0]-> a3_solutionbuildingblock : RA3-31 composition
 }
 
 package "A4 Technology Architecture" as A4 {
@@ -168,41 +168,41 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.Path" as a4_path
   rectangle "A4.Artifact" as a4_artifact
   ' constraints from ArchiMate 3.2 ch. 10 (35)
-  a4_node -[#1565C0]-> a4_node : composition
-  a4_node -[#1565C0,dashed]-> a4_node : aggregation
-  a4_node -[#1565C0,dashed]-> a4_device : aggregation
-  a4_node -[#6A1B9A]-> a4_systemsoftware : assignment
-  a4_device -[#6A1B9A]-> a4_systemsoftware : assignment
-  a4_systemsoftware -[#6A1B9A]-> a4_systemsoftware : assignment
-  a4_node -[#6A1B9A]-> a4_artifact : assignment
-  a4_node -[#2E7D32,dashed]-> a4_technologyservice : realization
-  a4_node -[#1565C0]-> a4_technologyinterface : composition
-  a4_technologyservice -[#EF6C00]-> a4_node : serving
-  a4_node -[#6A1B9A]-> a4_deployment : assignment
-  a4_device -[#6A1B9A]-> a4_artifact : assignment
-  a4_device -[#2E7D32,dashed]-> a4_technologyservice : realization
-  a4_device -[#1565C0]-> a4_technologyinterface : composition
-  a4_technologyservice -[#EF6C00]-> a4_device : serving
-  a4_device -[#6A1B9A]-> a4_deployment : assignment
-  a4_systemsoftware -[#6A1B9A]-> a4_artifact : assignment
-  a4_systemsoftware -[#2E7D32,dashed]-> a4_technologyservice : realization
-  a4_systemsoftware -[#1565C0]-> a4_technologyinterface : composition
-  a4_technologyservice -[#EF6C00]-> a4_systemsoftware : serving
-  a4_systemsoftware -[#6A1B9A]-> a4_deployment : assignment
-  a4_technologyinterface -[#6A1B9A]-> a4_technologyservice : assignment
-  a4_technologyservice -[#1565C0]-> a4_technologyservice : composition
-  a4_node -[#EF6C00,dashed]-> a4_node : flow
-  a4_node -[#EF6C00,dotted]-> a4_node : triggering
-  a4_communicationnetwork -[#2E7D32,dashed]-> a4_path : realization
-  a4_communicationnetwork -[#1565C0]-> a4_communicationnetwork : composition
-  a4_artifact -[#1565C0]-> a4_artifact : composition
-  a4_artifact -[#1565C0,dashed]-> a4_artifact : aggregation
-  a4_device -[#1565C0,dashed]-> a4_device : aggregation
-  a4_deploymentenvironment -[#1565C0,dashed]-> a4_deployment : aggregation
-  a4_deploymentenvironment -[#1565C0,dashed]-> a4_node : aggregation
-  a4_deploymentenvironment -[#1565C0,dashed]-> a4_device : aggregation
-  a4_deploymentenvironment -[#1565C0,dashed]-> a4_systemsoftware : aggregation
-  a4_deployment -[#1565C0,dashed]-> a4_artifact : aggregation
+  a4_node -[#1565C0]-> a4_node : RA4-01 composition
+  a4_node -[#1565C0,dashed]-> a4_node : RA4-02 aggregation
+  a4_node -[#1565C0,dashed]-> a4_device : RA4-03 aggregation
+  a4_node -[#6A1B9A]-> a4_systemsoftware : RA4-04 assignment
+  a4_device -[#6A1B9A]-> a4_systemsoftware : RA4-05 assignment
+  a4_systemsoftware -[#6A1B9A]-> a4_systemsoftware : RA4-06 assignment
+  a4_node -[#6A1B9A]-> a4_artifact : RA4-07 assignment
+  a4_node -[#2E7D32,dashed]-> a4_technologyservice : RA4-08 realization
+  a4_node -[#1565C0]-> a4_technologyinterface : RA4-09 composition
+  a4_technologyservice -[#EF6C00]-> a4_node : RA4-10 serving
+  a4_node -[#6A1B9A]-> a4_deployment : RA4-11 assignment
+  a4_device -[#6A1B9A]-> a4_artifact : RA4-12 assignment
+  a4_device -[#2E7D32,dashed]-> a4_technologyservice : RA4-13 realization
+  a4_device -[#1565C0]-> a4_technologyinterface : RA4-14 composition
+  a4_technologyservice -[#EF6C00]-> a4_device : RA4-15 serving
+  a4_device -[#6A1B9A]-> a4_deployment : RA4-16 assignment
+  a4_systemsoftware -[#6A1B9A]-> a4_artifact : RA4-17 assignment
+  a4_systemsoftware -[#2E7D32,dashed]-> a4_technologyservice : RA4-18 realization
+  a4_systemsoftware -[#1565C0]-> a4_technologyinterface : RA4-19 composition
+  a4_technologyservice -[#EF6C00]-> a4_systemsoftware : RA4-20 serving
+  a4_systemsoftware -[#6A1B9A]-> a4_deployment : RA4-21 assignment
+  a4_technologyinterface -[#6A1B9A]-> a4_technologyservice : RA4-22 assignment
+  a4_technologyservice -[#1565C0]-> a4_technologyservice : RA4-23 composition
+  a4_node -[#EF6C00,dashed]-> a4_node : RA4-24 flow
+  a4_node -[#EF6C00,dotted]-> a4_node : RA4-25 triggering
+  a4_communicationnetwork -[#2E7D32,dashed]-> a4_path : RA4-26 realization
+  a4_communicationnetwork -[#1565C0]-> a4_communicationnetwork : RA4-27 composition
+  a4_artifact -[#1565C0]-> a4_artifact : RA4-28 composition
+  a4_artifact -[#1565C0,dashed]-> a4_artifact : RA4-29 aggregation
+  a4_device -[#1565C0,dashed]-> a4_device : RA4-30 aggregation
+  a4_deploymentenvironment -[#1565C0,dashed]-> a4_deployment : RA4-31 aggregation
+  a4_deploymentenvironment -[#1565C0,dashed]-> a4_node : RA4-32 aggregation
+  a4_deploymentenvironment -[#1565C0,dashed]-> a4_device : RA4-33 aggregation
+  a4_deploymentenvironment -[#1565C0,dashed]-> a4_systemsoftware : RA4-34 aggregation
+  a4_deployment -[#1565C0,dashed]-> a4_artifact : RA4-35 aggregation
   ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) (10)
   a4_deployment -[#424242]-|> a4_infrastructurecomponent : extends
   a4_deploymentenvironment -[#424242]-|> a4_infrastructurecomponent : extends
@@ -219,7 +219,7 @@ package "A4 Technology Architecture" as A4 {
 legend right
   Kinds (ArchiMate 3.2): composition solid blue, aggregation dashed blue, realization dashed green, assignment purple,
   serving orange, flow dashed orange, triggering dotted orange, access dotted grey; association is permitted between any two entities of one level and is not drawn
-  Every arrow is a constraint row in metamodel/level-relationships.json; sdmm-graph check rejects any other within-level relationship.
+  Every arrow is a constraint row in metamodel/level-relationships.json (ID shown; full table in docs/relationships-planning.md); sdmm-graph check rejects any other within-level relationship.
   Hollow-headed black arrows: catalogue inheritance (extends). A4.InfrastructureComponent is abstract — never instantiated; it is the DEPLOYED_ON target type and every concrete A4 entity is-a InfrastructureComponent.
   A2 from BIAN (public portal); A1, A3, A4 paraphrased from ArchiMate 3.2 / TOGAF 10 chapter structure (login-gated, unverified) for the concept each entity derives from.
 endlegend

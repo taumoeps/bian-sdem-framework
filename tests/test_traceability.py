@@ -129,3 +129,20 @@ class OfficialRowsAreConstraintsTests(unittest.TestCase):
                    and m['source'].startswith('A2.') and m['target'].startswith('A2.')
                    and (m['source'], m['target']) not in pairs and (m['target'], m['source']) not in pairs]
         self.assertEqual(missing, [])
+
+
+class RelationshipsPlanningTests(unittest.TestCase):
+    def test_document_equals_render_from_json(self):
+        from sdmm.relationships import render
+        self.assertEqual((ROOT / 'docs/relationships-planning.md').read_text(encoding='utf-8'), render())
+
+    def test_every_row_has_id_and_provenance_fields(self):
+        lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
+        ids = [c['id'] for c in lr['constraints']]
+        self.assertEqual(len(ids), len(set(ids)))
+        for c in lr['constraints']:
+            for k in ('id', 'description', 'reference_source', 'reasoning', 'confidence', 'verification'):
+                self.assertTrue(c.get(k), f"{c.get('id')} lacks {k}")
+            self.assertIn(c['confidence'], ('high', 'medium', 'low'))
+        a2_official = {c['official_id'] for c in lr['constraints'] if c['level'] == 'A2' and c.get('official_id')}
+        self.assertEqual(a2_official, {f'B{n:02d}' for n in range(2, 16)})

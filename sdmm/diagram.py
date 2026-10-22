@@ -161,7 +161,7 @@ def render_levels(metamodel=None, level_rels=None, examples_dir=None):
            'skinparam rectangle {', '  BackgroundColor White', '  BorderColor #424242', '}',
            'skinparam package {', '  BackgroundColor #F5F5F5', '  BorderColor #9E9E9E', '}', 'skinparam ArrowFontSize 9',
            'title Within-level structure — every level from its reference architecture: A2 BIAN; A1, A3, A4 ArchiMate 3.2 / TOGAF (association permitted everywhere, not drawn)', '']
-    rows_by_level = {l: [(c['source_type'], c['kind'], c['target_type']) for c in lr['constraints'] if c['level'] == l] for l in ('A1', 'A2', 'A3', 'A4')}
+    rows_by_level = {l: [(c['source_type'], c['kind'], c['target_type'], c.get('id', '')) for c in lr['constraints'] if c['level'] == l] for l in ('A1', 'A2', 'A3', 'A4')}
     for lvl in ('A1', 'A2', 'A3', 'A4'):
         out.append(f'package "{LEVEL_NAMES[lvl]}" as {lvl} {{')
         for t, e in mm.entities.items():
@@ -170,8 +170,8 @@ def render_levels(metamodel=None, level_rels=None, examples_dir=None):
             out.append(f'  rectangle "{t}{tag}" as {alias[t]}')
         src = {'A1': 'ArchiMate 3.2 ch. 6–8', 'A2': 'BIAN Service Landscape metamodel', 'A3': 'ArchiMate 3.2 ch. 9; TOGAF (SBB)', 'A4': 'ArchiMate 3.2 ch. 10'}[lvl]
         out.append(f"  ' constraints from {src} ({len(rows_by_level[lvl])})")
-        for s_, k, t_ in rows_by_level[lvl]:
-            c, st = KIND_STYLE[k]; out.append(f"  {alias[s_]} -[#{c.lstrip('#')}{',' + st if st else ''}]-> {alias[t_]} : {k}")
+        for s_, k, t_, rid in rows_by_level[lvl]:
+            c, st = KIND_STYLE[k]; out.append(f"  {alias[s_]} -[#{c.lstrip('#')}{',' + st if st else ''}]-> {alias[t_]} : {rid} {k}")
         ext = [(t, e['extends']) for t, e in mm.entities.items() if e['level'] == lvl and e.get('extends')]
         if ext:
             out.append(f"  ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) ({len(ext)})")
@@ -180,7 +180,7 @@ def render_levels(metamodel=None, level_rels=None, examples_dir=None):
         out.append('}'); out.append('')
     out += ['legend right', '  Kinds (ArchiMate 3.2): composition solid blue, aggregation dashed blue, realization dashed green, assignment purple,',
             '  serving orange, flow dashed orange, triggering dotted orange, access dotted grey; association is permitted between any two entities of one level and is not drawn',
-            '  Every arrow is a constraint row in metamodel/level-relationships.json; sdmm-graph check rejects any other within-level relationship.',
+            '  Every arrow is a constraint row in metamodel/level-relationships.json (ID shown; full table in docs/relationships-planning.md); sdmm-graph check rejects any other within-level relationship.',
             '  Hollow-headed black arrows: catalogue inheritance (extends). A4.InfrastructureComponent is abstract — never instantiated; it is the DEPLOYED_ON target type and every concrete A4 entity is-a InfrastructureComponent.',
             '  A2 from BIAN (public portal); A1, A3, A4 paraphrased from ArchiMate 3.2 / TOGAF 10 chapter structure (login-gated, unverified) for the concept each entity derives from.',
             'endlegend', '@enduml']
@@ -198,7 +198,7 @@ def render_merged(new=None, metamodel=None, level_rels=None, examples_dir=None):
     entries = new_entries(new)
     rule_of = {m['id']: m.get('sdmm_rule') for m in load_official()['mappings']}
     ends = {m['source'] for m in entries} | {m['target'] for m in entries}
-    rows_by_level = {l: [(c['source_type'], c['kind'], c['target_type']) for c in lr['constraints'] if c['level'] == l] for l in ('A1', 'A2', 'A3', 'A4')}
+    rows_by_level = {l: [(c['source_type'], c['kind'], c['target_type'], c.get('id', '')) for c in lr['constraints'] if c['level'] == l] for l in ('A1', 'A2', 'A3', 'A4')}
     within = sum(len(v) for v in rows_by_level.values())
     out = ['@startuml merged-mappings', 'left to right direction',
            'skinparam rectangle {', '  BackgroundColor White', '  BorderColor #424242', '}',
@@ -212,8 +212,8 @@ def render_merged(new=None, metamodel=None, level_rels=None, examples_dir=None):
             if t in ends: out.append(f'  rectangle "{t}{tag}" as {alias[t]}')
             else: out.append(f'  rectangle "{t}{tag}" as {alias[t]} #EEEEEE')
         out.append(f"  ' within {lvl} — constraint rows ({len(rows_by_level[lvl])})")
-        for s_, k, t_ in rows_by_level[lvl]:
-            out.append(f"  {alias[s_]} -[#B0BEC5]-> {alias[t_]} : <size:8>{k}</size>")
+        for s_, k, t_, rid in rows_by_level[lvl]:
+            out.append(f"  {alias[s_]} -[#B0BEC5]-> {alias[t_]} : <size:8>{rid} {k}</size>")
         out.append('}'); out.append('')
     for dec, (colour, style, label) in DECISION_STYLE.items():
         rows = [m for m in entries if m['rule_decision'] == dec]

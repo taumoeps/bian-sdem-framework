@@ -59,918 +59,1855 @@
       "source_type": "A2.BusinessArea",
       "kind": "composition",
       "target_type": "A2.BusinessDomain",
-      "basis": "BIAN Service Landscape structure (public portal)"
+      "basis": "BIAN Service Landscape structure (public portal)",
+      "id": "RA2-01",
+      "official_id": "B02",
+      "description": "A business area is composed of business domains.",
+      "reasoning": "The Service Landscape is a three-tier grouping: areas contain domains contain Service Domains.",
+      "reference_source": "[SL14] Service Landscape (public portal)",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.BusinessDomain",
       "kind": "composition",
       "target_type": "A2.ServiceDomain",
-      "basis": "BIAN Service Landscape structure (public portal)"
+      "basis": "BIAN Service Landscape structure (public portal)",
+      "id": "RA2-02",
+      "official_id": "B03",
+      "description": "A business domain is composed of Service Domains.",
+      "reasoning": "Second tier of the landscape grouping.",
+      "reference_source": "[SL14] Service Landscape (public portal)",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.ServiceDomain",
       "kind": "composition",
       "target_type": "A2.ServiceGroup",
-      "basis": "BIAN MetaModel Overview (public portal)"
+      "basis": "BIAN MetaModel Overview (public portal)",
+      "id": "RA2-03",
+      "official_id": "B09",
+      "description": "A Service Domain offers its operations in service groups.",
+      "reasoning": "The metamodel overview places service groups between the domain and its operations.",
+      "reference_source": "[SL14] MetaModel Overview (public portal)",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.ServiceGroup",
       "kind": "composition",
       "target_type": "A2.ServiceOperation",
-      "basis": "BIAN MetaModel Overview (public portal)"
+      "basis": "BIAN MetaModel Overview (public portal)",
+      "id": "RA2-04",
+      "official_id": "B10",
+      "description": "A service group contains service operations.",
+      "reasoning": "Operations are the leaves of the domain's service structure.",
+      "reference_source": "[SL14] MetaModel Overview (public portal)",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.ServiceDomain",
       "kind": "aggregation",
       "target_type": "A2.ControlRecord",
-      "basis": "BIAN MetaModel Overview (public portal)"
+      "basis": "BIAN MetaModel Overview (public portal)",
+      "id": "RA2-05",
+      "official_id": "B06",
+      "description": "A Service Domain governs one control record.",
+      "reasoning": "Every Service Domain has exactly one control record, the thing it manages across its lifecycle.",
+      "reference_source": "[SL14] MetaModel Overview; Control Record Model (public portal)",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.ServiceDomain",
       "kind": "association",
       "target_type": "A2.FunctionalPattern",
-      "basis": "BIAN MetaModel Overview (public portal)"
+      "basis": "BIAN MetaModel Overview (public portal)",
+      "id": "RA2-06",
+      "official_id": "B04",
+      "description": "A Service Domain applies one functional pattern.",
+      "reasoning": "The pattern names the generic behaviour the domain performs on its asset.",
+      "reference_source": "[SL14] MetaModel Overview (public portal)",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.ServiceDomain",
       "kind": "association",
       "target_type": "A2.AssetType",
-      "basis": "BIAN MetaModel Overview (public portal)"
+      "basis": "BIAN MetaModel Overview (public portal)",
+      "id": "RA2-07",
+      "official_id": "B05",
+      "description": "A Service Domain manages one asset type.",
+      "reasoning": "The asset type is the thing the pattern acts on; pattern plus asset define the domain.",
+      "reference_source": "[SL14] MetaModel Overview (public portal)",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.ServiceOperation",
       "kind": "association",
       "target_type": "A2.BehaviorQualifier",
-      "basis": "BIAN MetaModel Overview (public portal)"
+      "basis": "BIAN MetaModel Overview (public portal)",
+      "id": "RA2-08",
+      "official_id": null,
+      "description": "A service operation may be qualified by a behaviour qualifier.",
+      "reasoning": "Operations act on a partition of the control record; the qualifier names that partition and appears in the REST path.",
+      "reference_source": "[SAPG] §3.2.4, §3.5",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.BusinessScenario",
       "kind": "aggregation",
       "target_type": "A2.ServiceOperation",
-      "basis": "BIAN Business Scenarios (public portal)"
+      "basis": "BIAN Business Scenarios (public portal)",
+      "id": "RA2-09",
+      "official_id": "B13",
+      "description": "A business scenario sequences service operations across domains.",
+      "reasoning": "Scenarios are illustrative choreographies of operations; aggregation because operations exist independently.",
+      "reference_source": "[SL14] Business Scenarios; [SAPG] §3.3",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.BusinessObject",
       "kind": "composition",
       "target_type": "A2.BusinessObjectAttribute",
-      "basis": "BIAN Business Object Model (public portal)"
+      "basis": "BIAN Business Object Model (public portal)",
+      "id": "RA2-10",
+      "official_id": null,
+      "description": "A business object is composed of its attributes.",
+      "reasoning": "The BOM defines objects as sets of typed attributes.",
+      "reference_source": "[SL14] Business Object Model (public portal)",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.ControlRecord",
       "kind": "composition",
       "target_type": "A2.BehaviorQualifier",
-      "basis": "BIAN MetaModel Overview; [SAPG] §3.2.4 (B07)"
+      "basis": "BIAN MetaModel Overview; [SAPG] §3.2.4 (B07)",
+      "id": "RA2-11",
+      "official_id": "B07",
+      "description": "A control record is partitioned by behaviour qualifiers.",
+      "reasoning": "Qualifiers are the sub-structures of the control record that operations address.",
+      "reference_source": "[SL14] MetaModel Overview; [SAPG] §3.2.4",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.ControlRecord",
       "kind": "association",
       "target_type": "A2.BusinessObject",
-      "basis": "BIAN BOM / Control Record rationalisation, [RN14] §1.3 (B08)"
+      "basis": "BIAN BOM / Control Record rationalisation, [RN14] §1.3 (B08)",
+      "id": "RA2-12",
+      "official_id": "B08",
+      "description": "A control record's attributes are typed by business objects.",
+      "reasoning": "Control records and the BOM were rationalised together in release 14.",
+      "reference_source": "[SL14] BOM Overview; [RN14] §1.3",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.ServiceOperation",
       "kind": "access",
       "target_type": "A2.ControlRecord",
-      "basis": "[SAPG] §3.2.5, §3.5 (B11)"
+      "basis": "[SAPG] §3.2.5, §3.5 (B11)",
+      "id": "RA2-13",
+      "official_id": "B11",
+      "description": "A service operation acts on the control record.",
+      "reasoning": "Every operation reads or changes the domain's control record; the action term says how.",
+      "reference_source": "[SAPG] §3.2.5, §3.5",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.ServiceDomain",
       "kind": "flow",
       "target_type": "A2.ServiceDomain",
-      "basis": "[SAPG] §3.2.6 first-order connections (B12)"
+      "basis": "[SAPG] §3.2.6 first-order connections (B12)",
+      "id": "RA2-14",
+      "official_id": "B12",
+      "description": "A Service Domain connects to other Service Domains.",
+      "reasoning": "First-order connections: the domains a domain calls or is called by.",
+      "reference_source": "[SAPG] §3.2.6",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.Wireframe",
       "kind": "association",
       "target_type": "A2.ServiceDomain",
-      "basis": "[SL14] Wireframes Overview; [SAPG] §3.4 — a wireframe depicts a Service Domain (B14)"
+      "basis": "[SL14] Wireframes Overview; [SAPG] §3.4 — a wireframe depicts a Service Domain (B14)",
+      "id": "RA2-15",
+      "official_id": "B14",
+      "description": "A wireframe depicts a Service Domain.",
+      "reasoning": "Wireframes are published per domain as an illustrative artefact.",
+      "reference_source": "[SL14] Wireframes Overview; [SAPG] §3.4",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.SemanticAPI",
       "kind": "realization",
       "target_type": "A2.ServiceDomain",
-      "basis": "[APIP]; [SAPG] §3.5 — the Semantic API is derived from the Service Domain's operations (B15)"
+      "basis": "[APIP]; [SAPG] §3.5 — the Semantic API is derived from the Service Domain's operations (B15)",
+      "id": "RA2-16",
+      "official_id": "B15",
+      "description": "A Semantic API is derived from a Service Domain.",
+      "reasoning": "The reference API is the domain's operations in REST form.",
+      "reference_source": "[APIP]; [SAPG] §3.5",
+      "confidence": "high",
+      "verification": "verified"
     },
     {
       "level": "A2",
       "source_type": "A2.BOMModel",
       "kind": "aggregation",
       "target_type": "A2.BusinessObject",
-      "basis": "[SL14] BOM Overview — the versioned Business Object Model artefact aggregates the business objects (content of B08's source)"
+      "basis": "[SL14] BOM Overview — the versioned Business Object Model artefact aggregates the business objects (content of B08's source)",
+      "id": "RA2-17",
+      "official_id": null,
+      "description": "The versioned Business Object Model artefact aggregates the business objects.",
+      "reasoning": "The BOM release is the container of the objects that type control records; SDMM reading of the BOM overview, not a published BIAN relationship.",
+      "reference_source": "[SL14] BOM Overview (public portal); SDMM reading",
+      "confidence": "medium",
+      "verification": "sdmm_reading"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessCapability",
       "kind": "composition",
       "target_type": "A1.BusinessCapability",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — capability structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — capability structure",
+      "id": "RA1-01",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — capability structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessCapability",
       "kind": "aggregation",
       "target_type": "A1.BusinessCapability",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — capability structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — capability structure",
+      "id": "RA1-02",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — capability structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessCapability",
       "kind": "serving",
       "target_type": "A1.ValueStream",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — a capability serves a value stream"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — a capability serves a value stream",
+      "id": "RA1-03",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — a capability serves a value stream.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessCapability",
       "kind": "serving",
       "target_type": "A1.ValueStreamStage",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — a capability serves a value stream"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — a capability serves a value stream",
+      "id": "RA1-04",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — a capability serves a value stream.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.ValueStream",
       "kind": "composition",
       "target_type": "A1.ValueStreamStage",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — value stream composed of stages (ValueStreamStage is the SDMM extension)"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — value stream composed of stages (ValueStreamStage is the SDMM extension)",
+      "id": "RA1-05",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — value stream composed of stages (ValueStreamStage is the SDMM extension).",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.ValueStreamStage",
       "kind": "triggering",
       "target_type": "A1.ValueStreamStage",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — stage sequence"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — stage sequence",
+      "id": "RA1-06",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — stage sequence.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.ValueStreamStage",
       "kind": "flow",
       "target_type": "A1.ValueStreamStage",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — stage sequence"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — stage sequence",
+      "id": "RA1-07",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — stage sequence.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessProcess",
       "kind": "realization",
       "target_type": "A1.BusinessCapability",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a capability"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a capability",
+      "id": "RA1-08",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a capability.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessProcess",
       "kind": "realization",
       "target_type": "A1.ValueStream",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage",
+      "id": "RA1-09",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessProcess",
       "kind": "realization",
       "target_type": "A1.ValueStreamStage",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage",
+      "id": "RA1-10",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessProcess",
       "kind": "realization",
       "target_type": "A1.BusinessService",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour realises a business service"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour realises a business service",
+      "id": "RA1-11",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — behaviour realises a business service.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessProcess",
       "kind": "access",
       "target_type": "A1.BusinessObject",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour accesses a business object"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour accesses a business object",
+      "id": "RA1-12",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — behaviour accesses a business object.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessProcess",
       "kind": "realization",
       "target_type": "A1.BusinessRequirement",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement",
+      "id": "RA1-13",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessProcess",
       "kind": "triggering",
       "target_type": "A1.BusinessProcess",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence",
+      "id": "RA1-14",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessProcess",
       "kind": "flow",
       "target_type": "A1.BusinessProcess",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence",
+      "id": "RA1-15",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActivity",
       "kind": "realization",
       "target_type": "A1.BusinessCapability",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a capability"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a capability",
+      "id": "RA1-16",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a capability.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActivity",
       "kind": "realization",
       "target_type": "A1.ValueStream",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage",
+      "id": "RA1-17",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActivity",
       "kind": "realization",
       "target_type": "A1.ValueStreamStage",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage",
+      "id": "RA1-18",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActivity",
       "kind": "realization",
       "target_type": "A1.BusinessService",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour realises a business service"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour realises a business service",
+      "id": "RA1-19",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — behaviour realises a business service.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActivity",
       "kind": "access",
       "target_type": "A1.BusinessObject",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour accesses a business object"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour accesses a business object",
+      "id": "RA1-20",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — behaviour accesses a business object.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActivity",
       "kind": "realization",
       "target_type": "A1.BusinessRequirement",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement",
+      "id": "RA1-21",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActivity",
       "kind": "triggering",
       "target_type": "A1.BusinessActivity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence",
+      "id": "RA1-22",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActivity",
       "kind": "flow",
       "target_type": "A1.BusinessActivity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence",
+      "id": "RA1-23",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessProcess",
       "kind": "composition",
       "target_type": "A1.BusinessActivity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — process composed of steps (BusinessActivity is the SDMM extension)"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — process composed of steps (BusinessActivity is the SDMM extension)",
+      "id": "RA1-24",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — process composed of steps (BusinessActivity is the SDMM extension).",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessProcess",
       "kind": "composition",
       "target_type": "A1.BusinessProcess",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — process decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — process decomposition",
+      "id": "RA1-25",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — process decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActivity",
       "kind": "composition",
       "target_type": "A1.BusinessActivity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — activity decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — activity decomposition",
+      "id": "RA1-26",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — activity decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessService",
       "kind": "serving",
       "target_type": "A1.BusinessProcess",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure",
+      "id": "RA1-27",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessService",
       "kind": "serving",
       "target_type": "A1.BusinessActivity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure",
+      "id": "RA1-28",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessService",
       "kind": "serving",
       "target_type": "A1.BusinessRole",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure",
+      "id": "RA1-29",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessService",
       "kind": "serving",
       "target_type": "A1.BusinessActor",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure",
+      "id": "RA1-30",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessService",
       "kind": "composition",
       "target_type": "A1.BusinessService",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — service decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — service decomposition",
+      "id": "RA1-31",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — service decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessService",
       "kind": "access",
       "target_type": "A1.BusinessObject",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a service accesses a business object"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a service accesses a business object",
+      "id": "RA1-32",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — a service accesses a business object.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessService",
       "kind": "realization",
       "target_type": "A1.BusinessRequirement",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement",
+      "id": "RA1-33",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessCapability",
       "kind": "realization",
       "target_type": "A1.BusinessRequirement",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement",
+      "id": "RA1-34",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActor",
       "kind": "assignment",
       "target_type": "A1.BusinessRole",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — an actor is assigned to a role"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — an actor is assigned to a role",
+      "id": "RA1-35",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — an actor is assigned to a role.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessRole",
       "kind": "assignment",
       "target_type": "A1.BusinessProcess",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour",
+      "id": "RA1-36",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessRole",
       "kind": "assignment",
       "target_type": "A1.BusinessActivity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour",
+      "id": "RA1-37",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActor",
       "kind": "assignment",
       "target_type": "A1.BusinessProcess",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour",
+      "id": "RA1-38",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActor",
       "kind": "assignment",
       "target_type": "A1.BusinessActivity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour",
+      "id": "RA1-39",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActor",
       "kind": "composition",
       "target_type": "A1.BusinessActor",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition",
+      "id": "RA1-40",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessActor",
       "kind": "aggregation",
       "target_type": "A1.BusinessActor",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition",
+      "id": "RA1-41",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessRole",
       "kind": "composition",
       "target_type": "A1.BusinessRole",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition",
+      "id": "RA1-42",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessRole",
       "kind": "aggregation",
       "target_type": "A1.BusinessRole",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition",
+      "id": "RA1-43",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessObject",
       "kind": "composition",
       "target_type": "A1.BusinessObject",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — business object structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — business object structure",
+      "id": "RA1-44",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — business object structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessObject",
       "kind": "aggregation",
       "target_type": "A1.BusinessObject",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — business object structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — business object structure",
+      "id": "RA1-45",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — business object structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessObject",
       "kind": "specialization",
       "target_type": "A1.BusinessObject",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — business object structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — business object structure",
+      "id": "RA1-46",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 8 Business — business object structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessRequirement",
       "kind": "composition",
       "target_type": "A1.BusinessRequirement",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — requirement decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — requirement decomposition",
+      "id": "RA1-47",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 6 Motivation — requirement decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A1",
       "source_type": "A1.BusinessRequirement",
       "kind": "specialization",
       "target_type": "A1.BusinessRequirement",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — requirement decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — requirement decomposition",
+      "id": "RA1-48",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 6 Motivation — requirement decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationComponent",
       "kind": "composition",
       "target_type": "A3.ApplicationComponent",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component decomposition",
+      "id": "RA3-01",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — component decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationComponent",
       "kind": "aggregation",
       "target_type": "A3.ApplicationComponent",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component decomposition",
+      "id": "RA3-02",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — component decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationComponent",
       "kind": "composition",
       "target_type": "A3.ApplicationInterface",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a component is composed of its interfaces"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a component is composed of its interfaces",
+      "id": "RA3-03",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — a component is composed of its interfaces.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationComponent",
       "kind": "assignment",
       "target_type": "A3.ApplicationFunction",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a component is assigned to the functions it performs"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a component is assigned to the functions it performs",
+      "id": "RA3-04",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — a component is assigned to the functions it performs.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationFunction",
       "kind": "realization",
       "target_type": "A3.ApplicationService",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a function realises a service"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a function realises a service",
+      "id": "RA3-05",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — a function realises a service.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationComponent",
       "kind": "realization",
       "target_type": "A3.ApplicationService",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — derived: component realises a service through its functions"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — derived: component realises a service through its functions",
+      "id": "RA3-06",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — derived: component realises a service through its functions.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationInterface",
       "kind": "assignment",
       "target_type": "A3.ApplicationService",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an interface is assigned to (exposes) a service"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an interface is assigned to (exposes) a service",
+      "id": "RA3-07",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — an interface is assigned to (exposes) a service.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationService",
       "kind": "serving",
       "target_type": "A3.ApplicationComponent",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a service serves a component or function"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a service serves a component or function",
+      "id": "RA3-08",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — a service serves a component or function.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationService",
       "kind": "serving",
       "target_type": "A3.ApplicationFunction",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a service serves a component or function"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a service serves a component or function",
+      "id": "RA3-09",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — a service serves a component or function.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationComponent",
       "kind": "flow",
       "target_type": "A3.ApplicationComponent",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component interaction (serving derived)"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component interaction (serving derived)",
+      "id": "RA3-10",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — component interaction (serving derived).",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationComponent",
       "kind": "serving",
       "target_type": "A3.ApplicationComponent",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component interaction (serving derived)"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component interaction (serving derived)",
+      "id": "RA3-11",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — component interaction (serving derived).",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationComponent",
       "kind": "triggering",
       "target_type": "A3.ApplicationComponent",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component interaction (serving derived)"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component interaction (serving derived)",
+      "id": "RA3-12",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — component interaction (serving derived).",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationFunction",
       "kind": "composition",
       "target_type": "A3.ApplicationFunction",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — function decomposition / sequence"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — function decomposition / sequence",
+      "id": "RA3-13",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — function decomposition / sequence.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationFunction",
       "kind": "triggering",
       "target_type": "A3.ApplicationFunction",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — function decomposition / sequence"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — function decomposition / sequence",
+      "id": "RA3-14",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — function decomposition / sequence.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationFunction",
       "kind": "flow",
       "target_type": "A3.ApplicationFunction",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — function decomposition / sequence"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — function decomposition / sequence",
+      "id": "RA3-15",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — function decomposition / sequence.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationComponent",
       "kind": "access",
       "target_type": "A3.DataEntity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object",
+      "id": "RA3-16",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationFunction",
       "kind": "access",
       "target_type": "A3.DataEntity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object",
+      "id": "RA3-17",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationService",
       "kind": "access",
       "target_type": "A3.DataEntity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object",
+      "id": "RA3-18",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.DataEntity",
       "kind": "composition",
       "target_type": "A3.DataEntity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — data object structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — data object structure",
+      "id": "RA3-19",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — data object structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.DataEntity",
       "kind": "aggregation",
       "target_type": "A3.DataEntity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — data object structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — data object structure",
+      "id": "RA3-20",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — data object structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.DataEntity",
       "kind": "specialization",
       "target_type": "A3.DataEntity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — data object structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — data object structure",
+      "id": "RA3-21",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — data object structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationComponent",
       "kind": "triggering",
       "target_type": "A3.Event",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour triggers an application event"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour triggers an application event",
+      "id": "RA3-22",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — behaviour triggers an application event.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationFunction",
       "kind": "triggering",
       "target_type": "A3.Event",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour triggers an application event"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour triggers an application event",
+      "id": "RA3-23",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — behaviour triggers an application event.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.Event",
       "kind": "triggering",
       "target_type": "A3.ApplicationFunction",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an event triggers behaviour"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an event triggers behaviour",
+      "id": "RA3-24",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — an event triggers behaviour.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.Event",
       "kind": "triggering",
       "target_type": "A3.ApplicationComponent",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an event triggers behaviour"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an event triggers behaviour",
+      "id": "RA3-25",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — an event triggers behaviour.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.Event",
       "kind": "access",
       "target_type": "A3.DataEntity",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an event accesses a data object"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an event accesses a data object",
+      "id": "RA3-26",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 9 Application — an event accesses a data object.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationInterface",
       "kind": "composition",
       "target_type": "A3.APIOperation",
-      "basis": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI) — an interface is composed of its API operations"
+      "basis": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI) — an interface is composed of its API operations",
+      "id": "RA3-27",
+      "reference_source": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI)",
+      "description": "An interface is composed of its API operations.",
+      "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
     },
     {
       "level": "A3",
       "source_type": "A3.ApplicationComponent",
       "kind": "composition",
       "target_type": "A3.APIOperation",
-      "basis": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI) — a component with no modelled interface composes its API operations"
+      "basis": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI) — a component with no modelled interface composes its API operations",
+      "id": "RA3-28",
+      "reference_source": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI)",
+      "description": "A component with no modelled interface composes its API operations.",
+      "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
     },
     {
       "level": "A3",
       "source_type": "A3.APIOperation",
       "kind": "access",
       "target_type": "A3.DataEntity",
-      "basis": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI) — an operation accesses a data object"
+      "basis": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI) — an operation accesses a data object",
+      "id": "RA3-29",
+      "reference_source": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI)",
+      "description": "An operation accesses a data object.",
+      "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
     },
     {
       "level": "A3",
       "source_type": "A3.SolutionBuildingBlock",
       "kind": "aggregation",
       "target_type": "A3.ApplicationComponent",
-      "basis": "[TOGAF] 10th ed. Architecture Content — login-gated, unverified — a solution building block aggregates components"
+      "basis": "[TOGAF] 10th ed. Architecture Content — login-gated, unverified — a solution building block aggregates components",
+      "id": "RA3-30",
+      "reference_source": "[TOGAF] 10th ed. Architecture Content",
+      "description": "Login-gated, unverified — a solution building block aggregates components.",
+      "reasoning": "TOGAF's solution building block is an aggregate of components; the row carries that into A3.",
+      "confidence": "medium",
+      "verification": "unverified_togaf"
     },
     {
       "level": "A3",
       "source_type": "A3.SolutionBuildingBlock",
       "kind": "composition",
       "target_type": "A3.SolutionBuildingBlock",
-      "basis": "[TOGAF] 10th ed. Architecture Content — login-gated, unverified — building-block decomposition"
+      "basis": "[TOGAF] 10th ed. Architecture Content — login-gated, unverified — building-block decomposition",
+      "id": "RA3-31",
+      "reference_source": "[TOGAF] 10th ed. Architecture Content",
+      "description": "Login-gated, unverified — building-block decomposition.",
+      "reasoning": "TOGAF's solution building block is an aggregate of components; the row carries that into A3.",
+      "confidence": "medium",
+      "verification": "unverified_togaf"
     },
     {
       "level": "A4",
       "source_type": "A4.Node",
       "kind": "composition",
       "target_type": "A4.Node",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node decomposition",
+      "id": "RA4-01",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — node decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Node",
       "kind": "aggregation",
       "target_type": "A4.Node",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node decomposition",
+      "id": "RA4-02",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — node decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Node",
       "kind": "aggregation",
       "target_type": "A4.Device",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node aggregates devices"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node aggregates devices",
+      "id": "RA4-03",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — a node aggregates devices.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Node",
       "kind": "assignment",
       "target_type": "A4.SystemSoftware",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — system software is assigned to a node or device"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — system software is assigned to a node or device",
+      "id": "RA4-04",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — system software is assigned to a node or device.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Device",
       "kind": "assignment",
       "target_type": "A4.SystemSoftware",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — system software is assigned to a node or device"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — system software is assigned to a node or device",
+      "id": "RA4-05",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — system software is assigned to a node or device.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.SystemSoftware",
       "kind": "assignment",
       "target_type": "A4.SystemSoftware",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — system software assigned to system software"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — system software assigned to system software",
+      "id": "RA4-06",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — system software assigned to system software.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Node",
       "kind": "assignment",
       "target_type": "A4.Artifact",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software",
+      "id": "RA4-07",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Node",
       "kind": "realization",
       "target_type": "A4.TechnologyService",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions)"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions)",
+      "id": "RA4-08",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions).",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Node",
       "kind": "composition",
       "target_type": "A4.TechnologyInterface",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node is composed of its interfaces"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node is composed of its interfaces",
+      "id": "RA4-09",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — a node is composed of its interfaces.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.TechnologyService",
       "kind": "serving",
       "target_type": "A4.Node",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software",
+      "id": "RA4-10",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Node",
       "kind": "assignment",
       "target_type": "A4.Deployment",
-      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment is deployed on the platform"
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment is deployed on the platform",
+      "id": "RA4-11",
+      "reference_source": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping)",
+      "description": "A deployment is deployed on the platform.",
+      "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
     },
     {
       "level": "A4",
       "source_type": "A4.Device",
       "kind": "assignment",
       "target_type": "A4.Artifact",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software",
+      "id": "RA4-12",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Device",
       "kind": "realization",
       "target_type": "A4.TechnologyService",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions)"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions)",
+      "id": "RA4-13",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions).",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Device",
       "kind": "composition",
       "target_type": "A4.TechnologyInterface",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node is composed of its interfaces"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node is composed of its interfaces",
+      "id": "RA4-14",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — a node is composed of its interfaces.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.TechnologyService",
       "kind": "serving",
       "target_type": "A4.Device",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software",
+      "id": "RA4-15",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Device",
       "kind": "assignment",
       "target_type": "A4.Deployment",
-      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment is deployed on the platform"
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment is deployed on the platform",
+      "id": "RA4-16",
+      "reference_source": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping)",
+      "description": "A deployment is deployed on the platform.",
+      "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
     },
     {
       "level": "A4",
       "source_type": "A4.SystemSoftware",
       "kind": "assignment",
       "target_type": "A4.Artifact",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software",
+      "id": "RA4-17",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.SystemSoftware",
       "kind": "realization",
       "target_type": "A4.TechnologyService",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions)"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions)",
+      "id": "RA4-18",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions).",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.SystemSoftware",
       "kind": "composition",
       "target_type": "A4.TechnologyInterface",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node is composed of its interfaces"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node is composed of its interfaces",
+      "id": "RA4-19",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — a node is composed of its interfaces.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.TechnologyService",
       "kind": "serving",
       "target_type": "A4.SystemSoftware",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software",
+      "id": "RA4-20",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.SystemSoftware",
       "kind": "assignment",
       "target_type": "A4.Deployment",
-      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment is deployed on the platform"
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment is deployed on the platform",
+      "id": "RA4-21",
+      "reference_source": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping)",
+      "description": "A deployment is deployed on the platform.",
+      "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
     },
     {
       "level": "A4",
       "source_type": "A4.TechnologyInterface",
       "kind": "assignment",
       "target_type": "A4.TechnologyService",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an interface is assigned to (exposes) a technology service"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an interface is assigned to (exposes) a technology service",
+      "id": "RA4-22",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — an interface is assigned to (exposes) a technology service.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.TechnologyService",
       "kind": "composition",
       "target_type": "A4.TechnologyService",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — service decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — service decomposition",
+      "id": "RA4-23",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — service decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Node",
       "kind": "flow",
       "target_type": "A4.Node",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node interaction"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node interaction",
+      "id": "RA4-24",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — node interaction.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Node",
       "kind": "triggering",
       "target_type": "A4.Node",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node interaction"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node interaction",
+      "id": "RA4-25",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — node interaction.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.CommunicationNetwork",
       "kind": "realization",
       "target_type": "A4.Path",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a path is realised by a communication network"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a path is realised by a communication network",
+      "id": "RA4-26",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — a path is realised by a communication network.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.CommunicationNetwork",
       "kind": "composition",
       "target_type": "A4.CommunicationNetwork",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — network decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — network decomposition",
+      "id": "RA4-27",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — network decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Artifact",
       "kind": "composition",
       "target_type": "A4.Artifact",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — artifact structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — artifact structure",
+      "id": "RA4-28",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — artifact structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Artifact",
       "kind": "aggregation",
       "target_type": "A4.Artifact",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — artifact structure"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — artifact structure",
+      "id": "RA4-29",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — artifact structure.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.Device",
       "kind": "aggregation",
       "target_type": "A4.Device",
-      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — device decomposition"
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — device decomposition",
+      "id": "RA4-30",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "Login-gated, unverified ch. 10 Technology — device decomposition.",
+      "reasoning": "ArchiMate's standard relationship between these concepts, which the SDMM entities derive from one-to-one.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     },
     {
       "level": "A4",
       "source_type": "A4.DeploymentEnvironment",
       "kind": "aggregation",
       "target_type": "A4.Deployment",
-      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on"
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on",
+      "id": "RA4-31",
+      "reference_source": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping)",
+      "description": "An environment groups deployments and the platform they run on.",
+      "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
     },
     {
       "level": "A4",
       "source_type": "A4.DeploymentEnvironment",
       "kind": "aggregation",
       "target_type": "A4.Node",
-      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on"
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on",
+      "id": "RA4-32",
+      "reference_source": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping)",
+      "description": "An environment groups deployments and the platform they run on.",
+      "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
     },
     {
       "level": "A4",
       "source_type": "A4.DeploymentEnvironment",
       "kind": "aggregation",
       "target_type": "A4.Device",
-      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on"
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on",
+      "id": "RA4-33",
+      "reference_source": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping)",
+      "description": "An environment groups deployments and the platform they run on.",
+      "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
     },
     {
       "level": "A4",
       "source_type": "A4.DeploymentEnvironment",
       "kind": "aggregation",
       "target_type": "A4.SystemSoftware",
-      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on"
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on",
+      "id": "RA4-34",
+      "reference_source": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping)",
+      "description": "An environment groups deployments and the platform they run on.",
+      "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
     },
     {
       "level": "A4",
       "source_type": "A4.Deployment",
       "kind": "aggregation",
       "target_type": "A4.Artifact",
-      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment carries the artifacts deployed"
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment carries the artifacts deployed",
+      "id": "RA4-35",
+      "reference_source": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping)",
+      "description": "A deployment carries the artifacts deployed.",
+      "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
     }
   ],
-  "policy": "Every within-level relationship must match a constraint row for its level, or be an association (ArchiMate's generic relationship, permitted between any two entities of one level). A2 rows come from BIAN's Service Landscape metamodel; A1, A3 and A4 rows are derived from ArchiMate 3.2 (ch. 6–10) and TOGAF 10 for the concepts each SDMM entity derives from (see README › Reference architecture provenance). ArchiMate and TOGAF are login-gated: those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations."
+  "policy": "Every within-level relationship must match a constraint row for its level, or be an association (ArchiMate's generic relationship, permitted between any two entities of one level). A2 rows come from BIAN's Service Landscape metamodel; A1, A3 and A4 rows are derived from ArchiMate 3.2 (ch. 6–10) and TOGAF 10 for the concepts each SDMM entity derives from (see README › Reference architecture provenance). ArchiMate and TOGAF are login-gated: those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations.",
+  "inheritance": [
+    {
+      "id": "XA1-01",
+      "level": "A1",
+      "entity": "A1.ValueStreamStage",
+      "extends": "A1.ValueStream",
+      "description": "A1.ValueStreamStage is-a A1.ValueStream.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    },
+    {
+      "id": "XA1-02",
+      "level": "A1",
+      "entity": "A1.BusinessActivity",
+      "extends": "A1.BusinessProcess",
+      "description": "A1.BusinessActivity is-a A1.BusinessProcess.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    },
+    {
+      "id": "XA4-01",
+      "level": "A4",
+      "entity": "A4.Deployment",
+      "extends": "A4.InfrastructureComponent",
+      "description": "A4.Deployment is-a A4.InfrastructureComponent.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    },
+    {
+      "id": "XA4-02",
+      "level": "A4",
+      "entity": "A4.DeploymentEnvironment",
+      "extends": "A4.InfrastructureComponent",
+      "description": "A4.DeploymentEnvironment is-a A4.InfrastructureComponent.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    },
+    {
+      "id": "XA4-03",
+      "level": "A4",
+      "entity": "A4.Node",
+      "extends": "A4.InfrastructureComponent",
+      "description": "A4.Node is-a A4.InfrastructureComponent.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    },
+    {
+      "id": "XA4-04",
+      "level": "A4",
+      "entity": "A4.Device",
+      "extends": "A4.InfrastructureComponent",
+      "description": "A4.Device is-a A4.InfrastructureComponent.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    },
+    {
+      "id": "XA4-05",
+      "level": "A4",
+      "entity": "A4.SystemSoftware",
+      "extends": "A4.InfrastructureComponent",
+      "description": "A4.SystemSoftware is-a A4.InfrastructureComponent.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    },
+    {
+      "id": "XA4-06",
+      "level": "A4",
+      "entity": "A4.TechnologyService",
+      "extends": "A4.InfrastructureComponent",
+      "description": "A4.TechnologyService is-a A4.InfrastructureComponent.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    },
+    {
+      "id": "XA4-07",
+      "level": "A4",
+      "entity": "A4.TechnologyInterface",
+      "extends": "A4.InfrastructureComponent",
+      "description": "A4.TechnologyInterface is-a A4.InfrastructureComponent.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    },
+    {
+      "id": "XA4-08",
+      "level": "A4",
+      "entity": "A4.CommunicationNetwork",
+      "extends": "A4.InfrastructureComponent",
+      "description": "A4.CommunicationNetwork is-a A4.InfrastructureComponent.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    },
+    {
+      "id": "XA4-09",
+      "level": "A4",
+      "entity": "A4.Path",
+      "extends": "A4.InfrastructureComponent",
+      "description": "A4.Path is-a A4.InfrastructureComponent.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    },
+    {
+      "id": "XA4-10",
+      "level": "A4",
+      "entity": "A4.Artifact",
+      "extends": "A4.InfrastructureComponent",
+      "description": "A4.Artifact is-a A4.InfrastructureComponent.",
+      "reference_source": "SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdmm_definition"
+    }
+  ]
 }

@@ -60,6 +60,8 @@ jobs:
           python -m sdmm.trace CAP-310 examples/card-fraud-alerts/mappings.json
           python -m sdmm.trace INF-CLOUD-K8S-PROD --direction up --json examples/card-fraud-alerts/mappings.json > /dev/null
       - run: python -m sdmm.validate --json examples/*/mappings.json
-      - name: Official-mapping diagram is generated from the JSON
-        run: python -m sdmm.diagram --check
+      - name: Diagrams and the relationships document are generated from the JSON
+        run: |
+          python -m sdmm.diagram --check
+          python -m sdmm.relationships --check
       - run: python -m unittest discover -s tests -v
