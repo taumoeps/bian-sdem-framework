@@ -163,3 +163,23 @@ class PaymentInitiationExampleTests(unittest.TestCase):
         api = next(i for i in a3['instances'] if i['id'] == 'API-PI-04'); self.assertEqual(api['attributes']['method'], 'POST')
         a2 = json.loads((self.P / 'a2-service-domain.json').read_text())
         op = next(i for i in a2['instances'] if i['id'] == 'SO-PI-04'); self.assertEqual(op['attributes']['action_term'], 'Retrieve')
+
+
+class LegacyLedgerExampleTests(unittest.TestCase):
+    P = ROOT / 'examples/legacy-core-ledger'
+
+    def test_exports_and_mappings_check_clean(self):
+        fg = FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
+        self.assertEqual({k: v for k, v in fg.check().items() if v}, {})
+
+    def test_given_is_empty_and_gold_is_the_union(self):
+        u = {m['mapping_id'] for m in json.loads((self.P / 'mappings.json').read_text())['mappings']}
+        g = json.loads((self.P / 'h1-mappings-given.json').read_text())['mappings']
+        d = {m['mapping_id'] for m in json.loads((self.P / 'h1-gold-mappings.json').read_text())['mappings']}
+        self.assertEqual(g, []); self.assertEqual(d, u); self.assertEqual(len(d), 28)
+
+    def test_all_soap_operations_are_post_and_batch_jobs_are_not_http(self):
+        a3 = json.loads((self.P / 'a3-application.json').read_text())
+        ops = [i for i in a3['instances'] if i['type'] == 'A3.APIOperation']
+        self.assertEqual({i['attributes']['method'] for i in ops if i['id'].startswith('OP-')}, {'POST'})
+        self.assertEqual({i['attributes']['method'] for i in ops if i['id'].startswith('JOB-')}, {'BATCH'})

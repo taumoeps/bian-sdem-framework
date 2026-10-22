@@ -1,0 +1,58 @@
+{
+  "level": "A1",
+  "model_id": "synthetic-bank-ledger-a1-draft",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-DRAFT-BCM",
+  "instances": [
+    {
+      "id": "CAP-ACCT-SVC",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Account Servicing",
+      "lifecycle_status": "active",
+      "description": "Open, maintain, block and close customer current accounts and manage their terms."
+    },
+    {
+      "id": "CAP-POSITION",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Position and Balance Management",
+      "lifecycle_status": "active",
+      "description": "Record every financial movement on an account and maintain the resulting balances and positions."
+    },
+    {
+      "id": "CAP-PAY-EXEC",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Payment Execution",
+      "lifecycle_status": "active",
+      "description": "Execute authorised payments through clearing schemes and track their outcome."
+    },
+    {
+      "id": "CAP-PARTY-DATA",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Customer Reference Data",
+      "lifecycle_status": "active",
+      "description": "Hold the master record of each customer and counterparty: identity, addresses, contact details, KYC status."
+    },
+    {
+      "id": "CAP-LENDING",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Consumer Lending",
+      "lifecycle_status": "active",
+      "description": "Originate, service and collect consumer loans."
+    },
+    {
+      "id": "CAP-TREASURY",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Treasury Management",
+      "lifecycle_status": "active",
+      "description": "Manage the bank's liquidity, funding and market risk positions."
+    }
+  ],
+  "relationships": []
+}

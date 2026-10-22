@@ -74,6 +74,10 @@ Rewritten after M1: a tally of "3 of 4 rules" is not a fill rule — on a six-op
 3. **Otherwise no proposal.** Two passes with a failed check 3, or check 4 failed, is not a mapping.
 4. **Disambiguation:** an operation maps to at most one API and an API to at most one operation in step 2. A decision-1 pair excludes any decision-2 pair that shares its operation or its API. If two APIs tie as an operation's best payload match, the one whose path contains the operation's qualifier wins; a remaining tie is **no proposal** with both candidates named in the log.
 
+**Non-HTTP interfaces.** If `attributes.method` is not an HTTP method (e.g. `BATCH`, `MQ`, `FILE`), the BIAN REST mapping does not apply: step 2 is **not applicable** for that operation — record it in the no-proposal register and, if the payload overlaps a control record ≥ 50 %, report the pair under *New connection candidates* as a non-REST realisation. Never force it through check 2.
+
+**Systematic deviations.** When every operation of an interface fails check 2 the same way (e.g. a SOAP interface where all operations are POST), report **one** finding naming the interface and the convention, and reference it from each affected proposal — not fourteen separate findings.
+
 **Notify operations.** A *Notify* operation has no REST form; if the A3 export carries an `A3.Event` whose name matches the operation's asset and state change, report it under *New connection candidates* as `A2.ServiceOperation → A3.Event` (no plan ID yet; M1 finding 5). Never as a proposal.
 
 Working: for every operation × API pair that passed the precondition, log the three check results and the decision reached, including suppressed pairs and the clause that suppressed them (M1 logged 36 pairs this way; that is the standard).

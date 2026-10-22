@@ -1,0 +1,97 @@
+{
+  "level": "A4",
+  "model_id": "synthetic-bank-ledger-a4",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-CMDB",
+  "instances": [
+    {
+      "id": "INF-MF-LPAR-PROD",
+      "type": "A4.Node",
+      "version": "2.0",
+      "name": "Mainframe LPAR PROD1",
+      "lifecycle_status": "active",
+      "description": "Production mainframe partition.",
+      "attributes": {
+        "hosts": [
+          "APP-LEDGER"
+        ]
+      }
+    },
+    {
+      "id": "INF-DB2-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "13",
+      "name": "DB2 for z/OS — ledger",
+      "lifecycle_status": "active",
+      "description": "Production database."
+    },
+    {
+      "id": "INF-MQ-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "9.3",
+      "name": "MQ — ledger",
+      "lifecycle_status": "active",
+      "description": "Production message queue manager."
+    },
+    {
+      "id": "TS-SCHED",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "Batch scheduler",
+      "lifecycle_status": "active",
+      "description": "Enterprise job scheduling service."
+    },
+    {
+      "id": "ENV-PROD",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "Production",
+      "lifecycle_status": "active",
+      "description": "Production environment."
+    },
+    {
+      "id": "DEP-LM-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "LedgerMaster — production",
+      "lifecycle_status": "active",
+      "description": "LedgerMaster 12.4 on PROD1.",
+      "attributes": {
+        "component_id": "APP-LEDGER",
+        "environment_id": "ENV-PROD",
+        "platform_id": "INF-MF-LPAR-PROD"
+      }
+    },
+    {
+      "id": "NET-CORE",
+      "type": "A4.CommunicationNetwork",
+      "version": "1.0",
+      "name": "Core banking network",
+      "lifecycle_status": "active",
+      "description": "Private network for core systems."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "ENV-PROD",
+      "kind": "aggregation",
+      "target": "DEP-LM-PROD"
+    },
+    {
+      "source": "INF-MF-LPAR-PROD",
+      "kind": "assignment",
+      "target": "NET-CORE"
+    },
+    {
+      "source": "INF-MF-LPAR-PROD",
+      "kind": "composition",
+      "target": "INF-DB2-PROD"
+    },
+    {
+      "source": "INF-MF-LPAR-PROD",
+      "kind": "composition",
+      "target": "INF-MQ-PROD"
+    }
+  ]
+}

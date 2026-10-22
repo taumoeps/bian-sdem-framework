@@ -1,0 +1,920 @@
+{
+  "level": "A2",
+  "model_id": "synthetic-bank-ledger-a2",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-BIAN-WORKBENCH",
+  "instances": [
+    {
+      "id": "BD-OPS",
+      "type": "A2.BusinessDomain",
+      "version": "1.0",
+      "name": "Operations (synthetic grouping)",
+      "lifecycle_status": "active",
+      "description": "Synthetic grouping of account, position and payment domains."
+    },
+    {
+      "id": "BD-REF",
+      "type": "A2.BusinessDomain",
+      "version": "1.0",
+      "name": "Reference Data (synthetic grouping)",
+      "lifecycle_status": "active",
+      "description": "Synthetic grouping of reference-data domains."
+    },
+    {
+      "id": "SD-CA",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Current Account (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in for a BIAN current-account domain: opens, maintains, blocks and closes current accounts and their terms.",
+      "attributes": {
+        "asset_type": "AT-CA",
+        "functional_pattern": "FP-FULFIL"
+      },
+      "canonical_id": "BIAN-CURRENT-ACCOUNT"
+    },
+    {
+      "id": "SD-PK",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Position Keeping (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in for a BIAN position-keeping domain: records financial movements and maintains balances and positions.",
+      "attributes": {
+        "asset_type": "AT-PK",
+        "functional_pattern": "FP-TRACK"
+      },
+      "canonical_id": "BIAN-POSITION-KEEPING"
+    },
+    {
+      "id": "SD-PE",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Payment Execution (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in for a BIAN payment-execution domain: executes authorised payment instructions through schemes.",
+      "attributes": {
+        "asset_type": "AT-PE",
+        "functional_pattern": "FP-FULFIL"
+      },
+      "canonical_id": "BIAN-PAYMENT-EXECUTION"
+    },
+    {
+      "id": "SD-PRD",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Party Reference Data Directory (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in for a BIAN party-reference-data domain: maintains the master reference record of parties.",
+      "attributes": {
+        "asset_type": "AT-PRD",
+        "functional_pattern": "FP-MAINTAIN"
+      },
+      "canonical_id": "BIAN-PARTY-REFERENCE"
+    },
+    {
+      "id": "AT-CA",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Current Account",
+      "lifecycle_status": "active",
+      "description": "A customer's current account."
+    },
+    {
+      "id": "AT-PK",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Financial Position",
+      "lifecycle_status": "active",
+      "description": "The position and balance of an account."
+    },
+    {
+      "id": "AT-PE",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Payment Transaction",
+      "lifecycle_status": "active",
+      "description": "An executed payment."
+    },
+    {
+      "id": "AT-PRD",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Party Reference",
+      "lifecycle_status": "active",
+      "description": "A party's master reference record."
+    },
+    {
+      "id": "FP-FULFIL",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Fulfil",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: complete a request through a procedure."
+    },
+    {
+      "id": "FP-TRACK",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Track",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: record and maintain a log of events."
+    },
+    {
+      "id": "FP-MAINTAIN",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Maintain",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: keep a reference record current."
+    },
+    {
+      "id": "CR-CA",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Current Account Facility",
+      "lifecycle_status": "active",
+      "description": "Lifecycle record of one current account.",
+      "attributes": {
+        "attributes": [
+          "account_reference",
+          "customer_reference",
+          "account_status",
+          "currency",
+          "balance",
+          "overdraft_limit",
+          "open_date",
+          "close_date"
+        ]
+      }
+    },
+    {
+      "id": "CR-PK",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Position Keeping Log",
+      "lifecycle_status": "active",
+      "description": "Log of financial movements and resulting positions.",
+      "attributes": {
+        "attributes": [
+          "position_reference",
+          "account_reference",
+          "posting_reference",
+          "amount",
+          "currency",
+          "posting_date",
+          "balance_after",
+          "posting_type"
+        ]
+      }
+    },
+    {
+      "id": "CR-PE",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Payment Execution Procedure",
+      "lifecycle_status": "active",
+      "description": "Lifecycle record of one payment execution.",
+      "attributes": {
+        "attributes": [
+          "payment_reference",
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "execution_date",
+          "execution_status",
+          "scheme_reference"
+        ]
+      }
+    },
+    {
+      "id": "CR-PRD",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Party Reference Record",
+      "lifecycle_status": "active",
+      "description": "Master record of one party.",
+      "attributes": {
+        "attributes": [
+          "party_reference",
+          "party_name",
+          "party_type",
+          "address",
+          "contact_details",
+          "kyc_status"
+        ]
+      }
+    },
+    {
+      "id": "BQ-CLOSURE",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Closure",
+      "lifecycle_status": "active",
+      "description": "Closing a current account."
+    },
+    {
+      "id": "BQ-POSTING",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Posting",
+      "lifecycle_status": "active",
+      "description": "A single financial movement."
+    },
+    {
+      "id": "BQ-REVERSAL",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Reversal",
+      "lifecycle_status": "active",
+      "description": "Reversal of a posting."
+    },
+    {
+      "id": "SG-CA",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Account",
+      "lifecycle_status": "active",
+      "description": "Current account operations."
+    },
+    {
+      "id": "SG-PK",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Position",
+      "lifecycle_status": "active",
+      "description": "Position keeping operations."
+    },
+    {
+      "id": "SG-PE",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Execution",
+      "lifecycle_status": "active",
+      "description": "Payment execution operations."
+    },
+    {
+      "id": "SG-PRD",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Party",
+      "lifecycle_status": "active",
+      "description": "Party reference operations."
+    },
+    {
+      "id": "SO-CA-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Initiate Current Account",
+      "lifecycle_status": "active",
+      "description": "Open a current account for a customer.",
+      "attributes": {
+        "action_term": "Initiate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "customer_reference",
+          "currency",
+          "overdraft_limit"
+        ],
+        "output_attributes": [
+          "account_reference",
+          "account_status",
+          "open_date"
+        ]
+      }
+    },
+    {
+      "id": "SO-CA-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Current Account",
+      "lifecycle_status": "active",
+      "description": "Return the account's status and terms.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "account_reference"
+        ],
+        "output_attributes": [
+          "account_status",
+          "currency",
+          "balance",
+          "overdraft_limit",
+          "customer_reference"
+        ]
+      }
+    },
+    {
+      "id": "SO-CA-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Control Current Account",
+      "lifecycle_status": "active",
+      "description": "Block or unblock an account.",
+      "attributes": {
+        "action_term": "Control",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "account_reference",
+          "account_status"
+        ],
+        "output_attributes": [
+          "account_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-CA-04",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Update Current Account",
+      "lifecycle_status": "active",
+      "description": "Amend the account's terms.",
+      "attributes": {
+        "action_term": "Update",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "account_reference",
+          "overdraft_limit"
+        ],
+        "output_attributes": [
+          "account_reference",
+          "account_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-CA-05",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Execute Current Account Closure",
+      "lifecycle_status": "active",
+      "description": "Close the account.",
+      "attributes": {
+        "action_term": "Execute",
+        "behavior_qualifier": "Closure",
+        "input_attributes": [
+          "account_reference"
+        ],
+        "output_attributes": [
+          "account_status",
+          "close_date"
+        ]
+      }
+    },
+    {
+      "id": "SO-PK-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Update Position Keeping Posting",
+      "lifecycle_status": "active",
+      "description": "Record a financial movement against an account.",
+      "attributes": {
+        "action_term": "Update",
+        "behavior_qualifier": "Posting",
+        "input_attributes": [
+          "account_reference",
+          "amount",
+          "currency",
+          "posting_date",
+          "posting_type"
+        ],
+        "output_attributes": [
+          "posting_reference",
+          "balance_after"
+        ]
+      }
+    },
+    {
+      "id": "SO-PK-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Position Keeping",
+      "lifecycle_status": "active",
+      "description": "Return the account's position and balance.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "account_reference"
+        ],
+        "output_attributes": [
+          "balance_after",
+          "position_reference",
+          "currency"
+        ]
+      }
+    },
+    {
+      "id": "SO-PK-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Execute Position Keeping Reversal",
+      "lifecycle_status": "active",
+      "description": "Reverse a posting.",
+      "attributes": {
+        "action_term": "Execute",
+        "behavior_qualifier": "Reversal",
+        "input_attributes": [
+          "posting_reference"
+        ],
+        "output_attributes": [
+          "posting_reference",
+          "balance_after"
+        ]
+      }
+    },
+    {
+      "id": "SO-PE-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Initiate Payment Execution",
+      "lifecycle_status": "active",
+      "description": "Start execution of an authorised payment.",
+      "attributes": {
+        "action_term": "Initiate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency"
+        ],
+        "output_attributes": [
+          "payment_reference",
+          "execution_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PE-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Payment Execution",
+      "lifecycle_status": "active",
+      "description": "Return the execution status.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "payment_reference"
+        ],
+        "output_attributes": [
+          "execution_status",
+          "scheme_reference",
+          "execution_date"
+        ]
+      }
+    },
+    {
+      "id": "SO-PE-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Control Payment Execution",
+      "lifecycle_status": "active",
+      "description": "Cancel or hold an execution.",
+      "attributes": {
+        "action_term": "Control",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "payment_reference"
+        ],
+        "output_attributes": [
+          "execution_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PRD-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Register Party Reference",
+      "lifecycle_status": "active",
+      "description": "Create a party's master record.",
+      "attributes": {
+        "action_term": "Register",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "party_name",
+          "party_type",
+          "address"
+        ],
+        "output_attributes": [
+          "party_reference"
+        ]
+      }
+    },
+    {
+      "id": "SO-PRD-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Party Reference",
+      "lifecycle_status": "active",
+      "description": "Return a party's master record.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "party_reference"
+        ],
+        "output_attributes": [
+          "party_name",
+          "party_type",
+          "address",
+          "kyc_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PRD-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Update Party Reference",
+      "lifecycle_status": "active",
+      "description": "Amend a party's details.",
+      "attributes": {
+        "action_term": "Update",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "party_reference",
+          "address",
+          "contact_details"
+        ],
+        "output_attributes": [
+          "party_reference"
+        ]
+      }
+    },
+    {
+      "id": "BBO-ACCOUNT",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Current Account",
+      "lifecycle_status": "active",
+      "description": "Canonical current account object.",
+      "attributes": {
+        "attributes": [
+          "account_reference",
+          "customer_reference",
+          "account_status",
+          "currency",
+          "balance",
+          "overdraft_limit",
+          "open_date",
+          "close_date"
+        ]
+      },
+      "canonical_id": "BIAN-BO-CURRENT-ACCOUNT"
+    },
+    {
+      "id": "BBO-POSTING",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Posting",
+      "lifecycle_status": "active",
+      "description": "Canonical financial posting object.",
+      "attributes": {
+        "attributes": [
+          "posting_reference",
+          "account_reference",
+          "amount",
+          "currency",
+          "posting_date",
+          "posting_type",
+          "balance_after"
+        ]
+      },
+      "canonical_id": "BIAN-BO-POSTING"
+    },
+    {
+      "id": "BBO-PAYMENT-TXN",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Payment Transaction",
+      "lifecycle_status": "active",
+      "description": "Canonical payment transaction object.",
+      "attributes": {
+        "attributes": [
+          "payment_reference",
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "execution_date",
+          "execution_status",
+          "scheme_reference"
+        ]
+      },
+      "canonical_id": "BIAN-BO-PAYMENT-TXN"
+    },
+    {
+      "id": "BBO-PARTY",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Party",
+      "lifecycle_status": "active",
+      "description": "Canonical party object.",
+      "attributes": {
+        "attributes": [
+          "party_reference",
+          "party_name",
+          "party_type",
+          "address",
+          "contact_details",
+          "kyc_status"
+        ]
+      },
+      "canonical_id": "BIAN-BO-PARTY"
+    }
+  ],
+  "relationships": [
+    {
+      "source": "BD-OPS",
+      "kind": "composition",
+      "target": "SD-CA"
+    },
+    {
+      "source": "BD-OPS",
+      "kind": "composition",
+      "target": "SD-PK"
+    },
+    {
+      "source": "BD-OPS",
+      "kind": "composition",
+      "target": "SD-PE"
+    },
+    {
+      "source": "BD-REF",
+      "kind": "composition",
+      "target": "SD-PRD"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "association",
+      "target": "AT-CA"
+    },
+    {
+      "source": "SD-PK",
+      "kind": "association",
+      "target": "AT-PK"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "association",
+      "target": "AT-PE"
+    },
+    {
+      "source": "SD-PRD",
+      "kind": "association",
+      "target": "AT-PRD"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "association",
+      "target": "FP-FULFIL"
+    },
+    {
+      "source": "SD-PK",
+      "kind": "association",
+      "target": "FP-TRACK"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "association",
+      "target": "FP-FULFIL"
+    },
+    {
+      "source": "SD-PRD",
+      "kind": "association",
+      "target": "FP-MAINTAIN"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "aggregation",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SD-PK",
+      "kind": "aggregation",
+      "target": "CR-PK"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "aggregation",
+      "target": "CR-PE"
+    },
+    {
+      "source": "SD-PRD",
+      "kind": "aggregation",
+      "target": "CR-PRD"
+    },
+    {
+      "source": "CR-CA",
+      "kind": "composition",
+      "target": "BQ-CLOSURE"
+    },
+    {
+      "source": "CR-PK",
+      "kind": "composition",
+      "target": "BQ-POSTING"
+    },
+    {
+      "source": "CR-PK",
+      "kind": "composition",
+      "target": "BQ-REVERSAL"
+    },
+    {
+      "source": "CR-CA",
+      "kind": "association",
+      "target": "BBO-ACCOUNT"
+    },
+    {
+      "source": "CR-PK",
+      "kind": "association",
+      "target": "BBO-POSTING"
+    },
+    {
+      "source": "CR-PE",
+      "kind": "association",
+      "target": "BBO-PAYMENT-TXN"
+    },
+    {
+      "source": "CR-PRD",
+      "kind": "association",
+      "target": "BBO-PARTY"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "composition",
+      "target": "SG-CA"
+    },
+    {
+      "source": "SD-PK",
+      "kind": "composition",
+      "target": "SG-PK"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "composition",
+      "target": "SG-PE"
+    },
+    {
+      "source": "SD-PRD",
+      "kind": "composition",
+      "target": "SG-PRD"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-01"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-02"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-03"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-04"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-05"
+    },
+    {
+      "source": "SG-PK",
+      "kind": "composition",
+      "target": "SO-PK-01"
+    },
+    {
+      "source": "SG-PK",
+      "kind": "composition",
+      "target": "SO-PK-02"
+    },
+    {
+      "source": "SG-PK",
+      "kind": "composition",
+      "target": "SO-PK-03"
+    },
+    {
+      "source": "SG-PE",
+      "kind": "composition",
+      "target": "SO-PE-01"
+    },
+    {
+      "source": "SG-PE",
+      "kind": "composition",
+      "target": "SO-PE-02"
+    },
+    {
+      "source": "SG-PE",
+      "kind": "composition",
+      "target": "SO-PE-03"
+    },
+    {
+      "source": "SG-PRD",
+      "kind": "composition",
+      "target": "SO-PRD-01"
+    },
+    {
+      "source": "SG-PRD",
+      "kind": "composition",
+      "target": "SO-PRD-02"
+    },
+    {
+      "source": "SG-PRD",
+      "kind": "composition",
+      "target": "SO-PRD-03"
+    },
+    {
+      "source": "SO-CA-01",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SO-CA-02",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SO-CA-03",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SO-CA-04",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SO-CA-05",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SO-PK-01",
+      "kind": "access",
+      "target": "CR-PK"
+    },
+    {
+      "source": "SO-PK-02",
+      "kind": "access",
+      "target": "CR-PK"
+    },
+    {
+      "source": "SO-PK-03",
+      "kind": "access",
+      "target": "CR-PK"
+    },
+    {
+      "source": "SO-PE-01",
+      "kind": "access",
+      "target": "CR-PE"
+    },
+    {
+      "source": "SO-PE-02",
+      "kind": "access",
+      "target": "CR-PE"
+    },
+    {
+      "source": "SO-PE-03",
+      "kind": "access",
+      "target": "CR-PE"
+    },
+    {
+      "source": "SO-PRD-01",
+      "kind": "access",
+      "target": "CR-PRD"
+    },
+    {
+      "source": "SO-PRD-02",
+      "kind": "access",
+      "target": "CR-PRD"
+    },
+    {
+      "source": "SO-PRD-03",
+      "kind": "access",
+      "target": "CR-PRD"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "flow",
+      "target": "SD-PK"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "flow",
+      "target": "SD-PK"
+    }
+  ]
+}

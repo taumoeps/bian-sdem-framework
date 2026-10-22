@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** seven use cases defined; E1, M0 and M1 executed 2026-10-22 (see Results); E2, M2, H1, H2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** seven use cases defined; E1, M0 and M1 executed 2026-10-22 (see Results); H1 authored and ready; E2, M2, H2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -135,23 +135,27 @@
 
 ## H1 — Legacy Core Ledger, reverse mapping (Hard)
 
-**Scenario.** A 20-year-old core banking ledger. Its A3 (modules, interfaces, ~15 API/batch operations with reasonable banking names) and A4 (mainframe partition, DB2, MQ) are fully documented in the CMDB. **No BIAN mapping exists; no capability model exists.**
+**Scenario.** A twenty-year-old core banking ledger. Its A3 (five modules, four SOAP interfaces, fourteen operations, three batch jobs, five tables) and A4 (mainframe LPAR, DB2, MQ) are fully documented in the CMDB. **No mappings exist.** A1 is only a draft capability list — six names with descriptions, no processes, no value streams.
 
-**Given.** A3 and A4 exports; A2 synthetic BIAN export for the relevant domains (e.g. position keeping, payment execution, account management); **no A1 export**; no approved mappings. **Gold (sealed):** the A3→A2 arrows an architect would approve, plus the A1 capabilities they would recognise.
+**Given.** `examples/legacy-core-ledger/a1–a4-*.json` (87 instances; see that folder's README); `h1-mappings-given.json` — **empty**. **Gold (sealed):** `h1-gold-mappings.json` — 28 approved: 14 `IMPLEMENTED_BY`, 4 `REALIZED_BY` (module level), 4 `MAPPED_TO`, `DEPLOYED_ON`, `DEPLOYED_AS`, 4 `SUPPORTED_BY`. Do not open it, or `mappings.json`, until phase 5.
 
-**Execution order.** Step 2 *in reverse* — for each API/batch operation, find the BIAN operation whose action term, qualifier and control-record attributes it matches → `IMPLEMENTED_BY`. Step 3 — the domain whose operations a module implements → `REALIZED_BY`; the control record whose attributes a table holds → S20 / `MAPPED_TO`. Step 1 — A4 from the CMDB. Then the hard part: **A1.** BIAN's capability→domain mapping is unpublished (B01). Options in order: derive capabilities from the public BCM capability map by matching domain names to capability names (step 4); else text inference (step 5) at low confidence; else report "no proposal — requires authoring".
+**Planted / to refuse.** Every SOAP operation is **POST**: check 2 passes only for Initiate and Register and fails for every Retrieve, Update, Control and Execute — those are proposed one band lower with a *systematic* finding ("all operations POST"), not dropped. Three batch jobs carry `method: BATCH` — not an HTTP interface; step 2 does not apply; they map to nothing. `APP-LEDGER` composes the modules that compose the interfaces — realisation is at **module** level; the ledger as a whole is a derived path, not a proposal. `ENT-AUDIT` matches no BOM object. `CAP-LENDING` and `CAP-TREASURY` match no domain: no proposal, not a low-confidence guess.
+
+**Execution order.** Step 1 (A3/A4 keys) → `DEPLOYED_ON`, `DEPLOYED_AS`. Step 2 **in reverse** — for each SOAP operation, the decision procedure over the 14 BIAN operations of the four domains; precondition via the asset-type name in the interface's operation names and descriptions. Step 3 → `REALIZED_BY` per module from its interface's step-2 proposals (capped at the strongest input). Step 4 → `MAPPED_TO` by attribute match. Then A1: step 3 impossible (no processes); step 5 over the four domains against six capabilities — propose at most one domain per capability, low; two capabilities must get no proposal.
 
 **Connections exercised and predicted.**
 
 | ID | Connection | Step | Predicted |
 |---|---|---|---|
-| S24 | operation ← API | 2 (reverse) | high for well-named operations; medium where naming diverges |
-| S17 | domain ← module | 3 | high |
-| S20, S30 | control record / BOM ← tables | 4 | medium — legacy schemas rarely align attribute-for-attribute |
-| S32, S33, S50 | deployment, platform, DBMS | 1 | high |
-| S01 | capability ← domain | 4 then 5 | **low** — the plan's own prediction; the test is whether the executor says so |
+| S33, S32 | ledger → LPAR, production deployment | 1 | high |
+| S24 ×14 | operations ← SOAP operations | 2 reverse | high for 3 (Initiate ×2, Register); **medium** for 11 (method mismatch, unique best payload match); none for the 3 batch jobs |
+| S17 ×4 | domains ← modules | 3 | high — any one implemented operation suffices; **no** proposal for APP-LEDGER (derived path) or LM-BATCH |
+| S30 ×4 | BOM objects → tables | 4 | high (≥ 7/8 attributes); none for ENT-AUDIT |
+| S20 ×4 | control records → tables | 4 | high — candidate-rule report |
+| S01 ×4 | capabilities → domains | 5 | **low** — four-domain candidate set; two capabilities no proposal |
+| S50 | tables → DB2 | 1 | medium — institution-only report via `stored_in` |
 
-**Pass:** F1 ≥ 0.7 on A3→A2; every A1 proposal carries low confidence and a step-5 rationale, or an explicit "no proposal"; no capability is invented that the BCM public map does not contain. **Status:** data to author.
+**Pass.** F1 ≥ 0.8 over the approved gold; the systematic POST finding reported once, not fourteen times; every negative held; A1 proposals all low with step-5 rationale; `h1-inference-log.json` complete. **Status:** data authored and validated (v0.5.4); **ready to execute**.
 
 ## H2 — Acquired Fintech, hostile naming (Hard)
 
@@ -190,7 +194,7 @@
 | Negative tests | ● | ● | ● | ● | ● | ● |
 | Perspectives: architecture / process / information | A | A P I | A P I | A | A I | A I |
 
-**Order of execution:** E1 (done); M0 (done, two runs); **M1 next** — author to the export conventions, then run; E2 after its exports are authored; then H1, H2; M2 last (it tests a boundary, not the plan's core).
+**Order of execution:** E1, M0, M1 (done); **H1 next**; then H2; E2 after its exports are authored; M2 last (it tests a boundary, not the plan's core).
 
 ## Results
 

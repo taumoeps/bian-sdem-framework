@@ -1,0 +1,674 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "H1",
+  "mappings": [
+    {
+      "mapping_id": "LM-101",
+      "source": {
+        "id": "SO-CA-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-OpenAccount",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#OpenAccount"
+      ],
+      "rationale": "Initiate \u2194 POST; 6/6",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-102",
+      "source": {
+        "id": "SO-CA-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-GetAccount",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#GetAccount",
+        "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+      ],
+      "rationale": "Retrieve implemented as POST (SOAP convention) \u2014 deviation recorded",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-103",
+      "source": {
+        "id": "SO-CA-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-BlockAccount",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#BlockAccount",
+        "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+      ],
+      "rationale": "Control implemented as POST \u2014 deviation recorded",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-104",
+      "source": {
+        "id": "SO-CA-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-AmendOverdraft",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#AmendOverdraft",
+        "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+      ],
+      "rationale": "Update implemented as POST \u2014 deviation recorded",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-105",
+      "source": {
+        "id": "SO-CA-05",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-CloseAccount",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#CloseAccount",
+        "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+      ],
+      "rationale": "Execute/Closure implemented as POST \u2014 deviation recorded",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-106",
+      "source": {
+        "id": "SO-PK-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-PostEntry",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#PostEntry",
+        "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+      ],
+      "rationale": "Update/Posting implemented as POST \u2014 deviation recorded",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-107",
+      "source": {
+        "id": "SO-PK-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-GetBalance",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#GetBalance",
+        "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+      ],
+      "rationale": "Retrieve as POST \u2014 deviation recorded",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-108",
+      "source": {
+        "id": "SO-PK-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-ReverseEntry",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#ReverseEntry",
+        "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+      ],
+      "rationale": "Execute/Reversal as POST \u2014 deviation recorded",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-109",
+      "source": {
+        "id": "SO-PE-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-SubmitPayment",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#SubmitPayment"
+      ],
+      "rationale": "Initiate \u2194 POST; 6/6",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-110",
+      "source": {
+        "id": "SO-PE-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-PaymentStatus",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#PaymentStatus",
+        "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+      ],
+      "rationale": "Retrieve as POST \u2014 deviation recorded",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-111",
+      "source": {
+        "id": "SO-PE-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-CancelPayment",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#CancelPayment",
+        "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+      ],
+      "rationale": "Control as POST \u2014 deviation recorded",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-112",
+      "source": {
+        "id": "SO-PRD-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-CreateCustomer",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#CreateCustomer"
+      ],
+      "rationale": "Register \u2194 POST; 4/4",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-113",
+      "source": {
+        "id": "SO-PRD-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-GetCustomer",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#GetCustomer",
+        "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+      ],
+      "rationale": "Retrieve as POST \u2014 deviation recorded",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-114",
+      "source": {
+        "id": "SO-PRD-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-UpdateCustomer",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledger-wsdl-12.4#UpdateCustomer",
+        "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+      ],
+      "rationale": "Update as POST \u2014 deviation recorded",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-121",
+      "source": {
+        "id": "SD-CA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "LM-ACCT",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:LM-ARCH-12.4#modules"
+      ],
+      "rationale": "LM-ACCT exposes the operations of the domain",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-122",
+      "source": {
+        "id": "SD-PK",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "LM-POST",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:LM-ARCH-12.4#modules"
+      ],
+      "rationale": "LM-POST exposes the operations of the domain",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-123",
+      "source": {
+        "id": "SD-PE",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "LM-PAY",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:LM-ARCH-12.4#modules"
+      ],
+      "rationale": "LM-PAY exposes the operations of the domain",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-124",
+      "source": {
+        "id": "SD-PRD",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "LM-PARTY",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:LM-ARCH-12.4#modules"
+      ],
+      "rationale": "LM-PARTY exposes the operations of the domain",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-131",
+      "source": {
+        "id": "BBO-ACCOUNT",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-ACCOUNT",
+        "type": "A3.DataEntity",
+        "version": "12.4"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:LM-DD-12.4#ENT-ACCOUNT"
+      ],
+      "rationale": "canonical attributes present in the table; extensions noted",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-132",
+      "source": {
+        "id": "BBO-POSTING",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-POSTING",
+        "type": "A3.DataEntity",
+        "version": "12.4"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:LM-DD-12.4#ENT-POSTING"
+      ],
+      "rationale": "canonical attributes present in the table; extensions noted",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-133",
+      "source": {
+        "id": "BBO-PAYMENT-TXN",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-PAYMENT",
+        "type": "A3.DataEntity",
+        "version": "12.4"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:LM-DD-12.4#ENT-PAYMENT"
+      ],
+      "rationale": "canonical attributes present in the table; extensions noted",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-134",
+      "source": {
+        "id": "BBO-PARTY",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-PARTY",
+        "type": "A3.DataEntity",
+        "version": "12.4"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:LM-DD-12.4#ENT-PARTY"
+      ],
+      "rationale": "canonical attributes present in the table; extensions noted",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-141",
+      "source": {
+        "id": "APP-LEDGER",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-MF-LPAR-PROD",
+        "type": "A4.Node",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:LM-DD-2026#prod"
+      ],
+      "rationale": "Production LPAR",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-142",
+      "source": {
+        "id": "APP-LEDGER",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-LM-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:LM-DD-2026#prod"
+      ],
+      "rationale": "Production deployment",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LM-151",
+      "source": {
+        "id": "CAP-ACCT-SVC",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-CA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-CURRENT-ACCOUNT"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BCM-DRAFT-2026#CAP-ACCT-SVC",
+        "domain_scope_assessment:DSA-LM-1"
+      ],
+      "rationale": "account servicing is the current-account domain's scope",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "LM-152",
+      "source": {
+        "id": "CAP-POSITION",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-PK",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-POSITION-KEEPING"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BCM-DRAFT-2026#CAP-POSITION",
+        "domain_scope_assessment:DSA-LM-2"
+      ],
+      "rationale": "balance management is position keeping",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "LM-153",
+      "source": {
+        "id": "CAP-PAY-EXEC",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-PE",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PAYMENT-EXECUTION"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BCM-DRAFT-2026#CAP-PAY-EXEC",
+        "domain_scope_assessment:DSA-LM-3"
+      ],
+      "rationale": "same scope",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "LM-154",
+      "source": {
+        "id": "CAP-PARTY-DATA",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-PRD",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PARTY-REFERENCE"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BCM-DRAFT-2026#CAP-PARTY-DATA",
+        "domain_scope_assessment:DSA-LM-4"
+      ],
+      "rationale": "customer reference data is the party reference directory",
+      "baseline_id": "LM-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    }
+  ]
+}

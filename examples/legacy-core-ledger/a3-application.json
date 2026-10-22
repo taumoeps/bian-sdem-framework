@@ -1,0 +1,679 @@
+{
+  "level": "A3",
+  "model_id": "synthetic-bank-ledger-a3",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-CMDB-APM",
+  "instances": [
+    {
+      "id": "APP-LEDGER",
+      "type": "A3.ApplicationComponent",
+      "version": "12.4",
+      "name": "LedgerMaster core ledger",
+      "lifecycle_status": "active",
+      "description": "Twenty-year-old core banking ledger: accounts, postings, payments, customer master and nightly batch. SOAP services over HTTP; all operations are POST.",
+      "attributes": {
+        "vendor": "LedgerMaster Ltd (synthetic)",
+        "deployed_on": [
+          "INF-MF-LPAR-PROD"
+        ],
+        "deployed_as": [
+          "DEP-LM-PROD"
+        ]
+      }
+    },
+    {
+      "id": "LM-ACCT",
+      "type": "A3.ApplicationComponent",
+      "version": "12.4",
+      "name": "Account module",
+      "lifecycle_status": "active",
+      "description": "Opens, maintains, blocks and closes accounts."
+    },
+    {
+      "id": "LM-POST",
+      "type": "A3.ApplicationComponent",
+      "version": "12.4",
+      "name": "Posting engine",
+      "lifecycle_status": "active",
+      "description": "Posts and reverses entries; maintains balances."
+    },
+    {
+      "id": "LM-PAY",
+      "type": "A3.ApplicationComponent",
+      "version": "12.4",
+      "name": "Payment interface module",
+      "lifecycle_status": "active",
+      "description": "Submits payments to the scheme gateway and tracks status."
+    },
+    {
+      "id": "LM-PARTY",
+      "type": "A3.ApplicationComponent",
+      "version": "12.4",
+      "name": "Customer master module",
+      "lifecycle_status": "active",
+      "description": "Holds customer and counterparty master records."
+    },
+    {
+      "id": "LM-BATCH",
+      "type": "A3.ApplicationComponent",
+      "version": "12.4",
+      "name": "Batch module",
+      "lifecycle_status": "active",
+      "description": "End-of-day, interest and extract jobs."
+    },
+    {
+      "id": "IFC-ACCT",
+      "type": "A3.ApplicationInterface",
+      "version": "12.4",
+      "name": "AccountService (SOAP)",
+      "lifecycle_status": "active",
+      "description": "Account operations."
+    },
+    {
+      "id": "IFC-POST",
+      "type": "A3.ApplicationInterface",
+      "version": "12.4",
+      "name": "PostingService (SOAP)",
+      "lifecycle_status": "active",
+      "description": "Posting operations."
+    },
+    {
+      "id": "IFC-PAY",
+      "type": "A3.ApplicationInterface",
+      "version": "12.4",
+      "name": "PaymentService (SOAP)",
+      "lifecycle_status": "active",
+      "description": "Payment operations."
+    },
+    {
+      "id": "IFC-PARTY",
+      "type": "A3.ApplicationInterface",
+      "version": "12.4",
+      "name": "CustomerService (SOAP)",
+      "lifecycle_status": "active",
+      "description": "Customer operations."
+    },
+    {
+      "id": "OP-OpenAccount",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "OpenAccount",
+      "lifecycle_status": "active",
+      "description": "Opens a current account.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/OpenAccount",
+        "payload_fields": [
+          "customer_reference",
+          "currency",
+          "overdraft_limit",
+          "account_reference",
+          "account_status",
+          "open_date"
+        ]
+      }
+    },
+    {
+      "id": "OP-GetAccount",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "GetAccount",
+      "lifecycle_status": "active",
+      "description": "Returns account status and terms.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/GetAccount",
+        "payload_fields": [
+          "account_reference",
+          "account_status",
+          "currency",
+          "balance",
+          "overdraft_limit",
+          "customer_reference"
+        ]
+      }
+    },
+    {
+      "id": "OP-BlockAccount",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "BlockAccount",
+      "lifecycle_status": "active",
+      "description": "Blocks or unblocks an account.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/BlockAccount",
+        "payload_fields": [
+          "account_reference",
+          "account_status",
+          "block_reason"
+        ]
+      }
+    },
+    {
+      "id": "OP-AmendOverdraft",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "AmendOverdraft",
+      "lifecycle_status": "active",
+      "description": "Changes the overdraft limit.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/AmendOverdraft",
+        "payload_fields": [
+          "account_reference",
+          "overdraft_limit",
+          "account_status"
+        ]
+      }
+    },
+    {
+      "id": "OP-CloseAccount",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "CloseAccount",
+      "lifecycle_status": "active",
+      "description": "Closes an account.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/CloseAccount",
+        "payload_fields": [
+          "account_reference",
+          "account_status",
+          "close_date"
+        ]
+      }
+    },
+    {
+      "id": "OP-PostEntry",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "PostEntry",
+      "lifecycle_status": "active",
+      "description": "Posts a financial entry.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/PostEntry",
+        "payload_fields": [
+          "account_reference",
+          "amount",
+          "currency",
+          "posting_date",
+          "posting_type",
+          "posting_reference",
+          "balance_after"
+        ]
+      }
+    },
+    {
+      "id": "OP-GetBalance",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "GetBalance",
+      "lifecycle_status": "active",
+      "description": "Returns the balance and position.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/GetBalance",
+        "payload_fields": [
+          "account_reference",
+          "balance_after",
+          "position_reference",
+          "currency"
+        ]
+      }
+    },
+    {
+      "id": "OP-ReverseEntry",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "ReverseEntry",
+      "lifecycle_status": "active",
+      "description": "Reverses a posting.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/ReverseEntry",
+        "payload_fields": [
+          "posting_reference",
+          "balance_after",
+          "reversal_reason"
+        ]
+      }
+    },
+    {
+      "id": "OP-SubmitPayment",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "SubmitPayment",
+      "lifecycle_status": "active",
+      "description": "Submits a payment for execution.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/SubmitPayment",
+        "payload_fields": [
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "payment_reference",
+          "execution_status"
+        ]
+      }
+    },
+    {
+      "id": "OP-PaymentStatus",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "PaymentStatus",
+      "lifecycle_status": "active",
+      "description": "Returns execution status.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/PaymentStatus",
+        "payload_fields": [
+          "payment_reference",
+          "execution_status",
+          "scheme_reference",
+          "execution_date"
+        ]
+      }
+    },
+    {
+      "id": "OP-CancelPayment",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "CancelPayment",
+      "lifecycle_status": "active",
+      "description": "Cancels a payment.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/CancelPayment",
+        "payload_fields": [
+          "payment_reference",
+          "execution_status",
+          "cancel_reason"
+        ]
+      }
+    },
+    {
+      "id": "OP-CreateCustomer",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "CreateCustomer",
+      "lifecycle_status": "active",
+      "description": "Creates a customer record.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/CreateCustomer",
+        "payload_fields": [
+          "party_name",
+          "party_type",
+          "address",
+          "party_reference"
+        ]
+      }
+    },
+    {
+      "id": "OP-GetCustomer",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "GetCustomer",
+      "lifecycle_status": "active",
+      "description": "Returns a customer record.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/GetCustomer",
+        "payload_fields": [
+          "party_reference",
+          "party_name",
+          "party_type",
+          "address",
+          "kyc_status"
+        ]
+      }
+    },
+    {
+      "id": "OP-UpdateCustomer",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "UpdateCustomer",
+      "lifecycle_status": "active",
+      "description": "Updates customer details.",
+      "attributes": {
+        "method": "POST",
+        "path": "/ledger/svc/UpdateCustomer",
+        "payload_fields": [
+          "party_reference",
+          "address",
+          "contact_details"
+        ]
+      }
+    },
+    {
+      "id": "JOB-EOD",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "EndOfDay",
+      "lifecycle_status": "active",
+      "description": "Nightly close: roll dates, compute balances.",
+      "attributes": {
+        "method": "BATCH",
+        "path": "/batch/EOD",
+        "payload_fields": [
+          "run_date",
+          "accounts_processed",
+          "status"
+        ]
+      }
+    },
+    {
+      "id": "JOB-INTEREST",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "ApplyInterest",
+      "lifecycle_status": "active",
+      "description": "Applies interest to accounts.",
+      "attributes": {
+        "method": "BATCH",
+        "path": "/batch/ApplyInterest",
+        "payload_fields": [
+          "account_reference",
+          "interest_amount",
+          "posting_date"
+        ]
+      }
+    },
+    {
+      "id": "JOB-AUDIT",
+      "type": "A3.APIOperation",
+      "version": "12.4",
+      "name": "AuditExtract",
+      "lifecycle_status": "active",
+      "description": "Extracts the audit trail.",
+      "attributes": {
+        "method": "BATCH",
+        "path": "/batch/AuditExtract",
+        "payload_fields": [
+          "audit_id",
+          "event",
+          "operator_id",
+          "timestamp"
+        ]
+      }
+    },
+    {
+      "id": "ENT-ACCOUNT",
+      "type": "A3.DataEntity",
+      "version": "12.4",
+      "name": "ACCT_MASTER",
+      "lifecycle_status": "active",
+      "description": "Account master table.",
+      "attributes": {
+        "attributes": [
+          "account_reference",
+          "customer_reference",
+          "account_status",
+          "currency",
+          "balance",
+          "overdraft_limit",
+          "open_date",
+          "close_date",
+          "branch_code"
+        ],
+        "stored_in": [
+          "INF-DB2-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-POSTING",
+      "type": "A3.DataEntity",
+      "version": "12.4",
+      "name": "POSTING_JRNL",
+      "lifecycle_status": "active",
+      "description": "Posting journal.",
+      "attributes": {
+        "attributes": [
+          "posting_reference",
+          "account_reference",
+          "amount",
+          "currency",
+          "posting_date",
+          "posting_type",
+          "balance_after",
+          "operator_id"
+        ],
+        "stored_in": [
+          "INF-DB2-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-PAYMENT",
+      "type": "A3.DataEntity",
+      "version": "12.4",
+      "name": "PAYMT_TXN",
+      "lifecycle_status": "active",
+      "description": "Payment transactions.",
+      "attributes": {
+        "attributes": [
+          "payment_reference",
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "execution_date",
+          "execution_status",
+          "scheme_reference"
+        ],
+        "stored_in": [
+          "INF-DB2-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-PARTY",
+      "type": "A3.DataEntity",
+      "version": "12.4",
+      "name": "CUST_MASTER",
+      "lifecycle_status": "active",
+      "description": "Customer master.",
+      "attributes": {
+        "attributes": [
+          "party_reference",
+          "party_name",
+          "party_type",
+          "address",
+          "contact_details",
+          "kyc_status",
+          "created_by"
+        ],
+        "stored_in": [
+          "INF-DB2-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-AUDIT",
+      "type": "A3.DataEntity",
+      "version": "12.4",
+      "name": "AUDIT_TRAIL",
+      "lifecycle_status": "active",
+      "description": "Audit trail.",
+      "attributes": {
+        "attributes": [
+          "audit_id",
+          "event",
+          "operator_id",
+          "timestamp"
+        ],
+        "stored_in": [
+          "INF-DB2-PROD"
+        ]
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "APP-LEDGER",
+      "kind": "composition",
+      "target": "LM-ACCT"
+    },
+    {
+      "source": "APP-LEDGER",
+      "kind": "composition",
+      "target": "LM-POST"
+    },
+    {
+      "source": "APP-LEDGER",
+      "kind": "composition",
+      "target": "LM-PAY"
+    },
+    {
+      "source": "APP-LEDGER",
+      "kind": "composition",
+      "target": "LM-PARTY"
+    },
+    {
+      "source": "APP-LEDGER",
+      "kind": "composition",
+      "target": "LM-BATCH"
+    },
+    {
+      "source": "LM-ACCT",
+      "kind": "composition",
+      "target": "IFC-ACCT"
+    },
+    {
+      "source": "LM-POST",
+      "kind": "composition",
+      "target": "IFC-POST"
+    },
+    {
+      "source": "LM-PAY",
+      "kind": "composition",
+      "target": "IFC-PAY"
+    },
+    {
+      "source": "LM-PARTY",
+      "kind": "composition",
+      "target": "IFC-PARTY"
+    },
+    {
+      "source": "IFC-ACCT",
+      "kind": "composition",
+      "target": "OP-OpenAccount"
+    },
+    {
+      "source": "IFC-ACCT",
+      "kind": "composition",
+      "target": "OP-GetAccount"
+    },
+    {
+      "source": "IFC-ACCT",
+      "kind": "composition",
+      "target": "OP-BlockAccount"
+    },
+    {
+      "source": "IFC-ACCT",
+      "kind": "composition",
+      "target": "OP-AmendOverdraft"
+    },
+    {
+      "source": "IFC-ACCT",
+      "kind": "composition",
+      "target": "OP-CloseAccount"
+    },
+    {
+      "source": "IFC-POST",
+      "kind": "composition",
+      "target": "OP-PostEntry"
+    },
+    {
+      "source": "IFC-POST",
+      "kind": "composition",
+      "target": "OP-GetBalance"
+    },
+    {
+      "source": "IFC-POST",
+      "kind": "composition",
+      "target": "OP-ReverseEntry"
+    },
+    {
+      "source": "IFC-PAY",
+      "kind": "composition",
+      "target": "OP-SubmitPayment"
+    },
+    {
+      "source": "IFC-PAY",
+      "kind": "composition",
+      "target": "OP-PaymentStatus"
+    },
+    {
+      "source": "IFC-PAY",
+      "kind": "composition",
+      "target": "OP-CancelPayment"
+    },
+    {
+      "source": "IFC-PARTY",
+      "kind": "composition",
+      "target": "OP-CreateCustomer"
+    },
+    {
+      "source": "IFC-PARTY",
+      "kind": "composition",
+      "target": "OP-GetCustomer"
+    },
+    {
+      "source": "IFC-PARTY",
+      "kind": "composition",
+      "target": "OP-UpdateCustomer"
+    },
+    {
+      "source": "LM-BATCH",
+      "kind": "composition",
+      "target": "JOB-EOD"
+    },
+    {
+      "source": "LM-BATCH",
+      "kind": "composition",
+      "target": "JOB-INTEREST"
+    },
+    {
+      "source": "LM-BATCH",
+      "kind": "composition",
+      "target": "JOB-AUDIT"
+    },
+    {
+      "source": "LM-ACCT",
+      "kind": "access",
+      "target": "ENT-ACCOUNT"
+    },
+    {
+      "source": "LM-POST",
+      "kind": "access",
+      "target": "ENT-POSTING"
+    },
+    {
+      "source": "LM-POST",
+      "kind": "access",
+      "target": "ENT-ACCOUNT"
+    },
+    {
+      "source": "LM-PAY",
+      "kind": "access",
+      "target": "ENT-PAYMENT"
+    },
+    {
+      "source": "LM-PARTY",
+      "kind": "access",
+      "target": "ENT-PARTY"
+    },
+    {
+      "source": "LM-BATCH",
+      "kind": "access",
+      "target": "ENT-AUDIT"
+    }
+  ]
+}
