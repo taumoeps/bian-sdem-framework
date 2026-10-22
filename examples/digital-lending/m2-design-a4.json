@@ -1,0 +1,34 @@
+{
+  "level": "A4",
+  "model_id": "synthetic-bank-lending-a4-TARGET-DESIGN",
+  "model_version": "2026.10-design",
+  "metamodel_version": "0.4.0",
+  "source_system": "DESIGN-PROPOSAL (bian-container-pattern; not a CMDB export)",
+  "instances": [
+    {
+      "id": "DSN-DEP-SD-LO",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Consumer Loan service — target deployment",
+      "lifecycle_status": "planned",
+      "description": "TARGET DESIGN: one deployment of DSN-APP-SD-LO. No environment or platform exists to name — environment_id and platform_id deliberately absent.",
+      "attributes": {
+        "component_id": "DSN-APP-SD-LO",
+        "design_source": "bian-container-pattern"
+      }
+    },
+    {
+      "id": "DSN-DEP-SD-CA",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Credit Assessment service — target deployment",
+      "lifecycle_status": "planned",
+      "description": "TARGET DESIGN: one deployment of DSN-APP-SD-CA. No environment or platform exists to name — environment_id and platform_id deliberately absent.",
+      "attributes": {
+        "component_id": "DSN-APP-SD-CA",
+        "design_source": "bian-container-pattern"
+      }
+    }
+  ],
+  "relationships": []
+}

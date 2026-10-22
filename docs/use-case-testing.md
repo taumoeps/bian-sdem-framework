@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** seven use cases defined; E1, E2, M0, M1, H1 and H2 (two runs) executed 2026-10-22 (see Results); M2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** seven use cases defined; all executed 2026-10-22 — E1, E2, M0, M1, M2, H1, H2 (two runs); see Results. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -134,7 +134,7 @@
 | M2.4 | Negative | no `DEPLOYED_ON` and no `MAPPED_TO` is proposed — there is no platform or data entity to name; S36 / S50 absent |
 | M2.5 | Score | `sdmm-eval` over the design gold: 12 of 12 expected — the pattern is deterministic once the convention is fixed |
 
-**Connections exercised.** S17, S24, S32 as *design targets*; S36/S50 must not appear. **Pass:** M2.1–M2.5 hold; the write-up states where mapping ends and design begins. **Status:** data authored and validated (v0.5.8); **ready to execute**.
+**Connections exercised.** S17, S24, S32 as *design targets*; S36/S50 must not appear. **Pass:** M2.1–M2.5 hold; the write-up states where mapping ends and design begins. **Status:** executed 2026-10-22 — see Results.
 
 ## H1 — Legacy Core Ledger, reverse mapping (Hard)
 
@@ -207,7 +207,7 @@
 | Negative tests | ● | ● | ● | ● | ● | ● |
 | Perspectives: architecture / process / information | A | A P I | A P I | A | A I | A I |
 
-**Order of execution:** E1, M0, M1, H1, H2 run 1 and run 2, E2 (done); M2 last (it tests a boundary, not the plan's core).
+**Order of execution:** E1, M0, M1, H1, H2 run 1 and run 2, E2, M2 — all done.
 
 ## Results
 
@@ -1215,3 +1215,81 @@ None new. SD-FD → svc-shield remains the only domain without a route: gate blo
 | 4 — abstract type in mappings, concrete in exports | By design: the graph resolves through the entity hierarchy (is-a). Noted in the example README |
 
 **E2 is complete:** six of six exact.
+
+### M2 — results (2026-10-22, fable-executor)
+
+**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.8 and the case's design-proposal convention. **Given.** `m2-mappings-given.json` (LN-001…008, every A1→A2 arrow approved) and the A1/A2 exports (15 + 23 instances). **No A3 or A4 export.** **Gold.** `m2-gold-design.json` was not opened until phase 5. **Files.** `examples/digital-lending/m2-design-a3.json` (2 components, 8 APIs, all `planned`), `m2-design-a4.json` (2 deployments, `planned`), `m2-proposals.json` (12 records), `m2-inference-log.json` (29 attempts and six commands verbatim).
+
+#### Where mapping ends and design begins
+
+**Mapping ends at A2.** The eight given arrows — two `SUPPORTED_BY`, one value-stream and two object `ALIGNED_TO`, three `USES_DOMAIN` — are the last records that connect two things that exist. Below SD-LO and SD-CA there is nothing exported: no component, no API, no table, no platform. No step of the plan applies. Step 1 has no record to join, step 2 has no API to check, step 3 has no arrow to close over, step 4 has no attributes to match, and step 5 is reserved for the A1 side. The executor's re-derivation of the given arrows from the exports agrees with all eight (processes' `invokes` → `USES_DOMAIN`; every process of each capability lands in one domain → `SUPPORTED_BY`; the four stages cover the scenario's four operations by action term → `ALIGNED_TO`; objects 6/7 and 5/6).
+
+**Design begins there.** What BIAN supplies for the gap is a pattern, not a mapping: one deployable component per Service Domain, exposing its service operations as a REST API in the form the Semantic API guide prescribes ([SAPG] §3.5, §4.1). From that pattern and the A2 export alone the executor *generated* twelve instances and twelve arrows. Every one is labelled so it cannot be mistaken for an observation: the instances are `lifecycle_status: planned` in exports whose `source_system` reads `DESIGN-PROPOSAL`; the arrows are `status: proposed`, confidence 0.4, `created_by` names the pattern source, and every rationale begins *TARGET DESIGN, not a mapping*. The ids follow the case's convention (`DSN-APP-<domain>`, `DSN-API-<operation>`, `DSN-DEP-<domain>`) so the design can be scored.
+
+**What the design does not say.** It names no platform, so there is no `DEPLOYED_ON`; it names no data entity, so there is no `MAPPED_TO`; the deployments carry a `component_id` and nothing else, because no environment exists to name. Those are the three places where a design would have to invent an instance with no source, and the guide forbids inventing instances. The design stops exactly where the pattern stops.
+
+#### Design proposals
+
+| Proposal | Plan ID (as target) | Design arrow | Reference form | Confidence |
+|---|---|---|---|---|
+| P-M2-001 | S24 | SO-LO-01 Initiate `IMPLEMENTED_BY` DSN-API-SO-LO-01 | POST /consumer-loans, 7 fields | 0.4 |
+| P-M2-002 | S24 | SO-LO-02 Update → DSN-API-SO-LO-02 | PATCH /consumer-loans/{id}, 4 fields | 0.4 |
+| P-M2-003 | S24 | SO-LO-03 Retrieve → DSN-API-SO-LO-03 | GET /consumer-loans/{id}, 7 fields | 0.4 |
+| P-M2-004 | S24 | SO-LO-04 Execute/Offer → DSN-API-SO-LO-04 | POST /consumer-loans/{id}/offer, 3 fields | 0.4 |
+| P-M2-005 | S24 | SO-LO-05 Execute/Agreement → DSN-API-SO-LO-05 | POST /consumer-loans/{id}/agreement, 4 fields | 0.4 |
+| P-M2-006 | S24 | SO-LO-06 Control → DSN-API-SO-LO-06 | PUT /consumer-loans/{id}/control, 2 fields | 0.4 |
+| P-M2-007 | S17 | SD-LO `REALIZED_BY` DSN-APP-SD-LO | one component per domain, composing the six APIs | 0.4 |
+| P-M2-008 | S32 | DSN-APP-SD-LO `DEPLOYED_AS` DSN-DEP-SD-LO | one deployment, environment and platform undecided | 0.4 |
+| P-M2-009 | S24 | SO-CA-01 Evaluate → DSN-API-SO-CA-01 | POST /credit-assessments, 6 fields | 0.4 |
+| P-M2-010 | S24 | SO-CA-02 Retrieve → DSN-API-SO-CA-02 | GET /credit-assessments/{id}, 5 fields | 0.4 |
+| P-M2-011 | S17 | SD-CA `REALIZED_BY` DSN-APP-SD-CA | one component per domain, composing the two APIs | 0.4 |
+| P-M2-012 | S32 | DSN-APP-SD-CA `DEPLOYED_AS` DSN-DEP-SD-CA | one deployment | 0.4 |
+
+**Conventions, marked.** **M2-C1** — reference paths: resource is the kebab-case plural of the asset-type name; Initiate/Evaluate → POST on the collection; Retrieve → GET on the instance; Update → PATCH on the instance; Execute with a qualifier → POST on the qualifier sub-resource (guide check 2, v0.5.7); Control → PUT on the instance's `control` action; payload = input ∪ output attributes. **M2-C2** — the id convention has no interface, so APIs are composed directly under the component. **M2-C3** — a target deployment carries `component_id` only.
+
+**M2.2 self-check.** The step-2 decision procedure, run over the design as if it were an export, finds every reference API at decision 1 for its own operation: check 2 passes by construction, check 3 passes for the two qualifier operations (`/offer`, `/agreement`) and is neutral for the rest, check 4 is 100 % for all eight. Two cross candidates appear — Update against the control API (2/4) and Control against the PATCH API (2/2) — and lose to the own API on overlap and ratio under the v0.5.7 contention rule; they are the same Control-is-a-subset-of-Update shape H2 run 2 found in real data.
+
+#### Tests
+
+| # | Expected | Observed | Verdict |
+|---|---|---|---|
+| M2.1 | records typed as design: `status: proposed`, `created_by` names the pattern source, confidence low, rationale states a target design from BIAN's container pattern | all twelve: `proposed`, 0.4, `created_by` = "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 … executor fable-executor/2026-10-22", rationale begins "TARGET DESIGN, not a mapping:"; design instances `planned` in exports marked `DESIGN-PROPOSAL` | **holds** |
+| M2.2 | each API's path/method follows the REST mapping from action term and qualifier | table above; self-check decision 1 for all eight | **holds** |
+| M2.3 | trace CAP-LEND down on the approved document stops at SD-LO; with `--status approved,proposed` and the design exports it reaches DSN-DEP-SD-LO | approved only: `CAP-LEND -SUPPORTED_BY-> SD-LO (LN-001)`, chain ends. With design: `… -REALIZED_BY-> DSN-APP-SD-LO 'Consumer Loan service (target)' (P-M2-007) -DEPLOYED_AS-> DSN-DEP-SD-LO (P-M2-008)` | **exact** |
+| M2.4 | no `DEPLOYED_ON`, no `MAPPED_TO`; S36 / S50 absent | none of the four relationships appears; the log records each as "no proposal — nothing to name" | **holds** |
+| M2.5 | `sdmm-eval` over the design gold: 12 of 12 | `OVERALL 12 12 12 0 0 1.00 1.00 1.00` | **holds** |
+
+```
+$ python -m sdmm.graph check a1 a2 m2-design-a3.json m2-design-a4.json m2-mappings-given.json m2-proposals.json
+OK: level A1; OK: level A2; OK: level A3 (synthetic-bank-lending-a3-TARGET-DESIGN); OK: level A4 (…-a4-TARGET-DESIGN); OK: mappings #1; OK: mappings #2
+$ python -m sdmm.validate --strict m2-proposals.json
+WARNING ×12 (required evidence kinds); OK (with warnings)
+$ python -m sdmm.evaluate examples/digital-lending/m2-gold-design.json --proposals examples/digital-lending/m2-proposals.json
+relationship     gold prop  tp  fp  fn   prec   rec    f1
+DEPLOYED_AS         2    2   2   0   0   1.00  1.00  1.00
+IMPLEMENTED_BY      8    8   8   0   0   1.00  1.00  1.00
+REALIZED_BY         2    2   2   0   0   1.00  1.00  1.00
+OVERALL            12   12  12   0   0   1.00  1.00  1.00
+```
+
+#### Findings
+
+| # | Where | What happened | Proposed change |
+|---|---|---|---|
+| 1 | case convention, `sdmm-eval` | the scorer keys on ids, so M2.5 scores the *shape* of the design (one component, one API per operation, one deployment) and not the REST forms; the gold's rationales allow alternatives ("PUT or PATCH", "PUT …/offer (or POST on the sub-resource)") that an id-based score never tests | either put `method` and `path` into the design gold as attributes of the DSN-API records and have the case check them (M2.2 by equality), or state in the convention which form is canonical. As it stands M2.2 is checked by rule (the self-check), not by the gold |
+| 2 | design gold vs README | `m2-gold-design.json` records are `status: approved` (so `sdmm-eval` can score them) while the README and case say "all `proposed`, confidence low" | README/case: "approved in the gold so the scorer counts them; the executor's copies are `proposed`". One line |
+| 3 | guide §3–§4 | the guide has no design mode: §2 forbids inventing instances, which is right for mapping, yet M2 requires generating them; the executor relied on the case text alone | guide: a short *Design targets* section — when a level has no export, the executor may generate `planned` instances from a named pattern under a fixed id convention, in a separate export marked as design, with every arrow `proposed` at low and labelled; never a `DEPLOYED_ON` or `MAPPED_TO` without an observed target |
+| 4 | S24 reference form | Control's payload (reference + status) is a subset of Update's; in the design the two are told apart only by path (`/control` vs the instance). Built estates will reproduce the H2 contention case | the design should give Control a distinguishing field (e.g. `control_action`) — a design finding, recorded for the architect rather than a plan change |
+| 5 | case M2.3 | the test loads the design exports to trace into A3/A4; a reader could take the trace as evidence that the chain exists | `sdmm-graph trace` could print the source-system label of a level export whose `source_system` starts with `DESIGN-PROPOSAL`, or mark `planned` instances in the tree, so a design hop is visibly not an observed one |
+
+#### No-proposal register
+
+| Plan ID | Why no proposal |
+|---|---|
+| S33 `DEPLOYED_ON` | no platform instance exists; naming one would invent an instance with no source |
+| S30 `MAPPED_TO`, S20 | no data entity exists; a target entity from the control record's attributes would be a further design step the convention does not define |
+| S36, S50 | no platform, no DBMS |
+| S25, S41 | no application service, no technology service |
+| S01, S02, S04, S12 | given (LN-001…008); re-derivations agree |
+
+**Summary.** M2 passes all five checks, and it does so by not pretending: the plan maps nothing below A2 here because nothing exists, and the executor says so. What it delivers instead is a target design generated from BIAN's container pattern, scored 12 of 12 against the architect's reference, and labelled at every point — in the exports, the records, the confidence and the rationale — as design rather than mapping. The boundary is a single sentence: a mapping connects two things that were observed; everything in `m2-design-*.json` was derived, so the arrows to it are proposals about what to build, not statements about what is. The suite's seven cases are now all executed.

@@ -1,0 +1,247 @@
+{
+  "level": "A3",
+  "model_id": "synthetic-bank-lending-a3-TARGET-DESIGN",
+  "model_version": "2026.10-design",
+  "metamodel_version": "0.4.0",
+  "source_system": "DESIGN-PROPOSAL (bian-container-pattern; not an APM export)",
+  "instances": [
+    {
+      "id": "DSN-APP-SD-LO",
+      "type": "A3.ApplicationComponent",
+      "version": "1.0",
+      "name": "Consumer Loan service (target)",
+      "lifecycle_status": "planned",
+      "description": "TARGET DESIGN from BIAN's container pattern: one deployable component for Consumer Loan Origination (synthetic selection), exposing its service operations as a REST API. Not built; proposed by bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22.",
+      "attributes": {
+        "design_source": "bian-container-pattern",
+        "realises_domain": "SD-LO",
+        "deployed_as": [
+          "DSN-DEP-SD-LO"
+        ]
+      }
+    },
+    {
+      "id": "DSN-API-SO-LO-01",
+      "type": "A3.APIOperation",
+      "version": "1.0",
+      "name": "POST /consumer-loans",
+      "lifecycle_status": "planned",
+      "description": "Reference API for Initiate Consumer Loan Origination (Initiate); create-instance term ⇔ POST on the collection (executor convention, guide check 2).",
+      "attributes": {
+        "method": "POST",
+        "path": "/consumer-loans",
+        "payload_fields": [
+          "application_status",
+          "currency",
+          "customer_reference",
+          "loan_application_reference",
+          "purpose",
+          "requested_amount",
+          "term_months"
+        ],
+        "design_source": "bian-container-pattern",
+        "implements_operation": "SO-LO-01"
+      }
+    },
+    {
+      "id": "DSN-API-SO-LO-02",
+      "type": "A3.APIOperation",
+      "version": "1.0",
+      "name": "PATCH /consumer-loans/{id}",
+      "lifecycle_status": "planned",
+      "description": "Reference API for Update Consumer Loan Origination (Update); Update ⇔ PATCH on the instance (executor convention).",
+      "attributes": {
+        "method": "PATCH",
+        "path": "/consumer-loans/{id}",
+        "payload_fields": [
+          "application_status",
+          "loan_application_reference",
+          "requested_amount",
+          "term_months"
+        ],
+        "design_source": "bian-container-pattern",
+        "implements_operation": "SO-LO-02"
+      }
+    },
+    {
+      "id": "DSN-API-SO-LO-03",
+      "type": "A3.APIOperation",
+      "version": "1.0",
+      "name": "GET /consumer-loans/{id}",
+      "lifecycle_status": "planned",
+      "description": "Reference API for Retrieve Consumer Loan Origination (Retrieve); Retrieve ⇔ GET (SAPG §3.5, verified).",
+      "attributes": {
+        "method": "GET",
+        "path": "/consumer-loans/{id}",
+        "payload_fields": [
+          "agreement_reference",
+          "application_status",
+          "currency",
+          "loan_application_reference",
+          "offer_reference",
+          "requested_amount",
+          "term_months"
+        ],
+        "design_source": "bian-container-pattern",
+        "implements_operation": "SO-LO-03"
+      }
+    },
+    {
+      "id": "DSN-API-SO-LO-04",
+      "type": "A3.APIOperation",
+      "version": "1.0",
+      "name": "POST /consumer-loans/{id}/offer",
+      "lifecycle_status": "planned",
+      "description": "Reference API for Execute Consumer Loan Origination Offer (Execute / Offer); Execute ⇔ POST on the qualifier sub-resource (guide check 2, v0.5.7); qualifier segment carries the behavior qualifier (check 3).",
+      "attributes": {
+        "method": "POST",
+        "path": "/consumer-loans/{id}/offer",
+        "payload_fields": [
+          "application_status",
+          "loan_application_reference",
+          "offer_reference"
+        ],
+        "design_source": "bian-container-pattern",
+        "implements_operation": "SO-LO-04"
+      }
+    },
+    {
+      "id": "DSN-API-SO-LO-05",
+      "type": "A3.APIOperation",
+      "version": "1.0",
+      "name": "POST /consumer-loans/{id}/agreement",
+      "lifecycle_status": "planned",
+      "description": "Reference API for Execute Consumer Loan Origination Agreement (Execute / Agreement); Execute ⇔ POST on the qualifier sub-resource (guide check 2, v0.5.7); qualifier segment carries the behavior qualifier (check 3).",
+      "attributes": {
+        "method": "POST",
+        "path": "/consumer-loans/{id}/agreement",
+        "payload_fields": [
+          "agreement_reference",
+          "application_status",
+          "loan_application_reference",
+          "offer_reference"
+        ],
+        "design_source": "bian-container-pattern",
+        "implements_operation": "SO-LO-05"
+      }
+    },
+    {
+      "id": "DSN-API-SO-LO-06",
+      "type": "A3.APIOperation",
+      "version": "1.0",
+      "name": "PUT /consumer-loans/{id}/control",
+      "lifecycle_status": "planned",
+      "description": "Reference API for Control Consumer Loan Origination (Control); Control ⇔ PUT on the instance's control action (executor convention; \"control\" is not a qualifier of this control record, so check 3 stays neutral for the other operations).",
+      "attributes": {
+        "method": "PUT",
+        "path": "/consumer-loans/{id}/control",
+        "payload_fields": [
+          "application_status",
+          "loan_application_reference"
+        ],
+        "design_source": "bian-container-pattern",
+        "implements_operation": "SO-LO-06"
+      }
+    },
+    {
+      "id": "DSN-APP-SD-CA",
+      "type": "A3.ApplicationComponent",
+      "version": "1.0",
+      "name": "Credit Assessment service (target)",
+      "lifecycle_status": "planned",
+      "description": "TARGET DESIGN from BIAN's container pattern: one deployable component for Credit Assessment (synthetic selection), exposing its service operations as a REST API. Not built; proposed by bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22.",
+      "attributes": {
+        "design_source": "bian-container-pattern",
+        "realises_domain": "SD-CA",
+        "deployed_as": [
+          "DSN-DEP-SD-CA"
+        ]
+      }
+    },
+    {
+      "id": "DSN-API-SO-CA-01",
+      "type": "A3.APIOperation",
+      "version": "1.0",
+      "name": "POST /credit-assessments",
+      "lifecycle_status": "planned",
+      "description": "Reference API for Evaluate Credit Assessment (Evaluate); create-instance term ⇔ POST on the collection (executor convention, guide check 2).",
+      "attributes": {
+        "method": "POST",
+        "path": "/credit-assessments",
+        "payload_fields": [
+          "approved_amount",
+          "assessment_outcome",
+          "conditions",
+          "credit_assessment_reference",
+          "credit_score",
+          "loan_application_reference"
+        ],
+        "design_source": "bian-container-pattern",
+        "implements_operation": "SO-CA-01"
+      }
+    },
+    {
+      "id": "DSN-API-SO-CA-02",
+      "type": "A3.APIOperation",
+      "version": "1.0",
+      "name": "GET /credit-assessments/{id}",
+      "lifecycle_status": "planned",
+      "description": "Reference API for Retrieve Credit Assessment (Retrieve); Retrieve ⇔ GET (SAPG §3.5, verified).",
+      "attributes": {
+        "method": "GET",
+        "path": "/credit-assessments/{id}",
+        "payload_fields": [
+          "approved_amount",
+          "assessment_outcome",
+          "conditions",
+          "credit_assessment_reference",
+          "credit_score"
+        ],
+        "design_source": "bian-container-pattern",
+        "implements_operation": "SO-CA-02"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "DSN-APP-SD-LO",
+      "kind": "composition",
+      "target": "DSN-API-SO-LO-01"
+    },
+    {
+      "source": "DSN-APP-SD-LO",
+      "kind": "composition",
+      "target": "DSN-API-SO-LO-02"
+    },
+    {
+      "source": "DSN-APP-SD-LO",
+      "kind": "composition",
+      "target": "DSN-API-SO-LO-03"
+    },
+    {
+      "source": "DSN-APP-SD-LO",
+      "kind": "composition",
+      "target": "DSN-API-SO-LO-04"
+    },
+    {
+      "source": "DSN-APP-SD-LO",
+      "kind": "composition",
+      "target": "DSN-API-SO-LO-05"
+    },
+    {
+      "source": "DSN-APP-SD-LO",
+      "kind": "composition",
+      "target": "DSN-API-SO-LO-06"
+    },
+    {
+      "source": "DSN-APP-SD-CA",
+      "kind": "composition",
+      "target": "DSN-API-SO-CA-01"
+    },
+    {
+      "source": "DSN-APP-SD-CA",
+      "kind": "composition",
+      "target": "DSN-API-SO-CA-02"
+    }
+  ]
+}

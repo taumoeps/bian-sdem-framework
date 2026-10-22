@@ -1,0 +1,274 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "fable-executor/2026-10-22",
+  "use_case": "M2",
+  "mappings": [
+    {
+      "mapping_id": "P-M2-001",
+      "source": {
+        "id": "SO-LO-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-01",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 (design target) design target, not step 2: no A3 export exists; the API is derived from the operation by the REST mapping — action term Initiate ⇔ POST, qualifier None ⇔ path /consumer-loans, payload = input ∪ output (7 attributes); create-instance term ⇔ POST on the collection (executor convention, guide check 2). Confidence low: a design proposal, nothing observed"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the reference API POST /consumer-loans is what BIAN's REST mapping prescribes for Initiate Consumer Loan Origination; it exists only in m2-design-a3.json",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M2-002",
+      "source": {
+        "id": "SO-LO-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-02",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 (design target) design target, not step 2: no A3 export exists; the API is derived from the operation by the REST mapping — action term Update ⇔ PATCH, qualifier None ⇔ path /consumer-loans/{id}, payload = input ∪ output (4 attributes); Update ⇔ PATCH on the instance (executor convention). Confidence low: a design proposal, nothing observed"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the reference API PATCH /consumer-loans/{id} is what BIAN's REST mapping prescribes for Update Consumer Loan Origination; it exists only in m2-design-a3.json",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M2-003",
+      "source": {
+        "id": "SO-LO-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-03",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 (design target) design target, not step 2: no A3 export exists; the API is derived from the operation by the REST mapping — action term Retrieve ⇔ GET, qualifier None ⇔ path /consumer-loans/{id}, payload = input ∪ output (7 attributes); Retrieve ⇔ GET (SAPG §3.5, verified). Confidence low: a design proposal, nothing observed"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the reference API GET /consumer-loans/{id} is what BIAN's REST mapping prescribes for Retrieve Consumer Loan Origination; it exists only in m2-design-a3.json",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M2-004",
+      "source": {
+        "id": "SO-LO-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-04",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 (design target) design target, not step 2: no A3 export exists; the API is derived from the operation by the REST mapping — action term Execute ⇔ POST, qualifier Offer ⇔ path /consumer-loans/{id}/offer, payload = input ∪ output (3 attributes); Execute ⇔ POST on the qualifier sub-resource (guide check 2, v0.5.7); qualifier segment carries the behavior qualifier (check 3). Confidence low: a design proposal, nothing observed"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the reference API POST /consumer-loans/{id}/offer is what BIAN's REST mapping prescribes for Execute Consumer Loan Origination Offer; it exists only in m2-design-a3.json",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M2-005",
+      "source": {
+        "id": "SO-LO-05",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-05",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 (design target) design target, not step 2: no A3 export exists; the API is derived from the operation by the REST mapping — action term Execute ⇔ POST, qualifier Agreement ⇔ path /consumer-loans/{id}/agreement, payload = input ∪ output (4 attributes); Execute ⇔ POST on the qualifier sub-resource (guide check 2, v0.5.7); qualifier segment carries the behavior qualifier (check 3). Confidence low: a design proposal, nothing observed"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the reference API POST /consumer-loans/{id}/agreement is what BIAN's REST mapping prescribes for Execute Consumer Loan Origination Agreement; it exists only in m2-design-a3.json",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M2-006",
+      "source": {
+        "id": "SO-LO-06",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-06",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 (design target) design target, not step 2: no A3 export exists; the API is derived from the operation by the REST mapping — action term Control ⇔ PUT, qualifier None ⇔ path /consumer-loans/{id}/control, payload = input ∪ output (2 attributes); Control ⇔ PUT on the instance's control action (executor convention; \"control\" is not a qualifier of this control record, so check 3 stays neutral for the other operations). Confidence low: a design proposal, nothing observed"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the reference API PUT /consumer-loans/{id}/control is what BIAN's REST mapping prescribes for Control Consumer Loan Origination; it exists only in m2-design-a3.json",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M2-007",
+      "source": {
+        "id": "SD-LO",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-CONSUMER-LOAN-ORIGINATION"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "DSN-APP-SD-LO",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S17 (design target) design target, not step 3: BIAN's container pattern (SAPG §4.1) — one deployable component per Service Domain; DSN-APP-SD-LO is that component for SD-LO, composing the 6 reference APIs; nothing observed"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: DSN-APP-SD-LO is the component the pattern prescribes for Consumer Loan Origination (synthetic selection); it exists only in m2-design-a3.json",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M2-008",
+      "source": {
+        "id": "DSN-APP-SD-LO",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DSN-DEP-SD-LO",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S32 (design target) design target, not step 1: no deployment record exists; one deployment per component follows the pattern; environment and platform unnamed — no DEPLOYED_ON is proposed (M2.4)"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: DSN-DEP-SD-LO is the single deployment the pattern implies for DSN-APP-SD-LO; environment and platform are undecided",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M2-009",
+      "source": {
+        "id": "SO-CA-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-CA-01",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 (design target) design target, not step 2: no A3 export exists; the API is derived from the operation by the REST mapping — action term Evaluate ⇔ POST, qualifier None ⇔ path /credit-assessments, payload = input ∪ output (6 attributes); create-instance term ⇔ POST on the collection (executor convention, guide check 2). Confidence low: a design proposal, nothing observed"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the reference API POST /credit-assessments is what BIAN's REST mapping prescribes for Evaluate Credit Assessment; it exists only in m2-design-a3.json",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M2-010",
+      "source": {
+        "id": "SO-CA-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-CA-02",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 (design target) design target, not step 2: no A3 export exists; the API is derived from the operation by the REST mapping — action term Retrieve ⇔ GET, qualifier None ⇔ path /credit-assessments/{id}, payload = input ∪ output (5 attributes); Retrieve ⇔ GET (SAPG §3.5, verified). Confidence low: a design proposal, nothing observed"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the reference API GET /credit-assessments/{id} is what BIAN's REST mapping prescribes for Retrieve Credit Assessment; it exists only in m2-design-a3.json",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M2-011",
+      "source": {
+        "id": "SD-CA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-CREDIT-ASSESSMENT"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "DSN-APP-SD-CA",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S17 (design target) design target, not step 3: BIAN's container pattern (SAPG §4.1) — one deployable component per Service Domain; DSN-APP-SD-CA is that component for SD-CA, composing the 2 reference APIs; nothing observed"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: DSN-APP-SD-CA is the component the pattern prescribes for Credit Assessment (synthetic selection); it exists only in m2-design-a3.json",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M2-012",
+      "source": {
+        "id": "DSN-APP-SD-CA",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DSN-DEP-SD-CA",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S32 (design target) design target, not step 1: no deployment record exists; one deployment per component follows the pattern; environment and platform unnamed — no DEPLOYED_ON is proposed (M2.4)"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: DSN-DEP-SD-CA is the single deployment the pattern implies for DSN-APP-SD-CA; environment and platform are undecided",
+      "baseline_id": "M2-DESIGN-2026-Q4",
+      "created_by": "bian-container-pattern [SAPG] §3.5 (REST mapping) + §4.1 (one deployable component per Service Domain); executor fable-executor/2026-10-22"
+    }
+  ]
+}
