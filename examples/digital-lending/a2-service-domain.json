@@ -284,10 +284,12 @@
         "behavior_qualifier": null,
         "input_attributes": [
           "loan_application_reference",
-          "application_status"
+          "control_action",
+          "control_reason"
         ],
         "output_attributes": [
-          "application_status"
+          "application_status",
+          "control_action"
         ]
       }
     },

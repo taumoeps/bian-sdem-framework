@@ -115,6 +115,15 @@ Only for the IDs the plan assigns to step 4, or as a declared fallback.
 
 Working: the attribute/stage pairs matched and the score.
 
+### Design targets — the one place instances may be created
+
+Mapping connects things that exist. When a case has **no export below some level** (M2: no A3/A4), no step applies there and the write-up must say so: *mapping ends at <level>*. Below that line the executor may produce a **target design** from BIAN's container pattern ([SAPG] §3.5, §4.1: one deployable component per Service Domain, its operations exposed as a REST API, one deployment per component) — and only from that pattern:
+
+- Instances go in a separate export per level (`<uc>-design-a3.json`, `<uc>-design-a4.json`), every one `lifecycle_status: planned`, ids by the case's convention (`DSN-APP-<domain>`, `DSN-API-<operation>`, `DSN-DEP-<domain>`), each API with `method`, `path` and `payload_fields` from the canonical REST forms.
+- Arrows go in the proposal file at **low** confidence, `created_by` naming the pattern source, rationale beginning **TARGET DESIGN, not a mapping**.
+- Nothing is invented that the pattern does not give: no platform (`DEPLOYED_ON`), no data entity (`MAPPED_TO`), no environment name.
+- `sdmm-graph trace` marks planned instances `[DESIGN — planned, not observed]`; a design chain is never reported as traceability.
+
 ### Step 5 — Text inference
 Only for S01 when step 3 produced nothing (capability with no mapped processes), and for the A1 side of hard cases. Compare the capability description with each candidate domain's description (name, description, asset type and aliases). Count **shared concepts**: content words after stop-word removal, excluding generic banking words (`bank, customer, manage, account, service, process, record, data`) — these appear everywhere and are not evidence. Propose at most **one** domain per capability, low confidence, with the two texts quoted and the shared concepts named, **only when** the best domain shares **≥ 2 concepts** and leads the runner-up by **≥ 1** (H1 finding 3). **The candidate set must be the full exported A2 landscape, or at least three domains**; with fewer, record *single-candidate, no proposal*. Otherwise **no proposal**.
 

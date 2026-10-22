@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.9 — after M2 (12 of 12); suite closed
+
+- Guide: *Design targets* section — the one place instances may be created, and how they are labelled.
+- `sdmm-graph trace` marks planned instances as design, not observed.
+- M2 case names the canonical REST forms; Control operation gains a distinguishing field.
+
 ## 0.5.8 — after E2 (six of six exact); M2 authored
 
 - E2 expected cells list every row the tools return; guide §6 query-only template; README states the validator/diff split; example README notes is-a resolution.

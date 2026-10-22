@@ -140,6 +140,7 @@ class FederatedGraph:
         node['level'] = self.mm.level(inst['type']) if inst else self.mm.level(node.get('type') or '')
         node['concrete_type'] = inst['type'] if inst else None
         node['resolved'] = inst is not None
+        node['lifecycle_status'] = inst.get('lifecycle_status') if inst else None
         for c in node['children']:
             self.enrich(c['node'])
         return node
@@ -207,7 +208,9 @@ def render_trace(tree, direction):
     def label(n):
         name = f" {n['name']!r}" if n.get('name') else ''
         t = n.get('concrete_type') or n.get('type') or '?'
-        return f"{n['id']}{name}  [{t}]" + ('' if n.get('resolved') else '  (unresolved)')
+        mark = '' if n.get('resolved') else '  (unresolved)'
+        if n.get('lifecycle_status') == 'planned': mark += '  [DESIGN — planned, not observed]'
+        return f"{n['id']}{name}  [{t}]" + mark
     lines = [label(tree)]
     def rec(n, prefix):
         for i, c in enumerate(n['children']):

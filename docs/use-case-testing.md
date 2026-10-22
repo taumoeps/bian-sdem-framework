@@ -120,6 +120,8 @@
 
 **Given.** `examples/digital-lending/a1-business.json` (15) and `a2-service-domain.json` (23): two capabilities, a value stream with four stages, three processes with activities and `invokes`, two business objects; two Service Domains with eight operations (action terms, two qualifiers with aliases), control records, a scenario, two BOM objects. **Approved:** `m2-mappings-given.json` — LN-001…008, the A1→A2 arrows. **No A3/A4 exports.** **Gold (sealed):** `m2-gold-design.json` — 12 records, the reference target design an architect accepted: 8 `IMPLEMENTED_BY`, 2 `REALIZED_BY`, 2 `DEPLOYED_AS`. Do not open it until phase 5.
 
+**Canonical REST forms** (the scorer keys on ids, so M2.2 is judged against this table, not by `sdmm-eval`): Initiate/Register/Evaluate → `POST /<asset-plural>`; Retrieve → `GET /<asset-plural>/{id}`; Update → `PUT` or `PATCH /<asset-plural>/{id}`; Control → `PUT /<asset-plural>/{id}/control` or `DELETE` for withdrawal; Execute with qualifier Q → `PUT` or `POST /<asset-plural>/{id}/<q>`; Notify → no REST form (an event). Payload = the operation's input ∪ output attributes.
+
 **Design-proposal convention.** Design targets use fixed ids so they can be scored: `DSN-APP-<domain id>`, `DSN-API-<operation id>`, `DSN-DEP-<domain id>`. Write them as `lifecycle_status: planned` instances in `m2-design-a3.json` and `m2-design-a4.json` (each API with `method` and `path`), and the arrows in `m2-proposals.json` with `status: proposed`, `created_by` naming the pattern source, confidence low, and a rationale beginning *TARGET DESIGN, not a mapping*.
 
 **What the plan can and cannot do.** No step fills A2→A3 or A3→A4 — there is nothing to join, apply rules to, or derive from. What BIAN *does* provide is a pattern: each Service Domain as a discrete deployable component exposing its operations as a REST API ([SAPG] §3.5, §4.1). The test is whether the executor produces a **target A3/A4 design proposal** from that pattern — two application components, their reference APIs from the Semantic API definitions, two deployments — and labels it unambiguously as *design*, not mapping.
@@ -1293,3 +1295,15 @@ OVERALL            12   12  12   0   0   1.00  1.00  1.00
 | S01, S02, S04, S12 | given (LN-001…008); re-derivations agree |
 
 **Summary.** M2 passes all five checks, and it does so by not pretending: the plan maps nothing below A2 here because nothing exists, and the executor says so. What it delivers instead is a target design generated from BIAN's container pattern, scored 12 of 12 against the architect's reference, and labelled at every point — in the exports, the records, the confidence and the rationale — as design rather than mapping. The boundary is a single sentence: a mapping connects two things that were observed; everything in `m2-design-*.json` was derived, so the arrows to it are proposals about what to build, not statements about what is. The suite's seven cases are now all executed.
+
+### M2 — actions taken on the findings (v0.5.9)
+
+| Finding | Action |
+|---|---|
+| 1 — scorer tests shape, not REST form | The case names the canonical REST forms; M2.2 is judged against that table (a record-level `method`/`path` would need a schema change — not made) |
+| 2 — guide has no design mode | Guide §3 gains *Design targets* — the one situation in which the executor may create instances, and the labelling that makes them unmistakable |
+| 3 — gold status | Example README states why the design gold is `approved` |
+| 4 — Control payload a subset of Update's | `SO-LO-06` gains `control_action` / `control_reason`; the same shape in H2 is left as run data |
+| 5 — design hops invisible in traces | `sdmm-graph trace` marks any `planned` instance `[DESIGN — planned, not observed]` |
+
+**M2 is complete and the suite is closed:** seven cases, eight runs.

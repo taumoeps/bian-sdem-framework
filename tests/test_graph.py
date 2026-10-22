@@ -277,3 +277,15 @@ class DigitalLendingExampleTests(unittest.TestCase):
         self.assertTrue(all(m['target']['id'].startswith('DSN-') for m in g))
         self.assertNotIn('DEPLOYED_ON', {m['relationship'] for m in g}); self.assertNotIn('MAPPED_TO', {m['relationship'] for m in g})
         self.assertTrue(all(m['rationale'].startswith('TARGET DESIGN') and m['confidence'] <= 0.4 for m in g))
+
+
+class DesignTraceMarkerTests(unittest.TestCase):
+    P = ROOT / 'examples/digital-lending'
+
+    def test_trace_marks_planned_instances(self):
+        from sdmm.graph import render_trace
+        files = sorted(self.P.glob('a*.json')) + sorted(self.P.glob('m2-design-a*.json')) + [self.P / 'mappings.json', self.P / 'm2-proposals.json']
+        fg = FederatedGraph.load(files)
+        out = render_trace(fg.trace('CAP-LEND', 'down', ('approved', 'proposed')), 'down')
+        self.assertIn('DSN-APP-SD-LO', out); self.assertIn('[DESIGN — planned, not observed]', out)
+        self.assertNotIn('DESIGN', render_trace(fg.trace('CAP-LEND', 'down'), 'down'))
