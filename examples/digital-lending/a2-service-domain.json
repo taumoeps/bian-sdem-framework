@@ -1,0 +1,571 @@
+{
+  "level": "A2",
+  "model_id": "synthetic-bank-lending-a2",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-BIAN-WORKBENCH",
+  "instances": [
+    {
+      "id": "BD-LEND",
+      "type": "A2.BusinessDomain",
+      "version": "1.0",
+      "name": "Lending (synthetic grouping)",
+      "lifecycle_status": "active",
+      "description": "Synthetic grouping."
+    },
+    {
+      "id": "SD-LO",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Consumer Loan Origination (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: handles a consumer loan from application through offer to agreement.",
+      "attributes": {
+        "asset_type": "AT-LO",
+        "functional_pattern": "FP-FULFIL"
+      },
+      "canonical_id": "BIAN-CONSUMER-LOAN-ORIGINATION"
+    },
+    {
+      "id": "SD-CA",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Credit Assessment (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: assesses an applicant's creditworthiness and records the outcome.",
+      "attributes": {
+        "asset_type": "AT-CA",
+        "functional_pattern": "FP-ASSESS"
+      },
+      "canonical_id": "BIAN-CREDIT-ASSESSMENT"
+    },
+    {
+      "id": "AT-LO",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Consumer Loan",
+      "lifecycle_status": "active",
+      "description": "The loan being originated.",
+      "attributes": {
+        "aliases": [
+          "loan",
+          "application"
+        ]
+      }
+    },
+    {
+      "id": "AT-CA",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Credit Assessment",
+      "lifecycle_status": "active",
+      "description": "An assessment of creditworthiness.",
+      "attributes": {
+        "aliases": [
+          "credit",
+          "assessment",
+          "decision"
+        ]
+      }
+    },
+    {
+      "id": "FP-FULFIL",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Fulfil",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in."
+    },
+    {
+      "id": "FP-ASSESS",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Assess",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in."
+    },
+    {
+      "id": "CR-LO",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Consumer Loan Origination Procedure",
+      "lifecycle_status": "active",
+      "description": "Lifecycle of one application.",
+      "attributes": {
+        "attributes": [
+          "loan_application_reference",
+          "customer_reference",
+          "requested_amount",
+          "currency",
+          "term_months",
+          "purpose",
+          "application_status",
+          "offer_reference",
+          "agreement_reference"
+        ]
+      }
+    },
+    {
+      "id": "CR-CA",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Credit Assessment",
+      "lifecycle_status": "active",
+      "description": "One assessment.",
+      "attributes": {
+        "attributes": [
+          "credit_assessment_reference",
+          "loan_application_reference",
+          "credit_score",
+          "assessment_outcome",
+          "approved_amount",
+          "conditions"
+        ]
+      }
+    },
+    {
+      "id": "BQ-OFFER",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Offer",
+      "lifecycle_status": "active",
+      "description": "Issuing the offer.",
+      "attributes": {
+        "aliases": [
+          "offer"
+        ]
+      }
+    },
+    {
+      "id": "BQ-AGREEMENT",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Agreement",
+      "lifecycle_status": "active",
+      "description": "Concluding the agreement.",
+      "attributes": {
+        "aliases": [
+          "agreement",
+          "sign"
+        ]
+      }
+    },
+    {
+      "id": "SG-LO",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Origination",
+      "lifecycle_status": "active",
+      "description": "Operations."
+    },
+    {
+      "id": "SG-CA",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Assessment",
+      "lifecycle_status": "active",
+      "description": "Operations."
+    },
+    {
+      "id": "SO-LO-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Initiate Consumer Loan Origination",
+      "lifecycle_status": "active",
+      "description": "Start an origination from the application.",
+      "attributes": {
+        "action_term": "Initiate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "customer_reference",
+          "requested_amount",
+          "currency",
+          "term_months",
+          "purpose"
+        ],
+        "output_attributes": [
+          "loan_application_reference",
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-LO-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Update Consumer Loan Origination",
+      "lifecycle_status": "active",
+      "description": "Amend the application.",
+      "attributes": {
+        "action_term": "Update",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "loan_application_reference",
+          "requested_amount",
+          "term_months"
+        ],
+        "output_attributes": [
+          "loan_application_reference",
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-LO-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Consumer Loan Origination",
+      "lifecycle_status": "active",
+      "description": "Return the application and its status.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "loan_application_reference"
+        ],
+        "output_attributes": [
+          "application_status",
+          "requested_amount",
+          "currency",
+          "term_months",
+          "offer_reference",
+          "agreement_reference"
+        ]
+      }
+    },
+    {
+      "id": "SO-LO-04",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Execute Consumer Loan Origination Offer",
+      "lifecycle_status": "active",
+      "description": "Issue the offer.",
+      "attributes": {
+        "action_term": "Execute",
+        "behavior_qualifier": "Offer",
+        "input_attributes": [
+          "loan_application_reference"
+        ],
+        "output_attributes": [
+          "offer_reference",
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-LO-05",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Execute Consumer Loan Origination Agreement",
+      "lifecycle_status": "active",
+      "description": "Conclude the agreement.",
+      "attributes": {
+        "action_term": "Execute",
+        "behavior_qualifier": "Agreement",
+        "input_attributes": [
+          "loan_application_reference",
+          "offer_reference"
+        ],
+        "output_attributes": [
+          "agreement_reference",
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-LO-06",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Control Consumer Loan Origination",
+      "lifecycle_status": "active",
+      "description": "Withdraw or hold the application.",
+      "attributes": {
+        "action_term": "Control",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "loan_application_reference",
+          "application_status"
+        ],
+        "output_attributes": [
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-CA-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Evaluate Credit Assessment",
+      "lifecycle_status": "active",
+      "description": "Assess the applicant and record the outcome.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "loan_application_reference"
+        ],
+        "output_attributes": [
+          "credit_assessment_reference",
+          "credit_score",
+          "assessment_outcome",
+          "approved_amount",
+          "conditions"
+        ]
+      }
+    },
+    {
+      "id": "SO-CA-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Credit Assessment",
+      "lifecycle_status": "active",
+      "description": "Return an assessment.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "credit_assessment_reference"
+        ],
+        "output_attributes": [
+          "credit_score",
+          "assessment_outcome",
+          "approved_amount",
+          "conditions"
+        ]
+      }
+    },
+    {
+      "id": "BS-LOAN",
+      "type": "A2.BusinessScenario",
+      "version": "1.0",
+      "name": "Consumer loan origination",
+      "lifecycle_status": "active",
+      "description": "Apply, assess, offer, agree.",
+      "attributes": {
+        "operation_sequence": [
+          "SO-LO-01",
+          "SO-CA-01",
+          "SO-LO-04",
+          "SO-LO-05"
+        ]
+      },
+      "canonical_id": "BIAN-SCENARIO-CONSUMER-LOAN"
+    },
+    {
+      "id": "BBO-LOAN-APP",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Loan Application",
+      "lifecycle_status": "active",
+      "description": "Canonical.",
+      "attributes": {
+        "attributes": [
+          "loan_application_reference",
+          "customer_reference",
+          "requested_amount",
+          "currency",
+          "term_months",
+          "purpose",
+          "application_status"
+        ]
+      },
+      "canonical_id": "BIAN-BO-LOAN-APPLICATION"
+    },
+    {
+      "id": "BBO-CREDIT-ASSESS",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Credit Assessment",
+      "lifecycle_status": "active",
+      "description": "Canonical.",
+      "attributes": {
+        "attributes": [
+          "credit_assessment_reference",
+          "loan_application_reference",
+          "credit_score",
+          "assessment_outcome",
+          "approved_amount",
+          "conditions"
+        ]
+      },
+      "canonical_id": "BIAN-BO-CREDIT-ASSESSMENT"
+    }
+  ],
+  "relationships": [
+    {
+      "source": "BD-LEND",
+      "kind": "composition",
+      "target": "SD-LO"
+    },
+    {
+      "source": "BD-LEND",
+      "kind": "composition",
+      "target": "SD-CA"
+    },
+    {
+      "source": "SD-LO",
+      "kind": "association",
+      "target": "AT-LO"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "association",
+      "target": "AT-CA"
+    },
+    {
+      "source": "SD-LO",
+      "kind": "association",
+      "target": "FP-FULFIL"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "association",
+      "target": "FP-ASSESS"
+    },
+    {
+      "source": "SD-LO",
+      "kind": "aggregation",
+      "target": "CR-LO"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "aggregation",
+      "target": "CR-CA"
+    },
+    {
+      "source": "CR-LO",
+      "kind": "composition",
+      "target": "BQ-OFFER"
+    },
+    {
+      "source": "CR-LO",
+      "kind": "composition",
+      "target": "BQ-AGREEMENT"
+    },
+    {
+      "source": "CR-LO",
+      "kind": "association",
+      "target": "BBO-LOAN-APP"
+    },
+    {
+      "source": "CR-CA",
+      "kind": "association",
+      "target": "BBO-CREDIT-ASSESS"
+    },
+    {
+      "source": "SD-LO",
+      "kind": "composition",
+      "target": "SG-LO"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "composition",
+      "target": "SG-CA"
+    },
+    {
+      "source": "SG-LO",
+      "kind": "composition",
+      "target": "SO-LO-01"
+    },
+    {
+      "source": "SG-LO",
+      "kind": "composition",
+      "target": "SO-LO-02"
+    },
+    {
+      "source": "SG-LO",
+      "kind": "composition",
+      "target": "SO-LO-03"
+    },
+    {
+      "source": "SG-LO",
+      "kind": "composition",
+      "target": "SO-LO-04"
+    },
+    {
+      "source": "SG-LO",
+      "kind": "composition",
+      "target": "SO-LO-05"
+    },
+    {
+      "source": "SG-LO",
+      "kind": "composition",
+      "target": "SO-LO-06"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-01"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-02"
+    },
+    {
+      "source": "SO-LO-01",
+      "kind": "access",
+      "target": "CR-LO"
+    },
+    {
+      "source": "SO-LO-02",
+      "kind": "access",
+      "target": "CR-LO"
+    },
+    {
+      "source": "SO-LO-03",
+      "kind": "access",
+      "target": "CR-LO"
+    },
+    {
+      "source": "SO-LO-04",
+      "kind": "access",
+      "target": "CR-LO"
+    },
+    {
+      "source": "SO-LO-05",
+      "kind": "access",
+      "target": "CR-LO"
+    },
+    {
+      "source": "SO-LO-06",
+      "kind": "access",
+      "target": "CR-LO"
+    },
+    {
+      "source": "SO-CA-01",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SO-CA-02",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "BS-LOAN",
+      "kind": "aggregation",
+      "target": "SO-LO-01"
+    },
+    {
+      "source": "BS-LOAN",
+      "kind": "aggregation",
+      "target": "SO-CA-01"
+    },
+    {
+      "source": "BS-LOAN",
+      "kind": "aggregation",
+      "target": "SO-LO-04"
+    },
+    {
+      "source": "BS-LOAN",
+      "kind": "aggregation",
+      "target": "SO-LO-05"
+    },
+    {
+      "source": "SD-LO",
+      "kind": "flow",
+      "target": "SD-CA"
+    }
+  ]
+}

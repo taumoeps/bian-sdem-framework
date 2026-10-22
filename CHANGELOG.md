@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.8 — after E2 (six of six exact); M2 authored
+
+- E2 expected cells list every row the tools return; guide §6 query-only template; README states the validator/diff split; example README notes is-a resolution.
+- `examples/digital-lending`: greenfield A1/A2 exports, approved A1→A2 arrows, sealed design gold with the `DSN-*` convention for use case M2.
+
 ## 0.5.7 — after H2 run 2 (P 1.00, R 1.00 with aliases as data)
 
 - Step 2 clause 4: overlap defined (count, then ratio); API-contention award (count, ratio, qualifier) — proposed, pending validation on an unseen gold.

@@ -14,6 +14,8 @@ The document exercises the full SDMM model:
 
 BIAN-grounded records (`bian_alignment_guidance` authority) carry a `bian_release` and a `canonical_id` on the A2 endpoint, ready for a licensed reference adapter (see `sdmm/reference.py`).
 
+The mappings name the abstract `A4.InfrastructureComponent` while the export types `INF-001` concretely as `A4.SystemSoftware`; the graph resolves this through the entity hierarchy (is-a), by design.
+
 Level exports `a1–a4-*.json` (24 synthetic instances, written to `metamodel/export-conventions.json`) back every id in the mappings, so the graph tools run on this example — use case **E2** in `docs/use-case-testing.md`.
 
 ```bash

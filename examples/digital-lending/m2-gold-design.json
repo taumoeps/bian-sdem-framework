@@ -1,0 +1,319 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "M2",
+  "mappings": [
+    {
+      "mapping_id": "LN-101",
+      "source": {
+        "id": "SO-LO-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-01",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:TARGET-consumer-lending-api.yaml#DSN-API-SO-LO-01",
+        "design_decision:DR-LEND-TARGET-2026#api"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: reference API POST /consumer-loans from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the reference design \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    },
+    {
+      "mapping_id": "LN-102",
+      "source": {
+        "id": "SO-LO-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-02",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:TARGET-consumer-lending-api.yaml#DSN-API-SO-LO-02",
+        "design_decision:DR-LEND-TARGET-2026#api"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: reference API PUT or PATCH /consumer-loans/{id} from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the reference design \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    },
+    {
+      "mapping_id": "LN-103",
+      "source": {
+        "id": "SO-LO-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-03",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:TARGET-consumer-lending-api.yaml#DSN-API-SO-LO-03",
+        "design_decision:DR-LEND-TARGET-2026#api"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: reference API GET /consumer-loans/{id} from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the reference design \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    },
+    {
+      "mapping_id": "LN-104",
+      "source": {
+        "id": "SO-LO-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-04",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:TARGET-consumer-lending-api.yaml#DSN-API-SO-LO-04",
+        "design_decision:DR-LEND-TARGET-2026#api"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: reference API PUT /consumer-loans/{id}/offer (or POST on the sub-resource) from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the reference design \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    },
+    {
+      "mapping_id": "LN-105",
+      "source": {
+        "id": "SO-LO-05",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-05",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:TARGET-consumer-lending-api.yaml#DSN-API-SO-LO-05",
+        "design_decision:DR-LEND-TARGET-2026#api"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: reference API PUT /consumer-loans/{id}/agreement (or POST on the sub-resource) from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the reference design \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    },
+    {
+      "mapping_id": "LN-106",
+      "source": {
+        "id": "SO-LO-06",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-LO-06",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:TARGET-consumer-lending-api.yaml#DSN-API-SO-LO-06",
+        "design_decision:DR-LEND-TARGET-2026#api"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: reference API PUT or PATCH /consumer-loans/{id} with the control action, or DELETE for withdrawal from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the reference design \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    },
+    {
+      "mapping_id": "LN-107",
+      "source": {
+        "id": "SO-CA-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-CA-01",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:TARGET-consumer-lending-api.yaml#DSN-API-SO-CA-01",
+        "design_decision:DR-LEND-TARGET-2026#api"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: reference API POST /credit-assessments from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the reference design \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    },
+    {
+      "mapping_id": "LN-108",
+      "source": {
+        "id": "SO-CA-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-CA-02",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:TARGET-consumer-lending-api.yaml#DSN-API-SO-CA-02",
+        "design_decision:DR-LEND-TARGET-2026#api"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: reference API GET /credit-assessments/{id} from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the reference design \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    },
+    {
+      "mapping_id": "LN-121",
+      "source": {
+        "id": "SD-LO",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "DSN-APP-SD-LO",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:TARGET-LEND-HLD#DSN-APP-SD-LO",
+        "design_decision:DR-LEND-TARGET-2026#components"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: one deployable component per Service Domain exposing its operations as a REST API ([SAPG] s4.1 container pattern) \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    },
+    {
+      "mapping_id": "LN-122",
+      "source": {
+        "id": "SD-CA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "DSN-APP-SD-CA",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:TARGET-LEND-HLD#DSN-APP-SD-CA",
+        "design_decision:DR-LEND-TARGET-2026#components"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: one deployable component per Service Domain exposing its operations as a REST API ([SAPG] s4.1 container pattern) \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    },
+    {
+      "mapping_id": "LN-131",
+      "source": {
+        "id": "DSN-APP-SD-LO",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DSN-DEP-SD-LO",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:TARGET-LEND-DD#DSN-DEP-SD-LO",
+        "design_decision:DR-LEND-TARGET-2026#deployments"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: one deployment per component in the target environment; no platform named \u2014 there is no data to name one \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    },
+    {
+      "mapping_id": "LN-132",
+      "source": {
+        "id": "DSN-APP-SD-CA",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DSN-DEP-SD-CA",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:TARGET-LEND-DD#DSN-DEP-SD-CA",
+        "design_decision:DR-LEND-TARGET-2026#deployments"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: one deployment per component in the target environment; no platform named \u2014 there is no data to name one \u2014 accepted by design review as the reference target (gold); status approved here only so sdmm-eval scores it",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "created_by": "design:bian-container-pattern [SAPG] s3.5 s4.1",
+      "confidence": 0.4
+    }
+  ]
+}

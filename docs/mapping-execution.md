@@ -213,6 +213,15 @@ Only now open `gold-mappings.json`. Paste the `sdmm-eval` output verbatim into t
 | Plan ID | Instances considered | Why no proposal |
 ```
 
+**Query-only cases** (E1, E2: everything approved, nothing to infer) replace *Proposals* and *sdmm-eval* with:
+
+```
+#### Tests
+| # | Expected (from the case) | Observed (verbatim tool output, abbreviated) | Verdict: exact / holds, beyond Expected / fails |
+```
+
+and keep *Findings* and the inference log (one entry per command: command, stdout, stderr, exit code).
+
 Every row in *Findings* must say what to change: the ID's `fill_step`, `confidence`, `data_needed`, `rule_decision`, or the step rules in §3 of this guide. That table is the output that matters.
 
 ## 7. What a good run looks like

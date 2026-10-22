@@ -1,0 +1,206 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "M2",
+  "mappings": [
+    {
+      "mapping_id": "LN-001",
+      "source": {
+        "id": "CAP-LEND",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-LO",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-CONSUMER-LOAN-ORIGINATION"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-LEND-2026#s2",
+        "domain_scope_assessment:DSA-LEND-1"
+      ],
+      "rationale": "origination is the domain's scope",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "LN-002",
+      "source": {
+        "id": "CAP-CREDIT",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-CA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-CREDIT-ASSESSMENT"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-LEND-2026#s2",
+        "domain_scope_assessment:DSA-LEND-2"
+      ],
+      "rationale": "credit risk assessment is the domain's scope",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "LN-003",
+      "source": {
+        "id": "VS-GET-LOAN",
+        "type": "A1.ValueStream",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BS-LOAN",
+        "type": "A2.BusinessScenario",
+        "version": "1.0",
+        "canonical_id": "BIAN-SCENARIO-CONSUMER-LOAN"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-GET-LOAN-2026",
+        "scenario_suitability_review:SCN-LOAN-1"
+      ],
+      "rationale": "four stages cover the scenario's four operations",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "LN-004",
+      "source": {
+        "id": "PRC-APPLY",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-LO",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-GET-LOAN-2026"
+      ],
+      "rationale": "invokes Initiate and Update",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LN-005",
+      "source": {
+        "id": "PRC-ASSESS",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-CA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-GET-LOAN-2026"
+      ],
+      "rationale": "invokes Evaluate and Retrieve",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LN-006",
+      "source": {
+        "id": "PRC-OFFER",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-LO",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-GET-LOAN-2026"
+      ],
+      "rationale": "invokes the Offer and Agreement executions",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "LN-007",
+      "source": {
+        "id": "BO-LOAN-APP",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-LOAN-APP",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-LOAN-APPLICATION"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "business_glossary:GL-LEND-2026#loan-application",
+        "object_alignment_review:OAR-LEND-1"
+      ],
+      "rationale": "same meaning; 6 of 7 attributes align",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "LN-008",
+      "source": {
+        "id": "BO-CREDIT-DEC",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-CREDIT-ASSESS",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-CREDIT-ASSESSMENT"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "business_glossary:GL-LEND-2026#credit-decision",
+        "object_alignment_review:OAR-LEND-2"
+      ],
+      "rationale": "the decision is the assessment outcome; 5 of 6 attributes align",
+      "baseline_id": "LEND-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    }
+  ]
+}

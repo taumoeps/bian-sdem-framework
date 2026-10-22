@@ -260,3 +260,20 @@ class CustomerOnboardingExampleTests(unittest.TestCase):
         self.assertEqual(rows['SD-001'], 'design_change_required')
         self.assertEqual(rows['INF-001'], 'review_required'); self.assertEqual(rows['DEP-001'], 'review_required')
         self.assertNotIn('BBO-001', rows); self.assertNotIn('ENT-001', rows)
+
+
+class DigitalLendingExampleTests(unittest.TestCase):
+    P = ROOT / 'examples/digital-lending'
+
+    def test_two_level_export_checks_clean(self):
+        files = sorted(self.P.glob('a*.json'))
+        self.assertEqual([f.name[:2] for f in files], ['a1', 'a2'])
+        fg = FederatedGraph.load(files + [self.P / 'mappings.json'])
+        self.assertEqual({k: v for k, v in fg.check().items() if v}, {})
+
+    def test_design_gold_uses_the_dsn_convention_and_names_no_platform(self):
+        g = json.loads((self.P / 'm2-gold-design.json').read_text())['mappings']
+        self.assertEqual(len(g), 12)
+        self.assertTrue(all(m['target']['id'].startswith('DSN-') for m in g))
+        self.assertNotIn('DEPLOYED_ON', {m['relationship'] for m in g}); self.assertNotIn('MAPPED_TO', {m['relationship'] for m in g})
+        self.assertTrue(all(m['rationale'].startswith('TARGET DESIGN') and m['confidence'] <= 0.4 for m in g))

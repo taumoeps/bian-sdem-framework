@@ -58,9 +58,9 @@
 |---|---|---|
 | E2.1 | Downstream from CAP-001 | SD-001 → APP-001 → INF-001 *and* DEP-001 (two A4 arrows from the same component) |
 | E2.2 | Information chain from BO-001 | BO-001 → BBO-001 → ENT-001 (`ALIGNED_TO`, `MAPPED_TO`) |
-| E2.3 | Process chain | VS-001 → BS-001; PRC-001 → SD-001 |
+| E2.3 | Process chain | VS-001 → BS-001 (chain ends); PRC-001 → SD-001, then the domain's architecture chain (APP-001 → INF-001 / DEP-001) |
 | E2.4 | Upstream from ENT-001 | ENT-001 → BBO-001 → BO-001 — information arrows only; architecture chain must not appear |
-| E2.5 | Replace APP-001 | `impact APP-001 --change replace` — SD-001 `design_change_required`, INF-001 / DEP-001 `review_required`, BBO/ENT untouched |
+| E2.5 | Replace APP-001 | `impact APP-001 --change replace` — SD-001 `design_change_required`; INF-001 / DEP-001 `review_required`; CAP-001 / PRC-001 `review_required` as indirect dependents; BBO/ENT untouched; MAP-002/003/011 to supersede |
 | E2.6 | Governance | edit an approved record's rationale → `sdmm-diff` rejects; supersede instead → accepted |
 
 **Connections exercised.** S01, S02, S04, S12, S17, S24 (proposed), S30, S32, S33. **Pass:** chains per perspective are disjoint where they should be; impact matches the rules table; `sdmm-diff` rejects the edit and accepts the supersession. **Status:** executed 2026-10-22 — see Results.
@@ -118,7 +118,9 @@
 
 **Scenario.** A new product line. A1 and A2 are designed and mapped. **There is no A3 or A4** — nothing has been built.
 
-**Given.** A1: capability, value stream, three processes. A2: two Service Domains (lending origination, credit assessment) with operations, control records, a scenario. **Approved:** A1→A2 arrows. **No A3/A4 exports.**
+**Given.** `examples/digital-lending/a1-business.json` (15) and `a2-service-domain.json` (23): two capabilities, a value stream with four stages, three processes with activities and `invokes`, two business objects; two Service Domains with eight operations (action terms, two qualifiers with aliases), control records, a scenario, two BOM objects. **Approved:** `m2-mappings-given.json` — LN-001…008, the A1→A2 arrows. **No A3/A4 exports.** **Gold (sealed):** `m2-gold-design.json` — 12 records, the reference target design an architect accepted: 8 `IMPLEMENTED_BY`, 2 `REALIZED_BY`, 2 `DEPLOYED_AS`. Do not open it until phase 5.
+
+**Design-proposal convention.** Design targets use fixed ids so they can be scored: `DSN-APP-<domain id>`, `DSN-API-<operation id>`, `DSN-DEP-<domain id>`. Write them as `lifecycle_status: planned` instances in `m2-design-a3.json` and `m2-design-a4.json` (each API with `method` and `path`), and the arrows in `m2-proposals.json` with `status: proposed`, `created_by` naming the pattern source, confidence low, and a rationale beginning *TARGET DESIGN, not a mapping*.
 
 **What the plan can and cannot do.** No step fills A2→A3 or A3→A4 — there is nothing to join, apply rules to, or derive from. What BIAN *does* provide is a pattern: each Service Domain as a discrete deployable component exposing its operations as a REST API ([SAPG] §3.5, §4.1). The test is whether the executor produces a **target A3/A4 design proposal** from that pattern — two application components, their reference APIs from the Semantic API definitions, two deployments — and labels it unambiguously as *design*, not mapping.
 
@@ -128,10 +130,11 @@
 |---|---|---|
 | M2.1 | Proposals are typed as design, not mapping | records carry `status: proposed`, `created_by` naming the pattern source, confidence **low**, and `rationale` stating they are a target design derived from BIAN's container pattern |
 | M2.2 | Reference APIs | each proposed API operation's path/method follows the REST mapping from the operation's action term and qualifier |
-| M2.3 | Trace honesty | `sdmm-graph trace CAP --direction down` on approved only stops at A2; with proposals included it reaches the *proposed* A4 |
-| M2.4 | Negative | no `DEPLOYED_ON` to any concrete platform is proposed — there is no data to name one |
+| M2.3 | Trace honesty | `sdmm-graph trace CAP-LEND --direction down` on the approved document stops at SD-LO; with `--status approved,proposed` and the design exports loaded it reaches `DSN-DEP-SD-LO` |
+| M2.4 | Negative | no `DEPLOYED_ON` and no `MAPPED_TO` is proposed — there is no platform or data entity to name; S36 / S50 absent |
+| M2.5 | Score | `sdmm-eval` over the design gold: 12 of 12 expected — the pattern is deterministic once the convention is fixed |
 
-**Connections exercised.** S17, S24, S32 as *design targets*; S36/S50 must not appear. **Pass:** M2.1–M2.4 hold; the write-up states where mapping ends and design begins. **Status:** data to author.
+**Connections exercised.** S17, S24, S32 as *design targets*; S36/S50 must not appear. **Pass:** M2.1–M2.5 hold; the write-up states where mapping ends and design begins. **Status:** data authored and validated (v0.5.8); **ready to execute**.
 
 ## H1 — Legacy Core Ledger, reverse mapping (Hard)
 
@@ -1201,3 +1204,14 @@ None new. SD-FD → svc-shield remains the only domain without a route: gate blo
 | 4 | export | `INF-000` is `A4.Node` and `INF-001` is `A4.SystemSoftware` while both mappings call them `A4.InfrastructureComponent`; the graph resolves it through the hierarchy, as in E1 | no change; recorded because E2 is the second example relying on it |
 
 **Summary.** E2 passes: all six questions return what the Expected column asks, with two cells understating the tools' (correct) output. The three perspectives stay apart where they should and meet only at the domain, the impact classification follows the rules table through to the indirect A1 dependents, and governance behaves as designed — an edit to an approved record is rejected by the diff and a supersession is accepted. Nothing was inferred and nothing in the repository was changed by the tests.
+
+### E2 — actions taken on the findings (v0.5.8)
+
+| Finding | Action |
+|---|---|
+| 1 — Expected cells understate | E2.3 and E2.5 now list every row the tools return |
+| 2 — no query-only template | Guide §6 gains a *query-only case* template (tests table with expected / observed / verdict) |
+| 3 — validator vs diff split | README states in one line that the validator checks a document and the diff tool checks history: an in-place edit of an approved record is caught only by the diff |
+| 4 — abstract type in mappings, concrete in exports | By design: the graph resolves through the entity hierarchy (is-a). Noted in the example README |
+
+**E2 is complete:** six of six exact.

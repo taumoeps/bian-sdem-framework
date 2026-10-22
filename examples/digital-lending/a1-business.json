@@ -1,0 +1,258 @@
+{
+  "level": "A1",
+  "model_id": "synthetic-bank-lending-a1",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-EA-TOOL",
+  "instances": [
+    {
+      "id": "CAP-LEND",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Originate Consumer Loan",
+      "lifecycle_status": "active",
+      "description": "Take a consumer loan application from enquiry to a signed agreement."
+    },
+    {
+      "id": "CAP-CREDIT",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Assess Credit Risk",
+      "lifecycle_status": "active",
+      "description": "Decide whether and on what terms the bank will lend to an applicant."
+    },
+    {
+      "id": "VS-GET-LOAN",
+      "type": "A1.ValueStream",
+      "version": "1.0",
+      "name": "Get a Loan",
+      "lifecycle_status": "active",
+      "description": "The customer's journey from applying to signing.",
+      "attributes": {
+        "stages": [
+          "VSS-L1",
+          "VSS-L2",
+          "VSS-L3",
+          "VSS-L4"
+        ]
+      }
+    },
+    {
+      "id": "VSS-L1",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Apply",
+      "lifecycle_status": "active",
+      "description": "The customer submits an application."
+    },
+    {
+      "id": "VSS-L2",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Assess",
+      "lifecycle_status": "active",
+      "description": "The bank evaluates the application."
+    },
+    {
+      "id": "VSS-L3",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Receive offer",
+      "lifecycle_status": "active",
+      "description": "The customer receives an offer."
+    },
+    {
+      "id": "VSS-L4",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Sign agreement",
+      "lifecycle_status": "active",
+      "description": "The customer signs."
+    },
+    {
+      "id": "PRC-APPLY",
+      "type": "A1.BusinessProcess",
+      "version": "1.0",
+      "name": "Capture loan application",
+      "lifecycle_status": "active",
+      "description": "Capture and maintain the application.",
+      "attributes": {
+        "invokes": [
+          "SO-LO-01",
+          "SO-LO-02"
+        ]
+      }
+    },
+    {
+      "id": "PRC-ASSESS",
+      "type": "A1.BusinessProcess",
+      "version": "1.0",
+      "name": "Assess application",
+      "lifecycle_status": "active",
+      "description": "Run the credit assessment and record the decision.",
+      "attributes": {
+        "invokes": [
+          "SO-CA-01",
+          "SO-CA-02"
+        ]
+      }
+    },
+    {
+      "id": "PRC-OFFER",
+      "type": "A1.BusinessProcess",
+      "version": "1.0",
+      "name": "Offer and agree",
+      "lifecycle_status": "active",
+      "description": "Issue the offer and conclude the agreement.",
+      "attributes": {
+        "invokes": [
+          "SO-LO-04",
+          "SO-LO-05"
+        ]
+      }
+    },
+    {
+      "id": "ACT-L1",
+      "type": "A1.BusinessActivity",
+      "version": "1.0",
+      "name": "Capture application",
+      "lifecycle_status": "active",
+      "description": "Record the applicant's request.",
+      "attributes": {
+        "invokes": [
+          "SO-LO-01"
+        ]
+      }
+    },
+    {
+      "id": "ACT-L2",
+      "type": "A1.BusinessActivity",
+      "version": "1.0",
+      "name": "Evaluate credit",
+      "lifecycle_status": "active",
+      "description": "Evaluate the applicant's credit.",
+      "attributes": {
+        "invokes": [
+          "SO-CA-01"
+        ]
+      }
+    },
+    {
+      "id": "ACT-L3",
+      "type": "A1.BusinessActivity",
+      "version": "1.0",
+      "name": "Issue offer",
+      "lifecycle_status": "active",
+      "description": "Issue the loan offer.",
+      "attributes": {
+        "invokes": [
+          "SO-LO-04"
+        ]
+      }
+    },
+    {
+      "id": "BO-LOAN-APP",
+      "type": "A1.BusinessObject",
+      "version": "1.0",
+      "name": "Loan Application",
+      "lifecycle_status": "active",
+      "description": "A customer's request for a loan.",
+      "attributes": {
+        "attributes": [
+          "application_id",
+          "customer_id",
+          "requested_amount",
+          "currency",
+          "term_months",
+          "purpose",
+          "application_status"
+        ]
+      }
+    },
+    {
+      "id": "BO-CREDIT-DEC",
+      "type": "A1.BusinessObject",
+      "version": "1.0",
+      "name": "Credit Decision",
+      "lifecycle_status": "active",
+      "description": "The bank's lending decision.",
+      "attributes": {
+        "attributes": [
+          "decision_id",
+          "application_id",
+          "credit_score",
+          "decision",
+          "approved_amount",
+          "conditions"
+        ]
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "VS-GET-LOAN",
+      "kind": "composition",
+      "target": "VSS-L1"
+    },
+    {
+      "source": "VS-GET-LOAN",
+      "kind": "composition",
+      "target": "VSS-L2"
+    },
+    {
+      "source": "VS-GET-LOAN",
+      "kind": "composition",
+      "target": "VSS-L3"
+    },
+    {
+      "source": "VS-GET-LOAN",
+      "kind": "composition",
+      "target": "VSS-L4"
+    },
+    {
+      "source": "VS-GET-LOAN",
+      "kind": "realization",
+      "target": "CAP-LEND"
+    },
+    {
+      "source": "PRC-APPLY",
+      "kind": "realization",
+      "target": "CAP-LEND"
+    },
+    {
+      "source": "PRC-OFFER",
+      "kind": "realization",
+      "target": "CAP-LEND"
+    },
+    {
+      "source": "PRC-ASSESS",
+      "kind": "realization",
+      "target": "CAP-CREDIT"
+    },
+    {
+      "source": "PRC-APPLY",
+      "kind": "composition",
+      "target": "ACT-L1"
+    },
+    {
+      "source": "PRC-ASSESS",
+      "kind": "composition",
+      "target": "ACT-L2"
+    },
+    {
+      "source": "PRC-OFFER",
+      "kind": "composition",
+      "target": "ACT-L3"
+    },
+    {
+      "source": "PRC-APPLY",
+      "kind": "access",
+      "target": "BO-LOAN-APP"
+    },
+    {
+      "source": "PRC-ASSESS",
+      "kind": "access",
+      "target": "BO-CREDIT-DEC"
+    }
+  ]
+}
