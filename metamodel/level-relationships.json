@@ -1,0 +1,129 @@
+{
+  "metamodel_version": "0.4.0",
+  "note": "Within-level relationships are held by each level model, never by SDMM mapping documents. This catalogue defines the kinds a conforming level model may use; the full ArchiMate relationship table is not reproduced here.",
+  "kinds": [
+    {
+      "kind": "composition",
+      "source": "ArchiMate 3.2 ch. 5",
+      "semantics": "whole consists of part; part cannot exist independently"
+    },
+    {
+      "kind": "aggregation",
+      "source": "ArchiMate 3.2 ch. 5",
+      "semantics": "whole groups parts that can exist independently"
+    },
+    {
+      "kind": "assignment",
+      "source": "ArchiMate 3.2 ch. 5",
+      "semantics": "active structure performs behaviour, or artefact is deployed on node"
+    },
+    {
+      "kind": "realization",
+      "source": "ArchiMate 3.2 ch. 5",
+      "semantics": "element plays a critical role in creating or achieving another"
+    },
+    {
+      "kind": "serving",
+      "source": "ArchiMate 3.2 ch. 5",
+      "semantics": "element provides its functionality to another"
+    },
+    {
+      "kind": "access",
+      "source": "ArchiMate 3.2 ch. 5",
+      "semantics": "behaviour observes or acts upon a passive element"
+    },
+    {
+      "kind": "flow",
+      "source": "ArchiMate 3.2 ch. 5",
+      "semantics": "transfer from one element to another"
+    },
+    {
+      "kind": "triggering",
+      "source": "ArchiMate 3.2 ch. 5",
+      "semantics": "temporal or causal precedence"
+    },
+    {
+      "kind": "specialization",
+      "source": "ArchiMate 3.2 ch. 5",
+      "semantics": "element is a particular kind of another"
+    },
+    {
+      "kind": "association",
+      "source": "ArchiMate 3.2 ch. 5",
+      "semantics": "unspecified relationship"
+    }
+  ],
+  "constraints": [
+    {
+      "level": "A2",
+      "source_type": "A2.BusinessArea",
+      "kind": "composition",
+      "target_type": "A2.BusinessDomain",
+      "basis": "BIAN Service Landscape structure (public portal)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.BusinessDomain",
+      "kind": "composition",
+      "target_type": "A2.ServiceDomain",
+      "basis": "BIAN Service Landscape structure (public portal)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.ServiceDomain",
+      "kind": "composition",
+      "target_type": "A2.ServiceGroup",
+      "basis": "BIAN MetaModel Overview (public portal)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.ServiceGroup",
+      "kind": "composition",
+      "target_type": "A2.ServiceOperation",
+      "basis": "BIAN MetaModel Overview (public portal)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.ServiceDomain",
+      "kind": "aggregation",
+      "target_type": "A2.ControlRecord",
+      "basis": "BIAN MetaModel Overview (public portal)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.ServiceDomain",
+      "kind": "association",
+      "target_type": "A2.FunctionalPattern",
+      "basis": "BIAN MetaModel Overview (public portal)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.ServiceDomain",
+      "kind": "association",
+      "target_type": "A2.AssetType",
+      "basis": "BIAN MetaModel Overview (public portal)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.ServiceOperation",
+      "kind": "association",
+      "target_type": "A2.BehaviorQualifier",
+      "basis": "BIAN MetaModel Overview (public portal)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.BusinessScenario",
+      "kind": "aggregation",
+      "target_type": "A2.ServiceOperation",
+      "basis": "BIAN Business Scenarios (public portal)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.BusinessObject",
+      "kind": "composition",
+      "target_type": "A2.BusinessObjectAttribute",
+      "basis": "BIAN Business Object Model (public portal)"
+    }
+  ],
+  "policy": "A2 relationships must match a constraint row (BIAN structure is fixed). A1, A3 and A4 relationships must use a catalogued kind between two entities of the same level; pairwise ArchiMate validity is the level model's responsibility."
+}

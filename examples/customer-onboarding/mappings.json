@@ -1,5 +1,5 @@
 {
-  "registry_version": "0.3.0",
+  "registry_version": "0.4.0",
   "mappings": [
     {
       "mapping_id": "MAP-001",
@@ -241,6 +241,30 @@
       "rationale": "Candidate flagged: API payload lacks fields the operation semantics require; architect must decide whether this is a partial implementation",
       "baseline_id": "DEMO-BASE-002",
       "created_by": "SDMM Mapping Engine"
+    },
+    {
+      "mapping_id": "MAP-011",
+      "source": {
+        "id": "APP-001",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-001",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:SYNTHETIC-IA-002"
+      ],
+      "rationale": "Production deployment of the onboarding application; the precise form of MAP-003's DEPLOYED_ON",
+      "baseline_id": "DEMO-BASE-002",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-03-01"
     }
-  ]
+  ],
+  "metamodel_version": "0.4.0"
 }

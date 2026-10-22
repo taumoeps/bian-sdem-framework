@@ -1,0 +1,150 @@
+{
+  "metamodel_version": "0.4.0",
+  "level": "A3",
+  "entities": [
+    {
+      "type": "A3.ApplicationComponent",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A modular, deployable part of an application",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Application Component",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A3.ApplicationService",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "Externally exposed application behaviour",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Application Service",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A3.ApplicationInterface",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "An access point to an application service",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Application Interface",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A3.ApplicationFunction",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "Internal application behaviour",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Application Function",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A3.APIOperation",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A callable operation of an API contract",
+      "definition_source": "sdmm_extension",
+      "alignment_kind": "related",
+      "reference": {
+        "standard": "BIAN Semantic API",
+        "release": "8.1",
+        "concept": "Service Operation (API)",
+        "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf",
+        "locator": "Practitioner Guide"
+      },
+      "evidence_status": "proposed_extension"
+    },
+    {
+      "type": "A3.DataEntity",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A logical data entity held by an application",
+      "definition_source": "archimate_aligned",
+      "alignment_kind": "related",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Data Object",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A3.Event",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "An event an application produces or consumes",
+      "definition_source": "archimate_aligned",
+      "alignment_kind": "related",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Application Event",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A3.SolutionBuildingBlock",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "An organisation-defined reusable solution grouping",
+      "definition_source": "togaf_informed",
+      "alignment_kind": "conceptual",
+      "reference": {
+        "standard": "TOGAF",
+        "release": "10",
+        "concept": "Solution Building Block",
+        "uri": "https://pubs.opengroup.org/togaf-standard/",
+        "locator": "Architecture Content"
+      },
+      "evidence_status": "interpreted_from_official_source"
+    }
+  ]
+}

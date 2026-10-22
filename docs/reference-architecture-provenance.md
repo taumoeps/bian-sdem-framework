@@ -108,7 +108,7 @@ Each extends a core ArchiMate-derived entity. They exist to show how a profile s
 
 ## Provenance statement
 
-1. **Origin.** Of the 31 core entities, 12 derive from BIAN, 19 from ArchiMate 3.2 (of which 4 are SDMM extensions of an ArchiMate parent), 1 from TOGAF, and 1 (`A4.InfrastructureComponent`) is an SDMM compatibility supertype. All reference material is publicly readable at the sources above.
+1. **Origin.** Of the 41 core entities, 13 derive from BIAN (12 `bian_reference`, 1 `bian_aligned`), 21 from ArchiMate 3.2, 1 from TOGAF, and 6 are SDMM extensions (`ValueStreamStage`, `BusinessActivity`, `APIOperation`, `Deployment`, `DeploymentEnvironment`) or the compatibility supertype `InfrastructureComponent`. All reference material is publicly readable at the sources above.
 2. **No institutional content.** No entity, name, definition or relationship in this catalogue is taken from any bank's or vendor's architecture model. Institution-specific entities belong in that institution's private profile and never in this repository.
 3. **No reproduction.** Definitions in the catalogue are SDMM paraphrases. No text, diagram, identifier list or dataset from BIAN or The Open Group is reproduced. `reference.uri` fields point to the public source; they do not substitute for it.
 4. **Verification.** `bian_reference` entities are published as `pending_release_validation` and become `confirmed_in_official_source` only through an entry in `metamodel/verification/` recording who checked what, where and when (v0.4.2).

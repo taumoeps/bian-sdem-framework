@@ -2,7 +2,7 @@
 ## v0.4 track — Entity Metamodel, Bank Architecture Profiles and BIAN Verification Register
 
 **Status:** Proposed design baseline for implementation (not a BIAN or Open Group standard)
-**Version:** 0.4-draft.3 (supersedes 0.3-draft.1 after review; renumbered because v0.3 is published as `sdmm-trace`; §14 decisions recorded)
+**Version:** 0.4.0 — implemented (catalogue, hierarchy, verdicts, `DEPLOYED_AS`, level-model exports and federated graph shipped in v0.4.0; profiles and the verification register follow as v0.4.1 / v0.4.2). Draft lineage: 0.3-draft.1 → 0.4-draft.3 (supersedes 0.3-draft.1 after review; renumbered because v0.3 is published as `sdmm-trace`; §14 decisions recorded)
 **Prepared:** 22 October 2026
 **Architecture scope:** SDMM-defined A1 Business / A2 BIAN Service Domain / A3 Application / A4 Infrastructure
 **Compatibility commitment:** every v0.2.1 mapping document validates unchanged under every v0.4.x release.
@@ -38,7 +38,7 @@ Registry self-check (new): a rule with `bian_*` authority must have at least one
 
 ## 2. Reference architecture inventory
 
-Per-entity provenance — which public standard each of the 31 entities derives from, with the public source — is maintained in `docs/reference-architecture-provenance.md`.
+Per-entity provenance — which public standard each of the 41 entities derives from, with the public source — is maintained in `docs/reference-architecture-provenance.md`.
 
 | Ref | Source | Contributes | SDMM use | Caveat |
 |---|---|---|---|---|
@@ -54,7 +54,7 @@ Per-entity provenance — which public standard each of the 31 entities derives 
 
 ## 3. Entity record
 
-**Vocabulary.** An **entity** is an item of the SDMM vocabulary — a kind of thing, such as `A2.ServiceDomain`; there are 31 in core. An **entity instance** is an actual element of a bank's architecture of that kind — `SD-044`, the Fraud Detection domain — and lives in the bank's own level model. A mapping's endpoints are **entity references**: pointers to instances, carrying the instance's `id`, its entity (the `type` field) and its `version`.
+**Vocabulary.** An **entity** is an item of the SDMM vocabulary — a kind of thing, such as `A2.ServiceDomain`; there are 41 in core. An **entity instance** is an actual element of a bank's architecture of that kind — `SD-044`, the Fraud Detection domain — and lives in the bank's own level model. A mapping's endpoints are **entity references**: pointers to instances, carrying the instance's `id`, its entity (the `type` field) and its `version`.
 
 Every entity in `metamodel/` records:
 
@@ -101,7 +101,7 @@ Document-level pins: `registry_version` (existing), **`metamodel_version`** and 
 
 ## 5. Core entity catalogue
 
-Counts: v0.2.1 ships 11 types. The 0.3 draft proposed 53. v0.4 core is **31**; the rest move to profiles or to the artefact list.
+Counts: v0.2.1 ships 11 types. The 0.3 draft proposed 53. v0.4 core is **41** (+3 artefacts); the rest move to profiles or to the artefact list.
 
 ### 5.1 A1 — Business (10)
 
@@ -297,7 +297,7 @@ Rules: an entity's `evidence_status` is computed from the register at load time,
 | Release | Scope | Acceptance |
 |---|---|---|
 | **v0.3** (published) | `sdmm-trace` | Reviewer's Card Fraud Alerts demo runs from the CLI |
-| **v0.4.0** Entity metamodel (additive) | `metamodel/` catalogue (31 core), `extends`/`abstract`, is-a matching, `DEPLOYED_AS`, verdicts in `--json`, `metamodel_version` pin, taxonomy self-check | v0.2.1 examples unchanged; `DEPLOYED_ON → A4.Node` passes; unknown type fails |
+| **v0.4.0** Entity metamodel (additive) | `metamodel/` catalogue (41 core), `extends`/`abstract`, is-a matching, `DEPLOYED_AS`, verdicts in `--json`, `metamodel_version` pin, taxonomy self-check | v0.2.1 examples unchanged; `DEPLOYED_ON → A4.Node` passes; unknown type fails |
 | **v0.4.1** Profiles and resolution | JSON profiles, static `where`/id rules, `resolve_entity(ref)`, `example-bank` and `example-cloud` profiles, `profile_id` pin | BusinessFunction / SBB / CloudResource resolve; S3 bucket → ComputeResource rejected |
 | **v0.4.2** BIAN verification register | `metamodel/verification/`, computed `evidence_status`, register-driven report | Zero `bian_reference` types confirmed without a register entry |
 

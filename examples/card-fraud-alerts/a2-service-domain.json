@@ -1,0 +1,67 @@
+{
+  "level": "A2",
+  "model_id": "synthetic-bank-a2",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-BIAN-WORKBENCH",
+  "instances": [
+    {
+      "id": "BD-FRAUD",
+      "type": "A2.BusinessDomain",
+      "version": "1.0",
+      "name": "Fraud and Risk (synthetic grouping)",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "SD-044",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Fraud Detection (synthetic selection)",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-FRAUD-DETECTION"
+    },
+    {
+      "id": "SG-044-01",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Fraud Case Operations",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "SO-044-07",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Notify Fraud Alert",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "CR-044",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Fraud Detection Control Record",
+      "lifecycle_status": "active"
+    }
+  ],
+  "relationships": [
+    {
+      "source": "BD-FRAUD",
+      "kind": "composition",
+      "target": "SD-044"
+    },
+    {
+      "source": "SD-044",
+      "kind": "composition",
+      "target": "SG-044-01"
+    },
+    {
+      "source": "SG-044-01",
+      "kind": "composition",
+      "target": "SO-044-07"
+    },
+    {
+      "source": "SD-044",
+      "kind": "aggregation",
+      "target": "CR-044"
+    }
+  ]
+}

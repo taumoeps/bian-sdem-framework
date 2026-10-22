@@ -17,7 +17,7 @@ SDADM is a generic four-level design lifecycle; an institution's own level numbe
 
 ## Reference architecture provenance
 
-Every entity in the SDMM vocabulary derives from a **publicly available reference architecture** — BIAN, ArchiMate 3.2 or TOGAF 10 — or is a documented SDMM extension of one. No entity is named after, defined by, or copied from any institution's architecture model; institution-specific entities belong in that institution's private profile, never here. Of the 31 core entities, **12 derive from BIAN, 19 from ArchiMate, 1 from TOGAF**. Full detail, including classification and the public URL for each, is in [`docs/reference-architecture-provenance.md`](docs/reference-architecture-provenance.md).
+Every entity in the SDMM vocabulary derives from a **publicly available reference architecture** — BIAN, ArchiMate 3.2 or TOGAF 10 — or is a documented SDMM extension of one. No entity is named after, defined by, or copied from any institution's architecture model; institution-specific entities belong in that institution's private profile, never here. Of the 41 core entities, **13 derive from BIAN (12 reference, 1 aligned), 21 from ArchiMate 3.2, 1 from TOGAF, and 6 are SDMM extensions** of an ArchiMate concept or compatibility supertypes. Full detail, including classification and the public URL for each, is in [`docs/reference-architecture-provenance.md`](docs/reference-architecture-provenance.md).
 
 | Key | Public source |
 |---|---|
@@ -140,7 +140,7 @@ Read this section first if you know enterprise architecture but not this reposit
 
 ### 1. Entity instances live in the levels; SDMM does not store them
 
-Two words, used precisely throughout: an **entity** is a kind of thing in the vocabulary (`A2.ServiceDomain`, one of 31); an **entity instance** is an actual thing of that kind in your bank (`SD-044`, the Fraud Detection domain). SDMM defines the entities. Your tools hold the instances.
+Two words, used precisely throughout: an **entity** is a kind of thing in the vocabulary (`A2.ServiceDomain`, one of 41); an **entity instance** is an actual thing of that kind in your bank (`SD-044`, the Fraud Detection domain). SDMM defines the entities. Your tools hold the instances.
 
 Each level already has its own model, owned by its own team, holding its own instances:
 
@@ -324,7 +324,7 @@ A knowledge graph needs three components. SDMM supplies one of them.
 |---|---|---|---|
 | **Nodes** | the entity instances — capabilities, domains, applications, servers | your A1–A4 models | yes, in your EA tooling |
 | **Arrows** | the approved mappings between entity instances in adjacent levels | **this repository's `mappings.json` files** | yes |
-| **Engine** | something that loads the arrows, attaches each end to its node, and walks the result | `sdmm-trace` walks the arrows today (v0.3); a persistent graph store and query service are roadmap |
+| **Engine** | something that loads the arrows, attaches each end to its node, and walks the result | `sdmm-graph` (v0.4) loads the four level models and the arrows into an in-memory federated graph, resolves every endpoint, traces with names and classifies impact; a persistent store is roadmap |
 
 When the engine loads the Card Fraud Alerts arrows and attaches them to their nodes, this is what it holds:
 
@@ -344,19 +344,19 @@ and it can then answer questions in either direction, without any extra arrows b
 
 The design specification calls this the **federated knowledge graph**: *federated* because the nodes stay in four different models owned by four different teams; SDMM owns only the arrows between them.
 
-**So, today:** the arrows exist, as records in files, and `sdmm-trace` walks them in either direction from the command line, naming the mapping that justifies each hop. The nodes exist in your own tools. What does not exist yet is a persistent graph store with a query service and impact classification — that is the roadmap. When it arrives, the records will not need to change; they are already the right shape.
+**So, today:** the arrows exist as records in files; the nodes exist as level-model exports (your tools write them to `schema/level-model.schema.json`); and `sdmm-graph` joins the two into a federated graph in memory — checking every endpoint resolves, tracing with real names, and classifying impact by rule. What does not exist is a persistent store or a UI; a database adapter would load the same files.
 
 ### The seven concepts, side by side
 
 | Concept | In one sentence | In this repository |
 |---|---|---|
-| **Entity** | A kind of thing in one level — Business Capability, Service Domain, Application Component | `schema/relationship-types.json` today; the 31-entity catalogue in v0.4 |
+| **Entity** | A kind of thing in one level — Business Capability, Service Domain, Application Component | `schema/relationship-types.json` today; the 41-entity catalogue in v0.4 |
 | **Entity instance** | An actual thing of that kind — *Card Fraud Alerts*, *Fraud Detection domain* | Not here. Lives in the level's own model; SDMM refers to it by ID |
 | **Mapping type** | One of the eight permitted kinds of arrow | `schema/relationship-types.json` |
 | **Mapping** | One actual arrow between two entity instances, with its evidence and approval | A record in a `mappings.json` file |
 | **Mapping document** | All the arrows for one initiative | `examples/<initiative>/mappings.json` |
 | **Validator** | The gate that rejects arrows that break the rules | `sdmm/validate.py` |
-| **Knowledge graph** | Nodes (your models) + arrows (the mappings) + an engine to walk them | Roadmap. This repo supplies the arrows only |
+| **Knowledge graph** | Nodes (your level exports) + arrows (the mappings) + an engine to walk them | `sdmm-graph` — in memory, rebuilt per run; persistent store is roadmap |
 
 ## What this repository ships
 
@@ -366,11 +366,12 @@ If you are expecting to deploy something: there is nothing to deploy. This repos
 |---|---|---|---|---|---|
 | **Contract** | v0.2 | — | — | The rulebook: the eight permitted arrow types (`schema/relationship-types.json`) and the fields every mapping must carry (`schema/mapping.schema.json`) | *SDMM Mapping Metamodel & Rules* |
 | **Service Domain Mapping Model Validator** | v0.2 | `sdmm-validate`, `sdmm-diff` | an **existing** mapping document | **Gate.** Checks the document's *structure and governance* — not the correctness of any A1–A4 relationship in it | *SDMM Validation & Approval* (the deterministic checks; approval itself is recorded as fields) |
-| **Service Domain Mapping Model Query** | v0.3 | `sdmm-trace` | an **existing** mapping document | **Trace.** Follows the approved arrows an architect already wrote, in either direction, and prints the chain — it draws no arrows of its own | *Federated Knowledge Graph — Mapping Registry & Traceability* (the traversal half; impact classification is v0.5) |
+| **Service Domain Mapping Model Query** | v0.3 | `sdmm-trace` | an **existing** mapping document | **Trace.** Follows the approved arrows an architect already wrote, in either direction, and prints the chain — it draws no arrows of its own | *Federated Knowledge Graph — Mapping Registry & Traceability* (traversal over mappings alone) |
+| **Service Domain Mapping Model Graph** | v0.4 | `sdmm-graph` | **existing** level-model exports (A1–A4) plus mapping documents | **Federate.** Validates each level model against the entity catalogue, resolves every mapping endpoint against it, traces chains with real names, and classifies impact by structural rule | *Federated Knowledge Graph* (in-memory reference implementation) · *Bidirectional impact traversal* (structural classification) |
 
-**Context of use — read this before the names mislead you.** Neither component contains mapping logic. Neither decides, suggests or assesses whether a Business Capability belongs to a Service Domain, whether a domain is realised by an application, or whether anything should be deployed anywhere. Those decisions are made by architects and recorded in a mapping document. The Validator checks that the *document* is well-formed and governed; the Query reads the *document's* approved arrows and joins them into chains. Both are downstream of the architect, never a substitute for one. A gap in a trace means no mapping has been decided there yet.
+**Context of use — read this before the names mislead you.** None of the components contains mapping logic. None decides, suggests or assesses whether a Business Capability belongs to a Service Domain, whether a domain is realised by an application, or whether anything should be deployed anywhere. Those decisions are made by architects and recorded in a mapping document. The Validator checks that the *document* is well-formed and governed; the Query reads the *document's* approved arrows and joins them into chains; the Graph joins those arrows to the institution's own level models and applies impact *rules*. All are downstream of the architect, never a substitute for one. A gap in a trace means no mapping has been decided there yet.
 
-Both components read the same `mappings.json` files. The validator decides whether a file is acceptable; the query assumes it already is. Neither stores anything, transforms anything, or sends anything anywhere.
+All components read the same files. The validator decides whether a mapping document is acceptable; the query and graph assume it already is. None stores anything, transforms anything, or sends anything anywhere — the graph is rebuilt in memory on every run.
 
 ### Service Domain Mapping Model Validator (v0.2)
 
@@ -439,6 +440,40 @@ CAP-310  [A1.BusinessCapability]
       └─ -DEPLOYED_ON-> INF-CLOUD-K8S-PROD  [A4.InfrastructureComponent]  (FRD-005)
 ```
 
+### Service Domain Mapping Model Graph (v0.4)
+
+**Target-state component:** *Federated Knowledge Graph* as an in-memory reference implementation, and *Bidirectional impact traversal* as structural classification. **Operates on:** the institution's A1–A4 level-model exports (`schema/level-model.schema.json`) plus mapping documents. **Does not:** store anything, propose mappings, or judge whether a change is semantically necessary — it applies a published rule table and an architect confirms.
+
+```mermaid
+flowchart LR
+    X1["A1 export"] --> FG
+    X2["A2 export"] --> FG
+    X3["A3 export"] --> FG
+    X4["A4 export"] --> FG
+    M["Mapping documents"] --> FG
+    subgraph FEDG["Target state: Federated Knowledge Graph (in-memory) + impact traversal"]
+      FG["sdmm-graph"]
+    end
+    FG --> CHK["check: level models valid,<br/>every mapping endpoint resolves"]
+    FG --> TR["trace: chain with names<br/>and concrete entities"]
+    FG --> IMP["impact: each reachable instance<br/>no_impact / review_required /<br/>design_change_required"]
+    style FEDG fill:#2e7d32,color:#fff,stroke:#1b5e20
+```
+
+The level-model export is the one new input: `{level, instances[{id, type, version, name, …}], relationships[{source, kind, target}]}`. Instances must use **concrete** entities from the catalogue; A2 relationships must follow BIAN's published structure. The federated graph is also the validator's entity resolver, so a mapping written to the abstract `A4.InfrastructureComponent` resolves against a concrete `A4.SystemSoftware` instance. Impact rules are the table in [`docs/06-data-architecture.md`](docs/06-data-architecture.md): for example `rehost` marks the A4 instance and its directly deployed A3 components `design_change_required` and everything above `no_impact`, and names the mapping records to supersede.
+
+```bash
+python -m sdmm.graph impact INF-CLOUD-K8S-PROD --change rehost examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+```
+```
+  design_change_required   A4  INF-CLOUD-K8S-PROD  Managed Kubernetes (production)  via -
+  design_change_required   A3  APP-FRAUD-ENGINE    Fraud Engine                     via FRD-005
+  no_impact                A2  SD-044              Fraud Detection                  via FRD-005, FRD-002
+  no_impact                A1  CAP-310             Card Fraud Alerts                via FRD-005, FRD-002, FRD-001
+
+  mappings to supersede: FRD-005
+```
+
 ### How it runs
 
 | Component | Mode | Command | Typical user |
@@ -450,6 +485,9 @@ CAP-310  [A1.BusinessCapability]
 | Query | Local | `python -m sdmm.trace CAP-310 path/to/mappings.json` | Architect asking what an instance depends on, or what depends on it |
 | Query | Pipeline | `sdmm-trace INF-X --direction up` with exit code `1` meaning "nothing depends on it" | Decommissioning gate |
 | Query | Library | `from sdmm.trace import load_edges, walk` | Developer feeding a dashboard or diagram generator |
+| Graph | Local / CI | `python -m sdmm.graph check a1.json a2.json a3.json a4.json mappings.json` | Gate: level models valid and every mapping endpoint exists |
+| Graph | Local | `python -m sdmm.graph trace CAP-310 <files>` / `impact INF-X --change rehost <files>` | Architect assessing a change |
+| Graph | Library | `from sdmm.graph import FederatedGraph` | Developer loading the graph into a store or UI |
 
 There is no server, no database, no scheduler and no UI. A production deployment would wrap these in whatever hosts your other EA tooling.
 
@@ -464,10 +502,10 @@ flowchart TB
     RULES["SDMM Mapping Metamodel & Rules<br/>BUILT: schema/"]
     ENGINE["SDMM Mapping Engine<br/>Process / Information / Architecture analysis<br/>NOT BUILT: v0.4"]
     VALID["SDMM Validation & Approval<br/>BUILT: sdmm/validate.py"]
-    FED[("Federated Knowledge Graph<br/>Cross-layer Mapping Registry & Traceability<br/>DATA: mappings.json files + sdmm-trace<br/>persistent graph store NOT BUILT")]
-    IMPACT["Bidirectional impact traversal<br/>& generated views<br/>TRAVERSAL BUILT: sdmm-trace<br/>impact classification NOT BUILT: v0.5"]
+    FED[("Federated Knowledge Graph<br/>Cross-layer Mapping Registry & Traceability<br/>BUILT in memory: level exports + mappings + sdmm-graph<br/>persistent store NOT BUILT")]
+    IMPACT["Bidirectional impact traversal<br/>& generated views<br/>BUILT: sdmm-graph impact (structural rules)<br/>generated views NOT BUILT: v0.5"]
 
-    subgraph LEVELS["Independently governed architecture models<br/>EXTERNAL: owned by the bank, referenced by id only"]
+    subgraph LEVELS["Independently governed architecture models<br/>EXTERNAL data, SDMM export format: schema/level-model.schema.json"]
       A1[(A1 Business)]
       A2[(A2 BIAN Service Domain)]
       A3[(A3 Application)]
@@ -484,33 +522,33 @@ flowchart TB
     RULES -->|loaded by| VALID
     REF -.->|canonical_id lookup| VALID
     VALID -->|approved mappings| FED
-    FED <-.->|federated references / queries| A1
-    FED <-.->|federated references / queries| A2
-    FED <-.->|federated references / queries| A3
-    FED <-.->|federated references / queries| A4
-    FED -.-> IMPACT
+    FED <-->|level exports loaded| A1
+    FED <-->|level exports loaded| A2
+    FED <-->|level exports loaded| A3
+    FED <-->|level exports loaded| A4
+    FED --> IMPACT
 
     style RULES fill:#2e7d32,color:#fff,stroke:#1b5e20
     style VALID fill:#2e7d32,color:#fff,stroke:#1b5e20
-    style FED fill:#f9a825,color:#000,stroke:#f57f17
+    style FED fill:#2e7d32,color:#fff,stroke:#1b5e20
+    style IMPACT fill:#2e7d32,color:#fff,stroke:#1b5e20
     style REF fill:#90caf9,color:#000,stroke:#1565c0
     style ENGINE fill:#eeeeee,color:#616161,stroke:#9e9e9e,stroke-dasharray: 5 5
     style HIST fill:#eeeeee,color:#616161,stroke:#9e9e9e,stroke-dasharray: 5 5
-    style IMPACT fill:#eeeeee,color:#616161,stroke:#9e9e9e,stroke-dasharray: 5 5
 ```
 
-Green = built. Amber = data present, engine absent. Blue = interface defined, implementation yours. Grey dashed = roadmap. Solid arrows are flows that happen today; dotted arrows are flows the target state adds.
+Green = built. Blue = interface defined, implementation yours. Grey dashed = roadmap. Solid arrows are flows that happen today; dotted arrows are flows the target state adds.
 
 | Box | Spec responsibility | Status in this repo |
 |---|---|---|
-| **Mapping Metamodel & Rules** | Which cross-layer links are legal; what a record must contain | **Built** — `schema/relationship-types.json`, `schema/mapping.schema.json` |
+| **Mapping Metamodel & Rules** | Which cross-layer links are legal; what a record must contain; the entity vocabulary | **Built** — `schema/relationship-types.json` (9 rules), `schema/mapping.schema.json`, `metamodel/` (41 entities + 3 artefacts, hierarchy, within-level relationship kinds) |
 | **Validation & Approval** | Deterministic checks, then architect sign-off | **Checks built** — `sdmm/validate.py` (structure, registry, evidence, anchoring) and `sdmm/diff.py` (transitions, immutability). Approval is recorded as fields (`status`, `reviewer_id`, `approved_at`), not a workflow system |
-| **Federated Knowledge Graph / Mapping Registry** | Store of approved cross-layer edges, queryable in both directions | **Data + traversal** — each `mappings.json` record is one edge, held as a flat file in git; `sdmm-trace` queries them both ways with provenance. A persistent graph store is not built |
+| **Federated Knowledge Graph / Mapping Registry** | Store of approved cross-layer edges, queryable in both directions | **Built, in memory** — `sdmm-graph` loads the four level exports and the mapping documents, resolves every endpoint (is-a), traces with names. A persistent store or query service is not built; a database adapter would load the same files |
 | **BIAN Reference Repository** | Licensed BIAN definitions by release | **Interface only** — `ReferenceResolver` in `sdmm/reference.py`; you implement it |
 | **Mapping Engine** | Reads A1–A4 and proposes mappings | **Not built** (v0.4). `status: proposed` + `confidence` reserve its output slot |
 | **Historical Design Repository** | Legacy documents and patterns | **Not built** |
-| **Bidirectional impact traversal & generated views** | Upstream/downstream queries, impact classification, diagrams projected from the graph | **Traversal built** (`sdmm-trace`); impact classification and generated views not built (v0.5) |
-| **A1–A4 models** | The bank's own capability, domain, application and infrastructure models | **External, never in scope.** SDMM references their instance IDs; it never copies the instances. An `EntityResolver` (file catalogue or your adapter) lets the validator confirm the IDs exist |
+| **Bidirectional impact traversal & generated views** | Upstream/downstream queries, impact classification, diagrams projected from the graph | **Traversal and impact classification built** (`sdmm-trace`, `sdmm-graph impact` — structural rules, architect confirms); generated views not built (v0.5) |
+| **A1–A4 models** | The bank's own capability, domain, application and infrastructure models | **External data, SDMM format.** The bank exports each model to `schema/level-model.schema.json`; `sdmm-graph` loads the exports and the validator resolves mapping endpoints against them. SDMM never holds the exports |
 
 ## Roadmap
 
@@ -523,15 +561,15 @@ Each release adds one component and maps to one box of the target-state architec
 | **v0.2.1** | Validator | Stricter checks: who approved, when, on what BIAN release, with what evidence — and a guard against editing approved records | Run in CI on every change to a mapping document | *OK*, or the records that break governance | *Validation & Approval* | shipped — `v0.2.1` |
 | **v0.3** | Query | Follow the arrows in an existing mapping document from any starting point, in either direction | Ask "what does X depend on?" or "what depends on X?" | The chain of connected instances, each hop naming the mapping that justifies it | *Federated Knowledge Graph* (traversal) | shipped — `v0.3.0` |
 | **v0.3.1** | Contract | Generic level names (A1–A4) so the vocabulary belongs to no single institution | Existing documents keep working through aliases | Same documents, institution-neutral naming | *Mapping Metamodel & Rules* | shipped — `v0.3.1` |
-| **v0.4.0** | Contract | A full vocabulary of 31 entities, each traced to a public standard, with family relationships between them | Write mappings against a richer, standards-anchored vocabulary | Documents that name precise entities, still valid under the old rules | *Mapping Metamodel & Rules* | next |
+| **v0.4** | Contract · Validator · Graph | The whole data architecture: a vocabulary of 41 entities traced to public standards, an export format for an institution's four design models, and a federated graph that joins them to the mappings — with impact classification | Export your A1–A4 models; run `sdmm-graph` to check, trace and assess change | Every mapping endpoint confirmed to exist; chains with real names; each affected instance classified no impact / review / redesign | *Metamodel & Rules* · *Validation & Approval* · *Federated Knowledge Graph* · *Impact traversal* | shipped — `v0.4.0` |
 | **v0.4.1** | Contract · Validator | A way for an institution to declare how its own entity names map onto the SDMM vocabulary | An institution publishes a profile; the checker resolves its names through it | Institution documents validated without changing their own vocabulary | *Metamodel & Rules* · *Validation & Approval* | planned |
 | **v0.4.2** | Contract | A record of which BIAN definitions have been checked against which release, by whom | Someone with BIAN access records what they verified | Each BIAN-derived entity marked verified or pending | *BIAN Reference Repository* (verification) | planned |
-| **v0.5** | Query | Tell apart "connected to the change" from "must change because of it" | Ask "if X changes, what must be redesigned?" | Each connected instance classified: no impact, review, or redesign | *Impact traversal & generated views* | planned |
+| **v0.5** | Graph | Generated views — matrices and diagrams projected from the graph — and baseline-aware impact (compare two dated baselines) | Produce the capability-to-domain matrix or an impact report for a steering pack | Views that are derived from approved data, never drawn by hand | *Impact traversal & generated views* | planned |
 | **v0.6** | Reference | A live lookup of BIAN identifiers in a licensed release | Attach the institution's BIAN access to the checker | Mappings rejected if they cite a BIAN id that does not exist | *BIAN Reference Repository* | planned |
 | **v0.7** | Engine | Suggested mappings, with evidence, for an architect to accept or reject | Run over the institution's models to draft candidate arrows | Proposed records only — never approved without a reviewer | *SDMM Mapping Engine* | planned |
 | **v1.0** | — | A stable, published specification others can conform to | Adopt it; test against it | A conformance profile | — | planned |
 
-Not on the roadmap: a persistent graph database, a UI, identity or workflow management, or any guarantee of BIAN conformance.
+Not on the roadmap: a UI, identity or workflow management, or any guarantee of BIAN conformance. A persistent graph database is an adapter over the same files, added when an institution needs one.
 
 ## Quick start
 
@@ -542,20 +580,23 @@ python -m sdmm.validate --strict examples/*/mappings.json                 # stru
 python -m sdmm.validate --catalogue examples/card-fraud-alerts/entities.json examples/card-fraud-alerts/mappings.json
 python -m sdmm.diff --git HEAD~1 examples/*/mappings.json                 # transitions and immutability vs last commit
 python -m sdmm.trace CAP-310 examples/card-fraud-alerts/mappings.json     # what it depends on / what depends on it
+python -m sdmm.graph check  examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json   # level models + endpoint resolution
+python -m sdmm.graph impact INF-CLOUD-K8S-PROD --change rehost examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
 python -m sdmm.validate --json examples/*/mappings.json                   # machine-readable report
 python -m unittest discover -s tests -v
 ```
 
-Or install it: `pip install -e .` gives you `sdmm-validate`, `sdmm-diff` and `sdmm-trace` commands. Exit codes: `0` valid, `1` issues found, `2` usage/registry error.
+Or install it: `pip install -e .` gives you `sdmm-validate`, `sdmm-diff`, `sdmm-trace` and `sdmm-graph` commands. Exit codes: `0` valid, `1` issues found, `2` usage/registry error.
 
 What the validator checks is listed under *What goes in and what comes out* above; `--registry` points it at your own registry and `validate(..., resolver=)` attaches a licensed BIAN lookup. It is **not a certification of BIAN conformance** or of architectural correctness.
 
 ## Contents
 
 - `docs/`: reference methodology, governance, the v0.4 entity metamodel spec and `reference-architecture-provenance.md` (every entity traced to a public standard)
-- `schema/`: SDMM cross-layer relationship registry + JSON Schema
+- `schema/`: relationship registry, mapping-document schema, level-model export schema
+- `metamodel/`: the A1–A4 entity catalogue (41 + 3 artefacts) and within-level relationship kinds
 - `examples/`: synthetic mappings — `customer-onboarding` (full vertical slice) and `card-fraud-alerts` (a change event with supersession)
-- `sdmm/`: validator, document diff, traceability walker, and the `ReferenceResolver` / `EntityResolver` adapter interfaces
+- `sdmm/`: validator, document diff, traceability walker, metamodel loader, federated graph with impact, and the `ReferenceResolver` / `EntityResolver` adapter interfaces
 - `tests/`: basic automated tests
 - `.github/workflows/`: CI validation
 

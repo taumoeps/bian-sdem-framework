@@ -1,0 +1,186 @@
+{
+  "metamodel_version": "0.4.0",
+  "level": "A1",
+  "entities": [
+    {
+      "type": "A1.BusinessCapability",
+      "level": "A1",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A business ability independent of how it is implemented",
+      "definition_source": "bian_aligned",
+      "alignment_kind": "conceptual",
+      "reference": {
+        "standard": "BIAN BCM",
+        "release": "2023",
+        "concept": "Business Capability",
+        "uri": "https://bian.org/wp-content/uploads/2023/08/BIAN-BCM-Relationship-with-BIAN-Service-Landscape-Final.pdf",
+        "locator": "Statement of Alignment"
+      },
+      "evidence_status": "interpreted_from_official_source"
+    },
+    {
+      "type": "A1.ValueStream",
+      "level": "A1",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "The stages by which stakeholders receive value",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Value Stream",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 7"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A1.ValueStreamStage",
+      "level": "A1",
+      "abstract": false,
+      "extends": "A1.ValueStream",
+      "artefact": false,
+      "definition": "One named segment of a value stream",
+      "definition_source": "sdmm_extension",
+      "alignment_kind": "specialization",
+      "reference": {
+        "standard": "SDMM",
+        "release": "0.4",
+        "concept": "Value Stream Stage",
+        "uri": "https://github.com/taumoeps/bian-sdmm-framework",
+        "locator": "extension of A1.ValueStream"
+      },
+      "evidence_status": "proposed_extension"
+    },
+    {
+      "type": "A1.BusinessProcess",
+      "level": "A1",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "Coordinated business behaviour",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Business Process",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 8"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A1.BusinessActivity",
+      "level": "A1",
+      "abstract": false,
+      "extends": "A1.BusinessProcess",
+      "artefact": false,
+      "definition": "A fine-grained activity within a process",
+      "definition_source": "sdmm_extension",
+      "alignment_kind": "conceptual",
+      "reference": {
+        "standard": "SDMM",
+        "release": "0.4",
+        "concept": "Business Activity",
+        "uri": "https://github.com/taumoeps/bian-sdmm-framework",
+        "locator": "extension of A1.BusinessProcess"
+      },
+      "evidence_status": "proposed_extension"
+    },
+    {
+      "type": "A1.BusinessService",
+      "level": "A1",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "Business behaviour exposed to consumers",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Business Service",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 8"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A1.BusinessActor",
+      "level": "A1",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "An individual or organisation capable of business behaviour",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Business Actor",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 8"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A1.BusinessRole",
+      "level": "A1",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "Responsibility for a class of business behaviour",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Business Role",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 8"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A1.BusinessObject",
+      "level": "A1",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A business-level information concept",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Business Object",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 8"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    },
+    {
+      "type": "A1.BusinessRequirement",
+      "level": "A1",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "An expressed architectural requirement",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Requirement",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 6"
+      },
+      "evidence_status": "confirmed_in_official_source"
+    }
+  ]
+}

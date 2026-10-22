@@ -5,6 +5,7 @@ schema/mapping.schema.json; `check_schema` is not a general JSON Schema engine.
 """
 from pathlib import Path
 import argparse, json, re, sys
+from sdmm.metamodel import Metamodel
 
 ROOT = Path(__file__).resolve().parents[1]
 RULES = ROOT / 'schema' / 'relationship-types.json'
@@ -103,7 +104,8 @@ def check_schema(value, schema, root=None, path='$'):
 
 # ---------------------------------------------------------------- registry self-check
 
-def validate_registry(registry):
+def validate_registry(registry, metamodel=None):
+    metamodel = metamodel or Metamodel.load()
     issues = []
     perspectives = set(registry.get('perspectives', []))
     authorities = set(registry.get('authorities', []))
@@ -130,6 +132,13 @@ def validate_registry(registry):
             issues.append(f'{prefix}: source/target types must be prefixed with a level code {levels}')
         elif levels.index(tgt) - levels.index(src) != 1:
             issues.append(f'{prefix}: cross-level edges must point from A(n) to A(n+1)')
+        for key in ('source_type', 'target_type'):
+            if rule.get(key) and not metamodel.known(normalize_type(rule[key], registry)):
+                issues.append(f'{prefix}: {key} {rule[key]!r} is not in the metamodel')
+        if str(rule.get('authority', '')).startswith('bian_'):
+            ends = [metamodel.entities.get(normalize_type(rule.get(k), registry), {}) for k in ('source_type', 'target_type')]
+            if not any(str(e.get('definition_source', '')).startswith('bian_') for e in ends):
+                issues.append(f'{prefix}: bian_* authority but neither endpoint entity has a bian_* definition_source')
         if rule.get('perspective') not in perspectives:
             issues.append(f'{prefix}: perspective must be one of {sorted(perspectives)}')
         if rule.get('authority') not in authorities:
@@ -150,16 +159,29 @@ def split_evidence(ref):
     return None, ref
 
 
-def validate(payload, registry=None, schema=None, resolver=None, entity_resolver=None, warnings=None):
+def match_rule(rules, metamodel, src, rel, tgt):
+    """Exact triple first; otherwise any rule with the same relationship whose endpoints are ancestors (is-a)."""
+    if (src, rel, tgt) in rules:
+        return rules[(src, rel, tgt)]
+    for (rs, rr, rt), rule in rules.items():
+        if rr == rel and metamodel.is_a(src, rs) and metamodel.is_a(tgt, rt):
+            return rule
+    return None
+
+
+def validate(payload, registry=None, schema=None, resolver=None, entity_resolver=None, warnings=None, verdicts=None, metamodel=None):
     """Validate one mapping document. Returns a list of issue strings (empty = valid).
 
     `resolver`         optional ReferenceResolver: canonical_ids on BIAN-grounded mappings must resolve.
     `entity_resolver`  optional EntityResolver: every endpoint must exist in the level models.
     `warnings`         optional list; advisory findings are appended to it instead of being returned.
+    `verdicts`         optional dict; filled with {mapping_id: {structural, governance, referential, bian, semantic}}.
     """
     registry = registry or load_registry()
     schema = schema or load_schema()
+    metamodel = metamodel or Metamodel.load()
     warnings = warnings if warnings is not None else []
+    verdicts = verdicts if verdicts is not None else {}
     issues = check_schema(payload, schema)
     if not isinstance(payload, dict) or not isinstance(payload.get('mappings'), list):
         return issues  # structure too broken for rule checks
@@ -167,71 +189,88 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
     registry_version = registry.get('$schema_version')
     if payload.get('registry_version') and payload['registry_version'] != registry_version:
         issues.append(f"document registry_version {payload['registry_version']!r} does not match loaded registry {registry_version!r}")
+    if payload.get('metamodel_version') and payload['metamodel_version'] != metamodel.version:
+        issues.append(f"document metamodel_version {payload['metamodel_version']!r} does not match loaded metamodel {metamodel.version!r}")
     mappings = [m for m in payload['mappings'] if isinstance(m, dict)]
     ids = [m.get('mapping_id') for m in mappings if isinstance(m.get('mapping_id'), str) and m['mapping_id']]
     id_set = set(ids)
     successors = {m['previous_mapping_id'] for m in mappings if isinstance(m.get('previous_mapping_id'), str)}
+    bian_level = registry.get('bian_level', 'A2')
     for pos, mapping in enumerate(mappings, 1):
         mid = mapping.get('mapping_id')
         prefix = f"mapping #{pos}" + (f" ({mid})" if mid else '')
+        v = {'structural': 'pass', 'governance': 'pass',
+             'referential': 'unverified' if entity_resolver is None else 'pass',
+             'bian': 'unverified', 'semantic': 'unverified'}
+        def fail(cat, msg):
+            issues.append(f'{prefix}: {msg}'); v[cat] = 'fail'
         if mid and ids.count(mid) > 1:
-            issues.append(f'{prefix}: duplicate mapping_id')
+            fail('structural', 'duplicate mapping_id')
         source, target = mapping.get('source') or {}, mapping.get('target') or {}
-        edge = (normalize_type(source.get('type'), registry), mapping.get('relationship'), normalize_type(target.get('type'), registry))
-        rule = rules.get(edge)
+        stype, ttype = normalize_type(source.get('type'), registry), normalize_type(target.get('type'), registry)
+        for label, t in (('source', stype), ('target', ttype)):
+            if t and not metamodel.known(t):
+                fail('structural', f"{label} entity {t!r} is not in the metamodel")
+            elif t and metamodel.is_artefact(t):
+                fail('structural', f"{label} entity {t!r} is an artefact; artefacts may be cited as evidence but not used as endpoints")
+        rule = match_rule(rules, metamodel, stype, mapping.get('relationship'), ttype) if v['structural'] == 'pass' else None
         if rule is None:
-            issues.append(f'{prefix}: relationship {edge} is not in the registry')
+            if v['structural'] == 'pass':
+                fail('structural', f"relationship ({stype}, {mapping.get('relationship')}, {ttype}) is not in the registry")
         else:
             if mapping.get('perspective') and mapping['perspective'] != rule['perspective']:
-                issues.append(f"{prefix}: perspective {mapping['perspective']!r} does not match registry {rule['perspective']!r}")
+                fail('structural', f"perspective {mapping['perspective']!r} does not match registry {rule['perspective']!r}")
             if rule['authority'].startswith('bian_'):
                 if not mapping.get('bian_release'):
-                    issues.append(f"{prefix}: {rule['authority']} mapping requires bian_release")
-                bian_level = registry.get('bian_level', 'A2')
+                    fail('governance', f"{rule['authority']} mapping requires bian_release")
                 for label, ent in (('source', source), ('target', target)):
                     if level_of(ent.get('type'), registry) == bian_level and not ent.get('canonical_id'):
-                        issues.append(f"{prefix}: {rule['authority']} mapping requires canonical_id on its {bian_level} {label}")
-            # evidence kinds: enforced when the author uses typed refs, advisory otherwise
+                        fail('governance', f"{rule['authority']} mapping requires canonical_id on its {bian_level} {label}")
             required = set(rule.get('required_evidence', []))
             refs = [r for r in mapping.get('evidence', []) if isinstance(r, str)]
             kinds = {k for k, _ in map(split_evidence, refs) if k}
             if required and kinds:
                 missing = sorted(required - kinds)
                 if missing:
-                    issues.append(f"{prefix}: evidence missing required kind(s) {missing}")
+                    fail('governance', f"evidence missing required kind(s) {missing}")
             elif required and refs:
                 warnings.append(f"{prefix}: evidence is untyped; cannot confirm required kind(s) {sorted(required)} (use 'kind:ref')")
         status = mapping.get('status')
         if status in REVIEWED_STATUSES:
             for field in ('reviewer_id', 'approved_at'):
                 if not mapping.get(field):
-                    issues.append(f'{prefix}: {status} mapping requires {field}')
+                    fail('governance', f'{status} mapping requires {field}')
         if status == 'superseded' and mid not in successors:
-            issues.append(f'{prefix}: superseded mapping has no successor referencing it via previous_mapping_id')
+            fail('governance', 'superseded mapping has no successor referencing it via previous_mapping_id')
         prev = mapping.get('previous_mapping_id')
         if prev and prev not in id_set:
-            issues.append(f'{prefix}: previous_mapping_id {prev!r} not found in document')
+            fail('governance', f'previous_mapping_id {prev!r} not found in document')
         if prev == mid:
-            issues.append(f'{prefix}: previous_mapping_id cannot reference itself')
+            fail('governance', 'previous_mapping_id cannot reference itself')
         if resolver is not None and mapping.get('bian_release'):
+            v['bian'] = 'pass'
             for label, ent in (('source', source), ('target', target)):
                 cid = ent.get('canonical_id')
                 if cid and resolver.resolve(cid, mapping['bian_release']) is None:
-                    issues.append(f"{prefix}: {label} canonical_id {cid!r} not found in BIAN release {mapping['bian_release']!r}")
+                    fail('bian', f"{label} canonical_id {cid!r} not found in BIAN release {mapping['bian_release']!r}")
         if entity_resolver is not None:
             for label, ent in (('source', source), ('target', target)):
                 if all(isinstance(ent.get(k), str) for k in ('id', 'type', 'version')):
                     ntype = normalize_type(ent['type'], registry)
                     if entity_resolver.resolve_entity(ent['id'], ntype, ent['version']) is None:
-                        issues.append(f"{prefix}: {label} {ntype} {ent['id']}@{ent['version']} not found in level model")
+                        fail('referential', f"{label} {ntype} {ent['id']}@{ent['version']} not found in level model")
+        if mid:
+            verdicts[mid] = v
     return issues
 
 
-def validate_files(paths, registry=None, schema=None, resolver=None, entity_resolver=None, warnings=None):
+def validate_files(paths, registry=None, schema=None, resolver=None, entity_resolver=None, warnings=None, verdicts=None, metamodel=None):
     """Validate several documents; mapping_ids must be unique across all of them."""
     registry = registry or load_registry()
     schema = schema or load_schema()
     warnings = warnings if warnings is not None else {}
+    verdicts = verdicts if verdicts is not None else {}
+    metamodel = metamodel or Metamodel.load()
     report, seen = {}, {}
     for path in paths:
         path = Path(path)
@@ -240,8 +279,9 @@ def validate_files(paths, registry=None, schema=None, resolver=None, entity_reso
         except (OSError, ValueError) as exc:
             report[str(path)] = [f'cannot read: {exc}']
             continue
-        file_warnings = []
-        issues = validate(payload, registry, schema, resolver, entity_resolver, file_warnings)
+        file_warnings, file_verdicts = [], {}
+        issues = validate(payload, registry, schema, resolver, entity_resolver, file_warnings, file_verdicts, metamodel)
+        verdicts[str(path)] = file_verdicts
         if file_warnings:
             warnings[str(path)] = file_warnings
         for m in (payload.get('mappings') or []) if isinstance(payload, dict) else []:
@@ -271,9 +311,10 @@ def main(argv=None):
     except (OSError, ValueError, KeyError) as exc:
         print(f'ERROR: cannot load inputs: {exc}', file=sys.stderr)
         return EXIT_USAGE
-    registry_issues = validate_registry(registry)
-    warnings = {}
-    report = validate_files(args.paths, registry, entity_resolver=entity_resolver, warnings=warnings)
+    metamodel = Metamodel.load()
+    registry_issues = metamodel.validate() + validate_registry(registry, metamodel)
+    warnings, verdicts = {}, {}
+    report = validate_files(args.paths, registry, entity_resolver=entity_resolver, warnings=warnings, verdicts=verdicts, metamodel=metamodel)
     if registry_issues:
         report = {'<registry>': registry_issues, **report}
     if args.strict:
@@ -282,8 +323,8 @@ def main(argv=None):
         warnings = {}
     failed = any(report.values())
     if args.json:
-        print(json.dumps({'ok': not failed, 'registry_version': registry.get('$schema_version'),
-                          'files': report, 'warnings': warnings}, indent=2))
+        print(json.dumps({'ok': not failed, 'registry_version': registry.get('$schema_version'), 'metamodel_version': metamodel.version,
+                          'files': report, 'warnings': warnings, 'verdicts': verdicts}, indent=2))
     else:
         for path, issues in report.items():
             for issue in issues:

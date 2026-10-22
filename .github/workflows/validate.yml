@@ -21,6 +21,11 @@ jobs:
         run: python -m sdmm.validate --strict --catalogue examples/card-fraud-alerts/entities.json examples/card-fraud-alerts/mappings.json
       - name: Lifecycle and immutability against previous commit
         run: python -m sdmm.diff --git HEAD~1 examples/*/mappings.json
+      - name: Federated graph — check, trace and impact on the fraud example
+        run: |
+          python -m sdmm.graph check  examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+          python -m sdmm.graph trace  CAP-310 examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+          python -m sdmm.graph impact INF-CLOUD-K8S-PROD --change rehost examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
       - name: Trace the fraud example both ways
         run: |
           python -m sdmm.trace CAP-310 examples/card-fraud-alerts/mappings.json

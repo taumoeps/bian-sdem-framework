@@ -1,0 +1,50 @@
+{
+  "level": "A4",
+  "model_id": "synthetic-bank-a4",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-CMDB",
+  "instances": [
+    {
+      "id": "INF-CLOUD-K8S-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "1.3",
+      "name": "Managed Kubernetes (production)",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "INF-ONPREM-VM-CLUSTER-B",
+      "type": "A4.Node",
+      "version": "2.0",
+      "name": "On-prem VM cluster B",
+      "lifecycle_status": "deprecated"
+    },
+    {
+      "id": "ENV-PROD",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "Production",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "NET-PRIVATE",
+      "type": "A4.CommunicationNetwork",
+      "version": "1.0",
+      "name": "Private network",
+      "lifecycle_status": "active"
+    }
+  ],
+  "relationships": [
+    {
+      "source": "ENV-PROD",
+      "kind": "aggregation",
+      "target": "INF-CLOUD-K8S-PROD"
+    },
+    {
+      "source": "INF-CLOUD-K8S-PROD",
+      "kind": "assignment",
+      "target": "NET-PRIVATE",
+      "name": "runs on"
+    }
+  ]
+}

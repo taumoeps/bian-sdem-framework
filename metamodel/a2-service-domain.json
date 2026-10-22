@@ -1,0 +1,276 @@
+{
+  "metamodel_version": "0.4.0",
+  "level": "A2",
+  "entities": [
+    {
+      "type": "A2.BusinessArea",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "Top-level grouping of the Service Landscape",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Business Area",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "Service Landscape views"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.BusinessDomain",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "Coarse functional grouping within a Business Area",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Business Domain",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "Service Landscape views"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.ServiceDomain",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A discrete functional scope of the bank and its responsibilities",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Service Domain",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "MetaModel Overview"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.FunctionalPattern",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "The generic behaviour pattern a Service Domain applies",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Functional Pattern",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "MetaModel Overview"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.AssetType",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "The class of asset a Service Domain manages through its lifecycle",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Asset Type",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "MetaModel Overview"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.ControlRecord",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "Lifecycle and control information for a Service Domain's activity",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Control Record",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "Control Record Model"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.ServiceGroup",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A grouping of a Service Domain's operations",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Service Group",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "MetaModel Overview"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.ServiceOperation",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "An operation a Service Domain exposes",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Service Operation",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "MetaModel Overview"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.BehaviorQualifier",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A refinement of a Service Domain's generic behaviour",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Behavior Qualifier",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "MetaModel Overview"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.BusinessScenario",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "An illustrative, non-prescriptive collaboration of Service Domain operations",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Business Scenario",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "Business Scenarios"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.BusinessObject",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A canonical business information concept",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Business Object",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "Business Object Model"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.BusinessObjectAttribute",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A property of a Business Object",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Business Object attribute",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "Business Object Model"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.BOMModel",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": true,
+      "definition": "A versioned Business Object Model artefact",
+      "definition_source": "sdmm_extension",
+      "alignment_kind": "related",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Business Object Model",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "Business Object Model"
+      },
+      "evidence_status": "proposed_extension"
+    },
+    {
+      "type": "A2.Wireframe",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": true,
+      "definition": "An archetypal Service Domain interaction pattern artefact",
+      "definition_source": "bian_reference",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "BIAN Service Landscape",
+        "release": "14.0",
+        "concept": "Wireframe",
+        "uri": "https://bian.org/servicelandscape-14-0-0/",
+        "locator": "Wireframes Overview"
+      },
+      "evidence_status": "pending_release_validation"
+    },
+    {
+      "type": "A2.SemanticAPI",
+      "level": "A2",
+      "abstract": false,
+      "extends": null,
+      "artefact": true,
+      "definition": "A Semantic API definition artefact",
+      "definition_source": "bian_aligned",
+      "alignment_kind": "related",
+      "reference": {
+        "standard": "BIAN Semantic API",
+        "release": "8.1",
+        "concept": "Semantic API",
+        "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf",
+        "locator": "Practitioner Guide"
+      },
+      "evidence_status": "interpreted_from_official_source"
+    }
+  ]
+}

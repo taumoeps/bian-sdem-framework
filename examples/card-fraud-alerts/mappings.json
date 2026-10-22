@@ -1,5 +1,5 @@
 {
-  "registry_version": "0.3.0",
+  "registry_version": "0.4.0",
   "mappings": [
     {
       "mapping_id": "FRD-001",
@@ -122,5 +122,6 @@
       "previous_mapping_id": "FRD-003",
       "valid_from": "2026-12-01"
     }
-  ]
+  ],
+  "metamodel_version": "0.4.0"
 }

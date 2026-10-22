@@ -1,0 +1,58 @@
+{
+  "level": "A1",
+  "model_id": "synthetic-bank-a1",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-EA-TOOL",
+  "instances": [
+    {
+      "id": "CAP-310",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Card Fraud Alerts",
+      "lifecycle_status": "active",
+      "attributes": {
+        "owner": "Retail Risk"
+      }
+    },
+    {
+      "id": "CAP-300",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Card Risk Management",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "VS-CARD-USE",
+      "type": "A1.ValueStream",
+      "version": "1.0",
+      "name": "Use Card Safely",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "PRC-310-01",
+      "type": "A1.BusinessProcess",
+      "version": "1.0",
+      "name": "Alert Cardholder of Suspicious Transaction",
+      "lifecycle_status": "active"
+    }
+  ],
+  "relationships": [
+    {
+      "source": "CAP-300",
+      "kind": "composition",
+      "target": "CAP-310"
+    },
+    {
+      "source": "VS-CARD-USE",
+      "kind": "realization",
+      "target": "CAP-310",
+      "name": "value stream realised by capability (institution convention)"
+    },
+    {
+      "source": "PRC-310-01",
+      "kind": "realization",
+      "target": "CAP-310"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "$schema_version": "0.3.0",
+  "$schema_version": "0.4.0",
   "levels": [
     {
       "code": "A1",
@@ -153,6 +153,21 @@
       "perspective": "architecture",
       "authority": "enterprise_rule",
       "direction_semantics": "The application component runs on the infrastructure component in a named environment.",
+      "required_evidence": [
+        "deployment_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "infrastructure-architecture"
+    },
+    {
+      "mapping_type_id": "COMPONENT_DEPLOYED_AS_DEPLOYMENT",
+      "source_type": "A3.ApplicationComponent",
+      "relationship": "DEPLOYED_AS",
+      "target_type": "A4.Deployment",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application component is instantiated as this deployment in a named environment.",
       "required_evidence": [
         "deployment_design"
       ],

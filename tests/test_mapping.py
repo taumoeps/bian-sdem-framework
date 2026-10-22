@@ -368,3 +368,80 @@ class LevelAliasTests(unittest.TestCase):
         data = copy.deepcopy(DATA)
         data['mappings'][0]['source']['type'] = 'X9.BusinessCapability'
         self.assertTrue(any('does not match pattern' in x for x in validate(data)))
+
+
+class MetamodelTests(unittest.TestCase):
+    def setUp(self):
+        from sdmm.metamodel import Metamodel
+        self.mm = Metamodel.load()
+
+    def test_catalogue_self_check(self):
+        self.assertEqual(self.mm.validate(), [])
+        self.assertEqual(len(self.mm.entities), 44)
+        self.assertEqual(sum(1 for e in self.mm.entities.values() if e['artefact']), 3)
+
+    def test_all_bian_reference_entities_are_pending(self):
+        for e in self.mm.entities.values():
+            if e['definition_source'] == 'bian_reference':
+                self.assertEqual(e['evidence_status'], 'pending_release_validation', e['type'])
+
+    def test_every_concrete_a4_entity_extends_the_supertype(self):
+        for t, e in self.mm.entities.items():
+            if e['level'] == 'A4' and not e['abstract']:
+                self.assertTrue(self.mm.is_a(t, 'A4.InfrastructureComponent'), t)
+
+    def test_registry_endpoints_exist_and_taxonomies_agree(self):
+        self.assertEqual(validate_registry(REGISTRY, self.mm), [])
+
+    def test_bian_rule_without_bian_endpoint_rejected(self):
+        reg = copy.deepcopy(REGISTRY)
+        reg['relationships'][4]['authority'] = 'bian_alignment_guidance'   # ServiceDomain REALIZED_BY ApplicationComponent
+        # ServiceDomain is bian_reference so this still passes; break it properly:
+        reg['relationships'][7]['authority'] = 'bian_alignment_guidance'   # ApplicationComponent DEPLOYED_ON InfrastructureComponent
+        self.assertTrue(any('neither endpoint entity has a bian_* definition_source' in x for x in validate_registry(reg, self.mm)))
+
+
+class V040ValidatorTests(unittest.TestCase):
+    def mutate(self, fn):
+        data = copy.deepcopy(DATA); fn(data); return data
+
+    def test_unknown_entity_is_an_error(self):
+        data = self.mutate(lambda d: d['mappings'][0]['target'].__setitem__('type', 'A2.Widget'))
+        self.assertIsNotNone(first_issue_matching(data, "entity 'A2.Widget' is not in the metamodel"))
+
+    def test_artefact_cannot_be_an_endpoint(self):
+        data = self.mutate(lambda d: d['mappings'][5]['target'].__setitem__('type', 'A2.BOMModel'))
+        self.assertIsNotNone(first_issue_matching(data, "is an artefact"))
+
+    def test_is_a_matching_accepts_concrete_a4_entity_under_deployed_on(self):
+        data = self.mutate(lambda d: d['mappings'][2]['target'].__setitem__('type', 'A4.SystemSoftware'))
+        self.assertEqual([x for x in validate(data) if 'registry' in x], [])
+
+    def test_is_a_matching_does_not_cross_levels(self):
+        data = self.mutate(lambda d: d['mappings'][2]['target'].__setitem__('type', 'A3.ApplicationService'))
+        self.assertIsNotNone(first_issue_matching(data, 'is not in the registry'))
+
+    def test_deployed_as_rule(self):
+        self.assertEqual(validate(DATA), [])
+        self.assertTrue(any(m['relationship'] == 'DEPLOYED_AS' for m in DATA['mappings']))
+
+    def test_metamodel_version_mismatch(self):
+        data = self.mutate(lambda d: d.__setitem__('metamodel_version', '0.0.1'))
+        self.assertIsNotNone(first_issue_matching(data, 'does not match loaded metamodel'))
+
+    def test_verdicts_are_separate_and_never_collapsed(self):
+        verdicts = {}
+        validate(DATA, verdicts=verdicts)
+        v = verdicts['MAP-001']
+        self.assertEqual(v['structural'], 'pass'); self.assertEqual(v['governance'], 'pass')
+        self.assertEqual(v['referential'], 'unverified'); self.assertEqual(v['bian'], 'unverified'); self.assertEqual(v['semantic'], 'unverified')
+        data = self.mutate(lambda d: d['mappings'][0].pop('reviewer_id'))
+        verdicts = {}; validate(data, verdicts=verdicts)
+        self.assertEqual(verdicts['MAP-001']['governance'], 'fail'); self.assertEqual(verdicts['MAP-001']['structural'], 'pass')
+
+    def test_verdict_referential_pass_with_catalogue(self):
+        from sdmm.reference import CatalogueEntityResolver
+        fraud = ROOT / 'examples/card-fraud-alerts'
+        verdicts = {}
+        validate(json.loads((fraud / 'mappings.json').read_text()), entity_resolver=CatalogueEntityResolver.from_file(fraud / 'entities.json'), verdicts=verdicts)
+        self.assertTrue(all(v['referential'] == 'pass' for v in verdicts.values()))

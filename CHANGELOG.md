@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0 — data architecture
+
+- `metamodel/`: the A1–A4 entity catalogue — 41 core entities and 3 artefacts, each with `extends`, `abstract`, public-standard provenance and `evidence_status` (all `bian_reference` entities pending verification); within-level relationship kinds (ArchiMate) and BIAN's A2 structure as constraints; `metamodel/entity.schema.json`.
+- `sdmm/metamodel.py`: catalogue loader, hierarchy (`is_a`), self-check.
+- Validator: unknown entity is an error; artefacts cannot be endpoints; registry matching is is-a (a rule naming `A4.InfrastructureComponent` accepts any concrete A4 entity); registry self-check requires endpoints in the catalogue and a `bian_*` endpoint for `bian_*` rules; per-mapping verdicts `structural / governance / referential / bian / semantic` in `--json`; `metamodel_version` pin. New rule `DEPLOYED_AS → A4.Deployment`. Registry 0.4.0.
+- `schema/level-model.schema.json`: the export format for an institution's design model — instances (concrete entities only) and within-level relationships.
+- `sdmm/graph.py` and `sdmm-graph`: `LevelGraph` (validate an export) and `FederatedGraph` (four exports + mappings, joined on instance id; also the validator's `EntityResolver`). `check`, `trace` (names and concrete entities), `impact` (structural classification by change kind: modify / replace / retire / rehost, with the mappings to supersede), `stats`.
+- Examples: synthetic A1–A4 exports for Card Fraud Alerts; `DEPLOYED_AS` record in customer-onboarding.
+- Tests: `test_v02_compatibility.py` release gate (legacy-form examples validate with no issues and no warnings), metamodel, validator and graph suites.
+- Docs: `docs/06-data-architecture.md`; README Graph component; entity count corrected to 41 (+3).
+
 ## 0.3.1
 
 Level naming: the four design models are now the **Service Domain Architecture Design Model (SDADM)** — A1 Business Architecture, A2 Service Domain Architecture, A3 Application Architecture, A4 Technology Architecture. The `L0.`–`L3.` prefixes were an institution's own numbering, not a generic one.

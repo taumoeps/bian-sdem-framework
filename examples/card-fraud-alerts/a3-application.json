@@ -1,0 +1,57 @@
+{
+  "level": "A3",
+  "model_id": "synthetic-bank-a3",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-APM",
+  "instances": [
+    {
+      "id": "APP-FRAUD-ENGINE",
+      "type": "A3.ApplicationComponent",
+      "version": "4.2",
+      "name": "Fraud Engine",
+      "lifecycle_status": "active",
+      "attributes": {
+        "vendor": "in-house"
+      }
+    },
+    {
+      "id": "CMP-SCORING",
+      "type": "A3.ApplicationComponent",
+      "version": "4.2",
+      "name": "Transaction Scoring",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "IFC-FRAUD-API",
+      "type": "A3.ApplicationInterface",
+      "version": "3.1",
+      "name": "Fraud API",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "POST /fraud/alerts",
+      "type": "A3.APIOperation",
+      "version": "3.1",
+      "name": "Create fraud alert",
+      "lifecycle_status": "active"
+    }
+  ],
+  "relationships": [
+    {
+      "source": "APP-FRAUD-ENGINE",
+      "kind": "composition",
+      "target": "CMP-SCORING"
+    },
+    {
+      "source": "APP-FRAUD-ENGINE",
+      "kind": "composition",
+      "target": "IFC-FRAUD-API"
+    },
+    {
+      "source": "IFC-FRAUD-API",
+      "kind": "composition",
+      "target": "POST /fraud/alerts"
+    }
+  ]
+}

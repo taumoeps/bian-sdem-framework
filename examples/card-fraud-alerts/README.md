@@ -36,3 +36,16 @@ python -m sdmm.trace INF-ONPREM-VM-CLUSTER-B --direction up --status approved,su
 ```
 
 Only `approved` arrows are followed by default, so the superseded on-prem deployment (FRD-003) and the unreviewed candidate (FRD-004) do not appear; the third command includes history and shows the old host's former chain. Every hop prints the `mapping_id` that justifies it.
+
+## Level models and the federated graph (v0.4)
+
+`a1-business.json` … `a4-technology.json` are synthetic exports of the four design models in `schema/level-model.schema.json` format — the instances the mappings refer to, with names and within-level relationships. They stand in for an institution's EA tool, BIAN workbench, APM and CMDB.
+
+```bash
+python -m sdmm.graph check  examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+python -m sdmm.graph trace  CAP-310 examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+python -m sdmm.graph impact INF-CLOUD-K8S-PROD --change rehost examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+python -m sdmm.graph impact SD-044 --change retire examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+```
+
+Notice that `INF-CLOUD-K8S-PROD` is an `A4.SystemSoftware` in the level model while the mappings call it `A4.InfrastructureComponent`: the federated graph resolves it through the entity hierarchy. The rehost impact marks A4 and A3 `design_change_required`, A2 and A1 `no_impact`, and names `FRD-005` as the mapping to supersede.
