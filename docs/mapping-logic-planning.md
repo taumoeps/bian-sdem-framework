@@ -370,9 +370,65 @@ Every source cited in §2.3–2.5 was checked for accessibility and, where reada
 
 **Bottom line:** of §2's claims, everything that rests on BIAN is verified; everything that rests on ArchiMate, TOGAF or W135 is unverified in this review because the primary texts are login-gated. Nothing from §2 is adopted into the registry until the gated sources have been read by someone with access — which is a one-afternoon task with a free Open Group account.
 
-### 2.7 Analysis *(next, after §2.6 is closed)*
+### 2.7 Analysis
 
-Which candidate pairs should become registry rules, which framework supplies the authority for each, and which remain institution-only.
+Outcome of §2.6 across the 54 candidate mappings in §2.3.
+
+| Outcome | Count | Meaning |
+|---|---|---|
+| **Verified** | 8 | the claimed BIAN guidance exists; read at section and page in the Semantic API Practitioner Guide or the BOM |
+| **Verified as intent / target only** | 2 | BIAN publishes the *target* or states the *intent*, but no mapping method |
+| **Confirmed none** | 31 | the row claimed no official mapping, and none was found in the BIAN sources — the claim stands |
+| **Unverified — W135** | 2 | rests on a document that requires a login |
+| **Unverified — ArchiMate** | 5 | rests on the normative relationship tables, which require a login |
+| **n/a — SDMM's own** | 6 | `DEPLOYED_ON`, `DEPLOYED_AS`, value-stream and similar: SDMM definitions with nothing external to confirm |
+
+**41 of 54 are settled** (10 confirmed as claimed, 31 confirmed as "nothing official", 6 SDMM-only); **7 remain open**, all because the primary source is login-gated.
+
+#### The ten confirmed mappings
+
+| Pair | SDMM rule | Source |
+|---|---|---|
+| `A2.ServiceDomain` → `A3.ApplicationComponent` | `REALIZED_BY` | [SAPG] §3.4 p. 52, §4.3.1 p. 91 |
+| `A2.ServiceOperation` → `A3.APIOperation` | `IMPLEMENTED_BY` | [SAPG] §3.5 pp. 52–55; [APIP] |
+| `A2.BusinessObject` → `A3.DataEntity` | `MAPPED_TO` | [SAPG] §3.2.7; [SL14] BOM |
+| `A2.ControlRecord` → `A3.DataEntity` | — not in registry | [SAPG] §4.2.2 pp. 80–87 |
+| `A2.ControlRecord` → `A3.ApplicationFunction` | — not in registry | [SAPG] §4.2.2 |
+| `A2.ServiceOperation` → `A3.ApplicationService` | — not in registry | [SAPG] §3.5 p. 52 |
+| `A2.BusinessScenario` → `A3.ApplicationService` | — not in registry | [SAPG] §3.4, §3.3 |
+| `A2.BusinessScenario` → `A3.ApplicationComponent` | — not in registry | [SAPG] §3.4, §3.3 |
+| `A1.BusinessCapability` → `A2.ServiceDomain` | `SUPPORTED_BY` | *intent only* — [RN14] §3, [WQA26]: mapping unpublished |
+| `A1.BusinessObject` → `A2.BusinessObject` | `ALIGNED_TO` | *target only* — [SL14] BOM published; no A1→A2 method |
+
+Every confirmed mapping with real guidance behind it sits on the **A2 → A3** boundary, consistent with §1: BIAN's published guidance leaves A2 in one direction only.
+
+#### The seven still open
+
+| Pair | Blocked on | Secondary corroboration |
+|---|---|---|
+| `A1.BusinessProcess` → `A2.ServiceDomain` | [W135] (2013, Service Landscape 2.0) | — |
+| `A1.BusinessProcess` → `A2.BusinessScenario` | [W135] | — |
+| `A3.ApplicationService` → `A4.TechnologyService` | [AM] normative tables | pattern corroborated: technology service serves application behaviour |
+| `A3.ApplicationFunction` → `A4.TechnologyService` | [AM] normative tables | pattern corroborated |
+| `A3.DataEntity` → `A4.Artifact` | [AM] normative tables | pattern corroborated: technology object realizes data object |
+| `A3.ApplicationComponent` → `A4.Node` | [AM] normative tables | **not** corroborated by the sources read |
+| `A3.ApplicationComponent` → `A4.Artifact` | [AM] normative tables | **not** corroborated by the sources read |
+
+#### By boundary
+
+| Boundary | Verified | Confirmed none | Open | SDMM-only |
+|---|---|---|---|---|
+| A1 → A2 | 2 (intent / target only) | 9 | 2 (W135) | 1 |
+| A2 → A3 | 8 | 9 | 0 | 0 |
+| A3 → A4 | 0 | 13 | 5 (ArchiMate) | 5 |
+
+#### What follows
+
+1. **Nothing in §2 adds to the registry on BIAN's authority beyond what §1 already gave.** The three registry rules with verified BIAN guidance — `REALIZED_BY`, `IMPLEMENTED_BY`, `MAPPED_TO` — were already there. The five further verified A2→A3 pairs (`ControlRecord` → `DataEntity` / `ApplicationFunction`, `ServiceOperation` → `ApplicationService`, `BusinessScenario` → `ApplicationService` / `ApplicationComponent`) are candidates for new rules with `bian_alignment_guidance` authority; whether they are *useful* enough to add is a §3 decision, not a sourcing one.
+2. **The five ArchiMate rows are the most likely new A3→A4 rules**, with `archimate_native` as the authority once the allowed-relationship tables are confirmed. Three are already corroborated in pattern; two (`ApplicationComponent` → `Node` / `Artifact`) need the primary text, because in ArchiMate 3.x the component–node link is normally indirect (artifact realizes component; artifact assigned to node) and the row may need re-targeting rather than confirming.
+3. **The two W135 rows are historical method at best.** Even when read, W135 describes a 2013 approach against Service Landscape 2.0; it can inform how the engine treats `USES_DOMAIN`, but it cannot be cited as authority for a BIAN 14.0 mapping.
+4. **The remaining 31 "confirmed none" pairs stay institution-only.** They are not wrong as candidates; they simply have no external authority and would enter the registry, if at all, as `enterprise_rule`.
+5. **To close the seven open rows:** one afternoon with a free Open Group account — ArchiMate 3.2 chapter 12 and Appendix B for the five, W135 pp. 1–43 for the two. Until then §2 contributes nothing to the registry and §3 proceeds on §1's basis alone.
 
 ## 3. Engine architecture *(in planning)*
 
