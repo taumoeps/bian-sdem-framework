@@ -85,6 +85,12 @@ def render_new(new=None, metamodel=None):
     entries = new_entries(new)
     rule_of = {m['id']: m.get('sdmm_rule') for m in load_official()['mappings']}
     excluded = [m for m in new['mappings'] if m['rule_decision'] in NOT_DRAWN and m['id'].startswith('S')] + [m for m in new['mappings'] if m['id'] == 'B01']
+    ends = {m['source'] for m in entries} | {m['target'] for m in entries}
+    def unmapped_reason(t, e):
+        if t in ends: return None
+        if e.get('artefact'): return 'artefact — never an endpoint'
+        rows = [m['id'] for m in new['mappings'] if m['rule_decision'] in NOT_DRAWN and t in (m['source'], m['target'])]
+        return ('not a mapping: ' + ', '.join(rows)) if rows else 'no plan row'
     out = ['@startuml new-mappings', 'left to right direction',
            'skinparam rectangle {', '  BackgroundColor White', '  BorderColor #424242', '}',
            'skinparam package {', '  BackgroundColor #F5F5F5', '  BorderColor #9E9E9E', '}',
@@ -96,7 +102,11 @@ def render_new(new=None, metamodel=None):
             if e['level'] != lvl:
                 continue
             tag = '\\n(artefact)' if e.get('artefact') else '\\n(abstract)' if e.get('abstract') else ''
-            out.append(f'  rectangle "{t}{tag}" as {alias[t]}')
+            why = unmapped_reason(t, e)
+            if why:
+                out.append(f'  rectangle "{t}{tag}\\n<size:9><i>no cross-level mapping: {why}</i></size>" as {alias[t]} #EEEEEE')
+            else:
+                out.append(f'  rectangle "{t}{tag}" as {alias[t]}')
         out.append('}'); out.append('')
     for dec, (colour, style, label) in DECISION_STYLE.items():
         rows = [m for m in entries if m['rule_decision'] == dec]
@@ -111,6 +121,7 @@ def render_new(new=None, metamodel=None):
     for dec, (colour, style, label) in DECISION_STYLE.items():
         n = sum(1 for m in entries if m['rule_decision'] == dec)
         out.append(f"  <color:{colour}>{(style or 'solid').capitalize()}</color>: {label} ({n})")
+    out.append("  Grey entity: no cross-level mapping by decision (artefacts are never endpoints; actors and roles are organisation, not mappings)")
     out.append(f"  Not drawn: {', '.join(m['id'] + ' ' + m['rule_decision'].replace('_', ' ') for m in excluded)}; B02–B15 inside A2 are on official-mappings.puml")
     out += ['endlegend', '@enduml']
     return '\n'.join(out) + '\n'

@@ -853,7 +853,7 @@ Generated from `metamodel/new-mappings.json` (every entry carries the official s
 
 ### 5.4 New-mappings diagram
 
-Generated from `metamodel/new-mappings.json` by `python -m sdmm.diagram` into `metamodel/new-mappings.puml` (CI checks it is current). Every cross-level connection of the plan is drawn with its ID and coloured by rule decision; BIAN-internal rows are on the official diagram (§4), and the four rows the plan rules out are named in the legend. Preview in VS Code with the PlantUML extension, or paste at https://www.plantuml.com/plantuml.
+Generated from `metamodel/new-mappings.json` by `python -m sdmm.diagram` into `metamodel/new-mappings.puml` (CI checks it is current). Every cross-level connection of the plan is drawn with its ID and coloured by rule decision; BIAN-internal rows are on the official diagram (§4), and the four rows the plan rules out are named in the legend. Entities with no cross-level mapping are greyed with the reason: the three A2 artefacts are never endpoints, and A1 actor and role are organisation, not mappings (S10, S11). Preview in VS Code with the PlantUML extension, or paste at https://www.plantuml.com/plantuml.
 
 ```plantuml
 @startuml new-mappings
@@ -877,8 +877,8 @@ package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessProcess" as a1_businessprocess
   rectangle "A1.BusinessActivity" as a1_businessactivity
   rectangle "A1.BusinessService" as a1_businessservice
-  rectangle "A1.BusinessActor" as a1_businessactor
-  rectangle "A1.BusinessRole" as a1_businessrole
+  rectangle "A1.BusinessActor\n<size:9><i>no cross-level mapping: not a mapping: S10</i></size>" as a1_businessactor #EEEEEE
+  rectangle "A1.BusinessRole\n<size:9><i>no cross-level mapping: not a mapping: S11</i></size>" as a1_businessrole #EEEEEE
   rectangle "A1.BusinessObject" as a1_businessobject
   rectangle "A1.BusinessRequirement" as a1_businessrequirement
 }
@@ -896,9 +896,9 @@ package "A2 Service Domain Architecture" as A2 {
   rectangle "A2.BusinessScenario" as a2_businessscenario
   rectangle "A2.BusinessObject" as a2_businessobject
   rectangle "A2.BusinessObjectAttribute" as a2_businessobjectattribute
-  rectangle "A2.BOMModel\n(artefact)" as a2_bommodel
-  rectangle "A2.Wireframe\n(artefact)" as a2_wireframe
-  rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi
+  rectangle "A2.BOMModel\n(artefact)\n<size:9><i>no cross-level mapping: artefact — never an endpoint</i></size>" as a2_bommodel #EEEEEE
+  rectangle "A2.Wireframe\n(artefact)\n<size:9><i>no cross-level mapping: artefact — never an endpoint</i></size>" as a2_wireframe #EEEEEE
+  rectangle "A2.SemanticAPI\n(artefact)\n<size:9><i>no cross-level mapping: artefact — never an endpoint</i></size>" as a2_semanticapi #EEEEEE
 }
 
 package "A3 Application Architecture" as A3 {
@@ -992,6 +992,7 @@ legend right
   <color:#EF6C00>Solid</color>: conditional rule (fires on institution data) (5)
   <color:#616161>Dashed</color>: derived path (closure over other arrows, never proposed) (17)
   <color:#6A1B9A>Dotted</color>: institution-only (reported from export keys) (14)
+  Grey entity: no cross-level mapping by decision (artefacts are never endpoints; actors and roles are organisation, not mappings)
   Not drawn: S05 historical method, S10 not a mapping, S11 not a mapping, S36 subsumed, B01 not encodable; B02–B15 inside A2 are on official-mappings.puml
 endlegend
 @enduml
