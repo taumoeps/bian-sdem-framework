@@ -1,0 +1,549 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "fable-executor/2026-10-22",
+  "use_case": "C1",
+  "note": "candidate-rule reports (guide 4c): relationship = plan ID; not a registry document",
+  "mappings": [
+    {
+      "mapping_id": "C-C1-001",
+      "source": {
+        "id": "ACT-T1",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S06",
+      "target": {
+        "id": "SO-LC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S06 S06 step1-grade join (plan step 4; the export states it): a1 ACT-T1.attributes.invokes = ['SO-LC-01']; SO-LC-01 'Initiate Letter of Credit' (Initiate); activity name 'Capture application' agrees with the action term by verb"
+      ],
+      "rationale": "S06 step1-grade join (plan step 4; the export states it): a1 ACT-T1.attributes.invokes = ['SO-LC-01']; SO-LC-01 'Initiate Letter of Credit' (Initiate); activity name 'Capture application' agrees with the action term by verb",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S06"
+    },
+    {
+      "mapping_id": "C-C1-002",
+      "source": {
+        "id": "ACT-T2",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S06",
+      "target": {
+        "id": "SO-LC-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S06 S06 step1-grade join (plan step 4; the export states it): a1 ACT-T2.attributes.invokes = ['SO-LC-02']; SO-LC-02 'Update Letter of Credit Amendment' (Update); activity name 'Amend application' agrees with the action term by verb"
+      ],
+      "rationale": "S06 step1-grade join (plan step 4; the export states it): a1 ACT-T2.attributes.invokes = ['SO-LC-02']; SO-LC-02 'Update Letter of Credit Amendment' (Update); activity name 'Amend application' agrees with the action term by verb",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S06"
+    },
+    {
+      "mapping_id": "C-C1-003",
+      "source": {
+        "id": "ACT-T3",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S06",
+      "target": {
+        "id": "SO-DC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S06 S06 step1-grade join (plan step 4; the export states it): a1 ACT-T3.attributes.invokes = ['SO-DC-01']; SO-DC-01 'Evaluate Document Checking' (Evaluate); activity name 'Evaluate documents' agrees with the action term by verb"
+      ],
+      "rationale": "S06 step1-grade join (plan step 4; the export states it): a1 ACT-T3.attributes.invokes = ['SO-DC-01']; SO-DC-01 'Evaluate Document Checking' (Evaluate); activity name 'Evaluate documents' agrees with the action term by verb",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S06"
+    },
+    {
+      "mapping_id": "C-C1-004",
+      "source": {
+        "id": "ACT-T4",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S06",
+      "target": {
+        "id": "SO-LC-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S06 S06 step1-grade join (plan step 4; the export states it): a1 ACT-T4.attributes.invokes = ['SO-LC-03']; SO-LC-03 'Execute Letter of Credit Issuance' (Execute); activity name 'Issue letter of credit' agrees with the action term by verb"
+      ],
+      "rationale": "S06 step1-grade join (plan step 4; the export states it): a1 ACT-T4.attributes.invokes = ['SO-LC-03']; SO-LC-03 'Execute Letter of Credit Issuance' (Execute); activity name 'Issue letter of credit' agrees with the action term by verb",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S06"
+    },
+    {
+      "mapping_id": "C-C1-005",
+      "source": {
+        "id": "ACT-T1",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S07",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-LETTER-OF-CREDIT"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S07 S07 derived: C-C1-001 (ACT-T1 -> SO-LC-01) and a2 composition SG-LC -> SO-LC-01 (B10), SD-LC -> SG-LC (B09) => ACT-T1 -> SD-LC; cap = input band (medium)"
+      ],
+      "rationale": "S07 derived: C-C1-001 (ACT-T1 -> SO-LC-01) and a2 composition SG-LC -> SO-LC-01 (B10), SD-LC -> SG-LC (B09) => ACT-T1 -> SD-LC; cap = input band (medium)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S07"
+    },
+    {
+      "mapping_id": "C-C1-006",
+      "source": {
+        "id": "ACT-T2",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S07",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-LETTER-OF-CREDIT"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S07 S07 derived: C-C1-002 (ACT-T2 -> SO-LC-02) and a2 composition SG-LC -> SO-LC-02 (B10), SD-LC -> SG-LC (B09) => ACT-T2 -> SD-LC; cap = input band (medium)"
+      ],
+      "rationale": "S07 derived: C-C1-002 (ACT-T2 -> SO-LC-02) and a2 composition SG-LC -> SO-LC-02 (B10), SD-LC -> SG-LC (B09) => ACT-T2 -> SD-LC; cap = input band (medium)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S07"
+    },
+    {
+      "mapping_id": "C-C1-007",
+      "source": {
+        "id": "ACT-T3",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S07",
+      "target": {
+        "id": "SD-DC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-DOCUMENT-CHECKING"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S07 S07 derived: C-C1-003 (ACT-T3 -> SO-DC-01) and a2 composition SG-DC -> SO-DC-01 (B10), SD-DC -> SG-DC (B09) => ACT-T3 -> SD-DC; cap = input band (medium)"
+      ],
+      "rationale": "S07 derived: C-C1-003 (ACT-T3 -> SO-DC-01) and a2 composition SG-DC -> SO-DC-01 (B10), SD-DC -> SG-DC (B09) => ACT-T3 -> SD-DC; cap = input band (medium)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S07"
+    },
+    {
+      "mapping_id": "C-C1-008",
+      "source": {
+        "id": "ACT-T4",
+        "type": "A1.BusinessActivity",
+        "version": "1.0"
+      },
+      "relationship": "S07",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-LETTER-OF-CREDIT"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S07 S07 derived: C-C1-004 (ACT-T4 -> SO-LC-03) and a2 composition SG-LC -> SO-LC-03 (B10), SD-LC -> SG-LC (B09) => ACT-T4 -> SD-LC; cap = input band (medium)"
+      ],
+      "rationale": "S07 derived: C-C1-004 (ACT-T4 -> SO-LC-03) and a2 composition SG-LC -> SO-LC-03 (B10), SD-LC -> SG-LC (B09) => ACT-T4 -> SD-LC; cap = input band (medium)",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S07"
+    },
+    {
+      "mapping_id": "C-C1-009",
+      "source": {
+        "id": "REQ-01",
+        "type": "A1.BusinessRequirement",
+        "version": "1.0"
+      },
+      "relationship": "S13",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-LETTER-OF-CREDIT"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S13 S13 derived: a1 REQ-01.attributes.applies_to = [PRC-LC-APPLY] (a process); approved S04 TF-103 (PRC-LC-APPLY USES_DOMAIN SD-LC) => REQ-01 -> SD-LC; cap = min(plan low, input approved) = low"
+      ],
+      "rationale": "S13 derived: a1 REQ-01.attributes.applies_to = [PRC-LC-APPLY] (a process); approved S04 TF-103 (PRC-LC-APPLY USES_DOMAIN SD-LC) => REQ-01 -> SD-LC; cap = min(plan low, input approved) = low",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S13"
+    },
+    {
+      "mapping_id": "C-C1-010",
+      "source": {
+        "id": "REQ-02",
+        "type": "A1.BusinessRequirement",
+        "version": "1.0"
+      },
+      "relationship": "S14",
+      "target": {
+        "id": "SO-DC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S14 S14 derived: a1 REQ-02.attributes.applies_to = [ACT-T3] (an activity); S06 report C-C1-003 (ACT-T3 -> SO-DC-01) => REQ-02 -> SO-DC-01; cap = min(plan low, input medium) = low"
+      ],
+      "rationale": "S14 derived: a1 REQ-02.attributes.applies_to = [ACT-T3] (an activity); S06 report C-C1-003 (ACT-T3 -> SO-DC-01) => REQ-02 -> SO-DC-01; cap = min(plan low, input medium) = low",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S14"
+    },
+    {
+      "mapping_id": "C-C1-011",
+      "source": {
+        "id": "REQ-02",
+        "type": "A1.BusinessRequirement",
+        "version": "1.0"
+      },
+      "relationship": "S13",
+      "target": {
+        "id": "SD-DC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-DOCUMENT-CHECKING"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S13 S13 derived (executor reading C1-R1): the requirement applies to an activity, so the closure runs through the activity's own operation — S06 C-C1-003, S07 chain ACT-T3 -> SO-DC-01 -> SD-DC — not through the parent process's S04 arrows (which for PRC-LC-ISSUE name ['SD-DC', 'SD-LC']); cap low"
+      ],
+      "rationale": "S13 derived (executor reading C1-R1): the requirement applies to an activity, so the closure runs through the activity's own operation — S06 C-C1-003, S07 chain ACT-T3 -> SO-DC-01 -> SD-DC — not through the parent process's S04 arrows (which for PRC-LC-ISSUE name ['SD-DC', 'SD-LC']); cap low",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S13"
+    },
+    {
+      "mapping_id": "C-C1-012",
+      "source": {
+        "id": "REQ-03",
+        "type": "A1.BusinessRequirement",
+        "version": "1.0"
+      },
+      "relationship": "S14",
+      "target": {
+        "id": "SO-LC-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S14 S14 derived: a1 REQ-03.attributes.applies_to = [ACT-T4] (an activity); S06 report C-C1-004 (ACT-T4 -> SO-LC-03) => REQ-03 -> SO-LC-03; cap = min(plan low, input medium) = low"
+      ],
+      "rationale": "S14 derived: a1 REQ-03.attributes.applies_to = [ACT-T4] (an activity); S06 report C-C1-004 (ACT-T4 -> SO-LC-03) => REQ-03 -> SO-LC-03; cap = min(plan low, input medium) = low",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S14"
+    },
+    {
+      "mapping_id": "C-C1-013",
+      "source": {
+        "id": "REQ-03",
+        "type": "A1.BusinessRequirement",
+        "version": "1.0"
+      },
+      "relationship": "S13",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-LETTER-OF-CREDIT"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S13 S13 derived (executor reading C1-R1): the requirement applies to an activity, so the closure runs through the activity's own operation — S06 C-C1-004, S07 chain ACT-T4 -> SO-LC-03 -> SD-LC — not through the parent process's S04 arrows (which for PRC-LC-ISSUE name ['SD-DC', 'SD-LC']); cap low"
+      ],
+      "rationale": "S13 derived (executor reading C1-R1): the requirement applies to an activity, so the closure runs through the activity's own operation — S06 C-C1-004, S07 chain ACT-T4 -> SO-LC-03 -> SD-LC — not through the parent process's S04 arrows (which for PRC-LC-ISSUE name ['SD-DC', 'SD-LC']); cap low",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S13"
+    },
+    {
+      "mapping_id": "C-C1-014",
+      "source": {
+        "id": "BSV-LC-APP",
+        "type": "A1.BusinessService",
+        "version": "1.0"
+      },
+      "relationship": "S09",
+      "target": {
+        "id": "SO-LC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S09 S09 step4 structural match: BSV-LC-APP.inputs ∪ outputs (7) vs SO-LC-01 input ∪ output: 7/7 = 1.00 matched ['applicant_reference', 'application_status', 'beneficiary_reference', 'credit_amount', 'currency', 'expiry_date', 'letter_of_credit_reference'] (>= 50%, >= 2); unique best — also above threshold but suppressed by executor convention C1-C1 (unique best only): [('SO-LC-04', '5/7'), ('SO-LC-02', '4/7')]"
+      ],
+      "rationale": "S09 step4 structural match: BSV-LC-APP.inputs ∪ outputs (7) vs SO-LC-01 input ∪ output: 7/7 = 1.00 matched ['applicant_reference', 'application_status', 'beneficiary_reference', 'credit_amount', 'currency', 'expiry_date', 'letter_of_credit_reference'] (>= 50%, >= 2); unique best — also above threshold but suppressed by executor convention C1-C1 (unique best only): [('SO-LC-04', '5/7'), ('SO-LC-02', '4/7')]",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S09"
+    },
+    {
+      "mapping_id": "C-C1-015",
+      "source": {
+        "id": "BSV-DOC-CHECK",
+        "type": "A1.BusinessService",
+        "version": "1.0"
+      },
+      "relationship": "S09",
+      "target": {
+        "id": "SO-DC-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S09 S09 step4 structural match: BSV-DOC-CHECK.inputs ∪ outputs (4) vs SO-DC-01 input ∪ output: 4/4 = 1.00 matched ['compliance_outcome', 'discrepancies', 'document_set_reference', 'letter_of_credit_reference'] (>= 50%, >= 2); unique best — also above threshold but suppressed by executor convention C1-C1 (unique best only): [('SO-DC-02', '3/4')]"
+      ],
+      "rationale": "S09 step4 structural match: BSV-DOC-CHECK.inputs ∪ outputs (4) vs SO-DC-01 input ∪ output: 4/4 = 1.00 matched ['compliance_outcome', 'discrepancies', 'document_set_reference', 'letter_of_credit_reference'] (>= 50%, >= 2); unique best — also above threshold but suppressed by executor convention C1-C1 (unique best only): [('SO-DC-02', '3/4')]",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S09"
+    },
+    {
+      "mapping_id": "C-C1-016",
+      "source": {
+        "id": "BSV-LC-APP",
+        "type": "A1.BusinessService",
+        "version": "1.0"
+      },
+      "relationship": "S08",
+      "target": {
+        "id": "SD-LC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-LETTER-OF-CREDIT"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S08 S08 step5 text inference: candidate set = the full exported A2 landscape (2 domains — the guide's first condition holds, so the ranking is not vacuous); BSV-LC-APP \"Offered to importers: submit an application for a documentary letter of credit and receive its reference and status.\" vs SD-LC: shared non-generic concepts ['application', 'credit', 'documentary', 'letter'] (4); runner-up SD-DC 1 ['credit']; threshold >= 2 and lead >= 1 — met"
+      ],
+      "rationale": "S08 step5 text inference: candidate set = the full exported A2 landscape (2 domains — the guide's first condition holds, so the ranking is not vacuous); BSV-LC-APP \"Offered to importers: submit an application for a documentary letter of credit and receive its reference and status.\" vs SD-LC: shared non-generic concepts ['application', 'credit', 'documentary', 'letter'] (4); runner-up SD-DC 1 ['credit']; threshold >= 2 and lead >= 1 — met",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S08"
+    },
+    {
+      "mapping_id": "C-C1-017",
+      "source": {
+        "id": "BSV-DOC-CHECK",
+        "type": "A1.BusinessService",
+        "version": "1.0"
+      },
+      "relationship": "S08",
+      "target": {
+        "id": "SD-DC",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-DOCUMENT-CHECKING"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S08 S08 step5 text inference: candidate set = the full exported A2 landscape (2 domains — the guide's first condition holds, so the ranking is not vacuous); BSV-DOC-CHECK \"Offered to beneficiaries' banks: present a document set against a credit and receive the compliance outcome and any discrepancies.\" vs SD-DC: shared non-generic concepts ['checking', 'compliance', 'credit', 'discrepancy', 'document', 'set'] (6); runner-up SD-LC 1 ['credit']; threshold >= 2 and lead >= 1 — met"
+      ],
+      "rationale": "S08 step5 text inference: candidate set = the full exported A2 landscape (2 domains — the guide's first condition holds, so the ranking is not vacuous); BSV-DOC-CHECK \"Offered to beneficiaries' banks: present a document set against a credit and receive the compliance outcome and any discrepancies.\" vs SD-DC: shared non-generic concepts ['checking', 'compliance', 'credit', 'discrepancy', 'document', 'set'] (6); runner-up SD-LC 1 ['credit']; threshold >= 2 and lead >= 1 — met",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S08"
+    },
+    {
+      "mapping_id": "C-C1-018",
+      "source": {
+        "id": "VSS-T1",
+        "type": "A1.ValueStreamStage",
+        "version": "1.0"
+      },
+      "relationship": "S03",
+      "target": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0",
+        "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S03 S03 derived from approved S02 TF-102 (VS-LC ALIGNED_TO BS-LC): stage 'Apply for credit' covers SO-LC-01 'Initiate Letter of Credit' by action term initiate (stage verb 'apply' — executor synonym apply ≈ initiate, marked); the stage is a refinement of S02, a derived path"
+      ],
+      "rationale": "S03 derived from approved S02 TF-102 (VS-LC ALIGNED_TO BS-LC): stage 'Apply for credit' covers SO-LC-01 'Initiate Letter of Credit' by action term initiate (stage verb 'apply' — executor synonym apply ≈ initiate, marked); the stage is a refinement of S02, a derived path",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S03"
+    },
+    {
+      "mapping_id": "C-C1-019",
+      "source": {
+        "id": "VSS-T2",
+        "type": "A1.ValueStreamStage",
+        "version": "1.0"
+      },
+      "relationship": "S03",
+      "target": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0",
+        "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S03 S03 derived from approved S02 TF-102 (VS-LC ALIGNED_TO BS-LC): stage 'Check documents' covers SO-DC-01 'Evaluate Document Checking' by action term evaluate (stage verb 'check'); the stage is a refinement of S02, a derived path"
+      ],
+      "rationale": "S03 derived from approved S02 TF-102 (VS-LC ALIGNED_TO BS-LC): stage 'Check documents' covers SO-DC-01 'Evaluate Document Checking' by action term evaluate (stage verb 'check'); the stage is a refinement of S02, a derived path",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S03"
+    },
+    {
+      "mapping_id": "C-C1-020",
+      "source": {
+        "id": "VSS-T3",
+        "type": "A1.ValueStreamStage",
+        "version": "1.0"
+      },
+      "relationship": "S03",
+      "target": {
+        "id": "BS-LC",
+        "type": "A2.BusinessScenario",
+        "version": "1.0",
+        "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S03 S03 derived from approved S02 TF-102 (VS-LC ALIGNED_TO BS-LC): stage 'Issue and advise' covers SO-LC-03 'Execute Letter of Credit Issuance' by action term execute / qualifier alias Issuance (stage verb 'issue'); the stage is a refinement of S02, a derived path"
+      ],
+      "rationale": "S03 derived from approved S02 TF-102 (VS-LC ALIGNED_TO BS-LC): stage 'Issue and advise' covers SO-LC-03 'Execute Letter of Credit Issuance' by action term execute / qualifier alias Issuance (stage verb 'issue'); the stage is a refinement of S02, a derived path",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S03"
+    },
+    {
+      "mapping_id": "C-C1-021",
+      "source": {
+        "id": "BD-TRADE",
+        "type": "A2.BusinessDomain",
+        "version": "1.0"
+      },
+      "relationship": "S16",
+      "target": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S16 S16 derived path: a2 composition BD-TRADE -> SD-LC (B03) and approved S17 TF-108 (SD-LC REALIZED_BY APP-LC) => BD-TRADE -> APP-LC; a query, never a stored arrow (SDMM forbids level-skipping records); cap = input approved, plan high"
+      ],
+      "rationale": "S16 derived path: a2 composition BD-TRADE -> SD-LC (B03) and approved S17 TF-108 (SD-LC REALIZED_BY APP-LC) => BD-TRADE -> APP-LC; a query, never a stored arrow (SDMM forbids level-skipping records); cap = input approved, plan high",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S16"
+    },
+    {
+      "mapping_id": "C-C1-022",
+      "source": {
+        "id": "BA-TRADE",
+        "type": "A2.BusinessArea",
+        "version": "1.0"
+      },
+      "relationship": "S15",
+      "target": {
+        "id": "APP-LC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S15 S15 derived path: a2 composition BA-TRADE -> BD-TRADE (B02) -> SD-LC (B03) and approved S17 TF-108 => BA-TRADE -> APP-LC; a query, never a stored arrow"
+      ],
+      "rationale": "S15 derived path: a2 composition BA-TRADE -> BD-TRADE (B02) -> SD-LC (B03) and approved S17 TF-108 => BA-TRADE -> APP-LC; a query, never a stored arrow",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S15"
+    },
+    {
+      "mapping_id": "C-C1-023",
+      "source": {
+        "id": "BD-TRADE",
+        "type": "A2.BusinessDomain",
+        "version": "1.0"
+      },
+      "relationship": "S16",
+      "target": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S16 S16 derived path: a2 composition BD-TRADE -> SD-DC (B03) and approved S17 TF-109 (SD-DC REALIZED_BY APP-DOC) => BD-TRADE -> APP-DOC; a query, never a stored arrow (SDMM forbids level-skipping records); cap = input approved, plan high"
+      ],
+      "rationale": "S16 derived path: a2 composition BD-TRADE -> SD-DC (B03) and approved S17 TF-109 (SD-DC REALIZED_BY APP-DOC) => BD-TRADE -> APP-DOC; a query, never a stored arrow (SDMM forbids level-skipping records); cap = input approved, plan high",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S16"
+    },
+    {
+      "mapping_id": "C-C1-024",
+      "source": {
+        "id": "BA-TRADE",
+        "type": "A2.BusinessArea",
+        "version": "1.0"
+      },
+      "relationship": "S15",
+      "target": {
+        "id": "APP-DOC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S15 S15 derived path: a2 composition BA-TRADE -> BD-TRADE (B02) -> SD-DC (B03) and approved S17 TF-109 => BA-TRADE -> APP-DOC; a query, never a stored arrow"
+      ],
+      "rationale": "S15 derived path: a2 composition BA-TRADE -> BD-TRADE (B02) -> SD-DC (B03) and approved S17 TF-109 => BA-TRADE -> APP-DOC; a query, never a stored arrow",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "candidate_rule:S15"
+    }
+  ]
+}

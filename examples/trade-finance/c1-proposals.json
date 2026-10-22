@@ -1,0 +1,54 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "fable-executor/2026-10-22",
+  "use_case": "C1",
+  "mappings": [
+    {
+      "mapping_id": "P-C1-001",
+      "source": {
+        "id": "BO-LC",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-LC",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-LETTER-OF-CREDIT"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S12 step4 structural match; BO-LC.attributes (8) vs BBO-LC.attributes (8): 7/8 = 0.88 (score = matched / BIAN attributes, threshold 0.5), matched ['applicant_reference', 'application_status', 'beneficiary_reference', 'credit_amount', 'currency', 'expiry_date', 'issuance_reference']; BIAN attributes without a bank counterpart ['letter_of_credit_reference']; bank attributes without a BIAN counterpart ['lc_number'] (no field aliases on A1 objects — lc_number is not letter_of_credit_reference by the rule); one-to-one fixpoint"
+      ],
+      "rationale": "The bank's Letter of Credit carries the canonical Letter of Credit: 7 of 8 attributes align by name",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-C1-002",
+      "source": {
+        "id": "BO-DOCSET",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-DOCSET",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-DOCUMENT-SET"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S12 step4 structural match; BO-DOCSET.attributes (5) vs BBO-DOCSET.attributes (5): 3/5 = 0.60 (score = matched / BIAN attributes, threshold 0.5), matched ['compliance_outcome', 'discrepancies', 'document_set_reference']; BIAN attributes without a bank counterpart ['checked_at', 'letter_of_credit_reference']; bank attributes without a BIAN counterpart ['lc_number', 'presented_at'] (no field aliases on A1 objects — lc_number is not letter_of_credit_reference by the rule); one-to-one fixpoint"
+      ],
+      "rationale": "The bank's Document Set carries the canonical Document Set: 3 of 5 attributes align by name",
+      "baseline_id": "TF-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    }
+  ]
+}

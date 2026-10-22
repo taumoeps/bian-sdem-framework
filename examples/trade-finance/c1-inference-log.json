@@ -1,0 +1,966 @@
+{
+  "use_case": "C1",
+  "executor": "fable-executor/2026-10-22",
+  "given": "c1-mappings-given.json (22 registry arrows: everything except object alignment)",
+  "gold_opened_at_phase": 5,
+  "files": {
+    "c1-proposals.json": "registry proposals (S12 x2)",
+    "c1-candidates.json": "candidate-rule reports per guide 4c, relationship = plan ID (24 over S03, S06, S07, S08, S09, S13, S14, S15, S16)"
+  },
+  "executor_readings": {
+    "C1-R1 (S13)": "a requirement that applies_to an activity closes over the activity's S06/S07 chain (its own operation's domain), not over the parent process's S04 arrows; the parent PRC-LC-ISSUE has two USES_DOMAIN arrows (SD-DC, SD-LC), so the process route would give REQ-02 and REQ-03 two domains each (5 reports); the activity route gives one each (3 reports, matching the gold)",
+    "C1-C1 (S09)": "the plan's threshold (>= 50%, >= 2) alone admits 5 service -> operation pairs; only each service's unique best match is reported (as the step-2 and S30 rules do); the three suppressed pairs are logged",
+    "S08 candidate set": "two domains are the full exported A2 landscape, so the step-5 rule's first condition holds and the ranking is not vacuous; threshold >= 2 non-generic shared concepts and lead >= 1 applied",
+    "S03 synonym": "apply ≈ initiate used for stage VSS-T1 (not in the guide's synonym list; marked); check ≈ evaluate and issue = Issuance alias for the other two"
+  },
+  "note": "One record per connection attempted. Outcomes set after sdmm-eval against both gold files.",
+  "attempts": [
+    {
+      "plan_id": "S12",
+      "connection": "BO-LC ALIGNED_TO BBO-LC",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a1 BO-LC.attributes.attributes",
+        "a2 BBO-LC.attributes.attributes"
+      ],
+      "reasoning": "7/8 matched ['applicant_reference', 'application_status', 'beneficiary_reference', 'credit_amount', 'currency', 'expiry_date', 'issuance_reference']",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "P-C1-001",
+      "outcome": "hit",
+      "outcome_note": "gold TF-106 (gold band None, plan band given 0.6)",
+      "file": "c1-proposals.json (registry)"
+    },
+    {
+      "plan_id": "S12",
+      "connection": "BO-LC ALIGNED_TO BBO-DOCSET",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "0/5 < 0.5",
+      "confidence_predicted": "medium",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S12",
+      "connection": "BO-DOCSET ALIGNED_TO BBO-LC",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "0/8 < 0.5",
+      "confidence_predicted": "medium",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S12",
+      "connection": "BO-DOCSET ALIGNED_TO BBO-DOCSET",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a1 BO-DOCSET.attributes.attributes",
+        "a2 BBO-DOCSET.attributes.attributes"
+      ],
+      "reasoning": "3/5 matched ['compliance_outcome', 'discrepancies', 'document_set_reference']",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "P-C1-002",
+      "outcome": "hit",
+      "outcome_note": "gold TF-107 (gold band None, plan band given 0.6)",
+      "file": "c1-proposals.json (registry)"
+    },
+    {
+      "plan_id": "S06",
+      "connection": "ACT-T1 -> SO-LC-01",
+      "step_assigned": 4,
+      "step_used": 1,
+      "fallback": true,
+      "data_read": [
+        "a1 ACT-T1.attributes.invokes"
+      ],
+      "reasoning": "stated by invokes; lower step used because the key is present (M1 finding 6)",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C1-001",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-004 (gold band 0.6, plan band given 0.6)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S06",
+      "connection": "ACT-T2 -> SO-LC-02",
+      "step_assigned": 4,
+      "step_used": 1,
+      "fallback": true,
+      "data_read": [
+        "a1 ACT-T2.attributes.invokes"
+      ],
+      "reasoning": "stated by invokes; lower step used because the key is present (M1 finding 6)",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C1-002",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-005 (gold band 0.6, plan band given 0.6)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S06",
+      "connection": "ACT-T3 -> SO-DC-01",
+      "step_assigned": 4,
+      "step_used": 1,
+      "fallback": true,
+      "data_read": [
+        "a1 ACT-T3.attributes.invokes"
+      ],
+      "reasoning": "stated by invokes; lower step used because the key is present (M1 finding 6)",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C1-003",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-006 (gold band 0.6, plan band given 0.6)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S06",
+      "connection": "ACT-T4 -> SO-LC-03",
+      "step_assigned": 4,
+      "step_used": 1,
+      "fallback": true,
+      "data_read": [
+        "a1 ACT-T4.attributes.invokes"
+      ],
+      "reasoning": "stated by invokes; lower step used because the key is present (M1 finding 6)",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C1-004",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-007 (gold band 0.6, plan band given 0.6)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S07",
+      "connection": "ACT-T1 -> SD-LC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C1-001",
+        "a2 composition"
+      ],
+      "reasoning": "closure over S06 report",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C1-005",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-008 (gold band 0.6, plan band given 0.6)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S07",
+      "connection": "ACT-T2 -> SD-LC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C1-002",
+        "a2 composition"
+      ],
+      "reasoning": "closure over S06 report",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C1-006",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-009 (gold band 0.6, plan band given 0.6)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S07",
+      "connection": "ACT-T3 -> SD-DC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C1-003",
+        "a2 composition"
+      ],
+      "reasoning": "closure over S06 report",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C1-007",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-010 (gold band 0.6, plan band given 0.6)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S07",
+      "connection": "ACT-T4 -> SD-LC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C1-004",
+        "a2 composition"
+      ],
+      "reasoning": "closure over S06 report",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C1-008",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-011 (gold band 0.6, plan band given 0.6)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S13",
+      "connection": "REQ-01 -> SD-LC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a1 REQ-01.applies_to",
+        "given TF-103"
+      ],
+      "reasoning": "closure over approved S04",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-009",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-016 (gold band 0.6, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S14",
+      "connection": "REQ-01 -> <operation>",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a1 REQ-01.applies_to = [PRC-LC-APPLY] (a process, not an activity)"
+      ],
+      "reasoning": "NO REPORT — S14 closes over S06 (activity -> operation); the requirement applies to a process, so there is no activity-level arrow to close over (C1.5). Closing over the process's invokes would be a different rule (process -> operation, no plan ID)",
+      "confidence_predicted": "none (C1.5)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S14",
+      "connection": "REQ-02 -> SO-DC-01",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a1 REQ-02.applies_to",
+        "C-C1-003"
+      ],
+      "reasoning": "closure over S06 report",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-010",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-019 (gold band 0.6, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S13",
+      "connection": "REQ-02 -> SD-DC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a1 REQ-02.applies_to = [ACT-T3]",
+        "C-C1-003"
+      ],
+      "reasoning": "closure via the activity's operation (C1-R1); via the parent process's S04 the requirement would reach ['SD-DC', 'SD-LC']",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-011",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-017 (gold band 0.6, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S14",
+      "connection": "REQ-03 -> SO-LC-03",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a1 REQ-03.applies_to",
+        "C-C1-004"
+      ],
+      "reasoning": "closure over S06 report",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-012",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-020 (gold band 0.6, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S13",
+      "connection": "REQ-03 -> SD-LC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a1 REQ-03.applies_to = [ACT-T4]",
+        "C-C1-004"
+      ],
+      "reasoning": "closure via the activity's operation (C1-R1); via the parent process's S04 the requirement would reach ['SD-DC', 'SD-LC']",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-013",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-018 (gold band 0.6, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S09",
+      "connection": "BSV-LC-APP -> SO-LC-01",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a1 BSV-LC-APP.attributes.inputs/outputs",
+        "a2 SO-LC-01 I/O"
+      ],
+      "reasoning": "7/7; unique best",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-014",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-014 (gold band 0.6, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S09",
+      "connection": "BSV-LC-APP -> SO-LC-04",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "5/7 = 0.71 >= 0.5 and >= 2 — WOULD BE REPORTED under the plan's threshold as written; suppressed by C1-C1 (not the service's best match)",
+      "confidence_predicted": "low",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S09",
+      "connection": "BSV-LC-APP -> SO-LC-02",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "4/7 = 0.57 >= 0.5 and >= 2 — WOULD BE REPORTED under the plan's threshold as written; suppressed by C1-C1 (not the service's best match)",
+      "confidence_predicted": "low",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S09",
+      "connection": "BSV-DOC-CHECK -> SO-DC-01",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a1 BSV-DOC-CHECK.attributes.inputs/outputs",
+        "a2 SO-DC-01 I/O"
+      ],
+      "reasoning": "4/4; unique best",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-015",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-015 (gold band 0.6, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S09",
+      "connection": "BSV-DOC-CHECK -> SO-DC-02",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "3/4 = 0.75 >= 0.5 and >= 2 — WOULD BE REPORTED under the plan's threshold as written; suppressed by C1-C1 (not the service's best match)",
+      "confidence_predicted": "low",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S08",
+      "connection": "BSV-LC-APP -> SD-LC",
+      "step_assigned": 5,
+      "step_used": 5,
+      "fallback": false,
+      "data_read": [
+        "a1 BSV-LC-APP description",
+        "a2 two domain descriptions, asset types, aliases"
+      ],
+      "reasoning": "shared ['application', 'credit', 'documentary', 'letter'] vs runner-up 1",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-016",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-012 (gold band 0.4, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S08",
+      "connection": "BSV-DOC-CHECK -> SD-DC",
+      "step_assigned": 5,
+      "step_used": 5,
+      "fallback": false,
+      "data_read": [
+        "a1 BSV-DOC-CHECK description",
+        "a2 two domain descriptions, asset types, aliases"
+      ],
+      "reasoning": "shared ['checking', 'compliance', 'credit', 'discrepancy', 'document', 'set'] vs runner-up 1",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-017",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-013 (gold band 0.4, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S03",
+      "connection": "VSS-T1 -> BS-LC",
+      "step_assigned": 4,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "given TF-102",
+        "a1 VSS-T1.name",
+        "a2 BS-LC.operation_sequence"
+      ],
+      "reasoning": "covers SO-LC-01 by initiate",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-018",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-001 (gold band 0.6, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S03",
+      "connection": "VSS-T2 -> BS-LC",
+      "step_assigned": 4,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "given TF-102",
+        "a1 VSS-T2.name",
+        "a2 BS-LC.operation_sequence"
+      ],
+      "reasoning": "covers SO-DC-01 by evaluate",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-019",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-002 (gold band 0.6, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S03",
+      "connection": "VSS-T3 -> BS-LC",
+      "step_assigned": 4,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "given TF-102",
+        "a1 VSS-T3.name",
+        "a2 BS-LC.operation_sequence"
+      ],
+      "reasoning": "covers SO-LC-03 by execute",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C1-020",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-003 (gold band 0.6, plan band given 0.4)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S16",
+      "connection": "BD-TRADE -> APP-LC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a2 composition",
+        "given TF-108"
+      ],
+      "reasoning": "derived path reported as candidate",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C1-021",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-023 (gold band 0.8, plan band given 0.8)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S15",
+      "connection": "BA-TRADE -> APP-LC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a2 composition",
+        "given TF-108"
+      ],
+      "reasoning": "derived path reported as candidate",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C1-022",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-021 (gold band 0.8, plan band given 0.8)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S16",
+      "connection": "BD-TRADE -> APP-DOC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a2 composition",
+        "given TF-109"
+      ],
+      "reasoning": "derived path reported as candidate",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C1-023",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-024 (gold band 0.8, plan band given 0.8)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S15",
+      "connection": "BA-TRADE -> APP-DOC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a2 composition",
+        "given TF-109"
+      ],
+      "reasoning": "derived path reported as candidate",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C1-024",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-022 (gold band 0.8, plan band given 0.8)",
+      "file": "c1-candidates.json (guide 4c, relationship = plan ID)"
+    },
+    {
+      "plan_id": "S10",
+      "connection": "—",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "NO REPORT — ACTOR-TRADE-OPS: not a mapping (plan not_a_mapping); scenario participants are context",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S11",
+      "connection": "—",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "NO REPORT — ROLE-TRADE-OFFICER: not a mapping (plan not_a_mapping)",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S05",
+      "connection": "—",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "NO REPORT — process -> scenario is historical_method (W135), not in C1's rows; not attempted",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S01",
+      "connection": "CAP-TF SUPPORTED_BY SD-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-101"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S02",
+      "connection": "VS-LC ALIGNED_TO BS-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-102"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S04",
+      "connection": "PRC-LC-APPLY USES_DOMAIN SD-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-103"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S04",
+      "connection": "PRC-LC-ISSUE USES_DOMAIN SD-DC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-104"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S04",
+      "connection": "PRC-LC-ISSUE USES_DOMAIN SD-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-105"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-LC REALIZED_BY APP-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-108"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-DC REALIZED_BY APP-DOC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-109"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LC-01 IMPLEMENTED_BY API-LC-01",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-110"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LC-02 IMPLEMENTED_BY API-LC-02",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-111"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LC-03 IMPLEMENTED_BY API-LC-03",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-112"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LC-04 IMPLEMENTED_BY API-LC-04",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-113"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-DC-01 IMPLEMENTED_BY API-DC-01",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-114"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-DC-02 IMPLEMENTED_BY API-DC-02",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-115"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-LC MAPPED_TO ENT-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-116"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-DOCSET MAPPED_TO ENT-DOCSET",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-117"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "APP-LC DEPLOYED_AS DEP-LC-PROD",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-118"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "APP-DOC DEPLOYED_AS DEP-DOC-PROD",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-119"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S33/S34/S35",
+      "connection": "APP-LC DEPLOYED_ON SYS-RUNTIME-TF",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-120"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S33/S34/S35",
+      "connection": "APP-DOC DEPLOYED_ON SYS-RUNTIME-TF",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-121"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S33/S34/S35",
+      "connection": "APP-LC DEPLOYED_ON NODE-TF-PROD",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-122"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S33/S34/S35",
+      "connection": "APP-DOC DEPLOYED_ON NODE-TF-PROD",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-123"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S33/S34/S35",
+      "connection": "APP-DOC DEPLOYED_ON DEV-SCAN-01",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-124"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    }
+  ]
+}
