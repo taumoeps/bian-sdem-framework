@@ -69,7 +69,7 @@ Build the probes in a scratch directory (never under `examples/`), each a minima
 
 ### T5 — Coverage: which rows the ten estates exercise
 
-For each row, count the relationship instances across all example exports that match it (directly or through inheritance). Produce the table *row → count → estates*. Rows with zero instances are **not tested by data**; list them. (Baseline at authoring: 42 of 131 rows are exercised. The gap is expected — many ArchiMate rows are legitimate but unused — and is reported, not failed.)
+For each row, count the relationship instances across all example exports that match it (directly or through inheritance). Produce the table *row → count → estates*. Rows with zero instances are **not tested by data**; list them. (Baseline at authoring: 42 of 131 rows were exercised by the realistic estates. Since v0.5.18 `examples/reference-structure/`, generated from the record by `sdmm-structure`, carries one relationship per enforceable row, so every row is exercised on committed data; report realistic-estate coverage and reference-structure coverage separately.)
 
 ### T6 — Dependency: the mapping rules find the rows they walk
 

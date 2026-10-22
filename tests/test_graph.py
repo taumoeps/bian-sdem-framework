@@ -334,3 +334,23 @@ class WithinLevelConstraintTests(unittest.TestCase):
         self.assertIsNone(mm.relationship_issue('A1', 'A1.BusinessCapability', 'serving', 'A1.ValueStream'))
         self.assertIsNotNone(mm.relationship_issue('A1', 'A1.ValueStream', 'realization', 'A1.BusinessCapability'))
         self.assertIsNone(mm.relationship_issue('A4', 'A4.Node', 'assignment', 'A4.Artifact'))
+
+
+class ReferenceStructureTests(unittest.TestCase):
+    """Every enforceable within-level row is exercised on committed data and accepted by the checker."""
+    P = ROOT / 'examples/reference-structure'
+
+    def test_generated_estate_is_current(self):
+        from sdmm.structure import render, FILES
+        docs = render()
+        for lvl, name in FILES.items():
+            self.assertEqual(json.loads((self.P / name).read_text(encoding='utf-8')), docs[lvl])
+
+    def test_every_enforceable_row_occurs_and_checks_clean(self):
+        fg = FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
+        self.assertEqual({k: v for k, v in fg.check().items() if v}, {})
+        lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
+        enforceable = {c['id'] for c in lr['constraints'] if c.get('enforceable') is not False}
+        present = {r['name'] for f in self.P.glob('a*.json') for r in json.loads(f.read_text(encoding='utf-8'))['relationships']}
+        self.assertEqual(enforceable - present, set())
+        self.assertEqual(len(enforceable), 129)

@@ -1,0 +1,325 @@
+{
+  "level": "A3",
+  "model_id": "reference-structure-a3",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SDMM-GENERATED-FROM-RECORD",
+  "instances": [
+    {
+      "id": "RS-ApplicationComponent-1",
+      "type": "A3.ApplicationComponent",
+      "version": "1.0",
+      "name": "ApplicationComponent 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.ApplicationComponent carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-ApplicationComponent-2",
+      "type": "A3.ApplicationComponent",
+      "version": "1.0",
+      "name": "ApplicationComponent 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.ApplicationComponent carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-ApplicationService-1",
+      "type": "A3.ApplicationService",
+      "version": "1.0",
+      "name": "ApplicationService 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.ApplicationService carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-ApplicationService-2",
+      "type": "A3.ApplicationService",
+      "version": "1.0",
+      "name": "ApplicationService 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.ApplicationService carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-ApplicationInterface-1",
+      "type": "A3.ApplicationInterface",
+      "version": "1.0",
+      "name": "ApplicationInterface 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.ApplicationInterface carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-ApplicationInterface-2",
+      "type": "A3.ApplicationInterface",
+      "version": "1.0",
+      "name": "ApplicationInterface 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.ApplicationInterface carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-ApplicationFunction-1",
+      "type": "A3.ApplicationFunction",
+      "version": "1.0",
+      "name": "ApplicationFunction 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.ApplicationFunction carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-ApplicationFunction-2",
+      "type": "A3.ApplicationFunction",
+      "version": "1.0",
+      "name": "ApplicationFunction 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.ApplicationFunction carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-APIOperation-1",
+      "type": "A3.APIOperation",
+      "version": "1.0",
+      "name": "APIOperation 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.APIOperation carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-APIOperation-2",
+      "type": "A3.APIOperation",
+      "version": "1.0",
+      "name": "APIOperation 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.APIOperation carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-DataEntity-1",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "DataEntity 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.DataEntity carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-DataEntity-2",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "DataEntity 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.DataEntity carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-Event-1",
+      "type": "A3.Event",
+      "version": "1.0",
+      "name": "Event 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.Event carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-Event-2",
+      "type": "A3.Event",
+      "version": "1.0",
+      "name": "Event 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.Event carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-SolutionBuildingBlock-1",
+      "type": "A3.SolutionBuildingBlock",
+      "version": "1.0",
+      "name": "SolutionBuildingBlock 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.SolutionBuildingBlock carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-SolutionBuildingBlock-2",
+      "type": "A3.SolutionBuildingBlock",
+      "version": "1.0",
+      "name": "SolutionBuildingBlock 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.SolutionBuildingBlock carrying one relationship per constraint row of A3; no business meaning."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "RS-ApplicationComponent-1",
+      "kind": "composition",
+      "target": "RS-ApplicationComponent-2",
+      "name": "RA3-01"
+    },
+    {
+      "source": "RS-ApplicationComponent-1",
+      "kind": "aggregation",
+      "target": "RS-ApplicationComponent-2",
+      "name": "RA3-02"
+    },
+    {
+      "source": "RS-ApplicationComponent-1",
+      "kind": "composition",
+      "target": "RS-ApplicationInterface-1",
+      "name": "RA3-03"
+    },
+    {
+      "source": "RS-ApplicationComponent-1",
+      "kind": "assignment",
+      "target": "RS-ApplicationFunction-1",
+      "name": "RA3-04"
+    },
+    {
+      "source": "RS-ApplicationFunction-1",
+      "kind": "realization",
+      "target": "RS-ApplicationService-1",
+      "name": "RA3-05"
+    },
+    {
+      "source": "RS-ApplicationComponent-1",
+      "kind": "realization",
+      "target": "RS-ApplicationService-1",
+      "name": "RA3-06"
+    },
+    {
+      "source": "RS-ApplicationInterface-1",
+      "kind": "assignment",
+      "target": "RS-ApplicationService-1",
+      "name": "RA3-07"
+    },
+    {
+      "source": "RS-ApplicationService-1",
+      "kind": "serving",
+      "target": "RS-ApplicationComponent-1",
+      "name": "RA3-08"
+    },
+    {
+      "source": "RS-ApplicationService-1",
+      "kind": "serving",
+      "target": "RS-ApplicationFunction-1",
+      "name": "RA3-09"
+    },
+    {
+      "source": "RS-ApplicationComponent-1",
+      "kind": "flow",
+      "target": "RS-ApplicationComponent-2",
+      "name": "RA3-10"
+    },
+    {
+      "source": "RS-ApplicationComponent-1",
+      "kind": "serving",
+      "target": "RS-ApplicationComponent-2",
+      "name": "RA3-11"
+    },
+    {
+      "source": "RS-ApplicationComponent-1",
+      "kind": "triggering",
+      "target": "RS-ApplicationComponent-2",
+      "name": "RA3-12"
+    },
+    {
+      "source": "RS-ApplicationFunction-1",
+      "kind": "composition",
+      "target": "RS-ApplicationFunction-2",
+      "name": "RA3-13"
+    },
+    {
+      "source": "RS-ApplicationFunction-1",
+      "kind": "triggering",
+      "target": "RS-ApplicationFunction-2",
+      "name": "RA3-14"
+    },
+    {
+      "source": "RS-ApplicationFunction-1",
+      "kind": "flow",
+      "target": "RS-ApplicationFunction-2",
+      "name": "RA3-15"
+    },
+    {
+      "source": "RS-ApplicationComponent-1",
+      "kind": "access",
+      "target": "RS-DataEntity-1",
+      "name": "RA3-16"
+    },
+    {
+      "source": "RS-ApplicationFunction-1",
+      "kind": "access",
+      "target": "RS-DataEntity-1",
+      "name": "RA3-17"
+    },
+    {
+      "source": "RS-ApplicationService-1",
+      "kind": "access",
+      "target": "RS-DataEntity-1",
+      "name": "RA3-18"
+    },
+    {
+      "source": "RS-DataEntity-1",
+      "kind": "composition",
+      "target": "RS-DataEntity-2",
+      "name": "RA3-19"
+    },
+    {
+      "source": "RS-DataEntity-1",
+      "kind": "aggregation",
+      "target": "RS-DataEntity-2",
+      "name": "RA3-20"
+    },
+    {
+      "source": "RS-DataEntity-1",
+      "kind": "specialization",
+      "target": "RS-DataEntity-2",
+      "name": "RA3-21"
+    },
+    {
+      "source": "RS-ApplicationComponent-1",
+      "kind": "triggering",
+      "target": "RS-Event-1",
+      "name": "RA3-22"
+    },
+    {
+      "source": "RS-ApplicationFunction-1",
+      "kind": "triggering",
+      "target": "RS-Event-1",
+      "name": "RA3-23"
+    },
+    {
+      "source": "RS-Event-1",
+      "kind": "triggering",
+      "target": "RS-ApplicationFunction-1",
+      "name": "RA3-24"
+    },
+    {
+      "source": "RS-Event-1",
+      "kind": "triggering",
+      "target": "RS-ApplicationComponent-1",
+      "name": "RA3-25"
+    },
+    {
+      "source": "RS-Event-1",
+      "kind": "access",
+      "target": "RS-DataEntity-1",
+      "name": "RA3-26"
+    },
+    {
+      "source": "RS-ApplicationInterface-1",
+      "kind": "composition",
+      "target": "RS-APIOperation-1",
+      "name": "RA3-27"
+    },
+    {
+      "source": "RS-ApplicationComponent-1",
+      "kind": "composition",
+      "target": "RS-APIOperation-1",
+      "name": "RA3-28"
+    },
+    {
+      "source": "RS-APIOperation-1",
+      "kind": "access",
+      "target": "RS-DataEntity-1",
+      "name": "RA3-29"
+    },
+    {
+      "source": "RS-SolutionBuildingBlock-1",
+      "kind": "aggregation",
+      "target": "RS-ApplicationComponent-1",
+      "name": "RA3-30"
+    },
+    {
+      "source": "RS-SolutionBuildingBlock-1",
+      "kind": "composition",
+      "target": "RS-SolutionBuildingBlock-2",
+      "name": "RA3-31"
+    }
+  ]
+}

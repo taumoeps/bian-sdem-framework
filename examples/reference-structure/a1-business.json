@@ -1,0 +1,459 @@
+{
+  "level": "A1",
+  "model_id": "reference-structure-a1",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SDMM-GENERATED-FROM-RECORD",
+  "instances": [
+    {
+      "id": "RS-BusinessCapability-1",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "BusinessCapability 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessCapability carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessCapability-2",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "BusinessCapability 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessCapability carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-ValueStream-1",
+      "type": "A1.ValueStream",
+      "version": "1.0",
+      "name": "ValueStream 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.ValueStream carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-ValueStream-2",
+      "type": "A1.ValueStream",
+      "version": "1.0",
+      "name": "ValueStream 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.ValueStream carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-ValueStreamStage-1",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "ValueStreamStage 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.ValueStreamStage carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-ValueStreamStage-2",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "ValueStreamStage 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.ValueStreamStage carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessProcess-1",
+      "type": "A1.BusinessProcess",
+      "version": "1.0",
+      "name": "BusinessProcess 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessProcess carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessProcess-2",
+      "type": "A1.BusinessProcess",
+      "version": "1.0",
+      "name": "BusinessProcess 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessProcess carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessActivity-1",
+      "type": "A1.BusinessActivity",
+      "version": "1.0",
+      "name": "BusinessActivity 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessActivity carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessActivity-2",
+      "type": "A1.BusinessActivity",
+      "version": "1.0",
+      "name": "BusinessActivity 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessActivity carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessService-1",
+      "type": "A1.BusinessService",
+      "version": "1.0",
+      "name": "BusinessService 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessService carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessService-2",
+      "type": "A1.BusinessService",
+      "version": "1.0",
+      "name": "BusinessService 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessService carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessActor-1",
+      "type": "A1.BusinessActor",
+      "version": "1.0",
+      "name": "BusinessActor 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessActor carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessActor-2",
+      "type": "A1.BusinessActor",
+      "version": "1.0",
+      "name": "BusinessActor 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessActor carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessRole-1",
+      "type": "A1.BusinessRole",
+      "version": "1.0",
+      "name": "BusinessRole 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessRole carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessRole-2",
+      "type": "A1.BusinessRole",
+      "version": "1.0",
+      "name": "BusinessRole 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessRole carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessObject-1",
+      "type": "A1.BusinessObject",
+      "version": "1.0",
+      "name": "BusinessObject 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessObject carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessObject-2",
+      "type": "A1.BusinessObject",
+      "version": "1.0",
+      "name": "BusinessObject 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessObject carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessRequirement-1",
+      "type": "A1.BusinessRequirement",
+      "version": "1.0",
+      "name": "BusinessRequirement 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessRequirement carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessRequirement-2",
+      "type": "A1.BusinessRequirement",
+      "version": "1.0",
+      "name": "BusinessRequirement 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessRequirement carrying one relationship per constraint row of A1; no business meaning."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "RS-BusinessCapability-1",
+      "kind": "composition",
+      "target": "RS-BusinessCapability-2",
+      "name": "RA1-01"
+    },
+    {
+      "source": "RS-BusinessCapability-1",
+      "kind": "aggregation",
+      "target": "RS-BusinessCapability-2",
+      "name": "RA1-02"
+    },
+    {
+      "source": "RS-BusinessCapability-1",
+      "kind": "serving",
+      "target": "RS-ValueStream-1",
+      "name": "RA1-03"
+    },
+    {
+      "source": "RS-BusinessCapability-1",
+      "kind": "serving",
+      "target": "RS-ValueStreamStage-1",
+      "name": "RA1-04"
+    },
+    {
+      "source": "RS-ValueStream-1",
+      "kind": "composition",
+      "target": "RS-ValueStreamStage-1",
+      "name": "RA1-05"
+    },
+    {
+      "source": "RS-ValueStreamStage-1",
+      "kind": "triggering",
+      "target": "RS-ValueStreamStage-2",
+      "name": "RA1-06"
+    },
+    {
+      "source": "RS-ValueStreamStage-1",
+      "kind": "flow",
+      "target": "RS-ValueStreamStage-2",
+      "name": "RA1-07"
+    },
+    {
+      "source": "RS-BusinessProcess-1",
+      "kind": "realization",
+      "target": "RS-BusinessCapability-1",
+      "name": "RA1-08"
+    },
+    {
+      "source": "RS-BusinessProcess-1",
+      "kind": "realization",
+      "target": "RS-ValueStream-1",
+      "name": "RA1-09"
+    },
+    {
+      "source": "RS-BusinessProcess-1",
+      "kind": "realization",
+      "target": "RS-ValueStreamStage-1",
+      "name": "RA1-10"
+    },
+    {
+      "source": "RS-BusinessProcess-1",
+      "kind": "realization",
+      "target": "RS-BusinessService-1",
+      "name": "RA1-11"
+    },
+    {
+      "source": "RS-BusinessProcess-1",
+      "kind": "access",
+      "target": "RS-BusinessObject-1",
+      "name": "RA1-12"
+    },
+    {
+      "source": "RS-BusinessProcess-1",
+      "kind": "realization",
+      "target": "RS-BusinessRequirement-1",
+      "name": "RA1-13"
+    },
+    {
+      "source": "RS-BusinessProcess-1",
+      "kind": "triggering",
+      "target": "RS-BusinessProcess-2",
+      "name": "RA1-14"
+    },
+    {
+      "source": "RS-BusinessProcess-1",
+      "kind": "flow",
+      "target": "RS-BusinessProcess-2",
+      "name": "RA1-15"
+    },
+    {
+      "source": "RS-BusinessActivity-1",
+      "kind": "realization",
+      "target": "RS-BusinessCapability-1",
+      "name": "RA1-16"
+    },
+    {
+      "source": "RS-BusinessActivity-1",
+      "kind": "realization",
+      "target": "RS-ValueStream-1",
+      "name": "RA1-17"
+    },
+    {
+      "source": "RS-BusinessActivity-1",
+      "kind": "realization",
+      "target": "RS-ValueStreamStage-1",
+      "name": "RA1-18"
+    },
+    {
+      "source": "RS-BusinessActivity-1",
+      "kind": "realization",
+      "target": "RS-BusinessService-1",
+      "name": "RA1-19"
+    },
+    {
+      "source": "RS-BusinessActivity-1",
+      "kind": "access",
+      "target": "RS-BusinessObject-1",
+      "name": "RA1-20"
+    },
+    {
+      "source": "RS-BusinessActivity-1",
+      "kind": "realization",
+      "target": "RS-BusinessRequirement-1",
+      "name": "RA1-21"
+    },
+    {
+      "source": "RS-BusinessActivity-1",
+      "kind": "triggering",
+      "target": "RS-BusinessActivity-2",
+      "name": "RA1-22"
+    },
+    {
+      "source": "RS-BusinessActivity-1",
+      "kind": "flow",
+      "target": "RS-BusinessActivity-2",
+      "name": "RA1-23"
+    },
+    {
+      "source": "RS-BusinessProcess-1",
+      "kind": "composition",
+      "target": "RS-BusinessActivity-1",
+      "name": "RA1-24"
+    },
+    {
+      "source": "RS-BusinessProcess-1",
+      "kind": "composition",
+      "target": "RS-BusinessProcess-2",
+      "name": "RA1-25"
+    },
+    {
+      "source": "RS-BusinessActivity-1",
+      "kind": "composition",
+      "target": "RS-BusinessActivity-2",
+      "name": "RA1-26"
+    },
+    {
+      "source": "RS-BusinessService-1",
+      "kind": "serving",
+      "target": "RS-BusinessProcess-1",
+      "name": "RA1-27"
+    },
+    {
+      "source": "RS-BusinessService-1",
+      "kind": "serving",
+      "target": "RS-BusinessActivity-1",
+      "name": "RA1-28"
+    },
+    {
+      "source": "RS-BusinessService-1",
+      "kind": "serving",
+      "target": "RS-BusinessRole-1",
+      "name": "RA1-29"
+    },
+    {
+      "source": "RS-BusinessService-1",
+      "kind": "serving",
+      "target": "RS-BusinessActor-1",
+      "name": "RA1-30"
+    },
+    {
+      "source": "RS-BusinessService-1",
+      "kind": "composition",
+      "target": "RS-BusinessService-2",
+      "name": "RA1-31"
+    },
+    {
+      "source": "RS-BusinessService-1",
+      "kind": "access",
+      "target": "RS-BusinessObject-1",
+      "name": "RA1-32"
+    },
+    {
+      "source": "RS-BusinessService-1",
+      "kind": "realization",
+      "target": "RS-BusinessRequirement-1",
+      "name": "RA1-33"
+    },
+    {
+      "source": "RS-BusinessCapability-1",
+      "kind": "realization",
+      "target": "RS-BusinessRequirement-1",
+      "name": "RA1-34"
+    },
+    {
+      "source": "RS-BusinessActor-1",
+      "kind": "assignment",
+      "target": "RS-BusinessRole-1",
+      "name": "RA1-35"
+    },
+    {
+      "source": "RS-BusinessRole-1",
+      "kind": "assignment",
+      "target": "RS-BusinessProcess-1",
+      "name": "RA1-36"
+    },
+    {
+      "source": "RS-BusinessRole-1",
+      "kind": "assignment",
+      "target": "RS-BusinessActivity-1",
+      "name": "RA1-37"
+    },
+    {
+      "source": "RS-BusinessActor-1",
+      "kind": "assignment",
+      "target": "RS-BusinessProcess-1",
+      "name": "RA1-38"
+    },
+    {
+      "source": "RS-BusinessActor-1",
+      "kind": "assignment",
+      "target": "RS-BusinessActivity-1",
+      "name": "RA1-39"
+    },
+    {
+      "source": "RS-BusinessActor-1",
+      "kind": "composition",
+      "target": "RS-BusinessActor-2",
+      "name": "RA1-40"
+    },
+    {
+      "source": "RS-BusinessActor-1",
+      "kind": "aggregation",
+      "target": "RS-BusinessActor-2",
+      "name": "RA1-41"
+    },
+    {
+      "source": "RS-BusinessRole-1",
+      "kind": "composition",
+      "target": "RS-BusinessRole-2",
+      "name": "RA1-42"
+    },
+    {
+      "source": "RS-BusinessRole-1",
+      "kind": "aggregation",
+      "target": "RS-BusinessRole-2",
+      "name": "RA1-43"
+    },
+    {
+      "source": "RS-BusinessObject-1",
+      "kind": "composition",
+      "target": "RS-BusinessObject-2",
+      "name": "RA1-44"
+    },
+    {
+      "source": "RS-BusinessObject-1",
+      "kind": "aggregation",
+      "target": "RS-BusinessObject-2",
+      "name": "RA1-45"
+    },
+    {
+      "source": "RS-BusinessObject-1",
+      "kind": "specialization",
+      "target": "RS-BusinessObject-2",
+      "name": "RA1-46"
+    },
+    {
+      "source": "RS-BusinessRequirement-1",
+      "kind": "composition",
+      "target": "RS-BusinessRequirement-2",
+      "name": "RA1-47"
+    },
+    {
+      "source": "RS-BusinessRequirement-1",
+      "kind": "specialization",
+      "target": "RS-BusinessRequirement-2",
+      "name": "RA1-48"
+    }
+  ]
+}

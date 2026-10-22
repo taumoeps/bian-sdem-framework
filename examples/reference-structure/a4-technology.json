@@ -1,0 +1,387 @@
+{
+  "level": "A4",
+  "model_id": "reference-structure-a4",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SDMM-GENERATED-FROM-RECORD",
+  "instances": [
+    {
+      "id": "RS-Deployment-1",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Deployment 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Deployment carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-Deployment-2",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Deployment 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Deployment carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-DeploymentEnvironment-1",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "DeploymentEnvironment 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.DeploymentEnvironment carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-DeploymentEnvironment-2",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "DeploymentEnvironment 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.DeploymentEnvironment carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-Node-1",
+      "type": "A4.Node",
+      "version": "1.0",
+      "name": "Node 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Node carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-Node-2",
+      "type": "A4.Node",
+      "version": "1.0",
+      "name": "Node 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Node carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-Device-1",
+      "type": "A4.Device",
+      "version": "1.0",
+      "name": "Device 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Device carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-Device-2",
+      "type": "A4.Device",
+      "version": "1.0",
+      "name": "Device 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Device carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-SystemSoftware-1",
+      "type": "A4.SystemSoftware",
+      "version": "1.0",
+      "name": "SystemSoftware 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.SystemSoftware carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-SystemSoftware-2",
+      "type": "A4.SystemSoftware",
+      "version": "1.0",
+      "name": "SystemSoftware 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.SystemSoftware carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-TechnologyService-1",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "TechnologyService 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.TechnologyService carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-TechnologyService-2",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "TechnologyService 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.TechnologyService carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-TechnologyInterface-1",
+      "type": "A4.TechnologyInterface",
+      "version": "1.0",
+      "name": "TechnologyInterface 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.TechnologyInterface carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-TechnologyInterface-2",
+      "type": "A4.TechnologyInterface",
+      "version": "1.0",
+      "name": "TechnologyInterface 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.TechnologyInterface carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-CommunicationNetwork-1",
+      "type": "A4.CommunicationNetwork",
+      "version": "1.0",
+      "name": "CommunicationNetwork 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.CommunicationNetwork carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-CommunicationNetwork-2",
+      "type": "A4.CommunicationNetwork",
+      "version": "1.0",
+      "name": "CommunicationNetwork 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.CommunicationNetwork carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-Path-1",
+      "type": "A4.Path",
+      "version": "1.0",
+      "name": "Path 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Path carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-Path-2",
+      "type": "A4.Path",
+      "version": "1.0",
+      "name": "Path 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Path carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-Artifact-1",
+      "type": "A4.Artifact",
+      "version": "1.0",
+      "name": "Artifact 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Artifact carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-Artifact-2",
+      "type": "A4.Artifact",
+      "version": "1.0",
+      "name": "Artifact 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Artifact carrying one relationship per constraint row of A4; no business meaning."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "RS-Node-1",
+      "kind": "composition",
+      "target": "RS-Node-2",
+      "name": "RA4-01"
+    },
+    {
+      "source": "RS-Node-1",
+      "kind": "aggregation",
+      "target": "RS-Node-2",
+      "name": "RA4-02"
+    },
+    {
+      "source": "RS-Node-1",
+      "kind": "aggregation",
+      "target": "RS-Device-1",
+      "name": "RA4-03"
+    },
+    {
+      "source": "RS-Node-1",
+      "kind": "assignment",
+      "target": "RS-SystemSoftware-1",
+      "name": "RA4-04"
+    },
+    {
+      "source": "RS-Device-1",
+      "kind": "assignment",
+      "target": "RS-SystemSoftware-1",
+      "name": "RA4-05"
+    },
+    {
+      "source": "RS-SystemSoftware-1",
+      "kind": "assignment",
+      "target": "RS-SystemSoftware-2",
+      "name": "RA4-06"
+    },
+    {
+      "source": "RS-Node-1",
+      "kind": "assignment",
+      "target": "RS-Artifact-1",
+      "name": "RA4-07"
+    },
+    {
+      "source": "RS-Node-1",
+      "kind": "realization",
+      "target": "RS-TechnologyService-1",
+      "name": "RA4-08"
+    },
+    {
+      "source": "RS-Node-1",
+      "kind": "composition",
+      "target": "RS-TechnologyInterface-1",
+      "name": "RA4-09"
+    },
+    {
+      "source": "RS-TechnologyService-1",
+      "kind": "serving",
+      "target": "RS-Node-1",
+      "name": "RA4-10"
+    },
+    {
+      "source": "RS-Node-1",
+      "kind": "assignment",
+      "target": "RS-Deployment-1",
+      "name": "RA4-11"
+    },
+    {
+      "source": "RS-Device-1",
+      "kind": "assignment",
+      "target": "RS-Artifact-1",
+      "name": "RA4-12"
+    },
+    {
+      "source": "RS-Device-1",
+      "kind": "realization",
+      "target": "RS-TechnologyService-1",
+      "name": "RA4-13"
+    },
+    {
+      "source": "RS-Device-1",
+      "kind": "composition",
+      "target": "RS-TechnologyInterface-1",
+      "name": "RA4-14"
+    },
+    {
+      "source": "RS-TechnologyService-1",
+      "kind": "serving",
+      "target": "RS-Device-1",
+      "name": "RA4-15"
+    },
+    {
+      "source": "RS-Device-1",
+      "kind": "assignment",
+      "target": "RS-Deployment-1",
+      "name": "RA4-16"
+    },
+    {
+      "source": "RS-SystemSoftware-1",
+      "kind": "assignment",
+      "target": "RS-Artifact-1",
+      "name": "RA4-17"
+    },
+    {
+      "source": "RS-SystemSoftware-1",
+      "kind": "realization",
+      "target": "RS-TechnologyService-1",
+      "name": "RA4-18"
+    },
+    {
+      "source": "RS-SystemSoftware-1",
+      "kind": "composition",
+      "target": "RS-TechnologyInterface-1",
+      "name": "RA4-19"
+    },
+    {
+      "source": "RS-TechnologyService-1",
+      "kind": "serving",
+      "target": "RS-SystemSoftware-1",
+      "name": "RA4-20"
+    },
+    {
+      "source": "RS-SystemSoftware-1",
+      "kind": "assignment",
+      "target": "RS-Deployment-1",
+      "name": "RA4-21"
+    },
+    {
+      "source": "RS-TechnologyInterface-1",
+      "kind": "assignment",
+      "target": "RS-TechnologyService-1",
+      "name": "RA4-22"
+    },
+    {
+      "source": "RS-TechnologyService-1",
+      "kind": "composition",
+      "target": "RS-TechnologyService-2",
+      "name": "RA4-23"
+    },
+    {
+      "source": "RS-Node-1",
+      "kind": "flow",
+      "target": "RS-Node-2",
+      "name": "RA4-24"
+    },
+    {
+      "source": "RS-Node-1",
+      "kind": "triggering",
+      "target": "RS-Node-2",
+      "name": "RA4-25"
+    },
+    {
+      "source": "RS-CommunicationNetwork-1",
+      "kind": "realization",
+      "target": "RS-Path-1",
+      "name": "RA4-26"
+    },
+    {
+      "source": "RS-CommunicationNetwork-1",
+      "kind": "composition",
+      "target": "RS-CommunicationNetwork-2",
+      "name": "RA4-27"
+    },
+    {
+      "source": "RS-Artifact-1",
+      "kind": "composition",
+      "target": "RS-Artifact-2",
+      "name": "RA4-28"
+    },
+    {
+      "source": "RS-Artifact-1",
+      "kind": "aggregation",
+      "target": "RS-Artifact-2",
+      "name": "RA4-29"
+    },
+    {
+      "source": "RS-Device-1",
+      "kind": "aggregation",
+      "target": "RS-Device-2",
+      "name": "RA4-30"
+    },
+    {
+      "source": "RS-DeploymentEnvironment-1",
+      "kind": "aggregation",
+      "target": "RS-Deployment-1",
+      "name": "RA4-31"
+    },
+    {
+      "source": "RS-DeploymentEnvironment-1",
+      "kind": "aggregation",
+      "target": "RS-Node-1",
+      "name": "RA4-32"
+    },
+    {
+      "source": "RS-DeploymentEnvironment-1",
+      "kind": "aggregation",
+      "target": "RS-Device-1",
+      "name": "RA4-33"
+    },
+    {
+      "source": "RS-DeploymentEnvironment-1",
+      "kind": "aggregation",
+      "target": "RS-SystemSoftware-1",
+      "name": "RA4-34"
+    },
+    {
+      "source": "RS-Deployment-1",
+      "kind": "aggregation",
+      "target": "RS-Artifact-1",
+      "name": "RA4-35"
+    },
+    {
+      "source": "RS-Device-1",
+      "kind": "composition",
+      "target": "RS-Device-2",
+      "name": "RA4-36"
+    }
+  ]
+}
