@@ -243,7 +243,10 @@
           "expiry_date",
           "application_status",
           "issuance_reference"
-        ]
+        ],
+        "field_aliases": {
+          "lc_number": "letter_of_credit_reference"
+        }
       }
     },
     {
@@ -260,7 +263,10 @@
           "compliance_outcome",
           "discrepancies",
           "presented_at"
-        ]
+        ],
+        "field_aliases": {
+          "lc_number": "letter_of_credit_reference"
+        }
       }
     }
   ],

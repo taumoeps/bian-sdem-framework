@@ -1,5 +1,5 @@
 {
-  "$schema_version": "0.5.10",
+  "$schema_version": "0.5.11",
   "note": "Conventional attribute keys on level-export instances. 'attributes' stays free-form in schema/level-model.schema.json; these are the keys the mapping steps (docs/mapping-execution.md §3) join on. Cross-level references are allowed ONLY as attributes (relationships stay within-level).",
   "conventions": {
     "A2.ServiceOperation": {
@@ -31,7 +31,8 @@
       "stages": "ordered list of A1.ValueStreamStage ids"
     },
     "A1.BusinessObject": {
-      "attributes": "list of attribute names from the business glossary"
+      "attributes": "list of attribute names from the business glossary",
+      "field_aliases": "map of the bank's glossary attribute names to canonical attribute names (S12 step 4), e.g. lc_number → letter_of_credit_reference; institution data"
     },
     "A3.APIOperation": {
       "method": "HTTP method",

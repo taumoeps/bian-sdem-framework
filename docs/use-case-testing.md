@@ -1532,3 +1532,12 @@ OVERALL            24   24  24   0   0   1.00  1.00  1.00
 | S01, S02, S04, S17, S24, S30, S32, S33/S34/S35 | the 22 given arrows | given |
 
 **Summary.** The first coverage case puts nine previously untested candidate rows and the one untested registry row through the steps, and all 26 targets are reached with nothing false: registry 2 of 2, candidates 24 of 24. Three readings had to be stated where the plan or guide is loose — activity-level requirements close through their own operation, service-to-operation matching must be one-to-one, two domains are a full landscape — and each is a one-line fix to `data_needed` or the guide. The one data gap is the A1 side's missing glossary alias, which is why the document-set alignment scores 3 of 5 rather than the architect's 4 of 5.
+
+### C1 — actions taken on the findings (v0.5.11)
+
+| Finding | Action |
+|---|---|
+| 1 — glossary aliases | `A1.BusinessObject.attributes.field_aliases` convention; applied to the estate (`lc_number → letter_of_credit_reference`) |
+| 2 — gold bands | Every candidate gold confidence set to the plan's band for its ID |
+| 3 — plan data | S13 activity route and S09 one-to-one written into `data_needed`; S06 moved to step 1 when `invokes` is present |
+| 4 — synonyms / precedence | apply, submit, check, issue, release added; full landscape takes precedence over the three-domain floor |

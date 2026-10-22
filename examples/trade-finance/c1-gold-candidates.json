@@ -17,7 +17,7 @@
         "version": "1.0"
       },
       "status": "approved",
-      "confidence": 0.6,
+      "confidence": 0.4,
       "created_by": "candidate_rule:S03",
       "rationale": "stage covers Initiate (apply)"
     },
@@ -35,7 +35,7 @@
         "version": "1.0"
       },
       "status": "approved",
-      "confidence": 0.6,
+      "confidence": 0.4,
       "created_by": "candidate_rule:S03",
       "rationale": "stage covers Evaluate (check documents)"
     },
@@ -53,7 +53,7 @@
         "version": "1.0"
       },
       "status": "approved",
-      "confidence": 0.6,
+      "confidence": 0.4,
       "created_by": "candidate_rule:S03",
       "rationale": "stage covers Execute Issuance (issue)"
     },
@@ -251,7 +251,7 @@
         "version": "1.0"
       },
       "status": "approved",
-      "confidence": 0.6,
+      "confidence": 0.4,
       "created_by": "candidate_rule:S09",
       "rationale": "service inputs ∪ outputs = the operation's I/O, 7/7"
     },
@@ -269,7 +269,7 @@
         "version": "1.0"
       },
       "status": "approved",
-      "confidence": 0.6,
+      "confidence": 0.4,
       "created_by": "candidate_rule:S09",
       "rationale": "4/4"
     },
@@ -287,7 +287,7 @@
         "version": "1.0"
       },
       "status": "approved",
-      "confidence": 0.6,
+      "confidence": 0.4,
       "created_by": "candidate_rule:S13",
       "rationale": "derived from S04 over applies_to"
     },
@@ -305,7 +305,7 @@
         "version": "1.0"
       },
       "status": "approved",
-      "confidence": 0.6,
+      "confidence": 0.4,
       "created_by": "candidate_rule:S13",
       "rationale": "derived from S04 over applies_to"
     },
@@ -323,7 +323,7 @@
         "version": "1.0"
       },
       "status": "approved",
-      "confidence": 0.6,
+      "confidence": 0.4,
       "created_by": "candidate_rule:S13",
       "rationale": "derived from S04 over applies_to"
     },
@@ -341,7 +341,7 @@
         "version": "1.0"
       },
       "status": "approved",
-      "confidence": 0.6,
+      "confidence": 0.4,
       "created_by": "candidate_rule:S14",
       "rationale": "derived from S06 over applies_to"
     },
@@ -359,7 +359,7 @@
         "version": "1.0"
       },
       "status": "approved",
-      "confidence": 0.6,
+      "confidence": 0.4,
       "created_by": "candidate_rule:S14",
       "rationale": "derived from S06 over applies_to"
     },

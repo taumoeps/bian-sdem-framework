@@ -1,5 +1,5 @@
 {
-  "$schema_version": "0.5.10",
+  "$schema_version": "0.5.11",
   "generated_from": "metamodel/official-mappings.json plus the gap-fill assessment in docs/mapping-logic-planning.md §5",
   "note": "One entry per official-mapping ID. Existing official mappings keep their source reference; every entry gets a rule decision, the step that fills its instances (0 BIAN export, 1 data join, 2 rule application, 3 derivation, 4 structural matching, 5 text inference), the data that step needs, the reasoning, and a confidence (high/medium/low) that the connection is a sound mapping and that the chosen fill produces correct instances. Attribute keys named in data_needed are defined in metamodel/export-conventions.json (added after the E1 run showed the joins had no keys).",
   "steps": {
@@ -333,10 +333,10 @@
       "verification": "confirmed_none",
       "source_reference": "[SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review",
       "rule_decision": "institution_only",
-      "fill_step": 4,
+      "fill_step": 1,
       "data_needed": "A1.BusinessActivity.attributes.invokes, or activity name vs operation action term + asset (export-conventions) (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "Activity→operation is the finest-grain process link and the most mechanically matchable (one activity, one operation call). No official authority, but it is the natural evidence for S04; an institution adopting it would fill it by name/parameter matching."
+      "reasoning": "Activity→operation is the finest-grain process link and the most mechanically matchable (one activity, one operation call). No official authority, but it is the natural evidence for S04; an institution adopting it would fill it by name/parameter matching. Step 1 (pure join) when A1.BusinessActivity.attributes.invokes is present; step 4 name match otherwise (C1 finding 3)."
     },
     {
       "id": "S07",
@@ -379,7 +379,7 @@
       "source_reference": "[SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review",
       "rule_decision": "institution_only",
       "fill_step": 4,
-      "data_needed": "A1.BusinessService.attributes.inputs/outputs vs A2.ServiceOperation input/output_attributes (≥ 50 %, ≥ 2) (export-conventions.json 0.5.10)",
+      "data_needed": "A1.BusinessService.attributes.inputs/outputs vs A2.ServiceOperation input/output_attributes (≥ 50 %, ≥ 2) (export-conventions.json 0.5.10); one-to-one per service, unique best match, as step 2 (C1 reading 2)",
       "confidence": "low",
       "reasoning": "Business service→operation would need the service's contract to be decomposed to operations; no authority, no method. Institution-only."
     },
@@ -439,7 +439,7 @@
       "source_reference": "[SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review",
       "rule_decision": "institution_only",
       "fill_step": 3,
-      "data_needed": "A1.BusinessRequirement.attributes.applies_to → S04 instances (export-conventions.json 0.5.10)",
+      "data_needed": "A1.BusinessRequirement.attributes.applies_to → S04 instances (export-conventions.json 0.5.10); a requirement applying to an activity closes through that activity's operation (S06 → domain), not the parent process (C1 reading 1)",
       "confidence": "low",
       "reasoning": "Requirement→domain has no BIAN basis; traceability from requirements is the institution's. Derivable through the processes a requirement constrains, if those are mapped. Not a rule by default."
     },

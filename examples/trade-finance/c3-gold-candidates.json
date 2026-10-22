@@ -683,7 +683,7 @@
         "version": "1.0"
       },
       "status": "approved",
-      "confidence": 0.6,
+      "confidence": 0.4,
       "created_by": "candidate_rule:S51",
       "rationale": "published_to names the broker"
     },

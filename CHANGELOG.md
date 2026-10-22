@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.11 — after C1 (26 of 26)
+
+- A1 business-object glossary aliases; candidate gold bands aligned to the plan; S06 at step 1 with `invokes`; synonym and step-5 precedence clarifications.
+
 ## 0.5.10 — coverage cases C1–C3 for the 42 untested plan rows
 
 - `examples/trade-finance`: one estate carrying every entity the plan's unexercised rows need; registry gold and 100 candidate-rule gold reports; three cases by level pair.
