@@ -115,3 +115,17 @@ class MergedDiagramTests(unittest.TestCase):
         lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
         a2 = text[text.index('package "A2'):text.index('package "A3')]
         self.assertEqual(a2.count('#B0BEC5'), sum(1 for c in lr['constraints'] if c['level'] == 'A2'))
+
+
+class OfficialRowsAreConstraintsTests(unittest.TestCase):
+    """Every BIAN-internal row of the official record (B02–B15, inside A2) must be an A2 constraint the
+    graph checker enforces — the two records may not drift apart again (found by the within-level diagram, v0.5.14)."""
+
+    def test_every_b_row_inside_a2_has_a_constraint(self):
+        official = json.loads((ROOT / 'metamodel/official-mappings.json').read_text(encoding='utf-8'))['mappings']
+        lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
+        pairs = {(c['source_type'], c['target_type']) for c in lr['constraints'] if c['level'] == 'A2'}
+        missing = [m['id'] for m in official if m['id'].startswith('B') and m['id'] != 'B01'
+                   and m['source'].startswith('A2.') and m['target'].startswith('A2.')
+                   and (m['source'], m['target']) not in pairs and (m['target'], m['source']) not in pairs]
+        self.assertEqual(missing, [])
