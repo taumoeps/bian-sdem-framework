@@ -1,0 +1,128 @@
+@startuml level-relationships
+left to right direction
+skinparam rectangle {
+  BackgroundColor White
+  BorderColor #424242
+}
+skinparam package {
+  BackgroundColor #F5F5F5
+  BorderColor #9E9E9E
+}
+skinparam ArrowFontSize 9
+title Within-level structure — A2 fixed by BIAN (constraints); A1, A3, A4 as observed in the example exports (ArchiMate kinds)
+
+package "A1 Business Architecture" as A1 {
+  rectangle "A1.BusinessCapability" as a1_businesscapability
+  rectangle "A1.ValueStream" as a1_valuestream
+  rectangle "A1.ValueStreamStage" as a1_valuestreamstage
+  rectangle "A1.BusinessProcess" as a1_businessprocess
+  rectangle "A1.BusinessActivity" as a1_businessactivity
+  rectangle "A1.BusinessService" as a1_businessservice
+  rectangle "A1.BusinessActor" as a1_businessactor
+  rectangle "A1.BusinessRole" as a1_businessrole
+  rectangle "A1.BusinessObject" as a1_businessobject
+  rectangle "A1.BusinessRequirement" as a1_businessrequirement
+  ' observed in the examples (11 patterns)
+  a1_businessactor -[#6A1B9A]-> a1_businessrole : assignment (x1)
+  a1_businesscapability -[#1565C0]-> a1_businesscapability : composition (x2)
+  a1_businessprocess -[#616161,dotted]-> a1_businessobject : access (x6)
+  a1_businessprocess -[#1565C0]-> a1_businessactivity : composition (x11)
+  a1_businessprocess -[#2E7D32,dashed]-> a1_businesscapability : realization (x9)
+  a1_businessprocess -[#2E7D32,dashed]-> a1_businessservice : realization (x2)
+  a1_businessrequirement -[#9E9E9E,dotted]-> a1_businessactivity : association (x2)
+  a1_businessrequirement -[#9E9E9E,dotted]-> a1_businessprocess : association (x1)
+  a1_businessrole -[#6A1B9A]-> a1_businessprocess : assignment (x2)
+  a1_valuestream -[#1565C0]-> a1_valuestreamstage : composition (x18)
+  a1_valuestream -[#2E7D32,dashed]-> a1_businesscapability : realization (x5)
+}
+
+package "A2 Service Domain Architecture" as A2 {
+  rectangle "A2.BusinessArea" as a2_businessarea
+  rectangle "A2.BusinessDomain" as a2_businessdomain
+  rectangle "A2.ServiceDomain" as a2_servicedomain
+  rectangle "A2.FunctionalPattern" as a2_functionalpattern
+  rectangle "A2.AssetType" as a2_assettype
+  rectangle "A2.ControlRecord" as a2_controlrecord
+  rectangle "A2.ServiceGroup" as a2_servicegroup
+  rectangle "A2.ServiceOperation" as a2_serviceoperation
+  rectangle "A2.BehaviorQualifier" as a2_behaviorqualifier
+  rectangle "A2.BusinessScenario" as a2_businessscenario
+  rectangle "A2.BusinessObject" as a2_businessobject
+  rectangle "A2.BusinessObjectAttribute" as a2_businessobjectattribute
+  rectangle "A2.BOMModel\n(artefact)" as a2_bommodel
+  rectangle "A2.Wireframe\n(artefact)" as a2_wireframe
+  rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi
+  ' BIAN-fixed constraints (14)
+  a2_businessarea -[#1565C0]-> a2_businessdomain : composition
+  a2_businessdomain -[#1565C0]-> a2_servicedomain : composition
+  a2_servicedomain -[#1565C0]-> a2_servicegroup : composition
+  a2_servicegroup -[#1565C0]-> a2_serviceoperation : composition
+  a2_servicedomain -[#1565C0,dashed]-> a2_controlrecord : aggregation
+  a2_servicedomain -[#9E9E9E,dotted]-> a2_functionalpattern : association
+  a2_servicedomain -[#9E9E9E,dotted]-> a2_assettype : association
+  a2_serviceoperation -[#9E9E9E,dotted]-> a2_behaviorqualifier : association
+  a2_businessscenario -[#1565C0,dashed]-> a2_serviceoperation : aggregation
+  a2_businessobject -[#1565C0]-> a2_businessobjectattribute : composition
+  a2_controlrecord -[#1565C0]-> a2_behaviorqualifier : composition
+  a2_controlrecord -[#9E9E9E,dotted]-> a2_businessobject : association
+  a2_serviceoperation -[#616161,dotted]-> a2_controlrecord : access
+  a2_servicedomain -[#EF6C00,dashed]-> a2_servicedomain : flow
+}
+
+package "A3 Application Architecture" as A3 {
+  rectangle "A3.ApplicationComponent" as a3_applicationcomponent
+  rectangle "A3.ApplicationService" as a3_applicationservice
+  rectangle "A3.ApplicationInterface" as a3_applicationinterface
+  rectangle "A3.ApplicationFunction" as a3_applicationfunction
+  rectangle "A3.APIOperation" as a3_apioperation
+  rectangle "A3.DataEntity" as a3_dataentity
+  rectangle "A3.Event" as a3_event
+  rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
+  ' observed in the examples (12 patterns)
+  a3_applicationcomponent -[#616161,dotted]-> a3_dataentity : access (x22)
+  a3_applicationcomponent -[#1565C0]-> a3_apioperation : composition (x3)
+  a3_applicationcomponent -[#1565C0]-> a3_applicationcomponent : composition (x9)
+  a3_applicationcomponent -[#1565C0]-> a3_applicationfunction : composition (x3)
+  a3_applicationcomponent -[#1565C0]-> a3_applicationinterface : composition (x13)
+  a3_applicationcomponent -[#1565C0]-> a3_applicationservice : composition (x3)
+  a3_applicationcomponent -[#EF6C00]-> a3_applicationcomponent : serving (x1)
+  a3_applicationcomponent -[#EF6C00,dotted]-> a3_event : triggering (x2)
+  a3_applicationfunction -[#616161,dotted]-> a3_dataentity : access (x4)
+  a3_applicationinterface -[#1565C0]-> a3_apioperation : composition (x52)
+  a3_applicationservice -[#1565C0]-> a3_applicationinterface : composition (x3)
+  a3_solutionbuildingblock -[#1565C0,dashed]-> a3_applicationcomponent : aggregation (x2)
+}
+
+package "A4 Technology Architecture" as A4 {
+  rectangle "A4.InfrastructureComponent\n(abstract)" as a4_infrastructurecomponent
+  rectangle "A4.Deployment" as a4_deployment
+  rectangle "A4.DeploymentEnvironment" as a4_deploymentenvironment
+  rectangle "A4.Node" as a4_node
+  rectangle "A4.Device" as a4_device
+  rectangle "A4.SystemSoftware" as a4_systemsoftware
+  rectangle "A4.TechnologyService" as a4_technologyservice
+  rectangle "A4.TechnologyInterface" as a4_technologyinterface
+  rectangle "A4.CommunicationNetwork" as a4_communicationnetwork
+  rectangle "A4.Path" as a4_path
+  rectangle "A4.Artifact" as a4_artifact
+  ' observed in the examples (11 patterns)
+  a4_artifact -[#6A1B9A]-> a4_device : assignment (x1)
+  a4_artifact -[#6A1B9A]-> a4_node : assignment (x2)
+  a4_artifact -[#6A1B9A]-> a4_systemsoftware : assignment (x1)
+  a4_communicationnetwork -[#1565C0]-> a4_path : composition (x1)
+  a4_deploymentenvironment -[#1565C0,dashed]-> a4_deployment : aggregation (x15)
+  a4_deploymentenvironment -[#1565C0,dashed]-> a4_systemsoftware : aggregation (x1)
+  a4_device -[#6A1B9A]-> a4_communicationnetwork : assignment (x1)
+  a4_node -[#6A1B9A]-> a4_communicationnetwork : assignment (x2)
+  a4_node -[#1565C0]-> a4_systemsoftware : composition (x3)
+  a4_systemsoftware -[#6A1B9A]-> a4_communicationnetwork : assignment (x2)
+  a4_technologyservice -[#1565C0]-> a4_technologyinterface : composition (x2)
+}
+
+legend right
+  Kinds (ArchiMate 3.2): composition solid blue, aggregation dashed blue, realization dashed green, assignment purple,
+  serving orange, flow dashed orange, triggering dotted orange, access dotted grey, association dotted light grey
+  A2 arrows are the constraint set every A2 export must satisfy (sdmm-graph check).
+  A1 / A3 / A4 arrows are what the ten example estates actually use; the metamodel allows any catalogued kind between two entities of one level.
+endlegend
+@enduml

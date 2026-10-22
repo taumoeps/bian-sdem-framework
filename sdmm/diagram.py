@@ -127,14 +127,72 @@ def render_new(new=None, metamodel=None):
     return '\n'.join(out) + '\n'
 
 
+LEVEL_RELS = MM_DIR / 'level-relationships.json'
+KIND_STYLE = {'composition': ('#1565C0', ''), 'aggregation': ('#1565C0', 'dashed'), 'realization': ('#2E7D32', 'dashed'), 'assignment': ('#6A1B9A', ''),
+              'serving': ('#EF6C00', ''), 'access': ('#616161', 'dotted'), 'flow': ('#EF6C00', 'dashed'), 'triggering': ('#EF6C00', 'dotted'),
+              'specialization': ('#424242', ''), 'association': ('#9E9E9E', 'dotted')}
+
+
+def observed_patterns(examples_dir=None):
+    """(level, source_type, kind, target_type) -> count, from every level export under examples/."""
+    import glob
+    from collections import Counter
+    root = Path(examples_dir) if examples_dir else MM_DIR.parent / 'examples'
+    obs = Counter()
+    for f in sorted(glob.glob(str(root / '*' / 'a[1-4]-*.json'))):
+        d = json.loads(Path(f).read_text(encoding='utf-8')); t = {i['id']: i['type'] for i in d['instances']}
+        for r in d['relationships']:
+            if r['source'] in t and r['target'] in t:
+                obs[(d['level'], t[r['source']], r['kind'], t[r['target']])] += 1
+    return obs
+
+
+def render_levels(metamodel=None, level_rels=None, examples_dir=None):
+    """Render metamodel/level-relationships.puml: the within-level structure of each architecture.
+    A2 is drawn from the BIAN-fixed constraint set in level-relationships.json; A1, A3 and A4 from the
+    relationship patterns observed across the example exports (the institution's own structure, using
+    catalogued ArchiMate kinds) — observed, not prescribed."""
+    mm = metamodel or Metamodel.load()
+    lr = level_rels or json.loads(LEVEL_RELS.read_text(encoding='utf-8'))
+    alias = {t: f"{e['level'].lower()}_{t.split('.')[1].lower()}" for t, e in mm.entities.items()}
+    a2 = [(c['source_type'], c['kind'], c['target_type']) for c in lr['constraints'] if c['level'] == 'A2']
+    obs = observed_patterns(examples_dir)
+    out = ['@startuml level-relationships', 'left to right direction',
+           'skinparam rectangle {', '  BackgroundColor White', '  BorderColor #424242', '}',
+           'skinparam package {', '  BackgroundColor #F5F5F5', '  BorderColor #9E9E9E', '}', 'skinparam ArrowFontSize 9',
+           'title Within-level structure — A2 fixed by BIAN (constraints); A1, A3, A4 as observed in the example exports (ArchiMate kinds)', '']
+    for lvl in ('A1', 'A2', 'A3', 'A4'):
+        out.append(f'package "{LEVEL_NAMES[lvl]}" as {lvl} {{')
+        for t, e in mm.entities.items():
+            if e['level'] != lvl: continue
+            tag = '\\n(artefact)' if e.get('artefact') else '\\n(abstract)' if e.get('abstract') else ''
+            out.append(f'  rectangle "{t}{tag}" as {alias[t]}')
+        if lvl == 'A2':
+            out.append(f"  ' BIAN-fixed constraints ({len(a2)})")
+            for s_, k, t_ in a2:
+                c, st = KIND_STYLE[k]; out.append(f"  {alias[s_]} -[#{c.lstrip('#')}{',' + st if st else ''}]-> {alias[t_]} : {k}")
+        else:
+            rows = sorted((s_, k, t_, n) for (l, s_, k, t_), n in obs.items() if l == lvl)
+            out.append(f"  ' observed in the examples ({len(rows)} patterns)")
+            for s_, k, t_, n in rows:
+                c, st = KIND_STYLE[k]; out.append(f"  {alias[s_]} -[#{c.lstrip('#')}{',' + st if st else ''}]-> {alias[t_]} : {k} (x{n})")
+        out.append('}'); out.append('')
+    out += ['legend right', '  Kinds (ArchiMate 3.2): composition solid blue, aggregation dashed blue, realization dashed green, assignment purple,',
+            '  serving orange, flow dashed orange, triggering dotted orange, access dotted grey, association dotted light grey',
+            '  A2 arrows are the constraint set every A2 export must satisfy (sdmm-graph check).',
+            '  A1 / A3 / A4 arrows are what the ten example estates actually use; the metamodel allows any catalogued kind between two entities of one level.',
+            'endlegend', '@enduml']
+    return '\n'.join(out) + '\n'
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(prog='sdmm-diagram', description='Render metamodel/official-mappings.puml and metamodel/new-mappings.puml from their JSON records.')
-    parser.add_argument('--which', choices=['official', 'new', 'both'], default='both')
+    parser.add_argument('--which', choices=['official', 'new', 'levels', 'both', 'all'], default='all')
     parser.add_argument('--check', action='store_true', help='exit 1 if a committed file differs from the rendered output')
     args = parser.parse_args(argv)
-    jobs = {'official': (MM_DIR / 'official-mappings.puml', render), 'new': (MM_DIR / 'new-mappings.puml', render_new)}
+    jobs = {'official': (MM_DIR / 'official-mappings.puml', render), 'new': (MM_DIR / 'new-mappings.puml', render_new), 'levels': (MM_DIR / 'level-relationships.puml', render_levels)}
     rc = 0
-    for name in (['official', 'new'] if args.which == 'both' else [args.which]):
+    for name in ({'both': ['official', 'new'], 'all': ['official', 'new', 'levels']}.get(args.which, [args.which])):
         out, fn = jobs[name]; text = fn()
         if args.check:
             current = out.read_text(encoding='utf-8') if out.exists() else ''

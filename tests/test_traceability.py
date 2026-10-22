@@ -88,3 +88,15 @@ class NewMappingsDiagramTests(unittest.TestCase):
     def test_planning_document_embeds_the_new_diagram(self):
         doc = (ROOT / 'docs/mapping-logic-planning.md').read_text(encoding='utf-8')
         self.assertIn((ROOT / 'metamodel/new-mappings.puml').read_text(encoding='utf-8'), doc)
+
+
+class LevelStructureDiagramTests(unittest.TestCase):
+    def test_committed_level_diagram_equals_render(self):
+        from sdmm.diagram import render_levels
+        self.assertEqual((ROOT / 'metamodel/level-relationships.puml').read_text(encoding='utf-8'), render_levels())
+
+    def test_a2_section_draws_every_constraint(self):
+        lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
+        text = (ROOT / 'metamodel/level-relationships.puml').read_text(encoding='utf-8')
+        a2 = text[text.index('package "A2'):text.index('package "A3')]
+        self.assertEqual(a2.count(']-> '), sum(1 for c in lr['constraints'] if c['level'] == 'A2'))
