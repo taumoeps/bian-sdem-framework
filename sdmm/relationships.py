@@ -27,6 +27,7 @@ def render(lr=None):
            'These are the connections **inside** each architecture (A1–A4), held by each level export\'s `relationships` list and enforced by `sdmm-graph check`. '
            'They are not mappings: the cross-level connections are planned in `docs/mapping-logic-planning.md` and recorded in `metamodel/new-mappings.json`.', '',
            '**Rule.** A within-level relationship is accepted when it matches a row for its level (through catalogue inheritance), or when its kind is `association` — ArchiMate\'s generic relationship, permitted between any two entities of one level and therefore not listed. Every row derives from the reference architecture the level\'s entities derive from (README › *Reference architecture provenance*).', '',
+           '**Inference (A1, A3, A4).** ArchiMate 3.2 and TOGAF 10 are login-gated, so every row outside A2 carries an explicit inference: the ArchiMate concept of each end (SDMM extensions through the concept they extend), the generic-metamodel pattern the row instantiates, the reasoning, SDMM\'s inference confidence, and the independent test — a lookup in the open-source Archi tool\'s relationship matrix (`relationships.xml`, github.com/archimatetool/archi), which implements the specification\'s permitted relationships per concept pair with the letters c composition, g aggregation, i assignment, r realization, v serving, a access, f flow, t triggering, s specialization, o association. The test plan for running those lookups is `docs/relationships-testing.md` §6.', '',
            '**Confidence and verification.** `high` = public BIAN source, or an SDMM definition; `medium` = paraphrased from the ArchiMate 3.2 / TOGAF 10 chapter structure, which is login-gated, so marked `unverified_archimate` / `unverified_togaf` until checked against the specification\'s relationship tables. `sdmm_definition` rows follow from how an SDMM extension entity is defined; `sdmm_reading` is SDMM\'s reading of a public BIAN page that states no explicit relationship.', '']
     tally = Counter((c['level'], c['confidence']) for c in rows)
     out += ['## Summary', '', '| Level | Reference source | Rows | high | medium |', '|---|---|---|---|---|']
@@ -37,10 +38,16 @@ def render(lr=None):
     out.append('')
     for l in ('A1', 'A2', 'A3', 'A4'):
         out += [f'## {LEVEL_NAMES[l]}', '', f'Reference: {LEVEL_SOURCE[l]}.', '',
-                '| ID | Official | Source entity | Kind | Target entity | Description | Reference source | Reasoning | Confidence | Verification |', '|---|---|---|---|---|---|---|---|---|---|']
+                ('| ID | Official | Source entity | Kind | Target entity | Description | Reference source | Reasoning | Confidence | Verification |' if l == 'A2' else
+                 '| ID | Source entity | Kind | Target entity | Description | ArchiMate concepts | Inferred pattern | Inference reasoning | Inference conf. | Independent test | Verification |'),
+                ('|---|---|---|---|---|---|---|---|---|---|' if l == 'A2' else '|---|---|---|---|---|---|---|---|---|---|---|')]
         for c in rows:
             if c['level'] != l: continue
-            out.append(f"| {c['id']} | {c.get('official_id') or '—'} | {c['source_type']} | {c['kind']} | {c['target_type']} | {c['description']} | {c['reference_source']} | {c['reasoning']} | {c['confidence']} | {c['verification']} |")
+            if l == 'A2':
+                out.append(f"| {c['id']} | {c.get('official_id') or '—'} | {c['source_type']} | {c['kind']} | {c['target_type']} | {c['description']} | {c['reference_source']} | {c['reasoning']} | {c['confidence']} | {c['verification']} |")
+            else:
+                i = c['inference']
+                out.append(f"| {c['id']} | {c['source_type']} | {c['kind']} | {c['target_type']} | {c['description']} | {i['archimate_source']} → {i['archimate_target']} | {i['pattern']} | {i['reasoning']} | {i['confidence']} | {i['test']} | {c['verification']} |")
         out.append('')
     out += ['## Catalogue inheritance (is-a)', '', 'Not relationships in an export: the catalogue\'s `extends` links, through which a mapping\'s abstract or parent type resolves to a concrete instance.', '',
             '| ID | Entity | extends | Description | Reference source | Reasoning | Confidence | Verification |', '|---|---|---|---|---|---|---|---|']

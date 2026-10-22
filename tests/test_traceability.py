@@ -146,3 +146,15 @@ class RelationshipsPlanningTests(unittest.TestCase):
             self.assertIn(c['confidence'], ('high', 'medium', 'low'))
         a2_official = {c['official_id'] for c in lr['constraints'] if c['level'] == 'A2' and c.get('official_id')}
         self.assertEqual(a2_official, {f'B{n:02d}' for n in range(2, 16)})
+
+
+class InferredRowsTests(unittest.TestCase):
+    def test_every_non_a2_row_carries_a_complete_inference(self):
+        lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
+        for c in lr['constraints']:
+            if c['level'] == 'A2':
+                self.assertNotIn('inference', c); continue
+            i = c.get('inference'); self.assertIsNotNone(i, c['id'])
+            for k in ('archimate_source', 'archimate_target', 'pattern', 'reasoning', 'confidence', 'test'):
+                self.assertTrue(i.get(k), f"{c['id']} inference lacks {k}")
+            self.assertIn(i['confidence'], ('high', 'medium', 'low'))

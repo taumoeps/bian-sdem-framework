@@ -274,3 +274,30 @@ Association: `relationship_issue` returns `None` for `association` before the ro
 **Pass criteria.** Every A2 row passes T1–T3 and B02–B15 are each covered once — met. No row fails T2 on direction or kind — met (103 pattern matches, 0 contradictions). T4.1–T4.9 — met except the three artefact rows, which cannot be probed (F5); the deviation is on the record's description of those rows, not on the checker. T6 — every dependency has its row and an instance, except the requirement rows (F10) and one expectation error in the plan itself (F9). The findings table names a row or a file for every change.
 
 **Summary.** The record is sound: 131 rows, none failing provenance, grounding or consistency, and the checker accepts exactly the rows and rejects every reversed, mistyped, cross-level or uncatalogued probe. The notes are where the work is: 103 rows remain unverified against login-gated specifications by design; 23 rows carry provenance by inheritance that the plan's T1 wording does not yet allow; three A2 artefact rows exist for provenance and can never be enforced; one Device row is missing; and 88 rows are unexercised by the examples, including the requirement rows that the trade-finance estate links the other way round. Fourteen findings, each a field on a row or a line in a named file.
+
+---
+
+## 6. Phase 2 — Independent verification of the inferred rows (A1, A3, A4)
+
+**Why.** The 115 rows outside A2 cite ArchiMate 3.2 or TOGAF 10, which are login-gated. Each now carries an `inference` on the record (`metamodel/level-relationships.json`, rendered in `docs/relationships-planning.md`): the ArchiMate concept of both ends, the generic pattern the row instantiates, the reasoning, SDMM's inference confidence, and the test to run. Phase 2 checks every inference against a **public implementation** of the specification's relationship matrix, so no Open Group account is needed and no specification text is reproduced.
+
+**Oracle.** The open-source Archi tool (github.com/archimatetool/archi) ships `relationships.xml` under `com.archimatetool.model`, listing for each source and target concept the permitted relationship letters: `c` composition, `g` aggregation, `i` assignment, `r` realization, `v` serving, `a` access, `f` flow, `t` triggering, `s` specialization, `o` association, `n` influence. Locate the file in the repository's default branch, record the **commit hash and path** you read, and read it with WebFetch or the GitHub tools. **Do not copy the file or any part of it into this repository**; cite it.
+
+**Procedure, per row (RA1-*, RA3-*, RA4-*).**
+
+1. Take `inference.archimate_source`, `inference.archimate_target` and the row's `kind`. Map the kind to its letter.
+2. Look up the oracle entry for that source → target pair. Verdict:
+   - **confirmed** — the letter is listed.
+   - **confirmed, alternative accepted** — the row's `inference.test` names an alternative letter and that one is listed (RA4-31).
+   - **contradicted** — the letter is absent. Record what the oracle *does* list for the pair, and for the reverse pair, so the finding can say whether the direction or the kind is wrong.
+   - **not testable** — no ArchiMate concept (the two TOGAF rows RA3-30, RA3-31): check the public TOGAF content-metamodel description that solution building blocks group solution components; report, do not score.
+3. For rows where an end is an SDMM extension (`A1.ValueStreamStage`, `A1.BusinessActivity`, `A3.APIOperation`, `A4.Deployment`, `A4.DeploymentEnvironment`), the lookup uses the concept the extension derives from; say so in the entry and note whether the extension's definition could change the answer.
+4. Compare the verdict with `inference.confidence`: a *high* row contradicted, or a *low* row confirmed, is itself a finding on the inference calibration.
+
+**Outputs.** Extend `metamodel/relationships-test-log.json`: per row, add `phase2: {oracle_pair, letters_listed, verdict, note}`; a top-level `phase2_oracle: {repo, path, commit}`. Append *Phase 2 results* to this document: a table of verdict counts by level and by inference confidence, the list of contradicted rows with the oracle's letters for both directions, and findings.
+
+**Findings.** One row per contradicted row: propose `kind` change, direction swap, or removal, with the oracle letters as evidence. One row per calibration miss. Rows confirmed are proposed for `verification: verified_against_archi` (a new status distinct from `verified`, since the oracle is an implementation, not the specification). The record is not edited by the executor.
+
+**Pass.** Every row has a Phase 2 verdict; no contradicted row is left without a proposed change; the oracle is cited by commit hash.
+
+**Prompt.** *Execute Phase 2 of `docs/relationships-testing.md` (§6) against `metamodel/level-relationships.json`. Read-only on the record; cite the Archi oracle by commit hash and path; copy nothing from it. Extend `metamodel/relationships-test-log.json`, append Phase 2 results and findings, and commit with the confirmed / contradicted / not-testable counts in the message.*
