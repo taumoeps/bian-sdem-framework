@@ -140,7 +140,7 @@ B02–B15 are BIAN's A2 structure; which of them `metamodel/level-relationships.
 
 ## 2. Official BIAN with Support Framework Mapping
 
-**Status:** merged from `SDMM_Reference_Architecture_Entity_Mappings_A1_A4.md` (22 October 2026). **Step one — done in §2.6 — is to confirm each claimed mapping against its stated source before anything is changed.** A *Verification* column has been added to every row of §2.3 and §2.4 with the result. Analysis of what to adopt follows in §2.7. §1 established that BIAN's published mapping model stops at A2. This section inventories what the other reference frameworks — ArchiMate 3.2, TOGAF 10 and The Open Group's W135 (TOGAF–BIAN integration, 2013) — supply for the links BIAN leaves open, pair by pair, with a conservative statement of how official each contribution is.
+**Status:** merged from `SDMM_Reference_Architecture_Entity_Mappings_A1_A4.md` (22 October 2026). **Step one — done in §2.6 — is to confirm each claimed mapping against its stated source before anything is changed.** A *Verification* column has been added to every row of §2.3 and §2.4 with the result. Analysis of what to adopt follows in §3. §1 established that BIAN's published mapping model stops at A2. This section inventories what the other reference frameworks — ArchiMate 3.2, TOGAF 10 and The Open Group's W135 (TOGAF–BIAN integration, 2013) — supply for the links BIAN leaves open, pair by pair, with a conservative statement of how official each contribution is.
 
 ### 2.1 Purpose
 
@@ -483,16 +483,16 @@ One row per mapping across both tiers: the claim (§1.2 or §2.3), its authority
 | S17 | Support | `A2.ServiceDomain` → `A3.ApplicationComponent` | BIAN | Verified | **registry rule** `DOMAIN_REALIZED_BY_COMPONENT` |
 | S18 | Support | `A2.FunctionalPattern` → `A3.ApplicationFunction` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S19 | Support | `A2.AssetType` → `A3.DataEntity` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
-| S20 | Support | `A2.ControlRecord` → `A3.DataEntity` | BIAN | Verified | candidate rule — authority `bian_alignment_guidance`; usefulness decided in §4 |
-| S21 | Support | `A2.ControlRecord` → `A3.ApplicationFunction` | BIAN | Verified | candidate rule — authority `bian_alignment_guidance`; usefulness decided in §4 |
+| S20 | Support | `A2.ControlRecord` → `A3.DataEntity` | BIAN | Verified | candidate rule — authority `bian_alignment_guidance`; usefulness decided in §5 |
+| S21 | Support | `A2.ControlRecord` → `A3.ApplicationFunction` | BIAN | Verified | candidate rule — authority `bian_alignment_guidance`; usefulness decided in §5 |
 | S22 | Support | `A2.ServiceGroup` → `A3.ApplicationService` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S23 | Support | `A2.ServiceGroup` → `A3.ApplicationInterface` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S24 | Support | `A2.ServiceOperation` → `A3.APIOperation` | BIAN | Verified | **registry rule** `OPERATION_IMPLEMENTED_BY_API` |
-| S25 | Support | `A2.ServiceOperation` → `A3.ApplicationService` | BIAN | Verified | candidate rule — authority `bian_alignment_guidance`; usefulness decided in §4 |
+| S25 | Support | `A2.ServiceOperation` → `A3.ApplicationService` | BIAN | Verified | candidate rule — authority `bian_alignment_guidance`; usefulness decided in §5 |
 | S26 | Support | `A2.BehaviorQualifier` → `A3.APIOperation` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S27 | Support | `A2.BehaviorQualifier` → `A3.DataEntity` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
-| S28 | Support | `A2.BusinessScenario` → `A3.ApplicationService` | BIAN | Verified | candidate rule — authority `bian_alignment_guidance`; usefulness decided in §4 |
-| S29 | Support | `A2.BusinessScenario` → `A3.ApplicationComponent` | BIAN | Verified | candidate rule — authority `bian_alignment_guidance`; usefulness decided in §4 |
+| S28 | Support | `A2.BusinessScenario` → `A3.ApplicationService` | BIAN | Verified | candidate rule — authority `bian_alignment_guidance`; usefulness decided in §5 |
+| S29 | Support | `A2.BusinessScenario` → `A3.ApplicationComponent` | BIAN | Verified | candidate rule — authority `bian_alignment_guidance`; usefulness decided in §5 |
 | S30 | Support | `A2.BusinessObject` → `A3.DataEntity` | BIAN | Verified | **registry rule** `BIAN_OBJECT_MAPPED_TO_DATA_ENTITY` |
 | S31 | Support | `A2.BusinessObjectAttribute` → `A3.DataEntity` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S32 | Support | `A3.ApplicationComponent` → `A4.Deployment` | SDMM | n/a | **registry rule** `COMPONENT_DEPLOYED_AS_DEPLOYMENT` |
@@ -522,66 +522,9 @@ One row per mapping across both tiers: the claim (§1.2 or §2.3), its authority
 **Summary:** 69 mappings traced — 15 BIAN-only (B01–B15) and 54 support-framework candidates (S01–S54). Of the 13 BIAN-internal relationships that should be level-model constraints, **8 are encoded** in `metamodel/level-relationships.json` and **4 are not yet** (B07, B08, B11, B12 — proposed constraints above; a v0.4.x correction). Of the 54 candidates: 9 are existing registry rules, 5 are verified BIAN-guided candidates, 6 are open, 3 are SDMM definitions, 31 are institution-only.
 
 
-## 4. Engine architecture *(in planning)*
+## 4. Mapping Diagram
 
-### 4.1 Starting point: SDMM's nine arrows against BIAN's mappings
-
-§1 described BIAN's own mapping model. The engine works on **SDMM's** nine arrows (the registry). For each, does a BIAN mapping from §1.2 cover it? Where it does not, §3 has to design the inference, drawing on §2 for what other frameworks supply.
-
-| SDMM arrow (registry rule) | Covered by a BIAN mapping? | Which one | What is left to the institution |
-|---|---|---|---|
-| `A1.BusinessCapability SUPPORTED_BY A2.ServiceDomain` | **No** | — (BCM→Service Domain unpublished) | The whole mapping |
-| `A1.ValueStream ALIGNED_TO A2.BusinessScenario` | **No** | — (value streams not modelled) | The whole mapping; scenarios are a published target |
-| `A1.BusinessProcess USES_DOMAIN A2.ServiceDomain` | **No** | — | The whole mapping; scenarios usable as templates |
-| `A1.BusinessObject ALIGNED_TO A2.BusinessObject` | **No** | — (BOM is a target, not a mapping) | The whole mapping; BOM attributes are the published target |
-| `A2.ServiceDomain REALIZED_BY A3.ApplicationComponent` | **Method only** | wireframe functional partition; legacy wrapping ([SAPG] §3.4, §4.3.1) | Deciding which application; BIAN says how to decide, not what |
-| `A2.ServiceOperation IMPLEMENTED_BY A3.APIOperation` | **Yes** | REST mapping and reference APIs ([SAPG] §3.5; [APIP]) | Comparing the bank's API to the reference form |
-| `A2.BusinessObject MAPPED_TO A3.DataEntity` | **Partial** | control record = REST resource ([SAPG] §3.5) | Matching the bank's data entity to the BOM object |
-| `A3.ApplicationComponent DEPLOYED_ON A4.InfrastructureComponent` | **No** | — (deployment patterns only) | The whole mapping, from deployment data |
-| `A3.ApplicationComponent DEPLOYED_AS A4.Deployment` | **No** | — (domain-as-container is a pattern, not a mapping) | The whole mapping, from deployment data |
-
-**One arrow of nine is covered by a BIAN mapping; one is partially covered; one has a BIAN method; six have nothing.** The rest of §3 follows this row by row.
-
-### 4.2 Gap-fill strategy — minimal inference
-
-§3 and §5.2 show the official picture: A2 complete, A2→A3 partial, A1→A2 intent only, A4 empty. Filling the rest is two different problems, and only one of them ever needs inference.
-
-#### Two gaps, two fillers
-
-| Gap | Question | Who can fill it |
-|---|---|---|
-| **Mapping types** | Is this *kind* of arrow legitimate, and on whose authority? | Standards. BIAN for anything touching A2. **ArchiMate** for A3→A4: SDMM's A3 and A4 entities are ArchiMate-native, so ArchiMate's cross-layer rules apply directly (pending the five verifications S34, S39, S44, S48, S50). TOGAF supplies vocabulary (ABB/SBB) and ADM placement, not relationship rules |
-| **Mapping instances** | Does *this* application run on *that* platform? | Never a standard. Always the institution: its data, its architects, or — last — inference |
-
-ArchiMate cannot reach A1→A2 directly: it has no BIAN concepts. The one lever is that BIAN publishes the Service Landscape in ArchiMate 3.2 ([RN14] §1.2). If BIAN types a Service Domain as a specific ArchiMate element, that element's cross-layer rules would apply. **To check on the portal** (MetaModel Overview): which ArchiMate element types BIAN assigns to Service Domain, Business Capability and Business Scenario.
-
-#### The ladder — lowest rung that works, inference last
-
-| Rung | Mechanism | Inference? | Arrows it fills |
-|---|---|---|---|
-| 1 | **Data join** — the institution's own records: CMDB, deployment manifests, API gateway inventory, data catalogue | none | `DEPLOYED_ON`, `DEPLOYED_AS`; most of `MAPPED_TO` |
-| 2 | **Rule application** — BIAN's published REST mapping: action term, behaviour qualifier, control-record resource, HTTP method ([SAPG] §3.5) | none, deterministic | `IMPLEMENTED_BY` |
-| 3 | **Derivation from approved arrows** — closure over records architects already approved: an application implementing operations of domain D realises D; a process using operations of D uses D; a capability whose processes all use D is a *candidate* for D | none; graph closure | `REALIZED_BY`, `USES_DOMAIN`, candidate `SUPPORTED_BY` |
-| 4 | **Structural matching** — attribute names and types against BOM attributes; API paths against operation names | light, fully explainable | `ALIGNED_TO` (object), residual `IMPLEMENTED_BY` |
-| 5 | **Text inference** — description similarity; model-assisted ranking with cited rationale | yes | only what is left: cold-start `SUPPORTED_BY`, `ALIGNED_TO` (value stream) |
-
-Reading down: **A4 is filled entirely by rung 1**; A2→A3 by rungs 2–3; A1→A2 objects by rung 4. The one arrow that genuinely needs rung 5 is capability → Service Domain — the mapping BIAN itself has not finished — and even there the minimal-inference options come first: author it (a capability map is ~100 entries, not 10,000), derive it by rung 3 once processes are mapped, or wait for BIAN's working group to publish ([WQA26]).
-
-#### Design rules that follow
-
-1. **Rungs 1–3 are the engine's tier 1.** They produce proposals with no semantic judgement, so they can carry high default confidence and cite the data or the approved record they were derived from.
-2. **Rung 4 is tier 1 with a score.** Explainable, bounded, cites the attributes matched.
-3. **Rung 5 is tier 2, opt-in per arrow type**, and only runs on pairs no lower rung could settle. Its proposals carry low confidence and the strictest evidence requirement.
-4. **A rung-3 derivation is never auto-approved either.** It is still `proposed`: the architect confirms that the closure holds semantically, not just structurally.
-5. **Type-level gaps are closed by registry changes, not by the engine.** When the ArchiMate rows verify, `DEPLOYED_ON` / `DEPLOYED_AS` move from `enterprise_rule` to `archimate_native` authority; the engine's behaviour on them is unchanged (still rung 1).
-
-### 4.3 Per-arrow design *(next)*
-
-Each of the nine arrows: which rung applies, what data it needs from the level exports, what it proposes, and its default confidence band.
-
-## 5. Mapping Diagram
-
-### 5.1 Entities by level
+### 4.1 Entities by level
 
 The four design models of the Service Domain Architecture Design Model, side by side A1 to A4, each column listing its entities top to bottom (`metamodel/`). Entity IDs are the catalogue `type` strings.
 
@@ -605,7 +548,7 @@ The four design models of the Service Domain Architecture Design Model, side by 
 
 Counts: A1 10 · A2 15 (12 entities + 3 artefacts) · A3 8 · A4 11 (10 concrete + 1 abstract) — 44 in total.
 
-### 5.2 The 24 official connectors
+### 4.2 The 24 official connectors
 
 Only the mappings that are officially sourced *and verified* (§3): the 14 BIAN-internal relationships (B02–B15, blue) and the 10 cross-level mappings with BIAN guidance (green; dashed where BIAN gives only intent or a target). Nothing unverified or institution-only is drawn. Source: `docs/diagrams/official-mappings.puml`, generated from `metamodel/` and the §2.3 verification column.
 
@@ -728,3 +671,61 @@ endlegend
 | **A3 → A4** | **0** | Nothing official. BIAN publishes no mapping to infrastructure; the five ArchiMate candidates (S34, S39, S44, S48, S50) are unverified, and the registry rules `DEPLOYED_ON` / `DEPLOYED_AS` are SDMM's own definitions — correctly not drawn |
 
 **Reading:** A2 is complete; A2→A3 is partially covered on the API and information path; A1→A2 has intent only; A4 is empty. A4 can only ever gain official connectors from ArchiMate — never from BIAN — and only once the five open rows are verified.
+
+## 5. Engine architecture *(in planning)*
+
+### 5.1 Starting point: SDMM's nine arrows against BIAN's mappings
+
+§1 described BIAN's own mapping model. The engine works on **SDMM's** nine arrows (the registry). For each, does a BIAN mapping from §1.2 cover it? Where it does not, §5 has to design the inference, drawing on §2 for what other frameworks supply.
+
+| SDMM arrow (registry rule) | Covered by a BIAN mapping? | Which one | What is left to the institution |
+|---|---|---|---|
+| `A1.BusinessCapability SUPPORTED_BY A2.ServiceDomain` | **No** | — (BCM→Service Domain unpublished) | The whole mapping |
+| `A1.ValueStream ALIGNED_TO A2.BusinessScenario` | **No** | — (value streams not modelled) | The whole mapping; scenarios are a published target |
+| `A1.BusinessProcess USES_DOMAIN A2.ServiceDomain` | **No** | — | The whole mapping; scenarios usable as templates |
+| `A1.BusinessObject ALIGNED_TO A2.BusinessObject` | **No** | — (BOM is a target, not a mapping) | The whole mapping; BOM attributes are the published target |
+| `A2.ServiceDomain REALIZED_BY A3.ApplicationComponent` | **Method only** | wireframe functional partition; legacy wrapping ([SAPG] §3.4, §4.3.1) | Deciding which application; BIAN says how to decide, not what |
+| `A2.ServiceOperation IMPLEMENTED_BY A3.APIOperation` | **Yes** | REST mapping and reference APIs ([SAPG] §3.5; [APIP]) | Comparing the bank's API to the reference form |
+| `A2.BusinessObject MAPPED_TO A3.DataEntity` | **Partial** | control record = REST resource ([SAPG] §3.5) | Matching the bank's data entity to the BOM object |
+| `A3.ApplicationComponent DEPLOYED_ON A4.InfrastructureComponent` | **No** | — (deployment patterns only) | The whole mapping, from deployment data |
+| `A3.ApplicationComponent DEPLOYED_AS A4.Deployment` | **No** | — (domain-as-container is a pattern, not a mapping) | The whole mapping, from deployment data |
+
+**One arrow of nine is covered by a BIAN mapping; one is partially covered; one has a BIAN method; six have nothing.** The rest of §5 follows this row by row.
+
+### 5.2 Gap-fill strategy — minimal inference
+
+§3 and §4.2 show the official picture: A2 complete, A2→A3 partial, A1→A2 intent only, A4 empty. Filling the rest is two different problems, and only one of them ever needs inference.
+
+#### Two gaps, two fillers
+
+| Gap | Question | Who can fill it |
+|---|---|---|
+| **Mapping types** | Is this *kind* of arrow legitimate, and on whose authority? | Standards. BIAN for anything touching A2. **ArchiMate** for A3→A4: SDMM's A3 and A4 entities are ArchiMate-native, so ArchiMate's cross-layer rules apply directly (pending the five verifications S34, S39, S44, S48, S50). TOGAF supplies vocabulary (ABB/SBB) and ADM placement, not relationship rules |
+| **Mapping instances** | Does *this* application run on *that* platform? | Never a standard. Always the institution: its data, its architects, or — last — inference |
+
+ArchiMate cannot reach A1→A2 directly: it has no BIAN concepts. The one lever is that BIAN publishes the Service Landscape in ArchiMate 3.2 ([RN14] §1.2). If BIAN types a Service Domain as a specific ArchiMate element, that element's cross-layer rules would apply. **To check on the portal** (MetaModel Overview): which ArchiMate element types BIAN assigns to Service Domain, Business Capability and Business Scenario.
+
+#### The ladder — lowest rung that works, inference last
+
+| Rung | Mechanism | Inference? | Arrows it fills |
+|---|---|---|---|
+| 1 | **Data join** — the institution's own records: CMDB, deployment manifests, API gateway inventory, data catalogue | none | `DEPLOYED_ON`, `DEPLOYED_AS`; most of `MAPPED_TO` |
+| 2 | **Rule application** — BIAN's published REST mapping: action term, behaviour qualifier, control-record resource, HTTP method ([SAPG] §3.5) | none, deterministic | `IMPLEMENTED_BY` |
+| 3 | **Derivation from approved arrows** — closure over records architects already approved: an application implementing operations of domain D realises D; a process using operations of D uses D; a capability whose processes all use D is a *candidate* for D | none; graph closure | `REALIZED_BY`, `USES_DOMAIN`, candidate `SUPPORTED_BY` |
+| 4 | **Structural matching** — attribute names and types against BOM attributes; API paths against operation names | light, fully explainable | `ALIGNED_TO` (object), residual `IMPLEMENTED_BY` |
+| 5 | **Text inference** — description similarity; model-assisted ranking with cited rationale | yes | only what is left: cold-start `SUPPORTED_BY`, `ALIGNED_TO` (value stream) |
+
+Reading down: **A4 is filled entirely by rung 1**; A2→A3 by rungs 2–3; A1→A2 objects by rung 4. The one arrow that genuinely needs rung 5 is capability → Service Domain — the mapping BIAN itself has not finished — and even there the minimal-inference options come first: author it (a capability map is ~100 entries, not 10,000), derive it by rung 3 once processes are mapped, or wait for BIAN's working group to publish ([WQA26]).
+
+#### Design rules that follow
+
+1. **Rungs 1–3 are the engine's tier 1.** They produce proposals with no semantic judgement, so they can carry high default confidence and cite the data or the approved record they were derived from.
+2. **Rung 4 is tier 1 with a score.** Explainable, bounded, cites the attributes matched.
+3. **Rung 5 is tier 2, opt-in per arrow type**, and only runs on pairs no lower rung could settle. Its proposals carry low confidence and the strictest evidence requirement.
+4. **A rung-3 derivation is never auto-approved either.** It is still `proposed`: the architect confirms that the closure holds semantically, not just structurally.
+5. **Type-level gaps are closed by registry changes, not by the engine.** When the ArchiMate rows verify, `DEPLOYED_ON` / `DEPLOYED_AS` move from `enterprise_rule` to `archimate_native` authority; the engine's behaviour on them is unchanged (still rung 1).
+
+### 5.3 Per-arrow design *(next)*
+
+Each of the nine arrows: which rung applies, what data it needs from the level exports, what it proposes, and its default confidence band.
+
