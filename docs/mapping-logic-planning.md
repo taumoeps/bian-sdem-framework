@@ -564,6 +564,7 @@ flowchart LR
       a1_08["A1.BusinessRole"]
       a1_09["A1.BusinessObject"]
       a1_10["A1.BusinessRequirement"]
+      a1_01 ~~~ a1_02 ~~~ a1_03 ~~~ a1_04 ~~~ a1_05 ~~~ a1_06 ~~~ a1_07 ~~~ a1_08 ~~~ a1_09 ~~~ a1_10
     end
     subgraph A2["A2 Service Domain Architecture — 15 entities"]
       direction TB
@@ -582,6 +583,7 @@ flowchart LR
       a2_13["A2.BOMModel (artefact)"]
       a2_14["A2.Wireframe (artefact)"]
       a2_15["A2.SemanticAPI (artefact)"]
+      a2_01 ~~~ a2_02 ~~~ a2_03 ~~~ a2_04 ~~~ a2_05 ~~~ a2_06 ~~~ a2_07 ~~~ a2_08 ~~~ a2_09 ~~~ a2_10 ~~~ a2_11 ~~~ a2_12 ~~~ a2_13 ~~~ a2_14 ~~~ a2_15
     end
     subgraph A3["A3 Application Architecture — 8 entities"]
       direction TB
@@ -593,6 +595,7 @@ flowchart LR
       a3_06["A3.DataEntity"]
       a3_07["A3.Event"]
       a3_08["A3.SolutionBuildingBlock"]
+      a3_01 ~~~ a3_02 ~~~ a3_03 ~~~ a3_04 ~~~ a3_05 ~~~ a3_06 ~~~ a3_07 ~~~ a3_08
     end
     subgraph A4["A4 Technology Architecture — 11 entities"]
       direction TB
@@ -607,8 +610,8 @@ flowchart LR
       a4_09["A4.CommunicationNetwork"]
       a4_10["A4.Path"]
       a4_11["A4.Artifact"]
+      a4_01 ~~~ a4_02 ~~~ a4_03 ~~~ a4_04 ~~~ a4_05 ~~~ a4_06 ~~~ a4_07 ~~~ a4_08 ~~~ a4_09 ~~~ a4_10 ~~~ a4_11
     end
-    A1 ~~~ A2 ~~~ A3 ~~~ A4
     classDef level fill:#f5f5f5,stroke:#9e9e9e,color:#212121
     class A1,A2,A3,A4 level
 ```
