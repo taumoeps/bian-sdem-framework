@@ -184,7 +184,8 @@ def render_trace(tree, direction):
         for i, c in enumerate(n['children']):
             last = i == len(n['children']) - 1
             tag = f"{arrow}{c['via']['relationship']}{'->' if direction == 'down' else '-'}"
-            lines.append(f"{prefix}{'└─ ' if last else '├─ '}{tag} {label(c['node'])}  ({c['via']['mapping_id']})")
+            ids = ', '.join([c['via']['mapping_id']] + c['via'].get('also', []))
+            lines.append(f"{prefix}{'└─ ' if last else '├─ '}{tag} {label(c['node'])}  ({ids})")
             rec(c['node'], prefix + ('   ' if last else '│  '))
     rec(tree, '')
     return '\n'.join(lines)
@@ -233,7 +234,8 @@ def main(argv=None):
             for d, t in trees.items():
                 print('DOWNSTREAM (depends on):' if d == 'down' else 'UPSTREAM (depended on by):')
                 print(render_trace(t, d) if t['children'] else f"{args.entity}  (no {d}stream mappings)"); print()
-        return EXIT_OK
+        # consistent with sdmm-trace: an empty result (no arrows in the chosen statuses) is exit 1
+        return EXIT_OK if any(t['children'] for t in trees.values()) else EXIT_ISSUES
     if args.cmd == 'impact':
         result = fg.impact(args.entity, args.change, statuses)
         if args.json: print(json.dumps(result, indent=2))

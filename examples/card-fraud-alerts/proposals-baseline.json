@@ -29,6 +29,28 @@
     {
       "mapping_id": "PROP-0002",
       "source": {
+        "id": "VS-CARD-USE",
+        "type": "A1.ValueStream",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BS-FRAUD-ALERT",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.67,
+      "evidence": [
+        "engine_rationale:shared terms ['card', 'cardholder', 'transaction'] between 'Use Card Safely' and 'Suspicious card transaction alerted'"
+      ],
+      "rationale": "shared terms ['card', 'cardholder', 'transaction'] between 'Use Card Safely' and 'Suspicious card transaction alerted'",
+      "baseline_id": "ENGINE-RUN",
+      "created_by": "baseline-name-overlap/0.5"
+    },
+    {
+      "mapping_id": "PROP-0003",
+      "source": {
         "id": "SD-044",
         "type": "A2.ServiceDomain",
         "version": "1.0",
@@ -50,7 +72,7 @@
       "created_by": "baseline-name-overlap/0.5"
     },
     {
-      "mapping_id": "PROP-0003",
+      "mapping_id": "PROP-0004",
       "source": {
         "id": "SO-044-07",
         "type": "A2.ServiceOperation",
@@ -68,6 +90,50 @@
         "engine_rationale:shared terms ['alert', 'fraud'] between 'Notify Fraud Alert' and 'Create fraud alert'"
       ],
       "rationale": "shared terms ['alert', 'fraud'] between 'Notify Fraud Alert' and 'Create fraud alert'",
+      "baseline_id": "ENGINE-RUN",
+      "created_by": "baseline-name-overlap/0.5"
+    },
+    {
+      "mapping_id": "PROP-0005",
+      "source": {
+        "id": "APP-FRAUD-ENGINE",
+        "type": "A3.ApplicationComponent",
+        "version": "4.2"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "DEP-FRAUD-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.69,
+      "evidence": [
+        "engine_rationale:shared terms ['engine', 'fraud'] between 'Fraud Engine' and 'Fraud Engine \u2014 production deployment'"
+      ],
+      "rationale": "shared terms ['engine', 'fraud'] between 'Fraud Engine' and 'Fraud Engine \u2014 production deployment'",
+      "baseline_id": "ENGINE-RUN",
+      "created_by": "baseline-name-overlap/0.5"
+    },
+    {
+      "mapping_id": "PROP-0006",
+      "source": {
+        "id": "APP-FRAUD-ENGINE",
+        "type": "A3.ApplicationComponent",
+        "version": "4.2"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-FRAUD-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.69,
+      "evidence": [
+        "engine_rationale:shared terms ['engine', 'fraud'] between 'Fraud Engine' and 'Fraud Engine \u2014 production deployment'"
+      ],
+      "rationale": "shared terms ['engine', 'fraud'] between 'Fraud Engine' and 'Fraud Engine \u2014 production deployment'",
       "baseline_id": "ENGINE-RUN",
       "created_by": "baseline-name-overlap/0.5"
     }

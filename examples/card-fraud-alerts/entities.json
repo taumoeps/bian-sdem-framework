@@ -48,6 +48,27 @@
       "versions": [
         "1.0"
       ]
+    },
+    {
+      "id": "DEP-FRAUD-PROD",
+      "type": "A4.Deployment",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "BS-FRAUD-ALERT",
+      "type": "A2.BusinessScenario",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "VS-CARD-USE",
+      "type": "A1.ValueStream",
+      "versions": [
+        "1.0"
+      ]
     }
   ]
 }

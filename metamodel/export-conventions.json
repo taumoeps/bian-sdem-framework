@@ -1,0 +1,91 @@
+{
+  "$schema_version": "0.5.1",
+  "note": "Conventional attribute keys on level-export instances. 'attributes' stays free-form in schema/level-model.schema.json; these are the keys the mapping steps (docs/mapping-execution.md §3) join on. Cross-level references are allowed ONLY as attributes (relationships stay within-level).",
+  "conventions": {
+    "A2.ServiceOperation": {
+      "action_term": "one of BIAN's 17 action terms",
+      "behavior_qualifier": "qualifier name or null",
+      "input_attributes": "list of control-record attribute names consumed",
+      "output_attributes": "list produced"
+    },
+    "A2.ControlRecord": {
+      "attributes": "list of attribute names (BIAN control-record make-up)"
+    },
+    "A2.BusinessObject": {
+      "attributes": "list of BOM attribute names"
+    },
+    "A2.BusinessScenario": {
+      "operation_sequence": "ordered list of A2.ServiceOperation ids"
+    },
+    "A1.BusinessCapability": {
+      "description": "scope statement (schema field, not attribute)"
+    },
+    "A1.BusinessProcess": {
+      "invokes": "list of A2.ServiceOperation ids the process steps call (optional; enables step 3 for USES_DOMAIN)"
+    },
+    "A1.BusinessActivity": {
+      "invokes": "list of A2.ServiceOperation ids"
+    },
+    "A1.ValueStream": {
+      "stages": "ordered list of A1.ValueStreamStage ids"
+    },
+    "A1.BusinessObject": {
+      "attributes": "list of attribute names from the business glossary"
+    },
+    "A3.APIOperation": {
+      "method": "HTTP method",
+      "path": "resource path",
+      "payload_fields": "list of request/response field names"
+    },
+    "A3.ApplicationComponent": {
+      "deployed_on": "list of A4 platform/node ids (join key for DEPLOYED_ON, S36)",
+      "deployed_as": "list of A4.Deployment ids (join key for DEPLOYED_AS)"
+    },
+    "A3.ApplicationService": {
+      "consumes": "list of A4.TechnologyService ids (join key for S41)"
+    },
+    "A3.DataEntity": {
+      "attributes": "list of attribute names",
+      "stored_in": "list of A4.SystemSoftware / A4.Artifact ids (join key for S50, S49)"
+    },
+    "A4.Deployment": {
+      "component_id": "the A3.ApplicationComponent deployed",
+      "environment_id": "A4.DeploymentEnvironment id",
+      "platform_id": "A4 platform/node id"
+    },
+    "A4.SystemSoftware": {
+      "hosts": "list of A3.ApplicationComponent ids (alternative join key)"
+    },
+    "A4.Node": {
+      "hosts": "list of A3.ApplicationComponent ids"
+    }
+  },
+  "bian_action_terms": {
+    "source": "[SAPG] §3.2.5 Figure 14 — 17 action terms in four categories; §3.5: Retrieve maps to HTTP GET; Notify is not used in the BIAN REST mapping",
+    "service_center": [
+      "Activate",
+      "Configure",
+      "Feedback"
+    ],
+    "create_instance": [
+      "Create",
+      "Initiate",
+      "Register",
+      "Evaluate",
+      "Provide"
+    ],
+    "act_on_instance": [
+      "Update",
+      "Control",
+      "Exchange",
+      "Capture",
+      "Execute",
+      "Request",
+      "Grant"
+    ],
+    "obtain_information": [
+      "Retrieve",
+      "Notify"
+    ]
+  }
+}

@@ -383,6 +383,7 @@ All components read the same files. The validator decides whether a mapping docu
 | Within-level relationship kinds | `metamodel/level-relationships.json` | the ArchiMate relationship kinds a level model may use; BIAN's A2 structure as fixed constraints |
 | Level-model export format | `schema/level-model.schema.json` | how an institution exports one design model: instances (concrete entities, with `description`) and within-level relationships |
 | Impact rules | `schema/impact-rules.json` | how far each kind of change propagates, with owner, version and rationale |
+| Export conventions | `metamodel/export-conventions.json` | the attribute keys on level-export instances that the mapping steps join on (deployment, API path/method/payload, action term, invokes, stored_in); BIAN's 17 action terms |
 | New mappings | `metamodel/new-mappings.json` | all 69 connections with rule decision, fill step (BIAN export / data join / rule / derivation / structural match / text inference), data needed, reasoning and confidence — the minimal-inference plan |
 | Official-mapping traceability | `metamodel/official-mappings.json`, `metamodel/official-mappings.puml` | the 69 mappings assessed in the planning document — 15 BIAN-internal, 54 cross-level candidates — with authority, verification status and disposition; the diagram is rendered from the JSON (`python -m sdmm.diagram`) and tests fail if document, diagram or registry drift |
 
@@ -471,7 +472,7 @@ flowchart LR
     style ENG fill:#eeeeee,color:#616161,stroke:#9e9e9e,stroke-dasharray: 5 5
 ```
 
-An engine implements `MappingEngine.propose(graph)` and returns records with `status: proposed`, a `confidence`, a `rationale`, `evidence` beginning `engine_rationale:` and `created_by`. The validator refuses to let such a record become `approved` without a named reviewer and date. **`sdmm-engine baseline`** is a deliberately naive engine (name and description word overlap) that exists to exercise the harness: on the shipped example it finds two of three approved arrows and misses the deployment, scoring F1 0.67 — the floor the real engine must beat. **`sdmm-eval`** scores any proposal document against approved mappings and can gate CI with `--min-f1`.
+An engine implements `MappingEngine.propose(graph)` and returns records with `status: proposed`, a `confidence`, a `rationale`, `evidence` beginning `engine_rationale:` and `created_by`. The validator refuses to let such a record become `approved` without a named reviewer and date. **`sdmm-engine baseline`** is a deliberately naive engine (name and description word overlap) that exists to exercise the harness: on the shipped example it finds four of five approved arrows by name overlap and misses the deployment to the platform, scoring F1 0.73 — the floor the real engine must beat. **`sdmm-eval`** scores any proposal document against approved mappings and can gate CI with `--min-f1`.
 
 ### How it runs
 

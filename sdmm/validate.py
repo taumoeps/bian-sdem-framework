@@ -304,7 +304,7 @@ def main(argv=None):
     parser.add_argument('paths', nargs='+', help='mapping JSON file(s)')
     parser.add_argument('--registry', default=RULES, help='relationship registry (default: bundled)')
     parser.add_argument('--catalogue', help='entity catalogue JSON; every endpoint must exist in it')
-    parser.add_argument('--strict', action='store_true', help='treat warnings as errors')
+    parser.add_argument('--strict', action='store_true', help='treat warnings as errors (except draft warnings on proposed records)')
     parser.add_argument('--json', action='store_true', help='emit a JSON report instead of text')
     args = parser.parse_args(argv)
     try:
@@ -323,9 +323,12 @@ def main(argv=None):
     if registry_issues:
         report = {'<registry>': registry_issues, **report}
     if args.strict:
-        for path, ws in warnings.items():
-            report.setdefault(path, []).extend(ws)
-        warnings = {}
+        # Draft (proposed) records legitimately lack evidence kinds and BIAN anchoring until review;
+        # those warnings say so and are not promoted. Everything else is.
+        for path, ws in list(warnings.items()):
+            hard = [w for w in ws if 'must be supplied before approval' not in w]
+            report.setdefault(path, []).extend(hard)
+            warnings[path] = [w for w in ws if w not in hard]
     failed = any(report.values())
     if args.json:
         print(json.dumps({'ok': not failed, 'registry_version': registry.get('$schema_version'), 'metamodel_version': metamodel.version,

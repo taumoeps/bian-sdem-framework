@@ -307,7 +307,7 @@ class TraceTests(unittest.TestCase):
         return [i for i, _ in self.paths(tree)[0]]
 
     def test_only_approved_edges_by_default(self):
-        self.assertEqual(sorted(e['mapping_id'] for e in self.edges), ['FRD-001', 'FRD-002', 'FRD-005'])
+        self.assertEqual(sorted(e['mapping_id'] for e in self.edges), ['FRD-001', 'FRD-002', 'FRD-005', 'FRD-006', 'FRD-007'])
 
     def test_downstream_reaches_new_host_not_old(self):
         chain = self.chain(self.walk(self.edges, 'CAP-310', 'down'))

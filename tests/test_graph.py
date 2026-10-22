@@ -86,7 +86,7 @@ class FederatedGraphTests(unittest.TestCase):
 
     def test_modify_only_reaches_direct_neighbours(self):
         c = self.classes(self.fg.impact('APP-FRAUD-ENGINE', 'modify'))
-        self.assertEqual(c, {'APP-FRAUD-ENGINE': 'design_change_required', 'SD-044': 'review_required', 'INF-CLOUD-K8S-PROD': 'review_required', 'CAP-310': 'no_impact'})
+        self.assertEqual(c, {'APP-FRAUD-ENGINE': 'design_change_required', 'SD-044': 'review_required', 'INF-CLOUD-K8S-PROD': 'review_required', 'DEP-FRAUD-PROD': 'review_required', 'CAP-310': 'no_impact'})
 
     def test_unknown_change_kind(self):
         with self.assertRaises(ValueError):
@@ -103,3 +103,43 @@ class FederatedGraphTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class V051Tests(unittest.TestCase):
+    def test_graph_trace_exits_1_on_empty_trace(self):
+        from sdmm.graph import main
+        import io, contextlib
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(main(['trace', 'INF-ONPREM-VM-CLUSTER-B', '--direction', 'up'] + [str(p) for p in FILES]), 1)
+            self.assertEqual(main(['trace', 'CAP-310', '--direction', 'down'] + [str(p) for p in FILES]), 0)
+
+    def test_duplicate_arrow_collapses_to_one_hop(self):
+        from sdmm.trace import load_edges, walk
+        doc = json.loads((F / 'mappings.json').read_text())
+        dup = dict(doc['mappings'][0]); dup = json.loads(json.dumps(dup)); dup['mapping_id'] = 'DUP-1'; dup['status'] = 'proposed'
+        edges = load_edges([{'mappings': doc['mappings'] + [dup]}], ('approved', 'proposed'))
+        t = walk(edges, 'CAP-310', 'down')
+        self.assertEqual(len(t['children']), 1)
+        self.assertEqual(t['children'][0]['via'].get('also'), ['DUP-1'])
+
+    def test_strict_does_not_promote_draft_warnings(self):
+        from sdmm.validate import main
+        import io, contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            code = main(['--strict', str(F / 'proposals-baseline.json')])
+        self.assertEqual(code, 0); self.assertIn('WARNING', buf.getvalue())
+
+    def test_four_bian_constraints_now_encoded(self):
+        mm = Metamodel.load()
+        for s, k, t in [('A2.ControlRecord', 'composition', 'A2.BehaviorQualifier'), ('A2.ControlRecord', 'association', 'A2.BusinessObject'),
+                        ('A2.ServiceOperation', 'access', 'A2.ControlRecord'), ('A2.ServiceDomain', 'flow', 'A2.ServiceDomain')]:
+            self.assertIsNone(mm.relationship_issue('A2', s, k, t), (s, k, t))
+
+    def test_enriched_exports_carry_join_keys(self):
+        fg = FederatedGraph.load(FILES)
+        self.assertEqual({k: v for k, v in fg.check().items() if v}, {})
+        app = fg.instance('APP-FRAUD-ENGINE'); self.assertIn('INF-CLOUD-K8S-PROD', app['attributes']['deployed_on'])
+        self.assertEqual(fg.instance('DEP-FRAUD-PROD')['attributes']['component_id'], 'APP-FRAUD-ENGINE')
+        self.assertEqual(fg.instance('SO-044-07')['attributes']['action_term'], 'Notify')
+        self.assertEqual(fg.instance('POST /fraud/alerts')['attributes']['method'], 'POST')

@@ -11,6 +11,8 @@ Where `customer-onboarding` shows a static chain, this example shows what happen
 | FRD-003 | **superseded** | The original on-prem deployment, kept as history with `valid_to` |
 | FRD-005 | approved | The new cloud deployment; `previous_mapping_id: FRD-003` closes the supersession chain |
 | FRD-004 | proposed | Engine candidate at 0.71 confidence for an API-level link; not yet a fact |
+| FRD-006 | approved | `DEPLOYED_AS` to the production deployment `DEP-FRAUD-PROD` — the precise form of FRD-005 |
+| FRD-007 | approved | Process perspective: the *Use Card Safely* value stream aligned to the fraud-alert scenario |
 
 Things to notice:
 
@@ -48,6 +50,6 @@ python -m sdmm.graph impact INF-CLOUD-K8S-PROD --change rehost examples/card-fra
 python -m sdmm.graph impact SD-044 --change retire examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
 ```
 
-`proposals-baseline.json` is the output of `sdmm-engine baseline` over the level files; `sdmm-eval mappings.json --proposals proposals-baseline.json` scores it at F1 0.67 — two of three approved arrows found, the deployment missed.
+`proposals-baseline.json` is the output of `sdmm-engine baseline` over the level files; `sdmm-eval mappings.json --proposals proposals-baseline.json` scores it at F1 0.73 — four of five approved arrows found, the deployment to the platform missed.
 
 Notice that `INF-CLOUD-K8S-PROD` is an `A4.SystemSoftware` in the level model while the mappings call it `A4.InfrastructureComponent`: the federated graph resolves it through the entity hierarchy. The rehost impact marks A4 and A3 `design_change_required`, A2 and A1 `no_impact`, and names `FRD-005` as the mapping to supersede.

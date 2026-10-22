@@ -38,7 +38,12 @@
       "version": "1.0",
       "name": "Alert Cardholder of Suspicious Transaction",
       "lifecycle_status": "active",
-      "description": "On a high-risk score, notify the cardholder, capture their response and release or block the transaction."
+      "description": "On a high-risk score, notify the cardholder, capture their response and release or block the transaction.",
+      "attributes": {
+        "invokes": [
+          "SO-044-07"
+        ]
+      }
     }
   ],
   "relationships": [

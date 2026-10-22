@@ -15,6 +15,7 @@ Read, in this order:
 3. The use case's section in `docs/use-case-testing.md` — the scenario, what is *given*, the connections it exercises, the expected outcomes.
 4. `schema/relationship-types.json` — the nine registry rules and their required evidence kinds.
 5. `metamodel/level-relationships.json` — the within-level relationship kinds you may read from the exports.
+6. `metamodel/export-conventions.json` — the attribute keys on export instances that steps 1–4 join on. **If an export lacks the key a step needs, that is a finding about the export, and the step produces no proposal.**
 
 Do **not** read the use case's gold set (`gold-mappings.json`) until phase 5. If you have already seen it, say so in the report.
 
@@ -41,11 +42,14 @@ Read the A4 export's `relationships` and `attributes`, and the A3 export's `attr
 
 | Connection | Join on |
 |---|---|
-| S32 `DEPLOYED_AS` | an A4 `Deployment` instance whose attributes name the A3 component (`component_id`, `deploys`, or an A4 relationship `deployment -assignment-> ...` naming it) |
-| S33 `DEPLOYED_ON` | an A4 relationship or attribute naming the component on a concrete platform/node |
-| S36 component → system software | as S33 where the target is `A4.SystemSoftware` |
-| S50 data entity → database platform | an A3 data entity attribute `stored_in` / an A4 relationship naming the entity |
-| S41 / S45 / S49 | platform-consumption or storage records naming the application service / function / entity |
+| S32 `DEPLOYED_AS` | `A4.Deployment.attributes.component_id` = the component's id (or `A3.ApplicationComponent.attributes.deployed_as` lists the deployment id) |
+| S33 `DEPLOYED_ON` | `A3.ApplicationComponent.attributes.deployed_on` lists the A4 id, or the A4 instance's `attributes.hosts` lists the component |
+| S36 component → system software | as S33 where the A4 target is `A4.SystemSoftware` |
+| S50 data entity → database platform | `A3.DataEntity.attributes.stored_in` lists an `A4.SystemSoftware` id |
+| S41 / S45 | `A3.ApplicationService.attributes.consumes` (or the function's) lists `A4.TechnologyService` ids |
+| S49 | `A3.DataEntity.attributes.stored_in` lists an `A4.Artifact` id |
+
+Relationships in exports are within-level only (policy); cross-level facts live in these attributes. Keys are defined in `metamodel/export-conventions.json`.
 
 Working: quote the record. If no record names the component, **no proposal**.
 
@@ -55,9 +59,9 @@ For each A2 operation and each A3 API operation, compare, in this order; all fou
 | # | Rule | Source | How to test |
 |---|---|---|---|
 | 1 | The API belongs to an application that is within the domain's boundary | [SAPG] §3.5 p. 52: the Service Domain matches the application boundary of the API | an approved `REALIZED_BY` for the component, or (reverse cases) the component's description names the domain's asset |
-| 2 | Action term ↔ HTTP method | [SAPG] §3.5: Retrieve → GET; other action terms take their noun form (Initiate → Initiation, Create → Creation, Update, Execute → Execution, Request → Requisition, Register → Registration, Evaluate → Evaluation, Provide → Provision, Control, Exchange, Capture, Grant); methods used are GET, PUT, POST, (PATCH), DELETE | Retrieve ⇔ GET (verified). For the others the guide gives the noun form, not a fixed method; **executor convention, mark as such:** Initiate/Create/Register/Evaluate/Provide/Request ⇔ POST; Update/Control/Exchange/Capture/Grant/Execute ⇔ PUT or PATCH. A mismatch (e.g. Retrieve on POST) is a **finding** on the API, reported with the proposal |
-| 3 | Behaviour qualifier ↔ sub-path | [SAPG] §3.5 p. 55: the qualifier narrows to a sub-partition of the control record | the qualifier's name (or a clear synonym) appears as a path segment after the resource |
-| 4 | Control-record attributes ↔ payload fields | [SAPG] §3.5: attributes are filtered by action term for input/output | ≥ 50 % of the operation's input/output attribute names (or clear synonyms) appear among the API's payload fields |
+| 2 | Action term ↔ HTTP method | [SAPG] §3.2.5 Figure 14: BIAN defines **17 action terms** in four categories — service centre: Activate, Configure, Feedback · create instance: Create, Initiate, Register, Evaluate, Provide · act on instance: Update, Control, Exchange, Capture, Execute, Request, Grant · obtain information: Retrieve, Notify. §3.5: Retrieve maps to HTTP GET; the others take noun form; **Notify is not used in the BIAN REST mapping**; methods used are GET, PUT, POST, (PATCH), DELETE | Read `A2.ServiceOperation.attributes.action_term` and `A3.APIOperation.attributes.method`. Retrieve ⇔ GET (verified). **Executor convention, mark as such:** Create/Initiate/Register/Evaluate/Provide/Request ⇔ POST; Update/Control/Exchange/Capture/Grant/Execute ⇔ PUT or PATCH; Activate/Configure/Feedback ⇔ PUT or POST. **Notify, or any term not in the 17: rule 2 is untestable and counts as a miss.** A mismatch (e.g. Retrieve on POST) is a **finding** on the API, reported with the proposal |
+| 3 | Behaviour qualifier ↔ sub-path | [SAPG] §3.5 p. 55: the qualifier narrows to a sub-partition of the control record | `attributes.behavior_qualifier` (or a clear synonym) appears as a segment of `attributes.path` after the resource; a null qualifier passes |
+| 4 | Control-record attributes ↔ payload fields | [SAPG] §3.5: attributes are filtered by action term for input/output | ≥ 50 % of `attributes.input_attributes` ∪ `output_attributes` (or clear synonyms) appear in `A3.APIOperation.attributes.payload_fields` |
 
 Working: list the four checks with the values compared. A mismatch on rule 2 or 4 that still yields a proposal must be written as a finding: *"API X implements operation Y but uses POST for a Retrieve"*.
 
@@ -66,10 +70,10 @@ Closure rules. Cite the `mapping_id` of every arrow used.
 
 | Connection | Rule |
 |---|---|
-| S17 `REALIZED_BY` | if component C exposes API operations that `IMPLEMENTED_BY` (approved, or your step-2 proposals — say which) operations of domain D, then D `REALIZED_BY` C |
+| S17 `REALIZED_BY` | if component C exposes API operations that `IMPLEMENTED_BY` (approved, or your step-2 proposals — say which) operations of domain D, then D `REALIZED_BY` C. **Fallback (step 4, one band lower):** the domain's asset-type noun (from `A2.AssetType`) appears in the component's API paths or data entity names — a structural match, scored as matches / APIs+entities, threshold ≥ 1 match. Description-only comparison is **step 5**, two bands lower |
 | S25 | operation O `IMPLEMENTED_BY` API a; a exposed by application service S (A3 composition) ⇒ O → S |
 | S22 / S23 | the service/interface exposing the APIs of a group's operations |
-| S04 `USES_DOMAIN` | process P has activity/step that invokes operation O (A1 export attribute or S06 proposal); O in domain D ⇒ P `USES_DOMAIN` D |
+| S04 `USES_DOMAIN` | process P (or one of its activities) has `attributes.invokes` naming operation O, or an S06 proposal; O in domain D (B09/B10) ⇒ P `USES_DOMAIN` D. A process exported without activities may be matched directly to operations by the S06 verb+noun rule (step 4) |
 | S01 `SUPPORTED_BY` (candidate) | every process of capability K (A1 relationship) `USES_DOMAIN` D ⇒ candidate K `SUPPORTED_BY` D, confidence medium; if only some processes, low |
 | S07, S15, S16, S40, S42, S46, S47, S48, S52–S54 | derived paths — report as **queries** (the chain of arrows), not as proposal records |
 
@@ -87,7 +91,7 @@ Only for the IDs the plan assigns to step 4, or as a declared fallback.
 Working: the attribute/stage pairs matched and the score.
 
 ### Step 5 — Text inference
-Only for S01 when step 3 produced nothing (capability with no mapped processes), and for the A1 side of hard cases. Compare the capability description with each candidate domain's description; propose at most **one** domain per capability, low confidence, with the two texts quoted and the shared concepts named. If no domain is clearly better than the rest, **no proposal**.
+Only for S01 when step 3 produced nothing (capability with no mapped processes), and for the A1 side of hard cases. Compare the capability description with each candidate domain's description; propose at most **one** domain per capability, low confidence, with the two texts quoted and the shared concepts named. **The candidate set must be the full exported A2 landscape, or at least three domains**; with fewer, the ranking is vacuous — record *single-candidate, no proposal*. If no domain is clearly better than the rest, **no proposal**.
 
 ## 4. Output — the proposal document
 
@@ -97,7 +101,7 @@ One file per use case: `examples/<use-case>/proposals-executor.json`, in the map
 {
   "registry_version": "0.4.0",
   "metamodel_version": "0.4.0",
-  "engine": "opus-executor/<date>",
+  "engine": "<model>-executor/<date>",
   "mappings": [
     {
       "mapping_id": "P-M1-001",
@@ -109,7 +113,7 @@ One file per use case: `examples/<use-case>/proposals-executor.json`, in the map
       "evidence": ["engine_rationale:S24 step2 rules 1-4 passed; action term Retrieve ↔ GET; qualifier 'Instruction' in path; 6/8 attributes in payload"],
       "rationale": "<one sentence>",
       "baseline_id": "<use case baseline>",
-      "created_by": "opus-executor/<date>"
+      "created_by": "<model>-executor/<date>"
     }
   ]
 }
@@ -131,7 +135,7 @@ Only now open `gold-mappings.json`. Paste the `sdmm-eval` output verbatim into t
 ## 6. Report — append to `docs/use-case-testing.md` under *Results*
 
 ```
-### <Case id> — results (<date>, opus-executor)
+### <Case id> — results (<date>, <model>-executor)
 
 #### Proposals
 <table: proposal id | plan ID | connection | step used (assigned / fallback) | confidence | working (one line)>
@@ -164,5 +168,5 @@ Every row in *Findings* must say what to change: the ID's `fill_step`, `confiden
 - Every proposal traceable to a record, a rule, an arrow or a scored match.
 - At least one *no proposal* with a reason.
 - The planted mismatch (where the case has one) surfaced as a finding.
-- `sdmm-validate --strict` passes on the proposal file (warnings for missing evidence kinds are expected on proposals).
+- `sdmm-validate --strict` passes on the proposal file: draft warnings (missing evidence kinds, `bian_release`, `canonical_id` on proposed records) are reported but not promoted to errors under `--strict`.
 - Predicted-vs-observed filled for every ID the case exercises, including the ones that failed.

@@ -11,7 +11,12 @@
       "version": "1.3",
       "name": "Managed Kubernetes (production)",
       "lifecycle_status": "active",
-      "description": "Managed Kubernetes cluster hosting production workloads."
+      "description": "Managed Kubernetes cluster hosting production workloads.",
+      "attributes": {
+        "hosts": [
+          "APP-FRAUD-ENGINE"
+        ]
+      }
     },
     {
       "id": "INF-ONPREM-VM-CLUSTER-B",
@@ -36,6 +41,19 @@
       "name": "Private network",
       "lifecycle_status": "active",
       "description": "Private network segment for production services."
+    },
+    {
+      "id": "DEP-FRAUD-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Fraud Engine — production deployment",
+      "lifecycle_status": "active",
+      "description": "Fraud Engine 4.2 deployed to the production Kubernetes cluster.",
+      "attributes": {
+        "component_id": "APP-FRAUD-ENGINE",
+        "environment_id": "ENV-PROD",
+        "platform_id": "INF-CLOUD-K8S-PROD"
+      }
     }
   ],
   "relationships": [
@@ -49,6 +67,11 @@
       "kind": "assignment",
       "target": "NET-PRIVATE",
       "name": "runs on"
+    },
+    {
+      "source": "ENV-PROD",
+      "kind": "aggregation",
+      "target": "DEP-FRAUD-PROD"
     }
   ]
 }

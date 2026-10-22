@@ -12,7 +12,13 @@
       "name": "Fraud Engine",
       "lifecycle_status": "active",
       "attributes": {
-        "vendor": "in-house"
+        "vendor": "in-house",
+        "deployed_on": [
+          "INF-CLOUD-K8S-PROD"
+        ],
+        "deployed_as": [
+          "DEP-FRAUD-PROD"
+        ]
       },
       "description": "Real-time scoring of card transactions against fraud models; dispatches alerts to channels and records outcomes."
     },
@@ -38,7 +44,19 @@
       "version": "3.1",
       "name": "Create fraud alert",
       "lifecycle_status": "active",
-      "description": "Creates a fraud alert for a transaction and triggers cardholder notification."
+      "description": "Creates a fraud alert for a transaction and triggers cardholder notification.",
+      "attributes": {
+        "method": "POST",
+        "path": "/fraud/alerts",
+        "payload_fields": [
+          "alert_reference",
+          "transaction_reference",
+          "party_reference",
+          "risk_score",
+          "notification_status",
+          "party_response"
+        ]
+      }
     }
   ],
   "relationships": [

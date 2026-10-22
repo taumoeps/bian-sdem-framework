@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.1 — after the first executed use case (E1)
+
+- `metamodel/export-conventions.json`: the attribute keys on level-export instances that mapping steps 1–4 join on; cross-level facts live in attributes, relationships stay within-level. Fraud example exports enriched accordingly (deployment, scenario, action term, API path/method/payload, `invokes`).
+- `metamodel/level-relationships.json`: four BIAN-internal A2 constraints added (control record → qualifier, control record → business object, operation → control record, domain → domain).
+- `sdmm-validate --strict`: draft warnings on `proposed` records are reported, not promoted.
+- `sdmm-graph trace`: exit 1 on an empty trace (consistent with `sdmm-trace`); an approved and a proposed record of the same arrow render as one hop with both ids.
+- `metamodel/new-mappings.json`: `data_needed` names export keys; S17 step-4 fallback defined; S01 step-5 candidate-set rule; S04 note on processes without activities.
+- `docs/mapping-execution.md`: all 17 BIAN action terms (Notify untestable in REST mapping), export keys per step, `<model>-executor` label.
+
 ## 0.5.0 — engine readiness
 
 Everything an automated mapping engine needs, except the engine.

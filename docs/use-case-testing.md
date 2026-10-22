@@ -31,20 +31,20 @@
 
 **Scenario.** The shipped example: a capability, its Service Domain, the Fraud Engine, Kubernetes. Everything mapped and approved.
 
-**Given.** `examples/card-fraud-alerts/a1–a4-*.json`; `mappings.json` (FRD-001, 002, 005 approved; FRD-003 superseded; FRD-004 proposed).
+**Given.** `examples/card-fraud-alerts/a1–a4-*.json`; `mappings.json` (FRD-001, 002, 005, 006, 007 approved; FRD-003 superseded; FRD-004 proposed — FRD-006/007 and the enriched exports were added in v0.5.1, after the first run).
 
 **Tests.**
 
 | # | Question | Command | Expected |
 |---|---|---|---|
-| E1.1 | Downstream from CAP-310 | `sdmm-graph trace CAP-310 --direction down` | CAP-310 → SD-044 → APP-FRAUD-ENGINE → INF-CLOUD-K8S-PROD, each hop with its mapping id |
+| E1.1 | Downstream from CAP-310 | `sdmm-graph trace CAP-310 --direction down` | CAP-310 → SD-044 → APP-FRAUD-ENGINE → INF-CLOUD-K8S-PROD (FRD-005) and → DEP-FRAUD-PROD (FRD-006, since v0.5.1), each hop with its mapping id |
 | E1.2 | Upstream from INF-CLOUD-K8S-PROD | `trace … --direction up` | the same chain reversed, ending at CAP-310 |
-| E1.3 | Upstream from the retired host | `trace INF-ONPREM-VM-CLUSTER-B --direction up` | nothing (exit 1): only a superseded arrow points there; with `--status approved,superseded` the old chain appears |
+| E1.3 | Upstream from the retired host | `trace INF-ONPREM-VM-CLUSTER-B --direction up` | `(no upstream mappings)`, exit 1 (since v0.5.1 `sdmm-graph trace` exits 1 on an empty trace, like `sdmm-trace`); with `--status approved,superseded` the old chain appears |
 | E1.4 | Rehost Kubernetes | `impact INF-CLOUD-K8S-PROD --change rehost` | A4, A3 `design_change_required`; A2, A1 `no_impact`; FRD-005 to supersede |
 | E1.5 | Retire the domain | `impact SD-044 --change retire` | CAP-310 `design_change_required`, APP `review_required`, INF `no_impact` |
-| E1.6 | Gap honesty | trace from SO-044-07 with approved only | exit 1 — the only arrow is `proposed`; with `--status approved,proposed` it appears |
+| E1.6 | Gap honesty | trace from SO-044-07 with approved only | `(no downstream mappings)`, exit 1 — the only arrow is `proposed`; with `--status approved,proposed` it appears |
 
-**Connections exercised.** S01 (as FRD-001), S17, S33. **Predicted:** all present and traceable; nothing to infer. **Pass:** every expected output exact. **Status:** executed 2026-10-22 — see Results.
+**Connections exercised.** S01 (FRD-001), S17 (FRD-002), S33 (FRD-005), S32 (FRD-006), S02 (FRD-007). **Predicted:** all present and traceable; with the v0.5.1 exports, re-derivable at their assigned steps. **Pass:** every expected output exact. **Status:** executed 2026-10-22 against the pre-enrichment data — see Results; re-run pending.
 
 ## E2 — Customer Onboarding, three perspectives (Easy)
 
@@ -312,3 +312,20 @@ CAP-310 → SD-044 (FRD-001 and P-E1-002, as two sibling branches) → APP-FRAUD
 | S17 | SD-044 × CMP-SCORING, IFC-FRAUD-API | parts of APP-FRAUD-ENGINE by composition; IFC-FRAUD-API is also an `A3.ApplicationInterface`, not the S17 target type |
 
 **Summary.** As a graph test E1 passes: all six traces and impacts match, with two exit-code cells to correct. As a plan test it is honest rather than clean: two of three approved arrows were re-derived only by fallback steps, the deployment arrow could not be re-derived at all, and the API arrow could not be tested. Every failure is a gap in what the exports carry, not a wrong rule — which is what M1's exports must fix before it runs.
+
+### E1 — actions taken on the findings (v0.5.1)
+
+| Finding | Action |
+|---|---|
+| 1, 2, 9 — no join keys in the exports | `metamodel/export-conventions.json` defines the attribute keys steps 1–4 join on (`deployed_on`, `deployed_as`, `component_id`, `hosts`, `stored_in`, `action_term`, `behavior_qualifier`, `input/output_attributes`, `method`, `path`, `payload_fields`, `invokes`, …). The fraud exports now carry them, plus an `A4.Deployment` and an `A2.BusinessScenario`. `data_needed` in `new-mappings.json` names the keys |
+| 3 — Notify | Verified in [SAPG] §3.2.5: 17 action terms, Notify among them; §3.5: not used in the REST mapping. Guide rule 2 now lists all 17 and treats Notify (or any term outside the 17) as untestable → miss |
+| 4 — S17 fallback | Guide step 3 now defines a step-4 structural fallback for S17 (asset-type noun in API paths / entity names); description-only comparison is step 5, two bands lower |
+| 5 — single-candidate step 5 | Guide step 5 requires the full A2 landscape or ≥ 3 candidates; otherwise *single-candidate, no proposal*. S01 `data_needed` updated |
+| 6 — `--strict` | `sdmm-validate --strict` no longer promotes draft warnings on proposed records; guide §7 restated |
+| 7 — exit codes | `sdmm-graph trace` exits 1 on an empty trace, consistent with `sdmm-trace`; E1.3/E1.6 expectations restated |
+| 8 — duplicate branches | trace collapses an approved and a proposed record of the same arrow into one hop listing both ids |
+| 10 — engine label | guide uses `<model>-executor/<date>` |
+| new-connection candidate (process → operation) | recorded as a note on S04 rather than a new ID: a process exported without activities may be matched directly by the S06 rule |
+| (earlier finding) four BIAN-internal constraints missing | B07, B08, B11, B12 added to `metamodel/level-relationships.json`; all 12 constraint-bearing BIAN relationships now encoded |
+
+**E1 is re-runnable:** with the enriched exports, S33 (step 1), S32 (step 1), S24 (step 2) and S04 (step 3) now have keys. A second run should re-derive all three approved arrows at their assigned steps.

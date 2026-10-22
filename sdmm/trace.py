@@ -45,10 +45,15 @@ def walk(edges, start, direction='down'):
     forward = direction == 'down'
     def node(eid, seen):
         here = {'id': eid, 'type': (ents.get(eid) or {}).get('type'), 'children': []}
+        taken = {}
         for e in edges:
             a, b = (e['source'], e['target']) if forward else (e['target'], e['source'])
             if a['id'] == eid and b['id'] not in seen:
-                here['children'].append({'via': e, 'node': node(b['id'], seen | {b['id']})})
+                key = (e['relationship'], b['id'])
+                if key in taken:   # same arrow recorded more than once (e.g. approved + proposed): one hop, all ids
+                    taken[key]['via'].setdefault('also', []).append(e['mapping_id']); continue
+                child = {'via': dict(e), 'node': node(b['id'], seen | {b['id']})}
+                taken[key] = child; here['children'].append(child)
         return here
     return node(start, {start})
 
@@ -73,7 +78,8 @@ def render(tree, direction):
             last = i == len(n['children']) - 1
             e = c['via']
             tag = f"{arrow}{e['relationship']}{'->' if direction == 'down' else '-'}"
-            lines.append(f"{prefix}{'└─ ' if last else '├─ '}{tag} {c['node']['id']}  [{c['node']['type'] or '?'}]  ({e['mapping_id']})")
+            ids = ', '.join([e['mapping_id']] + e.get('also', []))
+            lines.append(f"{prefix}{'└─ ' if last else '├─ '}{tag} {c['node']['id']}  [{c['node']['type'] or '?'}]  ({ids})")
             rec(c['node'], prefix + ('   ' if last else '│  '))
     rec(tree, '')
     return '\n'.join(lines)
