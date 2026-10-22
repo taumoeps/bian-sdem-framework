@@ -548,7 +548,9 @@ Tier 1 deterministic candidates per arrow, tier 2 model-assisted ranking, eviden
 
 ## 5. Mapping Diagram
 
-The four design models of the Service Domain Architecture Design Model, side by side A1 to A4, each column listing its entities top to bottom from the catalogue (`metamodel/`). No connectors are drawn: the arrows between levels are the mappings themselves, which are defined in the registry and recorded per institution in mapping documents, not in this picture. Entity IDs are the catalogue `type` strings.
+### 5.1 Entities by level
+
+The four design models of the Service Domain Architecture Design Model, side by side A1 to A4, each column listing its entities top to bottom (`metamodel/`). Entity IDs are the catalogue `type` strings.
 
 | **A1 Business Architecture** (10) | **A2 Service Domain Architecture** (15) | **A3 Application Architecture** (8) | **A4 Technology Architecture** (11) |
 |:---|:---|:---|:---|
@@ -569,3 +571,116 @@ The four design models of the Service Domain Architecture Design Model, side by 
 |  | `A2.SemanticAPI` *(artefact)* |  |  |
 
 Counts: A1 10 · A2 15 (12 entities + 3 artefacts) · A3 8 · A4 11 (10 concrete + 1 abstract) — 44 in total.
+
+### 5.2 The 24 official connectors
+
+Only the mappings that are officially sourced *and verified* (§3): the 14 BIAN-internal relationships (B02–B15, blue) and the 10 cross-level mappings with BIAN guidance (green; dashed where BIAN gives only intent or a target). Nothing unverified or institution-only is drawn. Source: `docs/diagrams/official-mappings.puml`, generated from `metamodel/` and the §2.3 verification column.
+
+Rendering: the VS Code PlantUML extension renders the block below in Markdown preview; `plantuml -tsvg docs/diagrams/official-mappings.puml` produces an SVG for GitHub (Java required — not installed on the authoring machine, so no SVG is committed yet).
+
+```plantuml
+@startuml official-mappings
+left to right direction
+skinparam rectangle { BackgroundColor White BorderColor #424242 }
+skinparam package { BackgroundColor #F5F5F5 BorderColor #9E9E9E }
+skinparam ArrowColor #1565C0
+skinparam ArrowFontSize 10
+title Official mappings — 24 verified connectors (B = BIAN-internal, S = cross-level with BIAN guidance)
+
+package "A1 Business Architecture" as A1 {
+  rectangle "A1.BusinessCapability" as a1_01
+  rectangle "A1.ValueStream" as a1_02
+  rectangle "A1.ValueStreamStage" as a1_03
+  rectangle "A1.BusinessProcess" as a1_04
+  rectangle "A1.BusinessActivity" as a1_05
+  rectangle "A1.BusinessService" as a1_06
+  rectangle "A1.BusinessActor" as a1_07
+  rectangle "A1.BusinessRole" as a1_08
+  rectangle "A1.BusinessObject" as a1_09
+  rectangle "A1.BusinessRequirement" as a1_10
+}
+
+package "A2 Service Domain Architecture" as A2 {
+  rectangle "A2.BusinessArea" as a2_01
+  rectangle "A2.BusinessDomain" as a2_02
+  rectangle "A2.ServiceDomain" as a2_03
+  rectangle "A2.FunctionalPattern" as a2_04
+  rectangle "A2.AssetType" as a2_05
+  rectangle "A2.ControlRecord" as a2_06
+  rectangle "A2.ServiceGroup" as a2_07
+  rectangle "A2.ServiceOperation" as a2_08
+  rectangle "A2.BehaviorQualifier" as a2_09
+  rectangle "A2.BusinessScenario" as a2_10
+  rectangle "A2.BusinessObject" as a2_11
+  rectangle "A2.BusinessObjectAttribute" as a2_12
+  rectangle "A2.BOMModel\n(artefact)" as a2_13
+  rectangle "A2.Wireframe\n(artefact)" as a2_14
+  rectangle "A2.SemanticAPI\n(artefact)" as a2_15
+}
+
+package "A3 Application Architecture" as A3 {
+  rectangle "A3.ApplicationComponent" as a3_01
+  rectangle "A3.ApplicationService" as a3_02
+  rectangle "A3.ApplicationInterface" as a3_03
+  rectangle "A3.ApplicationFunction" as a3_04
+  rectangle "A3.APIOperation" as a3_05
+  rectangle "A3.DataEntity" as a3_06
+  rectangle "A3.Event" as a3_07
+  rectangle "A3.SolutionBuildingBlock" as a3_08
+}
+
+package "A4 Technology Architecture" as A4 {
+  rectangle "A4.InfrastructureComponent\n(abstract)" as a4_01
+  rectangle "A4.Deployment" as a4_02
+  rectangle "A4.DeploymentEnvironment" as a4_03
+  rectangle "A4.Node" as a4_04
+  rectangle "A4.Device" as a4_05
+  rectangle "A4.SystemSoftware" as a4_06
+  rectangle "A4.TechnologyService" as a4_07
+  rectangle "A4.TechnologyInterface" as a4_08
+  rectangle "A4.CommunicationNetwork" as a4_09
+  rectangle "A4.Path" as a4_10
+  rectangle "A4.Artifact" as a4_11
+}
+
+' --- B: BIAN's own relationships inside A2 (14)
+a2_01 -[#1565C0]-> a2_02 : B02 contains
+a2_02 -[#1565C0]-> a2_03 : B03 contains
+a2_03 -[#1565C0]-> a2_04 : B04 applies
+a2_03 -[#1565C0]-> a2_05 : B05 manages
+a2_03 -[#1565C0]-> a2_06 : B06 governs
+a2_06 -[#1565C0]-> a2_09 : B07 partitioned by
+a2_06 -[#1565C0]-> a2_11 : B08 attributes typed by
+a2_03 -[#1565C0]-> a2_07 : B09 offers
+a2_07 -[#1565C0]-> a2_08 : B10 contains
+a2_08 -[#1565C0]-> a2_06 : B11 acts on
+a2_03 -[#1565C0]-> a2_03 : B12 connects to
+a2_10 -[#1565C0]-> a2_08 : B13 sequences
+a2_14 -[#1565C0]-> a2_03 : B14 depicts
+a2_15 -[#1565C0]-> a2_03 : B15 derived from
+
+' --- S: cross-level mappings with BIAN guidance (10); dashed = intent/target only
+a1_01 -[#2E7D32,dashed]-> a2_03 : S01 SUPPORTED_BY (intent)
+a1_09 -[#2E7D32,dashed]-> a2_11 : S12 ALIGNED_TO (target)
+a2_03 -[#2E7D32]-> a3_01 : S17 REALIZED_BY
+a2_06 -[#2E7D32]-> a3_06 : S20 guidance
+a2_06 -[#2E7D32]-> a3_04 : S21 guidance
+a2_08 -[#2E7D32]-> a3_05 : S24 IMPLEMENTED_BY
+a2_08 -[#2E7D32]-> a3_02 : S25 guidance
+a2_10 -[#2E7D32]-> a3_02 : S28 guidance
+a2_10 -[#2E7D32]-> a3_01 : S29 guidance
+a2_11 -[#2E7D32]-> a3_06 : S30 MAPPED_TO
+
+legend right
+  Blue solid: BIAN-internal (B02–B15, 14)
+  Green solid: cross-level, BIAN guidance (8)
+  Green dashed: cross-level, intent/target only (2)
+endlegend
+@enduml
+```
+
+| Colour | Connectors | Count |
+|---|---|---|
+| Blue solid | B02–B15 — BIAN's own relationships inside A2 | 14 |
+| Green solid | S17 `REALIZED_BY`, S24 `IMPLEMENTED_BY`, S30 `MAPPED_TO`, S20, S21, S25, S28, S29 (guidance, not in registry) | 8 |
+| Green dashed | S01 `SUPPORTED_BY` (intent only), S12 `ALIGNED_TO` (target only) | 2 |
