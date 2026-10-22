@@ -13,28 +13,32 @@
       "lifecycle_status": "active",
       "attributes": {
         "vendor": "in-house"
-      }
+      },
+      "description": "Real-time scoring of card transactions against fraud models; dispatches alerts to channels and records outcomes."
     },
     {
       "id": "CMP-SCORING",
       "type": "A3.ApplicationComponent",
       "version": "4.2",
       "name": "Transaction Scoring",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "Scores a transaction against the active fraud models and returns a risk band."
     },
     {
       "id": "IFC-FRAUD-API",
       "type": "A3.ApplicationInterface",
       "version": "3.1",
       "name": "Fraud API",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "REST interface exposing fraud alert and case operations to channels."
     },
     {
       "id": "POST /fraud/alerts",
       "type": "A3.APIOperation",
       "version": "3.1",
       "name": "Create fraud alert",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "Creates a fraud alert for a transaction and triggers cardholder notification."
     }
   ],
   "relationships": [

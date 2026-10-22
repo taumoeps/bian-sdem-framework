@@ -10,7 +10,8 @@
       "type": "A2.BusinessDomain",
       "version": "1.0",
       "name": "Fraud and Risk (synthetic grouping)",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "Synthetic grouping of fraud and risk Service Domains."
     },
     {
       "id": "SD-044",
@@ -18,28 +19,32 @@
       "version": "1.0",
       "name": "Fraud Detection (synthetic selection)",
       "lifecycle_status": "active",
-      "canonical_id": "BIAN-FRAUD-DETECTION"
+      "canonical_id": "BIAN-FRAUD-DETECTION",
+      "description": "Synthetic stand-in for a BIAN fraud-detection Service Domain: evaluates transactions and activity for indications of fraud and raises alerts."
     },
     {
       "id": "SG-044-01",
       "type": "A2.ServiceGroup",
       "version": "1.0",
       "name": "Fraud Case Operations",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "Operations for raising, evaluating and resolving fraud cases."
     },
     {
       "id": "SO-044-07",
       "type": "A2.ServiceOperation",
       "version": "1.0",
       "name": "Notify Fraud Alert",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "Notify an interested party of a suspected fraud event and record their response."
     },
     {
       "id": "CR-044",
       "type": "A2.ControlRecord",
       "version": "1.0",
       "name": "Fraud Detection Control Record",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "Control record tracking fraud evaluations and alert outcomes."
     }
   ],
   "relationships": [

@@ -15,6 +15,7 @@ class ReferenceBinding:
     entity_type: str
     name: str = ''
     source_record: str = ''
+    definition: str = ''   # populated only by an institution's licensed resolver; never stored in this repository
 
 
 class ReferenceResolver(Protocol):

@@ -14,21 +14,23 @@ LEVEL_SCHEMA = ROOT / 'schema' / 'level-model.schema.json'
 CLASSES = ('design_change_required', 'review_required', 'no_impact')
 EXIT_OK, EXIT_ISSUES, EXIT_USAGE = 0, 1, 2
 
-# Impact rules. For a change of `kind` to instance X, reachable instances are classified by their
-# relation to X: 'self', 'up1' (directly depends on X), 'up2+' (depends on X through others),
-# 'down1' (X directly depends on it), 'down2+'. Everything not listed is no_impact.
-IMPACT_RULES = {
-    'modify':  {'self': 'design_change_required', 'up1': 'review_required', 'down1': 'review_required'},
-    'replace': {'self': 'design_change_required', 'up1': 'design_change_required', 'up2+': 'review_required', 'down1': 'review_required'},
-    'retire':  {'self': 'design_change_required', 'up1': 'design_change_required', 'up2+': 'review_required', 'down1': 'review_required'},
-    'rehost':  {'self': 'design_change_required', 'up1': 'design_change_required'},
-}
-IMPACT_REASONS = {
-    'modify':  'internal change; direct neighbours re-check their assumptions, nothing further',
-    'replace': 'instance replaced; direct dependents must re-point their mappings, indirect ones review',
-    'retire':  'instance removed; direct dependents lose a dependency, indirect ones review',
-    'rehost':  'hosting changes only; deployment records must be superseded, functional layers unaffected',
-}
+IMPACT_RULES_FILE = ROOT / 'schema' / 'impact-rules.json'
+
+
+def load_impact_rules(path=IMPACT_RULES_FILE):
+    """Impact classification is governed data (schema/impact-rules.json), not code."""
+    doc = json.loads(Path(path).read_text(encoding='utf-8'))
+    for kind, spec in doc['kinds'].items():
+        bad = set(spec['rules'].values()) - set(doc['classes'])
+        if bad:
+            raise ValueError(f'impact-rules: kind {kind!r} uses unknown class(es) {sorted(bad)}')
+    return doc
+
+
+_IMPACT = load_impact_rules()
+IMPACT_RULES = {k: v['rules'] for k, v in _IMPACT['kinds'].items()}
+IMPACT_REASONS = {k: v['reason'] for k, v in _IMPACT['kinds'].items()}
+SUPERSEDE_FOR = set(_IMPACT.get('supersede_mappings_touching_changed_instance_for', []))
 
 
 class LevelGraph:
@@ -165,9 +167,9 @@ class FederatedGraph:
                     if not any(r['id'] == iid for r in rows):
                         add(iid, relation, [v['mapping_id'] for _, v in p[1:depth + 1]])
         for e in edges:
-            if changed in (e['source']['id'], e['target']['id']) and kind in ('replace', 'retire', 'rehost'):
+            if changed in (e['source']['id'], e['target']['id']) and kind in SUPERSEDE_FOR:
                 touched.append(e['mapping_id'])
-        return {'changed': changed, 'change': kind, 'reason': IMPACT_REASONS[kind], 'instances': rows,
+        return {'changed': changed, 'change': kind, 'reason': IMPACT_REASONS[kind], 'rules_version': _IMPACT['$schema_version'], 'instances': rows,
                 'mappings_to_supersede': sorted(set(touched))}
 
 

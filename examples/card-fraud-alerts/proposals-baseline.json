@@ -1,0 +1,73 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "baseline-name-overlap/0.5",
+  "mappings": [
+    {
+      "mapping_id": "PROP-0001",
+      "source": {
+        "id": "CAP-310",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-044",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.7,
+      "evidence": [
+        "engine_rationale:shared terms ['alerts', 'fraud', 'transactions'] between 'Card Fraud Alerts' and 'Fraud Detection (synthetic selection)'"
+      ],
+      "rationale": "shared terms ['alerts', 'fraud', 'transactions'] between 'Card Fraud Alerts' and 'Fraud Detection (synthetic selection)'",
+      "baseline_id": "ENGINE-RUN",
+      "created_by": "baseline-name-overlap/0.5"
+    },
+    {
+      "mapping_id": "PROP-0002",
+      "source": {
+        "id": "SD-044",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-FRAUD-ENGINE",
+        "type": "A3.ApplicationComponent",
+        "version": "4.2"
+      },
+      "status": "proposed",
+      "confidence": 0.7,
+      "evidence": [
+        "engine_rationale:shared terms ['alerts', 'fraud', 'transactions'] between 'Fraud Detection (synthetic selection)' and 'Fraud Engine'"
+      ],
+      "rationale": "shared terms ['alerts', 'fraud', 'transactions'] between 'Fraud Detection (synthetic selection)' and 'Fraud Engine'",
+      "baseline_id": "ENGINE-RUN",
+      "created_by": "baseline-name-overlap/0.5"
+    },
+    {
+      "mapping_id": "PROP-0003",
+      "source": {
+        "id": "SO-044-07",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "POST /fraud/alerts",
+        "type": "A3.APIOperation",
+        "version": "3.1"
+      },
+      "status": "proposed",
+      "confidence": 0.65,
+      "evidence": [
+        "engine_rationale:shared terms ['alert', 'fraud'] between 'Notify Fraud Alert' and 'Create fraud alert'"
+      ],
+      "rationale": "shared terms ['alert', 'fraud'] between 'Notify Fraud Alert' and 'Create fraud alert'",
+      "baseline_id": "ENGINE-RUN",
+      "created_by": "baseline-name-overlap/0.5"
+    }
+  ]
+}

@@ -368,6 +368,7 @@ If you are expecting to deploy something: there is nothing to deploy. This repos
 | **Service Domain Mapping Model Validator** | v0.2 | `sdmm-validate`, `sdmm-diff` | an **existing** mapping document | **Gate.** Checks the document's *structure and governance* — not the correctness of any A1–A4 relationship in it | *SDMM Validation & Approval* (the deterministic checks; approval itself is recorded as fields) |
 | **Service Domain Mapping Model Query** | v0.3 | `sdmm-trace` | an **existing** mapping document | **Trace.** Follows the approved arrows an architect already wrote, in either direction, and prints the chain — it draws no arrows of its own | *Federated Knowledge Graph — Mapping Registry & Traceability* (traversal over mappings alone) |
 | **Service Domain Mapping Model Graph** | v0.4 | `sdmm-graph` | **existing** level-model exports (A1–A4) plus mapping documents | **Federate.** Validates each level model against the entity catalogue, resolves every mapping endpoint against it, traces chains with real names, and classifies impact by structural rule | *Federated Knowledge Graph* (in-memory reference implementation) · *Bidirectional impact traversal* (structural classification) |
+| **Engine harness** | v0.5 | `sdmm-engine`, `sdmm-eval` | level-model exports, and a document of **proposed** records | **Score.** Defines what a mapping engine is (`MappingEngine`), runs one, and measures its proposals against approved mappings — precision, recall, F1, misses, false proposals. Ships a naive baseline as the floor to beat; the real engine is v0.6 | *SDMM Mapping Engine* (interface and acceptance test; the engine itself is not built) |
 
 **Context of use — read this before the names mislead you.** None of the components contains mapping logic. None decides, suggests or assesses whether a Business Capability belongs to a Service Domain, whether a domain is realised by an application, or whether anything should be deployed anywhere. Those decisions are made by architects and recorded in a mapping document. The Validator checks that the *document* is well-formed and governed; the Query reads the *document's* approved arrows and joins them into chains; the Graph joins those arrows to the institution's own level models and applies impact *rules*. All are downstream of the architect, never a substitute for one. A gap in a trace means no mapping has been decided there yet.
 
@@ -488,6 +489,7 @@ python -m sdmm.graph impact INF-CLOUD-K8S-PROD --change rehost examples/card-fra
 | Graph | Local / CI | `python -m sdmm.graph check a1.json a2.json a3.json a4.json mappings.json` | Gate: level models valid and every mapping endpoint exists |
 | Graph | Local | `python -m sdmm.graph trace CAP-310 <files>` / `impact INF-X --change rehost <files>` | Architect assessing a change |
 | Graph | Library | `from sdmm.graph import FederatedGraph` | Developer loading the graph into a store or UI |
+| Engine harness | Local / CI | `python -m sdmm.engine baseline a*.json > proposals.json` then `python -m sdmm.evaluate mappings.json --proposals proposals.json --min-f1 0.5` | Anyone building or buying a mapping engine: is it better than the floor? |
 
 There is no server, no database, no scheduler and no UI. A production deployment would wrap these in whatever hosts your other EA tooling.
 
@@ -500,7 +502,7 @@ flowchart TB
     REF["BIAN Reference Architecture Repository<br/>INTERFACE ONLY: sdmm/reference.py"]
     HIST["Historical Design Repository<br/>NOT BUILT"]
     RULES["SDMM Mapping Metamodel & Rules<br/>BUILT: schema/"]
-    ENGINE["SDMM Mapping Engine<br/>Process / Information / Architecture analysis<br/>NOT BUILT: v0.4"]
+    ENGINE["SDMM Mapping Engine<br/>Process / Information / Architecture analysis<br/>INTERFACE + HARNESS BUILT (v0.5); engine NOT BUILT: v0.6"]
     VALID["SDMM Validation & Approval<br/>BUILT: sdmm/validate.py"]
     FED[("Federated Knowledge Graph<br/>Cross-layer Mapping Registry & Traceability<br/>BUILT in memory: level exports + mappings + sdmm-graph<br/>persistent store NOT BUILT")]
     IMPACT["Bidirectional impact traversal<br/>& generated views<br/>BUILT: sdmm-graph impact (structural rules)<br/>generated views NOT BUILT: v0.5"]
@@ -545,7 +547,7 @@ Green = built. Blue = interface defined, implementation yours. Grey dashed = roa
 | **Validation & Approval** | Deterministic checks, then architect sign-off | **Checks built** — `sdmm/validate.py` (structure, registry, evidence, anchoring) and `sdmm/diff.py` (transitions, immutability). Approval is recorded as fields (`status`, `reviewer_id`, `approved_at`), not a workflow system |
 | **Federated Knowledge Graph / Mapping Registry** | Store of approved cross-layer edges, queryable in both directions | **Built, in memory** — `sdmm-graph` loads the four level exports and the mapping documents, resolves every endpoint (is-a), traces with names. A persistent store or query service is not built; a database adapter would load the same files |
 | **BIAN Reference Repository** | Licensed BIAN definitions by release | **Interface only** — `ReferenceResolver` in `sdmm/reference.py`; you implement it |
-| **Mapping Engine** | Reads A1–A4 and proposes mappings | **Not built** (v0.4). `status: proposed` + `confidence` reserve its output slot |
+| **Mapping Engine** | Reads A1–A4 and proposes mappings | **Interface, record shape, baseline and evaluation harness built** (v0.5); the engine that reads descriptions and proposes with evidence is v0.6 |
 | **Historical Design Repository** | Legacy documents and patterns | **Not built** |
 | **Bidirectional impact traversal & generated views** | Upstream/downstream queries, impact classification, diagrams projected from the graph | **Traversal and impact classification built** (`sdmm-trace`, `sdmm-graph impact` — structural rules, architect confirms); generated views not built (v0.5) |
 | **A1–A4 models** | The bank's own capability, domain, application and infrastructure models | **External data, SDMM format.** The bank exports each model to `schema/level-model.schema.json`; `sdmm-graph` loads the exports and the validator resolves mapping endpoints against them. SDMM never holds the exports |
@@ -564,9 +566,10 @@ Each release adds one component and maps to one box of the target-state architec
 | **v0.4** | Contract · Validator · Graph | The whole data architecture: a vocabulary of 41 entities traced to public standards, an export format for an institution's four design models, and a federated graph that joins them to the mappings — with impact classification | Export your A1–A4 models; run `sdmm-graph` to check, trace and assess change | Every mapping endpoint confirmed to exist; chains with real names; each affected instance classified no impact / review / redesign | *Metamodel & Rules* · *Validation & Approval* · *Federated Knowledge Graph* · *Impact traversal* | shipped — `v0.4.0` |
 | **v0.4.1** | Contract · Validator | A way for an institution to declare how its own entity names map onto the SDMM vocabulary | An institution publishes a profile; the checker resolves its names through it | Institution documents validated without changing their own vocabulary | *Metamodel & Rules* · *Validation & Approval* | planned |
 | **v0.4.2** | Contract | A record of which BIAN definitions have been checked against which release, by whom | Someone with BIAN access records what they verified | Each BIAN-derived entity marked verified or pending | *BIAN Reference Repository* (verification) | planned |
-| **v0.5** | Graph | Generated views — matrices and diagrams projected from the graph — and baseline-aware impact (compare two dated baselines) | Produce the capability-to-domain matrix or an impact report for a steering pack | Views that are derived from approved data, never drawn by hand | *Impact traversal & generated views* | planned |
-| **v0.6** | Reference | A live lookup of BIAN identifiers in a licensed release | Attach the institution's BIAN access to the checker | Mappings rejected if they cite a BIAN id that does not exist | *BIAN Reference Repository* | planned |
-| **v0.7** | Engine | Suggested mappings, with evidence, for an architect to accept or reject | Run over the institution's models to draft candidate arrows | Proposed records only — never approved without a reviewer | *SDMM Mapping Engine* | planned |
+| **v0.5** | Engine harness | Everything an engine needs except the engine: descriptions to read, a fixed output shape, a baseline, and a scorer | Run the baseline over your level exports; score any engine's proposals against your approved mappings | A precision / recall / F1 report per arrow type, with every miss and false proposal listed | *SDMM Mapping Engine* (interface and acceptance test) | shipped — `v0.5.0` |
+| **v0.6** | Engine | Suggested mappings, with evidence, for an architect to accept or reject — deterministic candidates first, model-assisted ranking second | Run over the institution's models to draft candidate arrows | Proposed records only — never approved without a reviewer; must beat the baseline on `sdmm-eval` | *SDMM Mapping Engine* | next |
+| **v0.7** | Reference | A live lookup of BIAN identifiers and definitions in a licensed release | Attach the institution's BIAN access to the checker and the engine | Mappings rejected if they cite a BIAN id that does not exist; the engine can read definitions | *BIAN Reference Repository* | planned |
+| **v0.8** | Graph | Generated views — matrices and diagrams projected from the graph — and baseline-aware impact | Produce the capability-to-domain matrix or an impact report for a steering pack | Views derived from approved data, never drawn by hand | *Impact traversal & generated views* | planned |
 | **v1.0** | — | A stable, published specification others can conform to | Adopt it; test against it | A conformance profile | — | planned |
 
 Not on the roadmap: a UI, identity or workflow management, or any guarantee of BIAN conformance. A persistent graph database is an adapter over the same files, added when an institution needs one.
@@ -586,17 +589,17 @@ python -m sdmm.validate --json examples/*/mappings.json                   # mach
 python -m unittest discover -s tests -v
 ```
 
-Or install it: `pip install -e .` gives you `sdmm-validate`, `sdmm-diff`, `sdmm-trace` and `sdmm-graph` commands. Exit codes: `0` valid, `1` issues found, `2` usage/registry error.
+Or install it: `pip install -e .` gives you `sdmm-validate`, `sdmm-diff`, `sdmm-trace`, `sdmm-graph`, `sdmm-engine` and `sdmm-eval` commands. Exit codes: `0` valid, `1` issues found, `2` usage/registry error.
 
 What the validator checks is listed under *What goes in and what comes out* above; `--registry` points it at your own registry and `validate(..., resolver=)` attaches a licensed BIAN lookup. It is **not a certification of BIAN conformance** or of architectural correctness.
 
 ## Contents
 
 - `docs/`: reference methodology, governance, the v0.4 entity metamodel spec and `reference-architecture-provenance.md` (every entity traced to a public standard)
-- `schema/`: relationship registry, mapping-document schema, level-model export schema
+- `schema/`: relationship registry, mapping-document schema, level-model export schema, impact rules
 - `metamodel/`: the A1–A4 entity catalogue (41 + 3 artefacts) and within-level relationship kinds
 - `examples/`: synthetic mappings — `customer-onboarding` (full vertical slice) and `card-fraud-alerts` (a change event with supersession)
-- `sdmm/`: validator, document diff, traceability walker, metamodel loader, federated graph with impact, and the `ReferenceResolver` / `EntityResolver` adapter interfaces
+- `sdmm/`: validator, document diff, traceability walker, metamodel loader, federated graph with impact, the `MappingEngine` interface with a baseline, the evaluation harness, and the `ReferenceResolver` / `EntityResolver` adapter interfaces
 - `tests/`: basic automated tests
 - `.github/workflows/`: CI validation
 

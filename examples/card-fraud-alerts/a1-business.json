@@ -13,28 +13,32 @@
       "lifecycle_status": "active",
       "attributes": {
         "owner": "Retail Risk"
-      }
+      },
+      "description": "Detect suspicious card transactions in real time and alert the cardholder through their preferred channel before the transaction settles."
     },
     {
       "id": "CAP-300",
       "type": "A1.BusinessCapability",
       "version": "1.0",
       "name": "Card Risk Management",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "Manage the risk exposure of the card portfolio, including fraud, credit and operational risk."
     },
     {
       "id": "VS-CARD-USE",
       "type": "A1.ValueStream",
       "version": "1.0",
       "name": "Use Card Safely",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "The cardholder's journey from presenting a card to confirming a transaction was legitimate."
     },
     {
       "id": "PRC-310-01",
       "type": "A1.BusinessProcess",
       "version": "1.0",
       "name": "Alert Cardholder of Suspicious Transaction",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "On a high-risk score, notify the cardholder, capture their response and release or block the transaction."
     }
   ],
   "relationships": [

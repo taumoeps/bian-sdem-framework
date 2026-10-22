@@ -42,7 +42,7 @@ Files are classified by content (a level export has `level` + `instances`; a map
 
 ## Impact classification
 
-`impact` declares a change of one **kind** to one instance and classifies every reachable instance by its structural relation to it. `up` means *depends on the changed instance* (toward A1); `down` means *the changed instance depends on it* (toward A4). Anything not listed is `no_impact`.
+Rules live in `schema/impact-rules.json` (owner, version, rationale per kind) and are loaded at run time; change them there, not in code. `impact` declares a change of one **kind** to one instance and classifies every reachable instance by its structural relation to it. `up` means *depends on the changed instance* (toward A1); `down` means *the changed instance depends on it* (toward A4). Anything not listed is `no_impact`.
 
 | Change kind | Meaning | self | up1 (direct dependents) | up2+ | down1 | down2+ |
 |---|---|---|---|---|---|---|

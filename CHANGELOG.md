@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.0 — engine readiness
+
+Everything an automated mapping engine needs, except the engine.
+
+- Level-model exports gain `description` and `definition_uri` per instance — the text an engine reads. Shipped example levels carry descriptions.
+- `ReferenceBinding.definition`: BIAN definition text, populated only by an institution's licensed resolver at run time; never stored here.
+- `sdmm/engine.py`: the `MappingEngine` protocol, the `proposal()` record shape, and a deliberately naive `baseline` engine (name/description overlap) to exercise the harness. `sdmm-engine baseline <levels>` emits a document of `proposed` records.
+- `sdmm/evaluate.py` and `sdmm-eval`: precision / recall / F1 of proposals against approved records, per relationship type, with misses and false proposals listed; `--min-f1` as a CI gate.
+- Validator: a `proposed` record missing required evidence kinds warns instead of failing (evidence is gathered during review); `engine` allowed at document level.
+- Impact rules moved from code to governed data: `schema/impact-rules.json` with owner, version and per-kind rationale; `sdmm-graph` loads it.
+- Docs: `docs/07-engine-readiness.md`.
+
 ## 0.4.0 — data architecture
 
 - `metamodel/`: the A1–A4 entity catalogue — 41 core entities and 3 artefacts, each with `extends`, `abstract`, public-standard provenance and `evidence_status` (all `bian_reference` entities pending verification); within-level relationship kinds (ArchiMate) and BIAN's A2 structure as constraints; `metamodel/entity.schema.json`.

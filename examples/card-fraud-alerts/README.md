@@ -48,4 +48,6 @@ python -m sdmm.graph impact INF-CLOUD-K8S-PROD --change rehost examples/card-fra
 python -m sdmm.graph impact SD-044 --change retire examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
 ```
 
+`proposals-baseline.json` is the output of `sdmm-engine baseline` over the level files; `sdmm-eval mappings.json --proposals proposals-baseline.json` scores it at F1 0.67 — two of three approved arrows found, the deployment missed.
+
 Notice that `INF-CLOUD-K8S-PROD` is an `A4.SystemSoftware` in the level model while the mappings call it `A4.InfrastructureComponent`: the federated graph resolves it through the entity hierarchy. The rehost impact marks A4 and A3 `design_change_required`, A2 and A1 `no_impact`, and names `FRD-005` as the mapping to supersede.

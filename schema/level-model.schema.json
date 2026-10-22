@@ -4,40 +4,126 @@
   "description": "The format an institution exports one of its four design models (A1-A4) to. Instances and within-level relationships are the institution's; the entity vocabulary and relationship kinds are SDMM's.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["level", "model_id", "model_version", "instances"],
+  "required": [
+    "level",
+    "model_id",
+    "model_version",
+    "instances"
+  ],
   "properties": {
-    "level": {"enum": ["A1", "A2", "A3", "A4"]},
-    "model_id": {"type": "string", "minLength": 1},
-    "model_version": {"type": "string", "minLength": 1},
-    "metamodel_version": {"type": "string", "minLength": 1},
-    "source_system": {"type": "string", "minLength": 1},
-    "instances": {"type": "array", "items": {"$ref": "#/$defs/instance"}},
-    "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship"}}
+    "level": {
+      "enum": [
+        "A1",
+        "A2",
+        "A3",
+        "A4"
+      ]
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "metamodel_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_system": {
+      "type": "string",
+      "minLength": 1
+    },
+    "instances": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/instance"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationship"
+      }
+    }
   },
   "$defs": {
     "instance": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "type", "version", "name"],
+      "required": [
+        "id",
+        "type",
+        "version",
+        "name"
+      ],
       "properties": {
-        "id": {"type": "string", "minLength": 1},
-        "type": {"type": "string", "pattern": "^A[1-4]\\.[A-Za-z]+$"},
-        "version": {"type": "string", "minLength": 1},
-        "name": {"type": "string", "minLength": 1},
-        "lifecycle_status": {"enum": ["planned", "active", "deprecated", "retired"]},
-        "canonical_id": {"type": "string", "minLength": 1},
-        "attributes": {"type": "object"}
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "pattern": "^A[1-4]\\.[A-Za-z]+$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lifecycle_status": {
+          "enum": [
+            "planned",
+            "active",
+            "deprecated",
+            "retired"
+          ]
+        },
+        "canonical_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attributes": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string",
+          "description": "Plain-language description of this instance; the text a mapping engine reads"
+        },
+        "definition_uri": {
+          "type": "string",
+          "description": "Where the authoritative description lives in the institution's tooling"
+        }
       }
     },
     "relationship": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["source", "kind", "target"],
+      "required": [
+        "source",
+        "kind",
+        "target"
+      ],
       "properties": {
-        "source": {"type": "string", "minLength": 1},
-        "kind": {"type": "string", "minLength": 1},
-        "target": {"type": "string", "minLength": 1},
-        "name": {"type": "string"}
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string"
+        }
       }
     }
   }

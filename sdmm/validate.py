@@ -231,7 +231,9 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
             kinds = {k for k, _ in map(split_evidence, refs) if k}
             if required and kinds:
                 missing = sorted(required - kinds)
-                if missing:
+                if missing and mapping.get('status') == 'proposed':
+                    warnings.append(f"{prefix}: proposal lacks required evidence kind(s) {missing}; must be supplied before approval")
+                elif missing:
                     fail('governance', f"evidence missing required kind(s) {missing}")
             elif required and refs:
                 warnings.append(f"{prefix}: evidence is untyped; cannot confirm required kind(s) {sorted(required)} (use 'kind:ref')")

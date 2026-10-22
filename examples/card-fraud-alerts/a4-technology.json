@@ -10,28 +10,32 @@
       "type": "A4.SystemSoftware",
       "version": "1.3",
       "name": "Managed Kubernetes (production)",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "Managed Kubernetes cluster hosting production workloads."
     },
     {
       "id": "INF-ONPREM-VM-CLUSTER-B",
       "type": "A4.Node",
       "version": "2.0",
       "name": "On-prem VM cluster B",
-      "lifecycle_status": "deprecated"
+      "lifecycle_status": "deprecated",
+      "description": "Legacy on-premises VM cluster, being decommissioned."
     },
     {
       "id": "ENV-PROD",
       "type": "A4.DeploymentEnvironment",
       "version": "1.0",
       "name": "Production",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "Production runtime environment."
     },
     {
       "id": "NET-PRIVATE",
       "type": "A4.CommunicationNetwork",
       "version": "1.0",
       "name": "Private network",
-      "lifecycle_status": "active"
+      "lifecycle_status": "active",
+      "description": "Private network segment for production services."
     }
   ],
   "relationships": [
