@@ -1,5 +1,5 @@
 {
-  "$schema_version": "0.5.6",
+  "$schema_version": "0.5.7",
   "generated_from": "metamodel/official-mappings.json plus the gap-fill assessment in docs/mapping-logic-planning.md §5",
   "note": "One entry per official-mapping ID. Existing official mappings keep their source reference; every entry gets a rule decision, the step that fills its instances (0 BIAN export, 1 data join, 2 rule application, 3 derivation, 4 structural matching, 5 text inference), the data that step needs, the reasoning, and a confidence (high/medium/low) that the connection is a sound mapping and that the chosen fill produces correct instances. Attribute keys named in data_needed are defined in metamodel/export-conventions.json (added after the E1 run showed the joins had no keys).",
   "steps": {
@@ -606,7 +606,7 @@
       "fill_step": 2,
       "data_needed": "A2.ServiceOperation attributes.action_term / behavior_qualifier / input_attributes / output_attributes; A2.ControlRecord attributes.attributes; A3.APIOperation attributes.method / path / payload_fields (export-conventions.json); A2.ServiceDomain.attributes.asset_type for rule 1 in reverse cases; A2.AssetType.attributes.aliases for the token boundary gate in reverse cases; A2.BehaviorQualifier.attributes.aliases and A3.ApplicationInterface.attributes.field_aliases for product-named estates",
       "confidence": "high",
-      "reasoning": "Registry rule IMPLEMENTED_BY, verified BIAN rules (SAPG §3.5): operation → REST form is prescribed. Fill by a decision procedure (guide step 2, rewritten after M1): a boundary precondition, then action term ↔ method, qualifier ↔ path and attributes ↔ payload as pass/fail/neutral evidence, with one-to-one disambiguation per operation and API. A 'count of rules passed' is not a rule — on a six-operation domain it admitted nineteen wrong pairs. Mismatches (e.g. Retrieve on POST) are proposed one band lower with a finding. The most mechanical arrow in the model."
+      "reasoning": "Registry rule IMPLEMENTED_BY, verified BIAN rules (SAPG §3.5): operation → REST form is prescribed. Fill by a decision procedure (guide step 2, rewritten after M1): a boundary precondition, then action term ↔ method, qualifier ↔ path and attributes ↔ payload as pass/fail/neutral evidence, with one-to-one disambiguation per operation and API. A 'count of rules passed' is not a rule — on a six-operation domain it admitted nineteen wrong pairs. Mismatches (e.g. Retrieve on POST) are proposed one band lower with a finding. The most mechanical arrow in the model. Contention between operations for one API is decided by overlap count, ratio, then qualifier (proposed, H2 run 2; pending validation on an unseen gold)."
     },
     {
       "id": "S25",

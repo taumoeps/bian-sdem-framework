@@ -1,5 +1,5 @@
 {
-  "$schema_version": "0.5.6",
+  "$schema_version": "0.5.7",
   "note": "Conventional attribute keys on level-export instances. 'attributes' stays free-form in schema/level-model.schema.json; these are the keys the mapping steps (docs/mapping-execution.md §3) join on. Cross-level references are allowed ONLY as attributes (relationships stay within-level).",
   "conventions": {
     "A2.ServiceOperation": {
@@ -46,7 +46,8 @@
     },
     "A3.DataEntity": {
       "attributes": "list of attribute names",
-      "stored_in": "list of A4.SystemSoftware / A4.Artifact ids (join key for S50, S49)"
+      "stored_in": "list of A4.SystemSoftware / A4.Artifact ids (join key for S50, S49)",
+      "field_aliases": "optional map of column names to canonical attribute names; overrides the field_aliases inherited from the interfaces of components that access the entity"
     },
     "A4.Deployment": {
       "component_id": "the A3.ApplicationComponent deployed",

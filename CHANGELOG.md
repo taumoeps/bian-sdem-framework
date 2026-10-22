@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.7 — after H2 run 2 (P 1.00, R 1.00 with aliases as data)
+
+- Step 2 clause 4: overlap defined (count, then ratio); API-contention award (count, ratio, qualifier) — proposed, pending validation on an unseen gold.
+- Check-2 convention: Control ⇔ DELETE (cancel/terminate); Execute ⇔ POST on a qualifier-named sub-resource.
+- Data entities inherit interface field aliases; `A3.DataEntity.attributes.field_aliases` overrides.
+
 ## 0.5.6 — after H2 run 1 (P 1.00, R 0.78 under hostile naming)
 
 - Data-entity matching (S30/S20/S31) one-to-one to a fixpoint; check 4 requires two matched attributes.

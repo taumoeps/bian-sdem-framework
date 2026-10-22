@@ -176,16 +176,16 @@
 | H2.5 | A4 unaffected | 14 deployment arrows at high |
 | H2.6 | A1 | "requires authoring" — no instances to propose against |
 
-**Connections exercised and predicted.**
+**Connections exercised and predicted** (run 1 on the bare export; run 2 on the alias-enriched export, v0.5.6+).
 
-| ID | Connection | Step | Predicted |
-|---|---|---|---|
-| S33 ×7, S32 ×7 | services → cluster / deployments | 1 | high |
-| S24 | operations ← endpoints | 2 | **9 proposals**: PI Initiate/Update/Retrieve, CA Initiate/Retrieve/Control, PRD ×3 — high; **none** for PI Control/Execute (tie), PE ×2 (fields), CA Closure (fields), SA ×3 (gate), perks/shield/ledger/buddies |
-| S17 | domains ← services | 3 | high for PI, CA, PRD; **medium** for PE via the alias fallback (`/zap`); SA via **fallback A** (vaults table `MAPPED_TO` the Savings object) at the step-4 input's band (v0.5.6) |
-| S30 | BOM objects → tables | 4 | high for PI, CA, PRD, **SA** (6/8 via attributes — the only route to Savings here); none for PE (`zaps` 2/8), FD, perks, buddies |
-| S20 | control records → tables | 4 | candidate-rule reports, same four |
-| S50 | tables → PostgreSQL / Redis | 1 | institution-only report |
+| ID | Connection | Step | Run 1 (no aliases) | Run 2 (aliases) |
+|---|---|---|---|---|
+| S33 ×7, S32 ×7 | services → cluster / deployments | 1 | high | high |
+| S24 | operations ← endpoints | 2 | 9 proposals at decision 1 (PI ×3, CA ×3, PRD ×3); none for PI Control/Execute (tie), PE (fields), CA Closure, SA (gate) | **17** — all gold: SA ×3 and PE ×2 at decision 1; Control-as-DELETE and Execute/Closure on POST sub-resources at high under the v0.5.7 check-2 convention |
+| S17 | domains ← services | 3 | high for PI, CA, PRD; medium for PE (alias in path); SA via fallback A | all five at high from step 3 proper |
+| S30 | BOM objects → tables | 4 | PI, CA, PRD, SA (6/8); none for PE (2/8) | all five; `zaps` 8/8 through field aliases |
+| S20 | control records → tables | 4 | candidate-rule reports | candidate-rule reports |
+| none | perks, shield, `/ledger`, `/buddies` | — | no proposal | no proposal |
 
 **Pass.** Precision ≥ 0.9; recall ≈ 0.7 is **expected** (the gold's interview-only arrows are the measured cost of missing aliases and product field names); H2.1–H2.6 hold; `h2-inference-log.json` complete. **Status:** executed twice 2026-10-22 (run 1 on v0.5.5, run 2 on v0.5.6) — see Results.
 
@@ -1146,3 +1146,14 @@ None new. SD-FD → svc-shield remains the only domain without a route: gate blo
 | S01, S02, S04, S06, S12 | — | requires authoring: no A1 export |
 
 **Summary.** With the institution's decoded names supplied as data, the same procedure that reached 32 of 41 under hostile naming reaches 41 of 41 with no false proposal: recall 0.78 → 1.00, precision unchanged at 1.00. The aliases did all the work — asset alias for the gate, field aliases for check 4 and the data-entity match, qualifier aliases for check 3 — and no rule was loosened. The run also found the next gap: once aliases make small attribute sets match widely, two operations can claim one API, and the guide must say who wins (finding 1); the executor's two-key rule reaches the gold but was chosen with the gold known, so it is proposed, not proven. Three decision-2 arrows (DELETE cancel, POST release, POST close) would rise to decision 1 with two convention rows (findings 3, 4). H2 is complete; E2 and M2 remain.
+
+### H2 run 2 — actions taken on the findings (v0.5.7)
+
+| Finding | Action |
+|---|---|
+| 1 — API contention | Clause 4 defines overlap (count, then ratio) and the contention award (count, ratio, qualifier; tie = no proposal). **Marked as proposed**: it was chosen with the gold known. It counts as validated only when it decides a pair on a gold the executor has not seen |
+| 2 — check-2 convention | Control ⇔ DELETE for cancel/terminate; Execute ⇔ POST on a sub-resource named for the qualifier. The three decision-2 arrows become high |
+| 3 — alias inheritance | A data entity inherits the field aliases of the interfaces of components that access it; `A3.DataEntity.attributes.field_aliases` overrides |
+| 4 — stale case table | H2 table rewritten with run-1 and run-2 columns |
+
+**H2 is complete.** The H2 pair of runs is the suite's key evidence: the same procedure, with the institution's decoded names supplied as *data*, goes from 0.78 to 1.00 recall at precision 1.00 — naming is an input problem, not a rule problem.
