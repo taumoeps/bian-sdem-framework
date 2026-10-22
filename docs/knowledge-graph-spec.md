@@ -4,7 +4,7 @@ Generated from the schemas and records by `python -m sdmm.kgspec`; the test suit
 
 ## 1. Architecture
 
-Four **local graphs**, one per architecture level, each owned by the team that governs that level, and one **federated graph** that holds only the approved links between levels and resolves each link's ends into the local graphs. The federated graph never copies a local graph's content and never holds a proposal.
+Four **local graphs**, one per architecture level, each owned by the team that governs that level, and one **federated graph** that holds only the approved links between levels and resolves each link's ends into the local graphs. The federated graph never copies a local graph's content and never holds a proposal. The engine reads both kinds of graph and writes only proposals to the mapping set; an architect's approval is the only way a proposal becomes a federated edge.
 
 ```mermaid
 flowchart TB
@@ -28,7 +28,12 @@ flowchart TB
     T3 -->|adapter → export| L3
     T4 -->|adapter → export| L4
     ENG[Engine] -->|proposed| MD
-ARCH[Architect] -->|approves| MD
+    ARCH[Architect] -->|approves| MD
+    L1 -.->|reads entities + changes| ENG
+    L2 -.-> ENG
+    L3 -.-> ENG
+    L4 -.-> ENG
+    FED -.->|reads approved edges| ENG
     L1 -.->|entity references| FED
     L2 -.-> FED
     L3 -.-> FED
@@ -50,6 +55,7 @@ ARCH[Architect] -->|approves| MD
 |---|---|---|
 | KG-A-01 | Hold each level in its own local graph, loaded only from that level's export; a change in one level never requires reloading another. | built (in memory) |
 | KG-A-02 | Hold in the federated graph only approved cross-level edges and references to their ends; never copy local content; never hold a proposed, rejected or superseded record as an edge used for answers. | built (in memory) |
+| KG-A-03 | The engine reads the four local graphs (entities, within-level links, and what changed since the last baseline) and the federated graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations. | partly built (reads exports and approved mappings directly; change-since-baseline not built) |
 
 ## 2. Local graphs
 
@@ -245,12 +251,13 @@ mapping set (approved records) → validate → resolve ends → load federated 
 
 ## 10. Requirements index
 
-30 requirements — built 20, not 9, partly 1. Groups: A architecture, L local graph, F federated graph, I identity, V versions, Q queries, R load and refresh, G governance.
+31 requirements — built 20, not 9, partly 2. Groups: A architecture, L local graph, F federated graph, I identity, V versions, Q queries, R load and refresh, G governance.
 
 | ID | Requirement | Basis | Status |
 |---|---|---|---|
 | KG-A-01 | Hold each level in its own local graph, loaded only from that level's export; a change in one level never requires reloading another. | level-model.schema.json; `LevelGraph` | built (in memory) |
 | KG-A-02 | Hold in the federated graph only approved cross-level edges and references to their ends; never copy local content; never hold a proposed, rejected or superseded record as an edge used for answers. | mapping.schema.json; `FederatedGraph` status filter | built (in memory) |
+| KG-A-03 | The engine reads the four local graphs (entities, within-level links, and what changed since the last baseline) and the federated graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations. | mapping-model-design-spec §6; §8 governance | partly built (reads exports and approved mappings directly; change-since-baseline not built) |
 | KG-L-01 | Accept a node only if its `type` resolves to a concrete, non-artefact catalogue entity of the graph's level. | entity catalogue | built |
 | KG-L-02 | Accept an edge only if both ends are nodes of this graph and (source type, kind, target type) matches a constraint row of the level through inheritance, or the kind is `association`. | level-relationships.json | built |
 | KG-L-03 | Reject the whole export, and keep the previously loaded local graph, if any node or edge fails; report every failure. | `sdmm-graph check` | built (check); keep-previous not built |

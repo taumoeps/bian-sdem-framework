@@ -44,13 +44,14 @@ def render():
 
     # ---- 1 architecture
     out += ['## 1. Architecture', '',
-            'Four **local graphs**, one per architecture level, each owned by the team that governs that level, and one **federated graph** that holds only the approved links between levels and resolves each link\'s ends into the local graphs. The federated graph never copies a local graph\'s content and never holds a proposal.', '',
+            'Four **local graphs**, one per architecture level, each owned by the team that governs that level, and one **federated graph** that holds only the approved links between levels and resolves each link\'s ends into the local graphs. The federated graph never copies a local graph\'s content and never holds a proposal. The engine reads both kinds of graph and writes only proposals to the mapping set; an architect\'s approval is the only way a proposal becomes a federated edge.', '',
             '```mermaid', 'flowchart TB',
             '    subgraph SOURCES[Source tools]', '      T1[EA tool]', '      T2[BIAN workbench]', '      T3[Application portfolio]', '      T4[CMDB]', '    end',
             '    subgraph LOCAL[Local graphs — one per level]', '      L1[(A1 Business)]', '      L2[(A2 Service Domain)]', '      L3[(A3 Application)]', '      L4[(A4 Technology)]', '    end',
             '    MD[[Mapping set — approved cross-level links]]', '    FED[(Federated graph)]', '    Q[Trace · Impact · Unmapped]',
             '    T1 -->|adapter → export| L1', '    T2 -->|adapter → export| L2', '    T3 -->|adapter → export| L3', '    T4 -->|adapter → export| L4',
-            '    ENG[Engine] -->|proposed| MD', 'ARCH[Architect] -->|approves| MD',
+            '    ENG[Engine] -->|proposed| MD', '    ARCH[Architect] -->|approves| MD',
+            '    L1 -.->|reads entities + changes| ENG', '    L2 -.-> ENG', '    L3 -.-> ENG', '    L4 -.-> ENG', '    FED -.->|reads approved edges| ENG',
             '    L1 -.->|entity references| FED', '    L2 -.-> FED', '    L3 -.-> FED', '    L4 -.-> FED', '    MD -->|approved edges| FED', '    FED --> Q', '```', '',
             '| Graph | Holds | Owner | Source | Built from |', '|---|---|---|---|---|']
     for l in ('A1', 'A2', 'A3', 'A4'):
@@ -58,6 +59,7 @@ def render():
     out += ['| Federated graph | approved cross-level edges, and references to their ends in the local graphs | enterprise architecture | the mapping set | the mapping set (`schema/mapping.schema.json`) joined to the four local graphs |', '']
     req('A', 'Hold each level in its own local graph, loaded only from that level\'s export; a change in one level never requires reloading another.', 'level-model.schema.json; `LevelGraph`', 'built (in memory)')
     req('A', 'Hold in the federated graph only approved cross-level edges and references to their ends; never copy local content; never hold a proposed, rejected or superseded record as an edge used for answers.', 'mapping.schema.json; `FederatedGraph` status filter', 'built (in memory)')
+    req('A', 'The engine reads the four local graphs (entities, within-level links, and what changed since the last baseline) and the federated graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations.', 'mapping-model-design-spec §6; §8 governance', 'partly built (reads exports and approved mappings directly; change-since-baseline not built)')
     out += inline('A')
 
     # ---- 2 local graphs
