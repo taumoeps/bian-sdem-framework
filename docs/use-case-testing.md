@@ -1307,3 +1307,88 @@ OVERALL            12   12  12   0   0   1.00  1.00  1.00
 | 5 — design hops invisible in traces | `sdmm-graph trace` marks any `planned` instance `[DESIGN — planned, not observed]` |
 
 **M2 is complete and the suite is closed:** seven cases, eight runs.
+
+## Plan coverage after the suite — all 69 entries
+
+Built from `metamodel/new-mappings.json` and the eight inference logs; counts are attempts logged under each plan ID across all runs (E1 and E2 are query-only and log commands, not plan IDs). *n/a* rows were never candidates for a proposal by the plan's own decision. *Not exercised* rows need a case whose exports carry their entities — they are the suite's remaining work, not failures.
+
+| Verdict | Entries |
+|---|---|
+| not exercised | 30 |
+| n/a | 19 |
+| report-only by rule | 7 |
+| refusals only | 5 |
+| validated with findings | 4 |
+| validated | 4 |
+
+| ID | Connection | Decision | Step | Plan conf. | Exercised in | hit / false / miss / no-proposal | Verdict |
+|---|---|---|---|---|---|---|---|
+| B01 | BusinessCapability → ServiceDomain (aligns to) | not encodable | 3 | low | — | — | n/a — not encodable |
+| B02 | BusinessArea → BusinessDomain (contains) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B03 | BusinessDomain → ServiceDomain (contains) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B04 | ServiceDomain → FunctionalPattern (applies) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B05 | ServiceDomain → AssetType (manages) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B06 | ServiceDomain → ControlRecord (governs) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B07 | ControlRecord → BehaviorQualifier (is partitioned by) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B08 | ControlRecord → BusinessObject (attributes typed by) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B09 | ServiceDomain → ServiceGroup (offers) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B10 | ServiceGroup → ServiceOperation (contains) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B11 | ServiceOperation → ControlRecord (acts on) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B12 | ServiceDomain → ServiceDomain (connects to) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B13 | BusinessScenario → ServiceOperation (sequences) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B14 | Wireframe → ServiceDomain (depicts) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| B15 | SemanticAPI → ServiceDomain (derived from) | bian internal | 0 | high | — | — | n/a — inside A2; encoded as an A2 relationship constraint and checked by `sdmm-graph check` on every A2 export |
+| S01 | BusinessCapability → ServiceDomain (SUPPORTED_BY) | registry rule | 3 | medium | H1, H2, H2 r2, M0, M1, M2 | 4 / 1 / 0 / 9 | **validated with findings** — 1 false / 0 missed, each with a named cause, fixed in the guide or data |
+| S02 | ValueStream → BusinessScenario (ALIGNED_TO) | registry rule | 4 | medium | H1, H2, H2 r2, M0, M1, M2 | 1 / 0 / 0 / 7 | **validated** — every gold arrow hit, no false |
+| S03 | ValueStreamStage → BusinessScenario (candidate) | derived path | 4 | low | — | — | **not exercised** — no case carried the data |
+| S04 | BusinessProcess → ServiceDomain (USES_DOMAIN) | registry rule | 3 | medium | H1, H2, H2 r2, M0, M1, M2 | 1 / 0 / 0 / 8 | **validated** — every gold arrow hit, no false |
+| S05 | BusinessProcess → BusinessScenario (candidate) | historical method | 4 | low | — | — | n/a — historical method |
+| S06 | BusinessActivity → ServiceOperation (candidate) | institution only | 4 | medium | H1, H2, H2 r2, M1 | 0 / 0 / 0 / 7 | report-only by rule — reported as a candidate, never proposed |
+| S07 | BusinessActivity → ServiceDomain (candidate) | derived path | 3 | medium | — | — | **not exercised** — no case carried the data |
+| S08 | BusinessService → ServiceDomain (candidate) | institution only | 5 | low | — | — | **not exercised** — no case carried the data |
+| S09 | BusinessService → ServiceOperation (candidate) | institution only | 4 | low | — | — | **not exercised** — no case carried the data |
+| S10 | BusinessActor → BusinessScenario (candidate) | not a mapping |  | low | — | — | n/a — not a mapping |
+| S11 | BusinessRole → BusinessScenario (candidate) | not a mapping |  | low | — | — | n/a — not a mapping |
+| S12 | BusinessObject → BusinessObject (ALIGNED_TO) | registry rule | 4 | medium | H1, H2, H2 r2, M1 | 0 / 0 / 0 / 5 | refusals only — no gold arrow to reach in those cases |
+| S13 | BusinessRequirement → ServiceDomain (candidate) | institution only | 3 | low | — | — | **not exercised** — no case carried the data |
+| S14 | BusinessRequirement → ServiceOperation (candidate) | institution only | 3 | low | — | — | **not exercised** — no case carried the data |
+| S15 | BusinessArea → ApplicationComponent (candidate) | derived path | 3 | high | — | — | **not exercised** — no case carried the data |
+| S16 | BusinessDomain → ApplicationComponent (candidate) | derived path | 3 | high | — | — | **not exercised** — no case carried the data |
+| S17 | ServiceDomain → ApplicationComponent (REALIZED_BY) | registry rule | 3 | high | H1, H2, H2 r2, M0, M1, M2 | 18 / 0 / 0 / 28 | **validated** — every gold arrow hit, no false |
+| S18 | FunctionalPattern → ApplicationFunction (candidate) | institution only | 4 | low | — | — | **not exercised** — no case carried the data |
+| S19 | AssetType → DataEntity (candidate) | institution only | 4 | low | — | — | **not exercised** — no case carried the data |
+| S20 | ControlRecord → DataEntity (candidate) | candidate rule | 4 | high | H1, H2, H2 r2, M1, M2 | 0 / 0 / 0 / 62 | report-only by rule — reported as a candidate, never proposed |
+| S21 | ControlRecord → ApplicationFunction (candidate) | candidate rule | 4 | medium | — | — | **not exercised** — no case carried the data |
+| S22 | ServiceGroup → ApplicationService (candidate) | derived path | 3 | medium | M1 | 0 / 0 / 0 / 1 | refusals only — no gold arrow to reach in those cases |
+| S23 | ServiceGroup → ApplicationInterface (candidate) | derived path | 3 | medium | H1, H2, H2 r2, M0, M1 | 0 / 0 / 0 / 8 | refusals only — no gold arrow to reach in those cases |
+| S24 | ServiceOperation → APIOperation (IMPLEMENTED_BY) | registry rule | 2 | high | H1, H2, H2 r2, M0, M1, M2 | 54 / 0 / 8 / 387 | **validated with findings** — 0 false / 8 missed, each with a named cause, fixed in the guide or data |
+| S25 | ServiceOperation → ApplicationService (candidate) | candidate rule | 3 | high | H1, H2, H2 r2, M0, M1, M2 | 0 / 0 / 0 / 10 | report-only by rule — reported as a candidate, never proposed |
+| S26 | BehaviorQualifier → APIOperation (candidate) | derived path | 2 | high | — | — | **not exercised** — no case carried the data |
+| S27 | BehaviorQualifier → DataEntity (candidate) | derived path | 4 | medium | — | — | **not exercised** — no case carried the data |
+| S28 | BusinessScenario → ApplicationService (candidate) | candidate rule | 3 | medium | — | — | **not exercised** — no case carried the data |
+| S29 | BusinessScenario → ApplicationComponent (candidate) | candidate rule | 3 | medium | — | — | **not exercised** — no case carried the data |
+| S30 | BusinessObject → DataEntity (MAPPED_TO) | registry rule | 4 | high | H1, H2, H2 r2, M1, M2 | 14 / 0 / 1 / 54 | **validated with findings** — 0 false / 1 missed, each with a named cause, fixed in the guide or data |
+| S31 | BusinessObjectAttribute → DataEntity (candidate) | derived path | 4 | high | — | — | **not exercised** — no case carried the data |
+| S32 | ApplicationComponent → Deployment (DEPLOYED_AS) | registry rule | 1 | high | H1, H2, H2 r2, M0, M1, M2 | 21 / 0 / 0 / 7 | **validated** — every gold arrow hit, no false |
+| S33 | ApplicationComponent → InfrastructureComponent (DEPLOYED_ON) | registry rule | 1 | high | H1, H2, H2 r2, M0, M1, M2 | 18 / 1 / 0 / 10 | **validated with findings** — 1 false / 0 missed, each with a named cause, fixed in the guide or data |
+| S34 | ApplicationComponent → Node (candidate) | conditional rule | 1 | low | — | — | **not exercised** — no case carried the data |
+| S35 | ApplicationComponent → Device (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
+| S36 | ApplicationComponent → SystemSoftware (candidate) | subsumed | 1 | high | H1, H2, H2 r2, M0, M1, M2 | 0 / 0 / 0 / 6 | n/a — subsumed |
+| S37 | ApplicationComponent → CommunicationNetwork (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
+| S38 | ApplicationComponent → Path (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
+| S39 | ApplicationComponent → Artifact (candidate) | conditional rule | 1 | medium | — | — | **not exercised** — no case carried the data |
+| S40 | ApplicationComponent → DeploymentEnvironment (candidate) | derived path | 3 | high | H1, H2, H2 r2, M0, M1 | 0 / 0 / 0 / 5 | refusals only — no gold arrow to reach in those cases |
+| S41 | ApplicationService → TechnologyService (candidate) | conditional rule | 1 | medium | H1, H2, H2 r2, M1, M2 | 0 / 0 / 0 / 6 | report-only by rule — reported as a candidate, never proposed |
+| S42 | ApplicationService → TechnologyInterface (candidate) | derived path | 3 | low | — | — | **not exercised** — no case carried the data |
+| S43 | ApplicationInterface → TechnologyInterface (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
+| S44 | ApplicationInterface → TechnologyService (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
+| S45 | ApplicationFunction → TechnologyService (candidate) | conditional rule | 1 | medium | M1 | 0 / 0 / 0 / 1 | report-only by rule — reported as a candidate, never proposed |
+| S46 | ApplicationFunction → SystemSoftware (candidate) | derived path | 3 | low | — | — | **not exercised** — no case carried the data |
+| S47 | APIOperation → Deployment (candidate) | derived path | 3 | high | H1, H2, H2 r2, M0, M1 | 0 / 0 / 0 / 5 | refusals only — no gold arrow to reach in those cases |
+| S48 | APIOperation → TechnologyInterface (candidate) | derived path | 3 | medium | — | — | **not exercised** — no case carried the data |
+| S49 | DataEntity → Artifact (candidate) | conditional rule | 1 | medium | H1, H2, M1 | 0 / 0 / 0 / 3 | report-only by rule — reported as a candidate, never proposed |
+| S50 | DataEntity → SystemSoftware (candidate) | institution only | 1 | medium | H1, H2, H2 r2, M0, M1, M2 | 0 / 0 / 0 / 26 | report-only by rule — reported as a candidate, never proposed |
+| S51 | Event → TechnologyService (candidate) | institution only | 1 | low | — | — | **not exercised** — no case carried the data |
+| S52 | SolutionBuildingBlock → InfrastructureComponent (candidate) | derived path | 3 | medium | — | — | **not exercised** — no case carried the data |
+| S53 | SolutionBuildingBlock → Deployment (candidate) | derived path | 3 | medium | — | — | **not exercised** — no case carried the data |
+| S54 | SolutionBuildingBlock → Node (candidate) | derived path | 3 | low | — | — | **not exercised** — no case carried the data |
