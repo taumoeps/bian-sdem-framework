@@ -27,7 +27,7 @@ Before designing any inference, establish what the reference architecture itself
 
 All 44 catalogue entities. **Covered by BIAN** is "Yes" when BIAN defines the concept and publishes its instances, "No" otherwise. **BIAN mapping to next level** says whether BIAN publishes a way to map this entity across the boundary below it: Yes (a published rule or method), Partial, Method only, No, or — where no arrow exists. Entities not covered by BIAN show "n/a" in the BIAN columns so the scope is visible in one table.
 
-Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 release notes · **[SAPG]** Semantic API Practitioner Guide v8.1 · **[APIP]** BIAN Semantic API portal. (What BIAN offers as *guidance* at each boundary is in §1.3, per arrow.)
+Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 release notes · **[SAPG]** Semantic API Practitioner Guide v8.1 · **[APIP]** BIAN Semantic API portal. (What BIAN offers as *guidance* at each boundary is in §1.3 (BIAN's own mappings) and §1.4 (SDMM's arrows against them).)
 
 
 #### A1 — Business Architecture — 1 of 10 covered by BIAN
@@ -96,7 +96,52 @@ Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 rel
 
 **Totals: 16 of 44 entities covered by BIAN** — one at A1, all fifteen at A2, none at A3, none at A4. Of the sixteen, only the A2→A3 information and API entities (`ControlRecord`, `ServiceOperation`, `BehaviorQualifier`, `BusinessObject`, `BusinessObjectAttribute`) have a published BIAN mapping to the next level; the capability's mapping to Service Domains — the one most expected — is not published.
 
-### 1.3 Coverage at arrow level
+### 1.3 Existing BIAN mappings between levels
+
+Only mappings that BIAN itself publishes, between a BIAN entity and something on the next level. Nothing SDMM defines appears here. Every row names the artefact it comes from.
+
+#### A1 → A2 — none published
+
+| BIAN mapping | Status |
+|---|---|
+| Business Capability → Service Domain | **Not published.** The BCM working group mapped capabilities to Service Domains in 2024; "the results are not yet documented in the BIAN BiZZdesign repository because still work in progress" ([RN13] §3, repeated [RN14] §3). Detail is on the members-only wiki |
+| Value stream → Business Scenario | **Not published.** Value streams are under study by the BCM working group and "not yet modelled" ([RN14] §3) |
+
+BIAN publishes the A2 **targets** a bank would map to — Service Domains, Business Scenarios, the BOM — but no mapping *from* a bank's A1 to them.
+
+#### A2 → A3 — published, at logical level, in the Semantic API Practitioner Guide v8.1
+
+| # | BIAN mapping | Rule as published | Source |
+|---|---|---|---|
+| 1 | **Service Domain → API application boundary** | "the assumption is made that the BIAN Service Domain matches the application boundary (the 'A') of the API" | [SAPG] §3.5 p. 52 |
+| 2 | **Service Operation → API program interface** | the domain's service operations "make up the collection of program interfaces (the 'PI's) that complete the API's description" | [SAPG] §3.5 p. 52 |
+| 3 | **Control Record instance → REST resource** | "a Service Domain control record instance essentially represents the accessed resource" | [SAPG] §3.5 p. 53 |
+| 4 | **Functional Pattern generic artefact → REST archetype** | each functional pattern's generic artefact maps to a REST archetype (document, collection or controller; the fourth, store, is not needed) — Figure 24 | [SAPG] §3.5 pp. 53–54 |
+| 5 | **Behavior Qualifier → sub-resource** | the qualifier "is used to narrow the reference to a sub-partition of the referenced control record instance"; attributes are filtered by action term for the input/output messages | [SAPG] §3.5 p. 55 |
+| 6 | **Action Term → REST form** | action terms are converted to noun form (Create → Creation, Initiate → Initiation, Register → Registration, Evaluate → Evaluation, Provide → Provision, Execute → Execution, Request → Requisition; Update, Control, Exchange, Capture, Grant unchanged); **Retrieve maps directly to HTTP GET**; Notify is not used in the mapping. HTTP methods applied are GET, PUT, POST, (PATCH), DELETE | [SAPG] §3.5 pp. 52, 55 |
+| 7 | **Semantic API reference definitions** | per-domain OpenAPI definitions published on the API portal as the reference form of 1–6 | [APIP] |
+| 8 | **Service Domain → application functional partition** *(method)* | "existing or to-be-developed applications can be mapped with the Service Domains corresponding to major functional partitions of the application", using the wireframe overlay | [SAPG] §3.4 p. 52 |
+| 9 | **Legacy system → Service Domain component boundary** *(method)* | legacy wrapping "compartmentalizes legacy systems aligning to component boundaries" | [SAPG] §4.3.1 p. 91 |
+
+Rows 1–7 are rules: given a BIAN operation, they say what its REST form is. Rows 8–9 are methods: they say *how to decide* which application realises a domain, not *which one does*. All are logical: "BIAN Endpoint descriptions are far from implementation specifications" ([SAPG] §3.5 p. 56). The Information Profile (§3.2.7) is not a mapping — it defines what information a domain governs, as the content any A3 data design must cover.
+
+#### A3 → A4 — none published
+
+| BIAN mapping | Status |
+|---|---|
+| Application → infrastructure / deployment | **None.** "The BIAN standard … does not assume or impose any physical properties for the Service Domains" ([SAPG] §4.2.3 p. 87). What exists is implementation *guidance* — component/container deployment properties, utilities to consider, legacy wrapping, parallel migration, shared platforms (§4.1–4.3) — which describes patterns, not a mapping |
+
+#### Summary
+
+| Boundary | BIAN mappings that exist |
+|---|---|
+| A1 → A2 | 0 |
+| A2 → A3 | 7 rules + 2 methods, all logical level |
+| A3 → A4 | 0 |
+
+**BIAN's published cross-level mapping is confined to one boundary, A2 → A3, and within it to the API and information path.** The capability boundary has no published mapping, and the infrastructure boundary has none by design.
+
+### 1.4 SDMM arrows against BIAN coverage
 
 | Arrow (registry rule) | BIAN source side | BIAN target side | BIAN mapping guidance | Engine approach | Default confidence band |
 |---|---|---|---|---|---|
@@ -112,7 +157,7 @@ Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 rel
 
 Reading across: **A2 is the only level BIAN fills.** Three of the nine arrows have a published BIAN method on their A2 side (operation→API, object→entity, object→BOM); two have a method only (domain→application, process→domain); the capability arrow — the one most people expect BIAN to answer — has none published; the two A4 arrows have deployment *patterns* but no vocabulary, no data and no mapping method, and need no text at all.
 
-### 1.4 Consequences for the engine design
+### 1.5 Consequences for the engine design
 
 1. **A2 is the anchor.** It is the only level whose vocabulary *and instances* can be sourced publicly (with an institution's licence to use them). Every A1→A2 and A2→A3 inference is a comparison *against* A2 text. Populating a rich A2 level model from the portal — descriptions, scenarios, operations, control-record attributes — is the first engineering task, and it is an export, not an inference.
 
@@ -124,7 +169,7 @@ Reading across: **A2 is the only level BIAN fills.** Three of the nine arrows ha
 
 5. **Existing approved mappings are the best evidence of all.** "Domain X is realised by application Y" makes "operation X.op is implemented by Y's API" far more likely. The engine should always read the federated graph before reading any description.
 
-### 1.5 Corrections to the repository arising from this review
+### 1.6 Corrections to the repository arising from this review
 
 - `docs/reference-architecture-provenance.md`, the README and the v0.4 spec cite a "BIAN BCM *Statement of Alignment with the Service Landscape* (2023)" PDF. That URL returns 404 and BIAN's release notes describe the alignment as unfinished and unpublished. The citation is replaced by the v13 and v14 release notes, and `A1.BusinessCapability` keeps `evidence_status: interpreted_from_official_source` with that basis.
 - The registry's `SUPPORTED_BY` and `ALIGNED_TO` (value stream) rules carry `authority: bian_alignment_guidance`. That remains correct — BIAN *intends* to provide this guidance and the BCM exists — but the planning assumption that an engine could consult a published alignment is withdrawn.
