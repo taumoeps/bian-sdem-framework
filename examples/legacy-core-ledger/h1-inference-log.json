@@ -1,0 +1,3651 @@
+{
+  "use_case": "H1",
+  "executor": "fable-executor/2026-10-22",
+  "given": "h1-mappings-given.json (empty)",
+  "gold_opened_at_phase": 5,
+  "executor_conventions": {
+    "H1-C1": "Boundary precondition at token level: >= half the asset-type name's tokens, or a listed synonym/abbreviation (acct~account, txn~transaction, paymt~payment, customer/counterparty~party, balance~position), appear in the module's camel-split operation names, paths, entity names, and the descriptions of the module, its operations and entities. Strict literal-phrase matching passes 2 of 4 domain/module gates.",
+    "H1-C2": "Disambiguation is iterative: a uniquely resolved pair removes its API and its operation from every other candidate set; repeat to a fixpoint; remaining ties -> no proposal. Strict clause 4 leaves two ties (SO-CA-03, SO-PRD-01).",
+    "H1-C3": "Step 5 'clearly better' = at least two shared concepts and strictly more than every other domain.",
+    "check3-stems": "For RPC/SOAP paths without resource structure the qualifier is sought in the camel-split operation name by stem (clos-, post-, revers-)."
+  },
+  "systematic_findings": {
+    "F-SOAP": "Every operation of IFC-ACCT, IFC-POST, IFC-PAY, IFC-PARTY is POST (SOAP over HTTP); check 2 fails for all Retrieve/Update/Control/Execute operations (11 of 14); reported once, referenced by P-H1-004..010, 012, 013, 015, 016."
+  },
+  "note": "One record per connection attempted; every gated operation x API pair appears; failed gates are summarised per domain/module. Outcomes set after sdmm-eval against h1-gold-mappings.json (approved records only).",
+  "attempts": [
+    {
+      "plan_id": "S33",
+      "connection": "APP-LEDGER DEPLOYED_ON INF-MF-LPAR-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-LEDGER.deployed_on lists INF-MF-LPAR-PROD",
+        "a4 INF-MF-LPAR-PROD.hosts lists APP-LEDGER",
+        "a4 DEP-LM-PROD.component_id/platform_id"
+      ],
+      "reasoning": "direct join",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-001",
+      "outcome": "hit",
+      "outcome_note": "gold LM-141"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "APP-LEDGER DEPLOYED_AS DEP-LM-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-LEDGER.deployed_as lists DEP-LM-PROD",
+        "a4 DEP-LM-PROD.component_id = APP-LEDGER (environment ENV-PROD, platform INF-MF-LPAR-PROD)"
+      ],
+      "reasoning": "direct join",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-002",
+      "outcome": "hit",
+      "outcome_note": "gold LM-142"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY OP-OpenAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 1. Precondition: asset type 'Current Account' of SD-CA located in LM-ACCT's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 PASS: Initiate <-> POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/OpenAccount' carries no other qualifier stem. check 4 PASS: 6/6 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique can"
+      ],
+      "reasoning": "OpenAccount carries Initiate Current Account's attributes on the Account module's SOAP interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-003",
+      "outcome": "hit",
+      "outcome_note": "gold LM-101",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 6/6"
+      },
+      "decision": 1,
+      "disambiguation": "unique candidate (decision 1) in round 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY OP-GetAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Current Account' of SD-CA located in LM-ACCT's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Retrieve <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/GetAccount' carries no other qualifier s"
+      ],
+      "reasoning": "GetAccount carries Retrieve Current Account's attributes on the Account module's SOAP interface; exposed as POST like every operation of the interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-004",
+      "outcome": "hit",
+      "outcome_note": "gold LM-102",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "FAIL (POST; systematic finding F-SOAP)",
+        "check3": "neutral",
+        "check4": "pass 6/6"
+      },
+      "decision": 2,
+      "disambiguation": "unique candidate (decision 2) in round 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY OP-BlockAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Current Account' of SD-CA located in LM-ACCT's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Control <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/BlockAccount' carries no other qualifier "
+      ],
+      "reasoning": "BlockAccount carries Control Current Account's attributes on the Account module's SOAP interface; exposed as POST like every operation of the interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-005",
+      "outcome": "hit",
+      "outcome_note": "gold LM-103",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "FAIL (POST; systematic finding F-SOAP)",
+        "check3": "neutral",
+        "check4": "pass 2/2"
+      },
+      "decision": 2,
+      "disambiguation": "unique candidate (decision 2) in round 2",
+      "strict_reading": "TIE among ['OP-BlockAccount', 'OP-AmendOverdraft'] -> no proposal (strict clause 4)"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY OP-AmendOverdraft",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Current Account' of SD-CA located in LM-ACCT's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Update <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/AmendOverdraft' carries no other qualifier"
+      ],
+      "reasoning": "AmendOverdraft carries Update Current Account's attributes on the Account module's SOAP interface; exposed as POST like every operation of the interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-006",
+      "outcome": "hit",
+      "outcome_note": "gold LM-104",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "FAIL (POST; systematic finding F-SOAP)",
+        "check3": "neutral",
+        "check4": "pass 3/3"
+      },
+      "decision": 2,
+      "disambiguation": "unique candidate (decision 2) in round 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY OP-CloseAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Current Account' of SD-CA located in LM-ACCT's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Execute <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 PASS: qualifier Closure ~ path '/ledger/svc/CloseAccount'. check 4 PASS: 3/3 input∪o"
+      ],
+      "reasoning": "CloseAccount carries Execute Current Account Closure's attributes on the Account module's SOAP interface; exposed as POST like every operation of the interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-007",
+      "outcome": "hit",
+      "outcome_note": "gold LM-105",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "FAIL (POST; systematic finding F-SOAP)",
+        "check3": "pass",
+        "check4": "pass 3/3"
+      },
+      "decision": 2,
+      "disambiguation": "unique candidate (decision 2) in round 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PK-01 IMPLEMENTED_BY OP-PostEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Financial Position' of SD-PK located in LM-POST's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Update <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 PASS: qualifier Posting ~ path '/ledger/svc/PostEntry'. check 4 PASS: 7/7 input∪ou"
+      ],
+      "reasoning": "PostEntry carries Update Position Keeping Posting's attributes on the Posting engine's SOAP interface; exposed as POST like every operation of the interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-008",
+      "outcome": "hit",
+      "outcome_note": "gold LM-106",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "FAIL (POST; systematic finding F-SOAP)",
+        "check3": "pass",
+        "check4": "pass 7/7"
+      },
+      "decision": 2,
+      "disambiguation": "unique candidate (decision 2) in round 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PK-02 IMPLEMENTED_BY OP-GetBalance",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Financial Position' of SD-PK located in LM-POST's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Retrieve <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/GetBalance' carries no other qualifie"
+      ],
+      "reasoning": "GetBalance carries Retrieve Position Keeping's attributes on the Posting engine's SOAP interface; exposed as POST like every operation of the interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-009",
+      "outcome": "hit",
+      "outcome_note": "gold LM-107",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "FAIL (POST; systematic finding F-SOAP)",
+        "check3": "neutral",
+        "check4": "pass 4/4"
+      },
+      "decision": 2,
+      "disambiguation": "unique candidate (decision 2) in round 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PK-03 IMPLEMENTED_BY OP-ReverseEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Financial Position' of SD-PK located in LM-POST's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Execute <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 PASS: qualifier Reversal ~ path '/ledger/svc/ReverseEntry'. check 4 PASS: 2/2 inp"
+      ],
+      "reasoning": "ReverseEntry carries Execute Position Keeping Reversal's attributes on the Posting engine's SOAP interface; exposed as POST like every operation of the interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-010",
+      "outcome": "hit",
+      "outcome_note": "gold LM-108",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "FAIL (POST; systematic finding F-SOAP)",
+        "check3": "pass",
+        "check4": "pass 2/2"
+      },
+      "decision": 2,
+      "disambiguation": "unique candidate (decision 2) in round 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-01 IMPLEMENTED_BY OP-SubmitPayment",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 1. Precondition: asset type 'Payment Transaction' of SD-PE located in LM-PAY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 PASS: Initiate <-> POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/SubmitPayment' carries no other qualifier stem. check 4 PASS: 6/6 input∪output attributes in payload_fields, best match for the operation. Disambiguation: uniqu"
+      ],
+      "reasoning": "SubmitPayment carries Initiate Payment Execution's attributes on the Payment interface module's SOAP interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-011",
+      "outcome": "hit",
+      "outcome_note": "gold LM-109",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 6/6"
+      },
+      "decision": 1,
+      "disambiguation": "unique candidate (decision 1) in round 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-02 IMPLEMENTED_BY OP-PaymentStatus",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Payment Transaction' of SD-PE located in LM-PAY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Retrieve <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/PaymentStatus' carries no other quali"
+      ],
+      "reasoning": "PaymentStatus carries Retrieve Payment Execution's attributes on the Payment interface module's SOAP interface; exposed as POST like every operation of the interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-012",
+      "outcome": "hit",
+      "outcome_note": "gold LM-110",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "FAIL (POST; systematic finding F-SOAP)",
+        "check3": "neutral",
+        "check4": "pass 4/4"
+      },
+      "decision": 2,
+      "disambiguation": "unique candidate (decision 2) in round 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-03 IMPLEMENTED_BY OP-CancelPayment",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Payment Transaction' of SD-PE located in LM-PAY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Control <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/CancelPayment' carries no other qualif"
+      ],
+      "reasoning": "CancelPayment carries Control Payment Execution's attributes on the Payment interface module's SOAP interface; exposed as POST like every operation of the interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-013",
+      "outcome": "hit",
+      "outcome_note": "gold LM-111",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "FAIL (POST; systematic finding F-SOAP)",
+        "check3": "neutral",
+        "check4": "pass 2/2"
+      },
+      "decision": 2,
+      "disambiguation": "unique candidate (decision 2) in round 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY OP-CreateCustomer",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 1. Precondition: asset type 'Party Reference' of SD-PRD located in LM-PARTY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 PASS: Register <-> POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/CreateCustomer' carries no other qualifier stem. check 4 PASS: 4/4 input∪output attributes in payload_fields, best match for the operation. Disambiguation: uniqu"
+      ],
+      "reasoning": "CreateCustomer carries Register Party Reference's attributes on the Customer master module's SOAP interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-014",
+      "outcome": "hit",
+      "outcome_note": "gold LM-112",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 4/4"
+      },
+      "decision": 1,
+      "disambiguation": "unique candidate (decision 1) in round 2",
+      "strict_reading": "TIE among ['OP-CreateCustomer', 'OP-GetCustomer'] -> no proposal (strict clause 4)"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY OP-GetCustomer",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Party Reference' of SD-PRD located in LM-PARTY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Retrieve <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/GetCustomer' carries no other qualifie"
+      ],
+      "reasoning": "GetCustomer carries Retrieve Party Reference's attributes on the Customer master module's SOAP interface; exposed as POST like every operation of the interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-015",
+      "outcome": "hit",
+      "outcome_note": "gold LM-113",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "FAIL (POST; systematic finding F-SOAP)",
+        "check3": "neutral",
+        "check4": "pass 5/5"
+      },
+      "decision": 2,
+      "disambiguation": "unique candidate (decision 2) in round 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY OP-UpdateCustomer",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Party Reference' of SD-PRD located in LM-PARTY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Update <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/UpdateCustomer' carries no other qualifi"
+      ],
+      "reasoning": "UpdateCustomer carries Update Party Reference's attributes on the Customer master module's SOAP interface; exposed as POST like every operation of the interface",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-016",
+      "outcome": "hit",
+      "outcome_note": "gold LM-114",
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "FAIL (POST; systematic finding F-SOAP)",
+        "check3": "neutral",
+        "check4": "pass 3/3"
+      },
+      "decision": 2,
+      "disambiguation": "unique candidate (decision 2) in round 1"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-CA REALIZED_BY LM-ACCT",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals ['P-H1-003', 'P-H1-004', 'P-H1-006', 'P-H1-007', 'P-H1-005']",
+        "a3 composition LM-ACCT -> IFC-ACCT -> operations"
+      ],
+      "reasoning": "closure; cap at strongest input 0.8",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-017",
+      "outcome": "hit",
+      "outcome_note": "gold LM-121"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PK REALIZED_BY LM-POST",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals ['P-H1-008', 'P-H1-009', 'P-H1-010']",
+        "a3 composition LM-POST -> IFC-POST -> operations"
+      ],
+      "reasoning": "closure; cap at strongest input 0.6",
+      "confidence_predicted": "high",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H1-018",
+      "outcome": "hit",
+      "outcome_note": "gold LM-122"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PE REALIZED_BY LM-PAY",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals ['P-H1-011', 'P-H1-012', 'P-H1-013']",
+        "a3 composition LM-PAY -> IFC-PAY -> operations"
+      ],
+      "reasoning": "closure; cap at strongest input 0.8",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-019",
+      "outcome": "hit",
+      "outcome_note": "gold LM-123"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PRD REALIZED_BY LM-PARTY",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals ['P-H1-015', 'P-H1-016', 'P-H1-014']",
+        "a3 composition LM-PARTY -> IFC-PARTY -> operations"
+      ],
+      "reasoning": "closure; cap at strongest input 0.8",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-020",
+      "outcome": "hit",
+      "outcome_note": "gold LM-124"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-ACCOUNT MAPPED_TO ENT-ACCOUNT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-ACCOUNT attributes",
+        "a3 ENT-ACCOUNT attributes"
+      ],
+      "reasoning": "8/8 = 1.00",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-021",
+      "outcome": "hit",
+      "outcome_note": "gold LM-131"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-POSTING MAPPED_TO ENT-POSTING",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-POSTING attributes",
+        "a3 ENT-POSTING attributes"
+      ],
+      "reasoning": "7/7 = 1.00",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-022",
+      "outcome": "hit",
+      "outcome_note": "gold LM-132"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAYMENT-TXN MAPPED_TO ENT-PAYMENT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAYMENT-TXN attributes",
+        "a3 ENT-PAYMENT attributes"
+      ],
+      "reasoning": "8/8 = 1.00",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-023",
+      "outcome": "hit",
+      "outcome_note": "gold LM-133"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PARTY MAPPED_TO ENT-PARTY",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PARTY attributes",
+        "a3 ENT-PARTY attributes"
+      ],
+      "reasoning": "6/6 = 1.00",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H1-024",
+      "outcome": "hit",
+      "outcome_note": "gold LM-134"
+    },
+    {
+      "plan_id": "S01",
+      "connection": "CAP-ACCT-SVC SUPPORTED_BY SD-CA",
+      "step_assigned": 3,
+      "step_used": 5,
+      "fallback": true,
+      "data_read": [
+        "a1 CAP-ACCT-SVC.description",
+        "a2: four A2.ServiceDomain descriptions"
+      ],
+      "reasoning": "step 3 impossible (no processes); step 5: shared concepts ['account', 'block', 'close', 'current', 'maintain', 'open', 'term']; runner-up SD-PRD 1",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "P-H1-025",
+      "outcome": "hit",
+      "outcome_note": "gold LM-151"
+    },
+    {
+      "plan_id": "S01",
+      "connection": "CAP-POSITION SUPPORTED_BY SD-PK",
+      "step_assigned": 3,
+      "step_used": 5,
+      "fallback": true,
+      "data_read": [
+        "a1 CAP-POSITION.description",
+        "a2: four A2.ServiceDomain descriptions"
+      ],
+      "reasoning": "step 3 impossible (no processes); step 5: shared concepts ['balance', 'financial', 'maintain', 'movement', 'position', 'record']; runner-up SD-PRD 2",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "P-H1-026",
+      "outcome": "hit",
+      "outcome_note": "gold LM-152"
+    },
+    {
+      "plan_id": "S01",
+      "connection": "CAP-PAY-EXEC SUPPORTED_BY SD-PE",
+      "step_assigned": 3,
+      "step_used": 5,
+      "fallback": true,
+      "data_read": [
+        "a1 CAP-PAY-EXEC.description",
+        "a2: four A2.ServiceDomain descriptions"
+      ],
+      "reasoning": "step 3 impossible (no processes); step 5: shared concepts ['authorised', 'execute', 'execution', 'payment', 'scheme']; runner-up SD-PRD 0",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "P-H1-027",
+      "outcome": "hit",
+      "outcome_note": "gold LM-153"
+    },
+    {
+      "plan_id": "S01",
+      "connection": "CAP-PARTY-DATA SUPPORTED_BY SD-PRD",
+      "step_assigned": 3,
+      "step_used": 5,
+      "fallback": true,
+      "data_read": [
+        "a1 CAP-PARTY-DATA.description",
+        "a2: four A2.ServiceDomain descriptions"
+      ],
+      "reasoning": "step 3 impossible (no processes); step 5: shared concepts ['data', 'master', 'record', 'reference']; runner-up SD-PK 1",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "P-H1-028",
+      "outcome": "hit",
+      "outcome_note": "gold LM-154"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY OP-GetAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: action_term=Initiate, behavior_qualifier=None",
+        "a3 OP-GetAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 5/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (5/6, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY OP-BlockAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: action_term=Initiate, behavior_qualifier=None",
+        "a3 OP-BlockAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 2/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY OP-AmendOverdraft",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: action_term=Initiate, behavior_qualifier=None",
+        "a3 OP-AmendOverdraft: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 3/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (3/6, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY OP-CloseAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: action_term=Initiate, behavior_qualifier=None",
+        "a3 OP-CloseAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "fail",
+        "check4": "fail 2/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY OP-PostEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: action_term=Initiate, behavior_qualifier=None",
+        "a3 OP-PostEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "fail",
+        "check4": "fail 2/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY OP-GetBalance",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: action_term=Initiate, behavior_qualifier=None",
+        "a3 OP-GetBalance: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 2/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY OP-ReverseEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: action_term=Initiate, behavior_qualifier=None",
+        "a3 OP-ReverseEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "fail",
+        "check4": "fail 0/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/6, below 50%); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY OP-OpenAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-OpenAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 5/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (5/6, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY OP-BlockAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-BlockAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 2/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY OP-AmendOverdraft",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-AmendOverdraft: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 3/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (3/6, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY OP-CloseAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-CloseAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 2/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY OP-PostEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-PostEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 2/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY OP-GetBalance",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-GetBalance: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 2/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY OP-ReverseEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-ReverseEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 0/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/6, below 50%); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY OP-OpenAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: action_term=Control, behavior_qualifier=None",
+        "a3 OP-OpenAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "pass 2/2"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate, excluded: operation resolved to OP-BlockAccount (unique candidate (decision 2) in round 2)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY OP-GetAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: action_term=Control, behavior_qualifier=None",
+        "a3 OP-GetAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "pass 2/2"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate, excluded: operation resolved to OP-BlockAccount (unique candidate (decision 2) in round 2)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY OP-AmendOverdraft",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: action_term=Control, behavior_qualifier=None",
+        "a3 OP-AmendOverdraft: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "pass 2/2"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate, excluded: operation resolved to OP-BlockAccount (unique candidate (decision 2) in round 2)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY OP-CloseAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: action_term=Control, behavior_qualifier=None",
+        "a3 OP-CloseAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "pass 2/2"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY OP-PostEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: action_term=Control, behavior_qualifier=None",
+        "a3 OP-PostEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 1/2"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/2, not the operation's best payload match); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY OP-GetBalance",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: action_term=Control, behavior_qualifier=None",
+        "a3 OP-GetBalance: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 1/2"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/2, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY OP-ReverseEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: action_term=Control, behavior_qualifier=None",
+        "a3 OP-ReverseEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 0/2"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/2, below 50%); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY OP-OpenAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: action_term=Update, behavior_qualifier=None",
+        "a3 OP-OpenAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "pass 3/3"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate, excluded: operation resolved to OP-AmendOverdraft (unique candidate (decision 2) in round 1)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY OP-GetAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: action_term=Update, behavior_qualifier=None",
+        "a3 OP-GetAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "pass 3/3"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate, excluded: operation resolved to OP-AmendOverdraft (unique candidate (decision 2) in round 1)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY OP-BlockAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: action_term=Update, behavior_qualifier=None",
+        "a3 OP-BlockAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 2/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY OP-CloseAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: action_term=Update, behavior_qualifier=None",
+        "a3 OP-CloseAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 2/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best payload match); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY OP-PostEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: action_term=Update, behavior_qualifier=None",
+        "a3 OP-PostEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 1/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/3, below 50%); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY OP-GetBalance",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: action_term=Update, behavior_qualifier=None",
+        "a3 OP-GetBalance: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 1/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/3, below 50%)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY OP-ReverseEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: action_term=Update, behavior_qualifier=None",
+        "a3 OP-ReverseEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 0/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY OP-OpenAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: action_term=Execute, behavior_qualifier=Closure",
+        "a3 OP-OpenAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 2/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best payload match); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY OP-GetAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: action_term=Execute, behavior_qualifier=Closure",
+        "a3 OP-GetAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 2/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best payload match); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY OP-BlockAccount",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: action_term=Execute, behavior_qualifier=Closure",
+        "a3 OP-BlockAccount: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 2/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best payload match); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY OP-AmendOverdraft",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: action_term=Execute, behavior_qualifier=Closure",
+        "a3 OP-AmendOverdraft: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 2/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best payload match); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY OP-PostEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: action_term=Execute, behavior_qualifier=Closure",
+        "a3 OP-PostEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 1/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/3, below 50%); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY OP-GetBalance",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: action_term=Execute, behavior_qualifier=Closure",
+        "a3 OP-GetBalance: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 1/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/3, below 50%); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY OP-ReverseEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: action_term=Execute, behavior_qualifier=Closure",
+        "a3 OP-ReverseEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 0/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PK-01 IMPLEMENTED_BY OP-GetBalance",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PK-01: action_term=Update, behavior_qualifier=Posting",
+        "a3 OP-GetBalance: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 3/7"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (3/7, below 50%); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PK-01 IMPLEMENTED_BY OP-ReverseEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PK-01: action_term=Update, behavior_qualifier=Posting",
+        "a3 OP-ReverseEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 2/7"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/7, below 50%); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PK-02 IMPLEMENTED_BY OP-PostEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PK-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-PostEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 3/4"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (3/4, not the operation's best payload match); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PK-02 IMPLEMENTED_BY OP-ReverseEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PK-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-ReverseEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 1/4"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/4, below 50%); check 3 fail (path carries another operation's qualifier stem)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PK-03 IMPLEMENTED_BY OP-PostEntry",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PK-03: action_term=Execute, behavior_qualifier=Reversal",
+        "a3 OP-PostEntry: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "pass 2/2"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PK-03 IMPLEMENTED_BY OP-GetBalance",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PK-03: action_term=Execute, behavior_qualifier=Reversal",
+        "a3 OP-GetBalance: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "fail",
+        "check4": "fail 1/2"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/2, not the operation's best payload match); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-01 IMPLEMENTED_BY OP-PaymentStatus",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PE-01: action_term=Initiate, behavior_qualifier=None",
+        "a3 OP-PaymentStatus: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 2/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-01 IMPLEMENTED_BY OP-CancelPayment",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PE-01: action_term=Initiate, behavior_qualifier=None",
+        "a3 OP-CancelPayment: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 2/6"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-02 IMPLEMENTED_BY OP-SubmitPayment",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PE-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-SubmitPayment: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 2/4"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/4, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-02 IMPLEMENTED_BY OP-CancelPayment",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PE-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-CancelPayment: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 2/4"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/4, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-03 IMPLEMENTED_BY OP-SubmitPayment",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PE-03: action_term=Control, behavior_qualifier=None",
+        "a3 OP-SubmitPayment: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "pass 2/2"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate, excluded: operation resolved to OP-CancelPayment (unique candidate (decision 2) in round 1)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-03 IMPLEMENTED_BY OP-PaymentStatus",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PE-03: action_term=Control, behavior_qualifier=None",
+        "a3 OP-PaymentStatus: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "pass 2/2"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate, excluded: operation resolved to OP-CancelPayment (unique candidate (decision 2) in round 1)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY OP-GetCustomer",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: action_term=Register, behavior_qualifier=None",
+        "a3 OP-GetCustomer: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 4/4"
+      },
+      "decision": 1,
+      "reasoning": "decision 1 candidate, excluded: operation resolved to OP-CreateCustomer (unique candidate (decision 1) in round 2)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY OP-UpdateCustomer",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: action_term=Register, behavior_qualifier=None",
+        "a3 OP-UpdateCustomer: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 2/4"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/4, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY OP-CreateCustomer",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-CreateCustomer: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 4/5"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (4/5, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY OP-UpdateCustomer",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: action_term=Retrieve, behavior_qualifier=None",
+        "a3 OP-UpdateCustomer: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 2/5"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/5, below 50%)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY OP-CreateCustomer",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: action_term=Update, behavior_qualifier=None",
+        "a3 OP-CreateCustomer: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 2/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY OP-GetCustomer",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: action_term=Update, behavior_qualifier=None",
+        "a3 OP-GetCustomer: method=POST"
+      ],
+      "checks": {
+        "precondition": "pass (convention H1-C1)",
+        "check2": "fail (POST)",
+        "check3": "neutral",
+        "check4": "fail 2/3"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best payload match)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "gate SD-CA x LM-POST",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "module texts"
+      ],
+      "reasoning": "gate passes ONLY by convention H1-C1 (token/synonym level); the literal asset-type phrase does not occur — under the strict text the pairs of this domain/module would not be considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "finding 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-CA x SOAP operations of LM-PAY",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-CA vs LM-PAY operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-CA x SOAP operations of LM-PARTY",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-CA vs LM-PARTY operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "gate SD-CA x LM-BATCH",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "module texts"
+      ],
+      "reasoning": "gate passes ONLY by convention H1-C1 (token/synonym level); the literal asset-type phrase does not occur — under the strict text the pairs of this domain/module would not be considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "finding 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-PK x SOAP operations of LM-ACCT",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-PK vs LM-ACCT operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "gate SD-PK x LM-POST",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "module texts"
+      ],
+      "reasoning": "gate passes ONLY by convention H1-C1 (token/synonym level); the literal asset-type phrase does not occur — under the strict text the pairs of this domain/module would not be considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "finding 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-PK x SOAP operations of LM-PAY",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-PK vs LM-PAY operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-PK x SOAP operations of LM-PARTY",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-PK vs LM-PARTY operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "gate SD-PK x LM-BATCH",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "module texts"
+      ],
+      "reasoning": "gate passes ONLY by convention H1-C1 (token/synonym level); the literal asset-type phrase does not occur — under the strict text the pairs of this domain/module would not be considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "finding 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-PE x SOAP operations of LM-ACCT",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-PE vs LM-ACCT operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-PE x SOAP operations of LM-POST",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-PE vs LM-POST operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-PE x SOAP operations of LM-PARTY",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-PE vs LM-PARTY operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-PE x SOAP operations of LM-BATCH",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-PE vs LM-BATCH operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-PRD x SOAP operations of LM-ACCT",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-PRD vs LM-ACCT operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-PRD x SOAP operations of LM-POST",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-PRD vs LM-POST operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-PRD x SOAP operations of LM-PAY",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-PRD vs LM-PAY operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "gate SD-PRD x LM-PARTY",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "module texts"
+      ],
+      "reasoning": "gate passes ONLY by convention H1-C1 (token/synonym level); the literal asset-type phrase does not occur — under the strict text the pairs of this domain/module would not be considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "finding 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "operations of SD-PRD x SOAP operations of LM-BATCH",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset-type name of SD-PRD vs LM-BATCH operation names (camel-split), paths, entity names, descriptions"
+      ],
+      "reasoning": "boundary precondition fails (strict=0, convention H1-C1=0): no asset-type token or synonym in the module's texts; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this domain/module boundary"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "LM-ACCT DEPLOYED_ON <any A4>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 LM-ACCT: no deployed_on; a4: no hosts / component_id names it"
+      ],
+      "reasoning": "module has no deployment record of its own; it is a part of APP-LEDGER (composition) — hosting is a derived path, not a proposal",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "LM-ACCT DEPLOYED_AS <any deployment>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 LM-ACCT: no deployed_as; a4: no component_id names it"
+      ],
+      "reasoning": "no record",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "LM-POST DEPLOYED_ON <any A4>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 LM-POST: no deployed_on; a4: no hosts / component_id names it"
+      ],
+      "reasoning": "module has no deployment record of its own; it is a part of APP-LEDGER (composition) — hosting is a derived path, not a proposal",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "LM-POST DEPLOYED_AS <any deployment>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 LM-POST: no deployed_as; a4: no component_id names it"
+      ],
+      "reasoning": "no record",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "LM-PAY DEPLOYED_ON <any A4>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 LM-PAY: no deployed_on; a4: no hosts / component_id names it"
+      ],
+      "reasoning": "module has no deployment record of its own; it is a part of APP-LEDGER (composition) — hosting is a derived path, not a proposal",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "LM-PAY DEPLOYED_AS <any deployment>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 LM-PAY: no deployed_as; a4: no component_id names it"
+      ],
+      "reasoning": "no record",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "LM-PARTY DEPLOYED_ON <any A4>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 LM-PARTY: no deployed_on; a4: no hosts / component_id names it"
+      ],
+      "reasoning": "module has no deployment record of its own; it is a part of APP-LEDGER (composition) — hosting is a derived path, not a proposal",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "LM-PARTY DEPLOYED_AS <any deployment>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 LM-PARTY: no deployed_as; a4: no component_id names it"
+      ],
+      "reasoning": "no record",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "LM-BATCH DEPLOYED_ON <any A4>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 LM-BATCH: no deployed_on; a4: no hosts / component_id names it"
+      ],
+      "reasoning": "module has no deployment record of its own; it is a part of APP-LEDGER (composition) — hosting is a derived path, not a proposal",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "LM-BATCH DEPLOYED_AS <any deployment>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 LM-BATCH: no deployed_as; a4: no component_id names it"
+      ],
+      "reasoning": "no record",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-ACCOUNT -> INF-DB2-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-ACCOUNT.attributes.stored_in"
+      ],
+      "reasoning": "direct join; institution-only, reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H1-001 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-POSTING -> INF-DB2-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-POSTING.attributes.stored_in"
+      ],
+      "reasoning": "direct join; institution-only, reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H1-002 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-PAYMENT -> INF-DB2-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-PAYMENT.attributes.stored_in"
+      ],
+      "reasoning": "direct join; institution-only, reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H1-003 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-PARTY -> INF-DB2-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-PARTY.attributes.stored_in"
+      ],
+      "reasoning": "direct join; institution-only, reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H1-004 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-AUDIT -> INF-DB2-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-AUDIT.attributes.stored_in"
+      ],
+      "reasoning": "direct join; institution-only, reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H1-005 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S41",
+      "connection": "<A3.ApplicationService> -> <A4.TechnologyService>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3: no A3.ApplicationService; TS-SCHED is referenced by nothing"
+      ],
+      "reasoning": "no instance to map from",
+      "confidence_predicted": "medium",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S49",
+      "connection": "<A3.DataEntity> -> <A4.Artifact>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a4: no A4.Artifact; a3: stored_in names INF-DB2-PROD only"
+      ],
+      "reasoning": "no instance",
+      "confidence_predicted": "medium",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S36",
+      "connection": "APP-LEDGER -> INF-MF-LPAR-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a4 INF-MF-LPAR-PROD.type = A4.Node"
+      ],
+      "reasoning": "subsumed by S33; and the target is a Node, not SystemSoftware",
+      "confidence_predicted": "— (subsumed)",
+      "confidence_given": null,
+      "proposal_id": "P-H1-001 (as S33)",
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-CA REALIZED_BY LM-POST",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-CA REALIZED_BY LM-PAY",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module; gate failed",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-CA REALIZED_BY LM-PARTY",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module; gate failed",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-CA REALIZED_BY LM-BATCH",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "exposes only BATCH jobs; step 2 not applicable; no implemented operation; step-4 fallback: asset-type tokens absent from job names/paths and ENT-AUDIT",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-CA REALIZED_BY APP-LEDGER",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "APP-LEDGER composes the modules; realisation is at module level and the whole is a derived path (query), not a proposal",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PK REALIZED_BY LM-ACCT",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module; gate failed",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PK REALIZED_BY LM-PAY",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module; gate failed",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PK REALIZED_BY LM-PARTY",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module; gate failed",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PK REALIZED_BY LM-BATCH",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "exposes only BATCH jobs; step 2 not applicable; no implemented operation; step-4 fallback: asset-type tokens absent from job names/paths and ENT-AUDIT",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PK REALIZED_BY APP-LEDGER",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "APP-LEDGER composes the modules; realisation is at module level and the whole is a derived path (query), not a proposal",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PE REALIZED_BY LM-ACCT",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module; gate failed",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PE REALIZED_BY LM-POST",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module; gate failed",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PE REALIZED_BY LM-PARTY",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module; gate failed",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PE REALIZED_BY LM-BATCH",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "exposes only BATCH jobs; step 2 not applicable; no implemented operation; step-4 fallback: asset-type tokens absent from job names/paths and ENT-AUDIT",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PE REALIZED_BY APP-LEDGER",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "APP-LEDGER composes the modules; realisation is at module level and the whole is a derived path (query), not a proposal",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PRD REALIZED_BY LM-ACCT",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module; gate failed",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PRD REALIZED_BY LM-POST",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module; gate failed",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PRD REALIZED_BY LM-PAY",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "no step-2 proposal links an operation of this domain to this module; gate failed",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PRD REALIZED_BY LM-BATCH",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "exposes only BATCH jobs; step 2 not applicable; no implemented operation; step-4 fallback: asset-type tokens absent from job names/paths and ENT-AUDIT",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PRD REALIZED_BY APP-LEDGER",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 results; a3 composition"
+      ],
+      "reasoning": "APP-LEDGER composes the modules; realisation is at module level and the whole is a derived path (query), not a proposal",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S25",
+      "connection": "<operation> -> <A3.ApplicationService>",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a3: no A3.ApplicationService instance"
+      ],
+      "reasoning": "no instance to map to",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S23",
+      "connection": "SG-CA -> IFC-ACCT (derived path, query)",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals; a3 composition IFC -> operations"
+      ],
+      "reasoning": "query: the interface exposing the APIs of the group's operations",
+      "confidence_predicted": "medium",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S23",
+      "connection": "SG-PK -> IFC-POST (derived path, query)",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals; a3 composition IFC -> operations"
+      ],
+      "reasoning": "query: the interface exposing the APIs of the group's operations",
+      "confidence_predicted": "medium",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S23",
+      "connection": "SG-PE -> IFC-PAY (derived path, query)",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals; a3 composition IFC -> operations"
+      ],
+      "reasoning": "query: the interface exposing the APIs of the group's operations",
+      "confidence_predicted": "medium",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S23",
+      "connection": "SG-PRD -> IFC-PARTY (derived path, query)",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals; a3 composition IFC -> operations"
+      ],
+      "reasoning": "query: the interface exposing the APIs of the group's operations",
+      "confidence_predicted": "medium",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S40",
+      "connection": "APP-LEDGER -> ENV-PROD (derived path, query)",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-H1-002 (DEPLOYED_AS DEP-LM-PROD)",
+        "a4 DEP-LM-PROD.environment_id = ENV-PROD"
+      ],
+      "reasoning": "query",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S47",
+      "connection": "14 SOAP operations + 3 jobs -> DEP-LM-PROD (derived path, query)",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "a3 composition up to APP-LEDGER",
+        "P-H1-002"
+      ],
+      "reasoning": "query",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S17/S33 derived",
+      "connection": "SD-x -> APP-LEDGER -> INF-MF-LPAR-PROD (derived path, query)",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "S17 module proposals; a3 APP-LEDGER composition; P-H1-001"
+      ],
+      "reasoning": "the ledger as a whole realises all four domains through its modules — a query over composition, not a stored record",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-CA -> ENT-ACCOUNT (candidate rule)",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-CA",
+        "a3 ENT-ACCOUNT"
+      ],
+      "reasoning": "8/8 = 1.00; candidate-rule, reported not filed",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-H1-006 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-CA -> ENT-POSTING",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-CA",
+        "a3 ENT-POSTING"
+      ],
+      "reasoning": "2/8 = 0.25 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-CA -> ENT-PAYMENT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-CA",
+        "a3 ENT-PAYMENT"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-CA -> ENT-PARTY",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-CA",
+        "a3 ENT-PARTY"
+      ],
+      "reasoning": "0/8 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-CA -> ENT-AUDIT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-CA",
+        "a3 ENT-AUDIT"
+      ],
+      "reasoning": "0/8 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PK -> ENT-POSTING (candidate rule)",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PK",
+        "a3 ENT-POSTING"
+      ],
+      "reasoning": "7/8 = 0.88; candidate-rule, reported not filed",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-H1-007 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PK -> ENT-ACCOUNT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PK",
+        "a3 ENT-ACCOUNT"
+      ],
+      "reasoning": "2/8 = 0.25 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PK -> ENT-PAYMENT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PK",
+        "a3 ENT-PAYMENT"
+      ],
+      "reasoning": "2/8 = 0.25 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PK -> ENT-PARTY",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PK",
+        "a3 ENT-PARTY"
+      ],
+      "reasoning": "0/8 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PK -> ENT-AUDIT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PK",
+        "a3 ENT-AUDIT"
+      ],
+      "reasoning": "0/8 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PE -> ENT-PAYMENT (candidate rule)",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PE",
+        "a3 ENT-PAYMENT"
+      ],
+      "reasoning": "8/8 = 1.00; candidate-rule, reported not filed",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-H1-008 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PE -> ENT-POSTING",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PE",
+        "a3 ENT-POSTING"
+      ],
+      "reasoning": "2/8 = 0.25 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PE -> ENT-ACCOUNT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PE",
+        "a3 ENT-ACCOUNT"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PE -> ENT-PARTY",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PE",
+        "a3 ENT-PARTY"
+      ],
+      "reasoning": "0/8 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PE -> ENT-AUDIT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PE",
+        "a3 ENT-AUDIT"
+      ],
+      "reasoning": "0/8 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PRD -> ENT-PARTY (candidate rule)",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PRD",
+        "a3 ENT-PARTY"
+      ],
+      "reasoning": "6/6 = 1.00; candidate-rule, reported not filed",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-H1-009 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PRD -> ENT-ACCOUNT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PRD",
+        "a3 ENT-ACCOUNT"
+      ],
+      "reasoning": "0/6 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PRD -> ENT-POSTING",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PRD",
+        "a3 ENT-POSTING"
+      ],
+      "reasoning": "0/6 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PRD -> ENT-PAYMENT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PRD",
+        "a3 ENT-PAYMENT"
+      ],
+      "reasoning": "0/6 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PRD -> ENT-AUDIT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PRD",
+        "a3 ENT-AUDIT"
+      ],
+      "reasoning": "0/6 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-ACCOUNT -> ENT-POSTING",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-ACCOUNT",
+        "a3 ENT-POSTING"
+      ],
+      "reasoning": "2/8 = 0.25 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-ACCOUNT -> ENT-PAYMENT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-ACCOUNT",
+        "a3 ENT-PAYMENT"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-ACCOUNT -> ENT-PARTY",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-ACCOUNT",
+        "a3 ENT-PARTY"
+      ],
+      "reasoning": "0/8 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-ACCOUNT -> ENT-AUDIT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-ACCOUNT",
+        "a3 ENT-AUDIT"
+      ],
+      "reasoning": "0/8 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-POSTING -> ENT-ACCOUNT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-POSTING",
+        "a3 ENT-ACCOUNT"
+      ],
+      "reasoning": "2/7 = 0.29 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-POSTING -> ENT-PAYMENT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-POSTING",
+        "a3 ENT-PAYMENT"
+      ],
+      "reasoning": "2/7 = 0.29 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-POSTING -> ENT-PARTY",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-POSTING",
+        "a3 ENT-PARTY"
+      ],
+      "reasoning": "0/7 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-POSTING -> ENT-AUDIT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-POSTING",
+        "a3 ENT-AUDIT"
+      ],
+      "reasoning": "0/7 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAYMENT-TXN -> ENT-POSTING",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAYMENT-TXN",
+        "a3 ENT-POSTING"
+      ],
+      "reasoning": "2/8 = 0.25 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAYMENT-TXN -> ENT-ACCOUNT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAYMENT-TXN",
+        "a3 ENT-ACCOUNT"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAYMENT-TXN -> ENT-PARTY",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAYMENT-TXN",
+        "a3 ENT-PARTY"
+      ],
+      "reasoning": "0/8 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAYMENT-TXN -> ENT-AUDIT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAYMENT-TXN",
+        "a3 ENT-AUDIT"
+      ],
+      "reasoning": "0/8 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PARTY -> ENT-ACCOUNT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PARTY",
+        "a3 ENT-ACCOUNT"
+      ],
+      "reasoning": "0/6 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PARTY -> ENT-POSTING",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PARTY",
+        "a3 ENT-POSTING"
+      ],
+      "reasoning": "0/6 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PARTY -> ENT-PAYMENT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PARTY",
+        "a3 ENT-PAYMENT"
+      ],
+      "reasoning": "0/6 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PARTY -> ENT-AUDIT",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PARTY",
+        "a3 ENT-AUDIT"
+      ],
+      "reasoning": "0/6 = 0.00 < 0.5",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "<any operation> IMPLEMENTED_BY JOB-EOD (method BATCH)",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a3 JOB-EOD: method=BATCH, path=/batch/EOD, payload_fields=['accounts_processed', 'run_date', 'status']"
+      ],
+      "reasoning": "non-HTTP interface: the BIAN REST mapping does not apply, step 2 not applicable; best control-record payload overlap CR-PRD 0.00 < 0.5, so no non-REST realisation candidate either",
+      "confidence_predicted": "none (case)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "<any operation> IMPLEMENTED_BY JOB-INTEREST (method BATCH)",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a3 JOB-INTEREST: method=BATCH, path=/batch/ApplyInterest, payload_fields=['account_reference', 'interest_amount', 'posting_date']"
+      ],
+      "reasoning": "non-HTTP interface: the BIAN REST mapping does not apply, step 2 not applicable; best control-record payload overlap CR-PK 0.25 < 0.5, so no non-REST realisation candidate either",
+      "confidence_predicted": "none (case)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "<any operation> IMPLEMENTED_BY JOB-AUDIT (method BATCH)",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a3 JOB-AUDIT: method=BATCH, path=/batch/AuditExtract, payload_fields=['audit_id', 'event', 'operator_id', 'timestamp']"
+      ],
+      "reasoning": "non-HTTP interface: the BIAN REST mapping does not apply, step 2 not applicable; best control-record payload overlap CR-PRD 0.00 < 0.5, so no non-REST realisation candidate either",
+      "confidence_predicted": "none (case)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S01",
+      "connection": "CAP-LENDING SUPPORTED_BY <domain>",
+      "step_assigned": 3,
+      "step_used": 5,
+      "fallback": true,
+      "data_read": [
+        "a1 CAP-LENDING.description",
+        "a2: four domain descriptions"
+      ],
+      "reasoning": "step 3 impossible; step 5: best SD-PRD shares 0 concept(s) [], runner-up SD-PK 0 — not clearly better (H1-C3: >= 2 and strictly ahead) -> no proposal, not a low-confidence guess",
+      "confidence_predicted": "none (case)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S01",
+      "connection": "CAP-TREASURY SUPPORTED_BY <domain>",
+      "step_assigned": 3,
+      "step_used": 5,
+      "fallback": true,
+      "data_read": [
+        "a1 CAP-TREASURY.description",
+        "a2: four domain descriptions"
+      ],
+      "reasoning": "step 3 impossible; step 5: best SD-PK shares 1 concept(s) ['position'], runner-up SD-PRD 0 — not clearly better (H1-C3: >= 2 and strictly ahead) -> no proposal, not a low-confidence guess",
+      "confidence_predicted": "none (case)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S02",
+      "connection": "—",
+      "step_assigned": 4,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "a1: no value streams, processes, activities or business objects"
+      ],
+      "reasoning": "no A1 instance to map from",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S04",
+      "connection": "—",
+      "step_assigned": 3,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "a1: no value streams, processes, activities or business objects"
+      ],
+      "reasoning": "no A1 instance to map from",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S06",
+      "connection": "—",
+      "step_assigned": 4,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "a1: no value streams, processes, activities or business objects"
+      ],
+      "reasoning": "no A1 instance to map from",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    },
+    {
+      "plan_id": "S12",
+      "connection": "—",
+      "step_assigned": 4,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "a1: no value streams, processes, activities or business objects"
+      ],
+      "reasoning": "no A1 instance to map from",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow"
+    }
+  ]
+}

@@ -1,0 +1,636 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "fable-executor/2026-10-22",
+  "use_case": "H1",
+  "mappings": [
+    {
+      "mapping_id": "P-H1-001",
+      "source": {
+        "id": "APP-LEDGER",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-MF-LPAR-PROD",
+        "type": "A4.Node",
+        "version": "2.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join; a3 APP-LEDGER.deployed_on lists INF-MF-LPAR-PROD; a4 INF-MF-LPAR-PROD.hosts lists APP-LEDGER; a4 DEP-LM-PROD.component_id/platform_id; 3 record(s), no inference"
+      ],
+      "rationale": "The CMDB places LedgerMaster core ledger on Mainframe LPAR PROD1",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-002",
+      "source": {
+        "id": "APP-LEDGER",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-LM-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S32 step1 data join; a3 APP-LEDGER.deployed_as lists DEP-LM-PROD; a4 DEP-LM-PROD.component_id = APP-LEDGER (environment ENV-PROD, platform INF-MF-LPAR-PROD); both sides"
+      ],
+      "rationale": "The production deployment record and the component name each other",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-003",
+      "source": {
+        "id": "SO-CA-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-OpenAccount",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 1. Precondition: asset type 'Current Account' of SD-CA located in LM-ACCT's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 PASS: Initiate <-> POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/OpenAccount' carries no other qualifier stem. check 4 PASS: 6/6 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 1) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "OpenAccount carries Initiate Current Account's attributes on the Account module's SOAP interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-004",
+      "source": {
+        "id": "SO-CA-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-GetAccount",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Current Account' of SD-CA located in LM-ACCT's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Retrieve <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/GetAccount' carries no other qualifier stem. check 4 PASS: 6/6 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 2) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "GetAccount carries Retrieve Current Account's attributes on the Account module's SOAP interface; exposed as POST like every operation of the interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-005",
+      "source": {
+        "id": "SO-CA-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-BlockAccount",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Current Account' of SD-CA located in LM-ACCT's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Control <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/BlockAccount' carries no other qualifier stem. check 4 PASS: 2/2 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 2) in round 2 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "BlockAccount carries Control Current Account's attributes on the Account module's SOAP interface; exposed as POST like every operation of the interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-006",
+      "source": {
+        "id": "SO-CA-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-AmendOverdraft",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Current Account' of SD-CA located in LM-ACCT's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Update <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/AmendOverdraft' carries no other qualifier stem. check 4 PASS: 3/3 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 2) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "AmendOverdraft carries Update Current Account's attributes on the Account module's SOAP interface; exposed as POST like every operation of the interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-007",
+      "source": {
+        "id": "SO-CA-05",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-CloseAccount",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Current Account' of SD-CA located in LM-ACCT's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Execute <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 PASS: qualifier Closure ~ path '/ledger/svc/CloseAccount'. check 4 PASS: 3/3 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 2) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "CloseAccount carries Execute Current Account Closure's attributes on the Account module's SOAP interface; exposed as POST like every operation of the interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-008",
+      "source": {
+        "id": "SO-PK-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-PostEntry",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Financial Position' of SD-PK located in LM-POST's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Update <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 PASS: qualifier Posting ~ path '/ledger/svc/PostEntry'. check 4 PASS: 7/7 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 2) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "PostEntry carries Update Position Keeping Posting's attributes on the Posting engine's SOAP interface; exposed as POST like every operation of the interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-009",
+      "source": {
+        "id": "SO-PK-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-GetBalance",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Financial Position' of SD-PK located in LM-POST's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Retrieve <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/GetBalance' carries no other qualifier stem. check 4 PASS: 4/4 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 2) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "GetBalance carries Retrieve Position Keeping's attributes on the Posting engine's SOAP interface; exposed as POST like every operation of the interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-010",
+      "source": {
+        "id": "SO-PK-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-ReverseEntry",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Financial Position' of SD-PK located in LM-POST's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Execute <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 PASS: qualifier Reversal ~ path '/ledger/svc/ReverseEntry'. check 4 PASS: 2/2 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 2) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "ReverseEntry carries Execute Position Keeping Reversal's attributes on the Posting engine's SOAP interface; exposed as POST like every operation of the interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-011",
+      "source": {
+        "id": "SO-PE-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-SubmitPayment",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 1. Precondition: asset type 'Payment Transaction' of SD-PE located in LM-PAY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 PASS: Initiate <-> POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/SubmitPayment' carries no other qualifier stem. check 4 PASS: 6/6 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 1) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "SubmitPayment carries Initiate Payment Execution's attributes on the Payment interface module's SOAP interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-012",
+      "source": {
+        "id": "SO-PE-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-PaymentStatus",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Payment Transaction' of SD-PE located in LM-PAY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Retrieve <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/PaymentStatus' carries no other qualifier stem. check 4 PASS: 4/4 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 2) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "PaymentStatus carries Retrieve Payment Execution's attributes on the Payment interface module's SOAP interface; exposed as POST like every operation of the interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-013",
+      "source": {
+        "id": "SO-PE-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-CancelPayment",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Payment Transaction' of SD-PE located in LM-PAY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Control <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/CancelPayment' carries no other qualifier stem. check 4 PASS: 2/2 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 2) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "CancelPayment carries Control Payment Execution's attributes on the Payment interface module's SOAP interface; exposed as POST like every operation of the interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-014",
+      "source": {
+        "id": "SO-PRD-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-CreateCustomer",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 1. Precondition: asset type 'Party Reference' of SD-PRD located in LM-PARTY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 PASS: Register <-> POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/CreateCustomer' carries no other qualifier stem. check 4 PASS: 4/4 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 1) in round 2 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "CreateCustomer carries Register Party Reference's attributes on the Customer master module's SOAP interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-015",
+      "source": {
+        "id": "SO-PRD-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-GetCustomer",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Party Reference' of SD-PRD located in LM-PARTY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Retrieve <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/GetCustomer' carries no other qualifier stem. check 4 PASS: 5/5 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 2) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "GetCustomer carries Retrieve Party Reference's attributes on the Customer master module's SOAP interface; exposed as POST like every operation of the interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-016",
+      "source": {
+        "id": "SO-PRD-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "OP-UpdateCustomer",
+        "type": "A3.APIOperation",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S24 step2 reverse, decision 2 (one band lower, method mismatch). Precondition: asset type 'Party Reference' of SD-PRD located in LM-PARTY's operation names/descriptions and entity names by executor convention H1-C1 (abbreviation/synonym table; strict phrase match fails). check 2 FAIL: Update <-> POST — systematic finding F-SOAP: every operation of the LedgerMaster SOAP interfaces is POST. check 3 NEUTRAL: qualifier None, path '/ledger/svc/UpdateCustomer' carries no other qualifier stem. check 4 PASS: 3/3 input∪output attributes in payload_fields, best match for the operation. Disambiguation: unique candidate (decision 2) in round 1 (convention H1-C2 iterative exclusion)"
+      ],
+      "rationale": "UpdateCustomer carries Update Party Reference's attributes on the Customer master module's SOAP interface; exposed as POST like every operation of the interface",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-017",
+      "source": {
+        "id": "SD-CA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-CURRENT-ACCOUNT"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "LM-ACCT",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S17 step3 derivation over step-2 proposals ['P-H1-003', 'P-H1-004', 'P-H1-006', 'P-H1-007', 'P-H1-005'] (none approved): LM-ACCT -composition-> IFC-ACCT -composition-> ['OP-OpenAccount', 'OP-GetAccount', 'OP-AmendOverdraft', 'OP-CloseAccount', 'OP-BlockAccount']; operations ['SO-CA-01', 'SO-CA-02', 'SO-CA-04', 'SO-CA-05', 'SO-CA-03'] belong to SD-CA (B09/B10). Cap = strongest input = 0.8 (any one implemented operation suffices). APP-LEDGER composes LM-ACCT: realisation at module level; the ledger as a whole is a derived path"
+      ],
+      "rationale": "The Account module exposes the SOAP operations that implement 5 of the domain's operations",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-018",
+      "source": {
+        "id": "SD-PK",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-POSITION-KEEPING"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "LM-POST",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S17 step3 derivation over step-2 proposals ['P-H1-008', 'P-H1-009', 'P-H1-010'] (none approved): LM-POST -composition-> IFC-POST -composition-> ['OP-PostEntry', 'OP-GetBalance', 'OP-ReverseEntry']; operations ['SO-PK-01', 'SO-PK-02', 'SO-PK-03'] belong to SD-PK (B09/B10). Cap = strongest input = 0.6 (any one implemented operation suffices). APP-LEDGER composes LM-POST: realisation at module level; the ledger as a whole is a derived path"
+      ],
+      "rationale": "The Posting engine exposes the SOAP operations that implement 3 of the domain's operations",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-019",
+      "source": {
+        "id": "SD-PE",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PAYMENT-EXECUTION"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "LM-PAY",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S17 step3 derivation over step-2 proposals ['P-H1-011', 'P-H1-012', 'P-H1-013'] (none approved): LM-PAY -composition-> IFC-PAY -composition-> ['OP-SubmitPayment', 'OP-PaymentStatus', 'OP-CancelPayment']; operations ['SO-PE-01', 'SO-PE-02', 'SO-PE-03'] belong to SD-PE (B09/B10). Cap = strongest input = 0.8 (any one implemented operation suffices). APP-LEDGER composes LM-PAY: realisation at module level; the ledger as a whole is a derived path"
+      ],
+      "rationale": "The Payment interface module exposes the SOAP operations that implement 3 of the domain's operations",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-020",
+      "source": {
+        "id": "SD-PRD",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PARTY-REFERENCE"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "LM-PARTY",
+        "type": "A3.ApplicationComponent",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S17 step3 derivation over step-2 proposals ['P-H1-015', 'P-H1-016', 'P-H1-014'] (none approved): LM-PARTY -composition-> IFC-PARTY -composition-> ['OP-GetCustomer', 'OP-UpdateCustomer', 'OP-CreateCustomer']; operations ['SO-PRD-02', 'SO-PRD-03', 'SO-PRD-01'] belong to SD-PRD (B09/B10). Cap = strongest input = 0.8 (any one implemented operation suffices). APP-LEDGER composes LM-PARTY: realisation at module level; the ledger as a whole is a derived path"
+      ],
+      "rationale": "The Customer master module exposes the SOAP operations that implement 3 of the domain's operations",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-021",
+      "source": {
+        "id": "BBO-ACCOUNT",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-CURRENT-ACCOUNT"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-ACCOUNT",
+        "type": "A3.DataEntity",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S30 step4 structural match; BBO-ACCOUNT.attributes.attributes (8) vs ENT-ACCOUNT.attributes.attributes (9): 8/8 = 1.00 (threshold 0.5); extension columns ['branch_code']; other entities [('ENT-POSTING', '2/8'), ('ENT-PAYMENT', '1/8'), ('ENT-PARTY', '0/8'), ('ENT-AUDIT', '0/8')]"
+      ],
+      "rationale": "Every attribute of the canonical Current Account is a column of ACCT_MASTER",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-022",
+      "source": {
+        "id": "BBO-POSTING",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-POSTING"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-POSTING",
+        "type": "A3.DataEntity",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S30 step4 structural match; BBO-POSTING.attributes.attributes (7) vs ENT-POSTING.attributes.attributes (8): 7/7 = 1.00 (threshold 0.5); extension columns ['operator_id']; other entities [('ENT-ACCOUNT', '2/7'), ('ENT-PAYMENT', '2/7'), ('ENT-PARTY', '0/7'), ('ENT-AUDIT', '0/7')]"
+      ],
+      "rationale": "Every attribute of the canonical Posting is a column of POSTING_JRNL",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-023",
+      "source": {
+        "id": "BBO-PAYMENT-TXN",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-PAYMENT-TXN"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-PAYMENT",
+        "type": "A3.DataEntity",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S30 step4 structural match; BBO-PAYMENT-TXN.attributes.attributes (8) vs ENT-PAYMENT.attributes.attributes (8): 8/8 = 1.00 (threshold 0.5); extension columns []; other entities [('ENT-POSTING', '2/8'), ('ENT-ACCOUNT', '1/8'), ('ENT-PARTY', '0/8'), ('ENT-AUDIT', '0/8')]"
+      ],
+      "rationale": "Every attribute of the canonical Payment Transaction is a column of PAYMT_TXN",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-024",
+      "source": {
+        "id": "BBO-PARTY",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-PARTY"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-PARTY",
+        "type": "A3.DataEntity",
+        "version": "12.4"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S30 step4 structural match; BBO-PARTY.attributes.attributes (6) vs ENT-PARTY.attributes.attributes (7): 6/6 = 1.00 (threshold 0.5); extension columns ['created_by']; other entities [('ENT-ACCOUNT', '0/6'), ('ENT-POSTING', '0/6'), ('ENT-PAYMENT', '0/6'), ('ENT-AUDIT', '0/6')]"
+      ],
+      "rationale": "Every attribute of the canonical Party is a column of CUST_MASTER",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-025",
+      "source": {
+        "id": "CAP-ACCT-SVC",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-CA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-CURRENT-ACCOUNT"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S01 step5 text inference (step 3 impossible: the A1 export has no processes or relationships). Candidate set = all four exported domains. Capability: \"Open, maintain, block and close customer current accounts and manage their terms.\" vs SD-CA: \"Synthetic stand-in for a BIAN current-account domain: opens, maintains, blocks and closes current accounts and their terms.\". Shared concepts ['account', 'block', 'close', 'current', 'maintain', 'open', 'term'] (7); runner-up SD-PRD 1 ['maintain']. Executor convention H1-C3 for 'clearly better': >= 2 shared concepts and strictly more than every other domain"
+      ],
+      "rationale": "Account Servicing describes the same scope as Current Account (synthetic selection); textual match only, low confidence",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-026",
+      "source": {
+        "id": "CAP-POSITION",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-PK",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-POSITION-KEEPING"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S01 step5 text inference (step 3 impossible: the A1 export has no processes or relationships). Candidate set = all four exported domains. Capability: \"Record every financial movement on an account and maintain the resulting balances and positions.\" vs SD-PK: \"Synthetic stand-in for a BIAN position-keeping domain: records financial movements and maintains balances and positions.\". Shared concepts ['balance', 'financial', 'maintain', 'movement', 'position', 'record'] (6); runner-up SD-PRD 2 ['maintain', 'record']. Executor convention H1-C3 for 'clearly better': >= 2 shared concepts and strictly more than every other domain"
+      ],
+      "rationale": "Position and Balance Management describes the same scope as Position Keeping (synthetic selection); textual match only, low confidence",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-027",
+      "source": {
+        "id": "CAP-PAY-EXEC",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-PE",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PAYMENT-EXECUTION"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S01 step5 text inference (step 3 impossible: the A1 export has no processes or relationships). Candidate set = all four exported domains. Capability: \"Execute authorised payments through clearing schemes and track their outcome.\" vs SD-PE: \"Synthetic stand-in for a BIAN payment-execution domain: executes authorised payment instructions through schemes.\". Shared concepts ['authorised', 'execute', 'execution', 'payment', 'scheme'] (5); runner-up SD-PRD 0 []. Executor convention H1-C3 for 'clearly better': >= 2 shared concepts and strictly more than every other domain"
+      ],
+      "rationale": "Payment Execution describes the same scope as Payment Execution (synthetic selection); textual match only, low confidence",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-H1-028",
+      "source": {
+        "id": "CAP-PARTY-DATA",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-PRD",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PARTY-REFERENCE"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S01 step5 text inference (step 3 impossible: the A1 export has no processes or relationships). Candidate set = all four exported domains. Capability: \"Hold the master record of each customer and counterparty: identity, addresses, contact details, KYC status.\" vs SD-PRD: \"Synthetic stand-in for a BIAN party-reference-data domain: maintains the master reference record of parties.\". Shared concepts ['data', 'master', 'record', 'reference'] (4); runner-up SD-PK 1 ['record']. Executor convention H1-C3 for 'clearly better': >= 2 shared concepts and strictly more than every other domain"
+      ],
+      "rationale": "Customer Reference Data describes the same scope as Party Reference Data Directory (synthetic selection); textual match only, low confidence",
+      "baseline_id": "H1-BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    }
+  ]
+}

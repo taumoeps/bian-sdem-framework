@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** seven use cases defined; E1, M0 and M1 executed 2026-10-22 (see Results); H1 authored and ready; E2, M2, H2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** seven use cases defined; E1, M0, M1 and H1 executed 2026-10-22 (see Results); E2, M2, H2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -155,7 +155,7 @@
 | S01 ×4 | capabilities → domains | 5 | **low** — four-domain candidate set; two capabilities no proposal |
 | S50 | tables → DB2 | 1 | medium — institution-only report via `stored_in` |
 
-**Pass.** F1 ≥ 0.8 over the approved gold; the systematic POST finding reported once, not fourteen times; every negative held; A1 proposals all low with step-5 rationale; `h1-inference-log.json` complete. **Status:** data authored and validated (v0.5.4); **ready to execute**.
+**Pass.** F1 ≥ 0.8 over the approved gold; the systematic POST finding reported once, not fourteen times; every negative held; A1 proposals all low with step-5 rationale; `h1-inference-log.json` complete. **Status:** executed 2026-10-22 — see Results.
 
 ## H2 — Acquired Fintech, hostile naming (Hard)
 
@@ -732,3 +732,135 @@ mappings to supersede: P-M1-001, P-M1-003
 | 5 — Notify → event | Recorded as a structured new-connection candidate in `new-mappings.json` (`new_connection_candidates`); reported, never proposed, until it has an ID |
 
 **M1 is complete** on the plan's core: F1 0.96 on run 1, 1.0 under the restated gold. The step-2 rewrite is the significant improvement to carry into H1 and H2, where step 2 runs in reverse and under hostile naming.
+
+### H1 — results (2026-10-22, fable-executor)
+
+**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.4. **Given.** `h1-mappings-given.json` — empty; the four v0.5.4 exports (87 instances). **Gold.** `h1-gold-mappings.json` and `mappings.json` were not opened until phase 5. The H1 case text states the gold's composition and the planted items, so the shape was known; the instances were not. **Baseline.** The case defines none; proposals carry the executor-assigned `H1-BASE-2026-Q4` (finding 8). **Files.** `examples/legacy-core-ledger/h1-proposals.json` (28 records) and `examples/legacy-core-ledger/h1-inference-log.json` (190 attempts, 21 plan IDs; every gated operation × API pair, failed gates summarised per domain and module).
+
+**Executor conventions, marked.** The guide left three gaps on this estate and the executor filled each with a stated rule, recorded in the log and in findings 1, 2 and 5: **H1-C1** — the boundary gate at token level with an abbreviation/synonym table (the literal asset-type phrase occurs for only two of the four modules); **H1-C2** — iterative one-to-one exclusion in step-2 disambiguation (the clause as written leaves two ties); **H1-C3** — "clearly better" in step 5 means at least two shared concepts and strictly more than every other domain. Check 3 on SOAP paths, which have no resource structure, was tested on the camel-split operation name by stem (Closure ~ Close, Posting ~ Post, Reversal ~ Reverse).
+
+#### Proposals
+
+| Proposal | Plan ID | Connection | Step | Confidence | Working |
+|---|---|---|---|---|---|
+| P-H1-001 | S33 | APP-LEDGER `DEPLOYED_ON` INF-MF-LPAR-PROD (`A4.Node`) | 1 | 0.8 | `deployed_on`, `hosts` and `DEP-LM-PROD.platform_id` — three records |
+| P-H1-002 | S32 | APP-LEDGER `DEPLOYED_AS` DEP-LM-PROD | 1 | 0.8 | `component_id` and `deployed_as` name each other |
+| P-H1-003 | S24 | SO-CA-01 Initiate `IMPLEMENTED_BY` OP-OpenAccount | 2 rev | 0.8 | decision 1: Initiate ⇔ POST; no qualifier, path clean (neutral); 6/6 attributes |
+| P-H1-004 | S24 | SO-CA-02 Retrieve ← OP-GetAccount | 2 rev | 0.6 | decision 2: **F-SOAP** (Retrieve on POST); neutral; 6/6, unique best |
+| P-H1-005 | S24 | SO-CA-03 Control ← OP-BlockAccount | 2 rev | 0.6 | decision 2: F-SOAP; neutral; 2/2 — **tie with AmendOverdraft at 2/2 under the clause as written**, resolved in round 2 when AmendOverdraft went to SO-CA-04 (H1-C2) |
+| P-H1-006 | S24 | SO-CA-04 Update ← OP-AmendOverdraft | 2 rev | 0.6 | decision 2: F-SOAP; neutral; 3/3 unique (GetAccount excluded, taken by SO-CA-02) |
+| P-H1-007 | S24 | SO-CA-05 Execute/Closure ← OP-CloseAccount | 2 rev | 0.6 | decision 2: F-SOAP; check 3 **pass** (Closure ~ Close); 3/3 unique |
+| P-H1-008 | S24 | SO-PK-01 Update/Posting ← OP-PostEntry | 2 rev | 0.6 | decision 2: F-SOAP; check 3 pass (Posting ~ Post); 7/7 |
+| P-H1-009 | S24 | SO-PK-02 Retrieve ← OP-GetBalance | 2 rev | 0.6 | decision 2: F-SOAP; neutral; 4/4 unique (PostEntry 3/4 and check-3 fail: carries the Posting stem) |
+| P-H1-010 | S24 | SO-PK-03 Execute/Reversal ← OP-ReverseEntry | 2 rev | 0.6 | decision 2: F-SOAP; check 3 pass; 2/2 — tie with PostEntry at 2/2 broken by the qualifier in the name (guide clause 4) |
+| P-H1-011 | S24 | SO-PE-01 Initiate ← OP-SubmitPayment | 2 rev | 0.8 | decision 1: Initiate ⇔ POST; neutral; 6/6 |
+| P-H1-012 | S24 | SO-PE-02 Retrieve ← OP-PaymentStatus | 2 rev | 0.6 | decision 2: F-SOAP; neutral; 4/4 unique |
+| P-H1-013 | S24 | SO-PE-03 Control ← OP-CancelPayment | 2 rev | 0.6 | decision 2: F-SOAP; neutral; 2/2 unique after SubmitPayment (decision 1) and PaymentStatus were taken |
+| P-H1-014 | S24 | SO-PRD-01 Register ← OP-CreateCustomer | 2 rev | 0.8 | decision 1: Register ⇔ POST; neutral; 4/4 — **tie with GetCustomer at 4/4 under the clause as written**, resolved in round 2 after GetCustomer went to SO-PRD-02 (5/5 unique) |
+| P-H1-015 | S24 | SO-PRD-02 Retrieve ← OP-GetCustomer | 2 rev | 0.6 | decision 2: F-SOAP; neutral; 5/5 unique |
+| P-H1-016 | S24 | SO-PRD-03 Update ← OP-UpdateCustomer | 2 rev | 0.6 | decision 2: F-SOAP; neutral; 3/3 unique |
+| P-H1-017 | S17 | SD-CA `REALIZED_BY` LM-ACCT | 3 | 0.8 | over P-H1-003…007; cap = strongest input (P-H1-003 high) |
+| P-H1-018 | S17 | SD-PK `REALIZED_BY` LM-POST | 3 | **0.6** | over P-H1-008…010; all three inputs medium (every PK operation is a POST deviation), so the cap gives medium (finding 6) |
+| P-H1-019 | S17 | SD-PE `REALIZED_BY` LM-PAY | 3 | 0.8 | over P-H1-011…013; strongest input high |
+| P-H1-020 | S17 | SD-PRD `REALIZED_BY` LM-PARTY | 3 | 0.8 | over P-H1-014…016; strongest input high |
+| P-H1-021 | S30 | BBO-ACCOUNT `MAPPED_TO` ENT-ACCOUNT | 4 | 0.8 | 8/8; extension `branch_code` |
+| P-H1-022 | S30 | BBO-POSTING `MAPPED_TO` ENT-POSTING | 4 | 0.8 | 7/7; extension `operator_id` |
+| P-H1-023 | S30 | BBO-PAYMENT-TXN `MAPPED_TO` ENT-PAYMENT | 4 | 0.8 | 8/8 |
+| P-H1-024 | S30 | BBO-PARTY `MAPPED_TO` ENT-PARTY | 4 | 0.8 | 6/6; extension `created_by` |
+| P-H1-025 | S01 | CAP-ACCT-SVC `SUPPORTED_BY` SD-CA | 3 → **5** | 0.4 | step 3 impossible (no processes); four-domain set; shared {account, block, close, current, maintain, open, term} = 7, runner-up 1 |
+| P-H1-026 | S01 | CAP-POSITION `SUPPORTED_BY` SD-PK | 3 → 5 | 0.4 | shared {balance, financial, maintain, movement, position, record} = 6, runner-up 2 |
+| P-H1-027 | S01 | CAP-PAY-EXEC `SUPPORTED_BY` SD-PE | 3 → 5 | 0.4 | shared {authorised, execute, execution, payment, scheme} = 5, runner-up 0 |
+| P-H1-028 | S01 | CAP-PARTY-DATA `SUPPORTED_BY` SD-PRD | 3 → 5 | 0.4 | shared {data, master, record, reference} = 4, runner-up 1 |
+
+**Systematic finding F-SOAP** (reported once, referenced by eleven proposals): every operation of the four LedgerMaster SOAP interfaces is exposed as POST, so check 2 fails for all Retrieve, Update, Control and Execute operations; they are proposed one band lower. The gold approves all eleven with "deviation recorded".
+
+#### Candidate-rule and institution-only proposals (not in the proposal file)
+
+| Report id | Plan ID | Connection | Step | Confidence | Working |
+|---|---|---|---|---|---|
+| C-H1-001…005 | S50 | ENT-ACCOUNT, ENT-POSTING, ENT-PAYMENT, ENT-PARTY, ENT-AUDIT → INF-DB2-PROD | 1 | 0.6 | `stored_in` |
+| C-H1-006…009 | S20 | CR-CA → ENT-ACCOUNT 8/8; CR-PK → ENT-POSTING **7/8** (`position_reference` absent); CR-PE → ENT-PAYMENT 8/8; CR-PRD → ENT-PARTY 6/6 | 4 | 0.8 | attribute match |
+
+Derived paths as queries: **S23** SG-CA/PK/PE/PRD → IFC-ACCT/POST/PAY/PARTY; **S40** APP-LEDGER → ENV-PROD; **S47** the 17 operations and jobs → DEP-LM-PROD; and **the ledger as a whole**: SD-CA, SD-PK, SD-PE, SD-PRD → APP-LEDGER → INF-MF-LPAR-PROD through module composition — a query, not a stored `REALIZED_BY`, as the case requires.
+
+#### sdmm-eval
+
+```
+$ python -m sdmm.graph check examples/legacy-core-ledger/a*.json examples/legacy-core-ledger/h1-mappings-given.json examples/legacy-core-ledger/h1-proposals.json
+OK: level A1 … A4; OK: mappings #1; OK: mappings #2
+
+$ python -m sdmm.validate --strict examples/legacy-core-ledger/h1-proposals.json
+WARNING ×28 (required evidence kinds on proposals); WARNING ×4 (P-H1-025…028: bian_alignment_guidance mapping requires bian_release)
+OK: examples/legacy-core-ledger/h1-proposals.json (with warnings)
+exit=0
+
+$ python -m sdmm.evaluate examples/legacy-core-ledger/h1-gold-mappings.json --proposals examples/legacy-core-ledger/h1-proposals.json
+relationship     gold prop  tp  fp  fn   prec   rec    f1
+DEPLOYED_AS         1    1   1   0   0   1.00  1.00  1.00
+DEPLOYED_ON         1    1   1   0   0   1.00  1.00  1.00
+IMPLEMENTED_BY     14   14  14   0   0   1.00  1.00  1.00
+MAPPED_TO           4    4   4   0   0   1.00  1.00  1.00
+REALIZED_BY         4    4   4   0   0   1.00  1.00  1.00
+SUPPORTED_BY        4    4   4   0   0   1.00  1.00  1.00
+OVERALL            28   28  28   0   0   1.00  1.00  1.00
+
+$ python -m sdmm.graph trace CAP-ACCT-SVC --direction down … h1-proposals.json --status approved,proposed
+CAP-ACCT-SVC -SUPPORTED_BY-> SD-CA (P-H1-025) -REALIZED_BY-> LM-ACCT (P-H1-017)
+(approved only: "(no downstream mappings)", exit 1 — nothing is approved in H1)
+$ … trace INF-MF-LPAR-PROD --direction up … --status approved,proposed
+INF-MF-LPAR-PROD <-DEPLOYED_ON- APP-LEDGER (P-H1-001)
+```
+
+The downstream trace from a capability stops at the module: `LM-ACCT` has no deployment record of its own, and the ledger's hosting is reached only through A3 composition (`APP-LEDGER` composes the modules), which the mapping graph does not follow. The chain capability → domain → module → platform exists in the data but is a derived path, not a trace (finding 7).
+
+**Pass criteria.** F1 1.00 ≥ 0.8. F-SOAP reported once. Every negative held: no deployment arrows for the five modules; nothing for the three BATCH jobs; nothing for ENT-AUDIT; no `REALIZED_BY` for APP-LEDGER or LM-BATCH; **no proposal for CAP-LENDING (0 shared concepts) or CAP-TREASURY (1, "position")**. All four A1 proposals low with a step-5 rationale naming both texts and the runner-up. Log complete. **Caveat:** under the guide's text as written — strict gate and non-iterative disambiguation — the run would have filed 8 of 14 `IMPLEMENTED_BY` (the posting and party gates fail literally; two ties remain), recall 0.79 overall.
+
+#### Predicted vs observed, per plan ID
+
+| Plan ID | Predicted | Observed | Verdict |
+|---|---|---|---|
+| S33, S32 | high (1) | hits, three and two records | **holds** |
+| S24 ×14 | high ×3 (Initiate ×2, Register), medium ×11, none for BATCH | exactly that; 14/14 hit | **holds — with H1-C1 and H1-C2**; as written 8/14 (findings 1, 2) |
+| S17 ×4 | high — any one implemented operation suffices | 4/4 hit; three at 0.8, **SD-PK at 0.6** because all its inputs carry the POST deviation | **holds, one band below the table for SD-PK** (finding 6) |
+| S30 ×4 | high (≥ 7/8) | 8/8, 7/7, 8/8, 6/6; ENT-AUDIT nothing | **holds** |
+| S20 ×4 | high (report) | 8/8, 7/8, 8/8, 6/6 reported | holds |
+| S01 ×4 | low; two capabilities none | 4/4 hit at 0.4; CAP-LENDING and CAP-TREASURY refused | **holds** — with H1-C3 (finding 5) |
+| S50 ×5 | medium (report) | reported | holds |
+| S36 | subsumed | the LPAR is an `A4.Node`; S33 covers it through the hierarchy | holds |
+| Negatives | APP-LEDGER, LM-BATCH, BATCH jobs, ENT-AUDIT | all no-proposal | hold |
+
+#### Findings against the plan
+
+| # | Plan ID | What happened | Why | Proposed change to `new-mappings.json` (or the guide / case) |
+|---|---|---|---|---|
+| 1 | S24 precondition, guide §3 step 2 | the boundary gate as written (literal asset-type name in paths, entity names or description) passes for only two of four modules: "current account" occurs in one operation description of LM-ACCT and "payment transactions" in ENT-PAYMENT's description; "Financial Position" and "Party Reference" occur nowhere in LM-POST's or LM-PARTY's texts | legacy estates name things `POSTING_JRNL`, `CUST_MASTER`, `GetBalance`, `CreateCustomer`; BIAN names them Position, Party. A literal gate blocks exactly the reverse-mapping case it exists for; strictly, six of fourteen operations are never considered | guide: the gate reads the module's camel-split operation names, its paths, its entity names, and the descriptions of module, operations and entities; it passes when at least half the asset-type tokens, or a listed synonym or abbreviation, occur. `export-conventions.json`: an optional institution glossary (`aliases`: acct→account, txn→transaction, customer→party …) that steps 2 and 4 consult. The gate's looseness is acceptable because it is a filter, not evidence — here it also admitted SD-CA × LM-POST and SD-CA/SD-PK × LM-BATCH without harm |
+| 2 | S24 disambiguation, guide clause 4 | two ties the clause cannot break: SO-CA-03 Control (2 attributes) matches BlockAccount and AmendOverdraft at 2/2; SO-PRD-01 Register matches CreateCustomer and GetCustomer at 4/4. Neither operation has a qualifier, so the tie-break does not apply; the clause says "no proposal" | the clause excludes only pairs sharing an API or operation with a **decision-1** pair; it does not propagate uniquely resolved decision-2 pairs. GetCustomer is SO-PRD-02's unique best (5/5) and AmendOverdraft is SO-CA-04's unique best (3/3); once those are taken, each tie has one candidate left | guide clause 4: "Resolution is iterative: a pair that is its operation's unique candidate is assigned; its API and operation leave every other candidate set; repeat until nothing changes. Only ties that survive the fixpoint are no proposal." Two rounds sufficed here |
+| 3 | S24 check 3 | SOAP paths have no resource/sub-resource structure (`/ledger/svc/CloseAccount`); the qualifier was sought in the camel-split operation name by stem (Closure ~ Close, Posting ~ Post, Reversal ~ Reverse) | the check's text presumes REST paths. The fail clause (a null-qualifier operation against a path carrying another operation's qualifier) was the discriminator in three pairs (SO-CA-02 × CloseAccount, SO-PK-02 × PostEntry, SO-PK-03 × PostEntry resolved by the tie-break) | guide check 3: "For RPC-style paths the qualifier is sought in the operation name (camel-split); a clear synonym is a shared stem of ≥ 4 letters." Keep the fail clause — it carried the discrimination the method could not provide |
+| 4 | S24, F-SOAP | the systematic finding worked as specified: one finding, eleven references; the gold approves all eleven as recorded deviations | — | a `deviation` field on the mapping record (M1 finding 5) so the architect sees "method: POST for Retrieve, SOAP convention" without reading the evidence string; the proposal keeps the lower band until approved |
+| 5 | S01, guide §3 step 5 | "no domain clearly better than the rest" has no threshold; CAP-TREASURY shares one generic token ("position") with SD-PK and nothing with the others — a strict reading of "better than the rest" would have proposed it | one shared word is not a scope match; the case requires a refusal here | guide step 5: "clearly better = at least two shared concepts after stop-words, and strictly more than every other domain" (H1-C3). On this run it separated the four true pairs (4–7 shared, runner-up ≤ 2) from the two refusals (0 and 1) with margin |
+| 6 | S17, guide §2 cap | SD-PK → LM-POST derived at 0.6 while the other three modules got 0.8: every Position Keeping operation is a POST deviation, so its strongest input is medium | the cap propagates a documented, systematic method deviation into the realisation band, although the realisation is as certain as the others — the APIs do implement the operations | guide §2: a decision-2 input whose only failed check is a systematic deviation (one F-finding covering the interface) counts as high for the purpose of the S17 cap; or, with finding 4, the band is not reduced once the deviation is recorded |
+| 7 | S17 / S33 trace | `sdmm-graph trace CAP-ACCT-SVC --direction down` stops at LM-ACCT: the module has no deployment arrow and the trace does not follow A3 composition to APP-LEDGER | realisation at module level (correct) plus hosting at ledger level (correct) leaves a composition hop the mapping graph does not traverse | `sdmm/graph.py`: optionally follow within-level `composition` upward from a traced component to its whole when the whole carries the A4 arrows (flag `--through-composition`), reporting the hop as derived. Not a plan change; recorded so the case's "capability → platform" expectation is exact |
+| 8 | guide §4 | no baseline exists for H1 (nothing is approved); the executor assigned `H1-BASE-2026-Q4` | the template requires `baseline_id` but the case does not define one | case H1 / guide §4: name the baseline the proposals belong to, or allow `baseline_id` to be omitted on a proposal document for an unbaselined estate |
+| 9 | S01 validator | `bian_release` is required on `bian_alignment_guidance` mappings; the A2 export carries no release identifier | the A2 export has `model_version` but no BIAN release field | `export-conventions.json`: a model-level `bian_release` on the A2 export that step-5 proposals copy; warning-level only |
+
+#### New connection candidates (outside the plan)
+
+None. The three BATCH jobs overlap no control record at ≥ 50 % (JOB-INTEREST vs CR-PK is the best at 2/8), so there is no non-REST realisation to report. The A2 export has no Notify operation. LM-BATCH and TS-SCHED (the scheduler) are plausibly related but no export key links them, so nothing is recorded.
+
+#### No-proposal register
+
+| Plan ID | Instances considered | Why no proposal |
+|---|---|---|
+| S33 / S32 | LM-ACCT, LM-POST, LM-PAY, LM-PARTY, LM-BATCH | no deployment record of their own; hosting is the ledger's (derived path) |
+| S24 | 67 gated operation × SOAP-operation pairs (all in the log) | 14 proposed; 45 at decision 3 (check 4 below 50 % or not the best match, or check 3 fail); 8 decision-1/2 candidates excluded by one-to-one resolution |
+| S24 | 13 of 20 domain × module gates | gate fails: no asset-type token or synonym in the module's texts; one summary record each |
+| S24 | JOB-EOD, JOB-INTEREST, JOB-AUDIT | `method: BATCH` — not an HTTP interface; step 2 not applicable; best control-record overlap 2/8 |
+| S17 | APP-LEDGER × four domains | composes the modules; realisation is at module level; the whole is a query |
+| S17 | LM-BATCH × four domains | exposes only BATCH jobs; no implemented operation; asset tokens absent |
+| S30 / S20 | ENT-AUDIT × every BOM object and control record | 0/n |
+| S01 | CAP-LENDING | 0 shared concepts with any domain |
+| S01 | CAP-TREASURY | 1 shared concept ("position") with SD-PK only — below the H1-C3 threshold; refused rather than guessed |
+| S25, S41, S49 | — | no `A3.ApplicationService`, no `consumes`, no artifact |
+| S02, S04, S06, S12 | — | the A1 draft has no value streams, processes, activities or business objects |
+
+**Summary.** Reverse mapping under the worst information conditions the suite defines — nothing approved, a draft capability list, SOAP-era naming — reached every one of the 28 approved arrows with no false proposal, and refused the two capabilities and the three batch jobs it was meant to refuse. The honest caveat is that three gaps in the guide had to be filled by stated conventions: the boundary gate must read operation names and descriptions through an alias table (as written it blocks half the estate), disambiguation must iterate (as written it leaves two ties), and step 5 needs a numeric "clearly better". None of the three is inference; each is a rule the guide should state. The method deviation (all POST) was carried as one finding and should stop depressing the realisation band once recorded. H2's hostile naming will press on finding 1 hardest.
