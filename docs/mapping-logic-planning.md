@@ -521,7 +521,7 @@ One row per mapping across both tiers: the claim (§1.2 or §2.3), its authority
 | S53 | Support | `A3.SolutionBuildingBlock` → `A4.Deployment` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S54 | Support | `A3.SolutionBuildingBlock` → `A4.Node` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 
-**Summary:** 69 mappings traced — 15 BIAN-only (B01–B15) and 54 support-framework candidates (S01–S54). Of the 13 BIAN-internal relationships that should be level-model constraints, **8 are encoded** in `metamodel/level-relationships.json` and **4 are not yet** (B07, B08, B11, B12 — proposed constraints above; a v0.4.x correction). Of the 54 candidates: 9 are existing registry rules, 5 are verified BIAN-guided candidates, 6 are open, 3 are SDMM definitions, 31 are institution-only.
+**Summary:** 69 mappings traced — 15 BIAN-only (B01–B15) and 54 support-framework candidates (S01–S54). Of the 12 BIAN-internal relationships that should be level-model constraints (B02–B13; B14–B15 are artefact relationships), **8 are encoded** in `metamodel/level-relationships.json` and **4 are not yet** (B07, B08, B11, B12 — proposed constraints above; a v0.4.x correction). Of the 54 candidates: 9 are existing registry rules, 5 are verified BIAN-guided candidates, 6 are open, 3 are SDMM definitions, 31 are institution-only.
 
 
 ## 4. Mapping Diagram
