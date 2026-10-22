@@ -224,7 +224,10 @@ class AcquiredFintechExampleTests(unittest.TestCase):
         self.assertEqual(json.loads((self.P / 'h2-mappings-given.json').read_text())['mappings'], [])
         self.assertEqual(d, u); self.assertEqual(len(d), 41)
 
-    def test_aliases_are_missing_for_savings_and_fraud(self):
+    def test_run2_aliases_savings_decoded_fraud_not(self):
         a2 = json.loads((self.P / 'a2-service-domain.json').read_text())
         at = {i['id']: i.get('attributes', {}).get('aliases') for i in a2['instances'] if i['type'] == 'A2.AssetType'}
-        self.assertIsNone(at['AT-SA']); self.assertIsNone(at['AT-FD']); self.assertIn('zap', at['AT-PE'])
+        self.assertIn('vault', at['AT-SA']); self.assertIsNone(at['AT-FD']); self.assertIn('zap', at['AT-PE'])
+        a3 = json.loads((self.P / 'a3-application.json').read_text())
+        zap = next(i for i in a3['instances'] if i['id'] == 'IFC-zap')
+        self.assertEqual(zap['attributes']['field_aliases']['sender'], 'debtor_account_reference')

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.6 — after H2 run 1 (P 1.00, R 0.78 under hostile naming)
+
+- Data-entity matching (S30/S20/S31) one-to-one to a fixpoint; check 4 requires two matched attributes.
+- S17: description-only fallback removed; new fallback A closes realisation over the information perspective.
+- New export conventions: qualifier aliases and interface field aliases (institution data); applied to the H2 export for run 2.
+
 ## 0.5.5 — after H1 (28 of 28 from nothing approved)
 
 - Executor guide: token boundary gate with institution asset-type aliases (new export convention `A2.AssetType.attributes.aliases`); disambiguation iterated to a fixpoint; numeric step-5 threshold (≥ 2 non-generic shared concepts, lead ≥ 1); systematic interface deviations do not lower derivations.

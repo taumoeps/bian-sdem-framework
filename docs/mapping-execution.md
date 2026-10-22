@@ -70,7 +70,9 @@ Legacy names rarely contain the literal BIAN asset name ("POSTING_JRNL" does not
 |---|---|---|---|---|---|
 | 2 | Action term ↔ HTTP method | [SAPG] §3.2.5 (17 action terms), §3.5 (Retrieve → GET; Notify unused in the REST mapping) | Retrieve ⇔ GET (verified). **Executor convention, marked:** Create/Initiate/Register/Evaluate/Provide/Request ⇔ POST; Update/Control/Exchange/Capture/Grant/Execute ⇔ PUT or PATCH; Activate/Configure/Feedback ⇔ PUT or POST | any other combination | — (Notify or a term outside the 17: **fail** — no REST form) |
 | 3 | Behaviour qualifier ↔ path | [SAPG] §3.5 p. 55 | the operation has a qualifier and its name (or clear synonym) is a path segment after the resource | the operation has a qualifier and the path lacks it; **or** the operation has no qualifier and the path carries a segment that is another operation's qualifier | the operation has no qualifier and the path has no qualifier segment |
-| 4 | Attributes ↔ payload | [SAPG] §3.5 (attributes filtered by action term) | ≥ 50 % of `input_attributes` ∪ `output_attributes` appear in `payload_fields` **and** this API is the operation's best payload match (highest overlap) | < 50 % | — |
+| 4 | Attributes ↔ payload | [SAPG] §3.5 (attributes filtered by action term) | ≥ 50 % of `input_attributes` ∪ `output_attributes` appear in `payload_fields`, **at least two attributes matched** (one shared field — e.g. a status — is not evidence; H2 finding 5), **and** this API is the operation's best payload match (highest overlap). Matching is by normalised name, then through `field_aliases` where the export supplies them | < 50 %, or fewer than two matched | — |
+
+**Aliases.** Where the export supplies them, check 3 reads `A2.BehaviorQualifier.attributes.aliases` (e.g. Closure → `close`) and check 4 reads `A3.ApplicationInterface.attributes.field_aliases` (product field → canonical attribute, e.g. `sender → debtor_account_reference`). Aliases are institution data, recorded in the export, never invented by the executor (H2 finding 4).
 
 **Decision, per operation, over the APIs that passed the precondition:**
 
@@ -92,7 +94,7 @@ Closure rules. Cite the `mapping_id` of every arrow used.
 
 | Connection | Rule |
 |---|---|
-| S17 `REALIZED_BY` | if component C exposes API operations that `IMPLEMENTED_BY` (approved, or your step-2 proposals — say which) operations of domain D, then D `REALIZED_BY` C. **Fallback (step 4, one band lower):** a token of the domain's asset-type name **or its aliases** (`A2.ServiceDomain.attributes.asset_type` → `A2.AssetType.name`, `.attributes.aliases`) appears in the component's API paths or data entity names — a structural match, scored as matches / APIs+entities, threshold ≥ 1 match. Description-only comparison is **step 5**, two bands lower |
+| S17 `REALIZED_BY` | if component C exposes API operations that `IMPLEMENTED_BY` (approved, or your step-2 proposals — say which) operations of domain D, then D `REALIZED_BY` C. **Fallback A (step 3, same band):** the component accesses a data entity that is `MAPPED_TO` (approved, or your step-4 proposal — say which) the domain's control record's business object — realisation closed over the information perspective (H2 finding 3). **Fallback B (step 4, one band lower):** a token of the domain's asset-type name **or its aliases** (`A2.ServiceDomain.attributes.asset_type` → `A2.AssetType.name`, `.attributes.aliases`) appears in the component's API paths or data entity names — a structural match, scored as matches / APIs+entities, threshold ≥ 1 match. **No description-only fallback**: step 5 is reserved for the A1 side (H2 finding 2) |
 | S25 | operation O `IMPLEMENTED_BY` API a; a exposed by application service S (A3 composition) ⇒ O → S |
 | S22 / S23 | the service/interface exposing the APIs of a group's operations |
 | S04 `USES_DOMAIN` | process P (or one of its activities) has `attributes.invokes` naming operation O, or an S06 proposal; O in domain D (B09/B10) ⇒ P `USES_DOMAIN` D. A process exported without activities may be matched directly to operations by the S06 verb+noun rule (step 4) |
@@ -105,7 +107,7 @@ Only for the IDs the plan assigns to step 4, or as a declared fallback.
 
 | Connection | Match on | Propose when |
 |---|---|---|
-| S30 `MAPPED_TO`, S20, S31 | BOM / control-record attribute names vs data entity attribute names (normalise case, underscores, plural) | ≥ 50 % of the BIAN object's attributes matched; score = matched / BIAN attributes |
+| S30 `MAPPED_TO`, S20, S31 | BOM / control-record attribute names vs data entity attribute names (normalise case, underscores, plural; `field_aliases` where supplied) | ≥ 50 % of the BIAN object's attributes matched; score = matched / BIAN attributes. **One-to-one, iterated to a fixpoint as in step 2:** file the highest-scoring object–entity pair, remove pairs sharing either end, repeat; ties are no proposal with both named. Account-like and payment-like objects share `amount, currency, status` fields and cross-match otherwise (H2 finding 1) |
 | S12 `ALIGNED_TO` (object) | bank glossary attributes vs BOM attributes | as above |
 | S02 `ALIGNED_TO` (value stream) | **coverage of the scenario's operations**: each operation in `operation_sequence`, in order, is matched by a stage whose name shares the operation's **action term** (verb or a clear synonym: capture ≈ initiate/create, validate ≈ evaluate, execute, confirm ≈ retrieve/notify). The asset noun is **not** evidence — every operation of a domain shares it (M1 finding 4). A stream may have more stages than the scenario has operations | score = covered operations / operations in the scenario; propose when ≥ 60 % |
 | S06 | activity name vs operation name (action verb + asset noun) | both verb and noun match |

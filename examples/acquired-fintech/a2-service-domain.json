@@ -180,7 +180,13 @@
       "version": "1.0",
       "name": "Savings Account",
       "lifecycle_status": "active",
-      "description": "An interest-bearing savings account."
+      "description": "An interest-bearing savings account.",
+      "attributes": {
+        "aliases": [
+          "vault",
+          "goal"
+        ]
+      }
     },
     {
       "id": "AT-FD",
@@ -335,7 +341,12 @@
       "version": "1.0",
       "name": "Execution",
       "lifecycle_status": "active",
-      "description": "Hand-over to execution."
+      "description": "Hand-over to execution.",
+      "attributes": {
+        "aliases": [
+          "release"
+        ]
+      }
     },
     {
       "id": "BQ-CLOSURE",
@@ -343,7 +354,12 @@
       "version": "1.0",
       "name": "Closure",
       "lifecycle_status": "active",
-      "description": "Closing an account."
+      "description": "Closing an account.",
+      "attributes": {
+        "aliases": [
+          "close"
+        ]
+      }
     },
     {
       "id": "SG-PI",

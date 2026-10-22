@@ -1,5 +1,5 @@
 {
-  "$schema_version": "0.5.5",
+  "$schema_version": "0.5.6",
   "note": "Conventional attribute keys on level-export instances. 'attributes' stays free-form in schema/level-model.schema.json; these are the keys the mapping steps (docs/mapping-execution.md §3) join on. Cross-level references are allowed ONLY as attributes (relationships stay within-level).",
   "conventions": {
     "A2.ServiceOperation": {
@@ -65,6 +65,12 @@
     },
     "A2.AssetType": {
       "aliases": "list of tokens the institution's estate uses for this asset (join key for the step-2 boundary gate and the S17 fallback); e.g. Financial Position → balance, position, posting, ledger"
+    },
+    "A2.BehaviorQualifier": {
+      "aliases": "list of tokens the institution's APIs use for this qualifier (step-2 check 3); e.g. Closure → close"
+    },
+    "A3.ApplicationInterface": {
+      "field_aliases": "map of the interface's product field names to canonical attribute names (step-2 check 4, S30/S20 step 4); e.g. sender → debtor_account_reference. Institution data from interviews or contract review, never inferred"
     }
   },
   "bian_action_terms": {

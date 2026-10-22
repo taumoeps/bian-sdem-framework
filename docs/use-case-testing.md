@@ -182,7 +182,7 @@
 |---|---|---|---|
 | S33 ×7, S32 ×7 | services → cluster / deployments | 1 | high |
 | S24 | operations ← endpoints | 2 | **9 proposals**: PI Initiate/Update/Retrieve, CA Initiate/Retrieve/Control, PRD ×3 — high; **none** for PI Control/Execute (tie), PE ×2 (fields), CA Closure (fields), SA ×3 (gate), perks/shield/ledger/buddies |
-| S17 | domains ← services | 3 | high for PI, CA, PRD; **medium** for PE via the alias fallback (`/zap`); **none** for SA (no step-2 input, no alias) |
+| S17 | domains ← services | 3 | high for PI, CA, PRD; **medium** for PE via the alias fallback (`/zap`); SA via **fallback A** (vaults table `MAPPED_TO` the Savings object) at the step-4 input's band (v0.5.6) |
 | S30 | BOM objects → tables | 4 | high for PI, CA, PRD, **SA** (6/8 via attributes — the only route to Savings here); none for PE (`zaps` 2/8), FD, perks, buddies |
 | S20 | control records → tables | 4 | candidate-rule reports, same four |
 | S50 | tables → PostgreSQL / Redis | 1 | institution-only report |
@@ -204,7 +204,7 @@
 | Negative tests | ● | ● | ● | ● | ● | ● |
 | Perspectives: architecture / process / information | A | A P I | A P I | A | A I | A I |
 
-**Order of execution:** E1, M0, M1, H1 (done); **H2 next**; E2 after its exports are authored; M2 last (it tests a boundary, not the plan's core).
+**Order of execution:** E1, M0, M1, H1, H2 run 1 (done); **H2 run 2 next** (alias-enriched export); E2 after its exports are authored; M2 last (it tests a boundary, not the plan's core).
 
 ## Results
 
@@ -1019,3 +1019,15 @@ SD-SA -REALIZED_BY-> svc-vaults (P-H2-028) -DEPLOYED_ON-> INF-EKS-ZIPPA-PROD; -D
 | S01, S02, S04, S06, S12 | — | **requires authoring**: no A1 export |
 
 **Summary.** Under hostile naming the plan did what the case asked: it proposed nothing wrong. Precision 1.00 over 32 proposals, and the nine misses are exactly the arrows the architect reached by interview. The misses are now measurable by cause — three behind one missing asset alias, five behind product field names, three behind deviations the procedure refuses by design — and each cause has a data-side remedy (asset aliases, field aliases, qualifier aliases, a DELETE row) rather than a looser rule. Two rule findings matter beyond this case: the `MAPPED_TO` threshold needs the same one-to-one resolution step 2 already has, or it files cross pairs between account-like objects; and the realisation rule should be allowed to close over the information perspective, which reaches Savings Account structurally where step 2 cannot. The suite's six cases are now all executed except E2 and M2.
+
+### H2 — actions taken on the findings (v0.5.6)
+
+| Finding | Action |
+|---|---|
+| 1 — data-entity rule cross-matched | S30/S20/S31 are one-to-one, iterated to a fixpoint as step 2 is; ties are no proposal |
+| 2 — S17 description fallback vs step 5 | Description-only fallback **removed** from S17; step 5 is reserved for the A1 side |
+| 3 — realisation via data | S17 fallback A: a component accessing an entity `MAPPED_TO` the domain's object realises the domain, at the step-4 input's band |
+| 4 — field and qualifier aliases | New export conventions `A2.BehaviorQualifier.attributes.aliases` and `A3.ApplicationInterface.attributes.field_aliases`; institution data, never inferred. Applied to the H2 export (vault/goal, close, release; zap/pots/buddies/vaults/flow field maps) so a **second run** can measure the recovery the executor predicted (8 of 9 misses) |
+| 5 — one shared field filed at high | Check 4 requires at least two matched attributes |
+
+**H2 run 1 is complete:** 32 of 32 proposals correct, recall 0.78, every miss classified. **Run 2** against the alias-enriched export is the next execution: expected recall ≥ 0.95 with precision unchanged.

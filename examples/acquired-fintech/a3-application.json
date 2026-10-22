@@ -145,7 +145,12 @@
       "version": "2026.10",
       "name": "flow-api",
       "lifecycle_status": "active",
-      "description": "REST."
+      "description": "REST.",
+      "attributes": {
+        "field_aliases": {
+          "flow_id": "payment_instruction_reference"
+        }
+      }
     },
     {
       "id": "IFC-zap",
@@ -153,7 +158,17 @@
       "version": "2026.10",
       "name": "zap-api",
       "lifecycle_status": "active",
-      "description": "REST."
+      "description": "REST.",
+      "attributes": {
+        "field_aliases": {
+          "sender": "debtor_account_reference",
+          "recipient": "creditor_account_reference",
+          "zap_id": "payment_reference",
+          "outcome": "execution_status",
+          "rail_ref": "scheme_reference",
+          "settled_at": "execution_date"
+        }
+      }
     },
     {
       "id": "IFC-pots",
@@ -161,7 +176,14 @@
       "version": "2026.10",
       "name": "pots-api",
       "lifecycle_status": "active",
-      "description": "REST."
+      "description": "REST.",
+      "attributes": {
+        "field_aliases": {
+          "pot_id": "account_reference",
+          "opened_at": "open_date",
+          "closed_at": "close_date"
+        }
+      }
     },
     {
       "id": "IFC-buddies",
@@ -169,7 +191,13 @@
       "version": "2026.10",
       "name": "buddies-api",
       "lifecycle_status": "active",
-      "description": "REST."
+      "description": "REST.",
+      "attributes": {
+        "field_aliases": {
+          "member_id": "party_reference",
+          "display_name": "party_name"
+        }
+      }
     },
     {
       "id": "IFC-vaults",
@@ -177,7 +205,12 @@
       "version": "2026.10",
       "name": "vaults-api",
       "lifecycle_status": "active",
-      "description": "REST."
+      "description": "REST.",
+      "attributes": {
+        "field_aliases": {
+          "vault_id": "account_reference"
+        }
+      }
     },
     {
       "id": "IFC-perks",
