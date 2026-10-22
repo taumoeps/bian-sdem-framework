@@ -1,0 +1,35 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "fable-executor/2026-10-22",
+  "mappings": [
+    {
+      "mapping_id": "P-E1-001",
+      "source": {"id": "SD-044", "type": "A2.ServiceDomain", "version": "1.0", "canonical_id": "BIAN-FRAUD-DETECTION"},
+      "relationship": "REALIZED_BY",
+      "target": {"id": "APP-FRAUD-ENGINE", "type": "A3.ApplicationComponent", "version": "4.2"},
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S17 step4 fallback (assigned step 3 produced nothing: no approved and no step-2 IMPLEMENTED_BY to close over); functional-partition comparison of descriptions: SD-044 vs APP-FRAUD-ENGINE share {fraud, transaction, alert} = 3/9 domain concepts; CMP-SCORING (2/9) and IFC-FRAUD-API (2/9) are parts of APP-FRAUD-ENGINE by A3 composition, so the whole is proposed; confidence lowered one band (high -> medium) for the fallback"
+      ],
+      "rationale": "The Fraud Engine's description covers the domain's partition (evaluate transactions for fraud, raise alerts); its composed parts match less and are not proposed separately",
+      "baseline_id": "BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-E1-002",
+      "source": {"id": "CAP-310", "type": "A1.BusinessCapability", "version": "1.0"},
+      "relationship": "SUPPORTED_BY",
+      "target": {"id": "SD-044", "type": "A2.ServiceDomain", "version": "1.0", "canonical_id": "BIAN-FRAUD-DETECTION"},
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S01 step5 fallback (assigned step 3 produced nothing: CAP-310's only process PRC-310-01 has no USES_DOMAIN arrow, no activities and no operation mapping to derive one); text comparison CAP-310 'Detect suspicious card transactions in real time and alert the cardholder ...' vs SD-044 'evaluates transactions and activity for indications of fraud and raises alerts': shared concepts {fraud, transaction, alert} = 3/12 capability concepts; SD-044 is the only A2.ServiceDomain in the export; confidence lowered one band (medium -> low) for the fallback"
+      ],
+      "rationale": "Only one domain is exported and it names the capability's three core concepts; the match is textual, not derived, so it is low confidence",
+      "baseline_id": "BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    }
+  ]
+}
