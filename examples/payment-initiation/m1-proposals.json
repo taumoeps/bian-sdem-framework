@@ -1,0 +1,151 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "fable-executor/2026-10-22",
+  "use_case": "M1",
+  "mappings": [
+    {
+      "mapping_id": "P-M1-001",
+      "source": {"id": "APP-PAY-HUB", "type": "A3.ApplicationComponent", "version": "7.1"},
+      "relationship": "DEPLOYED_ON",
+      "target": {"id": "INF-K8S-PAY-PROD", "type": "A4.SystemSoftware", "version": "1.29"},
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": ["engine_rationale:S33 step1 data join; a3 APP-PAY-HUB.attributes.deployed_on = ['INF-K8S-PAY-PROD']; a4 INF-K8S-PAY-PROD.attributes.hosts = ['APP-PAY-HUB','CMP-PAY-EXEC']; both sides name each other; corroborated by DEP-PAYHUB-PROD.platform_id"],
+      "rationale": "The APM and CMDB exports both place the Payments Hub on the production Kubernetes platform",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-002",
+      "source": {"id": "APP-PAY-HUB", "type": "A3.ApplicationComponent", "version": "7.1"},
+      "relationship": "DEPLOYED_ON",
+      "target": {"id": "INF-K8S-PAY-UAT", "type": "A4.SystemSoftware", "version": "1.29"},
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": ["engine_rationale:S33 step1 data join, ONE-SIDED: a4 INF-K8S-PAY-UAT.attributes.hosts = ['APP-PAY-HUB'] (guide step 1 accepts either side); a3 APP-PAY-HUB.attributes.deployed_on does NOT list the UAT platform; corroborated by DEP-PAYHUB-UAT (component_id APP-PAY-HUB, platform_id INF-K8S-PAY-UAT, environment_id ENV-PAY-UAT). Band is the plan's; the one-sided record is flagged in findings"],
+      "rationale": "The CMDB says the UAT cluster hosts the hub and the UAT deployment record agrees; the APM export omits it",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-003",
+      "source": {"id": "CMP-PAY-EXEC", "type": "A3.ApplicationComponent", "version": "3.4"},
+      "relationship": "DEPLOYED_ON",
+      "target": {"id": "INF-K8S-PAY-PROD", "type": "A4.SystemSoftware", "version": "1.29"},
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": ["engine_rationale:S33 step1 data join; a3 CMP-PAY-EXEC.attributes.deployed_on = ['INF-K8S-PAY-PROD']; a4 INF-K8S-PAY-PROD.attributes.hosts includes 'CMP-PAY-EXEC'; both sides; corroborated by DEP-PAYEXEC-PROD.platform_id"],
+      "rationale": "Both exports place the Execution Gateway on the production Kubernetes platform",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-004",
+      "source": {"id": "APP-PAY-HUB", "type": "A3.ApplicationComponent", "version": "7.1"},
+      "relationship": "DEPLOYED_AS",
+      "target": {"id": "DEP-PAYHUB-PROD", "type": "A4.Deployment", "version": "1.0"},
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": ["engine_rationale:S32 step1 data join; a4 DEP-PAYHUB-PROD.attributes.component_id = 'APP-PAY-HUB' (environment ENV-PAY-PROD, platform INF-K8S-PAY-PROD); a3 APP-PAY-HUB.attributes.deployed_as includes 'DEP-PAYHUB-PROD'; both sides"],
+      "rationale": "The production deployment record names the hub and the hub lists it",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-005",
+      "source": {"id": "APP-PAY-HUB", "type": "A3.ApplicationComponent", "version": "7.1"},
+      "relationship": "DEPLOYED_AS",
+      "target": {"id": "DEP-PAYHUB-UAT", "type": "A4.Deployment", "version": "1.0"},
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": ["engine_rationale:S32 step1 data join; a4 DEP-PAYHUB-UAT.attributes.component_id = 'APP-PAY-HUB' (environment ENV-PAY-UAT, platform INF-K8S-PAY-UAT); a3 APP-PAY-HUB.attributes.deployed_as includes 'DEP-PAYHUB-UAT'; both sides"],
+      "rationale": "The UAT deployment record names the hub and the hub lists it",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-006",
+      "source": {"id": "CMP-PAY-EXEC", "type": "A3.ApplicationComponent", "version": "3.4"},
+      "relationship": "DEPLOYED_AS",
+      "target": {"id": "DEP-PAYEXEC-PROD", "type": "A4.Deployment", "version": "1.0"},
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": ["engine_rationale:S32 step1 data join; a4 DEP-PAYEXEC-PROD.attributes.component_id = 'CMP-PAY-EXEC' (environment ENV-PAY-PROD, platform INF-K8S-PAY-PROD); a3 CMP-PAY-EXEC.attributes.deployed_as = ['DEP-PAYEXEC-PROD']; both sides"],
+      "rationale": "The gateway's production deployment record and the gateway name each other",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-007",
+      "source": {"id": "SO-PI-01", "type": "A2.ServiceOperation", "version": "1.0"},
+      "relationship": "IMPLEMENTED_BY",
+      "target": {"id": "API-PI-01", "type": "A3.APIOperation", "version": "2.0"},
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": ["engine_rationale:S24 step2 rules 1-4 hold (4/4). Rule 1 reverse: SD-PI.asset_type AT-PAY-INSTR 'Payment Instruction' tokens both in path '/payment-instructions'; API composed in IFC-PAY-API <- SVC-PAY-INIT <- APP-PAY-HUB. Rule 2: Initiate <-> POST (executor convention) = POST. Rule 3: qualifier null, passes. Rule 4: input ∪ output 8 attributes, 8/8 in payload_fields"],
+      "rationale": "Create payment instruction is the REST form of Initiate Payment Instruction: resource, method and all eight attributes match",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-008",
+      "source": {"id": "SO-PI-02", "type": "A2.ServiceOperation", "version": "1.0"},
+      "relationship": "IMPLEMENTED_BY",
+      "target": {"id": "API-PI-02", "type": "A3.APIOperation", "version": "2.0"},
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": ["engine_rationale:S24 step2 rules 1-4 hold (4/4). Rule 1: asset-type tokens in '/payment-instructions/{id}/validation'. Rule 2: Evaluate <-> POST (convention) = POST. Rule 3: qualifier 'Validation' = path segment 'validation'. Rule 4: 3/3 attributes (payment_instruction_reference, authorisation_status, payment_status) in payload_fields"],
+      "rationale": "The validation sub-resource with POST carries the Evaluate operation's qualifier and all its attributes",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-009",
+      "source": {"id": "SO-PI-03", "type": "A2.ServiceOperation", "version": "1.0"},
+      "relationship": "IMPLEMENTED_BY",
+      "target": {"id": "API-PI-03", "type": "A3.APIOperation", "version": "2.0"},
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": ["engine_rationale:S24 step2 rules 1-4 hold (4/4). Rule 1: asset-type tokens in '/payment-instructions/{id}/execution'. Rule 2: Execute <-> PUT/PATCH (convention) = PUT. Rule 3: qualifier 'Execution' = path segment 'execution'. Rule 4: 3/3 attributes (payment_instruction_reference, execution_reference, payment_status) in payload_fields"],
+      "rationale": "The execution sub-resource with PUT carries the Execute operation's qualifier and all its attributes",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-010",
+      "source": {"id": "SO-PI-04", "type": "A2.ServiceOperation", "version": "1.0"},
+      "relationship": "IMPLEMENTED_BY",
+      "target": {"id": "API-PI-04", "type": "A3.APIOperation", "version": "2.0"},
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": ["engine_rationale:S24 step2, 3 of 4 rules -> one band lower (high -> medium). Rule 1: asset-type tokens in '/payment-instructions/{id}'. Rule 2 FAILS: action term Retrieve <-> GET (SAPG §3.5, verified) but API-PI-04.method = POST — FINDING: 'API-PI-04 implements operation SO-PI-04 but uses POST for a Retrieve' (the API's description records a legacy-channel reason). Rule 3: qualifier null, passes. Rule 4: 4/4 attributes (payment_instruction_reference, payment_status, execution_reference, authorisation_status) in payload_fields. Selected over five other 3/4 pairs for SO-PI-04 by executor convention M1-C1 (highest rule-4 ratio, unique)"],
+      "rationale": "Get payment instruction returns exactly the Retrieve operation's attributes on the instruction resource, but is exposed as POST instead of GET",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-011",
+      "source": {"id": "SO-PI-05", "type": "A2.ServiceOperation", "version": "1.0"},
+      "relationship": "IMPLEMENTED_BY",
+      "target": {"id": "API-PI-05", "type": "A3.APIOperation", "version": "2.0"},
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": ["engine_rationale:S24 step2 rules 1-4 hold (4/4). Rule 1: asset-type tokens in '/payment-instructions/{id}'. Rule 2: Update <-> PUT/PATCH (convention) = PATCH. Rule 3: qualifier null, passes. Rule 4: 5/5 attributes (payment_instruction_reference, amount, value_date, creditor_account_reference, payment_status) in payload_fields"],
+      "rationale": "Amend payment instruction with PATCH carries the Update operation's five attributes on the instruction resource",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-012",
+      "source": {"id": "SD-PI", "type": "A2.ServiceDomain", "version": "1.0", "canonical_id": "BIAN-PAYMENT-INITIATION"},
+      "relationship": "REALIZED_BY",
+      "target": {"id": "APP-PAY-HUB", "type": "A3.ApplicationComponent", "version": "7.1"},
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": ["engine_rationale:S17 step3 derivation over the step-2 proposals P-M1-007..011 (none approved): APIs API-PI-01..05 are composed in IFC-PAY-API <- SVC-PAY-INIT <- APP-PAY-HUB (a3 composition) and implement SO-PI-01..05 of SD-PI (SG-PI-1/SG-PI-2 composition, B09/B10). Confidence = min(plan high, weakest input P-M1-010 medium) = 0.6 per the v0.5.2 cap; four of five inputs are high — see findings. No proposal for SD-PE / SD-PA: no operations implemented; step-4 fallback asset tokens 'Payment Transaction' 0/9, 'Authentication' 0/9"],
+      "rationale": "The Payments Hub exposes the APIs that implement five of the domain's six operations, so it realises the domain",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M1-013",
+      "source": {"id": "BBO-PAY-INSTR", "type": "A2.BusinessObject", "version": "1.0", "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION"},
+      "relationship": "MAPPED_TO",
+      "target": {"id": "ENT-PAY-INSTR", "type": "A3.DataEntity", "version": "7.1"},
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": ["engine_rationale:S30 step4 structural match; BBO-PAY-INSTR.attributes.attributes (8) vs ENT-PAY-INSTR.attributes.attributes (11): 8/8 matched = 1.00 (threshold 0.5); ENT-PAY-EVENT 1/8, ENT-ACCOUNT-CACHE 1/8 rejected; BBO-PARTY matches no entity (0/3 everywhere)"],
+      "rationale": "Every attribute of the canonical Payment Instruction object is a column of the hub's payment_instruction table",
+      "baseline_id": "PAY-BASE-2026-Q4", "created_by": "fable-executor/2026-10-22"
+    }
+  ]
+}

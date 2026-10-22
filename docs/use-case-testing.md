@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** seven use cases defined; E1 and M0 executed 2026-10-22 (see Results); M1 authored and ready; E2, M2, H1, H2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** seven use cases defined; E1, M0 and M1 executed 2026-10-22 (see Results); E2, M2, H1, H2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -112,7 +112,7 @@
 | S50 | entities → INF-PG-PAY-PROD | 1 | medium — institution-only report via `stored_in` |
 | S40, S47 | derived paths | 3 | high — as queries |
 
-**Then.** Trace CAP-PAY-010 → platform; `impact INF-K8S-PAY-PROD --change rehost`. **Pass.** `sdmm-eval` F1 ≥ 0.85 over the approved gold; the planted mismatch reported; every negative holds; `m1-inference-log.json` complete. **Status:** data authored and validated (v0.5.3); **ready to execute**.
+**Then.** Trace CAP-PAY-010 → platform; `impact INF-K8S-PAY-PROD --change rehost`. **Pass.** `sdmm-eval` F1 ≥ 0.85 over the approved gold; the planted mismatch reported; every negative holds; `m1-inference-log.json` complete. **Status:** executed 2026-10-22 — see Results.
 
 ## M2 — Digital Lending, greenfield (Medium)
 
@@ -587,3 +587,132 @@ VS-CARD-USE -ALIGNED_TO-> BS-FRAUD-ALERT (P-M0-006)
 | 4 — case text | Pass criterion says six arrows; S17 predicted medium under the cap; S02 and S01 rows restated |
 
 **M0 is complete.** Both runs are recorded; the plan, guide, exports and gold are consistent. Next: author M1 (Payment Initiation, brownfield) to the export conventions and run it.
+
+### M1 — results (2026-10-22, fable-executor)
+
+**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.3. **Given.** `m1-mappings-given.json` (PAY-001…005) and the four v0.5.3 exports (68 instances). **Gold.** `m1-gold-mappings.json` and `mappings.json` were not opened until phase 5. The M1 case text states the gold's composition (five `IMPLEMENTED_BY`, one `REALIZED_BY`, one `MAPPED_TO`, two `DEPLOYED_ON`, three `DEPLOYED_AS`) and the planted items, so the shape of the gold was known; the instances were not. **Files.** `examples/payment-initiation/m1-proposals.json` (13 records) and `examples/payment-initiation/m1-inference-log.json` (85 attempts, 21 plan IDs, every operation × API pair included).
+
+#### Proposals
+
+| Proposal | Plan ID | Connection | Step (assigned / used) | Confidence | Working |
+|---|---|---|---|---|---|
+| P-M1-001 | S33 | APP-PAY-HUB `DEPLOYED_ON` INF-K8S-PAY-PROD | 1 / 1 | 0.8 | `deployed_on` and `hosts` name each other; `DEP-PAYHUB-PROD.platform_id` agrees |
+| P-M1-002 | S33 | APP-PAY-HUB `DEPLOYED_ON` INF-K8S-PAY-UAT | 1 / 1 | 0.8 | **one-sided**: `INF-K8S-PAY-UAT.hosts` lists the hub and `DEP-PAYHUB-UAT.platform_id` agrees, but the hub's `deployed_on` omits UAT; the guide accepts either side |
+| P-M1-003 | S33 | CMP-PAY-EXEC `DEPLOYED_ON` INF-K8S-PAY-PROD | 1 / 1 | 0.8 | both sides |
+| P-M1-004 | S32 | APP-PAY-HUB `DEPLOYED_AS` DEP-PAYHUB-PROD | 1 / 1 | 0.8 | `component_id` and `deployed_as` name each other |
+| P-M1-005 | S32 | APP-PAY-HUB `DEPLOYED_AS` DEP-PAYHUB-UAT | 1 / 1 | 0.8 | both sides |
+| P-M1-006 | S32 | CMP-PAY-EXEC `DEPLOYED_AS` DEP-PAYEXEC-PROD | 1 / 1 | 0.8 | both sides |
+| P-M1-007 | S24 | SO-PI-01 `IMPLEMENTED_BY` API-PI-01 | 2 / 2 | 0.8 | 4/4: asset "Payment Instruction" in `/payment-instructions`; Initiate ⇔ POST; null qualifier; 8/8 attributes |
+| P-M1-008 | S24 | SO-PI-02 `IMPLEMENTED_BY` API-PI-02 | 2 / 2 | 0.8 | 4/4: Evaluate ⇔ POST; `Validation` in path; 3/3 attributes |
+| P-M1-009 | S24 | SO-PI-03 `IMPLEMENTED_BY` API-PI-03 | 2 / 2 | 0.8 | 4/4: Execute ⇔ PUT; `Execution` in path; 3/3 attributes |
+| P-M1-010 | S24 | SO-PI-04 `IMPLEMENTED_BY` API-PI-04 | 2 / 2 | **0.6** | 3/4: **rule 2 fails — Retrieve exposed as POST** (planted; the API's description cites a legacy-channel reason); null qualifier; 4/4 attributes. Chosen among six 3/4 pairs for SO-PI-04 by convention M1-C1c (unique top rule-4 ratio) |
+| P-M1-011 | S24 | SO-PI-05 `IMPLEMENTED_BY` API-PI-05 | 2 / 2 | 0.8 | 4/4: Update ⇔ PATCH; null qualifier; 5/5 attributes |
+| P-M1-012 | S17 | SD-PI `REALIZED_BY` APP-PAY-HUB | 3 / 3 | **0.6** | closure over P-M1-007…011 via SVC-PAY-INIT → IFC-PAY-API composition; cap = min(high, weakest input medium). SD-PE, SD-PA: no operations implemented, asset tokens 0/9 → no proposal |
+| P-M1-013 | S30 | BBO-PAY-INSTR `MAPPED_TO` ENT-PAY-INSTR | 4 / 4 | 0.8 | 8/8 attributes = 1.00; ENT-PAY-EVENT 1/8, ENT-ACCOUNT-CACHE 1/8; BBO-PARTY 0/3 everywhere |
+
+**Executor convention M1-C1 (step 2 disambiguation).** The rule as written ("three of four → one band lower") holds on **20** operation × API pairs of this estate besides the four 4/4 pairs (12 further pairs sit at ≤ 2/4), because rule 1 is domain-level and identical for every API under the hub, rule 3 passes vacuously for the four null-qualifier operations, and rule 4's 50 % threshold is met by any payload carrying the instruction reference and status. Applied mechanically it would have filed 19 cross-matches (Initiate → Amend, Update → Create, Retrieve → every API, Notify → every API) and one correct pair (the planted SO-PI-04). The executor therefore applied, and marks as a convention: **(a)** an operation with a 4/4 API keeps only that pair; **(b)** a 3/4 pair whose API already has a 4/4 operation is suppressed; **(c)** an operation with no 4/4 keeps the 3/4 pair with the unique highest rule-4 ratio, else none; **(d)** untestable rule 2 plus vacuous rule 3 leaves rules 1 and 4 alone, which is insufficient. Every suppressed pair is in the log with its rule values and the clause that suppressed it.
+
+#### Candidate-rule and institution-only proposals (not in the proposal file)
+
+| Report id | Plan ID | Connection | Step | Confidence | Working |
+|---|---|---|---|---|---|
+| C-M1-001…005 | S25 | SO-PI-01…05 → SVC-PAY-INIT | 3 | 0.8 ×4, 0.6 (SO-PI-04) | each implementing API is composed in IFC-PAY-API in SVC-PAY-INIT; capped at the step-2 input |
+| C-M1-006 | S20 | CR-PI → ENT-PAY-INSTR | 4 | 0.8 | 10/10 control-record attributes present (the case text's "10/11" is matched / entity attributes; the guide scores matched / BIAN attributes) |
+| C-M1-007, 008 | S41 | SVC-PAY-INIT → TS-SECRETS, TS-MQ | 1 | 0.6 | `consumes` |
+| C-M1-009…011 | S50 | ENT-PAY-INSTR, ENT-PAY-EVENT, ENT-ACCOUNT-CACHE → INF-PG-PAY-PROD | 1 | 0.6 | `stored_in` |
+| C-M1-012…015 | S06 | ACT-PAY-01a/01b/02a/02b → SO-PI-01/02/03/04 | 4 assigned, **1 used** | 0.6 | `invokes` on each activity states the fact; no name match needed (finding 6) |
+
+Derived paths as queries: **S22/S23** SG-PI-1, SG-PI-2 → SVC-PAY-INIT / IFC-PAY-API; **S40** APP-PAY-HUB → ENV-PAY-PROD, ENV-PAY-UAT and CMP-PAY-EXEC → ENV-PAY-PROD; **S47** API-PI-01…06 → DEP-PAYHUB-PROD, DEP-PAYHUB-UAT.
+
+#### sdmm-eval
+
+```
+$ python -m sdmm.graph check examples/payment-initiation/a*.json examples/payment-initiation/m1-mappings-given.json examples/payment-initiation/m1-proposals.json
+OK: level A1 … A4; OK: mappings #1; OK: mappings #2
+
+$ python -m sdmm.validate --strict examples/payment-initiation/m1-proposals.json
+WARNING ×13 (required evidence kinds on proposals); OK: examples/payment-initiation/m1-proposals.json (with warnings)
+exit=0
+
+$ python -m sdmm.evaluate examples/payment-initiation/m1-gold-mappings.json --proposals examples/payment-initiation/m1-proposals.json
+relationship     gold prop  tp  fp  fn   prec   rec    f1
+DEPLOYED_AS         3    3   3   0   0   1.00  1.00  1.00
+DEPLOYED_ON         2    3   2   1   0   0.67  1.00  0.80
+IMPLEMENTED_BY      5    5   5   0   0   1.00  1.00  1.00
+MAPPED_TO           1    1   1   0   0   1.00  1.00  1.00
+REALIZED_BY         1    1   1   0   0   1.00  1.00  1.00
+OVERALL            12   13  12   1   0   0.92  1.00  0.96
+
+false proposals (proposed, not approved):
+  APP-PAY-HUB -DEPLOYED_ON-> INF-K8S-PAY-UAT  conf=0.8  The CMDB says the UAT cluster hosts the hub and the UAT deployment record agrees; the APM export omits it
+
+$ python -m sdmm.graph trace CAP-PAY-010 --direction down … m1-mappings-given.json m1-proposals.json --status approved,proposed
+CAP-PAY-010 -SUPPORTED_BY-> SD-PI (PAY-001) -REALIZED_BY-> APP-PAY-HUB (P-M1-012)
+  -DEPLOYED_ON-> INF-K8S-PAY-PROD (P-M1-001); -DEPLOYED_ON-> INF-K8S-PAY-UAT (P-M1-002)
+  -DEPLOYED_AS-> DEP-PAYHUB-PROD (P-M1-004); -DEPLOYED_AS-> DEP-PAYHUB-UAT (P-M1-005)
+
+$ python -m sdmm.graph impact INF-K8S-PAY-PROD --change rehost … --status approved,proposed
+design_change_required  A4 INF-K8S-PAY-PROD; A3 APP-PAY-HUB (via P-M1-001); A3 CMP-PAY-EXEC (via P-M1-003)
+no_impact               A2 SD-PI; A1 CAP-PAY-010, PRC-PAY-01, PRC-PAY-02
+mappings to supersede: P-M1-001, P-M1-003
+```
+
+**Pass criteria.** F1 0.96 ≥ 0.85. The planted mismatch is reported (P-M1-010, finding 5). Every negative holds: no `DEPLOYED_ON`/`DEPLOYED_AS` for CMP-PAY-CAPTURE or CMP-PAY-VALIDATE, nothing for API-PI-06, nothing for SO-PI-06, nothing for ENT-ACCOUNT-CACHE, nothing for SD-PE or SD-PA. The log is complete. **Caveat:** the clean `IMPLEMENTED_BY` row depends on convention M1-C1; under the step-2 rule as written it would read 24 proposals, 5 tp, 19 fp, precision 0.21, and overall precision 0.38.
+
+#### Predicted vs observed, per plan ID
+
+| Plan ID | Predicted | Observed | Verdict |
+|---|---|---|---|
+| S33 ×2 | high (1) | both hits; **a third, one-sided record (hub → UAT) proposed and false** | **holds for the two; the UAT record is a data/gold question (finding 2)** |
+| S32 ×3 | high (1) | 3/3 hits, all two-sided | **holds** |
+| S36 | subsumed | no separate record | holds |
+| S24 ×5 | high for 01, 02, 03, 05; medium for 04 | exactly that — **but only after disambiguation**; the rule alone yields 24 proposals (4 at 4/4, 20 at 3/4) | **holds with convention; fails as written (finding 1)** |
+| S24 negatives | none for SO-PI-06, API-PI-06 | none filed; the rule alone would file Notify → all six APIs and Retrieve → API-PI-06 | as above |
+| S17 | medium (capped) | 0.6; hit; SD-PE / SD-PA none | **holds** — though the cap bites on the one medium input while four inputs are high (finding 3) |
+| S25 ×5 | high (report) | reported, capped per input | holds |
+| S30 | high, 8/8 | 8/8 hit; negatives hold | **holds** |
+| S20 | high, "10/11" | 10/10 by the guide's score; reported | holds (finding 8 on the score's denominator) |
+| S41 ×2, S50 ×3 | medium (report) | reported from `consumes` / `stored_in` | hold |
+| S40, S47 | high (queries) | queries | hold |
+| S06 ×4 | — (not listed) | `invokes` states activity → operation at step 1; plan assigns step 4 | finding 6 |
+| S01, S02, S04 (given) | — | re-derivations agree with PAY-001…004; CAP-PAY-000: three-domain step 5, two domains tie → no proposal | hold |
+
+#### Findings against the plan
+
+| # | Plan ID | What happened | Why | Proposed change to `new-mappings.json` (or the guide / case) |
+|---|---|---|---|---|
+| 1 | S24, guide §3 step 2 | the "three of four" clause admits **19 cross-matches** on a six-operation domain (Initiate → Amend, Update → Create, Retrieve → all six APIs, Notify → all six) | rule 1 is domain-level, so it is identical for every API of one component; rule 3 passes vacuously for null-qualifier operations (4 of 6 here); rule 4's 50 % bar is met by any payload carrying the reference and status; the rule has no per-operation or per-API exclusivity | guide §3 step 2: (i) count only *evidential* passes — a vacuous rule 3 and an untestable rule 2 are neither pass nor fail — and require three evidential passes, or two with rule 4 at 100 %; (ii) adopt M1-C1 (a)–(c) as the disambiguation rule: an operation's 4/4 pair excludes its 3/4 pairs, an API's 4/4 operation excludes other 3/4 pairs on it, remaining operations take the unique best rule-4 ratio or nothing; (iii) raise rule 4's threshold or weight it by attribute specificity (an attribute shared by every operation of the control record, like `payment_instruction_reference`, discriminates nothing). `S24.reasoning`: state that the four rules are necessary conditions, not a scoring function, and that exclusivity is part of the fill |
+| 2 | S33 (case, gold, data) | APP-PAY-HUB → INF-K8S-PAY-UAT proposed at high and scored false | the A4 export (`hosts`) and the UAT deployment record (`platform_id`) both state it; the A3 export's `deployed_on` omits it; the gold approves the UAT `DEPLOYED_AS` (PAY-110) but not the UAT `DEPLOYED_ON`; the guide accepts a one-sided record | decide the modelling question in the plan: either `DEPLOYED_ON` covers every environment (add PAY-113 to the gold — the data supports it as firmly as PAY-110) or `DEPLOYED_ON` is production hosting only (say so in `S33.reasoning`, and the gold's omission is right). Independently: guide step 1 — a two-sided record keeps the plan's band, a one-sided record drops one band; `sdmm-graph check` could warn when `hosts` / `platform_id` / `deployed_on` disagree |
+| 3 | S17, guide §2 | the derivation was capped at 0.6 because one of five inputs is medium, although four are high and one high arrow suffices for the rule | the cap takes the minimum over all inputs regardless of whether the rule needs all of them or any of them | guide §2: for a closure that needs **any one** input arrow (S17, S25), cap at the band of the **strongest** input; for a closure that needs **all** inputs (S01 "every process"), cap at the weakest. Here S17 would be 0.8 |
+| 4 | S02, guide §3 step 4 | the coverage rule's "verb **or** asset-type noun" clause is trivial when every operation of a domain carries the asset name — all four operations of SD-PI contain "Payment Instruction", so stage VSS-P1 alone covers all of them | asset-type noun is the resource, not the behaviour; only the verb or qualifier distinguishes operations | guide: match on the operation's action term (or qualifier) first; use the asset noun only to confirm the domain. Checked here against the given PAY-002: 3/4 by verb/qualifier, 4/4 trivially by noun |
+| 5 | S24 (planted) | API-PI-04 implements Retrieve as POST; rule 2 failed, proposal filed at medium with the finding; the gold approves it citing an architecture decision record | the plan has no way to lift a documented, approved deviation back to high; the executor can only report the mismatch | S24 `reasoning` / registry: allow an `architecture_decision_record` evidence kind on `IMPLEMENTED_BY`; when present, a rule-2 deviation is recorded as `deviation` on the mapping and the band is not reduced. The gold's PAY-105 rationale says "4/4 attributes" where the data gives 5/5 — text fix |
+| 6 | S06 | activity → operation is stated directly by `invokes` on each activity, yet the plan assigns step 4 (name match) | `export-conventions.json` already defines `A1.BusinessActivity.invokes`; the plan was not updated when the key was added | S06 `fill_step` 1 where `invokes` is present, 4 otherwise; same for the process-level `invokes` already consumed by S04 (E1/M0 candidate S06a) |
+| 7 | S24, new pair | SO-PI-06 (Notify) has no REST form; the A3 export has `EVT-PAY-STATUS` "Published when an instruction changes state", triggered by APP-PAY-HUB — the natural implementation of a Notify operation is an event, not an API | the plan has no `A2.ServiceOperation → A3.Event` connection | quarantined below; if adopted, a Notify-specific rule: action term Notify ⇔ an `A3.Event` whose description names the operation's asset and a state change, step 4 (structural: asset noun in event name/description), medium |
+| 8 | S20, case text | the case predicts "10/11"; the guide's score is matched / BIAN attributes = 10/10 | two denominators in use | case M1 table: 10/10; keep the guide's definition (coverage of the BIAN object), and report the entity-side extension count separately |
+| 9 | S01 step 5 | with three exported domains the step-5 ranking finally had a real candidate set, and it correctly produced **no proposal** for CAP-PAY-000 (SD-PI and SD-PE tie) | — | no change; record that the "clearly better" test worked as intended on a parent capability spanning two domains |
+
+#### New connection candidates (outside the plan)
+
+| Pair | Found by step | Reasoning | Confidence | Suggested ID |
+|---|---|---|---|---|
+| SO-PI-06 (Notify) → EVT-PAY-STATUS (`A3.Event`) | 4/5 | "Notify an interested party of a change in the instruction's state" vs "Published when an instruction changes state"; the event is triggered by APP-PAY-HUB, which realises SD-PI; Notify has no REST form, so no API can implement it | medium | S24e — operation (Notify) → event |
+| CAP-PAY-000 → SD-PI (parent of CAP-PAY-010) | 3, report-only | child approved as PAY-001; parent spans SD-PI and SD-PE | low | S01 report-only rule, as the guide now specifies |
+| PRC-PAY-01/02 → SO-PI-01…04 (process → operation) | 1 (`invokes`) | as in E1/M0: a data fact with no ID of its own | high (data) | S06a |
+
+#### No-proposal register
+
+| Plan ID | Instances considered | Why no proposal |
+|---|---|---|
+| S33 / S32 | CMP-PAY-CAPTURE, CMP-PAY-VALIDATE | no `deployed_on` / `deployed_as`; no `hosts` / `component_id` names them |
+| S24 | 31 operation × API pairs (all in the log) | 12 pairs at ≤ 2/4; 19 pairs at 3/4 suppressed by M1-C1 — (a) 8, (b) 8, (c) 1, (d) 2; the twentieth 3/4 pair, SO-PI-04 × API-PI-04, was selected by (c) and filed |
+| S24 | SO-PI-06 × API-PI-01…06 | Notify: rule 2 untestable; with null qualifier only rules 1 and 4 remain → M1-C1 (d) |
+| S24 | SO-PI-01…05 × API-PI-06 | List events: ≤ 2/4 for all but Retrieve (3/4: GET matches, payload 1/4), suppressed by (c) in favour of API-PI-04 |
+| S17 | SD-PE, SD-PA | no operations implemented; asset tokens 0/9 in paths and entity names |
+| S17 | SD-PI × CMP-PAY-CAPTURE / VALIDATE / EXEC | the APIs are composed under SVC-PAY-INIT in the hub, not under the sub-components |
+| S30 | BBO-PAY-INSTR × ENT-PAY-EVENT, ENT-ACCOUNT-CACHE; BBO-PARTY × all three | 1/8, 1/8; 0/3 |
+| S12 | BO-PAYEE × BBO-PARTY | 0/3 attribute names match |
+| S01 | CAP-PAY-000 | no processes; step 5 with three domains: SD-PI and SD-PE tie |
+| S49 / S45 | — | no `stored_in` naming an artifact; no `A3.ApplicationFunction` |
+| S01, S02, S04, S12 | the five given arrows | given; re-derivations agree |
+
+**Summary.** The plan reaches every approved arrow of a 68-instance brownfield estate: steps 1, 3 and 4 are mechanical and precise, and the planted REST deviation surfaces exactly where the case put it. The one false proposal is a modelling question the plan has not answered (does `DEPLOYED_ON` cover non-production hosting?), not an inference error. The finding that matters is step 2: the four REST rules are sound as *necessary conditions* but the "three of four" clause is not a usable fill rule — on this estate it admits nineteen wrong pairs for one right one. The executor's disambiguation convention recovers the correct five; it should be written into the guide, together with evidential-only counting of the rules. Next for the data: H1 and H2 will exercise step 2 in reverse and under hostile naming, where this weakness will matter more.
