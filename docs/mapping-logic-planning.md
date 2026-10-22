@@ -850,3 +850,149 @@ Generated from `metamodel/new-mappings.json` (every entry carries the official s
 | S52 | `A3.SolutionBuildingBlock` → `A4.InfrastructureComponent` | — | gap | derived path | 3 | **medium** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | A solution building block is a TOGAF grouping of components; its infrastructure follows from its components' deployments. Derived. |
 | S53 | `A3.SolutionBuildingBlock` → `A4.Deployment` | — | gap | derived path | 3 | **medium** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | A solution building block's deployments follow from its member components' DEPLOYED_AS instances (S32) via the SBB's composition in the A3 export. Derived, never stored. |
 | S54 | `A3.SolutionBuildingBlock` → `A4.Node` | — | gap | derived path | 3 | **low** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | As S52 for nodes; inherits S34's uncertainty. |
+
+### 5.4 New-mappings diagram
+
+Generated from `metamodel/new-mappings.json` by `python -m sdmm.diagram` into `metamodel/new-mappings.puml` (CI checks it is current). Every cross-level connection of the plan is drawn with its ID and coloured by rule decision; BIAN-internal rows are on the official diagram (§4), and the four rows the plan rules out are named in the legend. Preview in VS Code with the PlantUML extension, or paste at https://www.plantuml.com/plantuml.
+
+```plantuml
+@startuml new-mappings
+left to right direction
+skinparam rectangle {
+  BackgroundColor White
+  BorderColor #424242
+}
+skinparam package {
+  BackgroundColor #F5F5F5
+  BorderColor #9E9E9E
+}
+skinparam ArrowFontSize 9
+skinparam ArrowThickness 1
+title New mappings (plan) — 50 cross-level connections by rule decision; every one validated by the use-case suite
+
+package "A1 Business Architecture" as A1 {
+  rectangle "A1.BusinessCapability" as a1_businesscapability
+  rectangle "A1.ValueStream" as a1_valuestream
+  rectangle "A1.ValueStreamStage" as a1_valuestreamstage
+  rectangle "A1.BusinessProcess" as a1_businessprocess
+  rectangle "A1.BusinessActivity" as a1_businessactivity
+  rectangle "A1.BusinessService" as a1_businessservice
+  rectangle "A1.BusinessActor" as a1_businessactor
+  rectangle "A1.BusinessRole" as a1_businessrole
+  rectangle "A1.BusinessObject" as a1_businessobject
+  rectangle "A1.BusinessRequirement" as a1_businessrequirement
+}
+
+package "A2 Service Domain Architecture" as A2 {
+  rectangle "A2.BusinessArea" as a2_businessarea
+  rectangle "A2.BusinessDomain" as a2_businessdomain
+  rectangle "A2.ServiceDomain" as a2_servicedomain
+  rectangle "A2.FunctionalPattern" as a2_functionalpattern
+  rectangle "A2.AssetType" as a2_assettype
+  rectangle "A2.ControlRecord" as a2_controlrecord
+  rectangle "A2.ServiceGroup" as a2_servicegroup
+  rectangle "A2.ServiceOperation" as a2_serviceoperation
+  rectangle "A2.BehaviorQualifier" as a2_behaviorqualifier
+  rectangle "A2.BusinessScenario" as a2_businessscenario
+  rectangle "A2.BusinessObject" as a2_businessobject
+  rectangle "A2.BusinessObjectAttribute" as a2_businessobjectattribute
+  rectangle "A2.BOMModel\n(artefact)" as a2_bommodel
+  rectangle "A2.Wireframe\n(artefact)" as a2_wireframe
+  rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi
+}
+
+package "A3 Application Architecture" as A3 {
+  rectangle "A3.ApplicationComponent" as a3_applicationcomponent
+  rectangle "A3.ApplicationService" as a3_applicationservice
+  rectangle "A3.ApplicationInterface" as a3_applicationinterface
+  rectangle "A3.ApplicationFunction" as a3_applicationfunction
+  rectangle "A3.APIOperation" as a3_apioperation
+  rectangle "A3.DataEntity" as a3_dataentity
+  rectangle "A3.Event" as a3_event
+  rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
+}
+
+package "A4 Technology Architecture" as A4 {
+  rectangle "A4.InfrastructureComponent\n(abstract)" as a4_infrastructurecomponent
+  rectangle "A4.Deployment" as a4_deployment
+  rectangle "A4.DeploymentEnvironment" as a4_deploymentenvironment
+  rectangle "A4.Node" as a4_node
+  rectangle "A4.Device" as a4_device
+  rectangle "A4.SystemSoftware" as a4_systemsoftware
+  rectangle "A4.TechnologyService" as a4_technologyservice
+  rectangle "A4.TechnologyInterface" as a4_technologyinterface
+  rectangle "A4.CommunicationNetwork" as a4_communicationnetwork
+  rectangle "A4.Path" as a4_path
+  rectangle "A4.Artifact" as a4_artifact
+}
+
+' --- registry rule (SDMM relationship type) (9)
+a1_businesscapability -[#1565C0,bold]-> a2_servicedomain : S01 SUPPORTED_BY (step 3)
+a1_valuestream -[#1565C0,bold]-> a2_businessscenario : S02 ALIGNED_TO (step 4)
+a1_businessprocess -[#1565C0,bold]-> a2_servicedomain : S04 USES_DOMAIN (step 3)
+a1_businessobject -[#1565C0,bold]-> a2_businessobject : S12 ALIGNED_TO (step 4)
+a2_servicedomain -[#1565C0,bold]-> a3_applicationcomponent : S17 REALIZED_BY (step 3)
+a2_serviceoperation -[#1565C0,bold]-> a3_apioperation : S24 IMPLEMENTED_BY (step 2)
+a2_businessobject -[#1565C0,bold]-> a3_dataentity : S30 MAPPED_TO (step 4)
+a3_applicationcomponent -[#1565C0,bold]-> a4_deployment : S32 DEPLOYED_AS (step 1)
+a3_applicationcomponent -[#1565C0,bold]-> a4_infrastructurecomponent : S33 DEPLOYED_ON (step 1)
+
+' --- candidate rule (proposed for the registry) (5)
+a2_controlrecord -[#2E7D32]-> a3_dataentity : S20 step 4 high
+a2_controlrecord -[#2E7D32]-> a3_applicationfunction : S21 step 3 medium
+a2_serviceoperation -[#2E7D32]-> a3_applicationservice : S25 step 3 high
+a2_businessscenario -[#2E7D32]-> a3_applicationservice : S28 step 3 medium
+a2_businessscenario -[#2E7D32]-> a3_applicationcomponent : S29 step 3 medium
+
+' --- conditional rule (fires on institution data) (5)
+a3_applicationcomponent -[#EF6C00]-> a4_node : S34 step 1 low
+a3_applicationcomponent -[#EF6C00]-> a4_artifact : S39 step 1 medium
+a3_applicationservice -[#EF6C00]-> a4_technologyservice : S41 step 1 medium
+a3_applicationfunction -[#EF6C00]-> a4_technologyservice : S45 step 1 medium
+a3_dataentity -[#EF6C00]-> a4_artifact : S49 step 1 medium
+
+' --- derived path (closure over other arrows, never proposed) (17)
+a1_valuestreamstage -[#616161,dashed]-> a2_businessscenario : S03 step 4 low
+a1_businessactivity -[#616161,dashed]-> a2_servicedomain : S07 step 3 medium
+a2_businessarea -[#616161,dashed]-> a3_applicationcomponent : S15 step 3 high
+a2_businessdomain -[#616161,dashed]-> a3_applicationcomponent : S16 step 3 high
+a2_servicegroup -[#616161,dashed]-> a3_applicationservice : S22 step 3 medium
+a2_servicegroup -[#616161,dashed]-> a3_applicationinterface : S23 step 3 medium
+a2_behaviorqualifier -[#616161,dashed]-> a3_apioperation : S26 step 2 high
+a2_behaviorqualifier -[#616161,dashed]-> a3_dataentity : S27 step 4 medium
+a2_businessobjectattribute -[#616161,dashed]-> a3_dataentity : S31 step 4 high
+a3_applicationcomponent -[#616161,dashed]-> a4_deploymentenvironment : S40 step 3 high
+a3_applicationservice -[#616161,dashed]-> a4_technologyinterface : S42 step 3 low
+a3_applicationfunction -[#616161,dashed]-> a4_systemsoftware : S46 step 3 low
+a3_apioperation -[#616161,dashed]-> a4_deployment : S47 step 3 high
+a3_apioperation -[#616161,dashed]-> a4_technologyinterface : S48 step 3 medium
+a3_solutionbuildingblock -[#616161,dashed]-> a4_infrastructurecomponent : S52 step 3 medium
+a3_solutionbuildingblock -[#616161,dashed]-> a4_deployment : S53 step 3 medium
+a3_solutionbuildingblock -[#616161,dashed]-> a4_node : S54 step 3 low
+
+' --- institution-only (reported from export keys) (14)
+a1_businessactivity -[#6A1B9A,dotted]-> a2_serviceoperation : S06 step 1 medium
+a1_businessservice -[#6A1B9A,dotted]-> a2_servicedomain : S08 step 5 low
+a1_businessservice -[#6A1B9A,dotted]-> a2_serviceoperation : S09 step 4 low
+a1_businessrequirement -[#6A1B9A,dotted]-> a2_servicedomain : S13 step 3 low
+a1_businessrequirement -[#6A1B9A,dotted]-> a2_serviceoperation : S14 step 3 low
+a2_functionalpattern -[#6A1B9A,dotted]-> a3_applicationfunction : S18 step 3 low
+a2_assettype -[#6A1B9A,dotted]-> a3_dataentity : S19 step 4 low
+a3_applicationcomponent -[#6A1B9A,dotted]-> a4_device : S35 step 1 low
+a3_applicationcomponent -[#6A1B9A,dotted]-> a4_communicationnetwork : S37 step 1 low
+a3_applicationcomponent -[#6A1B9A,dotted]-> a4_path : S38 step 1 low
+a3_applicationinterface -[#6A1B9A,dotted]-> a4_technologyinterface : S43 step 1 low
+a3_applicationinterface -[#6A1B9A,dotted]-> a4_technologyservice : S44 step 1 low
+a3_dataentity -[#6A1B9A,dotted]-> a4_systemsoftware : S50 step 1 medium
+a3_event -[#6A1B9A,dotted]-> a4_technologyservice : S51 step 1 low
+
+legend right
+  <color:#1565C0>Bold</color>: registry rule (SDMM relationship type) (9)
+  <color:#2E7D32>Solid</color>: candidate rule (proposed for the registry) (5)
+  <color:#EF6C00>Solid</color>: conditional rule (fires on institution data) (5)
+  <color:#616161>Dashed</color>: derived path (closure over other arrows, never proposed) (17)
+  <color:#6A1B9A>Dotted</color>: institution-only (reported from export keys) (14)
+  Not drawn: S05 historical method, S10 not a mapping, S11 not a mapping, S36 subsumed, B01 not encodable; B02–B15 inside A2 are on official-mappings.puml
+endlegend
+@enduml
+```

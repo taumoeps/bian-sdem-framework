@@ -70,3 +70,21 @@ class TraceabilityTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class NewMappingsDiagramTests(unittest.TestCase):
+    def test_committed_new_diagram_equals_render_from_json(self):
+        from sdmm.diagram import render_new
+        self.assertEqual((ROOT / 'metamodel/new-mappings.puml').read_text(encoding='utf-8'), render_new())
+
+    def test_new_diagram_draws_every_drawable_row_with_its_id(self):
+        from sdmm.diagram import load_new, new_entries
+        text = (ROOT / 'metamodel/new-mappings.puml').read_text(encoding='utf-8')
+        rows = new_entries(load_new())
+        self.assertEqual(len(rows), 50)
+        for m in rows:
+            self.assertIn(f": {m['id']} ", text)
+
+    def test_planning_document_embeds_the_new_diagram(self):
+        doc = (ROOT / 'docs/mapping-logic-planning.md').read_text(encoding='utf-8')
+        self.assertIn((ROOT / 'metamodel/new-mappings.puml').read_text(encoding='utf-8'), doc)
