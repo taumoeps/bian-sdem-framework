@@ -548,72 +548,24 @@ Tier 1 deterministic candidates per arrow, tier 2 model-assisted ranking, eviden
 
 ## 5. Mapping Diagram
 
-The four design models of the Service Domain Architecture Design Model, side by side A1 to A4, each box listing its entities top to bottom from the catalogue (`metamodel/`). No connectors are drawn: the arrows between levels are the mappings themselves, which are defined in the registry and recorded per institution in mapping documents, not in this picture. Entity IDs are the catalogue `type` strings.
+The four design models of the Service Domain Architecture Design Model, side by side A1 to A4, each column listing its entities top to bottom from the catalogue (`metamodel/`). No connectors are drawn: the arrows between levels are the mappings themselves, which are defined in the registry and recorded per institution in mapping documents, not in this picture. Entity IDs are the catalogue `type` strings.
 
-```mermaid
-flowchart LR
-    subgraph A1["A1 Business Architecture — 10 entities"]
-      direction TB
-      a1_01["A1.BusinessCapability"]
-      a1_02["A1.ValueStream"]
-      a1_03["A1.ValueStreamStage"]
-      a1_04["A1.BusinessProcess"]
-      a1_05["A1.BusinessActivity"]
-      a1_06["A1.BusinessService"]
-      a1_07["A1.BusinessActor"]
-      a1_08["A1.BusinessRole"]
-      a1_09["A1.BusinessObject"]
-      a1_10["A1.BusinessRequirement"]
-      a1_01 ~~~ a1_02 ~~~ a1_03 ~~~ a1_04 ~~~ a1_05 ~~~ a1_06 ~~~ a1_07 ~~~ a1_08 ~~~ a1_09 ~~~ a1_10
-    end
-    subgraph A2["A2 Service Domain Architecture — 15 entities"]
-      direction TB
-      a2_01["A2.BusinessArea"]
-      a2_02["A2.BusinessDomain"]
-      a2_03["A2.ServiceDomain"]
-      a2_04["A2.FunctionalPattern"]
-      a2_05["A2.AssetType"]
-      a2_06["A2.ControlRecord"]
-      a2_07["A2.ServiceGroup"]
-      a2_08["A2.ServiceOperation"]
-      a2_09["A2.BehaviorQualifier"]
-      a2_10["A2.BusinessScenario"]
-      a2_11["A2.BusinessObject"]
-      a2_12["A2.BusinessObjectAttribute"]
-      a2_13["A2.BOMModel (artefact)"]
-      a2_14["A2.Wireframe (artefact)"]
-      a2_15["A2.SemanticAPI (artefact)"]
-      a2_01 ~~~ a2_02 ~~~ a2_03 ~~~ a2_04 ~~~ a2_05 ~~~ a2_06 ~~~ a2_07 ~~~ a2_08 ~~~ a2_09 ~~~ a2_10 ~~~ a2_11 ~~~ a2_12 ~~~ a2_13 ~~~ a2_14 ~~~ a2_15
-    end
-    subgraph A3["A3 Application Architecture — 8 entities"]
-      direction TB
-      a3_01["A3.ApplicationComponent"]
-      a3_02["A3.ApplicationService"]
-      a3_03["A3.ApplicationInterface"]
-      a3_04["A3.ApplicationFunction"]
-      a3_05["A3.APIOperation"]
-      a3_06["A3.DataEntity"]
-      a3_07["A3.Event"]
-      a3_08["A3.SolutionBuildingBlock"]
-      a3_01 ~~~ a3_02 ~~~ a3_03 ~~~ a3_04 ~~~ a3_05 ~~~ a3_06 ~~~ a3_07 ~~~ a3_08
-    end
-    subgraph A4["A4 Technology Architecture — 11 entities"]
-      direction TB
-      a4_01["A4.InfrastructureComponent (abstract)"]
-      a4_02["A4.Deployment"]
-      a4_03["A4.DeploymentEnvironment"]
-      a4_04["A4.Node"]
-      a4_05["A4.Device"]
-      a4_06["A4.SystemSoftware"]
-      a4_07["A4.TechnologyService"]
-      a4_08["A4.TechnologyInterface"]
-      a4_09["A4.CommunicationNetwork"]
-      a4_10["A4.Path"]
-      a4_11["A4.Artifact"]
-      a4_01 ~~~ a4_02 ~~~ a4_03 ~~~ a4_04 ~~~ a4_05 ~~~ a4_06 ~~~ a4_07 ~~~ a4_08 ~~~ a4_09 ~~~ a4_10 ~~~ a4_11
-    end
-    classDef level fill:#f5f5f5,stroke:#9e9e9e,color:#212121
-    class A1,A2,A3,A4 level
-```
+| **A1 Business Architecture** (10) | **A2 Service Domain Architecture** (15) | **A3 Application Architecture** (8) | **A4 Technology Architecture** (11) |
+|:---|:---|:---|:---|
+| `A1.BusinessCapability` | `A2.BusinessArea` | `A3.ApplicationComponent` | `A4.InfrastructureComponent` *(abstract)* |
+| `A1.ValueStream` | `A2.BusinessDomain` | `A3.ApplicationService` | `A4.Deployment` |
+| `A1.ValueStreamStage` | `A2.ServiceDomain` | `A3.ApplicationInterface` | `A4.DeploymentEnvironment` |
+| `A1.BusinessProcess` | `A2.FunctionalPattern` | `A3.ApplicationFunction` | `A4.Node` |
+| `A1.BusinessActivity` | `A2.AssetType` | `A3.APIOperation` | `A4.Device` |
+| `A1.BusinessService` | `A2.ControlRecord` | `A3.DataEntity` | `A4.SystemSoftware` |
+| `A1.BusinessActor` | `A2.ServiceGroup` | `A3.Event` | `A4.TechnologyService` |
+| `A1.BusinessRole` | `A2.ServiceOperation` | `A3.SolutionBuildingBlock` | `A4.TechnologyInterface` |
+| `A1.BusinessObject` | `A2.BehaviorQualifier` |  | `A4.CommunicationNetwork` |
+| `A1.BusinessRequirement` | `A2.BusinessScenario` |  | `A4.Path` |
+|  | `A2.BusinessObject` |  | `A4.Artifact` |
+|  | `A2.BusinessObjectAttribute` |  |  |
+|  | `A2.BOMModel` *(artefact)* |  |  |
+|  | `A2.Wireframe` *(artefact)* |  |  |
+|  | `A2.SemanticAPI` *(artefact)* |  |  |
 
 Counts: A1 10 · A2 15 (12 entities + 3 artefacts) · A3 8 · A4 11 (10 concrete + 1 abstract) — 44 in total.
