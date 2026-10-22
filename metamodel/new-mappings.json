@@ -1,5 +1,5 @@
 {
-  "$schema_version": "0.5.4",
+  "$schema_version": "0.5.5",
   "generated_from": "metamodel/official-mappings.json plus the gap-fill assessment in docs/mapping-logic-planning.md §5",
   "note": "One entry per official-mapping ID. Existing official mappings keep their source reference; every entry gets a rule decision, the step that fills its instances (0 BIAN export, 1 data join, 2 rule application, 3 derivation, 4 structural matching, 5 text inference), the data that step needs, the reasoning, and a confidence (high/medium/low) that the connection is a sound mapping and that the chosen fill produces correct instances. Attribute keys named in data_needed are defined in metamodel/export-conventions.json (added after the E1 run showed the joins had no keys).",
   "steps": {
@@ -261,7 +261,7 @@
       "fill_step": 3,
       "data_needed": "approved USES_DOMAIN for the capability's processes (step 3); fallback step 5 requires the full exported A2 landscape or at least 3 candidate domains — with fewer, no proposal (single-candidate inference is vacuous)",
       "confidence": "medium",
-      "reasoning": "Registry rule SUPPORTED_BY with bian_alignment_guidance authority. BIAN publishes the two ends but not the method. Minimal-inference fill: derive the domain from the operations the capability's processes already use; a capability with no mapped processes falls to text inference at low confidence. A parent capability whose composed child is SUPPORTED_BY D is reported as a candidate only, never proposed (M0 run 2: it produced the run's only false proposal — scope is a judgement)."
+      "reasoning": "Registry rule SUPPORTED_BY with bian_alignment_guidance authority. BIAN publishes the two ends but not the method. Minimal-inference fill: derive the domain from the operations the capability's processes already use; a capability with no mapped processes falls to text inference at low confidence. A parent capability whose composed child is SUPPORTED_BY D is reported as a candidate only, never proposed (M0 run 2: it produced the run's only false proposal — scope is a judgement). Step 5 proposes only when the best domain shares ≥ 2 non-generic concepts and leads the runner-up by ≥ 1 (H1 finding 3)."
     },
     {
       "id": "S02",
@@ -501,7 +501,7 @@
       "fill_step": 3,
       "data_needed": "approved or step-2 IMPLEMENTED_BY instances plus A3 composition (step 3; confidence capped at the weakest input's band); fallback step 4: A2.ServiceDomain.attributes.asset_type's name in the component's API paths / data entity names; description comparison alone is step 5",
       "confidence": "high",
-      "reasoning": "Registry rule REALIZED_BY, verified BIAN method (SAPG §3.4 functional partition; §4.3.1 legacy wrapping). Minimal-inference fill: an application that implements a domain's operations (S24) realises the domain; where no API mapping exists, functional-partition comparison of descriptions (step 4). Confidence cap: any one implemented operation suffices for the derivation, so the cap is the strongest step-2 input (M1 finding 3)."
+      "reasoning": "Registry rule REALIZED_BY, verified BIAN method (SAPG §3.4 functional partition; §4.3.1 legacy wrapping). Minimal-inference fill: an application that implements a domain's operations (S24) realises the domain; where no API mapping exists, functional-partition comparison of descriptions (step 4). Confidence cap: any one implemented operation suffices for the derivation, so the cap is the strongest step-2 input (M1 finding 3). A recorded systematic interface deviation on the inputs does not lower the derivation (H1 finding 4)."
     },
     {
       "id": "S18",
@@ -604,7 +604,7 @@
       "source_reference": "[SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
       "rule_decision": "registry_rule",
       "fill_step": 2,
-      "data_needed": "A2.ServiceOperation attributes.action_term / behavior_qualifier / input_attributes / output_attributes; A2.ControlRecord attributes.attributes; A3.APIOperation attributes.method / path / payload_fields (export-conventions.json); A2.ServiceDomain.attributes.asset_type for rule 1 in reverse cases",
+      "data_needed": "A2.ServiceOperation attributes.action_term / behavior_qualifier / input_attributes / output_attributes; A2.ControlRecord attributes.attributes; A3.APIOperation attributes.method / path / payload_fields (export-conventions.json); A2.ServiceDomain.attributes.asset_type for rule 1 in reverse cases; A2.AssetType.attributes.aliases for the token boundary gate in reverse cases",
       "confidence": "high",
       "reasoning": "Registry rule IMPLEMENTED_BY, verified BIAN rules (SAPG §3.5): operation → REST form is prescribed. Fill by a decision procedure (guide step 2, rewritten after M1): a boundary precondition, then action term ↔ method, qualifier ↔ path and attributes ↔ payload as pass/fail/neutral evidence, with one-to-one disambiguation per operation and API. A 'count of rules passed' is not a rule — on a six-operation domain it admitted nineteen wrong pairs. Mismatches (e.g. Retrieve on POST) are proposed one band lower with a finding. The most mechanical arrow in the model."
     },

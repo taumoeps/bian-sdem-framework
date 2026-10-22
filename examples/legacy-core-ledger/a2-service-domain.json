@@ -79,7 +79,13 @@
       "version": "1.0",
       "name": "Current Account",
       "lifecycle_status": "active",
-      "description": "A customer's current account."
+      "description": "A customer's current account.",
+      "attributes": {
+        "aliases": [
+          "account",
+          "overdraft"
+        ]
+      }
     },
     {
       "id": "AT-PK",
@@ -87,7 +93,16 @@
       "version": "1.0",
       "name": "Financial Position",
       "lifecycle_status": "active",
-      "description": "The position and balance of an account."
+      "description": "The position and balance of an account.",
+      "attributes": {
+        "aliases": [
+          "balance",
+          "position",
+          "posting",
+          "entry",
+          "ledger"
+        ]
+      }
     },
     {
       "id": "AT-PE",
@@ -95,7 +110,13 @@
       "version": "1.0",
       "name": "Payment Transaction",
       "lifecycle_status": "active",
-      "description": "An executed payment."
+      "description": "An executed payment.",
+      "attributes": {
+        "aliases": [
+          "payment",
+          "transfer"
+        ]
+      }
     },
     {
       "id": "AT-PRD",
@@ -103,7 +124,14 @@
       "version": "1.0",
       "name": "Party Reference",
       "lifecycle_status": "active",
-      "description": "A party's master reference record."
+      "description": "A party's master reference record.",
+      "attributes": {
+        "aliases": [
+          "customer",
+          "party",
+          "counterparty"
+        ]
+      }
     },
     {
       "id": "FP-FULFIL",

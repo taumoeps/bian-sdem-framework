@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.5 — after H1 (28 of 28 from nothing approved)
+
+- Executor guide: token boundary gate with institution asset-type aliases (new export convention `A2.AssetType.attributes.aliases`); disambiguation iterated to a fixpoint; numeric step-5 threshold (≥ 2 non-generic shared concepts, lead ≥ 1); systematic interface deviations do not lower derivations.
+- `sdmm-graph trace --follow-composition`: chains continue through within-level composition as `PART_OF` / `COMPOSES` structural hops.
+- Aliases added to the asset types of all three examples.
+
 ## 0.5.4 — after M1 (F1 0.96; 12 of 12 approved arrows)
 
 - Executor guide step 2 rewritten as a decision procedure: boundary precondition as a gate, pass/fail/neutral checks, one-to-one disambiguation; "3 of 4 rules" withdrawn (it admitted 19 wrong pairs on a six-operation domain).

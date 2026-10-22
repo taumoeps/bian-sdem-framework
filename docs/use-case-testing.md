@@ -194,7 +194,7 @@
 | Negative tests | ● | ● | ● | ● | ● | ● |
 | Perspectives: architecture / process / information | A | A P I | A P I | A | A I | A I |
 
-**Order of execution:** E1, M0, M1 (done); **H1 next**; then H2; E2 after its exports are authored; M2 last (it tests a boundary, not the plan's core).
+**Order of execution:** E1, M0, M1, H1 (done); **H2 next**; E2 after its exports are authored; M2 last (it tests a boundary, not the plan's core).
 
 ## Results
 
@@ -864,3 +864,15 @@ None. The three BATCH jobs overlap no control record at ≥ 50 % (JOB-INTEREST v
 | S02, S04, S06, S12 | — | the A1 draft has no value streams, processes, activities or business objects |
 
 **Summary.** Reverse mapping under the worst information conditions the suite defines — nothing approved, a draft capability list, SOAP-era naming — reached every one of the 28 approved arrows with no false proposal, and refused the two capabilities and the three batch jobs it was meant to refuse. The honest caveat is that three gaps in the guide had to be filled by stated conventions: the boundary gate must read operation names and descriptions through an alias table (as written it blocks half the estate), disambiguation must iterate (as written it leaves two ties), and step 5 needs a numeric "clearly better". None of the three is inference; each is a rule the guide should state. The method deviation (all POST) was carried as one finding and should stop depressing the realisation band once recorded. H2's hostile naming will press on finding 1 hardest.
+
+### H1 — actions taken on the findings (v0.5.5)
+
+| Finding | Action |
+|---|---|
+| 1 — literal boundary gate | Guide step 2: **token gate** — asset-type name *and aliases* (`A2.AssetType.attributes.aliases`, new export convention) against camel/snake-split operation names, paths, descriptions and accessed entity names. Aliases added to all three examples' asset types |
+| 2 — disambiguation ties | Disambiguation iterates to a fixpoint (decision-1 pairs first, then unique best payload matches, repeat) |
+| 3 — step 5 threshold | Propose only when the best domain shares ≥ 2 non-generic concepts and leads the runner-up by ≥ 1; generic banking words are not evidence |
+| 4 — systematic deviation depressing S17 | A derivation is not lowered by inputs whose only deficit is a recorded systematic interface deviation |
+| 5 — trace stops at the module | `sdmm-graph trace --follow-composition` continues a chain through within-level composition (module → its whole downstream; whole → parts upstream), rendered as `PART_OF` / `COMPOSES` structural hops |
+
+**H1 is complete:** 28 of 28 from nothing approved, no false proposal, every refusal held. Under the guide as it stood, recall would have been 0.79; the three conventions the executor had to invent are now rules.

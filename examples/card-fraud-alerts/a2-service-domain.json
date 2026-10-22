@@ -95,7 +95,13 @@
       "version": "1.0",
       "name": "Fraud Alert",
       "lifecycle_status": "active",
-      "description": "The suspected-fraud alert the domain raises and tracks through its lifecycle."
+      "description": "The suspected-fraud alert the domain raises and tracks through its lifecycle.",
+      "attributes": {
+        "aliases": [
+          "fraud",
+          "alert"
+        ]
+      }
     },
     {
       "id": "FP-ANALYSE",

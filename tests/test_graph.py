@@ -183,3 +183,27 @@ class LegacyLedgerExampleTests(unittest.TestCase):
         ops = [i for i in a3['instances'] if i['type'] == 'A3.APIOperation']
         self.assertEqual({i['attributes']['method'] for i in ops if i['id'].startswith('OP-')}, {'POST'})
         self.assertEqual({i['attributes']['method'] for i in ops if i['id'].startswith('JOB-')}, {'BATCH'})
+
+
+class FollowCompositionTests(unittest.TestCase):
+    P = ROOT / 'examples/legacy-core-ledger'
+
+    def test_trace_continues_from_module_to_whole_to_platform(self):
+        fg = FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
+        plain = fg.trace('CAP-ACCT-SVC', 'down')
+        leaf = plain['children'][0]['node']['children'][0]['node']
+        self.assertEqual(leaf['id'], 'LM-ACCT'); self.assertEqual(leaf['children'], [])
+        full = fg.trace('CAP-ACCT-SVC', 'down', follow_composition=True)
+        mod = full['children'][0]['node']['children'][0]['node']
+        whole = mod['children'][0]
+        self.assertEqual(whole['via']['relationship'], 'PART_OF'); self.assertEqual(whole['node']['id'], 'APP-LEDGER')
+        self.assertEqual({c['node']['id'] for c in whole['node']['children']}, {'INF-MF-LPAR-PROD', 'DEP-LM-PROD'})
+
+    def test_upstream_from_platform_descends_into_modules(self):
+        fg = FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
+        t = fg.trace('INF-MF-LPAR-PROD', 'up', follow_composition=True)
+        ledger = t['children'][0]['node']
+        kinds = {c['via']['relationship'] for c in ledger['children']}
+        self.assertIn('COMPOSES', kinds)
+        modules = {c['node']['id'] for c in ledger['children'] if c['via']['relationship'] == 'COMPOSES'}
+        self.assertIn('LM-ACCT', modules)

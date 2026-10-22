@@ -144,8 +144,37 @@ class FederatedGraph:
             self.enrich(c['node'])
         return node
 
-    def trace(self, start, direction='down', statuses=('approved',)):
-        return self.enrich(walk(self.edges(statuses), start, direction))
+    def composition_hops(self, iid, direction):
+        """Within-level composition as virtual hops: downstream climbs to the whole that composes the instance
+        (a module's traceability continues through its application); upstream descends to the parts."""
+        hops = []
+        for g in self.levels.values():
+            for r in g.relationships:
+                if r['kind'] != 'composition': continue
+                if direction == 'down' and r['target'] == iid: hops.append(r['source'])
+                if direction == 'up' and r['source'] == iid: hops.append(r['target'])
+        return hops
+
+    def trace(self, start, direction='down', statuses=('approved',), follow_composition=False):
+        edges = self.edges(statuses)
+        if follow_composition:
+            # add virtual PART_OF / COMPOSES edges so a chain can pass from a part to its whole (and back)
+            seen, frontier, virtual = set(), [start], []
+            while frontier:
+                n = frontier.pop()
+                if n in seen: continue
+                seen.add(n)
+                for e in edges:
+                    a, b = (e['source'], e['target']) if direction == 'down' else (e['target'], e['source'])
+                    if a['id'] == n: frontier.append(b['id'])
+                for whole in self.composition_hops(n, direction):
+                    inst = self.instance(whole) or {}
+                    src, tgt = ({'id': n, 'type': (self.instance(n) or {}).get('type'), 'version': (self.instance(n) or {}).get('version')}, {'id': whole, 'type': inst.get('type'), 'version': inst.get('version')})
+                    if direction == 'up': src, tgt = tgt, src
+                    virtual.append({'mapping_id': 'composition', 'relationship': 'PART_OF' if direction == 'down' else 'COMPOSES', 'status': 'structural', 'baseline_id': None, 'source': src, 'target': tgt})
+                    frontier.append(whole)
+            edges = edges + virtual
+        return self.enrich(walk(edges, start, direction))
 
     def impact(self, changed, kind, statuses=('approved',)):
         if kind not in IMPACT_RULES:
@@ -203,6 +232,7 @@ def main(argv=None):
         sp.add_argument('--json', action='store_true')
         if name == 'trace':
             sp.add_argument('--direction', choices=['down', 'up', 'both'], default='both')
+            sp.add_argument('--follow-composition', action='store_true', help='continue a chain through within-level composition (part -> whole downstream, whole -> parts upstream)')
         if name == 'impact':
             sp.add_argument('--change', choices=sorted(IMPACT_RULES), required=True)
     args = parser.parse_args(argv)
@@ -228,7 +258,7 @@ def main(argv=None):
         print(f'ERROR: {args.entity!r} is not an instance in any loaded level model or mapping', file=sys.stderr); return EXIT_ISSUES
     if args.cmd == 'trace':
         dirs = ['down', 'up'] if args.direction == 'both' else [args.direction]
-        trees = {d: fg.trace(args.entity, d, statuses) for d in dirs}
+        trees = {d: fg.trace(args.entity, d, statuses, getattr(args, 'follow_composition', False)) for d in dirs}
         if args.json: print(json.dumps(trees, indent=2))
         else:
             for d, t in trees.items():

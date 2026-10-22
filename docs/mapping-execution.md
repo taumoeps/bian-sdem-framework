@@ -30,7 +30,7 @@ Do **not** read the use case's gold set (`<uc>-gold-mappings.json` or `gold-mapp
 | **Never approve.** | Every record is `status: proposed`. You do not set `reviewer_id` or `approved_at`. |
 | **Never invent instances.** | Every `source.id` and `target.id` must exist in a level export. If the connection needs an instance that is not there, that is a finding ("no instance to map to"), not a proposal. |
 | **No proposal is a valid answer.** | Where the data does not support any candidate at the assigned step or a permitted fallback, record *no proposal* with the reason. Precision over recall. |
-| **Confidence is the plan's, not yours.** | Set `confidence` to the band the plan predicts for that ID (high 0.8, medium 0.6, low 0.4), adjusted down one band if you used a fallback step. **A step-3 derivation over non-approved arrows is capped by its inputs:** where the rule needs *all* its inputs (S01: every process of the capability), the cap is the weakest input's band; where *any one* input suffices (S17: one implemented operation realises the domain; S25, S22, S23), the cap is the strongest input's band (M1 finding 3). If you believe the plan's band is wrong, say so in findings — do not silently change it. |
+| **Confidence is the plan's, not yours.** | Set `confidence` to the band the plan predicts for that ID (high 0.8, medium 0.6, low 0.4), adjusted down one band if you used a fallback step. **A step-3 derivation over non-approved arrows is capped by its inputs:** where the rule needs *all* its inputs (S01: every process of the capability), the cap is the weakest input's band; where *any one* input suffices (S17: one implemented operation realises the domain; S25, S22, S23), the cap is the strongest input's band (M1 finding 3). **An input lowered only by a recorded systematic interface deviation** (e.g. every SOAP operation is POST) does not lower the derivation: the deviation is about the API's form, not about which component implements the domain (H1 finding 4). If you believe the plan's band is wrong, say so in findings — do not silently change it. |
 
 ## 3. The steps, as rules
 
@@ -57,7 +57,12 @@ Working: quote the record. If no record names the component, **no proposal**.
 
 Rewritten after M1: a tally of "3 of 4 rules" is not a fill rule — on a six-operation domain it admits nineteen wrong pairs (M1 finding 1). Step 2 is a **decision procedure** with one precondition, three evidential checks and a disambiguation.
 
-**Precondition — boundary** ([SAPG] §3.5 p. 52: the Service Domain matches the application boundary of the API). The API's component is `REALIZED_BY` the domain (approved), or — reverse cases — the name of the domain's asset type (`A2.ServiceDomain.attributes.asset_type` → `A2.AssetType.name`) appears in the component's API paths, data entity names or description. Fails → the pair is not considered. This is a gate, not a vote: it is the same for every API of one component and must never count as evidence.
+**Precondition — boundary** ([SAPG] §3.5 p. 52: the Service Domain matches the application boundary of the API). Pass when **either**:
+
+- the API's component is `REALIZED_BY` the domain (approved), **or**
+- **token gate (reverse cases):** tokenise the domain's asset-type name *and its aliases* (`A2.AssetType.attributes.aliases`, supplied by the institution — e.g. "Financial Position" → `balance, position, posting, ledger`) and tokenise the component's interface: operation names (camel-case and snake-case split), paths, descriptions, and the names of the data entities it accesses. Lower-case, singularise, drop stop words. Pass if any asset token appears in the interface tokens.
+
+Legacy names rarely contain the literal BIAN asset name ("POSTING_JRNL" does not say "Financial Position"); a literal gate blocks half of a legacy estate (H1 finding 1). No asset type and no aliases in the export → the gate is untestable for that domain; record it. The gate is the same for every API of one component and must never count as evidence.
 
 **Checks** — each is *pass*, *fail* or *neutral*; only pass and fail are evidence:
 
@@ -72,7 +77,7 @@ Rewritten after M1: a tally of "3 of 4 rules" is not a fill rule — on a six-op
 1. **Propose at the plan's band (high)** when checks 2 and 4 pass and check 3 is pass or neutral.
 2. **Propose one band lower, with a finding on the API** when check 2 fails but checks 3 (pass or neutral) and 4 pass and the API is the operation's unique best payload match — e.g. a Retrieve implemented as POST. The finding states the method mismatch.
 3. **Otherwise no proposal.** Two passes with a failed check 3, or check 4 failed, is not a mapping.
-4. **Disambiguation:** an operation maps to at most one API and an API to at most one operation in step 2. A decision-1 pair excludes any decision-2 pair that shares its operation or its API. If two APIs tie as an operation's best payload match, the one whose path contains the operation's qualifier wins; a remaining tie is **no proposal** with both candidates named in the log.
+4. **Disambiguation, iterated to a fixpoint:** an operation maps to at most one API and an API to at most one operation in step 2. Round 1: file every decision-1 pair; remove any other pair sharing its operation or API. Round 2: among the remaining decision-2 pairs, file each operation's unique best payload match; remove pairs sharing its operation or API. Repeat until no pair is filed in a round (H1 needed two rounds). If two APIs tie as an operation's best payload match, the one whose path or name contains the operation's qualifier wins; a remaining tie is **no proposal** with both candidates named in the log.
 
 **Non-HTTP interfaces.** If `attributes.method` is not an HTTP method (e.g. `BATCH`, `MQ`, `FILE`), the BIAN REST mapping does not apply: step 2 is **not applicable** for that operation — record it in the no-proposal register and, if the payload overlaps a control record ≥ 50 %, report the pair under *New connection candidates* as a non-REST realisation. Never force it through check 2.
 
@@ -109,7 +114,7 @@ Only for the IDs the plan assigns to step 4, or as a declared fallback.
 Working: the attribute/stage pairs matched and the score.
 
 ### Step 5 — Text inference
-Only for S01 when step 3 produced nothing (capability with no mapped processes), and for the A1 side of hard cases. Compare the capability description with each candidate domain's description; propose at most **one** domain per capability, low confidence, with the two texts quoted and the shared concepts named. **The candidate set must be the full exported A2 landscape, or at least three domains**; with fewer, the ranking is vacuous — record *single-candidate, no proposal*. If no domain is clearly better than the rest, **no proposal**.
+Only for S01 when step 3 produced nothing (capability with no mapped processes), and for the A1 side of hard cases. Compare the capability description with each candidate domain's description (name, description, asset type and aliases). Count **shared concepts**: content words after stop-word removal, excluding generic banking words (`bank, customer, manage, account, service, process, record, data`) — these appear everywhere and are not evidence. Propose at most **one** domain per capability, low confidence, with the two texts quoted and the shared concepts named, **only when** the best domain shares **≥ 2 concepts** and leads the runner-up by **≥ 1** (H1 finding 3). **The candidate set must be the full exported A2 landscape, or at least three domains**; with fewer, record *single-candidate, no proposal*. Otherwise **no proposal**.
 
 ## 4. Output — the proposal document
 

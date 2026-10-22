@@ -58,7 +58,13 @@
       "version": "1.0",
       "name": "Payment Instruction",
       "lifecycle_status": "active",
-      "description": "The customer payment instruction the domain fulfils."
+      "description": "The customer payment instruction the domain fulfils.",
+      "attributes": {
+        "aliases": [
+          "payment",
+          "instruction"
+        ]
+      }
     },
     {
       "id": "AT-PAY-TXN",
@@ -66,7 +72,14 @@
       "version": "1.0",
       "name": "Payment Transaction",
       "lifecycle_status": "active",
-      "description": "The executed transfer."
+      "description": "The executed transfer.",
+      "attributes": {
+        "aliases": [
+          "payment",
+          "transaction",
+          "transfer"
+        ]
+      }
     },
     {
       "id": "AT-AUTH",
@@ -74,7 +87,14 @@
       "version": "1.0",
       "name": "Authentication",
       "lifecycle_status": "active",
-      "description": "An authentication of a party."
+      "description": "An authentication of a party.",
+      "attributes": {
+        "aliases": [
+          "authentication",
+          "login",
+          "credential"
+        ]
+      }
     },
     {
       "id": "FP-FULFIL",
