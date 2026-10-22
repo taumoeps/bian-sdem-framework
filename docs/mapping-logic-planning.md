@@ -999,7 +999,7 @@ endlegend
 ```
 ### 5.5 Within-level structure
 
-The mappings are the cross-level arrows. Inside each architecture the entities are linked by ArchiMate relationship kinds recorded in each level export's `relationships` list: a graph of composition, aggregation, realization, assignment, access, serving, flow and triggering — not a single top-to-bottom chain. For A2 the set is fixed by BIAN (the 14 constraints in `metamodel/level-relationships.json`, checked on every A2 export). For A1, A3 and A4 the institution's own structure applies, using any catalogued kind between two entities of the same level; the diagram shows the patterns the ten example estates use. Generated into `metamodel/level-relationships.puml` by `python -m sdmm.diagram`.
+The mappings are the cross-level arrows. Inside each architecture the entities are linked by ArchiMate relationship kinds recorded in each level export's `relationships` list: a graph of composition, aggregation, realization, assignment, access, serving, flow and triggering — not a single top-to-bottom chain. For A2 the set is fixed by BIAN (the 17 constraints in `metamodel/level-relationships.json`, checked on every A2 export; the three artefact rows attach a wireframe or Semantic API to its domain and the BOM artefact to its objects). For A1, A3 and A4 the institution's own structure applies, using any catalogued kind between two entities of the same level; the diagram shows the patterns the ten example estates use. Generated into `metamodel/level-relationships.puml` by `python -m sdmm.diagram`.
 
 ```plantuml
 @startuml level-relationships
@@ -1056,7 +1056,7 @@ package "A2 Service Domain Architecture" as A2 {
   rectangle "A2.BOMModel\n(artefact)" as a2_bommodel
   rectangle "A2.Wireframe\n(artefact)" as a2_wireframe
   rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi
-  ' BIAN-fixed constraints (14)
+  ' BIAN-fixed constraints (17)
   a2_businessarea -[#1565C0]-> a2_businessdomain : composition
   a2_businessdomain -[#1565C0]-> a2_servicedomain : composition
   a2_servicedomain -[#1565C0]-> a2_servicegroup : composition
@@ -1071,6 +1071,9 @@ package "A2 Service Domain Architecture" as A2 {
   a2_controlrecord -[#9E9E9E,dotted]-> a2_businessobject : association
   a2_serviceoperation -[#616161,dotted]-> a2_controlrecord : access
   a2_servicedomain -[#EF6C00,dashed]-> a2_servicedomain : flow
+  a2_wireframe -[#9E9E9E,dotted]-> a2_servicedomain : association
+  a2_semanticapi -[#2E7D32,dashed]-> a2_servicedomain : realization
+  a2_bommodel -[#1565C0,dashed]-> a2_businessobject : aggregation
 }
 
 package "A3 Application Architecture" as A3 {
@@ -1148,7 +1151,7 @@ skinparam package {
   BorderColor #9E9E9E
 }
 skinparam ArrowFontSize 9
-title Merged view — 48 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
+title Merged view — 51 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
 
 package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessCapability" as a1_businesscapability
@@ -1191,7 +1194,7 @@ package "A2 Service Domain Architecture" as A2 {
   rectangle "A2.BOMModel\n(artefact)" as a2_bommodel #EEEEEE
   rectangle "A2.Wireframe\n(artefact)" as a2_wireframe #EEEEEE
   rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi #EEEEEE
-  ' within A2 — BIAN-fixed constraints (14)
+  ' within A2 — BIAN-fixed constraints (17)
   a2_businessarea -[#B0BEC5]-> a2_businessdomain : <size:8>composition</size>
   a2_businessdomain -[#B0BEC5]-> a2_servicedomain : <size:8>composition</size>
   a2_servicedomain -[#B0BEC5]-> a2_servicegroup : <size:8>composition</size>
@@ -1206,6 +1209,9 @@ package "A2 Service Domain Architecture" as A2 {
   a2_controlrecord -[#B0BEC5]-> a2_businessobject : <size:8>association</size>
   a2_serviceoperation -[#B0BEC5]-> a2_controlrecord : <size:8>access</size>
   a2_servicedomain -[#B0BEC5]-> a2_servicedomain : <size:8>flow</size>
+  a2_wireframe -[#B0BEC5]-> a2_servicedomain : <size:8>association</size>
+  a2_semanticapi -[#B0BEC5]-> a2_servicedomain : <size:8>realization</size>
+  a2_bommodel -[#B0BEC5]-> a2_businessobject : <size:8>aggregation</size>
 }
 
 package "A3 Application Architecture" as A3 {

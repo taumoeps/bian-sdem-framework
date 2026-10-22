@@ -1,6 +1,6 @@
 {
   "metamodel_version": "0.4.0",
-  "note": "Within-level relationships are held by each level model, never by SDMM mapping documents. This catalogue defines the kinds a conforming level model may use; the full ArchiMate relationship table is not reproduced here.",
+  "note": "Within-level relationships are held by each level model, never by SDMM mapping documents. This catalogue defines the kinds a conforming level model may use; the full ArchiMate relationship table is not reproduced here. 0.5.14: artefact rows added (Wireframe → ServiceDomain B14, SemanticAPI → ServiceDomain B15, BOMModel → BusinessObject) so artefacts can be carried in an A2 export as documents attached to their domain or objects; artefacts remain non-endpoints for cross-level mappings.",
   "kinds": [
     {
       "kind": "composition",
@@ -151,6 +151,27 @@
       "kind": "flow",
       "target_type": "A2.ServiceDomain",
       "basis": "[SAPG] §3.2.6 first-order connections (B12)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.Wireframe",
+      "kind": "association",
+      "target_type": "A2.ServiceDomain",
+      "basis": "[SL14] Wireframes Overview; [SAPG] §3.4 — a wireframe depicts a Service Domain (B14)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.SemanticAPI",
+      "kind": "realization",
+      "target_type": "A2.ServiceDomain",
+      "basis": "[APIP]; [SAPG] §3.5 — the Semantic API is derived from the Service Domain's operations (B15)"
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.BOMModel",
+      "kind": "aggregation",
+      "target_type": "A2.BusinessObject",
+      "basis": "[SL14] BOM Overview — the versioned Business Object Model artefact aggregates the business objects (content of B08's source)"
     }
   ],
   "policy": "A2 relationships must match a constraint row (BIAN structure is fixed). A1, A3 and A4 relationships must use a catalogued kind between two entities of the same level; pairwise ArchiMate validity is the level model's responsibility."

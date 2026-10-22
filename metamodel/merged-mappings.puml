@@ -9,7 +9,7 @@ skinparam package {
   BorderColor #9E9E9E
 }
 skinparam ArrowFontSize 9
-title Merged view — 48 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
+title Merged view — 51 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
 
 package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessCapability" as a1_businesscapability
@@ -52,7 +52,7 @@ package "A2 Service Domain Architecture" as A2 {
   rectangle "A2.BOMModel\n(artefact)" as a2_bommodel #EEEEEE
   rectangle "A2.Wireframe\n(artefact)" as a2_wireframe #EEEEEE
   rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi #EEEEEE
-  ' within A2 — BIAN-fixed constraints (14)
+  ' within A2 — BIAN-fixed constraints (17)
   a2_businessarea -[#B0BEC5]-> a2_businessdomain : <size:8>composition</size>
   a2_businessdomain -[#B0BEC5]-> a2_servicedomain : <size:8>composition</size>
   a2_servicedomain -[#B0BEC5]-> a2_servicegroup : <size:8>composition</size>
@@ -67,6 +67,9 @@ package "A2 Service Domain Architecture" as A2 {
   a2_controlrecord -[#B0BEC5]-> a2_businessobject : <size:8>association</size>
   a2_serviceoperation -[#B0BEC5]-> a2_controlrecord : <size:8>access</size>
   a2_servicedomain -[#B0BEC5]-> a2_servicedomain : <size:8>flow</size>
+  a2_wireframe -[#B0BEC5]-> a2_servicedomain : <size:8>association</size>
+  a2_semanticapi -[#B0BEC5]-> a2_servicedomain : <size:8>realization</size>
+  a2_bommodel -[#B0BEC5]-> a2_businessobject : <size:8>aggregation</size>
 }
 
 package "A3 Application Architecture" as A3 {

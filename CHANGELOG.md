@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.14 — diagrams and artefact constraints
+
+- `sdmm-diagram` renders four projections (official, new, levels, merged) with `--check` for CI; unmapped entities greyed with the reason.
+- A2 constraints 14 → 17: Wireframe → ServiceDomain (B14), SemanticAPI → ServiceDomain (B15), BOMModel → BusinessObject, so artefacts can be attached inside an A2 export.
+
 ## 0.5.13 — after C3 (51 of 51 registry + candidates, one false fixed by rule); suite closed
 
 - S42 derived over exposure (S43/S44), not consumption; DEPLOYED_ON fan-out and network-zone precedence noted; 69-row coverage table regenerated.

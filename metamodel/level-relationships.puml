@@ -52,7 +52,7 @@ package "A2 Service Domain Architecture" as A2 {
   rectangle "A2.BOMModel\n(artefact)" as a2_bommodel
   rectangle "A2.Wireframe\n(artefact)" as a2_wireframe
   rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi
-  ' BIAN-fixed constraints (14)
+  ' BIAN-fixed constraints (17)
   a2_businessarea -[#1565C0]-> a2_businessdomain : composition
   a2_businessdomain -[#1565C0]-> a2_servicedomain : composition
   a2_servicedomain -[#1565C0]-> a2_servicegroup : composition
@@ -67,6 +67,9 @@ package "A2 Service Domain Architecture" as A2 {
   a2_controlrecord -[#9E9E9E,dotted]-> a2_businessobject : association
   a2_serviceoperation -[#616161,dotted]-> a2_controlrecord : access
   a2_servicedomain -[#EF6C00,dashed]-> a2_servicedomain : flow
+  a2_wireframe -[#9E9E9E,dotted]-> a2_servicedomain : association
+  a2_semanticapi -[#2E7D32,dashed]-> a2_servicedomain : realization
+  a2_bommodel -[#1565C0,dashed]-> a2_businessobject : aggregation
 }
 
 package "A3 Application Architecture" as A3 {
