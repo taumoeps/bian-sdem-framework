@@ -1,0 +1,1330 @@
+{
+  "level": "A2",
+  "model_id": "synthetic-fintech-a2",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-BIAN-WORKBENCH",
+  "instances": [
+    {
+      "id": "BD-PAY",
+      "type": "A2.BusinessDomain",
+      "version": "1.0",
+      "name": "Payments (synthetic grouping)",
+      "lifecycle_status": "active",
+      "description": "Synthetic grouping."
+    },
+    {
+      "id": "BD-ACCT",
+      "type": "A2.BusinessDomain",
+      "version": "1.0",
+      "name": "Accounts (synthetic grouping)",
+      "lifecycle_status": "active",
+      "description": "Synthetic grouping."
+    },
+    {
+      "id": "BD-REF",
+      "type": "A2.BusinessDomain",
+      "version": "1.0",
+      "name": "Reference Data (synthetic grouping)",
+      "lifecycle_status": "active",
+      "description": "Synthetic grouping."
+    },
+    {
+      "id": "BD-RISK",
+      "type": "A2.BusinessDomain",
+      "version": "1.0",
+      "name": "Risk (synthetic grouping)",
+      "lifecycle_status": "active",
+      "description": "Synthetic grouping."
+    },
+    {
+      "id": "SD-PI",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Payment Initiation (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: captures, validates and hands over customer payment instructions.",
+      "attributes": {
+        "asset_type": "AT-PI",
+        "functional_pattern": "FP-FULFIL"
+      },
+      "canonical_id": "BIAN-PAYMENT-INITIATION"
+    },
+    {
+      "id": "SD-PE",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Payment Execution (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: executes payments through schemes or instantly between parties.",
+      "attributes": {
+        "asset_type": "AT-PE",
+        "functional_pattern": "FP-FULFIL"
+      },
+      "canonical_id": "BIAN-PAYMENT-EXECUTION"
+    },
+    {
+      "id": "SD-CA",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Current Account (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: opens, maintains, blocks and closes current accounts.",
+      "attributes": {
+        "asset_type": "AT-CA",
+        "functional_pattern": "FP-FULFIL"
+      },
+      "canonical_id": "BIAN-CURRENT-ACCOUNT"
+    },
+    {
+      "id": "SD-PRD",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Party Reference Data Directory (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: maintains the master reference record of parties.",
+      "attributes": {
+        "asset_type": "AT-PRD",
+        "functional_pattern": "FP-MAINTAIN"
+      },
+      "canonical_id": "BIAN-PARTY-REFERENCE"
+    },
+    {
+      "id": "SD-SA",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Savings Account (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: opens and maintains interest-bearing savings accounts with goals.",
+      "attributes": {
+        "asset_type": "AT-SA",
+        "functional_pattern": "FP-FULFIL"
+      },
+      "canonical_id": "BIAN-SAVINGS-ACCOUNT"
+    },
+    {
+      "id": "SD-FD",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Fraud Detection (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: assesses transactions for fraud and records the outcome.",
+      "attributes": {
+        "asset_type": "AT-FD",
+        "functional_pattern": "FP-ASSESS"
+      },
+      "canonical_id": "BIAN-FRAUD-DETECTION"
+    },
+    {
+      "id": "AT-PI",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "A customer's payment instruction.",
+      "attributes": {
+        "aliases": [
+          "moneyflow",
+          "flow",
+          "transfer"
+        ]
+      }
+    },
+    {
+      "id": "AT-PE",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Payment Transaction",
+      "lifecycle_status": "active",
+      "description": "An executed payment.",
+      "attributes": {
+        "aliases": [
+          "zap",
+          "send",
+          "p2p"
+        ]
+      }
+    },
+    {
+      "id": "AT-CA",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Current Account",
+      "lifecycle_status": "active",
+      "description": "A customer's current account.",
+      "attributes": {
+        "aliases": [
+          "pot",
+          "wallet"
+        ]
+      }
+    },
+    {
+      "id": "AT-PRD",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Party Reference",
+      "lifecycle_status": "active",
+      "description": "A party's master record.",
+      "attributes": {
+        "aliases": [
+          "member",
+          "buddy",
+          "profile"
+        ]
+      }
+    },
+    {
+      "id": "AT-SA",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Savings Account",
+      "lifecycle_status": "active",
+      "description": "An interest-bearing savings account."
+    },
+    {
+      "id": "AT-FD",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Fraud Case",
+      "lifecycle_status": "active",
+      "description": "A fraud assessment of a transaction."
+    },
+    {
+      "id": "FP-FULFIL",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Fulfil",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in."
+    },
+    {
+      "id": "FP-MAINTAIN",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Maintain",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in."
+    },
+    {
+      "id": "FP-ASSESS",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Assess",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in."
+    },
+    {
+      "id": "CR-PI",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Payment Initiation Procedure",
+      "lifecycle_status": "active",
+      "description": "Lifecycle of one instruction.",
+      "attributes": {
+        "attributes": [
+          "payment_instruction_reference",
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "value_date",
+          "payment_status",
+          "remittance_information"
+        ]
+      }
+    },
+    {
+      "id": "CR-PE",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Payment Execution Procedure",
+      "lifecycle_status": "active",
+      "description": "Lifecycle of one execution.",
+      "attributes": {
+        "attributes": [
+          "payment_reference",
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "execution_status",
+          "execution_date",
+          "scheme_reference"
+        ]
+      }
+    },
+    {
+      "id": "CR-CA",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Current Account Facility",
+      "lifecycle_status": "active",
+      "description": "Lifecycle of one account.",
+      "attributes": {
+        "attributes": [
+          "account_reference",
+          "customer_reference",
+          "account_status",
+          "currency",
+          "balance",
+          "overdraft_limit",
+          "open_date",
+          "close_date"
+        ]
+      }
+    },
+    {
+      "id": "CR-PRD",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Party Reference Record",
+      "lifecycle_status": "active",
+      "description": "Master record of one party.",
+      "attributes": {
+        "attributes": [
+          "party_reference",
+          "party_name",
+          "party_type",
+          "address",
+          "contact_details",
+          "kyc_status"
+        ]
+      }
+    },
+    {
+      "id": "CR-SA",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Savings Account Facility",
+      "lifecycle_status": "active",
+      "description": "Lifecycle of one savings account.",
+      "attributes": {
+        "attributes": [
+          "account_reference",
+          "customer_reference",
+          "account_status",
+          "currency",
+          "balance",
+          "interest_rate",
+          "target_amount",
+          "open_date"
+        ]
+      }
+    },
+    {
+      "id": "CR-FD",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Fraud Detection Assessment",
+      "lifecycle_status": "active",
+      "description": "One assessment.",
+      "attributes": {
+        "attributes": [
+          "fraud_case_reference",
+          "transaction_reference",
+          "risk_score",
+          "assessment_outcome",
+          "assessed_at"
+        ]
+      }
+    },
+    {
+      "id": "BQ-EXECUTION",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Execution",
+      "lifecycle_status": "active",
+      "description": "Hand-over to execution."
+    },
+    {
+      "id": "BQ-CLOSURE",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Closure",
+      "lifecycle_status": "active",
+      "description": "Closing an account."
+    },
+    {
+      "id": "SG-PI",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Instruction",
+      "lifecycle_status": "active",
+      "description": "Operations."
+    },
+    {
+      "id": "SG-PE",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Execution",
+      "lifecycle_status": "active",
+      "description": "Operations."
+    },
+    {
+      "id": "SG-CA",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Account",
+      "lifecycle_status": "active",
+      "description": "Operations."
+    },
+    {
+      "id": "SG-PRD",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Party",
+      "lifecycle_status": "active",
+      "description": "Operations."
+    },
+    {
+      "id": "SG-SA",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Savings",
+      "lifecycle_status": "active",
+      "description": "Operations."
+    },
+    {
+      "id": "SG-FD",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Assessment",
+      "lifecycle_status": "active",
+      "description": "Operations."
+    },
+    {
+      "id": "SO-PI-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Initiate Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "Create a payment instruction.",
+      "attributes": {
+        "action_term": "Initiate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "value_date",
+          "remittance_information"
+        ],
+        "output_attributes": [
+          "payment_instruction_reference",
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PI-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Update Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "Amend an instruction before execution.",
+      "attributes": {
+        "action_term": "Update",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "payment_instruction_reference",
+          "amount",
+          "value_date",
+          "creditor_account_reference"
+        ],
+        "output_attributes": [
+          "payment_instruction_reference",
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PI-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "Return the instruction and its status.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "payment_instruction_reference"
+        ],
+        "output_attributes": [
+          "payment_status",
+          "amount",
+          "currency",
+          "value_date",
+          "creditor_account_reference"
+        ]
+      }
+    },
+    {
+      "id": "SO-PI-04",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Control Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "Cancel or hold an instruction.",
+      "attributes": {
+        "action_term": "Control",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "payment_instruction_reference",
+          "payment_status"
+        ],
+        "output_attributes": [
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PI-05",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Execute Payment Instruction Execution",
+      "lifecycle_status": "active",
+      "description": "Hand the instruction to execution.",
+      "attributes": {
+        "action_term": "Execute",
+        "behavior_qualifier": "Execution",
+        "input_attributes": [
+          "payment_instruction_reference"
+        ],
+        "output_attributes": [
+          "execution_reference",
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PE-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Initiate Payment Execution",
+      "lifecycle_status": "active",
+      "description": "Execute a payment between two accounts.",
+      "attributes": {
+        "action_term": "Initiate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency"
+        ],
+        "output_attributes": [
+          "payment_reference",
+          "execution_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PE-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Payment Execution",
+      "lifecycle_status": "active",
+      "description": "Return the execution outcome.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "payment_reference"
+        ],
+        "output_attributes": [
+          "execution_status",
+          "scheme_reference",
+          "execution_date"
+        ]
+      }
+    },
+    {
+      "id": "SO-CA-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Initiate Current Account",
+      "lifecycle_status": "active",
+      "description": "Open an account.",
+      "attributes": {
+        "action_term": "Initiate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "customer_reference",
+          "currency",
+          "overdraft_limit"
+        ],
+        "output_attributes": [
+          "account_reference",
+          "account_status",
+          "open_date"
+        ]
+      }
+    },
+    {
+      "id": "SO-CA-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Current Account",
+      "lifecycle_status": "active",
+      "description": "Return the account.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "account_reference"
+        ],
+        "output_attributes": [
+          "account_status",
+          "currency",
+          "balance",
+          "overdraft_limit",
+          "customer_reference"
+        ]
+      }
+    },
+    {
+      "id": "SO-CA-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Update Current Account",
+      "lifecycle_status": "active",
+      "description": "Amend the account terms.",
+      "attributes": {
+        "action_term": "Update",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "account_reference",
+          "overdraft_limit"
+        ],
+        "output_attributes": [
+          "account_reference",
+          "account_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-CA-04",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Control Current Account",
+      "lifecycle_status": "active",
+      "description": "Block or unblock the account.",
+      "attributes": {
+        "action_term": "Control",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "account_reference",
+          "account_status"
+        ],
+        "output_attributes": [
+          "account_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-CA-05",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Execute Current Account Closure",
+      "lifecycle_status": "active",
+      "description": "Close the account.",
+      "attributes": {
+        "action_term": "Execute",
+        "behavior_qualifier": "Closure",
+        "input_attributes": [
+          "account_reference"
+        ],
+        "output_attributes": [
+          "account_status",
+          "close_date"
+        ]
+      }
+    },
+    {
+      "id": "SO-PRD-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Register Party Reference",
+      "lifecycle_status": "active",
+      "description": "Create a party record.",
+      "attributes": {
+        "action_term": "Register",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "party_name",
+          "party_type",
+          "address"
+        ],
+        "output_attributes": [
+          "party_reference"
+        ]
+      }
+    },
+    {
+      "id": "SO-PRD-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Party Reference",
+      "lifecycle_status": "active",
+      "description": "Return a party record.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "party_reference"
+        ],
+        "output_attributes": [
+          "party_name",
+          "party_type",
+          "address",
+          "kyc_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PRD-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Update Party Reference",
+      "lifecycle_status": "active",
+      "description": "Amend a party record.",
+      "attributes": {
+        "action_term": "Update",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "party_reference",
+          "address",
+          "contact_details"
+        ],
+        "output_attributes": [
+          "party_reference"
+        ]
+      }
+    },
+    {
+      "id": "SO-SA-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Initiate Savings Account",
+      "lifecycle_status": "active",
+      "description": "Open a savings account with a goal.",
+      "attributes": {
+        "action_term": "Initiate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "customer_reference",
+          "currency",
+          "target_amount"
+        ],
+        "output_attributes": [
+          "account_reference",
+          "account_status",
+          "open_date"
+        ]
+      }
+    },
+    {
+      "id": "SO-SA-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Savings Account",
+      "lifecycle_status": "active",
+      "description": "Return the savings account.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "account_reference"
+        ],
+        "output_attributes": [
+          "account_status",
+          "currency",
+          "balance",
+          "interest_rate",
+          "target_amount"
+        ]
+      }
+    },
+    {
+      "id": "SO-SA-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Update Savings Account",
+      "lifecycle_status": "active",
+      "description": "Amend the goal or terms.",
+      "attributes": {
+        "action_term": "Update",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "account_reference",
+          "target_amount"
+        ],
+        "output_attributes": [
+          "account_reference",
+          "account_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-FD-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Evaluate Fraud Detection",
+      "lifecycle_status": "active",
+      "description": "Assess a transaction for fraud.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "transaction_reference"
+        ],
+        "output_attributes": [
+          "fraud_case_reference",
+          "risk_score",
+          "assessment_outcome"
+        ]
+      }
+    },
+    {
+      "id": "SO-FD-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Fraud Detection",
+      "lifecycle_status": "active",
+      "description": "Return an assessment.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "fraud_case_reference"
+        ],
+        "output_attributes": [
+          "risk_score",
+          "assessment_outcome",
+          "assessed_at"
+        ]
+      }
+    },
+    {
+      "id": "BBO-PAY-INSTR",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "Canonical.",
+      "attributes": {
+        "attributes": [
+          "payment_instruction_reference",
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "value_date",
+          "payment_status",
+          "remittance_information"
+        ]
+      },
+      "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION"
+    },
+    {
+      "id": "BBO-PAYMENT-TXN",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Payment Transaction",
+      "lifecycle_status": "active",
+      "description": "Canonical.",
+      "attributes": {
+        "attributes": [
+          "payment_reference",
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "execution_status",
+          "execution_date",
+          "scheme_reference"
+        ]
+      },
+      "canonical_id": "BIAN-BO-PAYMENT-TXN"
+    },
+    {
+      "id": "BBO-ACCOUNT",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Current Account",
+      "lifecycle_status": "active",
+      "description": "Canonical.",
+      "attributes": {
+        "attributes": [
+          "account_reference",
+          "customer_reference",
+          "account_status",
+          "currency",
+          "balance",
+          "overdraft_limit",
+          "open_date",
+          "close_date"
+        ]
+      },
+      "canonical_id": "BIAN-BO-CURRENT-ACCOUNT"
+    },
+    {
+      "id": "BBO-PARTY",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Party",
+      "lifecycle_status": "active",
+      "description": "Canonical.",
+      "attributes": {
+        "attributes": [
+          "party_reference",
+          "party_name",
+          "party_type",
+          "address",
+          "contact_details",
+          "kyc_status"
+        ]
+      },
+      "canonical_id": "BIAN-BO-PARTY"
+    },
+    {
+      "id": "BBO-SAVINGS",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Savings Account",
+      "lifecycle_status": "active",
+      "description": "Canonical.",
+      "attributes": {
+        "attributes": [
+          "account_reference",
+          "customer_reference",
+          "account_status",
+          "currency",
+          "balance",
+          "interest_rate",
+          "target_amount",
+          "open_date"
+        ]
+      },
+      "canonical_id": "BIAN-BO-SAVINGS-ACCOUNT"
+    },
+    {
+      "id": "BBO-FRAUD-CASE",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Fraud Case",
+      "lifecycle_status": "active",
+      "description": "Canonical.",
+      "attributes": {
+        "attributes": [
+          "fraud_case_reference",
+          "transaction_reference",
+          "risk_score",
+          "assessment_outcome",
+          "assessed_at"
+        ]
+      },
+      "canonical_id": "BIAN-BO-FRAUD-CASE"
+    }
+  ],
+  "relationships": [
+    {
+      "source": "BD-PAY",
+      "kind": "composition",
+      "target": "SD-PI"
+    },
+    {
+      "source": "BD-PAY",
+      "kind": "composition",
+      "target": "SD-PE"
+    },
+    {
+      "source": "BD-ACCT",
+      "kind": "composition",
+      "target": "SD-CA"
+    },
+    {
+      "source": "BD-ACCT",
+      "kind": "composition",
+      "target": "SD-SA"
+    },
+    {
+      "source": "BD-REF",
+      "kind": "composition",
+      "target": "SD-PRD"
+    },
+    {
+      "source": "BD-RISK",
+      "kind": "composition",
+      "target": "SD-FD"
+    },
+    {
+      "source": "SD-PI",
+      "kind": "association",
+      "target": "AT-PI"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "association",
+      "target": "AT-PE"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "association",
+      "target": "AT-CA"
+    },
+    {
+      "source": "SD-PRD",
+      "kind": "association",
+      "target": "AT-PRD"
+    },
+    {
+      "source": "SD-SA",
+      "kind": "association",
+      "target": "AT-SA"
+    },
+    {
+      "source": "SD-FD",
+      "kind": "association",
+      "target": "AT-FD"
+    },
+    {
+      "source": "SD-PI",
+      "kind": "aggregation",
+      "target": "CR-PI"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "aggregation",
+      "target": "CR-PE"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "aggregation",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SD-PRD",
+      "kind": "aggregation",
+      "target": "CR-PRD"
+    },
+    {
+      "source": "SD-SA",
+      "kind": "aggregation",
+      "target": "CR-SA"
+    },
+    {
+      "source": "SD-FD",
+      "kind": "aggregation",
+      "target": "CR-FD"
+    },
+    {
+      "source": "SD-PI",
+      "kind": "composition",
+      "target": "SG-PI"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "composition",
+      "target": "SG-PE"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "composition",
+      "target": "SG-CA"
+    },
+    {
+      "source": "SD-PRD",
+      "kind": "composition",
+      "target": "SG-PRD"
+    },
+    {
+      "source": "SD-SA",
+      "kind": "composition",
+      "target": "SG-SA"
+    },
+    {
+      "source": "SD-FD",
+      "kind": "composition",
+      "target": "SG-FD"
+    },
+    {
+      "source": "SD-PI",
+      "kind": "association",
+      "target": "FP-FULFIL"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "association",
+      "target": "FP-FULFIL"
+    },
+    {
+      "source": "SD-CA",
+      "kind": "association",
+      "target": "FP-FULFIL"
+    },
+    {
+      "source": "SD-PRD",
+      "kind": "association",
+      "target": "FP-MAINTAIN"
+    },
+    {
+      "source": "SD-SA",
+      "kind": "association",
+      "target": "FP-FULFIL"
+    },
+    {
+      "source": "SD-FD",
+      "kind": "association",
+      "target": "FP-ASSESS"
+    },
+    {
+      "source": "CR-PI",
+      "kind": "composition",
+      "target": "BQ-EXECUTION"
+    },
+    {
+      "source": "CR-CA",
+      "kind": "composition",
+      "target": "BQ-CLOSURE"
+    },
+    {
+      "source": "CR-PI",
+      "kind": "association",
+      "target": "BBO-PAY-INSTR"
+    },
+    {
+      "source": "CR-PE",
+      "kind": "association",
+      "target": "BBO-PAYMENT-TXN"
+    },
+    {
+      "source": "CR-CA",
+      "kind": "association",
+      "target": "BBO-ACCOUNT"
+    },
+    {
+      "source": "CR-PRD",
+      "kind": "association",
+      "target": "BBO-PARTY"
+    },
+    {
+      "source": "CR-SA",
+      "kind": "association",
+      "target": "BBO-SAVINGS"
+    },
+    {
+      "source": "CR-FD",
+      "kind": "association",
+      "target": "BBO-FRAUD-CASE"
+    },
+    {
+      "source": "SG-PI",
+      "kind": "composition",
+      "target": "SO-PI-01"
+    },
+    {
+      "source": "SG-PI",
+      "kind": "composition",
+      "target": "SO-PI-02"
+    },
+    {
+      "source": "SG-PI",
+      "kind": "composition",
+      "target": "SO-PI-03"
+    },
+    {
+      "source": "SG-PI",
+      "kind": "composition",
+      "target": "SO-PI-04"
+    },
+    {
+      "source": "SG-PI",
+      "kind": "composition",
+      "target": "SO-PI-05"
+    },
+    {
+      "source": "SG-PE",
+      "kind": "composition",
+      "target": "SO-PE-01"
+    },
+    {
+      "source": "SG-PE",
+      "kind": "composition",
+      "target": "SO-PE-02"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-01"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-02"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-03"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-04"
+    },
+    {
+      "source": "SG-CA",
+      "kind": "composition",
+      "target": "SO-CA-05"
+    },
+    {
+      "source": "SG-PRD",
+      "kind": "composition",
+      "target": "SO-PRD-01"
+    },
+    {
+      "source": "SG-PRD",
+      "kind": "composition",
+      "target": "SO-PRD-02"
+    },
+    {
+      "source": "SG-PRD",
+      "kind": "composition",
+      "target": "SO-PRD-03"
+    },
+    {
+      "source": "SG-SA",
+      "kind": "composition",
+      "target": "SO-SA-01"
+    },
+    {
+      "source": "SG-SA",
+      "kind": "composition",
+      "target": "SO-SA-02"
+    },
+    {
+      "source": "SG-SA",
+      "kind": "composition",
+      "target": "SO-SA-03"
+    },
+    {
+      "source": "SG-FD",
+      "kind": "composition",
+      "target": "SO-FD-01"
+    },
+    {
+      "source": "SG-FD",
+      "kind": "composition",
+      "target": "SO-FD-02"
+    },
+    {
+      "source": "SO-PI-01",
+      "kind": "access",
+      "target": "CR-PI"
+    },
+    {
+      "source": "SO-PI-02",
+      "kind": "access",
+      "target": "CR-PI"
+    },
+    {
+      "source": "SO-PI-03",
+      "kind": "access",
+      "target": "CR-PI"
+    },
+    {
+      "source": "SO-PI-04",
+      "kind": "access",
+      "target": "CR-PI"
+    },
+    {
+      "source": "SO-PI-05",
+      "kind": "access",
+      "target": "CR-PI"
+    },
+    {
+      "source": "SO-PE-01",
+      "kind": "access",
+      "target": "CR-PE"
+    },
+    {
+      "source": "SO-PE-02",
+      "kind": "access",
+      "target": "CR-PE"
+    },
+    {
+      "source": "SO-CA-01",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SO-CA-02",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SO-CA-03",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SO-CA-04",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SO-CA-05",
+      "kind": "access",
+      "target": "CR-CA"
+    },
+    {
+      "source": "SO-PRD-01",
+      "kind": "access",
+      "target": "CR-PRD"
+    },
+    {
+      "source": "SO-PRD-02",
+      "kind": "access",
+      "target": "CR-PRD"
+    },
+    {
+      "source": "SO-PRD-03",
+      "kind": "access",
+      "target": "CR-PRD"
+    },
+    {
+      "source": "SO-SA-01",
+      "kind": "access",
+      "target": "CR-SA"
+    },
+    {
+      "source": "SO-SA-02",
+      "kind": "access",
+      "target": "CR-SA"
+    },
+    {
+      "source": "SO-SA-03",
+      "kind": "access",
+      "target": "CR-SA"
+    },
+    {
+      "source": "SO-FD-01",
+      "kind": "access",
+      "target": "CR-FD"
+    },
+    {
+      "source": "SO-FD-02",
+      "kind": "access",
+      "target": "CR-FD"
+    },
+    {
+      "source": "SD-PI",
+      "kind": "flow",
+      "target": "SD-PE"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** seven use cases defined; E1, M0, M1 and H1 executed 2026-10-22 (see Results); E2, M2, H2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** seven use cases defined; E1, M0, M1 and H1 executed 2026-10-22 (see Results); H2 authored and ready; E2, M2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -159,25 +159,35 @@
 
 ## H2 — Acquired Fintech, hostile naming (Hard)
 
-**Scenario.** A recently acquired fintech. A3/A4 are documented — a microservice estate with ~20 REST endpoints — but the API naming is product-specific (`/v2/moneyflows`, `/zap`), nothing resembles BIAN action terms, and there is no documentation beyond OpenAPI stubs and a deployment manifest. No A1, no A2 mappings.
+**Scenario.** A recently acquired fintech ("Zippa", synthetic). A3/A4 are documented — seven microservices, 23 REST endpoints known only from OpenAPI stubs, one cluster — but the API naming is product-specific (`/v2/moneyflows`, `/zap`, `/v2/pots`, `/v2/buddies`, `/v2/vaults`), service descriptions are one line, and there is **no A1 export at all**. No mappings.
 
-**Given.** A3 export with endpoints, methods and payload field names; A4 export from the manifest; A2 synthetic BIAN export; **no A1**; no approved mappings. **Gold (sealed):** what a patient architect concluded after interviews — including several endpoints that map to *nothing* in BIAN.
+**Given.** `examples/acquired-fintech/a2–a4-*.json` (116 instances; README in the folder); aliases decoded for four of six asset types; `h2-mappings-given.json` — **empty**. **Gold (sealed):** `h2-gold-mappings.json` — 41 approved, several reached by interview rather than by the plan. Do not open it, or `mappings.json`, until phase 5.
 
-**Execution order.** Step 2 fails by design (no action-term alignment). Step 1 fills A4. Step 4 — payload field names against control-record and BOM attributes; path nouns against asset types. Step 5 — only for pairs step 4 scores but cannot settle. Everything A1 is step 5 or "no proposal".
+**Execution order.** Step 1 fills A4 (14 arrows, untouched by naming). Step 2 with the **token gate**: passes for `flow`, `zap`, `pots`, `buddies` via aliases; **cannot pass** for `vaults` (no alias, no asset word in the interface) or `shield`; the write-up records each blocked domain. Checks 2–4 then decide; ties are no proposal. Step 3 → `REALIZED_BY` from step-2 proposals; S17 fallback via aliases in paths for `zap` if step 2 yields nothing there. Step 4 → `MAPPED_TO` by attributes — this reaches Savings Account where step 2 cannot. Step 5: nothing — no A1 instances exist.
 
 **Tests.**
 
 | # | Check | Expected |
 |---|---|---|
-| H2.1 | Step 2 produces nothing and says so | no `IMPLEMENTED_BY` at step 2; the write-up records why |
-| H2.2 | Step 4 proposals cite the attributes matched | every proposal names the field/attribute pairs |
-| H2.3 | Endpoints with no BIAN counterpart | **no proposal** — not a forced low-confidence one; precision over recall |
-| H2.4 | A1 | either low-confidence step-5 proposals with rationale, or "requires authoring" |
-| H2.5 | A4 unaffected | S32/S33 still high — the hostile naming does not touch deployment data |
+| H2.1 | Gate-blocked domains are recorded, not forced | no step-2 proposal for `vaults` or `shield` endpoints; the log names the gate failure per domain |
+| H2.2 | Every proposal cites the fields / attributes matched | yes, with scores |
+| H2.3 | Endpoints with no BIAN counterpart | **no proposal** for `perks` (2), `shield` (1), `/ledger`, `/buddies` (2) — precision over recall |
+| H2.4 | Ties and method mismatches | `DELETE` cancel and `POST .../release` tie as *Control*'s payload match → no proposal, both named; `POST .../close` fails check 4 → none; `zap` fails check 4 → none |
+| H2.5 | A4 unaffected | 14 deployment arrows at high |
+| H2.6 | A1 | "requires authoring" — no instances to propose against |
 
-**Connections exercised.** S24 (expected to fail at step 2, partially recover at 4), S17, S30, S32, S33, S01. **Pass:** precision ≥ 0.8 even if recall is low; H2.3 holds; confidence bands match the table. **Status:** data to author.
+**Connections exercised and predicted.**
 
----
+| ID | Connection | Step | Predicted |
+|---|---|---|---|
+| S33 ×7, S32 ×7 | services → cluster / deployments | 1 | high |
+| S24 | operations ← endpoints | 2 | **9 proposals**: PI Initiate/Update/Retrieve, CA Initiate/Retrieve/Control, PRD ×3 — high; **none** for PI Control/Execute (tie), PE ×2 (fields), CA Closure (fields), SA ×3 (gate), perks/shield/ledger/buddies |
+| S17 | domains ← services | 3 | high for PI, CA, PRD; **medium** for PE via the alias fallback (`/zap`); **none** for SA (no step-2 input, no alias) |
+| S30 | BOM objects → tables | 4 | high for PI, CA, PRD, **SA** (6/8 via attributes — the only route to Savings here); none for PE (`zaps` 2/8), FD, perks, buddies |
+| S20 | control records → tables | 4 | candidate-rule reports, same four |
+| S50 | tables → PostgreSQL / Redis | 1 | institution-only report |
+
+**Pass.** Precision ≥ 0.9; recall ≈ 0.7 is **expected** (the gold's interview-only arrows are the measured cost of missing aliases and product field names); H2.1–H2.6 hold; `h2-inference-log.json` complete. **Status:** data authored and validated (v0.5.5); **ready to execute**.
 
 ## What the six cases cover together
 

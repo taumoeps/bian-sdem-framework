@@ -1,0 +1,955 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "H2",
+  "mappings": [
+    {
+      "mapping_id": "ZP-101",
+      "source": {
+        "id": "SO-PI-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-01",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-01"
+      ],
+      "rationale": "Initiate \u2194 POST /v2/moneyflows; 6/8 fields",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-102",
+      "source": {
+        "id": "SO-PI-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-03",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-03"
+      ],
+      "rationale": "Update \u2194 PATCH; 4/5",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-103",
+      "source": {
+        "id": "SO-PI-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-02",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-02"
+      ],
+      "rationale": "Retrieve \u2194 GET; 5/6",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-104",
+      "source": {
+        "id": "SO-PI-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-04",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-04",
+        "application_architecture_document:ZIPPA-INTEGRATION-NOTES#interviews"
+      ],
+      "rationale": "Control implemented as DELETE (cancel) \u2014 deviation recorded (interview: 'delete = cancel')",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-105",
+      "source": {
+        "id": "SO-PI-05",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-05",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-05",
+        "application_architecture_document:ZIPPA-INTEGRATION-NOTES#interviews"
+      ],
+      "rationale": "Execute/Execution implemented as POST .../release \u2014 deviation recorded (interview: 'release hands the flow to the rails')",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-106",
+      "source": {
+        "id": "SO-PE-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-06",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-06",
+        "application_architecture_document:ZIPPA-INTEGRATION-NOTES#interviews"
+      ],
+      "rationale": "Initiate Payment Execution \u2194 POST /zap (interview: a zap is an instant execution; sender/recipient are account references, outcome is execution_status)",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-107",
+      "source": {
+        "id": "SO-PE-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-07",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-07"
+      ],
+      "rationale": "Retrieve \u2194 GET /zap/{id} (rail_ref = scheme_reference, settled_at = execution_date)",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-108",
+      "source": {
+        "id": "SO-CA-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-08",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-08"
+      ],
+      "rationale": "Initiate \u2194 POST /v2/pots; 3/6",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-109",
+      "source": {
+        "id": "SO-CA-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-09",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-09"
+      ],
+      "rationale": "Retrieve \u2194 GET; 4/6",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-110",
+      "source": {
+        "id": "SO-CA-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-10",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-10"
+      ],
+      "rationale": "Control \u2194 PUT .../freeze; 2/2",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-111",
+      "source": {
+        "id": "SO-CA-05",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-11",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-11",
+        "application_architecture_document:ZIPPA-INTEGRATION-NOTES#interviews"
+      ],
+      "rationale": "Execute/Closure implemented as POST .../close \u2014 deviation recorded",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-112",
+      "source": {
+        "id": "SO-PRD-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-13",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-13"
+      ],
+      "rationale": "Register \u2194 POST /v2/members; display_name = party_name",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-113",
+      "source": {
+        "id": "SO-PRD-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-14",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-14"
+      ],
+      "rationale": "Retrieve \u2194 GET; 4/5",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-114",
+      "source": {
+        "id": "SO-PRD-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-15",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-15"
+      ],
+      "rationale": "Update \u2194 PUT; 3/3",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-115",
+      "source": {
+        "id": "SO-SA-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-18",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-18",
+        "application_architecture_document:ZIPPA-INTEGRATION-NOTES#interviews"
+      ],
+      "rationale": "Initiate \u2194 POST /v2/vaults (interview: a vault is a goal savings account); 5/6",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-116",
+      "source": {
+        "id": "SO-SA-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-19",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-19"
+      ],
+      "rationale": "Retrieve \u2194 GET; 5/6",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-117",
+      "source": {
+        "id": "SO-SA-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "EP-20",
+        "type": "A3.APIOperation",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:zippa-openapi.yaml#EP-20"
+      ],
+      "rationale": "Update \u2194 PATCH .../target; 3/4",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-121",
+      "source": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "svc-flow",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:ZIPPA-INTEGRATION-NOTES#services"
+      ],
+      "rationale": "svc-flow exposes the domain's operations",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-122",
+      "source": {
+        "id": "SD-PE",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "svc-zap",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:ZIPPA-INTEGRATION-NOTES#services"
+      ],
+      "rationale": "svc-zap exposes the domain's operations",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-123",
+      "source": {
+        "id": "SD-CA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "svc-pots",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:ZIPPA-INTEGRATION-NOTES#services"
+      ],
+      "rationale": "svc-pots exposes the domain's operations",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-124",
+      "source": {
+        "id": "SD-PRD",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "svc-buddies",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:ZIPPA-INTEGRATION-NOTES#services"
+      ],
+      "rationale": "svc-buddies exposes the domain's operations",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-125",
+      "source": {
+        "id": "SD-SA",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "svc-vaults",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:ZIPPA-INTEGRATION-NOTES#services"
+      ],
+      "rationale": "svc-vaults exposes the domain's operations",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-131",
+      "source": {
+        "id": "BBO-PAY-INSTR",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-FLOWS",
+        "type": "A3.DataEntity",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:zippa-schema.sql#ENT-FLOWS"
+      ],
+      "rationale": "canonical attributes present; product extensions noted",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-132",
+      "source": {
+        "id": "BBO-PAYMENT-TXN",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-ZAPS",
+        "type": "A3.DataEntity",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:zippa-schema.sql#ENT-ZAPS"
+      ],
+      "rationale": "canonical attributes present; product extensions noted",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-133",
+      "source": {
+        "id": "BBO-ACCOUNT",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-POTS",
+        "type": "A3.DataEntity",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:zippa-schema.sql#ENT-POTS"
+      ],
+      "rationale": "canonical attributes present; product extensions noted",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-134",
+      "source": {
+        "id": "BBO-PARTY",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-MEMBERS",
+        "type": "A3.DataEntity",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:zippa-schema.sql#ENT-MEMBERS"
+      ],
+      "rationale": "canonical attributes present; product extensions noted",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-135",
+      "source": {
+        "id": "BBO-SAVINGS",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-VAULTS",
+        "type": "A3.DataEntity",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:zippa-schema.sql#ENT-VAULTS"
+      ],
+      "rationale": "canonical attributes present; product extensions noted",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-141",
+      "source": {
+        "id": "svc-flow",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#flow"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-142",
+      "source": {
+        "id": "svc-flow",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-FLOW-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#flow"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-143",
+      "source": {
+        "id": "svc-zap",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#zap"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-144",
+      "source": {
+        "id": "svc-zap",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-ZAP-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#zap"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-145",
+      "source": {
+        "id": "svc-pots",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#pots"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-146",
+      "source": {
+        "id": "svc-pots",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-POTS-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#pots"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-147",
+      "source": {
+        "id": "svc-buddies",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#buddies"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-148",
+      "source": {
+        "id": "svc-buddies",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-BUDDIES-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#buddies"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-149",
+      "source": {
+        "id": "svc-vaults",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#vaults"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-150",
+      "source": {
+        "id": "svc-vaults",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-VAULTS-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#vaults"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-151",
+      "source": {
+        "id": "svc-perks",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#perks"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-152",
+      "source": {
+        "id": "svc-perks",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-PERKS-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#perks"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-153",
+      "source": {
+        "id": "svc-shield",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-EKS-ZIPPA-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#shield"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "ZP-154",
+      "source": {
+        "id": "svc-shield",
+        "type": "A3.ApplicationComponent",
+        "version": "2026.10"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-SHIELD-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:zippa-manifest.yaml#shield"
+      ],
+      "rationale": "manifest",
+      "baseline_id": "ZIPPA-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    }
+  ]
+}

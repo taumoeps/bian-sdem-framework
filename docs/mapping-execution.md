@@ -92,7 +92,7 @@ Closure rules. Cite the `mapping_id` of every arrow used.
 
 | Connection | Rule |
 |---|---|
-| S17 `REALIZED_BY` | if component C exposes API operations that `IMPLEMENTED_BY` (approved, or your step-2 proposals — say which) operations of domain D, then D `REALIZED_BY` C. **Fallback (step 4, one band lower):** the domain's asset-type name (`A2.ServiceDomain.attributes.asset_type` → `A2.AssetType.name`) appears in the component's API paths or data entity names — a structural match, scored as matches / APIs+entities, threshold ≥ 1 match. Description-only comparison is **step 5**, two bands lower |
+| S17 `REALIZED_BY` | if component C exposes API operations that `IMPLEMENTED_BY` (approved, or your step-2 proposals — say which) operations of domain D, then D `REALIZED_BY` C. **Fallback (step 4, one band lower):** a token of the domain's asset-type name **or its aliases** (`A2.ServiceDomain.attributes.asset_type` → `A2.AssetType.name`, `.attributes.aliases`) appears in the component's API paths or data entity names — a structural match, scored as matches / APIs+entities, threshold ≥ 1 match. Description-only comparison is **step 5**, two bands lower |
 | S25 | operation O `IMPLEMENTED_BY` API a; a exposed by application service S (A3 composition) ⇒ O → S |
 | S22 / S23 | the service/interface exposing the APIs of a group's operations |
 | S04 `USES_DOMAIN` | process P (or one of its activities) has `attributes.invokes` naming operation O, or an S06 proposal; O in domain D (B09/B10) ⇒ P `USES_DOMAIN` D. A process exported without activities may be matched directly to operations by the S06 verb+noun rule (step 4) |

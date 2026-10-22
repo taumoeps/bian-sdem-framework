@@ -1,0 +1,188 @@
+{
+  "level": "A4",
+  "model_id": "synthetic-fintech-a4",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-K8S-MANIFEST",
+  "instances": [
+    {
+      "id": "INF-EKS-ZIPPA-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "1.30",
+      "name": "EKS cluster zippa-prod",
+      "lifecycle_status": "active",
+      "description": "Managed Kubernetes.",
+      "attributes": {
+        "hosts": [
+          "svc-flow",
+          "svc-zap",
+          "svc-pots",
+          "svc-buddies",
+          "svc-vaults",
+          "svc-perks",
+          "svc-shield"
+        ]
+      }
+    },
+    {
+      "id": "INF-PG-ZIPPA-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "16",
+      "name": "RDS PostgreSQL zippa",
+      "lifecycle_status": "active",
+      "description": "Managed PostgreSQL."
+    },
+    {
+      "id": "INF-REDIS-ZIPPA-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "7",
+      "name": "ElastiCache Redis zippa",
+      "lifecycle_status": "active",
+      "description": "Managed Redis."
+    },
+    {
+      "id": "TS-QUEUE",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "Queue",
+      "lifecycle_status": "active",
+      "description": "Managed queue."
+    },
+    {
+      "id": "ENV-ZIPPA-PROD",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "prod",
+      "lifecycle_status": "active",
+      "description": "Production namespace."
+    },
+    {
+      "id": "DEP-FLOW-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "flow-svc (prod)",
+      "lifecycle_status": "active",
+      "description": "Deployment from manifest.",
+      "attributes": {
+        "component_id": "svc-flow",
+        "environment_id": "ENV-ZIPPA-PROD",
+        "platform_id": "INF-EKS-ZIPPA-PROD"
+      }
+    },
+    {
+      "id": "DEP-ZAP-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "zap-svc (prod)",
+      "lifecycle_status": "active",
+      "description": "Deployment from manifest.",
+      "attributes": {
+        "component_id": "svc-zap",
+        "environment_id": "ENV-ZIPPA-PROD",
+        "platform_id": "INF-EKS-ZIPPA-PROD"
+      }
+    },
+    {
+      "id": "DEP-POTS-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "pots-svc (prod)",
+      "lifecycle_status": "active",
+      "description": "Deployment from manifest.",
+      "attributes": {
+        "component_id": "svc-pots",
+        "environment_id": "ENV-ZIPPA-PROD",
+        "platform_id": "INF-EKS-ZIPPA-PROD"
+      }
+    },
+    {
+      "id": "DEP-BUDDIES-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "buddies-svc (prod)",
+      "lifecycle_status": "active",
+      "description": "Deployment from manifest.",
+      "attributes": {
+        "component_id": "svc-buddies",
+        "environment_id": "ENV-ZIPPA-PROD",
+        "platform_id": "INF-EKS-ZIPPA-PROD"
+      }
+    },
+    {
+      "id": "DEP-VAULTS-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "vaults-svc (prod)",
+      "lifecycle_status": "active",
+      "description": "Deployment from manifest.",
+      "attributes": {
+        "component_id": "svc-vaults",
+        "environment_id": "ENV-ZIPPA-PROD",
+        "platform_id": "INF-EKS-ZIPPA-PROD"
+      }
+    },
+    {
+      "id": "DEP-PERKS-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "perks-svc (prod)",
+      "lifecycle_status": "active",
+      "description": "Deployment from manifest.",
+      "attributes": {
+        "component_id": "svc-perks",
+        "environment_id": "ENV-ZIPPA-PROD",
+        "platform_id": "INF-EKS-ZIPPA-PROD"
+      }
+    },
+    {
+      "id": "DEP-SHIELD-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "shield-svc (prod)",
+      "lifecycle_status": "active",
+      "description": "Deployment from manifest.",
+      "attributes": {
+        "component_id": "svc-shield",
+        "environment_id": "ENV-ZIPPA-PROD",
+        "platform_id": "INF-EKS-ZIPPA-PROD"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "ENV-ZIPPA-PROD",
+      "kind": "aggregation",
+      "target": "DEP-FLOW-PROD"
+    },
+    {
+      "source": "ENV-ZIPPA-PROD",
+      "kind": "aggregation",
+      "target": "DEP-ZAP-PROD"
+    },
+    {
+      "source": "ENV-ZIPPA-PROD",
+      "kind": "aggregation",
+      "target": "DEP-POTS-PROD"
+    },
+    {
+      "source": "ENV-ZIPPA-PROD",
+      "kind": "aggregation",
+      "target": "DEP-BUDDIES-PROD"
+    },
+    {
+      "source": "ENV-ZIPPA-PROD",
+      "kind": "aggregation",
+      "target": "DEP-VAULTS-PROD"
+    },
+    {
+      "source": "ENV-ZIPPA-PROD",
+      "kind": "aggregation",
+      "target": "DEP-PERKS-PROD"
+    },
+    {
+      "source": "ENV-ZIPPA-PROD",
+      "kind": "aggregation",
+      "target": "DEP-SHIELD-PROD"
+    }
+  ]
+}

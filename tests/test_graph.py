@@ -207,3 +207,24 @@ class FollowCompositionTests(unittest.TestCase):
         self.assertIn('COMPOSES', kinds)
         modules = {c['node']['id'] for c in ledger['children'] if c['via']['relationship'] == 'COMPOSES'}
         self.assertIn('LM-ACCT', modules)
+
+
+class AcquiredFintechExampleTests(unittest.TestCase):
+    P = ROOT / 'examples/acquired-fintech'
+
+    def test_three_level_export_checks_clean_without_a1(self):
+        files = sorted(self.P.glob('a*.json'))
+        self.assertEqual([f.name[:2] for f in files], ['a2', 'a3', 'a4'])
+        fg = FederatedGraph.load(files + [self.P / 'mappings.json'])
+        self.assertEqual({k: v for k, v in fg.check().items() if v}, {})
+
+    def test_gold_is_the_union_and_given_is_empty(self):
+        u = {m['mapping_id'] for m in json.loads((self.P / 'mappings.json').read_text())['mappings']}
+        d = {m['mapping_id'] for m in json.loads((self.P / 'h2-gold-mappings.json').read_text())['mappings']}
+        self.assertEqual(json.loads((self.P / 'h2-mappings-given.json').read_text())['mappings'], [])
+        self.assertEqual(d, u); self.assertEqual(len(d), 41)
+
+    def test_aliases_are_missing_for_savings_and_fraud(self):
+        a2 = json.loads((self.P / 'a2-service-domain.json').read_text())
+        at = {i['id']: i.get('attributes', {}).get('aliases') for i in a2['instances'] if i['type'] == 'A2.AssetType'}
+        self.assertIsNone(at['AT-SA']); self.assertIsNone(at['AT-FD']); self.assertIn('zap', at['AT-PE'])

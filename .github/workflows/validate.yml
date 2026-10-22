@@ -39,6 +39,10 @@ jobs:
         run: |
           python -m sdmm.graph check examples/legacy-core-ledger/a*.json examples/legacy-core-ledger/mappings.json
           python -m sdmm.validate --strict examples/legacy-core-ledger/mappings.json
+      - name: Acquired Fintech (H2) exports and mappings
+        run: |
+          python -m sdmm.graph check examples/acquired-fintech/a*.json examples/acquired-fintech/mappings.json
+          python -m sdmm.validate --strict examples/acquired-fintech/mappings.json
       - name: Trace the fraud example both ways
         run: |
           python -m sdmm.trace CAP-310 examples/card-fraud-alerts/mappings.json
