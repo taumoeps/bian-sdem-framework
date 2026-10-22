@@ -8,7 +8,7 @@
 
 ## 1. BIAN's current mapping model
 
-What BIAN itself defines: its entities (§1.1), the mappings it defines between them (§1.2), the mappings it defines from them to implementation (§1.3), and what it does not map (§1.4). Everything is taken from BIAN's public release notes for Service Landscape 13.0 and 14.0 and the Semantic API Practitioner Guide v8.1, with section and page references; no BIAN text is reproduced beyond short attributed phrases.
+What BIAN itself defines: its entities (§1.1), the mappings it defines between them (§1.2), and what it does not map (§1.3). Everything is taken from BIAN's public release notes for Service Landscape 13.0 and 14.0 and the Semantic API Practitioner Guide v8.1, with section and page references; no BIAN text is reproduced beyond short attributed phrases.
 
 ### 1.1 BIAN entities
 
@@ -107,40 +107,19 @@ The relationships BIAN itself defines among its sixteen entities — its own map
 
 Rows 2–15 are what `metamodel/level-relationships.json` encodes as the fixed A2 structure. Row 1 is the one BIAN mapping SDMM's `SUPPORTED_BY` arrow would rely on, and it does not exist publicly.
 
-### 1.3 BIAN mappings from its entities to implementation
-
-How BIAN maps its A2 entities onto implementation concepts (an API, an application, a legacy system). These are the only BIAN mappings that leave A2. They are logical-level; BIAN publishes no mapping to physical infrastructure.
-
-#### A2 → implementation — published, logical level, Semantic API Practitioner Guide v8.1
-
-| # | BIAN mapping | Rule as published | Source |
-|---|---|---|---|
-| 1 | **Service Domain → API application boundary** | "the assumption is made that the BIAN Service Domain matches the application boundary (the 'A') of the API" | [SAPG] §3.5 p. 52 |
-| 2 | **Service Operation → API program interface** | the domain's service operations "make up the collection of program interfaces (the 'PI's) that complete the API's description" | [SAPG] §3.5 p. 52 |
-| 3 | **Control Record instance → REST resource** | "a Service Domain control record instance essentially represents the accessed resource" | [SAPG] §3.5 p. 53 |
-| 4 | **Functional Pattern generic artefact → REST archetype** | each functional pattern's generic artefact maps to a REST archetype (document, collection or controller; the fourth, store, is not needed) — Figure 24 | [SAPG] §3.5 pp. 53–54 |
-| 5 | **Behavior Qualifier → sub-resource** | the qualifier "is used to narrow the reference to a sub-partition of the referenced control record instance"; attributes are filtered by action term for the input/output messages | [SAPG] §3.5 p. 55 |
-| 6 | **Action Term → REST form** | action terms are converted to noun form (Create → Creation, Initiate → Initiation, Register → Registration, Evaluate → Evaluation, Provide → Provision, Execute → Execution, Request → Requisition; Update, Control, Exchange, Capture, Grant unchanged); **Retrieve maps directly to HTTP GET**; Notify is not used in the mapping. HTTP methods applied are GET, PUT, POST, (PATCH), DELETE | [SAPG] §3.5 pp. 52, 55 |
-| 7 | **Semantic API reference definitions** | per-domain OpenAPI definitions published on the API portal as the reference form of 1–6 | [APIP] |
-| 8 | **Service Domain → application functional partition** *(method)* | "existing or to-be-developed applications can be mapped with the Service Domains corresponding to major functional partitions of the application", using the wireframe overlay | [SAPG] §3.4 p. 52 |
-| 9 | **Legacy system → Service Domain component boundary** *(method)* | legacy wrapping "compartmentalizes legacy systems aligning to component boundaries" | [SAPG] §4.3.1 p. 91 |
-
-Rows 1–7 are rules: given a BIAN operation, they say what its REST form is. Rows 8–9 are methods: they say *how to decide* which application realises a domain, not *which one does*. All are logical: "BIAN Endpoint descriptions are far from implementation specifications" ([SAPG] §3.5 p. 56). The Information Profile (§3.2.7) is not a mapping — it defines what information a domain governs, as the content any A3 data design must cover.
-
-
-### 1.4 What BIAN does not map
+### 1.3 What BIAN does not map
 
 | Would-be mapping | Status | Source |
 |---|---|---|
 | Business Capability → Service Domain | Work in progress, unpublished | [RN13] §3, [RN14] §3 |
 | Value stream → Business Scenario | Value streams not yet modelled | [RN14] §3 |
 | A bank's business process → Service Domain / operation | Never in scope; scenarios are illustrative, not a bank's processes | [SAPG] §3.3 |
-| A bank's application → Service Domain | Method only (§1.3 rows 8–9); BIAN holds no application data | [SAPG] §3.4, §4.3.1 |
+| A bank's application → Service Domain | Method only (wireframe functional partition, legacy wrapping); BIAN holds no application data | [SAPG] §3.4, §4.3.1 |
 | Anything → infrastructure or deployment | "does not assume or impose any physical properties"; implementation guidance only (§4.1–4.3) | [SAPG] §4.2.3 p. 87, Figure 34 p. 90 |
 
-**Summary: BIAN's mapping model is 15 relationships among its own A2 entities, plus 7 rules and 2 methods from A2 to implementation. It publishes nothing from A1 to A2 (the capability mapping is unfinished) and nothing to physical infrastructure.**
+**Summary: BIAN's mapping model is 15 relationships among its own entities, 14 of them inside A2. It publishes nothing from A1 to A2 (the capability mapping is unfinished), nothing to a bank's applications beyond a method, and nothing to physical infrastructure.**
 
-### 1.5 Consequences for the engine design
+### 1.4 Consequences for the engine design
 
 1. **A2 is the anchor.** It is the only level whose vocabulary *and instances* can be sourced publicly (with an institution's licence to use them). Every A1→A2 and A2→A3 inference is a comparison *against* A2 text. Populating a rich A2 level model from the portal — descriptions, scenarios, operations, control-record attributes — is the first engineering task, and it is an export, not an inference.
 
@@ -152,7 +131,7 @@ Rows 1–7 are rules: given a BIAN operation, they say what its REST form is. Ro
 
 5. **Existing approved mappings are the best evidence of all.** "Domain X is realised by application Y" makes "operation X.op is implemented by Y's API" far more likely. The engine should always read the federated graph before reading any description.
 
-### 1.6 Corrections to the repository arising from this review
+### 1.5 Corrections to the repository arising from this review
 
 - `docs/reference-architecture-provenance.md`, the README and the v0.4 spec cite a "BIAN BCM *Statement of Alignment with the Service Landscape* (2023)" PDF. That URL returns 404 and BIAN's release notes describe the alignment as unfinished and unpublished. The citation is replaced by the v13 and v14 release notes, and `A1.BusinessCapability` keeps `evidence_status: interpreted_from_official_source` with that basis.
 - The registry's `SUPPORTED_BY` and `ALIGNED_TO` (value stream) rules carry `authority: bian_alignment_guidance`. That remains correct — BIAN *intends* to provide this guidance and the BCM exists — but the planning assumption that an engine could consult a published alignment is withdrawn.
@@ -163,17 +142,17 @@ Rows 1–7 are rules: given a BIAN operation, they say what its REST form is. Ro
 
 ### 2.1 Starting point: SDMM's nine arrows against BIAN's mappings
 
-§1 described BIAN's own mapping model. The engine works on **SDMM's** nine arrows (the registry). For each, does a BIAN mapping from §1.2–1.3 cover it? Where it does not, §2 has to design the inference.
+§1 described BIAN's own mapping model. The engine works on **SDMM's** nine arrows (the registry). For each, does a BIAN mapping from §1.2 cover it? Where it does not, §2 has to design the inference.
 
-| SDMM arrow (registry rule) | Covered by a BIAN mapping? | Which one (§1.3) | What is left to the institution |
+| SDMM arrow (registry rule) | Covered by a BIAN mapping? | Which one | What is left to the institution |
 |---|---|---|---|
 | `A1.BusinessCapability SUPPORTED_BY A2.ServiceDomain` | **No** | — (BCM→Service Domain unpublished) | The whole mapping |
 | `A1.ValueStream ALIGNED_TO A2.BusinessScenario` | **No** | — (value streams not modelled) | The whole mapping; scenarios are a published target |
 | `A1.BusinessProcess USES_DOMAIN A2.ServiceDomain` | **No** | — | The whole mapping; scenarios usable as templates |
 | `A1.BusinessObject ALIGNED_TO A2.BusinessObject` | **No** | — (BOM is a target, not a mapping) | The whole mapping; BOM attributes are the published target |
-| `A2.ServiceDomain REALIZED_BY A3.ApplicationComponent` | **Method only** | #8 functional partition; #9 legacy wrapping | Deciding which application; BIAN says how to decide, not what |
-| `A2.ServiceOperation IMPLEMENTED_BY A3.APIOperation` | **Yes** | #1–#7 REST mapping and reference APIs | Comparing the bank's API to the reference form |
-| `A2.BusinessObject MAPPED_TO A3.DataEntity` | **Partial** | #3 control record = resource (payload attributes) | Matching the bank's data entity to the BOM object |
+| `A2.ServiceDomain REALIZED_BY A3.ApplicationComponent` | **Method only** | wireframe functional partition; legacy wrapping ([SAPG] §3.4, §4.3.1) | Deciding which application; BIAN says how to decide, not what |
+| `A2.ServiceOperation IMPLEMENTED_BY A3.APIOperation` | **Yes** | REST mapping and reference APIs ([SAPG] §3.5; [APIP]) | Comparing the bank's API to the reference form |
+| `A2.BusinessObject MAPPED_TO A3.DataEntity` | **Partial** | control record = REST resource ([SAPG] §3.5) | Matching the bank's data entity to the BOM object |
 | `A3.ApplicationComponent DEPLOYED_ON A4.InfrastructureComponent` | **No** | — (deployment patterns only) | The whole mapping, from deployment data |
 | `A3.ApplicationComponent DEPLOYED_AS A4.Deployment` | **No** | — (domain-as-container is a pattern, not a mapping) | The whole mapping, from deployment data |
 
