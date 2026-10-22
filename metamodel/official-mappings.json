@@ -23,7 +23,9 @@
       "meaning": "**Unpublished** — mapped by the BCM working group in 2024, \"not yet documented in the BIAN BiZZdesign repository\"",
       "sources": "[RN13] §3, [RN14] §3",
       "authority": "bian",
-      "verification": "unpublished"
+      "verification": "unpublished",
+      "constraint": null,
+      "disposition": "unpublished — not encodable; SDMM SUPPORTED_BY rests on intent only"
     },
     {
       "id": "B02",
@@ -34,7 +36,13 @@
       "meaning": "The landscape hierarchy, top level",
       "sources": "[SL14] Service Landscape views",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.BusinessArea",
+        "kind": "composition",
+        "target_type": "A2.BusinessDomain"
+      },
+      "disposition": "encoded — level-relationships.json constraint"
     },
     {
       "id": "B03",
@@ -45,7 +53,13 @@
       "meaning": "Each Service Domain sits in exactly one Business Domain",
       "sources": "[SL14] Service Landscape views",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.BusinessDomain",
+        "kind": "composition",
+        "target_type": "A2.ServiceDomain"
+      },
+      "disposition": "encoded — level-relationships.json constraint"
     },
     {
       "id": "B04",
@@ -56,7 +70,13 @@
       "meaning": "Every domain applies one generic behaviour pattern (e.g. Fulfil, Track, Analyse)",
       "sources": "[SL14] MetaModel Overview; [SAPG] §3.2.1",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.ServiceDomain",
+        "kind": "association",
+        "target_type": "A2.FunctionalPattern"
+      },
+      "disposition": "encoded — level-relationships.json constraint"
     },
     {
       "id": "B05",
@@ -67,7 +87,13 @@
       "meaning": "Every domain manages one class of asset through its lifecycle",
       "sources": "[SL14] MetaModel Overview; [SAPG] §3.2.2",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.ServiceDomain",
+        "kind": "association",
+        "target_type": "A2.AssetType"
+      },
+      "disposition": "encoded — level-relationships.json constraint"
     },
     {
       "id": "B06",
@@ -78,7 +104,13 @@
       "meaning": "Every domain has one control record: the lifecycle state of its pattern applied to its asset",
       "sources": "[SL14] Control Record Model; [SAPG] §3.2.3",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.ServiceDomain",
+        "kind": "aggregation",
+        "target_type": "A2.ControlRecord"
+      },
+      "disposition": "encoded — level-relationships.json constraint"
     },
     {
       "id": "B07",
@@ -89,7 +121,13 @@
       "meaning": "Qualifiers divide the control record into sub-partitions of equivalent operational properties",
       "sources": "[SL14] MetaModel Overview; [SAPG] §3.2.4",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.ControlRecord",
+        "kind": "composition",
+        "target_type": "A2.BehaviorQualifier"
+      },
+      "disposition": "not yet encoded — proposed level-relationships.json constraint"
     },
     {
       "id": "B08",
@@ -100,7 +138,13 @@
       "meaning": "Control record attributes draw on the Business Object Model; rationalised together in 14.0",
       "sources": "[SL14] BOM Overview; [RN14] §1.3",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.ControlRecord",
+        "kind": "association",
+        "target_type": "A2.BusinessObject"
+      },
+      "disposition": "not yet encoded — proposed level-relationships.json constraint"
     },
     {
       "id": "B09",
@@ -111,7 +155,13 @@
       "meaning": "Operations are grouped per domain",
       "sources": "[SL14] MetaModel Overview",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.ServiceDomain",
+        "kind": "composition",
+        "target_type": "A2.ServiceGroup"
+      },
+      "disposition": "encoded — level-relationships.json constraint"
     },
     {
       "id": "B10",
@@ -122,7 +172,13 @@
       "meaning": "Each operation belongs to one group",
       "sources": "[SL14] MetaModel Overview",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.ServiceGroup",
+        "kind": "composition",
+        "target_type": "A2.ServiceOperation"
+      },
+      "disposition": "encoded — level-relationships.json constraint"
     },
     {
       "id": "B11",
@@ -133,7 +189,13 @@
       "meaning": "An operation's action term says what it does to the control record instance; attributes are filtered by action term for input/output",
       "sources": "[SAPG] §3.2.5, §3.5",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.ServiceOperation",
+        "kind": "access",
+        "target_type": "A2.ControlRecord"
+      },
+      "disposition": "not yet encoded — proposed level-relationships.json constraint"
     },
     {
       "id": "B12",
@@ -144,7 +206,13 @@
       "meaning": "First-order connections: which domains a domain typically exchanges with",
       "sources": "[SAPG] §3.2.6",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.ServiceDomain",
+        "kind": "flow",
+        "target_type": "A2.ServiceDomain"
+      },
+      "disposition": "not yet encoded — proposed level-relationships.json constraint"
     },
     {
       "id": "B13",
@@ -155,7 +223,13 @@
       "meaning": "A scenario is an illustrative sequence of operation calls between domains (UML sequence diagram)",
       "sources": "[SL14] Business Scenarios; [SAPG] §3.3",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": {
+        "source_type": "A2.BusinessScenario",
+        "kind": "aggregation",
+        "target_type": "A2.ServiceOperation"
+      },
+      "disposition": "encoded — level-relationships.json constraint"
     },
     {
       "id": "B14",
@@ -166,7 +240,9 @@
       "meaning": "Archetypal interaction pattern among a set of domains",
       "sources": "[SL14] Wireframes Overview; [SAPG] §3.4",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": null,
+      "disposition": "artefact relationship — not a level-model constraint"
     },
     {
       "id": "B15",
@@ -177,7 +253,9 @@
       "meaning": "The reference API is the domain's operations in REST form",
       "sources": "[APIP]; [SAPG] §3.5",
       "authority": "bian",
-      "verification": "verified"
+      "verification": "verified",
+      "constraint": null,
+      "disposition": "artefact relationship — not a level-model constraint"
     },
     {
       "id": "S01",
