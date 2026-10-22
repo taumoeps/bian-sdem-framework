@@ -23,23 +23,11 @@ Before designing any inference, establish what the reference architecture itself
 | **A2 → A3** BOM object → data entity | BOM attributes are published; the information profile per Service Domain is documented (guide §3.2.7) | **Published.** | Attribute-level matching of an application's data entity against the BOM object |
 | **A3 → A4** application → infrastructure | No technology vocabulary and no data: BIAN "does not assume or impose any physical properties for the Service Domains" (guide §4.2.3, p. 87); Figure 34 places BIAN's scope at conceptual and partially logical, not physical (p. 90). But **deployment guidance exists**: §4.2.3 lists software utilities to consider in "a component/container type deployment" (message queues, state machines, event-driven processing, workflow, rules engines); §4.1 describes each Service Domain as a discrete service container and cloud/container environments; §4.3 gives legacy wrapping, parallel core migration (Figure 35) and shared-platform patterns (Figure 37) | **Guidance only.** No entities, no instances, no mapping method — but a published view of how domain-aligned components are expected to be deployed | BIAN contributes *patterns*, not data: "one domain → one deployable container" is a structural expectation an engine can use as a prior when an institution follows it. The actual arrows still come from the institution's deployment data — CMDB, manifests, environment assignments. Text won't help (the baseline already showed "Fraud Engine" and "Managed Kubernetes" share no words) |
 
-### 1.2 Consequences for the engine design
-
-1. **A2 is the anchor.** It is the only level whose vocabulary *and instances* can be sourced publicly (with an institution's licence to use them). Every A1→A2 and A2→A3 inference is a comparison *against* A2 text. Populating a rich A2 level model from the portal — descriptions, scenarios, operations, control-record attributes — is the first engineering task, and it is an export, not an inference.
-
-2. **The capability boundary has no BIAN answer.** Despite what our earlier provenance assumed, there is no published BCM↔Service Domain alignment to look up. An engine must infer it, and that inference carries the most risk of a plausible-but-wrong proposal. It gets the lowest default confidence and the strongest evidence requirement (`domain_scope_assessment` is already a required evidence kind for `SUPPORTED_BY`).
-
-3. **The API boundary has the most mechanics.** BIAN's REST mapping gives action terms, resource archetypes and HTTP methods. An engine can be *rule-based* here, and its proposals can carry specific findings. Highest default confidence.
-
-4. **The infrastructure boundary is text-free, but not pattern-free.** `DEPLOYED_ON` / `DEPLOYED_AS` come from deployment data, never from descriptions. The engine needs a structural source: a `relationships` entry in the A4 export that says which artefact runs where, or an attribute on the A3 instance naming its deployment target. BIAN's implementation guidance (§4.1–4.3) supplies a *prior* — a domain-aligned component is expected to deploy as a discrete container — which can raise confidence when the data agrees with the pattern, but never substitutes for the data.
-
-5. **Existing approved mappings are the best evidence of all.** "Domain X is realised by application Y" makes "operation X.op is implemented by Y's API" far more likely. The engine should always read the federated graph before reading any description.
-
-### 1.4 BIAN mapping scope by entity
+### 1.2 BIAN mapping scope by entity
 
 All 44 catalogue entities. **Covered by BIAN** is "Yes" when BIAN defines the concept and publishes its instances, "No" otherwise. **BIAN mapping to next level** says whether BIAN publishes a way to map this entity across the boundary below it: Yes (a published rule or method), Partial, Method only, No, or — where no arrow exists. Entities not covered by BIAN show "n/a" in the BIAN columns so the scope is visible in one table.
 
-Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 release notes · **[SAPG]** Semantic API Practitioner Guide v8.1 · **[APIP]** BIAN Semantic API portal. (What BIAN offers as *guidance* at each boundary is in §1.5, per arrow.)
+Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 release notes · **[SAPG]** Semantic API Practitioner Guide v8.1 · **[APIP]** BIAN Semantic API portal. (What BIAN offers as *guidance* at each boundary is in §1.3, per arrow.)
 
 
 #### A1 — Business Architecture — 1 of 10 covered by BIAN
@@ -108,7 +96,7 @@ Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 rel
 
 **Totals: 16 of 44 entities covered by BIAN** — one at A1, all fifteen at A2, none at A3, none at A4. Of the sixteen, only the A2→A3 information and API entities (`ControlRecord`, `ServiceOperation`, `BehaviorQualifier`, `BusinessObject`, `BusinessObjectAttribute`) have a published BIAN mapping to the next level; the capability's mapping to Service Domains — the one most expected — is not published.
 
-### 1.5 Coverage at arrow level
+### 1.3 Coverage at arrow level
 
 | Arrow (registry rule) | BIAN source side | BIAN target side | BIAN mapping guidance | Engine approach | Default confidence band |
 |---|---|---|---|---|---|
@@ -124,7 +112,19 @@ Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 rel
 
 Reading across: **A2 is the only level BIAN fills.** Three of the nine arrows have a published BIAN method on their A2 side (operation→API, object→entity, object→BOM); two have a method only (domain→application, process→domain); the capability arrow — the one most people expect BIAN to answer — has none published; the two A4 arrows have deployment *patterns* but no vocabulary, no data and no mapping method, and need no text at all.
 
-### 1.3 Corrections to the repository arising from this review
+### 1.4 Consequences for the engine design
+
+1. **A2 is the anchor.** It is the only level whose vocabulary *and instances* can be sourced publicly (with an institution's licence to use them). Every A1→A2 and A2→A3 inference is a comparison *against* A2 text. Populating a rich A2 level model from the portal — descriptions, scenarios, operations, control-record attributes — is the first engineering task, and it is an export, not an inference.
+
+2. **The capability boundary has no BIAN answer.** Despite what our earlier provenance assumed, there is no published BCM↔Service Domain alignment to look up. An engine must infer it, and that inference carries the most risk of a plausible-but-wrong proposal. It gets the lowest default confidence and the strongest evidence requirement (`domain_scope_assessment` is already a required evidence kind for `SUPPORTED_BY`).
+
+3. **The API boundary has the most mechanics.** BIAN's REST mapping gives action terms, resource archetypes and HTTP methods. An engine can be *rule-based* here, and its proposals can carry specific findings. Highest default confidence.
+
+4. **The infrastructure boundary is text-free, but not pattern-free.** `DEPLOYED_ON` / `DEPLOYED_AS` come from deployment data, never from descriptions. The engine needs a structural source: a `relationships` entry in the A4 export that says which artefact runs where, or an attribute on the A3 instance naming its deployment target. BIAN's implementation guidance (§4.1–4.3) supplies a *prior* — a domain-aligned component is expected to deploy as a discrete container — which can raise confidence when the data agrees with the pattern, but never substitutes for the data.
+
+5. **Existing approved mappings are the best evidence of all.** "Domain X is realised by application Y" makes "operation X.op is implemented by Y's API" far more likely. The engine should always read the federated graph before reading any description.
+
+### 1.5 Corrections to the repository arising from this review
 
 - `docs/reference-architecture-provenance.md`, the README and the v0.4 spec cite a "BIAN BCM *Statement of Alignment with the Service Landscape* (2023)" PDF. That URL returns 404 and BIAN's release notes describe the alignment as unfinished and unpublished. The citation is replaced by the v13 and v14 release notes, and `A1.BusinessCapability` keeps `evidence_status: interpreted_from_official_source` with that basis.
 - The registry's `SUPPORTED_BY` and `ALIGNED_TO` (value stream) rules carry `authority: bian_alignment_guidance`. That remains correct — BIAN *intends* to provide this guidance and the BCM exists — but the planning assumption that an engine could consult a published alignment is withdrawn.
