@@ -66,6 +66,7 @@ jobs:
           python -m sdmm.relationships --check
           python -m sdmm.structure --check
           python -m sdmm.spec --check
+          python -m sdmm.kgspec --check
       - name: Reference structure — every enforceable within-level row on committed data
         run: python -m sdmm.graph check examples/reference-structure/a*.json examples/reference-structure/mappings.json
       - run: python -m unittest discover -s tests -v

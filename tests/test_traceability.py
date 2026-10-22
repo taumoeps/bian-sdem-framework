@@ -216,3 +216,18 @@ class DesignDiagramTests(unittest.TestCase):
         for ent, keys in conv['conventions'].items():
             for k in keys:
                 kid = conv['key_ids'][f'{ent}.{k}']; self.assertIn(f"| {kid} | {ent} | `{k}` |", doc)
+
+
+class KnowledgeGraphSpecTests(unittest.TestCase):
+    def test_kg_spec_equals_render(self):
+        from sdmm.kgspec import render
+        self.assertEqual((ROOT / 'docs/knowledge-graph-spec.md').read_text(encoding='utf-8'), render())
+
+    def test_every_registry_relationship_and_schema_field_is_specified(self):
+        doc = (ROOT / 'docs/knowledge-graph-spec.md').read_text(encoding='utf-8')
+        reg = json.loads((ROOT / 'schema/relationship-types.json').read_text(encoding='utf-8'))
+        for r in reg['relationships']:
+            self.assertIn(r['mapping_type_id'], doc)
+        ms = json.loads((ROOT / 'schema/mapping.schema.json').read_text(encoding='utf-8'))
+        for f in ms['$defs']['mapping']['properties']:
+            self.assertIn(f"| `{f}` |", doc)
