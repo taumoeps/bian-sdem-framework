@@ -1,0 +1,6 @@
+{
+  "plantuml.render": "PlantUMLServer",
+  "plantuml.server": "https://www.plantuml.com/plantuml",
+  "plantuml.exportFormat": "svg",
+  "plantuml.exportOutDir": "docs/diagrams"
+}

@@ -576,7 +576,7 @@ Counts: A1 10 · A2 15 (12 entities + 3 artefacts) · A3 8 · A4 11 (10 concrete
 
 Only the mappings that are officially sourced *and verified* (§3): the 14 BIAN-internal relationships (B02–B15, blue) and the 10 cross-level mappings with BIAN guidance (green; dashed where BIAN gives only intent or a target). Nothing unverified or institution-only is drawn. Source: `docs/diagrams/official-mappings.puml`, generated from `metamodel/` and the §2.3 verification column.
 
-Rendering: the VS Code PlantUML extension renders the block below in Markdown preview; `plantuml -tsvg docs/diagrams/official-mappings.puml` produces an SVG for GitHub (Java required — not installed on the authoring machine, so no SVG is committed yet).
+Rendering: `.vscode/settings.json` points the VS Code PlantUML extension at the public PlantUML server, so the block below renders in Markdown preview without a local Java install (the diagram contains only public catalogue names). To export an SVG for GitHub: open the `.puml`, run *PlantUML: Export Current Diagram* (it lands in `docs/diagrams/`), or install Java and run `plantuml -tsvg docs/diagrams/official-mappings.puml`.
 
 ```plantuml
 @startuml official-mappings
