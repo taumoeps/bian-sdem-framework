@@ -332,19 +332,19 @@
       "target": "BSV-DOC-CHECK"
     },
     {
-      "source": "REQ-01",
-      "kind": "association",
-      "target": "PRC-LC-APPLY"
+      "source": "PRC-LC-APPLY",
+      "kind": "realization",
+      "target": "REQ-01"
     },
     {
-      "source": "REQ-02",
-      "kind": "association",
-      "target": "ACT-T3"
+      "source": "ACT-T3",
+      "kind": "realization",
+      "target": "REQ-02"
     },
     {
-      "source": "REQ-03",
-      "kind": "association",
-      "target": "ACT-T4"
+      "source": "ACT-T4",
+      "kind": "realization",
+      "target": "REQ-03"
     },
     {
       "source": "ACTOR-TRADE-OPS",

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.17 — relationships test findings
+
+- Artefact rows flagged `enforceable: false`; B14/B15 dispositions updated; device composition row RA4-36.
+- Capability locator records its ArchiMate Strategy derivation; test plan accepts provenance by inheritance; S46 dependency corrected.
+- Trade-finance requirements now `realization` from the core element; payment-initiation and trade-finance components compose their interfaces (ArchiMate).
+- `sdmm-graph trace --follow-composition` follows aggregation as well as composition (part-whole), never assignment.
+
 ## 0.5.16 — relationships planning document
 
 - Every within-level constraint row has an ID (`RA1-01` …), description, reference source, reasoning, confidence and verification; catalogue inheritance listed as `X` rows.

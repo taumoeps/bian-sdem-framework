@@ -999,7 +999,7 @@ endlegend
 ```
 ### 5.5 Within-level structure
 
-The mappings are the cross-level arrows. Inside each architecture the entities are linked by ArchiMate relationship kinds recorded in each level export's `relationships` list: a graph of composition, aggregation, realization, assignment, access, serving, flow and triggering — not a single top-to-bottom chain. Every level's set comes from its reference architecture (README › *Reference architecture provenance*): A2 from BIAN's Service Landscape metamodel (17 rows, including the three artefact rows), A1 from ArchiMate 3.2 chapters 6–8 (48 rows), A3 from ArchiMate chapter 9 and TOGAF's solution building block (31 rows), A4 from ArchiMate chapter 10 plus the SDMM deployment extensions (35 rows). Association, ArchiMate's generic relationship, is permitted between any two entities of one level and is not drawn. Catalogue inheritance (`extends`) is drawn as specialization: a value-stream stage is-a value stream, a business activity is-a business process, and every concrete A4 entity is-a `A4.InfrastructureComponent`, the abstract `DEPLOYED_ON` target that is never instantiated. `sdmm-graph check` rejects any other within-level relationship. ArchiMate and TOGAF are login-gated, so those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations. Generated into `metamodel/level-relationships.puml` by `python -m sdmm.diagram`.
+The mappings are the cross-level arrows. Inside each architecture the entities are linked by ArchiMate relationship kinds recorded in each level export's `relationships` list: a graph of composition, aggregation, realization, assignment, access, serving, flow and triggering — not a single top-to-bottom chain. Every level's set comes from its reference architecture (README › *Reference architecture provenance*): A2 from BIAN's Service Landscape metamodel (17 rows, including the three artefact rows), A1 from ArchiMate 3.2 chapters 6–8 (48 rows), A3 from ArchiMate chapter 9 and TOGAF's solution building block (31 rows), A4 from ArchiMate chapter 10 plus the SDMM deployment extensions (36 rows). Association, ArchiMate's generic relationship, is permitted between any two entities of one level and is not drawn. Catalogue inheritance (`extends`) is drawn as specialization: a value-stream stage is-a value stream, a business activity is-a business process, and every concrete A4 entity is-a `A4.InfrastructureComponent`, the abstract `DEPLOYED_ON` target that is never instantiated. `sdmm-graph check` rejects any other within-level relationship. ArchiMate and TOGAF are login-gated, so those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations. Generated into `metamodel/level-relationships.puml` by `python -m sdmm.diagram`.
 
 ```plantuml
 @startuml level-relationships
@@ -1171,7 +1171,7 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.CommunicationNetwork" as a4_communicationnetwork
   rectangle "A4.Path" as a4_path
   rectangle "A4.Artifact" as a4_artifact
-  ' constraints from ArchiMate 3.2 ch. 10 (35)
+  ' constraints from ArchiMate 3.2 ch. 10 (36)
   a4_node -[#1565C0]-> a4_node : RA4-01 composition
   a4_node -[#1565C0,dashed]-> a4_node : RA4-02 aggregation
   a4_node -[#1565C0,dashed]-> a4_device : RA4-03 aggregation
@@ -1207,6 +1207,7 @@ package "A4 Technology Architecture" as A4 {
   a4_deploymentenvironment -[#1565C0,dashed]-> a4_device : RA4-33 aggregation
   a4_deploymentenvironment -[#1565C0,dashed]-> a4_systemsoftware : RA4-34 aggregation
   a4_deployment -[#1565C0,dashed]-> a4_artifact : RA4-35 aggregation
+  a4_device -[#1565C0]-> a4_device : RA4-36 composition
   ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) (10)
   a4_deployment -[#424242]-|> a4_infrastructurecomponent : extends
   a4_deploymentenvironment -[#424242]-|> a4_infrastructurecomponent : extends
@@ -1246,7 +1247,7 @@ skinparam package {
   BorderColor #9E9E9E
 }
 skinparam ArrowFontSize 9
-title Merged view — 131 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
+title Merged view — 132 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
 
 package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessCapability" as a1_businesscapability
@@ -1401,7 +1402,7 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.CommunicationNetwork" as a4_communicationnetwork
   rectangle "A4.Path" as a4_path
   rectangle "A4.Artifact" as a4_artifact
-  ' within A4 — constraint rows (35)
+  ' within A4 — constraint rows (36)
   a4_node -[#B0BEC5]-> a4_node : <size:8>RA4-01 composition</size>
   a4_node -[#B0BEC5]-> a4_node : <size:8>RA4-02 aggregation</size>
   a4_node -[#B0BEC5]-> a4_device : <size:8>RA4-03 aggregation</size>
@@ -1437,6 +1438,7 @@ package "A4 Technology Architecture" as A4 {
   a4_deploymentenvironment -[#B0BEC5]-> a4_device : <size:8>RA4-33 aggregation</size>
   a4_deploymentenvironment -[#B0BEC5]-> a4_systemsoftware : <size:8>RA4-34 aggregation</size>
   a4_deployment -[#B0BEC5]-> a4_artifact : <size:8>RA4-35 aggregation</size>
+  a4_device -[#B0BEC5]-> a4_device : <size:8>RA4-36 composition</size>
 }
 
 ' --- cross-level: registry rule (SDMM relationship type) (9)

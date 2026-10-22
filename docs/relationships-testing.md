@@ -33,7 +33,7 @@ Run every test for every row it applies to. A row's overall verdict is the weake
 
 ### T1 — Provenance: the row names concepts the entities actually derive from
 
-For each row, read the source and target entity's `reference.concept` in the catalogue. The row's `reference_source` must be the reference architecture that **both** concepts derive from (A2: BIAN; A1/A3/A4: ArchiMate, or TOGAF for `A3.SolutionBuildingBlock`, or an SDMM extension row when either end is an SDMM extension entity). A row that relates an ArchiMate concept to a BIAN concept inside one level, or cites a source neither entity derives from, **fails**.
+For each row, read the source and target entity's `reference.concept` in the catalogue. The row's `reference_source` must be the reference architecture that **both** concepts derive from (A2: BIAN; A1/A3/A4: ArchiMate, or TOGAF for `A3.SolutionBuildingBlock`, or an SDMM extension row when either end is an SDMM extension entity). **Provenance by inheritance counts:** an SDMM extension entity (`A1.ValueStreamStage`, `A1.BusinessActivity`, `A4.Deployment`, …) carries its parent's reference architecture, and `A1.BusinessCapability`, catalogued to BIAN's BCM, also derives from ArchiMate Strategy (its locator says so) — a row citing ArchiMate for either is a pass, not a note. A row that relates an ArchiMate concept to a BIAN concept inside one level, or cites a source neither entity derives from, **fails**.
 
 Working: the two concepts and the standard each is cited to; the row's `reference_source`.
 
@@ -82,7 +82,7 @@ Every cross-level rule that derives over within-level structure depends on speci
 | S18, S21 (function rows) | A3: component assigned to function; function exposed through APIs (`exposed_through` key, not a relationship) | component → function row; note that `exposed_through` is an attribute |
 | S40 | A4: environment aggregates deployment | the A4 environment row |
 | S42, S44 | A4: technology interface assigned to technology service | the A4 interface → service row |
-| S46 | A4: node / device assigned system software | the A4 assignment rows |
+| S46 | the cross-level `DEPLOYED_ON` arrow from the function's component to system software (S33) — no within-level row is walked | none; listed to record that S46 has no within-level dependency (corrected after the first run, finding 5) |
 | S52, S53, S54 | A3: solution building block aggregates components | the TOGAF row |
 | `--follow-composition` trace | within-level `composition` only (part → whole) | confirm which rows are `composition` and therefore followed; list the rows a trace will **not** follow (aggregation, assignment) and whether that matters for S52–S54 and the H1 module case |
 | S02 optional route | A1: capability serves value stream; process realizes capability | the A1 serving and realization rows |

@@ -13,8 +13,8 @@ Generated from `metamodel/level-relationships.json` by `python -m sdmm.relations
 | A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 48 | 0 | 48 |
 | A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 17 | 16 | 1 |
 | A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDMM extension rows for API operations | 31 | 3 | 28 |
-| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDMM extension rows for Deployment and Deployment Environment | 35 | 8 | 27 |
-| **Total** | | **131** | 27 | 104 |
+| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDMM extension rows for Deployment and Deployment Environment | 36 | 8 | 28 |
+| **Total** | | **132** | 27 | 105 |
 
 ## A1 Business Architecture
 
@@ -91,9 +91,9 @@ Reference: BIAN Service Landscape 14 metamodel, Control Record Model, Business O
 | RA2-12 | B08 | A2.ControlRecord | association | A2.BusinessObject | A control record's attributes are typed by business objects. | [SL14] BOM Overview; [RN14] §1.3 | Control records and the BOM were rationalised together in release 14. | high | verified |
 | RA2-13 | B11 | A2.ServiceOperation | access | A2.ControlRecord | A service operation acts on the control record. | [SAPG] §3.2.5, §3.5 | Every operation reads or changes the domain's control record; the action term says how. | high | verified |
 | RA2-14 | B12 | A2.ServiceDomain | flow | A2.ServiceDomain | A Service Domain connects to other Service Domains. | [SAPG] §3.2.6 | First-order connections: the domains a domain calls or is called by. | high | verified |
-| RA2-15 | B14 | A2.Wireframe | association | A2.ServiceDomain | A wireframe depicts a Service Domain. | [SL14] Wireframes Overview; [SAPG] §3.4 | Wireframes are published per domain as an illustrative artefact. | high | verified |
-| RA2-16 | B15 | A2.SemanticAPI | realization | A2.ServiceDomain | A Semantic API is derived from a Service Domain. | [APIP]; [SAPG] §3.5 | The reference API is the domain's operations in REST form. | high | verified |
-| RA2-17 | — | A2.BOMModel | aggregation | A2.BusinessObject | The versioned Business Object Model artefact aggregates the business objects. | [SL14] BOM Overview (public portal); SDMM reading | The BOM release is the container of the objects that type control records; SDMM reading of the BOM overview, not a published BIAN relationship. | medium | sdmm_reading |
+| RA2-15 | B14 | A2.Wireframe | association | A2.ServiceDomain | A wireframe depicts a Service Domain. | [SL14] Wireframes Overview; [SAPG] §3.4 | Wireframes are published per domain as an illustrative artefact. Not enforceable: artefact entities are never instantiated in a level export (LevelGraph rejects them), so the row records provenance only. | high | verified |
+| RA2-16 | B15 | A2.SemanticAPI | realization | A2.ServiceDomain | A Semantic API is derived from a Service Domain. | [APIP]; [SAPG] §3.5 | The reference API is the domain's operations in REST form. Not enforceable: artefact entities are never instantiated in a level export (LevelGraph rejects them), so the row records provenance only. | high | verified |
+| RA2-17 | — | A2.BOMModel | aggregation | A2.BusinessObject | The versioned Business Object Model artefact aggregates the business objects. | [SL14] BOM Overview (public portal); SDMM reading | The BOM release is the container of the objects that type control records; SDMM reading of the BOM overview, not a published BIAN relationship. Not enforceable: artefact entities are never instantiated in a level export (LevelGraph rejects them), so the row records provenance only. | medium | sdmm_reading |
 
 ## A3 Application Architecture
 
@@ -174,6 +174,7 @@ Reference: ArchiMate 3.2 chapter 10 (Technology); SDMM extension rows for Deploy
 | RA4-33 | — | A4.DeploymentEnvironment | aggregation | A4.Device | An environment groups deployments and the platform they run on. | SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) | SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies. | high | sdmm_definition |
 | RA4-34 | — | A4.DeploymentEnvironment | aggregation | A4.SystemSoftware | An environment groups deployments and the platform they run on. | SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) | SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies. | high | sdmm_definition |
 | RA4-35 | — | A4.Deployment | aggregation | A4.Artifact | A deployment carries the artifacts deployed. | SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) | SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies. | high | sdmm_definition |
+| RA4-36 | — | A4.Device | composition | A4.Device | Device decomposition. | [AM] ArchiMate 3.2 ch. 10 Technology | ArchiMate's standard relationship between these concepts: a device specialises node, and nodes compose; added after the relationships test (finding 2) alongside the existing aggregation row. | medium | unverified_archimate |
 
 ## Catalogue inheritance (is-a)
 

@@ -167,7 +167,7 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.CommunicationNetwork" as a4_communicationnetwork
   rectangle "A4.Path" as a4_path
   rectangle "A4.Artifact" as a4_artifact
-  ' constraints from ArchiMate 3.2 ch. 10 (35)
+  ' constraints from ArchiMate 3.2 ch. 10 (36)
   a4_node -[#1565C0]-> a4_node : RA4-01 composition
   a4_node -[#1565C0,dashed]-> a4_node : RA4-02 aggregation
   a4_node -[#1565C0,dashed]-> a4_device : RA4-03 aggregation
@@ -203,6 +203,7 @@ package "A4 Technology Architecture" as A4 {
   a4_deploymentenvironment -[#1565C0,dashed]-> a4_device : RA4-33 aggregation
   a4_deploymentenvironment -[#1565C0,dashed]-> a4_systemsoftware : RA4-34 aggregation
   a4_deployment -[#1565C0,dashed]-> a4_artifact : RA4-35 aggregation
+  a4_device -[#1565C0]-> a4_device : RA4-36 composition
   ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) (10)
   a4_deployment -[#424242]-|> a4_infrastructurecomponent : extends
   a4_deploymentenvironment -[#424242]-|> a4_infrastructurecomponent : extends

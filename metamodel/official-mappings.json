@@ -242,7 +242,7 @@
       "authority": "bian",
       "verification": "verified",
       "constraint": null,
-      "disposition": "artefact relationship — not a level-model constraint"
+      "disposition": "artefact relationship — encoded as an A2 constraint row for provenance (level-relationships.json, enforceable=false: artefacts are never instantiated in a level export)"
     },
     {
       "id": "B15",
@@ -255,7 +255,7 @@
       "authority": "bian",
       "verification": "verified",
       "constraint": null,
-      "disposition": "artefact relationship — not a level-model constraint"
+      "disposition": "artefact relationship — encoded as an A2 constraint row for provenance (level-relationships.json, enforceable=false: artefacts are never instantiated in a level export)"
     },
     {
       "id": "S01",

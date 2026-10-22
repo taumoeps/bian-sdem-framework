@@ -1,6 +1,6 @@
 {
   "metamodel_version": "0.4.0",
-  "note": "Within-level relationships are held by each level model, never by SDMM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects).",
+  "note": "Within-level relationships are held by each level model, never by SDMM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects). 0.5.17: artefact rows flagged enforceable=false; device composition added (relationships test findings 1, 2).",
   "kinds": [
     {
       "kind": "composition",
@@ -259,10 +259,11 @@
       "id": "RA2-15",
       "official_id": "B14",
       "description": "A wireframe depicts a Service Domain.",
-      "reasoning": "Wireframes are published per domain as an illustrative artefact.",
+      "reasoning": "Wireframes are published per domain as an illustrative artefact. Not enforceable: artefact entities are never instantiated in a level export (LevelGraph rejects them), so the row records provenance only.",
       "reference_source": "[SL14] Wireframes Overview; [SAPG] §3.4",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "enforceable": false
     },
     {
       "level": "A2",
@@ -273,10 +274,11 @@
       "id": "RA2-16",
       "official_id": "B15",
       "description": "A Semantic API is derived from a Service Domain.",
-      "reasoning": "The reference API is the domain's operations in REST form.",
+      "reasoning": "The reference API is the domain's operations in REST form. Not enforceable: artefact entities are never instantiated in a level export (LevelGraph rejects them), so the row records provenance only.",
       "reference_source": "[APIP]; [SAPG] §3.5",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "enforceable": false
     },
     {
       "level": "A2",
@@ -287,10 +289,11 @@
       "id": "RA2-17",
       "official_id": null,
       "description": "The versioned Business Object Model artefact aggregates the business objects.",
-      "reasoning": "The BOM release is the container of the objects that type control records; SDMM reading of the BOM overview, not a published BIAN relationship.",
+      "reasoning": "The BOM release is the container of the objects that type control records; SDMM reading of the BOM overview, not a published BIAN relationship. Not enforceable: artefact entities are never instantiated in a level export (LevelGraph rejects them), so the row records provenance only.",
       "reference_source": "[SL14] BOM Overview (public portal); SDMM reading",
       "confidence": "medium",
-      "verification": "sdmm_reading"
+      "verification": "sdmm_reading",
+      "enforceable": false
     },
     {
       "level": "A1",
@@ -1773,6 +1776,19 @@
       "reasoning": "SDMM extension: the entity is defined as a composite or extension of ArchiMate concepts, and the row is the relationship that definition implies.",
       "confidence": "high",
       "verification": "sdmm_definition"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Device",
+      "kind": "composition",
+      "target_type": "A4.Device",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — device decomposition (a device is a specialisation of node; composition applies as to nodes)",
+      "id": "RA4-36",
+      "description": "Device decomposition.",
+      "reference_source": "[AM] ArchiMate 3.2 ch. 10 Technology",
+      "reasoning": "ArchiMate's standard relationship between these concepts: a device specialises node, and nodes compose; added after the relationships test (finding 2) alongside the existing aggregation row.",
+      "confidence": "medium",
+      "verification": "unverified_archimate"
     }
   ],
   "policy": "Every within-level relationship must match a constraint row for its level, or be an association (ArchiMate's generic relationship, permitted between any two entities of one level). A2 rows come from BIAN's Service Landscape metamodel; A1, A3 and A4 rows are derived from ArchiMate 3.2 (ch. 6–10) and TOGAF 10 for the concepts each SDMM entity derives from (see README › Reference architecture provenance). ArchiMate and TOGAF are login-gated: those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations.",

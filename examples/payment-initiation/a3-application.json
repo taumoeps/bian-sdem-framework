@@ -344,6 +344,11 @@
       "source": "APP-PAY-HUB",
       "kind": "triggering",
       "target": "EVT-PAY-STATUS"
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "composition",
+      "target": "IFC-PAY-API"
     }
   ]
 }

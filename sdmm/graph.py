@@ -146,12 +146,14 @@ class FederatedGraph:
         return node
 
     def composition_hops(self, iid, direction):
-        """Within-level composition as virtual hops: downstream climbs to the whole that composes the instance
-        (a module's traceability continues through its application); upstream descends to the parts."""
+        """Within-level part-whole links (composition and aggregation) as virtual hops: downstream climbs to the
+        whole (a module's traceability continues through its application; a component's through its solution
+        building block); upstream descends to the parts. Assignment and realization are not part-whole and are
+        not followed (relationships test, finding 6)."""
         hops = []
         for g in self.levels.values():
             for r in g.relationships:
-                if r['kind'] != 'composition': continue
+                if r['kind'] not in ('composition', 'aggregation'): continue
                 if direction == 'down' and r['target'] == iid: hops.append(r['source'])
                 if direction == 'up' and r['source'] == iid: hops.append(r['target'])
         return hops
@@ -235,7 +237,7 @@ def main(argv=None):
         sp.add_argument('--json', action='store_true')
         if name == 'trace':
             sp.add_argument('--direction', choices=['down', 'up', 'both'], default='both')
-            sp.add_argument('--follow-composition', action='store_true', help='continue a chain through within-level composition (part -> whole downstream, whole -> parts upstream)')
+            sp.add_argument('--follow-composition', action='store_true', help='continue a chain through within-level part-whole links — composition and aggregation (part -> whole downstream, whole -> parts upstream)')
         if name == 'impact':
             sp.add_argument('--change', choices=sorted(IMPACT_RULES), required=True)
     args = parser.parse_args(argv)

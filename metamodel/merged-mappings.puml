@@ -9,7 +9,7 @@ skinparam package {
   BorderColor #9E9E9E
 }
 skinparam ArrowFontSize 9
-title Merged view — 131 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
+title Merged view — 132 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
 
 package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessCapability" as a1_businesscapability
@@ -164,7 +164,7 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.CommunicationNetwork" as a4_communicationnetwork
   rectangle "A4.Path" as a4_path
   rectangle "A4.Artifact" as a4_artifact
-  ' within A4 — constraint rows (35)
+  ' within A4 — constraint rows (36)
   a4_node -[#B0BEC5]-> a4_node : <size:8>RA4-01 composition</size>
   a4_node -[#B0BEC5]-> a4_node : <size:8>RA4-02 aggregation</size>
   a4_node -[#B0BEC5]-> a4_device : <size:8>RA4-03 aggregation</size>
@@ -200,6 +200,7 @@ package "A4 Technology Architecture" as A4 {
   a4_deploymentenvironment -[#B0BEC5]-> a4_device : <size:8>RA4-33 aggregation</size>
   a4_deploymentenvironment -[#B0BEC5]-> a4_systemsoftware : <size:8>RA4-34 aggregation</size>
   a4_deployment -[#B0BEC5]-> a4_artifact : <size:8>RA4-35 aggregation</size>
+  a4_device -[#B0BEC5]-> a4_device : <size:8>RA4-36 composition</size>
 }
 
 ' --- cross-level: registry rule (SDMM relationship type) (9)

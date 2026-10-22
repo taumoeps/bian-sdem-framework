@@ -472,6 +472,16 @@
       "source": "APP-LC",
       "kind": "triggering",
       "target": "EVT-LC-ISSUED"
+    },
+    {
+      "source": "APP-LC",
+      "kind": "composition",
+      "target": "IFC-LC"
+    },
+    {
+      "source": "APP-DOC",
+      "kind": "composition",
+      "target": "IFC-DOC"
     }
   ]
 }

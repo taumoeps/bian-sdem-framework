@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bian-sdmm"
-version = "0.5.16"
+version = "0.5.17"
 description = "BIAN Service Domain Mapping Model (SDMM): typed cross-layer architecture mappings and validator"
 readme = "README.md"
 requires-python = ">=3.10"
