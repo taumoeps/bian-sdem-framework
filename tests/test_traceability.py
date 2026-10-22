@@ -7,7 +7,7 @@ DATA = json.loads((ROOT / 'metamodel/official-mappings.json').read_text())
 DOC = (ROOT / 'docs/mapping-logic-planning.md').read_text()
 PUML = (ROOT / 'metamodel/official-mappings.puml').read_text()
 IDS = {m['id'] for m in DATA['mappings']}
-GAP = json.loads((ROOT / 'metamodel/gap-mapping.json').read_text())
+GAP = json.loads((ROOT / 'metamodel/new-mappings.json').read_text())
 DATA_BY = {m['id']: m for m in DATA['mappings']}
 
 

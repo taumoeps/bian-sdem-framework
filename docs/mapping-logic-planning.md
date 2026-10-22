@@ -745,9 +745,9 @@ Data at the bottom, BIAN in the middle, inference only at the top and only for w
 4. **A step-3 derivation is never auto-approved either.** It is still `proposed`: the architect confirms that the closure holds semantically, not just structurally.
 5. **Type-level gaps are closed by registry changes, not by the engine.** When the ArchiMate rows verify, `DEPLOYED_ON` / `DEPLOYED_AS` move from `enterprise_rule` to `archimate_native` authority; the engine's behaviour on them is unchanged (still step 1).
 
-### 5.3 Gap mapping — all 69 connections
+### 5.3 New mappings — all 69 connections
 
-Generated from `metamodel/gap-mapping.json` (every entry carries the official source reference where one exists, the rule decision, the step that fills its instances, the data that step needs, the reasoning and a confidence). The JSON is the record; this table is its projection and `tests/test_traceability.py` keeps them aligned.
+Generated from `metamodel/new-mappings.json` (every entry carries the official source reference where one exists, the rule decision, the step that fills its instances, the data that step needs, the reasoning and a confidence). The JSON is the record; this table is its projection and `tests/test_traceability.py` keeps them aligned.
 
 **Fill steps:** 0 BIAN export · 1 data join · 2 rule application · 3 derivation · 4 structural matching · 5 text inference. **Confidence** rates both that the connection is a sound mapping and that the chosen fill produces correct instances.
 
