@@ -37,53 +37,55 @@ Before designing any inference, establish what the reference architecture itself
 
 ### 1.4 Coverage at entity level
 
-For each entity in the catalogue, three questions: does BIAN **define the concept**, does BIAN **publish instances** of it (so an A2 level model can be exported from the portal), and does BIAN **give guidance for mapping it across a boundary**. ● = yes, publicly · ◐ = partial / method only · ○ = no.
+For each entity in the catalogue, three questions: does BIAN **define the concept**, does BIAN **publish instances** of it (so an A2 level model can be exported from the portal), and does BIAN **give guidance for mapping it across a boundary**. ● = yes, publicly · ◐ = partial / method only · ○ = no. The **BIAN reference source** column names the public BIAN artefact or document section that the row rests on; "—" means BIAN has no artefact for this entity and the concept comes from ArchiMate, TOGAF or SDMM (see `docs/reference-architecture-provenance.md`).
+
+Sources: **[SL14]** Service Landscape 14.0 InSite portal, https://bian.org/servicelandscape-14-0-0/ · **[RN13]** v13.0 release notes · **[RN14]** v14.0 release notes · **[SAPG]** Semantic API Practitioner Guide v8.1 (2020) · **[APIP]** BIAN Semantic API portal, https://bian.org/bian-portal/
 
 **A1 — Business Architecture**
 
-| Entity | Concept defined by BIAN | Instances published by BIAN | Boundary guidance (→ A2) | What the engine has to work with |
-|---|---|---|---|---|
-| `A1.BusinessCapability` | ● BCM | ● the BCM capability map is on the portal (Top Level and Capability Views) | ○ capability→Service Domain mapping is WIP, unpublished (v13/v14 §3) | Capability description vs Service Domain description; which domains the capability's processes already use |
-| `A1.ValueStream` | ○ (ArchiMate) | ○ not yet modelled by BIAN (v14 §3) | ◐ scenarios exist on the A2 side; nothing links them to value streams | Stage text vs Business Scenario interaction text |
-| `A1.ValueStreamStage` | ○ (SDMM) | ○ | ○ | As above, per stage |
-| `A1.BusinessProcess` | ○ (ArchiMate) | ○ BIAN does not model a bank's processes | ◐ Business Scenarios are the nearest BIAN artefact; `USES_DOMAIN` is an enterprise rule | Process step text vs operation descriptions; scenario sequence as a template |
-| `A1.BusinessActivity` | ○ (SDMM) | ○ | ○ | As above, finer grain |
-| `A1.BusinessService` | ○ (ArchiMate) | ○ | ○ no SDMM arrow yet | — |
-| `A1.BusinessActor` / `A1.BusinessRole` | ○ (ArchiMate) | ○ (scenarios name parties informally) | ○ no SDMM arrow yet | Context only |
-| `A1.BusinessObject` | ○ (ArchiMate; aligned to BOM) | ○ the bank's own concepts | ● the BOM is the published target, with attributes | Name and attribute matching against BOM objects — the most tractable A1→A2 arrow |
-| `A1.BusinessRequirement` | ○ (ArchiMate) | ○ | ○ no SDMM arrow yet | — |
+| Entity | BIAN reference source | Concept defined by BIAN | Instances published by BIAN | Boundary guidance (→ A2) | What the engine has to work with |
+|---|---|---|---|---|---|
+| `A1.BusinessCapability` | [SL14] Business Capability Map — Top Level View, Business Capability Views; [RN14] §3 | ● BCM | ● capability map on the portal | ○ capability→Service Domain mapping WIP, unpublished ([RN13] §3, [RN14] §3) | Capability description vs Service Domain description; which domains the capability's processes already use |
+| `A1.ValueStream` | [RN14] §3 (value streams under study by the BCM working group; not modelled) | ○ (ArchiMate) | ○ not yet modelled | ◐ scenarios exist on the A2 side; nothing links them to value streams | Stage text vs Business Scenario interaction text |
+| `A1.ValueStreamStage` | — | ○ (SDMM) | ○ | ○ | As above, per stage |
+| `A1.BusinessProcess` | [SL14] Business Scenarios (nearest artefact; BIAN models no bank processes) | ○ (ArchiMate) | ○ | ◐ scenarios as templates; `USES_DOMAIN` is an enterprise rule | Process step text vs operation descriptions; scenario sequence as a template |
+| `A1.BusinessActivity` | — | ○ (SDMM) | ○ | ○ | As above, finer grain |
+| `A1.BusinessService` | — | ○ (ArchiMate) | ○ | ○ no SDMM arrow yet | — |
+| `A1.BusinessActor` / `A1.BusinessRole` | — (scenario sequence diagrams name parties informally, [SL14] Business Scenarios) | ○ (ArchiMate) | ○ | ○ no SDMM arrow yet | Context only |
+| `A1.BusinessObject` | [SL14] Business Object Model (the alignment target); [RN14] §1.3 | ○ (ArchiMate; aligned to BOM) | ○ the bank's own concepts | ● the BOM is the published target, with attributes | Name and attribute matching against BOM objects — the most tractable A1→A2 arrow |
+| `A1.BusinessRequirement` | — | ○ (ArchiMate) | ○ | ○ no SDMM arrow yet | — |
 
 **A2 — Service Domain Architecture** — every entity is defined *and* instantiated publicly; this level can be exported from the portal.
 
-| Entity | Concept | Instances | Boundary guidance (→ A3) | What the engine has to work with |
-|---|---|---|---|---|
-| `A2.BusinessArea` / `A2.BusinessDomain` | ● | ● Service Landscape views | — (structural only) | Hierarchy; no cross-level arrow |
-| `A2.ServiceDomain` | ● | ● ~300 domains with descriptions (rationalised in 14.0) | ◐ wireframe technique: map applications by functional partition (guide §3.4); legacy wrapping (§4.3.1) | Domain description, functional pattern, asset type; wireframe interaction pattern; existing `REALIZED_BY` arrows |
-| `A2.FunctionalPattern` / `A2.AssetType` | ● fixed vocabularies | ● per domain | ◐ patterns map to REST archetypes (§3.5) | Classifies the domain; drives the REST mapping |
-| `A2.ControlRecord` | ● | ● per domain, with attributes | ● control record = REST resource (§3.5) | Resource structure to match an API's payload against |
-| `A2.ServiceGroup` | ● | ● per domain (InSite) | — | Groups operations; organises evidence |
-| `A2.ServiceOperation` | ● | ● per domain, with input/output parameters (v14 §1) | ● REST mapping: action term + behaviour qualifier + HTTP method (§3.5) | The most mechanical arrow: compare path, method, payload |
-| `A2.BehaviorQualifier` | ● | ● per domain | ● part of the REST resource path | Refines the operation→API match |
-| `A2.BusinessScenario` | ● | ● UML sequence diagrams, new payment scenarios in 14.0 | ◐ scenarios *are* the A1 guidance (value stream side); none to A3 | Interaction sequence and participating domains |
-| `A2.BusinessObject` / `A2.BusinessObjectAttribute` | ● | ● BOM with attributes | ● information profile per domain (§3.2.7) | Attribute-level matching to data entities |
-| `A2.BOMModel` / `A2.Wireframe` / `A2.SemanticAPI` *(artefacts)* | ● | ● | — evidence, not endpoints | Citable support for a proposal |
+| Entity | BIAN reference source | Concept | Instances | Boundary guidance (→ A3) | What the engine has to work with |
+|---|---|---|---|---|---|
+| `A2.BusinessArea` / `A2.BusinessDomain` | [SL14] Service Landscape V14.0 — Value Chain, Matrix and Overview views | ● | ● | — (structural only) | Hierarchy; no cross-level arrow |
+| `A2.ServiceDomain` | [SL14] Service Landscape views and per-domain pages; [SAPG] §2.4–2.5, §3.1–3.2; [RN14] §4 (rationalised definitions) | ● | ● ~300 domains with descriptions | ◐ wireframe technique: map applications by functional partition ([SAPG] §3.4 p. 52); legacy wrapping ([SAPG] §4.3.1 p. 91) | Domain description, functional pattern, asset type; wireframe interaction pattern; existing `REALIZED_BY` arrows |
+| `A2.FunctionalPattern` / `A2.AssetType` | [SL14] MetaModel Overview; [SAPG] §3.2.1–3.2.2 | ● fixed vocabularies | ● per domain | ◐ patterns map to REST archetypes ([SAPG] §3.5 pp. 53–54) | Classifies the domain; drives the REST mapping |
+| `A2.ControlRecord` | [SL14] Control Record Model Overview; [SAPG] §3.2.3; [RN14] §1.3 | ● | ● per domain, with attributes | ● control record instance = REST resource ([SAPG] §3.5 p. 53) | Resource structure to match an API's payload against |
+| `A2.ServiceGroup` | [SL14] MetaModel Overview (InSite) | ● | ● per domain | — | Groups operations; organises evidence |
+| `A2.ServiceOperation` | [SL14] per-domain Service Operation descriptions with input/output parameters ([RN14] §1); [SAPG] §3.2.5 (operations and action terms) | ● | ● per domain, with I/O parameters | ● REST mapping: action term + behaviour qualifier + HTTP method ([SAPG] §3.5) | The most mechanical arrow: compare path, method, payload |
+| `A2.BehaviorQualifier` | [SL14] MetaModel Overview; [SAPG] §3.2.4 | ● | ● per domain | ● part of the REST resource path ([SAPG] §3.5) | Refines the operation→API match |
+| `A2.BusinessScenario` | [SL14] Business Scenarios (by business area); [RN14] §9 (new payment scenarios); [SAPG] §3.3 | ● | ● UML sequence diagrams | ◐ scenarios *are* the A1 guidance (value-stream side); none to A3 | Interaction sequence and participating domains |
+| `A2.BusinessObject` / `A2.BusinessObjectAttribute` | [SL14] Business Object Model Overview; [SAPG] §3.2.7 (information profile); [RN14] §1.3 | ● | ● BOM with attributes | ● information profile per domain | Attribute-level matching to data entities |
+| `A2.BOMModel` / `A2.Wireframe` / `A2.SemanticAPI` *(artefacts)* | [SL14] Business Object Model Overview; [SL14] Wireframes Overview ([SAPG] §3.4); [APIP] | ● | ● | — evidence, not endpoints | Citable support for a proposal |
 
 **A3 — Application Architecture** — BIAN defines nothing here; it offers logical guidance and, for APIs, reference definitions.
 
-| Entity | Concept | Instances | Boundary guidance (← A2 · → A4) | What the engine has to work with |
-|---|---|---|---|---|
-| `A3.ApplicationComponent` | ○ (ArchiMate) | ○ the bank's inventory | ◐ ← functional-partition method · ○ → nothing | Component description vs domain description; composition (what it contains); existing arrows |
-| `A3.ApplicationService` / `A3.ApplicationInterface` / `A3.ApplicationFunction` | ○ (ArchiMate) | ○ | ◐ ← a Semantic API is the collection of a domain's operations exposed at the application boundary (§3.5) | Interface groupings against domain operation sets; no SDMM arrow yet |
-| `A3.APIOperation` | ○ (SDMM) | ◐ BIAN publishes **reference** Semantic API definitions per domain (API portal, OpenAPI) — logical, not the bank's | ● ← REST mapping rules · ○ → nothing | Path, method, payload vs BIAN operation's action term, qualifier, control record attributes. Rule-based matching possible |
-| `A3.DataEntity` | ○ (ArchiMate-aligned) | ○ | ● ← BOM / information profile · ○ → | Entity attributes vs BOM attributes |
-| `A3.Event` | ○ (ArchiMate-aligned) | ○ | ◐ ← event triggering is a *proposed* BIAN extension (§3.6) | Weak; no SDMM arrow yet |
-| `A3.SolutionBuildingBlock` | ○ (TOGAF) | ○ | ○ | Grouping only |
+| Entity | BIAN reference source | Concept | Instances | Boundary guidance (← A2 · → A4) | What the engine has to work with |
+|---|---|---|---|---|---|
+| `A3.ApplicationComponent` | [SAPG] §3.4 p. 52 (applications mapped to domains by functional partition); §4.3.1 (legacy wrapping) | ○ (ArchiMate) | ○ the bank's inventory | ◐ ← functional-partition method · ○ → nothing | Component description vs domain description; composition; existing arrows |
+| `A3.ApplicationService` / `A3.ApplicationInterface` / `A3.ApplicationFunction` | [SAPG] §3.5 p. 52 (a Semantic API is the collection of a domain's operations at the application boundary) | ○ (ArchiMate) | ○ | ◐ ← as stated · ○ → | Interface groupings against domain operation sets; no SDMM arrow yet |
+| `A3.APIOperation` | [APIP] reference Semantic API definitions per domain (OpenAPI); [SAPG] §3.5 pp. 52–54 (REST mapping) | ○ (SDMM) | ◐ BIAN publishes **reference** API definitions — logical, not the bank's | ● ← REST mapping rules · ○ → | Path, method, payload vs BIAN operation's action term, qualifier, control-record attributes. Rule-based matching possible |
+| `A3.DataEntity` | [SL14] Business Object Model; [SAPG] §3.2.7 | ○ (ArchiMate-aligned) | ○ | ● ← BOM / information profile · ○ → | Entity attributes vs BOM attributes |
+| `A3.Event` | [SAPG] §3.6 (event triggering — a *proposed* design extension) | ○ (ArchiMate-aligned) | ○ | ◐ ← proposed only | Weak; no SDMM arrow yet |
+| `A3.SolutionBuildingBlock` | — (TOGAF) | ○ | ○ | ○ | Grouping only |
 
-**A4 — Technology Architecture** — BIAN covers nothing: "does not assume or impose any physical properties" (guide §4.2.3); scope stops at logical (Figure 34).
+**A4 — Technology Architecture** — BIAN covers nothing: "does not assume or impose any physical properties" ([SAPG] §4.2.3 p. 87); scope stops at logical (Figure 34, p. 90).
 
-| Entity | Concept | Instances | Boundary guidance (← A3) | What the engine has to work with |
-|---|---|---|---|---|
-| `A4.InfrastructureComponent` *(abstract)* and all ten concrete A4 entities — `Node`, `Device`, `SystemSoftware`, `TechnologyService`, `TechnologyInterface`, `CommunicationNetwork`, `Path`, `Artifact`, `Deployment`, `DeploymentEnvironment` | ○ (ArchiMate / SDMM) | ○ the bank's CMDB and platforms | ○ none | **Structural data only**: deployment manifests, artefact-to-node assignments, environment membership, as `relationships` in the A4 export or attributes on A3 instances. Descriptions do not help |
+| Entity | BIAN reference source | Concept | Instances | Boundary guidance (← A3) | What the engine has to work with |
+|---|---|---|---|---|---|
+| `A4.InfrastructureComponent` *(abstract)* and all ten concrete A4 entities — `Node`, `Device`, `SystemSoftware`, `TechnologyService`, `TechnologyInterface`, `CommunicationNetwork`, `Path`, `Artifact`, `Deployment`, `DeploymentEnvironment` | — ([SAPG] §4.2.3 and Figure 34 state the exclusion) | ○ (ArchiMate / SDMM) | ○ the bank's CMDB and platforms | ○ none | **Structural data only**: deployment manifests, artefact-to-node assignments, environment membership, as `relationships` in the A4 export or attributes on A3 instances. Descriptions do not help |
 
 ### 1.5 Coverage at arrow level
 
