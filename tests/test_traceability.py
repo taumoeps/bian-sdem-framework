@@ -7,6 +7,8 @@ DATA = json.loads((ROOT / 'metamodel/official-mappings.json').read_text())
 DOC = (ROOT / 'docs/mapping-logic-planning.md').read_text()
 PUML = (ROOT / 'metamodel/official-mappings.puml').read_text()
 IDS = {m['id'] for m in DATA['mappings']}
+GAP = json.loads((ROOT / 'metamodel/gap-mapping.json').read_text())
+DATA_BY = {m['id']: m for m in DATA['mappings']}
 
 
 def section(start, end):
@@ -39,6 +41,19 @@ class TraceabilityTests(unittest.TestCase):
     def test_document_embeds_the_committed_diagram(self):
         a = DOC.index('```plantuml\n') + len('```plantuml\n'); b = DOC.index('```', a)
         self.assertEqual(DOC[a:b].strip(), PUML.strip())
+
+    def test_gap_mapping_covers_every_id_with_required_fields(self):
+        self.assertEqual({m['id'] for m in GAP['mappings']}, IDS)
+        for m in GAP['mappings']:
+            self.assertIn(m['confidence'], ('high', 'medium', 'low'), m['id'])
+            self.assertIn(m['rule_decision'], GAP['rule_decisions'], m['id'])
+            self.assertTrue(m['reasoning'] and len(m['reasoning']) > 40, m['id'])
+            self.assertTrue(m['fill_step'] is None or str(m['fill_step']) in GAP['steps'], m['id'])
+            self.assertEqual(m['official'], DATA_BY[m['id']]['verification'] in ('verified', 'verified_intent_or_target_only'), m['id'])
+
+    def test_document_gap_table_carries_every_id(self):
+        sec = section('### 5.3 ', '\n## ') if '\n## ' in DOC[DOC.index('### 5.3 '):] else DOC[DOC.index('### 5.3 '):]
+        self.assertEqual(set(re.findall(r'^\| ([BS]\d{2}) \|', sec, flags=re.M)), IDS)
 
     def test_every_entity_in_file_exists_in_catalogue(self):
         from sdmm.metamodel import Metamodel

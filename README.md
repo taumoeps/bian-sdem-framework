@@ -383,6 +383,7 @@ All components read the same files. The validator decides whether a mapping docu
 | Within-level relationship kinds | `metamodel/level-relationships.json` | the ArchiMate relationship kinds a level model may use; BIAN's A2 structure as fixed constraints |
 | Level-model export format | `schema/level-model.schema.json` | how an institution exports one design model: instances (concrete entities, with `description`) and within-level relationships |
 | Impact rules | `schema/impact-rules.json` | how far each kind of change propagates, with owner, version and rationale |
+| Gap mapping | `metamodel/gap-mapping.json` | all 69 connections with rule decision, fill step (BIAN export / data join / rule / derivation / structural match / text inference), data needed, reasoning and confidence — the minimal-inference plan |
 | Official-mapping traceability | `metamodel/official-mappings.json`, `metamodel/official-mappings.puml` | the 69 mappings assessed in the planning document — 15 BIAN-internal, 54 cross-level candidates — with authority, verification status and disposition; the diagram is rendered from the JSON (`python -m sdmm.diagram`) and tests fail if document, diagram or registry drift |
 
 ### Validator
