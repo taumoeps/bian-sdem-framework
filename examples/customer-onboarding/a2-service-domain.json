@@ -1,0 +1,206 @@
+{
+  "level": "A2",
+  "model_id": "synthetic-bank-onboarding-a2",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-BIAN-WORKBENCH",
+  "instances": [
+    {
+      "id": "SD-001",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Customer Onboarding (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in for a BIAN onboarding domain: establishes a new customer relationship.",
+      "attributes": {
+        "asset_type": "AT-001",
+        "functional_pattern": "FP-001"
+      },
+      "canonical_id": "DEMO-BIAN-SD-ONBOARDING"
+    },
+    {
+      "id": "AT-001",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Customer Relationship",
+      "lifecycle_status": "active",
+      "description": "The relationship being established.",
+      "attributes": {
+        "aliases": [
+          "onboarding",
+          "customer",
+          "applicant"
+        ]
+      }
+    },
+    {
+      "id": "FP-001",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Fulfil",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in."
+    },
+    {
+      "id": "CR-001",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Customer Onboarding Procedure",
+      "lifecycle_status": "active",
+      "description": "Lifecycle record of one onboarding.",
+      "attributes": {
+        "attributes": [
+          "onboarding_reference",
+          "customer_reference",
+          "legal_name",
+          "date_of_birth",
+          "national_id",
+          "address",
+          "verification_status",
+          "onboarding_status"
+        ]
+      }
+    },
+    {
+      "id": "SG-001",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Onboarding",
+      "lifecycle_status": "active",
+      "description": "Operations."
+    },
+    {
+      "id": "SO-001",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Initiate Customer Onboarding",
+      "lifecycle_status": "active",
+      "description": "Start an onboarding from the applicant's identity details.",
+      "attributes": {
+        "action_term": "Initiate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "legal_name",
+          "date_of_birth",
+          "national_id",
+          "address"
+        ],
+        "output_attributes": [
+          "onboarding_reference",
+          "onboarding_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-002",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Customer Onboarding",
+      "lifecycle_status": "active",
+      "description": "Return the onboarding and its verification status.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "onboarding_reference"
+        ],
+        "output_attributes": [
+          "onboarding_status",
+          "verification_status",
+          "customer_reference"
+        ]
+      }
+    },
+    {
+      "id": "BS-001",
+      "type": "A2.BusinessScenario",
+      "version": "1.0",
+      "name": "Retail customer onboarding",
+      "lifecycle_status": "active",
+      "description": "An applicant is captured, verified and confirmed.",
+      "attributes": {
+        "operation_sequence": [
+          "SO-001",
+          "SO-002"
+        ]
+      },
+      "canonical_id": "DEMO-BIAN-SCENARIO-ONBOARD"
+    },
+    {
+      "id": "BBO-001",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Customer Identity",
+      "lifecycle_status": "active",
+      "description": "Canonical customer identity object.",
+      "attributes": {
+        "attributes": [
+          "customer_reference",
+          "legal_name",
+          "date_of_birth",
+          "national_id",
+          "address",
+          "verification_status"
+        ]
+      },
+      "canonical_id": "DEMO-BIAN-BO-CUSTOMER-IDENTITY"
+    }
+  ],
+  "relationships": [
+    {
+      "source": "SD-001",
+      "kind": "association",
+      "target": "AT-001"
+    },
+    {
+      "source": "SD-001",
+      "kind": "association",
+      "target": "FP-001"
+    },
+    {
+      "source": "SD-001",
+      "kind": "aggregation",
+      "target": "CR-001"
+    },
+    {
+      "source": "CR-001",
+      "kind": "association",
+      "target": "BBO-001"
+    },
+    {
+      "source": "SD-001",
+      "kind": "composition",
+      "target": "SG-001"
+    },
+    {
+      "source": "SG-001",
+      "kind": "composition",
+      "target": "SO-001"
+    },
+    {
+      "source": "SG-001",
+      "kind": "composition",
+      "target": "SO-002"
+    },
+    {
+      "source": "SO-001",
+      "kind": "access",
+      "target": "CR-001"
+    },
+    {
+      "source": "SO-002",
+      "kind": "access",
+      "target": "CR-001"
+    },
+    {
+      "source": "BS-001",
+      "kind": "aggregation",
+      "target": "SO-001"
+    },
+    {
+      "source": "BS-001",
+      "kind": "aggregation",
+      "target": "SO-002"
+    }
+  ]
+}

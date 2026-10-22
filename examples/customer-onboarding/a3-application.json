@@ -1,0 +1,115 @@
+{
+  "level": "A3",
+  "model_id": "synthetic-bank-onboarding-a3",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-APM",
+  "instances": [
+    {
+      "id": "APP-001",
+      "type": "A3.ApplicationComponent",
+      "version": "1.0",
+      "name": "Onboarding Portal",
+      "lifecycle_status": "active",
+      "description": "Captures applicant identity, orchestrates verification, creates the customer record.",
+      "attributes": {
+        "deployed_on": [
+          "INF-001"
+        ],
+        "deployed_as": [
+          "DEP-001"
+        ]
+      }
+    },
+    {
+      "id": "IFC-001",
+      "type": "A3.ApplicationInterface",
+      "version": "2.3",
+      "name": "Onboarding API v2.3",
+      "lifecycle_status": "active",
+      "description": "REST interface."
+    },
+    {
+      "id": "API-001",
+      "type": "A3.APIOperation",
+      "version": "2.3",
+      "name": "Create onboarding",
+      "lifecycle_status": "active",
+      "description": "Starts an onboarding.",
+      "attributes": {
+        "method": "POST",
+        "path": "/onboardings",
+        "payload_fields": [
+          "legal_name",
+          "date_of_birth",
+          "national_id",
+          "address",
+          "onboarding_reference",
+          "onboarding_status"
+        ]
+      }
+    },
+    {
+      "id": "API-002",
+      "type": "A3.APIOperation",
+      "version": "2.3",
+      "name": "Get onboarding",
+      "lifecycle_status": "active",
+      "description": "Returns an onboarding.",
+      "attributes": {
+        "method": "GET",
+        "path": "/onboardings/{id}",
+        "payload_fields": [
+          "onboarding_reference",
+          "onboarding_status",
+          "verification_status",
+          "customer_reference"
+        ]
+      }
+    },
+    {
+      "id": "ENT-001",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "customer_identity",
+      "lifecycle_status": "active",
+      "description": "Portal table holding applicant identity.",
+      "attributes": {
+        "attributes": [
+          "customer_reference",
+          "legal_name",
+          "date_of_birth",
+          "national_id",
+          "address",
+          "verification_status",
+          "captured_at"
+        ],
+        "stored_in": [
+          "INF-002"
+        ]
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "APP-001",
+      "kind": "composition",
+      "target": "IFC-001"
+    },
+    {
+      "source": "IFC-001",
+      "kind": "composition",
+      "target": "API-001"
+    },
+    {
+      "source": "IFC-001",
+      "kind": "composition",
+      "target": "API-002"
+    },
+    {
+      "source": "APP-001",
+      "kind": "access",
+      "target": "ENT-001"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "level": "A1",
+  "model_id": "synthetic-bank-onboarding-a1",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-EA-TOOL",
+  "instances": [
+    {
+      "id": "CAP-001",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Onboard Customer",
+      "lifecycle_status": "active",
+      "description": "Establish a new customer relationship: capture identity, verify it, and open the first product."
+    },
+    {
+      "id": "VS-001",
+      "type": "A1.ValueStream",
+      "version": "1.0",
+      "name": "Become a Customer",
+      "lifecycle_status": "active",
+      "description": "The customer's journey from applying to being able to transact.",
+      "attributes": {
+        "stages": [
+          "VSS-001",
+          "VSS-002",
+          "VSS-003"
+        ]
+      }
+    },
+    {
+      "id": "VSS-001",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Apply and capture identity",
+      "lifecycle_status": "active",
+      "description": "The applicant provides identity details."
+    },
+    {
+      "id": "VSS-002",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Verify identity",
+      "lifecycle_status": "active",
+      "description": "The bank verifies the identity."
+    },
+    {
+      "id": "VSS-003",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Confirm relationship",
+      "lifecycle_status": "active",
+      "description": "The customer is confirmed."
+    },
+    {
+      "id": "PRC-001",
+      "type": "A1.BusinessProcess",
+      "version": "1.0",
+      "name": "Onboard retail customer",
+      "lifecycle_status": "active",
+      "description": "Capture and verify an applicant's identity and establish the relationship.",
+      "attributes": {
+        "invokes": [
+          "SO-001",
+          "SO-002"
+        ]
+      }
+    },
+    {
+      "id": "BO-001",
+      "type": "A1.BusinessObject",
+      "version": "1.0",
+      "name": "Customer Identity",
+      "lifecycle_status": "active",
+      "description": "The identity details the bank holds for a customer.",
+      "attributes": {
+        "attributes": [
+          "customer_id",
+          "legal_name",
+          "date_of_birth",
+          "national_id",
+          "address",
+          "verification_status"
+        ]
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "VS-001",
+      "kind": "composition",
+      "target": "VSS-001"
+    },
+    {
+      "source": "VS-001",
+      "kind": "composition",
+      "target": "VSS-002"
+    },
+    {
+      "source": "VS-001",
+      "kind": "composition",
+      "target": "VSS-003"
+    },
+    {
+      "source": "VS-001",
+      "kind": "realization",
+      "target": "CAP-001"
+    },
+    {
+      "source": "PRC-001",
+      "kind": "realization",
+      "target": "CAP-001"
+    },
+    {
+      "source": "PRC-001",
+      "kind": "access",
+      "target": "BO-001"
+    }
+  ]
+}

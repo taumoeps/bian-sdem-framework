@@ -14,7 +14,12 @@ The document exercises the full SDMM model:
 
 BIAN-grounded records (`bian_alignment_guidance` authority) carry a `bian_release` and a `canonical_id` on the A2 endpoint, ready for a licensed reference adapter (see `sdmm/reference.py`).
 
+Level exports `a1–a4-*.json` (24 synthetic instances, written to `metamodel/export-conventions.json`) back every id in the mappings, so the graph tools run on this example — use case **E2** in `docs/use-case-testing.md`.
+
 ```bash
+python -m sdmm.graph check examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
+python -m sdmm.graph trace CAP-001 --direction down examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
+python -m sdmm.graph impact APP-001 --change replace examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
 python -m sdmm.validate examples/customer-onboarding/mappings.json
 python -m sdmm.validate --json examples/customer-onboarding/mappings.json
 ```

@@ -231,3 +231,32 @@ class AcquiredFintechExampleTests(unittest.TestCase):
         a3 = json.loads((self.P / 'a3-application.json').read_text())
         zap = next(i for i in a3['instances'] if i['id'] == 'IFC-zap')
         self.assertEqual(zap['attributes']['field_aliases']['sender'], 'debtor_account_reference')
+
+
+class CustomerOnboardingExampleTests(unittest.TestCase):
+    P = ROOT / 'examples/customer-onboarding'
+
+    def _fg(self):
+        return FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
+
+    def test_exports_cover_every_mapped_id(self):
+        self.assertEqual({k: v for k, v in self._fg().check().items() if v}, {})
+
+    def test_e2_1_two_a4_arrows_from_the_component(self):
+        t = self._fg().trace('CAP-001', 'down')
+        app = t['children'][0]['node']['children'][0]['node']
+        self.assertEqual(app['id'], 'APP-001')
+        self.assertEqual({c['node']['id'] for c in app['children']}, {'INF-001', 'DEP-001'})
+
+    def test_e2_4_upstream_from_entity_is_information_only(self):
+        t = self._fg().trace('ENT-001', 'up')
+        ids = set(); stack = [t]
+        while stack:
+            n = stack.pop(); ids.add(n['id']); stack += [c['node'] for c in n['children']]
+        self.assertEqual(ids, {'ENT-001', 'BBO-001', 'BO-001'})
+
+    def test_e2_5_replace_component(self):
+        rows = {r['id']: r['classification'] for r in self._fg().impact('APP-001', 'replace')['instances']}
+        self.assertEqual(rows['SD-001'], 'design_change_required')
+        self.assertEqual(rows['INF-001'], 'review_required'); self.assertEqual(rows['DEP-001'], 'review_required')
+        self.assertNotIn('BBO-001', rows); self.assertNotIn('ENT-001', rows)

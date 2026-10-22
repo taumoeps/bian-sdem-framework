@@ -1,0 +1,66 @@
+{
+  "level": "A4",
+  "model_id": "synthetic-bank-onboarding-a4",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-CMDB",
+  "instances": [
+    {
+      "id": "INF-001",
+      "type": "A4.SystemSoftware",
+      "version": "1.0",
+      "name": "Managed Kubernetes — channels (production)",
+      "lifecycle_status": "active",
+      "description": "Current production platform.",
+      "attributes": {
+        "hosts": [
+          "APP-001"
+        ]
+      }
+    },
+    {
+      "id": "INF-000",
+      "type": "A4.Node",
+      "version": "1.0",
+      "name": "Legacy VM cluster — channels",
+      "lifecycle_status": "retired",
+      "description": "Previous hosting, decommissioned."
+    },
+    {
+      "id": "INF-002",
+      "type": "A4.SystemSoftware",
+      "version": "16",
+      "name": "Managed PostgreSQL — channels",
+      "lifecycle_status": "active",
+      "description": "Production database."
+    },
+    {
+      "id": "ENV-001",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "Production",
+      "lifecycle_status": "active",
+      "description": "Production environment."
+    },
+    {
+      "id": "DEP-001",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Onboarding Portal — production",
+      "lifecycle_status": "active",
+      "description": "Portal 1.0 on the channels cluster.",
+      "attributes": {
+        "component_id": "APP-001",
+        "environment_id": "ENV-001",
+        "platform_id": "INF-001"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "ENV-001",
+      "kind": "aggregation",
+      "target": "DEP-001"
+    }
+  ]
+}

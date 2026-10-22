@@ -50,7 +50,7 @@
 
 **Scenario.** The second shipped example, with process and information arrows as well as the architecture chain, a supersession, and a `DEPLOYED_AS`.
 
-**Given.** `examples/customer-onboarding/mappings.json` (11 records) — **note:** no level exports exist yet; the case first requires authoring `a1–a4` exports for its 17 instance ids (synthetic).
+**Given.** `examples/customer-onboarding/mappings.json` (11 records) and `a1–a4-*.json` (24 instances to the export conventions, authored v0.5.7; `INF-000` is retired, `INF-002` holds the table, `API-001/002` carry method, path and payload). Everything is approved or in lifecycle already — this case queries and governs; it does not infer. Phase 2 of the guide (proposals) is skipped; record `e2-inference-log.json` with the tool outputs for E2.1–E2.6 only.
 
 **Tests.**
 
@@ -63,7 +63,7 @@
 | E2.5 | Replace APP-001 | `impact APP-001 --change replace` — SD-001 `design_change_required`, INF-001 / DEP-001 `review_required`, BBO/ENT untouched |
 | E2.6 | Governance | edit an approved record's rationale → `sdmm-diff` rejects; supersede instead → accepted |
 
-**Connections exercised.** S01, S02, S04, S12, S17, S24 (proposed), S30, S32, S33. **Pass:** chains per perspective are disjoint where they should be; impact matches the rules table. **Status:** needs level exports authored.
+**Connections exercised.** S01, S02, S04, S12, S17, S24 (proposed), S30, S32, S33. **Pass:** chains per perspective are disjoint where they should be; impact matches the rules table; `sdmm-diff` rejects the edit and accepts the supersession. **Status:** exports authored and all six checks verified with the tools (v0.5.7); **ready to execute** — the executor's job is to run E2.1–E2.6, record the verbatim outputs, and report any mismatch with the Expected column.
 
 ## M0 — Card Fraud Alerts as an inference test (Medium, on existing data)
 

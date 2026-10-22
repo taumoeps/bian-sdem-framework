@@ -43,6 +43,10 @@ jobs:
         run: |
           python -m sdmm.graph check examples/acquired-fintech/a*.json examples/acquired-fintech/mappings.json
           python -m sdmm.validate --strict examples/acquired-fintech/mappings.json
+      - name: Customer Onboarding (E2) exports and mappings
+        run: |
+          python -m sdmm.graph check examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
+          python -m sdmm.graph impact APP-001 --change replace examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
       - name: Trace the fraud example both ways
         run: |
           python -m sdmm.trace CAP-310 examples/card-fraud-alerts/mappings.json
