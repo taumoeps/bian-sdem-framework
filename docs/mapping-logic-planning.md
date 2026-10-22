@@ -545,3 +545,72 @@ One row per mapping across both tiers: the claim (§1.2 or §2.3), its authority
 ### 4.2 Per-arrow design *(next)*
 
 Tier 1 deterministic candidates per arrow, tier 2 model-assisted ranking, evidence and confidence policy, evaluation on a held-out set.
+
+## 5. Mapping Diagram
+
+The four design models of the Service Domain Architecture Design Model, side by side, each listing its entities from the catalogue (`metamodel/`). No connectors are drawn: the arrows between levels are the mappings themselves, which are defined in the registry and recorded per institution in mapping documents, not in this picture. Entity IDs are the catalogue `type` strings.
+
+```mermaid
+flowchart LR
+    subgraph A1["A1 Business Architecture — 10 entities"]
+      direction TB
+      a1_01["A1.BusinessCapability"]
+      a1_02["A1.ValueStream"]
+      a1_03["A1.ValueStreamStage"]
+      a1_04["A1.BusinessProcess"]
+      a1_05["A1.BusinessActivity"]
+      a1_06["A1.BusinessService"]
+      a1_07["A1.BusinessActor"]
+      a1_08["A1.BusinessRole"]
+      a1_09["A1.BusinessObject"]
+      a1_10["A1.BusinessRequirement"]
+    end
+    subgraph A2["A2 Service Domain Architecture — 15 entities"]
+      direction TB
+      a2_01["A2.BusinessArea"]
+      a2_02["A2.BusinessDomain"]
+      a2_03["A2.ServiceDomain"]
+      a2_04["A2.FunctionalPattern"]
+      a2_05["A2.AssetType"]
+      a2_06["A2.ControlRecord"]
+      a2_07["A2.ServiceGroup"]
+      a2_08["A2.ServiceOperation"]
+      a2_09["A2.BehaviorQualifier"]
+      a2_10["A2.BusinessScenario"]
+      a2_11["A2.BusinessObject"]
+      a2_12["A2.BusinessObjectAttribute"]
+      a2_13["A2.BOMModel (artefact)"]
+      a2_14["A2.Wireframe (artefact)"]
+      a2_15["A2.SemanticAPI (artefact)"]
+    end
+    subgraph A3["A3 Application Architecture — 8 entities"]
+      direction TB
+      a3_01["A3.ApplicationComponent"]
+      a3_02["A3.ApplicationService"]
+      a3_03["A3.ApplicationInterface"]
+      a3_04["A3.ApplicationFunction"]
+      a3_05["A3.APIOperation"]
+      a3_06["A3.DataEntity"]
+      a3_07["A3.Event"]
+      a3_08["A3.SolutionBuildingBlock"]
+    end
+    subgraph A4["A4 Technology Architecture — 11 entities"]
+      direction TB
+      a4_01["A4.InfrastructureComponent (abstract)"]
+      a4_02["A4.Deployment"]
+      a4_03["A4.DeploymentEnvironment"]
+      a4_04["A4.Node"]
+      a4_05["A4.Device"]
+      a4_06["A4.SystemSoftware"]
+      a4_07["A4.TechnologyService"]
+      a4_08["A4.TechnologyInterface"]
+      a4_09["A4.CommunicationNetwork"]
+      a4_10["A4.Path"]
+      a4_11["A4.Artifact"]
+    end
+    A1 ~~~ A2 ~~~ A3 ~~~ A4
+    classDef level fill:#f5f5f5,stroke:#9e9e9e,color:#212121
+    class A1,A2,A3,A4 level
+```
+
+Counts: A1 10 · A2 15 (12 entities + 3 artefacts) · A3 8 · A4 11 (10 concrete + 1 abstract) — 44 in total.
