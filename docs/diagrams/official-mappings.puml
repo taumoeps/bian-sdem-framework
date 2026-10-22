@@ -1,7 +1,13 @@
 @startuml official-mappings
 left to right direction
-skinparam rectangle { BackgroundColor White BorderColor #424242 }
-skinparam package { BackgroundColor #F5F5F5 BorderColor #9E9E9E }
+skinparam rectangle {
+  BackgroundColor White
+  BorderColor #424242
+}
+skinparam package {
+  BackgroundColor #F5F5F5
+  BorderColor #9E9E9E
+}
 skinparam ArrowColor #1565C0
 skinparam ArrowFontSize 10
 title Official mappings — 24 verified connectors (B = BIAN-internal, S = cross-level with BIAN guidance)
