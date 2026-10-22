@@ -172,10 +172,16 @@ def render_levels(metamodel=None, level_rels=None, examples_dir=None):
         out.append(f"  ' constraints from {src} ({len(rows_by_level[lvl])})")
         for s_, k, t_ in rows_by_level[lvl]:
             c, st = KIND_STYLE[k]; out.append(f"  {alias[s_]} -[#{c.lstrip('#')}{',' + st if st else ''}]-> {alias[t_]} : {k}")
+        ext = [(t, e['extends']) for t, e in mm.entities.items() if e['level'] == lvl and e.get('extends')]
+        if ext:
+            out.append(f"  ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) ({len(ext)})")
+            for t, parent in ext:
+                out.append(f"  {alias[t]} -[#424242]-|> {alias[parent]} : extends")
         out.append('}'); out.append('')
     out += ['legend right', '  Kinds (ArchiMate 3.2): composition solid blue, aggregation dashed blue, realization dashed green, assignment purple,',
             '  serving orange, flow dashed orange, triggering dotted orange, access dotted grey; association is permitted between any two entities of one level and is not drawn',
             '  Every arrow is a constraint row in metamodel/level-relationships.json; sdmm-graph check rejects any other within-level relationship.',
+            '  Hollow-headed black arrows: catalogue inheritance (extends). A4.InfrastructureComponent is abstract — never instantiated; it is the DEPLOYED_ON target type and every concrete A4 entity is-a InfrastructureComponent.',
             '  A2 from BIAN (public portal); A1, A3, A4 paraphrased from ArchiMate 3.2 / TOGAF 10 chapter structure (login-gated, unverified) for the concept each entity derives from.',
             'endlegend', '@enduml']
     return '\n'.join(out) + '\n'

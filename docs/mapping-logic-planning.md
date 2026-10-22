@@ -999,7 +999,7 @@ endlegend
 ```
 ### 5.5 Within-level structure
 
-The mappings are the cross-level arrows. Inside each architecture the entities are linked by ArchiMate relationship kinds recorded in each level export's `relationships` list: a graph of composition, aggregation, realization, assignment, access, serving, flow and triggering — not a single top-to-bottom chain. Every level's set comes from its reference architecture (README › *Reference architecture provenance*): A2 from BIAN's Service Landscape metamodel (17 rows, including the three artefact rows), A1 from ArchiMate 3.2 chapters 6–8 (48 rows), A3 from ArchiMate chapter 9 and TOGAF's solution building block (31 rows), A4 from ArchiMate chapter 10 plus the SDMM deployment extensions (35 rows). Association, ArchiMate's generic relationship, is permitted between any two entities of one level and is not drawn. `sdmm-graph check` rejects any other within-level relationship. ArchiMate and TOGAF are login-gated, so those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations. Generated into `metamodel/level-relationships.puml` by `python -m sdmm.diagram`.
+The mappings are the cross-level arrows. Inside each architecture the entities are linked by ArchiMate relationship kinds recorded in each level export's `relationships` list: a graph of composition, aggregation, realization, assignment, access, serving, flow and triggering — not a single top-to-bottom chain. Every level's set comes from its reference architecture (README › *Reference architecture provenance*): A2 from BIAN's Service Landscape metamodel (17 rows, including the three artefact rows), A1 from ArchiMate 3.2 chapters 6–8 (48 rows), A3 from ArchiMate chapter 9 and TOGAF's solution building block (31 rows), A4 from ArchiMate chapter 10 plus the SDMM deployment extensions (35 rows). Association, ArchiMate's generic relationship, is permitted between any two entities of one level and is not drawn. Catalogue inheritance (`extends`) is drawn as specialization: a value-stream stage is-a value stream, a business activity is-a business process, and every concrete A4 entity is-a `A4.InfrastructureComponent`, the abstract `DEPLOYED_ON` target that is never instantiated. `sdmm-graph check` rejects any other within-level relationship. ArchiMate and TOGAF are login-gated, so those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations. Generated into `metamodel/level-relationships.puml` by `python -m sdmm.diagram`.
 
 ```plantuml
 @startuml level-relationships
@@ -1075,6 +1075,9 @@ package "A1 Business Architecture" as A1 {
   a1_businessobject -[#424242]-> a1_businessobject : specialization
   a1_businessrequirement -[#1565C0]-> a1_businessrequirement : composition
   a1_businessrequirement -[#424242]-> a1_businessrequirement : specialization
+  ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) (2)
+  a1_valuestreamstage -[#424242]-|> a1_valuestream : extends
+  a1_businessactivity -[#424242]-|> a1_businessprocess : extends
 }
 
 package "A2 Service Domain Architecture" as A2 {
@@ -1204,12 +1207,24 @@ package "A4 Technology Architecture" as A4 {
   a4_deploymentenvironment -[#1565C0,dashed]-> a4_device : aggregation
   a4_deploymentenvironment -[#1565C0,dashed]-> a4_systemsoftware : aggregation
   a4_deployment -[#1565C0,dashed]-> a4_artifact : aggregation
+  ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) (10)
+  a4_deployment -[#424242]-|> a4_infrastructurecomponent : extends
+  a4_deploymentenvironment -[#424242]-|> a4_infrastructurecomponent : extends
+  a4_node -[#424242]-|> a4_infrastructurecomponent : extends
+  a4_device -[#424242]-|> a4_infrastructurecomponent : extends
+  a4_systemsoftware -[#424242]-|> a4_infrastructurecomponent : extends
+  a4_technologyservice -[#424242]-|> a4_infrastructurecomponent : extends
+  a4_technologyinterface -[#424242]-|> a4_infrastructurecomponent : extends
+  a4_communicationnetwork -[#424242]-|> a4_infrastructurecomponent : extends
+  a4_path -[#424242]-|> a4_infrastructurecomponent : extends
+  a4_artifact -[#424242]-|> a4_infrastructurecomponent : extends
 }
 
 legend right
   Kinds (ArchiMate 3.2): composition solid blue, aggregation dashed blue, realization dashed green, assignment purple,
   serving orange, flow dashed orange, triggering dotted orange, access dotted grey; association is permitted between any two entities of one level and is not drawn
   Every arrow is a constraint row in metamodel/level-relationships.json; sdmm-graph check rejects any other within-level relationship.
+  Hollow-headed black arrows: catalogue inheritance (extends). A4.InfrastructureComponent is abstract — never instantiated; it is the DEPLOYED_ON target type and every concrete A4 entity is-a InfrastructureComponent.
   A2 from BIAN (public portal); A1, A3, A4 paraphrased from ArchiMate 3.2 / TOGAF 10 chapter structure (login-gated, unverified) for the concept each entity derives from.
 endlegend
 @enduml
