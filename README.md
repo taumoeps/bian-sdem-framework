@@ -516,20 +516,20 @@ Green = built. Amber = data present, engine absent. Blue = interface defined, im
 
 Each release adds one component and maps to one box of the target-state architecture. Shipped releases are tagged on GitHub; the full table with acceptance tests is in [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
-| Release | Component | What it adds | Target-state box | Status |
-|---|---|---|---|---|
-| **v0.1** | Contract | Relationship registry, mapping schema, minimal validator, one example | *Mapping Metamodel & Rules* | shipped |
-| **v0.2** | Contract · Validator | Full registry metadata, JSON-Schema enforcement, supersession rules, `ReferenceResolver` interface, two examples, packaging, CI | *Mapping Metamodel & Rules* · *Validation & Approval* | shipped |
-| **v0.2.1** | Validator | Approval timestamps, canonical anchoring of BIAN-guided mappings, typed evidence, entity catalogue resolution, `sdmm-diff` for lifecycle transitions and immutability | *Validation & Approval* | shipped — `v0.2.1` |
-| **v0.3** | Query | `sdmm-trace`: downstream / upstream traversal of approved mappings with provenance on every hop | *Federated Knowledge Graph — Mapping Registry & Traceability* (traversal) | shipped — `v0.3.0` |
-| **v0.3.1** | Contract | SDADM level naming A1–A4 with legacy-prefix aliases; adjacency and BIAN-level rules driven by the registry | *Mapping Metamodel & Rules* | shipped — `v0.3.1` |
-| **v0.4.0** | Contract | Entity metamodel: 31-entity core catalogue with `extends` / `abstract`, is-a registry matching, `DEPLOYED_AS`, per-mapping verdicts — see [`docs/SDMM_v0.4_Entity_Metamodel_Specification.md`](docs/SDMM_v0.4_Entity_Metamodel_Specification.md) | *Mapping Metamodel & Rules* | next |
-| **v0.4.1** | Contract · Validator | Bank Architecture Profiles (JSON, static rules), `resolve_entity(ref)`, `example-bank` and `example-cloud` profiles | *Mapping Metamodel & Rules* · *Validation & Approval* | planned |
-| **v0.4.2** | Contract | BIAN verification register: `evidence_status` computed from recorded checks against a named release | *BIAN Reference Repository* (verification) | planned |
-| **v0.5** | Query | `sdmm-impact`: classify reachable instances as `no_impact` / `review_required` / `design_change_required` | *Bidirectional impact traversal & generated views* | planned |
-| **v0.6** | Reference | A concrete `ReferenceResolver` against an authorised BIAN release (no redistribution) | *BIAN Reference Repository* | planned |
-| **v0.7** | Engine | AI-assisted mapping proposals with evidence and explanations; output is always `proposed` | *SDMM Mapping Engine* | planned |
-| **v1.0** | — | Stable methodology specification, interoperability tests, versioned conformance requirements | — | planned |
+| Release | Component | What it adds | How it is used | Output | Target-state box | Status |
+|---|---|---|---|---|---|---|
+| **v0.1** | Contract | The first rulebook: which arrows are allowed and what a mapping record must contain | Architects write mapping documents to it | A mapping document that follows the rules | *Mapping Metamodel & Rules* | shipped |
+| **v0.2** | Contract · Validator | A complete rulebook, and a checker for documents written to it | Run the checker on an existing mapping document | *OK*, or a list of what is wrong | *Metamodel & Rules* · *Validation & Approval* | shipped |
+| **v0.2.1** | Validator | Stricter checks: who approved, when, on what BIAN release, with what evidence — and a guard against editing approved records | Run in CI on every change to a mapping document | *OK*, or the records that break governance | *Validation & Approval* | shipped — `v0.2.1` |
+| **v0.3** | Query | Follow the arrows in an existing mapping document from any starting point, in either direction | Ask "what does X depend on?" or "what depends on X?" | The chain of connected instances, each hop naming the mapping that justifies it | *Federated Knowledge Graph* (traversal) | shipped — `v0.3.0` |
+| **v0.3.1** | Contract | Generic level names (A1–A4) so the vocabulary belongs to no single institution | Existing documents keep working through aliases | Same documents, institution-neutral naming | *Mapping Metamodel & Rules* | shipped — `v0.3.1` |
+| **v0.4.0** | Contract | A full vocabulary of 31 entities, each traced to a public standard, with family relationships between them | Write mappings against a richer, standards-anchored vocabulary | Documents that name precise entities, still valid under the old rules | *Mapping Metamodel & Rules* | next |
+| **v0.4.1** | Contract · Validator | A way for an institution to declare how its own entity names map onto the SDMM vocabulary | An institution publishes a profile; the checker resolves its names through it | Institution documents validated without changing their own vocabulary | *Metamodel & Rules* · *Validation & Approval* | planned |
+| **v0.4.2** | Contract | A record of which BIAN definitions have been checked against which release, by whom | Someone with BIAN access records what they verified | Each BIAN-derived entity marked verified or pending | *BIAN Reference Repository* (verification) | planned |
+| **v0.5** | Query | Tell apart "connected to the change" from "must change because of it" | Ask "if X changes, what must be redesigned?" | Each connected instance classified: no impact, review, or redesign | *Impact traversal & generated views* | planned |
+| **v0.6** | Reference | A live lookup of BIAN identifiers in a licensed release | Attach the institution's BIAN access to the checker | Mappings rejected if they cite a BIAN id that does not exist | *BIAN Reference Repository* | planned |
+| **v0.7** | Engine | Suggested mappings, with evidence, for an architect to accept or reject | Run over the institution's models to draft candidate arrows | Proposed records only — never approved without a reviewer | *SDMM Mapping Engine* | planned |
+| **v1.0** | — | A stable, published specification others can conform to | Adopt it; test against it | A conformance profile | — | planned |
 
 Not on the roadmap: a persistent graph database, a UI, identity or workflow management, or any guarantee of BIAN conformance.
 
