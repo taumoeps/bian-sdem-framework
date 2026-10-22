@@ -173,7 +173,7 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 
 #### A1 → A2 — 14 candidate entity pairs
 
-| Source entity | Target entity | Official mapping coverage | Current SDMM rule | Mapping guidance / caveat  Verification (this review) |
+| Source entity | Target entity | Official mapping coverage | Current SDMM rule | Mapping guidance / caveat | Verification (this review) |
 |---|---|---|---|---|---|
 | `A1.BusinessCapability` | `A2.ServiceDomain` | **Official guidance only; no exact cross-standard entity pair** | `SUPPORTED_BY` | BIAN BCM alignment; v14 crosswalk not verified/published | **Verified as *intent only*** — [RN14] §3, [WQA26]: mapping unpublished |
 | `A1.ValueStream` | `A2.BusinessScenario` | **SDMM mapping only; no official equivalent** | `ALIGNED_TO` | Value Stream→scenario is SDMM-specific | n/a — SDMM definition, no external claim |
@@ -192,7 +192,7 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 
 #### A2 → A3 — 17 candidate entity pairs
 
-| Source entity | Target entity | Official mapping coverage | Current SDMM rule | Mapping guidance / caveat  Verification (this review) |
+| Source entity | Target entity | Official mapping coverage | Current SDMM rule | Mapping guidance / caveat | Verification (this review) |
 |---|---|---|---|---|---|
 | `A2.BusinessArea` | `A3.ApplicationComponent` | **No verified official cross-standard mapping** | Not implemented | Indirect only via A2.BusinessDomain and A2.ServiceDomain | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | `A2.BusinessDomain` | `A3.ApplicationComponent` | **No verified official cross-standard mapping** | Not implemented | Indirect only via A2.ServiceDomain | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
@@ -214,7 +214,7 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 
 #### A3 → A4 — 23 candidate entity pairs
 
-| Source entity | Target entity | Official mapping coverage | Current SDMM rule | Mapping guidance / caveat  Verification (this review) |
+| Source entity | Target entity | Official mapping coverage | Current SDMM rule | Mapping guidance / caveat | Verification (this review) |
 |---|---|---|---|---|---|
 | `A3.ApplicationComponent` | `A4.Deployment` | **SDMM mapping only; no official equivalent** | `DEPLOYED_AS` | SDMM-specific Deployment entity | n/a — SDMM definition, no external claim |
 | `A3.ApplicationComponent` | `A4.InfrastructureComponent` | **SDMM mapping only; no official equivalent** | `DEPLOYED_ON` | Abstract compatibility supertype only | n/a — SDMM definition, no external claim |
@@ -261,7 +261,7 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 
 **A1 — Business Architecture**
 
-| Entity                   | Reference architecture                  | Concept                         | Source             | Direction | Adjacent-level mapped entity/entities | Official mapping coverage | Mapping Guidance  Verification (this review) |
+| Entity                   | Reference architecture                  | Concept                         | Source             | Direction | Adjacent-level mapped entity/entities | Official mapping coverage | Mapping Guidance | Verification (this review) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `A1.BusinessCapability` | BIAN BCM; ArchiMate Strategy | Business Capability; Capability | [RN14] §3; [AM] ch. 7 | A1→A2 | A2.ServiceDomain | **Guidance only** | BIAN BCM supports capability/domain alignment as an objective; no verified published release-14 entity crosswalk. SDMM SUPPORTED_BY. | **Verified as *intent only*** — [RN14] §3, [WQA26] |
 | `A1.ValueStream` | ArchiMate Strategy | Value Stream | [AM] ch. 7; [RN14] §3 | A1→A2 | A2.BusinessScenario | **Not officially mapped** | SDMM ALIGNED_TO; ArchiMate defines Value Stream, but no official BIAN scenario pairing verified. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
@@ -276,7 +276,7 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 
 **A2 — Service Domain Architecture** — all BIAN reference, all `pending_release_validation` until verified against release 14.0
 
-| Entity                                          | Reference architecture                                              | Concept                          | Source                       | Direction | Adjacent-level mapped entity/entities | Official mapping coverage | Mapping Guidance  Verification (this review) |
+| Entity                                          | Reference architecture                                              | Concept                          | Source                       | Direction | Adjacent-level mapped entity/entities | Official mapping coverage | Mapping Guidance | Verification (this review) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `A2.BusinessArea` | BIAN Service Landscape | Business Area | [SL14] | A1↔A2; A2→A3 | A1.BusinessCapability; A3.ApplicationComponent (indirect) | **BIAN internal only** | BIAN hierarchy BusinessArea→BusinessDomain→ServiceDomain is defined; no direct official bank component mapping. | **Verified** — [SAPG] §3.1–3.2; [RN14] §1 |
 | `A2.BusinessDomain` | BIAN Service Landscape | Business Domain | [SL14] | A1↔A2; A2→A3 | A1.BusinessCapability; A3.ApplicationComponent (indirect) | **BIAN internal only** | BIAN BusinessDomain→ServiceDomain grouping; implementation through ServiceDomain, not domain-to-application identity. | **Verified** — [SAPG] §3.1–3.2; [RN14] §1 |
@@ -296,7 +296,7 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 
 **A3 — Application Architecture**
 
-| Entity                     | Reference architecture                                 | Concept                 | Source   | Direction | Adjacent-level mapped entity/entities | Official mapping coverage | Mapping Guidance  Verification (this review) |
+| Entity                     | Reference architecture                                 | Concept                 | Source   | Direction | Adjacent-level mapped entity/entities | Official mapping coverage | Mapping Guidance | Verification (this review) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `A3.ApplicationComponent` | ArchiMate Application | Application Component | [AM] ch. 9 | A2→A3→A4 | A2.ServiceDomain → A3.ApplicationComponent → A4.Deployment / A4.Node | **ArchiMate A3→A4 only** | BIAN→component pairing is enterprise-specific; ArchiMate permits cross-layer application/technology relations, but SDMM DEPLOYED_AS is an extension. | **Unverified against [AM] normative tables** (SSO-gated); general pattern corroborated by secondary sources |
 | `A3.ApplicationService` | ArchiMate Application | Application Service | [AM] ch. 9 | A2→A3→A4 | A2.ServiceOperation → A3.ApplicationService → A4.TechnologyService | **ArchiMate A3→A4 only** | BIAN service correspondence needs review; ArchiMate technology service can serve application elements subject to relationship constraints. | **Unverified against [AM] normative tables** (SSO-gated); general pattern corroborated by secondary sources |
@@ -309,7 +309,7 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 
 **A4 — Technology Architecture**
 
-| Entity                                    | Reference architecture                          | Concept               | Source              | Direction | Adjacent-level mapped entity/entities | Official mapping coverage | Mapping Guidance  Verification (this review) |
+| Entity                                    | Reference architecture                          | Concept               | Source              | Direction | Adjacent-level mapped entity/entities | Official mapping coverage | Mapping Guidance | Verification (this review) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `A4.InfrastructureComponent` *(abstract)* | SDMM compatibility supertype of every A4 entity | — | — | A3→A4 | A3.ApplicationComponent → A4.InfrastructureComponent | **Not officially mapped** | SDMM abstract compatibility type, not a named ArchiMate entity; legacy DEPLOYED_ON registry rule. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
 | `A4.Deployment` | SDMM extension of Artifact assigned to Node | — | [AM] ch. 10 (parents) | A3→A4 | A3.ApplicationComponent → A4.Deployment | **Not officially mapped** | SDMM DEPLOYED_AS; ArchiMate deployment can be modelled through Artifact/Node relationships, but Deployment is not a native ArchiMate type. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
