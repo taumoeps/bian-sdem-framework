@@ -197,3 +197,33 @@ Not relationships in an export: the catalogue's `extends` links, through which a
 | XA4-09 | A4.Path | A4.InfrastructureComponent | A4.Path is-a A4.InfrastructureComponent. | SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization | Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it. | high | sdmm_definition |
 | XA4-10 | A4.Artifact | A4.InfrastructureComponent | A4.Artifact is-a A4.InfrastructureComponent. | SDMM catalogue (metamodel/a*-*.json); ArchiMate specialization | Catalogue inheritance: an SDMM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the export's concrete instance through it. | high | sdmm_definition |
 
+## Verification status
+
+How far each row has been checked, and against what. `verified_against_archi` is as far as ArchiMate-derived rows can go without Open Group access; the two TOGAF rows have no public oracle.
+
+| Status | Rows | Meaning |
+|---|---|---|
+| verified_against_archi | 113 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
+| verified | 16 | checked against BIAN's public pages (A2) |
+| unverified_togaf | 2 | paraphrased from TOGAF; no public oracle |
+| sdmm_reading | 1 | SDMM's reading of a public BIAN page that states no explicit relationship |
+
+**Oracle.** Archi relationship matrix (open-source implementation of the ArchiMate 3.2 relationship tables): `github.com/archimatetool/archi` › `com.archimatetool.model/model/relationships.xml`, read at commit `9e6a014f9ef6a782a7dda604ef7b4d03d2c7819a` (file last changed `6d236081d9460f063076dbb6225f8645c5f5a7a5`, declares version 3.2), 2026-10-23. Nothing from the oracle is stored in this repository; each test-log entry records only the letters listed for the row's concept pair. verified_against_archi = the row's concept pair and kind are listed by the oracle; distinct from verified (specification text), which needs Open Group access. Calibration: all 7 low-confidence inferences were confirmed — the low band was over-cautious for derived dynamic relationships.
+
+**Inference calibration.** Inference confidence before the oracle test versus the oracle verdict:
+
+| Inference confidence | Rows | Oracle verdict |
+|---|---|---|
+| high | 66 | confirmed: 66 |
+| medium | 44 | confirmed: 42, not tested: 2 |
+| low | 5 | confirmed: 4, confirmed, alternative accepted: 1 |
+
+## Test history
+
+The test plan is `docs/relationships-testing.md`; its results sections and `metamodel/relationships-test-log.json` hold the per-row evidence.
+
+| Phase | What was tested | Result |
+|---|---|---|
+| 1 (2026-10-23) | provenance, grounding, consistency, enforcement probes, coverage, rule dependencies — all 131 rows and 12 inheritance links | 0 fail; 3 artefact rows not enforceable; 6 findings applied in v0.5.17 |
+| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | 112 confirmed, 1 confirmed via stated alternative, 0 contradicted, 2 not testable (TOGAF); applied in v0.5.20 |
+

@@ -54,6 +54,31 @@ def render(lr=None):
     for x in lr['inheritance']:
         out.append(f"| {x['id']} | {x['entity']} | {x['extends']} | {x['description']} | {x['reference_source']} | {x['reasoning']} | {x['confidence']} | {x['verification']} |")
     out.append('')
+    # ---- verification status, from the record and the test log
+    from collections import Counter as _C
+    vc = _C(c['verification'] for c in rows)
+    MEANING = {'verified': 'checked against BIAN\'s public pages (A2)', 'verified_against_archi': 'concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below',
+               'sdmm_reading': 'SDMM\'s reading of a public BIAN page that states no explicit relationship', 'sdmm_definition': 'follows from an SDMM extension entity\'s definition', 'unverified_archimate': 'paraphrased from ArchiMate chapter structure; not yet checked', 'unverified_togaf': 'paraphrased from TOGAF; no public oracle'}
+    out += ['## Verification status', '', 'How far each row has been checked, and against what. `verified_against_archi` is as far as ArchiMate-derived rows can go without Open Group access; the two TOGAF rows have no public oracle.', '',
+            '| Status | Rows | Meaning |', '|---|---|---|']
+    for k, n in sorted(vc.items(), key=lambda x: -x[1]):
+        out.append(f"| {k} | {n} | {MEANING.get(k, '')} |")
+    o = lr.get('verification_oracle')
+    if o:
+        out += ['', f"**Oracle.** {o['name']}: `{o['repo']}` › `{o['path']}`, read at commit `{o['commit_read']}` (file last changed `{o['file_last_changed']}`, declares version {o['declared_version']}), {o['date']}. Nothing from the oracle is stored in this repository; each test-log entry records only the letters listed for the row's concept pair. {o.get('note', '')}"]
+    ic = _C(c['inference']['confidence'] for c in rows if c.get('inference'))
+    oc = _C(c['inference'].get('oracle_verdict', 'not tested') for c in rows if c.get('inference'))
+    out += ['', '**Inference calibration.** Inference confidence before the oracle test versus the oracle verdict:', '', '| Inference confidence | Rows | Oracle verdict |', '|---|---|---|']
+    for conf in ('high', 'medium', 'low'):
+        sub = [c for c in rows if c.get('inference') and c['inference']['confidence'] == conf]
+        verdicts = _C(c['inference'].get('oracle_verdict', 'not tested') for c in sub)
+        out.append(f"| {conf} | {len(sub)} | " + ', '.join(f"{v}: {n}" for v, n in sorted(verdicts.items(), key=lambda x: -x[1])) + ' |')
+    log = MM_DIR / 'relationships-test-log.json'
+    out += ['', '## Test history', '', 'The test plan is `docs/relationships-testing.md`; its results sections and `metamodel/relationships-test-log.json` hold the per-row evidence.', '',
+            '| Phase | What was tested | Result |', '|---|---|---|',
+            '| 1 (2026-10-23) | provenance, grounding, consistency, enforcement probes, coverage, rule dependencies — all 131 rows and 12 inheritance links | 0 fail; 3 artefact rows not enforceable; 6 findings applied in v0.5.17 |',
+            f"| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | {oc.get('confirmed', 0)} confirmed, {oc.get('confirmed, alternative accepted', 0)} confirmed via stated alternative, 0 contradicted, {sum(1 for c in rows if c.get('inference') and 'TOGAF' in c['inference']['pattern'])} not testable (TOGAF); applied in v0.5.20 |" + ('' if log.exists() else ' (log file absent)'),
+            '']
     return '\n'.join(out) + '\n'
 
 
