@@ -64,7 +64,7 @@
     },
     {
       "source": "INF-CLOUD-K8S-PROD",
-      "kind": "assignment",
+      "kind": "association",
       "target": "NET-PRIVATE",
       "name": "runs on"
     },

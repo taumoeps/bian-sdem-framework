@@ -282,13 +282,13 @@
     },
     {
       "source": "APP-PAY-HUB",
-      "kind": "composition",
+      "kind": "realization",
       "target": "SVC-PAY-INIT"
     },
     {
-      "source": "SVC-PAY-INIT",
-      "kind": "composition",
-      "target": "IFC-PAY-API"
+      "source": "IFC-PAY-API",
+      "kind": "assignment",
+      "target": "SVC-PAY-INIT"
     },
     {
       "source": "IFC-PAY-API",

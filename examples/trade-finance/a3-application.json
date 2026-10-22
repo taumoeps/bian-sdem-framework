@@ -370,23 +370,23 @@
     },
     {
       "source": "APP-LC",
-      "kind": "composition",
+      "kind": "realization",
       "target": "SVC-LC"
     },
     {
       "source": "APP-DOC",
-      "kind": "composition",
+      "kind": "realization",
       "target": "SVC-DOC"
     },
     {
-      "source": "SVC-LC",
-      "kind": "composition",
-      "target": "IFC-LC"
+      "source": "IFC-LC",
+      "kind": "assignment",
+      "target": "SVC-LC"
     },
     {
-      "source": "SVC-DOC",
-      "kind": "composition",
-      "target": "IFC-DOC"
+      "source": "IFC-DOC",
+      "kind": "assignment",
+      "target": "SVC-DOC"
     },
     {
       "source": "IFC-LC",
@@ -420,17 +420,17 @@
     },
     {
       "source": "APP-LC",
-      "kind": "composition",
+      "kind": "assignment",
       "target": "FN-LC-CAPTURE"
     },
     {
       "source": "APP-LC",
-      "kind": "composition",
+      "kind": "assignment",
       "target": "FN-LC-ISSUE"
     },
     {
       "source": "APP-DOC",
-      "kind": "composition",
+      "kind": "assignment",
       "target": "FN-DOC-CHECK"
     },
     {

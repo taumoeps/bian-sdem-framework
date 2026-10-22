@@ -80,17 +80,17 @@
     },
     {
       "source": "INF-MF-LPAR-PROD",
-      "kind": "assignment",
+      "kind": "association",
       "target": "NET-CORE"
     },
     {
       "source": "INF-MF-LPAR-PROD",
-      "kind": "composition",
+      "kind": "assignment",
       "target": "INF-DB2-PROD"
     },
     {
       "source": "INF-MF-LPAR-PROD",
-      "kind": "composition",
+      "kind": "assignment",
       "target": "INF-MQ-PROD"
     }
   ]

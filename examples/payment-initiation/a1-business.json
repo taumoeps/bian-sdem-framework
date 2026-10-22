@@ -219,9 +219,9 @@
       "target": "VSS-P4"
     },
     {
-      "source": "VS-MAKE-PAYMENT",
-      "kind": "realization",
-      "target": "CAP-PAY-010"
+      "source": "CAP-PAY-010",
+      "kind": "serving",
+      "target": "VS-MAKE-PAYMENT"
     },
     {
       "source": "PRC-PAY-01",

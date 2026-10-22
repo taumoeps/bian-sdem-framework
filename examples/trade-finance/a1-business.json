@@ -287,9 +287,9 @@
       "target": "VSS-T3"
     },
     {
-      "source": "VS-LC",
-      "kind": "realization",
-      "target": "CAP-TF"
+      "source": "CAP-TF",
+      "kind": "serving",
+      "target": "VS-LC"
     },
     {
       "source": "PRC-LC-APPLY",

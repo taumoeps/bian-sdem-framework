@@ -316,3 +316,21 @@ class TradeFinanceCoverageTests(unittest.TestCase):
         cand = {m['relationship'] for m in json.loads((self.P / 'candidates.json').read_text())['mappings']}
         reg = {re.match(r'\[(S\d+)\]', m['rationale']).group(1) for m in json.loads((self.P / 'mappings.json').read_text())['mappings']}
         self.assertEqual(untested - (cand | reg), set())
+
+
+class WithinLevelConstraintTests(unittest.TestCase):
+    def test_every_level_has_a_constraint_set(self):
+        from sdmm.metamodel import Metamodel
+        mm = Metamodel.load()
+        levels = {c['level'] for c in mm.relationships['constraints']}
+        self.assertEqual(levels, {'A1', 'A2', 'A3', 'A4'})
+
+    def test_archimate_kind_is_enforced_and_association_is_generic(self):
+        from sdmm.metamodel import Metamodel
+        mm = Metamodel.load()
+        self.assertIsNone(mm.relationship_issue('A3', 'A3.ApplicationComponent', 'assignment', 'A3.ApplicationFunction'))
+        self.assertIsNotNone(mm.relationship_issue('A3', 'A3.ApplicationComponent', 'composition', 'A3.ApplicationFunction'))
+        self.assertIsNone(mm.relationship_issue('A3', 'A3.ApplicationComponent', 'association', 'A3.Event'))
+        self.assertIsNone(mm.relationship_issue('A1', 'A1.BusinessCapability', 'serving', 'A1.ValueStream'))
+        self.assertIsNotNone(mm.relationship_issue('A1', 'A1.ValueStream', 'realization', 'A1.BusinessCapability'))
+        self.assertIsNone(mm.relationship_issue('A4', 'A4.Node', 'assignment', 'A4.Artifact'))

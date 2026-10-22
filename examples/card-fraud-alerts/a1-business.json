@@ -93,10 +93,9 @@
       "target": "CAP-310"
     },
     {
-      "source": "VS-CARD-USE",
-      "kind": "realization",
-      "target": "CAP-310",
-      "name": "value stream realised by capability (institution convention)"
+      "source": "CAP-310",
+      "kind": "serving",
+      "target": "VS-CARD-USE"
     },
     {
       "source": "PRC-310-01",

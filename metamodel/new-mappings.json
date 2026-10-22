@@ -499,7 +499,7 @@
       "source_reference": "[SAPG] §3.4 p. 52 (functional partition",
       "rule_decision": "registry_rule",
       "fill_step": 3,
-      "data_needed": "approved or step-2 IMPLEMENTED_BY instances plus A3 composition (step 3; confidence capped at the weakest input's band); fallback step 4: A2.ServiceDomain.attributes.asset_type's name in the component's API paths / data entity names; description comparison alone is step 5",
+      "data_needed": "approved or step-2 IMPLEMENTED_BY instances plus A3 structure (component composes interface; interface composes API operations) (step 3; confidence capped at the weakest input's band); fallback step 4: A2.ServiceDomain.attributes.asset_type's name in the component's API paths / data entity names; description comparison alone is step 5",
       "confidence": "high",
       "reasoning": "Registry rule REALIZED_BY, verified BIAN method (SAPG §3.4 functional partition; §4.3.1 legacy wrapping). Minimal-inference fill: an application that implements a domain's operations (S24) realises the domain; where no API mapping exists, functional-partition comparison of descriptions (step 4). Confidence cap: any one implemented operation suffices for the derivation, so the cap is the strongest step-2 input (M1 finding 3). A recorded systematic interface deviation on the inputs does not lower the derivation (H1 finding 4). Fallback A closes over the information perspective (a component accessing an entity MAPPED_TO the domain's object); fallback B uses asset aliases in paths; no description-only fallback (H2 findings 2, 3)."
     },
@@ -574,7 +574,7 @@
       "source_reference": "[SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review",
       "rule_decision": "derived_path",
       "fill_step": 3,
-      "data_needed": "S24 instances; A3 interface composition",
+      "data_needed": "S24 instances; A3 structure: interface composes API operations, interface assigned to service (ArchiMate ch. 9)",
       "confidence": "medium",
       "reasoning": "Service group→application service follows from the group's operations being implemented by APIs exposed through one application service/interface. Derived from S24 plus A3 composition; not stored."
     },
@@ -589,7 +589,7 @@
       "source_reference": "[SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review",
       "rule_decision": "derived_path",
       "fill_step": 3,
-      "data_needed": "S24 instances; A3 interface composition",
+      "data_needed": "S24 instances; A3 structure: interface composes API operations, interface assigned to service (ArchiMate ch. 9)",
       "confidence": "medium",
       "reasoning": "As S22 for interfaces: the interface that exposes a group's operations' APIs."
     },
@@ -619,7 +619,7 @@
       "source_reference": "[SAPG] §3.5 p. 52 (operations = program interfaces of the application boundary",
       "rule_decision": "candidate_rule",
       "fill_step": 3,
-      "data_needed": "S24 instances; A3 composition (which service exposes which API operations)",
+      "data_needed": "S24 instances; A3 structure: which interface composes the API operation and which service that interface is assigned to (ArchiMate ch. 9)",
       "confidence": "high",
       "reasoning": "Verified BIAN statement (SAPG §3.5 p.52): a domain's operations make up the program interfaces at the application boundary. Operation→application service is the grouping of S24 results by the service that exposes them. Candidate rule; derivable."
     },

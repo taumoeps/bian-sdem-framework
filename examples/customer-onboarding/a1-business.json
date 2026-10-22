@@ -102,9 +102,9 @@
       "target": "VSS-003"
     },
     {
-      "source": "VS-001",
-      "kind": "realization",
-      "target": "CAP-001"
+      "source": "CAP-001",
+      "kind": "serving",
+      "target": "VS-001"
     },
     {
       "source": "PRC-001",

@@ -210,9 +210,9 @@
       "target": "VSS-L4"
     },
     {
-      "source": "VS-GET-LOAN",
-      "kind": "realization",
-      "target": "CAP-LEND"
+      "source": "CAP-LEND",
+      "kind": "serving",
+      "target": "VS-GET-LOAN"
     },
     {
       "source": "PRC-APPLY",

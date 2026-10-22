@@ -146,13 +146,13 @@
     },
     {
       "source": "INF-K8S-PAY-PROD",
-      "kind": "assignment",
+      "kind": "association",
       "target": "NET-PAY-PRIVATE"
     },
     {
-      "source": "ART-PAYHUB-IMG",
+      "source": "INF-K8S-PAY-PROD",
       "kind": "assignment",
-      "target": "INF-K8S-PAY-PROD"
+      "target": "ART-PAYHUB-IMG"
     }
   ]
 }

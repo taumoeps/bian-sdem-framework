@@ -1,6 +1,6 @@
 {
   "metamodel_version": "0.4.0",
-  "note": "Within-level relationships are held by each level model, never by SDMM mapping documents. This catalogue defines the kinds a conforming level model may use; the full ArchiMate relationship table is not reproduced here. 0.5.14: artefact rows added (Wireframe → ServiceDomain B14, SemanticAPI → ServiceDomain B15, BOMModel → BusinessObject) so artefacts can be carried in an A2 export as documents attached to their domain or objects; artefacts remain non-endpoints for cross-level mappings.",
+  "note": "Within-level relationships are held by each level model, never by SDMM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects).",
   "kinds": [
     {
       "kind": "composition",
@@ -172,7 +172,805 @@
       "kind": "aggregation",
       "target_type": "A2.BusinessObject",
       "basis": "[SL14] BOM Overview — the versioned Business Object Model artefact aggregates the business objects (content of B08's source)"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessCapability",
+      "kind": "composition",
+      "target_type": "A1.BusinessCapability",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — capability structure"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessCapability",
+      "kind": "aggregation",
+      "target_type": "A1.BusinessCapability",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — capability structure"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessCapability",
+      "kind": "serving",
+      "target_type": "A1.ValueStream",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — a capability serves a value stream"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessCapability",
+      "kind": "serving",
+      "target_type": "A1.ValueStreamStage",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — a capability serves a value stream"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.ValueStream",
+      "kind": "composition",
+      "target_type": "A1.ValueStreamStage",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — value stream composed of stages (ValueStreamStage is the SDMM extension)"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.ValueStreamStage",
+      "kind": "triggering",
+      "target_type": "A1.ValueStreamStage",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — stage sequence"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.ValueStreamStage",
+      "kind": "flow",
+      "target_type": "A1.ValueStreamStage",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — stage sequence"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessProcess",
+      "kind": "realization",
+      "target_type": "A1.BusinessCapability",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a capability"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessProcess",
+      "kind": "realization",
+      "target_type": "A1.ValueStream",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessProcess",
+      "kind": "realization",
+      "target_type": "A1.ValueStreamStage",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessProcess",
+      "kind": "realization",
+      "target_type": "A1.BusinessService",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour realises a business service"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessProcess",
+      "kind": "access",
+      "target_type": "A1.BusinessObject",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour accesses a business object"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessProcess",
+      "kind": "realization",
+      "target_type": "A1.BusinessRequirement",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessProcess",
+      "kind": "triggering",
+      "target_type": "A1.BusinessProcess",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessProcess",
+      "kind": "flow",
+      "target_type": "A1.BusinessProcess",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActivity",
+      "kind": "realization",
+      "target_type": "A1.BusinessCapability",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a capability"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActivity",
+      "kind": "realization",
+      "target_type": "A1.ValueStream",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActivity",
+      "kind": "realization",
+      "target_type": "A1.ValueStreamStage",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActivity",
+      "kind": "realization",
+      "target_type": "A1.BusinessService",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour realises a business service"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActivity",
+      "kind": "access",
+      "target_type": "A1.BusinessObject",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour accesses a business object"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActivity",
+      "kind": "realization",
+      "target_type": "A1.BusinessRequirement",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActivity",
+      "kind": "triggering",
+      "target_type": "A1.BusinessActivity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActivity",
+      "kind": "flow",
+      "target_type": "A1.BusinessActivity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — behaviour sequence"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessProcess",
+      "kind": "composition",
+      "target_type": "A1.BusinessActivity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — process composed of steps (BusinessActivity is the SDMM extension)"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessProcess",
+      "kind": "composition",
+      "target_type": "A1.BusinessProcess",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — process decomposition"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActivity",
+      "kind": "composition",
+      "target_type": "A1.BusinessActivity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — activity decomposition"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessService",
+      "kind": "serving",
+      "target_type": "A1.BusinessProcess",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessService",
+      "kind": "serving",
+      "target_type": "A1.BusinessActivity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessService",
+      "kind": "serving",
+      "target_type": "A1.BusinessRole",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessService",
+      "kind": "serving",
+      "target_type": "A1.BusinessActor",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessService",
+      "kind": "composition",
+      "target_type": "A1.BusinessService",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — service decomposition"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessService",
+      "kind": "access",
+      "target_type": "A1.BusinessObject",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — a service accesses a business object"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessService",
+      "kind": "realization",
+      "target_type": "A1.BusinessRequirement",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessCapability",
+      "kind": "realization",
+      "target_type": "A1.BusinessRequirement",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — a core element realises a requirement"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActor",
+      "kind": "assignment",
+      "target_type": "A1.BusinessRole",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — an actor is assigned to a role"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessRole",
+      "kind": "assignment",
+      "target_type": "A1.BusinessProcess",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessRole",
+      "kind": "assignment",
+      "target_type": "A1.BusinessActivity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActor",
+      "kind": "assignment",
+      "target_type": "A1.BusinessProcess",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActor",
+      "kind": "assignment",
+      "target_type": "A1.BusinessActivity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure is assigned to behaviour"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActor",
+      "kind": "composition",
+      "target_type": "A1.BusinessActor",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActor",
+      "kind": "aggregation",
+      "target_type": "A1.BusinessActor",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessRole",
+      "kind": "composition",
+      "target_type": "A1.BusinessRole",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessRole",
+      "kind": "aggregation",
+      "target_type": "A1.BusinessRole",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — active structure decomposition"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessObject",
+      "kind": "composition",
+      "target_type": "A1.BusinessObject",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — business object structure"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessObject",
+      "kind": "aggregation",
+      "target_type": "A1.BusinessObject",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — business object structure"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessObject",
+      "kind": "specialization",
+      "target_type": "A1.BusinessObject",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 8 Business — business object structure"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessRequirement",
+      "kind": "composition",
+      "target_type": "A1.BusinessRequirement",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — requirement decomposition"
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessRequirement",
+      "kind": "specialization",
+      "target_type": "A1.BusinessRequirement",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 6 Motivation — requirement decomposition"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationComponent",
+      "kind": "composition",
+      "target_type": "A3.ApplicationComponent",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component decomposition"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationComponent",
+      "kind": "aggregation",
+      "target_type": "A3.ApplicationComponent",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component decomposition"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationComponent",
+      "kind": "composition",
+      "target_type": "A3.ApplicationInterface",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a component is composed of its interfaces"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationComponent",
+      "kind": "assignment",
+      "target_type": "A3.ApplicationFunction",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a component is assigned to the functions it performs"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationFunction",
+      "kind": "realization",
+      "target_type": "A3.ApplicationService",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a function realises a service"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationComponent",
+      "kind": "realization",
+      "target_type": "A3.ApplicationService",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — derived: component realises a service through its functions"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationInterface",
+      "kind": "assignment",
+      "target_type": "A3.ApplicationService",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an interface is assigned to (exposes) a service"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationService",
+      "kind": "serving",
+      "target_type": "A3.ApplicationComponent",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a service serves a component or function"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationService",
+      "kind": "serving",
+      "target_type": "A3.ApplicationFunction",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — a service serves a component or function"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationComponent",
+      "kind": "flow",
+      "target_type": "A3.ApplicationComponent",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component interaction (serving derived)"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationComponent",
+      "kind": "serving",
+      "target_type": "A3.ApplicationComponent",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component interaction (serving derived)"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationComponent",
+      "kind": "triggering",
+      "target_type": "A3.ApplicationComponent",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — component interaction (serving derived)"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationFunction",
+      "kind": "composition",
+      "target_type": "A3.ApplicationFunction",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — function decomposition / sequence"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationFunction",
+      "kind": "triggering",
+      "target_type": "A3.ApplicationFunction",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — function decomposition / sequence"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationFunction",
+      "kind": "flow",
+      "target_type": "A3.ApplicationFunction",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — function decomposition / sequence"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationComponent",
+      "kind": "access",
+      "target_type": "A3.DataEntity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationFunction",
+      "kind": "access",
+      "target_type": "A3.DataEntity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationService",
+      "kind": "access",
+      "target_type": "A3.DataEntity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.DataEntity",
+      "kind": "composition",
+      "target_type": "A3.DataEntity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — data object structure"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.DataEntity",
+      "kind": "aggregation",
+      "target_type": "A3.DataEntity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — data object structure"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.DataEntity",
+      "kind": "specialization",
+      "target_type": "A3.DataEntity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — data object structure"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationComponent",
+      "kind": "triggering",
+      "target_type": "A3.Event",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour triggers an application event"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationFunction",
+      "kind": "triggering",
+      "target_type": "A3.Event",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — behaviour triggers an application event"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.Event",
+      "kind": "triggering",
+      "target_type": "A3.ApplicationFunction",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an event triggers behaviour"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.Event",
+      "kind": "triggering",
+      "target_type": "A3.ApplicationComponent",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an event triggers behaviour"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.Event",
+      "kind": "access",
+      "target_type": "A3.DataEntity",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 9 Application — an event accesses a data object"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationInterface",
+      "kind": "composition",
+      "target_type": "A3.APIOperation",
+      "basis": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI) — an interface is composed of its API operations"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.ApplicationComponent",
+      "kind": "composition",
+      "target_type": "A3.APIOperation",
+      "basis": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI) — a component with no modelled interface composes its API operations"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.APIOperation",
+      "kind": "access",
+      "target_type": "A3.DataEntity",
+      "basis": "SDMM extension (A3.APIOperation aligned to BIAN Semantic API / OpenAPI) — an operation accesses a data object"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.SolutionBuildingBlock",
+      "kind": "aggregation",
+      "target_type": "A3.ApplicationComponent",
+      "basis": "[TOGAF] 10th ed. Architecture Content — login-gated, unverified — a solution building block aggregates components"
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.SolutionBuildingBlock",
+      "kind": "composition",
+      "target_type": "A3.SolutionBuildingBlock",
+      "basis": "[TOGAF] 10th ed. Architecture Content — login-gated, unverified — building-block decomposition"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Node",
+      "kind": "composition",
+      "target_type": "A4.Node",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node decomposition"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Node",
+      "kind": "aggregation",
+      "target_type": "A4.Node",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node decomposition"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Node",
+      "kind": "aggregation",
+      "target_type": "A4.Device",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node aggregates devices"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Node",
+      "kind": "assignment",
+      "target_type": "A4.SystemSoftware",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — system software is assigned to a node or device"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Device",
+      "kind": "assignment",
+      "target_type": "A4.SystemSoftware",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — system software is assigned to a node or device"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.SystemSoftware",
+      "kind": "assignment",
+      "target_type": "A4.SystemSoftware",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — system software assigned to system software"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Node",
+      "kind": "assignment",
+      "target_type": "A4.Artifact",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Node",
+      "kind": "realization",
+      "target_type": "A4.TechnologyService",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions)"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Node",
+      "kind": "composition",
+      "target_type": "A4.TechnologyInterface",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node is composed of its interfaces"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.TechnologyService",
+      "kind": "serving",
+      "target_type": "A4.Node",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Node",
+      "kind": "assignment",
+      "target_type": "A4.Deployment",
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment is deployed on the platform"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Device",
+      "kind": "assignment",
+      "target_type": "A4.Artifact",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Device",
+      "kind": "realization",
+      "target_type": "A4.TechnologyService",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions)"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Device",
+      "kind": "composition",
+      "target_type": "A4.TechnologyInterface",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node is composed of its interfaces"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.TechnologyService",
+      "kind": "serving",
+      "target_type": "A4.Device",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Device",
+      "kind": "assignment",
+      "target_type": "A4.Deployment",
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment is deployed on the platform"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.SystemSoftware",
+      "kind": "assignment",
+      "target_type": "A4.Artifact",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.SystemSoftware",
+      "kind": "realization",
+      "target_type": "A4.TechnologyService",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions)"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.SystemSoftware",
+      "kind": "composition",
+      "target_type": "A4.TechnologyInterface",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a node is composed of its interfaces"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.TechnologyService",
+      "kind": "serving",
+      "target_type": "A4.SystemSoftware",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.SystemSoftware",
+      "kind": "assignment",
+      "target_type": "A4.Deployment",
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment is deployed on the platform"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.TechnologyInterface",
+      "kind": "assignment",
+      "target_type": "A4.TechnologyService",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — an interface is assigned to (exposes) a technology service"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.TechnologyService",
+      "kind": "composition",
+      "target_type": "A4.TechnologyService",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — service decomposition"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Node",
+      "kind": "flow",
+      "target_type": "A4.Node",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node interaction"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Node",
+      "kind": "triggering",
+      "target_type": "A4.Node",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — node interaction"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.CommunicationNetwork",
+      "kind": "realization",
+      "target_type": "A4.Path",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a path is realised by a communication network"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.CommunicationNetwork",
+      "kind": "composition",
+      "target_type": "A4.CommunicationNetwork",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — network decomposition"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Artifact",
+      "kind": "composition",
+      "target_type": "A4.Artifact",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — artifact structure"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Artifact",
+      "kind": "aggregation",
+      "target_type": "A4.Artifact",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — artifact structure"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Device",
+      "kind": "aggregation",
+      "target_type": "A4.Device",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — device decomposition"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.DeploymentEnvironment",
+      "kind": "aggregation",
+      "target_type": "A4.Deployment",
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.DeploymentEnvironment",
+      "kind": "aggregation",
+      "target_type": "A4.Node",
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.DeploymentEnvironment",
+      "kind": "aggregation",
+      "target_type": "A4.Device",
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.DeploymentEnvironment",
+      "kind": "aggregation",
+      "target_type": "A4.SystemSoftware",
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — an environment groups deployments and the platform they run on"
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Deployment",
+      "kind": "aggregation",
+      "target_type": "A4.Artifact",
+      "basis": "SDMM extension (A4.Deployment = Artifact assigned to Node; A4.DeploymentEnvironment = Node grouping) — a deployment carries the artifacts deployed"
     }
   ],
-  "policy": "A2 relationships must match a constraint row (BIAN structure is fixed). A1, A3 and A4 relationships must use a catalogued kind between two entities of the same level; pairwise ArchiMate validity is the level model's responsibility."
+  "policy": "Every within-level relationship must match a constraint row for its level, or be an association (ArchiMate's generic relationship, permitted between any two entities of one level). A2 rows come from BIAN's Service Landscape metamodel; A1, A3 and A4 rows are derived from ArchiMate 3.2 (ch. 6–10) and TOGAF 10 for the concepts each SDMM entity derives from (see README › Reference architecture provenance). ArchiMate and TOGAF are login-gated: those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations."
 }

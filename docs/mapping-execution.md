@@ -95,11 +95,11 @@ Closure rules. Cite the `mapping_id` of every arrow used.
 | Connection | Rule |
 |---|---|
 | S17 `REALIZED_BY` | if component C exposes API operations that `IMPLEMENTED_BY` (approved, or your step-2 proposals — say which) operations of domain D, then D `REALIZED_BY` C. **Fallback A (step 3, same band):** the component accesses a data entity that is `MAPPED_TO` (approved, or your step-4 proposal — say which) the domain's control record's business object — realisation closed over the information perspective (H2 finding 3). **Fallback B (step 4, one band lower):** a token of the domain's asset-type name **or its aliases** (`A2.ServiceDomain.attributes.asset_type` → `A2.AssetType.name`, `.attributes.aliases`) appears in the component's API paths or data entity names — a structural match, scored as matches / APIs+entities, threshold ≥ 1 match. **No description-only fallback**: step 5 is reserved for the A1 side (H2 finding 2) |
-| S25 | operation O `IMPLEMENTED_BY` API a; a exposed by application service S (A3 composition) ⇒ O → S |
+| S25 | operation O `IMPLEMENTED_BY` API a; a belongs to an interface assigned to application service S (A3: interface composes operations; interface `assignment` service, ArchiMate ch. 9) ⇒ O → S |
 | S22 / S23 | the service/interface exposing the APIs of a group's operations |
 | S04 `USES_DOMAIN` | process P (or one of its activities) has `attributes.invokes` naming operation O, or an S06 proposal; O in domain D (B09/B10) ⇒ P `USES_DOMAIN` D. A process exported without activities may be matched directly to operations by the S06 verb+noun rule (step 4) |
 | S01 `SUPPORTED_BY` (candidate) | every process of capability K (A1 relationship) `USES_DOMAIN` D ⇒ candidate K `SUPPORTED_BY` D, confidence medium; if only some processes, low. **Report-only:** a parent capability whose composed child is `SUPPORTED_BY` D is listed under *New connection candidates*, never proposed — whether a parent's scope is covered by a child's domain is a judgement, not a derivation (M0 run 2) |
-| S02 `ALIGNED_TO` (optional step 3) | value stream V realises capability K (A1 `realization`); a process of K invokes operation O; O in scenario S's `operation_sequence` ⇒ candidate V `ALIGNED_TO` S, low. Step 4 (stages vs sequence) remains the primary route |
+| S02 `ALIGNED_TO` (optional step 3) | capability K serves value stream V (A1 `serving`, ArchiMate ch. 7); a process of K invokes operation O; O in scenario S's `operation_sequence` ⇒ candidate V `ALIGNED_TO` S, low. Step 4 (stages vs sequence) remains the primary route |
 | S07, S15, S16, S40, S42, S46, S47, S48, S52–S54 | derived paths — report as **queries** (the chain of arrows), not as proposal records |
 
 ### Step 4 — Structural matching

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.15 — within-level structure from each level's reference architecture
+
+- `level-relationships.json`: A1 (48), A3 (31), A4 (35) constraint rows derived from ArchiMate 3.2 ch. 6–10 and TOGAF, beside the 17 BIAN rows for A2; association permitted everywhere.
+- `sdmm-graph check` enforces the constraints at every level (previously A2 only).
+- Example exports brought to ArchiMate's kinds (29 relationships: capability serves value stream; component assigned to function and realising service; interface assigned to service; artifacts assigned from the node; networks realise paths; interfaces assigned to technology services).
+- Diagrams draw the constraint sets, not observed patterns.
+
 ## 0.5.14 — diagrams and artefact constraints
 
 - `sdmm-diagram` renders four projections (official, new, levels, merged) with `--check` for CI; unmapped entities greyed with the reason.

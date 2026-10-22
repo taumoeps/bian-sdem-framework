@@ -62,11 +62,13 @@ class Metamodel:
                 return f'entity {t!r} is not in the metamodel'
             if self.level(t) != level:
                 return f'entity {t!r} is not an {level} entity'
-        if level == 'A2':
-            ok = any(c['level'] == 'A2' and self.is_a(source_type, c['source_type']) and c['kind'] == kind and self.is_a(target_type, c['target_type'])
-                     for c in self.relationships['constraints'])
-            if not ok:
-                return f'A2 relationship {source_type} -{kind}-> {target_type} does not match the BIAN structure constraints'
+        if kind == 'association':
+            return None  # ArchiMate's generic relationship: permitted between any two entities of one level
+        ok = any(c['level'] == level and self.is_a(source_type, c['source_type']) and c['kind'] == kind and self.is_a(target_type, c['target_type'])
+                 for c in self.relationships['constraints'])
+        if not ok:
+            basis = 'BIAN structure' if level == 'A2' else 'ArchiMate 3.2 / TOGAF'
+            return f'{level} relationship {source_type} -{kind}-> {target_type} does not match the {basis} constraints (metamodel/level-relationships.json)'
         return None
 
     # ---- self-check

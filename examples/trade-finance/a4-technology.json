@@ -221,48 +221,48 @@
     },
     {
       "source": "NODE-TF-PROD",
-      "kind": "composition",
+      "kind": "assignment",
       "target": "SYS-RUNTIME-TF"
     },
     {
-      "source": "TS-GATEWAY",
-      "kind": "composition",
-      "target": "TI-INGRESS"
+      "source": "TI-INGRESS",
+      "kind": "assignment",
+      "target": "TS-GATEWAY"
     },
     {
-      "source": "TS-QUEUE",
-      "kind": "composition",
-      "target": "TI-TOPIC-LC"
+      "source": "TI-TOPIC-LC",
+      "kind": "assignment",
+      "target": "TS-QUEUE"
     },
     {
       "source": "NODE-TF-PROD",
-      "kind": "assignment",
+      "kind": "association",
       "target": "NET-TF"
     },
     {
       "source": "DEV-SCAN-01",
-      "kind": "assignment",
+      "kind": "association",
       "target": "NET-TF"
     },
     {
       "source": "NET-TF",
-      "kind": "composition",
+      "kind": "realization",
       "target": "PATH-TF-01"
     },
     {
-      "source": "ART-LC-IMG",
+      "source": "NODE-TF-PROD",
       "kind": "assignment",
-      "target": "NODE-TF-PROD"
+      "target": "ART-LC-IMG"
     },
     {
-      "source": "ART-DOC-IMG",
+      "source": "NODE-TF-PROD",
       "kind": "assignment",
-      "target": "NODE-TF-PROD"
+      "target": "ART-DOC-IMG"
     },
     {
-      "source": "ART-DOC-IMG",
+      "source": "DEV-SCAN-01",
       "kind": "assignment",
-      "target": "DEV-SCAN-01"
+      "target": "ART-DOC-IMG"
     }
   ]
 }
