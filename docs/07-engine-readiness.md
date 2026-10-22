@@ -40,7 +40,7 @@ sdmm-eval mappings.json --proposals proposals.json [--min-f1 0.5]
 
 `sdmm-eval` treats the **approved** records in the gold documents as truth, matches proposals on `(source.id, relationship, target.id)`, and reports precision / recall / F1 per relationship type and overall, plus the exact misses and false proposals. `--min-f1` makes it a CI gate. Superseded and proposed records in the gold set are not truth.
 
-The shipped `baseline` engine (name and description word overlap, overlap coefficient ≥ 0.2) scores **P 0.67 / R 0.80 / F1 0.73** on the Card Fraud Alerts example: it finds four of five approved arrows by name overlap, still misses `DEPLOYED_ON` to the Kubernetes platform (no shared vocabulary — a structural signal is needed), mistakes a deployment for a platform, and proposes one pair an architect had left at `proposed`. That is the floor the v0.6 engine must beat, and the shape of the gap it must close.
+The shipped `baseline` engine (name and description word overlap, overlap coefficient ≥ 0.2) scores **P 0.56 / R 0.71 / F1 0.62** on the Card Fraud Alerts example: it finds 5 of 7 approved arrows by name overlap, still misses `DEPLOYED_ON` to the Kubernetes platform (no shared vocabulary — a structural signal is needed), mistakes a deployment for a platform, and proposes one pair an architect had left at `proposed`. That is the floor the v0.6 engine must beat, and the shape of the gap it must close.
 
 ## Acceptance for v0.6
 

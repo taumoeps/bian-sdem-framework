@@ -30,7 +30,7 @@ Do **not** read the use case's gold set (`<uc>-gold-mappings.json` or `gold-mapp
 | **Never approve.** | Every record is `status: proposed`. You do not set `reviewer_id` or `approved_at`. |
 | **Never invent instances.** | Every `source.id` and `target.id` must exist in a level export. If the connection needs an instance that is not there, that is a finding ("no instance to map to"), not a proposal. |
 | **No proposal is a valid answer.** | Where the data does not support any candidate at the assigned step or a permitted fallback, record *no proposal* with the reason. Precision over recall. |
-| **Confidence is the plan's, not yours.** | Set `confidence` to the band the plan predicts for that ID (high 0.8, medium 0.6, low 0.4), adjusted down one band if you used a fallback step. If you believe the plan's band is wrong, say so in findings — do not silently change it. |
+| **Confidence is the plan's, not yours.** | Set `confidence` to the band the plan predicts for that ID (high 0.8, medium 0.6, low 0.4), adjusted down one band if you used a fallback step. **A step-3 derivation over non-approved arrows takes min(plan band, lowest input band)** — a closure is only as good as its weakest input. If you believe the plan's band is wrong, say so in findings — do not silently change it. |
 
 ## 3. The steps, as rules
 
@@ -58,7 +58,7 @@ For each A2 operation and each A3 API operation, compare, in this order; all fou
 
 | # | Rule | Source | How to test |
 |---|---|---|---|
-| 1 | The API belongs to an application that is within the domain's boundary | [SAPG] §3.5 p. 52: the Service Domain matches the application boundary of the API | an approved `REALIZED_BY` for the component, or (reverse cases) the component's description names the domain's asset |
+| 1 | The API belongs to an application that is within the domain's boundary | [SAPG] §3.5 p. 52: the Service Domain matches the application boundary of the API | an approved `REALIZED_BY` for the component, or (reverse cases) the name of the domain's asset type (`A2.ServiceDomain.attributes.asset_type` → `A2.AssetType.name`) appears in the component's API paths, data entity names or description. No asset type in the export → rule 1 untestable |
 | 2 | Action term ↔ HTTP method | [SAPG] §3.2.5 Figure 14: BIAN defines **17 action terms** in four categories — service centre: Activate, Configure, Feedback · create instance: Create, Initiate, Register, Evaluate, Provide · act on instance: Update, Control, Exchange, Capture, Execute, Request, Grant · obtain information: Retrieve, Notify. §3.5: Retrieve maps to HTTP GET; the others take noun form; **Notify is not used in the BIAN REST mapping**; methods used are GET, PUT, POST, (PATCH), DELETE | Read `A2.ServiceOperation.attributes.action_term` and `A3.APIOperation.attributes.method`. Retrieve ⇔ GET (verified). **Executor convention, mark as such:** Create/Initiate/Register/Evaluate/Provide/Request ⇔ POST; Update/Control/Exchange/Capture/Grant/Execute ⇔ PUT or PATCH; Activate/Configure/Feedback ⇔ PUT or POST. **Notify, or any term not in the 17: rule 2 is untestable and counts as a miss.** A mismatch (e.g. Retrieve on POST) is a **finding** on the API, reported with the proposal |
 | 3 | Behaviour qualifier ↔ sub-path | [SAPG] §3.5 p. 55: the qualifier narrows to a sub-partition of the control record | `attributes.behavior_qualifier` (or a clear synonym) appears as a segment of `attributes.path` after the resource; a null qualifier passes |
 | 4 | Control-record attributes ↔ payload fields | [SAPG] §3.5: attributes are filtered by action term for input/output | ≥ 50 % of `attributes.input_attributes` ∪ `output_attributes` (or clear synonyms) appear in `A3.APIOperation.attributes.payload_fields` |
@@ -70,11 +70,12 @@ Closure rules. Cite the `mapping_id` of every arrow used.
 
 | Connection | Rule |
 |---|---|
-| S17 `REALIZED_BY` | if component C exposes API operations that `IMPLEMENTED_BY` (approved, or your step-2 proposals — say which) operations of domain D, then D `REALIZED_BY` C. **Fallback (step 4, one band lower):** the domain's asset-type noun (from `A2.AssetType`) appears in the component's API paths or data entity names — a structural match, scored as matches / APIs+entities, threshold ≥ 1 match. Description-only comparison is **step 5**, two bands lower |
+| S17 `REALIZED_BY` | if component C exposes API operations that `IMPLEMENTED_BY` (approved, or your step-2 proposals — say which) operations of domain D, then D `REALIZED_BY` C. **Fallback (step 4, one band lower):** the domain's asset-type name (`A2.ServiceDomain.attributes.asset_type` → `A2.AssetType.name`) appears in the component's API paths or data entity names — a structural match, scored as matches / APIs+entities, threshold ≥ 1 match. Description-only comparison is **step 5**, two bands lower |
 | S25 | operation O `IMPLEMENTED_BY` API a; a exposed by application service S (A3 composition) ⇒ O → S |
 | S22 / S23 | the service/interface exposing the APIs of a group's operations |
 | S04 `USES_DOMAIN` | process P (or one of its activities) has `attributes.invokes` naming operation O, or an S06 proposal; O in domain D (B09/B10) ⇒ P `USES_DOMAIN` D. A process exported without activities may be matched directly to operations by the S06 verb+noun rule (step 4) |
-| S01 `SUPPORTED_BY` (candidate) | every process of capability K (A1 relationship) `USES_DOMAIN` D ⇒ candidate K `SUPPORTED_BY` D, confidence medium; if only some processes, low |
+| S01 `SUPPORTED_BY` (candidate) | every process of capability K (A1 relationship) `USES_DOMAIN` D ⇒ candidate K `SUPPORTED_BY` D, confidence medium; if only some processes, low. Optional: a capability whose composed child capability is `SUPPORTED_BY` D is a candidate for D, low |
+| S02 `ALIGNED_TO` (optional step 3) | value stream V realises capability K (A1 `realization`); a process of K invokes operation O; O in scenario S's `operation_sequence` ⇒ candidate V `ALIGNED_TO` S, low. Step 4 (stages vs sequence) remains the primary route |
 | S07, S15, S16, S40, S42, S46, S47, S48, S52–S54 | derived paths — report as **queries** (the chain of arrows), not as proposal records |
 
 ### Step 4 — Structural matching
@@ -95,13 +96,14 @@ Only for S01 when step 3 produced nothing (capability with no mapped processes),
 
 ## 4. Output — the proposal document
 
-One file per use case: `examples/<use-case>/proposals-executor.json`, in the mapping-document shape:
+One file per use case: `examples/<example>/<uc>-proposals.json` (e.g. `m0-proposals.json`), in the mapping-document shape; `use_case` is an allowed top-level key:
 
 ```json
 {
   "registry_version": "0.4.0",
   "metamodel_version": "0.4.0",
   "engine": "<model>-executor/<date>",
+  "use_case": "<uc>",
   "mappings": [
     {
       "mapping_id": "P-M1-001",
@@ -123,7 +125,7 @@ Rules: `evidence[0]` starts with `engine_rationale:` and names the plan ID and s
 
 ## 4b. Output — the inference log
 
-Alongside the proposal file, write `examples/<use-case>/inference-log.json`: **one record per connection attempted**, including those that produced no proposal. This is the file the next optimisation step is planned from.
+Alongside the proposal file, write `examples/<example>/<uc>-inference-log.json`: **one record per connection attempted**, including those that produced no proposal. This is the file the next optimisation step is planned from.
 
 ```json
 {
@@ -145,13 +147,15 @@ Alongside the proposal file, write `examples/<use-case>/inference-log.json`: **o
 
 `outcome` is set after scoring: **hit** (proposal matches gold), **false** (proposal not in gold), **miss** (gold connection with no proposal — one record per missed gold arrow), **no_proposal** (attempted, nothing proposed, with the reason in `reasoning`). Every plan ID the use case lists must appear at least once.
 
+`sdmm-eval` scores proposals against **approved** gold only. If a case lists a connection whose gold record is `proposed`, it will be scored false — the case must either approve it in the gold or exclude it from the precision criterion (M0 finding 2).
+
 ## 5. Judge, then score
 
 ```bash
-python -m sdmm.graph check  examples/<uc>/a*.json examples/<uc>/<uc>-mappings-given.json examples/<uc>/proposals-executor.json
-python -m sdmm.validate --strict examples/<uc>/proposals-executor.json
-python -m sdmm.evaluate examples/<uc>/<uc>-gold-mappings.json --proposals examples/<uc>/proposals-executor.json
-python -m sdmm.graph trace <id> --direction down examples/<uc>/a*.json examples/<uc>/<uc>-mappings-given.json examples/<uc>/proposals-executor.json --status approved,proposed
+python -m sdmm.graph check  examples/<example>/a*.json examples/<example>/<uc>-mappings-given.json examples/<example>/<uc>-proposals.json
+python -m sdmm.validate --strict examples/<example>/<uc>-proposals.json
+python -m sdmm.evaluate examples/<example>/<uc>-gold-mappings.json --proposals examples/<example>/<uc>-proposals.json
+python -m sdmm.graph trace <id> --direction down examples/<example>/a*.json examples/<example>/<uc>-mappings-given.json examples/<example>/<uc>-proposals.json --status approved,proposed
 ```
 
 Only now open `gold-mappings.json`. Paste the `sdmm-eval` output verbatim into the report.

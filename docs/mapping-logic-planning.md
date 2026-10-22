@@ -760,7 +760,7 @@ Generated from `metamodel/new-mappings.json` (every entry carries the official s
 | Rule decisions | registry rule 9 · candidate rule 5 · conditional (ArchiMate) 5 · derived path 17 · institution-only 15 · BIAN-internal 14 · historical method 1 · not a mapping 2 · not encodable 1 |
 | Fill step | 0 BIAN export 14 · 1 data join 15 · 2 rule application 2 · 3 derivation 22 · 4 structural matching 13 · 5 text inference 1 · none 2 |
 
-**Reading:** of 69 connections, exactly **one** (S01, capability → Service Domain, and only when no process is mapped) needs text inference. Everything else is BIAN export, a data join, a published rule, a derivation over approved arrows, or an explainable structural match. The institution-only pairs with practical value — S36 component → system software, S50 data entity → database platform — are called out as worth adopting as `enterprise_rule`.
+**Reading:** of 69 connections, exactly **one** (S01, capability → Service Domain, and only when no process is mapped) needs text inference. Everything else is BIAN export, a data join, a published rule, a derivation over approved arrows, or an explainable structural match. S36 (component → system software) turned out to be an instance of S33 via the entity hierarchy and is marked subsumed; S50 (data entity → database platform) remains the institution-only pair worth adopting as `enterprise_rule`.
 
 #### Official BIAN-Only (B01–B15)
 

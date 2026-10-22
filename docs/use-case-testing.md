@@ -69,7 +69,7 @@
 
 **Scenario.** The enriched fraud exports (v0.5.1) with the approved mappings **hidden** except the capability → domain arrow. The executor must infer the rest from the exports alone. This is the first test that the data carries enough to connect the levels and that the steps are followable; it is small, so it establishes that the machinery works, not that the plan holds on a realistic estate (that is M1).
 
-**Given.** `examples/card-fraud-alerts/a1–a4-*.json` (v0.5.1, with `export-conventions.json` keys); `m0-mappings-given.json` — FRD-001 only (CAP-310 `SUPPORTED_BY` SD-044, approved). **Gold (sealed):** `m0-gold-mappings.json` — FRD-002, 005, 006, 007 approved; FRD-003 superseded; FRD-004 proposed. Do not open it until phase 5.
+**Given.** `examples/card-fraud-alerts/a1–a4-*.json` (v0.5.2: export keys incl. `asset_type`, `stages`); `m0-mappings-given.json` — FRD-001 only (CAP-310 `SUPPORTED_BY` SD-044, approved). **Gold (sealed):** `m0-gold-mappings.json` — FRD-002, 004, 005, 006, 007, 008 approved; FRD-003 superseded; FRD-009 proposed. (First run used the v0.5.1 gold with FRD-004 proposed and no FRD-008 — see results and actions.) Do not open it until phase 5.
 
 **Connections to attempt and what the plan predicts.**
 
@@ -77,11 +77,11 @@
 |---|---|---|---|---|
 | S33 | APP-FRAUD-ENGINE `DEPLOYED_ON` INF-CLOUD-K8S-PROD | 1 | `deployed_on` / `hosts` | high |
 | S32 | APP-FRAUD-ENGINE `DEPLOYED_AS` DEP-FRAUD-PROD | 1 | `component_id` / `deployed_as` | high |
-| S36 | APP-FRAUD-ENGINE → INF-CLOUD-K8S-PROD (SystemSoftware) | 1 | same key — report as candidate-rule, not in the proposal file | medium |
-| S24 | SO-044-07 `IMPLEMENTED_BY` POST /fraud/alerts | 2 | action term **Notify** — unused in the REST mapping, so rule 2 is untestable; rules 1, 3, 4 testable | medium at most; the executor must say rule 2 could not be tested |
+| S36 | APP-FRAUD-ENGINE → INF-CLOUD-K8S-PROD (SystemSoftware) | 1 | same key — **subsumed by S33** since v0.5.2; not a separate proposal | — |
+| S24 | SO-044-07 `IMPLEMENTED_BY` POST /fraud/alerts | 2 | action term **Notify** — unused in the REST mapping, so rule 2 is untestable; rules 1 (via `asset_type`), 3, 4 testable | medium (3 of 4); the executor must say rule 2 could not be tested |
 | S17 | SD-044 `REALIZED_BY` APP-FRAUD-ENGINE | 3, else 4 | derived from S24 if proposed; else asset-noun "alert" in `/fraud/alerts` | high (3) or medium (4) |
 | S04 | PRC-310-01 `USES_DOMAIN` SD-044 | 3 | `invokes: [SO-044-07]` → domain via B10/B09 | medium |
-| S02 | VS-CARD-USE `ALIGNED_TO` BS-FRAUD-ALERT | 4 | stage vs `operation_sequence` — note the export has no stage instances; expect a text-assisted match or no proposal | medium or none |
+| S02 | VS-CARD-USE `ALIGNED_TO` BS-FRAUD-ALERT | 4 | `stages` (4 stage instances since v0.5.2) vs `operation_sequence` | medium |
 | S01 | CAP-300 `SUPPORTED_BY` SD-044 | 5 | single candidate domain → **no proposal** (step-5 rule) | none |
 
 **Negative tests.** CMP-SCORING has no `deployed_on` → no `DEPLOYED_ON`; IFC-FRAUD-API is an interface, not a component → not an S17 target; no record for S50 → no proposal.
@@ -195,7 +195,7 @@
 
 ### E1 — results (2026-10-22, fable-executor)
 
-**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md`. The guide's template labels the engine `opus-executor`; this run is labelled `fable-executor/2026-10-22` so the record says who ran it. **Gold.** E1 has no separate `gold-mappings.json`; the gold is the three approved records in `examples/card-fraud-alerts/mappings.json`, which the case lists as *given*. The executor therefore saw the gold before executing. Mitigation: every proposal below was built from the level exports only; approved arrows were read only where a step rule permits (step 2 rule 1, step 3), and no approved arrow was used as evidence for a proposal of the same pair. **Proposal file.** `examples/card-fraud-alerts/proposals-executor.json` (2 records; overwritten by the M0 run later the same day — the E1 version is in commit fb94510).
+**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md`. The guide's template labels the engine `opus-executor`; this run is labelled `fable-executor/2026-10-22` so the record says who ran it. **Gold.** E1 has no separate `gold-mappings.json`; the gold is the three approved records in `examples/card-fraud-alerts/mappings.json`, which the case lists as *given*. The executor therefore saw the gold before executing. Mitigation: every proposal below was built from the level exports only; approved arrows were read only where a step rule permits (step 2 rule 1, step 3), and no approved arrow was used as evidence for a proposal of the same pair. **Proposal file.** `examples/card-fraud-alerts/e1-proposals.json` (2 records; overwritten by the M0 run later the same day — the E1 version is in commit fb94510).
 
 #### Graph tests E1.1–E1.6 (phase 5, approved arrows only unless stated)
 
@@ -256,7 +256,7 @@ None. S36 (component → `A4.SystemSoftware`) is the pair FRD-005 actually insta
 #### sdmm-eval
 
 ```
-$ python -m sdmm.evaluate examples/card-fraud-alerts/mappings.json --proposals examples/card-fraud-alerts/proposals-executor.json
+$ python -m sdmm.evaluate examples/card-fraud-alerts/mappings.json --proposals examples/card-fraud-alerts/e1-proposals.json
 relationship     gold prop  tp  fp  fn   prec   rec    f1
 DEPLOYED_ON         1    0   0   0   1   0.00  0.00  0.00
 REALIZED_BY         1    1   1   0   0   1.00  1.00  1.00
@@ -270,16 +270,16 @@ missed (approved, not proposed):
 Validation and trace over approved + proposed:
 
 ```
-$ python -m sdmm.graph check examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json examples/card-fraud-alerts/proposals-executor.json
+$ python -m sdmm.graph check examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json examples/card-fraud-alerts/e1-proposals.json
 OK: level A1 … A4; OK: mappings #1; OK: mappings #2
 
-$ python -m sdmm.validate --strict examples/card-fraud-alerts/proposals-executor.json
+$ python -m sdmm.validate --strict examples/card-fraud-alerts/e1-proposals.json
 ERROR: … (P-E1-001): proposal lacks required evidence kind(s) ['application_architecture_document']; must be supplied before approval
 ERROR: … (P-E1-002): bian_alignment_guidance mapping requires bian_release; must be supplied before approval
 ERROR: … (P-E1-002): proposal lacks required evidence kind(s) ['business_architecture_document', 'domain_scope_assessment']; must be supplied before approval
 exit=1
-$ python -m sdmm.validate examples/card-fraud-alerts/proposals-executor.json
-(same three lines as WARNING)  OK: examples/card-fraud-alerts/proposals-executor.json (with warnings)
+$ python -m sdmm.validate examples/card-fraud-alerts/e1-proposals.json
+(same three lines as WARNING)  OK: examples/card-fraud-alerts/e1-proposals.json (with warnings)
 exit=0
 
 $ python -m sdmm.graph trace CAP-310 --direction down … --status approved,proposed
@@ -355,7 +355,7 @@ CAP-310 → SD-044 (FRD-001 and P-E1-002, as two sibling branches) → APP-FRAUD
 
 ### M0 — results (2026-10-22, fable-executor)
 
-**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.1. **Given.** `m0-mappings-given.json` (FRD-001 only) and the v0.5.1 exports. **Gold.** `m0-gold-mappings.json` was not opened until phase 5. Disclosure: the E1 section's v0.5.1 diff names FRD-006 as S32 and FRD-007 as S02, and the M0 section lists the gold's record ids, so the four approved gold arrows were inferable before execution; every proposal below was nonetheless produced by the step rules on the exports, and the two false proposals show the gold did not steer them. **Files.** `examples/card-fraud-alerts/proposals-executor.json` (5 records; the E1 file at the same path is in commit fb94510) and `examples/card-fraud-alerts/inference-log.json` (17 attempts, 13 plan IDs).
+**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.1. **Given.** `m0-mappings-given.json` (FRD-001 only) and the v0.5.1 exports. **Gold.** `m0-gold-mappings.json` was not opened until phase 5. Disclosure: the E1 section's v0.5.1 diff names FRD-006 as S32 and FRD-007 as S02, and the M0 section lists the gold's record ids, so the four approved gold arrows were inferable before execution; every proposal below was nonetheless produced by the step rules on the exports, and the two false proposals show the gold did not steer them. **Files.** `examples/card-fraud-alerts/m0-proposals.json` (5 records; the E1 file at the same path is in commit fb94510) and `examples/card-fraud-alerts/m0-inference-log.json` (17 attempts, 13 plan IDs).
 
 #### Proposals
 
@@ -378,15 +378,15 @@ Derived paths, reported as queries: **S23** SG-044-01 → IFC-FRAUD-API (SG-044-
 #### sdmm-eval
 
 ```
-$ python -m sdmm.graph check examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/m0-mappings-given.json examples/card-fraud-alerts/proposals-executor.json
+$ python -m sdmm.graph check examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/m0-mappings-given.json examples/card-fraud-alerts/m0-proposals.json
 OK: level A1 … A4; OK: mappings #1; OK: mappings #2
 
-$ python -m sdmm.validate --strict examples/card-fraud-alerts/proposals-executor.json
+$ python -m sdmm.validate --strict examples/card-fraud-alerts/m0-proposals.json
 WARNING ×5: proposal lacks required evidence kind(s) [...]; must be supplied before approval
-OK: examples/card-fraud-alerts/proposals-executor.json (with warnings)
+OK: examples/card-fraud-alerts/m0-proposals.json (with warnings)
 exit=0
 
-$ python -m sdmm.evaluate examples/card-fraud-alerts/m0-gold-mappings.json --proposals examples/card-fraud-alerts/proposals-executor.json
+$ python -m sdmm.evaluate examples/card-fraud-alerts/m0-gold-mappings.json --proposals examples/card-fraud-alerts/m0-proposals.json
 relationship     gold prop  tp  fp  fn   prec   rec    f1
 ALIGNED_TO          1    0   0   0   1   0.00  0.00  0.00
 DEPLOYED_AS         1    1   1   0   0   1.00  1.00  1.00
@@ -403,7 +403,7 @@ false proposals (proposed, not approved):
   PRC-310-01 -USES_DOMAIN-> SD-044  conf=0.6  The process export says the process invokes Notify Fraud Alert, which BIAN's structure places in the Fraud Detection domain
   SO-044-07 -IMPLEMENTED_BY-> POST /fraud/alerts  conf=0.6  Qualifier and all five control-record attributes match the API; the Notify action term has no REST form, so the method cannot be checked
 
-$ python -m sdmm.graph trace CAP-310 --direction down … m0-mappings-given.json proposals-executor.json --status approved,proposed
+$ python -m sdmm.graph trace CAP-310 --direction down … m0-mappings-given.json m0-proposals.json --status approved,proposed
 CAP-310 -SUPPORTED_BY-> SD-044 (FRD-001) -REALIZED_BY-> APP-FRAUD-ENGINE (P-M0-005) -DEPLOYED_ON-> INF-CLOUD-K8S-PROD (P-M0-001) and -DEPLOYED_AS-> DEP-FRAUD-PROD (P-M0-002)
 (approved only: stops at SD-044)
 ```
@@ -436,7 +436,7 @@ The two "false" proposals are both connections the M0 table told the executor to
 | 4 | S02 | the only approved gold arrow not re-derived | VS-CARD-USE has no `attributes.stages` and there is no `A1.ValueStreamStage` instance, although `export-conventions.json` defines the key; the step-4 rule has nothing to compare with `operation_sequence`; step 5 is not permitted for S02 | add `stages` (and the stage instances) to the A1 export, or change the case's expectation to "none". Optional rule for the plan: a step-3 derivation for S02 — value stream realises capability K (A1 `realization`), K's process invokes operation O, O ∈ scenario `operation_sequence` ⇒ candidate `ALIGNED_TO`, low. It would have produced FRD-007 here; it is not in the plan, so it was not used |
 | 5 | S17, guide §2 | the derivation inherited the plan's high band although its only input was a medium step-2 proposal | the confidence rule adjusts for fallback steps but not for the status of the arrows closed over; a step-3 closure over proposals is only as good as its weakest input | guide §2 "Confidence is the plan's": a step-3 proposal derived over non-approved arrows takes min(plan band, lowest input band). Here S17 would be 0.6 |
 | 6 | S36 | produced by the same key and record as S33; the gold instance of S33 targets an `A4.SystemSoftware` | S33 accepts any concrete A4 descendant, so every S36 instance is already an S33 instance; a separate institution-only ID adds a second record for one fact | either fold S36 into S33 (`reasoning`: "SystemSoftware targets are S33 instances; no separate rule") or promote S36 to `enterprise_rule` and have the validator accept it — not both |
-| 7 | guide §4 | the proposal document cannot say which use case it belongs to: a top-level `use_case` key fails schema validation, and the file name is shared by every case in the same example directory (E1's file was overwritten) | `additionalProperties: false` on the mapping-document schema; §4 fixes the name `proposals-executor.json` | guide §4: name the file `<uc>-proposals-executor.json` (matching `<uc>-mappings-given.json`), or allow `use_case` in the document schema |
+| 7 | guide §4 | the proposal document cannot say which use case it belongs to: a top-level `use_case` key fails schema validation, and the file name is shared by every case in the same example directory (E1's file was overwritten) | `additionalProperties: false` on the mapping-document schema; §4 fixes the name `m0-proposals.json` | guide §4: name the file `<uc>-m0-proposals.json` (matching `<uc>-mappings-given.json`), or allow `use_case` in the document schema |
 | 8 | case M0 pass criterion | precision ≥ 0.8 unreachable (see §sdmm-eval) | consequence of 2 and 3 | fix 2 and 3, or restate the criterion as "precision ≥ 0.8 over the IDs the gold approves" |
 | 9 | S01 (step 3) | CAP-300 got no proposal though its child CAP-310 is approved-supported by SD-044 | no rule lets a parent capability inherit a child's domain | optional: add to the S01 step-3 rule "a capability whose composed child is `SUPPORTED_BY` D is a candidate for D, low". Not applied here |
 
@@ -460,3 +460,17 @@ The two "false" proposals are both connections the M0 table told the executor to
 | S23, S40, S47 | as listed above | derived paths — queries, not records, by plan design |
 
 **Summary.** The machinery works: with the v0.5.1 keys, steps 1–3 are mechanical and produced four of the five connections the data supports, each traceable to a record or a composition chain. The run misses one approved arrow (S02, no stages in the export) and is scored for two false proposals that the case asked for and the gold does not hold. Those two are gold defects, not plan defects; the plan findings that matter are the missing asset-type key (1), confidence inheritance through proposed arrows (5), and S36 duplicating S33 (6).
+
+### M0 — actions taken on the findings (v0.5.2)
+
+| Finding | Action |
+|---|---|
+| 1 — no asset type | `A2.ServiceDomain.attributes.asset_type` / `functional_pattern` added to the conventions; `AT-FRAUD-ALERT` and `FP-ANALYSE` instances with their associations added to the A2 export; guide rule 1 and the S17 fallback read the asset-type name; without it they are untestable, not conventions |
+| 2, 3, 8 — gold defects | FRD-004 approved (the step-2 evidence outweighs its name-overlap origin); FRD-008 `USES_DOMAIN` added approved; FRD-009 added as the new `proposed` demo record; `m0-gold-mappings.json` regenerated. The guide now states that `sdmm-eval` scores approved gold only |
+| 4 — S02 | four `A1.ValueStreamStage` instances and `VS-CARD-USE.attributes.stages` added; optional step-3 derivation for S02 recorded in the plan and guide |
+| 5 — derivation confidence | guide: a step-3 proposal over non-approved arrows takes min(plan band, weakest input band) |
+| 6 — S36 | folded into S33: an instance of the registry rule via the entity hierarchy; `new-mappings.json` marks it `subsumed` |
+| 7 — file names | `<uc>-proposals.json`, `<uc>-inference-log.json`; `use_case` allowed in the document schema; E1's overwritten file restored as `e1-proposals.json` |
+| 9 — parent capability | optional step-3 rule recorded on S01 (child `SUPPORTED_BY` D ⇒ parent candidate, low) |
+
+**M0 is re-runnable on v0.5.2.** Expected: six approved arrows re-derived; S24 at 3 of 4 rules with rule 1 now testable via the asset type; S02 at step 4 via stages; precision 1.0 over the approved gold.

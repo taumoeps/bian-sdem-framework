@@ -723,7 +723,7 @@
       "authority": "none",
       "verification": "confirmed_none",
       "verification_note": "Confirmed none in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review",
-      "disposition": "institution-only — would enter as `enterprise_rule`"
+      "disposition": "subsumed — an instance of registry rule S33 via the entity hierarchy"
     },
     {
       "id": "S37",

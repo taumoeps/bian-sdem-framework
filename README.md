@@ -472,7 +472,7 @@ flowchart LR
     style ENG fill:#eeeeee,color:#616161,stroke:#9e9e9e,stroke-dasharray: 5 5
 ```
 
-An engine implements `MappingEngine.propose(graph)` and returns records with `status: proposed`, a `confidence`, a `rationale`, `evidence` beginning `engine_rationale:` and `created_by`. The validator refuses to let such a record become `approved` without a named reviewer and date. **`sdmm-engine baseline`** is a deliberately naive engine (name and description word overlap) that exists to exercise the harness: on the shipped example it finds four of five approved arrows by name overlap and misses the deployment to the platform, scoring F1 0.73 — the floor the real engine must beat. **`sdmm-eval`** scores any proposal document against approved mappings and can gate CI with `--min-f1`.
+An engine implements `MappingEngine.propose(graph)` and returns records with `status: proposed`, a `confidence`, a `rationale`, `evidence` beginning `engine_rationale:` and `created_by`. The validator refuses to let such a record become `approved` without a named reviewer and date. **`sdmm-engine baseline`** is a deliberately naive engine (name and description word overlap) that exists to exercise the harness: on the shipped example it finds 5 of 7 approved arrows by name overlap and misses the deployment to the platform, scoring F1 0.62 — the floor the real engine must beat. **`sdmm-eval`** scores any proposal document against approved mappings and can gate CI with `--min-f1`.
 
 ### How it runs
 

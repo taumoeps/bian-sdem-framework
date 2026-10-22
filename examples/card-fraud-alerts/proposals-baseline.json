@@ -51,6 +51,72 @@
     {
       "mapping_id": "PROP-0003",
       "source": {
+        "id": "VSS-01",
+        "type": "A1.ValueStreamStage",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BS-FRAUD-ALERT",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:shared terms ['card'] between 'Present card' and 'Suspicious card transaction alerted'"
+      ],
+      "rationale": "shared terms ['card'] between 'Present card' and 'Suspicious card transaction alerted'",
+      "baseline_id": "ENGINE-RUN",
+      "created_by": "baseline-name-overlap/0.5"
+    },
+    {
+      "mapping_id": "PROP-0004",
+      "source": {
+        "id": "VSS-02",
+        "type": "A1.ValueStreamStage",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BS-FRAUD-ALERT",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.73,
+      "evidence": [
+        "engine_rationale:shared terms ['card', 'transaction'] between 'Score the transaction' and 'Suspicious card transaction alerted'"
+      ],
+      "rationale": "shared terms ['card', 'transaction'] between 'Score the transaction' and 'Suspicious card transaction alerted'",
+      "baseline_id": "ENGINE-RUN",
+      "created_by": "baseline-name-overlap/0.5"
+    },
+    {
+      "mapping_id": "PROP-0005",
+      "source": {
+        "id": "VSS-03",
+        "type": "A1.ValueStreamStage",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BS-FRAUD-ALERT",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.9,
+      "evidence": [
+        "engine_rationale:shared terms ['alert', 'card', 'cardholder'] between 'Alert the cardholder' and 'Suspicious card transaction alerted'"
+      ],
+      "rationale": "shared terms ['alert', 'card', 'cardholder'] between 'Alert the cardholder' and 'Suspicious card transaction alerted'",
+      "baseline_id": "ENGINE-RUN",
+      "created_by": "baseline-name-overlap/0.5"
+    },
+    {
+      "mapping_id": "PROP-0006",
+      "source": {
         "id": "SD-044",
         "type": "A2.ServiceDomain",
         "version": "1.0",
@@ -72,7 +138,7 @@
       "created_by": "baseline-name-overlap/0.5"
     },
     {
-      "mapping_id": "PROP-0004",
+      "mapping_id": "PROP-0007",
       "source": {
         "id": "SO-044-07",
         "type": "A2.ServiceOperation",
@@ -94,7 +160,7 @@
       "created_by": "baseline-name-overlap/0.5"
     },
     {
-      "mapping_id": "PROP-0005",
+      "mapping_id": "PROP-0008",
       "source": {
         "id": "APP-FRAUD-ENGINE",
         "type": "A3.ApplicationComponent",
@@ -116,7 +182,7 @@
       "created_by": "baseline-name-overlap/0.5"
     },
     {
-      "mapping_id": "PROP-0006",
+      "mapping_id": "PROP-0009",
       "source": {
         "id": "APP-FRAUD-ENGINE",
         "type": "A3.ApplicationComponent",

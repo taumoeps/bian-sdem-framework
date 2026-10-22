@@ -77,7 +77,7 @@ class FederatedGraphTests(unittest.TestCase):
     def test_rehost_touches_a4_and_a3_only(self):
         r = self.fg.impact('INF-CLOUD-K8S-PROD', 'rehost')
         self.assertEqual(self.classes(r), {'INF-CLOUD-K8S-PROD': 'design_change_required', 'APP-FRAUD-ENGINE': 'design_change_required',
-                                           'SD-044': 'no_impact', 'CAP-310': 'no_impact'})
+                                           'SD-044': 'no_impact', 'CAP-310': 'no_impact', 'PRC-310-01': 'no_impact'})
         self.assertEqual(r['mappings_to_supersede'], ['FRD-005'])
 
     def test_retire_domain(self):
@@ -86,7 +86,7 @@ class FederatedGraphTests(unittest.TestCase):
 
     def test_modify_only_reaches_direct_neighbours(self):
         c = self.classes(self.fg.impact('APP-FRAUD-ENGINE', 'modify'))
-        self.assertEqual(c, {'APP-FRAUD-ENGINE': 'design_change_required', 'SD-044': 'review_required', 'INF-CLOUD-K8S-PROD': 'review_required', 'DEP-FRAUD-PROD': 'review_required', 'CAP-310': 'no_impact'})
+        self.assertEqual(c, {'APP-FRAUD-ENGINE': 'design_change_required', 'SD-044': 'review_required', 'INF-CLOUD-K8S-PROD': 'review_required', 'DEP-FRAUD-PROD': 'review_required', 'CAP-310': 'no_impact', 'PRC-310-01': 'no_impact'})
 
     def test_unknown_change_kind(self):
         with self.assertRaises(ValueError):

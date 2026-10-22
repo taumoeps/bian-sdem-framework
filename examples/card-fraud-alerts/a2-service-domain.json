@@ -20,7 +20,11 @@
       "name": "Fraud Detection (synthetic selection)",
       "lifecycle_status": "active",
       "canonical_id": "BIAN-FRAUD-DETECTION",
-      "description": "Synthetic stand-in for a BIAN fraud-detection Service Domain: evaluates transactions and activity for indications of fraud and raises alerts."
+      "description": "Synthetic stand-in for a BIAN fraud-detection Service Domain: evaluates transactions and activity for indications of fraud and raises alerts.",
+      "attributes": {
+        "asset_type": "AT-FRAUD-ALERT",
+        "functional_pattern": "FP-ANALYSE"
+      }
     },
     {
       "id": "SG-044-01",
@@ -84,6 +88,22 @@
           "SO-044-07"
         ]
       }
+    },
+    {
+      "id": "AT-FRAUD-ALERT",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Fraud Alert",
+      "lifecycle_status": "active",
+      "description": "The suspected-fraud alert the domain raises and tracks through its lifecycle."
+    },
+    {
+      "id": "FP-ANALYSE",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Analyse",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in for a BIAN functional pattern: evaluate activity and raise findings."
     }
   ],
   "relationships": [
@@ -111,6 +131,16 @@
       "source": "BS-FRAUD-ALERT",
       "kind": "aggregation",
       "target": "SO-044-07"
+    },
+    {
+      "source": "SD-044",
+      "kind": "association",
+      "target": "AT-FRAUD-ALERT"
+    },
+    {
+      "source": "SD-044",
+      "kind": "association",
+      "target": "FP-ANALYSE"
     }
   ]
 }

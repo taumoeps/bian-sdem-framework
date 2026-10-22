@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.2 — after M0 (first inference run)
+
+- Export conventions: `A2.ServiceDomain.attributes.asset_type` / `functional_pattern`; fraud A2 export gains asset type and functional pattern instances, A1 export gains value-stream stages.
+- Fraud example mappings: FRD-004 approved on REST-rule evidence; FRD-008 `USES_DOMAIN` approved; FRD-009 new `proposed` demo record. M0 given/gold regenerated.
+- Plan: S36 subsumed by S33 (entity hierarchy); optional step-3 derivations recorded for S02 and S01; derivation confidence capped at the weakest input.
+- Executor guide: per-use-case file names (`<uc>-proposals.json`, `<uc>-inference-log.json`); `use_case` allowed in the mapping-document schema; E1's overwritten proposal file restored.
+
 ## 0.5.1 — after the first executed use case (E1)
 
 - `metamodel/export-conventions.json`: the attribute keys on level-export instances that mapping steps 1–4 join on; cross-level facts live in attributes, relationships stay within-level. Fraud example exports enriched accordingly (deployment, scenario, action term, API path/method/payload, `invokes`).

@@ -47,8 +47,8 @@ class EvaluationTests(unittest.TestCase):
     def test_baseline_scores_as_expected_on_fraud_example(self):
         props = {'mappings': NameOverlapBaseline().propose(FederatedGraph.load(LEVELS))}
         r = evaluate([GOLD], [props])
-        self.assertEqual((r['overall']['tp'], r['overall']['fp'], r['overall']['fn']), (4, 2, 1))
-        self.assertEqual(r['missed'], [['APP-FRAUD-ENGINE', 'DEPLOYED_ON', 'INF-CLOUD-K8S-PROD']])
+        self.assertEqual((r['overall']['tp'], r['overall']['fp'], r['overall']['fn']), (5, 4, 2))
+        self.assertEqual(r['missed'], [["APP-FRAUD-ENGINE", "DEPLOYED_ON", "INF-CLOUD-K8S-PROD"], ["PRC-310-01", "USES_DOMAIN", "SD-044"]])
 
     def test_perfect_proposals_score_one(self):
         props = copy.deepcopy(GOLD)
@@ -59,7 +59,7 @@ class EvaluationTests(unittest.TestCase):
 
     def test_only_approved_records_form_the_gold_set(self):
         r = evaluate([GOLD], [{'mappings': []}])
-        self.assertEqual(r['overall']['gold'], 5)   # FRD-003 superseded and FRD-004 proposed are not gold
+        self.assertEqual(r['overall']['gold'], 7)   # FRD-003 superseded and FRD-009 proposed are not gold
 
     def test_empty_proposals_zero_recall(self):
         r = evaluate([GOLD], [{'mappings': []}])

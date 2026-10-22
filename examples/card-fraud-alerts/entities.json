@@ -69,6 +69,62 @@
       "versions": [
         "1.0"
       ]
+    },
+    {
+      "id": "AT-FRAUD-ALERT",
+      "type": "A2.AssetType",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "FP-ANALYSE",
+      "type": "A2.FunctionalPattern",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "VSS-01",
+      "type": "A1.ValueStreamStage",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "VSS-02",
+      "type": "A1.ValueStreamStage",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "VSS-03",
+      "type": "A1.ValueStreamStage",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "VSS-04",
+      "type": "A1.ValueStreamStage",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "PRC-310-01",
+      "type": "A1.BusinessProcess",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "CMP-SCORING",
+      "type": "A3.ApplicationComponent",
+      "versions": [
+        "4.2"
+      ]
     }
   ]
 }

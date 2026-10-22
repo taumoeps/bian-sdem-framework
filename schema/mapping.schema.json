@@ -8,6 +8,7 @@
     "registry_version": {"type": "string", "minLength": 1},
     "metamodel_version": {"type": "string", "minLength": 1},
     "engine": {"type": "string", "minLength": 1},
+    "use_case": {"type": "string", "minLength": 1},
     "mappings": {
       "type": "array",
       "items": {"$ref": "#/$defs/mapping"}

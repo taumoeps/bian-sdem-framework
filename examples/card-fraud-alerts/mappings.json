@@ -88,14 +88,16 @@
         "version": "3.1"
       },
       "perspective": "architecture",
-      "status": "proposed",
+      "status": "approved",
       "confidence": 0.71,
       "evidence": [
         "api_contract:API-FRAUD-v3.1.yaml#/paths/~1fraud~1alerts"
       ],
-      "rationale": "Engine candidate: endpoint name and payload resemble the alert-notification operation; semantic review pending",
+      "rationale": "Reviewed after the M0 run: POST /fraud/alerts carries the Alert qualifier in its path and 5/5 of the operation's I/O attributes in its payload (REST rules 1, 3, 4); Notify has no REST form, so rule 2 is untestable. Approved as the implementation of Notify Fraud Alert",
       "baseline_id": "BASE-2026-Q4",
-      "created_by": "SDMM Mapping Engine"
+      "created_by": "SDMM Mapping Engine",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
     },
     {
       "mapping_id": "FRD-005",
@@ -170,6 +172,53 @@
       "baseline_id": "BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "FRD-008",
+      "source": {
+        "id": "PRC-310-01",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-044",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-CARD-USE-2026"
+      ],
+      "rationale": "The alert process invokes Notify Fraud Alert (SO-044-07), an operation of the fraud-detection domain",
+      "baseline_id": "BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "FRD-009",
+      "source": {
+        "id": "SD-044",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-FRAUD-DETECTION"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "CMP-SCORING",
+        "type": "A3.ApplicationComponent",
+        "version": "4.2"
+      },
+      "perspective": "architecture",
+      "status": "proposed",
+      "confidence": 0.55,
+      "evidence": [
+        "engine_rationale:S17 step 4 \u2014 asset noun 'alert' absent; 'scoring' matches the domain description's evaluation concept only"
+      ],
+      "rationale": "Engine candidate: the scoring component may realise part of the domain on its own; review needed",
+      "baseline_id": "BASE-2026-Q4",
+      "created_by": "baseline-name-overlap/0.5"
     }
   ],
   "metamodel_version": "0.4.0"

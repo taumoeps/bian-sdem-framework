@@ -30,7 +30,15 @@
       "version": "1.0",
       "name": "Use Card Safely",
       "lifecycle_status": "active",
-      "description": "The cardholder's journey from presenting a card to confirming a transaction was legitimate."
+      "description": "The cardholder's journey from presenting a card to confirming a transaction was legitimate.",
+      "attributes": {
+        "stages": [
+          "VSS-01",
+          "VSS-02",
+          "VSS-03",
+          "VSS-04"
+        ]
+      }
     },
     {
       "id": "PRC-310-01",
@@ -44,6 +52,38 @@
           "SO-044-07"
         ]
       }
+    },
+    {
+      "id": "VSS-01",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Present card",
+      "lifecycle_status": "active",
+      "description": "Stage of Use Card Safely: present card."
+    },
+    {
+      "id": "VSS-02",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Score the transaction",
+      "lifecycle_status": "active",
+      "description": "Stage of Use Card Safely: score the transaction."
+    },
+    {
+      "id": "VSS-03",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Alert the cardholder",
+      "lifecycle_status": "active",
+      "description": "Stage of Use Card Safely: alert the cardholder."
+    },
+    {
+      "id": "VSS-04",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Confirm or block",
+      "lifecycle_status": "active",
+      "description": "Stage of Use Card Safely: confirm or block."
     }
   ],
   "relationships": [
@@ -62,6 +102,26 @@
       "source": "PRC-310-01",
       "kind": "realization",
       "target": "CAP-310"
+    },
+    {
+      "source": "VS-CARD-USE",
+      "kind": "composition",
+      "target": "VSS-01"
+    },
+    {
+      "source": "VS-CARD-USE",
+      "kind": "composition",
+      "target": "VSS-02"
+    },
+    {
+      "source": "VS-CARD-USE",
+      "kind": "composition",
+      "target": "VSS-03"
+    },
+    {
+      "source": "VS-CARD-USE",
+      "kind": "composition",
+      "target": "VSS-04"
     }
   ]
 }
