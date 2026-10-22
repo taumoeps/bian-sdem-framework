@@ -158,3 +158,19 @@ class InferredRowsTests(unittest.TestCase):
             for k in ('archimate_source', 'archimate_target', 'pattern', 'reasoning', 'confidence', 'test'):
                 self.assertTrue(i.get(k), f"{c['id']} inference lacks {k}")
             self.assertIn(i['confidence'], ('high', 'medium', 'low'))
+
+
+class PlanTableStepAndConfidenceTests(unittest.TestCase):
+    """§5.3's fill-step and confidence columns must equal new-mappings.json (the reasoning column is already checked)."""
+
+    def test_step_and_confidence_columns_match_json(self):
+        import re
+        nm = {m['id']: m for m in json.loads((ROOT / 'metamodel/new-mappings.json').read_text(encoding='utf-8'))['mappings']}
+        doc = (ROOT / 'docs/mapping-logic-planning.md').read_text(encoding='utf-8')
+        sec = doc[doc.index('### 5.3 New mappings'):doc.index('### 5.4')]
+        seen = 0
+        for mo in re.finditer(r"^\| (S\d+|B\d+) \| (?:[^|]*\| ){4}([^|]*?) \| (\*\*\w+\*\*|\w+) \| ", sec, flags=re.M):
+            mid, step, conf = mo.groups(); m = nm[mid]; seen += 1
+            self.assertEqual(step, '—' if m.get('fill_step') is None else str(m['fill_step']), mid)
+            self.assertEqual(conf.strip('*'), m['confidence'], mid)
+        self.assertEqual(seen, 69)
