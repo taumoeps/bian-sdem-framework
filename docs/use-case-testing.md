@@ -65,6 +65,29 @@
 
 **Connections exercised.** S01, S02, S04, S12, S17, S24 (proposed), S30, S32, S33. **Pass:** chains per perspective are disjoint where they should be; impact matches the rules table. **Status:** needs level exports authored.
 
+## M0 — Card Fraud Alerts as an inference test (Medium, on existing data)
+
+**Scenario.** The enriched fraud exports (v0.5.1) with the approved mappings **hidden** except the capability → domain arrow. The executor must infer the rest from the exports alone. This is the first test that the data carries enough to connect the levels and that the steps are followable; it is small, so it establishes that the machinery works, not that the plan holds on a realistic estate (that is M1).
+
+**Given.** `examples/card-fraud-alerts/a1–a4-*.json` (v0.5.1, with `export-conventions.json` keys); `m0-mappings-given.json` — FRD-001 only (CAP-310 `SUPPORTED_BY` SD-044, approved). **Gold (sealed):** `m0-gold-mappings.json` — FRD-002, 005, 006, 007 approved; FRD-003 superseded; FRD-004 proposed. Do not open it until phase 5.
+
+**Connections to attempt and what the plan predicts.**
+
+| ID | Connection | Step | Expected from the data | Predicted |
+|---|---|---|---|---|
+| S33 | APP-FRAUD-ENGINE `DEPLOYED_ON` INF-CLOUD-K8S-PROD | 1 | `deployed_on` / `hosts` | high |
+| S32 | APP-FRAUD-ENGINE `DEPLOYED_AS` DEP-FRAUD-PROD | 1 | `component_id` / `deployed_as` | high |
+| S36 | APP-FRAUD-ENGINE → INF-CLOUD-K8S-PROD (SystemSoftware) | 1 | same key — report as candidate-rule, not in the proposal file | medium |
+| S24 | SO-044-07 `IMPLEMENTED_BY` POST /fraud/alerts | 2 | action term **Notify** — unused in the REST mapping, so rule 2 is untestable; rules 1, 3, 4 testable | medium at most; the executor must say rule 2 could not be tested |
+| S17 | SD-044 `REALIZED_BY` APP-FRAUD-ENGINE | 3, else 4 | derived from S24 if proposed; else asset-noun "alert" in `/fraud/alerts` | high (3) or medium (4) |
+| S04 | PRC-310-01 `USES_DOMAIN` SD-044 | 3 | `invokes: [SO-044-07]` → domain via B10/B09 | medium |
+| S02 | VS-CARD-USE `ALIGNED_TO` BS-FRAUD-ALERT | 4 | stage vs `operation_sequence` — note the export has no stage instances; expect a text-assisted match or no proposal | medium or none |
+| S01 | CAP-300 `SUPPORTED_BY` SD-044 | 5 | single candidate domain → **no proposal** (step-5 rule) | none |
+
+**Negative tests.** CMP-SCORING has no `deployed_on` → no `DEPLOYED_ON`; IFC-FRAUD-API is an interface, not a component → not an S17 target; no record for S50 → no proposal.
+
+**Pass.** All four approved arrows re-derived at their assigned step (or a declared fallback with the lower band); `sdmm-eval` precision ≥ 0.8; every attempted connection has a row in `inference-log.json`; S01 recorded as single-candidate no-proposal. **Status:** ready to execute.
+
 ## M1 — Payment Initiation, brownfield (Medium)
 
 **Scenario.** The business and domain architecture are mapped and approved. The payments platform exists — applications, APIs, deployments are exported from the APM and CMDB — but no A2→A3 or A3→A4 mappings have been written.
@@ -164,7 +187,7 @@
 | Negative tests | ● | ● | ● | ● | ● | ● |
 | Perspectives: architecture / process / information | A | A P I | A P I | A | A I | A I |
 
-**Order of execution:** E1 now; E2 after its exports are authored; M1 next (it exercises most of the plan); then H1, H2; M2 last (it tests a boundary, not the plan's core).
+**Order of execution:** E1 (done once; re-run after v0.5.1); **M0 now** — inference on existing data; E2 after its exports are authored; M1 next (it exercises most of the plan); then H1, H2; M2 last (it tests a boundary, not the plan's core).
 
 ## Results
 

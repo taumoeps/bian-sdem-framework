@@ -17,7 +17,7 @@ Read, in this order:
 5. `metamodel/level-relationships.json` — the within-level relationship kinds you may read from the exports.
 6. `metamodel/export-conventions.json` — the attribute keys on export instances that steps 1–4 join on. **If an export lacks the key a step needs, that is a finding about the export, and the step produces no proposal.**
 
-Do **not** read the use case's gold set (`gold-mappings.json`) until phase 5. If you have already seen it, say so in the report.
+Do **not** read the use case's gold set (`<uc>-gold-mappings.json` or `gold-mappings.json`) until phase 5. The mappings you may treat as already approved are only those in the case's *given* file (`<uc>-mappings-given.json`) — not the example's full `mappings.json`. If you have already seen the gold set, say so in the report.
 
 ## 2. Constraints — read these twice
 
@@ -121,13 +121,37 @@ One file per use case: `examples/<use-case>/proposals-executor.json`, in the map
 
 Rules: `evidence[0]` starts with `engine_rationale:` and names the plan ID and step. Only registry relationships may be used (the nine); candidate-rule connections (S20, S21, S25, S28, S29) and institution-only ones (S36, S50) are reported in the **Candidate-rule proposals** section of the report in the same record shape, not in this file, because the validator will reject their relationship.
 
+## 4b. Output — the inference log
+
+Alongside the proposal file, write `examples/<use-case>/inference-log.json`: **one record per connection attempted**, including those that produced no proposal. This is the file the next optimisation step is planned from.
+
+```json
+{
+  "use_case": "M0", "executor": "<model>-executor/<date>",
+  "attempts": [
+    {
+      "plan_id": "S33", "connection": "APP-FRAUD-ENGINE DEPLOYED_ON INF-CLOUD-K8S-PROD",
+      "step_assigned": 1, "step_used": 1, "fallback": false,
+      "data_read": ["a3-application.json: APP-FRAUD-ENGINE.attributes.deployed_on", "a4-technology.json: INF-CLOUD-K8S-PROD.attributes.hosts"],
+      "reasoning": "both sides name each other; direct join, no inference",
+      "confidence_predicted": "high", "confidence_given": 0.8,
+      "proposal_id": "P-M0-001",
+      "outcome": "hit | miss | false | no_proposal",
+      "outcome_note": "filled in phase 6 after sdmm-eval"
+    }
+  ]
+}
+```
+
+`outcome` is set after scoring: **hit** (proposal matches gold), **false** (proposal not in gold), **miss** (gold connection with no proposal — one record per missed gold arrow), **no_proposal** (attempted, nothing proposed, with the reason in `reasoning`). Every plan ID the use case lists must appear at least once.
+
 ## 5. Judge, then score
 
 ```bash
-python -m sdmm.graph check  examples/<uc>/a*.json examples/<uc>/mappings.json examples/<uc>/proposals-executor.json
+python -m sdmm.graph check  examples/<uc>/a*.json examples/<uc>/<uc>-mappings-given.json examples/<uc>/proposals-executor.json
 python -m sdmm.validate --strict examples/<uc>/proposals-executor.json
-python -m sdmm.evaluate examples/<uc>/gold-mappings.json --proposals examples/<uc>/proposals-executor.json
-python -m sdmm.graph trace <id> --direction down examples/<uc>/a*.json examples/<uc>/mappings.json examples/<uc>/proposals-executor.json --status approved,proposed
+python -m sdmm.evaluate examples/<uc>/<uc>-gold-mappings.json --proposals examples/<uc>/proposals-executor.json
+python -m sdmm.graph trace <id> --direction down examples/<uc>/a*.json examples/<uc>/<uc>-mappings-given.json examples/<uc>/proposals-executor.json --status approved,proposed
 ```
 
 Only now open `gold-mappings.json`. Paste the `sdmm-eval` output verbatim into the report.
@@ -170,3 +194,4 @@ Every row in *Findings* must say what to change: the ID's `fill_step`, `confiden
 - The planted mismatch (where the case has one) surfaced as a finding.
 - `sdmm-validate --strict` passes on the proposal file: draft warnings (missing evidence kinds, `bian_release`, `canonical_id` on proposed records) are reported but not promoted to errors under `--strict`.
 - Predicted-vs-observed filled for every ID the case exercises, including the ones that failed.
+- `inference-log.json` written, with an `outcome` on every attempt.

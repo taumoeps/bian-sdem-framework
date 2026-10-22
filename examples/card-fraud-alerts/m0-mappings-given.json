@@ -1,0 +1,32 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "mappings": [
+    {
+      "mapping_id": "FRD-001",
+      "source": {
+        "id": "CAP-310",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-044",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-FRAUD-DETECTION"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-FRAUD-2026#s2",
+        "domain_scope_assessment:BA-FRAUD-2026#s2"
+      ],
+      "rationale": "Fraud-alerting capability sits inside the selected fraud-detection domain's scope",
+      "bian_release": "BIAN-RELEASE-X",
+      "baseline_id": "BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    }
+  ]
+}
