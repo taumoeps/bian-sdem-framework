@@ -548,12 +548,12 @@ Tier 1 deterministic candidates per arrow, tier 2 model-assisted ranking, eviden
 
 ## 5. Mapping Diagram
 
-The four design models of the Service Domain Architecture Design Model, side by side, each listing its entities from the catalogue (`metamodel/`). No connectors are drawn: the arrows between levels are the mappings themselves, which are defined in the registry and recorded per institution in mapping documents, not in this picture. Entity IDs are the catalogue `type` strings.
+The four design models of the Service Domain Architecture Design Model, stacked A1 to A4, each a band listing its entities from the catalogue (`metamodel/`). No connectors are drawn: the arrows between levels are the mappings themselves, which are defined in the registry and recorded per institution in mapping documents, not in this picture. Entity IDs are the catalogue `type` strings.
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph A1["A1 Business Architecture — 10 entities"]
-      direction TB
+      direction LR
       a1_01["A1.BusinessCapability"]
       a1_02["A1.ValueStream"]
       a1_03["A1.ValueStreamStage"]
@@ -567,7 +567,7 @@ flowchart LR
       a1_01 ~~~ a1_02 ~~~ a1_03 ~~~ a1_04 ~~~ a1_05 ~~~ a1_06 ~~~ a1_07 ~~~ a1_08 ~~~ a1_09 ~~~ a1_10
     end
     subgraph A2["A2 Service Domain Architecture — 15 entities"]
-      direction TB
+      direction LR
       a2_01["A2.BusinessArea"]
       a2_02["A2.BusinessDomain"]
       a2_03["A2.ServiceDomain"]
@@ -580,13 +580,13 @@ flowchart LR
       a2_10["A2.BusinessScenario"]
       a2_11["A2.BusinessObject"]
       a2_12["A2.BusinessObjectAttribute"]
-      a2_13["A2.BOMModel (artefact)"]
-      a2_14["A2.Wireframe (artefact)"]
-      a2_15["A2.SemanticAPI (artefact)"]
+      a2_13["A2.BOMModel<br/>(artefact)"]
+      a2_14["A2.Wireframe<br/>(artefact)"]
+      a2_15["A2.SemanticAPI<br/>(artefact)"]
       a2_01 ~~~ a2_02 ~~~ a2_03 ~~~ a2_04 ~~~ a2_05 ~~~ a2_06 ~~~ a2_07 ~~~ a2_08 ~~~ a2_09 ~~~ a2_10 ~~~ a2_11 ~~~ a2_12 ~~~ a2_13 ~~~ a2_14 ~~~ a2_15
     end
     subgraph A3["A3 Application Architecture — 8 entities"]
-      direction TB
+      direction LR
       a3_01["A3.ApplicationComponent"]
       a3_02["A3.ApplicationService"]
       a3_03["A3.ApplicationInterface"]
@@ -598,8 +598,8 @@ flowchart LR
       a3_01 ~~~ a3_02 ~~~ a3_03 ~~~ a3_04 ~~~ a3_05 ~~~ a3_06 ~~~ a3_07 ~~~ a3_08
     end
     subgraph A4["A4 Technology Architecture — 11 entities"]
-      direction TB
-      a4_01["A4.InfrastructureComponent (abstract)"]
+      direction LR
+      a4_01["A4.InfrastructureComponent<br/>(abstract)"]
       a4_02["A4.Deployment"]
       a4_03["A4.DeploymentEnvironment"]
       a4_04["A4.Node"]
@@ -612,6 +612,7 @@ flowchart LR
       a4_11["A4.Artifact"]
       a4_01 ~~~ a4_02 ~~~ a4_03 ~~~ a4_04 ~~~ a4_05 ~~~ a4_06 ~~~ a4_07 ~~~ a4_08 ~~~ a4_09 ~~~ a4_10 ~~~ a4_11
     end
+    A1 ~~~ A2 ~~~ A3 ~~~ A4
     classDef level fill:#f5f5f5,stroke:#9e9e9e,color:#212121
     class A1,A2,A3,A4 level
 ```
