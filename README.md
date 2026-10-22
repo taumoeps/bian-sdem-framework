@@ -362,27 +362,40 @@ The design specification calls this the **federated knowledge graph**: *federate
 
 If you are expecting to deploy something: there is nothing to deploy. This repository is **a rulebook, a file format, and two command-line components** that work on files written to that rulebook.
 
-| Component | Version | Commands | Job | Gives a verdict? |
-|---|---|---|---|---|
-| **Contract** | v0.2 | — | The rulebook: the eight permitted arrow types (`schema/relationship-types.json`) and the fields every mapping must carry (`schema/mapping.schema.json`) | — |
-| **Service Domain Mapping Model Validator** | v0.2 | `sdmm-validate`, `sdmm-diff` | **Gate.** Checks that a mapping document is well-formed and governed, and that its history has not been tampered with | yes — OK / errors |
-| **Service Domain Mapping Model Query** | v0.3 | `sdmm-trace` | **Query.** Answers traceability questions over approved mappings: what does X depend on, what depends on X | no — it reports, it does not judge |
+| Component | Version | Commands | Operates on | Job | Target-state box it implements |
+|---|---|---|---|---|---|
+| **Contract** | v0.2 | — | — | The rulebook: the eight permitted arrow types (`schema/relationship-types.json`) and the fields every mapping must carry (`schema/mapping.schema.json`) | *SDMM Mapping Metamodel & Rules* |
+| **Service Domain Mapping Model Validator** | v0.2 | `sdmm-validate`, `sdmm-diff` | an **existing** mapping document | **Gate.** Checks the document's *structure and governance* — not the correctness of any A1–A4 relationship in it | *SDMM Validation & Approval* (the deterministic checks; approval itself is recorded as fields) |
+| **Service Domain Mapping Model Query** | v0.3 | `sdmm-trace` | an **existing** mapping document | **Trace.** Follows the approved arrows an architect already wrote, in either direction, and prints the chain — it draws no arrows of its own | *Federated Knowledge Graph — Mapping Registry & Traceability* (the traversal half; impact classification is v0.5) |
+
+**Context of use — read this before the names mislead you.** Neither component contains mapping logic. Neither decides, suggests or assesses whether a Business Capability belongs to a Service Domain, whether a domain is realised by an application, or whether anything should be deployed anywhere. Those decisions are made by architects and recorded in a mapping document. The Validator checks that the *document* is well-formed and governed; the Query reads the *document's* approved arrows and joins them into chains. Both are downstream of the architect, never a substitute for one. A gap in a trace means no mapping has been decided there yet.
 
 Both components read the same `mappings.json` files. The validator decides whether a file is acceptable; the query assumes it already is. Neither stores anything, transforms anything, or sends anything anywhere.
 
 ### Service Domain Mapping Model Validator (v0.2)
 
+**Target-state component:** *SDMM Validation & Approval.* **Operates on:** an existing mapping document written and approved by architects. **Does not:** decide or assess any A1–A4 relationship.
+
 ```mermaid
 flowchart LR
-    IN["A mapping document<br/>(mappings.json)"] --> CHK["sdmm-validate"]
-    CAT["Optional: catalogue of<br/>known entity instances"] -.-> CHK
-    REF["Optional: your licensed<br/>BIAN reference lookup"] -.-> CHK
+    IN["A mapping document<br/>(mappings.json)<br/>authored by architects"]
+    PREV["The same document<br/>at a previous commit"]
+    CAT["Optional: catalogue of<br/>known entity instances"]
+    REF["Optional: your licensed<br/>BIAN reference lookup"]
+    subgraph VALID["Target state: SDMM Validation & Approval"]
+      CHK["sdmm-validate<br/>structure + governance"]
+      DIFF["sdmm-diff<br/>history + immutability"]
+    end
+    IN --> CHK
+    CAT -.-> CHK
+    REF -.-> CHK
+    IN --> DIFF
+    PREV --> DIFF
     CHK --> OK["OK"]
     CHK --> ERR["A list of problems,<br/>one line each"]
-    PREV["The same document<br/>at a previous commit"] --> DIFF["sdmm-diff"]
-    IN --> DIFF
     DIFF --> OK2["OK"]
     DIFF --> ERR2["Illegal transitions,<br/>edits to approved records"]
+    style VALID fill:#2e7d32,color:#fff,stroke:#1b5e20
 ```
 
 **`sdmm-validate` — is this document acceptable?** It checks whether each arrow is one of the eight permitted types; whether the required fields are present; whether a reviewed arrow names its reviewer and date; whether a replaced arrow is linked to its replacement; whether a BIAN-guided arrow names the BIAN release it used and anchors its A2 end to a canonical id; whether the evidence cited covers the kinds the arrow's type requires. With a catalogue of known entity instances (`--catalogue`) it also confirms both ends exist. With a licensed BIAN lookup attached, it confirms canonical ids exist in the named release.
@@ -395,12 +408,19 @@ flowchart LR
 
 ### Service Domain Mapping Model Query (v0.3)
 
+**Target-state component:** the traversal half of *Federated Knowledge Graph — Cross-layer Mapping Registry & Traceability.* **Operates on:** the approved arrows in an existing mapping document. **Does not:** create, infer or assess any A1–A4 relationship; impact classification is v0.5.
+
 ```mermaid
 flowchart LR
-    IN["One or more<br/>mapping documents"] --> TR["sdmm-trace &lt;entity-id&gt;"]
+    IN["One or more mapping documents<br/>(approved arrows, written by architects)"]
+    subgraph FED["Target state: Federated Knowledge Graph — Mapping Registry & Traceability (traversal only)"]
+      TR["sdmm-trace &lt;entity-id&gt;<br/>follows existing arrows"]
+    end
+    IN --> TR
     TR --> DOWN["Downstream tree:<br/>what it depends on<br/>(toward A4)"]
     TR --> UP["Upstream tree:<br/>what depends on it<br/>(toward A1)"]
     TR -.->|--json| DATA["Paths with the<br/>mapping_id of every hop"]
+    style FED fill:#f9a825,color:#000,stroke:#f57f17
 ```
 
 **`sdmm-trace` — starting here, what is connected?** Give it an entity instance ID and it follows the approved arrows from there — forward toward Technology Architecture (*downstream*: what this depends on) or backward toward Business Architecture (*upstream*: what depends on this) — and prints the chain. Each hop names the `mapping_id` that justifies it, so a level-skipping answer such as "this capability runs on that Kubernetes platform" is always a derived path with provenance, never a stored record. Arrows are stored once, in their registry direction; upstream reads them backwards. Nothing is stored in reverse.
