@@ -141,21 +141,23 @@ Rows 1–7 are rules: given a BIAN operation, they say what its REST form is. Ro
 
 **BIAN's published cross-level mapping is confined to one boundary, A2 → A3, and within it to the API and information path.** The capability boundary has no published mapping, and the infrastructure boundary has none by design.
 
-### 1.4 SDMM arrows against BIAN coverage
+### 1.4 SDMM arrows against BIAN's mappings
 
-| Arrow (registry rule) | BIAN source side | BIAN target side | BIAN mapping guidance | Engine approach | Default confidence band |
-|---|---|---|---|---|---|
-| `A1.BusinessCapability SUPPORTED_BY A2.ServiceDomain` | ● BCM instances | ● domains | ○ unpublished | Text + structure inference; strongest evidence required | **low** |
-| `A1.ValueStream ALIGNED_TO A2.BusinessScenario` | ○ | ● scenarios | ◐ scenarios only | Stage text vs scenario interactions | low–medium |
-| `A1.BusinessProcess USES_DOMAIN A2.ServiceDomain` | ○ | ● domains | ◐ scenarios as templates | Step text vs operation descriptions; scenario participation | medium |
-| `A1.BusinessObject ALIGNED_TO A2.BusinessObject` | ○ | ● BOM | ● BOM attributes | Name + attribute match | medium–high |
-| `A2.ServiceDomain REALIZED_BY A3.ApplicationComponent` | ● | ○ | ◐ functional-partition method | Description overlap + composition + existing arrows | medium |
-| `A2.ServiceOperation IMPLEMENTED_BY A3.APIOperation` | ● with I/O params | ◐ reference APIs | ● REST mapping rules | Rule-based: action term, qualifier, method, payload attributes; emits findings | **high** |
-| `A2.BusinessObject MAPPED_TO A3.DataEntity` | ● BOM | ○ | ● information profile | Attribute-level match | medium–high |
-| `A3.ApplicationComponent DEPLOYED_ON A4.InfrastructureComponent` | ○ | ○ | ◐ deployment patterns ([SAPG] §4.1–4.3), no mapping method | Structural: deployment data in the A4 export; BIAN pattern as a prior | high *if* data present, else no proposal |
-| `A3.ApplicationComponent DEPLOYED_AS A4.Deployment` | ○ | ○ | ◐ as above — the domain-as-container expectation is this arrow's pattern | As above | As above |
+§1.3 lists the mappings **BIAN** publishes. This table lists the nine arrows **SDMM** allows (the registry) and asks one question of each: does a BIAN mapping from §1.3 cover it?
 
-Reading across: **A2 is the only level BIAN fills.** Three of the nine arrows have a published BIAN method on their A2 side (operation→API, object→entity, object→BOM); two have a method only (domain→application, process→domain); the capability arrow — the one most people expect BIAN to answer — has none published; the two A4 arrows have deployment *patterns* but no vocabulary, no data and no mapping method, and need no text at all.
+| SDMM arrow (registry rule) | Covered by a BIAN mapping? | Which one (§1.3) | What is left to the institution |
+|---|---|---|---|
+| `A1.BusinessCapability SUPPORTED_BY A2.ServiceDomain` | **No** | — (BCM→Service Domain unpublished) | The whole mapping |
+| `A1.ValueStream ALIGNED_TO A2.BusinessScenario` | **No** | — (value streams not modelled) | The whole mapping; scenarios are a published target |
+| `A1.BusinessProcess USES_DOMAIN A2.ServiceDomain` | **No** | — | The whole mapping; scenarios usable as templates |
+| `A1.BusinessObject ALIGNED_TO A2.BusinessObject` | **No** | — (BOM is a target, not a mapping) | The whole mapping; BOM attributes are the published target |
+| `A2.ServiceDomain REALIZED_BY A3.ApplicationComponent` | **Method only** | #8 functional partition; #9 legacy wrapping | Deciding which application; BIAN says how to decide, not what |
+| `A2.ServiceOperation IMPLEMENTED_BY A3.APIOperation` | **Yes** | #1–#7 REST mapping and reference APIs | Comparing the bank's API to the reference form |
+| `A2.BusinessObject MAPPED_TO A3.DataEntity` | **Partial** | #3 control record = resource (payload attributes) | Matching the bank's data entity to the BOM object |
+| `A3.ApplicationComponent DEPLOYED_ON A4.InfrastructureComponent` | **No** | — (deployment patterns only) | The whole mapping, from deployment data |
+| `A3.ApplicationComponent DEPLOYED_AS A4.Deployment` | **No** | — (domain-as-container is a pattern, not a mapping) | The whole mapping, from deployment data |
+
+**One arrow of nine is covered by a BIAN mapping; one is partially covered; one has a BIAN method; six have nothing.** The engine's design in §2 follows from this row by row.
 
 ### 1.5 Consequences for the engine design
 
