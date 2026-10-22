@@ -30,7 +30,7 @@ Do **not** read the use case's gold set (`<uc>-gold-mappings.json` or `gold-mapp
 | **Never approve.** | Every record is `status: proposed`. You do not set `reviewer_id` or `approved_at`. |
 | **Never invent instances.** | Every `source.id` and `target.id` must exist in a level export. If the connection needs an instance that is not there, that is a finding ("no instance to map to"), not a proposal. |
 | **No proposal is a valid answer.** | Where the data does not support any candidate at the assigned step or a permitted fallback, record *no proposal* with the reason. Precision over recall. |
-| **Confidence is the plan's, not yours.** | Set `confidence` to the band the plan predicts for that ID (high 0.8, medium 0.6, low 0.4), adjusted down one band if you used a fallback step. **A step-3 derivation over non-approved arrows takes min(plan band, lowest input band)** — a closure is only as good as its weakest input. If you believe the plan's band is wrong, say so in findings — do not silently change it. |
+| **Confidence is the plan's, not yours.** | Set `confidence` to the band the plan predicts for that ID (high 0.8, medium 0.6, low 0.4), adjusted down one band if you used a fallback step. **A step-3 derivation over non-approved arrows is capped by its inputs:** where the rule needs *all* its inputs (S01: every process of the capability), the cap is the weakest input's band; where *any one* input suffices (S17: one implemented operation realises the domain; S25, S22, S23), the cap is the strongest input's band (M1 finding 3). If you believe the plan's band is wrong, say so in findings — do not silently change it. |
 
 ## 3. The steps, as rules
 
@@ -43,7 +43,7 @@ Read the A4 export's `relationships` and `attributes`, and the A3 export's `attr
 | Connection | Join on |
 |---|---|
 | S32 `DEPLOYED_AS` | `A4.Deployment.attributes.component_id` = the component's id (or `A3.ApplicationComponent.attributes.deployed_as` lists the deployment id) |
-| S33 `DEPLOYED_ON` | `A3.ApplicationComponent.attributes.deployed_on` lists the A4 id, or the A4 instance's `attributes.hosts` lists the component |
+| S33 `DEPLOYED_ON` | `A3.ApplicationComponent.attributes.deployed_on` lists the A4 id, or the A4 instance's `attributes.hosts` lists the component, **or** an `A4.Deployment` with `component_id` = the component names the platform in `platform_id`. `DEPLOYED_ON` is environment-agnostic — a component hosted in UAT is `DEPLOYED_ON` the UAT platform; the environment is carried by the `A4.Deployment` (S32) (M1 finding 2) |
 | S36 component → system software | as S33 where the A4 target is `A4.SystemSoftware` |
 | S50 data entity → database platform | `A3.DataEntity.attributes.stored_in` lists an `A4.SystemSoftware` id |
 | S41 / S45 | `A3.ApplicationService.attributes.consumes` (or the function's) lists `A4.TechnologyService` ids |
@@ -54,16 +54,29 @@ Relationships in exports are within-level only (policy); cross-level facts live 
 Working: quote the record. If no record names the component, **no proposal**.
 
 ### Step 2 — BIAN REST rule application (operation ↔ API)
-For each A2 operation and each A3 API operation, compare, in this order; all four must hold for a proposal at the plan's confidence, three for one band lower, fewer → no proposal:
 
-| # | Rule | Source | How to test |
-|---|---|---|---|
-| 1 | The API belongs to an application that is within the domain's boundary | [SAPG] §3.5 p. 52: the Service Domain matches the application boundary of the API | an approved `REALIZED_BY` for the component, or (reverse cases) the name of the domain's asset type (`A2.ServiceDomain.attributes.asset_type` → `A2.AssetType.name`) appears in the component's API paths, data entity names or description. No asset type in the export → rule 1 untestable |
-| 2 | Action term ↔ HTTP method | [SAPG] §3.2.5 Figure 14: BIAN defines **17 action terms** in four categories — service centre: Activate, Configure, Feedback · create instance: Create, Initiate, Register, Evaluate, Provide · act on instance: Update, Control, Exchange, Capture, Execute, Request, Grant · obtain information: Retrieve, Notify. §3.5: Retrieve maps to HTTP GET; the others take noun form; **Notify is not used in the BIAN REST mapping**; methods used are GET, PUT, POST, (PATCH), DELETE | Read `A2.ServiceOperation.attributes.action_term` and `A3.APIOperation.attributes.method`. Retrieve ⇔ GET (verified). **Executor convention, mark as such:** Create/Initiate/Register/Evaluate/Provide/Request ⇔ POST; Update/Control/Exchange/Capture/Grant/Execute ⇔ PUT or PATCH; Activate/Configure/Feedback ⇔ PUT or POST. **Notify, or any term not in the 17: rule 2 is untestable and counts as a miss.** A mismatch (e.g. Retrieve on POST) is a **finding** on the API, reported with the proposal |
-| 3 | Behaviour qualifier ↔ sub-path | [SAPG] §3.5 p. 55: the qualifier narrows to a sub-partition of the control record | `attributes.behavior_qualifier` (or a clear synonym) appears as a segment of `attributes.path` after the resource; a null qualifier passes |
-| 4 | Control-record attributes ↔ payload fields | [SAPG] §3.5: attributes are filtered by action term for input/output | ≥ 50 % of `attributes.input_attributes` ∪ `output_attributes` (or clear synonyms) appear in `A3.APIOperation.attributes.payload_fields` |
+Rewritten after M1: a tally of "3 of 4 rules" is not a fill rule — on a six-operation domain it admits nineteen wrong pairs (M1 finding 1). Step 2 is a **decision procedure** with one precondition, three evidential checks and a disambiguation.
 
-Working: list the four checks with the values compared. A mismatch on rule 2 or 4 that still yields a proposal must be written as a finding: *"API X implements operation Y but uses POST for a Retrieve"*.
+**Precondition — boundary** ([SAPG] §3.5 p. 52: the Service Domain matches the application boundary of the API). The API's component is `REALIZED_BY` the domain (approved), or — reverse cases — the name of the domain's asset type (`A2.ServiceDomain.attributes.asset_type` → `A2.AssetType.name`) appears in the component's API paths, data entity names or description. Fails → the pair is not considered. This is a gate, not a vote: it is the same for every API of one component and must never count as evidence.
+
+**Checks** — each is *pass*, *fail* or *neutral*; only pass and fail are evidence:
+
+| # | Check | Source | Pass | Fail | Neutral |
+|---|---|---|---|---|---|
+| 2 | Action term ↔ HTTP method | [SAPG] §3.2.5 (17 action terms), §3.5 (Retrieve → GET; Notify unused in the REST mapping) | Retrieve ⇔ GET (verified). **Executor convention, marked:** Create/Initiate/Register/Evaluate/Provide/Request ⇔ POST; Update/Control/Exchange/Capture/Grant/Execute ⇔ PUT or PATCH; Activate/Configure/Feedback ⇔ PUT or POST | any other combination | — (Notify or a term outside the 17: **fail** — no REST form) |
+| 3 | Behaviour qualifier ↔ path | [SAPG] §3.5 p. 55 | the operation has a qualifier and its name (or clear synonym) is a path segment after the resource | the operation has a qualifier and the path lacks it; **or** the operation has no qualifier and the path carries a segment that is another operation's qualifier | the operation has no qualifier and the path has no qualifier segment |
+| 4 | Attributes ↔ payload | [SAPG] §3.5 (attributes filtered by action term) | ≥ 50 % of `input_attributes` ∪ `output_attributes` appear in `payload_fields` **and** this API is the operation's best payload match (highest overlap) | < 50 % | — |
+
+**Decision, per operation, over the APIs that passed the precondition:**
+
+1. **Propose at the plan's band (high)** when checks 2 and 4 pass and check 3 is pass or neutral.
+2. **Propose one band lower, with a finding on the API** when check 2 fails but checks 3 (pass or neutral) and 4 pass and the API is the operation's unique best payload match — e.g. a Retrieve implemented as POST. The finding states the method mismatch.
+3. **Otherwise no proposal.** Two passes with a failed check 3, or check 4 failed, is not a mapping.
+4. **Disambiguation:** an operation maps to at most one API and an API to at most one operation in step 2. A decision-1 pair excludes any decision-2 pair that shares its operation or its API. If two APIs tie as an operation's best payload match, the one whose path contains the operation's qualifier wins; a remaining tie is **no proposal** with both candidates named in the log.
+
+**Notify operations.** A *Notify* operation has no REST form; if the A3 export carries an `A3.Event` whose name matches the operation's asset and state change, report it under *New connection candidates* as `A2.ServiceOperation → A3.Event` (no plan ID yet; M1 finding 5). Never as a proposal.
+
+Working: for every operation × API pair that passed the precondition, log the three check results and the decision reached, including suppressed pairs and the clause that suppressed them (M1 logged 36 pairs this way; that is the standard).
 
 ### Step 3 — Derivation over approved arrows
 Closure rules. Cite the `mapping_id` of every arrow used.
@@ -85,7 +98,7 @@ Only for the IDs the plan assigns to step 4, or as a declared fallback.
 |---|---|---|
 | S30 `MAPPED_TO`, S20, S31 | BOM / control-record attribute names vs data entity attribute names (normalise case, underscores, plural) | ≥ 50 % of the BIAN object's attributes matched; score = matched / BIAN attributes |
 | S12 `ALIGNED_TO` (object) | bank glossary attributes vs BOM attributes | as above |
-| S02 `ALIGNED_TO` (value stream) | **coverage of the scenario's operations**: each operation in `operation_sequence`, in order, is matched by a stage whose name shares the operation's verb or asset-type noun. A stream may have more stages than the scenario has operations — that is normal | score = covered operations / operations in the scenario; propose when ≥ 60 % |
+| S02 `ALIGNED_TO` (value stream) | **coverage of the scenario's operations**: each operation in `operation_sequence`, in order, is matched by a stage whose name shares the operation's **action term** (verb or a clear synonym: capture ≈ initiate/create, validate ≈ evaluate, execute, confirm ≈ retrieve/notify). The asset noun is **not** evidence — every operation of a domain shares it (M1 finding 4). A stream may have more stages than the scenario has operations | score = covered operations / operations in the scenario; propose when ≥ 60 % |
 | S06 | activity name vs operation name (action verb + asset noun) | both verb and noun match |
 | S18, S19, S21, S27 | as the plan's `data_needed` states | state the score |
 

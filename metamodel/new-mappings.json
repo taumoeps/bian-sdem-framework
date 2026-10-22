@@ -1,5 +1,5 @@
 {
-  "$schema_version": "0.5.3",
+  "$schema_version": "0.5.4",
   "generated_from": "metamodel/official-mappings.json plus the gap-fill assessment in docs/mapping-logic-planning.md §5",
   "note": "One entry per official-mapping ID. Existing official mappings keep their source reference; every entry gets a rule decision, the step that fills its instances (0 BIAN export, 1 data join, 2 rule application, 3 derivation, 4 structural matching, 5 text inference), the data that step needs, the reasoning, and a confidence (high/medium/low) that the connection is a sound mapping and that the chosen fill produces correct instances. Attribute keys named in data_needed are defined in metamodel/export-conventions.json (added after the E1 run showed the joins had no keys).",
   "steps": {
@@ -276,7 +276,7 @@
       "fill_step": 4,
       "data_needed": "A1.ValueStream attributes.stages (ordered) and A2.BusinessScenario attributes.operation_sequence; scored as coverage of the scenario's operations by stages, not a stage count",
       "confidence": "medium",
-      "reasoning": "Registry rule ALIGNED_TO, SDMM's own definition — BIAN has not modelled value streams (RN14 §3). Fill by matching stage sequence to scenario interaction sequence (structure), then description text. BIAN's announced value-stream catalogue (WQA26) would turn this into a lookup. Optional step-3 derivation (M0 finding 4): value stream realises capability K; K's process invokes operation O; O in a scenario's operation_sequence ⇒ candidate ALIGNED_TO, low."
+      "reasoning": "Registry rule ALIGNED_TO, SDMM's own definition — BIAN has not modelled value streams (RN14 §3). Fill by matching stage sequence to scenario interaction sequence (structure), then description text. BIAN's announced value-stream catalogue (WQA26) would turn this into a lookup. Optional step-3 derivation (M0 finding 4): value stream realises capability K; K's process invokes operation O; O in a scenario's operation_sequence ⇒ candidate ALIGNED_TO, low. Stages are matched on the operation's action term, never the asset noun (M1 finding 4)."
     },
     {
       "id": "S03",
@@ -501,7 +501,7 @@
       "fill_step": 3,
       "data_needed": "approved or step-2 IMPLEMENTED_BY instances plus A3 composition (step 3; confidence capped at the weakest input's band); fallback step 4: A2.ServiceDomain.attributes.asset_type's name in the component's API paths / data entity names; description comparison alone is step 5",
       "confidence": "high",
-      "reasoning": "Registry rule REALIZED_BY, verified BIAN method (SAPG §3.4 functional partition; §4.3.1 legacy wrapping). Minimal-inference fill: an application that implements a domain's operations (S24) realises the domain; where no API mapping exists, functional-partition comparison of descriptions (step 4)."
+      "reasoning": "Registry rule REALIZED_BY, verified BIAN method (SAPG §3.4 functional partition; §4.3.1 legacy wrapping). Minimal-inference fill: an application that implements a domain's operations (S24) realises the domain; where no API mapping exists, functional-partition comparison of descriptions (step 4). Confidence cap: any one implemented operation suffices for the derivation, so the cap is the strongest step-2 input (M1 finding 3)."
     },
     {
       "id": "S18",
@@ -606,7 +606,7 @@
       "fill_step": 2,
       "data_needed": "A2.ServiceOperation attributes.action_term / behavior_qualifier / input_attributes / output_attributes; A2.ControlRecord attributes.attributes; A3.APIOperation attributes.method / path / payload_fields (export-conventions.json); A2.ServiceDomain.attributes.asset_type for rule 1 in reverse cases",
       "confidence": "high",
-      "reasoning": "Registry rule IMPLEMENTED_BY, verified BIAN rules (SAPG §3.5): operation → REST form is prescribed. Fill by rule application — compare the bank's API path, method and payload to the reference form; emit findings for mismatches. The most mechanical arrow in the model."
+      "reasoning": "Registry rule IMPLEMENTED_BY, verified BIAN rules (SAPG §3.5): operation → REST form is prescribed. Fill by a decision procedure (guide step 2, rewritten after M1): a boundary precondition, then action term ↔ method, qualifier ↔ path and attributes ↔ payload as pass/fail/neutral evidence, with one-to-one disambiguation per operation and API. A 'count of rules passed' is not a rule — on a six-operation domain it admitted nineteen wrong pairs. Mismatches (e.g. Retrieve on POST) are proposed one band lower with a finding. The most mechanical arrow in the model."
     },
     {
       "id": "S25",
@@ -741,7 +741,7 @@
       "fill_step": 1,
       "data_needed": "A3.ApplicationComponent attributes.deployed_on, or A4 platform/node attributes.hosts (export-conventions.json)",
       "confidence": "high",
-      "reasoning": "Registry rule DEPLOYED_ON, SDMM compatibility definition accepting any concrete A4 entity. Fill by data join from the CMDB — no inference."
+      "reasoning": "Registry rule DEPLOYED_ON, SDMM compatibility definition accepting any concrete A4 entity. Fill by data join from the CMDB — no inference. Environment-agnostic: a component is DEPLOYED_ON every platform that hosts it (production, UAT, …); the environment is carried by the Deployment (S32). M1 finding 2."
     },
     {
       "id": "S34",
@@ -1057,6 +1057,22 @@
       "data_needed": "SBB composition; S33/S34 instances",
       "confidence": "low",
       "reasoning": "As S52 for nodes; inherits S34's uncertainty."
+    }
+  ],
+  "new_connection_candidates": [
+    {
+      "pair": "A2.ServiceOperation (Notify) → A3.Event",
+      "found_in": "M1",
+      "step": 4,
+      "reasoning": "A Notify operation has no REST form (SAPG §3.5); an A3.Event whose name states the same asset and state change is its natural realisation. No registry rule; report-only until an ID is assigned.",
+      "confidence": "medium"
+    },
+    {
+      "pair": "A1.BusinessProcess → A2.ServiceOperation",
+      "found_in": "E1, M0",
+      "step": 4,
+      "reasoning": "A process exported without activities may be matched directly to operations by the S06 rule; recorded as a note on S04.",
+      "confidence": "medium"
     }
   ]
 }

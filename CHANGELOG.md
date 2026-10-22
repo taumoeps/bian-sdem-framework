@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.4 — after M1 (F1 0.96; 12 of 12 approved arrows)
+
+- Executor guide step 2 rewritten as a decision procedure: boundary precondition as a gate, pass/fail/neutral checks, one-to-one disambiguation; "3 of 4 rules" withdrawn (it admitted 19 wrong pairs on a six-operation domain).
+- `DEPLOYED_ON` is environment-agnostic; M1 gold gains PAY-113 (UAT hosting).
+- Derivation confidence capped at the strongest input where any one suffices, weakest where all are needed.
+- Value-stream stages matched on the action term, not the asset noun.
+- `new-mappings.json` gains `new_connection_candidates` (Notify → Event; process → operation).
+
 ## 0.5.3 — after M0 run 2 (P 0.86, R 1.00)
 
 - Guide: value stream ↔ scenario scored as coverage of the scenario's operations (not a stage count); optional lower-numbered steps allowed when the plan lists them for the ID, labelled `optional-step`; parent-capability inheritance is report-only.

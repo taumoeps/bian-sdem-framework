@@ -156,7 +156,7 @@ class PaymentInitiationExampleTests(unittest.TestCase):
         u = {m['mapping_id'] for m in json.loads((self.P / 'mappings.json').read_text())['mappings']}
         g = {m['mapping_id'] for m in json.loads((self.P / 'm1-mappings-given.json').read_text())['mappings']}
         d = {m['mapping_id'] for m in json.loads((self.P / 'm1-gold-mappings.json').read_text())['mappings']}
-        self.assertEqual(g | d, u); self.assertEqual(g & d, set()); self.assertEqual(len(d), 12)
+        self.assertEqual(g | d, u); self.assertEqual(g & d, set()); self.assertEqual(len(d), 13)
 
     def test_planted_mismatch_is_in_the_data(self):
         a3 = json.loads((self.P / 'a3-application.json').read_text())

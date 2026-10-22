@@ -92,7 +92,7 @@
 
 **Scenario.** The business and domain architecture are mapped and approved. The payments platform exists — applications, APIs, data entities and deployments are exported from the APM and CMDB to the export conventions — but no A2→A3 or A3→A4 mappings have been written.
 
-**Given.** `examples/payment-initiation/a1–a4-*.json` (68 instances: see that folder's README); `m1-mappings-given.json` — PAY-001…005 approved (A1→A2: `SUPPORTED_BY`, `ALIGNED_TO` ×2, `USES_DOMAIN` ×2). **Gold (sealed):** `m1-gold-mappings.json` — PAY-101…112 approved: five `IMPLEMENTED_BY`, one `REALIZED_BY`, one `MAPPED_TO`, two `DEPLOYED_ON`, three `DEPLOYED_AS`. Do not open it until phase 5. `mappings.json` in that folder is the union and is **not** an input to the executor.
+**Given.** `examples/payment-initiation/a1–a4-*.json` (68 instances: see that folder's README); `m1-mappings-given.json` — PAY-001…005 approved (A1→A2: `SUPPORTED_BY`, `ALIGNED_TO` ×2, `USES_DOMAIN` ×2). **Gold (sealed):** `m1-gold-mappings.json` — PAY-101…113 approved: five `IMPLEMENTED_BY`, one `REALIZED_BY`, one `MAPPED_TO`, three `DEPLOYED_ON` (PAY-113, UAT hosting, added after run 1), three `DEPLOYED_AS`. Do not open it until phase 5. `mappings.json` in that folder is the union and is **not** an input to the executor.
 
 **Planted.** `API-PI-04` implements the *Retrieve* operation as **POST** (recorded in the gold's rationale as a legacy-channel deviation): rule 2 must fail and be reported as a finding while rules 1, 3, 4 hold, so the proposal lands one band lower. `API-PI-06` implements nothing. `SO-PI-06` is *Notify* (no REST form). `CMP-PAY-CAPTURE` / `CMP-PAY-VALIDATE` have no deployment records. `ENT-ACCOUNT-CACHE` matches no BOM object. Three Service Domains are exported, so step 5 has a real candidate set.
 
@@ -102,9 +102,9 @@
 
 | ID | Connection | Step | Predicted |
 |---|---|---|---|
-| S33 ×2, S32 ×3 | hub and gateway → platform / deployments | 1 | high — pure joins; **no** proposal for CMP-PAY-CAPTURE / CMP-PAY-VALIDATE |
+| S33 ×3, S32 ×3 | hub and gateway → platforms / deployments (hub → UAT platform included; `DEPLOYED_ON` is environment-agnostic since v0.5.4) | 1 | high — pure joins; **no** proposal for CMP-PAY-CAPTURE / CMP-PAY-VALIDATE |
 | S24 ×5 | operations → APIs | 2 | high for 01, 02, 03, 05 (4 of 4 rules); **medium** for 04 (rule 2 fails: Retrieve on POST — must be a finding); no proposal for SO-PI-06 (Notify) or API-PI-06 |
-| S17 | SD-PI → APP-PAY-HUB | 3 | medium — capped at the weakest step-2 input unless all five are high; **no** proposal for SD-PE, SD-PA |
+| S17 | SD-PI → APP-PAY-HUB | 3 | high — capped at the **strongest** step-2 input (any one implemented operation suffices; v0.5.4); **no** proposal for SD-PE, SD-PA |
 | S25 | operations → SVC-PAY-INIT | 3 | high (candidate-rule report) |
 | S30 | BBO-PAY-INSTR → ENT-PAY-INSTR | 4 | high (8/8 attributes); no proposal for ENT-ACCOUNT-CACHE; BBO-PARTY → nothing |
 | S20 | CR-PI → ENT-PAY-INSTR | 4 | high (10/11) — candidate-rule report |
@@ -716,3 +716,15 @@ mappings to supersede: P-M1-001, P-M1-003
 | S01, S02, S04, S12 | the five given arrows | given; re-derivations agree |
 
 **Summary.** The plan reaches every approved arrow of a 68-instance brownfield estate: steps 1, 3 and 4 are mechanical and precise, and the planted REST deviation surfaces exactly where the case put it. The one false proposal is a modelling question the plan has not answered (does `DEPLOYED_ON` cover non-production hosting?), not an inference error. The finding that matters is step 2: the four REST rules are sound as *necessary conditions* but the "three of four" clause is not a usable fill rule — on this estate it admits nineteen wrong pairs for one right one. The executor's disambiguation convention recovers the correct five; it should be written into the guide, together with evidential-only counting of the rules. Next for the data: H1 and H2 will exercise step 2 in reverse and under hostile naming, where this weakness will matter more.
+
+### M1 — actions taken on the findings (v0.5.4)
+
+| Finding | Action |
+|---|---|
+| 1 — "3 of 4" is not a fill rule | Guide step 2 rewritten as a **decision procedure**: boundary precondition (a gate, never a vote); checks 2–4 as pass / fail / neutral (null qualifier is neutral, not a pass); propose at band only on 2+4 pass; one band lower with a finding only for a method mismatch that is the unique best payload match; one-to-one disambiguation per operation and API; ties are no proposal. The disambiguation Opus applied by convention is now the rule |
+| 2 — UAT hosting | `DEPLOYED_ON` is environment-agnostic; the environment lives on the Deployment. PAY-113 (hub `DEPLOYED_ON` UAT platform) added to the gold; the A3 export's `deployed_on` lists both platforms. Run 1's one false proposal is correct under the restated gold → precision 1.0 |
+| 3 — confidence cap | A derivation is capped at the **strongest** input where any one input suffices (S17, S25, S22, S23) and at the weakest only where all are needed (S01) |
+| 4 — stage matching | Stages match on the operation's **action term**, never the asset noun |
+| 5 — Notify → event | Recorded as a structured new-connection candidate in `new-mappings.json` (`new_connection_candidates`); reported, never proposed, until it has an ID |
+
+**M1 is complete** on the plan's core: F1 0.96 on run 1, 1.0 under the restated gold. The step-2 rewrite is the significant improvement to carry into H1 and H2, where step 2 runs in reverse and under hostile naming.

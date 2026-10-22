@@ -402,6 +402,29 @@
       "baseline_id": "PAY-BASE-2026-Q4",
       "reviewer_id": "sam.infra",
       "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-113",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-K8S-PAY-UAT",
+        "type": "A4.SystemSoftware",
+        "version": "1.29"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#uat"
+      ],
+      "rationale": "UAT hosting of the hub; DEPLOYED_ON is environment-agnostic, the environment is on DEP-PAYHUB-UAT (added after M1: the CMDB and the UAT deployment both state it)",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
     }
   ]
 }

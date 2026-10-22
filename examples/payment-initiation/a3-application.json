@@ -15,7 +15,8 @@
       "attributes": {
         "vendor": "in-house",
         "deployed_on": [
-          "INF-K8S-PAY-PROD"
+          "INF-K8S-PAY-PROD",
+          "INF-K8S-PAY-UAT"
         ],
         "deployed_as": [
           "DEP-PAYHUB-PROD",
