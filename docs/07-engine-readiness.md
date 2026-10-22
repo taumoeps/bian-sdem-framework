@@ -21,7 +21,7 @@ It reads the federated graph (four level exports with `description` text, plus e
 | Never use an entity outside the catalogue, or an arrow outside the registry | `sdmm-validate` structural checks |
 | Never store BIAN definition text in this repository | `ReferenceBinding.definition` is populated only by an institution's licensed resolver at run time |
 
-A proposal lacking the evidence kinds its arrow type requires is accepted with a **warning** ("must be supplied before approval"); the same gap on an `approved` record is an error. Evidence is gathered during review, not invented by the engine.
+A proposal lacking the evidence kinds its arrow type requires, or the `bian_release` / `canonical_id` a BIAN-guided arrow needs, is accepted with a **warning** ("must be supplied before approval"); the same gap on an `approved` record is an error. Evidence and anchoring are completed during review, not invented by the engine — though an engine carries a `canonical_id` through when the level export already has one.
 
 ## What an engine reads
 

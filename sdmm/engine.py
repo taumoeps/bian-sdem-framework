@@ -20,10 +20,11 @@ class MappingEngine(Protocol):
 
 def proposal(mapping_id, src, rel, tgt, confidence, rationale, engine, baseline_id='ENGINE-RUN'):
     """Shape every engine output the same way: a valid record with status proposed."""
-    return {'mapping_id': mapping_id,
-            'source': {'id': src['id'], 'type': src['type'], 'version': src['version']},
-            'relationship': rel,
-            'target': {'id': tgt['id'], 'type': tgt['type'], 'version': tgt['version']},
+    def ref(i):
+        r = {'id': i['id'], 'type': i['type'], 'version': i['version']}
+        if i.get('canonical_id'): r['canonical_id'] = i['canonical_id']   # carried from the level export, never invented
+        return r
+    return {'mapping_id': mapping_id, 'source': ref(src), 'relationship': rel, 'target': ref(tgt),
             'status': 'proposed', 'confidence': round(confidence, 2),
             'evidence': [f'engine_rationale:{rationale}'],
             'rationale': rationale, 'baseline_id': baseline_id, 'created_by': engine}

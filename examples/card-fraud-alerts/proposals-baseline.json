@@ -14,7 +14,8 @@
       "target": {
         "id": "SD-044",
         "type": "A2.ServiceDomain",
-        "version": "1.0"
+        "version": "1.0",
+        "canonical_id": "BIAN-FRAUD-DETECTION"
       },
       "status": "proposed",
       "confidence": 0.7,
@@ -30,7 +31,8 @@
       "source": {
         "id": "SD-044",
         "type": "A2.ServiceDomain",
-        "version": "1.0"
+        "version": "1.0",
+        "canonical_id": "BIAN-FRAUD-DETECTION"
       },
       "relationship": "REALIZED_BY",
       "target": {

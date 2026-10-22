@@ -221,11 +221,14 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
             if mapping.get('perspective') and mapping['perspective'] != rule['perspective']:
                 fail('structural', f"perspective {mapping['perspective']!r} does not match registry {rule['perspective']!r}")
             if rule['authority'].startswith('bian_'):
+                # Proposals are drafts: BIAN anchoring is required at approval, flagged until then.
+                draft = mapping.get('status') == 'proposed'
+                report = (lambda msg: warnings.append(f'{prefix}: {msg}; must be supplied before approval')) if draft else (lambda msg: fail('governance', msg))
                 if not mapping.get('bian_release'):
-                    fail('governance', f"{rule['authority']} mapping requires bian_release")
+                    report(f"{rule['authority']} mapping requires bian_release")
                 for label, ent in (('source', source), ('target', target)):
                     if level_of(ent.get('type'), registry) == bian_level and not ent.get('canonical_id'):
-                        fail('governance', f"{rule['authority']} mapping requires canonical_id on its {bian_level} {label}")
+                        report(f"{rule['authority']} mapping requires canonical_id on its {bian_level} {label}")
             required = set(rule.get('required_evidence', []))
             refs = [r for r in mapping.get('evidence', []) if isinstance(r, str)]
             kinds = {k for k, _ in map(split_evidence, refs) if k}
