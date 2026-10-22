@@ -37,46 +37,76 @@ Before designing any inference, establish what the reference architecture itself
 
 ### 1.4 BIAN mapping scope by entity
 
-Which of the 44 catalogue entities are BIAN's, and which are not. An entity is **in BIAN scope** when BIAN defines the concept and publishes its instances on the public portal. Everything else is **not covered by BIAN**: the entity comes from ArchiMate, TOGAF or SDMM, and its instances are the institution's. (Guidance BIAN offers for mapping *to* non-BIAN entities is detailed in Appendix A.1; it does not make those entities BIAN's.)
+All 44 catalogue entities. **Covered by BIAN** is "Yes" when BIAN defines the concept and publishes its instances; blank otherwise. **BIAN mapping to next level** says whether BIAN publishes a way to map this entity across the boundary below it: Yes (a published rule or method), Partial, Method only, No, or — where no arrow exists. Entities not covered by BIAN are listed with blank BIAN columns so the scope is visible in one table.
 
-#### In BIAN scope — 16 entities
+Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 release notes · **[SAPG]** Semantic API Practitioner Guide v8.1 · **[APIP]** BIAN Semantic API portal. (What BIAN offers as *guidance* for the uncovered entities is in Appendix A.1.)
 
-| Level | Entity | BIAN concept | BIAN source |
-|---|---|---|---|
-| A1 | `A1.BusinessCapability` | Business Capability (BCM) | [SL14] Business Capability Map — Top Level View, Capability Views |
-| A2 | `A2.BusinessArea` | Business Area | [SL14] Service Landscape V14.0 views |
-| A2 | `A2.BusinessDomain` | Business Domain | [SL14] Service Landscape views; InSite Business Domain pages |
-| A2 | `A2.ServiceDomain` | Service Domain | [SL14] landscape views and per-domain pages; [SAPG] §2.4–2.5, §3.1–3.2 |
-| A2 | `A2.FunctionalPattern` | Functional Pattern | [SL14] MetaModel Overview; [SAPG] §3.2.1 |
-| A2 | `A2.AssetType` | Asset Type | [SL14] MetaModel Overview; [SAPG] §3.2.2 |
-| A2 | `A2.ControlRecord` | Control Record | [SL14] Control Record Model Overview; [SAPG] §3.2.3 |
-| A2 | `A2.ServiceGroup` | Service Group | [SL14] MetaModel Overview |
-| A2 | `A2.ServiceOperation` | Service Operation | [SL14] per-domain operations with I/O parameters; [SAPG] §3.2.5 |
-| A2 | `A2.BehaviorQualifier` | Behavior Qualifier | [SL14] MetaModel Overview; [SAPG] §3.2.4 |
-| A2 | `A2.BusinessScenario` | Business Scenario | [SL14] Business Scenarios; [SAPG] §3.3 |
-| A2 | `A2.BusinessObject` | Business Object (BOM) | [SL14] Business Object Model Overview; [SAPG] §3.2.7 |
-| A2 | `A2.BusinessObjectAttribute` | Business Object attribute | [SL14] Business Object Model Overview |
-| A2 | `A2.BOMModel` *(artefact)* | Business Object Model | [SL14] Business Object Model Overview |
-| A2 | `A2.Wireframe` *(artefact)* | Wireframe | [SL14] Wireframes Overview; [SAPG] §3.4 |
-| A2 | `A2.SemanticAPI` *(artefact)* | Semantic API | [APIP]; [SAPG] §3.5 |
 
-One A1 entity and all fifteen A2 entities. Nothing at A3 or A4.
+#### A1 — Business Architecture — 1 of 10 covered by BIAN
 
-#### Not covered by BIAN — 28 entities
+| Entity | Covered by BIAN | BIAN concept | BIAN source | BIAN mapping to next level |
+|---|---|---|---|---|
+| `A1.BusinessCapability` | Yes | Business Capability (BCM) | [SL14] Business Capability Map | No — capability→Service Domain mapping is work in progress, unpublished ([RN14] §3) |
+| `A1.ValueStream` |  |  |  |  |
+| `A1.ValueStreamStage` |  |  |  |  |
+| `A1.BusinessProcess` |  |  |  |  |
+| `A1.BusinessActivity` |  |  |  |  |
+| `A1.BusinessService` |  |  |  |  |
+| `A1.BusinessActor` |  |  |  |  |
+| `A1.BusinessRole` |  |  |  |  |
+| `A1.BusinessObject` |  |  |  |  |
+| `A1.BusinessRequirement` |  |  |  |  |
 
-| Level | Entities | Defined by instead |
-|---|---|---|
-| A1 | `ValueStream`, `BusinessProcess`, `BusinessService`, `BusinessActor`, `BusinessRole`, `BusinessObject`, `BusinessRequirement` | ArchiMate 3.2 |
-| A1 | `ValueStreamStage`, `BusinessActivity` | SDMM |
-| A3 | `ApplicationComponent`, `ApplicationService`, `ApplicationInterface`, `ApplicationFunction`, `DataEntity`, `Event` | ArchiMate 3.2 |
-| A3 | `APIOperation` | SDMM (BIAN publishes *reference* API definitions, but the institution's API operations are its own) |
-| A3 | `SolutionBuildingBlock` | TOGAF 10 |
-| A4 | `Node`, `Device`, `SystemSoftware`, `TechnologyService`, `TechnologyInterface`, `CommunicationNetwork`, `Path`, `Artifact` | ArchiMate 3.2 |
-| A4 | `InfrastructureComponent`, `Deployment`, `DeploymentEnvironment` | SDMM |
+#### A2 — Service Domain Architecture — 15 of 15 covered by BIAN
 
-#### The scope in one line
+| Entity | Covered by BIAN | BIAN concept | BIAN source | BIAN mapping to next level |
+|---|---|---|---|---|
+| `A2.BusinessArea` | Yes | Business Area | [SL14] Service Landscape views | — (structural; no cross-level arrow) |
+| `A2.BusinessDomain` | Yes | Business Domain | [SL14] Service Landscape views | — (structural; no cross-level arrow) |
+| `A2.ServiceDomain` | Yes | Service Domain | [SL14] per-domain pages; [SAPG] §2.4–2.5, §3.1–3.2 | Method only — applications mapped by functional partition ([SAPG] §3.4); legacy wrapping (§4.3.1) |
+| `A2.FunctionalPattern` | Yes | Functional Pattern | [SL14] MetaModel Overview; [SAPG] §3.2.1 | Partial — patterns → REST archetypes ([SAPG] §3.5) |
+| `A2.AssetType` | Yes | Asset Type | [SL14] MetaModel Overview; [SAPG] §3.2.2 | Partial — with the pattern, shapes the REST resource |
+| `A2.ControlRecord` | Yes | Control Record | [SL14] Control Record Model Overview; [SAPG] §3.2.3 | Yes — control record = REST resource ([SAPG] §3.5) |
+| `A2.ServiceGroup` | Yes | Service Group | [SL14] MetaModel Overview | — |
+| `A2.ServiceOperation` | Yes | Service Operation | [SL14] per-domain operations with I/O parameters; [SAPG] §3.2.5 | Yes — REST mapping: action term, behaviour qualifier, HTTP method ([SAPG] §3.5) |
+| `A2.BehaviorQualifier` | Yes | Behavior Qualifier | [SL14] MetaModel Overview; [SAPG] §3.2.4 | Yes — part of the REST resource path ([SAPG] §3.5) |
+| `A2.BusinessScenario` | Yes | Business Scenario | [SL14] Business Scenarios; [SAPG] §3.3 | Partial — scenarios are BIAN's guidance toward A1 value streams; none toward A3 |
+| `A2.BusinessObject` | Yes | Business Object (BOM) | [SL14] Business Object Model Overview; [SAPG] §3.2.7 | Yes — information profile per domain ([SAPG] §3.2.7) |
+| `A2.BusinessObjectAttribute` | Yes | Business Object attribute | [SL14] Business Object Model Overview | Yes — attribute level, as above |
+| `A2.BOMModel` *(artefact)* | Yes | Business Object Model | [SL14] Business Object Model Overview | — (evidence artefact) |
+| `A2.Wireframe` *(artefact)* | Yes | Wireframe | [SL14] Wireframes Overview; [SAPG] §3.4 | — (evidence artefact) |
+| `A2.SemanticAPI` *(artefact)* | Yes | Semantic API | [APIP]; [SAPG] §3.5 | — (evidence artefact) |
 
-**BIAN covers the Service Domain Architecture (A2) completely and one Business Architecture concept (the capability). It covers nothing in Application or Technology Architecture.** Every arrow SDMM draws therefore has at most one BIAN end: the A2 end. The other end — a capability's process, an application, an API, a server — is always the institution's.
+#### A3 — Application Architecture — 0 of 8 covered by BIAN
+
+| Entity | Covered by BIAN | BIAN concept | BIAN source | BIAN mapping to next level |
+|---|---|---|---|---|
+| `A3.ApplicationComponent` |  |  |  |  |
+| `A3.ApplicationService` |  |  |  |  |
+| `A3.ApplicationInterface` |  |  |  |  |
+| `A3.ApplicationFunction` |  |  |  |  |
+| `A3.APIOperation` |  |  |  |  |
+| `A3.DataEntity` |  |  |  |  |
+| `A3.Event` |  |  |  |  |
+| `A3.SolutionBuildingBlock` |  |  |  |  |
+
+#### A4 — Technology Architecture — 0 of 11 covered by BIAN
+
+| Entity | Covered by BIAN | BIAN concept | BIAN source | BIAN mapping to next level |
+|---|---|---|---|---|
+| `A4.InfrastructureComponent` *(abstract)* |  |  |  |  |
+| `A4.Deployment` |  |  |  |  |
+| `A4.DeploymentEnvironment` |  |  |  |  |
+| `A4.Node` |  |  |  |  |
+| `A4.Device` |  |  |  |  |
+| `A4.SystemSoftware` |  |  |  |  |
+| `A4.TechnologyService` |  |  |  |  |
+| `A4.TechnologyInterface` |  |  |  |  |
+| `A4.CommunicationNetwork` |  |  |  |  |
+| `A4.Path` |  |  |  |  |
+| `A4.Artifact` |  |  |  |  |
+
+**Totals: 16 of 44 entities covered by BIAN** — one at A1, all fifteen at A2, none at A3, none at A4. Of the sixteen, only the A2→A3 information and API entities (`ControlRecord`, `ServiceOperation`, `BehaviorQualifier`, `BusinessObject`, `BusinessObjectAttribute`) have a published BIAN mapping to the next level; the capability's mapping to Service Domains — the one most expected — is not published.
 
 ### 1.5 Coverage at arrow level
 
