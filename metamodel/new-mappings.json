@@ -1,5 +1,5 @@
 {
-  "$schema_version": "0.5.11",
+  "$schema_version": "0.5.12",
   "generated_from": "metamodel/official-mappings.json plus the gap-fill assessment in docs/mapping-logic-planning.md §5",
   "note": "One entry per official-mapping ID. Existing official mappings keep their source reference; every entry gets a rule decision, the step that fills its instances (0 BIAN export, 1 data join, 2 rule application, 3 derivation, 4 structural matching, 5 text inference), the data that step needs, the reasoning, and a confidence (high/medium/low) that the connection is a sound mapping and that the chosen fill produces correct instances. Attribute keys named in data_needed are defined in metamodel/export-conventions.json (added after the E1 run showed the joins had no keys).",
   "steps": {
@@ -513,10 +513,10 @@
       "verification": "confirmed_none",
       "source_reference": "[SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review",
       "rule_decision": "institution_only",
-      "fill_step": 4,
+      "fill_step": 3,
       "data_needed": "A3.ApplicationFunction.attributes.exposed_through → S24 → domain → functional_pattern (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Functional pattern→application function: the pattern classifies what a domain does (track, fulfil…); an application function might be tagged with the same classification, but BIAN offers no cross-standard method and the value is thin. Not adopted."
+      "reasoning": "Functional pattern→application function: the pattern classifies what a domain does (track, fulfil…); an application function might be tagged with the same classification, but BIAN offers no cross-standard method and the value is thin. Not adopted. Filled by derivation through A3.ApplicationFunction.exposed_through and the S24 arrows — step 3, not 4 (C2 finding 1)."
     },
     {
       "id": "S19",
@@ -546,7 +546,7 @@
       "fill_step": 4,
       "data_needed": "A2.ControlRecord attributes.attributes; A3.DataEntity attributes.attributes",
       "confidence": "high",
-      "reasoning": "Verified BIAN guidance (SAPG §4.2.2: logical design extends the control record). A control record's attributes are the payload an application must hold; attribute-level matching to the application's data entities is deterministic enough to be tier 1. Candidate for a new rule with bian_alignment_guidance authority."
+      "reasoning": "Verified BIAN guidance (SAPG §4.2.2: logical design extends the control record). A control record's attributes are the payload an application must hold; attribute-level matching to the application's data entities is deterministic enough to be tier 1. Candidate for a new rule with bian_alignment_guidance authority. A partition table (e.g. amendments) scores under threshold but can near-miss; the one-to-one fixpoint keeps it out of the main-table rule and the qualifier rule S27 claims it (C2 finding 2)."
     },
     {
       "id": "S21",
@@ -558,10 +558,10 @@
       "verification": "verified",
       "source_reference": "[SAPG] §4.2.2 pp. 80–87 (logical design extensions",
       "rule_decision": "candidate_rule",
-      "fill_step": 4,
+      "fill_step": 3,
       "data_needed": "A3.ApplicationFunction.attributes.exposed_through → S24 → operation access ControlRecord (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "Verified BIAN guidance (SAPG §4.2.2). The control record's lifecycle is what an application function must drive; matching is by state/behaviour description, less mechanical than S20. Candidate rule, medium confidence."
+      "reasoning": "Verified BIAN guidance (SAPG §4.2.2). The control record's lifecycle is what an application function must drive; matching is by state/behaviour description, less mechanical than S20. Candidate rule, medium confidence. Filled by derivation through A3.ApplicationFunction.exposed_through and the S24 arrows — step 3, not 4 (C2 finding 1)."
     },
     {
       "id": "S22",

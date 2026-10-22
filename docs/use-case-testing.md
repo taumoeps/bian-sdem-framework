@@ -1626,3 +1626,12 @@ OVERALL            32   32  32   0   0   1.00  1.00  1.00
 | S01, S02, S04, S12, S32, S33/S34/S35 | the 14 given arrows | given |
 
 **Summary.** The application-internals case reaches every one of its 42 targets with nothing false and every band equal to the plan's. Twelve candidate rows that had never run now have working behind them, and the two negatives the case planted on the amendment table came out right for the right reasons: the attribute rules keep it out, the asset-alias and qualifier rules bring it in as a partition. The only plan corrections are two step labels and a stop-word.
+
+### C2 — actions taken on the findings (v0.5.12)
+
+| Finding | Action |
+|---|---|
+| 1 — S18 / S21 fill step | Moved to step 3 (derivation through `exposed_through` and S24) |
+| 2 — partition tables | S20 reasoning states the fixpoint-not-threshold behaviour and the S27 claim |
+| 3 — generic gate token | Structural nouns added to the gate's stop list |
+| 4 — check 3 | A path segment that is neither a qualifier nor an alias is ignored |

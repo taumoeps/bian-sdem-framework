@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.12 — after C2 (42 of 42)
+
+- S18 / S21 at step 3; gate stop list gains structural nouns; check 3 ignores non-qualifier segments; S20 partition note.
+
 ## 0.5.11 — after C1 (26 of 26)
 
 - A1 business-object glossary aliases; candidate gold bands aligned to the plan; S06 at step 1 with `invokes`; synonym and step-5 precedence clarifications.
