@@ -370,7 +370,7 @@ Every source cited in §2.3–2.5 was checked for accessibility and, where reada
 
 **Bottom line:** of §2's claims, everything that rests on BIAN is verified; everything that rests on ArchiMate, TOGAF or W135 is unverified in this review because the primary texts are login-gated. Nothing from §2 is adopted into the registry until the gated sources have been read by someone with access — which is a one-afternoon task with a free Open Group account.
 
-### 2.7 Analysis
+## 3 Analysis
 
 Outcome of §2.6 across the 54 candidate mappings in §2.3.
 
@@ -422,6 +422,19 @@ Every confirmed mapping with real guidance behind it sits on the **A2 → A3** b
 | A2 → A3 | 8 | 9 | 0 | 0 |
 | A3 → A4 | 0 | 13 | 5 (ArchiMate) | 5 |
 
+#### Combined view — both tiers
+
+§1 and §2 count different things. §1.2 lists the relationships **BIAN defines among its own entities**; §2.3 lists **candidate cross-level pairs** and asks what external authority each has. Put together, the complete set of *officially sourced* mappings available to SDMM today is:
+
+| Tier | Section | Mappings | Status |
+|---|---|---|---|
+| **Official BIAN-Only** — BIAN's own relationships | §1.2 | 15: 14 inside A2 (verified — [SL14], [SAPG] §3.1–3.5, [RN14]), 1 to A1 (`BusinessCapability` → `ServiceDomain`, **unpublished**) | verified in §1 |
+| **Official BIAN with Support Frameworks** — cross-level pairs with BIAN authority | §2.3, verified rows | 10: 8 A2→A3 guidance mappings + 2 A1→A2 intent/target-only | verified in §2.6 |
+| **Official BIAN with Support Frameworks** — cross-level pairs with ArchiMate / TOGAF / W135 authority | §2.3, unverified rows | 7: 5 ArchiMate (A3→A4), 2 W135 (A1→A2) | **open** — login-gated sources |
+| — | §2.3, remaining | 31 confirmed none + 6 SDMM-only | no official authority |
+
+**Total officially sourced and verified: 24** (14 BIAN-internal + 10 cross-level with BIAN guidance), of which 3 are already registry rules with real guidance (`REALIZED_BY`, `IMPLEMENTED_BY`, `MAPPED_TO`), 2 are registry rules with intent/target only (`SUPPORTED_BY`, `ALIGNED_TO` object), and the 14 internal ones are encoded as A2 structure in `metamodel/level-relationships.json`. **Pending verification: 7.** Everything else SDMM maps is the institution's.
+
 #### What follows
 
 1. **Nothing in §2 adds to the registry on BIAN's authority beyond what §1 already gave.** The three registry rules with verified BIAN guidance — `REALIZED_BY`, `IMPLEMENTED_BY`, `MAPPED_TO` — were already there. The five further verified A2→A3 pairs (`ControlRecord` → `DataEntity` / `ApplicationFunction`, `ServiceOperation` → `ApplicationService`, `BusinessScenario` → `ApplicationService` / `ApplicationComponent`) are candidates for new rules with `bian_alignment_guidance` authority; whether they are *useful* enough to add is a §3 decision, not a sourcing one.
@@ -430,9 +443,9 @@ Every confirmed mapping with real guidance behind it sits on the **A2 → A3** b
 4. **The remaining 31 "confirmed none" pairs stay institution-only.** They are not wrong as candidates; they simply have no external authority and would enter the registry, if at all, as `enterprise_rule`.
 5. **To close the seven open rows:** one afternoon with a free Open Group account — ArchiMate 3.2 chapter 12 and Appendix B for the five, W135 pp. 1–43 for the two. Until then §2 contributes nothing to the registry and §3 proceeds on §1's basis alone.
 
-## 3. Engine architecture *(in planning)*
+## 4. Engine architecture *(in planning)*
 
-### 3.1 Starting point: SDMM's nine arrows against BIAN's mappings
+### 4.1 Starting point: SDMM's nine arrows against BIAN's mappings
 
 §1 described BIAN's own mapping model. The engine works on **SDMM's** nine arrows (the registry). For each, does a BIAN mapping from §1.2 cover it? Where it does not, §3 has to design the inference, drawing on §2 for what other frameworks supply.
 
