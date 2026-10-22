@@ -301,3 +301,49 @@ Association: `relationship_issue` returns `None` for `association` before the ro
 **Pass.** Every row has a Phase 2 verdict; no contradicted row is left without a proposed change; the oracle is cited by commit hash.
 
 **Prompt.** *Execute Phase 2 of `docs/relationships-testing.md` (§6) against `metamodel/level-relationships.json`. Read-only on the record; cite the Archi oracle by commit hash and path; copy nothing from it. Extend `metamodel/relationships-test-log.json`, append Phase 2 results and findings, and commit with the confirmed / contradicted / not-testable counts in the message.*
+
+---
+
+### Phase 2 results (2026-10-23, fable-executor)
+
+**Oracle.** `github.com/archimatetool/archi`, path `com.archimatetool.model/model/relationships.xml`, read at default-branch commit `9e6a014f9ef6a782a7dda604ef7b4d03d2c7819a` (file last changed in `6d236081d9460f063076dbb6225f8645c5f5a7a5`); the file declares `relationships version="3.2"` and lists 62 concepts. It was read through the GitHub API into a session scratch lookup; **nothing from it is copied into this repository** — the log records, per row, only the letters the oracle lists for that row's pair. The record was not edited. TOGAF text was not fetched (login-gated).
+
+**Scope.** 115 rows — every A1, A3 and A4 row, including RA4-36 (added in v0.5.17 on Phase 1 finding F6; it has no Phase 1 verdicts and the log says so). Each row's `inference.archimate_source` → `archimate_target` and its kind's letter were looked up; for rows with an SDMM-extension end the lookup used the concept the extension derives from and the entry says so.
+
+| Verdict | A1 | A3 | A4 | Total |
+|---|---|---|---|---|
+| confirmed | 48 | 29 | 35 | 112 |
+| confirmed, alternative accepted | 0 | 0 | 1 | 1 |
+| contradicted | 0 | 0 | 0 | 0 |
+| not testable | 0 | 2 | 0 | 2 |
+
+| Verdict | inference high | inference medium | inference low | Total |
+|---|---|---|---|---|
+| confirmed | 66 | 42 | 4 | 112 |
+| confirmed, alternative accepted | 0 | 0 | 1 | 1 |
+| contradicted | 0 | 0 | 0 | 0 |
+| not testable | 0 | 2 | 0 | 2 |
+
+**Contradicted rows: none.** Every ArchiMate-grounded row's direction and kind is listed by the oracle for the inferred pair. **Alternative accepted (1):** RA4-31 `DeploymentEnvironment aggregation Deployment` — the lookup pair Node → Artifact lists `aio` (access, assignment, association): aggregation is **not** listed, assignment is; the row's `inference.test` names assignment as the accepted alternative, so the row passes by §6 but its kind is SDMM's, not ArchiMate's (finding P2-F2). **Not testable (2):** RA3-30, RA3-31 (TOGAF Solution Building Block; the public content-metamodel description is consistent, not scored).
+
+**SDMM-extension rows (11).** RA3-27, RA3-28, RA3-29 (APIOperation as Application Interface), RA4-11, RA4-16, RA4-21 (Deployment as Artifact assigned to a node / device / system software), RA4-32, RA4-33, RA4-34 (DeploymentEnvironment as Node grouping) and RA4-35 (Deployment aggregates Artifact as Artifact → Artifact) are confirmed through the parent concept; RA4-31 is the alternative case above. The extension definitions do not change the answer except for RA4-31, where "environment groups deployments" is modelled as aggregation while ArchiMate's Node → Artifact relation is assignment.
+
+#### Phase 2 findings
+
+| # | Row ID | What was found | Evidence (oracle letters) | Proposed change (field → value) |
+|---|---|---|---|---|
+| P2-F1 | the 102 `unverified_archimate` rows (all confirmed) | the row's kind is listed by the oracle for the inferred pair | per-row `phase2.letters_listed` in the log | `verification` → `verified_against_archi` (new status: verified against an open-source implementation of the matrix, not the specification); `confidence` may stay as is |
+| P2-F2 | RA4-31 | aggregation is not in the oracle for Node → Artifact; assignment is | listed `aio`, reverse `o` | either `kind` → `assignment` (then `verification` → `verified_against_archi`), or keep `aggregation` with `verification: sdmm_definition` and `inference.pattern` → "SDMM grouping; ArchiMate would assign the artifact to the node" — not both |
+| P2-F3 | RA3-10 | calibration miss: `inference.confidence: low` but the oracle lists the kind for ApplicationComponent → ApplicationComponent | listed `cfgorstv` | `inference.confidence` → `medium` (the oracle confirms the pair; the row's own `confidence` stays `medium` because the semantics of flow/triggering between components remain a modelling choice) |
+| P2-F4 | RA3-12 | calibration miss: `inference.confidence: low` but the oracle lists the kind for ApplicationComponent → ApplicationComponent | listed `cfgorstv` | `inference.confidence` → `medium` (the oracle confirms the pair; the row's own `confidence` stays `medium` because the semantics of flow/triggering between components remain a modelling choice) |
+| P2-F5 | RA4-24 | calibration miss: `inference.confidence: low` but the oracle lists the kind for Node → Node | listed `cfgiostv` | `inference.confidence` → `medium` (the oracle confirms the pair; the row's own `confidence` stays `medium` because the semantics of flow/triggering between nodes remain a modelling choice) |
+| P2-F6 | RA4-25 | calibration miss: `inference.confidence: low` but the oracle lists the kind for Node → Node | listed `cfgiostv` | `inference.confidence` → `medium` (the oracle confirms the pair; the row's own `confidence` stays `medium` because the semantics of flow/triggering between nodes remain a modelling choice) |
+| P2-F7 | RA4-31 | calibration miss: `inference.confidence: low`, confirmed through the alternative | as P2-F2 | resolve with P2-F2; if the kind becomes assignment, `inference.confidence` → `high` |
+| P2-F8 | the 11 `sdmm_definition` rows confirmed via the parent concept | ArchiMate supports the parent-concept relation the extension relies on | per-row `phase2.letters_listed` | `inference` → add `parent_concept_verified_against_archi: true`; keep `verification: sdmm_definition` (the extension itself is SDMM's) |
+| P2-F9 | RA3-30, RA3-31 | not testable against ArchiMate; TOGAF is login-gated | — | `verification` stays `unverified_togaf`; `inference.test` → cite the public TOGAF content-metamodel overview page so a later run can check it without an account |
+| P2-F10 | RA4-36 | added on Phase 1 finding F6 after the Phase 1 run, so it carries no T1–T5 verdicts; Phase 2 confirms it (Device → Device lists composition) | listed `cfgostv` | re-run Phase 1 T1–T5 for RA4-36 at the next Phase 1 pass; `verification` → `verified_against_archi` with the others |
+| P2-F11 | docs/relationships-testing.md §6 | the lookup needed a concept-name mapping (`Value Stream` → `ValueStream`, `Data Object` → `DataObject`, …) and a commit-pinning convention | `phase2_oracle` in the log | §6 → state the mapping rule (remove spaces) and the convention used here (default-branch head commit read, plus the file's last-change commit) |
+
+**Pass.** Every row has a Phase 2 verdict; there is no contradicted row; the oracle is cited by commit hash and path. The calibration picture is one-sided: no high inference was contradicted, while five low inferences were confirmed — the inference confidences are conservative rather than wrong.
+
+**Summary.** The 113 ArchiMate-grounded within-level rows survive an independent, public implementation of the ArchiMate 3.2 relationship matrix without a single contradiction of direction or kind; the one row that passes only through its stated alternative (RA4-31) is where SDMM's own grouping semantics diverge from ArchiMate's assignment, and the record should say which it means. Phase 1 left 102 rows `unverified_archimate`; Phase 2 proposes `verified_against_archi` for all 102.

@@ -1656,7 +1656,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Capability → Capability",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-02",
@@ -1689,7 +1700,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Capability → Capability",
+        "letter": "g",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-03",
@@ -1722,7 +1744,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Capability → ValueStream",
+        "letter": "v",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-04",
@@ -1755,7 +1788,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Capability → ValueStream",
+        "letter": "v",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.ValueStreamStage → A1.ValueStream",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-05",
@@ -1788,7 +1832,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ValueStream → ValueStream",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.ValueStreamStage → A1.ValueStream",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-06",
@@ -1821,7 +1876,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ValueStream → ValueStream",
+        "letter": "t",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.ValueStreamStage → A1.ValueStream, A1.ValueStreamStage → A1.ValueStream",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-07",
@@ -1854,7 +1920,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ValueStream → ValueStream",
+        "letter": "f",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.ValueStreamStage → A1.ValueStream, A1.ValueStreamStage → A1.ValueStream",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-08",
@@ -1887,7 +1964,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → Capability",
+        "letter": "r",
+        "letters_listed": "or",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-09",
@@ -1920,7 +2008,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → ValueStream",
+        "letter": "r",
+        "letters_listed": "or",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-10",
@@ -1953,7 +2052,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → ValueStream",
+        "letter": "r",
+        "letters_listed": "or",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.ValueStreamStage → A1.ValueStream",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-11",
@@ -1986,7 +2096,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → BusinessService",
+        "letter": "r",
+        "letters_listed": "fortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-12",
@@ -2019,7 +2140,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → BusinessObject",
+        "letter": "a",
+        "letters_listed": "ao",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-13",
@@ -2052,7 +2184,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → Requirement",
+        "letter": "r",
+        "letters_listed": "nor",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-14",
@@ -2085,7 +2228,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → BusinessProcess",
+        "letter": "t",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-15",
@@ -2118,7 +2272,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → BusinessProcess",
+        "letter": "f",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-16",
@@ -2151,7 +2316,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → Capability",
+        "letter": "r",
+        "letters_listed": "or",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-17",
@@ -2184,7 +2360,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → ValueStream",
+        "letter": "r",
+        "letters_listed": "or",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-18",
@@ -2217,7 +2404,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → ValueStream",
+        "letter": "r",
+        "letters_listed": "or",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess, A1.ValueStreamStage → A1.ValueStream",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-19",
@@ -2250,7 +2448,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → BusinessService",
+        "letter": "r",
+        "letters_listed": "fortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-20",
@@ -2283,7 +2492,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → BusinessObject",
+        "letter": "a",
+        "letters_listed": "ao",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-21",
@@ -2316,7 +2536,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → Requirement",
+        "letter": "r",
+        "letters_listed": "nor",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-22",
@@ -2349,7 +2580,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → BusinessProcess",
+        "letter": "t",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess, A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-23",
@@ -2382,7 +2624,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → BusinessProcess",
+        "letter": "f",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess, A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-24",
@@ -2415,7 +2668,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → BusinessProcess",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-25",
@@ -2448,7 +2712,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → BusinessProcess",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-26",
@@ -2481,7 +2756,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessProcess → BusinessProcess",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess, A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-27",
@@ -2514,7 +2800,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessService → BusinessProcess",
+        "letter": "v",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fortv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-28",
@@ -2547,7 +2844,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessService → BusinessProcess",
+        "letter": "v",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fortv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-29",
@@ -2580,7 +2888,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessService → BusinessRole",
+        "letter": "v",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fiortv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-30",
@@ -2613,7 +2932,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessService → BusinessActor",
+        "letter": "v",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fiortv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-31",
@@ -2646,7 +2976,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessService → BusinessService",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-32",
@@ -2679,7 +3020,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessService → BusinessObject",
+        "letter": "a",
+        "letters_listed": "ao",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-33",
@@ -2712,7 +3064,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessService → Requirement",
+        "letter": "r",
+        "letters_listed": "nor",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-34",
@@ -2745,7 +3108,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Capability → Requirement",
+        "letter": "r",
+        "letters_listed": "nor",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-35",
@@ -2778,7 +3152,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessActor → BusinessRole",
+        "letter": "i",
+        "letters_listed": "fiotv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-36",
@@ -2811,7 +3196,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessRole → BusinessProcess",
+        "letter": "i",
+        "letters_listed": "fiotv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-37",
@@ -2844,7 +3240,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessRole → BusinessProcess",
+        "letter": "i",
+        "letters_listed": "fiotv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-38",
@@ -2877,7 +3284,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessActor → BusinessProcess",
+        "letter": "i",
+        "letters_listed": "fiotv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-39",
@@ -2910,7 +3328,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessActor → BusinessProcess",
+        "letter": "i",
+        "letters_listed": "fiotv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A1.BusinessActivity → A1.BusinessProcess",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-40",
@@ -2943,7 +3372,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessActor → BusinessActor",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-41",
@@ -2976,7 +3416,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessActor → BusinessActor",
+        "letter": "g",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-42",
@@ -3009,7 +3460,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessRole → BusinessRole",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-43",
@@ -3042,7 +3504,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessRole → BusinessRole",
+        "letter": "g",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-44",
@@ -3075,7 +3548,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessObject → BusinessObject",
+        "letter": "c",
+        "letters_listed": "cgos",
+        "letters_listed_reverse": "cgos",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-45",
@@ -3108,7 +3592,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessObject → BusinessObject",
+        "letter": "g",
+        "letters_listed": "cgos",
+        "letters_listed_reverse": "cgos",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-46",
@@ -3141,7 +3636,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "BusinessObject → BusinessObject",
+        "letter": "s",
+        "letters_listed": "cgos",
+        "letters_listed_reverse": "cgos",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-47",
@@ -3174,7 +3680,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Requirement → Requirement",
+        "letter": "c",
+        "letters_listed": "cgnos",
+        "letters_listed_reverse": "cgnos",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA1-48",
@@ -3207,7 +3724,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Requirement → Requirement",
+        "letter": "s",
+        "letters_listed": "cgnos",
+        "letters_listed_reverse": "cgnos",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-01",
@@ -3240,7 +3768,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationComponent → ApplicationComponent",
+        "letter": "c",
+        "letters_listed": "cfgorstv",
+        "letters_listed_reverse": "cfgorstv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-02",
@@ -3273,7 +3812,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationComponent → ApplicationComponent",
+        "letter": "g",
+        "letters_listed": "cfgorstv",
+        "letters_listed_reverse": "cfgorstv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-03",
@@ -3306,7 +3856,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationComponent → ApplicationInterface",
+        "letter": "c",
+        "letters_listed": "cfgortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-04",
@@ -3339,7 +3900,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationComponent → ApplicationFunction",
+        "letter": "i",
+        "letters_listed": "fiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-05",
@@ -3372,7 +3944,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationFunction → ApplicationService",
+        "letter": "r",
+        "letters_listed": "fortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-06",
@@ -3405,7 +3988,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationComponent → ApplicationService",
+        "letter": "r",
+        "letters_listed": "fiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-07",
@@ -3438,7 +4032,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationInterface → ApplicationService",
+        "letter": "i",
+        "letters_listed": "fiotv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-08",
@@ -3471,7 +4076,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationService → ApplicationComponent",
+        "letter": "v",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fiortv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-09",
@@ -3504,7 +4120,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationService → ApplicationFunction",
+        "letter": "v",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fortv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-10",
@@ -3537,7 +4164,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationComponent → ApplicationComponent",
+        "letter": "f",
+        "letters_listed": "cfgorstv",
+        "letters_listed_reverse": "cfgorstv",
+        "verdict": "confirmed",
+        "inference_confidence": "low",
+        "calibration": "calibration miss: low inference confirmed",
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-11",
@@ -3570,7 +4208,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationComponent → ApplicationComponent",
+        "letter": "v",
+        "letters_listed": "cfgorstv",
+        "letters_listed_reverse": "cfgorstv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-12",
@@ -3603,7 +4252,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationComponent → ApplicationComponent",
+        "letter": "t",
+        "letters_listed": "cfgorstv",
+        "letters_listed_reverse": "cfgorstv",
+        "verdict": "confirmed",
+        "inference_confidence": "low",
+        "calibration": "calibration miss: low inference confirmed",
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-13",
@@ -3636,7 +4296,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationFunction → ApplicationFunction",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-14",
@@ -3669,7 +4340,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationFunction → ApplicationFunction",
+        "letter": "t",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-15",
@@ -3702,7 +4384,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationFunction → ApplicationFunction",
+        "letter": "f",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-16",
@@ -3735,7 +4428,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationComponent → DataObject",
+        "letter": "a",
+        "letters_listed": "ao",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-17",
@@ -3768,7 +4472,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationFunction → DataObject",
+        "letter": "a",
+        "letters_listed": "ao",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-18",
@@ -3801,7 +4516,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationService → DataObject",
+        "letter": "a",
+        "letters_listed": "ao",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-19",
@@ -3834,7 +4560,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "DataObject → DataObject",
+        "letter": "c",
+        "letters_listed": "cgos",
+        "letters_listed_reverse": "cgos",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-20",
@@ -3867,7 +4604,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "DataObject → DataObject",
+        "letter": "g",
+        "letters_listed": "cgos",
+        "letters_listed_reverse": "cgos",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-21",
@@ -3900,7 +4648,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "DataObject → DataObject",
+        "letter": "s",
+        "letters_listed": "cgos",
+        "letters_listed_reverse": "cgos",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-22",
@@ -3933,7 +4692,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationComponent → ApplicationEvent",
+        "letter": "t",
+        "letters_listed": "fiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-23",
@@ -3966,7 +4736,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationFunction → ApplicationEvent",
+        "letter": "t",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-24",
@@ -3999,7 +4780,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationEvent → ApplicationFunction",
+        "letter": "t",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-25",
@@ -4032,7 +4824,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationEvent → ApplicationComponent",
+        "letter": "t",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fiortv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-26",
@@ -4065,7 +4868,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationEvent → DataObject",
+        "letter": "a",
+        "letters_listed": "ao",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-27",
@@ -4098,7 +4912,18 @@
           "note": null
         }
       },
-      "overall": "pass"
+      "overall": "pass",
+      "phase2": {
+        "oracle_pair": "ApplicationInterface → ApplicationInterface",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A3.APIOperation → A3.ApplicationInterface (aligned)",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-28",
@@ -4131,7 +4956,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "ApplicationComponent → ApplicationInterface",
+        "letter": "c",
+        "letters_listed": "cfgortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A3.APIOperation → A3.ApplicationInterface (aligned)",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-29",
@@ -4164,7 +5000,18 @@
           "note": null
         }
       },
-      "overall": "pass"
+      "overall": "pass",
+      "phase2": {
+        "oracle_pair": "ApplicationInterface → DataObject",
+        "letter": "a",
+        "letters_listed": "ao",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A3.APIOperation → A3.ApplicationInterface (aligned)",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA3-30",
@@ -4197,7 +5044,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": null,
+        "letter": "g",
+        "letters_listed": null,
+        "letters_listed_reverse": null,
+        "verdict": "not testable",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "TOGAF concept, not in the ArchiMate matrix; the public TOGAF content-metamodel description (solution building blocks group the solution components that realise architecture building blocks; building blocks compose building blocks) is consistent with the row — reported, not scored. TOGAF text is login-gated and was not fetched.",
+        "proposed_verification": null
+      }
     },
     {
       "id": "RA3-31",
@@ -4230,7 +5088,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": null,
+        "letter": "c",
+        "letters_listed": null,
+        "letters_listed_reverse": null,
+        "verdict": "not testable",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "TOGAF concept, not in the ArchiMate matrix; the public TOGAF content-metamodel description (solution building blocks group the solution components that realise architecture building blocks; building blocks compose building blocks) is consistent with the row — reported, not scored. TOGAF text is login-gated and was not fetched.",
+        "proposed_verification": null
+      }
     },
     {
       "id": "RA4-01",
@@ -4263,7 +5132,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Node → Node",
+        "letter": "c",
+        "letters_listed": "cfgiostv",
+        "letters_listed_reverse": "cfgiostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-02",
@@ -4296,7 +5176,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Node → Node",
+        "letter": "g",
+        "letters_listed": "cfgiostv",
+        "letters_listed_reverse": "cfgiostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-03",
@@ -4329,7 +5220,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Node → Device",
+        "letter": "g",
+        "letters_listed": "cfgiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-04",
@@ -4362,7 +5264,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Node → SystemSoftware",
+        "letter": "i",
+        "letters_listed": "cfgiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-05",
@@ -4395,7 +5308,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Device → SystemSoftware",
+        "letter": "i",
+        "letters_listed": "cfgiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-06",
@@ -4428,7 +5352,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "SystemSoftware → SystemSoftware",
+        "letter": "i",
+        "letters_listed": "cfgiorstv",
+        "letters_listed_reverse": "cfgiorstv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-07",
@@ -4461,7 +5396,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Node → Artifact",
+        "letter": "i",
+        "letters_listed": "aio",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-08",
@@ -4494,7 +5440,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Node → TechnologyService",
+        "letter": "r",
+        "letters_listed": "fiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-09",
@@ -4527,7 +5484,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Node → TechnologyInterface",
+        "letter": "c",
+        "letters_listed": "cfgiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-10",
@@ -4560,7 +5528,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "TechnologyService → Node",
+        "letter": "v",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fiortv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-11",
@@ -4593,7 +5572,18 @@
           "note": null
         }
       },
-      "overall": "pass"
+      "overall": "pass",
+      "phase2": {
+        "oracle_pair": "Node → Artifact",
+        "letter": "i",
+        "letters_listed": "aio",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A4.Deployment → A4.Artifact (assigned to a node)",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-12",
@@ -4626,7 +5616,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Device → Artifact",
+        "letter": "i",
+        "letters_listed": "aio",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-13",
@@ -4659,7 +5660,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Device → TechnologyService",
+        "letter": "r",
+        "letters_listed": "fiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-14",
@@ -4692,7 +5704,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Device → TechnologyInterface",
+        "letter": "c",
+        "letters_listed": "cfgiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-15",
@@ -4725,7 +5748,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "TechnologyService → Device",
+        "letter": "v",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fiortv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-16",
@@ -4758,7 +5792,18 @@
           "note": null
         }
       },
-      "overall": "pass"
+      "overall": "pass",
+      "phase2": {
+        "oracle_pair": "Device → Artifact",
+        "letter": "i",
+        "letters_listed": "aio",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A4.Deployment → A4.Artifact (assigned to a node)",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-17",
@@ -4791,7 +5836,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "SystemSoftware → Artifact",
+        "letter": "i",
+        "letters_listed": "aio",
+        "letters_listed_reverse": "or",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-18",
@@ -4824,7 +5880,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "SystemSoftware → TechnologyService",
+        "letter": "r",
+        "letters_listed": "fiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-19",
@@ -4857,7 +5924,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "SystemSoftware → TechnologyInterface",
+        "letter": "c",
+        "letters_listed": "cfgiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-20",
@@ -4890,7 +5968,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "TechnologyService → SystemSoftware",
+        "letter": "v",
+        "letters_listed": "fotv",
+        "letters_listed_reverse": "fiortv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-21",
@@ -4923,7 +6012,18 @@
           "note": null
         }
       },
-      "overall": "pass"
+      "overall": "pass",
+      "phase2": {
+        "oracle_pair": "SystemSoftware → Artifact",
+        "letter": "i",
+        "letters_listed": "aio",
+        "letters_listed_reverse": "or",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A4.Deployment → A4.Artifact (assigned to a node)",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-22",
@@ -4956,7 +6056,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "TechnologyInterface → TechnologyService",
+        "letter": "i",
+        "letters_listed": "fiotv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-23",
@@ -4989,7 +6100,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "TechnologyService → TechnologyService",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-24",
@@ -5022,7 +6144,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Node → Node",
+        "letter": "f",
+        "letters_listed": "cfgiostv",
+        "letters_listed_reverse": "cfgiostv",
+        "verdict": "confirmed",
+        "inference_confidence": "low",
+        "calibration": "calibration miss: low inference confirmed",
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-25",
@@ -5055,7 +6188,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Node → Node",
+        "letter": "t",
+        "letters_listed": "cfgiostv",
+        "letters_listed_reverse": "cfgiostv",
+        "verdict": "confirmed",
+        "inference_confidence": "low",
+        "calibration": "calibration miss: low inference confirmed",
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-26",
@@ -5088,7 +6232,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "CommunicationNetwork → Path",
+        "letter": "r",
+        "letters_listed": "fortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-27",
@@ -5121,7 +6276,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "CommunicationNetwork → CommunicationNetwork",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-28",
@@ -5154,7 +6320,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Artifact → Artifact",
+        "letter": "c",
+        "letters_listed": "cgors",
+        "letters_listed_reverse": "cgors",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-29",
@@ -5187,7 +6364,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Artifact → Artifact",
+        "letter": "g",
+        "letters_listed": "cgors",
+        "letters_listed_reverse": "cgors",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-30",
@@ -5220,7 +6408,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Device → Device",
+        "letter": "g",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": null,
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-31",
@@ -5253,7 +6452,18 @@
           "note": null
         }
       },
-      "overall": "pass"
+      "overall": "pass",
+      "phase2": {
+        "oracle_pair": "Node → Artifact",
+        "letter": "g",
+        "letters_listed": "aio",
+        "letters_listed_reverse": "o",
+        "verdict": "confirmed, alternative accepted",
+        "inference_confidence": "low",
+        "calibration": "calibration miss: low inference confirmed",
+        "note": "row kind 'aggregation' (g) not listed; the inference.test's alternative ['assignment'] is listed; lookup via the concept the extension derives from: A4.DeploymentEnvironment → A4.Node (grouping), A4.Deployment → A4.Artifact (assigned to a node)",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-32",
@@ -5286,7 +6496,18 @@
           "note": null
         }
       },
-      "overall": "pass"
+      "overall": "pass",
+      "phase2": {
+        "oracle_pair": "Node → Node",
+        "letter": "g",
+        "letters_listed": "cfgiostv",
+        "letters_listed_reverse": "cfgiostv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A4.DeploymentEnvironment → A4.Node (grouping)",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-33",
@@ -5319,7 +6540,18 @@
           "note": null
         }
       },
-      "overall": "pass"
+      "overall": "pass",
+      "phase2": {
+        "oracle_pair": "Node → Device",
+        "letter": "g",
+        "letters_listed": "cfgiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A4.DeploymentEnvironment → A4.Node (grouping)",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-34",
@@ -5352,7 +6584,18 @@
           "note": null
         }
       },
-      "overall": "pass with note"
+      "overall": "pass with note",
+      "phase2": {
+        "oracle_pair": "Node → SystemSoftware",
+        "letter": "g",
+        "letters_listed": "cfgiortv",
+        "letters_listed_reverse": "fotv",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A4.DeploymentEnvironment → A4.Node (grouping)",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "RA4-35",
@@ -5385,7 +6628,18 @@
           "note": null
         }
       },
-      "overall": "pass"
+      "overall": "pass",
+      "phase2": {
+        "oracle_pair": "Artifact → Artifact",
+        "letter": "g",
+        "letters_listed": "cgors",
+        "letters_listed_reverse": "cgors",
+        "verdict": "confirmed",
+        "inference_confidence": "medium",
+        "calibration": null,
+        "note": "lookup via the concept the extension derives from: A4.Deployment → A4.Artifact (assigned to a node)",
+        "proposed_verification": "verified_against_archi"
+      }
     },
     {
       "id": "XA1-01",
@@ -5722,6 +6976,96 @@
         }
       },
       "overall": "pass"
+    },
+    {
+      "id": "RA4-36",
+      "row": "A4.Device -composition-> A4.Device",
+      "level": "A4",
+      "tests": {
+        "T1": {
+          "verdict": "not run",
+          "evidence": "row added in v0.5.17 (Phase 1 finding F6) after the Phase 1 run",
+          "note": null
+        }
+      },
+      "overall": "not run in Phase 1",
+      "phase2": {
+        "oracle_pair": "Device → Device",
+        "letter": "c",
+        "letters_listed": "cfgostv",
+        "letters_listed_reverse": "cfgostv",
+        "verdict": "confirmed",
+        "inference_confidence": "high",
+        "calibration": null,
+        "note": "row added after Phase 1 on finding F6; Phase 2 confirms it",
+        "proposed_verification": "verified_against_archi"
+      }
     }
-  ]
+  ],
+  "phase2_oracle": {
+    "repo": "github.com/archimatetool/archi",
+    "path": "com.archimatetool.model/model/relationships.xml",
+    "commit_read": "9e6a014f9ef6a782a7dda604ef7b4d03d2c7819a (default-branch head at read time, 2026-10-23)",
+    "commit_last_changed_file": "6d236081d9460f063076dbb6225f8645c5f5a7a5",
+    "declared_version": "relationships version=\"3.2\"",
+    "concepts": 62,
+    "copied": false,
+    "note": "the file was read through the GitHub API into a session scratch lookup; nothing from it is stored in this repository"
+  },
+  "phase2_summary": {
+    "rows_in_scope": 115,
+    "verdicts": {
+      "confirmed": 112,
+      "not testable": 2,
+      "confirmed, alternative accepted": 1
+    },
+    "by_level": {
+      "A1:confirmed": 48,
+      "A3:confirmed": 29,
+      "A3:not testable": 2,
+      "A4:confirmed": 35,
+      "A4:confirmed, alternative accepted": 1
+    },
+    "by_inference_confidence": {
+      "high:confirmed": 66,
+      "medium:confirmed": 42,
+      "low:confirmed": 4,
+      "medium:not testable": 2,
+      "low:confirmed, alternative accepted": 1
+    },
+    "contradicted": [],
+    "calibration_misses": [
+      {
+        "id": "RA3-10",
+        "issue": "calibration miss: low inference confirmed",
+        "inference_confidence": "low",
+        "verdict": "confirmed"
+      },
+      {
+        "id": "RA3-12",
+        "issue": "calibration miss: low inference confirmed",
+        "inference_confidence": "low",
+        "verdict": "confirmed"
+      },
+      {
+        "id": "RA4-24",
+        "issue": "calibration miss: low inference confirmed",
+        "inference_confidence": "low",
+        "verdict": "confirmed"
+      },
+      {
+        "id": "RA4-25",
+        "issue": "calibration miss: low inference confirmed",
+        "inference_confidence": "low",
+        "verdict": "confirmed"
+      },
+      {
+        "id": "RA4-31",
+        "issue": "calibration miss: low inference confirmed",
+        "inference_confidence": "low",
+        "verdict": "confirmed, alternative accepted"
+      }
+    ],
+    "executor": "fable-executor/2026-10-23"
+  }
 }
