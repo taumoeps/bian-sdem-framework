@@ -6,110 +6,112 @@
 
 ---
 
-## 1. What BIAN already gives us, boundary by boundary
+## 1. BIAN's current mapping model
 
-Before designing any inference, establish what the reference architecture itself provides. The findings below are taken from BIAN's public release notes for Service Landscape 13.0 (June 2025) and 14.0 (February 2026) and the Semantic API Practitioner Guide v8.1 (2020), not from memory. Section and page references are given so they can be checked; no BIAN text is reproduced beyond short attributed phrases.
+What BIAN itself defines: its entities (§1.1), the mappings it defines between them (§1.2), the mappings it defines from them to implementation (§1.3), and what it does not map (§1.4). Everything is taken from BIAN's public release notes for Service Landscape 13.0 and 14.0 and the Semantic API Practitioner Guide v8.1, with section and page references; no BIAN text is reproduced beyond short attributed phrases.
 
-### 1.1 Coverage matrix
+### 1.1 BIAN entities
 
-| Boundary | What BIAN publishes | How complete | What an engine can use it for |
-|---|---|---|---|
-| **A1 → A2** capability → Service Domain | A Business Capability Model exists and is in the repository, but the BCM working group's mapping of capabilities to Service Domains is **work in progress and not documented in the repository** (v13 notes §3; v14 notes §3 — "results are not yet documented… still work in progress"; further detail is on the members-only wiki). Value streams: also WIP, not yet modelled (v14 §3) | **Not published.** No authoritative capability→domain alignment exists publicly | Nothing to look up. The engine must *infer* this boundary from text — capability descriptions against Service Domain descriptions — and from structure (which domains a capability's processes already use). This is the hardest boundary and the one BIAN was expected to cover |
-| **A1 → A2** value stream → Business Scenario | Business Scenarios are fully documented as UML sequence diagrams with Service Domain descriptions (v14 §1, §9); value streams are not yet modelled by BIAN | **One side only.** Scenarios are public and rich; value streams have no BIAN counterpart | Scenario text and the Service Domains a scenario invokes are strong evidence. An engine can match a value stream's stages to a scenario's interactions, then propose the domains the scenario uses |
-| **A1 → A2** business object → BOM object | Business Object Model and Control Record Model fully documented, with attributes, rationalised in v14 (v14 §1.3) | **Published.** Canonical information concepts with attributes | Name and attribute matching against a public, well-structured target. The most tractable A1→A2 arrow |
-| **A2 within** | Service Domains, Functional Patterns, Asset Types, Control Records, Behavior Qualifiers, Service Groups, Service Operations with input/output parameters, Wireframes, First Order Connections (guide §3.2–3.4; v14 §1) | **Complete at conceptual level.** All expressed in ArchiMate 3.2 / UML (v14 §1.1–1.2) | The A2 level model is the one level SDMM can populate almost entirely from the public portal, under an institution's licence. The engine has rich text on every A2 instance |
-| **A2 → A3** Service Domain → application | The wireframe technique: "existing or to-be-developed applications can be mapped with the Service Domains corresponding to major functional partitions of the application" (guide §3.4, p. 52). Legacy wrapping aligns existing systems to component boundaries (guide §4.3.1, p. 91). Logical designs are "partially defined" and "quickly start to include site or implementation specific details" (guide §4.2, pp. 78–81) | **Method, not data.** BIAN says *how* to decide which application realises a domain (functional partition overlap), but publishes no application inventory and no realisation data — it cannot | The engine applies BIAN's own criterion: does the application's described functional scope fall inside the domain's responsibilities? Text similarity plus the wireframe's interaction pattern. Existing approved `REALIZED_BY` arrows give strong patterns ("this domain is already realised by…") |
-| **A2 → A3** Service Operation → API operation | Semantic API REST mapping: the Service Domain is assumed to match the application boundary of an API, and its service operations make up the API's program interfaces (guide §3.5, p. 52). Control record instance = REST resource; functional patterns map to REST archetypes; HTTP methods assigned (guide §3.5, pp. 52–54). A public Semantic API portal exists | **Published and prescriptive at logical level.** Operation naming, action terms and resource structure are defined | The most mechanical boundary. An engine can compare an institution's API path + method + payload against the BIAN operation's action term, behaviour qualifier and control record. Mismatches are *findings* ("this API realises the operation but omits two mandatory attributes"), not just scores |
-| **A2 → A3** BOM object → data entity | BOM attributes are published; the information profile per Service Domain is documented (guide §3.2.7) | **Published.** | Attribute-level matching of an application's data entity against the BOM object |
-| **A3 → A4** application → infrastructure | No technology vocabulary and no data: BIAN "does not assume or impose any physical properties for the Service Domains" (guide §4.2.3, p. 87); Figure 34 places BIAN's scope at conceptual and partially logical, not physical (p. 90). But **deployment guidance exists**: §4.2.3 lists software utilities to consider in "a component/container type deployment" (message queues, state machines, event-driven processing, workflow, rules engines); §4.1 describes each Service Domain as a discrete service container and cloud/container environments; §4.3 gives legacy wrapping, parallel core migration (Figure 35) and shared-platform patterns (Figure 37) | **Guidance only.** No entities, no instances, no mapping method — but a published view of how domain-aligned components are expected to be deployed | BIAN contributes *patterns*, not data: "one domain → one deployable container" is a structural expectation an engine can use as a prior when an institution follows it. The actual arrows still come from the institution's deployment data — CMDB, manifests, environment assignments. Text won't help (the baseline already showed "Fraud Engine" and "Managed Kubernetes" share no words) |
+All 44 catalogue entities. **Covered by BIAN** is "Yes" when BIAN defines the concept and publishes its instances, "No" otherwise; uncovered entities show "n/a". The BIAN entities (16) are the nodes of BIAN's own mapping model, described in §1.2 and §1.3.
 
-### 1.2 BIAN mapping scope by entity
-
-All 44 catalogue entities. **Covered by BIAN** is "Yes" when BIAN defines the concept and publishes its instances, "No" otherwise. **BIAN mapping to next level** says whether BIAN publishes a way to map this entity across the boundary below it: Yes (a published rule or method), Partial, Method only, No, or — where no arrow exists. Entities not covered by BIAN show "n/a" in the BIAN columns so the scope is visible in one table.
-
-Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 release notes · **[SAPG]** Semantic API Practitioner Guide v8.1 · **[APIP]** BIAN Semantic API portal. (What BIAN offers as *guidance* at each boundary is in §1.3 (BIAN's own mappings) and §1.4 (SDMM's arrows against them).)
+Sources: **[SL14]** Service Landscape 14.0 InSite portal · **[RN14]** v14.0 release notes · **[SAPG]** Semantic API Practitioner Guide v8.1 · **[APIP]** BIAN Semantic API portal.
 
 
 #### A1 — Business Architecture — 1 of 10 covered by BIAN
 
-| Entity | Covered by BIAN | BIAN concept | BIAN source | BIAN mapping to next level |
-|---|---|---|---|---|
-| `A1.BusinessCapability` | Yes | Business Capability (BCM) | [SL14] Business Capability Map | No — capability→Service Domain mapping is work in progress, unpublished ([RN14] §3) |
-| `A1.ValueStream` | No | n/a | n/a | n/a |
-| `A1.ValueStreamStage` | No | n/a | n/a | n/a |
-| `A1.BusinessProcess` | No | n/a | n/a | n/a |
-| `A1.BusinessActivity` | No | n/a | n/a | n/a |
-| `A1.BusinessService` | No | n/a | n/a | n/a |
-| `A1.BusinessActor` | No | n/a | n/a | n/a |
-| `A1.BusinessRole` | No | n/a | n/a | n/a |
-| `A1.BusinessObject` | No | n/a | n/a | n/a |
-| `A1.BusinessRequirement` | No | n/a | n/a | n/a |
+| Entity | Covered by BIAN | BIAN concept | BIAN source |
+|---|---|---|---|
+| `A1.BusinessCapability` | Yes | Business Capability (BCM) | [SL14] Business Capability Map |
+| `A1.ValueStream` | No | n/a | n/a |
+| `A1.ValueStreamStage` | No | n/a | n/a |
+| `A1.BusinessProcess` | No | n/a | n/a |
+| `A1.BusinessActivity` | No | n/a | n/a |
+| `A1.BusinessService` | No | n/a | n/a |
+| `A1.BusinessActor` | No | n/a | n/a |
+| `A1.BusinessRole` | No | n/a | n/a |
+| `A1.BusinessObject` | No | n/a | n/a |
+| `A1.BusinessRequirement` | No | n/a | n/a |
 
 #### A2 — Service Domain Architecture — 15 of 15 covered by BIAN
 
-| Entity | Covered by BIAN | BIAN concept | BIAN source | BIAN mapping to next level |
-|---|---|---|---|---|
-| `A2.BusinessArea` | Yes | Business Area | [SL14] Service Landscape views | — (structural; no cross-level arrow) |
-| `A2.BusinessDomain` | Yes | Business Domain | [SL14] Service Landscape views | — (structural; no cross-level arrow) |
-| `A2.ServiceDomain` | Yes | Service Domain | [SL14] per-domain pages; [SAPG] §2.4–2.5, §3.1–3.2 | Method only — applications mapped by functional partition ([SAPG] §3.4); legacy wrapping (§4.3.1) |
-| `A2.FunctionalPattern` | Yes | Functional Pattern | [SL14] MetaModel Overview; [SAPG] §3.2.1 | Partial — patterns → REST archetypes ([SAPG] §3.5) |
-| `A2.AssetType` | Yes | Asset Type | [SL14] MetaModel Overview; [SAPG] §3.2.2 | Partial — with the pattern, shapes the REST resource |
-| `A2.ControlRecord` | Yes | Control Record | [SL14] Control Record Model Overview; [SAPG] §3.2.3 | Yes — control record = REST resource ([SAPG] §3.5) |
-| `A2.ServiceGroup` | Yes | Service Group | [SL14] MetaModel Overview | — |
-| `A2.ServiceOperation` | Yes | Service Operation | [SL14] per-domain operations with I/O parameters; [SAPG] §3.2.5 | Yes — REST mapping: action term, behaviour qualifier, HTTP method ([SAPG] §3.5) |
-| `A2.BehaviorQualifier` | Yes | Behavior Qualifier | [SL14] MetaModel Overview; [SAPG] §3.2.4 | Yes — part of the REST resource path ([SAPG] §3.5) |
-| `A2.BusinessScenario` | Yes | Business Scenario | [SL14] Business Scenarios; [SAPG] §3.3 | Partial — scenarios are BIAN's guidance toward A1 value streams; none toward A3 |
-| `A2.BusinessObject` | Yes | Business Object (BOM) | [SL14] Business Object Model Overview; [SAPG] §3.2.7 | Yes — information profile per domain ([SAPG] §3.2.7) |
-| `A2.BusinessObjectAttribute` | Yes | Business Object attribute | [SL14] Business Object Model Overview | Yes — attribute level, as above |
-| `A2.BOMModel` *(artefact)* | Yes | Business Object Model | [SL14] Business Object Model Overview | — (evidence artefact) |
-| `A2.Wireframe` *(artefact)* | Yes | Wireframe | [SL14] Wireframes Overview; [SAPG] §3.4 | — (evidence artefact) |
-| `A2.SemanticAPI` *(artefact)* | Yes | Semantic API | [APIP]; [SAPG] §3.5 | — (evidence artefact) |
+| Entity | Covered by BIAN | BIAN concept | BIAN source |
+|---|---|---|---|
+| `A2.BusinessArea` | Yes | Business Area | [SL14] Service Landscape views |
+| `A2.BusinessDomain` | Yes | Business Domain | [SL14] Service Landscape views |
+| `A2.ServiceDomain` | Yes | Service Domain | [SL14] per-domain pages; [SAPG] §2.4–2.5, §3.1–3.2 |
+| `A2.FunctionalPattern` | Yes | Functional Pattern | [SL14] MetaModel Overview; [SAPG] §3.2.1 |
+| `A2.AssetType` | Yes | Asset Type | [SL14] MetaModel Overview; [SAPG] §3.2.2 |
+| `A2.ControlRecord` | Yes | Control Record | [SL14] Control Record Model Overview; [SAPG] §3.2.3 |
+| `A2.ServiceGroup` | Yes | Service Group | [SL14] MetaModel Overview |
+| `A2.ServiceOperation` | Yes | Service Operation | [SL14] per-domain operations with I/O parameters; [SAPG] §3.2.5 |
+| `A2.BehaviorQualifier` | Yes | Behavior Qualifier | [SL14] MetaModel Overview; [SAPG] §3.2.4 |
+| `A2.BusinessScenario` | Yes | Business Scenario | [SL14] Business Scenarios; [SAPG] §3.3 |
+| `A2.BusinessObject` | Yes | Business Object (BOM) | [SL14] Business Object Model Overview; [SAPG] §3.2.7 |
+| `A2.BusinessObjectAttribute` | Yes | Business Object attribute | [SL14] Business Object Model Overview |
+| `A2.BOMModel` *(artefact)* | Yes | Business Object Model | [SL14] Business Object Model Overview |
+| `A2.Wireframe` *(artefact)* | Yes | Wireframe | [SL14] Wireframes Overview; [SAPG] §3.4 |
+| `A2.SemanticAPI` *(artefact)* | Yes | Semantic API | [APIP]; [SAPG] §3.5 |
 
 #### A3 — Application Architecture — 0 of 8 covered by BIAN
 
-| Entity | Covered by BIAN | BIAN concept | BIAN source | BIAN mapping to next level |
-|---|---|---|---|---|
-| `A3.ApplicationComponent` | No | n/a | n/a | n/a |
-| `A3.ApplicationService` | No | n/a | n/a | n/a |
-| `A3.ApplicationInterface` | No | n/a | n/a | n/a |
-| `A3.ApplicationFunction` | No | n/a | n/a | n/a |
-| `A3.APIOperation` | No | n/a | n/a | n/a |
-| `A3.DataEntity` | No | n/a | n/a | n/a |
-| `A3.Event` | No | n/a | n/a | n/a |
-| `A3.SolutionBuildingBlock` | No | n/a | n/a | n/a |
+| Entity | Covered by BIAN | BIAN concept | BIAN source |
+|---|---|---|---|
+| `A3.ApplicationComponent` | No | n/a | n/a |
+| `A3.ApplicationService` | No | n/a | n/a |
+| `A3.ApplicationInterface` | No | n/a | n/a |
+| `A3.ApplicationFunction` | No | n/a | n/a |
+| `A3.APIOperation` | No | n/a | n/a |
+| `A3.DataEntity` | No | n/a | n/a |
+| `A3.Event` | No | n/a | n/a |
+| `A3.SolutionBuildingBlock` | No | n/a | n/a |
 
 #### A4 — Technology Architecture — 0 of 11 covered by BIAN
 
-| Entity | Covered by BIAN | BIAN concept | BIAN source | BIAN mapping to next level |
-|---|---|---|---|---|
-| `A4.InfrastructureComponent` *(abstract)* | No | n/a | n/a | n/a |
-| `A4.Deployment` | No | n/a | n/a | n/a |
-| `A4.DeploymentEnvironment` | No | n/a | n/a | n/a |
-| `A4.Node` | No | n/a | n/a | n/a |
-| `A4.Device` | No | n/a | n/a | n/a |
-| `A4.SystemSoftware` | No | n/a | n/a | n/a |
-| `A4.TechnologyService` | No | n/a | n/a | n/a |
-| `A4.TechnologyInterface` | No | n/a | n/a | n/a |
-| `A4.CommunicationNetwork` | No | n/a | n/a | n/a |
-| `A4.Path` | No | n/a | n/a | n/a |
-| `A4.Artifact` | No | n/a | n/a | n/a |
+| Entity | Covered by BIAN | BIAN concept | BIAN source |
+|---|---|---|---|
+| `A4.InfrastructureComponent` *(abstract)* | No | n/a | n/a |
+| `A4.Deployment` | No | n/a | n/a |
+| `A4.DeploymentEnvironment` | No | n/a | n/a |
+| `A4.Node` | No | n/a | n/a |
+| `A4.Device` | No | n/a | n/a |
+| `A4.SystemSoftware` | No | n/a | n/a |
+| `A4.TechnologyService` | No | n/a | n/a |
+| `A4.TechnologyInterface` | No | n/a | n/a |
+| `A4.CommunicationNetwork` | No | n/a | n/a |
+| `A4.Path` | No | n/a | n/a |
+| `A4.Artifact` | No | n/a | n/a |
 
-**Totals: 16 of 44 entities covered by BIAN** — one at A1, all fifteen at A2, none at A3, none at A4. Of the sixteen, only the A2→A3 information and API entities (`ControlRecord`, `ServiceOperation`, `BehaviorQualifier`, `BusinessObject`, `BusinessObjectAttribute`) have a published BIAN mapping to the next level; the capability's mapping to Service Domains — the one most expected — is not published.
+**Totals: 16 of 44 entities covered by BIAN** — one at A1, all fifteen at A2, none at A3, none at A4.
 
-### 1.3 Existing BIAN mappings between levels
+### 1.2 Mappings between BIAN entities
 
-Only mappings that BIAN itself publishes, between a BIAN entity and something on the next level. Nothing SDMM defines appears here. Every row names the artefact it comes from.
+The relationships BIAN itself defines among its sixteen entities — its own mapping model. All are within the Service Domain Architecture (A2) except the first, which is the only BIAN relationship reaching A1 and is unpublished.
 
-#### A1 → A2 — none published
+| # | From | Mapping | To | What it says | Source |
+|---|---|---|---|---|---|
+| 1 | `A1.BusinessCapability` | aligns to | `A2.ServiceDomain` | **Unpublished** — mapped by the BCM working group in 2024, "not yet documented in the BIAN BiZZdesign repository" | [RN13] §3, [RN14] §3 |
+| 2 | `A2.BusinessArea` | contains | `A2.BusinessDomain` | The landscape hierarchy, top level | [SL14] Service Landscape views |
+| 3 | `A2.BusinessDomain` | contains | `A2.ServiceDomain` | Each Service Domain sits in exactly one Business Domain | [SL14] Service Landscape views |
+| 4 | `A2.ServiceDomain` | applies | `A2.FunctionalPattern` | Every domain applies one generic behaviour pattern (e.g. Fulfil, Track, Analyse) | [SL14] MetaModel Overview; [SAPG] §3.2.1 |
+| 5 | `A2.ServiceDomain` | manages | `A2.AssetType` | Every domain manages one class of asset through its lifecycle | [SL14] MetaModel Overview; [SAPG] §3.2.2 |
+| 6 | `A2.ServiceDomain` | governs | `A2.ControlRecord` | Every domain has one control record: the lifecycle state of its pattern applied to its asset | [SL14] Control Record Model; [SAPG] §3.2.3 |
+| 7 | `A2.ControlRecord` | is partitioned by | `A2.BehaviorQualifier` | Qualifiers divide the control record into sub-partitions of equivalent operational properties | [SL14] MetaModel Overview; [SAPG] §3.2.4 |
+| 8 | `A2.ControlRecord` | attributes typed by | `A2.BusinessObject` / `A2.BusinessObjectAttribute` | Control record attributes draw on the Business Object Model; rationalised together in 14.0 | [SL14] BOM Overview; [RN14] §1.3 |
+| 9 | `A2.ServiceDomain` | offers | `A2.ServiceGroup` | Operations are grouped per domain | [SL14] MetaModel Overview |
+| 10 | `A2.ServiceGroup` | contains | `A2.ServiceOperation` | Each operation belongs to one group | [SL14] MetaModel Overview |
+| 11 | `A2.ServiceOperation` | acts on | `A2.ControlRecord` (or a qualifier partition) | An operation's action term says what it does to the control record instance; attributes are filtered by action term for input/output | [SAPG] §3.2.5, §3.5 |
+| 12 | `A2.ServiceDomain` | connects to | `A2.ServiceDomain` | First-order connections: which domains a domain typically exchanges with | [SAPG] §3.2.6 |
+| 13 | `A2.BusinessScenario` | sequences | `A2.ServiceOperation` across domains | A scenario is an illustrative sequence of operation calls between domains (UML sequence diagram) | [SL14] Business Scenarios; [SAPG] §3.3 |
+| 14 | `A2.Wireframe` | depicts | `A2.ServiceDomain` connections | Archetypal interaction pattern among a set of domains | [SL14] Wireframes Overview; [SAPG] §3.4 |
+| 15 | `A2.SemanticAPI` | derived from | `A2.ServiceDomain` + its `A2.ServiceOperation`s | The reference API is the domain's operations in REST form | [APIP]; [SAPG] §3.5 |
 
-| BIAN mapping | Status |
-|---|---|
-| Business Capability → Service Domain | **Not published.** The BCM working group mapped capabilities to Service Domains in 2024; "the results are not yet documented in the BIAN BiZZdesign repository because still work in progress" ([RN13] §3, repeated [RN14] §3). Detail is on the members-only wiki |
-| Value stream → Business Scenario | **Not published.** Value streams are under study by the BCM working group and "not yet modelled" ([RN14] §3) |
+Rows 2–15 are what `metamodel/level-relationships.json` encodes as the fixed A2 structure. Row 1 is the one BIAN mapping SDMM's `SUPPORTED_BY` arrow would rely on, and it does not exist publicly.
 
-BIAN publishes the A2 **targets** a bank would map to — Service Domains, Business Scenarios, the BOM — but no mapping *from* a bank's A1 to them.
+### 1.3 BIAN mappings from its entities to implementation
 
-#### A2 → A3 — published, at logical level, in the Semantic API Practitioner Guide v8.1
+How BIAN maps its A2 entities onto implementation concepts (an API, an application, a legacy system). These are the only BIAN mappings that leave A2. They are logical-level; BIAN publishes no mapping to physical infrastructure.
+
+#### A2 → implementation — published, logical level, Semantic API Practitioner Guide v8.1
 
 | # | BIAN mapping | Rule as published | Source |
 |---|---|---|---|
@@ -125,39 +127,18 @@ BIAN publishes the A2 **targets** a bank would map to — Service Domains, Busin
 
 Rows 1–7 are rules: given a BIAN operation, they say what its REST form is. Rows 8–9 are methods: they say *how to decide* which application realises a domain, not *which one does*. All are logical: "BIAN Endpoint descriptions are far from implementation specifications" ([SAPG] §3.5 p. 56). The Information Profile (§3.2.7) is not a mapping — it defines what information a domain governs, as the content any A3 data design must cover.
 
-#### A3 → A4 — none published
 
-| BIAN mapping | Status |
-|---|---|
-| Application → infrastructure / deployment | **None.** "The BIAN standard … does not assume or impose any physical properties for the Service Domains" ([SAPG] §4.2.3 p. 87). What exists is implementation *guidance* — component/container deployment properties, utilities to consider, legacy wrapping, parallel migration, shared platforms (§4.1–4.3) — which describes patterns, not a mapping |
+### 1.4 What BIAN does not map
 
-#### Summary
+| Would-be mapping | Status | Source |
+|---|---|---|
+| Business Capability → Service Domain | Work in progress, unpublished | [RN13] §3, [RN14] §3 |
+| Value stream → Business Scenario | Value streams not yet modelled | [RN14] §3 |
+| A bank's business process → Service Domain / operation | Never in scope; scenarios are illustrative, not a bank's processes | [SAPG] §3.3 |
+| A bank's application → Service Domain | Method only (§1.3 rows 8–9); BIAN holds no application data | [SAPG] §3.4, §4.3.1 |
+| Anything → infrastructure or deployment | "does not assume or impose any physical properties"; implementation guidance only (§4.1–4.3) | [SAPG] §4.2.3 p. 87, Figure 34 p. 90 |
 
-| Boundary | BIAN mappings that exist |
-|---|---|
-| A1 → A2 | 0 |
-| A2 → A3 | 7 rules + 2 methods, all logical level |
-| A3 → A4 | 0 |
-
-**BIAN's published cross-level mapping is confined to one boundary, A2 → A3, and within it to the API and information path.** The capability boundary has no published mapping, and the infrastructure boundary has none by design.
-
-### 1.4 SDMM arrows against BIAN's mappings
-
-§1.3 lists the mappings **BIAN** publishes. This table lists the nine arrows **SDMM** allows (the registry) and asks one question of each: does a BIAN mapping from §1.3 cover it?
-
-| SDMM arrow (registry rule) | Covered by a BIAN mapping? | Which one (§1.3) | What is left to the institution |
-|---|---|---|---|
-| `A1.BusinessCapability SUPPORTED_BY A2.ServiceDomain` | **No** | — (BCM→Service Domain unpublished) | The whole mapping |
-| `A1.ValueStream ALIGNED_TO A2.BusinessScenario` | **No** | — (value streams not modelled) | The whole mapping; scenarios are a published target |
-| `A1.BusinessProcess USES_DOMAIN A2.ServiceDomain` | **No** | — | The whole mapping; scenarios usable as templates |
-| `A1.BusinessObject ALIGNED_TO A2.BusinessObject` | **No** | — (BOM is a target, not a mapping) | The whole mapping; BOM attributes are the published target |
-| `A2.ServiceDomain REALIZED_BY A3.ApplicationComponent` | **Method only** | #8 functional partition; #9 legacy wrapping | Deciding which application; BIAN says how to decide, not what |
-| `A2.ServiceOperation IMPLEMENTED_BY A3.APIOperation` | **Yes** | #1–#7 REST mapping and reference APIs | Comparing the bank's API to the reference form |
-| `A2.BusinessObject MAPPED_TO A3.DataEntity` | **Partial** | #3 control record = resource (payload attributes) | Matching the bank's data entity to the BOM object |
-| `A3.ApplicationComponent DEPLOYED_ON A4.InfrastructureComponent` | **No** | — (deployment patterns only) | The whole mapping, from deployment data |
-| `A3.ApplicationComponent DEPLOYED_AS A4.Deployment` | **No** | — (domain-as-container is a pattern, not a mapping) | The whole mapping, from deployment data |
-
-**One arrow of nine is covered by a BIAN mapping; one is partially covered; one has a BIAN method; six have nothing.** The engine's design in §2 follows from this row by row.
+**Summary: BIAN's mapping model is 15 relationships among its own A2 entities, plus 7 rules and 2 methods from A2 to implementation. It publishes nothing from A1 to A2 (the capability mapping is unfinished) and nothing to physical infrastructure.**
 
 ### 1.5 Consequences for the engine design
 
@@ -178,6 +159,26 @@ Rows 1–7 are rules: given a BIAN operation, they say what its REST form is. Ro
 
 ---
 
-## 2. Engine architecture *(next: to be planned)*
+## 2. Engine architecture *(in planning)*
 
-Tier 1 deterministic candidates per boundary, tier 2 model-assisted ranking, evidence and confidence policy, evaluation on a held-out set. Sections 2–5 follow once §1 is agreed.
+### 2.1 Starting point: SDMM's nine arrows against BIAN's mappings
+
+§1 described BIAN's own mapping model. The engine works on **SDMM's** nine arrows (the registry). For each, does a BIAN mapping from §1.2–1.3 cover it? Where it does not, §2 has to design the inference.
+
+| SDMM arrow (registry rule) | Covered by a BIAN mapping? | Which one (§1.3) | What is left to the institution |
+|---|---|---|---|
+| `A1.BusinessCapability SUPPORTED_BY A2.ServiceDomain` | **No** | — (BCM→Service Domain unpublished) | The whole mapping |
+| `A1.ValueStream ALIGNED_TO A2.BusinessScenario` | **No** | — (value streams not modelled) | The whole mapping; scenarios are a published target |
+| `A1.BusinessProcess USES_DOMAIN A2.ServiceDomain` | **No** | — | The whole mapping; scenarios usable as templates |
+| `A1.BusinessObject ALIGNED_TO A2.BusinessObject` | **No** | — (BOM is a target, not a mapping) | The whole mapping; BOM attributes are the published target |
+| `A2.ServiceDomain REALIZED_BY A3.ApplicationComponent` | **Method only** | #8 functional partition; #9 legacy wrapping | Deciding which application; BIAN says how to decide, not what |
+| `A2.ServiceOperation IMPLEMENTED_BY A3.APIOperation` | **Yes** | #1–#7 REST mapping and reference APIs | Comparing the bank's API to the reference form |
+| `A2.BusinessObject MAPPED_TO A3.DataEntity` | **Partial** | #3 control record = resource (payload attributes) | Matching the bank's data entity to the BOM object |
+| `A3.ApplicationComponent DEPLOYED_ON A4.InfrastructureComponent` | **No** | — (deployment patterns only) | The whole mapping, from deployment data |
+| `A3.ApplicationComponent DEPLOYED_AS A4.Deployment` | **No** | — (domain-as-container is a pattern, not a mapping) | The whole mapping, from deployment data |
+
+**One arrow of nine is covered by a BIAN mapping; one is partially covered; one has a BIAN method; six have nothing.** The rest of §2 follows this row by row.
+
+### 2.2 Per-arrow design *(next)*
+
+Tier 1 deterministic candidates per arrow, tier 2 model-assisted ranking, evidence and confidence policy, evaluation on a held-out set.
