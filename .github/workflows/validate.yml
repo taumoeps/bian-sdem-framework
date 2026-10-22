@@ -31,6 +31,10 @@ jobs:
           python -m sdmm.engine baseline examples/card-fraud-alerts/a*.json > /tmp/proposals.json
           python -m sdmm.validate /tmp/proposals.json
           python -m sdmm.evaluate examples/card-fraud-alerts/mappings.json --proposals /tmp/proposals.json --min-f1 0.5
+      - name: Payment Initiation (M1) exports and mappings
+        run: |
+          python -m sdmm.graph check examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
+          python -m sdmm.validate --strict examples/payment-initiation/mappings.json
       - name: Trace the fraud example both ways
         run: |
           python -m sdmm.trace CAP-310 examples/card-fraud-alerts/mappings.json

@@ -1,0 +1,348 @@
+{
+  "level": "A3",
+  "model_id": "synthetic-bank-payments-a3",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-APM",
+  "instances": [
+    {
+      "id": "APP-PAY-HUB",
+      "type": "A3.ApplicationComponent",
+      "version": "7.1",
+      "name": "Payments Hub",
+      "lifecycle_status": "active",
+      "description": "The bank's payment initiation platform: captures instructions from channels, validates and authorises them, and hands them to execution.",
+      "attributes": {
+        "vendor": "in-house",
+        "deployed_on": [
+          "INF-K8S-PAY-PROD"
+        ],
+        "deployed_as": [
+          "DEP-PAYHUB-PROD",
+          "DEP-PAYHUB-UAT"
+        ]
+      }
+    },
+    {
+      "id": "CMP-PAY-CAPTURE",
+      "type": "A3.ApplicationComponent",
+      "version": "7.1",
+      "name": "Instruction Capture",
+      "lifecycle_status": "active",
+      "description": "Receives payment instructions from channels and creates the instruction record."
+    },
+    {
+      "id": "CMP-PAY-VALIDATE",
+      "type": "A3.ApplicationComponent",
+      "version": "7.1",
+      "name": "Instruction Validation",
+      "lifecycle_status": "active",
+      "description": "Checks instructions against limits, mandates and sanctions lists; records authorisation."
+    },
+    {
+      "id": "CMP-PAY-EXEC",
+      "type": "A3.ApplicationComponent",
+      "version": "3.4",
+      "name": "Execution Gateway",
+      "lifecycle_status": "active",
+      "description": "Hands authorised instructions to scheme execution and tracks execution references.",
+      "attributes": {
+        "deployed_on": [
+          "INF-K8S-PAY-PROD"
+        ],
+        "deployed_as": [
+          "DEP-PAYEXEC-PROD"
+        ]
+      }
+    },
+    {
+      "id": "SVC-PAY-INIT",
+      "type": "A3.ApplicationService",
+      "version": "2.0",
+      "name": "Payment Initiation Service",
+      "lifecycle_status": "active",
+      "description": "The externally exposed payment-initiation behaviour of the hub.",
+      "attributes": {
+        "consumes": [
+          "TS-SECRETS",
+          "TS-MQ"
+        ]
+      }
+    },
+    {
+      "id": "IFC-PAY-API",
+      "type": "A3.ApplicationInterface",
+      "version": "2.0",
+      "name": "Payments API v2",
+      "lifecycle_status": "active",
+      "description": "REST interface for payment instructions."
+    },
+    {
+      "id": "API-PI-01",
+      "type": "A3.APIOperation",
+      "version": "2.0",
+      "name": "Create payment instruction",
+      "lifecycle_status": "active",
+      "description": "Creates a payment instruction from the customer's details.",
+      "attributes": {
+        "method": "POST",
+        "path": "/payment-instructions",
+        "payload_fields": [
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "value_date",
+          "remittance_information",
+          "payment_instruction_reference",
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "API-PI-02",
+      "type": "A3.APIOperation",
+      "version": "2.0",
+      "name": "Validate payment instruction",
+      "lifecycle_status": "active",
+      "description": "Runs validation and records the authorisation outcome.",
+      "attributes": {
+        "method": "POST",
+        "path": "/payment-instructions/{id}/validation",
+        "payload_fields": [
+          "payment_instruction_reference",
+          "authorisation_status",
+          "payment_status",
+          "validation_result"
+        ]
+      }
+    },
+    {
+      "id": "API-PI-03",
+      "type": "A3.APIOperation",
+      "version": "2.0",
+      "name": "Execute payment instruction",
+      "lifecycle_status": "active",
+      "description": "Hands the instruction to execution.",
+      "attributes": {
+        "method": "PUT",
+        "path": "/payment-instructions/{id}/execution",
+        "payload_fields": [
+          "payment_instruction_reference",
+          "execution_reference",
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "API-PI-04",
+      "type": "A3.APIOperation",
+      "version": "2.0",
+      "name": "Get payment instruction",
+      "lifecycle_status": "active",
+      "description": "Returns the instruction and its status. NOTE: implemented as POST for legacy channel reasons.",
+      "attributes": {
+        "method": "POST",
+        "path": "/payment-instructions/{id}",
+        "payload_fields": [
+          "payment_instruction_reference",
+          "payment_status",
+          "execution_reference",
+          "authorisation_status"
+        ]
+      }
+    },
+    {
+      "id": "API-PI-05",
+      "type": "A3.APIOperation",
+      "version": "2.0",
+      "name": "Amend payment instruction",
+      "lifecycle_status": "active",
+      "description": "Amends amount, date or creditor before execution.",
+      "attributes": {
+        "method": "PATCH",
+        "path": "/payment-instructions/{id}",
+        "payload_fields": [
+          "payment_instruction_reference",
+          "amount",
+          "value_date",
+          "creditor_account_reference",
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "API-PI-06",
+      "type": "A3.APIOperation",
+      "version": "2.0",
+      "name": "List payment instruction events",
+      "lifecycle_status": "active",
+      "description": "Returns the event history of an instruction.",
+      "attributes": {
+        "method": "GET",
+        "path": "/payment-instructions/{id}/events",
+        "payload_fields": [
+          "event_id",
+          "payment_instruction_reference",
+          "event_type",
+          "occurred_at"
+        ]
+      }
+    },
+    {
+      "id": "ENT-PAY-INSTR",
+      "type": "A3.DataEntity",
+      "version": "7.1",
+      "name": "payment_instruction",
+      "lifecycle_status": "active",
+      "description": "Hub table holding one row per instruction.",
+      "attributes": {
+        "attributes": [
+          "payment_instruction_reference",
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "value_date",
+          "payment_status",
+          "authorisation_status",
+          "execution_reference",
+          "remittance_information",
+          "channel_id"
+        ],
+        "stored_in": [
+          "INF-PG-PAY-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-PAY-EVENT",
+      "type": "A3.DataEntity",
+      "version": "7.1",
+      "name": "payment_event",
+      "lifecycle_status": "active",
+      "description": "Append-only event history per instruction.",
+      "attributes": {
+        "attributes": [
+          "event_id",
+          "payment_instruction_reference",
+          "event_type",
+          "occurred_at"
+        ],
+        "stored_in": [
+          "INF-PG-PAY-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-ACCOUNT-CACHE",
+      "type": "A3.DataEntity",
+      "version": "7.1",
+      "name": "account_cache",
+      "lifecycle_status": "active",
+      "description": "Cached account details for validation.",
+      "attributes": {
+        "attributes": [
+          "account_reference",
+          "iban",
+          "currency",
+          "holder_reference",
+          "cached_at"
+        ],
+        "stored_in": [
+          "INF-PG-PAY-PROD"
+        ]
+      }
+    },
+    {
+      "id": "EVT-PAY-STATUS",
+      "type": "A3.Event",
+      "version": "2.0",
+      "name": "PaymentStatusChanged",
+      "lifecycle_status": "active",
+      "description": "Published when an instruction changes state."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "composition",
+      "target": "CMP-PAY-CAPTURE"
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "composition",
+      "target": "CMP-PAY-VALIDATE"
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "composition",
+      "target": "CMP-PAY-EXEC"
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "composition",
+      "target": "SVC-PAY-INIT"
+    },
+    {
+      "source": "SVC-PAY-INIT",
+      "kind": "composition",
+      "target": "IFC-PAY-API"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-01"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-02"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-03"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-04"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-05"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-06"
+    },
+    {
+      "source": "CMP-PAY-CAPTURE",
+      "kind": "access",
+      "target": "ENT-PAY-INSTR"
+    },
+    {
+      "source": "CMP-PAY-VALIDATE",
+      "kind": "access",
+      "target": "ENT-PAY-INSTR"
+    },
+    {
+      "source": "CMP-PAY-VALIDATE",
+      "kind": "access",
+      "target": "ENT-ACCOUNT-CACHE"
+    },
+    {
+      "source": "CMP-PAY-EXEC",
+      "kind": "access",
+      "target": "ENT-PAY-INSTR"
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "triggering",
+      "target": "EVT-PAY-STATUS"
+    }
+  ]
+}

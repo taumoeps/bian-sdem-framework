@@ -595,7 +595,7 @@ What the validator checks is listed under *What goes in and what comes out* abov
 - `docs/`: reference methodology, governance, the v0.4 entity metamodel spec and `reference-architecture-provenance.md` (every entity traced to a public standard)
 - `schema/`: relationship registry, mapping-document schema, level-model export schema, impact rules
 - `metamodel/`: the A1–A4 entity catalogue (41 + 3 artefacts) and within-level relationship kinds
-- `examples/`: synthetic mappings — `customer-onboarding` (full vertical slice) and `card-fraud-alerts` (a change event with supersession)
+- `examples/`: synthetic mappings — `customer-onboarding` (full vertical slice), `card-fraud-alerts` (a change event with supersession; use cases E1 and M0) and `payment-initiation` (68-instance brownfield estate for use case M1)
 - `sdmm/`: the four components — validator (`validate.py`, `diff.py`), graph (`graph.py`, `trace.py`, `metamodel.py`), engine harness (`engine.py`, `evaluate.py`) — and the `ReferenceResolver` / `EntityResolver` adapter interfaces (`reference.py`)
 - `tests/`: basic automated tests
 - `.github/workflows/`: CI validation

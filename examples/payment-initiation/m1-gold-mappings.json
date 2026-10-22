@@ -1,0 +1,284 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "M1",
+  "mappings": [
+    {
+      "mapping_id": "PAY-101",
+      "source": {
+        "id": "SO-PI-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-PI-01",
+        "type": "A3.APIOperation",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions/post"
+      ],
+      "rationale": "Initiate \u2194 POST; no qualifier; 8/8 attributes in payload",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-102",
+      "source": {
+        "id": "SO-PI-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-PI-02",
+        "type": "A3.APIOperation",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1validation/post"
+      ],
+      "rationale": "Evaluate \u2194 POST; Validation qualifier in path; 3/3 attributes",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-103",
+      "source": {
+        "id": "SO-PI-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-PI-03",
+        "type": "A3.APIOperation",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1execution/put"
+      ],
+      "rationale": "Execute \u2194 PUT; Execution qualifier in path; 3/3 attributes",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-104",
+      "source": {
+        "id": "SO-PI-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-PI-04",
+        "type": "A3.APIOperation",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/post",
+        "application_architecture_document:ADR-PAY-017"
+      ],
+      "rationale": "Retrieve implemented as POST (legacy channel constraint, ADR-PAY-017) \u2014 approved with a recorded deviation from the REST mapping",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-105",
+      "source": {
+        "id": "SO-PI-05",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-PI-05",
+        "type": "A3.APIOperation",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/patch"
+      ],
+      "rationale": "Update \u2194 PATCH; 4/4 attributes",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-106",
+      "source": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:AA-PAYHUB-HLD#s3"
+      ],
+      "rationale": "The hub implements five of the domain's six operations through Payments API v2",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-107",
+      "source": {
+        "id": "BBO-PAY-INSTR",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-PAY-INSTR",
+        "type": "A3.DataEntity",
+        "version": "7.1"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:DM-PAYHUB-7.1#payment_instruction"
+      ],
+      "rationale": "8/8 canonical attributes present in the hub table; channel_id is an extension",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-108",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-K8S-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.29"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#prod"
+      ],
+      "rationale": "Production hosting",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-109",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-PAYHUB-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#prod"
+      ],
+      "rationale": "Production deployment of the hub",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-110",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-PAYHUB-UAT",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#uat"
+      ],
+      "rationale": "UAT deployment of the hub",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-111",
+      "source": {
+        "id": "CMP-PAY-EXEC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.4"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-K8S-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.29"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#prod"
+      ],
+      "rationale": "The execution gateway is deployed separately on the production cluster",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-112",
+      "source": {
+        "id": "CMP-PAY-EXEC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.4"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-PAYEXEC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#prod"
+      ],
+      "rationale": "Production deployment of the gateway",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    }
+  ]
+}

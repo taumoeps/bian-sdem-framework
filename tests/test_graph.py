@@ -143,3 +143,23 @@ class V051Tests(unittest.TestCase):
         self.assertEqual(fg.instance('DEP-FRAUD-PROD')['attributes']['component_id'], 'APP-FRAUD-ENGINE')
         self.assertEqual(fg.instance('SO-044-07')['attributes']['action_term'], 'Notify')
         self.assertEqual(fg.instance('POST /fraud/alerts')['attributes']['method'], 'POST')
+
+
+class PaymentInitiationExampleTests(unittest.TestCase):
+    P = ROOT / 'examples/payment-initiation'
+
+    def test_exports_and_mappings_check_clean(self):
+        fg = FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
+        self.assertEqual({k: v for k, v in fg.check().items() if v}, {})
+
+    def test_given_and_gold_partition_the_union(self):
+        u = {m['mapping_id'] for m in json.loads((self.P / 'mappings.json').read_text())['mappings']}
+        g = {m['mapping_id'] for m in json.loads((self.P / 'm1-mappings-given.json').read_text())['mappings']}
+        d = {m['mapping_id'] for m in json.loads((self.P / 'm1-gold-mappings.json').read_text())['mappings']}
+        self.assertEqual(g | d, u); self.assertEqual(g & d, set()); self.assertEqual(len(d), 12)
+
+    def test_planted_mismatch_is_in_the_data(self):
+        a3 = json.loads((self.P / 'a3-application.json').read_text())
+        api = next(i for i in a3['instances'] if i['id'] == 'API-PI-04'); self.assertEqual(api['attributes']['method'], 'POST')
+        a2 = json.loads((self.P / 'a2-service-domain.json').read_text())
+        op = next(i for i in a2['instances'] if i['id'] == 'SO-PI-04'); self.assertEqual(op['attributes']['action_term'], 'Retrieve')

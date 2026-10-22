@@ -1,0 +1,158 @@
+{
+  "level": "A4",
+  "model_id": "synthetic-bank-payments-a4",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-CMDB",
+  "instances": [
+    {
+      "id": "INF-K8S-PAY-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "1.29",
+      "name": "Managed Kubernetes — payments (production)",
+      "lifecycle_status": "active",
+      "description": "Production container platform for the payments estate.",
+      "attributes": {
+        "hosts": [
+          "APP-PAY-HUB",
+          "CMP-PAY-EXEC"
+        ]
+      }
+    },
+    {
+      "id": "INF-K8S-PAY-UAT",
+      "type": "A4.SystemSoftware",
+      "version": "1.29",
+      "name": "Managed Kubernetes — payments (UAT)",
+      "lifecycle_status": "active",
+      "description": "UAT container platform.",
+      "attributes": {
+        "hosts": [
+          "APP-PAY-HUB"
+        ]
+      }
+    },
+    {
+      "id": "INF-PG-PAY-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "16",
+      "name": "Managed PostgreSQL — payments",
+      "lifecycle_status": "active",
+      "description": "Production relational store for the hub."
+    },
+    {
+      "id": "TS-MQ",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "Messaging service",
+      "lifecycle_status": "active",
+      "description": "Managed message broker used for status events."
+    },
+    {
+      "id": "TS-SECRETS",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "Secrets management",
+      "lifecycle_status": "active",
+      "description": "Platform secrets service."
+    },
+    {
+      "id": "ENV-PAY-PROD",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "Production",
+      "lifecycle_status": "active",
+      "description": "Production runtime environment."
+    },
+    {
+      "id": "ENV-PAY-UAT",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "UAT",
+      "lifecycle_status": "active",
+      "description": "User-acceptance environment."
+    },
+    {
+      "id": "DEP-PAYHUB-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Payments Hub — production",
+      "lifecycle_status": "active",
+      "description": "Hub 7.1 on the production cluster.",
+      "attributes": {
+        "component_id": "APP-PAY-HUB",
+        "environment_id": "ENV-PAY-PROD",
+        "platform_id": "INF-K8S-PAY-PROD"
+      }
+    },
+    {
+      "id": "DEP-PAYHUB-UAT",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Payments Hub — UAT",
+      "lifecycle_status": "active",
+      "description": "Hub 7.1 on the UAT cluster.",
+      "attributes": {
+        "component_id": "APP-PAY-HUB",
+        "environment_id": "ENV-PAY-UAT",
+        "platform_id": "INF-K8S-PAY-UAT"
+      }
+    },
+    {
+      "id": "DEP-PAYEXEC-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Execution Gateway — production",
+      "lifecycle_status": "active",
+      "description": "Gateway 3.4 on the production cluster.",
+      "attributes": {
+        "component_id": "CMP-PAY-EXEC",
+        "environment_id": "ENV-PAY-PROD",
+        "platform_id": "INF-K8S-PAY-PROD"
+      }
+    },
+    {
+      "id": "NET-PAY-PRIVATE",
+      "type": "A4.CommunicationNetwork",
+      "version": "1.0",
+      "name": "Payments private network",
+      "lifecycle_status": "active",
+      "description": "Private network segment for payment services."
+    },
+    {
+      "id": "ART-PAYHUB-IMG",
+      "type": "A4.Artifact",
+      "version": "7.1",
+      "name": "payments-hub:7.1",
+      "lifecycle_status": "active",
+      "description": "Container image of the hub."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "ENV-PAY-PROD",
+      "kind": "aggregation",
+      "target": "DEP-PAYHUB-PROD"
+    },
+    {
+      "source": "ENV-PAY-PROD",
+      "kind": "aggregation",
+      "target": "DEP-PAYEXEC-PROD"
+    },
+    {
+      "source": "ENV-PAY-UAT",
+      "kind": "aggregation",
+      "target": "DEP-PAYHUB-UAT"
+    },
+    {
+      "source": "INF-K8S-PAY-PROD",
+      "kind": "assignment",
+      "target": "NET-PAY-PRIVATE"
+    },
+    {
+      "source": "ART-PAYHUB-IMG",
+      "kind": "assignment",
+      "target": "INF-K8S-PAY-PROD"
+    }
+  ]
+}

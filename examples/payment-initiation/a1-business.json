@@ -1,0 +1,267 @@
+{
+  "level": "A1",
+  "model_id": "synthetic-bank-payments-a1",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-EA-TOOL",
+  "instances": [
+    {
+      "id": "CAP-PAY-000",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Payments",
+      "lifecycle_status": "active",
+      "description": "Move money on behalf of customers: initiate, execute, settle and report payments across schemes."
+    },
+    {
+      "id": "CAP-PAY-010",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Initiate Payment",
+      "lifecycle_status": "active",
+      "description": "Capture a customer's payment instruction, validate and authorise it, and hand it to execution — for credit transfers from a customer account."
+    },
+    {
+      "id": "VS-MAKE-PAYMENT",
+      "type": "A1.ValueStream",
+      "version": "1.0",
+      "name": "Make a Payment",
+      "lifecycle_status": "active",
+      "description": "The customer's journey from deciding to pay someone to seeing the payment confirmed.",
+      "attributes": {
+        "stages": [
+          "VSS-P1",
+          "VSS-P2",
+          "VSS-P3",
+          "VSS-P4"
+        ]
+      }
+    },
+    {
+      "id": "VSS-P1",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Capture payment instruction",
+      "lifecycle_status": "active",
+      "description": "The customer enters payee, amount and date."
+    },
+    {
+      "id": "VSS-P2",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Validate and authorise",
+      "lifecycle_status": "active",
+      "description": "The instruction is checked and the customer authorises it."
+    },
+    {
+      "id": "VSS-P3",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Execute transfer",
+      "lifecycle_status": "active",
+      "description": "The bank executes the transfer."
+    },
+    {
+      "id": "VSS-P4",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Confirm to customer",
+      "lifecycle_status": "active",
+      "description": "The customer sees the payment status."
+    },
+    {
+      "id": "PRC-PAY-01",
+      "type": "A1.BusinessProcess",
+      "version": "1.0",
+      "name": "Capture and validate payment instruction",
+      "lifecycle_status": "active",
+      "description": "Capture the instruction from the channel, validate it against account and scheme rules, obtain authorisation.",
+      "attributes": {
+        "invokes": [
+          "SO-PI-01",
+          "SO-PI-02"
+        ]
+      }
+    },
+    {
+      "id": "ACT-PAY-01a",
+      "type": "A1.BusinessActivity",
+      "version": "1.0",
+      "name": "Capture instruction",
+      "lifecycle_status": "active",
+      "description": "Record the payee, amount, currency and value date.",
+      "attributes": {
+        "invokes": [
+          "SO-PI-01"
+        ]
+      }
+    },
+    {
+      "id": "ACT-PAY-01b",
+      "type": "A1.BusinessActivity",
+      "version": "1.0",
+      "name": "Validate instruction",
+      "lifecycle_status": "active",
+      "description": "Evaluate the instruction for completeness, limits and sanctions.",
+      "attributes": {
+        "invokes": [
+          "SO-PI-02"
+        ]
+      }
+    },
+    {
+      "id": "PRC-PAY-02",
+      "type": "A1.BusinessProcess",
+      "version": "1.0",
+      "name": "Execute and confirm payment",
+      "lifecycle_status": "active",
+      "description": "Execute the authorised instruction and report its status to the customer.",
+      "attributes": {
+        "invokes": [
+          "SO-PI-03",
+          "SO-PI-04"
+        ]
+      }
+    },
+    {
+      "id": "ACT-PAY-02a",
+      "type": "A1.BusinessActivity",
+      "version": "1.0",
+      "name": "Execute payment",
+      "lifecycle_status": "active",
+      "description": "Submit the instruction for execution.",
+      "attributes": {
+        "invokes": [
+          "SO-PI-03"
+        ]
+      }
+    },
+    {
+      "id": "ACT-PAY-02b",
+      "type": "A1.BusinessActivity",
+      "version": "1.0",
+      "name": "Retrieve status",
+      "lifecycle_status": "active",
+      "description": "Obtain the current status of the instruction.",
+      "attributes": {
+        "invokes": [
+          "SO-PI-04"
+        ]
+      }
+    },
+    {
+      "id": "BO-PAY-INSTR",
+      "type": "A1.BusinessObject",
+      "version": "1.0",
+      "name": "Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "A customer's request to pay an amount to a payee on a date.",
+      "attributes": {
+        "attributes": [
+          "debtor_account",
+          "creditor_account",
+          "amount",
+          "currency",
+          "value_date",
+          "payment_reference",
+          "remittance_information"
+        ]
+      }
+    },
+    {
+      "id": "BO-PAYEE",
+      "type": "A1.BusinessObject",
+      "version": "1.0",
+      "name": "Payee",
+      "lifecycle_status": "active",
+      "description": "A party the customer pays.",
+      "attributes": {
+        "attributes": [
+          "payee_name",
+          "payee_account",
+          "payee_bank"
+        ]
+      }
+    },
+    {
+      "id": "ROLE-PAY-OFFICER",
+      "type": "A1.BusinessRole",
+      "version": "1.0",
+      "name": "Payments Operations Officer",
+      "lifecycle_status": "active",
+      "description": "Handles exceptions in payment processing."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "CAP-PAY-000",
+      "kind": "composition",
+      "target": "CAP-PAY-010"
+    },
+    {
+      "source": "VS-MAKE-PAYMENT",
+      "kind": "composition",
+      "target": "VSS-P1"
+    },
+    {
+      "source": "VS-MAKE-PAYMENT",
+      "kind": "composition",
+      "target": "VSS-P2"
+    },
+    {
+      "source": "VS-MAKE-PAYMENT",
+      "kind": "composition",
+      "target": "VSS-P3"
+    },
+    {
+      "source": "VS-MAKE-PAYMENT",
+      "kind": "composition",
+      "target": "VSS-P4"
+    },
+    {
+      "source": "VS-MAKE-PAYMENT",
+      "kind": "realization",
+      "target": "CAP-PAY-010"
+    },
+    {
+      "source": "PRC-PAY-01",
+      "kind": "realization",
+      "target": "CAP-PAY-010"
+    },
+    {
+      "source": "PRC-PAY-02",
+      "kind": "realization",
+      "target": "CAP-PAY-010"
+    },
+    {
+      "source": "PRC-PAY-01",
+      "kind": "composition",
+      "target": "ACT-PAY-01a"
+    },
+    {
+      "source": "PRC-PAY-01",
+      "kind": "composition",
+      "target": "ACT-PAY-01b"
+    },
+    {
+      "source": "PRC-PAY-02",
+      "kind": "composition",
+      "target": "ACT-PAY-02a"
+    },
+    {
+      "source": "PRC-PAY-02",
+      "kind": "composition",
+      "target": "ACT-PAY-02b"
+    },
+    {
+      "source": "ROLE-PAY-OFFICER",
+      "kind": "assignment",
+      "target": "PRC-PAY-02"
+    },
+    {
+      "source": "PRC-PAY-01",
+      "kind": "access",
+      "target": "BO-PAY-INSTR"
+    }
+  ]
+}

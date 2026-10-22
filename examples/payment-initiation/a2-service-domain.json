@@ -1,0 +1,500 @@
+{
+  "level": "A2",
+  "model_id": "synthetic-bank-payments-a2",
+  "model_version": "2026.10",
+  "metamodel_version": "0.4.0",
+  "source_system": "SYNTHETIC-BIAN-WORKBENCH",
+  "instances": [
+    {
+      "id": "BD-PAYMENTS",
+      "type": "A2.BusinessDomain",
+      "version": "1.0",
+      "name": "Payments (synthetic grouping)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in for a BIAN payments business domain."
+    },
+    {
+      "id": "SD-PI",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Payment Initiation (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in for a BIAN payment-initiation Service Domain: captures, validates, authorises and hands over customer payment instructions.",
+      "attributes": {
+        "asset_type": "AT-PAY-INSTR",
+        "functional_pattern": "FP-FULFIL"
+      },
+      "canonical_id": "BIAN-PAYMENT-INITIATION"
+    },
+    {
+      "id": "SD-PE",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Payment Execution (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in for a BIAN payment-execution Service Domain: executes authorised instructions through schemes.",
+      "attributes": {
+        "asset_type": "AT-PAY-TXN",
+        "functional_pattern": "FP-FULFIL"
+      },
+      "canonical_id": "BIAN-PAYMENT-EXECUTION"
+    },
+    {
+      "id": "SD-PA",
+      "type": "A2.ServiceDomain",
+      "version": "1.0",
+      "name": "Party Authentication (synthetic selection)",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in for a BIAN party-authentication Service Domain: verifies a party's identity for a session or transaction.",
+      "attributes": {
+        "asset_type": "AT-AUTH",
+        "functional_pattern": "FP-ASSESS"
+      },
+      "canonical_id": "BIAN-PARTY-AUTH"
+    },
+    {
+      "id": "AT-PAY-INSTR",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "The customer payment instruction the domain fulfils."
+    },
+    {
+      "id": "AT-PAY-TXN",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Payment Transaction",
+      "lifecycle_status": "active",
+      "description": "The executed transfer."
+    },
+    {
+      "id": "AT-AUTH",
+      "type": "A2.AssetType",
+      "version": "1.0",
+      "name": "Authentication",
+      "lifecycle_status": "active",
+      "description": "An authentication of a party."
+    },
+    {
+      "id": "FP-FULFIL",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Fulfil",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in for a BIAN functional pattern: complete a request through a procedure."
+    },
+    {
+      "id": "FP-ASSESS",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0",
+      "name": "Assess",
+      "lifecycle_status": "active",
+      "description": "Synthetic stand-in: evaluate something and record the result."
+    },
+    {
+      "id": "CR-PI",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Payment Initiation Procedure",
+      "lifecycle_status": "active",
+      "description": "Lifecycle record of one payment instruction from capture to hand-over.",
+      "attributes": {
+        "attributes": [
+          "payment_instruction_reference",
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "value_date",
+          "payment_status",
+          "authorisation_status",
+          "execution_reference",
+          "remittance_information"
+        ]
+      }
+    },
+    {
+      "id": "BQ-VALIDATION",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Validation",
+      "lifecycle_status": "active",
+      "description": "The validation and authorisation partition of the procedure."
+    },
+    {
+      "id": "BQ-EXECUTION",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Execution",
+      "lifecycle_status": "active",
+      "description": "The hand-over-to-execution partition of the procedure."
+    },
+    {
+      "id": "SG-PI-1",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Instruction",
+      "lifecycle_status": "active",
+      "description": "Operations that create and maintain the instruction."
+    },
+    {
+      "id": "SG-PI-2",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Processing",
+      "lifecycle_status": "active",
+      "description": "Operations that validate, execute and report."
+    },
+    {
+      "id": "SO-PI-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Initiate Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "Create a new payment instruction procedure from the customer's details.",
+      "attributes": {
+        "action_term": "Initiate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "value_date",
+          "remittance_information"
+        ],
+        "output_attributes": [
+          "payment_instruction_reference",
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PI-05",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Update Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "Amend an instruction before execution.",
+      "attributes": {
+        "action_term": "Update",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "payment_instruction_reference",
+          "amount",
+          "value_date",
+          "creditor_account_reference"
+        ],
+        "output_attributes": [
+          "payment_instruction_reference",
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PI-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Evaluate Payment Instruction Validation",
+      "lifecycle_status": "active",
+      "description": "Validate the instruction and record the authorisation outcome.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "behavior_qualifier": "Validation",
+        "input_attributes": [
+          "payment_instruction_reference"
+        ],
+        "output_attributes": [
+          "authorisation_status",
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PI-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Execute Payment Instruction Execution",
+      "lifecycle_status": "active",
+      "description": "Hand the authorised instruction to execution.",
+      "attributes": {
+        "action_term": "Execute",
+        "behavior_qualifier": "Execution",
+        "input_attributes": [
+          "payment_instruction_reference"
+        ],
+        "output_attributes": [
+          "execution_reference",
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PI-04",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "Return the current state of the instruction.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "payment_instruction_reference"
+        ],
+        "output_attributes": [
+          "payment_status",
+          "execution_reference",
+          "authorisation_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PI-06",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Notify Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "Notify an interested party of a change in the instruction's state.",
+      "attributes": {
+        "action_term": "Notify",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "payment_instruction_reference"
+        ],
+        "output_attributes": [
+          "payment_status"
+        ]
+      }
+    },
+    {
+      "id": "BS-CREDIT-TRANSFER",
+      "type": "A2.BusinessScenario",
+      "version": "1.0",
+      "name": "Customer credit transfer",
+      "lifecycle_status": "active",
+      "description": "A customer initiates a credit transfer; it is validated, executed and its status reported.",
+      "attributes": {
+        "operation_sequence": [
+          "SO-PI-01",
+          "SO-PI-02",
+          "SO-PI-03",
+          "SO-PI-04"
+        ]
+      }
+    },
+    {
+      "id": "BBO-PAY-INSTR",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Payment Instruction",
+      "lifecycle_status": "active",
+      "description": "Canonical payment instruction object.",
+      "attributes": {
+        "attributes": [
+          "payment_instruction_reference",
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "value_date",
+          "remittance_information",
+          "payment_status"
+        ]
+      },
+      "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION"
+    },
+    {
+      "id": "BBO-PARTY",
+      "type": "A2.BusinessObject",
+      "version": "1.0",
+      "name": "Party",
+      "lifecycle_status": "active",
+      "description": "Canonical party object.",
+      "attributes": {
+        "attributes": [
+          "party_reference",
+          "party_name",
+          "party_type"
+        ]
+      },
+      "canonical_id": "BIAN-BO-PARTY"
+    },
+    {
+      "id": "BBOA-AMOUNT",
+      "type": "A2.BusinessObjectAttribute",
+      "version": "1.0",
+      "name": "amount",
+      "lifecycle_status": "active",
+      "description": "Monetary amount of the instruction."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "BD-PAYMENTS",
+      "kind": "composition",
+      "target": "SD-PI"
+    },
+    {
+      "source": "BD-PAYMENTS",
+      "kind": "composition",
+      "target": "SD-PE"
+    },
+    {
+      "source": "BD-PAYMENTS",
+      "kind": "composition",
+      "target": "SD-PA"
+    },
+    {
+      "source": "SD-PI",
+      "kind": "association",
+      "target": "AT-PAY-INSTR"
+    },
+    {
+      "source": "SD-PI",
+      "kind": "association",
+      "target": "FP-FULFIL"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "association",
+      "target": "AT-PAY-TXN"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "association",
+      "target": "FP-FULFIL"
+    },
+    {
+      "source": "SD-PA",
+      "kind": "association",
+      "target": "AT-AUTH"
+    },
+    {
+      "source": "SD-PA",
+      "kind": "association",
+      "target": "FP-ASSESS"
+    },
+    {
+      "source": "SD-PI",
+      "kind": "aggregation",
+      "target": "CR-PI"
+    },
+    {
+      "source": "CR-PI",
+      "kind": "composition",
+      "target": "BQ-VALIDATION"
+    },
+    {
+      "source": "CR-PI",
+      "kind": "composition",
+      "target": "BQ-EXECUTION"
+    },
+    {
+      "source": "CR-PI",
+      "kind": "association",
+      "target": "BBO-PAY-INSTR"
+    },
+    {
+      "source": "SD-PI",
+      "kind": "composition",
+      "target": "SG-PI-1"
+    },
+    {
+      "source": "SD-PI",
+      "kind": "composition",
+      "target": "SG-PI-2"
+    },
+    {
+      "source": "SG-PI-1",
+      "kind": "composition",
+      "target": "SO-PI-01"
+    },
+    {
+      "source": "SG-PI-1",
+      "kind": "composition",
+      "target": "SO-PI-05"
+    },
+    {
+      "source": "SG-PI-2",
+      "kind": "composition",
+      "target": "SO-PI-02"
+    },
+    {
+      "source": "SG-PI-2",
+      "kind": "composition",
+      "target": "SO-PI-03"
+    },
+    {
+      "source": "SG-PI-2",
+      "kind": "composition",
+      "target": "SO-PI-04"
+    },
+    {
+      "source": "SG-PI-2",
+      "kind": "composition",
+      "target": "SO-PI-06"
+    },
+    {
+      "source": "SO-PI-01",
+      "kind": "access",
+      "target": "CR-PI"
+    },
+    {
+      "source": "SO-PI-02",
+      "kind": "access",
+      "target": "CR-PI"
+    },
+    {
+      "source": "SO-PI-03",
+      "kind": "access",
+      "target": "CR-PI"
+    },
+    {
+      "source": "SO-PI-04",
+      "kind": "access",
+      "target": "CR-PI"
+    },
+    {
+      "source": "SO-PI-05",
+      "kind": "access",
+      "target": "CR-PI"
+    },
+    {
+      "source": "SO-PI-06",
+      "kind": "access",
+      "target": "CR-PI"
+    },
+    {
+      "source": "BS-CREDIT-TRANSFER",
+      "kind": "aggregation",
+      "target": "SO-PI-01"
+    },
+    {
+      "source": "BS-CREDIT-TRANSFER",
+      "kind": "aggregation",
+      "target": "SO-PI-02"
+    },
+    {
+      "source": "BS-CREDIT-TRANSFER",
+      "kind": "aggregation",
+      "target": "SO-PI-03"
+    },
+    {
+      "source": "BS-CREDIT-TRANSFER",
+      "kind": "aggregation",
+      "target": "SO-PI-04"
+    },
+    {
+      "source": "BBO-PAY-INSTR",
+      "kind": "composition",
+      "target": "BBOA-AMOUNT"
+    },
+    {
+      "source": "SD-PI",
+      "kind": "flow",
+      "target": "SD-PE"
+    }
+  ]
+}

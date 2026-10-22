@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** seven use cases defined; E1 and M0 executed 2026-10-22 (see Results), E2–H2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** seven use cases defined; E1 and M0 executed 2026-10-22 (see Results); M1 authored and ready; E2, M2, H1, H2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -90,26 +90,29 @@
 
 ## M1 — Payment Initiation, brownfield (Medium)
 
-**Scenario.** The business and domain architecture are mapped and approved. The payments platform exists — applications, APIs, deployments are exported from the APM and CMDB — but no A2→A3 or A3→A4 mappings have been written.
+**Scenario.** The business and domain architecture are mapped and approved. The payments platform exists — applications, APIs, data entities and deployments are exported from the APM and CMDB to the export conventions — but no A2→A3 or A3→A4 mappings have been written.
 
-**Given.** A1: capability *Initiate Payment*, value stream *Make a Payment* with stages, two processes with activities. A2 (synthetic BIAN-style export): a Payment Initiation domain with functional pattern, asset type, control record with attributes, two service groups, six operations with action terms and behaviour qualifiers; one scenario. A3: a payments application composed of three components, one interface exposing six API operations with path, method and payload fields; four data entities with attributes. A4: two deployments in two environments, a Kubernetes platform, a managed PostgreSQL, a message broker; deployment relationships recorded. **Approved:** S01, S02, S04, S12 instances only (A1→A2). **Gold (sealed):** the A2→A3 and A3→A4 arrows an architect would approve — ~12 records.
+**Given.** `examples/payment-initiation/a1–a4-*.json` (68 instances: see that folder's README); `m1-mappings-given.json` — PAY-001…005 approved (A1→A2: `SUPPORTED_BY`, `ALIGNED_TO` ×2, `USES_DOMAIN` ×2). **Gold (sealed):** `m1-gold-mappings.json` — PAY-101…112 approved: five `IMPLEMENTED_BY`, one `REALIZED_BY`, one `MAPPED_TO`, two `DEPLOYED_ON`, three `DEPLOYED_AS`. Do not open it until phase 5. `mappings.json` in that folder is the union and is **not** an input to the executor.
 
-**Execution order.** Step 1 data join on the A4 export → `DEPLOYED_AS`, `DEPLOYED_ON`, S36, S50 candidates. Step 2 REST rules → `IMPLEMENTED_BY` for each API (action term vs method, qualifier vs path, control-record attributes vs payload); mismatches reported as findings. Step 3 derivation → `REALIZED_BY` (the application hosting the implementing APIs), S25, S22/S23, S40, S47. Step 4 → `MAPPED_TO` by attribute match against the control record and BOM objects, S20.
+**Planted.** `API-PI-04` implements the *Retrieve* operation as **POST** (recorded in the gold's rationale as a legacy-channel deviation): rule 2 must fail and be reported as a finding while rules 1, 3, 4 hold, so the proposal lands one band lower. `API-PI-06` implements nothing. `SO-PI-06` is *Notify* (no REST form). `CMP-PAY-CAPTURE` / `CMP-PAY-VALIDATE` have no deployment records. `ENT-ACCOUNT-CACHE` matches no BOM object. Three Service Domains are exported, so step 5 has a real candidate set.
+
+**Execution order.** Step 1 on the A3/A4 keys → `DEPLOYED_ON`, `DEPLOYED_AS` (five). Step 2 → `IMPLEMENTED_BY` for each API against each operation of SD-PI (rule 1 via `asset_type` "Payment Instruction" in `/payment-instructions`). Step 3 → `REALIZED_BY` from the step-2 proposals; S25 (operation → `SVC-PAY-INIT`), S22/S23, S40, S47 as derived paths. Step 4 → `MAPPED_TO` by attribute match against `BBO-PAY-INSTR` and `CR-PI`; S20.
 
 **Connections exercised and predicted.**
 
 | ID | Connection | Step | Predicted |
 |---|---|---|---|
-| S32 / S33 | component → deployment / platform | 1 | high — pure join |
-| S36 | component → system software | 1 | medium — proposed, not a rule |
-| S24 | operation → API | 2 | high; at least one deliberate mismatch planted (wrong method) must surface as a finding |
-| S17 | domain → application | 3 | high — derived from S24 |
-| S25 | operation → application service | 3 | high |
-| S30 | BOM object → data entity | 4 | high |
-| S20 | control record → data entity | 4 | high |
-| S40, S47 | derived paths | 3 | high — must appear as *queries*, not records |
+| S33 ×2, S32 ×3 | hub and gateway → platform / deployments | 1 | high — pure joins; **no** proposal for CMP-PAY-CAPTURE / CMP-PAY-VALIDATE |
+| S24 ×5 | operations → APIs | 2 | high for 01, 02, 03, 05 (4 of 4 rules); **medium** for 04 (rule 2 fails: Retrieve on POST — must be a finding); no proposal for SO-PI-06 (Notify) or API-PI-06 |
+| S17 | SD-PI → APP-PAY-HUB | 3 | medium — capped at the weakest step-2 input unless all five are high; **no** proposal for SD-PE, SD-PA |
+| S25 | operations → SVC-PAY-INIT | 3 | high (candidate-rule report) |
+| S30 | BBO-PAY-INSTR → ENT-PAY-INSTR | 4 | high (8/8 attributes); no proposal for ENT-ACCOUNT-CACHE; BBO-PARTY → nothing |
+| S20 | CR-PI → ENT-PAY-INSTR | 4 | high (10/11) — candidate-rule report |
+| S41 | SVC-PAY-INIT → TS-SECRETS, TS-MQ | 1 | medium — conditional-rule report via `consumes` |
+| S50 | entities → INF-PG-PAY-PROD | 1 | medium — institution-only report via `stored_in` |
+| S40, S47 | derived paths | 3 | high — as queries |
 
-**Then.** Trace CAP → platform; rehost the Kubernetes platform. **Pass:** F1 ≥ 0.8 on step 1–3 arrows; the planted mismatch reported; no proposal for a component with no deployment record (negative test). **Status:** data to author.
+**Then.** Trace CAP-PAY-010 → platform; `impact INF-K8S-PAY-PROD --change rehost`. **Pass.** `sdmm-eval` F1 ≥ 0.85 over the approved gold; the planted mismatch reported; every negative holds; `m1-inference-log.json` complete. **Status:** data authored and validated (v0.5.3); **ready to execute**.
 
 ## M2 — Digital Lending, greenfield (Medium)
 

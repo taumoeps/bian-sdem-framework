@@ -1,0 +1,131 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "use_case": "M1",
+  "mappings": [
+    {
+      "mapping_id": "PAY-001",
+      "source": {
+        "id": "CAP-PAY-010",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PAYMENT-INITIATION"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-PAY-2026#s2",
+        "domain_scope_assessment:DSA-PAY-INIT-001"
+      ],
+      "rationale": "Initiate Payment sits inside the payment-initiation domain's scope",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "PAY-002",
+      "source": {
+        "id": "VS-MAKE-PAYMENT",
+        "type": "A1.ValueStream",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BS-CREDIT-TRANSFER",
+        "type": "A2.BusinessScenario",
+        "version": "1.0",
+        "canonical_id": "BIAN-SCENARIO-CREDIT-TRANSFER"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-MAKE-PAYMENT-2026",
+        "scenario_suitability_review:SCN-REVIEW-CT-001"
+      ],
+      "rationale": "The four stages of Make a Payment correspond to the credit-transfer scenario's four operations",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "PAY-003",
+      "source": {
+        "id": "PRC-PAY-01",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-MAKE-PAYMENT-2026"
+      ],
+      "rationale": "Capture and validation invoke Initiate and Evaluate of the domain",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-004",
+      "source": {
+        "id": "PRC-PAY-02",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-MAKE-PAYMENT-2026"
+      ],
+      "rationale": "Execution and confirmation invoke Execute and Retrieve of the domain",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-005",
+      "source": {
+        "id": "BO-PAY-INSTR",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-PAY-INSTR",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "business_glossary:GL-PAY-2026#payment-instruction",
+        "object_alignment_review:OAR-PAY-001"
+      ],
+      "rationale": "The bank's Payment Instruction carries the same meaning as the canonical object; 6 of 8 attributes align",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    }
+  ]
+}
