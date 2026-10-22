@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** seven use cases defined; E1, M0, M1, H1 and H2 (two runs) executed 2026-10-22 (see Results); E2 and M2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** seven use cases defined; E1, E2, M0, M1, H1 and H2 (two runs) executed 2026-10-22 (see Results); M2 pending. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -63,7 +63,7 @@
 | E2.5 | Replace APP-001 | `impact APP-001 --change replace` — SD-001 `design_change_required`, INF-001 / DEP-001 `review_required`, BBO/ENT untouched |
 | E2.6 | Governance | edit an approved record's rationale → `sdmm-diff` rejects; supersede instead → accepted |
 
-**Connections exercised.** S01, S02, S04, S12, S17, S24 (proposed), S30, S32, S33. **Pass:** chains per perspective are disjoint where they should be; impact matches the rules table; `sdmm-diff` rejects the edit and accepts the supersession. **Status:** exports authored and all six checks verified with the tools (v0.5.7); **ready to execute** — the executor's job is to run E2.1–E2.6, record the verbatim outputs, and report any mismatch with the Expected column.
+**Connections exercised.** S01, S02, S04, S12, S17, S24 (proposed), S30, S32, S33. **Pass:** chains per perspective are disjoint where they should be; impact matches the rules table; `sdmm-diff` rejects the edit and accepts the supersession. **Status:** executed 2026-10-22 — see Results.
 
 ## M0 — Card Fraud Alerts as an inference test (Medium, on existing data)
 
@@ -204,7 +204,7 @@
 | Negative tests | ● | ● | ● | ● | ● | ● |
 | Perspectives: architecture / process / information | A | A P I | A P I | A | A I | A I |
 
-**Order of execution:** E1, M0, M1, H1, H2 run 1 and run 2 (done); E2 after its exports are authored; M2 last (it tests a boundary, not the plan's core).
+**Order of execution:** E1, M0, M1, H1, H2 run 1 and run 2, E2 (done); M2 last (it tests a boundary, not the plan's core).
 
 ## Results
 
@@ -1157,3 +1157,47 @@ None new. SD-FD → svc-shield remains the only domain without a route: gate blo
 | 4 — stale case table | H2 table rewritten with run-1 and run-2 columns |
 
 **H2 is complete.** The H2 pair of runs is the suite's key evidence: the same procedure, with the institution's decoded names supplied as *data*, goes from 0.78 to 1.00 recall at precision 1.00 — naming is an input problem, not a rule problem.
+
+### E2 — results (2026-10-22, fable-executor)
+
+**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.7. **Mode.** Phase 2 skipped as the case directs: every arrow is approved or in lifecycle already, so there is nothing to infer; E2.1–E2.6 were run with the tools and recorded verbatim. **Given.** `examples/customer-onboarding/mappings.json` (11 records) and the four v0.5.7 exports (24 instances). **Governance fixtures (E2.6).** Two copies of the mapping document were written to the scratch directory, never to the repository: one with MAP-002's `rationale` edited in place; one with MAP-002 set `superseded` (`valid_to` 2026-10-22) and a new approved MAP-012 on the same endpoints with the new rationale, `previous_mapping_id: MAP-002`, `valid_from` 2026-10-23. Both were diffed against the committed original with `sdmm-diff --old`. **File.** `examples/customer-onboarding/e2-inference-log.json` — 15 commands with stdout, stderr and exit code verbatim (the six tests, the two preconditions, two corroborating validations and three extra traces).
+
+#### Results against the Expected column
+
+| # | Expected | Observed (verbatim output in the log) | Verdict |
+|---|---|---|---|
+| E2.0 | — | `graph check`: all four levels and the mapping document OK; `validate --strict`: OK with no warnings | precondition holds |
+| E2.1 | SD-001 → APP-001 → INF-001 *and* DEP-001 | `CAP-001 -SUPPORTED_BY-> SD-001 (MAP-001) -REALIZED_BY-> APP-001 (MAP-002)` then two sibling hops: `-DEPLOYED_ON-> INF-001 [A4.SystemSoftware] (MAP-003)` and `-DEPLOYED_AS-> DEP-001 [A4.Deployment] (MAP-011)` | **exact** |
+| E2.2 | BO-001 → BBO-001 → ENT-001 (`ALIGNED_TO`, `MAPPED_TO`) | `BO-001 -ALIGNED_TO-> BBO-001 (MAP-006) -MAPPED_TO-> ENT-001 (MAP-007)`; nothing else | **exact** |
+| E2.3 | VS-001 → BS-001; PRC-001 → SD-001 | `VS-001 -ALIGNED_TO-> BS-001 (MAP-004)`, chain ends. `PRC-001 -USES_DOMAIN-> SD-001 (MAP-005)` **and the trace continues** `-REALIZED_BY-> APP-001 -DEPLOYED_ON-> INF-001 / -DEPLOYED_AS-> DEP-001` | **holds; beyond Expected** — the process arrow lands on a domain that has an architecture chain, and a downstream trace follows it. Not a defect; the Expected cell should say "… → SD-001, then the domain's architecture chain" |
+| E2.4 | ENT-001 → BBO-001 → BO-001, information arrows only; architecture chain must not appear | `ENT-001 <-MAPPED_TO- BBO-001 (MAP-007) <-ALIGNED_TO- BO-001 (MAP-006)`; no architecture hop | **exact** — the perspectives are disjoint upstream |
+| E2.5 | SD-001 `design_change_required`; INF-001 / DEP-001 `review_required`; BBO / ENT untouched | A3 APP-001 and A2 SD-001 `design_change_required`; A4 INF-001 (via MAP-003) and DEP-001 (via MAP-011) `review_required`; **also** A1 CAP-001 (via MAP-002, MAP-001) and A1 PRC-001 (via MAP-002, MAP-005) `review_required`; mappings to supersede MAP-002, MAP-003, MAP-011; BBO-001 and ENT-001 absent | **holds; beyond Expected** — the two A1 rows are indirect dependents and the rules table says indirect dependents review. The Expected cell omits them |
+| E2.6 | edit an approved record's rationale → `sdmm-diff` rejects; supersede instead → accepted | edit: `ERROR: … MAP-002: approved record is immutable but field(s) changed: ['rationale']`, exit 1. Supersession: `OK`, exit 0; the superseded document also passes `validate --strict` | **exact** |
+| extra | — | INF-000 upstream, approved only: `(no upstream mappings)`, exit 1; with `--status approved,superseded` the MAP-008 chain reappears up to CAP-001 and PRC-001. SO-001 downstream with `proposed` included: MAP-009 appears | consistent with E1.3 / E1.6 behaviour |
+
+**Pass criteria.** Chains per perspective are disjoint where they should be: the information chain (E2.2, E2.4) never touches the architecture chain in either direction; the process arrows (E2.3) join the architecture chain only through the domain, which is by design. Impact matches the rules table, including the indirect A1 reviews. `sdmm-diff` rejects the in-place edit and accepts the supersession. **No mismatch with the Expected column**; two cells understate what the tools return (E2.3, E2.5).
+
+#### Connections exercised
+
+| Plan ID | Record | Observation |
+|---|---|---|
+| S01 | MAP-001 | traced E2.1 |
+| S02 | MAP-004 | traced E2.3; the export's `stages` (3) and `operation_sequence` (2) would let the v0.5.3 coverage rule confirm it (Apply/capture ~ Initiate, Verify ~ Retrieve's status) — not executed, nothing to infer |
+| S04 | MAP-005 | traced E2.3; `invokes: [SO-001, SO-002]` in the export agrees |
+| S12 | MAP-006 | traced E2.2 / E2.4 |
+| S17 | MAP-002 | traced; the superseded record in E2.6b |
+| S24 | MAP-009 (proposed), MAP-010 (needs_review) | excluded from approved traces; MAP-009 visible with `--status … proposed` |
+| S30 | MAP-007 | traced E2.2 / E2.4 |
+| S32 | MAP-011 | traced E2.1 as the second A4 arrow |
+| S33 | MAP-003 (approved), MAP-008 (superseded) | traced E2.1; MAP-008 only with `superseded` included |
+
+#### Findings
+
+| # | Where | What happened | Proposed change |
+|---|---|---|---|
+| 1 | case E2.3, E2.5 | the Expected cells list fewer rows than the tools correctly return: E2.3's process trace continues down the domain's architecture chain; E2.5 lists the two indirect A1 dependents as `review_required` | `use-case-testing.md`: E2.3 "PRC-001 → SD-001, continuing down SD-001's architecture chain"; E2.5 add "CAP-001 / PRC-001 `review_required` (indirect)" so the pass criterion "every expected output exact" is literally checkable |
+| 2 | guide §6 | the results template (proposals, sdmm-eval, predicted vs observed) does not fit a query-only case; this section and E1's improvise a tests table | guide: a second template for E-tier cases — tests table with expected / observed / verdict, governance fixtures named, and the inference log as a command log |
+| 3 | `sdmm-validate` vs `sdmm-diff` | the in-place edit of an approved record passes `validate --strict`; only `diff` catches it | no change — the split is by design (validate checks a document, diff checks a change) — but the README should say so in one line so a reader does not expect validate to enforce immutability |
+| 4 | export | `INF-000` is `A4.Node` and `INF-001` is `A4.SystemSoftware` while both mappings call them `A4.InfrastructureComponent`; the graph resolves it through the hierarchy, as in E1 | no change; recorded because E2 is the second example relying on it |
+
+**Summary.** E2 passes: all six questions return what the Expected column asks, with two cells understating the tools' (correct) output. The three perspectives stay apart where they should and meet only at the domain, the impact classification follows the rules table through to the indirect A1 dependents, and governance behaves as designed — an edit to an approved record is rejected by the diff and a supersession is accepted. Nothing was inferred and nothing in the repository was changed by the tests.
