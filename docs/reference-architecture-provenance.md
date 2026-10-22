@@ -16,7 +16,7 @@
 Public sources used throughout:
 
 - **[BIAN-SL]** BIAN Service Landscape 14.0, InSite portal — https://bian.org/servicelandscape-14-0-0/ (publicly browsable; no licence text displayed; treated as read-only)
-- **[BIAN-BCM]** BIAN BCM Working Group, *Statement of Alignment with the BIAN Service Landscape* — https://bian.org/wp-content/uploads/2023/08/BIAN-BCM-Relationship-with-BIAN-Service-Landscape-Final.pdf
+- **[BIAN-BCM]** BIAN Business Capability Model, as described in the Service Landscape release notes — v13.0 (June 2025): https://bian.org/wp-content/uploads/2025/06/BIAN-v13.0-Release-Notes-v0.3.pdf ; v14.0 (February 2026): https://bian.org/wp-content/uploads/2026/02/BIAN-v14.0-Release-Notes-v1.0_-Final-Version.pdf. Note: the BCM↔Service Domain mapping is stated there to be work in progress and not yet in the repository; no separate alignment document is published
 - **[BIAN-API]** BIAN Semantic API Practitioner Guide — https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf
 - **[AM]** ArchiMate® 3.2 Specification, The Open Group — https://pubs.opengroup.org/architecture/archimate3-doc/ (chapter numbers below refer to this edition: 6 Motivation, 7 Strategy, 8 Business, 9 Application, 10 Technology)
 - **[TOGAF]** The TOGAF® Standard, 10th Edition — https://pubs.opengroup.org/togaf-standard/

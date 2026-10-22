@@ -43,7 +43,7 @@ Per-entity provenance — which public standard each of the 41 entities derives 
 | Ref | Source | Contributes | SDMM use | Caveat |
 |---|---|---|---|---|
 | R1 | BIAN Service Landscape 14.0 — InSite portal, publicly browsable at https://bian.org/servicelandscape-14-0-0/ | Business Areas/Domains, Service Domains, Service Groups/Operations, Functional Patterns, Asset Types, Control Records, Wireframes, MetaModel Overview | A2 structural anchor | Browsable without login; **no licence text on the portal**, so reproduction of definitions, diagrams or datasets is treated as not permitted. Verification = reading and recording, never copying |
-| R2 | BIAN BCM and *Statement of Alignment with the Service Landscape* (2023) | Capabilities, BCM↔Service Landscape alignment, value stream/scenario comparison | A1→A2 methodology | Guidance, not an algorithm |
+| R2 | BIAN Business Capability Model (release notes v13.0 / v14.0) | Capabilities; the BCM↔Service Landscape mapping is work in progress and unpublished; value streams not yet modelled | A1→A2 methodology — intent only | No published alignment to consult; an engine must infer |
 | R3 | BIAN Business Object Model and Control Record Model (InSite views) | Business Objects, attributes, information views | A2 information anchor | A BOM is a model artefact, not an entity |
 | R4 | BIAN Semantic APIs / Service Operations / Business Scenarios | Operations, interfaces, behaviour qualifiers, scenarios | A2 behaviour; A2→A3 contract alignment | Logical contracts, not the bank's physical APIs |
 | R5 | ArchiMate 3.2 (The Open Group) | Business, Application, Technology, Motivation concepts and relationships | A1/A3/A4 core element types | Synonyms tagged `aligned` or `extension`, never passed off as native |
@@ -341,7 +341,7 @@ No `sdmm/resolver.py`: resolvers stay in `reference.py`.
 
 - **[R1]** BIAN Service Landscape 14.0, InSite portal: https://bian.org/servicelandscape-14-0-0/ (publicly browsable; no licence text displayed; treated as read-only reference)
 - **[R1]** BIAN Service Landscape releases: https://bian.org/deliverables/service-landscape/
-- **[R2]** BIAN BCM, *Statement of Alignment*: https://bian.org/wp-content/uploads/2023/08/BIAN-BCM-Relationship-with-BIAN-Service-Landscape-Final.pdf
+- **[R2]** BIAN Service Landscape release notes v13.0: https://bian.org/wp-content/uploads/2025/06/BIAN-v13.0-Release-Notes-v0.3.pdf and v14.0: https://bian.org/wp-content/uploads/2026/02/BIAN-v14.0-Release-Notes-v1.0_-Final-Version.pdf (BCM status)
 - **[R4]** BIAN Semantic API Practitioner Guide: https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf
 - **[R5]** ArchiMate 3.2: https://www.opengroup.org/archimate-licensed-downloads
 - **[R6]** TOGAF Standard: https://www.opengroup.org/togaf

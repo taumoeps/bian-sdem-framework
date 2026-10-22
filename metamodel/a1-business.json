@@ -13,10 +13,10 @@
       "alignment_kind": "conceptual",
       "reference": {
         "standard": "BIAN BCM",
-        "release": "2023",
+        "release": "14.0",
         "concept": "Business Capability",
-        "uri": "https://bian.org/wp-content/uploads/2023/08/BIAN-BCM-Relationship-with-BIAN-Service-Landscape-Final.pdf",
-        "locator": "Statement of Alignment"
+        "uri": "https://bian.org/wp-content/uploads/2026/02/BIAN-v14.0-Release-Notes-v1.0_-Final-Version.pdf",
+        "locator": "Release notes \u00a73 \u2014 mapping to Service Domains stated as work in progress"
       },
       "evidence_status": "interpreted_from_official_source"
     },
