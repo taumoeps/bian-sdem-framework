@@ -1,29 +1,31 @@
 {
   "use_case": "M0",
+  "run": "second run, v0.5.2 exports, guide and gold",
   "executor": "fable-executor/2026-10-22",
   "given": "m0-mappings-given.json (FRD-001 only)",
   "gold_opened_at_phase": 5,
+  "disclosure": "the executor saw the v0.5.1 gold in the first run's phase 5; the CHANGELOG and the M0 section name the v0.5.2 gold's record ids. Proposals were produced by the step rules on the exports regardless.",
   "note": "One record per connection attempted. Outcomes set after sdmm-eval against m0-gold-mappings.json (gold = approved records only).",
   "attempts": [
     {
       "plan_id": "S33", "connection": "APP-FRAUD-ENGINE DEPLOYED_ON INF-CLOUD-K8S-PROD",
       "step_assigned": 1, "step_used": 1, "fallback": false,
       "data_read": ["a3-application.json: APP-FRAUD-ENGINE.attributes.deployed_on = ['INF-CLOUD-K8S-PROD']", "a4-technology.json: INF-CLOUD-K8S-PROD.attributes.hosts = ['APP-FRAUD-ENGINE']"],
-      "reasoning": "both sides name each other; direct join, no inference",
+      "reasoning": "both sides name each other; direct join, no inference. Target typed A4.SystemSoftware (concrete descendant); S36 subsumed",
       "confidence_predicted": "high", "confidence_given": 0.8,
       "proposal_id": "P-M0-001",
       "outcome": "hit",
-      "outcome_note": "gold FRD-005 (typed A4.InfrastructureComponent in gold, A4.SystemSoftware in the proposal; sdmm-eval keys on ids)"
+      "outcome_note": "gold FRD-005"
     },
     {
       "plan_id": "S33", "connection": "CMP-SCORING DEPLOYED_ON <any A4>",
       "step_assigned": 1, "step_used": 1, "fallback": false,
       "data_read": ["a3-application.json: CMP-SCORING has no attributes", "a4-technology.json: no hosts/platform_id/component_id names CMP-SCORING"],
-      "reasoning": "negative test; no record names the component on any platform; higher steps do not cover DEPLOYED_ON",
+      "reasoning": "negative test; no record names the component on any platform",
       "confidence_predicted": "high", "confidence_given": null,
       "proposal_id": null,
       "outcome": "no_proposal",
-      "outcome_note": "correct: gold has no arrow from CMP-SCORING"
+      "outcome_note": "correct: gold has no DEPLOYED_ON from CMP-SCORING"
     },
     {
       "plan_id": "S32", "connection": "APP-FRAUD-ENGINE DEPLOYED_AS DEP-FRAUD-PROD",
@@ -38,38 +40,38 @@
     {
       "plan_id": "S36", "connection": "APP-FRAUD-ENGINE -> INF-CLOUD-K8S-PROD (A4.SystemSoftware)",
       "step_assigned": 1, "step_used": 1, "fallback": false,
-      "data_read": ["same records as the S33 attempt; INF-CLOUD-K8S-PROD.type = A4.SystemSoftware"],
-      "reasoning": "same join as S33 with a SystemSoftware target; institution-only candidate, reported in the candidate-rule section and kept out of the proposal file because the validator rejects a non-registry relationship",
-      "confidence_predicted": "medium", "confidence_given": 0.6,
-      "proposal_id": "C-M0-001 (report only)",
-      "outcome": "hit",
-      "outcome_note": "the pair is gold FRD-005, which the gold types as DEPLOYED_ON to an A4.InfrastructureComponent; not scored by sdmm-eval"
+      "data_read": ["new-mappings.json: S36 rule_decision = subsumed"],
+      "reasoning": "subsumed by S33 since v0.5.2; the S33 proposal P-M0-001 is the instance; no separate record",
+      "confidence_predicted": "— (subsumed)", "confidence_given": null,
+      "proposal_id": "P-M0-001 (as S33)",
+      "outcome": "no_proposal",
+      "outcome_note": "by design; the pair is gold FRD-005 via S33"
     },
     {
       "plan_id": "S24", "connection": "SO-044-07 IMPLEMENTED_BY POST /fraud/alerts",
       "step_assigned": 2, "step_used": 2, "fallback": false,
-      "data_read": ["a2-service-domain.json: SO-044-07.attributes action_term='Notify', behavior_qualifier='Alert', input_attributes=[alert_reference, party_reference, transaction_reference], output_attributes=[alert_reference, notification_status, party_response]", "a3-application.json: POST /fraud/alerts attributes method='POST', path='/fraud/alerts', payload_fields=[alert_reference, transaction_reference, party_reference, risk_score, notification_status, party_response]; composition APP-FRAUD-ENGINE -> IFC-FRAUD-API -> POST /fraud/alerts", "a2-service-domain.json: no A2.AssetType instance; SD-044.description used for rule 1"],
-      "reasoning": "rule 1 holds by the reverse test (executor convention: domain-description nouns {transaction, fraud, alert} appear in the component description, because the export has no A2.AssetType); rule 2 UNTESTABLE - Notify is not used in the BIAN REST mapping, counts as a miss; rule 3 holds - qualifier 'Alert' ~ path segment 'alerts' after resource 'fraud'; rule 4 holds - 5/5 input∪output attributes in payload_fields. 3 of 4 -> one band lower",
-      "confidence_predicted": "high (plan); medium at most (case)", "confidence_given": 0.6,
+      "data_read": ["a2-service-domain.json: SD-044.attributes.asset_type = 'AT-FRAUD-ALERT' -> AT-FRAUD-ALERT.name = 'Fraud Alert'", "a2-service-domain.json: SO-044-07.attributes action_term='Notify', behavior_qualifier='Alert', input_attributes=[alert_reference, party_reference, transaction_reference], output_attributes=[alert_reference, notification_status, party_response]", "a3-application.json: POST /fraud/alerts attributes method='POST', path='/fraud/alerts', payload_fields=[alert_reference, transaction_reference, party_reference, risk_score, notification_status, party_response]; composition APP-FRAUD-ENGINE -> IFC-FRAUD-API -> POST /fraud/alerts"],
+      "reasoning": "rule 1 holds (reverse test, now data-backed): asset-type name tokens {fraud, alert} both appear in the component's API path /fraud/alerts; rule 2 UNTESTABLE: Notify is not used in the BIAN REST mapping, counts as a miss; rule 3 holds: qualifier 'Alert' ~ path segment 'alerts' after resource 'fraud'; rule 4 holds: 5/5 input∪output attributes in payload_fields. 3 of 4 -> one band lower",
+      "confidence_predicted": "medium (case; plan band high)", "confidence_given": 0.6,
       "proposal_id": "P-M0-003",
-      "outcome": "false",
-      "outcome_note": "gold holds this pair only as FRD-004 status=proposed (0.71); sdmm-eval counts approved records only, so a correct execution is scored false. Finding against the gold/case, not the data"
+      "outcome": "hit",
+      "outcome_note": "gold FRD-004, approved in v0.5.2 on the step-2 evidence"
     },
     {
       "plan_id": "S17", "connection": "SD-044 REALIZED_BY APP-FRAUD-ENGINE",
       "step_assigned": 3, "step_used": 3, "fallback": false,
-      "data_read": ["proposal P-M0-003 (step-2, not approved)", "a3-application.json: composition APP-FRAUD-ENGINE -> IFC-FRAUD-API -> POST /fraud/alerts", "a2-service-domain.json: SD-044 -composition-> SG-044-01 -composition-> SO-044-07"],
-      "reasoning": "the component exposes the API that implements an operation of the domain; closure over a step-2 proposal, no approved arrow available. Step-4 fallback (asset-type noun in API paths) would not have been testable: the A2 export has no A2.AssetType instance",
-      "confidence_predicted": "high", "confidence_given": 0.8,
+      "data_read": ["proposal P-M0-003 (step-2, medium, not approved)", "a3-application.json: composition APP-FRAUD-ENGINE -> IFC-FRAUD-API -> POST /fraud/alerts", "a2-service-domain.json: SD-044 -composition-> SG-044-01 -composition-> SO-044-07"],
+      "reasoning": "the component exposes the API that implements an operation of the domain; closure over a step-2 proposal. Confidence = min(plan high, input medium) = 0.6 under the v0.5.2 cap. Step-4 fallback would also have fired (asset-type name 'Fraud Alert' in /fraud/alerts, 1/1) but was not needed",
+      "confidence_predicted": "high (3)", "confidence_given": 0.6,
       "proposal_id": "P-M0-005",
       "outcome": "hit",
-      "outcome_note": "gold FRD-002. Band inherited from the plan although the input arrow is a medium proposal - see findings"
+      "outcome_note": "gold FRD-002; the case table still predicts high for step 3 - the cap makes medium the ceiling when the input is a step-2 proposal"
     },
     {
       "plan_id": "S17", "connection": "SD-044 REALIZED_BY IFC-FRAUD-API",
       "step_assigned": 3, "step_used": 3, "fallback": false,
       "data_read": ["a3-application.json: IFC-FRAUD-API.type = A3.ApplicationInterface"],
-      "reasoning": "negative test; the instance exposing the API is an interface, not an A3.ApplicationComponent, so it is not an S17 target; the composing component is proposed instead",
+      "reasoning": "negative test; an interface is not an S17 target; the composing component is proposed instead",
       "confidence_predicted": "high", "confidence_given": null,
       "proposal_id": null,
       "outcome": "no_proposal",
@@ -78,52 +80,52 @@
     {
       "plan_id": "S17", "connection": "SD-044 REALIZED_BY CMP-SCORING",
       "step_assigned": 3, "step_used": 3, "fallback": false,
-      "data_read": ["a3-application.json: CMP-SCORING exposes no API operation; APP-FRAUD-ENGINE -composition-> CMP-SCORING"],
-      "reasoning": "no implemented operation to close over; the part is covered by the proposal for its whole",
+      "data_read": ["a3-application.json: CMP-SCORING exposes no API operation; APP-FRAUD-ENGINE -composition-> CMP-SCORING; no data entity"],
+      "reasoning": "no implemented operation to close over; step-4 fallback: asset-type name in CMP-SCORING's API paths / data entity names - it has none, 0 matches; the part is covered by the proposal for its whole",
       "confidence_predicted": "high", "confidence_given": null,
       "proposal_id": null,
       "outcome": "no_proposal",
-      "outcome_note": "correct"
+      "outcome_note": "the gold carries this pair as FRD-009 proposed (0.55), not approved; sdmm-eval ignores it; the executor's no-proposal agrees it should not be approved on this data"
     },
     {
       "plan_id": "S04", "connection": "PRC-310-01 USES_DOMAIN SD-044",
       "step_assigned": 3, "step_used": 3, "fallback": false,
       "data_read": ["a1-business.json: PRC-310-01.attributes.invokes = ['SO-044-07']", "a2-service-domain.json: SG-044-01 -composition-> SO-044-07 (B10); SD-044 -composition-> SG-044-01 (B09)"],
-      "reasoning": "the process invokes an operation that BIAN's structure places in SD-044; pure derivation over export facts, no approved arrow needed",
+      "reasoning": "the process invokes an operation that BIAN's structure places in SD-044; derivation over export facts only, no mapping arrow, so no cap applies",
       "confidence_predicted": "medium", "confidence_given": 0.6,
       "proposal_id": "P-M0-004",
-      "outcome": "false",
-      "outcome_note": "the gold has no USES_DOMAIN record although the case table predicts this connection at medium; scored false by sdmm-eval. Finding against the gold/case"
+      "outcome": "hit",
+      "outcome_note": "gold FRD-008, added in v0.5.2"
     },
     {
       "plan_id": "S02", "connection": "VS-CARD-USE ALIGNED_TO BS-FRAUD-ALERT",
-      "step_assigned": 4, "step_used": 4, "fallback": false,
-      "data_read": ["a1-business.json: VS-CARD-USE has no attributes.stages and the export has no A1.ValueStreamStage instance", "a2-service-domain.json: BS-FRAUD-ALERT.attributes.operation_sequence = ['SO-044-07']"],
-      "reasoning": "the step-4 rule compares the stage sequence with the operation sequence; there is no stage sequence, so the rule cannot fire. Step 5 is not permitted for S02. A derivation path exists (VS-CARD-USE realises CAP-310; CAP-310's process invokes SO-044-07; SO-044-07 is the scenario's only operation) but no plan rule authorises it",
-      "confidence_predicted": "medium or none (case)", "confidence_given": null,
-      "proposal_id": null,
-      "outcome": "miss",
-      "outcome_note": "gold FRD-007 approved; missed because the A1 export lacks the stages key that export-conventions.json defines"
+      "step_assigned": 4, "step_used": 3, "fallback": true,
+      "data_read": ["a1-business.json: VS-CARD-USE.attributes.stages = [VSS-01 'Present card', VSS-02 'Score the transaction', VSS-03 'Alert the cardholder', VSS-04 'Confirm or block']", "a2-service-domain.json: BS-FRAUD-ALERT.attributes.operation_sequence = ['SO-044-07' 'Notify Fraud Alert']; SD-044.name 'Fraud Detection'", "a1-business.json: VS-CARD-USE -realization-> CAP-310; PRC-310-01 -realization-> CAP-310; PRC-310-01.attributes.invokes = ['SO-044-07']"],
+      "reasoning": "step 4 FAILED: 4 stages vs 1 operation is outside ±1; ordered name matches 1/4 (VSS-03 ~ SO-044-07) = 25% < 60%. Optional step-3 derivation (guide §3, v0.5.2) fired: the value stream realises CAP-310, whose process invokes SO-044-07, the scenario's only operation -> candidate, low. 'fallback' is set because a step other than the assigned one was used, although it is lower-numbered (see findings: conflicts with the 'never a lower step' constraint)",
+      "confidence_predicted": "medium (4)", "confidence_given": 0.4,
+      "proposal_id": "P-M0-006",
+      "outcome": "hit",
+      "outcome_note": "gold FRD-007; hit at low via the optional derivation, not at medium via stages as the case predicted"
     },
     {
       "plan_id": "S01", "connection": "CAP-300 SUPPORTED_BY SD-044",
-      "step_assigned": 3, "step_used": 5, "fallback": true,
-      "data_read": ["a1-business.json: no A1.BusinessProcess realises CAP-300 (CAP-300 -composition-> CAP-310 only)", "a2-service-domain.json: SD-044 is the only A2.ServiceDomain"],
-      "reasoning": "step 3: no processes of CAP-300, nothing to close over. Step 5: single candidate domain, ranking vacuous -> single-candidate, no proposal (guide §3 step 5)",
-      "confidence_predicted": "none (case)", "confidence_given": null,
-      "proposal_id": null,
-      "outcome": "no_proposal",
-      "outcome_note": "correct: gold has no arrow from CAP-300"
+      "step_assigned": 3, "step_used": 3, "fallback": false,
+      "data_read": ["a1-business.json: CAP-300 -composition-> CAP-310; no A1.BusinessProcess realises CAP-300 directly", "m0-mappings-given.json: FRD-001 CAP-310 SUPPORTED_BY SD-044 approved", "a2-service-domain.json: SD-044 is the only A2.ServiceDomain"],
+      "reasoning": "primary step-3 rule: no processes of CAP-300 -> nothing. Optional parent rule (guide §3, v0.5.2): composed child CAP-310 is approved-supported by SD-044 -> parent candidate, low. Step 5 would be single-candidate -> no proposal; not reached because step 3 produced a candidate",
+      "confidence_predicted": "none (case, step 5)", "confidence_given": 0.4,
+      "proposal_id": "P-M0-007",
+      "outcome": "false",
+      "outcome_note": "gold has no arrow from CAP-300; the optional parent rule produced the run's only false proposal"
     },
     {
       "plan_id": "S01", "connection": "CAP-310 SUPPORTED_BY SD-044",
       "step_assigned": 3, "step_used": 3, "fallback": false,
-      "data_read": ["m0-mappings-given.json: FRD-001 approved", "proposal P-M0-004; a1-business.json: PRC-310-01 -realization-> CAP-310 is the capability's only process"],
-      "reasoning": "already approved (given); the step-3 rule would re-derive it from P-M0-004 (every process of CAP-310 uses SD-044 -> candidate, medium). Not proposed because it is given",
+      "data_read": ["m0-mappings-given.json: FRD-001 approved", "proposal P-M0-004; a1-business.json: PRC-310-01 is CAP-310's only process"],
+      "reasoning": "already approved (given); the step-3 rule re-derives it from P-M0-004 (every process of CAP-310 uses SD-044 -> candidate, medium)",
       "confidence_predicted": "medium", "confidence_given": null,
       "proposal_id": null,
       "outcome": "no_proposal",
-      "outcome_note": "derivation agrees with the given arrow"
+      "outcome_note": "given; derivation agrees"
     },
     {
       "plan_id": "S50", "connection": "<A3.DataEntity> -> <A4.SystemSoftware>",
@@ -138,7 +140,7 @@
     {
       "plan_id": "S25", "connection": "SO-044-07 -> <A3.ApplicationService>",
       "step_assigned": 3, "step_used": 3, "fallback": false,
-      "data_read": ["a3-application.json: no A3.ApplicationService instance; the API is exposed by an A3.ApplicationInterface"],
+      "data_read": ["a3-application.json: no A3.ApplicationService instance"],
       "reasoning": "no instance to map to",
       "confidence_predicted": "high", "confidence_given": null,
       "proposal_id": null,
@@ -149,7 +151,7 @@
       "plan_id": "S23", "connection": "SG-044-01 -> IFC-FRAUD-API (derived path, query)",
       "step_assigned": 3, "step_used": 3, "fallback": false,
       "data_read": ["a2: SG-044-01 -composition-> SO-044-07", "P-M0-003", "a3: IFC-FRAUD-API -composition-> POST /fraud/alerts"],
-      "reasoning": "derived path: the interface exposing the API that implements the group's operation; reported as a query, not a record",
+      "reasoning": "derived path; reported as a query, not a record",
       "confidence_predicted": "medium", "confidence_given": null,
       "proposal_id": null,
       "outcome": "no_proposal",
@@ -158,8 +160,8 @@
     {
       "plan_id": "S40", "connection": "APP-FRAUD-ENGINE -> ENV-PROD (derived path, query)",
       "step_assigned": 3, "step_used": 3, "fallback": false,
-      "data_read": ["P-M0-002", "a4: DEP-FRAUD-PROD.attributes.environment_id = 'ENV-PROD'; ENV-PROD -aggregation-> DEP-FRAUD-PROD"],
-      "reasoning": "derived path: component -> deployment -> environment; reported as a query",
+      "data_read": ["P-M0-002", "a4: DEP-FRAUD-PROD.attributes.environment_id = 'ENV-PROD'"],
+      "reasoning": "derived path; reported as a query",
       "confidence_predicted": "high", "confidence_given": null,
       "proposal_id": null,
       "outcome": "no_proposal",
@@ -169,7 +171,7 @@
       "plan_id": "S47", "connection": "POST /fraud/alerts -> DEP-FRAUD-PROD (derived path, query)",
       "step_assigned": 3, "step_used": 3, "fallback": false,
       "data_read": ["a3: APP-FRAUD-ENGINE -composition-> IFC-FRAUD-API -composition-> POST /fraud/alerts", "P-M0-002"],
-      "reasoning": "derived path: API -> composing component -> deployment; reported as a query",
+      "reasoning": "derived path; reported as a query",
       "confidence_predicted": "high", "confidence_given": null,
       "proposal_id": null,
       "outcome": "no_proposal",

@@ -2,24 +2,17 @@
   "registry_version": "0.4.0",
   "metamodel_version": "0.4.0",
   "engine": "fable-executor/2026-10-22",
+  "use_case": "M0",
   "mappings": [
     {
       "mapping_id": "P-M0-001",
-      "source": {
-        "id": "APP-FRAUD-ENGINE",
-        "type": "A3.ApplicationComponent",
-        "version": "4.2"
-      },
+      "source": {"id": "APP-FRAUD-ENGINE", "type": "A3.ApplicationComponent", "version": "4.2"},
       "relationship": "DEPLOYED_ON",
-      "target": {
-        "id": "INF-CLOUD-K8S-PROD",
-        "type": "A4.SystemSoftware",
-        "version": "1.3"
-      },
+      "target": {"id": "INF-CLOUD-K8S-PROD", "type": "A4.SystemSoftware", "version": "1.3"},
       "status": "proposed",
       "confidence": 0.8,
       "evidence": [
-        "engine_rationale:S33 step1 data join; a3-application.json APP-FRAUD-ENGINE.attributes.deployed_on = ['INF-CLOUD-K8S-PROD']; a4-technology.json INF-CLOUD-K8S-PROD.attributes.hosts = ['APP-FRAUD-ENGINE']; both sides name each other, no inference"
+        "engine_rationale:S33 step1 data join; a3-application.json APP-FRAUD-ENGINE.attributes.deployed_on = ['INF-CLOUD-K8S-PROD']; a4-technology.json INF-CLOUD-K8S-PROD.attributes.hosts = ['APP-FRAUD-ENGINE']; both sides name each other, no inference. Target is A4.SystemSoftware, a concrete descendant of the rule's A4.InfrastructureComponent (S36 subsumed, v0.5.2)"
       ],
       "rationale": "The APM export says the Fraud Engine is deployed on the production Kubernetes cluster and the CMDB export says the cluster hosts it",
       "baseline_id": "BASE-2026-Q4",
@@ -27,17 +20,9 @@
     },
     {
       "mapping_id": "P-M0-002",
-      "source": {
-        "id": "APP-FRAUD-ENGINE",
-        "type": "A3.ApplicationComponent",
-        "version": "4.2"
-      },
+      "source": {"id": "APP-FRAUD-ENGINE", "type": "A3.ApplicationComponent", "version": "4.2"},
       "relationship": "DEPLOYED_AS",
-      "target": {
-        "id": "DEP-FRAUD-PROD",
-        "type": "A4.Deployment",
-        "version": "1.0"
-      },
+      "target": {"id": "DEP-FRAUD-PROD", "type": "A4.Deployment", "version": "1.0"},
       "status": "proposed",
       "confidence": 0.8,
       "evidence": [
@@ -49,44 +34,27 @@
     },
     {
       "mapping_id": "P-M0-003",
-      "source": {
-        "id": "SO-044-07",
-        "type": "A2.ServiceOperation",
-        "version": "1.0"
-      },
+      "source": {"id": "SO-044-07", "type": "A2.ServiceOperation", "version": "1.0"},
       "relationship": "IMPLEMENTED_BY",
-      "target": {
-        "id": "POST /fraud/alerts",
-        "type": "A3.APIOperation",
-        "version": "3.1"
-      },
+      "target": {"id": "POST /fraud/alerts", "type": "A3.APIOperation", "version": "3.1"},
       "status": "proposed",
       "confidence": 0.6,
       "evidence": [
-        "engine_rationale:S24 step2, 3 of 4 rules hold -> one band lower (high -> medium). Rule 1 (boundary): no approved REALIZED_BY in the given set; reverse test used, executor convention because the A2 export has no A2.AssetType instance - the domain description's object nouns {transaction, fraud, alert} appear in APP-FRAUD-ENGINE's description, and POST /fraud/alerts is composed in IFC-FRAUD-API composed in APP-FRAUD-ENGINE: holds, marked as convention. Rule 2 (action term <-> method): action_term 'Notify' is not used in the BIAN REST mapping -> UNTESTABLE, counts as a miss (method is POST). Rule 3 (qualifier <-> sub-path): behavior_qualifier 'Alert' ~ path segment 'alerts' after resource 'fraud': holds. Rule 4 (attributes <-> payload): input ∪ output = {alert_reference, party_reference, transaction_reference, notification_status, party_response}; all 5 in payload_fields (5/5 = 100%, threshold 50%): holds"
+        "engine_rationale:S24 step2, 3 of 4 rules hold -> one band lower (high -> medium). Rule 1 (boundary, reverse test): SD-044.attributes.asset_type = AT-FRAUD-ALERT, name 'Fraud Alert'; both tokens appear in the API path '/fraud/alerts' of the component APP-FRAUD-ENGINE (composition APP-FRAUD-ENGINE -> IFC-FRAUD-API -> POST /fraud/alerts): holds. Rule 2 (action term <-> method): action_term 'Notify' is not used in the BIAN REST mapping -> UNTESTABLE, counts as a miss (method is POST). Rule 3 (qualifier <-> sub-path): behavior_qualifier 'Alert' ~ path segment 'alerts' after resource 'fraud': holds. Rule 4 (attributes <-> payload): input ∪ output = {alert_reference, party_reference, transaction_reference, notification_status, party_response}; 5/5 in payload_fields (threshold 50%): holds"
       ],
-      "rationale": "Qualifier and all five control-record attributes match the API; the Notify action term has no REST form, so the method cannot be checked",
+      "rationale": "Asset type, qualifier and all five control-record attributes match the API; the Notify action term has no REST form, so the method cannot be checked",
       "baseline_id": "BASE-2026-Q4",
       "created_by": "fable-executor/2026-10-22"
     },
     {
       "mapping_id": "P-M0-004",
-      "source": {
-        "id": "PRC-310-01",
-        "type": "A1.BusinessProcess",
-        "version": "1.0"
-      },
+      "source": {"id": "PRC-310-01", "type": "A1.BusinessProcess", "version": "1.0"},
       "relationship": "USES_DOMAIN",
-      "target": {
-        "id": "SD-044",
-        "type": "A2.ServiceDomain",
-        "version": "1.0",
-        "canonical_id": "BIAN-FRAUD-DETECTION"
-      },
+      "target": {"id": "SD-044", "type": "A2.ServiceDomain", "version": "1.0", "canonical_id": "BIAN-FRAUD-DETECTION"},
       "status": "proposed",
       "confidence": 0.6,
       "evidence": [
-        "engine_rationale:S04 step3 derivation; a1-business.json PRC-310-01.attributes.invokes = ['SO-044-07']; a2-service-domain.json relationships SG-044-01 -composition-> SO-044-07 (B10) and SD-044 -composition-> SG-044-01 (B09) place the operation in SD-044; no approved mapping arrow needed"
+        "engine_rationale:S04 step3 derivation; a1-business.json PRC-310-01.attributes.invokes = ['SO-044-07']; a2-service-domain.json relationships SG-044-01 -composition-> SO-044-07 (B10) and SD-044 -composition-> SG-044-01 (B09) place the operation in SD-044; no mapping arrow needed, so no confidence cap applies"
       ],
       "rationale": "The process export says the process invokes Notify Fraud Alert, which BIAN's structure places in the Fraud Detection domain",
       "baseline_id": "BASE-2026-Q4",
@@ -94,24 +62,43 @@
     },
     {
       "mapping_id": "P-M0-005",
-      "source": {
-        "id": "SD-044",
-        "type": "A2.ServiceDomain",
-        "version": "1.0",
-        "canonical_id": "BIAN-FRAUD-DETECTION"
-      },
+      "source": {"id": "SD-044", "type": "A2.ServiceDomain", "version": "1.0", "canonical_id": "BIAN-FRAUD-DETECTION"},
       "relationship": "REALIZED_BY",
-      "target": {
-        "id": "APP-FRAUD-ENGINE",
-        "type": "A3.ApplicationComponent",
-        "version": "4.2"
-      },
+      "target": {"id": "APP-FRAUD-ENGINE", "type": "A3.ApplicationComponent", "version": "4.2"},
       "status": "proposed",
-      "confidence": 0.8,
+      "confidence": 0.6,
       "evidence": [
-        "engine_rationale:S17 step3 derivation over the step-2 proposal P-M0-003 (SO-044-07 IMPLEMENTED_BY POST /fraud/alerts; not an approved arrow); a3-application.json composition APP-FRAUD-ENGINE -> IFC-FRAUD-API -> POST /fraud/alerts; SO-044-07 belongs to SD-044 via SG-044-01 (B09/B10); hence SD-044 REALIZED_BY APP-FRAUD-ENGINE. Confidence is the plan's band for step 3 (high); the input arrow is itself a medium proposal - see findings"
+        "engine_rationale:S17 step3 derivation over the step-2 proposal P-M0-003 (not an approved arrow); a3-application.json composition APP-FRAUD-ENGINE -> IFC-FRAUD-API -> POST /fraud/alerts; SO-044-07 belongs to SD-044 via SG-044-01 (B09/B10). Confidence = min(plan band high, weakest input P-M0-003 medium) = 0.6 (v0.5.2 cap)"
       ],
       "rationale": "The Fraud Engine exposes the API that implements the domain's only exported operation, so it realises the domain",
+      "baseline_id": "BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M0-006",
+      "source": {"id": "VS-CARD-USE", "type": "A1.ValueStream", "version": "1.0"},
+      "relationship": "ALIGNED_TO",
+      "target": {"id": "BS-FRAUD-ALERT", "type": "A2.BusinessScenario", "version": "1.0"},
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S02 optional step3 derivation (guide §3 step 3, v0.5.2) after the assigned step 4 FAILED: VS-CARD-USE.attributes.stages has 4 stages [VSS-01..04], BS-FRAUD-ALERT.attributes.operation_sequence has 1 operation -> count differs by 3 (rule needs ±1); name match 1/4 stages ('Alert the cardholder' ~ 'Notify Fraud Alert'; 'Score the transaction' matches no operation or domain name) = 25% < 60%. Step 3: VS-CARD-USE -realization-> CAP-310 (a1 relationship); PRC-310-01 -realization-> CAP-310 and PRC-310-01.attributes.invokes = ['SO-044-07']; SO-044-07 ∈ BS-FRAUD-ALERT.operation_sequence => candidate ALIGNED_TO, low (rule's band)"
+      ],
+      "rationale": "The stage sequence does not structurally match a one-operation scenario, but the value stream's capability has a process that invokes the scenario's only operation",
+      "baseline_id": "BASE-2026-Q4",
+      "created_by": "fable-executor/2026-10-22"
+    },
+    {
+      "mapping_id": "P-M0-007",
+      "source": {"id": "CAP-300", "type": "A1.BusinessCapability", "version": "1.0"},
+      "relationship": "SUPPORTED_BY",
+      "target": {"id": "SD-044", "type": "A2.ServiceDomain", "version": "1.0", "canonical_id": "BIAN-FRAUD-DETECTION"},
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S01 step3, optional parent-capability rule (guide §3 step 3, v0.5.2): a1-business.json CAP-300 -composition-> CAP-310; m0-mappings-given.json FRD-001 CAP-310 SUPPORTED_BY SD-044 (approved) => CAP-300 candidate for SD-044, low. The primary step-3 rule does not fire (no process realises CAP-300 directly); step 5 would be single-candidate -> no proposal"
+      ],
+      "rationale": "Card Risk Management contains Card Fraud Alerts, which is approved as supported by Fraud Detection, so the parent is partly supported by the same domain",
       "baseline_id": "BASE-2026-Q4",
       "created_by": "fable-executor/2026-10-22"
     }
