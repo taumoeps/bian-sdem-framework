@@ -1,6 +1,6 @@
 # Use-case testing of the mapping plan
 
-**Status:** planned — six use cases defined, none executed. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI acting as the engine) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+**Status:** planned — six use cases defined, none executed. **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
