@@ -96,9 +96,9 @@ def render():
 
     # ---- 4 cross-level model
     out += ['## 4. Cross-level relationships', '', '### 4.1 The relationship type catalogue — the nine relationship types (Architecture Metamodel)', '',
-            '| Mapping type | Source → target | Relationship | Perspective | Authority | Required evidence | Meaning |', '|---|---|---|---|---|---|---|']
+            '| Mapping type | Source → target | Relationship | Perspective | Authority | Required evidence | Meaning | Source reference | Verification |', '|---|---|---|---|---|---|---|---|---|']
     for r in reg['relationships']:
-        out.append(f"| {r['mapping_type_id']} | {r['source_type']} → {r['target_type']} | `{r['relationship']}` | {r['perspective']} | {r['authority']} | {', '.join(r['required_evidence'])} | {r['direction_semantics']} |")
+        out.append(f"| {r['mapping_type_id']} | {r['source_type']} → {r['target_type']} | `{r['relationship']}` | {r['perspective']} | {r['authority']} | {', '.join(r['required_evidence'])} | {r['direction_semantics']} | {r.get('source_reference', '—')} | {r.get('verification', '—')} |")
     out += ['', 'Only these nine may appear in the mapping set (form: `schema/relationship-registry.schema.json`); adjacency is A(n) → A(n+1) only; BIAN authorities require `bian_release` and a `canonical_id` on the A2 endpoint before approval. Everything else the model knows is a **candidate report**, never a registry proposal.', '']
     req('M', 'Emit registry proposals only for the nine relationship types, with the record fields the schema requires, at status `proposed`, with `confidence` as the plan\'s band and `evidence` typed against `required_evidence`.', 'schema/relationship-types.json; schema/relationship-registry.schema.json', 'every run: `sdem-validate --strict` on each proposal file')
     dec = Counter(m['rule_decision'] for m in nm)

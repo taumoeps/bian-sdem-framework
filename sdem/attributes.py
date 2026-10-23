@@ -46,8 +46,8 @@ def render(rec=None):
             f"Plus {len(A) - len(act)} deprecated attribute(s) and {len(rec['core_fields'])} core fields every instance carries.", '',
             '| Source | Attributes |', '|---|---|'] + [f"| {k} | {v} |" for k, v in src.most_common()] + ['']
     out += ['## 4. Core fields (every entity type)', '', 'From `schema/level-model.schema.json`. These are the instance\'s identity and lifecycle, not entity-specific attributes.', '',
-            '| Field | Type | Required | Source | Description | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']
-    out += [f"| `{c['name']}` | {c['type']} | {'yes' if c['required'] else 'no'} | {c['source']} | {c['description']} | {c['reasoning']} | **{c['confidence']}** |" for c in rec['core_fields']]
+            '| Field | Type | Required | Source reference | Description | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']
+    out += [f"| `{c['name']}` | {c['type']} | {'yes' if c['required'] else 'no'} | {c['source']}: {c['reference']['standard']}, {c['reference']['locator']} ([link]({c['reference']['uri']})) | {c['description']} | {c['reasoning']} | **{c['confidence']}** |" for c in rec['core_fields']]
     out.append('')
     n = 4
     for l in ('A1', 'A2', 'A3', 'A4'):

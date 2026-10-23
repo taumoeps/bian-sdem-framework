@@ -344,3 +344,33 @@ class AttributeDesignTests(unittest.TestCase):
             for i in json.loads(Path(f).read_text(encoding='utf-8'))['instances']:
                 used |= {(i['type'], k) for k in (i.get('attributes') or {})}
         self.assertEqual(used - rec, set())
+
+
+class SourceReferenceCompletenessTests(unittest.TestCase):
+    """Every item in every layer of the model names its source (found missing in four places on 2026-10-24)."""
+
+    def _blank(self, v):
+        return v in (None, '', '—', '-') or (isinstance(v, str) and not v.strip())
+
+    def test_every_layer_has_a_source_reference(self):
+        import glob
+        for f in glob.glob(str(ROOT / 'metamodel/a[1-4]-*.json')):
+            for e in json.loads(Path(f).read_text(encoding='utf-8'))['entities']:
+                for k in ('standard', 'concept', 'uri', 'locator'):
+                    self.assertFalse(self._blank(e['reference'].get(k)), f"entity {e['type']} reference.{k}")
+        at = json.loads((ROOT / 'metamodel/entity-attributes.json').read_text(encoding='utf-8'))
+        for a in at['attributes']:
+            for k in ('standard', 'locator', 'uri'):
+                self.assertFalse(self._blank(a['reference'].get(k)), f"attribute {a['id']} reference.{k}")
+        for c in at['core_fields']:
+            for k in ('standard', 'locator', 'uri'):
+                self.assertFalse(self._blank((c.get('reference') or {}).get(k)), f"core field {c['name']} reference.{k}")
+        lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
+        for c in lr['constraints'] + lr['inheritance']:
+            self.assertFalse(self._blank(c.get('reference_source')), f"within-level {c['id']}")
+        for m in json.loads((ROOT / 'metamodel/relationship-rules.json').read_text(encoding='utf-8'))['mappings']:
+            self.assertFalse(self._blank(m.get('source_reference')), f"rule {m['id']}")
+        for x in json.loads((ROOT / 'schema/relationship-types.json').read_text(encoding='utf-8'))['relationships']:
+            self.assertFalse(self._blank(x.get('source_reference')), f"relationship type {x['mapping_type_id']}")
+        for m in json.loads((ROOT / 'metamodel/official-mappings.json').read_text(encoding='utf-8'))['mappings']:
+            self.assertFalse(self._blank(m.get('sources') or m.get('verification_note')), f"official {m['id']}")

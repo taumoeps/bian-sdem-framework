@@ -10,7 +10,12 @@
       "source": "SDEM",
       "description": "the instance's permanent key — the source tool's own persistent id",
       "reasoning": "Every relationship points at it; it must be unique in its level and never reused (knowledge-graph spec KG-I-01).",
-      "confidence": "high"
+      "confidence": "high",
+      "reference": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      }
     },
     {
       "name": "type",
@@ -19,7 +24,12 @@
       "source": "SDEM",
       "description": "an entity type from the catalogue",
       "reasoning": "Ties the instance to the Architecture Metamodel; must be concrete and of the export's level.",
-      "confidence": "high"
+      "confidence": "high",
+      "reference": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.type",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      }
     },
     {
       "name": "version",
@@ -28,7 +38,12 @@
       "source": "SDEM",
       "description": "the instance's version",
       "reasoning": "Relationship ends pin it, so an approved relationship refers to a known state.",
-      "confidence": "high"
+      "confidence": "high",
+      "reference": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.version",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      }
     },
     {
       "name": "name",
@@ -37,7 +52,12 @@
       "source": "SDEM",
       "description": "human-readable name",
       "reasoning": "Shown in traces; a rename changes the name, never the id.",
-      "confidence": "high"
+      "confidence": "high",
+      "reference": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      }
     },
     {
       "name": "lifecycle_status",
@@ -46,7 +66,12 @@
       "source": "SDEM",
       "description": "lifecycle state",
       "reasoning": "Lets retired things stay referable and planned (design) things be marked as such in traces.",
-      "confidence": "high"
+      "confidence": "high",
+      "reference": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.lifecycle_status",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      }
     },
     {
       "name": "canonical_id",
@@ -55,7 +80,12 @@
       "source": "BIAN",
       "description": "external reference id, e.g. a BIAN concept id on A2 instances",
       "reasoning": "BIAN-authority relationships require it on the A2 end before approval.",
-      "confidence": "high"
+      "confidence": "high",
+      "reference": {
+        "standard": "BIAN Service Landscape 14.0 (concept identifiers)",
+        "locator": "A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json",
+        "uri": "https://bian.org/servicelandscape-14-0-0/"
+      }
     },
     {
       "name": "description",
@@ -64,7 +94,12 @@
       "source": "SDEM",
       "description": "scope statement",
       "reasoning": "Read by the step-5 text rule for capabilities and domains.",
-      "confidence": "high"
+      "confidence": "high",
+      "reference": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.description",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      }
     },
     {
       "name": "definition_uri",
@@ -73,7 +108,12 @@
       "source": "SDEM",
       "description": "link to the source definition",
       "reasoning": "Points to the institution's or the standard's definition.",
-      "confidence": "high"
+      "confidence": "high",
+      "reference": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.definition_uri",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      }
     },
     {
       "name": "attributes",
@@ -82,7 +122,12 @@
       "source": "SDEM",
       "description": "the entity type's own attributes (this document)",
       "reasoning": "Container for the per-type attributes below.",
-      "confidence": "high"
+      "confidence": "high",
+      "reference": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.attributes",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      }
     }
   ],
   "attributes": [
@@ -154,7 +199,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM rule S09 (business service ↔ operation by inputs and outputs); validated in use case C1 — docs/relationship-rules-spec.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -173,7 +218,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM rule S09; validated in use case C1 — docs/relationship-rules-spec.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -192,7 +237,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM rule S12 (object alignment by attribute match); validated in use cases E2, C1 — docs/relationship-rules-spec.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -211,7 +256,7 @@
       "source": "institution",
       "reference": {
         "standard": "institution data (SDEM convention)",
-        "locator": "—",
+        "locator": "SDEM alias convention (export-conventions.json); introduced after use case C1, finding 1 — docs/use-case-testing.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "values supplied by the institution; convention is SDEM design",
@@ -306,7 +351,7 @@
       "source": "institution",
       "reference": {
         "standard": "institution data (SDEM convention)",
-        "locator": "—",
+        "locator": "SDEM alias convention (export-conventions.json); token boundary gate, use case H1 finding 1 — docs/use-case-testing.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "values supplied by the institution; convention is SDEM design",
@@ -344,7 +389,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM convention for rule S21; BIAN Control Record Model describes a lifecycle but lists no states — docs/relationship-rules-spec.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -439,7 +484,7 @@
       "source": "institution",
       "reference": {
         "standard": "institution data (SDEM convention)",
-        "locator": "—",
+        "locator": "SDEM alias convention; use case H2 finding 4 — docs/use-case-testing.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "values supplied by the institution; convention is SDEM design",
@@ -572,7 +617,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM join key for DEPLOYED_AS (rule S32) to the SDEM Deployment entity — docs/architecture-entity-design.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -610,7 +655,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM join key for rule S37; zone-wins precedence from use case C3 finding 3 — docs/use-case-testing.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -705,7 +750,7 @@
       "source": "institution",
       "reference": {
         "standard": "institution data (SDEM convention)",
-        "locator": "—",
+        "locator": "SDEM alias convention; use case H2 finding 4 (recall 0.78 → 1.00 in run 2) — docs/use-case-testing.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "values supplied by the institution; convention is SDEM design",
@@ -724,7 +769,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM join key for rules S18, S21; validated in use case C2 — docs/relationship-rules-spec.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -762,7 +807,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM field for rules S20, S30, S31 (attribute match to BIAN objects); validated in use cases M1, H1, H2, C2 — docs/relationship-rules-spec.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -800,7 +845,7 @@
       "source": "institution",
       "reference": {
         "standard": "institution data (SDEM convention)",
-        "locator": "—",
+        "locator": "SDEM alias convention; use case H2 run 2 finding 3 — docs/use-case-testing.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "values supplied by the institution; convention is SDEM design",
@@ -819,7 +864,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM join key for rule S51; corresponds to an AsyncAPI channel (not adopted) — docs/relationship-rules-spec.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -857,7 +902,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM Deployment entity (ArchiMate artifact assigned to node, ch. 10) — docs/architecture-entity-design.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -876,7 +921,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM Deployment entity — docs/architecture-entity-design.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -895,7 +940,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM Deployment entity — docs/architecture-entity-design.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -1047,7 +1092,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM join key for rule S38; validated in use case C3 — docs/relationship-rules-spec.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -1085,7 +1130,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "—",
+        "locator": "SDEM join key for rule S43 (platform-side view of exposed_through); validated in use case C3 — docs/relationship-rules-spec.md",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",

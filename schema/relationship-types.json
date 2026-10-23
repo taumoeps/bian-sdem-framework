@@ -50,7 +50,9 @@
         "domain_scope_assessment"
       ],
       "rule_version": "1.0",
-      "owner": "enterprise-architecture"
+      "owner": "enterprise-architecture",
+      "source_reference": "plan row S01 — Official guidance only; no exact cross-standard entity pair; Verified as *intent only* — [RN14] §3, [WQA26]: mapping unpublished",
+      "verification": "verified_intent_or_target_only"
     },
     {
       "mapping_type_id": "VALUE_STREAM_ALIGNED_TO_SCENARIO",
@@ -66,7 +68,9 @@
         "scenario_suitability_review"
       ],
       "rule_version": "1.0",
-      "owner": "business-architecture"
+      "owner": "business-architecture",
+      "source_reference": "plan row S02 — SDEM mapping only; no official equivalent; n/a — SDEM definition, no external claim",
+      "verification": "sdem_definition"
     },
     {
       "mapping_type_id": "PROCESS_USES_DOMAIN",
@@ -81,7 +85,9 @@
         "process_model"
       ],
       "rule_version": "1.0",
-      "owner": "business-architecture"
+      "owner": "business-architecture",
+      "source_reference": "plan row S04 — Official guidance only; no exact cross-standard entity pair; Unverified — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed",
+      "verification": "unverified_w135"
     },
     {
       "mapping_type_id": "BUSINESS_OBJECT_ALIGNED_TO_BIAN_OBJECT",
@@ -97,7 +103,9 @@
         "object_alignment_review"
       ],
       "rule_version": "1.0",
-      "owner": "data-architecture"
+      "owner": "data-architecture",
+      "source_reference": "plan row S12 — Official guidance only; no exact cross-standard entity pair; Verified as target only — [SL14] BOM is published; no A1→A2 mapping method",
+      "verification": "verified_intent_or_target_only"
     },
     {
       "mapping_type_id": "DOMAIN_REALIZED_BY_COMPONENT",
@@ -112,7 +120,9 @@
         "application_architecture_document"
       ],
       "rule_version": "1.0",
-      "owner": "application-architecture"
+      "owner": "application-architecture",
+      "source_reference": "plan row S17 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.4 p. 52 (functional partition), §4.3.1 p. 91",
+      "verification": "verified"
     },
     {
       "mapping_type_id": "OPERATION_IMPLEMENTED_BY_API",
@@ -127,7 +137,9 @@
         "api_contract"
       ],
       "rule_version": "1.0",
-      "owner": "application-architecture"
+      "owner": "application-architecture",
+      "source_reference": "plan row S24 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.5 pp. 52–55 (REST mapping); [APIP]",
+      "verification": "verified"
     },
     {
       "mapping_type_id": "BIAN_OBJECT_MAPPED_TO_DATA_ENTITY",
@@ -142,7 +154,9 @@
         "data_model"
       ],
       "rule_version": "1.0",
-      "owner": "data-architecture"
+      "owner": "data-architecture",
+      "source_reference": "plan row S30 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.2.7; [SL14] BOM",
+      "verification": "verified"
     },
     {
       "mapping_type_id": "COMPONENT_DEPLOYED_ON_INFRASTRUCTURE",
@@ -157,7 +171,9 @@
         "deployment_design"
       ],
       "rule_version": "1.0",
-      "owner": "infrastructure-architecture"
+      "owner": "infrastructure-architecture",
+      "source_reference": "plan row S33 — SDEM mapping only; no official equivalent; n/a — SDEM definition, no external claim",
+      "verification": "sdem_definition"
     },
     {
       "mapping_type_id": "COMPONENT_DEPLOYED_AS_DEPLOYMENT",
@@ -172,7 +188,9 @@
         "deployment_design"
       ],
       "rule_version": "1.0",
-      "owner": "infrastructure-architecture"
+      "owner": "infrastructure-architecture",
+      "source_reference": "plan row S32 — SDEM mapping only; no official equivalent; n/a — SDEM definition, no external claim",
+      "verification": "sdem_definition"
     }
   ]
 }
