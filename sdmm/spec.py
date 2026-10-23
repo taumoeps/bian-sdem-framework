@@ -195,7 +195,7 @@ def render_diagram():
     """The design diagram is the merged view (within-level rows by ID + cross-level plan rows by ID) under the spec's title."""
     from sdmm.diagram import render_merged
     text = render_merged()
-    return text.replace('@startuml merged-mappings', '@startuml mapping-model-design-diagram', 1).replace('title Merged view — ', 'title Mapping Model Design — every within-level row and cross-level mapping, by ID: ', 1)
+    return text.replace('@startuml merged-mappings', '@startuml mapping-model-diagram', 1).replace('title Merged view — ', 'title Mapping Model Design — every within-level row and cross-level mapping, by ID: ', 1)
 
 
 def main(argv=None):

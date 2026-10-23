@@ -59,7 +59,7 @@ def render():
     out += ['| Federated graph | approved cross-level edges, and references to their ends in the local graphs | enterprise architecture | the mapping set | the mapping set (`schema/mapping.schema.json`) joined to the four local graphs |', '']
     req('A', 'Hold each level in its own local graph, loaded only from that level\'s export; a change in one level never requires reloading another.', 'level-model.schema.json; `LevelGraph`', 'built (in memory)')
     req('A', 'Hold in the federated graph only approved cross-level edges and references to their ends; never copy local content; never hold a proposed, rejected or superseded record as an edge used for answers.', 'mapping.schema.json; `FederatedGraph` status filter', 'built (in memory)')
-    req('A', 'The engine reads the four local graphs (entities, within-level links, and what changed since the last baseline) and the federated graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations.', 'mapping-model-design-spec §6; §8 governance', 'partly built (reads exports and approved mappings directly; change-since-baseline not built)')
+    req('A', 'The engine reads the four local graphs (entities, within-level links, and what changed since the last baseline) and the federated graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations.', 'mapping-model-spec §6; §8 governance', 'partly built (reads exports and approved mappings directly; change-since-baseline not built)')
     out += inline('A')
 
     # ---- 2 local graphs
@@ -176,7 +176,7 @@ def render():
     out.append('')
     req('C', 'Build an adapter (C-03) per source tool that writes a valid level export and fails loudly rather than writing a partial one.', 'C-03', 'not built')
     req('C', 'Build the export diff (C-07) so the engine re-checks only changed instances and removals are routed to impact and supersession.', 'C-07', 'not built')
-    req('C', 'Build the engine step logic (C-08) to the mapping-model design specification, accepted by reproducing the eleven executor runs.', 'C-08; mapping-model-design-spec §8', 'not built')
+    req('C', 'Build the engine step logic (C-08) to the mapping-model spec (docs/mapping-model-spec.md), accepted by reproducing the eleven executor runs.', 'C-08; mapping-model-spec §8', 'not built')
     req('C', 'Provide a review queue for C-11 that lists proposals and pending supersessions with their evidence and impact.', 'C-11', 'not built')
     out += ['### 8.1 Component requirements'] + inline('C')
 

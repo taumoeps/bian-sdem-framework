@@ -296,7 +296,7 @@ flowchart LR
 |---|---|---|
 | KG-C-01 | Build an adapter (C-03) per source tool that writes a valid level export and fails loudly rather than writing a partial one. | not built |
 | KG-C-02 | Build the export diff (C-07) so the engine re-checks only changed instances and removals are routed to impact and supersession. | not built |
-| KG-C-03 | Build the engine step logic (C-08) to the mapping-model design specification, accepted by reproducing the eleven executor runs. | not built |
+| KG-C-03 | Build the engine step logic (C-08) to the mapping-model spec (docs/mapping-model-spec.md), accepted by reproducing the eleven executor runs. | not built |
 | KG-C-04 | Provide a review queue for C-11 that lists proposals and pending supersessions with their evidence and impact. | not built |
 
 ## 9. Change workflows — which components run for each change
@@ -348,7 +348,7 @@ Every workflow ends with C-06 rebuilding the graphs; no component edits a graph 
 |---|---|---|---|
 | KG-A-01 | Hold each level in its own local graph, loaded only from that level's export; a change in one level never requires reloading another. | level-model.schema.json; `LevelGraph` | built (in memory) |
 | KG-A-02 | Hold in the federated graph only approved cross-level edges and references to their ends; never copy local content; never hold a proposed, rejected or superseded record as an edge used for answers. | mapping.schema.json; `FederatedGraph` status filter | built (in memory) |
-| KG-A-03 | The engine reads the four local graphs (entities, within-level links, and what changed since the last baseline) and the federated graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations. | mapping-model-design-spec §6; §8 governance | partly built (reads exports and approved mappings directly; change-since-baseline not built) |
+| KG-A-03 | The engine reads the four local graphs (entities, within-level links, and what changed since the last baseline) and the federated graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations. | mapping-model-spec §6; §8 governance | partly built (reads exports and approved mappings directly; change-since-baseline not built) |
 | KG-L-01 | Accept a node only if its `type` resolves to a concrete, non-artefact catalogue entity of the graph's level. | entity catalogue | built |
 | KG-L-02 | Accept an edge only if both ends are nodes of this graph and (source type, kind, target type) matches a constraint row of the level through inheritance, or the kind is `association`. | level-relationships.json | built |
 | KG-L-03 | Reject the whole export, and keep the previously loaded local graph, if any node or edge fails; report every failure. | `sdmm-graph check` | built (check); keep-previous not built |
@@ -378,7 +378,7 @@ Every workflow ends with C-06 rebuilding the graphs; no component edits a graph 
 | KG-R-05 | The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§11 DEC-02). | §7 | not built |
 | KG-C-01 | Build an adapter (C-03) per source tool that writes a valid level export and fails loudly rather than writing a partial one. | C-03 | not built |
 | KG-C-02 | Build the export diff (C-07) so the engine re-checks only changed instances and removals are routed to impact and supersession. | C-07 | not built |
-| KG-C-03 | Build the engine step logic (C-08) to the mapping-model design specification, accepted by reproducing the eleven executor runs. | C-08; mapping-model-design-spec §8 | not built |
+| KG-C-03 | Build the engine step logic (C-08) to the mapping-model spec (docs/mapping-model-spec.md), accepted by reproducing the eleven executor runs. | C-08; mapping-model-spec §8 | not built |
 | KG-C-04 | Provide a review queue for C-11 that lists proposals and pending supersessions with their evidence and impact. | C-11 | not built |
 | KG-G-01 | Only an architect action sets `approved`; no automated component, engine or agent may. | mapping-execution.md §2; registry enterprise_rule | built (convention; validator requires reviewer_id and approved_at) |
 
