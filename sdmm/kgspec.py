@@ -142,7 +142,7 @@ def render():
                      ('A local graph is rebuilt in full from its export; incremental update is an optimisation, not a requirement.', 'built (full rebuild)'),
                      ('A failed export validation leaves the previous local graph in place and raises an alert.', 'not built'),
                      ('The federated graph is rebuilt whenever a local graph or the mapping set changes.', 'built (rebuilt on every run)'),
-                     ('The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§11 DEC-02).', 'not built')):
+                     ('The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§12 DEC-02).', 'not built')):
         rid = req('R', text, '§7', st); out.append(f"| {rid} | {text} | {st} |")
     out.append('')
 
@@ -205,8 +205,11 @@ def render():
     req('G', 'Only an architect action sets `approved`; no automated component, engine or agent may.', 'mapping-execution.md §2; registry enterprise_rule', 'built (convention; validator requires reviewer_id and approved_at)')
     out += inline('G')
 
+    from sdmm.kgspec_services import render as _render_services
+    out += _render_services(req)
+
     # ---- 11 decisions
-    out += ['## 11. Open design decisions', '', '| ID | Decision | Options | SDMM default |', '|---|---|---|---|',
+    out += ['## 12. Open design decisions', '', '| ID | Decision | Options | SDMM default |', '|---|---|---|---|',
             '| DEC-01 | Graph store | in memory from files (today); property graph (e.g. Neo4j: nodes and edges map one-to-one to §2 and §3); RDF store (named graph per local graph, edges as reified statements with PROV) | in memory until a team needs persistent queries; then property graph |',
             '| DEC-02 | Refresh trigger per source | on demand; scheduled; event-driven (webhook); refresh-on-read | on demand now; event-driven where the tool supports it |',
             '| DEC-03 | One store or five | one store with a partition per local graph plus the federated edges; or separate stores per team federated by id | one store, partitioned, until teams need independent operation |',
@@ -215,7 +218,7 @@ def render():
 
     # ---- 10 index
     status = Counter(r[4].split(' ')[0] for r in REQ)
-    out += ['## 12. Requirements index', '', f"{len(REQ)} requirements — " + ', '.join(f"{k} {v}" for k, v in status.most_common()) + '. Groups: A architecture, L local graph, F federated graph, I identity, V versions, Q queries, R load and refresh, C components, G governance.', '',
+    out += ['## 13. Requirements index', '', f"{len(REQ)} requirements — " + ', '.join(f"{k} {v}" for k, v in status.most_common()) + '. Groups: A architecture, L local graph, F federated graph, I identity, V versions, Q queries, R load and refresh, C components, G governance, S services.', '',
             '| ID | Requirement | Basis | Status |', '|---|---|---|---|']
     for rid, g, text, basis, st in REQ:
         out.append(f"| {rid} | {text} | {basis} | {st} |")

@@ -284,3 +284,15 @@ class KnowledgeGraphDesignTests(unittest.TestCase):
     def test_linked_from_spec_and_overview(self):
         self.assertIn('knowledge-graph-design.md', (ROOT / 'docs/knowledge-graph-spec.md').read_text(encoding='utf-8'))
         self.assertIn('knowledge-graph-design.md', (ROOT / 'docs/mapping-model-design.md').read_text(encoding='utf-8'))
+
+
+class ServiceSpecTests(unittest.TestCase):
+    def test_every_service_is_fully_specified_and_maps_to_a_component(self):
+        from sdmm.kgspec_services import SERVICES
+        doc = (ROOT / 'docs/knowledge-graph-spec.md').read_text(encoding='utf-8')
+        self.assertEqual([s['id'] for s in SERVICES], [f'SVC-0{i}' for i in range(1, 8)])
+        for s in SERVICES:
+            for k in ('purpose', 'interface', 'inputs', 'steps', 'valid', 'target', 'records', 'status'):
+                self.assertTrue(s.get(k), f"{s['id']} lacks {k}")
+            self.assertIn(f"| {s['component']} |", doc)
+            self.assertIn(f"{s['id']} {s['name']} ({s['component']})", doc)

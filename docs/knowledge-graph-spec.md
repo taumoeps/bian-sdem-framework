@@ -229,7 +229,7 @@ mapping set (approved records) → validate → resolve ends → load federated 
 | KG-R-02 | A local graph is rebuilt in full from its export; incremental update is an optimisation, not a requirement. | built (full rebuild) |
 | KG-R-03 | A failed export validation leaves the previous local graph in place and raises an alert. | not built |
 | KG-R-04 | The federated graph is rebuilt whenever a local graph or the mapping set changes. | built (rebuilt on every run) |
-| KG-R-05 | The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§11 DEC-02). | not built |
+| KG-R-05 | The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§12 DEC-02). | not built |
 
 ## 8. Components and dependencies
 
@@ -333,7 +333,342 @@ Every workflow ends with C-06 rebuilding the graphs; no component edits a graph 
 |---|---|---|
 | KG-G-01 | Only an architect action sets `approved`; no automated component, engine or agent may. | built (convention; validator requires reviewer_id and approved_at) |
 
-## 11. Open design decisions
+## 11. Service specifications
+
+One subsection per service the graphs depend on. Each gives the purpose, interface, inputs, behaviour, outputs and errors, what it records, and its status. **SVC-01** is specified from the code as it runs today, with target behaviour marked; the others are target design.
+
+| ID | Service | Component | Status |
+|---|---|---|---|
+| SVC-01 | Graph loader | C-06 | built in memory (`sdmm/graph.py`); failure handling, load record and persistence not built |
+| SVC-02 | Adapter contract | C-03 | not built — adapters are institution-specific; `sdmm/structure.py` is the one generator in this repository |
+| SVC-03 | Export diff | C-07 | not built |
+| SVC-04 | Refresh trigger | C-15 | not built (on demand only: someone runs a command) |
+| SVC-05 | Query service | C-14 | built as commands with `--json`; a programmatic interface and the history, unmapped and local queries are not built |
+| SVC-06 | Review queue | C-11 | not built (today: architects edit the mapping-set file; `sdmm-diff` guards history) |
+| SVC-07 | Assistant access | C-16 | not built — transport per DEC-04 (CLI run by the assistant, VS Code extension, context snapshot, or MCP where allowed) |
+
+### 11.1 SVC-01 Graph loader (C-06)
+
+**Purpose.** Build the four local graphs from their exports and the federated graph from the approved mapping set, every time it runs; nothing else ever writes a graph.
+
+**Status.** built in memory (`sdmm/graph.py`); failure handling, load record and persistence not built
+
+**Interface**
+
+| | |
+|---|---|
+| Command | `sdmm-graph <check|trace|impact|stats> [args] <files…>` — files in any order; each is classified by content |
+| Library | `FederatedGraph.load(paths)` → `FederatedGraph`; `LevelGraph.load(path)` → `LevelGraph` |
+| Exit codes | 0 ok · 1 issues found (or an empty trace) · 2 usage error (unreadable file, unknown command) |
+
+**Inputs**
+
+| Input | Detail |
+|---|---|
+| Level exports | `a1…a4-*.json`, shape `schema/level-model.schema.json`; a file with `level` + `instances` is an export |
+| Mapping set | `mappings.json`, shape `schema/mapping.schema.json`; a file with `mappings` is a mapping set |
+| Model records | the entity catalogue, `level-relationships.json`, `relationship-types.json` — loaded from `metamodel/` and `schema/` |
+
+**Behaviour**
+
+| Step | Does | On failure / settings / limits |
+|---|---|---|
+| 1 Load the model | read the catalogue and relationship rows; all metamodel files must carry the same `metamodel_version` | stop: "metamodel files disagree" |
+| 2 Classify files | export or mapping set, by content | stop: "neither a level export nor a mapping document" (exit 2) |
+| 3 Build local graphs | one per export: index instances by id and version | — |
+| 4 Validate each local graph | export `metamodel_version` matches; no duplicate id@version; every type is a known, concrete, non-artefact entity of that level; every link's ends are in the export and the link matches a relationship row (or is `association`) | each failure reported as an issue |
+| 5 Validate the mapping set | schema, registry relationship, evidence kinds, BIAN fields; each end resolved into its local graph by level, id, version and is-a | each failure reported as an issue |
+| 6 Build the federated graph | the records in the requested statuses (default: `approved`) become links; duplicates between the same two nodes collapse to one hop listing every record id | — |
+| 7 Answer | run the requested query on the loaded graphs | — |
+
+**Validity.** A load is **valid** when steps 4 and 5 report no issue. `check` prints every issue and exits 1. **Today** `trace` and `impact` still answer from an invalid load, marking unresolved ends `(unresolved)`.
+
+**Target design**
+
+| | |
+|---|---|
+| Refuse invalid loads | any issue in steps 4–5 → the new graphs are discarded, the last valid graphs stay in service, an alert is raised (SVC-04 notifies) |
+| Record each load | write a load record (below) for every attempt, valid or not |
+| Persist | write valid graphs to the store chosen under DEC-01, keyed by baseline; earlier baselines stay queryable |
+
+**Records**
+
+| Field | Content |
+|---|---|
+| load_id | unique per attempt |
+| started_at / finished_at | timestamps |
+| inputs | per export: path, `model_id`, `model_version`, content hash; the mapping set: path and content hash (or git commit) |
+| metamodel_version | of the model records used |
+| result | `valid` or `rejected`, with the issue list |
+| counts | nodes and links per local graph; approved links; unresolved ends |
+| baseline_id | assigned when valid; returned with every answer from this load |
+
+### 11.2 SVC-02 Adapter contract (C-03)
+
+**Purpose.** Turn one source tool's records into one level export. Every adapter, for every tool, meets the same contract.
+
+**Status.** not built — adapters are institution-specific; `sdmm/structure.py` is the one generator in this repository
+
+**Interface**
+
+| | |
+|---|---|
+| Command | `<adapter> export --out <file>` and `<adapter> version` |
+| Configuration | a translation table: source record type → SDMM entity; source field → export key; source link type → relationship kind |
+
+**Inputs**
+
+| Input | Detail |
+|---|---|
+| Source tool | API, report or database view of the tool |
+| Translation table | held with the adapter, versioned |
+| Model records | the catalogue and `export-conventions.json`, to know the allowed entities and keys |
+
+**Behaviour**
+
+| Step | Does | On failure / settings / limits |
+|---|---|---|
+| 1 Extract | read the source records in scope | source unreachable → exit non-zero, no file written |
+| 2 Translate | map each record and link through the translation table | an unmapped record type → listed, not guessed; the run fails if any in-scope record is unmapped |
+| 3 Self-check | run the export validator (SDMM step 4) on the result in memory | any issue → fail |
+| 4 Write atomically | write to a temporary file, then rename over the target | a partial export is never visible |
+
+**Validity.** An adapter succeeds only if every in-scope record is translated and the export passes validation. **It fails loudly rather than writing a partial export.**
+
+**Target design**
+
+| | |
+|---|---|
+| Version | `model_version` = the source tool's change marker if it has one (revision, last-modified), else the extraction timestamp; `source_system` names the tool; `version` reports the source's current marker cheaply so SVC-04 can poll |
+| Identity | instance `id` is the source tool's persistent key; a renamed record keeps its id (KG-I-01, KG-I-02) |
+| Scope | one adapter per tool per level; an adapter never writes mappings |
+
+**Records**
+
+| Field | Content |
+|---|---|
+| run log | start, end, source marker, records read, records written, unmapped types, result |
+
+### 11.3 SVC-03 Export diff (C-07)
+
+**Purpose.** Say exactly what changed between the export last loaded and a new one, so the engine re-checks only what changed and removals go to impact analysis.
+
+**Status.** not built
+
+**Interface**
+
+| | |
+|---|---|
+| Command | `sdmm-graph diff <old-export> <new-export> [--json]` |
+| Library | `diff_exports(old, new)` → change list |
+
+**Inputs**
+
+| Input | Detail |
+|---|---|
+| Two exports of the same level and `model_id` | the last valid one (from the load record) and the new one |
+
+**Behaviour**
+
+| Step | Does | On failure / settings / limits |
+|---|---|---|
+| 1 Match instances | by `id` | — |
+| 2 Classify instances | **added** (new id) · **removed** (id gone) · **retired** (`lifecycle_status` → retired) · **changed** (same id; name, version, type or attributes differ — the changed fields listed) · **unchanged** | — |
+| 3 Classify links | by (source, kind, target): added · removed | — |
+| 4 Flag possible re-keys | a removed and an added instance of the same type whose name and attributes match ≥ 90 % → reported as a **possible re-key**, never merged automatically | — |
+| 5 List affected mappings | approved mapping-set records whose ends are removed, retired, re-keyed or changed in a join key | — |
+
+**Validity.** The two exports must be the same level and `model_id`; otherwise the diff refuses.
+
+**Target design**
+
+| | |
+|---|---|
+| Change list format | `{level, model_id, old_version, new_version, instances: {added, removed, retired, changed: [{id, fields}], possible_rekeys: [{old, new, score}]}, links: {added, removed}, affected_mappings: [mapping_id]}` |
+| Routing | added and changed → the engine; removed, retired and possible re-keys → impact (SVC-05) and the review queue (SVC-06) |
+
+**Records**
+
+| Field | Content |
+|---|---|
+| diff record | the change list, stored with the load record of the new export |
+
+### 11.4 SVC-04 Refresh trigger (C-15)
+
+**Purpose.** Decide when each adapter and the graph loader run. Configured per source tool.
+
+**Status.** not built (on demand only: someone runs a command)
+
+**Interface**
+
+| | |
+|---|---|
+| Configuration | one entry per source: `{source, level, adapter, mode, settings}` |
+
+**Inputs**
+
+| Input | Detail |
+|---|---|
+| Mode | one of the four below |
+| Source version | from `<adapter> version` |
+
+**Behaviour**
+
+| Step | Does | On failure / settings / limits |
+|---|---|---|
+| On demand | a person or the assistant asks; run the adapter, then the loader | settings: none |
+| Scheduled | run at a set time | settings: `cron` expression; skip if the source version is unchanged |
+| Event (webhook) | the source tool calls an endpoint when it changes; run the adapter for that source | settings: endpoint path, shared secret; debounce window (e.g. 5 min) so a burst of edits runs once |
+| Refresh on read | before answering a query, compare each source version with the last load; run adapters for changed sources, then load | settings: maximum staleness (e.g. 15 min) to avoid checking on every query; timeout after which the query is answered from the last valid load and says so |
+
+**Validity.** Only one load runs at a time; a trigger that fires during a load queues one follow-up run.
+
+**Target design**
+
+| | |
+|---|---|
+| Alerts | adapter failure, rejected load, unresolved ends, a source not refreshed within its expected window |
+| Recommended | event where the tool supports webhooks, scheduled otherwise; refresh on read only as a top-up (DEC-02) |
+
+**Records**
+
+| Field | Content |
+|---|---|
+| trigger log | which trigger fired, for which source, and the load_id it started |
+
+### 11.5 SVC-05 Query service (C-14)
+
+**Purpose.** Answer questions over the loaded graphs, read-only, with every answer citing the load it came from and the mapping-set record behind every cross-architecture step.
+
+**Status.** built as commands with `--json`; a programmatic interface and the history, unmapped and local queries are not built
+
+**Interface**
+
+| | |
+|---|---|
+| Command (today) | `sdmm-graph trace|impact|stats … [--json]` |
+| Function interface (target) | one function per query below, same parameters, returning the JSON shown; wrapped by any transport the institution chooses (CLI, HTTP, assistant tool) |
+
+**Inputs**
+
+| Input | Detail |
+|---|---|
+| Queries | **trace**(entity, direction=down|up|both, statuses=[approved], follow_composition=false) · **impact**(entity, change=modify|replace|retire|rehost) · **local**(entity, level, kinds?) · **unmapped**(level) · **history**(mapping_id or entity) · **stats**() · **check**() |
+
+**Behaviour**
+
+| Step | Does | On failure / settings / limits |
+|---|---|---|
+| Trace | walk approved links (and part–whole links if asked) from the entity | — |
+| Impact | classify dependents by `schema/impact-rules.json` | — |
+| Local | neighbours and part–whole closure inside one local graph | not built (KG-L-04) |
+| Unmapped | nodes of a level with no approved cross-level link where a registry rule expects one | not built (KG-Q-04) |
+| History | superseded predecessors of a record; the baselines a node or link appeared in | not built (KG-Q-05) |
+
+**Validity.** Queries run only against a valid load (SVC-01 target); the answer carries that load's `baseline_id`.
+
+**Target design**
+
+| | |
+|---|---|
+| Response | `{baseline_id, query, result, warnings}`. Trace result: a tree of `{id, name, type, level, lifecycle_status, children: [{via: {relationship, mapping_ids}, node}]}`; impact result: `[{id, level, classification, via}]` plus `supersede: [mapping_id]` |
+| Errors | `unknown_entity` (id in no local graph) · `no_paths` (entity exists, no links in the chosen statuses) · `invalid_load` (no valid graph to answer from) · `bad_parameter` |
+| Design marking | nodes with `lifecycle_status: planned` carry `design: true` (as the trace marks them today) |
+
+**Records**
+
+| Field | Content |
+|---|---|
+| query log | who asked, which query, parameters, baseline_id, result size — audit logging is not yet specified |
+
+### 11.6 SVC-06 Review queue (C-11)
+
+**Purpose.** Give architects one place to decide on the engine's output and on links affected by change, and write each decision back to the mapping set.
+
+**Status.** not built (today: architects edit the mapping-set file; `sdmm-diff` guards history)
+
+**Interface**
+
+| | |
+|---|---|
+| Views | a list of items; an item detail; filters by estate, level pair, rule (plan row), confidence, item type |
+| Actions | approve · reject · send back · supersede · bulk-approve (one rule, one estate) |
+
+**Inputs**
+
+| Input | Detail |
+|---|---|
+| Items | **proposed** records from the engine · **affected** approved records from the export diff (an end removed, retired, re-keyed or a join key changed) · **flagged** approved records the engine re-checked and found no longer holding |
+
+**Behaviour**
+
+| Step | Does | On failure / settings / limits |
+|---|---|---|
+| Item detail shows | the link (both ends with names, levels and types); the rule that produced it (plan row, step, band); the evidence and the working; confidence; for affected items, what changed and the impact report | — |
+| Approve | status → `approved`; `reviewer_id`, `approved_at`, `baseline_id` set | missing required evidence → blocked |
+| Reject | status → `rejected`, reason recorded | reason required |
+| Supersede | old record → `superseded`, `valid_to` set; a replacement record (if any) gets `previous_mapping_id` | — |
+| Send back | status → `needs_review` with a comment; typically "fix the rule" — routed to the mapping-model owner | — |
+| Write back | each decision is a change to the mapping set that passes `sdmm-validate` and `sdmm-diff` before it is saved | a decision that fails validation is not saved |
+
+**Validity.** Only a named architect can decide; the engine and the assistant cannot (§10 governance).
+
+**Target design**
+
+| | |
+|---|---|
+| Rule-level approval | an architect may declare a rule auto-approved for an estate (`enterprise_rule`); its records then skip the queue but are listed in a weekly summary |
+| Implementation | the EA tool's own review features, or a small application over the mapping set (see the EA-tool options discussion) |
+
+**Records**
+
+| Field | Content |
+|---|---|
+| decision log | item, action, architect, time, reason |
+
+### 11.7 SVC-07 Assistant access (C-16)
+
+**Purpose.** Let an AI assistant answer design questions from the graphs and help architects act, without ever approving or writing a graph.
+
+**Status.** not built — transport per DEC-04 (CLI run by the assistant, VS Code extension, context snapshot, or MCP where allowed)
+
+**Interface**
+
+| | |
+|---|---|
+| Tools | the table below; each is a thin wrapper over SVC-05, the engine, the validators or SVC-04 |
+
+**Inputs**
+
+| Input | Detail |
+|---|---|
+| Tools and limits | — |
+
+**Behaviour**
+
+| Step | Does | On failure / settings / limits |
+|---|---|---|
+| `graph_trace`, `graph_impact`, `graph_local`, `graph_unmapped`, `graph_history` | read-only queries (SVC-05) | limit: answers must cite `baseline_id` and mapping ids; no write |
+| `graph_refresh` | ask SVC-04 for an on-demand refresh of one source | limit: rate-limited (e.g. once per source per 15 min); returns the load result, never edits an export |
+| `engine_propose` | run the engine for a named entity or estate | limit: writes `proposed` records only, to the review queue; never `approved` |
+| `validate` | run `sdmm-validate` / `sdmm-graph check` on a file | limit: read-only |
+| **not available** | approve, reject, supersede; edit an export, the mapping set or the mapping model | these stay human (§10 governance) |
+
+**Validity.** Every tool call is logged with the user it acted for; the assistant sees only what that user may see (access control is not yet specified).
+
+**Target design**
+
+| | |
+|---|---|
+| Answer style | state the baseline and its age; name each mapping id; say "unmapped" rather than guess when a link is missing; mark design (planned) nodes |
+
+**Records**
+
+| Field | Content |
+|---|---|
+| tool-call log | user, tool, parameters, result size, time |
+
+## 12. Open design decisions
 
 | ID | Decision | Options | SDMM default |
 |---|---|---|---|
@@ -343,9 +678,9 @@ Every workflow ends with C-06 rebuilding the graphs; no component edits a graph 
 | DEC-04 | Agent access | CLI run by the assistant; VS Code extension; context snapshot; MCP where policy allows | per the organisation's Copilot policy |
 | DEC-05 | Standard export of the mapping set | none; SSSOM; RDF + PROV-O | SSSOM export when interoperability is needed |
 
-## 12. Requirements index
+## 13. Requirements index
 
-36 requirements — built 20, not 14, partly 2. Groups: A architecture, L local graph, F federated graph, I identity, V versions, Q queries, R load and refresh, C components, G governance.
+43 requirements — built 22, not 19, partly 2. Groups: A architecture, L local graph, F federated graph, I identity, V versions, Q queries, R load and refresh, C components, G governance, S services.
 
 | ID | Requirement | Basis | Status |
 |---|---|---|---|
@@ -379,10 +714,17 @@ Every workflow ends with C-06 rebuilding the graphs; no component edits a graph 
 | KG-R-02 | A local graph is rebuilt in full from its export; incremental update is an optimisation, not a requirement. | §7 | built (full rebuild) |
 | KG-R-03 | A failed export validation leaves the previous local graph in place and raises an alert. | §7 | not built |
 | KG-R-04 | The federated graph is rebuilt whenever a local graph or the mapping set changes. | §7 | built (rebuilt on every run) |
-| KG-R-05 | The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§11 DEC-02). | §7 | not built |
+| KG-R-05 | The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§12 DEC-02). | §7 | not built |
 | KG-C-01 | Build an adapter (C-03) per source tool that writes a valid level export and fails loudly rather than writing a partial one. | C-03 | not built |
 | KG-C-02 | Build the export diff (C-07) so the engine re-checks only changed instances and removals are routed to impact and supersession. | C-07 | not built |
 | KG-C-03 | Build the engine step logic (C-08) to the mapping-model spec (docs/mapping-model-spec.md), accepted by reproducing the eleven executor runs. | C-08; mapping-model-spec §8 | not built |
 | KG-C-04 | Provide a review queue for C-11 that lists proposals and pending supersessions with their evidence and impact. | C-11 | not built |
 | KG-G-01 | Only an architect action sets `approved`; no automated component, engine or agent may. | mapping-execution.md §2; registry enterprise_rule | built (convention; validator requires reviewer_id and approved_at) |
+| KG-S-01 | SVC-01 Graph loader: implement to §11.1. | C-06 | built in memory |
+| KG-S-02 | SVC-02 Adapter contract: implement to §11.2. | C-03 | not built |
+| KG-S-03 | SVC-03 Export diff: implement to §11.3. | C-07 | not built |
+| KG-S-04 | SVC-04 Refresh trigger: implement to §11.4. | C-15 | not built |
+| KG-S-05 | SVC-05 Query service: implement to §11.5. | C-14 | built as commands with `--json`; a programmatic interface and the history, unmapped and local queries are not built |
+| KG-S-06 | SVC-06 Review queue: implement to §11.6. | C-11 | not built |
+| KG-S-07 | SVC-07 Assistant access: implement to §11.7. | C-16 | not built |
 

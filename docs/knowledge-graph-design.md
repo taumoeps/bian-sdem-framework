@@ -260,6 +260,6 @@ Which components run for each kind of change, in order, is in [`knowledge-graph-
 
 ## Read more
 
-- [`knowledge-graph-spec.md`](knowledge-graph-spec.md) — every requirement, component and change workflow for the graphs.
+- [`knowledge-graph-spec.md`](knowledge-graph-spec.md) — every requirement, component and change workflow for the graphs; §11 specifies each service: graph loader, adapter contract, export diff, refresh trigger, query service, review queue, assistant access.
 - [`mapping-model-design.md`](mapping-model-design.md) — the mapping model, the engine and the mapping set.
 - [`relationships-planning.md`](relationships-planning.md) — every link allowed *inside* each architecture.
