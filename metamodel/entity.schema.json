@@ -134,6 +134,19 @@
             "proposed_extension",
             "pending_release_validation"
           ]
+        },
+        "reasoning": {
+          "type": "string",
+          "minLength": 1,
+          "description": "why the entity is defined this way and how its source supports it"
+        },
+        "confidence": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ],
+          "description": "strength of the source basis: high = the concept exists one-to-one in a public standard; medium = interpreted from, or an SDEM extension of, a standard concept; low = SDEM design with no standard concept"
         }
       }
     }

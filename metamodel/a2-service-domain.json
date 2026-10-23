@@ -18,7 +18,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "Service Landscape views"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Business Area — the top grouping of the Service Landscape; named in BIAN's public Service Landscape 14.0 portal. Release 14.0 content not yet verified against a licensed copy.",
+      "confidence": "high"
     },
     {
       "type": "A2.BusinessDomain",
@@ -36,7 +38,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "Service Landscape views"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Business Domain — the second grouping of the Service Landscape; named in BIAN's public Service Landscape 14.0 portal. Release not yet verified.",
+      "confidence": "high"
     },
     {
       "type": "A2.ServiceDomain",
@@ -54,7 +58,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "MetaModel Overview"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Service Domain — the central BIAN concept; named in BIAN's public Service Landscape 14.0 portal (MetaModel Overview). Release not yet verified.",
+      "confidence": "high"
     },
     {
       "type": "A2.FunctionalPattern",
@@ -72,7 +78,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "MetaModel Overview"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Functional Pattern — the generic behaviour a Service Domain performs; named in BIAN's public Service Landscape 14.0 portal (MetaModel Overview). Release not yet verified.",
+      "confidence": "high"
     },
     {
       "type": "A2.AssetType",
@@ -90,7 +98,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "MetaModel Overview"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Asset Type — what a Service Domain manages; named in BIAN's public Service Landscape 14.0 portal (MetaModel Overview). Release not yet verified.",
+      "confidence": "high"
     },
     {
       "type": "A2.ControlRecord",
@@ -108,7 +118,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "Control Record Model"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Control Record — the record a Service Domain governs; named in BIAN's public Service Landscape 14.0 portal (Control Record Model). Release not yet verified.",
+      "confidence": "high"
     },
     {
       "type": "A2.ServiceGroup",
@@ -126,7 +138,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "MetaModel Overview"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Service Group — groups a Service Domain's operations; named in BIAN's public Service Landscape 14.0 portal (MetaModel Overview). Release not yet verified.",
+      "confidence": "high"
     },
     {
       "type": "A2.ServiceOperation",
@@ -144,7 +158,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "MetaModel Overview"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Service Operation — named by action term and qualifier; named in BIAN's public Service Landscape 14.0 portal and specified in the Semantic API Practitioner Guide v8.1 §3.2.5. Release not yet verified.",
+      "confidence": "high"
     },
     {
       "type": "A2.BehaviorQualifier",
@@ -162,7 +178,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "MetaModel Overview"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Behavior Qualifier — a partition of the control record that operations address; named in BIAN's public Service Landscape 14.0 portal and the Semantic API Practitioner Guide §3.2.4. Release not yet verified.",
+      "confidence": "high"
     },
     {
       "type": "A2.BusinessScenario",
@@ -180,7 +198,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "Business Scenarios"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Business Scenario — an illustrative sequence of operations across domains; named in BIAN's public Service Landscape 14.0 portal (Business Scenarios). Release not yet verified.",
+      "confidence": "high"
     },
     {
       "type": "A2.BusinessObject",
@@ -198,7 +218,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "Business Object Model"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Business Object — the canonical information concept; named in BIAN's public Service Landscape 14.0 portal (Business Object Model). Release not yet verified.",
+      "confidence": "high"
     },
     {
       "type": "A2.BusinessObjectAttribute",
@@ -216,7 +238,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "Business Object Model"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Business Object attribute — a property of a business object in the BOM; named in BIAN's public Service Landscape 14.0 portal. Release not yet verified.",
+      "confidence": "high"
     },
     {
       "type": "A2.BOMModel",
@@ -234,7 +258,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "Business Object Model"
       },
-      "evidence_status": "proposed_extension"
+      "evidence_status": "proposed_extension",
+      "reasoning": "BIAN publishes the Business Object Model as a body of content; SDEM makes the versioned model an artefact entity so a release can be cited as evidence. The artefact-to-object link (RA2-17) is SDEM's reading, not a BIAN relationship.",
+      "confidence": "medium"
     },
     {
       "type": "A2.Wireframe",
@@ -252,7 +278,9 @@
         "uri": "https://bian.org/servicelandscape-14-0-0/",
         "locator": "Wireframes Overview"
       },
-      "evidence_status": "pending_release_validation"
+      "evidence_status": "pending_release_validation",
+      "reasoning": "BIAN Wireframe — a published per-domain diagram; named in BIAN's public Service Landscape 14.0 portal (Wireframes Overview). An artefact: citable as evidence, never a mapping endpoint.",
+      "confidence": "high"
     },
     {
       "type": "A2.SemanticAPI",
@@ -270,7 +298,9 @@
         "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf",
         "locator": "Practitioner Guide"
       },
-      "evidence_status": "interpreted_from_official_source"
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "BIAN Semantic API — the reference REST form of a Service Domain's operations, specified in the public Semantic API Practitioner Guide v8.1 §3.5. Modelled as an artefact rather than an instance type.",
+      "confidence": "high"
     }
   ]
 }

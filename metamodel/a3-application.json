@@ -18,7 +18,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 9"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Application Component, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A3.ApplicationService",
@@ -36,7 +38,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 9"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Application Service, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A3.ApplicationInterface",
@@ -54,7 +58,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 9"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Application Interface, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A3.ApplicationFunction",
@@ -72,7 +78,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 9"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Application Function, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A3.APIOperation",
@@ -90,7 +98,9 @@
         "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf",
         "locator": "Practitioner Guide"
       },
-      "evidence_status": "proposed_extension"
+      "evidence_status": "proposed_extension",
+      "reasoning": "SDEM extension: ArchiMate has no element for a single API operation (it stops at the interface). SDEM adds it because BIAN's Semantic API maps each service operation to one REST operation (Practitioner Guide §3.5), and its attributes follow the public OpenAPI standard (method, path, payload).",
+      "confidence": "medium"
     },
     {
       "type": "A3.DataEntity",
@@ -108,7 +118,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 9"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "Aligned to ArchiMate 3.2 Data Object, ch. 9 (concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated). SDEM narrows it to a logical data entity with a column list, so it can be matched to BIAN business-object attributes; ArchiMate's Data Object is broader.",
+      "confidence": "medium"
     },
     {
       "type": "A3.Event",
@@ -126,7 +138,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 9"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "Aligned to ArchiMate 3.2 Application Event, ch. 9 (concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated). SDEM uses it for published business events; no public standard is yet cited for its fields (AsyncAPI is proposed).",
+      "confidence": "medium"
     },
     {
       "type": "A3.SolutionBuildingBlock",
@@ -144,7 +158,9 @@
         "uri": "https://pubs.opengroup.org/togaf-standard/",
         "locator": "Architecture Content"
       },
-      "evidence_status": "interpreted_from_official_source"
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "TOGAF 10 Solution Building Block (Architecture Content Framework) — a real TOGAF concept, but the TOGAF specification is login-gated, so the definition is SDEM's paraphrase and unverified.",
+      "confidence": "medium"
     }
   ]
 }

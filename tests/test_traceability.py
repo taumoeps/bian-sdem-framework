@@ -306,3 +306,13 @@ class PackagingTests(unittest.TestCase):
         self.assertEqual(DATA_ROOT, ROOT)
         toml = (ROOT / 'pyproject.toml').read_text(encoding='utf-8')
         self.assertIn('"sdem.data.schema" = "schema"', toml); self.assertIn('"sdem.data.metamodel" = "metamodel"', toml)
+
+
+class EntityCatalogueDocTests(unittest.TestCase):
+    def test_doc_is_current_and_every_entity_has_reasoning_and_confidence(self):
+        from sdem.catalogue import render
+        self.assertEqual((ROOT / 'docs/entity-catalogue.md').read_text(encoding='utf-8'), render())
+        import glob
+        for f in glob.glob(str(ROOT / 'metamodel/a[1-4]-*.json')):
+            for e in json.loads(Path(f).read_text(encoding='utf-8'))['entities']:
+                self.assertTrue(e.get('reasoning'), e['type']); self.assertIn(e.get('confidence'), ('high', 'medium', 'low'), e['type'])

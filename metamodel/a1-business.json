@@ -18,7 +18,9 @@
         "uri": "https://bian.org/wp-content/uploads/2026/02/BIAN-v14.0-Release-Notes-v1.0_-Final-Version.pdf",
         "locator": "Release notes §3 — mapping to Service Domains stated as work in progress; also derives from ArchiMate 3.2 ch. 7 Strategy — Capability (within-level rows cite ArchiMate)"
       },
-      "evidence_status": "interpreted_from_official_source"
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "BIAN's Business Capability Model names capabilities but its capability-to-Service-Domain mapping is unpublished (v14.0 release notes §3); the same concept exists exactly as ArchiMate 3.2 Capability (ch. 7, concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated). SDEM uses the ArchiMate meaning and aligns to BIAN's.",
+      "confidence": "high"
     },
     {
       "type": "A1.ValueStream",
@@ -36,7 +38,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 7"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Value Stream, ch. 7 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A1.ValueStreamStage",
@@ -54,7 +58,9 @@
         "uri": "https://github.com/taumoeps/bian-sdem-framework",
         "locator": "extension of A1.ValueStream"
       },
-      "evidence_status": "proposed_extension"
+      "evidence_status": "proposed_extension",
+      "reasoning": "SDEM extension: ArchiMate describes a value stream as a sequence of stages but models a stage as a value stream composed into another, not as its own element; SDEM makes the stage explicit so stages can be matched to BIAN scenario steps.",
+      "confidence": "medium"
     },
     {
       "type": "A1.BusinessProcess",
@@ -72,7 +78,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 8"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Business Process, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A1.BusinessActivity",
@@ -90,7 +98,9 @@
         "uri": "https://github.com/taumoeps/bian-sdem-framework",
         "locator": "extension of A1.BusinessProcess"
       },
-      "evidence_status": "proposed_extension"
+      "evidence_status": "proposed_extension",
+      "reasoning": "SDEM extension of Business Process: ArchiMate decomposes a process into sub-processes (composition) rather than a separate activity element; SDEM names the lowest level an activity, the level at which a step invokes one BIAN operation.",
+      "confidence": "medium"
     },
     {
       "type": "A1.BusinessService",
@@ -108,7 +118,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 8"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Business Service, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A1.BusinessActor",
@@ -126,7 +138,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 8"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Business Actor, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A1.BusinessRole",
@@ -144,7 +158,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 8"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Business Role, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A1.BusinessObject",
@@ -162,7 +178,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 8"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Business Object, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated; aligned to BIAN's Business Object Model through the S12 cross-level rule.",
+      "confidence": "high"
     },
     {
       "type": "A1.BusinessRequirement",
@@ -180,7 +198,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 6"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Requirement (motivation elements), ch. 6 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated. SDEM places it in A1 because requirements are stated against business behaviour.",
+      "confidence": "high"
     }
   ]
 }

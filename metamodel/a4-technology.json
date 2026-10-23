@@ -18,7 +18,9 @@
         "uri": "https://github.com/taumoeps/bian-sdem-framework",
         "locator": "extension of none"
       },
-      "evidence_status": "proposed_extension"
+      "evidence_status": "proposed_extension",
+      "reasoning": "SDEM's abstract supertype of every A4 entity, never instantiated. No standard defines it; it exists so the DEPLOYED_ON relationship type can target 'any infrastructure' without listing each kind.",
+      "confidence": "low"
     },
     {
       "type": "A4.Deployment",
@@ -36,7 +38,9 @@
         "uri": "https://github.com/taumoeps/bian-sdem-framework",
         "locator": "extension of A4.Artifact assigned to A4.Node"
       },
-      "evidence_status": "proposed_extension"
+      "evidence_status": "proposed_extension",
+      "reasoning": "SDEM extension: in ArchiMate a deployment is an Artifact assigned to a Node (ch. 10). SDEM makes the deployment a first-class record so it can carry component, environment and platform and be traced.",
+      "confidence": "medium"
     },
     {
       "type": "A4.DeploymentEnvironment",
@@ -54,7 +58,9 @@
         "uri": "https://github.com/taumoeps/bian-sdem-framework",
         "locator": "extension of A4.Node grouping"
       },
-      "evidence_status": "proposed_extension"
+      "evidence_status": "proposed_extension",
+      "reasoning": "SDEM extension: ArchiMate has no environment element; environments are usually modelled as a grouping of Nodes. SDEM names it so production, UAT and similar can be traced and aggregated.",
+      "confidence": "medium"
     },
     {
       "type": "A4.Node",
@@ -72,7 +78,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Node, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A4.Device",
@@ -90,7 +98,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Device, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A4.SystemSoftware",
@@ -108,7 +118,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 System Software, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A4.TechnologyService",
@@ -126,7 +138,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Technology Service, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A4.TechnologyInterface",
@@ -144,7 +158,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Technology Interface, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A4.CommunicationNetwork",
@@ -162,7 +178,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Communication Network, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A4.Path",
@@ -180,7 +198,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Path, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     },
     {
       "type": "A4.Artifact",
@@ -198,7 +218,9 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source"
+      "evidence_status": "confirmed_in_official_source",
+      "reasoning": "ArchiMate 3.2 Artifact, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high"
     }
   ]
 }
