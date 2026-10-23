@@ -117,7 +117,7 @@ flowchart TB
     classDef links fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
     classDef prog fill:#FFFFFF,stroke:#424242,color:#212121
     classDef person fill:#F3E5F5,stroke:#6A1B9A,color:#4A148C
-    classDef graph fill:#E0F7FA,stroke:#00838F,color:#006064
+    classDef kg fill:#E0F7FA,stroke:#00838F,color:#006064
 
     subgraph SRC["Source tools — owned by each architecture team"]
         direction LR
@@ -132,10 +132,10 @@ flowchart TB
 
     subgraph LOCAL["Local graphs — what exists"]
         direction LR
-        L1[("A1 Business")]:::graph
-        L2[("A2 Service Domain")]:::graph
-        L3[("A3 Application")]:::graph
-        L4[("A4 Technology")]:::graph
+        L1[("A1 Business")]:::kg
+        L2[("A2 Service Domain")]:::kg
+        L3[("A3 Application")]:::kg
+        L4[("A4 Technology")]:::kg
     end
 
     ARCH(["Architects"]):::person
@@ -144,7 +144,7 @@ flowchart TB
     MS[/"Mapping set<br/><b>the links</b>"/]:::links
     REV(["Architects review<br/>approve · reject<br/>fix a wrong link by fixing the rule"]):::person
     LDR["Graph loader"]:::prog
-    FED[("Federated graph<br/>local graphs joined by approved links")]:::graph
+    FED[("Federated graph<br/>local graphs joined by approved links")]:::kg
     Q["trace · impact"]:::prog
 
     T1 & T2 & T3 & T4 --> ADP
