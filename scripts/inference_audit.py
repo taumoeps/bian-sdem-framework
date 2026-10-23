@@ -11,23 +11,11 @@ off = {m['id']: m for m in json.load(open(R / 'metamodel/official-mappings.json'
 
 # ---- judgement: source of each documented attribute
 B, O, AR, T, S, I = 'BIAN (public)', 'OpenAPI (public)', 'ArchiMate relationship held as attribute', 'TOGAF (login-gated)', 'SDEM-defined', 'institution data'
-ATTR_SOURCE = {
- 'A1.BusinessCapability.description': AR, 'A1.BusinessProcess.invokes': AR, 'A1.BusinessActivity.invokes': AR, 'A1.ValueStream.stages': AR,
- 'A1.BusinessObject.attributes': S, 'A1.BusinessObject.field_aliases': I, 'A1.BusinessService.inputs': S, 'A1.BusinessService.outputs': S, 'A1.BusinessRequirement.applies_to': AR,
- 'A2.ServiceOperation.action_term': B, 'A2.ServiceOperation.behavior_qualifier': B, 'A2.ServiceOperation.input_attributes': B, 'A2.ServiceOperation.output_attributes': B,
- 'A2.ControlRecord.attributes': B, 'A2.ControlRecord.lifecycle_states': S, 'A2.BusinessObject.attributes': B, 'A2.BusinessScenario.operation_sequence': B,
- 'A2.ServiceDomain.asset_type': B, 'A2.ServiceDomain.functional_pattern': B, 'A2.AssetType.aliases': I, 'A2.BehaviorQualifier.aliases': I,
- 'A3.APIOperation.method': O, 'A3.APIOperation.path': O, 'A3.APIOperation.payload_fields': O,
- 'A3.ApplicationComponent.deployed_on': AR, 'A3.ApplicationComponent.deployed_as': S, 'A3.ApplicationComponent.built_as': AR, 'A3.ApplicationComponent.network_zone': S,
- 'A3.ApplicationService.consumes': AR, 'A3.DataEntity.attributes': S, 'A3.DataEntity.stored_in': AR, 'A3.DataEntity.field_aliases': I,
- 'A3.ApplicationInterface.field_aliases': I, 'A3.ApplicationInterface.exposed_through': AR, 'A3.ApplicationFunction.exposed_through': AR, 'A3.ApplicationFunction.consumes': AR,
- 'A3.Event.published_to': AR, 'A3.SolutionBuildingBlock.components': T,
- 'A4.Deployment.component_id': S, 'A4.Deployment.environment_id': S, 'A4.Deployment.platform_id': S, 'A4.SystemSoftware.hosts': AR, 'A4.Node.hosts': AR, 'A4.Device.hosts': AR,
- 'A4.CommunicationNetwork.connects': AR, 'A4.Path.from': AR, 'A4.Path.to': AR, 'A4.Path.network': AR, 'A4.Path.carries': AR,
- 'A4.TechnologyInterface.of_service': AR, 'A4.TechnologyInterface.exposes': AR, 'A4.Artifact.of_component': AR,
-}
-attrs = {f'{e}.{k}' for e, ks in conv.items() for k in ks}
-assert attrs == set(ATTR_SOURCE), (attrs ^ set(ATTR_SOURCE))
+_REC = json.load(open(R / 'metamodel/entity-attributes.json'))
+_MAP = {'BIAN': B, 'OpenAPI': O, 'ArchiMate relationship': AR, 'TOGAF': T, 'SDEM': S, 'institution': I}
+ATTR_SOURCE = {f"{x['entity']}.{x['name']}": _MAP[x['source']] for x in _REC['attributes'] if x['status'] == 'active'}
+attrs = {f'{e}.{k}' for e, ks in conv.items() for k in ks} - {'A1.BusinessCapability.description'}
+assert attrs <= set(ATTR_SOURCE), (attrs - set(ATTR_SOURCE))
 GROUNDED_ATTR = {B, O}; INFER_ATTR = {AR, S}; GATED = {T}
 
 def def_class(e):
@@ -60,7 +48,7 @@ for m in rules:
 
 def pct(c, keys): n = sum(c.values()); k = sum(c[x] for x in keys); return f"{k} of {n} ({round(100 * k / n)}%)"
 out = ['# SDEM inference audit', '',
-       'A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the records (`metamodel/`, `schema/`). It answers one question: **without access to the login-gated standards or a standards MCP server, how much of SDEM is inferred rather than taken from a verifiable public source?** Counts are computed by script from the records; the one judgement is the source assigned to each attribute (§2), which no record holds yet.', '',
+       'A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the records (`metamodel/`, `schema/`). It answers one question: **without access to the login-gated standards or a standards MCP server, how much of SDEM is inferred rather than taken from a verifiable public source?** Counts are computed by script from the records; attribute sources are read from `metamodel/entity-attributes.json` (see `architecture-attribute-design.md`).', '',
        '**Definitions used.** *Grounded*: stated in a public source anyone can check (BIAN public portal and Semantic API guide; ArchiMate concept names; OpenAPI). *Oracle-confirmed*: inferred by SDEM, then confirmed against the open-source Archi implementation of the ArchiMate relationship tables. *Inferred*: SDEM\'s own reading or design, with reasoning recorded, tested by the use cases but not by a standard. *Gated*: cited to TOGAF or the ArchiMate text and not checkable without an Open Group login.', '',
        '## 1. Summary by layer', '',
        '| Layer | Total | Grounded | Oracle-confirmed | Inferred | Gated / unverified |', '|---|---|---|---|---|---|',
@@ -74,7 +62,7 @@ allitems = sum(tot['definition'].values()) + sum(tot['attribute'].values()) - to
 out += [f"**Across all four layers** ({allitems} items, institution data excluded): {grounded} grounded ({round(100*grounded/allitems)}%), {oracle} oracle-confirmed ({round(100*oracle/allitems)}%), the rest inferred or gated ({round(100*(allitems-grounded-oracle)/allitems)}%).", '',
         '**Where inference concentrates.** (1) **Cross-level rules**: BIAN publishes almost nothing below A2 and no capability-to-domain mapping, so most rules are SDEM\'s; they are the part tested by the eleven use-case runs (50 rows validated against sealed answers), not by a standard. (2) **Attributes of ArchiMate-derived entities**: ArchiMate defines no attributes, so every A1, A3 and A4 field is either a relationship SDEM chose to record on the entity or a field SDEM defined. (3) **Within-level rows** were mostly inferred, but 113 of them are now confirmed by the Archi oracle.', '',
         '**Where it does not.** A2 is grounded almost entirely in BIAN\'s public material; entity *concepts* are grounded for ' + str(tot['definition']['grounded']) + ' of ' + str(sum(tot['definition'].values())) + ' entities; API attributes follow OpenAPI.', '',
-        '## 2. Attribute sources (the one judgement in this audit)', '', '| Attribute | Source |', '|---|---|']
+        '## 2. Attribute sources (from metamodel/entity-attributes.json)', '', '| Attribute | Source |', '|---|---|']
 out += [f"| `{k}` | {v} |" for k, v in sorted(ATTR_SOURCE.items())]
 out += ['', '## 3. Entity by entity', '',
         '| Entity | Standard: concept | Definition | Attributes (source) | Within-level rows | Cross-level rules | Review note |', '|---|---|---|---|---|---|---|']

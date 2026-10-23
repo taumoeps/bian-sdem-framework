@@ -316,3 +316,31 @@ class EntityCatalogueDocTests(unittest.TestCase):
         for f in glob.glob(str(ROOT / 'metamodel/a[1-4]-*.json')):
             for e in json.loads(Path(f).read_text(encoding='utf-8'))['entities']:
                 self.assertTrue(e.get('reasoning'), e['type']); self.assertIn(e.get('confidence'), ('high', 'medium', 'low'), e['type'])
+
+
+class AttributeDesignTests(unittest.TestCase):
+    def test_doc_is_current_and_records_are_complete(self):
+        from sdem.attributes import render, load
+        self.assertEqual((ROOT / 'docs/architecture-attribute-design.md').read_text(encoding='utf-8'), render())
+        rec = load(); ids = [a['id'] for a in rec['attributes']]
+        self.assertEqual(len(ids), len(set(ids)))
+        from sdem.metamodel import Metamodel
+        mm = Metamodel.load()
+        for a in rec['attributes']:
+            self.assertTrue(mm.known(a['entity']), a['id'])
+            for k in ('type', 'source', 'reasoning', 'verification', 'read_by', 'description'):
+                self.assertTrue(a.get(k), f"{a['id']} lacks {k}")
+            self.assertIn(a['confidence'], ('high', 'medium', 'low')); self.assertIn(a['status'], ('active', 'deprecated'))
+
+    def test_every_join_key_is_an_attribute_and_every_used_attribute_is_recorded(self):
+        import glob
+        from sdem.attributes import load
+        rec = {(a['entity'], a['name']) for a in load()['attributes']}
+        conv = json.loads((ROOT / 'metamodel/export-conventions.json').read_text(encoding='utf-8'))['conventions']
+        keys = {(e, k) for e, ks in conv.items() for k in ks} - {('A1.BusinessCapability', 'description')}  # a core field
+        self.assertEqual(keys - rec, set())
+        used = set()
+        for f in glob.glob(str(ROOT / 'examples/*/a[1-4]-*.json')):
+            for i in json.loads(Path(f).read_text(encoding='utf-8'))['instances']:
+                used |= {(i['type'], k) for k in (i.get('attributes') or {})}
+        self.assertEqual(used - rec, set())

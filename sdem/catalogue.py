@@ -67,6 +67,7 @@ def render():
             '- **The ArchiMate entities are confirmed as concepts, not as specification text.** Reading the ArchiMate 3.2 specification (free Open Group account) would upgrade their verification; it would not change their confidence.',
             '- **`A3.SolutionBuildingBlock` rests on TOGAF**, which is login-gated; its definition is SDEM\'s paraphrase.', '',
             '## Related', '',
+            '- [`architecture-attribute-design.md`](architecture-attribute-design.md) — the attributes of each entity type.',
             '- [`relationships-planning.md`](relationships-planning.md) — every link allowed inside each architecture.',
             '- [`inference-audit.md`](inference-audit.md) — how much of SDEM is grounded, confirmed or inferred, including the source of each attribute.',
             '- [`reference-architecture-provenance.md`](reference-architecture-provenance.md) — the standards and their public URLs.',

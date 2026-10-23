@@ -1,0 +1,1116 @@
+{
+  "metamodel_version": "0.4.0",
+  "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Not yet enforced by sdem-graph check (next build); export-conventions.json keys must all appear here (test).",
+  "confidence_rule": "high = the attribute is defined by a public standard; medium = it encodes a standard concept or relationship as SDEM chose to record it, or is institution data under an SDEM convention; low = an SDEM field with no standard concept",
+  "core_fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "source": "SDEM",
+      "description": "the instance's permanent key — the source tool's own persistent id",
+      "reasoning": "Every relationship points at it; it must be unique in its level and never reused (knowledge-graph spec KG-I-01).",
+      "confidence": "high"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "source": "SDEM",
+      "description": "an entity type from the catalogue",
+      "reasoning": "Ties the instance to the Architecture Metamodel; must be concrete and of the export's level.",
+      "confidence": "high"
+    },
+    {
+      "name": "version",
+      "type": "string",
+      "required": true,
+      "source": "SDEM",
+      "description": "the instance's version",
+      "reasoning": "Relationship ends pin it, so an approved relationship refers to a known state.",
+      "confidence": "high"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "source": "SDEM",
+      "description": "human-readable name",
+      "reasoning": "Shown in traces; a rename changes the name, never the id.",
+      "confidence": "high"
+    },
+    {
+      "name": "lifecycle_status",
+      "type": "enum: planned, active, deprecated, retired",
+      "required": false,
+      "source": "SDEM",
+      "description": "lifecycle state",
+      "reasoning": "Lets retired things stay referable and planned (design) things be marked as such in traces.",
+      "confidence": "high"
+    },
+    {
+      "name": "canonical_id",
+      "type": "string",
+      "required": false,
+      "source": "BIAN",
+      "description": "external reference id, e.g. a BIAN concept id on A2 instances",
+      "reasoning": "BIAN-authority relationships require it on the A2 end before approval.",
+      "confidence": "high"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "required": false,
+      "source": "SDEM",
+      "description": "scope statement",
+      "reasoning": "Read by the step-5 text rule for capabilities and domains.",
+      "confidence": "high"
+    },
+    {
+      "name": "definition_uri",
+      "type": "string",
+      "required": false,
+      "source": "SDEM",
+      "description": "link to the source definition",
+      "reasoning": "Points to the institution's or the standard's definition.",
+      "confidence": "high"
+    },
+    {
+      "name": "attributes",
+      "type": "object",
+      "required": false,
+      "source": "SDEM",
+      "description": "the entity type's own attributes (this document)",
+      "reasoning": "Container for the per-type attributes below.",
+      "confidence": "high"
+    }
+  ],
+  "attributes": [
+    {
+      "id": "AT-A1-01",
+      "entity": "A1.BusinessProcess",
+      "name": "invokes",
+      "type": "list<string>",
+      "required": false,
+      "description": "A2 operations the process steps call",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "serving / realization, ch. 5 & 8",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "Records on the process which BIAN operations it uses, so the A1→A2 USES_DOMAIN relationship can be derived by join instead of guessed. ArchiMate expresses this as behaviour served by a service; listing the operation ids on the process is SDEM's encoding.",
+      "confidence": "medium",
+      "read_by": "S04"
+    },
+    {
+      "id": "AT-A1-02",
+      "entity": "A1.BusinessActivity",
+      "name": "invokes",
+      "type": "list<string>",
+      "required": false,
+      "description": "A2 operations the activity calls",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "serving, ch. 5 & 8",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "As for the process, at the level where one step calls one operation; makes S06 a step-1 join.",
+      "confidence": "medium",
+      "read_by": "S06, S07"
+    },
+    {
+      "id": "AT-A1-03",
+      "entity": "A1.ValueStream",
+      "name": "stages",
+      "type": "list<string>",
+      "required": false,
+      "description": "ordered ids of the stream's stages",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "composition, ch. 7",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "ArchiMate composes a value stream of stages; SDEM keeps them as an ordered list because stage order is what is matched to a BIAN scenario's operation sequence.",
+      "confidence": "medium",
+      "read_by": "S02, S03"
+    },
+    {
+      "id": "AT-A1-04",
+      "entity": "A1.BusinessService",
+      "name": "inputs",
+      "type": "list<string>",
+      "required": false,
+      "description": "attribute names the service takes",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "ArchiMate defines no attributes for a business service. SDEM adds inputs and outputs so a business service can be matched to BIAN operation inputs and outputs (S09). No standard defines them.",
+      "confidence": "low",
+      "read_by": "S09"
+    },
+    {
+      "id": "AT-A1-05",
+      "entity": "A1.BusinessService",
+      "name": "outputs",
+      "type": "list<string>",
+      "required": false,
+      "description": "attribute names the service returns",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "As for inputs.",
+      "confidence": "low",
+      "read_by": "S09"
+    },
+    {
+      "id": "AT-A1-06",
+      "entity": "A1.BusinessObject",
+      "name": "attributes",
+      "type": "list<string>",
+      "required": false,
+      "description": "glossary attribute names",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "ArchiMate's business object has no attributes. SDEM records the bank's glossary attributes so the object can be aligned to a BIAN business object by attribute match (S12). Built on a standard concept; the field list is SDEM's.",
+      "confidence": "medium",
+      "read_by": "S12"
+    },
+    {
+      "id": "AT-A1-07",
+      "entity": "A1.BusinessObject",
+      "name": "field_aliases",
+      "type": "map<string,string>",
+      "required": false,
+      "description": "glossary name → canonical attribute name",
+      "status": "active",
+      "source": "institution",
+      "reference": {
+        "standard": "institution data (SDEM convention)",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "values supplied by the institution; convention is SDEM design",
+      "reasoning": "The bank's decoded names, supplied as data so matching never guesses (the H2 finding).",
+      "confidence": "medium",
+      "read_by": "S12"
+    },
+    {
+      "id": "AT-A1-08",
+      "entity": "A1.BusinessRequirement",
+      "name": "applies_to",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of the processes or activities the requirement constrains",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "realization (core element realizes requirement), ch. 6",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "ArchiMate links a requirement to the core element that realizes it; SDEM records the targets on the requirement for joining.",
+      "confidence": "medium",
+      "read_by": "S13, S14"
+    },
+    {
+      "id": "AT-A1-09",
+      "entity": "A1.BusinessCapability",
+      "name": "owner",
+      "type": "string",
+      "required": false,
+      "description": "accountable owner",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "not",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "Informational field used by one example; no rule reads it. Kept so exports that carry it validate.",
+      "confidence": "low",
+      "read_by": "any rule"
+    },
+    {
+      "id": "AT-A2-01",
+      "entity": "A2.ServiceDomain",
+      "name": "asset_type",
+      "type": "string",
+      "required": true,
+      "description": "id of the domain's asset type",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Service Landscape 14.0",
+        "locator": "MetaModel Overview; B05",
+        "uri": "https://bian.org/servicelandscape-14-0-0/"
+      },
+      "verification": "BIAN public material; licensed release pending",
+      "reasoning": "BIAN defines each Service Domain by the asset it manages; the field names it.",
+      "confidence": "high",
+      "read_by": "step 2 gate, S17, S19"
+    },
+    {
+      "id": "AT-A2-02",
+      "entity": "A2.ServiceDomain",
+      "name": "functional_pattern",
+      "type": "string",
+      "required": true,
+      "description": "id of the domain's functional pattern",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Service Landscape 14.0",
+        "locator": "MetaModel Overview; B04",
+        "uri": "https://bian.org/servicelandscape-14-0-0/"
+      },
+      "verification": "BIAN public material; licensed release pending",
+      "reasoning": "BIAN defines each Service Domain by the pattern it applies; the field names it.",
+      "confidence": "high",
+      "read_by": "S18"
+    },
+    {
+      "id": "AT-A2-03",
+      "entity": "A2.AssetType",
+      "name": "aliases",
+      "type": "list<string>",
+      "required": false,
+      "description": "tokens the estate uses for the asset",
+      "status": "active",
+      "source": "institution",
+      "reference": {
+        "standard": "institution data (SDEM convention)",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "values supplied by the institution; convention is SDEM design",
+      "reasoning": "The institution's decoded names for the asset, supplied as data; the token gate reads them (H1, H2 findings).",
+      "confidence": "medium",
+      "read_by": "the step-2 boundary gate, S17, S19"
+    },
+    {
+      "id": "AT-A2-04",
+      "entity": "A2.ControlRecord",
+      "name": "attributes",
+      "type": "list<string>",
+      "required": true,
+      "description": "the control record's attribute names",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Service Landscape 14.0",
+        "locator": "Control Record Model; [RN14] §1.3",
+        "uri": "https://bian.org/servicelandscape-14-0-0/"
+      },
+      "verification": "BIAN public material; licensed release pending",
+      "reasoning": "BIAN defines the control record and its attributes, rationalised with the Business Object Model in release 14.",
+      "confidence": "high",
+      "read_by": "S20, S21"
+    },
+    {
+      "id": "AT-A2-05",
+      "entity": "A2.ControlRecord",
+      "name": "lifecycle_states",
+      "type": "list<string>",
+      "required": false,
+      "description": "ordered lifecycle states",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "BIAN describes a control record as tracking an asset through its lifecycle but publishes no state list; SDEM records one so functions can be related to the states they act on.",
+      "confidence": "medium",
+      "read_by": "S21 (informational)"
+    },
+    {
+      "id": "AT-A2-06",
+      "entity": "A2.ServiceOperation",
+      "name": "action_term",
+      "type": "string",
+      "required": true,
+      "description": "one of BIAN's 17 action terms",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Semantic API Practitioner Guide v8.1",
+        "locator": "§3.2.5, Figure 14 (17 action terms)",
+        "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf"
+      },
+      "verification": "BIAN public material; licensed release pending",
+      "reasoning": "BIAN names every operation by an action term; the term determines the REST method.",
+      "confidence": "high",
+      "read_by": "step 2, S02"
+    },
+    {
+      "id": "AT-A2-07",
+      "entity": "A2.ServiceOperation",
+      "name": "behavior_qualifier",
+      "type": "string",
+      "required": false,
+      "description": "qualifier name, or null",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Semantic API Practitioner Guide v8.1",
+        "locator": "§3.2.4",
+        "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf"
+      },
+      "verification": "BIAN public material; licensed release pending",
+      "reasoning": "BIAN qualifies an operation by the control-record partition it acts on; the qualifier appears in the REST path. Null when the operation acts on the whole record.",
+      "confidence": "high",
+      "read_by": "step 2 check 3, S26"
+    },
+    {
+      "id": "AT-A2-08",
+      "entity": "A2.ServiceOperation",
+      "name": "input_attributes",
+      "type": "list<string>",
+      "required": true,
+      "description": "control-record attributes the operation takes",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Semantic API Practitioner Guide v8.1",
+        "locator": "§3.5 (attributes filtered by action term)",
+        "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf"
+      },
+      "verification": "BIAN public material; licensed release pending",
+      "reasoning": "BIAN derives an operation's request from the control record's attributes; SDEM lists their names.",
+      "confidence": "high",
+      "read_by": "step 2 check 4, S09"
+    },
+    {
+      "id": "AT-A2-09",
+      "entity": "A2.ServiceOperation",
+      "name": "output_attributes",
+      "type": "list<string>",
+      "required": true,
+      "description": "control-record attributes the operation returns",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Semantic API Practitioner Guide v8.1",
+        "locator": "§3.5",
+        "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf"
+      },
+      "verification": "BIAN public material; licensed release pending",
+      "reasoning": "As for inputs, for the response.",
+      "confidence": "high",
+      "read_by": "step 2 check 4, S09"
+    },
+    {
+      "id": "AT-A2-10",
+      "entity": "A2.BehaviorQualifier",
+      "name": "aliases",
+      "type": "list<string>",
+      "required": false,
+      "description": "tokens the estate's API paths use for the qualifier",
+      "status": "active",
+      "source": "institution",
+      "reference": {
+        "standard": "institution data (SDEM convention)",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "values supplied by the institution; convention is SDEM design",
+      "reasoning": "Decoded names supplied as data (H2 finding).",
+      "confidence": "medium",
+      "read_by": "step 2 check 3"
+    },
+    {
+      "id": "AT-A2-11",
+      "entity": "A2.BusinessScenario",
+      "name": "operation_sequence",
+      "type": "list<string>",
+      "required": true,
+      "description": "ordered ids of the operations the scenario sequences",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Service Landscape 14.0",
+        "locator": "Business Scenarios; B13",
+        "uri": "https://bian.org/servicelandscape-14-0-0/"
+      },
+      "verification": "BIAN public material; licensed release pending",
+      "reasoning": "BIAN publishes scenarios as sequences of operations across domains.",
+      "confidence": "high",
+      "read_by": "S02, S03, S28"
+    },
+    {
+      "id": "AT-A2-12",
+      "entity": "A2.BusinessObject",
+      "name": "attributes",
+      "type": "list<string>",
+      "required": true,
+      "description": "the canonical object's attribute names",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Service Landscape 14.0",
+        "locator": "Business Object Model",
+        "uri": "https://bian.org/servicelandscape-14-0-0/"
+      },
+      "verification": "BIAN public material; licensed release pending",
+      "reasoning": "BIAN's BOM defines each object's attributes.",
+      "confidence": "high",
+      "read_by": "S12, S30, S31"
+    },
+    {
+      "id": "AT-A3-01",
+      "entity": "A3.APIOperation",
+      "name": "method",
+      "type": "string",
+      "required": true,
+      "description": "HTTP method, or BATCH / MQ / FILE for non-HTTP",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI Specification 3.1",
+        "locator": "Path Item Object (operation per HTTP method)",
+        "uri": "https://spec.openapis.org/oas/v3.1.0"
+      },
+      "verification": "public specification",
+      "reasoning": "OpenAPI keys each operation by its HTTP method; BIAN maps action terms to methods (Practitioner Guide §3.5). Non-HTTP values are SDEM's, so step 2 can mark them not applicable (H1).",
+      "confidence": "high",
+      "read_by": "step 2 check 2"
+    },
+    {
+      "id": "AT-A3-02",
+      "entity": "A3.APIOperation",
+      "name": "path",
+      "type": "string",
+      "required": true,
+      "description": "resource path",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI Specification 3.1",
+        "locator": "Paths Object",
+        "uri": "https://spec.openapis.org/oas/v3.1.0"
+      },
+      "verification": "public specification",
+      "reasoning": "OpenAPI's path; BIAN places the qualifier in it.",
+      "confidence": "high",
+      "read_by": "step 2 checks 1, 3"
+    },
+    {
+      "id": "AT-A3-03",
+      "entity": "A3.APIOperation",
+      "name": "payload_fields",
+      "type": "list<string>",
+      "required": true,
+      "description": "request and response field names",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI Specification 3.1",
+        "locator": "request body and response schemas",
+        "uri": "https://spec.openapis.org/oas/v3.1.0"
+      },
+      "verification": "public specification",
+      "reasoning": "OpenAPI describes payloads as schemas; SDEM flattens them to field names, which is enough to match against BIAN attributes but loses structure.",
+      "confidence": "medium",
+      "read_by": "step 2 check 4"
+    },
+    {
+      "id": "AT-A3-04",
+      "entity": "A3.ApplicationComponent",
+      "name": "deployed_on",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of the A4 platforms that host it",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "assignment (node assigned to deployed artifact), ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "The join key for DEPLOYED_ON. ArchiMate expresses hosting as a node assigned to the deployed artifact; SDEM records the platform on the component.",
+      "confidence": "medium",
+      "read_by": "S33, S34, S35"
+    },
+    {
+      "id": "AT-A3-05",
+      "entity": "A3.ApplicationComponent",
+      "name": "deployed_as",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of its A4 deployments",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "The join key for DEPLOYED_AS, pointing at SDEM's Deployment entity.",
+      "confidence": "medium",
+      "read_by": "S32"
+    },
+    {
+      "id": "AT-A3-06",
+      "entity": "A3.ApplicationComponent",
+      "name": "built_as",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of the A4 artifacts it is built as",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "realization (artifact realizes component), ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "ArchiMate: an artifact realizes an application component; SDEM records the artifacts on the component.",
+      "confidence": "medium",
+      "read_by": "S39"
+    },
+    {
+      "id": "AT-A3-07",
+      "entity": "A3.ApplicationComponent",
+      "name": "network_zone",
+      "type": "string",
+      "required": false,
+      "description": "id of the A4 network it sits in",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "No standard field; SDEM's convenience key for S37. A network's connects list is the alternative; the zone wins when they disagree (C3 finding).",
+      "confidence": "low",
+      "read_by": "S37"
+    },
+    {
+      "id": "AT-A3-08",
+      "entity": "A3.ApplicationComponent",
+      "name": "vendor",
+      "type": "string",
+      "required": false,
+      "description": "supplier name",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "not",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "Informational field used by examples; no rule reads it.",
+      "confidence": "low",
+      "read_by": "any rule"
+    },
+    {
+      "id": "AT-A3-09",
+      "entity": "A3.ApplicationComponent",
+      "name": "accesses",
+      "type": "list<string>",
+      "required": false,
+      "description": "data entities it accesses",
+      "status": "deprecated",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "duplicates the A3 access relationship (RA3-16)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "Duplicates the within-level access relationship already in the export; one example carries it. Deprecated: use the relationship.",
+      "confidence": "low",
+      "read_by": "—"
+    },
+    {
+      "id": "AT-A3-10",
+      "entity": "A3.ApplicationService",
+      "name": "consumes",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of A4 technology services it uses",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "serving (technology service serves application), ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "ArchiMate: a technology service serves the application layer; SDEM records the services on the application service.",
+      "confidence": "medium",
+      "read_by": "S41"
+    },
+    {
+      "id": "AT-A3-11",
+      "entity": "A3.ApplicationInterface",
+      "name": "exposed_through",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of A4 technology interfaces it is exposed through",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "serving / assignment across layers, ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "Records the gateway or listener the interface is reached through.",
+      "confidence": "medium",
+      "read_by": "S43"
+    },
+    {
+      "id": "AT-A3-12",
+      "entity": "A3.ApplicationInterface",
+      "name": "field_aliases",
+      "type": "map<string,string>",
+      "required": false,
+      "description": "product field name → canonical attribute name",
+      "status": "active",
+      "source": "institution",
+      "reference": {
+        "standard": "institution data (SDEM convention)",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "values supplied by the institution; convention is SDEM design",
+      "reasoning": "Decoded product names supplied as data; raised H2 recall from 0.78 to 1.00.",
+      "confidence": "medium",
+      "read_by": "step 2 check 4, S30"
+    },
+    {
+      "id": "AT-A3-13",
+      "entity": "A3.ApplicationFunction",
+      "name": "exposed_through",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of the API operations the function is reached through",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "No standard field; lets functions be related to BIAN operations through the APIs they serve.",
+      "confidence": "medium",
+      "read_by": "S18, S21"
+    },
+    {
+      "id": "AT-A3-14",
+      "entity": "A3.ApplicationFunction",
+      "name": "consumes",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of A4 technology services it uses",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "serving, ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "As for application service consumes, at function grain.",
+      "confidence": "medium",
+      "read_by": "S45"
+    },
+    {
+      "id": "AT-A3-15",
+      "entity": "A3.DataEntity",
+      "name": "attributes",
+      "type": "list<string>",
+      "required": true,
+      "description": "column names",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "ArchiMate's data object has no attributes; SDEM records columns so tables can be matched to BIAN control records and business objects. Built on a standard concept; the field list is SDEM's.",
+      "confidence": "medium",
+      "read_by": "S20, S30, S31"
+    },
+    {
+      "id": "AT-A3-16",
+      "entity": "A3.DataEntity",
+      "name": "stored_in",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of the A4 system software or artifact holding it",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "realization / assignment, ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "Records where the data lives: a database (system software) or an object store (artifact).",
+      "confidence": "medium",
+      "read_by": "S49, S50"
+    },
+    {
+      "id": "AT-A3-17",
+      "entity": "A3.DataEntity",
+      "name": "field_aliases",
+      "type": "map<string,string>",
+      "required": false,
+      "description": "column name → canonical attribute name",
+      "status": "active",
+      "source": "institution",
+      "reference": {
+        "standard": "institution data (SDEM convention)",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "values supplied by the institution; convention is SDEM design",
+      "reasoning": "Overrides the aliases inherited from the interfaces of components that access the entity.",
+      "confidence": "medium",
+      "read_by": "S30, S20"
+    },
+    {
+      "id": "AT-A3-18",
+      "entity": "A3.Event",
+      "name": "published_to",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of A4 technology services (brokers) it is published to",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "No adopted standard yet; corresponds to an AsyncAPI channel and to ArchiMate flow to a technology service.",
+      "confidence": "medium",
+      "read_by": "S51; aligns with AsyncAPI channels (not adopted)"
+    },
+    {
+      "id": "AT-A3-19",
+      "entity": "A3.SolutionBuildingBlock",
+      "name": "components",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of the components the building block aggregates",
+      "status": "active",
+      "source": "TOGAF",
+      "reference": {
+        "standard": "TOGAF 10",
+        "locator": "Architecture Content Framework (login-gated)",
+        "uri": "https://pubs.opengroup.org/togaf-standard/"
+      },
+      "verification": "TOGAF login-gated; unverified",
+      "reasoning": "TOGAF composes solution building blocks of solution components; the specification text could not be checked.",
+      "confidence": "medium",
+      "read_by": "S52–S54"
+    },
+    {
+      "id": "AT-A4-01",
+      "entity": "A4.Deployment",
+      "name": "component_id",
+      "type": "string",
+      "required": true,
+      "description": "id of the A3 component deployed",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "SDEM's Deployment makes ArchiMate's \"artifact assigned to node\" a record; these three fields name its parts.",
+      "confidence": "medium",
+      "read_by": "S32, S33, S40"
+    },
+    {
+      "id": "AT-A4-02",
+      "entity": "A4.Deployment",
+      "name": "environment_id",
+      "type": "string",
+      "required": true,
+      "description": "id of the environment",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "As above.",
+      "confidence": "medium",
+      "read_by": "S40"
+    },
+    {
+      "id": "AT-A4-03",
+      "entity": "A4.Deployment",
+      "name": "platform_id",
+      "type": "string",
+      "required": true,
+      "description": "id of the A4 platform it runs on",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "As above.",
+      "confidence": "medium",
+      "read_by": "S33"
+    },
+    {
+      "id": "AT-A4-04",
+      "entity": "A4.Node",
+      "name": "hosts",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of A3 components it hosts",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "assignment, ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "The platform-side view of deployed_on; either side is enough for the join.",
+      "confidence": "medium",
+      "read_by": "S33, S34"
+    },
+    {
+      "id": "AT-A4-05",
+      "entity": "A4.Device",
+      "name": "hosts",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of A3 components it hosts",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "assignment, ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "As for Node.",
+      "confidence": "medium",
+      "read_by": "S35"
+    },
+    {
+      "id": "AT-A4-06",
+      "entity": "A4.SystemSoftware",
+      "name": "hosts",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of A3 components it hosts",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "assignment, ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "As for Node.",
+      "confidence": "medium",
+      "read_by": "S33"
+    },
+    {
+      "id": "AT-A4-07",
+      "entity": "A4.CommunicationNetwork",
+      "name": "connects",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of nodes and devices on the network",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "association, ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "ArchiMate associates nodes with networks.",
+      "confidence": "medium",
+      "read_by": "S37"
+    },
+    {
+      "id": "AT-A4-08",
+      "entity": "A4.Path",
+      "name": "from",
+      "type": "string",
+      "required": false,
+      "description": "id of one end",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "path between nodes, ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "ArchiMate: a path connects two nodes.",
+      "confidence": "medium",
+      "read_by": "S38"
+    },
+    {
+      "id": "AT-A4-09",
+      "entity": "A4.Path",
+      "name": "to",
+      "type": "string",
+      "required": false,
+      "description": "id of the other end",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "path between nodes, ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "As above.",
+      "confidence": "medium",
+      "read_by": "S38"
+    },
+    {
+      "id": "AT-A4-10",
+      "entity": "A4.Path",
+      "name": "network",
+      "type": "string",
+      "required": false,
+      "description": "id of the network realizing the path",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "realization (network realizes path), ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "ArchiMate: a communication network realizes a path.",
+      "confidence": "medium",
+      "read_by": "—"
+    },
+    {
+      "id": "AT-A4-11",
+      "entity": "A4.Path",
+      "name": "carries",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of A3 components whose traffic uses the path",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "No standard field; SDEM's key for S38.",
+      "confidence": "low",
+      "read_by": "S38"
+    },
+    {
+      "id": "AT-A4-12",
+      "entity": "A4.TechnologyInterface",
+      "name": "of_service",
+      "type": "string",
+      "required": false,
+      "description": "id of its technology service",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "assignment (interface assigned to service), ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "ArchiMate: an interface is assigned to the service it exposes.",
+      "confidence": "medium",
+      "read_by": "S42, S44"
+    },
+    {
+      "id": "AT-A4-13",
+      "entity": "A4.TechnologyInterface",
+      "name": "exposes",
+      "type": "list<string>",
+      "required": false,
+      "description": "ids of A3 interfaces reachable through it",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "—",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; exercised by the use-case runs",
+      "reasoning": "Platform-side view of ApplicationInterface.exposed_through.",
+      "confidence": "medium",
+      "read_by": "S43"
+    },
+    {
+      "id": "AT-A4-14",
+      "entity": "A4.Artifact",
+      "name": "of_component",
+      "type": "string",
+      "required": false,
+      "description": "id of the A3 component it is a build of",
+      "status": "active",
+      "source": "ArchiMate relationship",
+      "reference": {
+        "standard": "ArchiMate 3.2 (relationship)",
+        "locator": "realization (artifact realizes component), ch. 10",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "underlying relationship confirmed by the Archi oracle; holding it as an attribute is SDEM design",
+      "reasoning": "Platform-side view of built_as.",
+      "confidence": "medium",
+      "read_by": "S39"
+    }
+  ]
+}
