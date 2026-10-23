@@ -1,5 +1,7 @@
 # Mapping logic — planning (v0.6)
 
+> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` now run as `sdem-*` (the old names still work in v0.7). See [`sdem-overview.md`](sdem-overview.md).
+
 **Status:** planning. Nothing in this document is implemented. v0.4 delivered the structural logic (what a mapping *may* be); v0.5 delivered the harness (how an engine is scored). §1 is the Official BIAN-Only Mapping (what BIAN itself defines), §2 is the Official BIAN with Support Framework Mappings (what ArchiMate, TOGAF and W135 add where BIAN stops — every claim source-verified before use), and §3 plans the semantic logic: how software will *propose* what a mapping *should* be, for an architect to accept or reject.
 
 **Ground rule, restated:** an engine's output is always `status: proposed`. The validator refuses approval without a named reviewer and date. Nothing below changes that.
@@ -105,14 +107,14 @@ The relationships BIAN itself defines among its sixteen entities — its own map
 | B14 | `A2.Wireframe` | depicts | `A2.ServiceDomain` connections | Archetypal interaction pattern among a set of domains | [SL14] Wireframes Overview; [SAPG] §3.4 |
 | B15 | `A2.SemanticAPI` | derived from | `A2.ServiceDomain` + its `A2.ServiceOperation`s | The reference API is the domain's operations in REST form | [APIP]; [SAPG] §3.5 |
 
-B02–B13 are encoded as constraints in `metamodel/level-relationships.json`; B14–B15 are artefact relationships (see §3.1). B01 is the one BIAN mapping SDMM's `SUPPORTED_BY` arrow would rely on, and it does not exist publicly.
+B02–B13 are encoded as constraints in `metamodel/level-relationships.json`; B14–B15 are artefact relationships (see §3.1). B01 is the one BIAN mapping SDEM's `SUPPORTED_BY` arrow would rely on, and it does not exist publicly.
 
 ### 1.3 What BIAN does not map
 
 | Would-be mapping | Status | Source |
 |---|---|---|
 | Business Capability → Service Domain | Work in progress, unpublished. Confirmed still in progress in June 2026: a working group is developing "an L1/L2 Business Capability taxonomy, a Value Stream catalogue and stage definitions, and the alignment of stages to Business Domains and orchestrating Service Domains" | [RN13] §3, [RN14] §3, [WQA26] |
-| Value stream / stage → Business Domain and Service Domain | Not yet modelled. **Announced intent** (June 2026): value streams and stages will enter the BIAN metamodel, with each stage mapped to Business Domain(s) and a primary orchestrating Service Domain. When published, this becomes BIAN's first A1→A2 mapping and SDMM's `ALIGNED_TO` / `USES_DOMAIN` arrows gain a BIAN basis | [WQA26] |
+| Value stream / stage → Business Domain and Service Domain | Not yet modelled. **Announced intent** (June 2026): value streams and stages will enter the BIAN metamodel, with each stage mapped to Business Domain(s) and a primary orchestrating Service Domain. When published, this becomes BIAN's first A1→A2 mapping and SDEM's `ALIGNED_TO` / `USES_DOMAIN` arrows gain a BIAN basis | [WQA26] |
 | A bank's business process → Service Domain / operation | Never in scope; scenarios are illustrative, not a bank's processes | [SAPG] §3.3 |
 | A bank's application → Service Domain | Method only (wireframe functional partition, legacy wrapping); BIAN holds no application data | [SAPG] §3.4, §4.3.1 |
 | Anything → infrastructure or deployment | "does not assume or impose any physical properties"; implementation guidance only (§4.1–4.3) | [SAPG] §4.2.3 p. 87, Figure 34 p. 90 |
@@ -149,7 +151,7 @@ Three frameworks can fill gaps, in different ways:
 | Framework | What it can supply | What it cannot |
 |---|---|---|
 | **ArchiMate 3.2** | Cross-layer *relationship semantics* between its own native elements (Business ↔ Application ↔ Technology: serving, realization, assignment, access), with normative allowed-relationship tables | Any correspondence between a BIAN instance and a bank's instance; BIAN entities are not ArchiMate elements |
-| **TOGAF 10** | Architecture-content guidance: building blocks (ABB/SBB), content metamodel, how layers relate in a method | A fixed BIAN-to-SDMM element correspondence |
+| **TOGAF 10** | Architecture-content guidance: building blocks (ABB/SBB), content metamodel, how layers relate in a method | A fixed BIAN-to-SDEM element correspondence |
 | **W135** (The Open Group, 2013) | The one published attempt to integrate TOGAF with the BIAN Service Landscape — scenario/process analysis, application overlay | Currency: it predates BIAN 14.0 and TOGAF 10; informational, not a conformance mapping |
 
 Additional source key for this section: **[W135]** The Open Group White Paper W135, *Integrating the TOGAF® Standard with the BIAN Service Landscape*, Paul Bonnie, Thomas Obitz and the TOGAF–BIAN Collaboration Work Group, 22 October 2013, 43 pp., supersedes W120 (13 February 2012); written for BIAN Service Landscape 2.0 — https://publications.opengroup.org/w135 (free, **login required to download**)
@@ -159,31 +161,31 @@ Additional source key for this section: **[W135]** The Open Group White Paper W1
 - **BIAN internal only:** BIAN officially defines an A2 structural or behavioural relationship, but that is **not** an official mapping to A1 or A3.
 - **Guidance only:** an official publication discusses alignment, but does **not** supply a definitive instance-level or exact entity-type crosswalk.
 - **ArchiMate native relationship support:** the modelling language defines cross-layer relationship semantics for **native ArchiMate elements**, subject to its normative relationship constraints. It does **not** map BIAN domain instances to a bank's application instances.
-- **Not officially mapped:** no specific published official mapping for the SDMM pair was established in this review. This does not prove no publication exists.
+- **Not officially mapped:** no specific published official mapping for the SDEM pair was established in this review. This does not prove no publication exists.
 - **BIAN artefact only:** the artefact is official evidence but is not a mapping endpoint.
-- **TOGAF guidance only:** TOGAF supplies architecture-content guidance, not a fixed BIAN-to-SDMM element correspondence.
+- **TOGAF guidance only:** TOGAF supplies architecture-content guidance, not a fixed BIAN-to-SDEM element correspondence.
 
 An entity can be **officially defined** without any **official cross-standard mapping** to another entity. An official *relationship type* is not a published list of *mapped instances*. Every adjacent-level target below is a **candidate mapping endpoint**, not an assertion that the two instances always match.
 
 ### 2.3 Candidate adjacent-level pairs — exhaustive for the documented set
 
-It lists **every adjacent-level entity pairing identified in the entity-by-entity guidance**, including potential connections that **have no official mapping** and pairs **not supported by the current SDMM registry**. It is exhaustive **for the documented candidate set**, *not* every mathematically possible pair of the 41 entities, and not a claim that an arbitrary pair is semantically valid.
+It lists **every adjacent-level entity pairing identified in the entity-by-entity guidance**, including potential connections that **have no official mapping** and pairs **not supported by the current SDEM registry**. It is exhaustive **for the documented candidate set**, *not* every mathematically possible pair of the 41 entities, and not a claim that an arbitrary pair is semantically valid.
 
-**Official coverage:** “ArchiMate modelling relationship” means the standard provides relevant relation semantics for its own native concepts, **not** a certified BIAN–ArchiMate correspondence and not necessarily a permitted exact SDMM pair. “Guidance only” means published method, **not** an exact entity crosswalk. “No verified official mapping” includes plausible but unverified candidate pairs. Neither implies a bank-specific mapping instance has been published. Only `SUPPORTED_BY`, `ALIGNED_TO`, `USES_DOMAIN`, `REALIZED_BY`, `IMPLEMENTED_BY`, `MAPPED_TO`, `DEPLOYED_AS`, `DEPLOYED_ON` are presently in the appropriate adjacent-level SDMM registry (including two different `ALIGNED_TO` types).
+**Official coverage:** “ArchiMate modelling relationship” means the standard provides relevant relation semantics for its own native concepts, **not** a certified BIAN–ArchiMate correspondence and not necessarily a permitted exact SDEM pair. “Guidance only” means published method, **not** an exact entity crosswalk. “No verified official mapping” includes plausible but unverified candidate pairs. Neither implies a bank-specific mapping instance has been published. Only `SUPPORTED_BY`, `ALIGNED_TO`, `USES_DOMAIN`, `REALIZED_BY`, `IMPLEMENTED_BY`, `MAPPED_TO`, `DEPLOYED_AS`, `DEPLOYED_ON` are presently in the appropriate adjacent-level SDEM registry (including two different `ALIGNED_TO` types).
 
 #### A1 → A2 — 14 candidate entity pairs
 
-| ID | Source entity | Target entity | Official mapping coverage | Current SDMM rule | Mapping guidance / caveat | Verification (this review) |
+| ID | Source entity | Target entity | Official mapping coverage | Current SDEM rule | Mapping guidance / caveat | Verification (this review) |
 |---|---|---|---|---|---|---|
 | S01 | `A1.BusinessCapability` | `A2.ServiceDomain` | **Official guidance only; no exact cross-standard entity pair** | `SUPPORTED_BY` | BIAN BCM alignment; v14 crosswalk not verified/published | **Verified as *intent only*** — [RN14] §3, [WQA26]: mapping unpublished |
-| S02 | `A1.ValueStream` | `A2.BusinessScenario` | **SDMM mapping only; no official equivalent** | `ALIGNED_TO` | Value Stream→scenario is SDMM-specific | n/a — SDMM definition, no external claim |
+| S02 | `A1.ValueStream` | `A2.BusinessScenario` | **SDEM mapping only; no official equivalent** | `ALIGNED_TO` | Value Stream→scenario is SDEM-specific | n/a — SDEM definition, no external claim |
 | S03 | `A1.ValueStreamStage` | `A2.BusinessScenario` | **No verified official cross-standard mapping** | Not implemented | Proposed stage→scenario interpretation | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
-| S04 | `A1.BusinessProcess` | `A2.ServiceDomain` | **Official guidance only; no exact cross-standard entity pair** | `USES_DOMAIN` | Process/domain matching is SDMM-specific; W135 scenario methodology | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
+| S04 | `A1.BusinessProcess` | `A2.ServiceDomain` | **Official guidance only; no exact cross-standard entity pair** | `USES_DOMAIN` | Process/domain matching is SDEM-specific; W135 scenario methodology | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
 | S05 | `A1.BusinessProcess` | `A2.BusinessScenario` | **Official guidance only; no exact cross-standard entity pair** | Not implemented | W135 process/scenario guidance, not a direct prescribed correspondence | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
 | S06 | `A1.BusinessActivity` | `A2.ServiceOperation` | **No verified official cross-standard mapping** | Not implemented | Activity-level candidate mappings | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S07 | `A1.BusinessActivity` | `A2.ServiceDomain` | **No verified official cross-standard mapping** | Not implemented | Activity-level candidate mappings | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
-| S08 | `A1.BusinessService` | `A2.ServiceDomain` | **No verified official cross-standard mapping** | Not implemented | No published equivalence for this SDMM pair | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
-| S09 | `A1.BusinessService` | `A2.ServiceOperation` | **No verified official cross-standard mapping** | Not implemented | No published equivalence for this SDMM pair | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
+| S08 | `A1.BusinessService` | `A2.ServiceDomain` | **No verified official cross-standard mapping** | Not implemented | No published equivalence for this SDEM pair | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
+| S09 | `A1.BusinessService` | `A2.ServiceOperation` | **No verified official cross-standard mapping** | Not implemented | No published equivalence for this SDEM pair | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S10 | `A1.BusinessActor` | `A2.BusinessScenario` | **No verified official cross-standard mapping** | Not implemented | Actor participation needs bank evidence | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S11 | `A1.BusinessRole` | `A2.BusinessScenario` | **No verified official cross-standard mapping** | Not implemented | Role participation needs bank evidence | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S12 | `A1.BusinessObject` | `A2.BusinessObject` | **Official guidance only; no exact cross-standard entity pair** | `ALIGNED_TO` | BOM semantic alignment; matching not predefined | **Verified as target only** — [SL14] BOM is published; no A1→A2 mapping method |
@@ -192,7 +194,7 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 
 #### A2 → A3 — 17 candidate entity pairs
 
-| ID | Source entity | Target entity | Official mapping coverage | Current SDMM rule | Mapping guidance / caveat | Verification (this review) |
+| ID | Source entity | Target entity | Official mapping coverage | Current SDEM rule | Mapping guidance / caveat | Verification (this review) |
 |---|---|---|---|---|---|---|
 | S15 | `A2.BusinessArea` | `A3.ApplicationComponent` | **No verified official cross-standard mapping** | Not implemented | Indirect only via A2.BusinessDomain and A2.ServiceDomain | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S16 | `A2.BusinessDomain` | `A3.ApplicationComponent` | **No verified official cross-standard mapping** | Not implemented | Indirect only via A2.ServiceDomain | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
@@ -214,35 +216,35 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 
 #### A3 → A4 — 23 candidate entity pairs
 
-| ID | Source entity | Target entity | Official mapping coverage | Current SDMM rule | Mapping guidance / caveat | Verification (this review) |
+| ID | Source entity | Target entity | Official mapping coverage | Current SDEM rule | Mapping guidance / caveat | Verification (this review) |
 |---|---|---|---|---|---|---|
-| S32 | `A3.ApplicationComponent` | `A4.Deployment` | **SDMM mapping only; no official equivalent** | `DEPLOYED_AS` | SDMM-specific Deployment entity | n/a — SDMM definition, no external claim |
-| S33 | `A3.ApplicationComponent` | `A4.InfrastructureComponent` | **SDMM mapping only; no official equivalent** | `DEPLOYED_ON` | Abstract compatibility supertype only | n/a — SDMM definition, no external claim |
+| S32 | `A3.ApplicationComponent` | `A4.Deployment` | **SDEM mapping only; no official equivalent** | `DEPLOYED_AS` | SDEM-specific Deployment entity | n/a — SDEM definition, no external claim |
+| S33 | `A3.ApplicationComponent` | `A4.InfrastructureComponent` | **SDEM mapping only; no official equivalent** | `DEPLOYED_ON` | Abstract compatibility supertype only | n/a — SDEM definition, no external claim |
 | S34 | `A3.ApplicationComponent` | `A4.Node` | **ArchiMate modelling relationship; exact endpoint constraint to verify** | Not implemented | Indirect/realisation/deployment pattern; exact constraint needs check | **Unverified** — [AM] SSO-gated; not corroborated by the secondary sources read |
 | S35 | `A3.ApplicationComponent` | `A4.Device` | **No verified official cross-standard mapping** | Not implemented | Potential indirect implementation/hosting paths; no direct prescribed pair | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S36 | `A3.ApplicationComponent` | `A4.SystemSoftware` | **No verified official cross-standard mapping** | Not implemented | Potential indirect implementation/hosting paths; no direct prescribed pair | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S37 | `A3.ApplicationComponent` | `A4.CommunicationNetwork` | **No verified official cross-standard mapping** | Not implemented | Potential indirect implementation/hosting paths; no direct prescribed pair | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S38 | `A3.ApplicationComponent` | `A4.Path` | **No verified official cross-standard mapping** | Not implemented | Potential indirect implementation/hosting paths; no direct prescribed pair | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S39 | `A3.ApplicationComponent` | `A4.Artifact` | **ArchiMate modelling relationship; exact endpoint constraint to verify** | Not implemented | ArchiMate Artifact realization pattern; direction/constraint to check | **Unverified** — [AM] SSO-gated; not corroborated by the secondary sources read |
-| S40 | `A3.ApplicationComponent` | `A4.DeploymentEnvironment` | **SDMM mapping only; no official equivalent** | Not implemented | Indirect via A4.Deployment; SDMM extension | n/a — SDMM definition, no external claim |
+| S40 | `A3.ApplicationComponent` | `A4.DeploymentEnvironment` | **SDEM mapping only; no official equivalent** | Not implemented | Indirect via A4.Deployment; SDEM extension | n/a — SDEM definition, no external claim |
 | S41 | `A3.ApplicationService` | `A4.TechnologyService` | **ArchiMate modelling relationship; exact endpoint constraint to verify** | Not implemented | Technology service serves application architecture, not fixed instances | **Unverified against [AM] normative tables** (SSO-gated); pattern corroborated by secondary sources (technology service serves application behaviour / technology object realizes data object) |
 | S42 | `A3.ApplicationService` | `A4.TechnologyInterface` | **No verified official cross-standard mapping** | Not implemented | Indirect via TechnologyService, not prescribed direct mapping | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S43 | `A3.ApplicationInterface` | `A4.TechnologyInterface` | **No verified official cross-standard mapping** | Not implemented | Both standard entities, but no one-to-one interface correspondence | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S44 | `A3.ApplicationInterface` | `A4.TechnologyService` | **No verified official cross-standard mapping** | Not implemented | Both standard entities, but no one-to-one interface correspondence | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S45 | `A3.ApplicationFunction` | `A4.TechnologyService` | **ArchiMate modelling relationship; exact endpoint constraint to verify** | Not implemented | Technology serving application behaviour; constraint check required | **Unverified against [AM] normative tables** (SSO-gated); pattern corroborated by secondary sources (technology service serves application behaviour / technology object realizes data object) |
 | S46 | `A3.ApplicationFunction` | `A4.SystemSoftware` | **No verified official cross-standard mapping** | Not implemented | Indirect via technology services | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
-| S47 | `A3.APIOperation` | `A4.Deployment` | **SDMM mapping only; no official equivalent** | Not implemented | APIOperation is SDMM extension; indirect via component/interface | n/a — SDMM definition, no external claim |
-| S48 | `A3.APIOperation` | `A4.TechnologyInterface` | **SDMM mapping only; no official equivalent** | Not implemented | APIOperation is SDMM extension; indirect via component/interface | n/a — SDMM definition, no external claim |
+| S47 | `A3.APIOperation` | `A4.Deployment` | **SDEM mapping only; no official equivalent** | Not implemented | APIOperation is SDEM extension; indirect via component/interface | n/a — SDEM definition, no external claim |
+| S48 | `A3.APIOperation` | `A4.TechnologyInterface` | **SDEM mapping only; no official equivalent** | Not implemented | APIOperation is SDEM extension; indirect via component/interface | n/a — SDEM definition, no external claim |
 | S49 | `A3.DataEntity` | `A4.Artifact` | **ArchiMate modelling relationship; exact endpoint constraint to verify** | Not implemented | ArchiMate Data Object→Artifact pattern; DataEntity is only aligned, not native | **Unverified against [AM] normative tables** (SSO-gated); pattern corroborated by secondary sources (technology service serves application behaviour / technology object realizes data object) |
 | S50 | `A3.DataEntity` | `A4.SystemSoftware` | **No verified official cross-standard mapping** | Not implemented | May be indirectly hosted through runtime/database platform | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 | S51 | `A3.Event` | `A4.TechnologyService` | **No verified official cross-standard mapping** | Not implemented | Indirect possibility; no cross-standard event/technology pair | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
-| S52 | `A3.SolutionBuildingBlock` | `A4.InfrastructureComponent` | **No verified official cross-standard mapping** | Not implemented | TOGAF SBB concept does not prescribe these SDMM correspondences | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
-| S53 | `A3.SolutionBuildingBlock` | `A4.Deployment` | **No verified official cross-standard mapping** | Not implemented | TOGAF SBB concept does not prescribe these SDMM correspondences | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
-| S54 | `A3.SolutionBuildingBlock` | `A4.Node` | **No verified official cross-standard mapping** | Not implemented | TOGAF SBB concept does not prescribe these SDMM correspondences | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
+| S52 | `A3.SolutionBuildingBlock` | `A4.InfrastructureComponent` | **No verified official cross-standard mapping** | Not implemented | TOGAF SBB concept does not prescribe these SDEM correspondences | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
+| S53 | `A3.SolutionBuildingBlock` | `A4.Deployment` | **No verified official cross-standard mapping** | Not implemented | TOGAF SBB concept does not prescribe these SDEM correspondences | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
+| S54 | `A3.SolutionBuildingBlock` | `A4.Node` | **No verified official cross-standard mapping** | Not implemented | TOGAF SBB concept does not prescribe these SDEM correspondences | **Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review |
 
 #### Reference artefacts that are not mapping endpoints
 
-| BIAN evidence artefact | Applicable entity mapping context | Official status | SDMM endpoint? |
+| BIAN evidence artefact | Applicable entity mapping context | Official status | SDEM endpoint? |
 |---|---|---|---|
 | `A2.BOMModel` | `A1.BusinessObject` → `A2.BusinessObject` → `A3.DataEntity` | Official BIAN model artefact; **not** an official cross-standard entity pair | No |
 | `A2.Wireframe` | `A1.BusinessProcess` / `A2.BusinessScenario` → `A3.ApplicationComponent` | Official BIAN modelling/evidence artefact; no bank-independent application pair | No |
@@ -251,8 +253,8 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 #### Counts and limits
 
 - **54 adjacent-level candidate pair rows:** A1→A2: 14, A2→A3: 17, A3→A4: 23.
-- **Nine current SDMM relationship definitions**, whose endpoints are not necessarily the same as all candidate pairs above.
-- **Three BIAN artefacts** documented separately because they are evidence, not legal mapping endpoints in the SDMM model.
+- **Nine current SDEM relationship definitions**, whose endpoints are not necessarily the same as all candidate pairs above.
+- **Three BIAN artefacts** documented separately because they are evidence, not legal mapping endpoints in the SDEM model.
 - **Not covered:** within-layer relationships (already documented in the repo), non-adjacent direct links, and arbitrary unsupported cross-products.
 
 ### 2.4 Entity-by-entity gap table
@@ -263,15 +265,15 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 
 | Entity                   | Reference architecture                  | Concept                         | Source             | Direction | Adjacent-level mapped entity/entities | Official mapping coverage | Mapping Guidance | Verification (this review) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `A1.BusinessCapability` | BIAN BCM; ArchiMate Strategy | Business Capability; Capability | [RN14] §3; [AM] ch. 7 | A1→A2 | A2.ServiceDomain | **Guidance only** | BIAN BCM supports capability/domain alignment as an objective; no verified published release-14 entity crosswalk. SDMM SUPPORTED_BY. | **Verified as *intent only*** — [RN14] §3, [WQA26] |
-| `A1.ValueStream` | ArchiMate Strategy | Value Stream | [AM] ch. 7; [RN14] §3 | A1→A2 | A2.BusinessScenario | **Not officially mapped** | SDMM ALIGNED_TO; ArchiMate defines Value Stream, but no official BIAN scenario pairing verified. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
-| `A1.ValueStreamStage` | SDMM extension of Value Stream | — | [AM] ch. 7 (parent) | A1→A2 | A2.BusinessScenario | **Not officially mapped** | Stage is SDMM-specific; no official stage-to-scenario pair. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
-| `A1.BusinessProcess` | ArchiMate Business | Business Process | [AM] ch. 8 | A1→A2 | A2.BusinessScenario; A2.ServiceDomain | **Guidance only** | W135 scenario/process analysis is methodological, not a normative one-to-one map; SDMM USES_DOMAIN. | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
-| `A1.BusinessActivity` | SDMM extension of Business Process | — | [AM] ch. 8 (parent) | A1→A2 | A2.ServiceOperation; A2.ServiceDomain | **Not officially mapped** | Activity granularity is SDMM-specific; proposed trace via a process and scenario/operation. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
+| `A1.BusinessCapability` | BIAN BCM; ArchiMate Strategy | Business Capability; Capability | [RN14] §3; [AM] ch. 7 | A1→A2 | A2.ServiceDomain | **Guidance only** | BIAN BCM supports capability/domain alignment as an objective; no verified published release-14 entity crosswalk. SDEM SUPPORTED_BY. | **Verified as *intent only*** — [RN14] §3, [WQA26] |
+| `A1.ValueStream` | ArchiMate Strategy | Value Stream | [AM] ch. 7; [RN14] §3 | A1→A2 | A2.BusinessScenario | **Not officially mapped** | SDEM ALIGNED_TO; ArchiMate defines Value Stream, but no official BIAN scenario pairing verified. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
+| `A1.ValueStreamStage` | SDEM extension of Value Stream | — | [AM] ch. 7 (parent) | A1→A2 | A2.BusinessScenario | **Not officially mapped** | Stage is SDEM-specific; no official stage-to-scenario pair. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
+| `A1.BusinessProcess` | ArchiMate Business | Business Process | [AM] ch. 8 | A1→A2 | A2.BusinessScenario; A2.ServiceDomain | **Guidance only** | W135 scenario/process analysis is methodological, not a normative one-to-one map; SDEM USES_DOMAIN. | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
+| `A1.BusinessActivity` | SDEM extension of Business Process | — | [AM] ch. 8 (parent) | A1→A2 | A2.ServiceOperation; A2.ServiceDomain | **Not officially mapped** | Activity granularity is SDEM-specific; proposed trace via a process and scenario/operation. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
 | `A1.BusinessService` | ArchiMate Business | Business Service | [AM] ch. 8 | A1→A2 | A2.ServiceDomain; A2.ServiceOperation | **Not officially mapped** | No official BusinessService=ServiceDomain equivalence. ArchiMate's native Business Service relations do not bridge BIAN automatically. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
 | `A1.BusinessActor` | ArchiMate Business | Business Actor | [AM] ch. 8 | A1→A2 | A2.BusinessScenario | **Not officially mapped** | May participate in scenario context; no verified published BIAN–ArchiMate actor correspondence. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
-| `A1.BusinessRole` | ArchiMate Business | Business Role | [AM] ch. 8 | A1→A2 | A2.BusinessScenario | **Not officially mapped** | Role/scenario involvement requires an SDMM-specific mapping; not present in the current registry. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
-| `A1.BusinessObject` | ArchiMate Business; aligned to BIAN BOM | Business Object | [AM] ch. 8; [SL14] | A1→A2 | A2.BusinessObject | **Guidance only** | BIAN BOM informs semantic information alignment; exact enterprise-object equivalence must be assessed (SDMM ALIGNED_TO). | **Verified** — [SL14] BOM; [SAPG] §3.2.7 |
+| `A1.BusinessRole` | ArchiMate Business | Business Role | [AM] ch. 8 | A1→A2 | A2.BusinessScenario | **Not officially mapped** | Role/scenario involvement requires an SDEM-specific mapping; not present in the current registry. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
+| `A1.BusinessObject` | ArchiMate Business; aligned to BIAN BOM | Business Object | [AM] ch. 8; [SL14] | A1→A2 | A2.BusinessObject | **Guidance only** | BIAN BOM informs semantic information alignment; exact enterprise-object equivalence must be assessed (SDEM ALIGNED_TO). | **Verified** — [SL14] BOM; [SAPG] §3.2.7 |
 | `A1.BusinessRequirement` | ArchiMate Motivation | Requirement | [AM] ch. 6 | A1→A2 | A2.ServiceDomain; A2.ServiceOperation | **Not officially mapped** | Trace through requirements/decisions locally; no fixed published requirement-to-domain map. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
 
 **A2 — Service Domain Architecture** — all BIAN reference, all `pending_release_validation` until verified against release 14.0
@@ -280,40 +282,40 @@ It lists **every adjacent-level entity pairing identified in the entity-by-entit
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `A2.BusinessArea` | BIAN Service Landscape | Business Area | [SL14] | A1↔A2; A2→A3 | A1.BusinessCapability; A3.ApplicationComponent (indirect) | **BIAN internal only** | BIAN hierarchy BusinessArea→BusinessDomain→ServiceDomain is defined; no direct official bank component mapping. | **Verified** — [SAPG] §3.1–3.2; [RN14] §1 |
 | `A2.BusinessDomain` | BIAN Service Landscape | Business Domain | [SL14] | A1↔A2; A2→A3 | A1.BusinessCapability; A3.ApplicationComponent (indirect) | **BIAN internal only** | BIAN BusinessDomain→ServiceDomain grouping; implementation through ServiceDomain, not domain-to-application identity. | **Verified** — [SAPG] §3.1–3.2; [RN14] §1 |
-| `A2.ServiceDomain` | BIAN Service Landscape | Service Domain | [SL14] MetaModel Overview | A1→A2→A3 | A1.BusinessCapability → A2.ServiceDomain → A3.ApplicationComponent | **Guidance only** | BIAN capability alignment and W135 application overlay are guidance; SDMM SUPPORTED_BY/REALIZED_BY are SDMM registry rules. | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
+| `A2.ServiceDomain` | BIAN Service Landscape | Service Domain | [SL14] MetaModel Overview | A1→A2→A3 | A1.BusinessCapability → A2.ServiceDomain → A3.ApplicationComponent | **Guidance only** | BIAN capability alignment and W135 application overlay are guidance; SDEM SUPPORTED_BY/REALIZED_BY are SDEM registry rules. | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
 | `A2.FunctionalPattern` | BIAN Service Landscape | Functional Pattern | [SL14] MetaModel Overview | A2→A3 | A3.ApplicationFunction | **Not officially mapped** | BIAN classification within A2 is official; no verified cross-standard functional-pattern/function identity. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
 | `A2.AssetType` | BIAN Service Landscape | Asset Type | [SL14] MetaModel Overview | A2→A3 | A3.DataEntity | **Not officially mapped** | BIAN asset semantics may inform data design; no direct published asset-type-to-data-entity map. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
 | `A2.ControlRecord` | BIAN Control Record Model | Control Record | [SL14] Control Record Model | A2→A3 | A3.DataEntity; A3.ApplicationFunction | **Guidance only** | BIAN lifecycle/control record modelling supports logical design, not a canonical institution-specific data mapping. | **Verified** — [SAPG] §4.2.2 |
 | `A2.ServiceGroup` | BIAN Service Landscape | Service Group | [SL14] MetaModel Overview | A2→A3 | A3.ApplicationService; A3.ApplicationInterface | **Not officially mapped** | BIAN ServiceGroup→ServiceOperation internal structure official; no exact cross-standard service-group map. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
-| `A2.ServiceOperation` | BIAN Service Landscape; Semantic APIs | Service Operation | [SL14]; [SAPG] | A2→A3 | A3.APIOperation; A3.ApplicationService | **Guidance only** | BIAN Semantic API and W135 guide implementation; bank APIOperation linkage is SDMM IMPLEMENTED_BY. | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
+| `A2.ServiceOperation` | BIAN Service Landscape; Semantic APIs | Service Operation | [SL14]; [SAPG] | A2→A3 | A3.APIOperation; A3.ApplicationService | **Guidance only** | BIAN Semantic API and W135 guide implementation; bank APIOperation linkage is SDEM IMPLEMENTED_BY. | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
 | `A2.BehaviorQualifier` | BIAN Service Landscape; Semantic APIs | Behavior Qualifier | [SL14]; [SAPG] | A2→A3 | A3.APIOperation; A3.DataEntity | **Not officially mapped** | Official BIAN qualifier structure only; API/data correspondence needs local interpretation. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
 | `A2.BusinessScenario` | BIAN Business Scenarios | Business Scenario (illustrative) | [SL14] Business Scenarios | A1↔A2→A3 | A1.BusinessProcess; A3.ApplicationService; A3.ApplicationComponent | **Guidance only** | BIAN defines participating operations/domains; W135 scenario-to-process/application analysis is guidance, not fixed bank mappings. | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
-| `A2.BusinessObject` | BIAN Business Object Model | Business Object | [SL14] BOM | A1→A2→A3 | A1.BusinessObject → A2.BusinessObject → A3.DataEntity | **Guidance only** | BIAN BOM semantics and W135 logical data alignment; SDMM MAPPED_TO requires actual bank data mapping. | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
-| `A2.BusinessObjectAttribute` | BIAN Business Object Model | BOM attribute | [SL14] BOM | A2→A3 | A3.DataEntity (attributes) | **Not officially mapped** | BIAN attributes are defined; SDMM has no separate A3 DataAttribute entity or official attribute-level bridge. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
-| `A2.BOMModel` *(artefact)* | BIAN Business Object Model artefact | BOM model artefact | [SL14] BOM | Evidence across A1→A2→A3 | A1.BusinessObject; A2.BusinessObject; A3.DataEntity | **BIAN artefact only** | Official BIAN evidence/model artefact, not an SDMM mapping endpoint. | **Verified** — [SL14]; [SAPG] §3.4–3.5 |
+| `A2.BusinessObject` | BIAN Business Object Model | Business Object | [SL14] BOM | A1→A2→A3 | A1.BusinessObject → A2.BusinessObject → A3.DataEntity | **Guidance only** | BIAN BOM semantics and W135 logical data alignment; SDEM MAPPED_TO requires actual bank data mapping. | **Unverified** — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed |
+| `A2.BusinessObjectAttribute` | BIAN Business Object Model | BOM attribute | [SL14] BOM | A2→A3 | A3.DataEntity (attributes) | **Not officially mapped** | BIAN attributes are defined; SDEM has no separate A3 DataAttribute entity or official attribute-level bridge. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
+| `A2.BOMModel` *(artefact)* | BIAN Business Object Model artefact | BOM model artefact | [SL14] BOM | Evidence across A1→A2→A3 | A1.BusinessObject; A2.BusinessObject; A3.DataEntity | **BIAN artefact only** | Official BIAN evidence/model artefact, not an SDEM mapping endpoint. | **Verified** — [SL14]; [SAPG] §3.4–3.5 |
 | `A2.Wireframe` *(artefact)* | BIAN Wireframes artefact | Wireframe artefact | [SL14] Wireframes | Evidence across A1→A2→A3 | A2.BusinessScenario; A3.ApplicationComponent | **BIAN artefact only** | Official BIAN view used for design guidance; not an entity-level mapping endpoint. | **Verified** — [SL14]; [SAPG] §3.4–3.5 |
-| `A2.SemanticAPI` *(artefact)* | BIAN Semantic APIs artefact | Semantic API artefact | [SAPG] | Evidence across A2→A3 | A2.ServiceOperation; A3.APIOperation | **BIAN artefact only** | Published BIAN semantic contract guidance; not an SDMM mapping endpoint. | **Verified** — [SL14]; [SAPG] §3.4–3.5 |
+| `A2.SemanticAPI` *(artefact)* | BIAN Semantic APIs artefact | Semantic API artefact | [SAPG] | Evidence across A2→A3 | A2.ServiceOperation; A3.APIOperation | **BIAN artefact only** | Published BIAN semantic contract guidance; not an SDEM mapping endpoint. | **Verified** — [SL14]; [SAPG] §3.4–3.5 |
 
 **A3 — Application Architecture**
 
 | Entity                     | Reference architecture                                 | Concept                 | Source   | Direction | Adjacent-level mapped entity/entities | Official mapping coverage | Mapping Guidance | Verification (this review) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `A3.ApplicationComponent` | ArchiMate Application | Application Component | [AM] ch. 9 | A2→A3→A4 | A2.ServiceDomain → A3.ApplicationComponent → A4.Deployment / A4.Node | **ArchiMate A3→A4 only** | BIAN→component pairing is enterprise-specific; ArchiMate permits cross-layer application/technology relations, but SDMM DEPLOYED_AS is an extension. | **Unverified against [AM] normative tables** (SSO-gated); general pattern corroborated by secondary sources |
+| `A3.ApplicationComponent` | ArchiMate Application | Application Component | [AM] ch. 9 | A2→A3→A4 | A2.ServiceDomain → A3.ApplicationComponent → A4.Deployment / A4.Node | **ArchiMate A3→A4 only** | BIAN→component pairing is enterprise-specific; ArchiMate permits cross-layer application/technology relations, but SDEM DEPLOYED_AS is an extension. | **Unverified against [AM] normative tables** (SSO-gated); general pattern corroborated by secondary sources |
 | `A3.ApplicationService` | ArchiMate Application | Application Service | [AM] ch. 9 | A2→A3→A4 | A2.ServiceOperation → A3.ApplicationService → A4.TechnologyService | **ArchiMate A3→A4 only** | BIAN service correspondence needs review; ArchiMate technology service can serve application elements subject to relationship constraints. | **Unverified against [AM] normative tables** (SSO-gated); general pattern corroborated by secondary sources |
 | `A3.ApplicationInterface` | ArchiMate Application | Application Interface | [AM] ch. 9 | A2→A3→A4 | A2.ServiceOperation → A3.ApplicationInterface → A4.TechnologyInterface | **Not officially mapped end-to-end** | ArchiMate defines both interface types, but no universal direct interface-to-interface bridge or BIAN endpoint map. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
 | `A3.ApplicationFunction` | ArchiMate Application | Application Function | [AM] ch. 9 | A2→A3→A4 | A2.ServiceDomain / A2.ServiceOperation → A3.ApplicationFunction → A4.TechnologyService | **ArchiMate A3→A4 only** | Application behaviour can be served by technology services in ArchiMate; BIAN function allocation remains local. | **Unverified against [AM] normative tables** (SSO-gated); general pattern corroborated by secondary sources |
-| `A3.APIOperation` | SDMM extension; aligned to BIAN Semantic API / OpenAPI | — | [SAPG] | A2→A3→A4 | A2.ServiceOperation → A3.APIOperation → A4.Deployment (via ApplicationComponent) | **Guidance only to A3** | BIAN semantic operation correspondence is implementation guidance; APIOperation is an SDMM extension, no direct official A3→A4 pair. | **Verified** — [SAPG] |
-| `A3.DataEntity` | ArchiMate Application (related) | Data Object | [AM] ch. 9 | A2→A3→A4 | A2.BusinessObject → A3.DataEntity → A4.Artifact | **ArchiMate A3→A4 analogue only** | ArchiMate Data Object/Artifact realization is modelled officially; SDMM DataEntity is aligned, not exactly that standard type. | **Unverified against [AM] normative tables** (SSO-gated); general pattern corroborated by secondary sources |
+| `A3.APIOperation` | SDEM extension; aligned to BIAN Semantic API / OpenAPI | — | [SAPG] | A2→A3→A4 | A2.ServiceOperation → A3.APIOperation → A4.Deployment (via ApplicationComponent) | **Guidance only to A3** | BIAN semantic operation correspondence is implementation guidance; APIOperation is an SDEM extension, no direct official A3→A4 pair. | **Verified** — [SAPG] |
+| `A3.DataEntity` | ArchiMate Application (related) | Data Object | [AM] ch. 9 | A2→A3→A4 | A2.BusinessObject → A3.DataEntity → A4.Artifact | **ArchiMate A3→A4 analogue only** | ArchiMate Data Object/Artifact realization is modelled officially; SDEM DataEntity is aligned, not exactly that standard type. | **Unverified against [AM] normative tables** (SSO-gated); general pattern corroborated by secondary sources |
 | `A3.Event` | ArchiMate Application (related) | Application Event | [AM] ch. 9 | A2→A3→A4 | A2.BusinessScenario / A2.ServiceOperation → A3.Event → A4.TechnologyService (indirect) | **Not officially mapped** | ArchiMate Application Event has native relationships; no direct BIAN event crosswalk or fixed event-to-technology bridge. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
-| `A3.SolutionBuildingBlock` | TOGAF Architecture Content | Solution Building Block | [TOGAF] | A2→A3→A4 | A2.ServiceDomain → A3.SolutionBuildingBlock → A4.InfrastructureComponent | **TOGAF guidance only** | TOGAF describes SBBs, but does not prescribe BIAN domain-to-SBB or SBB-to-SDMM infrastructure pairing. | **Unverified** — [TOGAF] SSO-gated |
+| `A3.SolutionBuildingBlock` | TOGAF Architecture Content | Solution Building Block | [TOGAF] | A2→A3→A4 | A2.ServiceDomain → A3.SolutionBuildingBlock → A4.InfrastructureComponent | **TOGAF guidance only** | TOGAF describes SBBs, but does not prescribe BIAN domain-to-SBB or SBB-to-SDEM infrastructure pairing. | **Unverified** — [TOGAF] SSO-gated |
 
 **A4 — Technology Architecture**
 
 | Entity                                    | Reference architecture                          | Concept               | Source              | Direction | Adjacent-level mapped entity/entities | Official mapping coverage | Mapping Guidance | Verification (this review) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `A4.InfrastructureComponent` *(abstract)* | SDMM compatibility supertype of every A4 entity | — | — | A3→A4 | A3.ApplicationComponent → A4.InfrastructureComponent | **Not officially mapped** | SDMM abstract compatibility type, not a named ArchiMate entity; legacy DEPLOYED_ON registry rule. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
-| `A4.Deployment` | SDMM extension of Artifact assigned to Node | — | [AM] ch. 10 (parents) | A3→A4 | A3.ApplicationComponent → A4.Deployment | **Not officially mapped** | SDMM DEPLOYED_AS; ArchiMate deployment can be modelled through Artifact/Node relationships, but Deployment is not a native ArchiMate type. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
-| `A4.DeploymentEnvironment` | SDMM extension of Node grouping | — | [AM] ch. 10 (parent) | A3→A4 | A3.ApplicationComponent → A4.DeploymentEnvironment (via Deployment) | **Not officially mapped** | SDMM extension; no exact BIAN/TOGAF/ArchiMate cross-standard pair. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
+| `A4.InfrastructureComponent` *(abstract)* | SDEM compatibility supertype of every A4 entity | — | — | A3→A4 | A3.ApplicationComponent → A4.InfrastructureComponent | **Not officially mapped** | SDEM abstract compatibility type, not a named ArchiMate entity; legacy DEPLOYED_ON registry rule. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
+| `A4.Deployment` | SDEM extension of Artifact assigned to Node | — | [AM] ch. 10 (parents) | A3→A4 | A3.ApplicationComponent → A4.Deployment | **Not officially mapped** | SDEM DEPLOYED_AS; ArchiMate deployment can be modelled through Artifact/Node relationships, but Deployment is not a native ArchiMate type. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
+| `A4.DeploymentEnvironment` | SDEM extension of Node grouping | — | [AM] ch. 10 (parent) | A3→A4 | A3.ApplicationComponent → A4.DeploymentEnvironment (via Deployment) | **Not officially mapped** | SDEM extension; no exact BIAN/TOGAF/ArchiMate cross-standard pair. | **Confirmed none** in BIAN sources; [AM]/[TOGAF]/[W135] not readable in this review |
 | `A4.Node` | ArchiMate Technology | Node | [AM] ch. 10 | A3→A4 | A3.ApplicationComponent; A3.ApplicationService (via technology services/artifacts) | **ArchiMate native relationship support** | Official ArchiMate cross-layer structure and Artifact-on-Node modelling; no official BIAN ServiceDomain→Node mapping. | **Unverified against [AM] normative tables** (SSO-gated); general pattern corroborated by secondary sources |
 | `A4.Device` | ArchiMate Technology | Device | [AM] ch. 10 | A3→A4 | A3.ApplicationComponent (indirect through A4.Node / A4.Artifact) | **ArchiMate native relationship support** | Official technology modelling; no direct universal application-component-to-device assignment. | **Unverified against [AM] normative tables** (SSO-gated); general pattern corroborated by secondary sources |
 | `A4.SystemSoftware` | ArchiMate Technology | System Software | [AM] ch. 10 | A3→A4 | A3.ApplicationComponent (via A4.Node / A4.TechnologyService) | **ArchiMate native relationship support** | Official runtime element and relationships; specific applications/instances need bank evidence. | **Unverified against [AM] normative tables** (SSO-gated); general pattern corroborated by secondary sources |
@@ -359,7 +361,7 @@ Every source cited in §2.3–2.5 was checked for accessibility and, where reada
 | Official guidance only, citing W135 | process/scenario, application overlay, logical data rows in §2.4 | **Unverified** — W135 not readable |
 | ArchiMate modelling relationship / native support | A3→A4 rows | **Unverified against the normative tables**; three pairs corroborated in pattern by secondary sources (ApplicationService ← TechnologyService, ApplicationFunction ← TechnologyService, DataEntity ← Artifact); ApplicationComponent → Node and ApplicationComponent → Artifact not corroborated by the sources read |
 | TOGAF guidance only | SBB rows | **Unverified** |
-| SDMM mapping only | `DEPLOYED_ON`, `DEPLOYED_AS`, value-stream rows | n/a — SDMM's own definitions, no external claim |
+| SDEM mapping only | `DEPLOYED_ON`, `DEPLOYED_AS`, value-stream rows | n/a — SDEM's own definitions, no external claim |
 | No verified official mapping | remaining rows | **Confirmed none in the BIAN sources**; the three gated sources could not be searched |
 
 #### Corrections required before §2 is used
@@ -381,13 +383,13 @@ Outcome of §2.6 across the 54 candidate mappings in §2.3.
 | **Confirmed none** | 31 | the row claimed no official mapping, and none was found in the BIAN sources — the claim stands |
 | **Unverified — W135** | 2 | rests on a document that requires a login |
 | **Unverified — ArchiMate** | 5 | rests on the normative relationship tables, which require a login |
-| **n/a — SDMM's own** | 6 | `DEPLOYED_ON`, `DEPLOYED_AS`, value-stream and similar: SDMM definitions with nothing external to confirm |
+| **n/a — SDEM's own** | 6 | `DEPLOYED_ON`, `DEPLOYED_AS`, value-stream and similar: SDEM definitions with nothing external to confirm |
 
-**41 of 54 are settled** (10 confirmed as claimed, 31 confirmed as "nothing official", 6 SDMM-only); **7 remain open**, all because the primary source is login-gated.
+**41 of 54 are settled** (10 confirmed as claimed, 31 confirmed as "nothing official", 6 SDEM-only); **7 remain open**, all because the primary source is login-gated.
 
 #### The ten confirmed mappings
 
-| ID | Pair | SDMM rule | Source |
+| ID | Pair | SDEM rule | Source |
 |---|---|---|---|
 | S17 | `A2.ServiceDomain` → `A3.ApplicationComponent` | `REALIZED_BY` | [SAPG] §3.4 p. 52, §4.3.1 p. 91 |
 | S24 | `A2.ServiceOperation` → `A3.APIOperation` | `IMPLEMENTED_BY` | [SAPG] §3.5 pp. 52–55; [APIP] |
@@ -416,7 +418,7 @@ Every confirmed mapping with real guidance behind it sits on the **A2 → A3** b
 
 #### By boundary
 
-| Boundary | Verified | Confirmed none | Open | SDMM-only |
+| Boundary | Verified | Confirmed none | Open | SDEM-only |
 |---|---|---|---|---|
 | A1 → A2 | 2 (intent / target only) | 9 | 2 (W135) | 1 |
 | A2 → A3 | 8 | 9 | 0 | 0 |
@@ -424,16 +426,16 @@ Every confirmed mapping with real guidance behind it sits on the **A2 → A3** b
 
 #### Combined view — both tiers
 
-§1 and §2 count different things. §1.2 lists the relationships **BIAN defines among its own entities**; §2.3 lists **candidate cross-level pairs** and asks what external authority each has. Put together, the complete set of *officially sourced* mappings available to SDMM today is:
+§1 and §2 count different things. §1.2 lists the relationships **BIAN defines among its own entities**; §2.3 lists **candidate cross-level pairs** and asks what external authority each has. Put together, the complete set of *officially sourced* mappings available to SDEM today is:
 
 | Tier | Section | Mappings | Status |
 |---|---|---|---|
 | **Official BIAN-Only** — BIAN's own relationships | §1.2 | 15: 14 inside A2 (verified — [SL14], [SAPG] §3.1–3.5, [RN14]), 1 to A1 (`BusinessCapability` → `ServiceDomain`, **unpublished**) | verified in §1 |
 | **Official BIAN with Support Frameworks** — cross-level pairs with BIAN authority | §2.3, verified rows | 10: 8 A2→A3 guidance mappings + 2 A1→A2 intent/target-only | verified in §2.6 |
 | **Official BIAN with Support Frameworks** — cross-level pairs with ArchiMate / TOGAF / W135 authority | §2.3, unverified rows | 7: 5 ArchiMate (A3→A4), 2 W135 (A1→A2) | **open** — login-gated sources |
-| — | §2.3, remaining | 31 confirmed none + 6 SDMM-only | no official authority |
+| — | §2.3, remaining | 31 confirmed none + 6 SDEM-only | no official authority |
 
-**Total officially sourced and verified: 24** (14 BIAN-internal + 10 cross-level with BIAN guidance), of which 3 are already registry rules with real guidance (`REALIZED_BY`, `IMPLEMENTED_BY`, `MAPPED_TO`), 2 are registry rules with intent/target only (`SUPPORTED_BY`, `ALIGNED_TO` object), and the 14 internal ones are encoded as A2 structure in `metamodel/level-relationships.json`. **Pending verification: 7.** Everything else SDMM maps is the institution's.
+**Total officially sourced and verified: 24** (14 BIAN-internal + 10 cross-level with BIAN guidance), of which 3 are already registry rules with real guidance (`REALIZED_BY`, `IMPLEMENTED_BY`, `MAPPED_TO`), 2 are registry rules with intent/target only (`SUPPORTED_BY`, `ALIGNED_TO` object), and the 14 internal ones are encoded as A2 structure in `metamodel/level-relationships.json`. **Pending verification: 7.** Everything else SDEM maps is the institution's.
 
 #### What follows
 
@@ -451,7 +453,7 @@ One row per mapping across both tiers: the claim (§1.2 or §2.3), its authority
 
 | ID | Tier | From → To | Authority | Verification | Disposition |
 |---|---|---|---|---|---|
-| B01 | BIAN-only | `A1.BusinessCapability` *aligns to* `A2.ServiceDomain` | BIAN | **unpublished** ([RN13] §3, [RN14] §3, [WQA26]) | not encodable — unpublished; SDMM `SUPPORTED_BY` rests on intent only |
+| B01 | BIAN-only | `A1.BusinessCapability` *aligns to* `A2.ServiceDomain` | BIAN | **unpublished** ([RN13] §3, [RN14] §3, [WQA26]) | not encodable — unpublished; SDEM `SUPPORTED_BY` rests on intent only |
 | B02 | BIAN-only | `A2.BusinessArea` *contains* `A2.BusinessDomain` | BIAN | verified — [SL14] | **encoded** — `level-relationships.json` constraint `A2.BusinessArea -composition-> A2.BusinessDomain` |
 | B03 | BIAN-only | `A2.BusinessDomain` *contains* `A2.ServiceDomain` | BIAN | verified — [SL14] | **encoded** — `level-relationships.json` constraint `A2.BusinessDomain -composition-> A2.ServiceDomain` |
 | B04 | BIAN-only | `A2.ServiceDomain` *applies* `A2.FunctionalPattern` | BIAN | verified — [SAPG] §3.2.1 | **encoded** — `level-relationships.json` constraint `A2.ServiceDomain -association-> A2.FunctionalPattern` |
@@ -467,7 +469,7 @@ One row per mapping across both tiers: the claim (§1.2 or §2.3), its authority
 | B14 | BIAN-only | `A2.Wireframe` *depicts* `A2.ServiceDomain` | BIAN | verified — [SL14], [SAPG] §3.4 | artefact relationship — not a level-model constraint (artefacts are evidence, not endpoints) |
 | B15 | BIAN-only | `A2.SemanticAPI` *derived from* `A2.ServiceDomain` | BIAN | verified — [APIP], [SAPG] §3.5 | artefact relationship — not a level-model constraint (artefacts are evidence, not endpoints) |
 | S01 | Support | `A1.BusinessCapability` → `A2.ServiceDomain` | BIAN | Verified as *intent only | **registry rule** `CAPABILITY_SUPPORTED_BY_DOMAIN` |
-| S02 | Support | `A1.ValueStream` → `A2.BusinessScenario` | SDMM | n/a | **registry rule** `VALUE_STREAM_ALIGNED_TO_SCENARIO` |
+| S02 | Support | `A1.ValueStream` → `A2.BusinessScenario` | SDEM | n/a | **registry rule** `VALUE_STREAM_ALIGNED_TO_SCENARIO` |
 | S03 | Support | `A1.ValueStreamStage` → `A2.BusinessScenario` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S04 | Support | `A1.BusinessProcess` → `A2.ServiceDomain` | BIAN | Unverified | **registry rule** `PROCESS_USES_DOMAIN` |
 | S05 | Support | `A1.BusinessProcess` → `A2.BusinessScenario` | BIAN | Unverified | open — W135; historical method at best |
@@ -497,23 +499,23 @@ One row per mapping across both tiers: the claim (§1.2 or §2.3), its authority
 | S29 | Support | `A2.BusinessScenario` → `A3.ApplicationComponent` | BIAN | Verified | candidate rule — authority `bian_alignment_guidance`; usefulness decided in §5 |
 | S30 | Support | `A2.BusinessObject` → `A3.DataEntity` | BIAN | Verified | **registry rule** `BIAN_OBJECT_MAPPED_TO_DATA_ENTITY` |
 | S31 | Support | `A2.BusinessObjectAttribute` → `A3.DataEntity` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
-| S32 | Support | `A3.ApplicationComponent` → `A4.Deployment` | SDMM | n/a | **registry rule** `COMPONENT_DEPLOYED_AS_DEPLOYMENT` |
-| S33 | Support | `A3.ApplicationComponent` → `A4.InfrastructureComponent` | SDMM | n/a | **registry rule** `COMPONENT_DEPLOYED_ON_INFRASTRUCTURE` |
+| S32 | Support | `A3.ApplicationComponent` → `A4.Deployment` | SDEM | n/a | **registry rule** `COMPONENT_DEPLOYED_AS_DEPLOYMENT` |
+| S33 | Support | `A3.ApplicationComponent` → `A4.InfrastructureComponent` | SDEM | n/a | **registry rule** `COMPONENT_DEPLOYED_ON_INFRASTRUCTURE` |
 | S34 | Support | `A3.ApplicationComponent` → `A4.Node` | ArchiMate | Unverified | open — ArchiMate tables; likely `archimate_native` rule if confirmed |
 | S35 | Support | `A3.ApplicationComponent` → `A4.Device` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S36 | Support | `A3.ApplicationComponent` → `A4.SystemSoftware` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S37 | Support | `A3.ApplicationComponent` → `A4.CommunicationNetwork` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S38 | Support | `A3.ApplicationComponent` → `A4.Path` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S39 | Support | `A3.ApplicationComponent` → `A4.Artifact` | ArchiMate | Unverified | open — ArchiMate tables; likely `archimate_native` rule if confirmed |
-| S40 | Support | `A3.ApplicationComponent` → `A4.DeploymentEnvironment` | SDMM | n/a | SDMM definition |
+| S40 | Support | `A3.ApplicationComponent` → `A4.DeploymentEnvironment` | SDEM | n/a | SDEM definition |
 | S41 | Support | `A3.ApplicationService` → `A4.TechnologyService` | ArchiMate | Unverified against [AM] normative tables** (SSO-gated); pattern corroborated by secondary sources (technology service serves application behaviour / technology object realizes data object) | open — ArchiMate tables; likely `archimate_native` rule if confirmed |
 | S42 | Support | `A3.ApplicationService` → `A4.TechnologyInterface` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S43 | Support | `A3.ApplicationInterface` → `A4.TechnologyInterface` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S44 | Support | `A3.ApplicationInterface` → `A4.TechnologyService` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S45 | Support | `A3.ApplicationFunction` → `A4.TechnologyService` | ArchiMate | Unverified against [AM] normative tables** (SSO-gated); pattern corroborated by secondary sources (technology service serves application behaviour / technology object realizes data object) | open — ArchiMate tables; likely `archimate_native` rule if confirmed |
 | S46 | Support | `A3.ApplicationFunction` → `A4.SystemSoftware` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
-| S47 | Support | `A3.APIOperation` → `A4.Deployment` | SDMM | n/a | SDMM definition |
-| S48 | Support | `A3.APIOperation` → `A4.TechnologyInterface` | SDMM | n/a | SDMM definition |
+| S47 | Support | `A3.APIOperation` → `A4.Deployment` | SDEM | n/a | SDEM definition |
+| S48 | Support | `A3.APIOperation` → `A4.TechnologyInterface` | SDEM | n/a | SDEM definition |
 | S49 | Support | `A3.DataEntity` → `A4.Artifact` | ArchiMate | Unverified against [AM] normative tables** (SSO-gated); pattern corroborated by secondary sources (technology service serves application behaviour / technology object realizes data object) | open — ArchiMate tables; likely `archimate_native` rule if confirmed |
 | S50 | Support | `A3.DataEntity` → `A4.SystemSoftware` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S51 | Support | `A3.Event` → `A4.TechnologyService` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
@@ -521,7 +523,7 @@ One row per mapping across both tiers: the claim (§1.2 or §2.3), its authority
 | S53 | Support | `A3.SolutionBuildingBlock` → `A4.Deployment` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 | S54 | Support | `A3.SolutionBuildingBlock` → `A4.Node` | none | Confirmed none** in [SL14], [SAPG], [RN14]; [AM], [TOGAF], [W135] not readable in this review | institution-only — would enter as `enterprise_rule` |
 
-**Summary:** 69 mappings traced — 15 BIAN-only (B01–B15) and 54 support-framework candidates (S01–S54). Of the 12 BIAN-internal relationships that should be level-model constraints (B02–B13; B14–B15 are artefact relationships), **all 12 are encoded** in `metamodel/level-relationships.json` (B07, B08, B11, B12 added in v0.5.1). Of the 54 candidates: 9 are existing registry rules, 5 are verified BIAN-guided candidates, 6 are open, 3 are SDMM definitions, 31 are institution-only.
+**Summary:** 69 mappings traced — 15 BIAN-only (B01–B15) and 54 support-framework candidates (S01–S54). Of the 12 BIAN-internal relationships that should be level-model constraints (B02–B13; B14–B15 are artefact relationships), **all 12 are encoded** in `metamodel/level-relationships.json` (B07, B08, B11, B12 added in v0.5.1). Of the 54 candidates: 9 are existing registry rules, 5 are verified BIAN-guided candidates, 6 are open, 3 are SDEM definitions, 31 are institution-only.
 
 
 ## 4. Mapping Diagram
@@ -670,17 +672,17 @@ endlegend
 | **Inside A2** | **14** blue solid | B02–B15, BIAN's own structure — all verified, as expected |
 | **A1 → A2** | **2** green dashed | S01 `SUPPORTED_BY` (intent only — the capability mapping is unpublished) and S12 `ALIGNED_TO` (target only — the BOM is published, the method is not). Dashed because neither is a real mapping |
 | **A2 → A3** | **8** green solid | S17 `REALIZED_BY`, S24 `IMPLEMENTED_BY`, S30 `MAPPED_TO` (registry rules) plus S20, S21, S25, S28, S29 (BIAN guidance, not yet rules) |
-| **A3 → A4** | **0** | Nothing official. BIAN publishes no mapping to infrastructure; the five ArchiMate candidates (S34, S39, S41, S45, S49) are unverified, and the registry rules `DEPLOYED_ON` / `DEPLOYED_AS` are SDMM's own definitions — correctly not drawn |
+| **A3 → A4** | **0** | Nothing official. BIAN publishes no mapping to infrastructure; the five ArchiMate candidates (S34, S39, S41, S45, S49) are unverified, and the registry rules `DEPLOYED_ON` / `DEPLOYED_AS` are SDEM's own definitions — correctly not drawn |
 
 **Reading:** A2 is complete; A2→A3 is partially covered on the API and information path; A1→A2 has intent only; A4 is empty. A4 can only ever gain official connectors from ArchiMate — never from BIAN — and only once the five open rows are verified.
 
 ## 5. Engine architecture *(in planning)*
 
-### 5.1 Starting point: SDMM's nine arrows against BIAN's mappings
+### 5.1 Starting point: SDEM's nine arrows against BIAN's mappings
 
-§1 described BIAN's own mapping model. The engine works on **SDMM's** nine arrows (the registry). For each, does a BIAN mapping from §1.2 cover it? Where it does not, §5 has to design the inference, drawing on §2 for what other frameworks supply.
+§1 described BIAN's own mapping model. The engine works on **SDEM's** nine arrows (the registry). For each, does a BIAN mapping from §1.2 cover it? Where it does not, §5 has to design the inference, drawing on §2 for what other frameworks supply.
 
-| SDMM arrow (registry rule) | Covered by a BIAN mapping? | Which one | What is left to the institution |
+| SDEM arrow (registry rule) | Covered by a BIAN mapping? | Which one | What is left to the institution |
 |---|---|---|---|
 | `A1.BusinessCapability SUPPORTED_BY A2.ServiceDomain` | **No** | — (BCM→Service Domain unpublished) | The whole mapping |
 | `A1.ValueStream ALIGNED_TO A2.BusinessScenario` | **No** | — (value streams not modelled) | The whole mapping; scenarios are a published target |
@@ -702,7 +704,7 @@ endlegend
 
 | Gap | Question | Who can fill it |
 |---|---|---|
-| **Mapping types** | Is this *kind* of arrow legitimate, and on whose authority? | Standards. BIAN for anything touching A2. **ArchiMate** for A3→A4: SDMM's A3 and A4 entities are ArchiMate-native, so ArchiMate's cross-layer rules apply directly (pending the five verifications S34, S39, S41, S45, S49). TOGAF supplies vocabulary (ABB/SBB) and ADM placement, not relationship rules |
+| **Mapping types** | Is this *kind* of arrow legitimate, and on whose authority? | Standards. BIAN for anything touching A2. **ArchiMate** for A3→A4: SDEM's A3 and A4 entities are ArchiMate-native, so ArchiMate's cross-layer rules apply directly (pending the five verifications S34, S39, S41, S45, S49). TOGAF supplies vocabulary (ABB/SBB) and ADM placement, not relationship rules |
 | **Mapping instances** | Does *this* application run on *that* platform? | Never a standard. Always the institution: its data, its architects, or — last — inference |
 
 ArchiMate cannot reach A1→A2 directly: it has no BIAN concepts. The one lever is that BIAN publishes the Service Landscape in ArchiMate 3.2 ([RN14] §1.2). If BIAN types a Service Domain as a specific ArchiMate element, that element's cross-layer rules would apply. **To check on the portal** (MetaModel Overview): which ArchiMate element types BIAN assigns to Service Domain, Business Capability and Business Scenario.
@@ -747,7 +749,7 @@ Data at the bottom, BIAN in the middle, inference only at the top and only for w
 
 ### 5.3 New mappings — all 69 connections
 
-Generated from `metamodel/new-mappings.json` (every entry carries the official source reference where one exists, the rule decision, the step that fills its instances, the data that step needs, the reasoning and a confidence). The JSON is the record; this table is its projection and `tests/test_traceability.py` keeps them aligned.
+Generated from `metamodel/relationship-rules.json` (every entry carries the official source reference where one exists, the rule decision, the step that fills its instances, the data that step needs, the reasoning and a confidence). The JSON is the record; this table is its projection and `tests/test_traceability.py` keeps them aligned.
 
 **Fill steps:** 0 BIAN export · 1 data join · 2 rule application · 3 derivation · 4 structural matching · 5 text inference. **Confidence** rates both that the connection is a sound mapping and that the chosen fill produces correct instances.
 
@@ -787,7 +789,7 @@ Generated from `metamodel/new-mappings.json` (every entry carries the official s
 | ID | Pair | Relation | Status | Rule decision | Fill step | Confidence | Source reference | Reasoning |
 |---|---|---|---|---|---|---|---|---|
 | S01 | `A1.BusinessCapability` → `A2.ServiceDomain` | `SUPPORTED_BY` | official | registry rule | 3 | **medium** | [RN14] §3; [WQA26]: mapping unpublished | Registry rule SUPPORTED_BY with bian_alignment_guidance authority. BIAN publishes the two ends but not the method. Minimal-inference fill: derive the domain from the operations the capability's processes already use; a capability with no mapped processes falls to text inference at low confidence. A parent capability whose composed child is SUPPORTED_BY D is reported as a candidate only, never proposed (M0 run 2: it produced the run's only false proposal — scope is a judgement). Step 5 proposes only when the best domain shares ≥ 2 non-generic concepts and leads the runner-up by ≥ 1 (H1 finding 3). |
-| S02 | `A1.ValueStream` → `A2.BusinessScenario` | `ALIGNED_TO` | gap | registry rule | 4 | **medium** | — | Registry rule ALIGNED_TO, SDMM's own definition — BIAN has not modelled value streams (RN14 §3). Fill by matching stage sequence to scenario interaction sequence (structure), then description text. BIAN's announced value-stream catalogue (WQA26) would turn this into a lookup. |
+| S02 | `A1.ValueStream` → `A2.BusinessScenario` | `ALIGNED_TO` | gap | registry rule | 4 | **medium** | — | Registry rule ALIGNED_TO, SDEM's own definition — BIAN has not modelled value streams (RN14 §3). Fill by matching stage sequence to scenario interaction sequence (structure), then description text. BIAN's announced value-stream catalogue (WQA26) would turn this into a lookup. |
 | S03 | `A1.ValueStreamStage` → `A2.BusinessScenario` | — | gap | derived path | 4 | **low** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Stage→scenario is a finer grain of S02; nothing official. Once S02 holds, a stage maps to the scenario steps it covers by sequence position and text. Not a rule; a refinement an institution may record. |
 | S04 | `A1.BusinessProcess` → `A2.ServiceDomain` | `USES_DOMAIN` | gap | registry rule | 3 | **medium** | [W135] | Registry rule USES_DOMAIN, enterprise_rule. W135 claims a method but is unread; BIAN scenarios are illustrative. Fill by derivation: a process whose steps invoke operations of domain D uses D. Where no operation mapping exists yet, structural match of step text to operation names. |
 | S05 | `A1.BusinessProcess` → `A2.BusinessScenario` | — | gap | historical method | 4 | **low** | [W135] | Process→scenario alignment rests on W135 (2013, Service Landscape 2.0), unread. Plausible as sequence matching but has no current BIAN basis; not proposed as a rule until W135 is read and found to still apply. |
@@ -805,7 +807,7 @@ Generated from `metamodel/new-mappings.json` (every entry carries the official s
 
 | ID | Pair | Relation | Status | Rule decision | Fill step | Confidence | Source reference | Reasoning |
 |---|---|---|---|---|---|---|---|---|
-| S15 | `A2.BusinessArea` → `A3.ApplicationComponent` | — | gap | derived path | 3 | **high** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Business Area→application is reachable through Area⊃Domain⊃Service Domain (B02, B03) and REALIZED_BY (S17). A query, never a record — SDMM forbids level-skipping stores. Confidence is that of the derivation, which is mechanical. |
+| S15 | `A2.BusinessArea` → `A3.ApplicationComponent` | — | gap | derived path | 3 | **high** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Business Area→application is reachable through Area⊃Domain⊃Service Domain (B02, B03) and REALIZED_BY (S17). A query, never a record — SDEM forbids level-skipping stores. Confidence is that of the derivation, which is mechanical. |
 | S16 | `A2.BusinessDomain` → `A3.ApplicationComponent` | — | gap | derived path | 3 | **high** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | As S15 one level down: Business Domain→application via B03 and S17. |
 | S17 | `A2.ServiceDomain` → `A3.ApplicationComponent` | `REALIZED_BY` | official | registry rule | 3 | **high** | [SAPG] §3.4 p. 52 (functional partition | Registry rule REALIZED_BY, verified BIAN method (SAPG §3.4 functional partition; §4.3.1 legacy wrapping). Minimal-inference fill: an application that implements a domain's operations (S24) realises the domain; where no API mapping exists, functional-partition comparison of descriptions (step 4). Confidence cap: any one implemented operation suffices for the derivation, so the cap is the strongest step-2 input (M1 finding 3). A recorded systematic interface deviation on the inputs does not lower the derivation (H1 finding 4). Fallback A closes over the information perspective (a component accessing an entity MAPPED_TO the domain's object); fallback B uses asset aliases in paths; no description-only fallback (H2 findings 2, 3). |
 | S18 | `A2.FunctionalPattern` → `A3.ApplicationFunction` | — | gap | institution only | 3 | **low** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Functional pattern→application function: the pattern classifies what a domain does (track, fulfil…); an application function might be tagged with the same classification, but BIAN offers no cross-standard method and the value is thin. Not adopted. Filled by derivation through A3.ApplicationFunction.exposed_through and the S24 arrows — step 3, not 4 (C2 finding 1). |
@@ -821,14 +823,14 @@ Generated from `metamodel/new-mappings.json` (every entry carries the official s
 | S28 | `A2.BusinessScenario` → `A3.ApplicationService` | — | official | candidate rule | 3 | **medium** | [SAPG] §3.4 (wireframe overlay | Verified BIAN guidance (SAPG §3.3–3.4): scenarios and wireframes show which operations an interaction uses; the application services implementing those operations realise the scenario. Derivable through S24/S25. Candidate rule for process-perspective traceability. |
 | S29 | `A2.BusinessScenario` → `A3.ApplicationComponent` | — | official | candidate rule | 3 | **medium** | [SAPG] §3.4 (wireframe overlay | As S28 at component grain: the applications realising a scenario's domains. Derivable through S17. |
 | S30 | `A2.BusinessObject` → `A3.DataEntity` | `MAPPED_TO` | official | registry rule | 4 | **high** | [SAPG] §3.2.7; [SL14] BOM | Registry rule MAPPED_TO, verified BIAN basis (SAPG §3.2.7 information profile; BOM). Fill by attribute-level structural matching against a published, well-structured target; a data catalogue export (step 1) often supplies it outright. One-to-one between objects and entities, iterated to a fixpoint; field_aliases from the interface export where supplied (H2 findings 1, 4). |
-| S31 | `A2.BusinessObjectAttribute` → `A3.DataEntity` | — | gap | derived path | 4 | **high** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Attribute→entity is the grain at which S30 is actually computed; SDMM has no A3 attribute entity, so it stays a refinement inside S30, not a rule. |
+| S31 | `A2.BusinessObjectAttribute` → `A3.DataEntity` | — | gap | derived path | 4 | **high** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Attribute→entity is the grain at which S30 is actually computed; SDEM has no A3 attribute entity, so it stays a refinement inside S30, not a rule. |
 
 #### A3 → A4 (S32–S54)
 
 | ID | Pair | Relation | Status | Rule decision | Fill step | Confidence | Source reference | Reasoning |
 |---|---|---|---|---|---|---|---|---|
-| S32 | `A3.ApplicationComponent` → `A4.Deployment` | `DEPLOYED_AS` | gap | registry rule | 1 | **high** | — | Registry rule DEPLOYED_AS, SDMM definition. No BIAN content; BIAN's domain-as-container pattern (SAPG §4.1) is a prior only. Fill by data join from deployment records — no inference. |
-| S33 | `A3.ApplicationComponent` → `A4.InfrastructureComponent` | `DEPLOYED_ON` | gap | registry rule | 1 | **high** | — | Registry rule DEPLOYED_ON, SDMM compatibility definition accepting any concrete A4 entity. Fill by data join from the CMDB — no inference. Environment-agnostic: a component is DEPLOYED_ON every platform that hosts it (production, UAT, …); the environment is carried by the Deployment (S32). M1 finding 2. DEPLOYED_ON fans out per host layer: a component on a node pool, a runtime on that pool and an appliance yields three arrows (S34, S33, S35), each approved on its own evidence (C3 finding 2). |
+| S32 | `A3.ApplicationComponent` → `A4.Deployment` | `DEPLOYED_AS` | gap | registry rule | 1 | **high** | — | Registry rule DEPLOYED_AS, SDEM definition. No BIAN content; BIAN's domain-as-container pattern (SAPG §4.1) is a prior only. Fill by data join from deployment records — no inference. |
+| S33 | `A3.ApplicationComponent` → `A4.InfrastructureComponent` | `DEPLOYED_ON` | gap | registry rule | 1 | **high** | — | Registry rule DEPLOYED_ON, SDEM compatibility definition accepting any concrete A4 entity. Fill by data join from the CMDB — no inference. Environment-agnostic: a component is DEPLOYED_ON every platform that hosts it (production, UAT, …); the environment is carried by the Deployment (S32). M1 finding 2. DEPLOYED_ON fans out per host layer: a component on a node pool, a runtime on that pool and an appliance yields three arrows (S34, S33, S35), each approved on its own evidence (C3 finding 2). |
 | S34 | `A3.ApplicationComponent` → `A4.Node` | — | gap | conditional rule | 1 | **low** | [AM] SSO-gated | Component→node is the commonest deployment fact, but in ArchiMate 3.x the link is normally indirect (artifact realizes component; artifact assigned to node). The primary tables are login-gated and the secondary sources read do not corroborate a direct relationship. Instances come from data regardless; the rule's authority is open and the pair may need re-targeting via S39. |
 | S35 | `A3.ApplicationComponent` → `A4.Device` | — | gap | institution only | 1 | **low** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Component→physical device: real in on-prem estates, meaningless in cloud ones; ArchiMate reaches Device only through Node. Institution-only, data-filled where it exists. |
 | S36 | `A3.ApplicationComponent` → `A4.SystemSoftware` | — | gap | institution only | 1 | **high** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Component→system software is how most cloud deployments actually look (the fraud example's Kubernetes is SystemSoftware). BIAN's §4.2.3 utilities checklist is a prior; ArchiMate would route it through Node or Artifact. No authority yet, but high practical value; data-filled. Worth adopting as enterprise_rule. |
@@ -853,10 +855,10 @@ Generated from `metamodel/new-mappings.json` (every entry carries the official s
 
 ### 5.4 New-mappings diagram
 
-Generated from `metamodel/new-mappings.json` by `python -m sdmm.diagram` into `metamodel/new-mappings.puml` (CI checks it is current). Every cross-level connection of the plan is drawn with its ID and coloured by rule decision; BIAN-internal rows are on the official diagram (§4), and the four rows the plan rules out are named in the legend. Entities with no cross-level mapping are greyed with the reason: the three A2 artefacts are never endpoints, and A1 actor and role are organisation, not mappings (S10, S11). Preview in VS Code with the PlantUML extension, or paste at https://www.plantuml.com/plantuml.
+Generated from `metamodel/relationship-rules.json` by `python -m sdmm.diagram` into `metamodel/relationship-rules.puml` (CI checks it is current). Every cross-level connection of the plan is drawn with its ID and coloured by rule decision; BIAN-internal rows are on the official diagram (§4), and the four rows the plan rules out are named in the legend. Entities with no cross-level mapping are greyed with the reason: the three A2 artefacts are never endpoints, and A1 actor and role are organisation, not mappings (S10, S11). Preview in VS Code with the PlantUML extension, or paste at https://www.plantuml.com/plantuml.
 
 ```plantuml
-@startuml new-mappings
+@startuml relationship-rules
 left to right direction
 skinparam rectangle {
   BackgroundColor White
@@ -926,7 +928,7 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.Artifact" as a4_artifact
 }
 
-' --- registry rule (SDMM relationship type) (9)
+' --- catalogue rule (SDEM relationship type) (9)
 a1_businesscapability -[#1565C0,bold]-> a2_servicedomain : S01 SUPPORTED_BY (step 3)
 a1_valuestream -[#1565C0,bold]-> a2_businessscenario : S02 ALIGNED_TO (step 4)
 a1_businessprocess -[#1565C0,bold]-> a2_servicedomain : S04 USES_DOMAIN (step 3)
@@ -937,7 +939,7 @@ a2_businessobject -[#1565C0,bold]-> a3_dataentity : S30 MAPPED_TO (step 4)
 a3_applicationcomponent -[#1565C0,bold]-> a4_deployment : S32 DEPLOYED_AS (step 1)
 a3_applicationcomponent -[#1565C0,bold]-> a4_infrastructurecomponent : S33 DEPLOYED_ON (step 1)
 
-' --- candidate rule (proposed for the registry) (5)
+' --- candidate rule (proposed for the relationship type catalogue) (5)
 a2_controlrecord -[#2E7D32]-> a3_dataentity : S20 step 4 high
 a2_controlrecord -[#2E7D32]-> a3_applicationfunction : S21 step 3 medium
 a2_serviceoperation -[#2E7D32]-> a3_applicationservice : S25 step 3 high
@@ -987,8 +989,8 @@ a3_dataentity -[#6A1B9A,dotted]-> a4_systemsoftware : S50 step 1 medium
 a3_event -[#6A1B9A,dotted]-> a4_technologyservice : S51 step 1 low
 
 legend right
-  <color:#1565C0>Bold</color>: registry rule (SDMM relationship type) (9)
-  <color:#2E7D32>Solid</color>: candidate rule (proposed for the registry) (5)
+  <color:#1565C0>Bold</color>: catalogue rule (SDEM relationship type) (9)
+  <color:#2E7D32>Solid</color>: candidate rule (proposed for the relationship type catalogue) (5)
   <color:#EF6C00>Solid</color>: conditional rule (fires on institution data) (5)
   <color:#616161>Dashed</color>: derived path (closure over other arrows, never proposed) (17)
   <color:#6A1B9A>Dotted</color>: institution-only (reported from export keys) (14)
@@ -999,7 +1001,7 @@ endlegend
 ```
 ### 5.5 Within-level structure
 
-The mappings are the cross-level arrows. Inside each architecture the entities are linked by ArchiMate relationship kinds recorded in each level export's `relationships` list: a graph of composition, aggregation, realization, assignment, access, serving, flow and triggering — not a single top-to-bottom chain. Every level's set comes from its reference architecture (README › *Reference architecture provenance*): A2 from BIAN's Service Landscape metamodel (17 rows, including the three artefact rows), A1 from ArchiMate 3.2 chapters 6–8 (48 rows), A3 from ArchiMate chapter 9 and TOGAF's solution building block (31 rows), A4 from ArchiMate chapter 10 plus the SDMM deployment extensions (36 rows). Association, ArchiMate's generic relationship, is permitted between any two entities of one level and is not drawn. Catalogue inheritance (`extends`) is drawn as specialization: a value-stream stage is-a value stream, a business activity is-a business process, and every concrete A4 entity is-a `A4.InfrastructureComponent`, the abstract `DEPLOYED_ON` target that is never instantiated. `sdmm-graph check` rejects any other within-level relationship. ArchiMate and TOGAF are login-gated, so those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations. Generated into `metamodel/level-relationships.puml` by `python -m sdmm.diagram`.
+The mappings are the cross-level arrows. Inside each architecture the entities are linked by ArchiMate relationship kinds recorded in each level export's `relationships` list: a graph of composition, aggregation, realization, assignment, access, serving, flow and triggering — not a single top-to-bottom chain. Every level's set comes from its reference architecture (README › *Reference architecture provenance*): A2 from BIAN's Service Landscape metamodel (17 rows, including the three artefact rows), A1 from ArchiMate 3.2 chapters 6–8 (48 rows), A3 from ArchiMate chapter 9 and TOGAF's solution building block (31 rows), A4 from ArchiMate chapter 10 plus the SDEM deployment extensions (36 rows). Association, ArchiMate's generic relationship, is permitted between any two entities of one level and is not drawn. Catalogue inheritance (`extends`) is drawn as specialization: a value-stream stage is-a value stream, a business activity is-a business process, and every concrete A4 entity is-a `A4.InfrastructureComponent`, the abstract `DEPLOYED_ON` target that is never instantiated. `sdmm-graph check` rejects any other within-level relationship. ArchiMate and TOGAF are login-gated, so those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations. Generated into `metamodel/level-relationships.puml` by `python -m sdmm.diagram`.
 
 ```plantuml
 @startuml level-relationships
@@ -1224,7 +1226,7 @@ package "A4 Technology Architecture" as A4 {
 legend right
   Kinds (ArchiMate 3.2): composition solid blue, aggregation dashed blue, realization dashed green, assignment purple,
   serving orange, flow dashed orange, triggering dotted orange, access dotted grey; association is permitted between any two entities of one level and is not drawn
-  Every arrow is a constraint row in metamodel/level-relationships.json (ID shown; full table in docs/relationships-planning.md); sdmm-graph check rejects any other within-level relationship.
+  Every arrow is a constraint row in metamodel/level-relationships.json (ID shown; full table in docs/relationships-planning.md); sdem-graph check rejects any other within-level relationship.
   Hollow-headed black arrows: catalogue inheritance (extends). A4.InfrastructureComponent is abstract — never instantiated; it is the DEPLOYED_ON target type and every concrete A4 entity is-a InfrastructureComponent.
   A2 from BIAN (public portal); A1, A3, A4 paraphrased from ArchiMate 3.2 / TOGAF 10 chapter structure (login-gated, unverified) for the concept each entity derives from.
 endlegend
@@ -1233,10 +1235,10 @@ endlegend
 
 ### 5.6 Merged view — within-level structure and cross-level mappings together
 
-One canvas: the within-level links of §5.5 as thin light-grey arrows labelled only by kind, and the 50 cross-level connections of §5.4 with their plan IDs and decision colours. Generated into `metamodel/merged-mappings.puml` by `python -m sdmm.diagram`; the three source diagrams remain the readable detail.
+One canvas: the within-level links of §5.5 as thin light-grey arrows labelled only by kind, and the 50 cross-level connections of §5.4 with their plan IDs and decision colours. Generated into `metamodel/merged-relationships.puml` by `python -m sdmm.diagram`; the three source diagrams remain the readable detail.
 
 ```plantuml
-@startuml merged-mappings
+@startuml merged-relationships
 left to right direction
 skinparam rectangle {
   BackgroundColor White
@@ -1441,7 +1443,7 @@ package "A4 Technology Architecture" as A4 {
   a4_device -[#B0BEC5]-> a4_device : <size:8>RA4-36 composition</size>
 }
 
-' --- cross-level: registry rule (SDMM relationship type) (9)
+' --- cross-level: catalogue rule (SDEM relationship type) (9)
 a1_businesscapability -[#1565C0,bold]-> a2_servicedomain : S01 SUPPORTED_BY
 a1_valuestream -[#1565C0,bold]-> a2_businessscenario : S02 ALIGNED_TO
 a1_businessprocess -[#1565C0,bold]-> a2_servicedomain : S04 USES_DOMAIN
@@ -1452,7 +1454,7 @@ a2_businessobject -[#1565C0,bold]-> a3_dataentity : S30 MAPPED_TO
 a3_applicationcomponent -[#1565C0,bold]-> a4_deployment : S32 DEPLOYED_AS
 a3_applicationcomponent -[#1565C0,bold]-> a4_infrastructurecomponent : S33 DEPLOYED_ON
 
-' --- cross-level: candidate rule (proposed for the registry) (5)
+' --- cross-level: candidate rule (proposed for the relationship type catalogue) (5)
 a2_controlrecord -[#2E7D32]-> a3_dataentity : S20
 a2_controlrecord -[#2E7D32]-> a3_applicationfunction : S21
 a2_serviceoperation -[#2E7D32]-> a3_applicationservice : S25
@@ -1503,13 +1505,13 @@ a3_event -[#6A1B9A,dotted]-> a4_technologyservice : S51
 
 legend right
   Light grey thin arrows: within-level constraint rows (ArchiMate kind as label) — A2 from BIAN; A1, A3, A4 from ArchiMate 3.2 / TOGAF
-  <color:#1565C0>Bold</color>: cross-level registry rule (SDMM relationship type) (9)
-  <color:#2E7D32>Solid</color>: cross-level candidate rule (proposed for the registry) (5)
+  <color:#1565C0>Bold</color>: cross-level catalogue rule (SDEM relationship type) (9)
+  <color:#2E7D32>Solid</color>: cross-level candidate rule (proposed for the relationship type catalogue) (5)
   <color:#EF6C00>Solid</color>: cross-level conditional rule (fires on institution data) (5)
   <color:#616161>Dashed</color>: cross-level derived path (closure over other arrows, never proposed) (17)
   <color:#6A1B9A>Dotted</color>: cross-level institution-only (reported from export keys) (14)
   Grey entity: no cross-level mapping by decision
-  Detail: official-mappings.puml, new-mappings.puml, level-relationships.puml
+  Detail: official-mappings.puml, relationship-rules.puml, level-relationships.puml
 endlegend
 @enduml
 ```

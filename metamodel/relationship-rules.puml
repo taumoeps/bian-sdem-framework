@@ -1,4 +1,4 @@
-@startuml new-mappings
+@startuml relationship-rules
 left to right direction
 skinparam rectangle {
   BackgroundColor White
@@ -68,7 +68,7 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.Artifact" as a4_artifact
 }
 
-' --- registry rule (SDMM relationship type) (9)
+' --- catalogue rule (SDEM relationship type) (9)
 a1_businesscapability -[#1565C0,bold]-> a2_servicedomain : S01 SUPPORTED_BY (step 3)
 a1_valuestream -[#1565C0,bold]-> a2_businessscenario : S02 ALIGNED_TO (step 4)
 a1_businessprocess -[#1565C0,bold]-> a2_servicedomain : S04 USES_DOMAIN (step 3)
@@ -79,7 +79,7 @@ a2_businessobject -[#1565C0,bold]-> a3_dataentity : S30 MAPPED_TO (step 4)
 a3_applicationcomponent -[#1565C0,bold]-> a4_deployment : S32 DEPLOYED_AS (step 1)
 a3_applicationcomponent -[#1565C0,bold]-> a4_infrastructurecomponent : S33 DEPLOYED_ON (step 1)
 
-' --- candidate rule (proposed for the registry) (5)
+' --- candidate rule (proposed for the relationship type catalogue) (5)
 a2_controlrecord -[#2E7D32]-> a3_dataentity : S20 step 4 high
 a2_controlrecord -[#2E7D32]-> a3_applicationfunction : S21 step 3 medium
 a2_serviceoperation -[#2E7D32]-> a3_applicationservice : S25 step 3 high
@@ -129,8 +129,8 @@ a3_dataentity -[#6A1B9A,dotted]-> a4_systemsoftware : S50 step 1 medium
 a3_event -[#6A1B9A,dotted]-> a4_technologyservice : S51 step 1 low
 
 legend right
-  <color:#1565C0>Bold</color>: registry rule (SDMM relationship type) (9)
-  <color:#2E7D32>Solid</color>: candidate rule (proposed for the registry) (5)
+  <color:#1565C0>Bold</color>: catalogue rule (SDEM relationship type) (9)
+  <color:#2E7D32>Solid</color>: candidate rule (proposed for the relationship type catalogue) (5)
   <color:#EF6C00>Solid</color>: conditional rule (fires on institution data) (5)
   <color:#616161>Dashed</color>: derived path (closure over other arrows, never proposed) (17)
   <color:#6A1B9A>Dotted</color>: institution-only (reported from export keys) (14)

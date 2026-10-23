@@ -18,6 +18,6 @@ One estate authored so that **every plan row the first seven cases never exercis
 | C3 | A3→A4 | S32 S33 S34 S35 | S37 S38 S39 S40 S41 S42 S43 S44 S45 S46 S47 S48 S49 S50 S51 S52 S53 S54 |
 
 ```bash
-python -m sdmm.graph check examples/trade-finance/a*.json examples/trade-finance/mappings.json
-python -m sdmm.evaluate examples/trade-finance/c2-gold-candidates.json --proposals examples/trade-finance/c2-candidates.json
+python -m sdem.graph check examples/trade-finance/a*.json examples/trade-finance/mappings.json
+python -m sdem.evaluate examples/trade-finance/c2-gold-candidates.json --proposals examples/trade-finance/c2-candidates.json
 ```

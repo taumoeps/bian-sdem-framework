@@ -3,7 +3,7 @@
   "model_id": "reference-structure-a2",
   "model_version": "2026.10",
   "metamodel_version": "0.4.0",
-  "source_system": "SDMM-GENERATED-FROM-RECORD",
+  "source_system": "SDEM-GENERATED-FROM-RECORD",
   "instances": [
     {
       "id": "RS-BusinessArea-1",

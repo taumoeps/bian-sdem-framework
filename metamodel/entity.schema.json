@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "SDMM Entity Catalogue (one level)",
+  "title": "SDEM Entity Catalogue (one level)",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -86,6 +86,7 @@
             "archimate_native",
             "archimate_aligned",
             "togaf_informed",
+            "sdem_extension",
             "sdmm_extension",
             "bank_extension"
           ]

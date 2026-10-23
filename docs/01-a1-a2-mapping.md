@@ -1,5 +1,7 @@
 # A1 → A2 mapping methodology
 
+> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` now run as `sdem-*` (the old names still work in v0.7). See [`sdem-overview.md`](sdem-overview.md).
+
 ## Purpose
 Align a bank's business capabilities, processes/value streams and business concepts to approved BIAN-aligned A2 domain design instances.
 

@@ -1,13 +1,15 @@
-# SDMM data architecture (v0.4)
+# SDEM data architecture (v0.4)
+
+> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` now run as `sdem-*` (the old names still work in v0.7). See [`sdem-overview.md`](sdem-overview.md).
 
 Four kinds of data, three owners, one graph.
 
 | Data | Owner | Format | Held in |
 |---|---|---|---|
-| **Entity catalogue** — the 41 core entities (+3 artefacts) of the A1–A4 vocabulary, with hierarchy and public-standard provenance | SDMM | `metamodel/entity.schema.json` | `metamodel/a1…a4-*.json` |
-| **Within-level relationship catalogue** — the kinds a level model may use; BIAN's A2 structure as fixed constraints | SDMM | — | `metamodel/level-relationships.json` |
+| **Entity catalogue** — the 41 core entities (+3 artefacts) of the A1–A4 vocabulary, with hierarchy and public-standard provenance | SDEM | `metamodel/entity.schema.json` | `metamodel/a1…a4-*.json` |
+| **Within-level relationship catalogue** — the kinds a level model may use; BIAN's A2 structure as fixed constraints | SDEM | — | `metamodel/level-relationships.json` |
 | **Level model exports** — an institution's instances and within-level relationships for one design model | the institution | `schema/level-model.schema.json` | the institution's repository (synthetic copies in `examples/`) |
-| **Mapping documents** — the cross-level arrows between instances | the institution's architects | `schema/mapping.schema.json` | the institution's repository |
+| **Mapping documents** — the cross-level arrows between instances | the institution's architects | `schema/relationship-registry.schema.json` | the institution's repository |
 
 ## Level model export
 

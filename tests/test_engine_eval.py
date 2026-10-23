@@ -1,9 +1,9 @@
 import copy, json, unittest
 from pathlib import Path
-from sdmm.graph import FederatedGraph, load_impact_rules, IMPACT_RULES
-from sdmm.engine import NameOverlapBaseline, proposal
-from sdmm.evaluate import evaluate
-from sdmm.validate import validate
+from sdem.graph import FederatedGraph, load_impact_rules, IMPACT_RULES
+from sdem.inference import NameOverlapBaseline, proposal
+from sdem.evaluate import evaluate
+from sdem.validate import validate
 
 ROOT = Path(__file__).resolve().parents[1]
 F = ROOT / 'examples/card-fraud-alerts'

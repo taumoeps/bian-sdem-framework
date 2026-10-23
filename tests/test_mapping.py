@@ -1,7 +1,7 @@
 import copy, json, unittest
 from pathlib import Path
-from sdmm.validate import validate, validate_registry, validate_files, load_registry, check_schema, load_schema
-from sdmm.reference import StaticReferenceResolver, ReferenceBinding, NullReferenceResolver
+from sdem.validate import validate, validate_registry, validate_files, load_registry, check_schema, load_schema
+from sdem.reference import StaticReferenceResolver, ReferenceBinding, NullReferenceResolver
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = json.loads((ROOT / 'examples/customer-onboarding/mappings.json').read_text())
@@ -233,7 +233,7 @@ class V021RuleTests(unittest.TestCase):
         self.assertEqual(warnings, [])
 
     def test_entity_resolver_flags_unknown_endpoint(self):
-        from sdmm.reference import CatalogueEntityResolver
+        from sdem.reference import CatalogueEntityResolver
         fraud = ROOT / 'examples/card-fraud-alerts'
         doc = json.loads((fraud / 'mappings.json').read_text())
         resolver = CatalogueEntityResolver.from_file(fraud / 'entities.json')
@@ -245,7 +245,7 @@ class V021RuleTests(unittest.TestCase):
 
 class DiffTests(unittest.TestCase):
     def setUp(self):
-        from sdmm.diff import diff
+        from sdem.diff import diff
         self.diff = diff
         self.old = copy.deepcopy(DATA)
 
@@ -298,7 +298,7 @@ class DiffTests(unittest.TestCase):
 
 class TraceTests(unittest.TestCase):
     def setUp(self):
-        from sdmm.trace import load_edges, walk, paths
+        from sdem.trace import load_edges, walk, paths
         self.load_edges, self.walk, self.paths = load_edges, walk, paths
         self.fraud = json.loads((ROOT / 'examples/card-fraud-alerts/mappings.json').read_text())
         self.edges = load_edges([self.fraud])
@@ -336,7 +336,7 @@ class TraceTests(unittest.TestCase):
         self.assertEqual(self.chain(self.walk(edges, 'CAP-310', 'down')), ['CAP-310', 'SD-044', 'APP-FRAUD-ENGINE', 'INF-CLOUD-K8S-PROD'])
 
     def test_cli_unknown_entity_exit_code(self):
-        from sdmm.trace import main
+        from sdem.trace import main
         import io, contextlib
         with contextlib.redirect_stderr(io.StringIO()):
             self.assertEqual(main(['NOPE', str(ROOT / 'examples/card-fraud-alerts/mappings.json')]), 1)
@@ -361,7 +361,7 @@ class LevelAliasTests(unittest.TestCase):
         self.assertEqual(validate(self.legacy()), [])
 
     def test_alias_rename_is_not_an_immutable_edit(self):
-        from sdmm.diff import diff
+        from sdem.diff import diff
         self.assertEqual(diff(self.legacy(), DATA), [])
 
     def test_unknown_prefix_rejected(self):
@@ -372,7 +372,7 @@ class LevelAliasTests(unittest.TestCase):
 
 class MetamodelTests(unittest.TestCase):
     def setUp(self):
-        from sdmm.metamodel import Metamodel
+        from sdem.metamodel import Metamodel
         self.mm = Metamodel.load()
 
     def test_catalogue_self_check(self):
@@ -440,7 +440,7 @@ class V040ValidatorTests(unittest.TestCase):
         self.assertEqual(verdicts['MAP-001']['governance'], 'fail'); self.assertEqual(verdicts['MAP-001']['structural'], 'pass')
 
     def test_verdict_referential_pass_with_catalogue(self):
-        from sdmm.reference import CatalogueEntityResolver
+        from sdem.reference import CatalogueEntityResolver
         fraud = ROOT / 'examples/card-fraud-alerts'
         verdicts = {}
         validate(json.loads((fraud / 'mappings.json').read_text()), entity_resolver=CatalogueEntityResolver.from_file(fraud / 'entities.json'), verdicts=verdicts)

@@ -1,24 +1,26 @@
-# BIAN Service Domain Mapping Model (SDMM)
+# Service Domain Enterprise Metamodel (SDEM)
+
+> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` now run as `sdem-*` (the old names still work in v0.7). See [`sdem-overview.md`](sdem-overview.md).
 ## Solution Design Specification
 
 **Document status:** Proposed design baseline / draft for architecture review  
 **Version:** 1.0  
 **Architecture scope:** A1–A4  
 **Primary architecture pattern:** Federated knowledge graph with independently governed level-specific models  
-**Terminology note:** *BIAN Service Domain Mapping Model (SDMM)* is the platform's proposed name, not an official BIAN standard or product.
+**Terminology note:** *Service Domain Enterprise Metamodel (SDEM)* is the platform's proposed name, not an official BIAN standard or product.
 
 ---
 
 ## 1. Purpose and definition
 
-The **BIAN Service Domain Mapping Model (SDMM)** is a federated architecture mapping model that establishes and maintains traceable relationships between:
+The **Service Domain Enterprise Metamodel (SDEM)** is a federated architecture mapping model that establishes and maintains traceable relationships between:
 
 - **A1 — Business Architecture:** business capabilities, value streams, processes, requirements and business information.
 - **A2 — BIAN Service Domain Architecture:** bank-specific selection and composition of BIAN Service Domains, Service Operations, Business Scenarios, Control Records and Business Object Models (BOMs).
 - **A3 — High-Level Application Architecture:** applications, components, APIs, integration contracts and relevant data entities.
 - **A4 — Detailed Infrastructure Architecture:** hosting, deployments, compute, networking, storage, security and infrastructure dependencies.
 
-The SDMM incorporates BIAN reference architecture definitions and alignment guidance where applicable, and extends that basis using bank-specific enterprise architecture mapping rules. It preserves historical architecture artefacts while enabling new designs to follow BIAN-aligned A2 standards.
+The SDEM incorporates BIAN reference architecture definitions and alignment guidance where applicable, and extends that basis using bank-specific enterprise architecture mapping rules. It preserves historical architecture artefacts while enabling new designs to follow BIAN-aligned A2 standards.
 
 ### 1.1 Design objectives
 
@@ -37,7 +39,7 @@ The SDMM incorporates BIAN reference architecture definitions and alignment guid
 - Treating a BIAN Service Domain as necessarily equivalent to one deployable microservice.
 - Assuming BIAN supplies full bank-specific A3 or A4 implementation mappings.
 - Automatically publishing regenerated designs without architect approval.
-- Treating illustrative SDMM relationship names as formal BIAN or ArchiMate relationship names.
+- Treating illustrative SDEM relationship names as formal BIAN or ArchiMate relationship names.
 
 ---
 
@@ -45,15 +47,15 @@ The SDMM incorporates BIAN reference architecture definitions and alignment guid
 
 The bank's **existing design lifecycle** is A1 Business, A2 Conceptual, A3 High-Level Application and A4 Detailed Infrastructure. New designs replace the A2 conceptual approach with **BIAN Service Domain Architecture**. Existing designs remain unchanged as historical records, but can be discovered, referenced, compared, and reused as approved patterns.
 
-Each level maintains its **own design entity instances, schema and knowledge graph**. A **federated knowledge graph** provides a shared cross-layer query and traceability view. The BIAN reference architecture repository and Historical Design Repository are assumed to exist outside the primary diagram; they must be connected to SDMM even when not visually depicted.
+Each level maintains its **own design entity instances, schema and knowledge graph**. A **federated knowledge graph** provides a shared cross-layer query and traceability view. The BIAN reference architecture repository and Historical Design Repository are assumed to exist outside the primary diagram; they must be connected to SDEM even when not visually depicted.
 
 **Separation of concerns:**
 
 - The **BIAN Reference Model** defines canonical BIAN concepts and version-specific relationships.
 - Each **A1–A4 knowledge graph** owns bank-specific entity instances and in-layer relationships.
-- The **SDMM mapping metamodel** defines which *cross-layer* relationships are permitted and their semantics.
-- The **SDMM mapping registry / federated knowledge graph** stores approved cross-layer mappings and may also retain proposed mappings in a separate state.
-- The **SDMM Mapping Engine** analyses sources and proposes mappings; it does not make unreviewed AI conclusions authoritative.
+- The **SDEM mapping metamodel** defines which *cross-layer* relationships are permitted and their semantics.
+- The **SDEM mapping registry / federated knowledge graph** stores approved cross-layer mappings and may also retain proposed mappings in a separate state.
+- The **SDEM Mapping Engine** analyses sources and proposes mappings; it does not make unreviewed AI conclusions authoritative.
 
 ### 2.1 Logical architecture
 
@@ -61,9 +63,9 @@ Each level maintains its **own design entity instances, schema and knowledge gra
 flowchart TB
     REF[BIAN Reference Architecture Repository]
     HIST[Historical Design Repository]
-    RULES[SDMM Mapping Metamodel & Rules]
-    ENGINE["SDMM Mapping Engine<br/>Process / Information / Architecture analysis"]
-    VALID[SDMM Validation & Approval]
+    RULES[SDEM Mapping Metamodel & Rules]
+    ENGINE["SDEM Mapping Engine<br/>Process / Information / Architecture analysis"]
+    VALID[SDEM Validation & Approval]
     FED["Federated Knowledge Graph<br/>Cross-layer Mapping Registry & Traceability"]
 
     subgraph LEVELS[Independently Governed Architecture Models]
@@ -93,9 +95,9 @@ flowchart TB
 
 ---
 
-## 3. SDMM mapping scope
+## 3. SDEM mapping scope
 
-| Mapping concern | Direction / layers | BIAN reference or bank methodology | SDMM responsibility |
+| Mapping concern | Direction / layers | BIAN reference or bank methodology | SDEM responsibility |
 |---|---|---|---|
 | Business capability | A1 → A2 | BIAN Business Capability Model (BCM)–Service Landscape alignment | Align A1 capabilities to selected BIAN Service Domains; support many-to-many mappings. |
 | Process and value stream | A1 → A2 | BIAN Value Stream–Business Scenario alignment guidance | Relate A1 value streams/processes to BIAN scenarios and operations, with scenario suitability review. |
@@ -103,13 +105,13 @@ flowchart TB
 | Logical service implementation | A2 → A3 | BIAN Service Operations and Semantic APIs, plus bank implementation rules | Identify which A3 application components and API operations realise selected A2 functions. |
 | Infrastructure deployment | A3 → A4 | Bank enterprise architecture metamodel; ArchiMate where adopted | Relate application components to deployments, hosting and infrastructure dependencies. |
 
-**Reference boundary:** BIAN supplies reference definitions, modelling constraints and alignment *guidance*; the SDMM must supply bank-specific entity matching, evidence evaluation, identity resolution, approvals, and A3/A4 implementation relationships.
+**Reference boundary:** BIAN supplies reference definitions, modelling constraints and alignment *guidance*; the SDEM must supply bank-specific entity matching, evidence evaluation, identity resolution, approvals, and A3/A4 implementation relationships.
 
 ---
 
 ## 4. Three horizontal mapping perspectives
 
-The SDMM uses three **logical analysis perspectives**. They are not required to be three physically separate graphs or AI agents. They can be implemented as reusable mapping workflows reading the federated context.
+The SDEM uses three **logical analysis perspectives**. They are not required to be three physically separate graphs or AI agents. They can be implemented as reusable mapping workflows reading the federated context.
 
 | Perspective | Reads | Proposes |
 |---|---|---|
@@ -117,7 +119,7 @@ The SDMM uses three **logical analysis perspectives**. They are not required to 
 | **Information Mapping** | A1 business objects; BIAN BOM/Control Records; A3 data entities and API payload schemas | A1↔A2 and A2↔A3 semantic object relationships with field-level evidence where needed. |
 | **Architecture Mapping** | A1 capabilities; A2 Service Domains/operations; A3 apps/APIs; A4 infrastructure; historical designs/patterns | Capability support, functional realisation, interface implementation and deployment links. |
 
-These perspectives resemble the *types of analysis* described for ABLEMENTS' Process, Data and Architecture modules. **SDMM is an independent bank-specific solution**; the ABLEMENTS terminology is an architectural analogy, not evidence that ABLEMENTS uses this exact metamodel.
+These perspectives resemble the *types of analysis* described for ABLEMENTS' Process, Data and Architecture modules. **SDEM is an independent bank-specific solution**; the ABLEMENTS terminology is an architectural analogy, not evidence that ABLEMENTS uses this exact metamodel.
 
 ---
 
@@ -140,7 +142,7 @@ The authoritative list is `schema/relationship-types.json`; this table mirrors i
 
 All eight are many-to-many. Every edge points from layer *n* to layer *n+1*; the registry self-check rejects same-layer or layer-skipping definitions.
 
-These labels are **proposed SDMM vocabulary**. They must be explicitly bound to the bank's architecture metamodel; do not claim that the labels are official BIAN or automatically equivalent to ArchiMate `Serving`, `Realization` or `Assignment` relations.
+These labels are **proposed SDEM vocabulary**. They must be explicitly bound to the bank's architecture metamodel; do not claim that the labels are official BIAN or automatically equivalent to ArchiMate `Serving`, `Realization` or `Assignment` relations.
 
 ### 5.2 Mapping rule registry
 
@@ -158,7 +160,7 @@ The registry must reject invalid source/target type combinations. It should not 
 
 ### 5.3 Core architecture mapping record
 
-The record shape is defined by `schema/mapping.schema.json`. The mapping type is derived from the `(source.type, relationship, target.type)` triple, so it is not repeated on the record.
+The record shape is defined by `schema/relationship-registry.schema.json`. The mapping type is derived from the `(source.type, relationship, target.type)` triple, so it is not repeated on the record.
 
 ```yaml
 mapping_id: MAP-0001
@@ -180,7 +182,7 @@ evidence:
   - 'DOC-BA-001#section-3'
 bian_release: '<approved BIAN release>'      # required when the registry authority is bian_*
 baseline_id: BASE-2026-Q1
-created_by: 'SDMM Mapping Engine'
+created_by: 'SDEM Mapping Engine'
 # reviewer_id, approved_at   — required once status is approved / rejected / superseded
 # previous_mapping_id        — supersession link; every superseded record needs a successor
 # valid_from, valid_to       — applicability window
@@ -263,7 +265,7 @@ An edge is normally stored once, in its defined direction; **bidirectional queri
 
 1. A new approved model revision or proposed design change emits a `MappingChangeEvent`.
 2. The impact engine traverses directly and indirectly connected mappings, recording paths and versions.
-3. Rules classify impacted objects as `design_change_required`, `review_required`, or `no_impact` based on the actual change type and relationship semantics (see `docs/04-governance-and-impact.md`).
+3. Rules classify impacted objects as `design_change_required`, `review_required`, or `no_impact` based on the actual change type and relationship semantics (see `docs/architecture-governance-spec.md`).
 4. AI proposes changes to affected architecture models and documents, referencing original source evidence and patterns.
 5. Level owners validate and approve changes before a new consistent architecture baseline is published.
 6. Historical entity instance versions, prior mappings and old approved baselines remain queryable.
@@ -272,7 +274,7 @@ An edge is normally stored once, in its defined direction; **bidirectional queri
 
 ### 8.3 Lifecycle statuses
 
-`proposed → validated → approved → superseded`, with `needs_review` and `rejected` as side states (enforced by `schema/mapping.schema.json`). Approval must be tied to actor (`reviewer_id`), timestamp (`approved_at`) and baseline; a `superseded` record must be referenced by its successor's `previous_mapping_id`. AI-generated candidate edges must never silently enter the approved design graph.
+`proposed → validated → approved → superseded`, with `needs_review` and `rejected` as side states (enforced by `schema/relationship-registry.schema.json`). Approval must be tied to actor (`reviewer_id`), timestamp (`approved_at`) and baseline; a `superseded` record must be referenced by its successor's `previous_mapping_id`. AI-generated candidate edges must never silently enter the approved design graph.
 
 ---
 
@@ -294,7 +296,7 @@ An edge is normally stored once, in its defined direction; **bidirectional queri
 ### 9.1 Storage responsibilities
 
 - **A1–A4 graphs:** source of truth for their own entity instances and internal relationships.
-- **Federated graph / SDMM registry:** source of truth for cross-layer mapping records and relationship metadata.
+- **Federated graph / SDEM registry:** source of truth for cross-layer mapping records and relationship metadata.
 - **BIAN reference repository:** source of truth for imported/licensed, versioned BIAN definitions and reference constraints.
 - **Historical repository:** source of truth for preserved prior documents/diagrams and pattern evidence.
 - **Metadata / governance store:** source of truth for mapping rules, decisions, lifecycle and baselines (can share an implementation with the registry).
@@ -334,7 +336,7 @@ No bank-specific mapping rule should be misrepresented as normative BIAN termino
 
 ## 11. Outputs and architecture artefacts
 
-SDMM should expose:
+SDEM should expose:
 
 - A1–A2 capability-to-Service-Domain mapping matrix.
 - A1–A2 value-stream/process-to-scenario mapping report.
@@ -353,7 +355,7 @@ Architecture diagrams and generated design documents should be projections of th
 
 ### Phase 1 — Define the metamodel
 
-Create the four level-owned entity contracts, SDMM mapping type registry, versioned entity references, and the eight initial mapping types listed in §5.1 (seven relationship labels: `SUPPORTED_BY`, `ALIGNED_TO`, `USES_DOMAIN`, `REALIZED_BY`, `IMPLEMENTED_BY`, `MAPPED_TO`, `DEPLOYED_ON`). Bind type constraints and specify evidence/approval rules.
+Create the four level-owned entity contracts, SDEM mapping type registry, versioned entity references, and the eight initial mapping types listed in §5.1 (seven relationship labels: `SUPPORTED_BY`, `ALIGNED_TO`, `USES_DOMAIN`, `REALIZED_BY`, `IMPLEMENTED_BY`, `MAPPED_TO`, `DEPLOYED_ON`). Bind type constraints and specify evidence/approval rules.
 
 ### Phase 2 — One end-to-end vertical slice
 
@@ -369,7 +371,7 @@ Simulate one A1 requirement change and one A4 deployment change. Confirm graph t
 
 ### Phase 5 — Controlled design regeneration
 
-Connect SDMM to A1–A4 design generators so impact results can produce reviewable draft changes and maintain approved, immutable baselines.
+Connect SDEM to A1–A4 design generators so impact results can produce reviewable draft changes and maintain approved, immutable baselines.
 
 ---
 
@@ -391,9 +393,9 @@ Connect SDMM to A1–A4 design generators so impact results can produce reviewab
 ## 14. Open design decisions
 
 - **Physical graph strategy:** four databases, namespaces/subgraphs in one database, or another federated implementation.
-- **Mapping ownership:** dedicated SDMM service or a governed component within the existing federated graph service.
+- **Mapping ownership:** dedicated SDEM service or a governed component within the existing federated graph service.
 - **Canonical identifiers:** entity instance ID and version formats across bank-owned and BIAN reference objects.
-- **Modelling standard:** which ArchiMate relationship semantics are adopted for bank-owned mappings and how they relate to SDMM labels.
+- **Modelling standard:** which ArchiMate relationship semantics are adopted for bank-owned mappings and how they relate to SDEM labels.
 - **BIAN ingestion:** approved sources, licensing, structured metamodel extraction and reference-release upgrade procedure.
 - **Governance:** mapping approval authority, automated validation thresholds and exceptional override path.
 - **Impact scope:** definition of material design changes and what constitutes a required downstream revision.
@@ -402,4 +404,4 @@ Connect SDMM to A1–A4 design generators so impact results can produce reviewab
 
 ## 15. Summary
 
-The **BIAN Service Domain Mapping Model (SDMM)** is the bank's proposed horizontal cross-layer mapping model for A1–A4. It reuses BIAN BCM–Service Landscape alignment, Business Scenarios, BOM/Control Records and Semantic APIs where applicable, extending those reference semantics through bank-owned A3 implementation and A4 infrastructure relationships. It operates over independently governed level-specific graphs through a federated mapping registry, and enables evidence-backed, versioned and bidirectionally queryable traceability. AI mapping analysis proposes relationships; deterministic rules and architects validate and approve them.
+The **Service Domain Enterprise Metamodel (SDEM)** is the bank's proposed horizontal cross-layer mapping model for A1–A4. It reuses BIAN BCM–Service Landscape alignment, Business Scenarios, BOM/Control Records and Semantic APIs where applicable, extending those reference semantics through bank-owned A3 implementation and A4 infrastructure relationships. It operates over independently governed level-specific graphs through a federated mapping registry, and enables evidence-backed, versioned and bidirectionally queryable traceability. AI mapping analysis proposes relationships; deterministic rules and architects validate and approve them.

@@ -1,10 +1,10 @@
-# SDMM Mapping Model Design Specification — engine input (v0.6 draft)
+# SDEM Architecture Relationship Rules Specification — inference engine input (v0.7)
 
-> New to SDMM? Read `docs/mapping-model-design.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.
+> New to SDEM? Read `docs/sdem-overview.md` first — it explains how the local knowledge graphs, relationship rules model, inference engine, relationship registry and federated knowledge graph fit together.
 
-Generated from the records by `python -m sdmm.spec`; the test suite checks it is current. This specification merges the three records — the entity catalogue, the within-level structure (`metamodel/level-relationships.json`) and the cross-level mapping model (`schema/relationship-types.json`, `metamodel/new-mappings.json`) — with the export conventions, the mapping procedure and the test results, into one statement of **what a mapping engine must consume, do, refuse and produce**. Every requirement names the record rows it derives from and the use-case runs that validated it; nothing here claims more than a record and a run support.
+Generated from the records by `python -m sdem.spec`; the test suite checks it is current. This specification merges the three records — the entity catalogue, the within-level structure (`metamodel/level-relationships.json`) and the cross-level relationship rules model (`schema/relationship-types.json`, `metamodel/relationship-rules.json`) — with the export conventions, the mapping procedure and the test results, into one statement of **what a inference engine must consume, do, refuse and produce**. Every requirement names the record rows it derives from and the use-case runs that validated it; nothing here claims more than a record and a run support.
 
-**Terms, as in `docs/mapping-model-design.md`.** This document is the **mapping model**: the **rules** — the registry (§4.1), the plan rows (§4.2–4.3) and the export conventions (§5) — stated over entity **types**. The **mapping set** is the engine's output: **links** between real instances, in the form fixed by `schema/mapping.schema.json` (§7). The companion diagram `docs/mapping-model-diagram.puml` draws the mapping model: every within-level row (`RA…`) and every cross-level rule (`S…`) by ID, between entity types; it does not draw the mapping set.
+**Terms, as in `docs/sdem-overview.md`.** This document specifies the **Architecture Relationship Rules Model** — the plan rows (§4.2–4.3) and the export conventions (§5), the **rules** for establishing relationships, stated over entity **types** — and the **Architecture Relationship Inference Engine** that applies them. It restates from the **Architecture Metamodel** what the rules are stated over: the entity types (§2), the within-level rows (§3) and the relationship type catalogue (§4.1). The **Architecture Relationship Registry** is the inference engine's output: **links** between real instances, in the form fixed by `schema/relationship-registry.schema.json` (§7). The companion diagram `docs/architecture-model-diagram.puml` draws the Architecture Metamodel and the rules: every within-level row (`RA…`) and every cross-level rule (`S…`) by ID, between entity types; it does not draw the relationship registry.
 
  Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.
 
@@ -18,15 +18,15 @@ Generated from the records by `python -m sdmm.spec`; the test suite checks it is
 
 ## 2. Vocabulary — the entity catalogue
 
-44 entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: ArchiMate 21, BIAN 17, SDMM extension 5, TOGAF 1. **The entity ID is its type string** (e.g. `A3.ApplicationComponent`); every mapping, relationship row and export instance refers to it by that string.
+44 entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: ArchiMate 21, BIAN 17, SDEM extension 5, TOGAF 1. **The entity ID is its type string** (e.g. `A3.ApplicationComponent`); every mapping, relationship row and export instance refers to it by that string.
 
 | ID | Level | Kind | Extends | Reference concept |
 |---|---|---|---|---|
 | `A1.BusinessCapability` | A1 | concrete | — | BIAN BCM: Business Capability |
 | `A1.ValueStream` | A1 | concrete | — | ArchiMate 3.2: Value Stream |
-| `A1.ValueStreamStage` | A1 | concrete | A1.ValueStream | SDMM: Value Stream Stage |
+| `A1.ValueStreamStage` | A1 | concrete | A1.ValueStream | SDEM: Value Stream Stage |
 | `A1.BusinessProcess` | A1 | concrete | — | ArchiMate 3.2: Business Process |
-| `A1.BusinessActivity` | A1 | concrete | A1.BusinessProcess | SDMM: Business Activity |
+| `A1.BusinessActivity` | A1 | concrete | A1.BusinessProcess | SDEM: Business Activity |
 | `A1.BusinessService` | A1 | concrete | — | ArchiMate 3.2: Business Service |
 | `A1.BusinessActor` | A1 | concrete | — | ArchiMate 3.2: Business Actor |
 | `A1.BusinessRole` | A1 | concrete | — | ArchiMate 3.2: Business Role |
@@ -55,9 +55,9 @@ Generated from the records by `python -m sdmm.spec`; the test suite checks it is
 | `A3.DataEntity` | A3 | concrete | — | ArchiMate 3.2: Data Object |
 | `A3.Event` | A3 | concrete | — | ArchiMate 3.2: Application Event |
 | `A3.SolutionBuildingBlock` | A3 | concrete | — | TOGAF: Solution Building Block |
-| `A4.InfrastructureComponent` | A4 | abstract | — | SDMM: Infrastructure Component |
-| `A4.Deployment` | A4 | concrete | A4.InfrastructureComponent | SDMM: Deployment |
-| `A4.DeploymentEnvironment` | A4 | concrete | A4.InfrastructureComponent | SDMM: Deployment Environment |
+| `A4.InfrastructureComponent` | A4 | abstract | — | SDEM: Infrastructure Component |
+| `A4.Deployment` | A4 | concrete | A4.InfrastructureComponent | SDEM: Deployment |
+| `A4.DeploymentEnvironment` | A4 | concrete | A4.InfrastructureComponent | SDEM: Deployment Environment |
 | `A4.Node` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Node |
 | `A4.Device` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Device |
 | `A4.SystemSoftware` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: System Software |
@@ -69,14 +69,14 @@ Generated from the records by `python -m sdmm.spec`; the test suite checks it is
 
 ## 3. Within-level structure — what an export may contain
 
-132 constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/relationships-planning.md`): A1 Business Architecture 48, A2 Service Domain Architecture 17, A3 Application Architecture 31, A4 Technology Architecture 36. Verification: verified_against_archi 113, verified 16, unverified_togaf 2, sdmm_reading 1. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.
+132 constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/relationships-planning.md`): A1 Business Architecture 48, A2 Service Domain Architecture 17, A3 Application Architecture 31, A4 Technology Architecture 36. Verification: verified_against_archi 113, verified 16, unverified_togaf 2, sdem_reading 1. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.
 
 | Level | Derived from | Rows | The structure in one line |
 |---|---|---|---|
 | A1 | ArchiMate 3.2 ch. 6–8 | 48 | capabilities serve value streams; processes (and activities, is-a process) realise capabilities, value streams, services and requirements, access objects, compose activities; actors assigned to roles assigned to processes |
 | A2 | BIAN Service Landscape metamodel (B02–B15) | 17 | area ⊃ domain ⊃ Service Domain; a domain has an asset type, a functional pattern, a control record and service groups of operations; operations act on the control record and may be qualified; scenarios sequence operations; objects type the control record |
 | A3 | ArchiMate 3.2 ch. 9; TOGAF (SBB) | 31 | a component composes interfaces (which compose API operations) and sub-components, is assigned to functions, realises services; interfaces are assigned to services; behaviour accesses data entities and triggers events; a solution building block aggregates components |
-| A4 | ArchiMate 3.2 ch. 10; SDMM deployment extensions | 36 | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |
+| A4 | ArchiMate 3.2 ch. 10; SDEM deployment extensions | 36 | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |
 
 ### 3.1 All within-level rows
 
@@ -100,7 +100,7 @@ Full description, source, reasoning, inference and confidence per row: `docs/rel
 | RA2-14 | B12 | A2.ServiceDomain | flow | A2.ServiceDomain | verified |
 | RA2-15 | B14 | A2.Wireframe | association | A2.ServiceDomain | verified (not enforceable) |
 | RA2-16 | B15 | A2.SemanticAPI | realization | A2.ServiceDomain | verified (not enforceable) |
-| RA2-17 | — | A2.BOMModel | aggregation | A2.BusinessObject | sdmm_reading (not enforceable) |
+| RA2-17 | — | A2.BOMModel | aggregation | A2.BusinessObject | sdem_reading (not enforceable) |
 | RA1-01 | — | A1.BusinessCapability | composition | A1.BusinessCapability | verified_against_archi |
 | RA1-02 | — | A1.BusinessCapability | aggregation | A1.BusinessCapability | verified_against_archi |
 | RA1-03 | — | A1.BusinessCapability | serving | A1.ValueStream | verified_against_archi |
@@ -232,9 +232,9 @@ Full description, source, reasoning, inference and confidence per row: `docs/rel
 | XA4-09 | A4.Path | A4.InfrastructureComponent |
 | XA4-10 | A4.Artifact | A4.InfrastructureComponent |
 
-## 4. Cross-level mapping model
+## 4. Cross-level relationships
 
-### 4.1 The registry — the nine relationship types a mapping may carry
+### 4.1 The relationship type catalogue — the nine relationship types (Architecture Metamodel)
 
 | Mapping type | Source → target | Relationship | Perspective | Authority | Required evidence | Meaning |
 |---|---|---|---|---|---|---|
@@ -248,56 +248,56 @@ Full description, source, reasoning, inference and confidence per row: `docs/rel
 | COMPONENT_DEPLOYED_ON_INFRASTRUCTURE | A3.ApplicationComponent → A4.InfrastructureComponent | `DEPLOYED_ON` | architecture | enterprise_rule | deployment_design | The application component runs on the infrastructure component in a named environment. |
 | COMPONENT_DEPLOYED_AS_DEPLOYMENT | A3.ApplicationComponent → A4.Deployment | `DEPLOYED_AS` | architecture | enterprise_rule | deployment_design | The application component is instantiated as this deployment in a named environment. |
 
-Only these nine may appear in the mapping set (form: `schema/mapping.schema.json`); adjacency is A(n) → A(n+1) only; BIAN authorities require `bian_release` and a `canonical_id` on the A2 endpoint before approval. Everything else the model knows is a **candidate report**, never a registry proposal.
+Only these nine may appear in the relationship registry (form: `schema/relationship-registry.schema.json`); adjacency is A(n) → A(n+1) only; BIAN authorities require `bian_release` and a `canonical_id` on the A2 endpoint before approval. Everything else the model knows is a **candidate report**, never a registry proposal.
 
 ### 4.2 Plan rows — the 69 rules by decision
 
-Every cross-level pair the mapping model considers (`metamodel/new-mappings.json`; reasoning per row in `docs/mapping-logic-planning.md` §5.3). The decision says what the engine does with the row: only **registry rules** produce links in the mapping set; the others are reported as candidates or not used.
+Every cross-level pair the relationship rules model considers (`metamodel/relationship-rules.json`; reasoning per row in `docs/mapping-logic-planning.md` §5.3). The decision says what the engine does with the row: only **catalogue rules** produce links in the relationship registry; the others are reported as candidates or not used.
 
 | Decision | Rows | Engine behaviour |
 |---|---|---|
-| registry rule | 9 | propose, at the step and band stated |
-| candidate rule | 5 | report in the candidate file; never propose until adopted into the registry |
+| catalogue rule | 9 | propose, at the step and band stated |
+| candidate rule | 5 | report in the candidate file; never propose until adopted into the relationship type catalogue |
 | conditional rule | 5 | report when the institution data it fires on is present |
 | derived path | 17 | compute as a closure over other arrows; report; never store |
 | institution only | 14 | report from the export key named in `data_needed`; never infer |
 | bian internal | 14 | not cross-level: A2 structure, enforced by §3 |
 | not a mapping / historical / subsumed / not encodable | 5 | do nothing; the plan says why |
 
-### 4.3 The 50 rules drawn in the mapping-model diagram, with the run that validated each
+### 4.3 The 50 rules drawn in the relationship-rules diagram, with the run that validated each
 
 | ID | Pair | Decision | Step | Band | Validation |
 |---|---|---|---|---|---|
-| S01 | BusinessCapability → ServiceDomain (SUPPORTED_BY) | registry rule | 3 | medium | validated with findings: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (4 hits, 1 false — fixed) |
-| S02 | ValueStream → BusinessScenario (ALIGNED_TO) | registry rule | 4 | medium | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (1 hits, 0 false) |
+| S01 | BusinessCapability → ServiceDomain (SUPPORTED_BY) | catalogue rule | 3 | medium | validated with findings: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (4 hits, 1 false — fixed) |
+| S02 | ValueStream → BusinessScenario (ALIGNED_TO) | catalogue rule | 4 | medium | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (1 hits, 0 false) |
 | S03 | ValueStreamStage → BusinessScenario (candidate) | derived path | 4 | low | validated: C1 (3 hits, 0 false) |
-| S04 | BusinessProcess → ServiceDomain (USES_DOMAIN) | registry rule | 3 | medium | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (1 hits, 0 false) |
+| S04 | BusinessProcess → ServiceDomain (USES_DOMAIN) | catalogue rule | 3 | medium | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (1 hits, 0 false) |
 | S06 | BusinessActivity → ServiceOperation (candidate) | institution only | 1 | medium | validated: C1, H1, H2, H2 r2, M1 (4 hits, 0 false) |
 | S07 | BusinessActivity → ServiceDomain (candidate) | derived path | 3 | medium | validated: C1 (4 hits, 0 false) |
 | S08 | BusinessService → ServiceDomain (candidate) | institution only | 5 | low | validated: C1 (2 hits, 0 false) |
 | S09 | BusinessService → ServiceOperation (candidate) | institution only | 4 | low | validated: C1 (2 hits, 0 false) |
-| S12 | BusinessObject → BusinessObject (ALIGNED_TO) | registry rule | 4 | medium | validated: C1, H1, H2, H2 r2, M1 (2 hits, 0 false) |
+| S12 | BusinessObject → BusinessObject (ALIGNED_TO) | catalogue rule | 4 | medium | validated: C1, H1, H2, H2 r2, M1 (2 hits, 0 false) |
 | S13 | BusinessRequirement → ServiceDomain (candidate) | institution only | 3 | low | validated: C1 (3 hits, 0 false) |
 | S14 | BusinessRequirement → ServiceOperation (candidate) | institution only | 3 | low | validated: C1 (2 hits, 0 false) |
 | S15 | BusinessArea → ApplicationComponent (candidate) | derived path | 3 | high | validated: C1 (2 hits, 0 false) |
 | S16 | BusinessDomain → ApplicationComponent (candidate) | derived path | 3 | high | validated: C1 (2 hits, 0 false) |
-| S17 | ServiceDomain → ApplicationComponent (REALIZED_BY) | registry rule | 3 | high | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (20 hits, 0 false) |
+| S17 | ServiceDomain → ApplicationComponent (REALIZED_BY) | catalogue rule | 3 | high | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (20 hits, 0 false) |
 | S18 | FunctionalPattern → ApplicationFunction (candidate) | institution only | 3 | low | validated: C2 (3 hits, 0 false) |
 | S19 | AssetType → DataEntity (candidate) | institution only | 4 | low | validated: C2 (3 hits, 0 false) |
 | S20 | ControlRecord → DataEntity (candidate) | candidate rule | 4 | high | validated: C2, H1, H2, H2 r2, M1, M2 (2 hits, 0 false) |
 | S21 | ControlRecord → ApplicationFunction (candidate) | candidate rule | 3 | medium | validated: C2 (3 hits, 0 false) |
 | S22 | ServiceGroup → ApplicationService (candidate) | derived path | 3 | medium | validated: C2, M1 (2 hits, 0 false) |
 | S23 | ServiceGroup → ApplicationInterface (candidate) | derived path | 3 | medium | validated: C2, H1, H2, H2 r2, M0, M1 (2 hits, 0 false) |
-| S24 | ServiceOperation → APIOperation (IMPLEMENTED_BY) | registry rule | 2 | high | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (60 hits, 0 false) |
+| S24 | ServiceOperation → APIOperation (IMPLEMENTED_BY) | catalogue rule | 2 | high | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (60 hits, 0 false) |
 | S25 | ServiceOperation → ApplicationService (candidate) | candidate rule | 3 | high | validated: C2, H1, H2, H2 r2, M0, M1, M2 (6 hits, 0 false) |
 | S26 | BehaviorQualifier → APIOperation (candidate) | derived path | 2 | high | validated: C2 (2 hits, 0 false) |
 | S27 | BehaviorQualifier → DataEntity (candidate) | derived path | 4 | medium | validated: C2 (1 hits, 0 false) |
 | S28 | BusinessScenario → ApplicationService (candidate) | candidate rule | 3 | medium | validated: C2 (2 hits, 0 false) |
 | S29 | BusinessScenario → ApplicationComponent (candidate) | candidate rule | 3 | medium | validated: C2 (2 hits, 0 false) |
-| S30 | BusinessObject → DataEntity (MAPPED_TO) | registry rule | 4 | high | validated: C1, C2, C3, H1, H2, H2 r2, M1, M2 (16 hits, 0 false) |
+| S30 | BusinessObject → DataEntity (MAPPED_TO) | catalogue rule | 4 | high | validated: C1, C2, C3, H1, H2, H2 r2, M1, M2 (16 hits, 0 false) |
 | S31 | BusinessObjectAttribute → DataEntity (candidate) | derived path | 4 | high | validated: C2 (4 hits, 0 false) |
-| S32 | ApplicationComponent → Deployment (DEPLOYED_AS) | registry rule | 1 | high | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (23 hits, 0 false) |
-| S33 | ApplicationComponent → InfrastructureComponent (DEPLOYED_ON) | registry rule | 1 | high | validated with findings: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (20 hits, 1 false — fixed) |
+| S32 | ApplicationComponent → Deployment (DEPLOYED_AS) | catalogue rule | 1 | high | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (23 hits, 0 false) |
+| S33 | ApplicationComponent → InfrastructureComponent (DEPLOYED_ON) | catalogue rule | 1 | high | validated with findings: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (20 hits, 1 false — fixed) |
 | S34 | ApplicationComponent → Node (candidate) | conditional rule | 1 | low | validated: C3 (2 hits, 0 false) |
 | S35 | ApplicationComponent → Device (candidate) | institution only | 1 | low | validated: C3 (1 hits, 0 false) |
 | S37 | ApplicationComponent → CommunicationNetwork (candidate) | institution only | 1 | low | validated: C3 (2 hits, 0 false) |
@@ -400,12 +400,12 @@ The steps are specified in `docs/mapping-execution.md` §3 exactly as the execut
 
 | ID | Output | File | Content | Scored by |
 |---|---|---|---|---|
-| OUT-01 | Mapping-set records | `<uc>-proposals.json` | links between real instances, from registry rules only; `status: proposed`, plan band, typed evidence, rationale with the working | `sdmm-eval` against `<uc>-gold-mappings.json` (approved) — P / R / F1 per relationship |
-| OUT-02 | Candidate reports (not part of the mapping set) | `<uc>-candidates.json` | one record per candidate / conditional / institution-only / derived row, `relationship` = plan ID | `sdmm-eval` against `<uc>-gold-candidates.json` — per plan ID |
+| OUT-01 | Relationship registry records | `<uc>-proposals.json` | links between real instances, from catalogue rules only; `status: proposed`, plan band, typed evidence, rationale with the working | `sdem-eval` against `<uc>-gold-mappings.json` (approved) — P / R / F1 per relationship |
+| OUT-02 | Candidate reports (not part of the relationship registry) | `<uc>-candidates.json` | one record per candidate / conditional / institution-only / derived row, `relationship` = plan ID | `sdem-eval` against `<uc>-gold-candidates.json` — per plan ID |
 | OUT-03 | Inference log | `<uc>-inference-log.json` | every attempt: plan ID, data read, rule values, step assigned / used, fallback, confidence predicted / given, outcome; no-proposal register; findings | the coverage table in `docs/use-case-testing.md` is regenerated from it |
-| OUT-04 | Design exports | `<uc>-design-a3.json`, `-a4.json` | planned instances (M2 only) | `sdmm-graph check`; trace marks design hops |
+| OUT-04 | Design exports | `<uc>-design-a3.json`, `-a4.json` | planned instances (M2 only) | `sdem-graph check`; trace marks design hops |
 
-Governance stays outside the engine: `sdmm-validate` (structure, registry, evidence, anchoring), `sdmm-diff` (lifecycle transitions, immutability of approved records; supersession via `previous_mapping_id`), impact classification per `schema/impact-rules.json` (modify, replace, retire, rehost).
+Governance stays outside the engine: `sdem-validate` (structure, registry, evidence, anchoring), `sdem-diff` (lifecycle transitions, immutability of approved records; supersession via `previous_mapping_id`), impact classification per `schema/impact-rules.json` (modify, replace, retire, rehost).
 
 ## 8. Acceptance — the runs the engine must reproduce
 
@@ -431,20 +431,20 @@ Plan coverage after the suite: 45 rows validated clean, 5 validated with finding
 | OPEN-02 | A1 / A3 / A4 within-level rows | 113 verified against the open-source Archi relationship matrix (commit cited in the record); 2 TOGAF rows unverified |
 | OPEN-03 | Official S rows citing ArchiMate / W135 (S34, S39, S41, S45, S49; S04, S05) | unverified: login-gated; the five ArchiMate rows can be checked against the Archi oracle next |
 | OPEN-04 | API contention tie-break (step 2 clause 4) | **proposed** — chosen with a gold already seen; validated only when it decides a pair on an unseen gold |
-| OPEN-05 | One-author caveat | all estates and gold authored by SDMM; one blind case (data and gold by someone else) retires it |
+| OPEN-05 | One-author caveat | all estates and gold authored by SDEM; one blind case (data and gold by someone else) retires it |
 | OPEN-06 | Confidence bands | assigned by hand and calibrated conservative (every low inference confirmed); could be re-derived from the logs' predicted-vs-observed outcomes |
 
 ## 10. Requirements index
 
-33 requirements. Groups: V vocabulary, S structure, M mapping model, D data, P procedure, O outputs, A acceptance.
+33 requirements. Groups: V vocabulary, S structure, M relationship rules model, D data, P procedure, O outputs, A acceptance.
 
 | ID | Requirement | Derives from | Validated by |
 |---|---|---|---|
-| REQ-V-01 | Resolve every instance type in an export to a catalogue entity, through `extends` (is-a) and the registry's type aliases; reject unknown types, instantiated abstract entities and artefacts used as mapping endpoints. | entity catalogue; `schema/relationship-types.json` type_aliases | E1, E2 (every example export loads); relationships test T4.6 |
+| REQ-V-01 | Resolve every instance type in an export to a catalogue entity, through `extends` (is-a) and the relationship type catalogue's type aliases; reject unknown types, instantiated abstract entities and artefacts used as mapping endpoints. | entity catalogue; `schema/relationship-types.json` type_aliases | E1, E2 (every example export loads); relationships test T4.6 |
 | REQ-S-01 | Accept a within-level relationship only when its (source entity, kind, target entity) matches a constraint row for that level through inheritance, or its kind is `association`; report the offending triple and the level's basis otherwise. | RA1-01 … RA4-36 | relationships test T4.1–T4.9 (131 accepted, 25 rejected); `examples/reference-structure` (129 rows on committed data) |
-| REQ-S-02 | Walk within-level part-whole links (composition, aggregation) in traces and derivations — part → whole downstream, whole → parts upstream — and never assignment or realization. | rows of kind composition / aggregation; `sdmm-graph trace --follow-composition` | H1 (module → ledger → platform); C3 (API → interface → component → deployment → environment) |
+| REQ-S-02 | Walk within-level part-whole links (composition, aggregation) in traces and derivations — part → whole downstream, whole → parts upstream — and never assignment or realization. | rows of kind composition / aggregation; `sdem-graph trace --follow-composition` | H1 (module → ledger → platform); C3 (API → interface → component → deployment → environment) |
 | REQ-S-03 | Treat the three A2 artefact rows as provenance only: Wireframe, Semantic API and BOM artefacts are never instantiated and never mapping endpoints. | RA2-15, RA2-16, RA2-17 (enforceable=false) | relationships test T4 (not testable by construction) |
-| REQ-M-01 | Emit registry proposals only for the nine relationship types, with the record fields the schema requires, at status `proposed`, with `confidence` as the plan's band and `evidence` typed against `required_evidence`. | schema/relationship-types.json; schema/mapping.schema.json | every run: `sdmm-validate --strict` on each proposal file |
+| REQ-M-01 | Emit catalogue-typed proposals only for the nine relationship types, with the record fields the schema requires, at status `proposed`, with `confidence` as the plan's band and `evidence` typed against `required_evidence`. | schema/relationship-types.json; schema/relationship-registry.schema.json | every run: `sdem-validate --strict` on each proposal file |
 | REQ-M-02 | S01: propose `SUPPORTED_BY` A1.BusinessCapability → A2.ServiceDomain at step 3 (medium); data: approved USES_DOMAIN for the capability's processes (step 3); fallback step 5 requires the full exported A2 landscape or at least 3 candidate domains — with fewer, no proposal (single-candidate inference is vacuous) | S01 | validated with findings: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (4 hits, 1 false — fixed) |
 | REQ-M-03 | S02: propose `ALIGNED_TO` A1.ValueStream → A2.BusinessScenario at step 4 (medium); data: A1.ValueStream attributes.stages (ordered) and A2.BusinessScenario attributes.operation_sequence; scored as coverage of the scenario's operations by stages, not a stage count | S02 | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (1 hits, 0 false) |
 | REQ-M-04 | S04: propose `USES_DOMAIN` A1.BusinessProcess → A2.ServiceDomain at step 3 (medium); data: A1.BusinessProcess (or its activities) attributes.invokes naming A2.ServiceOperation ids; otherwise step 4 verb+noun match of step text to operation names. A process exported without activities may be matched directly to operations by the S06 rule (E1 finding) | S04 | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (1 hits, 0 false) |
@@ -469,7 +469,7 @@ Plan coverage after the suite: 45 rows validated clean, 5 validated with finding
 | REQ-P-07 | Step 5 — bounded text inference: Only for S01 when step 3 produced nothing and for the A1 side of reverse cases, and S08: count shared non-generic concepts; propose at most one domain per capability, low, when the best shares ≥ 2 and leads by ≥ 1; the candidate set is the full exported landscape (two domains count) or at least three; otherwise no proposal. | S01, S08 | H1 (four right, two refused), C1 |
 | REQ-P-08 | Design targets: When no export exists below a level, state *mapping ends at <level>* and, only from BIAN's container pattern, generate planned A3/A4 instances with the `DSN-*` convention, canonical REST forms, low confidence, `created_by` naming the pattern and a rationale beginning *TARGET DESIGN, not a mapping*; never a platform or a data entity; traces mark planned instances as design. | guide § Design targets; M2 case | M2 (12 of 12; boundary stated) |
 | REQ-P-09 | Refusal discipline: No working → no proposal. Every attempt, including suppressed pairs, failed gates and ties, is logged with its data read, rule values, decision and outcome; negatives are the measure of precision. | guide §2 | every run: zero false proposals after v0.5.4 across M1, H1, H2 ×2, M2, C1, C2 (one in C3, fixed by rule) |
-| REQ-O-01 | Write the three output files in the shapes above; never write `approved` (except rules an architect has declared auto-approved); never edit an existing mapping set; proposals must pass `sdmm-validate --strict` with draft warnings only. | guide §4, §4b, §4c | every run |
+| REQ-O-01 | Write the three output files in the shapes above; never write `approved` (except rules an architect has declared auto-approved); never edit an existing relationship registry; proposals must pass `sdem-validate --strict` with draft warnings only. | guide §4, §4b, §4c | every run |
 | REQ-O-02 | Log every attempt, not only proposals: the inference log is the evidence base for the coverage table and for confidence calibration. | guide §4b | eleven logs, 812+ attempts |
 | REQ-A-01 | Reproduce every executor run from the committed inputs with precision ≥ the executor's and recall ≥ the executor's on each sealed gold; any difference is a finding on the engine or on the guide. | docs/use-case-testing.md | baseline established by the eleven runs |
 | REQ-A-02 | Validate every example export and `examples/reference-structure` clean, and reject the relationships-test probes (reversed, mistyped, abstract, cross-level, uncatalogued). | §3 rows; relationships test T4 | Phase 1 probes; CI |

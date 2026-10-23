@@ -81,7 +81,7 @@
       "extends": null,
       "artefact": false,
       "definition": "A callable operation of an API contract",
-      "definition_source": "sdmm_extension",
+      "definition_source": "sdem_extension",
       "alignment_kind": "related",
       "reference": {
         "standard": "BIAN Semantic API",

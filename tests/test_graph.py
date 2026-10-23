@@ -1,8 +1,8 @@
 import re
 import copy, json, unittest
 from pathlib import Path
-from sdmm.graph import LevelGraph, FederatedGraph, IMPACT_RULES
-from sdmm.metamodel import Metamodel
+from sdem.graph import LevelGraph, FederatedGraph, IMPACT_RULES
+from sdem.metamodel import Metamodel
 
 ROOT = Path(__file__).resolve().parents[1]
 F = ROOT / 'examples/card-fraud-alerts'
@@ -94,7 +94,7 @@ class FederatedGraphTests(unittest.TestCase):
             self.fg.impact('SD-044', 'explode')
 
     def test_every_change_kind_has_rules_and_reason(self):
-        from sdmm.graph import IMPACT_REASONS
+        from sdem.graph import IMPACT_REASONS
         self.assertEqual(set(IMPACT_RULES), set(IMPACT_REASONS))
 
     def test_load_rejects_unclassifiable_file(self):
@@ -108,14 +108,14 @@ if __name__ == '__main__':
 
 class V051Tests(unittest.TestCase):
     def test_graph_trace_exits_1_on_empty_trace(self):
-        from sdmm.graph import main
+        from sdem.graph import main
         import io, contextlib
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(main(['trace', 'INF-ONPREM-VM-CLUSTER-B', '--direction', 'up'] + [str(p) for p in FILES]), 1)
             self.assertEqual(main(['trace', 'CAP-310', '--direction', 'down'] + [str(p) for p in FILES]), 0)
 
     def test_duplicate_arrow_collapses_to_one_hop(self):
-        from sdmm.trace import load_edges, walk
+        from sdem.trace import load_edges, walk
         doc = json.loads((F / 'mappings.json').read_text())
         dup = dict(doc['mappings'][0]); dup = json.loads(json.dumps(dup)); dup['mapping_id'] = 'DUP-1'; dup['status'] = 'proposed'
         edges = load_edges([{'mappings': doc['mappings'] + [dup]}], ('approved', 'proposed'))
@@ -124,7 +124,7 @@ class V051Tests(unittest.TestCase):
         self.assertEqual(t['children'][0]['via'].get('also'), ['DUP-1'])
 
     def test_strict_does_not_promote_draft_warnings(self):
-        from sdmm.validate import main
+        from sdem.validate import main
         import io, contextlib
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
@@ -284,7 +284,7 @@ class DesignTraceMarkerTests(unittest.TestCase):
     P = ROOT / 'examples/digital-lending'
 
     def test_trace_marks_planned_instances(self):
-        from sdmm.graph import render_trace
+        from sdem.graph import render_trace
         files = sorted(self.P.glob('a*.json')) + sorted(self.P.glob('m2-design-a*.json')) + [self.P / 'mappings.json', self.P / 'm2-proposals.json']
         fg = FederatedGraph.load(files)
         out = render_trace(fg.trace('CAP-LEND', 'down', ('approved', 'proposed')), 'down')
@@ -320,13 +320,13 @@ class TradeFinanceCoverageTests(unittest.TestCase):
 
 class WithinLevelConstraintTests(unittest.TestCase):
     def test_every_level_has_a_constraint_set(self):
-        from sdmm.metamodel import Metamodel
+        from sdem.metamodel import Metamodel
         mm = Metamodel.load()
         levels = {c['level'] for c in mm.relationships['constraints']}
         self.assertEqual(levels, {'A1', 'A2', 'A3', 'A4'})
 
     def test_archimate_kind_is_enforced_and_association_is_generic(self):
-        from sdmm.metamodel import Metamodel
+        from sdem.metamodel import Metamodel
         mm = Metamodel.load()
         self.assertIsNone(mm.relationship_issue('A3', 'A3.ApplicationComponent', 'assignment', 'A3.ApplicationFunction'))
         self.assertIsNotNone(mm.relationship_issue('A3', 'A3.ApplicationComponent', 'composition', 'A3.ApplicationFunction'))
@@ -341,7 +341,7 @@ class ReferenceStructureTests(unittest.TestCase):
     P = ROOT / 'examples/reference-structure'
 
     def test_generated_estate_is_current(self):
-        from sdmm.structure import render, FILES
+        from sdem.structure import render, FILES
         docs = render()
         for lvl, name in FILES.items():
             self.assertEqual(json.loads((self.P / name).read_text(encoding='utf-8')), docs[lvl])

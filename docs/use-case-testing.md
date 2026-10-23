@@ -1,6 +1,8 @@
 # Use-case testing of the mapping plan
 
-**Status:** ten use cases defined; all executed — E1, E2, M0, M1, M2, H1, H2 (two runs), C1, C2, C3 (see Results). **Purpose:** test `metamodel/new-mappings.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
+> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` now run as `sdem-*` (the old names still work in v0.7). See [`sdem-overview.md`](sdem-overview.md).
+
+**Status:** ten use cases defined; all executed — E1, E2, M0, M1, M2, H1, H2 (two runs), C1, C2, C3 (see Results). **Purpose:** test `metamodel/relationship-rules.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
 ## Protocol
 
@@ -11,7 +13,7 @@
 | 3 Validate | `sdmm-validate --strict` on the proposal document; `sdmm-graph check` with the exports | tool |
 | 4 Score | `sdmm-eval <gold> --proposals <proposals>` — precision / recall / F1 per arrow type; every miss and false proposal listed | tool |
 | 5 Trace | the traceability questions the case poses, via `sdmm-graph trace` / `impact` over the *approved* set, then over approved + proposed | tool |
-| 6 Compare | observed outcome against the confidence `new-mappings.json` predicted, per connection ID | executor, written up in the case's results section |
+| 6 Compare | observed outcome against the confidence `relationship-rules.json` predicted, per connection ID | executor, written up in the case's results section |
 
 **Honesty rules.** The gold set is sealed in a file first. Steps 1–3 are mechanical: every proposal cites the data or arrow it came from. The table's confidence is the hypothesis under test — a *high* that misses is a finding against the plan, not against the data. All data is synthetic.
 
@@ -374,7 +376,7 @@ CAP-310 → SD-044 (FRD-001 and P-E1-002, as two sibling branches) → APP-FRAUD
 
 #### Findings against the plan
 
-| # | Plan ID | What happened | Why | Proposed change to `new-mappings.json` (or the guide) |
+| # | Plan ID | What happened | Why | Proposed change to `relationship-rules.json` (or the guide) |
 |---|---|---|---|---|
 | 1 | S33 (also S32, S36, S50) | step 1 found no record naming the component; the approved `DEPLOYED_ON` was missed | `level-relationships.json` policy makes `relationships` within-level only, and `attributes` is a free-form object; the E1 A4 export has no `A4.Deployment` and no attribute referencing an A3 id. The join has no key | `data_needed`: name the export-side convention the join keys on (e.g. an A4 instance attribute `hosts`/`component_id` holding the A3 id, or a `cross_level_refs` field in `level-model.schema.json`). Then either add it to the E1 A4 export or state in E1 that S33 is a trace test only |
 | 2 | S24 | step 2 could test only rule 1; rules 2–4 had no data on either side | the A2 export carries name and description only; the A3 export encodes method and path in the instance id and has no payload fields. `data_needed` says what is needed but not where it lives in the export | `data_needed`: name attribute keys (`action_term`, `behaviour_qualifier`, `control_record_attributes`, `input`/`output` on A2; `method`, `path`, `payload_fields` on A3) so step 2 is mechanical. Enrich the E1 exports or declare S24 out of E1's scope. Note that FRD-004 exists at 0.71 yet cannot be reproduced by the rules — the existing proposed record is itself a name-overlap guess |
@@ -412,7 +414,7 @@ CAP-310 → SD-044 (FRD-001 and P-E1-002, as two sibling branches) → APP-FRAUD
 
 | Finding | Action |
 |---|---|
-| 1, 2, 9 — no join keys in the exports | `metamodel/export-conventions.json` defines the attribute keys steps 1–4 join on (`deployed_on`, `deployed_as`, `component_id`, `hosts`, `stored_in`, `action_term`, `behavior_qualifier`, `input/output_attributes`, `method`, `path`, `payload_fields`, `invokes`, …). The fraud exports now carry them, plus an `A4.Deployment` and an `A2.BusinessScenario`. `data_needed` in `new-mappings.json` names the keys |
+| 1, 2, 9 — no join keys in the exports | `metamodel/export-conventions.json` defines the attribute keys steps 1–4 join on (`deployed_on`, `deployed_as`, `component_id`, `hosts`, `stored_in`, `action_term`, `behavior_qualifier`, `input/output_attributes`, `method`, `path`, `payload_fields`, `invokes`, …). The fraud exports now carry them, plus an `A4.Deployment` and an `A2.BusinessScenario`. `data_needed` in `relationship-rules.json` names the keys |
 | 3 — Notify | Verified in [SAPG] §3.2.5: 17 action terms, Notify among them; §3.5: not used in the REST mapping. Guide rule 2 now lists all 17 and treats Notify (or any term outside the 17) as untestable → miss |
 | 4 — S17 fallback | Guide step 3 now defines a step-4 structural fallback for S17 (asset-type noun in API paths / entity names); description-only comparison is step 5, two bands lower |
 | 5 — single-candidate step 5 | Guide step 5 requires the full A2 landscape or ≥ 3 candidates; otherwise *single-candidate, no proposal*. S01 `data_needed` updated |
@@ -500,7 +502,7 @@ The two "false" proposals are both connections the M0 table told the executor to
 
 #### Findings against the plan
 
-| # | Plan ID | What happened | Why | Proposed change to `new-mappings.json` (or the guide / case) |
+| # | Plan ID | What happened | Why | Proposed change to `relationship-rules.json` (or the guide / case) |
 |---|---|---|---|---|
 | 1 | S24, S17 | the A2 export has no `A2.AssetType` instance, so step 2 rule 1's reverse test and S17's step-4 fallback both lacked their key; the executor substituted the domain description's nouns and marked it a convention | `export-conventions.json` defines no asset-type key; the B-constraint `A2.ServiceDomain -association-> A2.AssetType` exists but the fraud export does not instantiate it | add `A2.ServiceDomain.attributes.asset_type` (or require an `A2.AssetType` instance with the association) to `export-conventions.json`; name it in S17 and S24 `data_needed`; add it to the fraud A2 export. Until then, rule 1 reverse and S17 step 4 are "untestable → no proposal", not conventions |
 | 2 | S24 (case, gold) | a correct 3-of-4 step-2 proposal is scored false | the gold keeps FRD-004 as `proposed`; `sdmm-eval` gold = approved only; the M0 table nevertheless lists S24 as a connection to attempt at medium | either approve FRD-004 in `m0-gold-mappings.json` (the step-2 evidence — qualifier and 5/5 attributes — is stronger than the 0.71 name-overlap rationale it carries) or exclude S24 from the case's precision criterion. Longer term: `sdmm-eval` could score an "expected-proposed" tier so a case can assert "this should be proposed but not approved" |
@@ -541,7 +543,7 @@ The two "false" proposals are both connections the M0 table told the executor to
 | 2, 3, 8 — gold defects | FRD-004 approved (the step-2 evidence outweighs its name-overlap origin); FRD-008 `USES_DOMAIN` added approved; FRD-009 added as the new `proposed` demo record; `m0-gold-mappings.json` regenerated. The guide now states that `sdmm-eval` scores approved gold only |
 | 4 — S02 | four `A1.ValueStreamStage` instances and `VS-CARD-USE.attributes.stages` added; optional step-3 derivation for S02 recorded in the plan and guide |
 | 5 — derivation confidence | guide: a step-3 proposal over non-approved arrows takes min(plan band, weakest input band) |
-| 6 — S36 | folded into S33: an instance of the registry rule via the entity hierarchy; `new-mappings.json` marks it `subsumed` |
+| 6 — S36 | folded into S33: an instance of the registry rule via the entity hierarchy; `relationship-rules.json` marks it `subsumed` |
 | 7 — file names | `<uc>-proposals.json`, `<uc>-inference-log.json`; `use_case` allowed in the document schema; E1's overwritten file restored as `e1-proposals.json` |
 | 9 — parent capability | optional step-3 rule recorded on S01 (child `SUPPORTED_BY` D ⇒ parent candidate, low) |
 
@@ -616,7 +618,7 @@ VS-CARD-USE -ALIGNED_TO-> BS-FRAUD-ALERT (P-M0-006)
 
 #### Findings against the plan
 
-| # | Plan ID | What happened | Why | Proposed change to `new-mappings.json` (or the guide / case) |
+| # | Plan ID | What happened | Why | Proposed change to `relationship-rules.json` (or the guide / case) |
 |---|---|---|---|---|
 | 1 | S02, guide §3 step 4 | the stage-sequence rule failed on data that now has stages: 4 stages vs 1 operation is outside ± 1, and only 1/4 stage names match | the synthetic scenario has one operation; real BIAN scenarios span several operations and domains, but a stream will still usually have more stages than the scenario has operations, so an absolute count rule is the wrong shape | guide §3 step 4, S02: replace "same number of stages ± 1" with a coverage test — ≥ 60 % of the scenario's operations (or participating domains) are name-matched by stages, in order — and keep the stage-side ratio as the score. On this data that gives 1/1 operations covered, score 1/4 stages. M1's scenario must carry several operations so the rule is actually exercised |
 | 2 | S01, guide §3 step 3 | the optional parent-capability rule produced the only false proposal (CAP-300 → SD-044) | "parent of a supported child is partly supported" is a scope judgement, not a derivation; the gold author did not approve it and the case table predicts none | drop the optional parent rule from S01 (revert finding 9), or keep it report-only — quarantined under *New connection candidates* like a candidate rule — so it never enters the proposal file. Recommended: drop |
@@ -651,7 +653,7 @@ VS-CARD-USE -ALIGNED_TO-> BS-FRAUD-ALERT (P-M0-006)
 | Finding | Action |
 |---|---|
 | 1 — S02 stage rule | Guide step 4: value stream ↔ scenario is scored as **coverage of the scenario's operations** — each operation in `operation_sequence` matched, in order, by a stage whose name shares the operation's verb or asset; score = covered operations / operations; threshold ≥ 60 %. A stream with more stages than the scenario has operations is normal, not a failure |
-| 2 — parent-capability rule | Withdrawn as a proposal source. It is a scope judgement; kept **report-only**: a parent whose child is `SUPPORTED_BY` D goes to *New connection candidates*, never to the proposal file. `new-mappings.json` S01 updated |
+| 2 — parent-capability rule | Withdrawn as a proposal source. It is a scope judgement; kept **report-only**: a parent whose child is `SUPPORTED_BY` D goes to *New connection candidates*, never to the proposal file. `relationship-rules.json` S01 updated |
 | 3 — lower-step conflict | Guide §2: an optional step the plan lists for that ID in `reasoning` may be used even when numbered lower than the assigned step; the proposal is labelled `optional-step` and takes the band the plan gives it (low for S02's step-3 derivation) |
 | 4 — case text | Pass criterion says six arrows; S17 predicted medium under the cap; S02 and S01 rows restated |
 
@@ -748,7 +750,7 @@ mappings to supersede: P-M1-001, P-M1-003
 
 #### Findings against the plan
 
-| # | Plan ID | What happened | Why | Proposed change to `new-mappings.json` (or the guide / case) |
+| # | Plan ID | What happened | Why | Proposed change to `relationship-rules.json` (or the guide / case) |
 |---|---|---|---|---|
 | 1 | S24, guide §3 step 2 | the "three of four" clause admits **19 cross-matches** on a six-operation domain (Initiate → Amend, Update → Create, Retrieve → all six APIs, Notify → all six) | rule 1 is domain-level, so it is identical for every API of one component; rule 3 passes vacuously for null-qualifier operations (4 of 6 here); rule 4's 50 % bar is met by any payload carrying the reference and status; the rule has no per-operation or per-API exclusivity | guide §3 step 2: (i) count only *evidential* passes — a vacuous rule 3 and an untestable rule 2 are neither pass nor fail — and require three evidential passes, or two with rule 4 at 100 %; (ii) adopt M1-C1 (a)–(c) as the disambiguation rule: an operation's 4/4 pair excludes its 3/4 pairs, an API's 4/4 operation excludes other 3/4 pairs on it, remaining operations take the unique best rule-4 ratio or nothing; (iii) raise rule 4's threshold or weight it by attribute specificity (an attribute shared by every operation of the control record, like `payment_instruction_reference`, discriminates nothing). `S24.reasoning`: state that the four rules are necessary conditions, not a scoring function, and that exclusivity is part of the fill |
 | 2 | S33 (case, gold, data) | APP-PAY-HUB → INF-K8S-PAY-UAT proposed at high and scored false | the A4 export (`hosts`) and the UAT deployment record (`platform_id`) both state it; the A3 export's `deployed_on` omits it; the gold approves the UAT `DEPLOYED_AS` (PAY-110) but not the UAT `DEPLOYED_ON`; the guide accepts a one-sided record | decide the modelling question in the plan: either `DEPLOYED_ON` covers every environment (add PAY-113 to the gold — the data supports it as firmly as PAY-110) or `DEPLOYED_ON` is production hosting only (say so in `S33.reasoning`, and the gold's omission is right). Independently: guide step 1 — a two-sided record keeps the plan's band, a one-sided record drops one band; `sdmm-graph check` could warn when `hosts` / `platform_id` / `deployed_on` disagree |
@@ -794,7 +796,7 @@ mappings to supersede: P-M1-001, P-M1-003
 | 2 — UAT hosting | `DEPLOYED_ON` is environment-agnostic; the environment lives on the Deployment. PAY-113 (hub `DEPLOYED_ON` UAT platform) added to the gold; the A3 export's `deployed_on` lists both platforms. Run 1's one false proposal is correct under the restated gold → precision 1.0 |
 | 3 — confidence cap | A derivation is capped at the **strongest** input where any one input suffices (S17, S25, S22, S23) and at the weakest only where all are needed (S01) |
 | 4 — stage matching | Stages match on the operation's **action term**, never the asset noun |
-| 5 — Notify → event | Recorded as a structured new-connection candidate in `new-mappings.json` (`new_connection_candidates`); reported, never proposed, until it has an ID |
+| 5 — Notify → event | Recorded as a structured new-connection candidate in `relationship-rules.json` (`new_connection_candidates`); reported, never proposed, until it has an ID |
 
 **M1 is complete** on the plan's core: F1 0.96 on run 1, 1.0 under the restated gold. The step-2 rewrite is the significant improvement to carry into H1 and H2, where step 2 runs in reverse and under hostile naming.
 
@@ -896,7 +898,7 @@ The downstream trace from a capability stops at the module: `LM-ACCT` has no dep
 
 #### Findings against the plan
 
-| # | Plan ID | What happened | Why | Proposed change to `new-mappings.json` (or the guide / case) |
+| # | Plan ID | What happened | Why | Proposed change to `relationship-rules.json` (or the guide / case) |
 |---|---|---|---|---|
 | 1 | S24 precondition, guide §3 step 2 | the boundary gate as written (literal asset-type name in paths, entity names or description) passes for only two of four modules: "current account" occurs in one operation description of LM-ACCT and "payment transactions" in ENT-PAYMENT's description; "Financial Position" and "Party Reference" occur nowhere in LM-POST's or LM-PARTY's texts | legacy estates name things `POSTING_JRNL`, `CUST_MASTER`, `GetBalance`, `CreateCustomer`; BIAN names them Position, Party. A literal gate blocks exactly the reverse-mapping case it exists for; strictly, six of fourteen operations are never considered | guide: the gate reads the module's camel-split operation names, its paths, its entity names, and the descriptions of module, operations and entities; it passes when at least half the asset-type tokens, or a listed synonym or abbreviation, occur. `export-conventions.json`: an optional institution glossary (`aliases`: acct→account, txn→transaction, customer→party …) that steps 2 and 4 consult. The gate's looseness is acceptable because it is a filter, not evidence — here it also admitted SD-CA × LM-POST and SD-CA/SD-PK × LM-BATCH without harm |
 | 2 | S24 disambiguation, guide clause 4 | two ties the clause cannot break: SO-CA-03 Control (2 attributes) matches BlockAccount and AmendOverdraft at 2/2; SO-PRD-01 Register matches CreateCustomer and GetCustomer at 4/4. Neither operation has a qualifier, so the tie-break does not apply; the clause says "no proposal" | the clause excludes only pairs sharing an API or operation with a **decision-1** pair; it does not propagate uniquely resolved decision-2 pairs. GetCustomer is SO-PRD-02's unique best (5/5) and AmendOverdraft is SO-CA-04's unique best (3/3); once those are taken, each tie has one candidate left | guide clause 4: "Resolution is iterative: a pair that is its operation's unique candidate is assigned; its API and operation leave every other candidate set; repeat until nothing changes. Only ties that survive the fixpoint are no proposal." Two rounds sufficed here |
@@ -1040,7 +1042,7 @@ SD-SA -REALIZED_BY-> svc-vaults (P-H2-028) -DEPLOYED_ON-> INF-EKS-ZIPPA-PROD; -D
 
 #### Findings against the plan
 
-| # | Plan ID | What happened | Why | Proposed change to `new-mappings.json` (or the guide / case) |
+| # | Plan ID | What happened | Why | Proposed change to `relationship-rules.json` (or the guide / case) |
 |---|---|---|---|---|
 | 1 | S30, S20 (S12), guide §3 step 4 | the "≥ 50 % of the BIAN object's attributes" rule, applied literally, files **three cross pairs**: Payment Transaction → flows (4/8: debtor, creditor, amount, currency), Current Account → vaults (4/8), Savings Account → pots (4/8); the S20 analogues too | account-like and payment-like objects share four generic attributes; 50 % of eight is four | guide step 4: add the step-2 one-to-one clause — each BOM object takes its unique best entity, a resolved entity leaves other candidate sets, iterate to a fixpoint, ties → no proposal; and raise the threshold or require a reference attribute (a `*_reference`/id) among the matches. On this estate the fixpoint alone separates pots from vaults (6/8 beats 4/8) |
 | 2 | S17, guide §3 steps 3 and 5 | the S17 row allows description comparison "step 5, two bands lower"; the step-5 heading says step 5 is only for S01 and the A1 side. The executor followed the row and filed SD-SA → svc-vaults at 0.4 on {goal, interest}; the gold approves it | the two sections were written at different times; the case table followed the heading ("none for SA") | reconcile: step 5 heading lists S17 as a permitted fallback with the same threshold (≥ 2 non-generic shared concepts, lead ≥ 1, candidate set = all components); case H2 table: SA **low** via step 5 |
@@ -1171,7 +1173,7 @@ SD-SA -REALIZED_BY-> svc-vaults (P-H2R2-041) -DEPLOYED_ON-> INF-EKS-ZIPPA-PROD; 
 
 #### Findings against the plan
 
-| # | Plan ID | What happened | Why | Proposed change to `new-mappings.json` (or the guide / case) |
+| # | Plan ID | What happened | Why | Proposed change to `relationship-rules.json` (or the guide / case) |
 |---|---|---|---|---|
 | 1 | S24, guide clause 4 | two operations claimed one API at decision 1 in two places: SO-PI-02 Update (5/5) and SO-PI-04 Control (2/2) both on PATCH EP-03; SO-CA-03 Update (2/3) and SO-CA-04 Control (2/2) both on PUT EP-10. Clause 4 has no rule for this direction and "best payload match (highest overlap)" does not say whether overlap is a count or a ratio | field aliases make Control's two attributes (reference, status) a subset of every sibling operation's set, so Control reaches 100 % on several APIs | guide clause 4: "If several operations hold decision-1 pairs on one API, the API goes to the operation with the larger **absolute** overlap, then the higher **ratio**, then the qualifier in the path; a remaining tie is no proposal with all claimants named." Measured here: ratio-only loses Update Payment Instruction (EP-03 tie); absolute-only loses Control Current Account (EP-10 tie); first-come order files Update Current Account **falsely** and misses Control Current Account; the two-key rule reaches the gold on both. The executor knew the gold when choosing the key order (disclosed above) — the rule is justified on its own terms (a fuller match first, a complete match second) but the guide must own it |
 | 2 | S30, S20, conventions | `field_aliases` live on the interface; tables have none of their own | the convention was written for check 4; S30 reuses it | `export-conventions.json`: state that an entity inherits the field aliases of the interfaces of the components that access it (H2R2-C1), or allow `field_aliases` on `A3.DataEntity` directly |
@@ -1360,7 +1362,7 @@ OVERALL            12   12  12   0   0   1.00  1.00  1.00
 
 ## Plan coverage after the suite — all 69 entries
 
-Regenerated after C3 (2026-10-23) from `metamodel/new-mappings.json` and the eleven inference logs; counts are attempts logged under each plan ID across all runs. *n/a* rows were never candidates for a proposal by the plan's own decision: 14 are inside A2 and checked structurally on every export, 5 are not mappings.
+Regenerated after C3 (2026-10-23) from `metamodel/relationship-rules.json` and the eleven inference logs; counts are attempts logged under each plan ID across all runs. *n/a* rows were never candidates for a proposal by the plan's own decision: 14 are inside A2 and checked structurally on every export, 5 are not mappings.
 
 | Verdict | Entries |
 |---|---|

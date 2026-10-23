@@ -3,7 +3,7 @@
 Draft warnings on proposed records ("must be supplied before approval") are expected and ignored, as --strict does."""
 import copy, json, re, unittest
 from pathlib import Path
-from sdmm.validate import validate
+from sdem.validate import validate
 
 ROOT = Path(__file__).resolve().parents[1]
 

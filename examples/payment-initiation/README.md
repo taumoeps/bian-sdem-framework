@@ -14,7 +14,7 @@ The business and domain architecture are mapped and approved (`m1-mappings-given
 **Planted for the executor:** `API-PI-04` implements a *Retrieve* operation as **POST** (a legacy-channel constraint, recorded in the gold's rationale) — REST rule 2 must fail and be reported as a finding while rules 1, 3, 4 hold. `API-PI-06` (events) implements no operation; `SO-PI-06` (Notify) has no REST form. `CMP-PAY-CAPTURE` and `CMP-PAY-VALIDATE` have no deployment records of their own — no `DEPLOYED_ON` may be proposed for them. `ENT-ACCOUNT-CACHE` matches no BOM object. `SD-PE` and `SD-PA` realise nothing in this estate.
 
 ```bash
-python -m sdmm.graph check  examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
-python -m sdmm.validate --strict examples/payment-initiation/mappings.json
-python -m sdmm.graph trace CAP-PAY-010 --direction down examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
+python -m sdem.graph check  examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
+python -m sdem.validate --strict examples/payment-initiation/mappings.json
+python -m sdem.graph trace CAP-PAY-010 --direction down examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
 ```

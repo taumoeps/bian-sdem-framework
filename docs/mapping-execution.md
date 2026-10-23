@@ -1,8 +1,8 @@
 # Mapping execution guide — for the executor
 
-**Who this is for.** A model session (or an analyst) acting as the mapping engine for one use case in `docs/use-case-testing.md`. You are executing a **plan**, not designing one. The plan is `metamodel/new-mappings.json`; the data is the use case's level exports. Your job is to produce the connections the plan says can be produced, show the working for each, and report precisely where the plan did not work.
+**Who this is for.** A model session (or an analyst) acting as the inference engine for one use case in `docs/use-case-testing.md`. You are executing a **plan**, not designing one. The plan is `metamodel/relationship-rules.json`; the data is the use case's level exports. Your job is to produce the connections the plan says can be produced, show the working for each, and report precisely where the plan did not work.
 
-**Objective.** Test whether the connections in `new-mappings.json` are correct and producible from the data. Every miss, false proposal or forced guess is a finding that improves the plan. A clean run with no findings is less useful than an honest one.
+**Objective.** Test whether the connections in `relationship-rules.json` are correct and producible from the data. Every miss, false proposal or forced guess is a finding that improves the plan. A clean run with no findings is less useful than an honest one.
 
 ---
 
@@ -10,10 +10,10 @@
 
 Read, in this order:
 
-1. `metamodel/new-mappings.json` — every connection, its `rule_decision`, `fill_step`, `data_needed`, `reasoning`, `confidence`. This is your instruction set per connection.
+1. `metamodel/relationship-rules.json` — every connection, its `rule_decision`, `fill_step`, `data_needed`, `reasoning`, `confidence`. This is your instruction set per connection.
 2. `docs/mapping-logic-planning.md` §5.2 — the five steps and the direction of fill.
 3. The use case's section in `docs/use-case-testing.md` — the scenario, what is *given*, the connections it exercises, the expected outcomes.
-4. `schema/relationship-types.json` — the nine registry rules and their required evidence kinds.
+4. `schema/relationship-types.json` — the nine catalogue rules and their required evidence kinds.
 5. `metamodel/level-relationships.json` — the within-level relationship kinds you may read from the exports.
 6. `metamodel/export-conventions.json` — the attribute keys on export instances that steps 1–4 join on. **If an export lacks the key a step needs, that is a finding about the export, and the step produces no proposal.**
 
@@ -23,7 +23,7 @@ Do **not** read the use case's gold set (`<uc>-gold-mappings.json` or `gold-mapp
 
 | Rule | Meaning |
 |---|---|
-| **Use only the connections in the plan.** | A proposal must correspond to an ID in `new-mappings.json`. The `source`/`target` entity types of your proposal must be the ID's `source`/`target` (or, for A4, a concrete descendant of `A4.InfrastructureComponent`). |
+| **Use only the connections in the plan.** | A proposal must correspond to an ID in `relationship-rules.json`. The `source`/`target` entity types of your proposal must be the ID's `source`/`target` (or, for A4, a concrete descendant of `A4.InfrastructureComponent`). |
 | **New connections are allowed but quarantined.** | If the data clearly supports a connection that no ID covers, record it in the **New connection candidates** section of the report, not in the proposal document. Give its entity pair, the step that found it, reasoning and confidence. It is a proposed addition to the plan, not a result. |
 | **Follow the step the plan assigns.** | Use the ID's `fill_step`. You may fall back to a *higher-numbered* step only if the assigned step cannot produce the connection from the data, and you must say so in the working. Never use a lower step than assigned (e.g. do not "derive" what the plan says must come from data) — **except** an optional step the plan's `reasoning` for that ID explicitly lists (e.g. S02's step-3 derivation); use it only after the assigned step has failed, label the proposal `optional-step`, and give it the band the plan states for that option. |
 | **Show the working for every proposal.** | Step 1: the export record(s) joined. Step 2: the rule(s) fired and the values compared. Step 3: the approved arrows closed over, by `mapping_id`. Step 4: the attributes/paths/positions matched and the score. Step 5: the texts compared and why. No working → no proposal. |
@@ -122,7 +122,7 @@ Mapping connects things that exist. When a case has **no export below some level
 - Instances go in a separate export per level (`<uc>-design-a3.json`, `<uc>-design-a4.json`), every one `lifecycle_status: planned`, ids by the case's convention (`DSN-APP-<domain>`, `DSN-API-<operation>`, `DSN-DEP-<domain>`), each API with `method`, `path` and `payload_fields` from the canonical REST forms.
 - Arrows go in the proposal file at **low** confidence, `created_by` naming the pattern source, rationale beginning **TARGET DESIGN, not a mapping**.
 - Nothing is invented that the pattern does not give: no platform (`DEPLOYED_ON`), no data entity (`MAPPED_TO`), no environment name.
-- `sdmm-graph trace` marks planned instances `[DESIGN — planned, not observed]`; a design chain is never reported as traceability.
+- `sdem-graph trace` marks planned instances `[DESIGN — planned, not observed]`; a design chain is never reported as traceability.
 
 ### Step 5 — Text inference
 Only for S01 when step 3 produced nothing (capability with no mapped processes), and for the A1 side of hard cases. Compare the capability description with each candidate domain's description (name, description, asset type and aliases). Count **shared concepts**: content words after stop-word removal, excluding generic banking words (`bank, customer, manage, account, service, process, record, data`) — these appear everywhere and are not evidence. Propose at most **one** domain per capability, low confidence, with the two texts quoted and the shared concepts named, **only when** the best domain shares **≥ 2 concepts** and leads the runner-up by **≥ 1** (H1 finding 3). **The candidate set must be the full exported A2 landscape, or at least three domains** — *full landscape takes precedence*: when the export holds only two domains and both are compared, the ranking is valid (C1 reading 3); with a single domain, record *single-candidate, no proposal*. Otherwise **no proposal**.
@@ -154,7 +154,7 @@ One file per use case: `examples/<example>/<uc>-proposals.json` (e.g. `m0-propos
 }
 ```
 
-Rules: `evidence[0]` starts with `engine_rationale:` and names the plan ID and step. Only registry relationships may be used (the nine); candidate-rule connections (S20, S21, S25, S28, S29) and institution-only ones (S36, S50) are reported in the **Candidate-rule proposals** section of the report in the same record shape, not in this file, because the validator will reject their relationship.
+Rules: `evidence[0]` starts with `engine_rationale:` and names the plan ID and step. Only catalogued relationship types may be used (the nine); candidate-rule connections (S20, S21, S25, S28, S29) and institution-only ones (S36, S50) are reported in the **Candidate-rule proposals** section of the report in the same record shape, not in this file, because the validator will reject their relationship.
 
 ## 4b. Output — the inference log
 
@@ -172,7 +172,7 @@ Alongside the proposal file, write `examples/<example>/<uc>-inference-log.json`:
       "confidence_predicted": "high", "confidence_given": 0.8,
       "proposal_id": "P-M0-001",
       "outcome": "hit | miss | false | no_proposal",
-      "outcome_note": "filled in phase 6 after sdmm-eval"
+      "outcome_note": "filled in phase 6 after sdem-eval"
     }
   ]
 }
@@ -180,32 +180,32 @@ Alongside the proposal file, write `examples/<example>/<uc>-inference-log.json`:
 
 `outcome` is set after scoring: **hit** (proposal matches gold), **false** (proposal not in gold), **miss** (gold connection with no proposal — one record per missed gold arrow), **no_proposal** (attempted, nothing proposed, with the reason in `reasoning`). Every plan ID the use case lists must appear at least once.
 
-`sdmm-eval` scores proposals against **approved** gold only. If a case lists a connection whose gold record is `proposed`, it will be scored false — the case must either approve it in the gold or exclude it from the precision criterion (M0 finding 2).
+`sdem-eval` scores proposals against **approved** gold only. If a case lists a connection whose gold record is `proposed`, it will be scored false — the case must either approve it in the gold or exclude it from the precision criterion (M0 finding 2).
 
 ## 4c. Candidate-rule reports as a scored file
 
-Rows the plan marks `candidate_rule`, `conditional_rule`, `institution_only` or `derived_path` never become registry proposals — but they are tested. Write every candidate report to `examples/<example>/<uc>-candidates.json` in the mapping-document shape with **`relationship` = the plan ID** (e.g. `"S06"`), `status: proposed`, `created_by: candidate_rule:<ID>`, the plan's band as `confidence`, and the working in `rationale`. The file is not a registry document and is not validated by `sdmm-validate`; it is scored:
+Rows the plan marks `candidate_rule`, `conditional_rule`, `institution_only` or `derived_path` never become catalogue-typed proposals — but they are tested. Write every candidate report to `examples/<example>/<uc>-candidates.json` in the mapping-document shape with **`relationship` = the plan ID** (e.g. `"S06"`), `status: proposed`, `created_by: candidate_rule:<ID>`, the plan's band as `confidence`, and the working in `rationale`. The file is not a registry document and is not validated by `sdem-validate`; it is scored:
 
 ```
-python -m sdmm.evaluate examples/<example>/<uc>-gold-candidates.json --proposals examples/<example>/<uc>-candidates.json
+python -m sdem.evaluate examples/<example>/<uc>-gold-candidates.json --proposals examples/<example>/<uc>-candidates.json
 ```
 
 which reports precision / recall per plan ID. The same refusal discipline applies: no working, no report.
 
 **`DEPLOYED_ON` fans out per host layer.** A component on a node pool, a runtime on that pool and an appliance has three `DEPLOYED_ON` arrows; each is approved on its own evidence. **Network zone wins.** When `A3.ApplicationComponent.network_zone` and `A4.CommunicationNetwork.connects` disagree, report S37 on the zone and record the disagreement as a finding.
 
-**`DEPLOYED_ON` by target entity.** Log a `DEPLOYED_ON` attempt under S33 when the A4 target is `SystemSoftware` (S36 is subsumed there), under **S34** when it is a `Node`, under **S35** when it is a `Device`. One registry rule, three plan rows.
+**`DEPLOYED_ON` by target entity.** Log a `DEPLOYED_ON` attempt under S33 when the A4 target is `SystemSoftware` (S36 is subsumed there), under **S34** when it is a `Node`, under **S35** when it is a `Device`. One catalogue rule, three plan rows.
 
 ## 5. Judge, then score
 
 ```bash
-python -m sdmm.graph check  examples/<example>/a*.json examples/<example>/<uc>-mappings-given.json examples/<example>/<uc>-proposals.json
-python -m sdmm.validate --strict examples/<example>/<uc>-proposals.json
-python -m sdmm.evaluate examples/<example>/<uc>-gold-mappings.json --proposals examples/<example>/<uc>-proposals.json
-python -m sdmm.graph trace <id> --direction down examples/<example>/a*.json examples/<example>/<uc>-mappings-given.json examples/<example>/<uc>-proposals.json --status approved,proposed
+python -m sdem.graph check  examples/<example>/a*.json examples/<example>/<uc>-mappings-given.json examples/<example>/<uc>-proposals.json
+python -m sdem.validate --strict examples/<example>/<uc>-proposals.json
+python -m sdem.evaluate examples/<example>/<uc>-gold-mappings.json --proposals examples/<example>/<uc>-proposals.json
+python -m sdem.graph trace <id> --direction down examples/<example>/a*.json examples/<example>/<uc>-mappings-given.json examples/<example>/<uc>-proposals.json --status approved,proposed
 ```
 
-Only now open `gold-mappings.json`. Paste the `sdmm-eval` output verbatim into the report.
+Only now open `gold-mappings.json`. Paste the `sdem-eval` output verbatim into the report.
 
 ## 6. Report — append to `docs/use-case-testing.md` under *Results*
 
@@ -218,7 +218,7 @@ Only now open `gold-mappings.json`. Paste the `sdmm-eval` output verbatim into t
 #### Candidate-rule and institution-only proposals (not in the proposal file)
 <same table>
 
-#### sdmm-eval
+#### sdem-eval
 <verbatim output>
 
 #### Predicted vs observed, per plan ID
@@ -226,7 +226,7 @@ Only now open `gold-mappings.json`. Paste the `sdmm-eval` output verbatim into t
 | S24 | high | 5/6 hit, 1 false | holds / weaker than predicted / failed |
 
 #### Findings against the plan
-| # | Plan ID | What happened | Why | Proposed change to new-mappings.json |
+| # | Plan ID | What happened | Why | Proposed change to relationship-rules.json |
 | 1 | S36 | data had it; plan says institution-only | ... | promote to enterprise_rule? |
 
 #### New connection candidates (outside the plan)
@@ -236,7 +236,7 @@ Only now open `gold-mappings.json`. Paste the `sdmm-eval` output verbatim into t
 | Plan ID | Instances considered | Why no proposal |
 ```
 
-**Query-only cases** (E1, E2: everything approved, nothing to infer) replace *Proposals* and *sdmm-eval* with:
+**Query-only cases** (E1, E2: everything approved, nothing to infer) replace *Proposals* and *sdem-eval* with:
 
 ```
 #### Tests
@@ -252,6 +252,6 @@ Every row in *Findings* must say what to change: the ID's `fill_step`, `confiden
 - Every proposal traceable to a record, a rule, an arrow or a scored match.
 - At least one *no proposal* with a reason.
 - The planted mismatch (where the case has one) surfaced as a finding.
-- `sdmm-validate --strict` passes on the proposal file: draft warnings (missing evidence kinds, `bian_release`, `canonical_id` on proposed records) are reported but not promoted to errors under `--strict`.
+- `sdem-validate --strict` passes on the proposal file: draft warnings (missing evidence kinds, `bian_release`, `canonical_id` on proposed records) are reported but not promoted to errors under `--strict`.
 - Predicted-vs-observed filled for every ID the case exercises, including the ones that failed.
 - `inference-log.json` written, with an `outcome` on every attempt.

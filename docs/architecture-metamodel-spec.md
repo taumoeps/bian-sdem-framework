@@ -1,29 +1,31 @@
-# BIAN Service Domain Mapping Model (SDMM)
+# Service Domain Enterprise Metamodel (SDEM)
+
+> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` now run as `sdem-*` (the old names still work in v0.7). See [`sdem-overview.md`](sdem-overview.md).
 ## v0.4 track — Entity Metamodel, Bank Architecture Profiles and BIAN Verification Register
 
 **Status:** Proposed design baseline for implementation (not a BIAN or Open Group standard)
 **Version:** 0.4.0 — implemented (catalogue, hierarchy, verdicts, `DEPLOYED_AS`, level-model exports and federated graph shipped in v0.4.0; profiles and the verification register follow as v0.4.1 / v0.4.2). Draft lineage: 0.3-draft.1 → 0.4-draft.3 (supersedes 0.3-draft.1 after review; renumbered because v0.3 is published as `sdmm-trace`; §14 decisions recorded)
 **Prepared:** 22 October 2026
-**Architecture scope:** SDMM-defined A1 Business / A2 BIAN Service Domain / A3 Application / A4 Infrastructure
+**Architecture scope:** SDEM-defined A1 Business / A2 BIAN Service Domain / A3 Application / A4 Infrastructure
 **Compatibility commitment:** every v0.2.1 mapping document validates unchanged under every v0.4.x release.
 
 ---
 
 ## 1. Purpose and outcome
 
-The v0.4 track gives SDMM a **bank-neutral, standards-traceable entity vocabulary** for all four levels, an **entity hierarchy** so the existing relationship registry can accept specialised endpoint entities, an **Architecture Profile** mechanism that maps an institution's own A1–A4 concepts onto that vocabulary, and a **verification register** that records how each BIAN-derived claim was checked without reproducing BIAN content.
+The v0.4 track gives SDEM a **bank-neutral, standards-traceable entity vocabulary** for all four levels, an **entity hierarchy** so the existing relationship registry can accept specialised endpoint entities, an **Architecture Profile** mechanism that maps an institution's own A1–A4 concepts onto that vocabulary, and a **verification register** that records how each BIAN-derived claim was checked without reproducing BIAN content.
 
-A successful v0.4 enables a sample bank to (a) register its own `BusinessFunction`, `SolutionBuildingBlock` and `CloudResource` types, (b) map them to SDMM core entities through a profile, (c) resolve actual instance IDs and versions, (d) validate an authored A1→A4 chain, and (e) see, for every BIAN-derived type, whether its definition has been verified against a named release. It **does not** infer which BIAN domain is semantically correct, store within-level relationships, implement a persistent federated graph, or perform impact analysis.
+A successful v0.4 enables a sample bank to (a) register its own `BusinessFunction`, `SolutionBuildingBlock` and `CloudResource` types, (b) map them to SDEM core entities through a profile, (c) resolve actual instance IDs and versions, (d) validate an authored A1→A4 chain, and (e) see, for every BIAN-derived type, whether its definition has been verified against a named release. It **does not** infer which BIAN domain is semantically correct, store within-level relationships, implement a persistent federated graph, or perform impact analysis.
 
 ### 1.1 Normative boundary
 
 1. **`bian_reference`:** authoritative only for definitions and relations present in a pinned BIAN release and recorded in the verification register.
-2. **`archimate_native` / `archimate_aligned`:** SDMM abstraction corresponding to an ArchiMate 3.2 concept; `native` only when definition and semantics match.
-3. **`togaf_informed`:** content governance, building blocks and tailoring methodology; TOGAF is not SDMM's element-type vocabulary.
+2. **`archimate_native` / `archimate_aligned`:** SDEM abstraction corresponding to an ArchiMate 3.2 concept; `native` only when definition and semantics match.
+3. **`togaf_informed`:** content governance, building blocks and tailoring methodology; TOGAF is not SDEM's element-type vocabulary.
 4. **`sdmm_extension`:** portable neutral types introduced for the A1–A4 lifecycle, with origin recorded.
 5. **`bank_extension`:** a profile's own types. A profile mapping asserts equivalence only to the degree its `alignment_kind` states.
 
-SDMM's A1–A4 decomposition is local to SDMM and is not an official BIAN layering convention. BIAN Service Domains are logical partitions of banking functionality, not deployable microservices. BIAN Business Scenarios are illustrative, not prescriptive.
+SDEM's A1–A4 decomposition is local to SDEM and is not an official BIAN layering convention. BIAN Service Domains are logical partitions of banking functionality, not deployable microservices. BIAN Business Scenarios are illustrative, not prescriptive.
 
 ### 1.2 Two taxonomies, deliberately distinct
 
@@ -40,7 +42,7 @@ Registry self-check (new): a rule with `bian_*` authority must have at least one
 
 Per-entity provenance — which public standard each of the 41 entities derives from, with the public source — is maintained in `docs/reference-architecture-provenance.md`.
 
-| Ref | Source | Contributes | SDMM use | Caveat |
+| Ref | Source | Contributes | SDEM use | Caveat |
 |---|---|---|---|---|
 | R1 | BIAN Service Landscape 14.0 — InSite portal, publicly browsable at https://bian.org/servicelandscape-14-0-0/ | Business Areas/Domains, Service Domains, Service Groups/Operations, Functional Patterns, Asset Types, Control Records, Wireframes, MetaModel Overview | A2 structural anchor | Browsable without login; **no licence text on the portal**, so reproduction of definitions, diagrams or datasets is treated as not permitted. Verification = reading and recording, never copying |
 | R2 | BIAN Business Capability Model (release notes v13.0 / v14.0) | Capabilities; the BCM↔Service Landscape mapping is work in progress and unpublished; value streams not yet modelled | A1→A2 methodology — intent only | No published alignment to consult; an engine must infer |
@@ -48,13 +50,13 @@ Per-entity provenance — which public standard each of the 41 entities derives 
 | R4 | BIAN Semantic APIs / Service Operations / Business Scenarios | Operations, interfaces, behaviour qualifiers, scenarios | A2 behaviour; A2→A3 contract alignment | Logical contracts, not the bank's physical APIs |
 | R5 | ArchiMate 3.2 (The Open Group) | Business, Application, Technology, Motivation concepts and relationships | A1/A3/A4 core element types | Synonyms tagged `aligned` or `extension`, never passed off as native |
 | R6 | TOGAF 10, Architecture Content | Building blocks, content governance, tailoring | Profiles; `SolutionBuildingBlock` | No cloud-specific vocabulary |
-| R7 | SDMM v0.2.1 registry, schema, validator, `sdmm-diff` | Eight cross-level relationship types, approvals, evidence, immutability | Compatibility baseline | Edge names are SDMM proposals |
+| R7 | SDEM v0.2.1 registry, schema, validator, `sdmm-diff` | Eight cross-level relationship types, approvals, evidence, immutability | Compatibility baseline | Edge names are SDEM proposals |
 
 ---
 
 ## 3. Entity record
 
-**Vocabulary.** An **entity** is an item of the SDMM vocabulary — a kind of thing, such as `A2.ServiceDomain`; there are 41 in core. An **entity instance** is an actual element of a bank's architecture of that kind — `SD-044`, the Fraud Detection domain — and lives in the bank's own level model. A mapping's endpoints are **entity references**: pointers to instances, carrying the instance's `id`, its entity (the `type` field) and its `version`.
+**Vocabulary.** An **entity** is an item of the SDEM vocabulary — a kind of thing, such as `A2.ServiceDomain`; there are 41 in core. An **entity instance** is an actual element of a bank's architecture of that kind — `SD-044`, the Fraud Detection domain — and lives in the bank's own level model. A mapping's endpoints are **entity references**: pointers to instances, carrying the instance's `id`, its entity (the `type` field) and its `version`.
 
 Every entity in `metamodel/` records:
 
@@ -63,8 +65,8 @@ Every entity in `metamodel/` records:
   "type": "A2.ServiceDomain",
   "level": "A2",
   "abstract": false,
-  "extends": null,                                   // parent SDMM entity, or null
-  "definition": "Discrete functional scope of the bank and its responsibilities",   // SDMM paraphrase, never quoted text
+  "extends": null,                                   // parent SDEM entity, or null
+  "definition": "Discrete functional scope of the bank and its responsibilities",   // SDEM paraphrase, never quoted text
   "definition_source": "bian_reference",
   "alignment_kind": "exact",                         // exact | specialization | related | conceptual | none
   "reference": { "standard": "BIAN Service Landscape", "release": "14.0", "concept": "Service Domain",
@@ -180,7 +182,7 @@ Moved to the **`example-cloud` profile** (§7): `ComputeResource`, `ContainerPla
 
 ### 6.1 Within-level relationships are out of scope — decided
 
-SDMM stores **only** cross-level edges. Relationships inside a level (capability decomposition, component composition, deployment-runs-on-node) belong to that level's own model and are never SDMM mapping records. The registry self-check continues to reject same-level and level-skipping rules. Profiles may *describe* a bank's within-level relationship types for documentation, but nothing in SDMM reads or validates them.
+SDEM stores **only** cross-level edges. Relationships inside a level (capability decomposition, component composition, deployment-runs-on-node) belong to that level's own model and are never SDEM mapping records. The registry self-check continues to reject same-level and level-skipping rules. Profiles may *describe* a bank's within-level relationship types for documentation, but nothing in SDEM reads or validates them.
 
 ### 6.2 Cross-level registry
 
@@ -345,9 +347,9 @@ No `sdmm/resolver.py`: resolvers stay in `reference.py`.
 - **[R4]** BIAN Semantic API Practitioner Guide: https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf
 - **[R5]** ArchiMate 3.2: https://www.opengroup.org/archimate-licensed-downloads
 - **[R6]** TOGAF Standard: https://www.opengroup.org/togaf
-- **[R7]** SDMM: https://github.com/taumoeps/bian-sdmm-framework
+- **[R7]** SDEM: https://github.com/taumoeps/bian-sdmm-framework
 
-Nothing from R1–R6 is reproduced in this repository. Type `definition` fields are SDMM paraphrases. `reference.uri` points to the official source; it never substitutes for it. SDMM is independent of, and not endorsed by, BIAN or The Open Group.
+Nothing from R1–R6 is reproduced in this repository. Type `definition` fields are SDEM paraphrases. `reference.uri` points to the official source; it never substitutes for it. SDEM is independent of, and not endorsed by, BIAN or The Open Group.
 
 ---
 
@@ -360,4 +362,4 @@ Nothing from R1–R6 is reproduced in this repository. Type `definition` fields 
 | 3 | Register `verified_by` | A **role** (e.g. `lead-domain-architect`) in the public register. An institution's private copy may record the individual |
 | 4 | `source_system` on references | Optional in core. Mandatory in the institution's own profile from first use, because it is trivial to add at authoring time and costly to backfill |
 
-**Approval criterion (unchanged):** no SDMM entity may claim canonical-standard status without a release-specific verification record.
+**Approval criterion (unchanged):** no SDEM entity may claim canonical-standard status without a release-specific verification record.

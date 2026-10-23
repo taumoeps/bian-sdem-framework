@@ -1,17 +1,19 @@
 # Reference architecture provenance
 
-**Purpose.** Every entity in the SDMM vocabulary is derived from a **publicly available reference architecture** — BIAN, ArchiMate or TOGAF — or is a documented SDMM extension of one. No entity is derived from, named after, or copied from any institution's own architecture model. This table is the evidence for that claim and must be kept current whenever the catalogue changes.
+> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` now run as `sdem-*` (the old names still work in v0.7). See [`sdem-overview.md`](sdem-overview.md).
 
-**How to read it.** *Reference architecture* is the public standard the entity is drawn from; *concept* is that standard's own name for it; *classification* is SDMM's `definition_source` / `alignment_kind`; *public source* is where the concept's definition is published; BIAN sources are open, Open Group sources need a free account to read online. SDMM paraphrases definitions and never reproduces standard text, diagrams or datasets.
+**Purpose.** Every entity in the SDEM vocabulary is derived from a **publicly available reference architecture** — BIAN, ArchiMate or TOGAF — or is a documented SDEM extension of one. No entity is derived from, named after, or copied from any institution's own architecture model. This table is the evidence for that claim and must be kept current whenever the catalogue changes.
+
+**How to read it.** *Reference architecture* is the public standard the entity is drawn from; *concept* is that standard's own name for it; *classification* is SDEM's `definition_source` / `alignment_kind`; *public source* is where the concept's definition is published; BIAN sources are open, Open Group sources need a free account to read online. SDEM paraphrases definitions and never reproduces standard text, diagrams or datasets.
 
 | `definition_source` | Meaning |
 |---|---|
 | `bian_reference` | The concept is a named element of the BIAN Service Landscape, BOM or Control Record Model, readable on the public InSite portal. Status stays `pending_release_validation` until a verification-register entry records a check against the pinned release |
-| `bian_aligned` | SDMM concept grounded in BIAN alignment guidance rather than a landscape element |
+| `bian_aligned` | SDEM concept grounded in BIAN alignment guidance rather than a landscape element |
 | `archimate_native` | Exact correspondence to an ArchiMate 3.2 element |
 | `archimate_aligned` | Related to an ArchiMate 3.2 element; not claimed as identical |
 | `togaf_informed` | Drawn from TOGAF 10 content guidance |
-| `sdmm_extension` | SDMM's own portable concept, introduced where the standards leave a gap; origin recorded |
+| `sdmm_extension` | SDEM's own portable concept, introduced where the standards leave a gap; origin recorded |
 
 Public sources used throughout:
 
@@ -29,9 +31,9 @@ Public sources used throughout:
 |---|---|---|---|---|
 | `A1.BusinessCapability` | BIAN BCM; ArchiMate Strategy layer | Business Capability; Capability | `bian_aligned` / conceptual | [BIAN-BCM]; [AM] ch. 7 |
 | `A1.ValueStream` | ArchiMate Strategy layer; BIAN BCM alignment | Value Stream | `archimate_native` / exact | [AM] ch. 7; [BIAN-BCM] |
-| `A1.ValueStreamStage` | SDMM extension of ArchiMate Value Stream | — (stage decomposition) | `sdmm_extension` / specialization | [AM] ch. 7 (parent) |
+| `A1.ValueStreamStage` | SDEM extension of ArchiMate Value Stream | — (stage decomposition) | `sdmm_extension` / specialization | [AM] ch. 7 (parent) |
 | `A1.BusinessProcess` | ArchiMate Business layer | Business Process | `archimate_native` / exact | [AM] ch. 8 |
-| `A1.BusinessActivity` | SDMM extension of ArchiMate Business Process | — (process decomposition) | `sdmm_extension` / conceptual | [AM] ch. 8 (parent) |
+| `A1.BusinessActivity` | SDEM extension of ArchiMate Business Process | — (process decomposition) | `sdmm_extension` / conceptual | [AM] ch. 8 (parent) |
 | `A1.BusinessService` | ArchiMate Business layer | Business Service | `archimate_native` / exact | [AM] ch. 8 |
 | `A1.BusinessActor` | ArchiMate Business layer | Business Actor | `archimate_native` / exact | [AM] ch. 8 |
 | `A1.BusinessRole` | ArchiMate Business layer | Business Role | `archimate_native` / exact | [AM] ch. 8 |
@@ -68,7 +70,7 @@ All `bian_reference`; all `pending_release_validation` until registered against 
 | `A3.ApplicationService` | ArchiMate Application layer | Application Service | `archimate_native` / exact | [AM] ch. 9 |
 | `A3.ApplicationInterface` | ArchiMate Application layer | Application Interface | `archimate_native` / exact | [AM] ch. 9 |
 | `A3.ApplicationFunction` | ArchiMate Application layer | Application Function | `archimate_native` / exact | [AM] ch. 9 |
-| `A3.APIOperation` | SDMM extension; aligned to BIAN Semantic API operations and OpenAPI | — | `sdmm_extension` / aligned | [BIAN-API] |
+| `A3.APIOperation` | SDEM extension; aligned to BIAN Semantic API operations and OpenAPI | — | `sdmm_extension` / aligned | [BIAN-API] |
 | `A3.DataEntity` | ArchiMate Application layer | Data Object | `archimate_aligned` / related | [AM] ch. 9 |
 | `A3.Event` | ArchiMate Application layer | Application Event | `archimate_aligned` / related | [AM] ch. 9 |
 | `A3.SolutionBuildingBlock` | TOGAF Architecture Content | Solution Building Block | `togaf_informed` / conceptual | [TOGAF] Architecture Content |
@@ -77,9 +79,9 @@ All `bian_reference`; all `pending_release_validation` until registered against 
 
 | Entity | Reference architecture | Concept | Classification | Public source |
 |---|---|---|---|---|
-| `A4.InfrastructureComponent` *(abstract)* | SDMM compatibility supertype | — | `sdmm_extension` | — |
-| `A4.Deployment` | SDMM extension of ArchiMate Artifact assigned to Node | — | `sdmm_extension` / composite | [AM] ch. 10 (parents) |
-| `A4.DeploymentEnvironment` | SDMM extension of ArchiMate Node grouping | — | `sdmm_extension` | [AM] ch. 10 (parent) |
+| `A4.InfrastructureComponent` *(abstract)* | SDEM compatibility supertype | — | `sdmm_extension` | — |
+| `A4.Deployment` | SDEM extension of ArchiMate Artifact assigned to Node | — | `sdmm_extension` / composite | [AM] ch. 10 (parents) |
+| `A4.DeploymentEnvironment` | SDEM extension of ArchiMate Node grouping | — | `sdmm_extension` | [AM] ch. 10 (parent) |
 | `A4.Node` | ArchiMate Technology layer | Node | `archimate_native` / exact | [AM] ch. 10 |
 | `A4.Device` | ArchiMate Technology layer | Device | `archimate_native` / exact | [AM] ch. 10 |
 | `A4.SystemSoftware` | ArchiMate Technology layer | System Software | `archimate_native` / exact | [AM] ch. 10 |
@@ -108,8 +110,8 @@ Each extends a core ArchiMate-derived entity. They exist to show how a profile s
 
 ## Provenance statement
 
-1. **Origin.** Of the 41 core entities, 13 derive from BIAN (12 `bian_reference`, 1 `bian_aligned`), 21 from ArchiMate 3.2, 1 from TOGAF, and 6 are SDMM extensions (`ValueStreamStage`, `BusinessActivity`, `APIOperation`, `Deployment`, `DeploymentEnvironment`) or the compatibility supertype `InfrastructureComponent`. All reference material is publicly readable at the sources above.
+1. **Origin.** Of the 41 core entities, 13 derive from BIAN (12 `bian_reference`, 1 `bian_aligned`), 21 from ArchiMate 3.2, 1 from TOGAF, and 6 are SDEM extensions (`ValueStreamStage`, `BusinessActivity`, `APIOperation`, `Deployment`, `DeploymentEnvironment`) or the compatibility supertype `InfrastructureComponent`. All reference material is publicly readable at the sources above.
 2. **No institutional content.** No entity, name, definition or relationship in this catalogue is taken from any bank's or vendor's architecture model. Institution-specific entities belong in that institution's private profile and never in this repository.
-3. **No reproduction.** Definitions in the catalogue are SDMM paraphrases. No text, diagram, identifier list or dataset from BIAN or The Open Group is reproduced. `reference.uri` fields point to the public source; they do not substitute for it.
+3. **No reproduction.** Definitions in the catalogue are SDEM paraphrases. No text, diagram, identifier list or dataset from BIAN or The Open Group is reproduced. `reference.uri` fields point to the public source; they do not substitute for it.
 4. **Verification.** `bian_reference` entities are published as `pending_release_validation` and become `confirmed_in_official_source` only through an entry in `metamodel/verification/` recording who checked what, where and when (v0.4.2).
-5. **Trademarks.** BIAN®, ArchiMate® and TOGAF® are trademarks of their respective owners. SDMM is independent and not endorsed by BIAN or The Open Group.
+5. **Trademarks.** BIAN®, ArchiMate® and TOGAF® are trademarks of their respective owners. SDEM is independent and not endorsed by BIAN or The Open Group.

@@ -1,4 +1,4 @@
-name: Validate SDMM
+name: Validate SDEM
 on:
   push:
   pull_request:
@@ -16,57 +16,57 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Validate (warnings are errors)
-        run: python -m sdmm.validate --strict examples/*/mappings.json
+        run: python -m sdem.validate --strict examples/*/mappings.json
       - name: Validate against entity catalogue
-        run: python -m sdmm.validate --strict --catalogue examples/card-fraud-alerts/entities.json examples/card-fraud-alerts/mappings.json
+        run: python -m sdem.validate --strict --catalogue examples/card-fraud-alerts/entities.json examples/card-fraud-alerts/mappings.json
       - name: Lifecycle and immutability against previous commit
-        run: python -m sdmm.diff --git HEAD~1 examples/*/mappings.json
+        run: python -m sdem.diff --git HEAD~1 examples/*/mappings.json
       - name: Federated graph — check, trace and impact on the fraud example
         run: |
-          python -m sdmm.graph check  examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
-          python -m sdmm.graph trace  CAP-310 examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
-          python -m sdmm.graph impact INF-CLOUD-K8S-PROD --change rehost examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+          python -m sdem.graph check  examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+          python -m sdem.graph trace  CAP-310 examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+          python -m sdem.graph impact INF-CLOUD-K8S-PROD --change rehost examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
       - name: Engine harness — baseline proposals validate and score above the floor
         run: |
-          python -m sdmm.engine baseline examples/card-fraud-alerts/a*.json > /tmp/proposals.json
-          python -m sdmm.validate /tmp/proposals.json
-          python -m sdmm.evaluate examples/card-fraud-alerts/mappings.json --proposals /tmp/proposals.json --min-f1 0.5
+          python -m sdem.inference baseline examples/card-fraud-alerts/a*.json > /tmp/proposals.json
+          python -m sdem.validate /tmp/proposals.json
+          python -m sdem.evaluate examples/card-fraud-alerts/mappings.json --proposals /tmp/proposals.json --min-f1 0.5
       - name: Payment Initiation (M1) exports and mappings
         run: |
-          python -m sdmm.graph check examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
-          python -m sdmm.validate --strict examples/payment-initiation/mappings.json
+          python -m sdem.graph check examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
+          python -m sdem.validate --strict examples/payment-initiation/mappings.json
       - name: Legacy Core Ledger (H1) exports and mappings
         run: |
-          python -m sdmm.graph check examples/legacy-core-ledger/a*.json examples/legacy-core-ledger/mappings.json
-          python -m sdmm.validate --strict examples/legacy-core-ledger/mappings.json
+          python -m sdem.graph check examples/legacy-core-ledger/a*.json examples/legacy-core-ledger/mappings.json
+          python -m sdem.validate --strict examples/legacy-core-ledger/mappings.json
       - name: Acquired Fintech (H2) exports and mappings
         run: |
-          python -m sdmm.graph check examples/acquired-fintech/a*.json examples/acquired-fintech/mappings.json
-          python -m sdmm.validate --strict examples/acquired-fintech/mappings.json
+          python -m sdem.graph check examples/acquired-fintech/a*.json examples/acquired-fintech/mappings.json
+          python -m sdem.validate --strict examples/acquired-fintech/mappings.json
       - name: Customer Onboarding (E2) exports and mappings
         run: |
-          python -m sdmm.graph check examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
-          python -m sdmm.graph impact APP-001 --change replace examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
+          python -m sdem.graph check examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
+          python -m sdem.graph impact APP-001 --change replace examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
       - name: Digital Lending (M2) exports and mappings
         run: |
-          python -m sdmm.graph check examples/digital-lending/a*.json examples/digital-lending/mappings.json
-          python -m sdmm.validate --strict examples/digital-lending/mappings.json
+          python -m sdem.graph check examples/digital-lending/a*.json examples/digital-lending/mappings.json
+          python -m sdem.validate --strict examples/digital-lending/mappings.json
       - name: Trade Finance (C1–C3) exports and mappings
         run: |
-          python -m sdmm.graph check examples/trade-finance/a*.json examples/trade-finance/mappings.json
-          python -m sdmm.validate --strict examples/trade-finance/mappings.json
+          python -m sdem.graph check examples/trade-finance/a*.json examples/trade-finance/mappings.json
+          python -m sdem.validate --strict examples/trade-finance/mappings.json
       - name: Trace the fraud example both ways
         run: |
-          python -m sdmm.trace CAP-310 examples/card-fraud-alerts/mappings.json
-          python -m sdmm.trace INF-CLOUD-K8S-PROD --direction up --json examples/card-fraud-alerts/mappings.json > /dev/null
-      - run: python -m sdmm.validate --json examples/*/mappings.json
+          python -m sdem.trace CAP-310 examples/card-fraud-alerts/mappings.json
+          python -m sdem.trace INF-CLOUD-K8S-PROD --direction up --json examples/card-fraud-alerts/mappings.json > /dev/null
+      - run: python -m sdem.validate --json examples/*/mappings.json
       - name: Diagrams and the relationships document are generated from the JSON
         run: |
-          python -m sdmm.diagram --check
-          python -m sdmm.relationships --check
-          python -m sdmm.structure --check
-          python -m sdmm.spec --check
-          python -m sdmm.kgspec --check
+          python -m sdem.diagram --check
+          python -m sdem.relationships --check
+          python -m sdem.structure --check
+          python -m sdem.spec --check
+          python -m sdem.kgspec --check
       - name: Reference structure — every enforceable within-level row on committed data
-        run: python -m sdmm.graph check examples/reference-structure/a*.json examples/reference-structure/mappings.json
+        run: python -m sdem.graph check examples/reference-structure/a*.json examples/reference-structure/mappings.json
       - run: python -m unittest discover -s tests -v

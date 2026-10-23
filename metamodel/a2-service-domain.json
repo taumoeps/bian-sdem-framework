@@ -225,7 +225,7 @@
       "extends": null,
       "artefact": true,
       "definition": "A versioned Business Object Model artefact",
-      "definition_source": "sdmm_extension",
+      "definition_source": "sdem_extension",
       "alignment_kind": "related",
       "reference": {
         "standard": "BIAN Service Landscape",

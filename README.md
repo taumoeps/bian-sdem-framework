@@ -1,39 +1,55 @@
-# BIAN Service Domain Mapping Model (SDMM)
+# Service Domain Enterprise Metamodel (SDEM)
 
-> **Status:** community proposal and reference implementation (v0.6.2), **not** an official BIAN standard. BIAN reference content is not included.
+> **Status:** v0.7.0 — open-source reference implementation; BIAN-aligned, **not** an official BIAN standard or BIAN-endorsed framework. BIAN reference content is not included. *(Until v0.6.2 this project was called SDMM, the BIAN Service Domain Mapping Model; see [Renamed from SDMM](#renamed-from-sdmm).)*
 
-SDMM traces a bank's architecture across four design models, from business capability to running platform, through BIAN Service Domains. It defines **the rules for linking them** (the *mapping model*), **the format of the links** (the *mapping set*), and **the graphs that join them** (the *local* and *federated* knowledge graphs), with validators, query tools and a tested procedure for producing links automatically.
+**Service Domain Enterprise Metamodel (SDEM)** is an open-source, model-driven enterprise architecture metamodel designed to define, validate and govern architecture entities and relationships across Business, Service Domain, Application and Technology architectures.
 
-| Code | Architecture | Holds |
+SDEM provides a structured foundation for four local architecture knowledge graphs and a federated architecture knowledge graph, enabling end-to-end architecture traceability, relationship governance and change-impact analysis.
+
+Its architecture relationship rules and inference components support evidence-based discovery and validation of relationships between architecture entities.
+
+SDEM is BIAN-aligned but is not an official BIAN standard or BIAN-endorsed framework.
+
+| Level | Architecture | Scope |
 |---|---|---|
-| **A1** | Business Architecture | capabilities, value streams, processes, business services and objects |
-| **A2** | Service Domain Architecture | BIAN-aligned Service Domains, operations, control records, scenarios, business objects |
-| **A3** | Application Architecture | applications, interfaces, API operations, data entities, events |
-| **A4** | Technology Architecture | platforms, nodes, deployments, environments, networks |
+| **A1** | Business Architecture | capabilities, processes, business services and business objects |
+| **A2** | Service Domain Architecture | BIAN Service Domains, operations, control records and business objects |
+| **A3** | Application Architecture | applications, application services, APIs, events and data entities |
+| **A4** | Technology Architecture | infrastructure, deployment, platforms, networks and environments |
 
-Together these four are the **Service Domain Architecture Design Model (SDADM)**. Entity names carry the level code, e.g. `A3.APIOperation`.
+Each level has its own entity metamodel, relationship definitions, architecture data model and local architecture knowledge graph. Entity types carry the level code, e.g. `A3.APIOperation`.
 
-> **New here?** Read [`docs/mapping-model-design.md`](docs/mapping-model-design.md) first (one page, with a worked example), then [`docs/knowledge-graph-design.md`](docs/knowledge-graph-design.md).
+> **New here?** Read [`docs/sdem-overview.md`](docs/sdem-overview.md) first, then [`docs/knowledge-graph-design.md`](docs/knowledge-graph-design.md).
+
+## Principles
+
+1. **Model-driven architecture** — entities, relationships and constraints are defined by explicit metamodels.
+2. **Four architecture levels** — Business, Service Domain, Application, Technology.
+3. **Independent local knowledge graphs** — each level has its own entities and relationships.
+4. **Federated knowledge graph** — approved cross-architecture relationships connect the local graphs.
+5. **Typed relationships** — relationship types and constraints govern valid connections.
+6. **Evidence-based inference** — automated relationship discovery provides supporting evidence.
+7. **Governance** — relationships carry versions, approval status, provenance and lifecycle history.
+8. **Bidirectional traceability** — dependencies can be traversed upstream and downstream.
+9. **Change-impact analysis** — a change to an entity can be traced across levels.
 
 ---
 
-## How SDMM works
+## How SDEM works
 
-**Rules → engine → links → review → graph.**
-
-- Each architecture's **data** is exported from the tool that owns it and loaded as a **local graph**: *what exists*.
-- Architects write the **mapping model**: the **rules** for how things in one architecture connect to things in the next.
-- The **mapping engine** applies the rules to the local graphs and produces the **mapping set**: the **actual links**, each with evidence and confidence.
-- Architects **review** the links. The **graph loader** joins the local graphs with the approved links into the **federated graph**, which answers questions across architectures: *what does this capability run on? what is affected if this platform changes?*
+**Metamodel → data → rules → inference → registry → review → federated graph.**
 
 ```mermaid
 flowchart TB
+    classDef def fill:#FFF8E1,stroke:#F9A825,color:#5D4037
     classDef data fill:#E3F2FD,stroke:#1565C0,color:#0D47A1
     classDef rules fill:#FFF3E0,stroke:#EF6C00,color:#E65100
     classDef links fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
     classDef prog fill:#FFFFFF,stroke:#424242,color:#212121
     classDef person fill:#F3E5F5,stroke:#6A1B9A,color:#4A148C
     classDef kg fill:#E0F7FA,stroke:#00838F,color:#006064
+
+    META["Architecture Metamodel<br/><b>the types</b><br/>entity types · within-level rows · relationship type catalogue"]:::def
 
     subgraph SRC["Source tools — owned by each architecture team"]
         direction LR
@@ -46,7 +62,7 @@ flowchart TB
     ADP["Adapters"]:::prog
     EXP[/"Exports<br/>one file per architecture"/]:::data
 
-    subgraph LOCAL["Local graphs — what exists"]
+    subgraph LOCAL["Local architecture knowledge graphs — what exists"]
         direction LR
         L1[("A1 Business")]:::kg
         L2[("A2 Service Domain")]:::kg
@@ -55,74 +71,78 @@ flowchart TB
     end
 
     ARCH(["Architects"]):::person
-    MM["Mapping model<br/><b>the rules</b>"]:::rules
-    ENG["Mapping engine<br/>applies the rules"]:::prog
-    MS[/"Mapping set<br/><b>the links</b>"/]:::links
-    REV(["Architects review<br/>approve · reject<br/>fix a wrong link by fixing the rule"]):::person
+    RULES["Architecture Relationship Rules Model<br/><b>the rules</b>"]:::rules
+    ENG["Architecture Relationship Inference Engine<br/>applies the rules"]:::prog
+    REG[/"Architecture Relationship Registry<br/><b>the instances</b>"/]:::links
+    REV(["Architecture governance<br/>approve · reject · supersede<br/>fix a wrong relationship by fixing the rule"]):::person
     LDR["Graph loader"]:::prog
-    FED[("Federated graph<br/>local graphs joined by approved links")]:::kg
-    Q["trace · impact"]:::prog
+    FED[("Federated architecture knowledge graph<br/>local graphs joined by approved relationships")]:::kg
+    Q["traceability · change impact"]:::prog
 
     T1 & T2 & T3 & T4 --> ADP
     ADP -->|write| EXP
+    META -.->|validates| EXP
     EXP -->|graph loader builds| LOCAL
-    ARCH -->|write| MM
-    MM --> ENG
+    META -.->|types| RULES
+    ARCH -->|write| RULES
+    RULES --> ENG
     LOCAL -->|read| ENG
-    ENG -->|proposed links| MS
-    MS <-->|review| REV
-    REV -.->|wrong link? change the rule| MM
-    MS -->|approved only| LDR
+    ENG -->|proposed| REG
+    META -.->|validates| REG
+    REG <-->|review| REV
+    REV -.->|wrong relationship? change the rule| RULES
+    REG -->|approved only| LDR
     LOCAL -->|joined by| LDR
     LDR --> FED
     FED --> Q
 ```
 
-| Part | What it is | Owned by | Where |
+| Component | Is | Lives in | Status |
 |---|---|---|---|
-| **Exports → local graphs** | one per architecture: what exists and the links inside it | each architecture team | `examples/<estate>/a1…a4-*.json` |
-| **Mapping model** | the rules for links between architectures | architects | `schema/relationship-types.json`, `metamodel/new-mappings.json`, `metamodel/export-conventions.json` |
-| **Mapping engine** | applies the rules, writes proposed links | runs on request | `sdmm/engine.py` |
-| **Mapping set** | the links between real things, with status and evidence | built by the engine, reviewed by architects | `examples/<estate>/mappings.json` |
-| **Graph loader → federated graph** | the local graphs joined by the approved links | rebuilt every run | `sdmm/graph.py` (`sdmm-graph`) |
+| **Architecture Metamodel** | the **types**: entity types per level, the links allowed inside each level, and the **relationship type catalogue** (the nine kinds of link allowed between levels) | `metamodel/a1…a4-*.json`, `metamodel/level-relationships.json`, `schema/relationship-types.json` | built |
+| **Local architecture knowledge graphs** | one per level: real entities and the links inside the level, built from that level's export | `sdem/graph.py` (`LevelGraph`) | built (in memory) |
+| **Architecture Relationship Rules Model** | the **rules**: how each cross-level relationship is established, from which data, with what evidence and confidence | `metamodel/relationship-rules.json`, `metamodel/export-conventions.json` | built as records; tested |
+| **Architecture Relationship Inference Engine** | applies the rules to the local graphs and **proposes** relationships | `sdem/inference.py` | interface, baseline and scorer built; **rule logic is the next build** |
+| **Architecture Relationship Registry** | the **instances**: actual relationships with evidence, status, versions and approval provenance | `examples/<estate>/mappings.json`; schema `schema/relationship-registry.schema.json` | built |
+| **Federated architecture knowledge graph** | the local graphs joined by **approved** registry records | `sdem/graph.py` (`FederatedGraph`) | built (in memory) |
+| **Architecture Governance and traceability** | approval, supersession, immutability; trace and change impact | `sdem-validate`, `sdem-diff`, `sdem-graph trace / impact` | built |
 
 ---
 
-## The mapping model
+## The architecture model
 
-The mapping model is the **rules**, stated over entity **types**. It is not the links, and it is not the schema.
+Three layers, easy to confuse, kept separate:
 
-| | Mapping model | Mapping set | Schema |
+| | Architecture Metamodel | Relationship Rules Model | Relationship Registry |
 |---|---|---|---|
-| In one word | **rules** | **links** | **form** |
-| Talks about | types: `A2.ServiceOperation` | real things: `SO-PI-01` | fields: `status` |
-| Example | rule `S24`: an operation is `IMPLEMENTED_BY` an API when the HTTP method fits its action and the payload carries its attributes | link `PAY-101`: *Initiate Payment Instruction* is implemented by `POST /payment-instructions`, approved by an architect | `schema/mapping.schema.json` |
+| In one word | **types** | **rules** | **instances** |
+| Example | `IMPLEMENTED_BY` is allowed from `A2.ServiceOperation` to `A3.APIOperation` | `S24`: establish it when the HTTP method fits the operation's action and the payload carries its attributes; high confidence; needs an API contract | `PAY-101`: *Initiate Payment Instruction* is implemented by `POST /payment-instructions`, approved by an architect |
 
-| The mapping model in numbers | |
+| The model in numbers | |
 |---|---|
 | Entity types | 44 |
-| Links allowed *inside* each architecture (within-level rows) | 132 |
-| Kinds of link allowed *between* architectures (registry) | 9 |
-| Plan rows: rules for finding cross-architecture links | 69 — 9 registry rules that produce links; 41 candidate, conditional, derived or institution-only rules that are reported; 14 BIAN-internal; 5 ruled out |
+| Within-level rows (links allowed inside each architecture) | 132 |
+| Relationship type catalogue (kinds of link allowed between architectures) | 9 |
+| Plan rows (rules for establishing cross-architecture relationships) | 69 — 9 catalogue rules that produce registry records; 41 candidate, conditional, derived or institution-only rules that are reported; 14 BIAN-internal; 5 ruled out |
 | Join keys the rules read from exports | 52 |
 
-**Read:** [`mapping-model-design.md`](docs/mapping-model-design.md) (overview) · [`mapping-model-spec.md`](docs/mapping-model-spec.md) (every rule, and the engine's 33 requirements) · [`mapping-model-diagram.puml`](docs/mapping-model-diagram.puml) (every rule by ID, one picture) · [`relationships-planning.md`](docs/relationships-planning.md) (every within-level row with source, reasoning and confidence).
+**Read:** [`sdem-overview.md`](docs/sdem-overview.md) · [`architecture-metamodel-spec.md`](docs/architecture-metamodel-spec.md) and [`relationships-planning.md`](docs/relationships-planning.md) (the metamodel) · [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) (the rules and the inference engine's 33 requirements) · [`relationship-registry-spec.md`](docs/relationship-registry-spec.md) (the registry) · [`architecture-model-diagram.puml`](docs/architecture-model-diagram.puml) (metamodel and rules by ID, one picture).
 
 ---
 
-## The knowledge graph
+## The architecture knowledge graphs
 
-| | Local graph | Federated graph |
+| | Local knowledge graph | Federated knowledge graph |
 |---|---|---|
 | How many | four, one per architecture | one |
-| Built from | that architecture's **export** | the **approved** records of the **mapping set**, plus the four local graphs |
-| Holds | what exists, and the links inside one architecture | the links between architectures, each pointing into two local graphs |
+| Built from | that architecture's **export** | the **approved** records of the **relationship registry**, plus the four local knowledge graphs |
+| Holds | what exists, and the links inside one architecture | the links between architectures, each pointing into two local knowledge graphs |
 | Answers | "What is the Payments Hub made of?" | "What does the Initiate Payment capability run on?" |
 
-The **graph loader** builds all five on every run: it checks each export against the entity catalogue and the within-level rows, keeps approved links only, and resolves both ends of each link in the right local graph. Nothing edits a graph directly; a change reaches it by changing an export or the mapping set.
+The **graph loader** builds all five on every run: it checks each export against the entity catalogue and the within-level rows, keeps approved links only, and resolves both ends of each link in the right local knowledge graph. Nothing edits a graph directly; a change reaches it by changing an export or the relationship registry.
 
 ```text
-$ sdmm-graph trace CAP-PAY-010 --direction down examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
+$ sdem-graph trace CAP-PAY-010 --direction down examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
 CAP-PAY-010 'Initiate Payment'                [A1]
 └─ SUPPORTED_BY → SD-PI 'Payment Initiation'  [A2]   (PAY-001)
    └─ REALIZED_BY → APP-PAY-HUB 'Payments Hub' [A3]  (PAY-106)
@@ -130,15 +150,17 @@ CAP-PAY-010 'Initiate Payment'                [A1]
       └─ DEPLOYED_AS → DEP-PAYHUB-PROD          [A4]  (PAY-109)
 ```
 
-Every step across architectures cites the mapping-set record that justifies it.
+Every step across architectures cites the relationship registry record that justifies it.
 
 **Read:** [`knowledge-graph-design.md`](docs/knowledge-graph-design.md) (how the graphs are built; local query paths L1–L3 and federated paths F1–F4) · [`knowledge-graph-spec.md`](docs/knowledge-graph-spec.md) (node and edge schemas, identity, versions, every component and service, change workflows, open decisions).
 
 ---
 
+---
+
 ## How it was tested
 
-The mapping model was run as a procedure by an AI executor against sealed answer keys, on synthetic bank estates, and corrected after each run.
+The Relationship Rules Model was run as a procedure by an AI executor (standing in for the inference engine) against sealed answer keys, on synthetic bank estates, and corrected after each run.
 
 | Test | Result |
 |---|---|
@@ -155,11 +177,11 @@ The mapping model was run as a procedure by an AI executor against sealed answer
 
 | Component | Status |
 |---|---|
-| Entity catalogue, within-level rows, mapping model records, export and mapping-set schemas | built |
-| Validators: `sdmm-graph check` (exports), `sdmm-validate` (mapping set), `sdmm-diff` (approved links never edited) | built |
+| Architecture Metamodel (entity types, within-level rows, relationship type catalogue); Relationship Rules Model records; export and registry schemas | built |
+| Validators: `sdem-graph check` (exports), `sdem-validate` (registry records), `sdem-diff` (approved records never edited) | built |
 | Graph loader, local and federated graphs (in memory), `trace`, `impact`, `stats` | built |
 | Generated documents and diagrams, checked current in CI | built |
-| Mapping engine | interface, baseline and scorer built; **rule logic is the next build**, to [`mapping-model-spec.md`](docs/mapping-model-spec.md) |
+| Architecture Relationship Inference Engine (`sdem-infer`) | interface, baseline and scorer built; **rule logic is the next build**, to [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) |
 | Export diff, refresh trigger, review queue, query service interface, assistant access, persistent store | specified ([`knowledge-graph-spec.md`](docs/knowledge-graph-spec.md) §11), not built |
 | Adapters from real tools | not built here — they belong in an institution's private repository |
 
@@ -167,26 +189,26 @@ The mapping model was run as a procedure by an AI executor against sealed answer
 
 ## Quick start
 
-Python 3.10+; no third-party dependencies. `pip install -e .` installs the commands; or run them with `python -m sdmm.<module>`.
+Python 3.10+; no third-party dependencies. `pip install -e .` installs the commands; or run them with `python -m sdem.<module>`.
 
 ```bash
 E=examples/payment-initiation
 
-sdmm-graph check  $E/a*.json $E/mappings.json                          # load and check the graphs
-sdmm-graph trace  CAP-PAY-010 --direction down $E/a*.json $E/mappings.json   # what does this depend on?
-sdmm-graph trace  INF-K8S-PAY-PROD --direction up $E/a*.json $E/mappings.json  # what depends on this?
-sdmm-graph impact APP-PAY-HUB --change replace $E/a*.json $E/mappings.json    # what is affected by a change?
+sdem-graph check  $E/a*.json $E/mappings.json                          # load and check the graphs
+sdem-graph trace  CAP-PAY-010 --direction down $E/a*.json $E/mappings.json   # what does this depend on?
+sdem-graph trace  INF-K8S-PAY-PROD --direction up $E/a*.json $E/mappings.json  # what depends on this?
+sdem-graph impact APP-PAY-HUB --change replace $E/a*.json $E/mappings.json    # what is affected by a change?
 
-sdmm-validate --strict $E/mappings.json                                 # check a mapping set
-sdmm-diff --git HEAD~1 $E/mappings.json                                 # approved links not edited since last commit
-sdmm-eval $E/m1-gold-mappings.json --proposals $E/m1-proposals.json     # score proposals against an answer key
+sdem-validate --strict $E/mappings.json                                 # check the relationship registry
+sdem-diff --git HEAD~1 $E/mappings.json                                 # approved links not edited since last commit
+sdem-eval $E/m1-gold-mappings.json --proposals $E/m1-proposals.json     # score proposals against an answer key
 
 python -m unittest discover -s tests                                    # the test suite
 ```
 
 Exit codes: `0` ok, `1` issues found, `2` usage error.
 
-**Regenerating documents and diagrams** after changing a record: `sdmm-relationships`, `sdmm-spec`, `sdmm-kgspec`, `sdmm-structure`, `python -m sdmm.diagram`. Each has `--check`, which CI runs.
+**Regenerating documents and diagrams** after changing a record: `sdem-relationships`, `sdem-spec`, `sdem-kgspec`, `sdem-structure`, `sdem-diagram`. Each has `--check`, which CI runs.
 
 ---
 
@@ -194,12 +216,15 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 
 | Read | For |
 |---|---|
-| [`mapping-model-design.md`](docs/mapping-model-design.md) | **start here** — the five parts, the three things that look alike, a worked example, a glossary |
+| [`sdem-overview.md`](docs/sdem-overview.md) | **start here** — principles, components and boundaries, the four things that look alike, a worked example, a glossary |
 | [`knowledge-graph-design.md`](docs/knowledge-graph-design.md) | how the local and federated graphs are built and queried |
-| [`mapping-model-spec.md`](docs/mapping-model-spec.md) · [`mapping-model-diagram.puml`](docs/mapping-model-diagram.puml) | the mapping model in full; the engine's requirements |
+| [`architecture-metamodel-spec.md`](docs/architecture-metamodel-spec.md) | the Architecture Metamodel (v0.4 entity specification; current rows in `relationships-planning.md`) |
+| [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) · [`architecture-model-diagram.puml`](docs/architecture-model-diagram.puml) | the Relationship Rules Model and the inference engine's requirements |
+| [`relationship-registry-spec.md`](docs/relationship-registry-spec.md) | the Relationship Registry: fields, lifecycle, immutability, legacy names |
+| [`architecture-governance-spec.md`](docs/architecture-governance-spec.md) | approval, supersession and impact |
 | [`knowledge-graph-spec.md`](docs/knowledge-graph-spec.md) | the graphs' requirements, components, services and change workflows |
 | [`relationships-planning.md`](docs/relationships-planning.md) · [`relationships-testing.md`](docs/relationships-testing.md) | every within-level row, and how they were tested |
-| [`mapping-logic-planning.md`](docs/mapping-logic-planning.md) | why the mapping model is shaped this way: BIAN's own mappings, the supporting frameworks, the gap-fill strategy |
+| [`mapping-logic-planning.md`](docs/mapping-logic-planning.md) | why the relationship rules model is shaped this way: BIAN's own mappings, the supporting frameworks, the gap-fill strategy |
 | [`mapping-execution.md`](docs/mapping-execution.md) · [`use-case-testing.md`](docs/use-case-testing.md) | the procedure as executed, and the eleven test runs |
 | [`reference-architecture-provenance.md`](docs/reference-architecture-provenance.md) | every entity traced to a public standard |
 | [`ROADMAP.md`](docs/ROADMAP.md) · [`CHANGELOG.md`](CHANGELOG.md) | releases |
@@ -208,9 +233,10 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 
 | Folder | Holds |
 |---|---|
-| `metamodel/` | entity catalogue (A1–A4), within-level rows, mapping-model plan and export conventions, generated diagrams |
-| `schema/` | export and mapping-set schemas, the nine-relationship registry, impact rules |
-| `sdmm/` | validators (`validate.py`, `diff.py`), graph loader and queries (`graph.py`, `trace.py`, `metamodel.py`), engine interface and scorer (`engine.py`, `evaluate.py`), document generators |
+| `metamodel/` | Architecture Metamodel (entity catalogue A1–A4, within-level rows), Relationship Rules Model (`relationship-rules.json`, `export-conventions.json`), BIAN's official mappings, generated diagrams |
+| `schema/` | export and registry schemas, the relationship type catalogue (`relationship-types.json`), impact rules |
+| `sdem/` | validators (`validate.py`, `diff.py`), graph loader and queries (`graph.py`, `trace.py`, `metamodel.py`), inference engine interface and scorer (`inference.py`, `evaluate.py`), terminology (`terms.py`), document generators |
+| `sdmm/` | deprecated compatibility shim for v0.7: re-exports `sdem` with a warning |
 | `examples/` | synthetic estates: `payment-initiation`, `legacy-core-ledger`, `acquired-fintech`, `digital-lending`, `trade-finance`, `card-fraud-alerts`, `customer-onboarding`, and `reference-structure` (generated: one link per within-level row) |
 | `docs/` | designs, specifications, test plans and results |
 | `tests/` | the test suite |
@@ -222,17 +248,40 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | v0.1–v0.3 | rulebook, validators, traceability queries, generic A1–A4 naming |
 | v0.4 | entity catalogue traced to public standards, export format, local and federated graphs, impact |
 | v0.5 | engine harness (interface, baseline, scorer); mapping plan and procedure; ten use cases, eleven runs; within-level rows from BIAN, ArchiMate and TOGAF, verified |
-| v0.6 | mapping-model spec and diagram; knowledge-graph design and spec with service specifications |
-| **next** | the mapping engine, accepted by reproducing the eleven runs; export diff; refresh and load record; a blind test case |
+| v0.6 | rules spec and diagram; knowledge-graph design and spec with service specifications |
+| **v0.7** | **renamed SDEM — Service Domain Enterprise Metamodel**; model-driven terminology; registry spec; compatibility aliases |
+| **next** | the inference engine, accepted by reproducing the eleven runs; export diff; refresh and load record; a blind test case |
 | later | live BIAN reference lookup; review queue; persistent store; generated views; v1.0 conformance profile |
 
 Full table with acceptance tests: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ---
 
+## Renamed from SDMM
+
+In v0.7.0 the project was renamed from **SDMM (BIAN Service Domain Mapping Model)** to **SDEM (Service Domain Enterprise Metamodel)**, and its terms aligned with model-driven enterprise architecture. Behaviour and data are unchanged.
+
+| Before | Now |
+|---|---|
+| Python package `sdmm` | `sdem` (`sdmm` still imports, with a deprecation warning, in v0.7) |
+| Commands `sdmm-*`, `sdmm-engine` | `sdem-*`, `sdem-infer` (`sdmm-*` still installed in v0.7) |
+| `sdmm/engine.py`, `MappingEngine` | `sdem/inference.py`, `RelationshipInferenceEngine` (old class name kept as an alias) |
+| `schema/mapping.schema.json` | `schema/relationship-registry.schema.json` (old path kept as a deprecated copy) |
+| `metamodel/new-mappings.json` | `metamodel/relationship-rules.json` |
+| mapping set / mapping document | Architecture Relationship Registry |
+| mapping model (the rules) | Architecture Relationship Rules Model |
+| registry (the nine relationship types) | relationship type catalogue, part of the Architecture Metamodel |
+| mapping engine | Architecture Relationship Inference Engine |
+| local / federated graph | local / federated architecture knowledge graph |
+| `sdmm_extension`, `sdmm_definition`, `sdmm_reading`, `sdmm_rule` | `sdem_*` (old values still accepted) |
+
+**Not renamed:** the registry's record fields `mappings`, `mapping_id`, `previous_mapping_id` and the catalogue's `mapping_type_id`, `registry_version`, because they sit inside immutable approved records (see [`relationship-registry-spec.md`](docs/relationship-registry-spec.md) §7); file names such as `mappings.json` and `official-mappings.json` (BIAN's own mappings); and historical test logs and results, which record what ran under the old name. The GitHub repository is still `bian-sdmm-framework`.
+
+---
+
 ## Reference architecture provenance
 
-Every entity in the SDMM vocabulary derives from a **publicly available reference architecture** — BIAN, ArchiMate 3.2 or TOGAF 10 — or is a documented SDMM extension of one. No entity is named after, defined by, or copied from any institution's architecture model; institution-specific entities belong in that institution's private profile, never here. Of the 41 core entities, **13 derive from BIAN (12 reference, 1 aligned), 21 from ArchiMate 3.2, 1 from TOGAF, and 6 are SDMM extensions** of an ArchiMate concept or compatibility supertypes. Full detail, including classification and the public URL for each, is in [`docs/reference-architecture-provenance.md`](docs/reference-architecture-provenance.md). The same provenance governs how entities may be linked **inside** a level: `metamodel/level-relationships.json` holds, per level, the relationship rows derived from that level's reference architecture (BIAN for A2; ArchiMate 3.2 and TOGAF for A1, A3, A4), and `sdmm-graph check` rejects any other within-level relationship. Every row has an ID, description, source, reasoning and confidence in [`docs/relationships-planning.md`](docs/relationships-planning.md), generated from the record; [`docs/relationships-testing.md`](docs/relationships-testing.md) is the test plan that validates them. The within-level and cross-level records, the conventions, the procedure and the test results merge into [`docs/mapping-model-spec.md`](docs/mapping-model-spec.md), the generated design specification that is the engine's input and requirements; [`docs/knowledge-graph-spec.md`](docs/knowledge-graph-spec.md) specifies the local and federated graphs.
+Every entity in the SDEM vocabulary derives from a **publicly available reference architecture** — BIAN, ArchiMate 3.2 or TOGAF 10 — or is a documented SDEM extension of one. No entity is named after, defined by, or copied from any institution's architecture model; institution-specific entities belong in that institution's private profile, never here. Of the 41 core entities, **13 derive from BIAN (12 reference, 1 aligned), 21 from ArchiMate 3.2, 1 from TOGAF, and 6 are SDEM extensions** of an ArchiMate concept or compatibility supertypes. Full detail, including classification and the public URL for each, is in [`docs/reference-architecture-provenance.md`](docs/reference-architecture-provenance.md). The same provenance governs how entities may be linked **inside** a level: `metamodel/level-relationships.json` holds, per level, the relationship rows derived from that level's reference architecture (BIAN for A2; ArchiMate 3.2 and TOGAF for A1, A3, A4), and `sdem-graph check` rejects any other within-level relationship. Every row has an ID, description, source, reasoning and confidence in [`docs/relationships-planning.md`](docs/relationships-planning.md), generated from the record; [`docs/relationships-testing.md`](docs/relationships-testing.md) is the test plan that validates them. The within-level and cross-level records, the conventions, the procedure and the test results merge into [`docs/relationship-rules-spec.md`](docs/relationship-rules-spec.md), the generated design specification that is the engine's input and requirements; [`docs/knowledge-graph-spec.md`](docs/knowledge-graph-spec.md) specifies the local and federated graphs.
 
 | Key | Public source |
 |---|---|
@@ -248,9 +297,9 @@ Every entity in the SDMM vocabulary derives from a **publicly available referenc
 |---|---|---|---|
 | `A1.BusinessCapability` | BIAN BCM; ArchiMate Strategy | Business Capability; Capability | BIAN-BCM; AM ch. 7 |
 | `A1.ValueStream` | ArchiMate Strategy | Value Stream | AM ch. 7; BIAN-BCM |
-| `A1.ValueStreamStage` | SDMM extension of Value Stream | — | AM ch. 7 (parent) |
+| `A1.ValueStreamStage` | SDEM extension of Value Stream | — | AM ch. 7 (parent) |
 | `A1.BusinessProcess` | ArchiMate Business | Business Process | AM ch. 8 |
-| `A1.BusinessActivity` | SDMM extension of Business Process | — | AM ch. 8 (parent) |
+| `A1.BusinessActivity` | SDEM extension of Business Process | — | AM ch. 8 (parent) |
 | `A1.BusinessService` | ArchiMate Business | Business Service | AM ch. 8 |
 | `A1.BusinessActor` | ArchiMate Business | Business Actor | AM ch. 8 |
 | `A1.BusinessRole` | ArchiMate Business | Business Role | AM ch. 8 |
@@ -283,7 +332,7 @@ Every entity in the SDMM vocabulary derives from a **publicly available referenc
 | `A3.ApplicationService` | ArchiMate Application | Application Service | AM ch. 9 |
 | `A3.ApplicationInterface` | ArchiMate Application | Application Interface | AM ch. 9 |
 | `A3.ApplicationFunction` | ArchiMate Application | Application Function | AM ch. 9 |
-| `A3.APIOperation` | SDMM extension; aligned to BIAN Semantic API / OpenAPI | — | BIAN-API |
+| `A3.APIOperation` | SDEM extension; aligned to BIAN Semantic API / OpenAPI | — | BIAN-API |
 | `A3.DataEntity` | ArchiMate Application (related) | Data Object | AM ch. 9 |
 | `A3.Event` | ArchiMate Application (related) | Application Event | AM ch. 9 |
 | `A3.SolutionBuildingBlock` | TOGAF Architecture Content | Solution Building Block | TOGAF |
@@ -292,9 +341,9 @@ Every entity in the SDMM vocabulary derives from a **publicly available referenc
 
 | Entity | Reference architecture | Concept | Source |
 |---|---|---|---|
-| `A4.InfrastructureComponent` *(abstract)* | SDMM compatibility supertype of every A4 entity | — | — |
-| `A4.Deployment` | SDMM extension of Artifact assigned to Node | — | AM ch. 10 (parents) |
-| `A4.DeploymentEnvironment` | SDMM extension of Node grouping | — | AM ch. 10 (parent) |
+| `A4.InfrastructureComponent` *(abstract)* | SDEM compatibility supertype of every A4 entity | — | — |
+| `A4.Deployment` | SDEM extension of Artifact assigned to Node | — | AM ch. 10 (parents) |
+| `A4.DeploymentEnvironment` | SDEM extension of Node grouping | — | AM ch. 10 (parent) |
 | `A4.Node` | ArchiMate Technology | Node | AM ch. 10 |
 | `A4.Device` | ArchiMate Technology | Device | AM ch. 10 |
 | `A4.SystemSoftware` | ArchiMate Technology | System Software | AM ch. 10 |
@@ -304,7 +353,7 @@ Every entity in the SDMM vocabulary derives from a **publicly available referenc
 | `A4.Path` | ArchiMate Technology | Path | AM ch. 10 |
 | `A4.Artifact` | ArchiMate Technology | Artifact | AM ch. 10 |
 
-Cloud-specific entities (compute resource, container platform, storage, database platform, security control, …) are **not core**: they live in the `example-cloud` profile, each extending one of the ArchiMate-derived A4 entities above. Definitions in the catalogue are SDMM paraphrases; no text, diagram or dataset from BIAN or The Open Group is reproduced. BIAN®, ArchiMate® and TOGAF® are trademarks of their respective owners; SDMM is independent and not endorsed by either organisation.
+Cloud-specific entities (compute resource, container platform, storage, database platform, security control, …) are **not core**: they live in the `example-cloud` profile, each extending one of the ArchiMate-derived A4 entities above. Definitions in the catalogue are SDEM paraphrases; no text, diagram or dataset from BIAN or The Open Group is reproduced. BIAN®, ArchiMate® and TOGAF® are trademarks of their respective owners; SDEM is independent and not endorsed by either organisation.
 
 ---
 

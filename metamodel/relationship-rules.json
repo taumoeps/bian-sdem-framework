@@ -270,13 +270,13 @@
       "target": "A2.BusinessScenario",
       "relation": "ALIGNED_TO",
       "official": false,
-      "verification": "sdmm_definition",
+      "verification": "sdem_definition",
       "source_reference": "—",
       "rule_decision": "registry_rule",
       "fill_step": 4,
       "data_needed": "A1.ValueStream attributes.stages (ordered) and A2.BusinessScenario attributes.operation_sequence; scored as coverage of the scenario's operations by stages, not a stage count",
       "confidence": "medium",
-      "reasoning": "Registry rule ALIGNED_TO, SDMM's own definition — BIAN has not modelled value streams (RN14 §3). Fill by matching stage sequence to scenario interaction sequence (structure), then description text. BIAN's announced value-stream catalogue (WQA26) would turn this into a lookup. Optional step-3 derivation (M0 finding 4): value stream realises capability K; K's process invokes operation O; O in a scenario's operation_sequence ⇒ candidate ALIGNED_TO, low. Stages are matched on the operation's action term, never the asset noun (M1 finding 4)."
+      "reasoning": "Registry rule ALIGNED_TO, SDEM's own definition — BIAN has not modelled value streams (RN14 §3). Fill by matching stage sequence to scenario interaction sequence (structure), then description text. BIAN's announced value-stream catalogue (WQA26) would turn this into a lookup. Optional step-3 derivation (M0 finding 4): value stream realises capability K; K's process invokes operation O; O in a scenario's operation_sequence ⇒ candidate ALIGNED_TO, low. Stages are matched on the operation's action term, never the asset noun (M1 finding 4)."
     },
     {
       "id": "S03",
@@ -471,7 +471,7 @@
       "fill_step": 3,
       "data_needed": "S17 instances over A2 composition BusinessArea → BusinessDomain → ServiceDomain (export-conventions.json 0.5.10)",
       "confidence": "high",
-      "reasoning": "Business Area→application is reachable through Area⊃Domain⊃Service Domain (B02, B03) and REALIZED_BY (S17). A query, never a record — SDMM forbids level-skipping stores. Confidence is that of the derivation, which is mechanical."
+      "reasoning": "Business Area→application is reachable through Area⊃Domain⊃Service Domain (B02, B03) and REALIZED_BY (S17). A query, never a record — SDEM forbids level-skipping stores. Confidence is that of the derivation, which is mechanical."
     },
     {
       "id": "S16",
@@ -711,7 +711,7 @@
       "fill_step": 4,
       "data_needed": "S30 instances + A3.DataEntity.attributes containing the attribute name (export-conventions.json 0.5.10)",
       "confidence": "high",
-      "reasoning": "Attribute→entity is the grain at which S30 is actually computed; SDMM has no A3 attribute entity, so it stays a refinement inside S30, not a rule."
+      "reasoning": "Attribute→entity is the grain at which S30 is actually computed; SDEM has no A3 attribute entity, so it stays a refinement inside S30, not a rule."
     },
     {
       "id": "S32",
@@ -720,13 +720,13 @@
       "target": "A4.Deployment",
       "relation": "DEPLOYED_AS",
       "official": false,
-      "verification": "sdmm_definition",
+      "verification": "sdem_definition",
       "source_reference": "—",
       "rule_decision": "registry_rule",
       "fill_step": 1,
       "data_needed": "A4.Deployment instances with attributes.component_id / environment_id / platform_id, or A3.ApplicationComponent attributes.deployed_as (export-conventions.json)",
       "confidence": "high",
-      "reasoning": "Registry rule DEPLOYED_AS, SDMM definition. No BIAN content; BIAN's domain-as-container pattern (SAPG §4.1) is a prior only. Fill by data join from deployment records — no inference."
+      "reasoning": "Registry rule DEPLOYED_AS, SDEM definition. No BIAN content; BIAN's domain-as-container pattern (SAPG §4.1) is a prior only. Fill by data join from deployment records — no inference."
     },
     {
       "id": "S33",
@@ -735,13 +735,13 @@
       "target": "A4.InfrastructureComponent",
       "relation": "DEPLOYED_ON",
       "official": false,
-      "verification": "sdmm_definition",
+      "verification": "sdem_definition",
       "source_reference": "—",
       "rule_decision": "registry_rule",
       "fill_step": 1,
       "data_needed": "A3.ApplicationComponent attributes.deployed_on, or A4 platform/node attributes.hosts (export-conventions.json)",
       "confidence": "high",
-      "reasoning": "Registry rule DEPLOYED_ON, SDMM compatibility definition accepting any concrete A4 entity. Fill by data join from the CMDB — no inference. Environment-agnostic: a component is DEPLOYED_ON every platform that hosts it (production, UAT, …); the environment is carried by the Deployment (S32). M1 finding 2. DEPLOYED_ON fans out per host layer: a component on a node pool, a runtime on that pool and an appliance yields three arrows (S34, S33, S35), each approved on its own evidence (C3 finding 2)."
+      "reasoning": "Registry rule DEPLOYED_ON, SDEM compatibility definition accepting any concrete A4 entity. Fill by data join from the CMDB — no inference. Environment-agnostic: a component is DEPLOYED_ON every platform that hosts it (production, UAT, …); the environment is carried by the Deployment (S32). M1 finding 2. DEPLOYED_ON fans out per host layer: a component on a node pool, a runtime on that pool and an appliance yields three arrows (S34, S33, S35), each approved on its own evidence (C3 finding 2)."
     },
     {
       "id": "S34",
@@ -840,7 +840,7 @@
       "target": "A4.DeploymentEnvironment",
       "relation": "candidate",
       "official": false,
-      "verification": "sdmm_definition",
+      "verification": "sdem_definition",
       "source_reference": "—",
       "rule_decision": "derived_path",
       "fill_step": 3,
@@ -945,7 +945,7 @@
       "target": "A4.Deployment",
       "relation": "candidate",
       "official": false,
-      "verification": "sdmm_definition",
+      "verification": "sdem_definition",
       "source_reference": "—",
       "rule_decision": "derived_path",
       "fill_step": 3,
@@ -960,7 +960,7 @@
       "target": "A4.TechnologyInterface",
       "relation": "candidate",
       "official": false,
-      "verification": "sdmm_definition",
+      "verification": "sdem_definition",
       "source_reference": "—",
       "rule_decision": "derived_path",
       "fill_step": 3,

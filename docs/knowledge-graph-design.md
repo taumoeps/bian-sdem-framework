@@ -1,17 +1,17 @@
 # How the knowledge graphs work — local and federated
 
-Read this before [`knowledge-graph-spec.md`](knowledge-graph-spec.md). That spec lists every requirement and component; this page explains how the graphs are built and how you query them. It uses the same terms as [`mapping-model-design.md`](mapping-model-design.md).
+Read this before [`knowledge-graph-spec.md`](knowledge-graph-spec.md). That spec lists every requirement and component; this page explains how the graphs are built and how you query them. It uses the same terms as [`sdem-overview.md`](sdem-overview.md).
 
 ## The short version
 
-- There are **four local graphs**, one per architecture: A1 Business, A2 Service Domain, A3 Application, A4 Technology. Each is built from its **export** and holds *what exists* in that architecture and the links *inside* it.
-- There is **one federated graph**. It is built from the **mapping set** and holds the approved links *between* architectures, pointing into the local graphs.
+- There are **four local knowledge graphs**, one per architecture: A1 Business, A2 Service Domain, A3 Application, A4 Technology. Each is built from its **export** and holds *what exists* in that architecture and the links *inside* it.
+- There is **one federated knowledge graph**. It is built from the **relationship registry** and holds the approved links *between* architectures, pointing into the local knowledge graphs.
 - The **graph loader** builds all five, every time it runs, from files. Nothing edits a graph directly.
-- A **local query** stays inside one local graph. A **federated query** crosses architectures using the approved links.
+- A **local query** stays inside one local knowledge graph. A **federated query** crosses architectures using the approved links.
 
-**Exports → local graphs. Mapping set → federated graph. Both joined → questions across architectures.**
+**Exports → local knowledge graphs. Relationship registry → federated knowledge graph. Both joined → questions across architectures.**
 
-> **A common mix-up.** Local graphs are **not** built from a mapping set. They are built from exports. The mapping set holds only links *between* architectures, so it feeds only the federated graph.
+> **A common mix-up.** Local knowledge graphs are **not** built from a relationship registry. They are built from exports. The relationship registry holds only links *between* architectures, so it feeds only the federated knowledge graph.
 
 ---
 
@@ -19,11 +19,11 @@ Read this before [`knowledge-graph-spec.md`](knowledge-graph-spec.md). That spec
 
 | Graph | Built from | Holds | Owned by |
 |---|---|---|---|
-| A1 local graph | the A1 export, e.g. `examples/payment-initiation/a1-business.json` | capabilities, value streams, processes, activities, business objects, and the links between them | business architecture |
-| A2 local graph | the A2 export, `a2-service-domain.json` | Service Domains, service groups, operations, control records, scenarios, and the links between them | BIAN alignment |
-| A3 local graph | the A3 export, `a3-application.json` | applications, interfaces, API operations, data entities, events, and the links between them | application architecture |
-| A4 local graph | the A4 export, `a4-technology.json` | platforms, nodes, deployments, environments, and the links between them | infrastructure |
-| **Federated graph** | the **mapping set**, `mappings.json` — **approved records only** — plus the four local graphs | the links *between* architectures; each one points to a node in two local graphs | nobody edits it |
+| A1 local knowledge graph | the A1 export, e.g. `examples/payment-initiation/a1-business.json` | capabilities, value streams, processes, activities, business objects, and the links between them | business architecture |
+| A2 local knowledge graph | the A2 export, `a2-service-domain.json` | Service Domains, service groups, operations, control records, scenarios, and the links between them | BIAN alignment |
+| A3 local knowledge graph | the A3 export, `a3-application.json` | applications, interfaces, API operations, data entities, events, and the links between them | application architecture |
+| A4 local knowledge graph | the A4 export, `a4-technology.json` | platforms, nodes, deployments, environments, and the links between them | infrastructure |
+| **Federated knowledge graph** | the **relationship registry**, `mappings.json` — **approved records only** — plus the four local knowledge graphs | the links *between* architectures; each one points to a node in two local knowledge graphs | nobody edits it |
 
 In the payment-initiation example:
 
@@ -39,26 +39,26 @@ In the payment-initiation example:
 
 ## How the graph loader builds them
 
-The graph loader is `sdmm/graph.py`, run as `sdmm-graph`. It does the same steps every run.
+The graph loader is `sdem/graph.py`, run as `sdem-graph`. It does the same steps every run.
 
 ```
  1. For each architecture:
-      read the export  ──▶  check it  ──▶  build the local graph
+      read the export  ──▶  check it  ──▶  build the local knowledge graph
                              (types in the catalogue? links allowed by the
                               relationship rows? if not, stop and report)
 
- 2. Read the mapping set  ──▶  keep approved records only
+ 2. Read the relationship registry  ──▶  keep approved records only
 
  3. For each approved record:
-      find its source node in one local graph   (by level, id, version, type)
-      find its target node in the next local graph
-      both found?  ──▶  add the link to the federated graph
+      find its source node in one local knowledge graph   (by level, id, version, type)
+      find its target node in the next local knowledge graph
+      both found?  ──▶  add the link to the federated knowledge graph
       not found?   ──▶  report it as unresolved, leave it out
 
  4. Answer the query (check · trace · impact · stats)
 ```
 
-### Step 1 — loading a local graph
+### Step 1 — loading a local knowledge graph
 
 | Check | Rejected example |
 |---|---|
@@ -68,11 +68,11 @@ The graph loader is `sdmm/graph.py`, run as `sdmm-graph`. It does the same steps
 
 ### Step 3 — resolving a federated link
 
-Take mapping-set record `PAY-106`: *SD-PI `REALIZED_BY` APP-PAY-HUB*.
+Take relationship registry record `PAY-106`: *SD-PI `REALIZED_BY` APP-PAY-HUB*.
 
-1. The source type is `A2.ServiceDomain`, so look in the **A2 local graph**. `SD-PI` is there, version 1.0. Found.
-2. The target type is `A3.ApplicationComponent`, so look in the **A3 local graph**. `APP-PAY-HUB` is there, version 7.1. Found.
-3. Add the link `SD-PI → APP-PAY-HUB` to the federated graph, labelled `PAY-106`.
+1. The source type is `A2.ServiceDomain`, so look in the **A2 local knowledge graph**. `SD-PI` is there, version 1.0. Found.
+2. The target type is `A3.ApplicationComponent`, so look in the **A3 local knowledge graph**. `APP-PAY-HUB` is there, version 7.1. Found.
+3. Add the link `SD-PI → APP-PAY-HUB` to the federated knowledge graph, labelled `PAY-106`.
 
 If an export no longer contains `APP-PAY-HUB`, the link can't be resolved. It is reported and left out, and the architect supersedes the record. The graph never shows a link to something that doesn't exist.
 
@@ -82,11 +82,11 @@ A mapping may name a **parent type**. `DEPLOYED_ON` targets `A4.InfrastructureCo
 
 ## Query paths inside one architecture (local)
 
-A local query uses one local graph and follows the links inside it. It never touches the mapping set.
+A local query uses one local knowledge graph and follows the links inside it. It never touches the relationship registry.
 
 ### Path L1 — what is a node made of, and what does it link to?
 
-*"What does the Payment Initiation Service Domain contain?"* (A2 local graph)
+*"What does the Payment Initiation Service Domain contain?"* (A2 local knowledge graph)
 
 ```
 SD-PI 'Payment Initiation'
@@ -100,7 +100,7 @@ SD-PI 'Payment Initiation'
 └─ flow        → SD-PE          [ServiceDomain]      the domain it hands over to
 ```
 
-*"What is the Payments Hub made of?"* (A3 local graph)
+*"What is the Payments Hub made of?"* (A3 local knowledge graph)
 
 ```
 APP-PAY-HUB 'Payments Hub'
@@ -123,24 +123,24 @@ Assignment, realization, serving, flow and triggering are **not** part–whole, 
 
 ### Path L3 — everything of one kind
 
-*"List every deployment in production"* (A4 local graph): the nodes of type `A4.Deployment` aggregated by `ENV-PAY-PROD`.
+*"List every deployment in production"* (A4 local knowledge graph): the nodes of type `A4.Deployment` aggregated by `ENV-PAY-PROD`.
 
 ### Status
 
-There is **no `sdmm-graph` command for local queries yet** (requirement KG-L-04, partly built). The local graphs exist and are validated; the examples above were produced by reading one export directly. Part–whole paths are available today inside a federated trace with `--follow-composition`.
+There is **no `sdem-graph` command for local queries yet** (requirement KG-L-04, partly built). The local knowledge graphs exist and are validated; the examples above were produced by reading one export directly. Part–whole paths are available today inside a federated trace with `--follow-composition`.
 
 ---
 
 ## Query paths across architectures (federated)
 
-A federated query starts in one local graph, crosses to the next by an **approved** link, and continues. Every crossing shows the mapping-set record that justifies it.
+A federated query starts in one local knowledge graph, crosses to the next by an **approved** link, and continues. Every crossing shows the relationship registry record that justifies it.
 
 ### Path F1 — downstream trace: what does this depend on?
 
 *"What does the Initiate Payment capability run on?"*
 
 ```
-sdmm-graph trace CAP-PAY-010 --direction down <exports> mappings.json
+sdem-graph trace CAP-PAY-010 --direction down <exports> mappings.json
 ```
 
 ```
@@ -160,7 +160,7 @@ Path: **A1 local → (PAY-001) → A2 local → (PAY-106) → A3 local → (PAY-
 *"What depends on the production Kubernetes cluster?"*
 
 ```
-sdmm-graph trace INF-K8S-PAY-PROD --direction up <exports> mappings.json
+sdem-graph trace INF-K8S-PAY-PROD --direction up <exports> mappings.json
 ```
 
 ```
@@ -180,7 +180,7 @@ A federated trace can also walk part–whole links *inside* each architecture, s
 *"Where does the Create Payment Instruction API run?"*
 
 ```
-sdmm-graph trace API-PI-01 --direction down --follow-composition <exports> mappings.json
+sdem-graph trace API-PI-01 --direction down --follow-composition <exports> mappings.json
 ```
 
 ```
@@ -200,7 +200,7 @@ Path: **A3 local (part → whole) → (PAY-108, PAY-109) → A4 local (part → 
 *"What is affected if we replace the Payments Hub?"*
 
 ```
-sdmm-graph impact APP-PAY-HUB --change replace <exports> mappings.json
+sdem-graph impact APP-PAY-HUB --change replace <exports> mappings.json
 ```
 
 | Classification | Nodes | Reached by |
@@ -228,12 +228,12 @@ The next step, from an operation up to its Service Domain, is a *local* A2 link 
 
 | | Local query | Federated query |
 |---|---|---|
-| Uses | one local graph | the four local graphs + the approved mapping set |
+| Uses | one local knowledge graph | the four local knowledge graphs + the approved relationship registry |
 | Follows | links inside one architecture | approved links between architectures, plus local part–whole links if asked |
-| Each step shows | the link kind (composition, assignment …) | the mapping-set record ID (PAY-106 …) for every crossing |
+| Each step shows | the link kind (composition, assignment …) | the relationship registry record ID (PAY-106 …) for every crossing |
 | Paths | L1 contents · L2 part–whole · L3 all of a kind | F1 downstream · F2 upstream · F3 with local structure · F4 impact |
 | Typical asker | the team that owns that architecture | enterprise architects; impact analysis |
-| Command | not built yet (KG-L-04) | `sdmm-graph trace`, `sdmm-graph impact` |
+| Command | not built yet (KG-L-04) | `sdem-graph trace`, `sdem-graph impact` |
 
 ---
 
@@ -243,9 +243,9 @@ The graphs are always rebuilt from files, so a change reaches them by changing a
 
 | Change | File that changes | Graph that changes on the next load |
 |---|---|---|
-| A team adds, removes or edits something in its architecture | that architecture's export | its local graph; the federated graph if a link pointed at it |
-| An architect approves, rejects or supersedes a link | the mapping set | the federated graph |
-| The rules change | the mapping model; the engine rebuilds affected links | the federated graph, after review |
+| A team adds, removes or edits something in its architecture | that architecture's export | its local knowledge graph; the federated knowledge graph if a link pointed at it |
+| An architect approves, rejects or supersedes a link | the relationship registry | the federated knowledge graph |
+| The rules change | the relationship rules model; the engine rebuilds affected links | the federated knowledge graph, after review |
 
 Which components run for each kind of change, in order, is in [`knowledge-graph-spec.md`](knowledge-graph-spec.md) §9.
 
@@ -261,5 +261,5 @@ Which components run for each kind of change, in order, is in [`knowledge-graph-
 ## Read more
 
 - [`knowledge-graph-spec.md`](knowledge-graph-spec.md) — every requirement, component and change workflow for the graphs; §11 specifies each service: graph loader, adapter contract, export diff, refresh trigger, query service, review queue, assistant access.
-- [`mapping-model-design.md`](mapping-model-design.md) — the mapping model, the engine and the mapping set.
+- [`sdem-overview.md`](sdem-overview.md) — the relationship rules model, the engine and the relationship registry.
 - [`relationships-planning.md`](relationships-planning.md) — every link allowed *inside* each architecture.

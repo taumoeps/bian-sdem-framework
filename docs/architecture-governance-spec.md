@@ -1,4 +1,8 @@
-# Mapping governance, history and impact
+# SDEM Architecture Governance Specification
+
+> Approval, versioning, provenance and change impact for the **Architecture Relationship Registry**. Current, generated detail: record lifecycle and immutability in [`relationship-registry-spec.md`](relationship-registry-spec.md); impact classification in `schema/impact-rules.json` and [`knowledge-graph-design.md`](knowledge-graph-design.md) path F4; who may do what in [`knowledge-graph-spec.md`](knowledge-graph-spec.md) §10; the review queue in §11 (SVC-06). The text below is the original governance and impact methodology (formerly `04-governance-and-impact.md`), with SDEM terms.
+
+## Governance, history and impact — original methodology
 
 ## Lifecycle
 `proposed` → `validated` → `approved` → `superseded`, with `needs_review` and `rejected` as side states.
@@ -22,11 +26,11 @@
 | `approved` | `superseded` only |
 | `rejected`, `superseded` | nothing — terminal |
 
-`sdmm-diff` enforces these between two versions of a document (a previous file, or a git revision such as `HEAD~1`). Run it in CI so an illegal transition cannot merge.
+`sdem-diff` enforces these between two versions of a document (a previous file, or a git revision such as `HEAD~1`). Run it in CI so an illegal transition cannot merge.
 
 ### Immutability
 
-Once a record is `approved`, `rejected` or `superseded` its fields are frozen. The only permitted edit is `approved → superseded`, which may also set `valid_to`. Records are never deleted. `sdmm-diff` reports any other change. One exception: evidence references may be *re-typed* (`kind:ref` added to an existing reference) because that annotates the evidence without changing which artefact is cited.
+Once a record is `approved`, `rejected` or `superseded` its fields are frozen. The only permitted edit is `approved → superseded`, which may also set `valid_to`. Records are never deleted. `sdem-diff` reports any other change. One exception: evidence references may be *re-typed* (`kind:ref` added to an existing reference) because that annotates the evidence without changing which artefact is cited.
 
 ### Evidence
 
@@ -49,7 +53,7 @@ An architect confirms the outcome. Graph reachability alone never implies a requ
 
 ## Authoritative and derived relationships
 
-Only adjacent-level edges (A1→A2, A2→A3, A3→A4) are ever **stored**; the registry self-check rejects anything else. A relationship that skips levels — a requirement traced straight to a security control at A4, say — is a **derived** relationship: computed by walking the stored edges, and reported with provenance to every approved edge on the path. Derived relationships are query results, never records. This keeps one authoritative chain while leaving traceability questions unrestricted.
+Only adjacent-level edges (A1→A2, A2→A3, A3→A4) are ever **stored**; the relationship type catalogue self-check rejects anything else. A relationship that skips levels — a requirement traced straight to a security control at A4, say — is a **derived** relationship: computed by walking the stored edges, and reported with provenance to every approved edge on the path. Derived relationships are query results, never records. This keeps one authoritative chain while leaving traceability questions unrestricted.
 
 ## Handling legacy designs
 Keep previous A2 conceptual architecture documents as immutable artefacts. Create derived map claims to current A2 BIAN-aligned design objects where justified; do not imply an old document was authored to BIAN standards.

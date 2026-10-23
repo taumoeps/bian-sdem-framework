@@ -1,4 +1,4 @@
-@startuml merged-mappings
+@startuml merged-relationships
 left to right direction
 skinparam rectangle {
   BackgroundColor White
@@ -203,7 +203,7 @@ package "A4 Technology Architecture" as A4 {
   a4_device -[#B0BEC5]-> a4_device : <size:8>RA4-36 composition</size>
 }
 
-' --- cross-level: registry rule (SDMM relationship type) (9)
+' --- cross-level: catalogue rule (SDEM relationship type) (9)
 a1_businesscapability -[#1565C0,bold]-> a2_servicedomain : S01 SUPPORTED_BY
 a1_valuestream -[#1565C0,bold]-> a2_businessscenario : S02 ALIGNED_TO
 a1_businessprocess -[#1565C0,bold]-> a2_servicedomain : S04 USES_DOMAIN
@@ -214,7 +214,7 @@ a2_businessobject -[#1565C0,bold]-> a3_dataentity : S30 MAPPED_TO
 a3_applicationcomponent -[#1565C0,bold]-> a4_deployment : S32 DEPLOYED_AS
 a3_applicationcomponent -[#1565C0,bold]-> a4_infrastructurecomponent : S33 DEPLOYED_ON
 
-' --- cross-level: candidate rule (proposed for the registry) (5)
+' --- cross-level: candidate rule (proposed for the relationship type catalogue) (5)
 a2_controlrecord -[#2E7D32]-> a3_dataentity : S20
 a2_controlrecord -[#2E7D32]-> a3_applicationfunction : S21
 a2_serviceoperation -[#2E7D32]-> a3_applicationservice : S25
@@ -265,12 +265,12 @@ a3_event -[#6A1B9A,dotted]-> a4_technologyservice : S51
 
 legend right
   Light grey thin arrows: within-level constraint rows (ArchiMate kind as label) — A2 from BIAN; A1, A3, A4 from ArchiMate 3.2 / TOGAF
-  <color:#1565C0>Bold</color>: cross-level registry rule (SDMM relationship type) (9)
-  <color:#2E7D32>Solid</color>: cross-level candidate rule (proposed for the registry) (5)
+  <color:#1565C0>Bold</color>: cross-level catalogue rule (SDEM relationship type) (9)
+  <color:#2E7D32>Solid</color>: cross-level candidate rule (proposed for the relationship type catalogue) (5)
   <color:#EF6C00>Solid</color>: cross-level conditional rule (fires on institution data) (5)
   <color:#616161>Dashed</color>: cross-level derived path (closure over other arrows, never proposed) (17)
   <color:#6A1B9A>Dotted</color>: cross-level institution-only (reported from export keys) (14)
   Grey entity: no cross-level mapping by decision
-  Detail: official-mappings.puml, new-mappings.puml, level-relationships.puml
+  Detail: official-mappings.puml, relationship-rules.puml, level-relationships.puml
 endlegend
 @enduml
