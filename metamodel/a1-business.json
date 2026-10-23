@@ -51,7 +51,7 @@
         "standard": "SDEM",
         "release": "0.4",
         "concept": "Value Stream Stage",
-        "uri": "https://github.com/taumoeps/bian-sdmm-framework",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework",
         "locator": "extension of A1.ValueStream"
       },
       "evidence_status": "proposed_extension"
@@ -87,7 +87,7 @@
         "standard": "SDEM",
         "release": "0.4",
         "concept": "Business Activity",
-        "uri": "https://github.com/taumoeps/bian-sdmm-framework",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework",
         "locator": "extension of A1.BusinessProcess"
       },
       "evidence_status": "proposed_extension"

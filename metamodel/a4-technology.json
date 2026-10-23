@@ -15,7 +15,7 @@
         "standard": "SDEM",
         "release": "0.4",
         "concept": "Infrastructure Component",
-        "uri": "https://github.com/taumoeps/bian-sdmm-framework",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework",
         "locator": "extension of none"
       },
       "evidence_status": "proposed_extension"
@@ -33,7 +33,7 @@
         "standard": "SDEM",
         "release": "0.4",
         "concept": "Deployment",
-        "uri": "https://github.com/taumoeps/bian-sdmm-framework",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework",
         "locator": "extension of A4.Artifact assigned to A4.Node"
       },
       "evidence_status": "proposed_extension"
@@ -51,7 +51,7 @@
         "standard": "SDEM",
         "release": "0.4",
         "concept": "Deployment Environment",
-        "uri": "https://github.com/taumoeps/bian-sdmm-framework",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework",
         "locator": "extension of A4.Node grouping"
       },
       "evidence_status": "proposed_extension"

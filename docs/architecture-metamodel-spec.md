@@ -347,7 +347,7 @@ No `sdmm/resolver.py`: resolvers stay in `reference.py`.
 - **[R4]** BIAN Semantic API Practitioner Guide: https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf
 - **[R5]** ArchiMate 3.2: https://www.opengroup.org/archimate-licensed-downloads
 - **[R6]** TOGAF Standard: https://www.opengroup.org/togaf
-- **[R7]** SDEM: https://github.com/taumoeps/bian-sdmm-framework
+- **[R7]** SDEM: https://github.com/taumoeps/bian-sdem-framework
 
 Nothing from R1–R6 is reproduced in this repository. Type `definition` fields are SDEM paraphrases. `reference.uri` points to the official source; it never substitutes for it. SDEM is independent of, and not endorsed by, BIAN or The Open Group.
 
