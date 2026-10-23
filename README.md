@@ -2,6 +2,8 @@
 
 > **Status:** community proposal / starter reference implementation, **not** an official BIAN standard.
 
+> **New here?** Start with [`docs/how-sdmm-works.md`](docs/how-sdmm-works.md): the five parts — local graphs, mapping model, mapping engine, mapping set, federated graph — on one page, with a worked example.
+
 SDMM is a proposed methodology and typed cross-layer mapping model for tracing banking architecture across the four design models of a **Service Domain Architecture Design Model (SDADM)**:
 
 | Code | Design model | Scope |
