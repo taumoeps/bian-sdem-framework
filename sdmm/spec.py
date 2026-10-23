@@ -1,4 +1,4 @@
-"""Render docs/mapping-model-design-spec.md — the SDMM Mapping Model Design Specification (engine input).
+"""Render docs/mapping-model-spec.md — the SDMM Mapping Model Design Specification (engine input).
 
 The specification is a projection of the records (entity catalogue, level-relationships.json, relationship-types.json,
 new-mappings.json, export-conventions.json, impact-rules.json) plus a numbered requirements set. Every requirement
@@ -11,7 +11,7 @@ import argparse, glob, json, re
 from sdmm.metamodel import Metamodel, MM_DIR
 
 ROOT = MM_DIR.parent
-DOC = ROOT / 'docs' / 'mapping-model-design-spec.md'
+DOC = ROOT / 'docs' / 'mapping-model-spec.md'
 LEVEL_NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
 
 
@@ -48,8 +48,8 @@ def render():
     def req(group, text, src, val): REQ.append((f"REQ-{group}-{sum(1 for r in REQ if r[1] == group) + 1:02d}", group, text, src, val)); return REQ[-1][0]
 
     out = ['# SDMM Mapping Model Design Specification — engine input (v0.6 draft)', '',
-           '> New to SDMM? Read `docs/how-sdmm-works.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.', '', 'Generated from the records by `python -m sdmm.spec`; the test suite checks it is current. This specification merges the three records — the entity catalogue, the within-level structure (`metamodel/level-relationships.json`) and the cross-level mapping model (`schema/relationship-types.json`, `metamodel/new-mappings.json`) — with the export conventions, the mapping procedure and the test results, into one statement of **what a mapping engine must consume, do, refuse and produce**. Every requirement names the record rows it derives from and the use-case runs that validated it; nothing here claims more than a record and a run support.', '',
-           'The companion diagram `docs/mapping-model-design-diagram.puml` draws every within-level row and cross-level mapping with its ID. Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.', '']
+           '> New to SDMM? Read `docs/mapping-model-design.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.', '', 'Generated from the records by `python -m sdmm.spec`; the test suite checks it is current. This specification merges the three records — the entity catalogue, the within-level structure (`metamodel/level-relationships.json`) and the cross-level mapping model (`schema/relationship-types.json`, `metamodel/new-mappings.json`) — with the export conventions, the mapping procedure and the test results, into one statement of **what a mapping engine must consume, do, refuse and produce**. Every requirement names the record rows it derives from and the use-case runs that validated it; nothing here claims more than a record and a run support.', '',
+           'The companion diagram `docs/mapping-model-diagram.puml` draws every within-level row and cross-level mapping with its ID. Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.', '']
 
     # ---- 1 scope
     out += ['## 1. Purpose, scope and non-goals', '',
@@ -188,7 +188,7 @@ def render():
     return '\n'.join(out) + '\n'
 
 
-DIAGRAM = ROOT / 'docs' / 'mapping-model-design-diagram.puml'
+DIAGRAM = ROOT / 'docs' / 'mapping-model-diagram.puml'
 
 
 def render_diagram():
@@ -199,7 +199,7 @@ def render_diagram():
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdmm-spec', description='Render docs/mapping-model-design-spec.md and docs/mapping-model-design-diagram.puml from the records.')
+    parser = argparse.ArgumentParser(prog='sdmm-spec', description='Render docs/mapping-model-spec.md and docs/mapping-model-diagram.puml from the records.')
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args(argv)
     rc = 0

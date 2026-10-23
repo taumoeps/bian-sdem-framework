@@ -40,7 +40,7 @@ def render():
         rows = [r for r in REQ if r[1] == g]
         return ['', '| ID | Requirement | Status |', '|---|---|---|'] + [f"| {r[0]} | {r[2]} | {r[4]} |" for r in rows] + ['']
     out = ['# SDMM Knowledge Graph Specification — local and federated graphs', '',
-           '> New to SDMM? Read `docs/how-sdmm-works.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.', '', 'Generated from the schemas and records by `python -m sdmm.kgspec`; the test suite checks it is current. Companion to `docs/mapping-model-design-spec.md`, which specifies the engine. This document specifies the graphs: what each holds, how its nodes and edges are shaped, how identity and versions work, what queries it must answer, and how it is loaded. Requirements carry `KG-*` IDs; each says whether it is **built** (in `sdmm/graph.py` and the validators) or **not built**.', '']
+           '> New to SDMM? Read `docs/mapping-model-design.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.', '', 'Generated from the schemas and records by `python -m sdmm.kgspec`; the test suite checks it is current. Companion to `docs/mapping-model-spec.md`, which specifies the engine. This document specifies the graphs: what each holds, how its nodes and edges are shaped, how identity and versions work, what queries it must answer, and how it is loaded. Requirements carry `KG-*` IDs; each says whether it is **built** (in `sdmm/graph.py` and the validators) or **not built**.', '']
 
     # ---- 1 architecture
     out += ['## 1. Architecture', '',

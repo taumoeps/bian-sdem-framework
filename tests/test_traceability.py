@@ -179,11 +179,11 @@ class PlanTableStepAndConfidenceTests(unittest.TestCase):
 class DesignSpecTests(unittest.TestCase):
     def test_spec_equals_render_from_records(self):
         from sdmm.spec import render
-        self.assertEqual((ROOT / 'docs/mapping-model-design-spec.md').read_text(encoding='utf-8'), render())
+        self.assertEqual((ROOT / 'docs/mapping-model-spec.md').read_text(encoding='utf-8'), render())
 
     def test_every_requirement_is_traced(self):
         import re
-        doc = (ROOT / 'docs/mapping-model-design-spec.md').read_text(encoding='utf-8')
+        doc = (ROOT / 'docs/mapping-model-spec.md').read_text(encoding='utf-8')
         idx = doc[doc.index('## 10. Requirements index'):]
         rows = [l for l in idx.splitlines() if l.startswith('| REQ-')]
         self.assertGreaterEqual(len(rows), 30)
@@ -202,7 +202,7 @@ class DesignDiagramTests(unittest.TestCase):
     def test_design_diagram_equals_render_and_carries_every_id(self):
         from sdmm.spec import render_diagram
         from sdmm.diagram import load_new, new_entries
-        text = (ROOT / 'docs/mapping-model-design-diagram.puml').read_text(encoding='utf-8')
+        text = (ROOT / 'docs/mapping-model-diagram.puml').read_text(encoding='utf-8')
         self.assertEqual(text, render_diagram())
         lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
         for c in lr['constraints']:
@@ -212,7 +212,7 @@ class DesignDiagramTests(unittest.TestCase):
 
     def test_every_convention_key_has_an_id_in_the_record_and_the_spec(self):
         conv = json.loads((ROOT / 'metamodel/export-conventions.json').read_text(encoding='utf-8'))
-        doc = (ROOT / 'docs/mapping-model-design-spec.md').read_text(encoding='utf-8')
+        doc = (ROOT / 'docs/mapping-model-spec.md').read_text(encoding='utf-8')
         for ent, keys in conv['conventions'].items():
             for k in keys:
                 kid = conv['key_ids'][f'{ent}.{k}']; self.assertIn(f"| {kid} | {ent} | `{k}` |", doc)
