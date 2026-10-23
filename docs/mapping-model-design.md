@@ -188,6 +188,7 @@ From `examples/payment-initiation/`:
 
 - [`mapping-model-spec.md`](mapping-model-spec.md) — the mapping model in full and the engine's requirements.
 - [`mapping-model-diagram.puml`](mapping-model-diagram.puml) — the mapping model in one picture: every within-level row and cross-level rule by ID, between entity types (see *Reading the mapping-model diagram*).
+- [`knowledge-graph-design.md`](knowledge-graph-design.md) — how the local and federated graphs are built and queried, with query paths.
 - [`knowledge-graph-spec.md`](knowledge-graph-spec.md) — the local and federated graphs, every component, and what runs for each kind of change.
 - [`relationships-planning.md`](relationships-planning.md) — every allowed link *inside* each architecture.
 - [`use-case-testing.md`](use-case-testing.md) — how the mapping model was tested.

@@ -2,6 +2,8 @@
 
 > New to SDMM? Read `docs/mapping-model-design.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.
 
+> How the graphs are built and queried, in plain terms: `docs/knowledge-graph-design.md`.
+
 Generated from the schemas and records by `python -m sdmm.kgspec`; the test suite checks it is current. Companion to `docs/mapping-model-spec.md`, which specifies the engine. This document specifies the graphs: what each holds, how its nodes and edges are shaped, how identity and versions work, what queries it must answer, and how it is loaded. Requirements carry `KG-*` IDs; each says whether it is **built** (in `sdmm/graph.py` and the validators) or **not built**.
 
 ## 1. Architecture
@@ -211,6 +213,7 @@ The federated graph points into the local graphs by id. These rules keep those p
 | KG-Q-04 Unmapped | list nodes of a level with no approved cross-level edge where the plan expects one — the engine's work list | new | not built |
 | KG-Q-05 History | for an edge or a node, list its superseded predecessors and the baselines it appeared in | mapping-set history | not built |
 | KG-Q-06 Stats | counts of nodes, edges and statuses per level | `sdmm-graph stats` | built |
+| KG-Q-07 Climb to the whole | an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation's operation to its Service Domain), so a trace from an API reaches the capability | knowledge-graph-design.md, limit of path F2 | not built |
 
 ## 7. Load and refresh
 
@@ -342,7 +345,7 @@ Every workflow ends with C-06 rebuilding the graphs; no component edits a graph 
 
 ## 12. Requirements index
 
-35 requirements — built 20, not 13, partly 2. Groups: A architecture, L local graph, F federated graph, I identity, V versions, Q queries, R load and refresh, C components, G governance.
+36 requirements — built 20, not 14, partly 2. Groups: A architecture, L local graph, F federated graph, I identity, V versions, Q queries, R load and refresh, C components, G governance.
 
 | ID | Requirement | Basis | Status |
 |---|---|---|---|
@@ -371,6 +374,7 @@ Every workflow ends with C-06 rebuilding the graphs; no component edits a graph 
 | KG-Q-04 | Unmapped: list nodes of a level with no approved cross-level edge where the plan expects one — the engine's work list. | new | not built |
 | KG-Q-05 | History: for an edge or a node, list its superseded predecessors and the baselines it appeared in. | mapping-set history | not built |
 | KG-Q-06 | Stats: counts of nodes, edges and statuses per level. | `sdmm-graph stats` | built |
+| KG-Q-07 | Climb to the whole: an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation's operation to its Service Domain), so a trace from an API reaches the capability. | knowledge-graph-design.md, limit of path F2 | not built |
 | KG-R-01 | An adapter per source tool translates its records to a level export; adapters are institution-specific and live in the institution's private repository. | §7 | not built (examples are hand-written exports) |
 | KG-R-02 | A local graph is rebuilt in full from its export; incremental update is an optimisation, not a requirement. | §7 | built (full rebuild) |
 | KG-R-03 | A failed export validation leaves the previous local graph in place and raises an alert. | §7 | not built |

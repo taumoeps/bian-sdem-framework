@@ -40,7 +40,7 @@ def render():
         rows = [r for r in REQ if r[1] == g]
         return ['', '| ID | Requirement | Status |', '|---|---|---|'] + [f"| {r[0]} | {r[2]} | {r[4]} |" for r in rows] + ['']
     out = ['# SDMM Knowledge Graph Specification — local and federated graphs', '',
-           '> New to SDMM? Read `docs/mapping-model-design.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.', '', 'Generated from the schemas and records by `python -m sdmm.kgspec`; the test suite checks it is current. Companion to `docs/mapping-model-spec.md`, which specifies the engine. This document specifies the graphs: what each holds, how its nodes and edges are shaped, how identity and versions work, what queries it must answer, and how it is loaded. Requirements carry `KG-*` IDs; each says whether it is **built** (in `sdmm/graph.py` and the validators) or **not built**.', '']
+           '> New to SDMM? Read `docs/mapping-model-design.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.', '', '> How the graphs are built and queried, in plain terms: `docs/knowledge-graph-design.md`.', '', 'Generated from the schemas and records by `python -m sdmm.kgspec`; the test suite checks it is current. Companion to `docs/mapping-model-spec.md`, which specifies the engine. This document specifies the graphs: what each holds, how its nodes and edges are shaped, how identity and versions work, what queries it must answer, and how it is loaded. Requirements carry `KG-*` IDs; each says whether it is **built** (in `sdmm/graph.py` and the validators) or **not built**.', '']
 
     # ---- 1 architecture
     out += ['## 1. Architecture', '',
@@ -128,7 +128,8 @@ def render():
          ('Check', 'validate the four local graphs and the federated edges; report every unresolved or disallowed item', '`sdmm-graph check`', 'built'),
          ('Unmapped', 'list nodes of a level with no approved cross-level edge where the plan expects one — the engine\'s work list', 'new', 'not built'),
          ('History', 'for an edge or a node, list its superseded predecessors and the baselines it appeared in', 'mapping-set history', 'not built'),
-         ('Stats', 'counts of nodes, edges and statuses per level', '`sdmm-graph stats`', 'built')]
+         ('Stats', 'counts of nodes, edges and statuses per level', '`sdmm-graph stats`', 'built'),
+         ('Climb to the whole', 'an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation\'s operation to its Service Domain), so a trace from an API reaches the capability', 'knowledge-graph-design.md, limit of path F2', 'not built')]
     out += ['| Query | Must answer | Implemented by | Status |', '|---|---|---|---|']
     for name, text, impl, st in Q:
         rid = req('Q', f"{name}: {text}.", impl, st); out.append(f"| {rid} {name} | {text} | {impl} | {st} |")

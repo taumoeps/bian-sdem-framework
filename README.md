@@ -2,7 +2,7 @@
 
 > **Status:** community proposal / starter reference implementation, **not** an official BIAN standard.
 
-> **New here?** Start with [`docs/mapping-model-design.md`](docs/mapping-model-design.md): the five parts — local graphs, mapping model, mapping engine, mapping set, federated graph — on one page, with a worked example.
+> **New here?** Start with [`docs/mapping-model-design.md`](docs/mapping-model-design.md): the five parts — local graphs, mapping model, mapping engine, mapping set, federated graph — on one page, with a worked example. Then [`docs/knowledge-graph-design.md`](docs/knowledge-graph-design.md) for how the local and federated graphs are built and queried.
 
 SDMM is a proposed methodology and typed cross-layer mapping model for tracing banking architecture across the four design models of a **Service Domain Architecture Design Model (SDADM)**:
 

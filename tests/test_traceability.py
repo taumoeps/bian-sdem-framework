@@ -269,3 +269,18 @@ class MappingModelDocsAlignTests(unittest.TestCase):
             self.assertNotIn('mapping document', t, f)
         puml = (ROOT / 'docs/mapping-model-diagram.puml').read_text(encoding='utf-8')
         self.assertIn('mapping set', puml); self.assertIn('Mapping model', puml)
+
+
+class KnowledgeGraphDesignTests(unittest.TestCase):
+    def test_example_counts_match_the_payment_initiation_estate(self):
+        doc = (ROOT / 'docs/knowledge-graph-design.md').read_text(encoding='utf-8')
+        P = ROOT / 'examples/payment-initiation'
+        for lvl, f in (('A1', 'a1-business.json'), ('A2', 'a2-service-domain.json'), ('A3', 'a3-application.json'), ('A4', 'a4-technology.json')):
+            d = json.loads((P / f).read_text(encoding='utf-8'))
+            self.assertIn(f"| {lvl} local | {len(d['instances'])} | {len(d['relationships'])} within {lvl} |", doc)
+        approved = [m for m in json.loads((P / 'mappings.json').read_text(encoding='utf-8'))['mappings'] if m['status'] == 'approved']
+        self.assertIn(f"| {len(approved)} approved cross-architecture links |", doc)
+
+    def test_linked_from_spec_and_overview(self):
+        self.assertIn('knowledge-graph-design.md', (ROOT / 'docs/knowledge-graph-spec.md').read_text(encoding='utf-8'))
+        self.assertIn('knowledge-graph-design.md', (ROOT / 'docs/mapping-model-design.md').read_text(encoding='utf-8'))
