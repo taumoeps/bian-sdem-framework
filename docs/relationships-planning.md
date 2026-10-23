@@ -6,17 +6,17 @@ Generated from `metamodel/level-relationships.json` by `python -m sdem.relations
 
 **Inference (A1, A3, A4).** ArchiMate 3.2 and TOGAF 10 are login-gated, so every row outside A2 carries an explicit inference: the ArchiMate concept of each end (SDEM extensions through the concept they extend), the generic-metamodel pattern the row instantiates, the reasoning, SDEM's inference confidence, and the independent test — a lookup in the open-source Archi tool's relationship matrix (`relationships.xml`, github.com/archimatetool/archi), which implements the specification's permitted relationships per concept pair with the letters c composition, g aggregation, i assignment, r realization, v serving, a access, f flow, t triggering, s specialization, o association. The test plan for running those lookups is `docs/relationships-testing.md` §6.
 
-**Confidence and verification.** `high` = public BIAN source, or an SDEM definition; `medium` = paraphrased from the ArchiMate 3.2 / TOGAF 10 chapter structure, which is login-gated, so marked `unverified_archimate` / `unverified_togaf` until checked against the specification's relationship tables; `verified_against_archi` = confirmed by the open-source Archi relationship matrix (an implementation of those tables, cited by commit in the record), which is as far as verification can go without Open Group access. `sdem_definition` rows follow from how an SDEM extension entity is defined; `sdem_reading` is SDEM's reading of a public BIAN page that states no explicit relationship.
+**Confidence and verification.** Confidence follows the single rule applied to every layer of the model (`sdem/confidence.py`): **high** — defined by a public standard and checked (BIAN public material, or a relationship confirmed by the Archi oracle); **medium** — follows from an SDEM extension built on a standard concept, or rests on a login-gated source exercised by the coverage cases; **low** — an SDEM reading with no standard relationship, not validated. Verification: `verified` = checked on BIAN's public pages; `verified_against_archi` = confirmed by the open-source Archi relationship matrix (cited by commit below); `sdem_definition` follows from an SDEM extension entity; `sdem_reading` is SDEM's reading of a public BIAN page that states no explicit relationship; `unverified_togaf` has no public oracle. The A1/A3/A4 tables also show the *inference confidence* recorded before the oracle test.
 
 ## Summary
 
-| Level | Reference source | Rows | high | medium |
-|---|---|---|---|---|
-| A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 48 | 48 | 0 |
-| A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 17 | 16 | 0 |
-| A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations | 31 | 29 | 2 |
-| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 36 | 36 | 0 |
-| **Total** | | **132** | 129 | 2 |
+| Level | Reference source | Rows | high | medium | low |
+|---|---|---|---|---|---|
+| A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 48 | 48 | 0 | 0 |
+| A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 17 | 16 | 0 | 1 |
+| A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations | 31 | 29 | 2 | 0 |
+| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 36 | 36 | 0 | 0 |
+| **Total** | | **132** | 129 | 2 | 1 |
 
 ## A1 Business Architecture
 
