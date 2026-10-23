@@ -49,7 +49,7 @@ def render():
 
     out = ['# SDMM Mapping Model Design Specification — engine input (v0.6 draft)', '',
            '> New to SDMM? Read `docs/mapping-model-design.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.', '', 'Generated from the records by `python -m sdmm.spec`; the test suite checks it is current. This specification merges the three records — the entity catalogue, the within-level structure (`metamodel/level-relationships.json`) and the cross-level mapping model (`schema/relationship-types.json`, `metamodel/new-mappings.json`) — with the export conventions, the mapping procedure and the test results, into one statement of **what a mapping engine must consume, do, refuse and produce**. Every requirement names the record rows it derives from and the use-case runs that validated it; nothing here claims more than a record and a run support.', '',
-           'The companion diagram `docs/mapping-model-diagram.puml` draws every within-level row and cross-level mapping with its ID. Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.', '']
+           '**Terms, as in `docs/mapping-model-design.md`.** This document is the **mapping model**: the **rules** — the registry (§4.1), the plan rows (§4.2–4.3) and the export conventions (§5) — stated over entity **types**. The **mapping set** is the engine\'s output: **links** between real instances, in the form fixed by `schema/mapping.schema.json` (§7). The companion diagram `docs/mapping-model-diagram.puml` draws the mapping model: every within-level row (`RA…`) and every cross-level rule (`S…`) by ID, between entity types; it does not draw the mapping set.', '', ' Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.', '']
 
     # ---- 1 scope
     out += ['## 1. Purpose, scope and non-goals', '',
@@ -98,16 +98,16 @@ def render():
             '| Mapping type | Source → target | Relationship | Perspective | Authority | Required evidence | Meaning |', '|---|---|---|---|---|---|---|']
     for r in reg['relationships']:
         out.append(f"| {r['mapping_type_id']} | {r['source_type']} → {r['target_type']} | `{r['relationship']}` | {r['perspective']} | {r['authority']} | {', '.join(r['required_evidence'])} | {r['direction_semantics']} |")
-    out += ['', 'Only these nine may appear in a mapping document (`schema/mapping.schema.json`); adjacency is A(n) → A(n+1) only; BIAN authorities require `bian_release` and a `canonical_id` on the A2 endpoint before approval. Everything else the model knows is a **candidate report**, never a registry proposal.', '']
+    out += ['', 'Only these nine may appear in the mapping set (form: `schema/mapping.schema.json`); adjacency is A(n) → A(n+1) only; BIAN authorities require `bian_release` and a `canonical_id` on the A2 endpoint before approval. Everything else the model knows is a **candidate report**, never a registry proposal.', '']
     req('M', 'Emit registry proposals only for the nine relationship types, with the record fields the schema requires, at status `proposed`, with `confidence` as the plan\'s band and `evidence` typed against `required_evidence`.', 'schema/relationship-types.json; schema/mapping.schema.json', 'every run: `sdmm-validate --strict` on each proposal file')
     dec = Counter(m['rule_decision'] for m in nm)
-    out += ['### 4.2 The plan — 69 connections by decision', '', 'Every cross-level pair the model considers (`metamodel/new-mappings.json`; reasoning per row in `docs/mapping-logic-planning.md` §5.3). The decision says what the engine does with the row.', '',
+    out += ['### 4.2 Plan rows — the 69 rules by decision', '', 'Every cross-level pair the mapping model considers (`metamodel/new-mappings.json`; reasoning per row in `docs/mapping-logic-planning.md` §5.3). The decision says what the engine does with the row: only **registry rules** produce links in the mapping set; the others are reported as candidates or not used.', '',
             '| Decision | Rows | Engine behaviour |', '|---|---|---|',
             f"| registry rule | {dec['registry_rule']} | propose, at the step and band stated |", f"| candidate rule | {dec['candidate_rule']} | report in the candidate file; never propose until adopted into the registry |",
             f"| conditional rule | {dec['conditional_rule']} | report when the institution data it fires on is present |", f"| derived path | {dec['derived_path']} | compute as a closure over other arrows; report; never store |",
             f"| institution only | {dec['institution_only']} | report from the export key named in `data_needed`; never infer |", f"| bian internal | {dec['bian_internal']} | not cross-level: A2 structure, enforced by §3 |",
             f"| not a mapping / historical / subsumed / not encodable | {dec['not_a_mapping'] + dec['historical_method'] + dec['subsumed'] + dec['not_encodable']} | do nothing; the plan says why |", '',
-            '### 4.3 The 50 drawable connections, with the run that validated each', '', '| ID | Pair | Decision | Step | Band | Validation |', '|---|---|---|---|---|---|']
+            '### 4.3 The 50 rules drawn in the mapping-model diagram, with the run that validated each', '', '| ID | Pair | Decision | Step | Band | Validation |', '|---|---|---|---|---|---|']
     for m in nm:
         if m['rule_decision'] in ('registry_rule', 'candidate_rule', 'conditional_rule', 'derived_path', 'institution_only'):
             out.append(f"| {m['id']} | {m['source'].split('.')[1]} → {m['target'].split('.')[1]} ({m.get('relation') or m.get('sdmm_rule') or ''}) | {m['rule_decision'].replace('_', ' ')} | {m.get('fill_step')} | {m.get('confidence')} | {validated_in(m['id'])} |")
@@ -150,12 +150,12 @@ def render():
     # ---- 7 outputs
     out += ['## 7. Outputs, scoring and governance', '',
             '| ID | Output | File | Content | Scored by |', '|---|---|---|---|---|',
-            '| OUT-01 | Proposals | `<uc>-proposals.json` | registry records, `status: proposed`, plan band, typed evidence, rationale with the working | `sdmm-eval` against `<uc>-gold-mappings.json` (approved) — P / R / F1 per relationship |',
-            '| OUT-02 | Candidate reports | `<uc>-candidates.json` | one record per candidate / conditional / institution-only / derived row, `relationship` = plan ID | `sdmm-eval` against `<uc>-gold-candidates.json` — per plan ID |',
+            '| OUT-01 | Mapping-set records | `<uc>-proposals.json` | links between real instances, from registry rules only; `status: proposed`, plan band, typed evidence, rationale with the working | `sdmm-eval` against `<uc>-gold-mappings.json` (approved) — P / R / F1 per relationship |',
+            '| OUT-02 | Candidate reports (not part of the mapping set) | `<uc>-candidates.json` | one record per candidate / conditional / institution-only / derived row, `relationship` = plan ID | `sdmm-eval` against `<uc>-gold-candidates.json` — per plan ID |',
             '| OUT-03 | Inference log | `<uc>-inference-log.json` | every attempt: plan ID, data read, rule values, step assigned / used, fallback, confidence predicted / given, outcome; no-proposal register; findings | the coverage table in `docs/use-case-testing.md` is regenerated from it |',
             '| OUT-04 | Design exports | `<uc>-design-a3.json`, `-a4.json` | planned instances (M2 only) | `sdmm-graph check`; trace marks design hops |', '',
             'Governance stays outside the engine: `sdmm-validate` (structure, registry, evidence, anchoring), `sdmm-diff` (lifecycle transitions, immutability of approved records; supersession via `previous_mapping_id`), impact classification per `schema/impact-rules.json` (' + ', '.join(imp['kinds']) + ').', '']
-    req('O', 'Write the three output files in the shapes above; never write `approved`; never edit an existing mapping document; proposals must pass `sdmm-validate --strict` with draft warnings only.', 'guide §4, §4b, §4c', 'every run')
+    req('O', 'Write the three output files in the shapes above; never write `approved` (except rules an architect has declared auto-approved); never edit an existing mapping set; proposals must pass `sdmm-validate --strict` with draft warnings only.', 'guide §4, §4b, §4c', 'every run')
     req('O', 'Log every attempt, not only proposals: the inference log is the evidence base for the coverage table and for confidence calibration.', 'guide §4b', 'eleven logs, 812+ attempts')
 
     # ---- 8 acceptance
@@ -195,7 +195,13 @@ def render_diagram():
     """The design diagram is the merged view (within-level rows by ID + cross-level plan rows by ID) under the spec's title."""
     from sdmm.diagram import render_merged
     text = render_merged()
-    return text.replace('@startuml merged-mappings', '@startuml mapping-model-diagram', 1).replace('title Merged view — ', 'title Mapping Model Design — every within-level row and cross-level mapping, by ID: ', 1)
+    text = text.replace('@startuml merged-mappings', '@startuml mapping-model-diagram', 1)
+    text = text.replace('title Merged view — ', 'title Mapping model — the rules, by ID, between entity types (the mapping set is not drawn): ', 1)
+    text = text.replace('within-level links (thin, kind only)', 'within-level rows (thin grey, RA…)').replace('cross-level mappings (plan ID, coloured by decision)', 'cross-level rules (plan rows S…, coloured by decision)')
+    text = text.replace('  Light grey thin arrows: within-level constraint rows (ArchiMate kind as label)', '  Thin grey arrows: within-level rows (RA…) — the links allowed inside one architecture')
+    text = text.replace("  Grey entity: no cross-level mapping by decision", "  Blue (registry rules) are the only rules whose output becomes links in the mapping set; the other colours are reported as candidates\n  Grey entity: no cross-level rule by decision\n  Every box is an entity TYPE; real instances and the mapping set's links are not drawn")
+    text = text.replace('  Detail: official-mappings.puml, new-mappings.puml, level-relationships.puml', '  Read with: docs/mapping-model-design.md (overview) and docs/mapping-model-spec.md (rules in full)')
+    return text
 
 
 def main(argv=None):

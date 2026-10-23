@@ -231,3 +231,41 @@ class KnowledgeGraphSpecTests(unittest.TestCase):
         ms = json.loads((ROOT / 'schema/mapping.schema.json').read_text(encoding='utf-8'))
         for f in ms['$defs']['mapping']['properties']:
             self.assertIn(f"| `{f}` |", doc)
+
+
+class MappingModelDocsAlignTests(unittest.TestCase):
+    """The overview, the spec and the diagram use the same terms and the same numbers."""
+
+    def test_overview_numbers_match_the_records(self):
+        import re
+        from collections import Counter
+        from sdmm.metamodel import Metamodel
+        from sdmm.diagram import new_entries, load_new
+        doc = (ROOT / 'docs/mapping-model-design.md').read_text(encoding='utf-8')
+        sec = doc[doc.index('## The mapping model in numbers'):doc.index('## Reading the mapping-model diagram')]
+        counts = [int(x) for x in re.findall(r"^\| [^|]+ \| (\d+) \|", sec, flags=re.M)]
+        lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
+        nm = json.loads((ROOT / 'metamodel/new-mappings.json').read_text(encoding='utf-8'))['mappings']
+        reg = json.loads((ROOT / 'schema/relationship-types.json').read_text(encoding='utf-8'))['relationships']
+        conv = json.loads((ROOT / 'metamodel/export-conventions.json').read_text(encoding='utf-8'))
+        spec = (ROOT / 'docs/mapping-model-spec.md').read_text(encoding='utf-8')
+        reqs = len([l for l in spec[spec.index('## 10. Requirements index'):].splitlines() if l.startswith('| REQ-')])
+        expected = [len(Metamodel.load().entities), len(lr['constraints']), len(reg), len(nm), len(new_entries(load_new())),
+                    Counter(m['rule_decision'] for m in nm)['registry_rule'], len(conv['key_ids']), reqs]
+        self.assertEqual(counts, expected)
+
+    def test_diagram_title_counts_match(self):
+        from sdmm.diagram import new_entries, load_new
+        text = (ROOT / 'docs/mapping-model-diagram.puml').read_text(encoding='utf-8')
+        lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
+        self.assertIn(f"{len(lr['constraints'])} within-level rows", text)
+        self.assertIn(f"{len(new_entries(load_new()))} cross-level rules", text)
+
+    def test_shared_terms_and_no_stale_term(self):
+        for f in ('docs/mapping-model-design.md', 'docs/mapping-model-spec.md'):
+            t = (ROOT / f).read_text(encoding='utf-8')
+            for term in ('mapping model', 'mapping set'):
+                self.assertIn(term, t.lower(), f)
+            self.assertNotIn('mapping document', t, f)
+        puml = (ROOT / 'docs/mapping-model-diagram.puml').read_text(encoding='utf-8')
+        self.assertIn('mapping set', puml); self.assertIn('Mapping model', puml)

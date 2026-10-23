@@ -62,6 +62,36 @@ One rule, S24, produced five links in this estate (`PAY-101` … `PAY-105`), one
 
 ---
 
+## The mapping model in numbers
+
+The same numbers appear in [`mapping-model-spec.md`](mapping-model-spec.md) and [`mapping-model-diagram.puml`](mapping-model-diagram.puml); a test keeps all three in step with the records.
+
+| What | Count | Where in the spec | In the diagram |
+|---|---|---|---|
+| Entity types (boxes) | 44 | §2 | every box |
+| Within-level rows: links allowed *inside* one architecture | 132 | §3.1 (`RA…`) | thin grey arrows |
+| Registry: kinds of link allowed *between* architectures | 9 | §4.1 | named on the blue arrows |
+| Plan rows: rules for finding cross-level links | 69 | §4.2 (`S…`, `B…`) | — |
+| …of which drawn as cross-level rules | 50 | §4.3 | coloured arrows |
+| …of which registry rules, the only ones that produce mapping-set links | 9 | §4.3 | blue arrows |
+| Join keys the rules read from the exports | 52 | §5 (`K…`) | — |
+| Engine requirements | 33 | §10 (`REQ-…`) | — |
+
+## Reading the mapping-model diagram
+
+[`mapping-model-diagram.puml`](mapping-model-diagram.puml) draws the **mapping model**, not the mapping set.
+
+| On the diagram | Means |
+|---|---|
+| A box, e.g. `A3.APIOperation` | an entity **type**, not a real thing. No real instance like `API-PI-01` appears |
+| Four columns | the four architectures, A1 to A4 |
+| Thin grey arrow labelled `RA3-27 composition` | a **within-level row**: this link is allowed inside one architecture |
+| Blue arrow labelled `S24 IMPLEMENTED_BY` | a **registry rule**: the engine uses it to build links in the mapping set |
+| Green, orange, dashed or dotted arrow, e.g. `S20` | another **plan row**: the engine reports it as a candidate; it never becomes a mapping-set link |
+| Grey box | an entity type with no cross-level rule, by decision (artefacts; actor and role) |
+
+So the diagram shows *which links may exist and how they are found*. To see *which links do exist*, open a mapping set, e.g. `examples/payment-initiation/mappings.json`, or run `sdmm-graph trace`.
+
 ## All the parts
 
 | Part | What it is | Owned by | Where |
@@ -70,7 +100,7 @@ One rule, S24, produced five links in this estate (`PAY-101` … `PAY-105`), one
 | **Adapter** | a script that turns one tool's data into an export file | the institution | the institution's private repository (not built here) |
 | **Export** | one file per architecture listing *what exists* and the links *inside* it | written by the adapter | `examples/<estate>/a1…a4-*.json` |
 | **Local graph** | one export, loaded and checked | built by the graph loader | in memory |
-| **Mapping model** | the **rules** for links *between* architectures | **architects** | the three records above; readable version: [`mapping-model-spec.md`](mapping-model-spec.md) |
+| **Mapping model** | the **rules** for links *between* architectures | **architects** | the three records above; readable version: [`mapping-model-spec.md`](mapping-model-spec.md); picture: [`mapping-model-diagram.puml`](mapping-model-diagram.puml) |
 | **Mapping engine** | applies the mapping model to the local graphs and builds the mapping set | runs on request | `sdmm/engine.py` (interface built; rule logic is the next build) |
 | **Mapping set** | the **links** between architectures, each with evidence and a status | built by the engine; **reviewed** by architects | `examples/<estate>/mappings.json` |
 | **Validators** | check that exports and the mapping set fit their schemas and rules, and that approved links are never edited | automatic | `sdmm-graph check`, `sdmm-validate`, `sdmm-diff` |
@@ -157,7 +187,7 @@ From `examples/payment-initiation/`:
 ## Read more
 
 - [`mapping-model-spec.md`](mapping-model-spec.md) — the mapping model in full and the engine's requirements.
-- [`mapping-model-diagram.puml`](mapping-model-diagram.puml) — every rule and allowed link, by ID, in one picture.
+- [`mapping-model-diagram.puml`](mapping-model-diagram.puml) — the mapping model in one picture: every within-level row and cross-level rule by ID, between entity types (see *Reading the mapping-model diagram*).
 - [`knowledge-graph-spec.md`](knowledge-graph-spec.md) — the local and federated graphs, every component, and what runs for each kind of change.
 - [`relationships-planning.md`](relationships-planning.md) — every allowed link *inside* each architecture.
 - [`use-case-testing.md`](use-case-testing.md) — how the mapping model was tested.

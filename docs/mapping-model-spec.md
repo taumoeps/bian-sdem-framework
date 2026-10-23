@@ -4,7 +4,9 @@
 
 Generated from the records by `python -m sdmm.spec`; the test suite checks it is current. This specification merges the three records — the entity catalogue, the within-level structure (`metamodel/level-relationships.json`) and the cross-level mapping model (`schema/relationship-types.json`, `metamodel/new-mappings.json`) — with the export conventions, the mapping procedure and the test results, into one statement of **what a mapping engine must consume, do, refuse and produce**. Every requirement names the record rows it derives from and the use-case runs that validated it; nothing here claims more than a record and a run support.
 
-The companion diagram `docs/mapping-model-diagram.puml` draws every within-level row and cross-level mapping with its ID. Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.
+**Terms, as in `docs/mapping-model-design.md`.** This document is the **mapping model**: the **rules** — the registry (§4.1), the plan rows (§4.2–4.3) and the export conventions (§5) — stated over entity **types**. The **mapping set** is the engine's output: **links** between real instances, in the form fixed by `schema/mapping.schema.json` (§7). The companion diagram `docs/mapping-model-diagram.puml` draws the mapping model: every within-level row (`RA…`) and every cross-level rule (`S…`) by ID, between entity types; it does not draw the mapping set.
+
+ Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.
 
 ## 1. Purpose, scope and non-goals
 
@@ -246,11 +248,11 @@ Full description, source, reasoning, inference and confidence per row: `docs/rel
 | COMPONENT_DEPLOYED_ON_INFRASTRUCTURE | A3.ApplicationComponent → A4.InfrastructureComponent | `DEPLOYED_ON` | architecture | enterprise_rule | deployment_design | The application component runs on the infrastructure component in a named environment. |
 | COMPONENT_DEPLOYED_AS_DEPLOYMENT | A3.ApplicationComponent → A4.Deployment | `DEPLOYED_AS` | architecture | enterprise_rule | deployment_design | The application component is instantiated as this deployment in a named environment. |
 
-Only these nine may appear in a mapping document (`schema/mapping.schema.json`); adjacency is A(n) → A(n+1) only; BIAN authorities require `bian_release` and a `canonical_id` on the A2 endpoint before approval. Everything else the model knows is a **candidate report**, never a registry proposal.
+Only these nine may appear in the mapping set (form: `schema/mapping.schema.json`); adjacency is A(n) → A(n+1) only; BIAN authorities require `bian_release` and a `canonical_id` on the A2 endpoint before approval. Everything else the model knows is a **candidate report**, never a registry proposal.
 
-### 4.2 The plan — 69 connections by decision
+### 4.2 Plan rows — the 69 rules by decision
 
-Every cross-level pair the model considers (`metamodel/new-mappings.json`; reasoning per row in `docs/mapping-logic-planning.md` §5.3). The decision says what the engine does with the row.
+Every cross-level pair the mapping model considers (`metamodel/new-mappings.json`; reasoning per row in `docs/mapping-logic-planning.md` §5.3). The decision says what the engine does with the row: only **registry rules** produce links in the mapping set; the others are reported as candidates or not used.
 
 | Decision | Rows | Engine behaviour |
 |---|---|---|
@@ -262,7 +264,7 @@ Every cross-level pair the model considers (`metamodel/new-mappings.json`; reaso
 | bian internal | 14 | not cross-level: A2 structure, enforced by §3 |
 | not a mapping / historical / subsumed / not encodable | 5 | do nothing; the plan says why |
 
-### 4.3 The 50 drawable connections, with the run that validated each
+### 4.3 The 50 rules drawn in the mapping-model diagram, with the run that validated each
 
 | ID | Pair | Decision | Step | Band | Validation |
 |---|---|---|---|---|---|
@@ -398,8 +400,8 @@ The steps are specified in `docs/mapping-execution.md` §3 exactly as the execut
 
 | ID | Output | File | Content | Scored by |
 |---|---|---|---|---|
-| OUT-01 | Proposals | `<uc>-proposals.json` | registry records, `status: proposed`, plan band, typed evidence, rationale with the working | `sdmm-eval` against `<uc>-gold-mappings.json` (approved) — P / R / F1 per relationship |
-| OUT-02 | Candidate reports | `<uc>-candidates.json` | one record per candidate / conditional / institution-only / derived row, `relationship` = plan ID | `sdmm-eval` against `<uc>-gold-candidates.json` — per plan ID |
+| OUT-01 | Mapping-set records | `<uc>-proposals.json` | links between real instances, from registry rules only; `status: proposed`, plan band, typed evidence, rationale with the working | `sdmm-eval` against `<uc>-gold-mappings.json` (approved) — P / R / F1 per relationship |
+| OUT-02 | Candidate reports (not part of the mapping set) | `<uc>-candidates.json` | one record per candidate / conditional / institution-only / derived row, `relationship` = plan ID | `sdmm-eval` against `<uc>-gold-candidates.json` — per plan ID |
 | OUT-03 | Inference log | `<uc>-inference-log.json` | every attempt: plan ID, data read, rule values, step assigned / used, fallback, confidence predicted / given, outcome; no-proposal register; findings | the coverage table in `docs/use-case-testing.md` is regenerated from it |
 | OUT-04 | Design exports | `<uc>-design-a3.json`, `-a4.json` | planned instances (M2 only) | `sdmm-graph check`; trace marks design hops |
 
@@ -467,7 +469,7 @@ Plan coverage after the suite: 45 rows validated clean, 5 validated with finding
 | REQ-P-07 | Step 5 — bounded text inference: Only for S01 when step 3 produced nothing and for the A1 side of reverse cases, and S08: count shared non-generic concepts; propose at most one domain per capability, low, when the best shares ≥ 2 and leads by ≥ 1; the candidate set is the full exported landscape (two domains count) or at least three; otherwise no proposal. | S01, S08 | H1 (four right, two refused), C1 |
 | REQ-P-08 | Design targets: When no export exists below a level, state *mapping ends at <level>* and, only from BIAN's container pattern, generate planned A3/A4 instances with the `DSN-*` convention, canonical REST forms, low confidence, `created_by` naming the pattern and a rationale beginning *TARGET DESIGN, not a mapping*; never a platform or a data entity; traces mark planned instances as design. | guide § Design targets; M2 case | M2 (12 of 12; boundary stated) |
 | REQ-P-09 | Refusal discipline: No working → no proposal. Every attempt, including suppressed pairs, failed gates and ties, is logged with its data read, rule values, decision and outcome; negatives are the measure of precision. | guide §2 | every run: zero false proposals after v0.5.4 across M1, H1, H2 ×2, M2, C1, C2 (one in C3, fixed by rule) |
-| REQ-O-01 | Write the three output files in the shapes above; never write `approved`; never edit an existing mapping document; proposals must pass `sdmm-validate --strict` with draft warnings only. | guide §4, §4b, §4c | every run |
+| REQ-O-01 | Write the three output files in the shapes above; never write `approved` (except rules an architect has declared auto-approved); never edit an existing mapping set; proposals must pass `sdmm-validate --strict` with draft warnings only. | guide §4, §4b, §4c | every run |
 | REQ-O-02 | Log every attempt, not only proposals: the inference log is the evidence base for the coverage table and for confidence calibration. | guide §4b | eleven logs, 812+ attempts |
 | REQ-A-01 | Reproduce every executor run from the committed inputs with precision ≥ the executor's and recall ≥ the executor's on each sealed gold; any difference is a finding on the engine or on the guide. | docs/use-case-testing.md | baseline established by the eleven runs |
 | REQ-A-02 | Validate every example export and `examples/reference-structure` clean, and reject the relationships-test probes (reversed, mistyped, abstract, cross-level, uncatalogued). | §3 rows; relationships test T4 | Phase 1 probes; CI |

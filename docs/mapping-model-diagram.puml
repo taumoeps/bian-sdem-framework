@@ -9,7 +9,7 @@ skinparam package {
   BorderColor #9E9E9E
 }
 skinparam ArrowFontSize 9
-title Mapping Model Design — every within-level row and cross-level mapping, by ID: 132 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
+title Mapping model — the rules, by ID, between entity types (the mapping set is not drawn): 132 within-level rows (thin grey, RA…) and 50 cross-level rules (plan rows S…, coloured by decision)
 
 package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessCapability" as a1_businesscapability
@@ -264,13 +264,15 @@ a3_dataentity -[#6A1B9A,dotted]-> a4_systemsoftware : S50
 a3_event -[#6A1B9A,dotted]-> a4_technologyservice : S51
 
 legend right
-  Light grey thin arrows: within-level constraint rows (ArchiMate kind as label) — A2 from BIAN; A1, A3, A4 from ArchiMate 3.2 / TOGAF
+  Thin grey arrows: within-level rows (RA…) — the links allowed inside one architecture — A2 from BIAN; A1, A3, A4 from ArchiMate 3.2 / TOGAF
   <color:#1565C0>Bold</color>: cross-level registry rule (SDMM relationship type) (9)
   <color:#2E7D32>Solid</color>: cross-level candidate rule (proposed for the registry) (5)
   <color:#EF6C00>Solid</color>: cross-level conditional rule (fires on institution data) (5)
   <color:#616161>Dashed</color>: cross-level derived path (closure over other arrows, never proposed) (17)
   <color:#6A1B9A>Dotted</color>: cross-level institution-only (reported from export keys) (14)
-  Grey entity: no cross-level mapping by decision
-  Detail: official-mappings.puml, new-mappings.puml, level-relationships.puml
+  Blue (registry rules) are the only rules whose output becomes links in the mapping set; the other colours are reported as candidates
+  Grey entity: no cross-level rule by decision
+  Every box is an entity TYPE; real instances and the mapping set's links are not drawn
+  Read with: docs/mapping-model-design.md (overview) and docs/mapping-model-spec.md (rules in full)
 endlegend
 @enduml
