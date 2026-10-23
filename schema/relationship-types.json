@@ -52,7 +52,10 @@
       "rule_version": "1.0",
       "owner": "enterprise-architecture",
       "source_reference": "plan row S01 — Official guidance only; no exact cross-standard entity pair; Verified as *intent only* — [RN14] §3, [WQA26]: mapping unpublished",
-      "verification": "verified_intent_or_target_only"
+      "verification": "verified_intent_or_target_only",
+      "confidence": "medium",
+      "confidence_basis": "BIAN states the intent or the target only",
+      "reasoning": "BIAN intends a capability-to-Service-Domain mapping but has not published it (release notes v13/v14 §3); SDEM encodes the intent so capabilities can be traced, and derives it from process arrows (S01)."
     },
     {
       "mapping_type_id": "VALUE_STREAM_ALIGNED_TO_SCENARIO",
@@ -70,7 +73,10 @@
       "rule_version": "1.0",
       "owner": "business-architecture",
       "source_reference": "plan row S02 — SDEM mapping only; no official equivalent; n/a — SDEM definition, no external claim",
-      "verification": "sdem_definition"
+      "verification": "sdem_definition",
+      "confidence": "medium",
+      "confidence_basis": "SDEM definition; validated against sealed answers",
+      "reasoning": "No standard aligns a value stream to a BIAN scenario; SDEM defines it so a business journey can be checked against BIAN's operation sequence (S02)."
     },
     {
       "mapping_type_id": "PROCESS_USES_DOMAIN",
@@ -87,7 +93,10 @@
       "rule_version": "1.0",
       "owner": "business-architecture",
       "source_reference": "plan row S04 — Official guidance only; no exact cross-standard entity pair; Unverified — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed",
-      "verification": "unverified_w135"
+      "verification": "unverified_w135",
+      "confidence": "medium",
+      "confidence_basis": "cited source login-gated and unverified; validated against sealed answers",
+      "reasoning": "The citation for process-to-domain usage rests on an Open Group document behind a login (W135); SDEM keeps the relationship because the process's invoked operations make it derivable by join (S04)."
     },
     {
       "mapping_type_id": "BUSINESS_OBJECT_ALIGNED_TO_BIAN_OBJECT",
@@ -105,7 +114,10 @@
       "rule_version": "1.0",
       "owner": "data-architecture",
       "source_reference": "plan row S12 — Official guidance only; no exact cross-standard entity pair; Verified as target only — [SL14] BOM is published; no A1→A2 mapping method",
-      "verification": "verified_intent_or_target_only"
+      "verification": "verified_intent_or_target_only",
+      "confidence": "medium",
+      "confidence_basis": "BIAN states the intent or the target only",
+      "reasoning": "BIAN publishes the Business Object Model as the target to align to, but no rule for aligning a bank's own objects; SDEM aligns by attribute match (S12)."
     },
     {
       "mapping_type_id": "DOMAIN_REALIZED_BY_COMPONENT",
@@ -122,7 +134,10 @@
       "rule_version": "1.0",
       "owner": "application-architecture",
       "source_reference": "plan row S17 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.4 p. 52 (functional partition), §4.3.1 p. 91",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence": "high",
+      "confidence_basis": "BIAN public guidance names this alignment and it was checked",
+      "reasoning": "BIAN's Semantic API guide treats a Service Domain as realized by the application component that implements its operations (§3.4); SDEM derives it from implemented operations (S17)."
     },
     {
       "mapping_type_id": "OPERATION_IMPLEMENTED_BY_API",
@@ -139,7 +154,10 @@
       "rule_version": "1.0",
       "owner": "application-architecture",
       "source_reference": "plan row S24 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.5 pp. 52–55 (REST mapping); [APIP]",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence": "high",
+      "confidence_basis": "BIAN public guidance names this alignment and it was checked",
+      "reasoning": "BIAN's Semantic API guide maps each service operation to a REST operation (§3.5, pp. 52–55); SDEM applies that mapping as a decision procedure (S24)."
     },
     {
       "mapping_type_id": "BIAN_OBJECT_MAPPED_TO_DATA_ENTITY",
@@ -156,7 +174,10 @@
       "rule_version": "1.0",
       "owner": "data-architecture",
       "source_reference": "plan row S30 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.2.7; [SL14] BOM",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence": "high",
+      "confidence_basis": "BIAN public guidance names this alignment and it was checked",
+      "reasoning": "BIAN's guide and BOM relate business objects to implementation data (§3.2.7); SDEM maps a BIAN object to a table by attribute match (S30)."
     },
     {
       "mapping_type_id": "COMPONENT_DEPLOYED_ON_INFRASTRUCTURE",
@@ -173,7 +194,10 @@
       "rule_version": "1.0",
       "owner": "infrastructure-architecture",
       "source_reference": "plan row S33 — SDEM mapping only; no official equivalent; n/a — SDEM definition, no external claim",
-      "verification": "sdem_definition"
+      "verification": "sdem_definition",
+      "confidence": "medium",
+      "confidence_basis": "SDEM definition; validated against sealed answers",
+      "reasoning": "No standard defines this cross-level relationship; SDEM encodes ArchiMate's assignment of a node to the deployed artifact (ch. 10) so an application can be traced to its platform (S33)."
     },
     {
       "mapping_type_id": "COMPONENT_DEPLOYED_AS_DEPLOYMENT",
@@ -190,7 +214,10 @@
       "rule_version": "1.0",
       "owner": "infrastructure-architecture",
       "source_reference": "plan row S32 — SDEM mapping only; no official equivalent; n/a — SDEM definition, no external claim",
-      "verification": "sdem_definition"
+      "verification": "sdem_definition",
+      "confidence": "medium",
+      "confidence_basis": "SDEM definition; validated against sealed answers",
+      "reasoning": "No standard defines it; it points at SDEM's Deployment entity, which makes ArchiMate's artifact-assigned-to-node a traceable record (S32)."
     }
   ]
 }

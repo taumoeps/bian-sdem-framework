@@ -36,7 +36,9 @@
       "fill_step": 3,
       "data_needed": "A1 capability map and process/operation mappings (for derivation); otherwise architect authoring",
       "confidence": "low",
-      "reasoning": "BIAN intends a capability→Service Domain mapping but has not published it (RN13/RN14 §3; working group still active June 2026). Until it lands, the connection can only be derived from processes that use a domain's operations (step 3), authored, or inferred from text (step 5)."
+      "reasoning": "BIAN intends a capability→Service Domain mapping but has not published it (RN13/RN14 §3; working group still active June 2026). Until it lands, the connection can only be derived from processes that use a domain's operations (step 3), authored, or inferred from text (step 5).",
+      "basis_confidence": "n/a",
+      "basis_confidence_reason": "not used (not encodable)"
     },
     {
       "id": "B02",
@@ -51,7 +53,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "BIAN's Service Landscape organises Business Domains under Business Areas; the hierarchy is published and instantiated for every domain."
+      "reasoning": "BIAN's Service Landscape organises Business Domains under Business Areas; the hierarchy is published and instantiated for every domain.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B03",
@@ -66,7 +70,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "Every Service Domain sits in exactly one Business Domain in the published landscape."
+      "reasoning": "Every Service Domain sits in exactly one Business Domain in the published landscape.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B04",
@@ -81,7 +87,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "BIAN assigns one functional pattern per Service Domain; it is a fixed attribute of the domain definition."
+      "reasoning": "BIAN assigns one functional pattern per Service Domain; it is a fixed attribute of the domain definition.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B05",
@@ -96,7 +104,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "BIAN assigns one asset type per Service Domain; with the pattern it defines what the domain does to what."
+      "reasoning": "BIAN assigns one asset type per Service Domain; with the pattern it defines what the domain does to what.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B06",
@@ -111,7 +121,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "Each Service Domain governs one control record — the lifecycle state of its pattern applied to its asset. Defined per domain on the portal."
+      "reasoning": "Each Service Domain governs one control record — the lifecycle state of its pattern applied to its asset. Defined per domain on the portal.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B07",
@@ -126,7 +138,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "Behavior qualifiers partition a control record into sub-partitions with equivalent operational properties; BIAN publishes them per domain."
+      "reasoning": "Behavior qualifiers partition a control record into sub-partitions with equivalent operational properties; BIAN publishes them per domain.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B08",
@@ -141,7 +155,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "Control-record attributes draw on the Business Object Model; the 14.0 rationalisation aligned the two models."
+      "reasoning": "Control-record attributes draw on the Business Object Model; the 14.0 rationalisation aligned the two models.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B09",
@@ -156,7 +172,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "Operations are grouped per domain into service groups on the portal."
+      "reasoning": "Operations are grouped per domain into service groups on the portal.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B10",
@@ -171,7 +189,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "Each service operation belongs to one service group."
+      "reasoning": "Each service operation belongs to one service group.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B11",
@@ -186,7 +206,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "A service operation's action term states what it does to the control-record instance; BIAN defines the input/output in terms of the control record."
+      "reasoning": "A service operation's action term states what it does to the control-record instance; BIAN defines the input/output in terms of the control record.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B12",
@@ -201,7 +223,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "First-order connections list which domains a domain typically exchanges with; published per domain."
+      "reasoning": "First-order connections list which domains a domain typically exchanges with; published per domain.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B13",
@@ -216,7 +240,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "A business scenario is a UML sequence of operation calls between domains; published per scenario."
+      "reasoning": "A business scenario is a UML sequence of operation calls between domains; published per scenario.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B14",
@@ -231,7 +257,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "A wireframe depicts an archetypal set of domain connections; it is an evidence artefact, not a mapping endpoint."
+      "reasoning": "A wireframe depicts an archetypal set of domain connections; it is an evidence artefact, not a mapping endpoint.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "B15",
@@ -246,7 +274,9 @@
       "fill_step": 0,
       "data_needed": "BIAN A2 export: domains, groups, operations, control records, qualifiers, BOM, scenarios",
       "confidence": "high",
-      "reasoning": "The Semantic API for a domain is its operations rendered in REST form; an artefact derived from the domain definition."
+      "reasoning": "The Semantic API for a domain is its operations rendered in REST form; an artefact derived from the domain definition.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "BIAN-internal structure, checked against the public portal"
     },
     {
       "id": "S01",
@@ -261,7 +291,9 @@
       "fill_step": 3,
       "data_needed": "approved USES_DOMAIN for the capability's processes (step 3); fallback step 5 requires the full exported A2 landscape or at least 3 candidate domains — with fewer, no proposal (single-candidate inference is vacuous)",
       "confidence": "medium",
-      "reasoning": "Registry rule SUPPORTED_BY with bian_alignment_guidance authority. BIAN publishes the two ends but not the method. Minimal-inference fill: derive the domain from the operations the capability's processes already use; a capability with no mapped processes falls to text inference at low confidence. A parent capability whose composed child is SUPPORTED_BY D is reported as a candidate only, never proposed (M0 run 2: it produced the run's only false proposal — scope is a judgement). Step 5 proposes only when the best domain shares ≥ 2 non-generic concepts and leads the runner-up by ≥ 1 (H1 finding 3)."
+      "reasoning": "Registry rule SUPPORTED_BY with bian_alignment_guidance authority. BIAN publishes the two ends but not the method. Minimal-inference fill: derive the domain from the operations the capability's processes already use; a capability with no mapped processes falls to text inference at low confidence. A parent capability whose composed child is SUPPORTED_BY D is reported as a candidate only, never proposed (M0 run 2: it produced the run's only false proposal — scope is a judgement). Step 5 proposes only when the best domain shares ≥ 2 non-generic concepts and leads the runner-up by ≥ 1 (H1 finding 3).",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "BIAN states the intent or the target only"
     },
     {
       "id": "S02",
@@ -276,7 +308,9 @@
       "fill_step": 4,
       "data_needed": "A1.ValueStream attributes.stages (ordered) and A2.BusinessScenario attributes.operation_sequence; scored as coverage of the scenario's operations by stages, not a stage count",
       "confidence": "medium",
-      "reasoning": "Registry rule ALIGNED_TO, SDEM's own definition — BIAN has not modelled value streams (RN14 §3). Fill by matching stage sequence to scenario interaction sequence (structure), then description text. BIAN's announced value-stream catalogue (WQA26) would turn this into a lookup. Optional step-3 derivation (M0 finding 4): value stream realises capability K; K's process invokes operation O; O in a scenario's operation_sequence ⇒ candidate ALIGNED_TO, low. Stages are matched on the operation's action term, never the asset noun (M1 finding 4)."
+      "reasoning": "Registry rule ALIGNED_TO, SDEM's own definition — BIAN has not modelled value streams (RN14 §3). Fill by matching stage sequence to scenario interaction sequence (structure), then description text. BIAN's announced value-stream catalogue (WQA26) would turn this into a lookup. Optional step-3 derivation (M0 finding 4): value stream realises capability K; K's process invokes operation O; O in a scenario's operation_sequence ⇒ candidate ALIGNED_TO, low. Stages are matched on the operation's action term, never the asset noun (M1 finding 4).",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S03",
@@ -291,7 +325,9 @@
       "fill_step": 4,
       "data_needed": "S02 approved; A1.ValueStream.stages; stage names vs the scenario's operation action terms (as S02) (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Stage→scenario is a finer grain of S02; nothing official. Once S02 holds, a stage maps to the scenario steps it covers by sequence position and text. Not a rule; a refinement an institution may record."
+      "reasoning": "Stage→scenario is a finer grain of S02; nothing official. Once S02 holds, a stage maps to the scenario steps it covers by sequence position and text. Not a rule; a refinement an institution may record.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S04",
@@ -306,7 +342,9 @@
       "fill_step": 3,
       "data_needed": "A1.BusinessProcess (or its activities) attributes.invokes naming A2.ServiceOperation ids; otherwise step 4 verb+noun match of step text to operation names. A process exported without activities may be matched directly to operations by the S06 rule (E1 finding)",
       "confidence": "medium",
-      "reasoning": "Registry rule USES_DOMAIN, enterprise_rule. W135 claims a method but is unread; BIAN scenarios are illustrative. Fill by derivation: a process whose steps invoke operations of domain D uses D. Where no operation mapping exists yet, structural match of step text to operation names."
+      "reasoning": "Registry rule USES_DOMAIN, enterprise_rule. W135 claims a method but is unread; BIAN scenarios are illustrative. Fill by derivation: a process whose steps invoke operations of domain D uses D. Where no operation mapping exists yet, structural match of step text to operation names.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "cited source unverified; validated against sealed answers"
     },
     {
       "id": "S05",
@@ -321,7 +359,9 @@
       "fill_step": 4,
       "data_needed": "process step sequence; scenario sequence diagrams",
       "confidence": "low",
-      "reasoning": "Process→scenario alignment rests on W135 (2013, Service Landscape 2.0), unread. Plausible as sequence matching but has no current BIAN basis; not proposed as a rule until W135 is read and found to still apply."
+      "reasoning": "Process→scenario alignment rests on W135 (2013, Service Landscape 2.0), unread. Plausible as sequence matching but has no current BIAN basis; not proposed as a rule until W135 is read and found to still apply.",
+      "basis_confidence": "n/a",
+      "basis_confidence_reason": "not used (historical method)"
     },
     {
       "id": "S06",
@@ -336,7 +376,9 @@
       "fill_step": 1,
       "data_needed": "A1.BusinessActivity.attributes.invokes, or activity name vs operation action term + asset (export-conventions) (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "Activity→operation is the finest-grain process link and the most mechanically matchable (one activity, one operation call). No official authority, but it is the natural evidence for S04; an institution adopting it would fill it by name/parameter matching. Step 1 (pure join) when A1.BusinessActivity.attributes.invokes is present; step 4 name match otherwise (C1 finding 3)."
+      "reasoning": "Activity→operation is the finest-grain process link and the most mechanically matchable (one activity, one operation call). No official authority, but it is the natural evidence for S04; an institution adopting it would fill it by name/parameter matching. Step 1 (pure join) when A1.BusinessActivity.attributes.invokes is present; step 4 name match otherwise (C1 finding 3).",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S07",
@@ -351,7 +393,9 @@
       "fill_step": 3,
       "data_needed": "S06 instances (derived) (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "Activity→domain follows from activity→operation (S06) plus operation→domain (B10/B09). Never stored; derived."
+      "reasoning": "Activity→domain follows from activity→operation (S06) plus operation→domain (B10/B09). Never stored; derived.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S08",
@@ -366,7 +410,9 @@
       "fill_step": 5,
       "data_needed": "A1.BusinessService description vs domain description, asset type and aliases (step 5 threshold) (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "ArchiMate Business Service has no BIAN counterpart; a bank's business services are typically coarser than domains. Only text inference could propose this; low value, low confidence. Not adopted by default."
+      "reasoning": "ArchiMate Business Service has no BIAN counterpart; a bank's business services are typically coarser than domains. Only text inference could propose this; low value, low confidence. Not adopted by default.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S09",
@@ -381,7 +427,9 @@
       "fill_step": 4,
       "data_needed": "A1.BusinessService.attributes.inputs/outputs vs A2.ServiceOperation input/output_attributes (≥ 50 %, ≥ 2) (export-conventions.json 0.5.10); one-to-one per service, unique best match, as step 2 (C1 reading 2)",
       "confidence": "low",
-      "reasoning": "Business service→operation would need the service's contract to be decomposed to operations; no authority, no method. Institution-only."
+      "reasoning": "Business service→operation would need the service's contract to be decomposed to operations; no authority, no method. Institution-only.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S10",
@@ -396,7 +444,9 @@
       "fill_step": null,
       "data_needed": "scenario participants",
       "confidence": "low",
-      "reasoning": "Actors appear in scenarios as parties, informally. Context for a mapping, not a mapping; no registry rule proposed."
+      "reasoning": "Actors appear in scenarios as parties, informally. Context for a mapping, not a mapping; no registry rule proposed.",
+      "basis_confidence": "n/a",
+      "basis_confidence_reason": "not used (not a mapping)"
     },
     {
       "id": "S11",
@@ -411,7 +461,9 @@
       "fill_step": null,
       "data_needed": "scenario participants",
       "confidence": "low",
-      "reasoning": "Roles appear in scenario sequence diagrams as the parties performing steps, informally. Like actors (S10), they are context for a process mapping rather than a mapping endpoint; no registry rule is proposed."
+      "reasoning": "Roles appear in scenario sequence diagrams as the parties performing steps, informally. Like actors (S10), they are context for a process mapping rather than a mapping endpoint; no registry rule is proposed.",
+      "basis_confidence": "n/a",
+      "basis_confidence_reason": "not used (not a mapping)"
     },
     {
       "id": "S12",
@@ -426,7 +478,9 @@
       "fill_step": 4,
       "data_needed": "A1.BusinessObject attributes.attributes; A2.BusinessObject attributes.attributes (BOM)",
       "confidence": "medium",
-      "reasoning": "Registry rule ALIGNED_TO (object), bian_alignment_guidance. BIAN publishes the BOM as the target with attributes but no mapping method. Fill by attribute-level structural matching — the most tractable A1→A2 arrow; text only to break ties."
+      "reasoning": "Registry rule ALIGNED_TO (object), bian_alignment_guidance. BIAN publishes the BOM as the target with attributes but no mapping method. Fill by attribute-level structural matching — the most tractable A1→A2 arrow; text only to break ties.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "BIAN states the intent or the target only"
     },
     {
       "id": "S13",
@@ -441,7 +495,9 @@
       "fill_step": 3,
       "data_needed": "A1.BusinessRequirement.attributes.applies_to → S04 instances (export-conventions.json 0.5.10); a requirement applying to an activity closes through that activity's operation (S06 → domain), not the parent process (C1 reading 1)",
       "confidence": "low",
-      "reasoning": "Requirement→domain has no BIAN basis; traceability from requirements is the institution's. Derivable through the processes a requirement constrains, if those are mapped. Not a rule by default."
+      "reasoning": "Requirement→domain has no BIAN basis; traceability from requirements is the institution's. Derivable through the processes a requirement constrains, if those are mapped. Not a rule by default.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S14",
@@ -456,7 +512,9 @@
       "fill_step": 3,
       "data_needed": "A1.BusinessRequirement.attributes.applies_to → S06 instances (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "As S13 at operation grain; derivable only after S06."
+      "reasoning": "As S13 at operation grain; derivable only after S06.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S15",
@@ -471,7 +529,9 @@
       "fill_step": 3,
       "data_needed": "S17 instances over A2 composition BusinessArea → BusinessDomain → ServiceDomain (export-conventions.json 0.5.10)",
       "confidence": "high",
-      "reasoning": "Business Area→application is reachable through Area⊃Domain⊃Service Domain (B02, B03) and REALIZED_BY (S17). A query, never a record — SDEM forbids level-skipping stores. Confidence is that of the derivation, which is mechanical."
+      "reasoning": "Business Area→application is reachable through Area⊃Domain⊃Service Domain (B02, B03) and REALIZED_BY (S17). A query, never a record — SDEM forbids level-skipping stores. Confidence is that of the derivation, which is mechanical.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S16",
@@ -486,7 +546,9 @@
       "fill_step": 3,
       "data_needed": "S17 instances over A2 composition BusinessDomain → ServiceDomain (export-conventions.json 0.5.10)",
       "confidence": "high",
-      "reasoning": "As S15 one level down: Business Domain→application via B03 and S17."
+      "reasoning": "As S15 one level down: Business Domain→application via B03 and S17.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S17",
@@ -501,7 +563,9 @@
       "fill_step": 3,
       "data_needed": "approved or step-2 IMPLEMENTED_BY instances plus A3 structure (component composes interface; interface composes API operations) (step 3; confidence capped at the weakest input's band); fallback step 4: A2.ServiceDomain.attributes.asset_type's name in the component's API paths / data entity names; description comparison alone is step 5",
       "confidence": "high",
-      "reasoning": "Registry rule REALIZED_BY, verified BIAN method (SAPG §3.4 functional partition; §4.3.1 legacy wrapping). Minimal-inference fill: an application that implements a domain's operations (S24) realises the domain; where no API mapping exists, functional-partition comparison of descriptions (step 4). Confidence cap: any one implemented operation suffices for the derivation, so the cap is the strongest step-2 input (M1 finding 3). A recorded systematic interface deviation on the inputs does not lower the derivation (H1 finding 4). Fallback A closes over the information perspective (a component accessing an entity MAPPED_TO the domain's object); fallback B uses asset aliases in paths; no description-only fallback (H2 findings 2, 3)."
+      "reasoning": "Registry rule REALIZED_BY, verified BIAN method (SAPG §3.4 functional partition; §4.3.1 legacy wrapping). Minimal-inference fill: an application that implements a domain's operations (S24) realises the domain; where no API mapping exists, functional-partition comparison of descriptions (step 4). Confidence cap: any one implemented operation suffices for the derivation, so the cap is the strongest step-2 input (M1 finding 3). A recorded systematic interface deviation on the inputs does not lower the derivation (H1 finding 4). Fallback A closes over the information perspective (a component accessing an entity MAPPED_TO the domain's object); fallback B uses asset aliases in paths; no description-only fallback (H2 findings 2, 3).",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "official guidance, checked"
     },
     {
       "id": "S18",
@@ -516,7 +580,9 @@
       "fill_step": 3,
       "data_needed": "A3.ApplicationFunction.attributes.exposed_through → S24 → domain → functional_pattern (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Functional pattern→application function: the pattern classifies what a domain does (track, fulfil…); an application function might be tagged with the same classification, but BIAN offers no cross-standard method and the value is thin. Not adopted. Filled by derivation through A3.ApplicationFunction.exposed_through and the S24 arrows — step 3, not 4 (C2 finding 1)."
+      "reasoning": "Functional pattern→application function: the pattern classifies what a domain does (track, fulfil…); an application function might be tagged with the same classification, but BIAN offers no cross-standard method and the value is thin. Not adopted. Filled by derivation through A3.ApplicationFunction.exposed_through and the S24 arrows — step 3, not 4 (C2 finding 1).",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S19",
@@ -531,7 +597,9 @@
       "fill_step": 4,
       "data_needed": "A2.AssetType name/aliases token in A3.DataEntity name (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Asset type→data entity: the asset a domain manages often names the principal data entity, but BIAN gives no mapping and S30 (BOM→entity) covers the information path properly. Not adopted."
+      "reasoning": "Asset type→data entity: the asset a domain manages often names the principal data entity, but BIAN gives no mapping and S30 (BOM→entity) covers the information path properly. Not adopted.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S20",
@@ -546,7 +614,9 @@
       "fill_step": 4,
       "data_needed": "A2.ControlRecord attributes.attributes; A3.DataEntity attributes.attributes",
       "confidence": "high",
-      "reasoning": "Verified BIAN guidance (SAPG §4.2.2: logical design extends the control record). A control record's attributes are the payload an application must hold; attribute-level matching to the application's data entities is deterministic enough to be tier 1. Candidate for a new rule with bian_alignment_guidance authority. A partition table (e.g. amendments) scores under threshold but can near-miss; the one-to-one fixpoint keeps it out of the main-table rule and the qualifier rule S27 claims it (C2 finding 2)."
+      "reasoning": "Verified BIAN guidance (SAPG §4.2.2: logical design extends the control record). A control record's attributes are the payload an application must hold; attribute-level matching to the application's data entities is deterministic enough to be tier 1. Candidate for a new rule with bian_alignment_guidance authority. A partition table (e.g. amendments) scores under threshold but can near-miss; the one-to-one fixpoint keeps it out of the main-table rule and the qualifier rule S27 claims it (C2 finding 2).",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "official guidance, checked"
     },
     {
       "id": "S21",
@@ -561,7 +631,9 @@
       "fill_step": 3,
       "data_needed": "A3.ApplicationFunction.attributes.exposed_through → S24 → operation access ControlRecord (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "Verified BIAN guidance (SAPG §4.2.2). The control record's lifecycle is what an application function must drive; matching is by state/behaviour description, less mechanical than S20. Candidate rule, medium confidence. Filled by derivation through A3.ApplicationFunction.exposed_through and the S24 arrows — step 3, not 4 (C2 finding 1)."
+      "reasoning": "Verified BIAN guidance (SAPG §4.2.2). The control record's lifecycle is what an application function must drive; matching is by state/behaviour description, less mechanical than S20. Candidate rule, medium confidence. Filled by derivation through A3.ApplicationFunction.exposed_through and the S24 arrows — step 3, not 4 (C2 finding 1).",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "official guidance, checked"
     },
     {
       "id": "S22",
@@ -576,7 +648,9 @@
       "fill_step": 3,
       "data_needed": "S24 instances; A3 structure: interface composes API operations, interface assigned to service (ArchiMate ch. 9)",
       "confidence": "medium",
-      "reasoning": "Service group→application service follows from the group's operations being implemented by APIs exposed through one application service/interface. Derived from S24 plus A3 composition; not stored."
+      "reasoning": "Service group→application service follows from the group's operations being implemented by APIs exposed through one application service/interface. Derived from S24 plus A3 composition; not stored.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S23",
@@ -591,7 +665,9 @@
       "fill_step": 3,
       "data_needed": "S24 instances; A3 structure: interface composes API operations, interface assigned to service (ArchiMate ch. 9)",
       "confidence": "medium",
-      "reasoning": "As S22 for interfaces: the interface that exposes a group's operations' APIs."
+      "reasoning": "As S22 for interfaces: the interface that exposes a group's operations' APIs.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S24",
@@ -606,7 +682,9 @@
       "fill_step": 2,
       "data_needed": "A2.ServiceOperation attributes.action_term / behavior_qualifier / input_attributes / output_attributes; A2.ControlRecord attributes.attributes; A3.APIOperation attributes.method / path / payload_fields (export-conventions.json); A2.ServiceDomain.attributes.asset_type for rule 1 in reverse cases; A2.AssetType.attributes.aliases for the token boundary gate in reverse cases; A2.BehaviorQualifier.attributes.aliases and A3.ApplicationInterface.attributes.field_aliases for product-named estates",
       "confidence": "high",
-      "reasoning": "Registry rule IMPLEMENTED_BY, verified BIAN rules (SAPG §3.5): operation → REST form is prescribed. Fill by a decision procedure (guide step 2, rewritten after M1): a boundary precondition, then action term ↔ method, qualifier ↔ path and attributes ↔ payload as pass/fail/neutral evidence, with one-to-one disambiguation per operation and API. A 'count of rules passed' is not a rule — on a six-operation domain it admitted nineteen wrong pairs. Mismatches (e.g. Retrieve on POST) are proposed one band lower with a finding. The most mechanical arrow in the model. Contention between operations for one API is decided by overlap count, ratio, then qualifier (proposed, H2 run 2; pending validation on an unseen gold)."
+      "reasoning": "Registry rule IMPLEMENTED_BY, verified BIAN rules (SAPG §3.5): operation → REST form is prescribed. Fill by a decision procedure (guide step 2, rewritten after M1): a boundary precondition, then action term ↔ method, qualifier ↔ path and attributes ↔ payload as pass/fail/neutral evidence, with one-to-one disambiguation per operation and API. A 'count of rules passed' is not a rule — on a six-operation domain it admitted nineteen wrong pairs. Mismatches (e.g. Retrieve on POST) are proposed one band lower with a finding. The most mechanical arrow in the model. Contention between operations for one API is decided by overlap count, ratio, then qualifier (proposed, H2 run 2; pending validation on an unseen gold).",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "official guidance, checked"
     },
     {
       "id": "S25",
@@ -621,7 +699,9 @@
       "fill_step": 3,
       "data_needed": "S24 instances; A3 structure: which interface composes the API operation and which service that interface is assigned to (ArchiMate ch. 9)",
       "confidence": "high",
-      "reasoning": "Verified BIAN statement (SAPG §3.5 p.52): a domain's operations make up the program interfaces at the application boundary. Operation→application service is the grouping of S24 results by the service that exposes them. Candidate rule; derivable."
+      "reasoning": "Verified BIAN statement (SAPG §3.5 p.52): a domain's operations make up the program interfaces at the application boundary. Operation→application service is the grouping of S24 results by the service that exposes them. Candidate rule; derivable.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "official guidance, checked"
     },
     {
       "id": "S26",
@@ -636,7 +716,9 @@
       "fill_step": 2,
       "data_needed": "S24 instances where check 3 passed (qualifier alias in path) (export-conventions.json 0.5.10)",
       "confidence": "high",
-      "reasoning": "Behavior qualifier→API: the qualifier is part of the REST resource path in BIAN's own mapping (SAPG §3.5 p.55). Covered by S24's rule application; a refinement, not a separate rule."
+      "reasoning": "Behavior qualifier→API: the qualifier is part of the REST resource path in BIAN's own mapping (SAPG §3.5 p.55). Covered by S24's rule application; a refinement, not a separate rule.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S27",
@@ -651,7 +733,9 @@
       "fill_step": 4,
       "data_needed": "A2.BehaviorQualifier aliases token in A3.DataEntity name (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "Qualifier→data entity: the qualifier partitions the control record, so it partitions the data S20 maps. Follows from S20; not stored."
+      "reasoning": "Qualifier→data entity: the qualifier partitions the control record, so it partitions the data S20 maps. Follows from S20; not stored.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S28",
@@ -666,7 +750,9 @@
       "fill_step": 3,
       "data_needed": "S24 + S25 over BusinessScenario.operation_sequence (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "Verified BIAN guidance (SAPG §3.3–3.4): scenarios and wireframes show which operations an interaction uses; the application services implementing those operations realise the scenario. Derivable through S24/S25. Candidate rule for process-perspective traceability."
+      "reasoning": "Verified BIAN guidance (SAPG §3.3–3.4): scenarios and wireframes show which operations an interaction uses; the application services implementing those operations realise the scenario. Derivable through S24/S25. Candidate rule for process-perspective traceability.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "official guidance, checked"
     },
     {
       "id": "S29",
@@ -681,7 +767,9 @@
       "fill_step": 3,
       "data_needed": "S17 over the domains of the scenario's operations (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "As S28 at component grain: the applications realising a scenario's domains. Derivable through S17."
+      "reasoning": "As S28 at component grain: the applications realising a scenario's domains. Derivable through S17.",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "official guidance, checked"
     },
     {
       "id": "S30",
@@ -696,7 +784,9 @@
       "fill_step": 4,
       "data_needed": "A2.BusinessObject attributes.attributes; A3.DataEntity attributes.attributes; data catalogue export where available",
       "confidence": "high",
-      "reasoning": "Registry rule MAPPED_TO, verified BIAN basis (SAPG §3.2.7 information profile; BOM). Fill by attribute-level structural matching against a published, well-structured target; a data catalogue export (step 1) often supplies it outright. One-to-one between objects and entities, iterated to a fixpoint; field_aliases from the interface export where supplied (H2 findings 1, 4)."
+      "reasoning": "Registry rule MAPPED_TO, verified BIAN basis (SAPG §3.2.7 information profile; BOM). Fill by attribute-level structural matching against a published, well-structured target; a data catalogue export (step 1) often supplies it outright. One-to-one between objects and entities, iterated to a fixpoint; field_aliases from the interface export where supplied (H2 findings 1, 4).",
+      "basis_confidence": "high",
+      "basis_confidence_reason": "official guidance, checked"
     },
     {
       "id": "S31",
@@ -711,7 +801,9 @@
       "fill_step": 4,
       "data_needed": "S30 instances + A3.DataEntity.attributes containing the attribute name (export-conventions.json 0.5.10)",
       "confidence": "high",
-      "reasoning": "Attribute→entity is the grain at which S30 is actually computed; SDEM has no A3 attribute entity, so it stays a refinement inside S30, not a rule."
+      "reasoning": "Attribute→entity is the grain at which S30 is actually computed; SDEM has no A3 attribute entity, so it stays a refinement inside S30, not a rule.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S32",
@@ -726,7 +818,9 @@
       "fill_step": 1,
       "data_needed": "A4.Deployment instances with attributes.component_id / environment_id / platform_id, or A3.ApplicationComponent attributes.deployed_as (export-conventions.json)",
       "confidence": "high",
-      "reasoning": "Registry rule DEPLOYED_AS, SDEM definition. No BIAN content; BIAN's domain-as-container pattern (SAPG §4.1) is a prior only. Fill by data join from deployment records — no inference."
+      "reasoning": "Registry rule DEPLOYED_AS, SDEM definition. No BIAN content; BIAN's domain-as-container pattern (SAPG §4.1) is a prior only. Fill by data join from deployment records — no inference.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S33",
@@ -741,7 +835,9 @@
       "fill_step": 1,
       "data_needed": "A3.ApplicationComponent attributes.deployed_on, or A4 platform/node attributes.hosts (export-conventions.json)",
       "confidence": "high",
-      "reasoning": "Registry rule DEPLOYED_ON, SDEM compatibility definition accepting any concrete A4 entity. Fill by data join from the CMDB — no inference. Environment-agnostic: a component is DEPLOYED_ON every platform that hosts it (production, UAT, …); the environment is carried by the Deployment (S32). M1 finding 2. DEPLOYED_ON fans out per host layer: a component on a node pool, a runtime on that pool and an appliance yields three arrows (S34, S33, S35), each approved on its own evidence (C3 finding 2)."
+      "reasoning": "Registry rule DEPLOYED_ON, SDEM compatibility definition accepting any concrete A4 entity. Fill by data join from the CMDB — no inference. Environment-agnostic: a component is DEPLOYED_ON every platform that hosts it (production, UAT, …); the environment is carried by the Deployment (S32). M1 finding 2. DEPLOYED_ON fans out per host layer: a component on a node pool, a runtime on that pool and an appliance yields three arrows (S34, S33, S35), each approved on its own evidence (C3 finding 2).",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S34",
@@ -756,7 +852,9 @@
       "fill_step": 1,
       "data_needed": "A3.ApplicationComponent.deployed_on / A4.Node.hosts — logged as S34 when the DEPLOYED_ON target is a Node (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Component→node is the commonest deployment fact, but in ArchiMate 3.x the link is normally indirect (artifact realizes component; artifact assigned to node). The primary tables are login-gated and the secondary sources read do not corroborate a direct relationship. Instances come from data regardless; the rule's authority is open and the pair may need re-targeting via S39."
+      "reasoning": "Component→node is the commonest deployment fact, but in ArchiMate 3.x the link is normally indirect (artifact realizes component; artifact assigned to node). The primary tables are login-gated and the secondary sources read do not corroborate a direct relationship. Instances come from data regardless; the rule's authority is open and the pair may need re-targeting via S39.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "cited source unverified; validated against sealed answers"
     },
     {
       "id": "S35",
@@ -771,7 +869,9 @@
       "fill_step": 1,
       "data_needed": "A4.Device.attributes.hosts — logged as S35 when the DEPLOYED_ON target is a Device (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Component→physical device: real in on-prem estates, meaningless in cloud ones; ArchiMate reaches Device only through Node. Institution-only, data-filled where it exists."
+      "reasoning": "Component→physical device: real in on-prem estates, meaningless in cloud ones; ArchiMate reaches Device only through Node. Institution-only, data-filled where it exists.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S36",
@@ -786,7 +886,9 @@
       "fill_step": 1,
       "data_needed": "as S33 where the A4 target is A4.SystemSoftware",
       "confidence": "high",
-      "reasoning": "Component → system software is how most cloud deployments look (the fraud example's Kubernetes is SystemSoftware). But S33 `DEPLOYED_ON` targets the abstract A4.InfrastructureComponent and accepts any concrete descendant, so every S36 instance is already an S33 instance produced from the same record (M0 finding 6). No separate rule; data-filled as S33."
+      "reasoning": "Component → system software is how most cloud deployments look (the fraud example's Kubernetes is SystemSoftware). But S33 `DEPLOYED_ON` targets the abstract A4.InfrastructureComponent and accepts any concrete descendant, so every S36 instance is already an S33 instance produced from the same record (M0 finding 6). No separate rule; data-filled as S33.",
+      "basis_confidence": "n/a",
+      "basis_confidence_reason": "not used (subsumed)"
     },
     {
       "id": "S37",
@@ -801,7 +903,9 @@
       "fill_step": 1,
       "data_needed": "A3.ApplicationComponent.attributes.network_zone, or A4.CommunicationNetwork.connects naming the component's node (export-conventions.json 0.5.10); when network_zone and connects disagree, the component's network_zone wins and the disagreement is a finding (C3 finding 3)",
       "confidence": "low",
-      "reasoning": "Component→network: reached through node and path in ArchiMate; a direct arrow is rarely how estates are recorded. Institution-only."
+      "reasoning": "Component→network: reached through node and path in ArchiMate; a direct arrow is rarely how estates are recorded. Institution-only.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S38",
@@ -816,7 +920,9 @@
       "fill_step": 1,
       "data_needed": "A4.Path.attributes.carries (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Component→network path: as S37, ArchiMate reaches a Path only through the nodes it connects, and estates record routes against nodes, not applications. Institution-only; data-filled from network records where they exist."
+      "reasoning": "Component→network path: as S37, ArchiMate reaches a Path only through the nodes it connects, and estates record routes against nodes, not applications. Institution-only; data-filled from network records where they exist.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S39",
@@ -831,7 +937,9 @@
       "fill_step": 1,
       "data_needed": "A3.ApplicationComponent.attributes.built_as / A4.Artifact.of_component (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "Component→artifact is ArchiMate's own realization pattern (artifact realizes application component) and BIAN's domain-as-container packaging (SAPG §4.1) — but the primary tables are login-gated and the secondary sources read did not state it. Instances come from build data. Likely archimate_native once confirmed; the natural correction target for S34."
+      "reasoning": "Component→artifact is ArchiMate's own realization pattern (artifact realizes application component) and BIAN's domain-as-container packaging (SAPG §4.1) — but the primary tables are login-gated and the secondary sources read did not state it. Instances come from build data. Likely archimate_native once confirmed; the natural correction target for S34.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "cited source unverified; validated against sealed answers"
     },
     {
       "id": "S40",
@@ -846,7 +954,9 @@
       "fill_step": 3,
       "data_needed": "S32 instances; A4 environment membership",
       "confidence": "high",
-      "reasoning": "Component→environment follows from component→deployment (S32) and the deployment's environment in the A4 export. Derived, never stored."
+      "reasoning": "Component→environment follows from component→deployment (S32) and the deployment's environment in the A4 export. Derived, never stored.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S41",
@@ -861,7 +971,9 @@
       "fill_step": 1,
       "data_needed": "A3.ApplicationService attributes.consumes naming A4.TechnologyService ids",
       "confidence": "medium",
-      "reasoning": "Technology service serving an application service is the canonical ArchiMate cross-layer relationship; corroborated in pattern by the secondary sources, primary tables login-gated. Instances come from platform-consumption data. Likely archimate_native once confirmed."
+      "reasoning": "Technology service serving an application service is the canonical ArchiMate cross-layer relationship; corroborated in pattern by the secondary sources, primary tables login-gated. Instances come from platform-consumption data. Likely archimate_native once confirmed.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "cited source unverified; validated against sealed answers"
     },
     {
       "id": "S42",
@@ -876,7 +988,9 @@
       "fill_step": 3,
       "data_needed": "S43 instances + A4.TechnologyInterface.of_service — the interface the service is *exposed through*, derived over S43 and S44; never over S41 + composition, which reaches every interface of every consumed service (C3 finding 1)",
       "confidence": "low",
-      "reasoning": "Application service→technology interface: reached through the technology service (S41) and its interface. Derived; thin value. Rewritten after C3: derive over S43/S44 (exposure), not S41 + composition (consumption)."
+      "reasoning": "Application service→technology interface: reached through the technology service (S41) and its interface. Derived; thin value. Rewritten after C3: derive over S43/S44 (exposure), not S41 + composition (consumption).",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S43",
@@ -891,7 +1005,9 @@
       "fill_step": 1,
       "data_needed": "A3.ApplicationInterface.attributes.exposed_through / A4.TechnologyInterface.exposes (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Interface→technology interface: both exist in ArchiMate but with no prescribed one-to-one bridge; in practice an API gateway record. Institution-only."
+      "reasoning": "Interface→technology interface: both exist in ArchiMate but with no prescribed one-to-one bridge; in practice an API gateway record. Institution-only.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S44",
@@ -906,7 +1022,9 @@
       "fill_step": 1,
       "data_needed": "S43 instances + A4.TechnologyInterface.of_service (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Application interface→technology service: indirect via S41; not a distinct fact worth storing."
+      "reasoning": "Application interface→technology service: indirect via S41; not a distinct fact worth storing.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S45",
@@ -921,7 +1039,9 @@
       "fill_step": 1,
       "data_needed": "A3.ApplicationFunction.attributes.consumes (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "As S41 at application-function grain; same ArchiMate pattern, same corroboration status."
+      "reasoning": "As S41 at application-function grain; same ArchiMate pattern, same corroboration status.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "cited source unverified; validated against sealed answers"
     },
     {
       "id": "S46",
@@ -936,7 +1056,9 @@
       "fill_step": 3,
       "data_needed": "function's component DEPLOYED_ON an A4.SystemSoftware (S33/S36) (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Function→system software: follows from the component's runtime (S36). Derived."
+      "reasoning": "Function→system software: follows from the component's runtime (S36). Derived.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S47",
@@ -951,7 +1073,9 @@
       "fill_step": 3,
       "data_needed": "S24 + S32 instances",
       "confidence": "high",
-      "reasoning": "API operation→deployment: an API runs where the component exposing it is deployed. Follows from S24-style composition and S32; derived, never stored."
+      "reasoning": "API operation→deployment: an API runs where the component exposing it is deployed. Follows from S24-style composition and S32; derived, never stored.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S48",
@@ -966,7 +1090,9 @@
       "fill_step": 3,
       "data_needed": "S43 instances over the API's interface (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "API operation→technology interface: the gateway endpoint that fronts it; derivable from gateway configuration once S47 holds."
+      "reasoning": "API operation→technology interface: the gateway endpoint that fronts it; derivable from gateway configuration once S47 holds.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S49",
@@ -981,7 +1107,9 @@
       "fill_step": 1,
       "data_needed": "A3.DataEntity attributes.stored_in naming an A4.Artifact",
       "confidence": "medium",
-      "reasoning": "Technology object realizes data object is the ArchiMate pattern; corroborated in the secondary sources, primary login-gated. Instances come from storage/catalogue data."
+      "reasoning": "Technology object realizes data object is the ArchiMate pattern; corroborated in the secondary sources, primary login-gated. Instances come from storage/catalogue data.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "cited source unverified; validated against sealed answers"
     },
     {
       "id": "S50",
@@ -996,7 +1124,9 @@
       "fill_step": 1,
       "data_needed": "A3.DataEntity attributes.stored_in naming an A4.SystemSoftware (export-conventions.json)",
       "confidence": "medium",
-      "reasoning": "Data entity→database platform is a real and useful fact (where is this data held); ArchiMate reaches it through Artifact and Node. No authority yet; data-filled; worth adopting as enterprise_rule alongside S36."
+      "reasoning": "Data entity→database platform is a real and useful fact (where is this data held); ArchiMate reaches it through Artifact and Node. No authority yet; data-filled; worth adopting as enterprise_rule alongside S36.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S51",
@@ -1011,7 +1141,9 @@
       "fill_step": 1,
       "data_needed": "A3.Event.attributes.published_to (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Event→technology service: BIAN's event triggering is only a proposed extension (SAPG §3.6); the messaging platform record is the fact. Institution-only."
+      "reasoning": "Event→technology service: BIAN's event triggering is only a proposed extension (SAPG §3.6); the messaging platform record is the fact. Institution-only.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S52",
@@ -1026,7 +1158,9 @@
       "fill_step": 3,
       "data_needed": "A3.SolutionBuildingBlock.attributes.components + S33/S34/S35 instances (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "A solution building block is a TOGAF grouping of components; its infrastructure follows from its components' deployments. Derived."
+      "reasoning": "A solution building block is a TOGAF grouping of components; its infrastructure follows from its components' deployments. Derived.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S53",
@@ -1041,7 +1175,9 @@
       "fill_step": 3,
       "data_needed": "A3.SolutionBuildingBlock.attributes.components + S32 instances (export-conventions.json 0.5.10)",
       "confidence": "medium",
-      "reasoning": "A solution building block's deployments follow from its member components' DEPLOYED_AS instances (S32) via the SBB's composition in the A3 export. Derived, never stored."
+      "reasoning": "A solution building block's deployments follow from its member components' DEPLOYED_AS instances (S32) via the SBB's composition in the A3 export. Derived, never stored.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
     {
       "id": "S54",
@@ -1056,7 +1192,9 @@
       "fill_step": 3,
       "data_needed": "A3.SolutionBuildingBlock.attributes.components + S34 instances (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "As S52 for nodes; inherits S34's uncertainty."
+      "reasoning": "As S52 for nodes; inherits S34's uncertainty.",
+      "basis_confidence": "medium",
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     }
   ],
   "new_connection_candidates": [

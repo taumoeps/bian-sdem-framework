@@ -66,7 +66,8 @@
       "reasoning": "The Service Landscape is a three-tier grouping: areas contain domains contain Service Domains.",
       "reference_source": "[SL14] Service Landscape (public portal)",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -80,7 +81,8 @@
       "reasoning": "Second tier of the landscape grouping.",
       "reference_source": "[SL14] Service Landscape (public portal)",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -94,7 +96,8 @@
       "reasoning": "The metamodel overview places service groups between the domain and its operations.",
       "reference_source": "[SL14] MetaModel Overview (public portal)",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -108,7 +111,8 @@
       "reasoning": "Operations are the leaves of the domain's service structure.",
       "reference_source": "[SL14] MetaModel Overview (public portal)",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -122,7 +126,8 @@
       "reasoning": "Every Service Domain has exactly one control record, the thing it manages across its lifecycle.",
       "reference_source": "[SL14] MetaModel Overview; Control Record Model (public portal)",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -136,7 +141,8 @@
       "reasoning": "The pattern names the generic behaviour the domain performs on its asset.",
       "reference_source": "[SL14] MetaModel Overview (public portal)",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -150,7 +156,8 @@
       "reasoning": "The asset type is the thing the pattern acts on; pattern plus asset define the domain.",
       "reference_source": "[SL14] MetaModel Overview (public portal)",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -164,7 +171,8 @@
       "reasoning": "Operations act on a partition of the control record; the qualifier names that partition and appears in the REST path.",
       "reference_source": "[SAPG] §3.2.4, §3.5",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -178,7 +186,8 @@
       "reasoning": "Scenarios are illustrative choreographies of operations; aggregation because operations exist independently.",
       "reference_source": "[SL14] Business Scenarios; [SAPG] §3.3",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -192,7 +201,8 @@
       "reasoning": "The BOM defines objects as sets of typed attributes.",
       "reference_source": "[SL14] Business Object Model (public portal)",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -206,7 +216,8 @@
       "reasoning": "Qualifiers are the sub-structures of the control record that operations address.",
       "reference_source": "[SL14] MetaModel Overview; [SAPG] §3.2.4",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -220,7 +231,8 @@
       "reasoning": "Control records and the BOM were rationalised together in release 14.",
       "reference_source": "[SL14] BOM Overview; [RN14] §1.3",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -234,7 +246,8 @@
       "reasoning": "Every operation reads or changes the domain's control record; the action term says how.",
       "reference_source": "[SAPG] §3.2.5, §3.5",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -248,7 +261,8 @@
       "reasoning": "First-order connections: the domains a domain calls or is called by.",
       "reference_source": "[SAPG] §3.2.6",
       "confidence": "high",
-      "verification": "verified"
+      "verification": "verified",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -263,7 +277,8 @@
       "reference_source": "[SL14] Wireframes Overview; [SAPG] §3.4",
       "confidence": "high",
       "verification": "verified",
-      "enforceable": false
+      "enforceable": false,
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -278,7 +293,8 @@
       "reference_source": "[APIP]; [SAPG] §3.5",
       "confidence": "high",
       "verification": "verified",
-      "enforceable": false
+      "enforceable": false,
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A2",
@@ -291,9 +307,10 @@
       "description": "The versioned Business Object Model artefact aggregates the business objects.",
       "reasoning": "The BOM release is the container of the objects that type control records; SDEM reading of the BOM overview, not a published BIAN relationship. Not enforceable: artefact entities are never instantiated in a level export (LevelGraph rejects them), so the row records provenance only.",
       "reference_source": "[SL14] BOM Overview (public portal); SDEM reading",
-      "confidence": "medium",
+      "confidence": "low",
       "verification": "sdem_reading",
-      "enforceable": false
+      "enforceable": false,
+      "confidence_basis": "SDEM reading with no standard relationship; not validated"
     },
     {
       "level": "A1",
@@ -305,7 +322,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — capability structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Capability",
@@ -315,7 +332,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Capability → Capability must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -327,7 +345,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — capability structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Capability",
@@ -337,7 +355,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Capability → Capability must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -349,7 +368,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — a capability serves a value stream.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Capability",
@@ -359,7 +378,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Capability → Value Stream must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -371,7 +391,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — a capability serves a value stream.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Capability",
@@ -381,7 +401,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Capability → Value Stream must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -393,7 +414,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — value stream composed of stages (ValueStreamStage is the SDEM extension).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Value Stream",
@@ -403,7 +424,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Value Stream → Value Stream must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -415,7 +437,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — stage sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Value Stream",
@@ -425,7 +447,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Value Stream → Value Stream must list 't' (triggering)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -437,7 +460,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — stage sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Value Stream",
@@ -447,7 +470,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Value Stream → Value Stream must list 'f' (flow)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -459,7 +483,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a capability.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -469,7 +493,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Process → Capability must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -481,7 +506,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -491,7 +516,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -503,7 +529,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -513,7 +539,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -525,7 +552,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — behaviour realises a business service.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -535,7 +562,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Process → Business Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -547,7 +575,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — behaviour accesses a business object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -557,7 +585,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Process → Business Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -569,7 +598,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -579,7 +608,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Process → Requirement must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -591,7 +621,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -601,7 +631,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Process → Business Process must list 't' (triggering)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -613,7 +644,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -623,7 +654,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Process → Business Process must list 'f' (flow)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -635,7 +667,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a capability.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -645,7 +677,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Process → Capability must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -657,7 +690,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -667,7 +700,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -679,7 +713,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 7 Strategy — core behaviour realises a value stream / stage.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -689,7 +723,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -701,7 +736,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — behaviour realises a business service.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -711,7 +746,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Process → Business Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -723,7 +759,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — behaviour accesses a business object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -733,7 +769,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Process → Business Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -745,7 +782,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -755,7 +792,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Process → Requirement must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -767,7 +805,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -777,7 +815,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Process → Business Process must list 't' (triggering)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -789,7 +828,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — behaviour sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -799,7 +838,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Process → Business Process must list 'f' (flow)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -811,7 +851,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — process composed of steps (BusinessActivity is the SDEM extension).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -821,7 +861,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -833,7 +874,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — process decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -843,7 +884,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -855,7 +897,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — activity decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Process",
@@ -865,7 +907,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -877,7 +920,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
@@ -887,7 +930,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Service → Business Process must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -899,7 +943,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
@@ -909,7 +953,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Service → Business Process must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -921,7 +966,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
@@ -931,7 +976,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Service → Business Role must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -943,7 +989,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — a business service serves behaviour or active structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
@@ -953,7 +999,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Service → Business Actor must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -965,7 +1012,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — service decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
@@ -975,7 +1022,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Service → Business Service must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -987,7 +1035,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — a service accesses a business object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
@@ -997,7 +1045,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Service → Business Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1009,7 +1058,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Service",
@@ -1019,7 +1068,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Service → Requirement must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1031,7 +1081,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 6 Motivation — a core element realises a requirement.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Capability",
@@ -1041,7 +1091,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Capability → Requirement must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1053,7 +1104,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — an actor is assigned to a role.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Actor",
@@ -1063,7 +1114,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Actor → Business Role must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1075,7 +1127,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Role",
@@ -1085,7 +1137,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Role → Business Process must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1097,7 +1150,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Role",
@@ -1107,7 +1160,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Role → Business Process must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1119,7 +1173,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Actor",
@@ -1129,7 +1183,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Actor → Business Process must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1141,7 +1196,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — active structure is assigned to behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Actor",
@@ -1151,7 +1206,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Business Actor → Business Process must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1163,7 +1219,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Actor",
@@ -1173,7 +1229,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Actor → Business Actor must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1185,7 +1242,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Actor",
@@ -1195,7 +1252,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Actor → Business Actor must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1207,7 +1265,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Role",
@@ -1217,7 +1275,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Role → Business Role must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1229,7 +1288,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — active structure decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Role",
@@ -1239,7 +1298,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Role → Business Role must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1251,7 +1311,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — business object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Object",
@@ -1261,7 +1321,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Object → Business Object must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1273,7 +1334,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — business object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Object",
@@ -1283,7 +1344,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Object → Business Object must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1295,7 +1357,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 8 Business — business object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Business Object",
@@ -1305,7 +1367,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Business Object → Business Object must list 's' (specialization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1317,7 +1380,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 6 Motivation — requirement decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Requirement",
@@ -1327,7 +1390,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Requirement → Requirement must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A1",
@@ -1339,7 +1403,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 6 Motivation — requirement decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Requirement",
@@ -1349,7 +1413,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Requirement → Requirement must list 's' (specialization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1361,7 +1426,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — component decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
@@ -1371,7 +1436,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Component → Application Component must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1383,7 +1449,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — component decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
@@ -1393,7 +1459,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Component → Application Component must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1405,7 +1472,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — a component is composed of its interfaces.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
@@ -1415,7 +1482,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Component → Application Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1427,7 +1495,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — a component is assigned to the functions it performs.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
@@ -1437,7 +1505,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Component → Application Function must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1449,7 +1518,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — a function realises a service.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
@@ -1459,7 +1528,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Function → Application Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1471,7 +1541,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — derived: component realises a service through its functions.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
@@ -1481,7 +1551,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Application Component → Application Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1493,7 +1564,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — an interface is assigned to (exposes) a service.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Interface",
@@ -1503,7 +1574,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Interface → Application Service must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1515,7 +1587,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — a service serves a component or function.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Service",
@@ -1525,7 +1597,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Service → Application Component must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1537,7 +1610,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — a service serves a component or function.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Service",
@@ -1547,7 +1620,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Service → Application Function must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1559,7 +1633,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — component interaction (serving derived).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
@@ -1569,7 +1643,8 @@
         "confidence": "low",
         "test": "Archi relationship matrix: Application Component → Application Component must list 'f' (flow)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1581,7 +1656,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — component interaction (serving derived).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
@@ -1591,7 +1666,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Application Component → Application Component must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1603,7 +1679,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — component interaction (serving derived).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
@@ -1613,7 +1689,8 @@
         "confidence": "low",
         "test": "Archi relationship matrix: Application Component → Application Component must list 't' (triggering)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1625,7 +1702,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — function decomposition / sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
@@ -1635,7 +1712,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Function → Application Function must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1647,7 +1725,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — function decomposition / sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
@@ -1657,7 +1735,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Function → Application Function must list 't' (triggering)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1669,7 +1748,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — function decomposition / sequence.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
@@ -1679,7 +1758,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Function → Application Function must list 'f' (flow)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1691,7 +1771,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
@@ -1701,7 +1781,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Application Component → Data Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1713,7 +1794,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
@@ -1723,7 +1804,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Function → Data Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1735,7 +1817,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — behaviour or active structure accesses a data object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Service",
@@ -1745,7 +1827,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Application Service → Data Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1757,7 +1840,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — data object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Data Object",
@@ -1767,7 +1850,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Data Object → Data Object must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1779,7 +1863,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — data object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Data Object",
@@ -1789,7 +1873,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Data Object → Data Object must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1801,7 +1886,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — data object structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Data Object",
@@ -1811,7 +1896,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Data Object → Data Object must list 's' (specialization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1823,7 +1909,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — behaviour triggers an application event.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Component",
@@ -1833,7 +1919,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Application Component → Application Event must list 't' (triggering)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1845,7 +1932,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — behaviour triggers an application event.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Function",
@@ -1855,7 +1942,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Function → Application Event must list 't' (triggering)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1867,7 +1955,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — an event triggers behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Event",
@@ -1877,7 +1965,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Application Event → Application Function must list 't' (triggering)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1889,7 +1978,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — an event triggers behaviour.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Event",
@@ -1899,7 +1988,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Application Event → Application Component must list 't' (triggering)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1911,7 +2001,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 9 Application — an event accesses a data object.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Application Event",
@@ -1921,7 +2011,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Application Event → Data Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1943,7 +2034,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Application Interface → Application Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1965,7 +2057,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Application Component → Application Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -1987,7 +2080,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Application Interface → Data Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A3",
@@ -2008,7 +2102,8 @@
         "reasoning": "TOGAF's content metamodel defines solution building blocks as implementation-level groupings of components; aggregation (components exist independently) is the natural ArchiMate rendering. No ArchiMate concept exists for the block itself.",
         "confidence": "medium",
         "test": "Not testable against the ArchiMate matrix; check the public TOGAF content-metamodel summary (building blocks aggregate components) and report."
-      }
+      },
+      "confidence_basis": "login-gated TOGAF source, unverified; exercised by the C3 coverage case"
     },
     {
       "level": "A3",
@@ -2029,7 +2124,8 @@
         "reasoning": "TOGAF's content metamodel defines solution building blocks as implementation-level groupings of components; aggregation (components exist independently) is the natural ArchiMate rendering. No ArchiMate concept exists for the block itself.",
         "confidence": "medium",
         "test": "Not testable against the ArchiMate matrix; check the public TOGAF content-metamodel summary (building blocks aggregate components) and report."
-      }
+      },
+      "confidence_basis": "login-gated TOGAF source, unverified; exercised by the C3 coverage case"
     },
     {
       "level": "A4",
@@ -2041,7 +2137,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — node decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
@@ -2051,7 +2147,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Node → Node must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2063,7 +2160,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — node decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
@@ -2073,7 +2170,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Node → Node must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2085,7 +2183,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — a node aggregates devices.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
@@ -2095,7 +2193,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Node → Device must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2107,7 +2206,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — system software is assigned to a node or device.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
@@ -2117,7 +2216,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Node → System Software must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2129,7 +2229,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — system software is assigned to a node or device.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
@@ -2139,7 +2239,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Device → System Software must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2151,7 +2252,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — system software assigned to system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "System Software",
@@ -2161,7 +2262,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: System Software → System Software must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2173,7 +2275,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
@@ -2183,7 +2285,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Node → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2195,7 +2298,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
@@ -2205,7 +2308,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Node → Technology Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2217,7 +2321,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — a node is composed of its interfaces.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
@@ -2227,7 +2331,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Node → Technology Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2239,7 +2344,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Technology Service",
@@ -2249,7 +2354,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Technology Service → Node must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2271,7 +2377,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Node → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2283,7 +2390,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
@@ -2293,7 +2400,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Device → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2305,7 +2413,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
@@ -2315,7 +2423,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Device → Technology Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2327,7 +2436,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — a node is composed of its interfaces.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
@@ -2337,7 +2446,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Device → Technology Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2349,7 +2459,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Technology Service",
@@ -2359,7 +2469,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Technology Service → Device must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2381,7 +2492,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Device → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2393,7 +2505,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — an artifact is assigned to (deployed on) a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "System Software",
@@ -2403,7 +2515,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: System Software → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2415,7 +2528,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — active structure realises a technology service (through its functions).",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "System Software",
@@ -2425,7 +2538,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: System Software → Technology Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2437,7 +2551,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — a node is composed of its interfaces.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "System Software",
@@ -2447,7 +2561,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: System Software → Technology Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2459,7 +2574,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — a technology service serves a node, device or system software.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Technology Service",
@@ -2469,7 +2584,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Technology Service → System Software must list 'v' (serving)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2491,7 +2607,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: System Software → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2503,7 +2620,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — an interface is assigned to (exposes) a technology service.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Technology Interface",
@@ -2513,7 +2630,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Technology Interface → Technology Service must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2525,7 +2643,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — service decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Technology Service",
@@ -2535,7 +2653,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Technology Service → Technology Service must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2547,7 +2666,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — node interaction.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
@@ -2557,7 +2676,8 @@
         "confidence": "low",
         "test": "Archi relationship matrix: Node → Node must list 'f' (flow)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2569,7 +2689,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — node interaction.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Node",
@@ -2579,7 +2699,8 @@
         "confidence": "low",
         "test": "Archi relationship matrix: Node → Node must list 't' (triggering)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2591,7 +2712,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — a path is realised by a communication network.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Communication Network",
@@ -2601,7 +2722,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Communication Network → Path must list 'r' (realization)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2613,7 +2735,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — network decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Communication Network",
@@ -2623,7 +2745,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Communication Network → Communication Network must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2635,7 +2758,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — artifact structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Artifact",
@@ -2645,7 +2768,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Artifact → Artifact must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2657,7 +2781,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — artifact structure.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Artifact",
@@ -2667,7 +2791,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Artifact → Artifact must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2679,7 +2804,7 @@
       "reference_source": "[AM] ArchiMate 3.2",
       "description": "Login-gated, unverified ch. 10 Technology — device decomposition.",
       "reasoning": "ArchiMate's standard relationship between these concepts, which the SDEM entities derive from one-to-one.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
@@ -2689,7 +2814,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Device → Device must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2711,7 +2837,8 @@
         "confidence": "low",
         "test": "Archi relationship matrix: Node → Artifact must list 'g' (aggregation) or 'i' (assignment)",
         "oracle_verdict": "confirmed, alternative accepted"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2733,7 +2860,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Node → Node must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2755,7 +2883,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Node → Device must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2777,7 +2906,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Node → System Software must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2799,7 +2929,8 @@
         "confidence": "medium",
         "test": "Archi relationship matrix: Artifact → Artifact must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     },
     {
       "level": "A4",
@@ -2811,7 +2942,7 @@
       "description": "Device decomposition.",
       "reference_source": "[AM] ArchiMate 3.2 ch. 10 Technology",
       "reasoning": "ArchiMate's standard relationship between these concepts: a device specialises node, and nodes compose; added after the relationships test (finding 2) alongside the existing aggregation row.",
-      "confidence": "medium",
+      "confidence": "high",
       "verification": "verified_against_archi",
       "inference": {
         "archimate_source": "Device",
@@ -2821,7 +2952,8 @@
         "confidence": "high",
         "test": "Archi relationship matrix: Device → Device must list 'c' (composition)",
         "oracle_verdict": "confirmed"
-      }
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
     }
   ],
   "policy": "Every within-level relationship must match a constraint row for its level, or be an association (ArchiMate's generic relationship, permitted between any two entities of one level). A2 rows come from BIAN's Service Landscape metamodel; A1, A3 and A4 rows are derived from ArchiMate 3.2 (ch. 6–10) and TOGAF 10 for the concepts each SDEM entity derives from (see README › Reference architecture provenance). ArchiMate and TOGAF are login-gated: those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations.",

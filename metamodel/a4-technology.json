@@ -20,7 +20,8 @@
       },
       "evidence_status": "proposed_extension",
       "reasoning": "SDEM's abstract supertype of every A4 entity, never instantiated. No standard defines it; it exists so the DEPLOYED_ON relationship type can target 'any infrastructure' without listing each kind.",
-      "confidence": "low"
+      "confidence": "medium",
+      "confidence_basis": "SDEM definition with no standard concept; validated against sealed answers"
     },
     {
       "type": "A4.Deployment",
@@ -40,7 +41,8 @@
       },
       "evidence_status": "proposed_extension",
       "reasoning": "SDEM extension: in ArchiMate a deployment is an Artifact assigned to a Node (ch. 10). SDEM makes the deployment a first-class record so it can carry component, environment and platform and be traced.",
-      "confidence": "medium"
+      "confidence": "medium",
+      "confidence_basis": "built on a standard concept as SDEM chose to model it"
     },
     {
       "type": "A4.DeploymentEnvironment",
@@ -60,7 +62,8 @@
       },
       "evidence_status": "proposed_extension",
       "reasoning": "SDEM extension: ArchiMate has no environment element; environments are usually modelled as a grouping of Nodes. SDEM names it so production, UAT and similar can be traced and aggregated.",
-      "confidence": "medium"
+      "confidence": "medium",
+      "confidence_basis": "built on a standard concept as SDEM chose to model it"
     },
     {
       "type": "A4.Node",
@@ -80,7 +83,8 @@
       },
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Node, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
-      "confidence": "high"
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
     },
     {
       "type": "A4.Device",
@@ -100,7 +104,8 @@
       },
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Device, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
-      "confidence": "high"
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
     },
     {
       "type": "A4.SystemSoftware",
@@ -120,7 +125,8 @@
       },
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 System Software, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
-      "confidence": "high"
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
     },
     {
       "type": "A4.TechnologyService",
@@ -140,7 +146,8 @@
       },
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Technology Service, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
-      "confidence": "high"
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
     },
     {
       "type": "A4.TechnologyInterface",
@@ -160,7 +167,8 @@
       },
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Technology Interface, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
-      "confidence": "high"
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
     },
     {
       "type": "A4.CommunicationNetwork",
@@ -180,7 +188,8 @@
       },
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Communication Network, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
-      "confidence": "high"
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
     },
     {
       "type": "A4.Path",
@@ -200,7 +209,8 @@
       },
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Path, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
-      "confidence": "high"
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
     },
     {
       "type": "A4.Artifact",
@@ -220,7 +230,8 @@
       },
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Artifact, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
-      "confidence": "high"
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
     }
   ]
 }

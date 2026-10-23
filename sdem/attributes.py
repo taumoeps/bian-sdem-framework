@@ -52,11 +52,11 @@ def render(rec=None):
     n = 4
     for l in ('A1', 'A2', 'A3', 'A4'):
         n += 1
-        out += [f"## {n}. {NAMES[l]}", '', '| ID | Entity | Attribute | Type | Required | Source reference | Read by | Verification | Reasoning | Confidence |', '|---|---|---|---|---|---|---|---|---|---|']
+        out += [f"## {n}. {NAMES[l]}", '', '| ID | Entity | Attribute | Type | Required | Source reference | Read by | Verification | Reasoning | Confidence | Confidence basis |', '|---|---|---|---|---|---|---|---|---|---|---|']
         for a in [a for a in A if a['entity'].startswith(l)]:
             r = a['reference']; ref = f"{a['source']}: {r['standard']}" + (f", {r['locator']}" if r['locator'] not in ('—', '') else '') + f" ([link]({r['uri']}))"
             name = f"`{a['name']}`" + (' *(deprecated)*' if a['status'] == 'deprecated' else '')
-            out.append(f"| {a['id']} | `{a['entity']}` | {name} | {a['type']} | {'yes' if a['required'] else 'no'} | {ref} | {a['read_by']} | {a['verification']} | {a['reasoning']} | **{a['confidence']}** |")
+            out.append(f"| {a['id']} | `{a['entity']}` | {name} | {a['type']} | {'yes' if a['required'] else 'no'} | {ref} | {a['read_by']} | {a['verification']} | {a['reasoning']} | **{a['confidence']}** | {a.get('confidence_basis', '')} |")
         out.append('')
     low = [a for a in A if a['confidence'] == 'low']
     sdem = [a for a in act if a['source'] == 'SDEM']
@@ -65,7 +65,7 @@ def render(rec=None):
     out += [f'## {n + 2}. Review points', '',
             '- **`A3.APIOperation.payload_fields` is medium, not high**: OpenAPI describes payloads as schemas; SDEM flattens them to field names, which loses structure (nested objects, arrays).',
             '- **`A2.ControlRecord.lifecycle_states` is SDEM\'s**: BIAN describes a control record as tracking an asset through its lifecycle but publishes no state list.',
-            '- **`A1.BusinessService.inputs` / `outputs` are low**: no standard gives a business service inputs and outputs; SDEM added them for rule S09.',
+            '- **`A1.BusinessService.inputs` / `outputs` are medium, not high**: no standard gives a business service inputs and outputs; they rate medium only because rule S09 was validated against sealed answers in use case C1.',
             '- **`A3.ApplicationComponent.accesses` is deprecated**: it duplicates the A3 `access` relationship; exports should use the relationship.',
             '- **`A3.Event.published_to`** would gain a public source if AsyncAPI were adopted (a channel).',
             '- **Required flags reflect today\'s examples.** Turning them into checks is the next build; a real export may show that a "required" field is often missing, which is a finding, not a failure of the export.', '',

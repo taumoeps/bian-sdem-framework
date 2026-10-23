@@ -374,3 +374,9 @@ class SourceReferenceCompletenessTests(unittest.TestCase):
             self.assertFalse(self._blank(x.get('source_reference')), f"relationship type {x['mapping_type_id']}")
         for m in json.loads((ROOT / 'metamodel/official-mappings.json').read_text(encoding='utf-8'))['mappings']:
             self.assertFalse(self._blank(m.get('sources') or m.get('verification_note')), f"official {m['id']}")
+
+
+class ConfidenceRuleTests(unittest.TestCase):
+    def test_every_record_agrees_with_the_single_confidence_rule(self):
+        from sdem.confidence import apply
+        self.assertEqual(apply(write=False), [])

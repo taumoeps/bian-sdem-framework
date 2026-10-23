@@ -37,7 +37,7 @@ def render():
            '| Source type | how the entity relates to the standard: native or reference (exact), aligned (interpreted), informed (TOGAF, gated), or SDEM extension; with the alignment kind |',
            '| Verification | what has been checked: BIAN concepts against the public portal (**a licensed release is still pending**); ArchiMate concepts against the open-source Archi implementation of the relationship tables, because the specification text is login-gated; SDEM extensions are proposals |',
            '| Reasoning | why the entity is defined this way and how its source supports it |',
-           '| **Confidence** | strength of the source basis — **high**: the concept exists one-to-one in a public standard; **medium**: interpreted from, or an SDEM extension of, a standard concept; **low**: SDEM design with no standard concept |', '',
+           '| **Confidence** | one rule for every layer of the model (`sdem/confidence.py`): **high** — defined by a public standard and checked; **medium** — built on a standard concept as SDEM chose to model it, or BIAN intent only, or an SDEM / gated / unverified basis that was validated against sealed answers; **low** — no standard basis and not validated |', '| Confidence basis | which part of the rule applied |', '',
            '## 3. Summary', '', '| Architecture | Built on | Entity types | High | Medium | Low |', '|---|---|---|---|---|---|']
     for l in ('A1', 'A2', 'A3', 'A4'):
         c = Counter(e['confidence'] for e in by[l])
@@ -48,13 +48,13 @@ def render():
     for lvl in ('A1', 'A2', 'A3', 'A4'):
         rows = [e for e in ents if e['level'] == lvl]
         n += 1
-        out += [f"## {n}. {NAMES[lvl]}", '', f"Built on {lvl_std[lvl]}.", '', '| Entity | Kind | Source reference | Source type | Verification | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']
+        out += [f"## {n}. {NAMES[lvl]}", '', f"Built on {lvl_std[lvl]}.", '', '| Entity | Kind | Source reference | Source type | Verification | Reasoning | Confidence | Confidence basis |', '|---|---|---|---|---|---|---|---|']
         for e in rows:
             r = e['reference']; kind = 'abstract' if e['abstract'] else 'artefact' if e['artefact'] else 'concrete'
             if e.get('extends'): kind += f", extends `{e['extends']}`"
             std = r['standard'] if r['release'] in r['standard'] else f"{r['standard']} {r['release']}"
             ref = f"{std}: *{r['concept']}*" + (f", {r['locator']}" if r.get('locator') else '') + f" ([link]({r['uri']}))"
-            out.append(f"| `{e['type']}` | {kind} | {ref} | {SOURCE[e['definition_source']]} ({e['alignment_kind']}) | {STATUS.get(e['evidence_status'], e['evidence_status'])} | {e['reasoning']} | **{e['confidence']}** |")
+            out.append(f"| `{e['type']}` | {kind} | {ref} | {SOURCE[e['definition_source']]} ({e['alignment_kind']}) | {STATUS.get(e['evidence_status'], e['evidence_status'])} | {e['reasoning']} | **{e['confidence']}** | {e.get('confidence_basis', '')} |")
         out.append('')
     weak = [e for e in ents if e['confidence'] != 'high']
     out += [f'## {n + 1}. Entities SDEM defines or interprets', '',
@@ -62,7 +62,7 @@ def render():
             '| Entity | Confidence | Built on |', '|---|---|---|']
     out += [f"| `{e['type']}` | {e['confidence']} | {e['reference']['standard']}: {e['reference']['concept']} |" for e in weak]
     out += ['', f'## {n + 2}. Review points', '',
-            '- **`A1.BusinessCapability` is rated high** because ArchiMate defines Capability exactly, although the record cites BIAN\'s Business Capability Model as its primary source with a *conceptual* alignment. Rated on the BIAN source alone it would be medium.',
+            '- **`A1.BusinessCapability` is rated medium** under the single confidence rule: its recorded source is BIAN\'s Business Capability Model with a *conceptual* alignment. ArchiMate defines Capability exactly, so re-sourcing the entity to ArchiMate would make it high.',
             '- **All 13 BIAN reference entities await validation against a licensed BIAN release**; their concepts are checked only against the public portal.',
             '- **The ArchiMate entities are confirmed as concepts, not as specification text.** Reading the ArchiMate 3.2 specification (free Open Group account) would upgrade their verification; it would not change their confidence.',
             '- **`A3.SolutionBuildingBlock` rests on TOGAF**, which is login-gated; its definition is SDEM\'s paraphrase.', '',
