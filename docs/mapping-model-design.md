@@ -110,22 +110,66 @@ So the diagram shows *which links may exist and how they are found*. To see *whi
 
 ## How they connect
 
+```mermaid
+flowchart TB
+    classDef data fill:#E3F2FD,stroke:#1565C0,color:#0D47A1
+    classDef rules fill:#FFF3E0,stroke:#EF6C00,color:#E65100
+    classDef links fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+    classDef prog fill:#FFFFFF,stroke:#424242,color:#212121
+    classDef person fill:#F3E5F5,stroke:#6A1B9A,color:#4A148C
+    classDef graph fill:#E0F7FA,stroke:#00838F,color:#006064
+
+    subgraph SRC["Source tools — owned by each architecture team"]
+        direction LR
+        T1["EA tool"]
+        T2["BIAN workbench"]
+        T3["Application portfolio"]
+        T4["CMDB"]
+    end
+
+    ADP["Adapters"]:::prog
+    EXP[/"Exports<br/>one file per architecture"/]:::data
+
+    subgraph LOCAL["Local graphs — what exists"]
+        direction LR
+        L1[("A1 Business")]:::graph
+        L2[("A2 Service Domain")]:::graph
+        L3[("A3 Application")]:::graph
+        L4[("A4 Technology")]:::graph
+    end
+
+    ARCH(["Architects"]):::person
+    MM["Mapping model<br/><b>the rules</b>"]:::rules
+    ENG["Mapping engine<br/>applies the rules"]:::prog
+    MS[/"Mapping set<br/><b>the links</b>"/]:::links
+    REV(["Architects review<br/>approve · reject<br/>fix a wrong link by fixing the rule"]):::person
+    LDR["Graph loader"]:::prog
+    FED[("Federated graph<br/>local graphs joined by approved links")]:::graph
+    Q["trace · impact"]:::prog
+
+    T1 & T2 & T3 & T4 --> ADP
+    ADP -->|write| EXP
+    EXP -->|graph loader builds| LOCAL
+    ARCH -->|write| MM
+    MM --> ENG
+    LOCAL -->|read| ENG
+    ENG -->|proposed links| MS
+    MS <-->|review| REV
+    REV -.->|wrong link? change the rule| MM
+    MS -->|approved only| LDR
+    LOCAL -->|joined by| LDR
+    LDR --> FED
+    FED --> Q
 ```
- Source tools ──adapter──▶ Exports ──graph loader──▶ Local graphs (A1 · A2 · A3 · A4)
-                                                          │                  │
-                                                          │ read             │ joined by
-                                                          ▼                  │
- Architects ──write──▶ Mapping model ──▶ Mapping engine                     │
-                        (the rules)          │                               │
-                                             ▼                               │
-                                       Mapping set ◀── Architects review     │
-                                        (the links)    (approve / reject;    │
-                                             │          fix a wrong link     │
-                                             │          by fixing the rule)  │
-                               approved only │                               │
-                                             ▼                               ▼
-                                       Graph loader ───────────────▶ Federated graph ──▶ trace · impact
-```
+
+| Colour | Means |
+|---|---|
+| Blue | data about what exists: exports |
+| Teal | graphs |
+| Orange | the rules: the mapping model |
+| Green | the links: the mapping set |
+| White | programs: adapters, engine, graph loader, queries |
+| Purple | people |
 
 ## Who does what
 
