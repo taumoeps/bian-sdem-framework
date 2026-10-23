@@ -298,3 +298,11 @@ class ServiceSpecTests(unittest.TestCase):
                 self.assertTrue(s.get(k), f"{s['id']} lacks {k}")
             self.assertIn(f"| {s['component']} |", doc)
             self.assertIn(f"{s['id']} {s['name']} ({s['component']})", doc)
+
+
+class PackagingTests(unittest.TestCase):
+    def test_checkout_uses_repository_data_and_bundle_mapping_is_declared(self):
+        from sdem.paths import DATA_ROOT
+        self.assertEqual(DATA_ROOT, ROOT)
+        toml = (ROOT / 'pyproject.toml').read_text(encoding='utf-8')
+        self.assertIn('"sdem.data.schema" = "schema"', toml); self.assertIn('"sdem.data.metamodel" = "metamodel"', toml)

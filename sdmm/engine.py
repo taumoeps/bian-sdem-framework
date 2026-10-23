@@ -1,4 +1,4 @@
-"""Deprecated alias of sdem.inference (SDMM → SDEM, v0.7.0)."""
+"""Deprecated alias of sdem.inference (SDMM → SDEM, v0.7.0); removed in v0.8.0."""
 import warnings
 warnings.warn("sdmm.engine is deprecated; use sdem.inference", DeprecationWarning, stacklevel=2)
 from sdem.inference import *  # noqa: F401,F403

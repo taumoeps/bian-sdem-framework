@@ -5,7 +5,7 @@ The catalogue is the public vocabulary (metamodel/*.json). It holds no instituti
 from pathlib import Path
 import json
 
-ROOT = Path(__file__).resolve().parents[1]
+from sdem.paths import DATA_ROOT as ROOT  # repository folders, or bundled copies when installed
 MM_DIR = ROOT / 'metamodel'
 LEVEL_FILES = ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json']
 

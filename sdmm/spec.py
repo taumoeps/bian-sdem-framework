@@ -1,4 +1,4 @@
-"""Deprecated alias of sdem.spec (SDMM → SDEM, v0.7.0)."""
+"""Deprecated alias of sdem.spec (SDMM → SDEM, v0.7.0); removed in v0.8.0."""
 import warnings
 warnings.warn("sdmm.spec is deprecated; use sdem.spec", DeprecationWarning, stacklevel=2)
 from sdem.spec import *  # noqa: F401,F403

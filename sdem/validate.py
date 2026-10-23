@@ -7,7 +7,7 @@ from pathlib import Path
 import argparse, json, re, sys
 from sdem.metamodel import Metamodel
 
-ROOT = Path(__file__).resolve().parents[1]
+from sdem.paths import DATA_ROOT as ROOT  # repository folders, or bundled copies when installed
 RULES = ROOT / 'schema' / 'relationship-types.json'
 SCHEMA = ROOT / 'schema' / 'relationship-registry.schema.json'
 

@@ -189,7 +189,7 @@ The Relationship Rules Model was run as a procedure by an AI executor (standing 
 
 ## Quick start
 
-Python 3.10+; no third-party dependencies. `pip install -e .` installs the commands; or run them with `python -m sdem.<module>`.
+Python 3.10+; no third-party dependencies. `pip install .` (or `pip install -e .` for development) installs the commands, which work from any directory; or run them with `python -m sdem.<module>`.
 
 ```bash
 E=examples/payment-initiation
@@ -259,7 +259,7 @@ Full table with acceptance tests: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## Renamed from SDMM
 
-In v0.7.0 the project was renamed from **SDMM (BIAN Service Domain Mapping Model)** to **SDEM (Service Domain Enterprise Metamodel)**, and its terms aligned with model-driven enterprise architecture. Behaviour and data are unchanged.
+In v0.7.0 the project was renamed from **SDMM (BIAN Service Domain Mapping Model)** to **SDEM (Service Domain Enterprise Metamodel)**, and its terms aligned with model-driven enterprise architecture. Behaviour and data are unchanged. **The compatibility layer below — the `sdmm` package, the `sdmm-*` commands, the `MappingEngine` name, the old schema path and the old enum values — is removed in v0.8.0.**
 
 | Before | Now |
 |---|---|

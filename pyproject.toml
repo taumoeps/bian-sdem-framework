@@ -23,7 +23,7 @@ sdem-structure = "sdem.structure:main"
 sdem-spec = "sdem.spec:main"
 sdem-kgspec = "sdem.kgspec:main"
 sdem-diagram = "sdem.diagram:main"
-# Deprecated aliases (SDMM → SDEM, v0.7.0); removed in the next release
+# Deprecated aliases (SDMM → SDEM, v0.7.0); removed in v0.8.0
 sdmm-validate = "sdem.validate:main"
 sdmm-diff = "sdem.diff:main"
 sdmm-trace = "sdem.trace:main"
@@ -36,4 +36,12 @@ sdmm-spec = "sdem.spec:main"
 sdmm-kgspec = "sdem.kgspec:main"
 
 [tool.setuptools]
-packages = ["sdem", "sdmm"]
+packages = ["sdem", "sdem.data", "sdem.data.schema", "sdem.data.metamodel", "sdmm"]
+
+[tool.setuptools.package-dir]
+"sdem.data.schema" = "schema"
+"sdem.data.metamodel" = "metamodel"
+
+[tool.setuptools.package-data]
+"sdem.data.schema" = ["*.json"]
+"sdem.data.metamodel" = ["*.json"]

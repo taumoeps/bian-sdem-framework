@@ -1,4 +1,4 @@
-"""Deprecated alias of sdem.diagram (SDMM → SDEM, v0.7.0)."""
+"""Deprecated alias of sdem.diagram (SDMM → SDEM, v0.7.0); removed in v0.8.0."""
 import warnings
 warnings.warn("sdmm.diagram is deprecated; use sdem.diagram", DeprecationWarning, stacklevel=2)
 from sdem.diagram import *  # noqa: F401,F403

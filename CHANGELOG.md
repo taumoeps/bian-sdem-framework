@@ -10,6 +10,8 @@
 - **Files.** `schema/mapping.schema.json` → `schema/relationship-registry.schema.json`; `metamodel/new-mappings.json` → `relationship-rules.json`; diagrams `new-mappings.puml` → `relationship-rules.puml`, `merged-mappings.puml` → `merged-relationships.puml`; docs `mapping-model-design.md` → `sdem-overview.md` (rewritten), `mapping-model-spec.md` → `relationship-rules-spec.md`, `mapping-model-diagram.puml` → `architecture-model-diagram.puml`, `SDMM_v0.4_Entity_Metamodel_Specification.md` → `architecture-metamodel-spec.md`, `04-governance-and-impact.md` → `architecture-governance-spec.md`, `BIAN_SDMM_Design_Specification.md` → `BIAN_SDEM_Design_Specification.md`.
 - **New.** `docs/relationship-registry-spec.md`, generated from the registry schema, the lifecycle and the type catalogue.
 - **Model definitions.** Enum values `sdmm_extension`, `sdmm_definition`, `sdmm_reading`, field `sdmm_rule` and authority `sdmm` → `sdem_*` / `sdem`; the old values are still accepted.
+- **Packaging.** `schema/` and `metamodel/` are bundled in the installed package (`sdem/data/`, located by `sdem/paths.py`), so `pip install .` works from any directory; previously `sdmm-graph` and `sdmm-engine` failed outside a checkout.
+- **Deprecation schedule.** The compatibility layer (`sdmm` package, `sdmm-*` commands, `MappingEngine`, `schema/mapping.schema.json`, `sdmm_*` enum values) is removed in **v0.8.0**.
 - **Not renamed:** registry record fields (`mappings`, `mapping_id`, `previous_mapping_id`) and catalogue fields (`mapping_type_id`, `registry_version`) — they sit inside immutable approved records; historical test logs and results; the GitHub repository name.
 
 ## 0.6.2 — Knowledge Graph Specification
