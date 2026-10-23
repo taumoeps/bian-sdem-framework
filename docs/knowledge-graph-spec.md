@@ -4,7 +4,7 @@ Generated from the schemas and records by `python -m sdmm.kgspec`; the test suit
 
 ## 1. Architecture
 
-Four **local graphs**, one per architecture level, each owned by the team that governs that level, and one **federated graph** that holds only the approved links between levels and resolves each link's ends into the local graphs. The federated graph never copies a local graph's content and never holds a proposal. The engine reads both kinds of graph and writes only proposals to the mapping set; an architect's approval is the only way a proposal becomes a federated edge.
+Four **local graphs**, one per architecture level, each owned by the team that governs that level, and one **federated graph** that holds only the approved links between levels and resolves each link's ends into the local graphs. The federated graph never copies a local graph's content and never holds a proposal. Architects design and manage the **mapping model** (the cross-level rules); the engine reads both kinds of graph, applies that model and **builds the mapping set**; architects review its output, and only approved records become federated edges.
 
 ```mermaid
 flowchart TB
@@ -27,8 +27,10 @@ flowchart TB
     T2 -->|adapter → export| L2
     T3 -->|adapter → export| L3
     T4 -->|adapter → export| L4
-    ENG[Engine] -->|proposed| MD
-    ARCH[Architect] -->|approves| MD
+    MMOD[Mapping model] --> ENG
+    ARCH[Architect] -->|designs| MMOD
+    ENG[Engine] -->|builds| MD
+    ARCH -->|reviews| MD
     L1 -.->|reads entities + changes| ENG
     L2 -.-> ENG
     L3 -.-> ENG
@@ -267,17 +269,18 @@ flowchart LR
 
 | ID | Component | Does | Reads | Writes | Depends on | Lives in | Status |
 |---|---|---|---|---|---|---|---|
-| C-01 | Model records | the entity catalogue, `level-relationships.json`, `relationship-types.json`, `export-conventions.json`, `impact-rules.json` | SDMM model owner's edits | the rules every other component applies | — | `metamodel/`, `schema/` | built |
+| C-01 | Model records | the entity catalogue and the within-level rows (`level-relationships.json`), with `impact-rules.json` | SDMM model owner's edits | the rules every other component applies | — | `metamodel/`, `schema/` | built |
+| C-01b | Mapping model | the cross-level rules the engine applies: the nine registry relationships, the plan rows with their steps, thresholds and confidence, the join keys and alias conventions — **designed and managed by architects** | architects' edits | the rules C-08 applies | C-01 | `relationship-types.json`, `new-mappings.json`, `export-conventions.json` | built (as records; an editing interface is not built) |
 | C-02 | Source tool | the institution's system of record for one level | its users | its own records | — | institution | external |
 | C-03 | Adapter | extract, translate to SDMM entities and keys, write the export | C-02; C-01 (catalogue and conventions) | one level export | C-01, C-02 | institution's private repository | not built (examples hand-written; `sdmm/structure.py` is the one generator) |
 | C-04 | Level export | the file a local graph is built from | C-03 | — | C-03 | `examples/*/a[1-4]-*.json` (stand-ins) | built (format); schema `level-model.schema.json` |
 | C-05 | Export validator | checks an export against C-01 | C-04, C-01 | pass, or every failure | C-01, C-04 | `sdmm-graph check` (`LevelGraph`) | built |
 | C-06 | Graph loader | rebuilds local graphs from exports and the federated graph from the mapping set; records the baseline | C-04 (validated), C-09 | local graphs, federated graph | C-05, C-09 | `sdmm/graph.py` (`LevelGraph`, `FederatedGraph`) | built in memory; persistence and baselines not built |
 | C-07 | Export diff | compares a new export with the last loaded one: added, removed, changed instances and links | two versions of C-04 | a change list | C-04 | — | not built |
-| C-08 | Engine | proposes cross-level links for what changed, with evidence and confidence | local graphs, federated graph, C-07, C-01 | proposals, candidate reports, inference log | C-06, C-07, C-01 | `sdmm/engine.py` protocol; logic proven by executor runs | partly built (protocol, baseline, eval); step logic not built |
-| C-09 | Mapping set | the register of cross-level links with status and evidence | C-08 proposals; architect decisions | — | C-08, C-11 | `examples/*/mappings.json`; schema `mapping.schema.json` | built |
+| C-08 | Engine | applies the mapping model (C-01b) to the local graphs and **builds the mapping set**: new links for what changed, re-checks of approved links, with evidence and confidence | local graphs, federated graph, C-07, C-01, C-01b | mapping-set records (status `proposed`, or `approved` where the rule is auto-approved under `enterprise_rule`), candidate reports, inference log | C-06, C-07, C-01b | `sdmm/engine.py` protocol; logic proven by executor runs | partly built (protocol, baseline, eval); step logic not built |
+| C-09 | Mapping set | the cross-level links with status and evidence — built by the engine from the mapping model; hand-made links are an exception, recorded with `created_by` naming the architect | C-08 output; architect decisions | — | C-08, C-11 | `examples/*/mappings.json`; schema `mapping.schema.json` | built |
 | C-10 | Mapping validator | checks proposals and the mapping set: registry, evidence, anchoring | C-09, C-01 | pass, or every failure | C-01 | `sdmm-validate` | built |
-| C-11 | Architect approval | approves, rejects or supersedes mapping records | validated proposals; impact reports | status changes in C-09 | C-10, C-14 | a person; recorded as fields | built (as fields); review queue not built |
+| C-11 | Architect review | reviews the engine's output: approves, rejects or supersedes records; corrects the mapping model (C-01b) when a rule produces a wrong link, rather than hand-editing the set | validated proposals; impact reports | status changes in C-09 | C-10, C-14 | a person; recorded as fields | built (as fields); review queue not built |
 | C-12 | History guard | rejects edits to approved records and invalid status transitions | two versions of C-09 | pass, or every violation | C-09 | `sdmm-diff` | built |
 | C-13 | Local graphs, federated graph | the graphs themselves | C-06 | — | C-06 | in memory | built in memory; store is DEC-01 |
 | C-14 | Query tools | trace, impact, check, stats; unmapped and history to come | C-13 | answers with mapping ids | C-13 | `sdmm-graph`, `sdmm-trace` | built (unmapped, history not built) |
@@ -305,7 +308,7 @@ flowchart LR
 | Within-level link changed | a process gains an activity | C-03 → C-04 → C-05 → C-06 | none; derived paths recompute |
 | Instance re-keyed in its tool | an application gets a new id | as removed + added, then C-11 supersedes the old mappings with new ones (KG-I-02) | approve the replacements |
 | Mapping approved, rejected or superseded | an architect reviews the queue | C-11 → C-09 → C-10 → C-12 → C-06 (federated) | the decision itself |
-| Mapping rule changed | a threshold or alias convention | C-01 → C-17 (acceptance cases rerun and scored) → C-08 on affected estates → C-11 | model owner adopts the rule only if the scores hold |
+| Mapping rule changed | a threshold, alias convention or a rule that produced a wrong link | C-01b edit → C-17 (acceptance cases rerun and scored) → C-08 rebuilds the affected mapping-set records → C-11 | architect adopts the rule only if the scores hold |
 | BIAN release | a new Service Landscape version | C-01 (A2 rows and catalogue) → C-03 for A2 → C-04 → C-05 → C-06 → C-07 → C-08 → C-11 | review changed A2 mappings |
 
 Every workflow ends with C-06 rebuilding the graphs; no component edits a graph in place.
@@ -315,8 +318,8 @@ Every workflow ends with C-06 rebuilding the graphs; no component edits a graph 
 | Actor | May | May not |
 |---|---|---|
 | Level owner | change its source tool; publish a new export | write federated edges |
-| Engine | read local graphs and approved edges; write proposals | approve; write to any graph |
-| Architect | approve, reject or supersede mapping records | edit an approved record |
+| Engine | read local graphs and approved edges; apply the mapping model; build mapping-set records (proposed, or approved only under an architect-declared `enterprise_rule`) | change the mapping model; write to any graph |
+| Architect | design and manage the mapping model; review, approve, reject or supersede mapping records; declare which rules are auto-approved | edit an approved record |
 | Agent (assistant) | query the graphs; run the engine and validators | approve; write to any graph or mapping set |
 | Graph loader | rebuild graphs from exports and the mapping set | change any input |
 
