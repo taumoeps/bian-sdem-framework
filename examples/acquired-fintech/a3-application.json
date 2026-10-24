@@ -18,9 +18,6 @@
         ],
         "deployed_as": [
           "DEP-FLOW-PROD"
-        ],
-        "accesses": [
-          "ENT-FLOWS"
         ]
       }
     },
@@ -37,9 +34,6 @@
         ],
         "deployed_as": [
           "DEP-ZAP-PROD"
-        ],
-        "accesses": [
-          "ENT-ZAPS"
         ]
       }
     },
@@ -56,9 +50,6 @@
         ],
         "deployed_as": [
           "DEP-POTS-PROD"
-        ],
-        "accesses": [
-          "ENT-POTS"
         ]
       }
     },
@@ -75,10 +66,6 @@
         ],
         "deployed_as": [
           "DEP-BUDDIES-PROD"
-        ],
-        "accesses": [
-          "ENT-MEMBERS",
-          "ENT-BUDDIES"
         ]
       }
     },
@@ -95,9 +82,6 @@
         ],
         "deployed_as": [
           "DEP-VAULTS-PROD"
-        ],
-        "accesses": [
-          "ENT-VAULTS"
         ]
       }
     },
@@ -114,9 +98,6 @@
         ],
         "deployed_as": [
           "DEP-PERKS-PROD"
-        ],
-        "accesses": [
-          "ENT-PERKS"
         ]
       }
     },
@@ -133,9 +114,6 @@
         ],
         "deployed_as": [
           "DEP-SHIELD-PROD"
-        ],
-        "accesses": [
-          "ENT-SCORES"
         ]
       }
     },

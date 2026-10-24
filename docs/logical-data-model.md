@@ -1634,19 +1634,19 @@ The rules the data must satisfy, and which the checker enforces today.
 
 ## Appendix B. How the example data measures up
 
-The 7 example estates (447 instances) checked by `sdem-graph check` against the enforced rules. No errors; 29 completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record); 7 instance(s) still use a deprecated field.
+The 7 example estates (447 instances) checked by `sdem-graph check` against the enforced rules. No errors; 29 completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
 
 | Rule | Values checked | Failures |
 |---|---|---|
 | LC-04 | 478 | 0 |
-| LC-05 | 811 | 0 |
+| LC-05 | 804 | 0 |
 | LC-06 | 586 | 0 |
-| LC-07 | 132 | 0 |
+| LC-07 | 124 | 0 |
 | LC-08 (warning) | 136 | 0 |
 | LC-09 | 316 | 0 |
 | LC-10 | 1106 | 0 |
 | LC-10m (warning) | 1106 | 29 |
-| LC-13 deprecated field in use | — | 7 |
+| LC-13 deprecated field in use | — | 0 |
 | fields not in the model | — | 0 |
 
 ## Appendix C. Where the model's decisions come from
