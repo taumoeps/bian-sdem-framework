@@ -33,6 +33,14 @@ def runs_by_plan_id():
     return per
 
 
+def _logs():
+    import glob as _g
+    fs = _g.glob(str(ROOT / 'examples' / '*' / '*inference-log*.json')); n = 0
+    for f in fs:
+        d = json.loads(Path(f).read_text(encoding='utf-8')); n += len(d.get('attempts') or d.get('log') or d.get('entries') or (d if isinstance(d, list) else []))
+    return len(fs), n
+
+
 def render():
     mm = Metamodel.load()
     lr = _load(MM_DIR / 'level-relationships.json'); reg = _load(ROOT / 'schema' / 'relationship-types.json')
@@ -157,16 +165,16 @@ def render():
             '| OUT-04 | Design exports | `<uc>-design-a3.json`, `-a4.json` | planned instances (M2 only) | `sdem-graph check`; trace marks design hops |', '',
             'Governance stays outside the engine: `sdem-validate` (structure, registry, evidence, anchoring), `sdem-diff` (lifecycle transitions, immutability of approved records; supersession via `previous_mapping_id`), impact classification per `schema/impact-rules.json` (' + ', '.join(imp['kinds']) + ').', '']
     req('O', 'Write the three output files in the shapes above; never write `approved` (except rules an architect has declared auto-approved); never edit an existing mapping set; proposals must pass `sdem-validate --strict` with draft warnings only.', 'guide §4, §4b, §4c', 'every run')
-    req('O', 'Log every attempt, not only proposals: the inference log is the evidence base for the coverage table and for confidence calibration.', 'guide §4b', 'eleven logs, 812+ attempts')
+    req('O', 'Log every attempt, not only proposals: the inference log is the evidence base for the coverage table and for confidence calibration.', 'guide §4b', f"{_logs()[0]} logs, {_logs()[1]} attempts")
 
     # ---- 8 acceptance
-    out += ['## 8. Acceptance — the runs the engine must reproduce', '', 'The eleven executor runs are the acceptance test: the engine, given the same inputs, must reach the same proposals and candidate reports and score at least the same against the sealed gold (`docs/use-case-testing.md` › Results and Plan coverage).', '',
+    out += ['## 8. Acceptance — the runs the engine must reproduce', '', 'The executed runs are the acceptance test (DEC-E-01): the engine, given the current committed inputs of each scored run, must score at least the executor\'s precision and recall against the sealed gold (`docs/use-case-testing.md` › Results and Plan coverage).', '',
             '| ID | Case | Estate | Hidden | Executor result |', '|---|---|---|---|---|',
             '| ACC-01 | E1, E2 | card-fraud-alerts, customer-onboarding | nothing (query and governance) | all checks exact |',
             '| ACC-02 | M0 | card-fraud-alerts | 6 arrows | run 2: 6 of 6, 1 false (rule withdrawn) |', '| ACC-03 | M1 | payment-initiation (68 instances) | 12 → 13 arrows, planted mismatch | 13 of 13 under the restated gold; mismatch caught |',
             '| ACC-04 | H1 | legacy-core-ledger (87; SOAP, all POST; empty given) | 28 arrows | 28 of 28, 0 false |', '| ACC-05 | H2 | acquired-fintech (116; no A1; hostile names) | 41 arrows | run 1: 32 of 41, 0 false; run 2 with aliases: 41 of 41 |',
             '| ACC-06 | M2 | digital-lending (greenfield, no A3/A4) | 12 design arrows | 12 of 12; boundary stated |', '| ACC-07 | C1, C2, C3 | trade-finance (85; one estate, three level pairs) | 19 registry + 100 candidate | 19 of 19; 100 of 101 (one fixed by rule) |', '',
-            'Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: 131 rows enforced, 113 verified against the Archi oracle, 0 contradicted.', '']
+            'Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: ' + str(len(lr['constraints'])) + ' rows, ' + str(sum(1 for c in lr['constraints'] if c.get('enforceable') is not False)) + ' enforced (the rest are A2 artefact rows, documentation only), 113 verified against the Archi oracle, 0 contradicted.', '']
     req('A', 'Reproduce every executor run from the committed inputs with precision ≥ the executor\'s and recall ≥ the executor\'s on each sealed gold; any difference is a finding on the engine or on the guide.', 'docs/use-case-testing.md', 'baseline established by the eleven runs')
     req('A', 'Validate every example export and `examples/reference-structure` clean, and reject the relationships-test probes (reversed, mistyped, abstract, cross-level, uncatalogued).', '§3 rows; relationships test T4', 'Phase 1 probes; CI')
 
@@ -176,9 +184,18 @@ def render():
             '| OPEN-01 | A2 structure and B rows | verified on public BIAN pages; `pending_release_validation` against a licensed release remains |',
             '| OPEN-02 | A1 / A3 / A4 within-level rows | 113 verified against the open-source Archi relationship matrix (commit cited in the record); 2 TOGAF rows unverified |',
             '| OPEN-03 | Official S rows citing ArchiMate / W135 (S34, S39, S41, S45, S49; S04, S05) | unverified: login-gated; the five ArchiMate rows can be checked against the Archi oracle next |',
-            '| OPEN-04 | API contention tie-break (step 2 clause 4) | **proposed** — chosen with a gold already seen; validated only when it decides a pair on an unseen gold |',
+            '| OPEN-04 | API contention tie-break (step 2 clause 4) | **binding** (DEC-E-06) — chosen with a gold already seen; still to be validated when it decides a pair on an unseen gold |',
             '| OPEN-05 | One-author caveat | all estates and gold authored by SDEM; one blind case (data and gold by someone else) retires it |',
             '| OPEN-06 | Confidence bands | assigned by hand and calibrated conservative (every low inference confirmed); could be re-derived from the logs\' predicted-vs-observed outcomes |', '']
+
+    out += ['### Engine decisions', '', 'Settled 2026-10-25 before the engine build (v0.9), where the records and the procedure disagreed or were silent.', '',
+            '| ID | Question | Decision | Reasoning |', '|---|---|---|---|',
+            '| DEC-E-01 | What must the engine reproduce? | On every scored run, **precision and recall at least the executor\'s** against the sealed gold, from the current committed inputs (latest run per case). Exact replication is not required. | The executor runs contain errors that were later fixed by rule changes (M0 CAP-300 parent rule, C3 S42); scoring against the gold rewards the fixed rules instead of copying the errors. REQ-A-01 already said this; §8 now agrees. |',
+            '| DEC-E-02 | S17 confidence cap: weakest or strongest input? | **Strongest step-2 input.** | Any one implemented operation suffices to show the application realises the domain (M1 finding 3); a systematic interface deviation does not lower it (H1 finding 4). The S17 `data_needed` text said "weakest" and is corrected. |',
+            '| DEC-E-03 | Does S17 have a description-only fallback? | **No.** Fallbacks are step 4 (asset-type name in API paths or data entity names) and fallback A (information perspective); S17 is not in step 5. | Description similarity alone is too weak for a high-band registry arrow; the procedure never used it. |',
+            '| DEC-E-04 | Is S08 in step 5? | **Yes, but off by default**; enabled only when an institution opts in. | S08 can only be inferred from text and is "not adopted by default" in its own record; the procedure omits it for that reason. |',
+            '| DEC-E-05 | Which runs are in scope? | Scored: M0, M1, H1, H2, M2 (design mode, built last), C1, C2, C3. **Not scored:** E1 (no answer key; not re-run on the enriched exports) and E2 (query-only). | An engine can only be accepted against a sealed gold. |',
+            '| DEC-E-06 | Are the executor\'s conventions binding? | **Yes** — the contention tie-break (OPEN-04) and the method rows of step 2 check 2 are part of the specification. | They were applied in every run that scored 1.00; leaving them open would make the engine\'s behaviour undefined. |', '']
 
     # ---- 10 index
     out += ['## 10. Requirements index', '', f"{len(REQ)} requirements. Groups: V vocabulary, S structure, M mapping model, D data, P procedure, O outputs, A acceptance.", '',

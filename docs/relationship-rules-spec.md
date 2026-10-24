@@ -409,7 +409,7 @@ Governance stays outside the engine: `sdem-validate` (structure, registry, evide
 
 ## 8. Acceptance — the runs the engine must reproduce
 
-The eleven executor runs are the acceptance test: the engine, given the same inputs, must reach the same proposals and candidate reports and score at least the same against the sealed gold (`docs/use-case-testing.md` › Results and Plan coverage).
+The executed runs are the acceptance test (DEC-E-01): the engine, given the current committed inputs of each scored run, must score at least the executor's precision and recall against the sealed gold (`docs/use-case-testing.md` › Results and Plan coverage).
 
 | ID | Case | Estate | Hidden | Executor result |
 |---|---|---|---|---|
@@ -421,7 +421,7 @@ The eleven executor runs are the acceptance test: the engine, given the same inp
 | ACC-06 | M2 | digital-lending (greenfield, no A3/A4) | 12 design arrows | 12 of 12; boundary stated |
 | ACC-07 | C1, C2, C3 | trade-finance (85; one estate, three level pairs) | 19 registry + 100 candidate | 19 of 19; 100 of 101 (one fixed by rule) |
 
-Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: 131 rows enforced, 113 verified against the Archi oracle, 0 contradicted.
+Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: 132 rows, 129 enforced (the rest are A2 artefact rows, documentation only), 113 verified against the Archi oracle, 0 contradicted.
 
 ## 9. Verification status and open items
 
@@ -430,9 +430,22 @@ Plan coverage after the suite: 45 rows validated clean, 5 validated with finding
 | OPEN-01 | A2 structure and B rows | verified on public BIAN pages; `pending_release_validation` against a licensed release remains |
 | OPEN-02 | A1 / A3 / A4 within-level rows | 113 verified against the open-source Archi relationship matrix (commit cited in the record); 2 TOGAF rows unverified |
 | OPEN-03 | Official S rows citing ArchiMate / W135 (S34, S39, S41, S45, S49; S04, S05) | unverified: login-gated; the five ArchiMate rows can be checked against the Archi oracle next |
-| OPEN-04 | API contention tie-break (step 2 clause 4) | **proposed** — chosen with a gold already seen; validated only when it decides a pair on an unseen gold |
+| OPEN-04 | API contention tie-break (step 2 clause 4) | **binding** (DEC-E-06) — chosen with a gold already seen; still to be validated when it decides a pair on an unseen gold |
 | OPEN-05 | One-author caveat | all estates and gold authored by SDEM; one blind case (data and gold by someone else) retires it |
 | OPEN-06 | Confidence bands | assigned by hand and calibrated conservative (every low inference confirmed); could be re-derived from the logs' predicted-vs-observed outcomes |
+
+### Engine decisions
+
+Settled 2026-10-25 before the engine build (v0.9), where the records and the procedure disagreed or were silent.
+
+| ID | Question | Decision | Reasoning |
+|---|---|---|---|
+| DEC-E-01 | What must the engine reproduce? | On every scored run, **precision and recall at least the executor's** against the sealed gold, from the current committed inputs (latest run per case). Exact replication is not required. | The executor runs contain errors that were later fixed by rule changes (M0 CAP-300 parent rule, C3 S42); scoring against the gold rewards the fixed rules instead of copying the errors. REQ-A-01 already said this; §8 now agrees. |
+| DEC-E-02 | S17 confidence cap: weakest or strongest input? | **Strongest step-2 input.** | Any one implemented operation suffices to show the application realises the domain (M1 finding 3); a systematic interface deviation does not lower it (H1 finding 4). The S17 `data_needed` text said "weakest" and is corrected. |
+| DEC-E-03 | Does S17 have a description-only fallback? | **No.** Fallbacks are step 4 (asset-type name in API paths or data entity names) and fallback A (information perspective); S17 is not in step 5. | Description similarity alone is too weak for a high-band registry arrow; the procedure never used it. |
+| DEC-E-04 | Is S08 in step 5? | **Yes, but off by default**; enabled only when an institution opts in. | S08 can only be inferred from text and is "not adopted by default" in its own record; the procedure omits it for that reason. |
+| DEC-E-05 | Which runs are in scope? | Scored: M0, M1, H1, H2, M2 (design mode, built last), C1, C2, C3. **Not scored:** E1 (no answer key; not re-run on the enriched exports) and E2 (query-only). | An engine can only be accepted against a sealed gold. |
+| DEC-E-06 | Are the executor's conventions binding? | **Yes** — the contention tie-break (OPEN-04) and the method rows of step 2 check 2 are part of the specification. | They were applied in every run that scored 1.00; leaving them open would make the engine's behaviour undefined. |
 
 ## 10. Requirements index
 
@@ -449,7 +462,7 @@ Plan coverage after the suite: 45 rows validated clean, 5 validated with finding
 | REQ-M-03 | S02: propose `ALIGNED_TO` A1.ValueStream → A2.BusinessScenario at step 4 (medium); data: A1.ValueStream attributes.stages (ordered) and A2.BusinessScenario attributes.operation_sequence; scored as coverage of the scenario's operations by stages, not a stage count | S02 | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (1 hits, 0 false) |
 | REQ-M-04 | S04: propose `USES_DOMAIN` A1.BusinessProcess → A2.ServiceDomain at step 3 (medium); data: A1.BusinessProcess (or its activities) attributes.invokes naming A2.ServiceOperation ids; otherwise step 4 verb+noun match of step text to operation names. A process exported without activities may be matched directly to operations by the S06 rule (E1 finding) | S04 | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (1 hits, 0 false) |
 | REQ-M-05 | S12: propose `ALIGNED_TO` A1.BusinessObject → A2.BusinessObject at step 4 (medium); data: A1.BusinessObject attributes.attributes; A2.BusinessObject attributes.attributes (BOM) | S12 | validated: C1, H1, H2, H2 r2, M1 (2 hits, 0 false) |
-| REQ-M-06 | S17: propose `REALIZED_BY` A2.ServiceDomain → A3.ApplicationComponent at step 3 (high); data: approved or step-2 IMPLEMENTED_BY instances plus A3 structure (component composes interface; interface composes API operations) (step 3; confidence capped at the weakest input's band); fallback step 4: A2.ServiceDomain.attributes.asset_type's name in the component's API paths / data entity names; description comparison alone is step 5 | S17 | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (20 hits, 0 false) |
+| REQ-M-06 | S17: propose `REALIZED_BY` A2.ServiceDomain → A3.ApplicationComponent at step 3 (high); data: approved or step-2 IMPLEMENTED_BY instances plus A3 structure (component composes interface; interface composes API operations) (step 3; confidence capped at the strongest step-2 input's band — DEC-E-02); fallback step 4: A2.ServiceDomain.attributes.asset_type's name in the component's API paths / data entity names; no description-only fallback (DEC-E-03) | S17 | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (20 hits, 0 false) |
 | REQ-M-07 | S24: propose `IMPLEMENTED_BY` A2.ServiceOperation → A3.APIOperation at step 2 (high); data: A2.ServiceOperation attributes.action_term / behavior_qualifier / input_attributes / output_attributes; A2.ControlRecord attributes.attributes; A3.APIOperation attributes.method / path / payload_fields (export-conventions.json); A2.ServiceDomain.attributes.asset_type for rule 1 in reverse cases; A2.AssetType.attributes.aliases for the token boundary gate in reverse cases; A2.BehaviorQualifier.attributes.aliases and A3.ApplicationInterface.attributes.field_aliases for product-named estates | S24 | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (60 hits, 0 false) |
 | REQ-M-08 | S30: propose `MAPPED_TO` A2.BusinessObject → A3.DataEntity at step 4 (high); data: A2.BusinessObject attributes.attributes; A3.DataEntity attributes.attributes; data catalogue export where available | S30 | validated: C1, C2, C3, H1, H2, H2 r2, M1, M2 (16 hits, 0 false) |
 | REQ-M-09 | S32: propose `DEPLOYED_AS` A3.ApplicationComponent → A4.Deployment at step 1 (high); data: A4.Deployment instances with attributes.component_id / environment_id / platform_id, or A3.ApplicationComponent attributes.deployed_as (export-conventions.json) | S32 | validated: C1, C2, C3, H1, H2, H2 r2, M0, M1, M2 (23 hits, 0 false) |
@@ -470,7 +483,7 @@ Plan coverage after the suite: 45 rows validated clean, 5 validated with finding
 | REQ-P-08 | Design targets: When no export exists below a level, state *mapping ends at <level>* and, only from BIAN's container pattern, generate planned A3/A4 instances with the `DSN-*` convention, canonical REST forms, low confidence, `created_by` naming the pattern and a rationale beginning *TARGET DESIGN, not a mapping*; never a platform or a data entity; traces mark planned instances as design. | guide § Design targets; M2 case | M2 (12 of 12; boundary stated) |
 | REQ-P-09 | Refusal discipline: No working → no proposal. Every attempt, including suppressed pairs, failed gates and ties, is logged with its data read, rule values, decision and outcome; negatives are the measure of precision. | guide §2 | every run: zero false proposals after v0.5.4 across M1, H1, H2 ×2, M2, C1, C2 (one in C3, fixed by rule) |
 | REQ-O-01 | Write the three output files in the shapes above; never write `approved` (except rules an architect has declared auto-approved); never edit an existing relationship registry; proposals must pass `sdem-validate --strict` with draft warnings only. | guide §4, §4b, §4c | every run |
-| REQ-O-02 | Log every attempt, not only proposals: the inference log is the evidence base for the coverage table and for confidence calibration. | guide §4b | eleven logs, 812+ attempts |
+| REQ-O-02 | Log every attempt, not only proposals: the inference log is the evidence base for the coverage table and for confidence calibration. | guide §4b | 10 logs, 1034 attempts |
 | REQ-A-01 | Reproduce every executor run from the committed inputs with precision ≥ the executor's and recall ≥ the executor's on each sealed gold; any difference is a finding on the engine or on the guide. | docs/use-case-testing.md | baseline established by the eleven runs |
 | REQ-A-02 | Validate every example export and `examples/reference-structure` clean, and reject the relationships-test probes (reversed, mistyped, abstract, cross-level, uncatalogued). | §3 rows; relationships test T4 | Phase 1 probes; CI |
 
