@@ -376,6 +376,22 @@ class SourceReferenceCompletenessTests(unittest.TestCase):
             self.assertFalse(self._blank(m.get('sources') or m.get('verification_note')), f"official {m['id']}")
 
 
+    def test_every_attribute_and_draft_field_has_source_reasoning_and_confidence(self):
+        """Approved attributes (specific, common, derived) and every data-model draft field carry all three (A1–A4 review, 2026-10-24)."""
+        import glob
+        at = json.loads((ROOT / 'metamodel/entity-attributes.json').read_text(encoding='utf-8'))
+        for a in at['attributes'] + at.get('common_attributes', []):
+            self.assertFalse(self._blank(a.get('reasoning')), f"attribute {a['id']} reasoning")
+            self.assertIn(a.get('confidence'), ('high', 'medium', 'low'), f"attribute {a['id']} confidence")
+        for x in at.get('derived_attributes', []):
+            for k in ('rule', 'source', 'reasoning'): self.assertFalse(self._blank(x.get(k)), f"derived {x['id']} {k}")
+            self.assertIn(x.get('confidence'), ('high', 'medium', 'low'), f"derived {x['id']} confidence")
+        for f in glob.glob(str(ROOT / 'metamodel/drafts/a[1-4]-descriptive-attributes.json')):
+            for x in json.loads(Path(f).read_text(encoding='utf-8'))['attributes']:
+                for k in ('source', 'uri', 'reasoning', 'question'): self.assertFalse(self._blank(x.get(k)), f"{Path(f).name} {x['id']} {k}")
+                self.assertIn(x.get('confidence'), ('high', 'medium', 'low'), f"{Path(f).name} {x['id']} confidence")
+                if x['confidence'] == 'high': self.assertNotIn('SDEM', x['source'], f"{x['id']}: SDEM-defined cannot be high")
+
 class ConfidenceRuleTests(unittest.TestCase):
     def test_every_record_agrees_with_the_single_confidence_rule(self):
         from sdem.confidence import apply

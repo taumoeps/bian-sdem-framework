@@ -1,6 +1,6 @@
 # A2 Service Domain Architecture — Data Model (DRAFT for review)
 
-> **Status: draft, 2026-10-24.** Proposed fields are marked **proposed**; nothing here is in the model until you approve it. Record: `metamodel/drafts/a2-descriptive-attributes.json`. Rendered by `python scripts/render_data_model_draft.py a2`.
+> **Status: APPROVED 2026-10-24 — dropped DA2-02. Written into metamodel/entity-attributes.json (AT-A2-13, AT-A2-25).** Record: `metamodel/drafts/a2-descriptive-attributes.json`. Rendered by `python scripts/render_data_model_draft.py a2`.
 
 **How to read each entity.** The **Data Model** table is the complete record for the entity: every field, its type, whether it is required, its allowed values, what it holds and its **source reference**. Fields come in groups — **Core** (identity, on every entity), **Common** (descriptive, on every entity), **Inherited** (from a parent entity) and **Specific** (this entity only). Each entity and each field carries its **source reference**, **reasoning** (for proposed fields, starting with the design question it answers) and **confidence**. In an export file the common and specific fields sit inside the instance's `attributes` object.
 
@@ -524,6 +524,13 @@
 | `A2.BusinessObjectAttribute` | 3 | 2 | 1 | 0 |
 | `A2.SemanticAPI` | 1 | 0 | 1 | 0 |
 | **Total** | **14** | **9** | **3** | **2** |
+
+## Derived attributes (computed, never stored)
+
+| ID | Entity | Attribute | Rule | Source reference | Reasoning | Confidence |
+|---|---|---|---|---|---|---|
+| DV-A2-01 | `A2.ServiceDomain` | `criticality` | the highest criticality of the A1 processes linked to the Service Domain by USES_DOMAIN | SDEM-defined derivation over approved relationships | Replaces the dropped stored attribute DA2-02: a derived value cannot drift from process criticality. | **medium** |
+| DV-A2-02 | `A2.ServiceOperation` | `http_method (default)` | Retrieve → GET (guide §3.5, p.55); for other action terms, the method in BIAN's published Semantic API definition of the operation (not checked here); an `http_method` value overrides | BIAN Semantic API Practitioner Guide v8.1 (public) | Lets the engine check a realising API's method with little data entry. Only Retrieve → GET is stated in the guide, so the rest of the rule rests on BIAN files not yet checked. | **medium** |
 
 ## Decisions for you
 
