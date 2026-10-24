@@ -20,7 +20,7 @@
       "id": "DA1-01",
       "entity": "all",
       "name": "source_id",
-      "type": "string",
+      "type": "text",
       "values": null,
       "required": false,
       "question": "Which record in the source tool is this?",
@@ -29,7 +29,8 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "The record's own key in the tool it came from, so any node can be traced back to its system of record. Distinct from SDEM `id`, which may be the same value.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The record's own key in the tool it came from, so any node can be traced back to its system of record."
     },
     {
       "id": "DA1-02",
@@ -44,7 +45,8 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "Date the thing was created in the source.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Date the thing was created in the source."
     },
     {
       "id": "DA1-03",
@@ -59,7 +61,8 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "Date of the last change in the source; lets reviews spot stale entries.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Date of the last change in the source."
     },
     {
       "id": "DA1-04",
@@ -74,7 +77,8 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "Start of the validity period. Dublin Core defines `valid` as a date or range; SDEM stores the range as two dates.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Start of the validity period."
     },
     {
       "id": "DA1-05",
@@ -89,7 +93,8 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "End of the validity period (empty = open).",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "End of the validity period (empty = open)."
     },
     {
       "id": "DA1-06",
@@ -104,7 +109,8 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "The earlier instance this one supersedes, so history can be followed through renames and re-designs.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The earlier instance this one supersedes, so history can be followed through renames and re-designs."
     },
     {
       "id": "DA1-07",
@@ -119,7 +125,8 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "The later instance that supersedes this one.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The later instance that supersedes this one."
     },
     {
       "id": "DA1-08",
@@ -134,7 +141,8 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "E.g. \"BIAN BCM 14.0\", an internal policy id. Makes alignment claims explicit and queryable.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "E.g."
     },
     {
       "id": "DA1-09",
@@ -149,7 +157,8 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "Free topic tags; lets architects slice the graph by theme.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Free topic tags."
     },
     {
       "id": "DA1-10",
@@ -164,7 +173,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "Accountability is the most-asked design question. No public standard defines an \"owner\" field: Dublin Core's rightsHolder is about rights, not accountability. Built on ArchiMate's assignment of an actor or role.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Accountability is the most-asked design question."
     },
     {
       "id": "DA1-11",
@@ -184,7 +194,8 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "Dublin Core defines the field (access or security status); the four values are SDEM's common banking scale, not a standard.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Dublin Core defines the field (access or security status)."
     },
     {
       "id": "DA1-12",
@@ -199,7 +210,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "Depth in the capability hierarchy. The hierarchy itself is the composition link between capabilities; `level` makes the depth queryable without walking it.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Depth in the capability hierarchy."
     },
     {
       "id": "DA1-13",
@@ -219,7 +231,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Common capability heat-map dimension; no open standard defines it or its values.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Common capability heat-map dimension."
     },
     {
       "id": "DA1-14",
@@ -234,7 +247,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Current maturity on a 1–5 scale. Maturity scales (e.g. CMMI) are proprietary; SDEM defines only the range.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Current maturity on a 1–5 scale."
     },
     {
       "id": "DA1-15",
@@ -249,7 +263,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Target maturity, same scale; the gap to current drives investment questions.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Target maturity, same scale."
     },
     {
       "id": "DA1-16",
@@ -264,7 +279,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The stakeholder the stream delivers value to; ArchiMate has a Stakeholder concept.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The stakeholder the stream delivers value to."
     },
     {
       "id": "DA1-17",
@@ -279,7 +295,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The value the stream produces; ArchiMate has a Value concept associated with value streams.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The value the stream produces."
     },
     {
       "id": "DA1-18",
@@ -294,7 +311,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Condition for entering the stage. Widely used in value-stream mapping, but the source that defines it (BIZBOK) is membership-only.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Condition for entering the stage."
     },
     {
       "id": "DA1-19",
@@ -309,7 +327,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Condition for leaving the stage; as above.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Condition for leaving the stage."
     },
     {
       "id": "DA1-20",
@@ -324,7 +343,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The value a stage contributes; ArchiMate Value concept.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The value a stage contributes."
     },
     {
       "id": "DA1-21",
@@ -339,7 +359,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "Depth in the process hierarchy; the hierarchy itself is the composition link.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Depth in the process hierarchy."
     },
     {
       "id": "DA1-22",
@@ -354,7 +375,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The business event that starts it (e.g. \"customer submits payment\").",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The business event that starts it (e.g."
     },
     {
       "id": "DA1-23",
@@ -369,7 +391,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The end result the process achieves.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The end result the process achieves."
     },
     {
       "id": "DA1-24",
@@ -388,7 +411,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "The single most useful field for impact analysis. No open standard defines it; business-continuity standards (ISO 22301) are paid.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The single most useful field for impact analysis."
     },
     {
       "id": "DA1-25",
@@ -409,7 +433,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "How often the process runs; informs outage impact.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "How often the process runs."
     },
     {
       "id": "DA1-26",
@@ -428,7 +453,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Degree of automation; no standard scale.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Degree of automation."
     },
     {
       "id": "DA1-27",
@@ -443,7 +469,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "Position of the step in its process; ArchiMate orders steps with triggering and flow.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Position of the step in its process."
     },
     {
       "id": "DA1-28",
@@ -458,7 +485,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The actors or roles the service serves.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The actors or roles the service serves."
     },
     {
       "id": "DA1-29",
@@ -473,7 +501,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Whether customers use the service directly; key for customer-impact questions.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Whether customers use the service directly."
     },
     {
       "id": "DA1-30",
@@ -495,7 +524,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Delivery channels. ArchiMate models channels as business interfaces; the value list is SDEM's.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Delivery channels."
     },
     {
       "id": "DA1-31",
@@ -510,7 +540,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "The service-level target (e.g. \"same-day\"). Service-management standards that define this (ITIL) are paid.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The service-level target (e.g."
     },
     {
       "id": "DA1-32",
@@ -529,7 +560,8 @@
       "uri": "https://www.w3.org/TR/vocab-org/",
       "reasoning": "The three kinds of agent ORG distinguishes.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The three kinds of agent ORG distinguishes."
     },
     {
       "id": "DA1-33",
@@ -544,7 +576,8 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Whether the actor is outside the bank. ORG does not distinguish internal from external.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Whether the actor is outside the bank."
     },
     {
       "id": "DA1-34",
@@ -559,7 +592,8 @@
       "uri": "https://www.w3.org/TR/vocab-org/",
       "reasoning": "A category from a scheme (e.g. regulator, partner, business line).",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "A category from a scheme (e.g."
     },
     {
       "id": "DA1-35",
@@ -574,7 +608,8 @@
       "uri": "https://www.w3.org/TR/vocab-org/",
       "reasoning": "The organisation's or unit's purpose.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The organisation's or unit's purpose."
     },
     {
       "id": "DA1-36",
@@ -589,7 +624,8 @@
       "uri": "https://www.w3.org/TR/vocab-org/",
       "reasoning": "The site where the actor is based.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The site where the actor is based."
     },
     {
       "id": "DA1-37",
@@ -607,7 +643,8 @@
       "uri": "https://www.w3.org/TR/vocab-org/",
       "reasoning": "ORG separates a generic role from a post that exists whether or not it is filled.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "ORG separates a generic role from a post that exists whether or not it is filled."
     },
     {
       "id": "DA1-38",
@@ -622,7 +659,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "What the role does; ArchiMate's role is defined by its responsibilities.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "What the role does."
     },
     {
       "id": "DA1-39",
@@ -637,7 +675,8 @@
       "uri": "https://www.w3.org/TR/skos-reference/",
       "reasoning": "Link to the business-glossary concept that defines the object.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Link to the business-glossary concept that defines the object."
     },
     {
       "id": "DA1-40",
@@ -652,7 +691,8 @@
       "uri": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
       "reasoning": "Whether the object holds information about an identifiable person, as defined in public privacy law.",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "Whether the object holds information about an identifiable person, as defined in public privacy law."
     },
     {
       "id": "DA1-41",
@@ -671,7 +711,8 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "ArchiMate has three separate concepts; SDEM holds them as one entity with a kind field.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "ArchiMate has three separate concepts."
     },
     {
       "id": "DA1-42",
@@ -686,7 +727,8 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "The origin of the requirement (e.g. a regulation article or policy id).",
       "confidence": "high",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "The origin of the requirement (e.g."
     },
     {
       "id": "DA1-43",
@@ -706,7 +748,15 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "MoSCoW priority, a common convention with no open standard definition.",
       "confidence": "low",
-      "status": "draft"
+      "status": "draft",
+      "meaning": "MoSCoW priority, a common convention with no open standard definition."
+    }
+  ],
+  "supersedes": [
+    {
+      "existing": "A1.BusinessCapability.owner (text, informational)",
+      "by": "common owner (reference to an actor or role)",
+      "action": "deprecate the existing field when approved"
     }
   ]
 }
