@@ -71,7 +71,7 @@ def render():
             '- [`relationships-planning.md`](relationships-planning.md) — every link allowed inside each architecture.',
             '- [`inference-audit.md`](inference-audit.md) — how much of SDEM is grounded, confirmed or inferred, including the source of each attribute.',
             '- [`reference-architecture-provenance.md`](reference-architecture-provenance.md) — the standards and their public URLs.',
-            '- [`architecture-metamodel-spec.md`](architecture-metamodel-spec.md) — the v0.4 entity metamodel specification this design grew from.', '']
+            '- [`architecture-metamodel-high-level-spec.md`](architecture-metamodel-high-level-spec.md) — the v0.4 entity metamodel specification this design grew from (the frozen reference); [`architecture-metamodel-detail-level-spec.md`](architecture-metamodel-detail-level-spec.md) — the governing detail-level specification.', '']
     return _terms('\n'.join(out) + '\n')
 
 

@@ -126,7 +126,7 @@ Three layers, easy to confuse, kept separate:
 | Plan rows (rules for establishing cross-architecture relationships) | 69 — 9 catalogue rules that produce registry records; 41 candidate, conditional, derived or institution-only rules that are reported; 14 BIAN-internal; 5 ruled out |
 | Join keys the rules read from exports | 52 |
 
-**Read:** [`sdem-overview.md`](docs/sdem-overview.md) · [`architecture-metamodel-spec.md`](docs/architecture-metamodel-spec.md) and [`relationships-planning.md`](docs/relationships-planning.md) (the metamodel) · [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) (the rules and the inference engine's 33 requirements) · [`relationship-registry-spec.md`](docs/relationship-registry-spec.md) (the registry) · [`architecture-model-diagram.puml`](docs/architecture-model-diagram.puml) (metamodel and rules by ID, one picture).
+**Read:** [`sdem-overview.md`](docs/sdem-overview.md) · [`architecture-metamodel-detail-level-spec.md`](docs/architecture-metamodel-detail-level-spec.md) (governing; follows the high-level spec) and [`relationships-planning.md`](docs/relationships-planning.md) (the metamodel) · [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) (the rules and the inference engine's 33 requirements) · [`relationship-registry-spec.md`](docs/relationship-registry-spec.md) (the registry) · [`architecture-model-diagram.puml`](docs/architecture-model-diagram.puml) (metamodel and rules by ID, one picture).
 
 ---
 
@@ -236,7 +236,8 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | [`physical-data-model.md`](docs/physical-data-model.md) | the Physical Data Model: one JSON Schema per entity type (`schema/entities/`), the export format tool adapters validate against; source, reasoning and confidence on every property |
 | [`architecture-attribute-design.md`](docs/architecture-attribute-design.md) | the Architecture Attribute Design: every attribute by architecture, with type, source reference, readers, verification, reasoning and confidence |
 | [`architecture-entity-design.md`](docs/architecture-entity-design.md) | the Architecture Entity Design: every entity type by architecture, with source reference, verification, reasoning and confidence |
-| [`architecture-metamodel-spec.md`](docs/architecture-metamodel-spec.md) | the Architecture Metamodel (v0.4 entity specification; current rows in `relationships-planning.md`) |
+| [`architecture-metamodel-detail-level-spec.md`](docs/architecture-metamodel-detail-level-spec.md) | **the governing Architecture Metamodel specification**: follows the high-level spec section by section, with the implemented detail and a gap register |
+| [`architecture-metamodel-high-level-spec.md`](docs/architecture-metamodel-high-level-spec.md) | the owner's v0.4 high-level specification — the frozen reference |
 | [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) · [`architecture-model-diagram.puml`](docs/architecture-model-diagram.puml) | the Relationship Rules Model and the inference engine's requirements |
 | [`relationship-registry-spec.md`](docs/relationship-registry-spec.md) | the Relationship Registry: fields, lifecycle, immutability, legacy names |
 | [`architecture-governance-spec.md`](docs/architecture-governance-spec.md) | approval, supersession and impact |

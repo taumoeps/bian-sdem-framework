@@ -72,6 +72,7 @@ jobs:
           python -m sdem.confidence --check
           python -m sdem.logical --check
           python -m sdem.physical --check
+          python -m sdem.metamodel_spec --check
       - name: Reference structure — every enforceable within-level row on committed data
         run: python -m sdem.graph check examples/reference-structure/a*.json examples/reference-structure/mappings.json
       - name: Graph stores are current (sdem-graph build --check)
