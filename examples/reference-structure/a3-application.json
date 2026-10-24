@@ -75,7 +75,14 @@
       "version": "1.0",
       "name": "APIOperation 1 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A3.APIOperation carrying one relationship per constraint row of A3; no business meaning."
+      "description": "Synthetic instance of A3.APIOperation carrying one relationship per constraint row of A3; no business meaning.",
+      "attributes": {
+        "method": "GET",
+        "path": "structure",
+        "payload_fields": [
+          "structure"
+        ]
+      }
     },
     {
       "id": "RS-APIOperation-2",
@@ -83,7 +90,14 @@
       "version": "1.0",
       "name": "APIOperation 2 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A3.APIOperation carrying one relationship per constraint row of A3; no business meaning."
+      "description": "Synthetic instance of A3.APIOperation carrying one relationship per constraint row of A3; no business meaning.",
+      "attributes": {
+        "method": "GET",
+        "path": "structure",
+        "payload_fields": [
+          "structure"
+        ]
+      }
     },
     {
       "id": "RS-DataEntity-1",
@@ -91,7 +105,12 @@
       "version": "1.0",
       "name": "DataEntity 1 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A3.DataEntity carrying one relationship per constraint row of A3; no business meaning."
+      "description": "Synthetic instance of A3.DataEntity carrying one relationship per constraint row of A3; no business meaning.",
+      "attributes": {
+        "attributes": [
+          "structure"
+        ]
+      }
     },
     {
       "id": "RS-DataEntity-2",
@@ -99,7 +118,12 @@
       "version": "1.0",
       "name": "DataEntity 2 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A3.DataEntity carrying one relationship per constraint row of A3; no business meaning."
+      "description": "Synthetic instance of A3.DataEntity carrying one relationship per constraint row of A3; no business meaning.",
+      "attributes": {
+        "attributes": [
+          "structure"
+        ]
+      }
     },
     {
       "id": "RS-Event-1",

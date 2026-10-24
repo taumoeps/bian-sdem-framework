@@ -7,6 +7,7 @@ impact by rule. Nothing here decides whether a mapping is right.
 from pathlib import Path
 import argparse, json, sys
 from sdem.metamodel import Metamodel
+from sdem.conformance import check_level, estate_index
 from sdem.validate import check_schema, load_registry, load_schema, normalize_type, validate, ROOT
 from sdem.trace import load_edges, walk, paths as tree_paths
 
@@ -42,6 +43,7 @@ class LevelGraph:
         for i in doc.get('instances', []):
             self.by_id.setdefault(i['id'], []).append(i)
         self.relationships = doc.get('relationships', [])
+        self.warnings, self.estate = [], None
 
     @classmethod
     def load(cls, path, metamodel=None):
@@ -76,7 +78,8 @@ class LevelGraph:
             problem = self.mm.relationship_issue(self.level, ends[0][0]['type'], r['kind'], ends[1][0]['type'])
             if problem:
                 issues.append(f"relationship {r['source']} -{r['kind']}-> {r['target']}: {problem}")
-        return issues
+        errors, self.warnings, _ = check_level(self.doc, self.mm, self.estate)  # data-model conformance (LC-04 … LC-13)
+        return issues + errors
 
     def neighbours(self, iid):
         out = []
@@ -122,9 +125,12 @@ class FederatedGraph:
 
     def check(self):
         """Validate every level graph, then every mapping document with this graph as the entity resolver."""
-        report = {}
+        report = {}; self.warnings = {}
+        index = estate_index([g.doc for g in self.levels.values()])
         for lvl, g in sorted(self.levels.items()):
+            g.estate = index
             report[f'level {lvl} ({g.doc["model_id"]})'] = g.validate()
+            if g.warnings: self.warnings[f'level {lvl} ({g.doc["model_id"]})'] = g.warnings
         for n, d in enumerate(self.mapping_docs, 1):
             warnings = []
             issues = validate(d, self.registry, load_schema(), entity_resolver=self, warnings=warnings, metamodel=self.mm)
@@ -249,10 +255,11 @@ def main(argv=None):
     if args.cmd == 'check':
         report = fg.check()
         failed = any(report.values())
-        if args.json: print(json.dumps({'ok': not failed, 'report': report}, indent=2))
+        if args.json: print(json.dumps({'ok': not failed, 'report': report, 'warnings': fg.warnings}, indent=2))
         else:
             for k, issues in report.items():
                 for i in issues: print(f'ERROR: {k}: {i}')
+                for w in fg.warnings.get(k, []): print(f'WARN: {k}: {w}')
                 if not issues: print(f'OK: {k}')
         return EXIT_ISSUES if failed else EXIT_OK
     if args.cmd == 'stats':

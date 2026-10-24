@@ -1620,21 +1620,21 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-01 | Instance identity | `id` + `version` is unique within a level export | **enforced** |
 | LC-02 | Entity typing | every instance's `type` is a concrete, non-artefact entity type of the export's level | **enforced** |
 | LC-03 | Within-level relationships | every relationship matches a within-level row of its level (through inheritance), or is `association` | **enforced** |
-| LC-04 | Required attributes | every attribute marked required is present | **not enforced** |
-| LC-05 | Attribute types | every attribute value has its declared type | **not enforced** |
-| LC-06 | Enumerations | enumerated attributes (`action_term`, `method`, `lifecycle_status`) take an allowed value | **not enforced** |
-| LC-07 | Same-level references | a reference attribute whose target is in the same level names an instance of the declared type in the same export | **not enforced** |
-| LC-08 | Cross-level references | a reference attribute whose target is in another level names an instance of the declared type in the estate | **not enforced** |
-| LC-09 | Natural keys | no two instances of a type share their identifier key within an export | **not enforced** |
-| LC-10 | Cardinality — maximum | no instance exceeds the stated maximum of a BIAN or ArchiMate-composition row (e.g. a service group in two Service Domains) | **not enforced** |
-| LC-10m | Cardinality — minimum (completeness) | an instance meets the stated minimum (e.g. a Service Domain has a control record); exports may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error | **not enforced** |
+| LC-04 | Required attributes | every attribute marked required is present | **enforced** |
+| LC-05 | Attribute types | every attribute value has its declared type | **enforced** |
+| LC-06 | Enumerations | enumerated attributes (`action_term`, `method`, `lifecycle_status`) take an allowed value | **enforced** |
+| LC-07 | Same-level references | a reference attribute whose target is in the same level names an instance of the declared type in the same export | **enforced** |
+| LC-08 | Cross-level references | a reference attribute whose target is in another level names an instance of the declared type in the estate | **enforced as a warning** |
+| LC-09 | Natural keys | no two instances of a type share their identifier key within an export | **enforced** |
+| LC-10 | Cardinality — maximum | no instance exceeds the stated maximum of a BIAN or ArchiMate-composition row (e.g. a service group in two Service Domains) | **enforced** |
+| LC-10m | Cardinality — minimum (completeness) | an instance meets the stated minimum (e.g. a Service Domain has a control record); exports may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error | **enforced** |
 | LC-11 | Cross-level relationship ends | both ends of every registry record resolve to instances of the right type, level and version | **enforced** |
 | LC-12 | Registry immutability | approved, rejected and superseded registry records are never edited | **enforced** |
-| LC-13 | Deprecated attributes | deprecated attributes raise a warning | **not enforced** |
+| LC-13 | Deprecated attributes | deprecated attributes raise a warning | **enforced** |
 
 ## Appendix B. How the example data measures up
 
-The 7 example estates (447 instances) measured against the rules not yet enforced. No errors; 29 completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record); 7 instance(s) still use a deprecated field.
+The 7 example estates (447 instances) checked by `sdem-graph check` against the enforced rules. No errors; 29 completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record); 7 instance(s) still use a deprecated field.
 
 | Rule | Values checked | Failures |
 |---|---|---|
@@ -1642,7 +1642,7 @@ The 7 example estates (447 instances) measured against the rules not yet enforce
 | LC-05 | 811 | 0 |
 | LC-06 | 586 | 0 |
 | LC-07 | 132 | 0 |
-| LC-08 | 136 | 0 |
+| LC-08 (warning) | 136 | 0 |
 | LC-09 | 316 | 0 |
 | LC-10 | 1106 | 0 |
 | LC-10m (warning) | 1106 | 29 |
@@ -1668,6 +1668,6 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Layer | Content | Status |
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
-| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 5 of 14 rules enforced |
+| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 14 of 14 rules enforced |
 | Physical | one export JSON Schema per entity; a graph store schema | not generated yet — next build |
 

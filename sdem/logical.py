@@ -22,79 +22,32 @@ CONSTRAINTS = [
  ('LC-01', 'Instance identity', '`id` + `version` is unique within a level export', 'enforced', '`sdem-graph check`'),
  ('LC-02', 'Entity typing', 'every instance\'s `type` is a concrete, non-artefact entity type of the export\'s level', 'enforced', '`sdem-graph check`'),
  ('LC-03', 'Within-level relationships', 'every relationship matches a within-level row of its level (through inheritance), or is `association`', 'enforced', '`sdem-graph check`'),
- ('LC-04', 'Required attributes', 'every attribute marked required is present', 'not enforced', 'designed; next build'),
- ('LC-05', 'Attribute types', 'every attribute value has its declared type', 'not enforced', 'designed; next build'),
- ('LC-06', 'Enumerations', 'enumerated attributes (`action_term`, `method`, `lifecycle_status`) take an allowed value', 'not enforced', 'designed; next build'),
- ('LC-07', 'Same-level references', 'a reference attribute whose target is in the same level names an instance of the declared type in the same export', 'not enforced', 'designed; next build'),
- ('LC-08', 'Cross-level references', 'a reference attribute whose target is in another level names an instance of the declared type in the estate', 'not enforced', 'resolved by the inference engine (join keys); never a federated edge'),
- ('LC-09', 'Natural keys', 'no two instances of a type share their identifier key within an export', 'not enforced', 'designed; needed by the export diff'),
- ('LC-10', 'Cardinality — maximum', 'no instance exceeds the stated maximum of a BIAN or ArchiMate-composition row (e.g. a service group in two Service Domains)', 'not enforced', 'designed as an error; next build'),
- ('LC-10m', 'Cardinality — minimum (completeness)', 'an instance meets the stated minimum (e.g. a Service Domain has a control record); exports may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error', 'not enforced', 'designed as a warning; next build'),
+ ('LC-04', 'Required attributes', 'every attribute marked required is present', 'enforced', '`sdem-graph check` (error)'),
+ ('LC-05', 'Attribute types', 'every attribute value has its declared type', 'enforced', '`sdem-graph check` (error)'),
+ ('LC-06', 'Enumerations', 'enumerated attributes (`action_term`, `method`, `lifecycle_status`) take an allowed value', 'enforced', '`sdem-graph check` (error)'),
+ ('LC-07', 'Same-level references', 'a reference attribute whose target is in the same level names an instance of the declared type in the same export', 'enforced', '`sdem-graph check` (error)'),
+ ('LC-08', 'Cross-level references', 'a reference attribute whose target is in another level names an instance of the declared type in the estate', 'enforced as a warning', '`sdem-graph check` (warning when the target level is loaded); resolved by the inference engine; never a federated edge'),
+ ('LC-09', 'Natural keys', 'no two instances of a type share their identifier key within an export', 'enforced', '`sdem-graph check` (error)'),
+ ('LC-10', 'Cardinality — maximum', 'no instance exceeds the stated maximum of a BIAN or ArchiMate-composition row (e.g. a service group in two Service Domains)', 'enforced', '`sdem-graph check` (error)'),
+ ('LC-10m', 'Cardinality — minimum (completeness)', 'an instance meets the stated minimum (e.g. a Service Domain has a control record); exports may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error', 'enforced', '`sdem-graph check` (warning)'),
  ('LC-11', 'Cross-level relationship ends', 'both ends of every registry record resolve to instances of the right type, level and version', 'enforced', '`sdem-graph check`'),
  ('LC-12', 'Registry immutability', 'approved, rejected and superseded registry records are never edited', 'enforced', '`sdem-diff`'),
- ('LC-13', 'Deprecated attributes', 'deprecated attributes raise a warning', 'not enforced', 'designed; next build'),
+ ('LC-13', 'Deprecated attributes', 'deprecated attributes raise a warning', 'enforced', '`sdem-graph check` (warning)'),
 ]
 
 
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
 
 
-def conformance(mm, attrs, common=()):
-    """Measure the example estates against LC-04 … LC-10 (the constraints not yet enforced)."""
-    byent = {}
-    for a in attrs: byent.setdefault(a['entity'], {})[a['name']] = a
+def conformance(mm, attrs=None, common=None):
+    """Measure the example estates with the enforced conformance checks (sdem/conformance.py)."""
+    from .conformance import check_level, estate_index
     res = Counter(); estates = 0; instances = 0
     for est in sorted(glob.glob(str(ROOT / 'examples' / '*') + '/')):
         if 'reference-structure' in est: continue
-        estates += 1; idx = {}
-        files = glob.glob(est + 'a[1-4]-*.json')
-        for f in files:
-            for i in _j(f)['instances']: idx[i['id']] = i['type']
-        for f in files:
-            keys = Counter()
-            for i in _j(f)['instances']:
-                instances += 1
-                defs = {c['name']: c for c in common}
-                for t in list(reversed(list(mm.ancestors(i['type'])))) + [i['type']]: defs.update(byent.get(t, {}))
-                at = i.get('attributes') or {}
-                for k, a in defs.items():
-                    if a['required']:
-                        res['LC-04 checked'] += 1; res['LC-04 failed'] += k not in at
-                for k, v in at.items():
-                    a = defs.get(k)
-                    if not a: res['undefined'] += 1; continue
-                    if a['status'] == 'deprecated': res['LC-13 failed'] += 1
-                    want = TY.get(a['type'])
-                    if want: res['LC-05 checked'] += 1; res['LC-05 failed'] += not ((isinstance(v, want) and not (want is int and isinstance(v, bool))) or (v is None and k == 'behavior_qualifier'))
-                    if a.get('values'): res['LC-06 checked'] += 1; res['LC-06 failed'] += v not in a['values']
-                    if a.get('kind') == 'reference':
-                        targets = [i['type'] if t == 'same entity type' else t for t in a['references']]
-                        same = all(t.startswith(i['type'][:2]) for t in targets)
-                        for x in (v if isinstance(v, list) else [v]):
-                            t = idx.get(x); hit = bool(t) and any(mm.is_a(t, r) for r in targets)
-                            lc = 'LC-07' if same else 'LC-08'
-                            res[f'{lc} checked'] += 1; res[f'{lc} failed'] += not hit
-                if i.get('lifecycle_status'):
-                    res['LC-06 checked'] += 1; res['LC-06 failed'] += i['lifecycle_status'] not in ('planned', 'active', 'deprecated', 'retired')
-                e = mm.entities[i['type']]; key = (e.get('identifier') or {}).get('key') or []
-                if key and all(k in i or k in at for k in key):
-                    keys[(i['type'],) + tuple(json.dumps(i.get(k, at.get(k)), sort_keys=True) for k in key)] += 1
-            dup = sum(n - 1 for n in keys.values() if n > 1)
-            res['LC-09 checked'] += len(keys); res['LC-09 failed'] += dup
-            doc = _j(f); itype = {i['id']: i['type'] for i in doc['instances']}
-            for c in _j(MM_DIR / 'level-relationships.json')['constraints']:
-                cd = c.get('cardinality') or {}
-                if c['level'] != doc['level'] or cd.get('basis') == 'SDEM default': continue
-                links = [(r['source'], r['target']) for r in doc['relationships'] if r['kind'] == c['kind'] and r['source'] in itype and r['target'] in itype
-                         and mm.is_a(itype[r['source']], c['source_type']) and mm.is_a(itype[r['target']], c['target_type'])]
-                for side, card, ends in (('src', cd['source_per_target'], [t for t in itype if mm.is_a(itype[t], c['target_type'])]),
-                                         ('tgt', cd['target_per_source'], [x for x in itype if mm.is_a(itype[x], c['source_type'])])):
-                    lo, hi = card.split('..')
-                    for inst_id in ends:
-                        cnt = sum(1 for a, b in links if (b if side == 'src' else a) == inst_id)
-                        res['LC-10 checked'] += 1; res['LC-10m checked'] += 1
-                        res['LC-10 failed'] += hi != '*' and cnt > int(hi)
-                        res['LC-10m failed'] += cnt < int(lo)
+        estates += 1; docs = [_j(f) for f in sorted(glob.glob(est + 'a[1-4]-*.json'))]; index = estate_index(docs)
+        for d in docs:
+            instances += len(d['instances']); res.update(check_level(d, mm, index)[2])
     return estates, instances, res
 
 
@@ -176,10 +129,10 @@ def render():
             '| ID | Rule | Detail | Status |', '|---|---|---|---|']
     out += [f"| {c[0]} | {c[1]} | {c[2]} | **{c[3]}** |" for c in CONSTRAINTS]
     out += ['', '## Appendix B. How the example data measures up', '',
-            f"The {est} example estates ({inst} instances) measured against the rules not yet enforced. " + ('No errors' if all(res[f'{lc} failed'] == 0 for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-08', 'LC-09', 'LC-10')) else 'Errors are listed below') + f"; {res['LC-10m failed']} completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record)" + (f"; {res['LC-13 failed']} instance(s) still use a deprecated field" if res['LC-13 failed'] else '') + '.', '',
+            f"The {est} example estates ({inst} instances) checked by `sdem-graph check` against the enforced rules. " + ('No errors' if all(res[f'{lc} failed'] == 0 for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-09', 'LC-10')) else 'Errors are listed below') + f"; {res['LC-10m failed']} completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record)" + (f"; {res['LC-13 failed']} instance(s) still use a deprecated field" if res['LC-13 failed'] else '') + '.', '',
             '| Rule | Values checked | Failures |', '|---|---|---|']
     for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-08', 'LC-09', 'LC-10', 'LC-10m'):
-        out.append(f"| {lc}{' (warning)' if lc == 'LC-10m' else ''} | {res[lc + ' checked']} | {res[lc + ' failed']} |")
+        out.append(f"| {lc}{' (warning)' if lc in ('LC-08', 'LC-10m') else ''} | {res[lc + ' checked']} | {res[lc + ' failed']} |")
     out += [f"| LC-13 deprecated field in use | — | {res['LC-13 failed']} |", f"| fields not in the model | — | {res['undefined']} |", '',
             '## Appendix C. Where the model\'s decisions come from', '',
             'Each entity\'s, field\'s and link\'s source, reasoning and confidence are in [`architecture-entity-design.md`](architecture-entity-design.md), [`architecture-attribute-design.md`](architecture-attribute-design.md) and [`relationships-planning.md`](relationships-planning.md). In summary:', '',
@@ -191,7 +144,7 @@ def render():
     out += [f"| Identifiers — {k} | {v} | {'BIAN concept ids and operation naming' if k == 'BIAN' else 'path and method unique per API' if k == 'OpenAPI' else 'SDEM recommendation: a unique name'} |" for k, v in ib.most_common()]
     out += ['', '## Appendix D. Where this sits', '', '| Layer | Content | Status |', '|---|---|---|',
             '| Conceptual | which entities exist and which links are allowed | complete |',
-            f"| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; {sum(1 for c in CONSTRAINTS if c[3] == 'enforced')} of {len(CONSTRAINTS)} rules enforced |",
+            f"| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; {sum(1 for c in CONSTRAINTS if c[3].startswith('enforced'))} of {len(CONSTRAINTS)} rules enforced |",
             '| Physical | one export JSON Schema per entity; a graph store schema | not generated yet — next build |', '']
     return _terms('\n'.join(out) + '\n')
 

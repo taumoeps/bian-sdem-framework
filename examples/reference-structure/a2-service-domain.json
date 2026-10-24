@@ -43,7 +43,11 @@
       "version": "1.0",
       "name": "ServiceDomain 1 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A2.ServiceDomain carrying one relationship per constraint row of A2; no business meaning."
+      "description": "Synthetic instance of A2.ServiceDomain carrying one relationship per constraint row of A2; no business meaning.",
+      "attributes": {
+        "asset_type": "RS-AssetType-1",
+        "functional_pattern": "RS-FunctionalPattern-1"
+      }
     },
     {
       "id": "RS-ServiceDomain-2",
@@ -51,7 +55,11 @@
       "version": "1.0",
       "name": "ServiceDomain 2 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A2.ServiceDomain carrying one relationship per constraint row of A2; no business meaning."
+      "description": "Synthetic instance of A2.ServiceDomain carrying one relationship per constraint row of A2; no business meaning.",
+      "attributes": {
+        "asset_type": "RS-AssetType-2",
+        "functional_pattern": "RS-FunctionalPattern-2"
+      }
     },
     {
       "id": "RS-FunctionalPattern-1",
@@ -91,7 +99,12 @@
       "version": "1.0",
       "name": "ControlRecord 1 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A2.ControlRecord carrying one relationship per constraint row of A2; no business meaning."
+      "description": "Synthetic instance of A2.ControlRecord carrying one relationship per constraint row of A2; no business meaning.",
+      "attributes": {
+        "attributes": [
+          "structure"
+        ]
+      }
     },
     {
       "id": "RS-ControlRecord-2",
@@ -99,7 +112,12 @@
       "version": "1.0",
       "name": "ControlRecord 2 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A2.ControlRecord carrying one relationship per constraint row of A2; no business meaning."
+      "description": "Synthetic instance of A2.ControlRecord carrying one relationship per constraint row of A2; no business meaning.",
+      "attributes": {
+        "attributes": [
+          "structure"
+        ]
+      }
     },
     {
       "id": "RS-ServiceGroup-1",
@@ -123,7 +141,16 @@
       "version": "1.0",
       "name": "ServiceOperation 1 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A2.ServiceOperation carrying one relationship per constraint row of A2; no business meaning."
+      "description": "Synthetic instance of A2.ServiceOperation carrying one relationship per constraint row of A2; no business meaning.",
+      "attributes": {
+        "action_term": "Activate",
+        "input_attributes": [
+          "structure"
+        ],
+        "output_attributes": [
+          "structure"
+        ]
+      }
     },
     {
       "id": "RS-ServiceOperation-2",
@@ -131,7 +158,16 @@
       "version": "1.0",
       "name": "ServiceOperation 2 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A2.ServiceOperation carrying one relationship per constraint row of A2; no business meaning."
+      "description": "Synthetic instance of A2.ServiceOperation carrying one relationship per constraint row of A2; no business meaning.",
+      "attributes": {
+        "action_term": "Activate",
+        "input_attributes": [
+          "structure"
+        ],
+        "output_attributes": [
+          "structure"
+        ]
+      }
     },
     {
       "id": "RS-BehaviorQualifier-1",
@@ -155,7 +191,12 @@
       "version": "1.0",
       "name": "BusinessScenario 1 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A2.BusinessScenario carrying one relationship per constraint row of A2; no business meaning."
+      "description": "Synthetic instance of A2.BusinessScenario carrying one relationship per constraint row of A2; no business meaning.",
+      "attributes": {
+        "operation_sequence": [
+          "RS-ServiceOperation-1"
+        ]
+      }
     },
     {
       "id": "RS-BusinessScenario-2",
@@ -163,7 +204,12 @@
       "version": "1.0",
       "name": "BusinessScenario 2 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A2.BusinessScenario carrying one relationship per constraint row of A2; no business meaning."
+      "description": "Synthetic instance of A2.BusinessScenario carrying one relationship per constraint row of A2; no business meaning.",
+      "attributes": {
+        "operation_sequence": [
+          "RS-ServiceOperation-2"
+        ]
+      }
     },
     {
       "id": "RS-BusinessObject-1",
@@ -171,7 +217,12 @@
       "version": "1.0",
       "name": "BusinessObject 1 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A2.BusinessObject carrying one relationship per constraint row of A2; no business meaning."
+      "description": "Synthetic instance of A2.BusinessObject carrying one relationship per constraint row of A2; no business meaning.",
+      "attributes": {
+        "attributes": [
+          "structure"
+        ]
+      }
     },
     {
       "id": "RS-BusinessObject-2",
@@ -179,7 +230,12 @@
       "version": "1.0",
       "name": "BusinessObject 2 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A2.BusinessObject carrying one relationship per constraint row of A2; no business meaning."
+      "description": "Synthetic instance of A2.BusinessObject carrying one relationship per constraint row of A2; no business meaning.",
+      "attributes": {
+        "attributes": [
+          "structure"
+        ]
+      }
     },
     {
       "id": "RS-BusinessObjectAttribute-1",

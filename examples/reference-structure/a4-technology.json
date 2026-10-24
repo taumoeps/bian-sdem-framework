@@ -11,7 +11,12 @@
       "version": "1.0",
       "name": "Deployment 1 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A4.Deployment carrying one relationship per constraint row of A4; no business meaning."
+      "description": "Synthetic instance of A4.Deployment carrying one relationship per constraint row of A4; no business meaning.",
+      "attributes": {
+        "component_id": "RS-ApplicationComponent-1",
+        "environment_id": "RS-DeploymentEnvironment-1",
+        "platform_id": "RS-Artifact-1"
+      }
     },
     {
       "id": "RS-Deployment-2",
@@ -19,7 +24,12 @@
       "version": "1.0",
       "name": "Deployment 2 (structure conformance)",
       "lifecycle_status": "active",
-      "description": "Synthetic instance of A4.Deployment carrying one relationship per constraint row of A4; no business meaning."
+      "description": "Synthetic instance of A4.Deployment carrying one relationship per constraint row of A4; no business meaning.",
+      "attributes": {
+        "component_id": "RS-ApplicationComponent-2",
+        "environment_id": "RS-DeploymentEnvironment-2",
+        "platform_id": "RS-Artifact-2"
+      }
     },
     {
       "id": "RS-DeploymentEnvironment-1",
