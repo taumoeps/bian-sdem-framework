@@ -12,11 +12,11 @@
 |---|---|---|---|
 | [G-01](#gap-register) | contradiction | §1, §6.1 | decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed — detail §6.1 supersedes high-level §6.1 |
 | [G-02](#gap-register) | contradiction | §3, §9, approval criterion | open — awaiting the owner's decision |
-| [G-03](#gap-register) | contradiction | §5.4 | open — awaiting the owner's decision |
-| [G-04](#gap-register) | contradiction | §5.4, header | open — awaiting the owner's decision |
-| [G-05](#gap-register) | contradiction | §4, §14 decision 4 | open — awaiting the owner's decision |
-| [G-06](#gap-register) | contradiction | §7.2 | open — tied to G-08 |
-| [G-07](#gap-register) | contradiction | §6.3 | open — awaiting the owner's decision |
+| [G-03](#gap-register) | contradiction | §5.4 | decided 2026-10-25 (owner): keep related; composite is not an allowed value — the high-level spec is not changed |
+| [G-04](#gap-register) | contradiction | §5.4, header | decided 2026-10-25 (owner): A4 is named Technology (ArchiMate's Technology Layer), as implemented — the high-level spec is not changed |
+| [G-05](#gap-register) | contradiction | §4, §14 decision 4 | decided 2026-10-25 (owner): added as optional fields to schema/relationship-registry.schema.json |
+| [G-06](#gap-register) | contradiction | §7.2 | decided 2026-10-25 (owner): deferred — built with profiles (G-08, v0.14) |
+| [G-07](#gap-register) | contradiction | §6.3 | decided 2026-10-25 (owner): derived paths may be written as candidate reports, never as registry records |
 | [G-08](#gap-register) | not built | §7, §8 stage 3 | not built — planned (ROADMAP) v0.14 |
 | [G-09](#gap-register) | not built | §9 | not built — planned (ROADMAP) v0.14 |
 | [G-10](#gap-register) | as designed | §8 stage 5 | as designed |
@@ -117,10 +117,10 @@ The registry endpoint fields as implemented in `schema/relationship-registry.sch
 | `type` | yes | yes |
 | `version` | yes | yes |
 | `canonical_id` | A2 ends of bian_* rules | yes |
-| `source_system` | optional | **no** — **Gap G-05** (contradiction; open — awaiting the owner's decision) |
-| `source_entity_id` | optional | **no** — **Gap G-05** (contradiction; open — awaiting the owner's decision) |
+| `source_system` | optional | yes |
+| `source_entity_id` | optional | yes |
 
-Document pins: `registry_version` — yes; `metamodel_version` — yes; `profile_id` — **no** — **Gap G-05** (contradiction; open — awaiting the owner's decision). `lifecycle_status` is not a reference field — aligned.
+Document pins: `registry_version` — yes; `metamodel_version` — yes; `profile_id` — yes. `lifecycle_status` is not a reference field — aligned.
 
 ## 5. Entity catalogue
 
@@ -174,12 +174,12 @@ Document pins: `registry_version` — yes; `metamodel_version` — yes; `profile
 | `A3.Event` | concrete | An event an application produces or consumes | `archimate_aligned` | `related` | `confirmed_in_official_source` | medium | ✓ |
 | `A3.SolutionBuildingBlock` | concrete | An organisation-defined reusable solution grouping | `togaf_informed` | `conceptual` | `interpreted_from_official_source` | medium | ✓ |
 
-### 5.4 A4 Technology — **Gap G-04** (contradiction; open — awaiting the owner's decision) (11)
+### 5.4 A4 Technology (high-level: "Infrastructure") — **Gap G-04** (contradiction; decided 2026-10-25 (owner): A4 is named Technology (ArchiMate's Technology Layer), as implemented — the high-level spec is not changed) (11)
 
 | Type | Kind | Definition | definition_source | alignment_kind | evidence_status | Confidence | Alignment |
 |---|---|---|---|---|---|---|---|
 | `A4.InfrastructureComponent` | abstract | Abstract supertype of every Technology Architecture entity; retained for compatibility with earlier mapping documents | `sdem_extension` | `none` | `proposed_extension` | medium | ✓ |
-| `A4.Deployment` | extends `A4.InfrastructureComponent` | An application as deployed into a specific environment | `sdem_extension` | `related` | `proposed_extension` | medium | alignment composite → related — **Gap G-03** (contradiction; open — awaiting the owner's decision) |
+| `A4.Deployment` | extends `A4.InfrastructureComponent` | An application as deployed into a specific environment | `sdem_extension` | `related` | `proposed_extension` | medium | alignment composite → related — **Gap G-03** (contradiction; decided 2026-10-25 (owner): keep related; composite is not an allowed value — the high-level spec is not changed) |
 | `A4.DeploymentEnvironment` | extends `A4.InfrastructureComponent` | A governed runtime boundary such as production or test | `sdem_extension` | `related` | `proposed_extension` | medium | ✓ |
 | `A4.Node` | extends `A4.InfrastructureComponent` | A computational host, physical or virtual | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
 | `A4.Device` | extends `A4.InfrastructureComponent` | Physical computing hardware | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
@@ -220,11 +220,11 @@ Is-a matching lets `DEPLOYED_ON → A4.InfrastructureComponent` accept any concr
 
 ### 6.3 Derived relationships
 
-Level-skipping traceability is a query over approved edges with provenance (`sdem-graph trace`) and never a registry record — aligned. The inference engine also writes derived-path rows as **candidate reports** in a separate file, never registry records — **Gap G-07** (contradiction; open — awaiting the owner's decision).
+Level-skipping traceability is a query over approved edges with provenance (`sdem-graph trace`) and never a registry record — aligned. The inference engine also writes derived-path rows as **candidate reports** in a separate file, never registry records — **Gap G-07** (contradiction; decided 2026-10-25 (owner): derived paths may be written as candidate reports, never as registry records).
 
 ## 7. Bank Architecture Profiles
 
-**Gap G-08** (not built; not built — planned (ROADMAP) v0.14). Nothing of high-level §7 is built; the `ReferenceResolver` interface exists (`sdem/reference.py`), the `resolve_entity(ref)` form does not — **Gap G-06** (contradiction; open — tied to G-08).
+**Gap G-08** (not built; not built — planned (ROADMAP) v0.14). Nothing of high-level §7 is built; the `ReferenceResolver` interface exists (`sdem/reference.py`), the `resolve_entity(ref)` form does not — **Gap G-06** (contradiction; decided 2026-10-25 (owner): deferred — built with profiles (G-08, v0.14)).
 
 ## 8. Validation stages and verdicts
 
@@ -278,7 +278,7 @@ examples/    synthetic estates, each with its graph store (graph/); acceptance-c
 | 1 Core entity list | 41 core + 3 artefacts, as §5 — the decision's "31" is **Gap G-16** (internal; noted — the high-level spec is not changed) |
 | 2 `DEPLOYED_AS` governance | aligned (§6.2 above) |
 | 3 Register `verified_by` is a role | not built — **Gap G-09** (not built; not built — planned (ROADMAP) v0.14) |
-| 4 `source_system` optional in core | not in the registry schema — **Gap G-05** (contradiction; open — awaiting the owner's decision) |
+| 4 `source_system` optional in core | not in the registry schema — **Gap G-05** (contradiction; decided 2026-10-25 (owner): added as optional fields to schema/relationship-registry.schema.json) |
 
 Later decisions live with the parts they govern: data-model reviews (`metamodel/drafts/`), engine decisions DEC-E-01…09 ([`relationship-rules-spec.md`](relationship-rules-spec.md)), graph-store decisions GD-01…09 ([`graph-store-design.md`](graph-store-design.md)).
 
@@ -320,11 +320,11 @@ From `metamodel/metamodel-spec-gaps.json`. Status changes only on the owner's de
 |---|---|---|---|---|---|---|
 | G-01 | contradiction | §1, §6.1 | Within-level relationships are out of scope; nothing in SDEM reads or validates them. | 132 within-level rows, stored in metamodel/level-relationships.json and enforced by sdem-graph check (built at the owner's later request). | Bring within-level relationships into scope. | **decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed — detail §6.1 supersedes high-level §6.1** |
 | G-02 | contradiction | §3, §9, approval criterion | No entity may claim canonical-standard status without a release-specific verification record; evidence_status is computed from the register. | 21 ArchiMate-derived entities carry evidence_status confirmed_in_official_source, set by hand at v0.4.0 on the strength of the open-source Archi relationship tables; no verification record exists. | Set them to interpreted_from_official_source until a register entry exists. | **open — awaiting the owner's decision** |
-| G-03 | contradiction | §5.4 | A4.Deployment alignment_kind = composite. | alignment_kind = related; composite is not one of the values §3 allows. | Keep related. | **open — awaiting the owner's decision** |
-| G-04 | contradiction | §5.4, header | A4 is named "Infrastructure". | A4 is named "Technology" in records, files (a4-technology.json), documents and diagrams. | Owner to choose the name. | **open — awaiting the owner's decision** |
-| G-05 | contradiction | §4, §14 decision 4 | Optional reference fields source_system and source_entity_id; optional document pin profile_id. | None of the three is in schema/relationship-registry.schema.json (metamodel_version is). | Add the three as optional fields. | **open — awaiting the owner's decision** |
-| G-06 | contradiction | §7.2 | resolve_entity(ref) returns a ResolvedEntity (id, type, version, source_system, lifecycle_status, attributes); a missing lookup yields unverified. | The v0.2.1 form resolve_entity(id, type, version) returning the instance (sdem/graph.py, sdem/reference.py). | Implement with profiles (G-08). | **open — tied to G-08** |
-| G-07 | contradiction | §6.3 | Derived relationships are queries over stored edges, never records. | The inference engine writes derived-path rows (S07, S15, S16, S40–S54) as candidate reports in a candidates file — never registry records, but stored output. | Allow candidate reports (never registry records) and say so. | **open — awaiting the owner's decision** |
+| G-03 | contradiction | §5.4 | A4.Deployment alignment_kind = composite. | alignment_kind = related; composite is not one of the values §3 allows. | Keep related. | **decided 2026-10-25 (owner): keep related; composite is not an allowed value — the high-level spec is not changed** |
+| G-04 | contradiction | §5.4, header | A4 is named "Infrastructure". | A4 is named "Technology" in records, files (a4-technology.json), documents and diagrams. | Owner to choose the name. | **decided 2026-10-25 (owner): A4 is named Technology (ArchiMate's Technology Layer), as implemented — the high-level spec is not changed** |
+| G-05 | contradiction | §4, §14 decision 4 | Optional reference fields source_system and source_entity_id; optional document pin profile_id. | source_system and source_entity_id (endpoint) and profile_id (document) are optional fields of schema/relationship-registry.schema.json since 2026-10-25. | Add the three as optional fields. | **decided 2026-10-25 (owner): added as optional fields to schema/relationship-registry.schema.json** |
+| G-06 | contradiction | §7.2 | resolve_entity(ref) returns a ResolvedEntity (id, type, version, source_system, lifecycle_status, attributes); a missing lookup yields unverified. | The v0.2.1 form resolve_entity(id, type, version) returning the instance (sdem/graph.py, sdem/reference.py). | Implement with profiles (G-08). | **decided 2026-10-25 (owner): deferred — built with profiles (G-08, v0.14)** |
+| G-07 | contradiction | §6.3 | Derived relationships are queries over stored edges, never records. | The inference engine writes derived-path rows (S07, S15, S16, S40–S54) as candidate reports in a candidates file — never registry records, but stored output. | Allow candidate reports (never registry records) and say so. | **decided 2026-10-25 (owner): derived paths may be written as candidate reports, never as registry records** |
 | G-08 | not built | §7, §8 stage 3 | Bank Architecture Profiles (example-bank, example-cloud), where / include / exclude rules, profile validation; cloud types moved to the example-cloud profile. | No profiles/ directory; profile validation stage absent; the example-cloud types exist nowhere. | Build as planned. | **not built — planned (ROADMAP) v0.14** |
 | G-09 | not built | §9 | BIAN verification register; evidence_status computed from it at load time, never hand-edited. | No metamodel/verification/; evidence_status is set in the records. | Build as planned. | **not built — planned (ROADMAP) v0.14** |
 | G-10 | as designed | §8 stage 5 | canonical_id valid in the stated release (pass / fail / unverified). | Always unverified: only Null and Static reference resolvers exist; a licensed resolver is institution-side. | None — matches the design until a licensed resolver exists. | **as designed** |

@@ -26,7 +26,7 @@
       "high_level_says": "A4.Deployment alignment_kind = composite.",
       "implemented": "alignment_kind = related; composite is not one of the values §3 allows.",
       "recommendation": "Keep related.",
-      "status": "open — awaiting the owner's decision"
+      "status": "decided 2026-10-25 (owner): keep related; composite is not an allowed value — the high-level spec is not changed"
     },
     {
       "id": "G-04",
@@ -35,16 +35,16 @@
       "high_level_says": "A4 is named \"Infrastructure\".",
       "implemented": "A4 is named \"Technology\" in records, files (a4-technology.json), documents and diagrams.",
       "recommendation": "Owner to choose the name.",
-      "status": "open — awaiting the owner's decision"
+      "status": "decided 2026-10-25 (owner): A4 is named Technology (ArchiMate's Technology Layer), as implemented — the high-level spec is not changed"
     },
     {
       "id": "G-05",
       "kind": "contradiction",
       "high_level_section": "§4, §14 decision 4",
       "high_level_says": "Optional reference fields source_system and source_entity_id; optional document pin profile_id.",
-      "implemented": "None of the three is in schema/relationship-registry.schema.json (metamodel_version is).",
+      "implemented": "source_system and source_entity_id (endpoint) and profile_id (document) are optional fields of schema/relationship-registry.schema.json since 2026-10-25.",
       "recommendation": "Add the three as optional fields.",
-      "status": "open — awaiting the owner's decision"
+      "status": "decided 2026-10-25 (owner): added as optional fields to schema/relationship-registry.schema.json"
     },
     {
       "id": "G-06",
@@ -53,7 +53,7 @@
       "high_level_says": "resolve_entity(ref) returns a ResolvedEntity (id, type, version, source_system, lifecycle_status, attributes); a missing lookup yields unverified.",
       "implemented": "The v0.2.1 form resolve_entity(id, type, version) returning the instance (sdem/graph.py, sdem/reference.py).",
       "recommendation": "Implement with profiles (G-08).",
-      "status": "open — tied to G-08"
+      "status": "decided 2026-10-25 (owner): deferred — built with profiles (G-08, v0.14)"
     },
     {
       "id": "G-07",
@@ -62,7 +62,7 @@
       "high_level_says": "Derived relationships are queries over stored edges, never records.",
       "implemented": "The inference engine writes derived-path rows (S07, S15, S16, S40–S54) as candidate reports in a candidates file — never registry records, but stored output.",
       "recommendation": "Allow candidate reports (never registry records) and say so.",
-      "status": "open — awaiting the owner's decision"
+      "status": "decided 2026-10-25 (owner): derived paths may be written as candidate reports, never as registry records"
     },
     {
       "id": "G-08",

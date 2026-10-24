@@ -42,6 +42,8 @@ The **Architecture Relationship Registry** holds the actual relationships betwee
 | `type` | yes |
 | `version` | yes |
 | `canonical_id` | no |
+| `source_system` | no |
+| `source_entity_id` | no |
 
 An end must resolve to an instance in the local architecture knowledge graph its type prefix names, with that id and version, whose type is the referenced type or a descendant of it.
 

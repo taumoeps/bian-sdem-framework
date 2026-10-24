@@ -101,7 +101,7 @@ def render():
     mism = []
     for lvl, f, name in LEVELS:
         es_ = [e for l, e in ents if l == lvl]
-        title = name if lvl != 'A4' else name + ' — ' + st('G-04')
+        title = name if lvl != 'A4' else name + ' (high-level: "Infrastructure") — ' + st('G-04')
         out += ['', f'### 5.{lvl[1]} {title} ({len(es_)})', '', '| Type | Kind | Definition | definition_source | alignment_kind | evidence_status | Confidence | Alignment |', '|---|---|---|---|---|---|---|---|']
         for e in es_:
             kind = 'artefact' if e.get('artefact') else 'abstract' if e.get('abstract') else ('extends `' + e['extends'] + '`' if e.get('extends') else 'concrete')

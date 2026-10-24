@@ -15,6 +15,11 @@
       "type": "string",
       "minLength": 1
     },
+    "profile_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The Bank Architecture Profile the document was written under (optional; high-level §4; gap G-05; profiles are not built yet)"
+    },
     "engine": {
       "type": "string",
       "minLength": 1
@@ -151,6 +156,16 @@
         "canonical_id": {
           "type": "string",
           "minLength": 1
+        },
+        "source_system": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Which level model or tool holds the instance (optional; high-level §4, §14 decision 4; gap G-05)"
+        },
+        "source_entity_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The instance's native id in its source tool, if it differs from id (optional; high-level §4; gap G-05)"
         }
       }
     }

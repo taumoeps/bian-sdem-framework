@@ -156,7 +156,7 @@ One edge per approved mapping record; its fields become the edge's properties (`
 | `valid_to` | string | no |
 | `previous_mapping_id` | string | no |
 
-Each end (`source`, `target`) is a reference, not a copy: `id`, `type`, `version`, `canonical_id`.
+Each end (`source`, `target`) is a reference, not a copy: `id`, `type`, `version`, `canonical_id`, `source_system`, `source_entity_id`.
 
 ### 3.3 Resolving an edge's ends
 
