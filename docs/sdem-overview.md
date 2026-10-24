@@ -247,7 +247,7 @@ From `examples/payment-initiation/`:
 
 | Document | Specifies |
 |---|---|
-| [`logical-data-model.md`](logical-data-model.md) · [`architecture-entity-design.md`](architecture-entity-design.md) · [`architecture-attribute-design.md`](architecture-attribute-design.md) · [`architecture-metamodel-spec.md`](architecture-metamodel-spec.md) · [`relationships-planning.md`](relationships-planning.md) · [`reference-architecture-provenance.md`](reference-architecture-provenance.md) | the Architecture Metamodel: entity types, within-level rows, provenance |
+| [`logical-data-model.md`](logical-data-model.md) · [`physical-data-model.md`](physical-data-model.md) · [`architecture-entity-design.md`](architecture-entity-design.md) · [`architecture-attribute-design.md`](architecture-attribute-design.md) · [`architecture-metamodel-spec.md`](architecture-metamodel-spec.md) · [`relationships-planning.md`](relationships-planning.md) · [`reference-architecture-provenance.md`](reference-architecture-provenance.md) | the Architecture Metamodel: entity types, within-level rows, provenance |
 | [`relationship-rules-spec.md`](relationship-rules-spec.md) · [`architecture-model-diagram.puml`](architecture-model-diagram.puml) | the Relationship Rules Model and the inference engine's requirements |
 | [`relationship-registry-spec.md`](relationship-registry-spec.md) | the Relationship Registry: record fields, statuses, transitions, immutability |
 | [`knowledge-graph-design.md`](knowledge-graph-design.md) · [`knowledge-graph-spec.md`](knowledge-graph-spec.md) | the local and federated architecture knowledge graphs |
