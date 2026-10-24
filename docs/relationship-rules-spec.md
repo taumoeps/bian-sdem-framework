@@ -446,6 +446,7 @@ Settled 2026-10-25 before the engine build (v0.9), where the records and the pro
 | DEC-E-04 | Is S08 in step 5? | **Yes, but off by default**; enabled only when an institution opts in. | S08 can only be inferred from text and is "not adopted by default" in its own record; the procedure omits it for that reason. |
 | DEC-E-05 | Which runs are in scope? | Scored: M0, M1, H1, H2, M2 (design mode, built last), C1, C2, C3. **Not scored:** E1 (no answer key; not re-run on the enriched exports) and E2 (query-only). | An engine can only be accepted against a sealed gold. |
 | DEC-E-06 | Are the executor's conventions binding? | **Yes** — the contention tie-break (OPEN-04) and the method rows of step 2 check 2 are part of the specification. | They were applied in every run that scored 1.00; leaving them open would make the engine's behaviour undefined. |
+| DEC-E-07 | What is a "clear synonym" in step 2 check 3? | **A shared word stem** between the qualifier (or its aliases) and a path segment: closure ↔ close, posting ↔ post, reversal ↔ reverse, validation ↔ validate (engine convention EC-01, `sdem/rules_engine.py` `stem`). | The H1 hand-run matched exactly these on a SOAP estate; with exact words only, 4 of H1's 14 `IMPLEMENTED_BY` links are lost. Added 2026-10-25 while building step 2; no false proposal introduced in any case. |
 
 ## 10. Requirements index
 

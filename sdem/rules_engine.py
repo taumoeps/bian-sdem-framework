@@ -7,9 +7,9 @@ Reads a graph through the graph access layer (sdem/store.py GraphReader), applie
   log        — one record per attempt, including refusals (the evidence base; REQ-O-02)
 It never approves, never invents an instance, and never re-proposes a link that is already approved.
 
-Built step by step against the acceptance harness (sdem/acceptance.py). Implemented: step 1 (data joins).
+Built step by step against the acceptance harness (sdem/acceptance.py). Implemented: step 1 (data joins), step 2 (BIAN REST decision procedure).
 """
-import json
+import json, re
 from pathlib import Path
 
 from .paths import DATA_ROOT
@@ -26,6 +26,50 @@ def _list(v):
     return [] if v is None else (v if isinstance(v, list) else [v])
 
 
+STOP = {'the', 'and', 'of', 'for', 'a', 'an', 'to', 'in', 'on', 'by', 'with', 'from', 'api', 'svc', 'v1', 'v2', 'v3', 'id'}
+STRUCTURAL = {'set', 'record', 'item', 'list', 'group', 'type', 'data', 'master', 'detail', 'entry'}  # never gate evidence (C2 finding 3)
+HTTP = {'GET', 'POST', 'PUT', 'PATCH', 'DELETE'}
+# check 2: action term -> methods that pass. Retrieve -> GET is verified (SAPG §3.5); the rest is the executor convention,
+# binding under DEC-E-06. Execute passes on POST only on a sub-resource named for the qualifier (checked in _check2).
+METHODS = {'Retrieve': {'GET'}, 'Create': {'POST'}, 'Initiate': {'POST'}, 'Register': {'POST'}, 'Evaluate': {'POST'}, 'Provide': {'POST'}, 'Request': {'POST'},
+           'Update': {'PUT', 'PATCH'}, 'Control': {'PUT', 'PATCH', 'DELETE'}, 'Exchange': {'PUT', 'PATCH'}, 'Capture': {'PUT', 'PATCH'}, 'Grant': {'PUT', 'PATCH'},
+           'Execute': {'PUT', 'PATCH', 'POST'}, 'Activate': {'PUT', 'POST'}, 'Configure': {'PUT', 'POST'}, 'Feedback': {'PUT', 'POST'}}
+
+
+def _sing(w):
+    if len(w) > 4 and w.endswith('ies'): return w[:-3] + 'y'
+    if len(w) > 3 and w.endswith('s') and not w.endswith('ss'): return w[:-1]
+    return w
+
+
+def tokens(*texts, structural=True):
+    """Lower-case words: camel- and snake-case split, singularised; stop words (and structural nouns) dropped."""
+    out = set()
+    for t in texts:
+        if not t: continue
+        for part in re.findall(r'[A-Z]+(?=[A-Z][a-z])|[A-Z]?[a-z]+|[A-Z]+|[0-9]+', str(t)):
+            w = _sing(part.lower())
+            if w in STOP or (structural and w in STRUCTURAL) or w.isdigit(): continue
+            out.add(w)
+    return out
+
+
+def stem(w):
+    """Light stem for check 3's 'clear synonym': a qualifier noun and its verb share a stem (closure/close, posting/post,
+    reversal/reverse, validation/validate). Engine convention EC-01 (relationship-rules-spec.md DEC-E-07)."""
+    for suf in ('ation', 'ition', 'ment', 'ing', 'ure', 'ion', 'al', 'e'):
+        if w.endswith(suf) and len(w) - len(suf) >= 4: return w[:-len(suf)]
+    return w
+
+
+def stems(ws):
+    return {stem(w) for w in ws}
+
+
+def norm(name):
+    return _sing(re.sub(r'[^a-z0-9]', '', str(name).lower()))
+
+
 class Run:
     """One inference run over one graph: the state every step reads and writes."""
 
@@ -38,6 +82,7 @@ class Run:
         self.reported = {}   # (src, plan id, tgt) -> candidate record (this run)
         self.ids = {}        # (level, id) -> node, latest version
         for n in reader.nodes(): self.ids[(n['level'], n['id'])] = n
+        self.wedges = reader.edges('within-level')
 
     # -- lookups
     def of(self, etype):
@@ -49,6 +94,31 @@ class Run:
             if i == iid and (level is None or lvl == level) and (etype is None or self.mm.is_a(n['type'], etype)):
                 return n
         return None
+
+    def parents(self, iid, kind='composition'):
+        return [e['source'] for e in self.wedges if e['target'] == iid and e['kind'] == kind]
+
+    def children(self, iid, kind='composition'):
+        return [e['target'] for e in self.wedges if e['source'] == iid and e['kind'] == kind]
+
+    def climb(self, iid, etype, level):
+        """Nearest composition ancestor (or self) of the given type."""
+        seen, todo = set(), [iid]
+        while todo:
+            x = todo.pop(0)
+            if x in seen: continue
+            seen.add(x); n = self.get(x, level=level)
+            if n and self.mm.is_a(n['type'], etype): return n
+            todo += self.parents(x)
+        return None
+
+    def descendants(self, iid, kinds=('composition',)):
+        seen, todo = [], [iid]
+        while todo:
+            x = todo.pop(0)
+            if x in seen: continue
+            seen.append(x); todo += [c for k in kinds for c in self.children(x, k)]
+        return seen
 
     @staticmethod
     def attr(n, k):
@@ -157,8 +227,136 @@ class Run:
                 c = self.get(x, 'A3.ApplicationComponent')
                 if c: self.report('S38', c, p, 1, f"data join; a4 {p['id']}.carries lists {x}", [f"{p['id']}.carries"])
 
+    # ------------------------------------------------------------ step 2 — BIAN REST decision procedure (S24, S26)
+    def _qual(self, name):
+        """A behaviour qualifier's tokens: its name and the institution's aliases (A2.BehaviorQualifier.attributes.aliases)."""
+        if not name: return set(), None
+        bq = next((b for b in self.of('A2.BehaviorQualifier') if b['name'].lower() == str(name).lower()), None)
+        return stems(tokens(name, *_list(self.attr(bq, 'aliases') if bq else None))), bq
+
+    @staticmethod
+    def _path_segments(path):
+        segs = [x for x in str(path or '').split('/') if x and not x.startswith('{')]
+        return [stems(tokens(x)) for x in segs]
+
+    def _check2(self, term, method, qual_in_path):
+        if term not in METHODS: return 'fail', f'action term {term!r} has no REST form'
+        if term == 'Execute' and method == 'POST':
+            return ('pass', 'Execute on POST to a sub-resource named for the qualifier') if qual_in_path else ('fail', 'Execute on POST without a qualifier sub-resource')
+        return ('pass', f'{term} ↔ {method}') if method in METHODS[term] else ('fail', f'{term} on {method}')
+
+    def _check3(self, op_qual, other_quals, path):
+        segs = self._path_segments(path); after = set().union(*segs[1:]) if len(segs) > 1 else set()
+        if op_qual:
+            return ('pass', 'qualifier in path') if op_qual & after else ('fail', 'qualifier not in path')
+        for q in other_quals:
+            if q & after: return 'fail', f'path carries another operation\'s qualifier ({sorted(q & after)[0]})'
+        return 'neutral', 'no qualifier, none in path'
+
+    def _overlap(self, op, api, aliases):
+        want = {norm(a) for a in _list(self.attr(op, 'input_attributes')) + _list(self.attr(op, 'output_attributes'))}
+        have = set()
+        for f in _list(self.attr(api, 'payload_fields')):
+            have.add(norm(f))
+            if f in aliases: have.add(norm(aliases[f]))
+        m = want & have
+        return len(m), (len(m) / len(want) if want else 0.0), sorted(m)
+
+    def step2(self):
+        ops = self.of('A2.ServiceOperation'); apis = self.of('A3.APIOperation')
+        pairs = []
+        for op in ops:
+            dom = self.climb(op['id'], 'A2.ServiceDomain', 'A2')
+            term = self.attr(op, 'action_term'); qual, _ = self._qual(self.attr(op, 'behavior_qualifier'))
+            siblings = [o for o in ops if o['id'] != op['id'] and dom and self.climb(o['id'], 'A2.ServiceDomain', 'A2') == dom]
+            other_quals = [q for q in (self._qual(self.attr(o, 'behavior_qualifier'))[0] for o in siblings) if q]
+            if dom is None:
+                self.attempt('S24', op['id'], None, 2, [f"{op['id']} composition ancestors"], 'operation belongs to no exported Service Domain — no boundary'); continue
+            at = self.get(self.attr(dom, 'asset_type'), 'A2.AssetType') if self.attr(dom, 'asset_type') else None
+            gate = tokens(at['name'], *_list(self.attr(at, 'aliases'))) if at else set()
+            for api in apis:
+                comp = self.climb(api['id'], 'A3.ApplicationComponent', 'A3')
+                ifc = self.climb(api['id'], 'A3.ApplicationInterface', 'A3')
+                method = str(self.attr(api, 'method') or '').upper()
+                conn = f"{op['id']} → {api['id']}"
+                # precondition — boundary
+                comps = {comp['id']} | ({c for c in self.descendants(comp['id'])} if comp else set()) if comp else set()
+                anc = [x['id'] for x in [comp] if x]
+                realized = comp and any((dom['id'], 'REALIZED_BY', c) in self.approved for c in anc + [p for p in self.parents(comp['id'])])
+                if not realized:
+                    if not gate:
+                        self.log.append({'plan_id': 'S24', 'connection': conn, 'step_assigned': 2, 'step_used': 2, 'fallback': False, 'data_read': [dom['id']],
+                                         'reasoning': 'boundary untestable: no approved REALIZED_BY and no asset type/aliases in the export', 'outcome': 'no_proposal', 'proposal_id': None,
+                                         'confidence_predicted': 'high', 'confidence_given': None}); continue
+                    texts = []
+                    for x in (self.descendants(comp['id']) if comp else []):
+                        n = self.get(x, level='A3')
+                        if not n: continue
+                        if self.mm.is_a(n['type'], 'A3.APIOperation'): texts += [n['name'], self.attr(n, 'path'), n.get('description'), self.attr(n, 'operation_id')]
+                    for c in (self.descendants(comp['id']) if comp else []):
+                        for e in self.children(c, 'access'):
+                            de = self.get(e, 'A3.DataEntity', 'A3')
+                            if de: texts.append(de['name'])
+                    hit = gate & tokens(*texts)
+                    if not hit: continue  # outside the boundary: not a candidate pair (not logged per pair; the gate is per component)
+                if method not in HTTP:
+                    self.attempt('S24', op['id'], api['id'], 2, [f"{api['id']}.method"], f'method {method or "?"} is not HTTP — the BIAN REST mapping does not apply'); continue
+                c3, why3 = self._check3(qual, other_quals, self.attr(api, 'path'))
+                c2, why2 = self._check2(term, method, c3 == 'pass')
+                aliases = (self.attr(ifc, 'field_aliases') or {}) if ifc else {}
+                cnt, ratio, matched = self._overlap(op, api, aliases)
+                pairs.append({'op': op, 'api': api, 'c2': c2, 'c3': c3, 'cnt': cnt, 'ratio': ratio, 'matched': matched, 'why': f'{why2}; {why3}; payload {cnt} matched ({ratio:.0%}): {matched}',
+                              'qual_hit': bool(qual & stems(tokens(self.attr(api, 'path')) | tokens(api['name'])))})
+        filed, removed = [], set()
+        def live(): return [p for p in pairs if id(p) not in removed]
+        def c4(p, pool):
+            if p['cnt'] < 2 or p['ratio'] < 0.5: return False
+            mine = [q for q in pool if q['op'] is p['op'] and q['cnt'] >= 2 and q['ratio'] >= 0.5]
+            best = max((q['cnt'], q['ratio']) for q in mine)
+            tops = [q for q in mine if (q['cnt'], q['ratio']) == best]
+            if len(tops) > 1:
+                tops = [q for q in tops if q['qual_hit']] or tops
+            return len(tops) == 1 and tops[0] is p
+        def award(cands):
+            """Contention for one API between operations: count, then ratio, then the qualifier the path carries; a tie is no proposal."""
+            out = []
+            by_api = {}
+            for p in cands: by_api.setdefault(p['api']['id'], []).append(p)
+            for group in by_api.values():
+                if len(group) == 1: out.append(group[0]); continue
+                group.sort(key=lambda q: (q['cnt'], q['ratio'], q['qual_hit']), reverse=True)
+                a, b = group[0], group[1]
+                if (a['cnt'], a['ratio'], a['qual_hit']) == (b['cnt'], b['ratio'], b['qual_hit']):
+                    for q in group:
+                        self.attempt('S24', q['op']['id'], q['api']['id'], 2, [], f"contention tie for {q['api']['id']} between {[g['op']['id'] for g in group]} — no proposal")
+                    continue
+                out.append(a)
+            return out
+        def file(p, decision):
+            filed.append((p, decision))
+            for q in live():
+                if q is not p and (q['op'] is p['op'] or q['api'] is p['api']): removed.add(id(q))
+            removed.add(id(p))
+        while True:
+            pool = live()
+            d1 = award([p for p in pool if p['c2'] == 'pass' and p['c3'] != 'fail' and c4(p, pool)])
+            for p in d1: file(p, 1)
+            pool = live()
+            d2 = award([p for p in pool if p['c2'] == 'fail' and p['c3'] != 'fail' and c4(p, pool)]) if not d1 else []
+            for p in d2: file(p, 2)
+            if not d1 and not d2: break
+        for p in live():
+            self.attempt('S24', p['op']['id'], p['api']['id'], 2, [f"{p['op']['id']}.action_term/qualifier/attributes", f"{p['api']['id']}.method/path/payload_fields"], f"no decision: {p['why']}")
+        for p, decision in filed:
+            working = f"decision {decision}: {p['why']}" + ('' if decision == 1 else ' — method mismatch, proposed one band lower')
+            rec = self.propose('S24', 'IMPLEMENTED_BY', p['op'], p['api'], 2, working, [f"{p['op']['id']}.action_term/behavior_qualifier/input_attributes/output_attributes", f"{p['api']['id']}.method/path/payload_fields"], fallback=decision == 2)
+            if rec and p['c3'] == 'pass':
+                _, bq = self._qual(self.attr(p['op'], 'behavior_qualifier'))
+                if bq: self.report('S26', bq, p['api'], 2, f"qualifier {bq['name']} in path of {p['api']['id']}, which implements {p['op']['id']} ({rec['mapping_id']})", [f"{p['api']['id']}.path"])
+
     def run(self):
         self.step1()
+        self.step2()
         return {'proposals': self.proposals, 'candidates': self.candidates, 'log': self.log}
 
 
