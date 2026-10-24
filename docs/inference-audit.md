@@ -9,11 +9,11 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 | Layer | Total | Grounded | Oracle-confirmed | Inferred | Gated / unverified |
 |---|---|---|---|---|---|
 | Entity definitions | 44 | 32 | — | 12 (7 SDEM extensions, 5 interpreted alignments) | 0 |
-| Attributes | 84 | 20 (BIAN 9, OpenAPI 3, other public standards 8) | — | 58 (relationship held as attribute 30, SDEM-defined 28) | 1 TOGAF; plus 5 institution data (not a standards question) |
+| Attributes | 97 | 32 (BIAN 16, OpenAPI 3, other public standards 13) | — | 59 (relationship held as attribute 30, SDEM-defined 29) | 1 TOGAF; plus 5 institution data (not a standards question) |
 | Within-level rows | 132 | 16 | 113 | 1 | 2 |
 | Cross-level rules (50 that can produce a link or report) | 50 | 10 official | — | 34 (28 with no official source, 6 SDEM definitions) | 6 |
 
-**Across all four layers** (305 items, institution data excluded): 78 grounded (26%), 113 oracle-confirmed (37%), the rest inferred or gated (37%).
+**Across all four layers** (318 items, institution data excluded): 90 grounded (28%), 113 oracle-confirmed (36%), the rest inferred or gated (36%).
 
 **Where inference concentrates.** (1) **Cross-level rules**: BIAN publishes almost nothing below A2 and no capability-to-domain mapping, so most rules are SDEM's; they are the part tested by the eleven use-case runs (50 rows validated against sealed answers), not by a standard. (2) **Attributes of ArchiMate-derived entities**: ArchiMate defines no attributes, so every A1, A3 and A4 field is either a relationship SDEM chose to record on the entity or a field SDEM defined. (3) **Within-level rows** were mostly inferred, but 113 of them are now confirmed by the Archi oracle.
 
@@ -25,19 +25,19 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 |---|---|
 | `A1.BusinessActivity.invokes` | ArchiMate relationship or concept held as attribute |
 | `A1.BusinessActivity.sequence` | ArchiMate relationship or concept held as attribute |
-| `A1.BusinessActor.actor_kind` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
-| `A1.BusinessActor.classification` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessActor.actor_kind` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A1.BusinessActor.classification` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A1.BusinessActor.external` | SDEM-defined |
-| `A1.BusinessActor.location` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
-| `A1.BusinessActor.purpose` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessActor.location` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A1.BusinessActor.purpose` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A1.BusinessCapability.level` | ArchiMate relationship or concept held as attribute |
 | `A1.BusinessCapability.maturity_current` | SDEM-defined |
 | `A1.BusinessCapability.maturity_target` | SDEM-defined |
 | `A1.BusinessCapability.strategic_importance` | SDEM-defined |
 | `A1.BusinessObject.attributes` | SDEM-defined |
 | `A1.BusinessObject.field_aliases` | institution data |
-| `A1.BusinessObject.glossary_uri` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
-| `A1.BusinessObject.personal_information` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessObject.glossary_uri` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A1.BusinessObject.personal_information` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A1.BusinessProcess.automation_level` | SDEM-defined |
 | `A1.BusinessProcess.criticality` | SDEM-defined |
 | `A1.BusinessProcess.frequency` | SDEM-defined |
@@ -46,11 +46,11 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 | `A1.BusinessProcess.outcome` | ArchiMate relationship or concept held as attribute |
 | `A1.BusinessProcess.triggered_by` | ArchiMate relationship or concept held as attribute |
 | `A1.BusinessRequirement.applies_to` | ArchiMate relationship or concept held as attribute |
-| `A1.BusinessRequirement.derived_from` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessRequirement.derived_from` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A1.BusinessRequirement.priority` | SDEM-defined |
 | `A1.BusinessRequirement.requirement_kind` | ArchiMate relationship or concept held as attribute |
 | `A1.BusinessRole.responsibilities` | ArchiMate relationship or concept held as attribute |
-| `A1.BusinessRole.role_kind` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessRole.role_kind` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A1.BusinessService.channels` | SDEM-defined |
 | `A1.BusinessService.consumers` | ArchiMate relationship or concept held as attribute |
 | `A1.BusinessService.customer_facing` | SDEM-defined |
@@ -66,13 +66,26 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 | `A2.AssetType.aliases` | institution data |
 | `A2.BehaviorQualifier.aliases` | institution data |
 | `A2.BusinessObject.attributes` | BIAN (public) |
+| `A2.BusinessObject.glossary_uri` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A2.BusinessObject.iso20022_ref` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A2.BusinessObject.personal_information` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A2.BusinessObjectAttribute.data_type` | BIAN (public) |
+| `A2.BusinessObjectAttribute.iso20022_ref` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A2.BusinessObjectAttribute.personal_information` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A2.BusinessScenario.operation_sequence` | BIAN (public) |
+| `A2.BusinessScenario.trigger_event` | BIAN (public) |
 | `A2.ControlRecord.attributes` | BIAN (public) |
 | `A2.ControlRecord.lifecycle_states` | SDEM-defined |
+| `A2.FunctionalPattern.behavior_qualifier_type` | BIAN (public) |
+| `A2.FunctionalPattern.generic_artefact` | BIAN (public) |
+| `A2.FunctionalPattern.rest_archetype` | BIAN (public) |
+| `A2.SemanticAPI.spec_format` | BIAN (public) |
+| `A2.ServiceDomain.adoption_status` | SDEM-defined |
 | `A2.ServiceDomain.asset_type` | BIAN (public) |
 | `A2.ServiceDomain.functional_pattern` | BIAN (public) |
 | `A2.ServiceOperation.action_term` | BIAN (public) |
 | `A2.ServiceOperation.behavior_qualifier` | BIAN (public) |
+| `A2.ServiceOperation.http_method` | BIAN (public) |
 | `A2.ServiceOperation.input_attributes` | BIAN (public) |
 | `A2.ServiceOperation.output_attributes` | BIAN (public) |
 | `A3.APIOperation.method` | OpenAPI (public) |
@@ -107,17 +120,17 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 | `A4.SystemSoftware.hosts` | ArchiMate relationship or concept held as attribute |
 | `A4.TechnologyInterface.exposes` | SDEM-defined |
 | `A4.TechnologyInterface.of_service` | ArchiMate relationship or concept held as attribute |
-| `common.access_classification` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
-| `common.conforms_to` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
-| `common.created` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
-| `common.modified` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `common.access_classification` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `common.conforms_to` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `common.created` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `common.modified` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `common.owner` | ArchiMate relationship or concept held as attribute |
-| `common.replaced_by` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
-| `common.replaces` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
-| `common.source_id` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
-| `common.subject` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
-| `common.valid_from` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
-| `common.valid_to` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `common.replaced_by` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `common.replaces` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `common.source_id` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `common.subject` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `common.valid_from` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `common.valid_to` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 
 ## 3. Entity by entity
 
@@ -135,19 +148,19 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 | `A1.BusinessRequirement` | ArchiMate 3.2: Requirement | grounded | `applies_to` rel.; `requirement_kind` rel.; `derived_from` inst.; `priority` SDEM | 6 inferred, oracle-confirmed | 2 inferred (no official source) (S13, S14) | has SDEM-defined fields; 2 cross-level rule(s) with no official source |
 | `A2.BusinessArea` | BIAN Service Landscape: Business Area | grounded | — | 1 grounded | 1 inferred (no official source) (S15) | 1 cross-level rule(s) with no official source; BIAN release not yet verified |
 | `A2.BusinessDomain` | BIAN Service Landscape: Business Domain | grounded | — | 2 grounded | 1 inferred (no official source) (S16) | 1 cross-level rule(s) with no official source; BIAN release not yet verified |
-| `A2.ServiceDomain` | BIAN Service Landscape: Service Domain | grounded | `asset_type` BIAN; `functional_pattern` BIAN | 8 grounded | 3 inferred (no official source), 2 official, 1 cited, unverified (S01, S04, S07, S08, S13, S17) | 3 cross-level rule(s) with no official source; BIAN release not yet verified |
-| `A2.FunctionalPattern` | BIAN Service Landscape: Functional Pattern | grounded | — | 1 grounded | 1 inferred (no official source) (S18) | 1 cross-level rule(s) with no official source; BIAN release not yet verified |
+| `A2.ServiceDomain` | BIAN Service Landscape: Service Domain | grounded | `asset_type` BIAN; `functional_pattern` BIAN; `adoption_status` SDEM | 8 grounded | 3 inferred (no official source), 2 official, 1 cited, unverified (S01, S04, S07, S08, S13, S17) | has SDEM-defined fields; 3 cross-level rule(s) with no official source; BIAN release not yet verified |
+| `A2.FunctionalPattern` | BIAN Service Landscape: Functional Pattern | grounded | `generic_artefact` BIAN; `behavior_qualifier_type` BIAN; `rest_archetype` BIAN | 1 grounded | 1 inferred (no official source) (S18) | 1 cross-level rule(s) with no official source; BIAN release not yet verified |
 | `A2.AssetType` | BIAN Service Landscape: Asset Type | grounded | `aliases` inst. | 1 grounded | 1 inferred (no official source) (S19) | 1 cross-level rule(s) with no official source; BIAN release not yet verified |
 | `A2.ControlRecord` | BIAN Service Landscape: Control Record | grounded | `attributes` BIAN; `lifecycle_states` SDEM | 4 grounded | 2 official (S20, S21) | has SDEM-defined fields; BIAN release not yet verified |
 | `A2.ServiceGroup` | BIAN Service Landscape: Service Group | grounded | — | 2 grounded | 2 inferred (no official source) (S22, S23) | 2 cross-level rule(s) with no official source; BIAN release not yet verified |
-| `A2.ServiceOperation` | BIAN Service Landscape: Service Operation | grounded | `action_term` BIAN; `behavior_qualifier` BIAN; `input_attributes` BIAN; `output_attributes` BIAN | 4 grounded | 3 inferred (no official source), 2 official (S06, S09, S14, S24, S25) | 3 cross-level rule(s) with no official source; BIAN release not yet verified |
+| `A2.ServiceOperation` | BIAN Service Landscape: Service Operation | grounded | `action_term` BIAN; `behavior_qualifier` BIAN; `input_attributes` BIAN; `output_attributes` BIAN; `http_method` BIAN | 4 grounded | 3 inferred (no official source), 2 official (S06, S09, S14, S24, S25) | 3 cross-level rule(s) with no official source; BIAN release not yet verified |
 | `A2.BehaviorQualifier` | BIAN Service Landscape: Behavior Qualifier | grounded | `aliases` inst. | 2 grounded | 2 inferred (no official source) (S26, S27) | 2 cross-level rule(s) with no official source; BIAN release not yet verified |
-| `A2.BusinessScenario` | BIAN Service Landscape: Business Scenario | grounded | `operation_sequence` BIAN | 1 grounded | 2 official, 1 SDEM definition, 1 inferred (no official source) (S02, S03, S28, S29) | 1 cross-level rule(s) with no official source; BIAN release not yet verified |
-| `A2.BusinessObject` | BIAN Service Landscape: Business Object | grounded | `attributes` BIAN | 2 grounded, 1 inferred | 2 official (S12, S30) | BIAN release not yet verified |
-| `A2.BusinessObjectAttribute` | BIAN Service Landscape: Business Object attribute | grounded | — | 1 grounded | 1 inferred (no official source) (S31) | 1 cross-level rule(s) with no official source; BIAN release not yet verified |
+| `A2.BusinessScenario` | BIAN Service Landscape: Business Scenario | grounded | `operation_sequence` BIAN; `trigger_event` BIAN | 1 grounded | 2 official, 1 SDEM definition, 1 inferred (no official source) (S02, S03, S28, S29) | 1 cross-level rule(s) with no official source; BIAN release not yet verified |
+| `A2.BusinessObject` | BIAN Service Landscape: Business Object | grounded | `attributes` BIAN; `glossary_uri` inst.; `iso20022_ref` inst.; `personal_information` inst. | 2 grounded, 1 inferred | 2 official (S12, S30) | BIAN release not yet verified |
+| `A2.BusinessObjectAttribute` | BIAN Service Landscape: Business Object attribute | grounded | `data_type` BIAN; `iso20022_ref` inst.; `personal_information` inst. | 1 grounded | 1 inferred (no official source) (S31) | 1 cross-level rule(s) with no official source; BIAN release not yet verified |
 | `A2.BOMModel` | BIAN Service Landscape: Business Object Model | SDEM extension (inferred) | — | 1 inferred | — | definition is SDEM's |
 | `A2.Wireframe` | BIAN Service Landscape: Wireframe | grounded | — | 1 grounded | — | BIAN release not yet verified |
-| `A2.SemanticAPI` | BIAN Semantic API: Semantic API | aligned (interpreted) | — | 1 grounded | — | definition interpreted from a standard |
+| `A2.SemanticAPI` | BIAN Semantic API: Semantic API | aligned (interpreted) | `spec_format` BIAN | 1 grounded | — | definition interpreted from a standard |
 | `A3.ApplicationComponent` | ArchiMate 3.2: Application Component | grounded | `deployed_on` rel.; `deployed_as` SDEM; `built_as` rel.; `network_zone` SDEM; `vendor` SDEM | 13 inferred, oracle-confirmed, 1 inferred, unverified | 5 inferred (no official source), 3 SDEM definition, 2 official, 2 cited, unverified (S15, S16, S17, S29, S32, S33, S34, S35, S37, S38, S39, S40) | has SDEM-defined fields; 5 cross-level rule(s) with no official source |
 | `A3.ApplicationService` | ArchiMate 3.2: Application Service | grounded | `consumes` rel. | 6 inferred, oracle-confirmed | 2 inferred (no official source), 2 official, 1 cited, unverified (S22, S25, S28, S41, S42) | 2 cross-level rule(s) with no official source |
 | `A3.ApplicationInterface` | ArchiMate 3.2: Application Interface | grounded | `exposed_through` rel.; `field_aliases` inst. | 3 inferred, oracle-confirmed | 3 inferred (no official source) (S23, S43, S44) | 3 cross-level rule(s) with no official source |

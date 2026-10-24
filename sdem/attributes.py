@@ -48,6 +48,11 @@ def render(rec=None):
     out += ['## 4. Core fields and common attributes (every entity type)', '', 'From `schema/level-model.schema.json`. These are the instance\'s identity and lifecycle, not entity-specific attributes.', '',
             '| Field | Type | Required | Source reference | Description | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']
     out += [f"| `{c['name']}` | {c['type']} | {'yes' if c['required'] else 'no'} | {c['source']}: {c['reference']['standard']}, {c['reference']['locator']} ([link]({c['reference']['uri']})) | {c['description']} | {c['reasoning']} | **{c['confidence']}** |" for c in rec['core_fields']]
+    DER = rec.get('derived_attributes', [])
+    if DER:
+        out += ['', '### Derived attributes (computed, never stored)', '', 'Values the engine or a query computes from approved data, so they cannot drift from it.', '',
+                '| ID | Entity | Attribute | Rule | Source reference | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']
+        out += [f"| {x['id']} | `{x['entity']}` | `{x['name']}` | {x['rule']} | {x['source']} | {x['reasoning']} | **{x['confidence']}** |" for x in DER]
     if COM:
         out += ['', '### Common attributes (every entity type, all four architectures)', '', 'Approved in the A1 data-model review, 2026-10-24. Optional; they describe any architecture element the same way.', '',
                 '| ID | Attribute | Type | Allowed values / refers to | Source reference | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']

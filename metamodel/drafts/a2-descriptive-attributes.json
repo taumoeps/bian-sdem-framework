@@ -1,7 +1,7 @@
 {
   "level": "A2",
   "date": "2026-10-24",
-  "status": "DRAFT — not yet in the model",
+  "status": "APPROVED 2026-10-24 — dropped DA2-02. Written into metamodel/entity-attributes.json (AT-A2-13, AT-A2-25).",
   "note": "Descriptive attributes proposed for the A2 Service Domain architecture. The 11 common attributes (approved in the A1 review) apply here too. BIAN locators checked in the public BIAN Semantic API Practitioner Guide v8.1 on 2026-10-24; BIAN portal Service Domain pages were unreachable (404), so no attribute rests on them.",
   "attributes": [
     {
@@ -21,9 +21,9 @@
       "source": "SDEM-defined",
       "term": "—",
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
-      "reasoning": "Realisation links show whether an application implements a Service Domain today, not the intended adoption. No standard defines the values.",
+      "reasoning": "Realisation links show whether an application implements a Service Domain today, not the intended adoption. No standard defines the values. Approved: the only record of intended (not current) adoption.",
       "confidence": "low",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-02",
@@ -43,7 +43,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Same values as process criticality so impact queries can rank both levels the same way. No open standard defines criticality values.",
       "confidence": "low",
-      "status": "draft"
+      "status": "dropped"
     },
     {
       "id": "DA2-03",
@@ -58,7 +58,7 @@
       "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf",
       "reasoning": "BIAN pairs each functional pattern with one generic artefact; with the asset type it names the Service Domain's control record. Checked in the public guide.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-04",
@@ -73,7 +73,7 @@
       "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf",
       "reasoning": "BIAN defines one behaviour-qualifier type per functional pattern. Checked in the public guide.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-05",
@@ -93,7 +93,7 @@
       "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf",
       "reasoning": "BIAN maps each generic artefact to a REST archetype (only three of the four are used). Checked in the public guide.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-06",
@@ -108,14 +108,14 @@
         "DELETE"
       ],
       "required": false,
-      "meaning": "the HTTP method the operation maps to in the BIAN REST mapping",
+      "meaning": "the HTTP method of the operation, where it is not derivable or the bank overrides BIAN",
       "question": "Which HTTP method should an API implementing this operation use?",
       "source": "BIAN Semantic API Practitioner Guide v8.1 (public)",
-      "term": "§3.5 action terms mapped to HTTP methods, p.55",
+      "term": "§3.5 p.52 (HTTP methods used: GET, PUT, POST, PATCH, DELETE) and p.55 (Retrieve maps to GET; the other action terms become resource nouns)",
       "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf",
-      "reasoning": "BIAN maps action terms to HTTP methods (e.g. Retrieve → GET). Lets the engine check an A3 API's method against the operation it realises. Checked in the public guide.",
+      "reasoning": "The guide names the HTTP methods BIAN uses (p.52) and states only Retrieve → GET explicitly (p.55); the other action terms become resource nouns, so their method comes from BIAN's published Semantic API definitions (not checked here). Allowed values checked in the public guide. Approved as optional: the engine derives the method where it can (DV-A2-02); the attribute records the method where it cannot, or a deliberate override.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-07",
@@ -130,7 +130,7 @@
       "uri": "https://bian.org/servicelandscape-14-0-0/",
       "reasoning": "BIAN scenarios begin from a business event; holding it as a field is SDEM's choice and lets scenarios be matched to A1 processes with the same trigger.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-08",
@@ -145,7 +145,7 @@
       "uri": "https://www.w3.org/TR/skos-reference/",
       "reasoning": "Same as the A1 business object: links the BIAN object to the bank's glossary concept.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-09",
@@ -160,7 +160,7 @@
       "uri": "https://iso20022.org/dictionary-items-definition",
       "reasoning": "BIAN's stated policy is to map its information attributes to the ISO 20022 Business Model rather than define a new standard (guide §3, p.44). The ISO 20022 business model is publicly browsable.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-10",
@@ -175,7 +175,7 @@
       "uri": "https://www.legislation.govt.nz/act/public/2020/0031/latest/LMS23223.html",
       "reasoning": "Same definition as the A1 business object; public law.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-11",
@@ -190,7 +190,7 @@
       "uri": "https://bian.org/servicelandscape-14-0-0/",
       "reasoning": "BOM attributes are typed, but the type catalogue was not checked against a public page here.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-12",
@@ -205,7 +205,7 @@
       "uri": "https://iso20022.org/dictionary-items-definition",
       "reasoning": "Attribute-level form of the ISO 20022 mapping BIAN states as its policy (guide §3, p.44).",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-13",
@@ -220,7 +220,7 @@
       "uri": "https://www.legislation.govt.nz/act/public/2020/0031/latest/LMS23223.html",
       "reasoning": "Privacy is decided per attribute (a name is personal, a currency code is not); public law.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA2-14",
@@ -240,12 +240,38 @@
       "uri": "https://bian.org/servicelandscape-14-0-0/",
       "reasoning": "BIAN publishes Semantic API definitions as machine-readable specifications; the format list was not checked against a public page here.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "approved"
     }
   ],
   "decisions": [
     "**The two SDEM-defined attributes** — keep `adoption_status` and `criticality` on Service Domains, or leave them off (criticality can be inferred from the processes that use the domain)?",
     "**Service Domain description sections** — BIAN's portal pages describe each Service Domain under several headings (e.g. key features, examples of use). They are not proposed because the pages could not be checked today. Add them later once checked?",
     "**Required attributes** — all proposed attributes are optional. Should `http_method` be required on operations, so the engine can always check API methods?"
+  ],
+  "derived": [
+    {
+      "id": "DV-A2-01",
+      "entity": "A2.ServiceDomain",
+      "name": "criticality",
+      "rule": "the highest criticality of the A1 processes linked to the Service Domain by USES_DOMAIN",
+      "source": "SDEM-defined derivation over approved relationships",
+      "reasoning": "Replaces the dropped stored attribute DA2-02: a derived value cannot drift from process criticality.",
+      "confidence": "medium"
+    },
+    {
+      "id": "DV-A2-02",
+      "entity": "A2.ServiceOperation",
+      "name": "http_method (default)",
+      "rule": "Retrieve → GET (guide §3.5, p.55); for other action terms, the method in BIAN's published Semantic API definition of the operation (not checked here); an `http_method` value overrides",
+      "source": "BIAN Semantic API Practitioner Guide v8.1 (public)",
+      "reasoning": "Lets the engine check a realising API's method with little data entry. Only Retrieve → GET is stated in the guide, so the rest of the rule rests on BIAN files not yet checked.",
+      "confidence": "medium"
+    }
+  ],
+  "decisions_taken": [
+    "adoption_status kept (low; only record of intended adoption)",
+    "criticality dropped; derived from linked process criticality (DV-A2-01)",
+    "http_method optional; derived from action_term via the BIAN mapping, records overrides only (DV-A2-02)",
+    "BIAN portal description sections deferred until the pages can be checked; definition_uri links to them"
   ]
 }

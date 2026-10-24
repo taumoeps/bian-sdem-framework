@@ -2357,6 +2357,384 @@
       ],
       "values_source": "SDEM",
       "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A2-13",
+      "entity": "A2.ServiceDomain",
+      "name": "adoption_status",
+      "type": "string",
+      "required": false,
+      "description": "how far the bank intends to adopt the Service Domain",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision DA2-01 (A2 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the data-model review 2026-10-24",
+      "reasoning": "Answers: Which BIAN Service Domains are we adopting, and how far? Realisation links show whether an application implements a Service Domain today, not the intended adoption. No standard defines the values. Approved: the only record of intended (not current) adoption.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which BIAN Service Domains are we adopting, and how far?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-01"
+      },
+      "kind": "enumeration",
+      "values": [
+        "adopted",
+        "partly adopted",
+        "planned",
+        "not adopted"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A2-14",
+      "entity": "A2.FunctionalPattern",
+      "name": "generic_artefact",
+      "type": "string",
+      "required": false,
+      "description": "the kind of control record the pattern manages (the pattern as a noun)",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Semantic API Practitioner Guide v8.1 (public)",
+        "locator": "§3 Figure 9 — Functional Pattern Generic Artifacts, p.29",
+        "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf"
+      },
+      "verification": "public BIAN Semantic API Practitioner Guide v8.1, page checked 2026-10-24",
+      "reasoning": "Answers: What does a Service Domain with this pattern keep a record of? BIAN pairs each functional pattern with one generic artefact; with the asset type it names the Service Domain's control record. Checked in the public guide.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What does a Service Domain with this pattern keep a record of?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-03"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (BIAN) and checked"
+    },
+    {
+      "id": "AT-A2-15",
+      "entity": "A2.FunctionalPattern",
+      "name": "behavior_qualifier_type",
+      "type": "string",
+      "required": false,
+      "description": "the kind of behaviour qualifier used to break the pattern down",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Semantic API Practitioner Guide v8.1 (public)",
+        "locator": "§3 Figure 12 — Functional Pattern/Generic Artifacts and Behavior Qualifier Types, p.34",
+        "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf"
+      },
+      "verification": "public BIAN Semantic API Practitioner Guide v8.1, page checked 2026-10-24",
+      "reasoning": "Answers: How is a Service Domain with this pattern broken into finer behaviour? BIAN defines one behaviour-qualifier type per functional pattern. Checked in the public guide.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "How is a Service Domain with this pattern broken into finer behaviour?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-04"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (BIAN) and checked"
+    },
+    {
+      "id": "AT-A2-16",
+      "entity": "A2.FunctionalPattern",
+      "name": "rest_archetype",
+      "type": "string",
+      "required": false,
+      "description": "the REST resource archetype the pattern's control record maps to",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Semantic API Practitioner Guide v8.1 (public)",
+        "locator": "§3.5 Figure 24 — REST Archetype mapping to BIAN Generic Artifact, p.55",
+        "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf"
+      },
+      "verification": "public BIAN Semantic API Practitioner Guide v8.1, page checked 2026-10-24",
+      "reasoning": "Answers: How should the Semantic API for a Service Domain with this pattern be shaped? BIAN maps each generic artefact to a REST archetype (only three of the four are used). Checked in the public guide.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "How should the Semantic API for a Service Domain with this pattern be shaped?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-05"
+      },
+      "kind": "enumeration",
+      "values": [
+        "document",
+        "collection",
+        "controller"
+      ],
+      "values_source": "BIAN Semantic API Practitioner Guide v8.1 (public)",
+      "confidence_basis": "defined by a public standard (BIAN) and checked"
+    },
+    {
+      "id": "AT-A2-17",
+      "entity": "A2.ServiceOperation",
+      "name": "http_method",
+      "type": "string",
+      "required": false,
+      "description": "the HTTP method of the operation, where it is not derivable or the bank overrides BIAN",
+      "status": "active",
+      "source": "BIAN",
+      "reference": {
+        "standard": "BIAN Semantic API Practitioner Guide v8.1 (public)",
+        "locator": "§3.5 p.52 (HTTP methods used: GET, PUT, POST, PATCH, DELETE) and p.55 (Retrieve maps to GET; the other action terms become resource nouns)",
+        "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf"
+      },
+      "verification": "public BIAN Semantic API Practitioner Guide v8.1, page checked 2026-10-24",
+      "reasoning": "Answers: Which HTTP method should an API implementing this operation use? The guide names the HTTP methods BIAN uses (p.52) and states only Retrieve → GET explicitly (p.55); the other action terms become resource nouns, so their method comes from BIAN's published Semantic API definitions (not checked here). Allowed values checked in the public guide. Approved as optional: the engine derives the method where it can (DV-A2-02); the attribute records the method where it cannot, or a deliberate override.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which HTTP method should an API implementing this operation use?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-06"
+      },
+      "kind": "enumeration",
+      "values": [
+        "GET",
+        "PUT",
+        "POST",
+        "PATCH",
+        "DELETE"
+      ],
+      "values_source": "BIAN Semantic API Practitioner Guide v8.1 (public)",
+      "confidence_basis": "defined by a public standard (BIAN) and checked"
+    },
+    {
+      "id": "AT-A2-18",
+      "entity": "A2.BusinessScenario",
+      "name": "trigger_event",
+      "type": "string",
+      "required": false,
+      "description": "the business event that starts the scenario",
+      "status": "active",
+      "source": "BIAN concept",
+      "reference": {
+        "standard": "BIAN concept (Business Scenario)",
+        "locator": "Business Scenario",
+        "uri": "https://bian.org/servicelandscape-14-0-0/"
+      },
+      "verification": "BIAN concept named in the public Service Landscape; the field itself not checked against a public page",
+      "reasoning": "Answers: What starts this collaboration of Service Domains? BIAN scenarios begin from a business event; holding it as a field is SDEM's choice and lets scenarios be matched to A1 processes with the same trigger.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What starts this collaboration of Service Domains?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-07"
+      },
+      "kind": "value",
+      "confidence_basis": "built on a BIAN concept; the field itself not checked against a public page"
+    },
+    {
+      "id": "AT-A2-19",
+      "entity": "A2.BusinessObject",
+      "name": "glossary_uri",
+      "type": "string",
+      "required": false,
+      "description": "link to the agreed glossary definition",
+      "status": "active",
+      "source": "W3C SKOS",
+      "reference": {
+        "standard": "W3C SKOS Reference",
+        "locator": "skos:exactMatch / skos:closeMatch",
+        "uri": "https://www.w3.org/TR/skos-reference/"
+      },
+      "verification": "public standard (W3C SKOS), checked 2026-10-24",
+      "reasoning": "Answers: Which agreed business term does this object stand for? Same as the A1 business object: links the BIAN object to the bank's glossary concept.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which agreed business term does this object stand for?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-08"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (W3C SKOS) and checked"
+    },
+    {
+      "id": "AT-A2-20",
+      "entity": "A2.BusinessObject",
+      "name": "iso20022_ref",
+      "type": "string",
+      "required": false,
+      "description": "the matching ISO 20022 business component",
+      "status": "active",
+      "source": "ISO 20022",
+      "reference": {
+        "standard": "ISO 20022 Data Dictionary (public)",
+        "locator": "Business component",
+        "uri": "https://iso20022.org/dictionary-items-definition"
+      },
+      "verification": "public standard (ISO 20022), checked 2026-10-24",
+      "reasoning": "Answers: Which ISO 20022 concept does this object correspond to? BIAN's stated policy is to map its information attributes to the ISO 20022 Business Model rather than define a new standard (guide §3, p.44). The ISO 20022 business model is publicly browsable.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which ISO 20022 concept does this object correspond to?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-09"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (ISO 20022) and checked"
+    },
+    {
+      "id": "AT-A2-21",
+      "entity": "A2.BusinessObject",
+      "name": "personal_information",
+      "type": "boolean",
+      "required": false,
+      "description": "whether it holds information about an identifiable person",
+      "status": "active",
+      "source": "public legislation",
+      "reference": {
+        "standard": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7",
+        "locator": "personal information / personal data",
+        "uri": "https://www.legislation.govt.nz/act/public/2020/0031/latest/LMS23223.html"
+      },
+      "verification": "public standard (public legislation), checked 2026-10-24",
+      "reasoning": "Answers: Which BIAN objects carry personal information? Same definition as the A1 business object; public law.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which BIAN objects carry personal information?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-10"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (public legislation) and checked"
+    },
+    {
+      "id": "AT-A2-22",
+      "entity": "A2.BusinessObjectAttribute",
+      "name": "data_type",
+      "type": "string",
+      "required": false,
+      "description": "the attribute's data type in the Business Object Model",
+      "status": "active",
+      "source": "BIAN concept",
+      "reference": {
+        "standard": "BIAN concept (Business Object Model)",
+        "locator": "BOM attribute type",
+        "uri": "https://bian.org/servicelandscape-14-0-0/"
+      },
+      "verification": "BIAN concept named in the public Service Landscape; the field itself not checked against a public page",
+      "reasoning": "Answers: What type of value does this attribute hold? BOM attributes are typed, but the type catalogue was not checked against a public page here.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What type of value does this attribute hold?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-11"
+      },
+      "kind": "value",
+      "confidence_basis": "built on a BIAN concept; the field itself not checked against a public page"
+    },
+    {
+      "id": "AT-A2-23",
+      "entity": "A2.BusinessObjectAttribute",
+      "name": "iso20022_ref",
+      "type": "string",
+      "required": false,
+      "description": "the matching ISO 20022 business element",
+      "status": "active",
+      "source": "ISO 20022",
+      "reference": {
+        "standard": "ISO 20022 Data Dictionary (public)",
+        "locator": "Business element",
+        "uri": "https://iso20022.org/dictionary-items-definition"
+      },
+      "verification": "public standard (ISO 20022), checked 2026-10-24",
+      "reasoning": "Answers: Which ISO 20022 element does this attribute correspond to? Attribute-level form of the ISO 20022 mapping BIAN states as its policy (guide §3, p.44).",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which ISO 20022 element does this attribute correspond to?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-12"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (ISO 20022) and checked"
+    },
+    {
+      "id": "AT-A2-24",
+      "entity": "A2.BusinessObjectAttribute",
+      "name": "personal_information",
+      "type": "boolean",
+      "required": false,
+      "description": "whether the attribute is personal information",
+      "status": "active",
+      "source": "public legislation",
+      "reference": {
+        "standard": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7",
+        "locator": "personal information / personal data",
+        "uri": "https://www.legislation.govt.nz/act/public/2020/0031/latest/LMS23223.html"
+      },
+      "verification": "public standard (public legislation), checked 2026-10-24",
+      "reasoning": "Answers: Which attributes are personal information (for privacy impact)? Privacy is decided per attribute (a name is personal, a currency code is not); public law.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which attributes are personal information (for privacy impact)?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-13"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (public legislation) and checked"
+    },
+    {
+      "id": "AT-A2-25",
+      "entity": "A2.SemanticAPI",
+      "name": "spec_format",
+      "type": "string",
+      "required": false,
+      "description": "the format of the published API definition",
+      "status": "active",
+      "source": "BIAN concept",
+      "reference": {
+        "standard": "BIAN concept (Semantic API)",
+        "locator": "Semantic API",
+        "uri": "https://bian.org/servicelandscape-14-0-0/"
+      },
+      "verification": "BIAN concept named in the public Service Landscape; the field itself not checked against a public page",
+      "reasoning": "Answers: Which tooling can read this Semantic API definition? BIAN publishes Semantic API definitions as machine-readable specifications; the format list was not checked against a public page here.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which tooling can read this Semantic API definition?",
+      "approved": {
+        "review": "A2 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA2-14"
+      },
+      "kind": "enumeration",
+      "values": [
+        "OpenAPI 3.1",
+        "OpenAPI 3.0",
+        "Swagger 2.0"
+      ],
+      "values_source": "BIAN concept (Semantic API)",
+      "confidence_basis": "built on a BIAN concept; the field itself not checked against a public page"
     }
   ],
   "common_attributes": [
@@ -2676,6 +3054,26 @@
       ],
       "values_source": "SDEM",
       "confidence_basis": "Dublin Core defines the attribute; its allowed values are SDEM-defined"
+    }
+  ],
+  "derived_attributes": [
+    {
+      "id": "DV-A2-01",
+      "entity": "A2.ServiceDomain",
+      "name": "criticality",
+      "rule": "the highest criticality of the A1 processes linked to the Service Domain by USES_DOMAIN",
+      "source": "SDEM-defined derivation over approved relationships",
+      "reasoning": "Replaces the dropped stored attribute DA2-02: a derived value cannot drift from process criticality.",
+      "confidence": "medium"
+    },
+    {
+      "id": "DV-A2-02",
+      "entity": "A2.ServiceOperation",
+      "name": "http_method (default)",
+      "rule": "Retrieve → GET (guide §3.5, p.55); for other action terms, the method in BIAN's published Semantic API definition of the operation (not checked here); an `http_method` value overrides",
+      "source": "BIAN Semantic API Practitioner Guide v8.1 (public)",
+      "reasoning": "Lets the engine check a realising API's method with little data entry. Only Retrieve → GET is stated in the guide, so the rest of the rule rests on BIAN files not yet checked.",
+      "confidence": "medium"
     }
   ]
 }

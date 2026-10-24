@@ -46,11 +46,15 @@ def entity(e, val, rules_by_entity):
     return ('medium', 'SDEM definition with no standard concept; validated against sealed answers') if tested else ('low', 'SDEM definition with no standard concept; not validated')
 
 
+PUBLIC = ('Dublin Core', 'W3C ORG', 'W3C SKOS', 'W3C', 'public legislation', 'ISO 20022', 'AsyncAPI', 'SPDX', 'CycloneDX', 'SemVer', 'NIST', 'IANA', 'ISO 3166', 'Kubernetes', 'OCI')
+
+
 def attribute(a, val):
     rs = set(re.findall(r'S\d+', a.get('read_by', ''))); tested = bool(rs & val)
     if a['status'] == 'deprecated': return 'low', 'deprecated'
     src = a['source']
-    if src in ('Dublin Core', 'W3C ORG', 'W3C SKOS', 'public legislation'):
+    if src == 'BIAN concept': return 'medium', 'built on a BIAN concept; the field itself not checked against a public page'
+    if src in PUBLIC:
         if a.get('values_source') == 'SDEM': return 'medium', f'{src} defines the attribute; its allowed values are SDEM-defined'
         return 'high', f'defined by a public standard ({src}) and checked'
     if src == 'ArchiMate concept': return 'medium', 'built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it'

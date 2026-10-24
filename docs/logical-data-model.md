@@ -482,9 +482,13 @@ erDiagram
         string id PK
         string asset_type FK
         string functional_pattern FK
+        string adoption_status
     }
     A2_FunctionalPattern {
         string id PK
+        string generic_artefact
+        string behavior_qualifier_type
+        string rest_archetype
     }
     A2_AssetType {
         string id PK
@@ -504,6 +508,7 @@ erDiagram
         string behavior_qualifier
         list input_attributes
         list output_attributes
+        string http_method
     }
     A2_BehaviorQualifier {
         string id PK
@@ -512,13 +517,20 @@ erDiagram
     A2_BusinessScenario {
         string id PK
         list operation_sequence FK
+        string trigger_event
     }
     A2_BusinessObject {
         string id PK
         list attributes
+        string glossary_uri
+        string iso20022_ref
+        boolean personal_information
     }
     A2_BusinessObjectAttribute {
         string id PK
+        string data_type
+        string iso20022_ref
+        boolean personal_information
     }
     A2_BOMModel {
         string id PK
@@ -528,6 +540,7 @@ erDiagram
     }
     A2_SemanticAPI {
         string id PK
+        string spec_format
     }
     A2_BusinessArea ||--|{ A2_BusinessDomain : "composition"
     A2_BusinessDomain ||--|{ A2_ServiceDomain : "composition"
@@ -595,6 +608,7 @@ A discrete functional scope of the bank and its responsibilities
 |---|---|---|---|---|
 | `asset_type` | text | yes | id of the domain's asset type | `A2.AssetType` |
 | `functional_pattern` | text | yes | id of the domain's functional pattern | `A2.FunctionalPattern` |
+| `adoption_status` | text | no | how far the bank intends to adopt the Service Domain | one of: adopted, partly adopted, planned, not adopted |
 
 **Links**
 
@@ -617,7 +631,13 @@ The generic behaviour pattern a Service Domain applies
 
 **Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
 
-**Fields:** core fields only.
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `generic_artefact` | text | no | the kind of control record the pattern manages (the pattern as a noun) | — |
+| `behavior_qualifier_type` | text | no | the kind of behaviour qualifier used to break the pattern down | — |
+| `rest_archetype` | text | no | the REST resource archetype the pattern's control record maps to | one of: document, collection, controller |
 
 **Links**
 
@@ -702,6 +722,7 @@ An operation a Service Domain exposes
 | `behavior_qualifier` | text | no | qualifier name, or null | — |
 | `input_attributes` | list | yes | control-record attributes the operation takes | — |
 | `output_attributes` | list | yes | control-record attributes the operation returns | — |
+| `http_method` | text | no | the HTTP method of the operation, where it is not derivable or the bank overrides BIAN | one of: GET, PUT, POST, PATCH, DELETE |
 
 **Links**
 
@@ -746,6 +767,7 @@ An illustrative, non-prescriptive collaboration of Service Domain operations
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `operation_sequence` | list | yes | ordered ids of the operations the scenario sequences | `A2.ServiceOperation` |
+| `trigger_event` | text | no | the business event that starts the scenario | — |
 
 **Links**
 
@@ -766,6 +788,9 @@ A canonical business information concept
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `attributes` | list | yes | the canonical object's attribute names | — |
+| `glossary_uri` | text | no | link to the agreed glossary definition | — |
+| `iso20022_ref` | text | no | the matching ISO 20022 business component | — |
+| `personal_information` | boolean | no | whether it holds information about an identifiable person | — |
 
 **Links**
 
@@ -783,7 +808,13 @@ A property of a Business Object
 
 **Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
 
-**Fields:** core fields only.
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `data_type` | text | no | the attribute's data type in the Business Object Model | — |
+| `iso20022_ref` | text | no | the matching ISO 20022 business element | — |
+| `personal_information` | boolean | no | whether the attribute is personal information | — |
 
 **Links**
 
@@ -825,7 +856,11 @@ An archetypal Service Domain interaction pattern artefact
 
 A Semantic API definition artefact
 
-**Fields:** core fields only.
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `spec_format` | text | no | the format of the published API definition | one of: OpenAPI 3.1, OpenAPI 3.0, Swagger 2.0 |
 
 **Links**
 
@@ -1522,10 +1557,10 @@ The 7 example estates (447 instances) measured against the rules not yet enforce
 | Rule | Values checked | Failures |
 |---|---|---|
 | LC-04 | 478 | 0 |
-| LC-05 | 757 | 0 |
-| LC-06 | 572 | 0 |
+| LC-05 | 771 | 0 |
+| LC-06 | 575 | 0 |
 | LC-07 | 132 | 0 |
-| LC-08 | 134 | 0 |
+| LC-08 | 135 | 0 |
 | LC-09 | 316 | 0 |
 | LC-10 | 1106 | 0 |
 | LC-10m (warning) | 1106 | 29 |

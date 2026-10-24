@@ -67,7 +67,7 @@ def render(level):
     for e in ents:
         if e.get('abstract'): continue
         n += 1
-        ex = [a for a in cur if a['entity'] == e['type']]; pr = [a for a in A if a['entity'] == e['type']]
+        ex = [a for a in cur if a['entity'] == e['type']]; pr = [a for a in A if a['entity'] == e['type'] and a.get('status') != 'dropped']
         dup = [a for a in ex if a['name'] in common_names]; ex = [a for a in ex if a['name'] not in common_names]
         par = e.get('extends')
         pex = [a for a in cur if par and a['entity'] == par]; ppr = [a for a in A if par and a['entity'] == par]
@@ -93,7 +93,7 @@ def render(level):
         for x in ex:
             row(f"`{x['name']}`", 'Specific', CT.get(x['type'], x['type']), 'yes' if x['required'] else 'no', allowed(x), x['description'], esrc(x), x['reasoning'], x['confidence'], 'existing')
         for x in pr:
-            row(f"**`{x['name']}`**", 'Specific', x['type'], 'no', allowed(x), x['meaning'], src(x), f"Answers: {x['question']} {x['reasoning']}", x['confidence'], f"**proposed {x['id']}**")
+            row(f"**`{x['name']}`**", 'Specific', x['type'], 'no', allowed(x), x['meaning'], src(x), f"Answers: {x['question']} {x['reasoning']}", x['confidence'], f"**{'approved' if x.get('status') == 'approved' else 'proposed'} {x['id']}**")
         for x in dup:
             row(f"~~`{x['name']}`~~", 'Specific (existing text field)', CT.get(x['type'], x['type']), 'no', '—', x['description'], esrc(x), x['reasoning'] + f" Replaced by the common `{x['name']}`, which refers to an actor or role instead of holding free text.", x['confidence'], '**to be replaced**')
         out.append('')

@@ -22,7 +22,12 @@
       "description": "Synthetic stand-in for a BIAN payment-initiation Service Domain: captures, validates, authorises and hands over customer payment instructions.",
       "attributes": {
         "asset_type": "AT-PAY-INSTR",
-        "functional_pattern": "FP-FULFIL"
+        "functional_pattern": "FP-FULFIL",
+        "adoption_status": "adopted",
+        "owner": "ROLE-PAY-OFFICER",
+        "conforms_to": [
+          "BIAN 14.0"
+        ]
       },
       "canonical_id": "BIAN-PAYMENT-INITIATION"
     },
@@ -35,7 +40,8 @@
       "description": "Synthetic stand-in for a BIAN payment-execution Service Domain: executes authorised instructions through schemes.",
       "attributes": {
         "asset_type": "AT-PAY-TXN",
-        "functional_pattern": "FP-FULFIL"
+        "functional_pattern": "FP-FULFIL",
+        "adoption_status": "partly adopted"
       },
       "canonical_id": "BIAN-PAYMENT-EXECUTION"
     },
@@ -48,7 +54,8 @@
       "description": "Synthetic stand-in for a BIAN party-authentication Service Domain: verifies a party's identity for a session or transaction.",
       "attributes": {
         "asset_type": "AT-AUTH",
-        "functional_pattern": "FP-ASSESS"
+        "functional_pattern": "FP-ASSESS",
+        "adoption_status": "planned"
       },
       "canonical_id": "BIAN-PARTY-AUTH"
     },
@@ -102,7 +109,11 @@
       "version": "1.0",
       "name": "Fulfil",
       "lifecycle_status": "active",
-      "description": "Synthetic stand-in for a BIAN functional pattern: complete a request through a procedure."
+      "description": "Synthetic stand-in for a BIAN functional pattern: complete a request through a procedure.",
+      "attributes": {
+        "generic_artefact": "Arrangement",
+        "behavior_qualifier_type": "Features"
+      }
     },
     {
       "id": "FP-ASSESS",
@@ -110,7 +121,11 @@
       "version": "1.0",
       "name": "Assess",
       "lifecycle_status": "active",
-      "description": "Synthetic stand-in: evaluate something and record the result."
+      "description": "Synthetic stand-in: evaluate something and record the result.",
+      "attributes": {
+        "generic_artefact": "Assessment",
+        "behavior_qualifier_type": "Tests"
+      }
     },
     {
       "id": "CR-PI",
@@ -301,7 +316,8 @@
           "SO-PI-02",
           "SO-PI-03",
           "SO-PI-04"
-        ]
+        ],
+        "trigger_event": "customer submits a credit transfer"
       }
     },
     {
@@ -321,7 +337,8 @@
           "value_date",
           "remittance_information",
           "payment_status"
-        ]
+        ],
+        "personal_information": true
       },
       "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION"
     },
@@ -337,7 +354,8 @@
           "party_reference",
           "party_name",
           "party_type"
-        ]
+        ],
+        "personal_information": true
       },
       "canonical_id": "BIAN-BO-PARTY"
     },
@@ -347,7 +365,11 @@
       "version": "1.0",
       "name": "amount",
       "lifecycle_status": "active",
-      "description": "Monetary amount of the instruction."
+      "description": "Monetary amount of the instruction.",
+      "attributes": {
+        "personal_information": false,
+        "data_type": "Amount"
+      }
     }
   ],
   "relationships": [
