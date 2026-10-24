@@ -431,7 +431,7 @@ Plan coverage after the suite: 45 rows validated clean, 5 validated with finding
 | OPEN-02 | A1 / A3 / A4 within-level rows | 113 verified against the open-source Archi relationship matrix (commit cited in the record); 2 TOGAF rows unverified |
 | OPEN-03 | Official S rows citing ArchiMate / W135 (S34, S39, S41, S45, S49; S04, S05) | unverified: login-gated; the five ArchiMate rows can be checked against the Archi oracle next |
 | OPEN-04 | API contention tie-break (step 2 clause 4) | **binding** (DEC-E-06) — chosen with a gold already seen; still to be validated when it decides a pair on an unseen gold |
-| OPEN-05 | One-author caveat | all estates and gold authored by SDEM; one blind case (data and gold by someone else) retires it |
+| OPEN-05 | One-author caveat | all estates and gold authored by SDEM; one blind case (data and gold by someone else) retires it. **Sharper since the engine build:** DEC-E-07…09 were chosen while the golds of these cases were known, so passing them shows the engine reproduces the procedure, not that it generalises — the blind case is now the engine's real acceptance test |
 | OPEN-06 | Confidence bands | assigned by hand and calibrated conservative (every low inference confirmed); could be re-derived from the logs' predicted-vs-observed outcomes |
 
 ### Engine decisions
@@ -447,6 +447,8 @@ Settled 2026-10-25 before the engine build (v0.9), where the records and the pro
 | DEC-E-05 | Which runs are in scope? | Scored: M0, M1, H1, H2, M2 (design mode, built last), C1, C2, C3. **Not scored:** E1 (no answer key; not re-run on the enriched exports) and E2 (query-only). | An engine can only be accepted against a sealed gold. |
 | DEC-E-06 | Are the executor's conventions binding? | **Yes** — the contention tie-break (OPEN-04) and the method rows of step 2 check 2 are part of the specification. | They were applied in every run that scored 1.00; leaving them open would make the engine's behaviour undefined. |
 | DEC-E-07 | What is a "clear synonym" in step 2 check 3? | **A shared word stem** between the qualifier (or its aliases) and a path segment: closure ↔ close, posting ↔ post, reversal ↔ reverse, validation ↔ validate (engine convention EC-01, `sdem/rules_engine.py` `stem`). | The H1 hand-run matched exactly these on a SOAP estate; with exact words only, 4 of H1's 14 `IMPLEMENTED_BY` links are lost. Added 2026-10-25 while building step 2; no false proposal introduced in any case. |
+| DEC-E-08 | S17 fallback B: is any asset-type token in the component's paths evidence? | **Not when the token is shared with the asset type of another domain the component (or a component containing it) already realises.** | Otherwise "payment" ties every payments domain to the Payments Hub; the M1 hand-run counted 0 distinctive matches and its gold agrees. |
+| DEC-E-09 | S01 when only some of a capability's processes use the domain? | **No proposal** (logged). The rule's "low" band for partial coverage is withdrawn. | The C1 hand-run never proposed partial coverage and the gold has none; H1 and M0 do not depend on it. |
 
 ## 10. Requirements index
 

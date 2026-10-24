@@ -7,7 +7,7 @@ Reads a graph through the graph access layer (sdem/store.py GraphReader), applie
   log        — one record per attempt, including refusals (the evidence base; REQ-O-02)
 It never approves, never invents an instance, and never re-proposes a link that is already approved.
 
-Built step by step against the acceptance harness (sdem/acceptance.py). Implemented: step 1 (data joins), step 2 (BIAN REST decision procedure).
+Built step by step against the acceptance harness (sdem/acceptance.py). Implemented: steps 1–5 (data joins; BIAN REST decision procedure; structural matching; derivation; bounded text inference). Design mode (M2) is not built.
 """
 import json, re
 from pathlib import Path
@@ -354,9 +354,367 @@ class Run:
                 _, bq = self._qual(self.attr(p['op'], 'behavior_qualifier'))
                 if bq: self.report('S26', bq, p['api'], 2, f"qualifier {bq['name']} in path of {p['api']['id']}, which implements {p['op']['id']} ({rec['mapping_id']})", [f"{p['api']['id']}.path"])
 
-    def run(self):
+    # ------------------------------------------------------------ shared: links known so far (approved, or proposed in this run)
+    def links(self, rel):
+        """(source id, target id, label) for a catalogue relationship: approved arrows and this run's proposals, labelled which."""
+        out = [(a, b, 'approved') for a, r, b in self.approved if r == rel]
+        out += [(k[0], k[2], self.proposed[k]['mapping_id']) for k in self.proposed if k[1] == rel]
+        return out
+
+    def band_of(self, label):
+        """Confidence band of an input arrow: approved counts as high; a proposal carries its own."""
+        if label == 'approved': return 'high'
+        rec = next(r for r in self.proposals if r['mapping_id'] == label)
+        return {0.8: 'high', 0.6: 'medium', 0.4: 'low'}[rec['confidence']]
+
+    def reports(self, plan_id):
+        return [(k[0], k[2], v['mapping_id']) for k, v in self.reported.items() if k[1] == plan_id]
+
+    def domain_of(self, op_id):
+        return self.climb(op_id, 'A2.ServiceDomain', 'A2')
+
+    def component_of(self, a3_id):
+        return self.climb(a3_id, 'A3.ApplicationComponent', 'A3')
+
+    def entity_aliases(self, de):
+        """field_aliases a data entity carries: inherited from every interface of a component that accesses it; its own take precedence."""
+        al = {}
+        for e in self.wedges:
+            if e['kind'] == 'access' and e['target'] == de['id']:
+                comp = self.get(e['source'], 'A3.ApplicationComponent', 'A3')
+                for x in (self.descendants(comp['id']) if comp else []):
+                    ifc = self.get(x, 'A3.ApplicationInterface', 'A3')
+                    if ifc: al.update(self.attr(ifc, 'field_aliases') or {})
+        al.update(self.attr(de, 'field_aliases') or {})
+        return al
+
+    def one_to_one(self, plan_id, scored, file):
+        """File the highest-scoring pair, drop pairs sharing either end, repeat; a tie at the top is no proposal (both named)."""
+        pool = [x for x in scored]
+        while pool:
+            top = max(x[0] for x in pool)
+            best = [x for x in pool if x[0] == top]
+            tied = [x for x in best if any(y is not x and (y[1]['id'] == x[1]['id'] or y[2]['id'] == x[2]['id']) for y in best)]
+            for x in tied:
+                self.attempt(plan_id, x[1]['id'], x[2]['id'], 4, x[4], f'tie at score {top:.2f} with another pair sharing an end — no proposal')
+            filed = [x for x in best if x not in tied]
+            if not filed:
+                pool = [x for x in pool if x not in best]; continue
+            for x in filed: file(x)
+            ends = {e for x in filed + tied for e in (('s', x[1]['id']), ('t', x[2]['id']))}
+            pool = [x for x in pool if ('s', x[1]['id']) not in ends and ('t', x[2]['id']) not in ends]
+
+    # ------------------------------------------------------------ step 4 — structural matching
+    VERB = {'initiate': {'initiate', 'create', 'capture', 'apply', 'submit', 'open', 'request', 'register'}, 'create': {'create', 'initiate', 'capture', 'apply', 'submit', 'open'},
+            'register': {'register', 'create', 'capture'}, 'evaluate': {'evaluate', 'validate', 'check', 'assess', 'screen', 'score', 'review', 'examine'},
+            'execute': {'execute', 'issue', 'release', 'settle', 'pay', 'run'}, 'retrieve': {'retrieve', 'confirm', 'get', 'view', 'query', 'track'},
+            'notify': {'notify', 'confirm', 'alert', 'inform'}, 'update': {'update', 'amend', 'change', 'modify'}, 'control': {'control', 'block', 'suspend', 'cancel', 'close'},
+            'request': {'request', 'ask', 'order'}, 'provide': {'provide', 'supply', 'deliver'}, 'exchange': {'exchange', 'accept', 'reject'},
+            'capture': {'capture', 'record', 'enter'}, 'grant': {'grant', 'approve', 'authorise', 'authorize'}}
+
+    def verbs(self, term):
+        t = str(term or '').lower(); return stems(self.VERB.get(t, {t}))
+
+    def attr_match(self, want, have, aliases=None):
+        w = {norm(a) for a in want}; h = set()
+        for f in have:
+            h.add(norm(f))
+            if aliases and f in aliases: h.add(norm(aliases[f]))
+        return w & h
+
+    def step4(self):
+        # S30 MAPPED_TO (BOM object -> data entity) and S20 (control record -> data entity): >= 50 % of the BIAN object's attributes, one-to-one
+        des = self.of('A3.DataEntity')
+        for plan, stype in (('S30', 'A2.BusinessObject'), ('S20', 'A2.ControlRecord')):
+            scored = []
+            for b in self.of(stype):
+                want = _list(self.attr(b, 'attributes'))
+                if not want: continue
+                for de in des:
+                    m = self.attr_match(want, _list(self.attr(de, 'attributes')), self.entity_aliases(de))
+                    sc = len(m) / len(want)
+                    if sc >= 0.5: scored.append((sc, b, de, sorted(m), [f"{b['id']}.attributes", f"{de['id']}.attributes"]))
+            if plan == 'S30':
+                self.one_to_one(plan, scored, lambda x: self.propose('S30', 'MAPPED_TO', x[1], x[2], 4, f"{len(x[3])}/{len(_list(self.attr(x[1], 'attributes')))} BOM attributes matched ({x[0]:.0%}): {x[3]}", x[4]))
+            else:
+                self.one_to_one(plan, scored, lambda x: self.report('S20', x[1], x[2], 4, f"{len(x[3])}/{len(_list(self.attr(x[1], 'attributes')))} control-record attributes matched ({x[0]:.0%})", x[4]))
+        # S31: attributes of a mapped BOM object found in the data entity
+        for b_id, de_id, lab in self.links('MAPPED_TO'):
+            b = self.get(b_id, 'A2.BusinessObject'); de = self.get(de_id, 'A3.DataEntity')
+            if not (b and de): continue
+            have = self.attr_match([x['name'] for x in (self.get(c, 'A2.BusinessObjectAttribute') for c in self.children(b_id)) if x], _list(self.attr(de, 'attributes')), self.entity_aliases(de))
+            for c in self.children(b_id):
+                boa = self.get(c, 'A2.BusinessObjectAttribute')
+                if boa and norm(boa['name']) in have:
+                    self.report('S31', boa, de, 4, f"attribute {boa['name']} of {b_id} is in {de_id} (MAPPED_TO {lab})", [f"{de_id}.attributes"])
+        # S12 ALIGNED_TO (bank glossary object -> BOM object): glossary attributes through the bank's aliases, one-to-one
+        scored = []
+        for a in self.of('A1.BusinessObject'):
+            have = _list(self.attr(a, 'attributes')); al = self.attr(a, 'field_aliases') or {}
+            for b in self.of('A2.BusinessObject'):
+                want = _list(self.attr(b, 'attributes'))
+                if not want or not have: continue
+                m = self.attr_match(want, have, al); sc = len(m) / len(want)
+                if sc >= 0.5: scored.append((sc, a, b, sorted(m), [f"{a['id']}.attributes/field_aliases", f"{b['id']}.attributes"]))
+        self.one_to_one('S12', scored, lambda x: self.propose('S12', 'ALIGNED_TO', x[1], x[2], 4, f"{len(x[3])}/{len(_list(self.attr(x[2], 'attributes')))} BOM attributes covered by the glossary ({x[0]:.0%})", x[4]))
+        # S02 ALIGNED_TO (value stream -> scenario): coverage of the scenario's operations, in order, by stage action verbs (>= 60 %)
+        for vs in self.of('A1.ValueStream'):
+            stages = [self.get(x, 'A1.ValueStreamStage') for x in _list(self.attr(vs, 'stages'))]
+            stages = [x for x in stages if x]
+            for sc_ in self.of('A2.BusinessScenario'):
+                ops = [self.get(x, 'A2.ServiceOperation') for x in _list(self.attr(sc_, 'operation_sequence'))]
+                ops = [o for o in ops if o]
+                if not ops or not stages: continue
+                i, hits = 0, []
+                for o in ops:
+                    v = self.verbs(self.attr(o, 'action_term'))
+                    for j in range(i, len(stages)):
+                        if v & stems(tokens(stages[j]['name'])):
+                            hits.append((o['id'], stages[j]['id'])); i = j + 1; break
+                cov = len(hits) / len(ops)
+                data = [f"{vs['id']}.stages", f"{sc_['id']}.operation_sequence"]
+                if cov >= 0.6:
+                    self.propose('S02', 'ALIGNED_TO', vs, sc_, 4, f"{len(hits)}/{len(ops)} scenario operations covered in order by stage verbs ({cov:.0%}): {hits}", data)
+                    for _, st in hits:
+                        self.report('S03', self.get(st, 'A1.ValueStreamStage'), sc_, 4, f"stage {st} matches an operation of {sc_['id']} (S02 for {vs['id']})", data)
+                else:
+                    self.attempt('S02', vs['id'], sc_['id'], 4, data, f'coverage {cov:.0%} < 60 %')
+        # S06 (activity -> operation) by verb + noun when the activity names no operation
+        for act in self.of('A1.BusinessActivity'):
+            if _list(self.attr(act, 'invokes')): continue
+            at = stems(tokens(act['name']))
+            for o in self.of('A2.ServiceOperation'):
+                dom = self.domain_of(o['id']); asset = self.get(self.attr(dom, 'asset_type'), 'A2.AssetType') if dom and self.attr(dom, 'asset_type') else None
+                noun = stems(tokens(asset['name'], *_list(self.attr(asset, 'aliases')))) if asset else set()
+                if self.verbs(self.attr(o, 'action_term')) & at and noun & at:
+                    self.report('S06', act, o, 4, f"verb and noun match: '{act['name']}' ~ '{o['name']}'", [f"{act['id']}.name", f"{o['id']}.action_term", 'asset type'])
+        # S09 (business service -> operation): inputs/outputs vs operation attributes, >= 50 % and >= 2, unique best per service
+        for bs in self.of('A1.BusinessService'):
+            have = _list(self.attr(bs, 'inputs')) + _list(self.attr(bs, 'outputs'))
+            if not have: continue
+            sc = []
+            for o in self.of('A2.ServiceOperation'):
+                want = _list(self.attr(o, 'input_attributes')) + _list(self.attr(o, 'output_attributes'))
+                m = self.attr_match(want, have)
+                if want and len(m) >= 2 and len(m) / len(want) >= 0.5: sc.append((len(m), len(m) / len(want), o, sorted(m)))
+            if sc:
+                top = max(x[:2] for x in sc); best = [x for x in sc if x[:2] == top]
+                if len(best) == 1:
+                    self.report('S09', bs, best[0][2], 4, f"{best[0][0]} attributes matched ({best[0][1]:.0%}): {best[0][3]}", [f"{bs['id']}.inputs/outputs"])
+                else:
+                    self.attempt('S09', bs['id'], None, 4, [], f"tie between {[x[2]['id'] for x in best]} — no report")
+        # S19 (asset type -> data entity) and S27 (qualifier -> data entity): a name or alias token in the entity name
+        for plan, stype, src in (('S19', 'A2.AssetType', lambda x: tokens(*_list(self.attr(x, 'aliases')))), ('S27', 'A2.BehaviorQualifier', lambda x: tokens(*_list(self.attr(x, 'aliases'))))):
+            for a in self.of(stype):
+                toks = stems(src(a))
+                for de in des:
+                    hit = toks & stems(tokens(de['name']))
+                    if hit: self.report(plan, a, de, 4, f"{sorted(hit)} of {a['id']} in entity name '{de['name']}'", [f"{a['id']}.aliases", f"{de['id']}.name"])
+
+    # ------------------------------------------------------------ step 3 — derivation over approved arrows and this run's proposals
+    def step3(self):
+        impl = self.links('IMPLEMENTED_BY')
+        # S17 REALIZED_BY: a component exposing APIs that implement a domain's operations realises the domain (cap: strongest input, DEC-E-02)
+        real = {}
+        for op_id, api_id, lab in impl:
+            dom = self.domain_of(op_id); comp = self.component_of(api_id)
+            if dom and comp: real.setdefault((dom['id'], comp['id']), []).append((op_id, api_id, lab))
+        for (d, c), via in real.items():
+            band = max((self.band_of(l) for _, _, l in via), key=lambda b: BAND[b])
+            self.propose('S17', 'REALIZED_BY', self.get(d, 'A2.ServiceDomain'), self.get(c, 'A3.ApplicationComponent'), 3,
+                         'implements ' + '; '.join(f'{o} via {a} ({l})' for o, a, l in via), [f'IMPLEMENTED_BY {l}' for _, _, l in via], band=band)
+        done = {d for d, _ in real}
+        # fallback A: the component accesses a data entity MAPPED_TO the business object of the domain's control record
+        mapped = self.links('MAPPED_TO')
+        for dom in self.of('A2.ServiceDomain'):
+            if dom['id'] in done: continue
+            crs = [x for x in self.children(dom['id'], 'aggregation') if self.get(x, 'A2.ControlRecord')]
+            bos = {e['target'] for e in self.wedges if e['source'] in crs and self.get(e['target'], 'A2.BusinessObject')} | {e['source'] for e in self.wedges if e['target'] in crs and self.get(e['source'], 'A2.BusinessObject')}
+            found = {}
+            for b, de, lab in mapped:
+                if b not in bos: continue
+                for e in self.wedges:
+                    if e['kind'] == 'access' and e['target'] == de:
+                        comp = self.component_of(e['source'])
+                        if comp: found.setdefault(comp['id'], []).append((b, de, lab))
+            for c, via in found.items():
+                band = max((self.band_of(l) for _, _, l in via), key=lambda b: BAND[b])
+                self.propose('S17', 'REALIZED_BY', dom, self.get(c, 'A3.ApplicationComponent'), 3, 'fallback A (information perspective): ' + '; '.join(f'accesses {de}, MAPPED_TO {b} ({l})' for b, de, l in via),
+                             [f'MAPPED_TO {l}' for _, _, l in via], band=band)
+                done.add(dom['id'])
+        # fallback B (step 4, one band lower): an asset-type token in the component's API paths or data entity names
+        for dom in self.of('A2.ServiceDomain'):
+            if dom['id'] in done: continue
+            at = self.get(self.attr(dom, 'asset_type'), 'A2.AssetType') if self.attr(dom, 'asset_type') else None
+            if not at: self.attempt('S17', dom['id'], None, 3, [], 'no implemented operation, no mapped object, no asset type — no proposal'); continue
+            toks = stems(tokens(at['name'], *_list(self.attr(at, 'aliases'))))
+            for comp in self.of('A3.ApplicationComponent'):
+                # DEC-E-08: a token shared with the asset type of a domain this component (or one containing it) already realises explains nothing new
+                lineage = {comp['id']} | set(self.parents(comp['id']))
+                explained = set()
+                for dd, cc, _ in self.links('REALIZED_BY'):
+                    if cc in lineage and dd != dom['id']:
+                        a2 = self.get(self.attr(self.get(dd, 'A2.ServiceDomain'), 'asset_type'), 'A2.AssetType')
+                        if a2: explained |= stems(tokens(a2['name'], *_list(self.attr(a2, 'aliases'))))
+                texts = []
+                for x in self.descendants(comp['id']):
+                    n = self.get(x, 'A3.APIOperation', 'A3')
+                    if n: texts.append(self.attr(n, 'path'))
+                for x in self.descendants(comp['id']):
+                    for e in self.children(x, 'access'):
+                        de = self.get(e, 'A3.DataEntity', 'A3')
+                        if de: texts.append(de['name'])
+                hit = (toks - explained) & stems(tokens(*texts))
+                if hit: self.propose('S17', 'REALIZED_BY', dom, comp, 4, f'fallback B: asset-type tokens {sorted(hit)} in API paths / entity names', [f"{comp['id']} API paths, data entities"], fallback=True)
+        # S04 USES_DOMAIN: a process (or one of its activities) invokes an operation of the domain, or an S06 report links its activity
+        for prc in self.of('A1.BusinessProcess'):
+            if self.mm.is_a(prc['type'], 'A1.BusinessActivity'): continue
+            acts = [a for a in self.children(prc['id']) if self.get(a, 'A1.BusinessActivity')]
+            ops = {o: f"{prc['id']}.invokes" for o in _list(self.attr(prc, 'invokes'))}
+            for a in acts:
+                for o in _list(self.attr(self.get(a, 'A1.BusinessActivity'), 'invokes')): ops.setdefault(o, f'{a}.invokes')
+                for s_, o, lab in self.reports('S06'):
+                    if s_ == a: ops.setdefault(o, f'S06 {lab}')
+            doms = {}
+            for o, why in ops.items():
+                d = self.domain_of(o)
+                if d: doms.setdefault(d['id'], []).append(f'{o} ({why})')
+            for d, why in doms.items():
+                self.propose('S04', 'USES_DOMAIN', prc, self.get(d, 'A2.ServiceDomain'), 3, 'invokes ' + '; '.join(why), why)
+        # S01 SUPPORTED_BY: every process of the capability uses the domain (medium); only some (low)
+        for cap in self.of('A1.BusinessCapability'):
+            prcs = [e['source'] for e in self.wedges if e['kind'] == 'realization' and e['target'] == cap['id'] and self.get(e['source'], 'A1.BusinessProcess') and not self.get(e['source'], 'A1.BusinessActivity')]
+            if not prcs: continue
+            uses = {}
+            for p_, d, lab in self.links('USES_DOMAIN'):
+                if p_ in prcs: uses.setdefault(d, set()).add(p_)
+            for d, ps in uses.items():
+                if len(ps) == len(prcs):
+                    self.propose('S01', 'SUPPORTED_BY', cap, self.get(d, 'A2.ServiceDomain'), 3, f"all {len(prcs)} processes of the capability use the domain", sorted(ps))
+                else:  # DEC-E-09: partial coverage is not evidence enough for a registry arrow
+                    self.attempt('S01', cap['id'], d, 3, sorted(ps), f'only {len(ps)} of {len(prcs)} processes use the domain — no proposal (DEC-E-09)')
+        # candidate derivations (reported, never registry records)
+        for a, o, lab in self.reports('S06'):
+            d = self.domain_of(o)
+            if d: self.report('S07', self.get(a, 'A1.BusinessActivity'), d, 3, f'S06 {lab}: {a} → {o}, in {d["id"]}', [lab])
+        for req in self.of('A1.BusinessRequirement'):
+            for t in _list(self.attr(req, 'applies_to')):
+                tn = self.get(t, level='A1')
+                if not tn: continue
+                if self.mm.is_a(tn['type'], 'A1.BusinessActivity'):
+                    ops = [o for s_, o, _ in self.reports('S06') if s_ == t] + _list(self.attr(tn, 'invokes'))
+                    for o in dict.fromkeys(ops):
+                        on = self.get(o, 'A2.ServiceOperation'); d = self.domain_of(o)
+                        if on: self.report('S14', req, on, 3, f'applies to activity {t}, which invokes {o}', [f"{req['id']}.applies_to"])
+                        if d: self.report('S13', req, d, 3, f'applies to activity {t}, whose operation {o} is in {d["id"]}', [f"{req['id']}.applies_to"])
+                else:
+                    for p_, d, lab in self.links('USES_DOMAIN'):
+                        if p_ == t: self.report('S13', req, self.get(d, 'A2.ServiceDomain'), 3, f'applies to {t}, which USES_DOMAIN {d} ({lab})', [f"{req['id']}.applies_to"])
+        for d, c, lab in self.links('REALIZED_BY'):
+            comp = self.get(c, 'A3.ApplicationComponent')
+            bd = [p_ for p_ in self.parents(d) if self.get(p_, 'A2.BusinessDomain')]
+            for b in bd:
+                self.report('S16', self.get(b, 'A2.BusinessDomain'), comp, 3, f'{b} composes {d}, REALIZED_BY {c} ({lab})', [lab])
+                for a in self.parents(b):
+                    if self.get(a, 'A2.BusinessArea'): self.report('S15', self.get(a, 'A2.BusinessArea'), comp, 3, f'{a} composes {b} composes {d}, REALIZED_BY {c} ({lab})', [lab])
+        for op_id, api_id, lab in impl:
+            op = self.get(op_id, 'A2.ServiceOperation'); ifc = self.climb(api_id, 'A3.ApplicationInterface', 'A3')
+            svcs = [self.get(e['target'], 'A3.ApplicationService') for e in self.wedges if ifc and e['kind'] == 'assignment' and e['source'] == ifc['id']]
+            for sv in [x for x in svcs if x]:
+                self.report('S25', op, sv, 3, f'{op_id} IMPLEMENTED_BY {api_id} ({lab}); {ifc["id"]} composes it and is assigned to {sv["id"]}', [lab])
+            for sg in [p_ for p_ in self.parents(op_id) if self.get(p_, 'A2.ServiceGroup')]:
+                for sv in [x for x in svcs if x]: self.report('S22', self.get(sg, 'A2.ServiceGroup'), sv, 3, f'{sg} contains {op_id}, IMPLEMENTED_BY {api_id} exposed through {ifc["id"]} → {sv["id"]}', [lab])
+                if ifc: self.report('S23', self.get(sg, 'A2.ServiceGroup'), ifc, 3, f'{sg} contains {op_id}, IMPLEMENTED_BY {api_id} in {ifc["id"]}', [lab])
+            for fn in self.of('A3.ApplicationFunction'):
+                if api_id in _list(self.attr(fn, 'exposed_through')):
+                    d = self.domain_of(op_id)
+                    fp = self.get(self.attr(d, 'functional_pattern'), 'A2.FunctionalPattern') if d and self.attr(d, 'functional_pattern') else None
+                    if fp: self.report('S18', fp, fn, 3, f'{fn["id"]} exposed through {api_id}, which implements {op_id} of {d["id"]} (pattern {fp["id"]})', [lab])
+                    for cr in self.children(op_id, 'access'):
+                        crn = self.get(cr, 'A2.ControlRecord')
+                        if crn: self.report('S21', crn, fn, 3, f'{fn["id"]} exposed through {api_id}; {op_id} accesses {cr}', [lab])
+        for sc_ in self.of('A2.BusinessScenario'):
+            for o in _list(self.attr(sc_, 'operation_sequence')):
+                for s_, sv, lab in self.reports('S25'):
+                    if s_ == o: self.report('S28', sc_, self.get(sv, 'A3.ApplicationService'), 3, f'{o} in the sequence → {sv} (S25 {lab})', [lab])
+                d = self.domain_of(o)
+                for dd, c, lab in self.links('REALIZED_BY'):
+                    if d and dd == d['id']: self.report('S29', sc_, self.get(c, 'A3.ApplicationComponent'), 3, f'{o} in the sequence is in {dd}, REALIZED_BY {c} ({lab})', [lab])
+        # technology derived paths (C3)
+        dep_as = self.links('DEPLOYED_AS'); dep_on = self.links('DEPLOYED_ON')
+        for c, d, lab in dep_as:
+            dn = self.get(d, 'A4.Deployment'); env = self.get(self.attr(dn, 'environment_id'), 'A4.DeploymentEnvironment') if dn and self.attr(dn, 'environment_id') else None
+            if env: self.report('S40', self.get(c, 'A3.ApplicationComponent'), env, 3, f'DEPLOYED_AS {d} ({lab}) in environment {env["id"]}', [lab])
+            for x in self.descendants(c):
+                api = self.get(x, 'A3.APIOperation', 'A3')
+                if api: self.report('S47', api, dn, 3, f'{c} composes … {x}; {c} DEPLOYED_AS {d} ({lab})', [lab])
+        for c, t, lab in dep_on:
+            tn = self.get(t, 'A4.InfrastructureComponent', 'A4')
+            if tn and self.mm.is_a(tn['type'], 'A4.SystemSoftware'):
+                for f in self.children(c, 'assignment'):
+                    fn = self.get(f, 'A3.ApplicationFunction')
+                    if fn: self.report('S46', fn, tn, 3, f'{c} is assigned {f} and is DEPLOYED_ON {t} ({lab})', [lab])
+        for ai, ti, lab in self.reports('S43'):
+            tin = self.get(ti, 'A4.TechnologyInterface'); ts = self.get(self.attr(tin, 'of_service'), 'A4.TechnologyService') if tin and self.attr(tin, 'of_service') else None
+            if ts: self.report('S44', self.get(ai, 'A3.ApplicationInterface'), ts, 3, f'S43 {lab}: {ai} → {ti}, interface of {ts["id"]}', [lab])
+            for e in self.wedges:
+                if e['kind'] == 'assignment' and e['source'] == ai and self.get(e['target'], 'A3.ApplicationService'):
+                    self.report('S42', self.get(e['target'], 'A3.ApplicationService'), tin, 3, f'{e["target"]} is exposed through {ai}, which is exposed through {ti} (S43 {lab})', [lab])
+            for x in self.children(ai):
+                api = self.get(x, 'A3.APIOperation', 'A3')
+                if api: self.report('S48', api, tin, 3, f'{ai} composes {x}; {ai} exposed through {ti} (S43 {lab})', [lab])
+        for sbb in self.of('A3.SolutionBuildingBlock'):
+            comps = _list(self.attr(sbb, 'components'))
+            for c, t, lab in dep_on:
+                if c in comps:
+                    tn = self.get(t, 'A4.InfrastructureComponent', 'A4')
+                    self.report('S52', sbb, tn, 3, f'component {c} of the block is DEPLOYED_ON {t} ({lab})', [lab])
+                    if tn and self.mm.is_a(tn['type'], 'A4.Node'): self.report('S54', sbb, tn, 3, f'component {c} of the block is DEPLOYED_ON node {t} ({lab})', [lab])
+            for c, d, lab in dep_as:
+                if c in comps: self.report('S53', sbb, self.get(d, 'A4.Deployment'), 3, f'component {c} of the block is DEPLOYED_AS {d} ({lab})', [lab])
+
+    # ------------------------------------------------------------ step 5 — bounded text inference (S01 when step 3 found nothing; S08 on opt-in)
+    GENERIC = {'bank', 'customer', 'manage', 'management', 'account', 'service', 'process', 'record', 'data'}
+
+    def concepts(self, *texts):
+        return stems({w for w in tokens(*texts) if w not in self.GENERIC and len(w) > 2})
+
+    def rank(self, plan, src, text, rel=None):
+        doms = self.of('A2.ServiceDomain')
+        if len(doms) < 2:
+            self.attempt(plan, src['id'], None, 5, [], 'single-candidate — no proposal'); return
+        def dtext(d):
+            at = self.get(self.attr(d, 'asset_type'), 'A2.AssetType') if self.attr(d, 'asset_type') else None
+            return self.concepts(d['name'], d.get('description'), at['name'] if at else None, *_list(self.attr(at, 'aliases') if at else None))
+        mine = self.concepts(text)
+        sc = sorted(((len(mine & dtext(d)), d) for d in doms), key=lambda x: -x[0])
+        best, runner = sc[0], (sc[1][0] if len(sc) > 1 else 0)
+        working = f"shares {sorted(mine & dtext(best[1]))} with {best[1]['id']}; runner-up shares {runner}"
+        if best[0] >= 2 and best[0] - runner >= 1:
+            if rel: self.propose(plan, rel, src, best[1], 5, working, ['descriptions'], band='low')
+            else: self.report(plan, src, best[1], 5, working, ['descriptions'], band='low')
+        else:
+            self.attempt(plan, src['id'], best[1]['id'], 5, ['descriptions'], f'{working} — below threshold, no proposal')
+
+    def step5(self, options):
+        supported = {k[0] for k in self.proposed if k[1] == 'SUPPORTED_BY'} | {a for a, r, _ in self.approved if r == 'SUPPORTED_BY'}
+        for cap in self.of('A1.BusinessCapability'):
+            prcs = [e for e in self.wedges if e['kind'] == 'realization' and e['target'] == cap['id']]
+            if cap['id'] in supported or prcs: continue  # step 5 only for a capability with no mapped processes
+            kids = [c for c in self.children(cap['id']) if self.get(c, 'A1.BusinessCapability')]
+            if kids:  # a parent's scope covered by a child's domain is a judgement, not a derivation (M0 run 2): report-only
+                self.attempt('S01', cap['id'], None, 5, [f"{cap['id']} composes {kids}"], 'parent capability — report-only, never proposed (M0 run 2)'); continue
+            self.rank('S01', cap, f"{cap['name']} {cap.get('description') or ''}", 'SUPPORTED_BY')
+        if options.get('S08'):
+            for bs in self.of('A1.BusinessService'):
+                self.rank('S08', bs, f"{bs['name']} {bs.get('description') or ''}")
+
+    def run(self, options=None):
         self.step1()
         self.step2()
+        self.step4()
+        self.step3()
+        self.step5(options or {})
         return {'proposals': self.proposals, 'candidates': self.candidates, 'log': self.log}
 
 
@@ -367,4 +725,4 @@ class RulesEngine:
     name = ENGINE_NAME
 
     def infer(self, reader, case=None):
-        return Run(reader, (case or {}).get('id', 'RUN')).run()
+        return Run(reader, (case or {}).get('id', 'RUN')).run((case or {}).get('options'))

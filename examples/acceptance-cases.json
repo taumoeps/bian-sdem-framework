@@ -11,7 +11,7 @@
         "proposals": "m0-proposals.json"
       },
       "note": "run 2 inputs; the executor run carries one false proposal from a rule since withdrawn (CAP-300 parent), so the floor is below 1.00",
-      "engine_status": "pending"
+      "engine_status": "passing"
     },
     {
       "id": "M1",
@@ -22,7 +22,7 @@
       "executor": {
         "proposals": "m1-proposals.json"
       },
-      "engine_status": "pending"
+      "engine_status": "passing"
     },
     {
       "id": "H1",
@@ -34,7 +34,7 @@
         "proposals": "h1-proposals.json"
       },
       "note": "SOAP interface, every operation POST: a systematic deviation (H1 finding 4)",
-      "engine_status": "pending"
+      "engine_status": "passing"
     },
     {
       "id": "H2",
@@ -46,7 +46,7 @@
         "proposals": "h2-run2-proposals.json"
       },
       "note": "current inputs are run 2 (institution aliases supplied); no A1 export",
-      "engine_status": "pending"
+      "engine_status": "passing"
     },
     {
       "id": "M2",
@@ -86,8 +86,11 @@
         "S15",
         "S16"
       ],
-      "note": "business layer (A1–A2)",
-      "engine_status": "pending"
+      "note": "business layer (A1–A2); the institution has opted in to S08 (DEC-E-04)",
+      "engine_status": "passing",
+      "options": {
+        "S08": true
+      }
     },
     {
       "id": "C2",
@@ -115,7 +118,7 @@
         "S31"
       ],
       "note": "application internals (A2–A3)",
-      "engine_status": "pending"
+      "engine_status": "passing"
     },
     {
       "id": "C3",
@@ -149,7 +152,7 @@
         "S54"
       ],
       "note": "technology estate (A3–A4); the executor run carries one false candidate fixed by rule (S42)",
-      "engine_status": "pending"
+      "engine_status": "passing"
     }
   ]
 }
