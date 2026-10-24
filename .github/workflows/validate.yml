@@ -77,6 +77,10 @@ jobs:
       - name: Graph stores are current (sdem-graph build --check)
         run: |
           for e in examples/*/; do python -m sdem.graph build $e/a*.json $e/mappings.json --out $e/graph --check || exit 1; done
+      - name: Acceptance harness proven on the hand-executed runs
+        run: python -m sdem.acceptance --engine replay
+      - name: Inference engine progress (report only; the test suite enforces cases marked passing)
+        run: python -m sdem.acceptance --engine rules || true
       - name: Store performance (GS-X-02)
         run: python scripts/store_perf.py 10000
       - run: python -m unittest discover -s tests -v

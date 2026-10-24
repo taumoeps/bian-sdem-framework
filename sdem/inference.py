@@ -71,8 +71,18 @@ class NameOverlapBaseline:
                                             f"shared terms {sorted(shared)} between '{s['name']}' and '{t['name']}'", self.name))
         return out
 
+    def infer(self, reader, case=None):
+        """Harness interface (sdem/acceptance.py): proposals only, links already approved left out."""
+        approved = {(e['source']['id'], e['relationship'], e['target']['id']) for e in reader.fg.edges()}
+        return {'proposals': [m for m in self.propose(reader.fg) if (m['source']['id'], m['relationship'], m['target']['id']) not in approved]}
 
-ENGINES = {'baseline': NameOverlapBaseline}
+
+def _rules_engine():
+    from sdem.rules_engine import RulesEngine
+    return RulesEngine()
+
+
+ENGINES = {'baseline': NameOverlapBaseline, 'rules': _rules_engine}
 
 
 def main(argv=None):

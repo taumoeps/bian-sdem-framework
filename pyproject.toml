@@ -28,6 +28,7 @@ sdem-attributes = "sdem.attributes:main"
 sdem-confidence = "sdem.confidence:main"
 sdem-logical = "sdem.logical:main"
 sdem-physical = "sdem.physical:main"
+sdem-accept = "sdem.acceptance:main"
 # Deprecated aliases (SDMM → SDEM, v0.7.0); removed in v0.8.0
 sdmm-validate = "sdem.validate:main"
 sdmm-diff = "sdem.diff:main"

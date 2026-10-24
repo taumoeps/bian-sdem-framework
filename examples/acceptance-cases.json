@@ -1,0 +1,155 @@
+{
+  "$comment": "Acceptance cases for the inference engine (relationship-rules-spec.md §8, DEC-E-01 and DEC-E-05). Each case: the estate exports plus the GIVEN registry (approved before the run) are the only inputs; the gold is sealed. An engine passes a case when its precision and recall are at least the hand-executed run's, computed from the committed executor files. engine_status records which cases the rules engine must pass (tests enforce it). E1 (no answer key) and E2 (query-only) are not scored.",
+  "cases": [
+    {
+      "id": "M0",
+      "estate": "card-fraud-alerts",
+      "mode": "registry",
+      "given": "m0-mappings-given.json",
+      "gold": "m0-gold-mappings.json",
+      "executor": {
+        "proposals": "m0-proposals.json"
+      },
+      "note": "run 2 inputs; the executor run carries one false proposal from a rule since withdrawn (CAP-300 parent), so the floor is below 1.00",
+      "engine_status": "pending"
+    },
+    {
+      "id": "M1",
+      "estate": "payment-initiation",
+      "mode": "registry",
+      "given": "m1-mappings-given.json",
+      "gold": "m1-gold-mappings.json",
+      "executor": {
+        "proposals": "m1-proposals.json"
+      },
+      "engine_status": "pending"
+    },
+    {
+      "id": "H1",
+      "estate": "legacy-core-ledger",
+      "mode": "registry",
+      "given": "h1-mappings-given.json",
+      "gold": "h1-gold-mappings.json",
+      "executor": {
+        "proposals": "h1-proposals.json"
+      },
+      "note": "SOAP interface, every operation POST: a systematic deviation (H1 finding 4)",
+      "engine_status": "pending"
+    },
+    {
+      "id": "H2",
+      "estate": "acquired-fintech",
+      "mode": "registry",
+      "given": "h2-mappings-given.json",
+      "gold": "h2-gold-mappings.json",
+      "executor": {
+        "proposals": "h2-run2-proposals.json"
+      },
+      "note": "current inputs are run 2 (institution aliases supplied); no A1 export",
+      "engine_status": "pending"
+    },
+    {
+      "id": "M2",
+      "estate": "digital-lending",
+      "mode": "design",
+      "given": "m2-mappings-given.json",
+      "gold": "m2-gold-design.json",
+      "executor": {
+        "proposals": "m2-proposals.json",
+        "design": [
+          "m2-design-a3.json",
+          "m2-design-a4.json"
+        ]
+      },
+      "note": "greenfield: no A3/A4 export; the engine produces a target design (DEC-E-05: built last)",
+      "engine_status": "pending"
+    },
+    {
+      "id": "C1",
+      "estate": "trade-finance",
+      "mode": "registry",
+      "given": "c1-mappings-given.json",
+      "gold": "c1-gold-mappings.json",
+      "gold_candidates": "c1-gold-candidates.json",
+      "executor": {
+        "proposals": "c1-proposals.json",
+        "candidates": "c1-candidates.json"
+      },
+      "candidate_scope": [
+        "S03",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S13",
+        "S14",
+        "S15",
+        "S16"
+      ],
+      "note": "business layer (A1–A2)",
+      "engine_status": "pending"
+    },
+    {
+      "id": "C2",
+      "estate": "trade-finance",
+      "mode": "registry",
+      "given": "c2-mappings-given.json",
+      "gold": "c2-gold-mappings.json",
+      "gold_candidates": "c2-gold-candidates.json",
+      "executor": {
+        "proposals": "c2-proposals.json",
+        "candidates": "c2-candidates.json"
+      },
+      "candidate_scope": [
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S31"
+      ],
+      "note": "application internals (A2–A3)",
+      "engine_status": "pending"
+    },
+    {
+      "id": "C3",
+      "estate": "trade-finance",
+      "mode": "registry",
+      "given": "c3-mappings-given.json",
+      "gold": "c3-gold-mappings.json",
+      "gold_candidates": "c3-gold-candidates.json",
+      "executor": {
+        "proposals": "c3-proposals.json",
+        "candidates": "c3-candidates.json"
+      },
+      "candidate_scope": [
+        "S37",
+        "S38",
+        "S39",
+        "S40",
+        "S41",
+        "S42",
+        "S43",
+        "S44",
+        "S45",
+        "S46",
+        "S47",
+        "S48",
+        "S49",
+        "S50",
+        "S51",
+        "S52",
+        "S53",
+        "S54"
+      ],
+      "note": "technology estate (A3–A4); the executor run carries one false candidate fixed by rule (S42)",
+      "engine_status": "pending"
+    }
+  ]
+}
