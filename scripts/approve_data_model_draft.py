@@ -8,7 +8,7 @@ import argparse, json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DATE = '2026-10-24'
+DATE = __import__('datetime').date.today().isoformat()
 # draft source text (prefix) -> attribute-record source; order matters (longest first)
 SOURCES = [('BIAN Semantic API Practitioner Guide', 'BIAN'), ('BIAN concept', 'BIAN concept'), ('ISO 20022', 'ISO 20022'), ('Dublin Core', 'Dublin Core'),
            ('W3C Organization Ontology', 'W3C ORG'), ('W3C SKOS', 'W3C SKOS'), ('W3C', 'W3C'), ('EU GDPR', 'public legislation'), ('ArchiMate 3.2 concept', 'ArchiMate concept'),

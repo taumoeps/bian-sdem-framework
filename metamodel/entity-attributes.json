@@ -797,20 +797,21 @@
       "name": "vendor",
       "type": "string",
       "required": false,
-      "description": "supplier name",
+      "description": "the supplier of the component (\"in-house\" when built by the bank)",
       "status": "active",
-      "source": "SDEM",
+      "source": "CycloneDX",
       "reference": {
-        "standard": "SDEM",
-        "locator": "SDEM informational field; read by no rule",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "standard": "CycloneDX 1.6 (ECMA-424, public)",
+        "locator": "components[].supplier",
+        "uri": "https://cyclonedx.org/docs/1.6/json/"
       },
-      "verification": "SDEM design; exercised by the use-case runs",
-      "reasoning": "Informational field used by examples; no rule reads it.",
-      "confidence": "low",
-      "read_by": "any rule",
-      "confidence_basis": "SDEM field with no standard concept; not validated",
-      "kind": "value"
+      "verification": "public standard (CycloneDX), checked 2026-10-24",
+      "reasoning": "Answers: Who supplies this application? Same meaning as CycloneDX supplier; name kept so existing exports stay valid (A3 data-model review, 2026-10-25).",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "confidence_basis": "defined by a public standard (CycloneDX) and checked",
+      "kind": "value",
+      "question": "Who supplies this application?"
     },
     {
       "id": "AT-A3-09",
@@ -2735,6 +2736,1099 @@
       ],
       "values_source": "BIAN concept (Semantic API)",
       "confidence_basis": "built on a BIAN concept; the field itself not checked against a public page"
+    },
+    {
+      "id": "AT-A3-20",
+      "entity": "A3.ApplicationComponent",
+      "name": "release_version",
+      "type": "string",
+      "required": false,
+      "description": "the product release that is in use (not the version of this model record)",
+      "status": "active",
+      "source": "CycloneDX",
+      "reference": {
+        "standard": "CycloneDX 1.6 (ECMA-424, public)",
+        "locator": "components[].version",
+        "uri": "https://cyclonedx.org/docs/1.6/json/"
+      },
+      "verification": "public standard (CycloneDX), checked 2026-10-25",
+      "reasoning": "Answers: Which release of the product are we running? CycloneDX names the version of a component exactly this way; checked 2026-10-24. Distinct from the core `version`, which versions the architecture record.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which release of the product are we running?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-01"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (CycloneDX) and checked"
+    },
+    {
+      "id": "AT-A3-21",
+      "entity": "A3.ApplicationComponent",
+      "name": "license",
+      "type": "string",
+      "required": false,
+      "description": "the licence, as an SPDX identifier (e.g. Apache-2.0)",
+      "status": "active",
+      "source": "SPDX",
+      "reference": {
+        "standard": "SPDX License List 3.29 (public)",
+        "locator": "license short identifier (CycloneDX components[].licenses[].license.id)",
+        "uri": "https://spdx.org/licenses/"
+      },
+      "verification": "public standard (SPDX), checked 2026-10-25",
+      "reasoning": "Answers: Which licences do we depend on, and are any restricted? SPDX identifiers are the public standard for naming licences and CycloneDX uses them; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which licences do we depend on, and are any restricted?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-02"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (SPDX) and checked"
+    },
+    {
+      "id": "AT-A3-22",
+      "entity": "A3.ApplicationComponent",
+      "name": "cpe",
+      "type": "string",
+      "required": false,
+      "description": "the product's CPE 2.3 name, for vulnerability matching",
+      "status": "active",
+      "source": "NIST",
+      "reference": {
+        "standard": "NIST CPE 2.3 (public)",
+        "locator": "CPE 2.3 name (CycloneDX components[].cpe)",
+        "uri": "https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe"
+      },
+      "verification": "public standard (NIST), checked 2026-10-25",
+      "reasoning": "Answers: Which published vulnerabilities affect this application? NIST's standard product naming, used to match vulnerability records; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which published vulnerabilities affect this application?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-03"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (NIST) and checked"
+    },
+    {
+      "id": "AT-A3-23",
+      "entity": "A3.ApplicationComponent",
+      "name": "hosting_model",
+      "type": "string",
+      "required": false,
+      "description": "how the application is hosted",
+      "status": "active",
+      "source": "NIST",
+      "reference": {
+        "standard": "NIST SP 800-145 The NIST Definition of Cloud Computing (public)",
+        "locator": "service models SaaS, PaaS, IaaS (§2, PDF p.6–7)",
+        "uri": "https://csrc.nist.gov/pubs/sp/800/145/final"
+      },
+      "verification": "public standard (NIST), checked 2026-10-25",
+      "reasoning": "Answers: What runs on premises and what runs in the cloud? NIST defines the three cloud service models; checked 2026-10-24. SDEM adds `on-premises` for applications outside any cloud, so the value list is SDEM's.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What runs on premises and what runs in the cloud?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-04"
+      },
+      "kind": "enumeration",
+      "values": [
+        "on-premises",
+        "IaaS",
+        "PaaS",
+        "SaaS"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "NIST defines the attribute; its allowed values are SDEM-defined"
+    },
+    {
+      "id": "AT-A3-24",
+      "entity": "A3.ApplicationComponent",
+      "name": "recovery_time_objective",
+      "type": "string",
+      "required": false,
+      "description": "how quickly the application must be back after an outage (e.g. \"4h\")",
+      "status": "active",
+      "source": "NIST",
+      "reference": {
+        "standard": "NIST SP 800-34 Rev. 1 (public; NIST glossary)",
+        "locator": "Recovery Time Objective (RTO)",
+        "uri": "https://csrc.nist.gov/glossary/term/recovery_time_objective"
+      },
+      "verification": "public standard (NIST), checked 2026-10-25",
+      "reasoning": "Answers: How fast must this application recover? Defined in NIST SP 800-34 Rev. 1 (NIST glossary); checked 2026-10-24. The resilience measure banks report, more precise than a criticality label.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "How fast must this application recover?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-05"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (NIST) and checked"
+    },
+    {
+      "id": "AT-A3-25",
+      "entity": "A3.ApplicationComponent",
+      "name": "recovery_point_objective",
+      "type": "string",
+      "required": false,
+      "description": "how much data loss is tolerable, as a time (e.g. \"15m\")",
+      "status": "active",
+      "source": "NIST",
+      "reference": {
+        "standard": "NIST SP 800-34 Rev. 1 (public; NIST glossary)",
+        "locator": "Recovery Point Objective (RPO)",
+        "uri": "https://csrc.nist.gov/glossary/term/recovery_point_objective"
+      },
+      "verification": "public standard (NIST), checked 2026-10-25",
+      "reasoning": "Answers: How much data can this application afford to lose? Defined in NIST SP 800-34 Rev. 1 (NIST glossary); checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "How much data can this application afford to lose?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-06"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (NIST) and checked"
+    },
+    {
+      "id": "AT-A3-26",
+      "entity": "A3.ApplicationComponent",
+      "name": "disposition",
+      "type": "string",
+      "required": false,
+      "description": "what the bank plans to do with the application",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision DA3-07 (A3 data-model review, 2026-10-25)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the data-model review 2026-10-25",
+      "reasoning": "Answers: Which applications do we keep, invest in, replace or retire? The application-rationalisation question. Published classifications are proprietary, so SDEM defines its own plain values.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which applications do we keep, invest in, replace or retire?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-07"
+      },
+      "kind": "enumeration",
+      "values": [
+        "keep",
+        "enhance",
+        "replace",
+        "retire"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A3-27",
+      "entity": "A3.ApplicationInterface",
+      "name": "contract_format",
+      "type": "string",
+      "required": false,
+      "description": "the format of the interface's machine-readable contract",
+      "status": "active",
+      "source": "AsyncAPI",
+      "reference": {
+        "standard": "AsyncAPI 3.0.0 (public)",
+        "locator": "AsyncAPI 3.0.0 / OpenAPI 3.1.0 documents",
+        "uri": "https://www.asyncapi.com/docs/reference/specification/v3.0.0"
+      },
+      "verification": "public standard (AsyncAPI), checked 2026-10-25",
+      "reasoning": "Answers: Which interfaces have a machine-readable contract, and in which format? Each value names a public specification (checked 2026-10-24 for OpenAPI and AsyncAPI); the list itself is SDEM's.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which interfaces have a machine-readable contract, and in which format?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-08"
+      },
+      "kind": "enumeration",
+      "values": [
+        "OpenAPI 3.1",
+        "OpenAPI 3.0",
+        "AsyncAPI 3.0",
+        "AsyncAPI 2.6",
+        "WSDL",
+        "GraphQL",
+        "none"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "AsyncAPI defines the attribute; its allowed values are SDEM-defined"
+    },
+    {
+      "id": "AT-A3-28",
+      "entity": "A3.ApplicationInterface",
+      "name": "security_scheme",
+      "type": "string",
+      "required": false,
+      "description": "how callers authenticate",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI 3.1.0 (public)",
+        "locator": "Security Scheme Object type (§4.8.27.1)",
+        "uri": "https://spec.openapis.org/oas/v3.1.0.html"
+      },
+      "verification": "public standard (OpenAPI), checked 2026-10-25",
+      "reasoning": "Answers: How is this interface secured? OpenAPI defines exactly these five scheme types; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "How is this interface secured?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-09"
+      },
+      "kind": "enumeration",
+      "values": [
+        "apiKey",
+        "http",
+        "mutualTLS",
+        "oauth2",
+        "openIdConnect"
+      ],
+      "values_source": "OpenAPI 3.1.0 (public)",
+      "confidence_basis": "defined by a public standard (OpenAPI) and checked"
+    },
+    {
+      "id": "AT-A3-29",
+      "entity": "A3.ApplicationInterface",
+      "name": "protocol",
+      "type": "string",
+      "required": false,
+      "description": "the protocol the interface uses (e.g. https, amqp, kafka, mqtt)",
+      "status": "active",
+      "source": "AsyncAPI",
+      "reference": {
+        "standard": "AsyncAPI 3.0.0 (public)",
+        "locator": "Server Object protocol",
+        "uri": "https://www.asyncapi.com/docs/reference/specification/v3.0.0"
+      },
+      "verification": "public standard (AsyncAPI), checked 2026-10-25",
+      "reasoning": "Answers: Which protocols do our interfaces use? AsyncAPI names protocols this way, covering both request and event interfaces; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which protocols do our interfaces use?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-10"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (AsyncAPI) and checked"
+    },
+    {
+      "id": "AT-A3-30",
+      "entity": "A3.APIOperation",
+      "name": "operation_id",
+      "type": "string",
+      "required": false,
+      "description": "the operation's unique id in its API contract",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI 3.1.0 (public)",
+        "locator": "Operation Object operationId (§4.8.10.1)",
+        "uri": "https://spec.openapis.org/oas/v3.1.0.html"
+      },
+      "verification": "public standard (OpenAPI), checked 2026-10-25",
+      "reasoning": "Answers: Which contract operation is this, exactly? OpenAPI field; lets an export match an operation to its contract even when paths change; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which contract operation is this, exactly?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-11"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (OpenAPI) and checked"
+    },
+    {
+      "id": "AT-A3-31",
+      "entity": "A3.APIOperation",
+      "name": "deprecated",
+      "type": "boolean",
+      "required": false,
+      "description": "whether the operation is deprecated in its contract",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI 3.1.0 (public)",
+        "locator": "Operation Object deprecated (§4.8.10.1)",
+        "uri": "https://spec.openapis.org/oas/v3.1.0.html"
+      },
+      "verification": "public standard (OpenAPI), checked 2026-10-25",
+      "reasoning": "Answers: Which API operations are being phased out? OpenAPI field; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which API operations are being phased out?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-12"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (OpenAPI) and checked"
+    },
+    {
+      "id": "AT-A3-32",
+      "entity": "A3.DataEntity",
+      "name": "personal_information",
+      "type": "boolean",
+      "required": false,
+      "description": "whether it holds information about an identifiable person",
+      "status": "active",
+      "source": "public legislation",
+      "reference": {
+        "standard": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7",
+        "locator": "personal information / personal data",
+        "uri": "https://www.legislation.govt.nz/act/public/2020/0031/latest/LMS23223.html"
+      },
+      "verification": "public standard (public legislation), checked 2026-10-25",
+      "reasoning": "Answers: Which applications hold personal information? Same definition as the A1 and A2 business objects; public law.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which applications hold personal information?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-13"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (public legislation) and checked"
+    },
+    {
+      "id": "AT-A3-33",
+      "entity": "A3.DataEntity",
+      "name": "glossary_uri",
+      "type": "string",
+      "required": false,
+      "description": "link to the agreed glossary definition",
+      "status": "active",
+      "source": "W3C SKOS",
+      "reference": {
+        "standard": "W3C SKOS Reference",
+        "locator": "skos:exactMatch / skos:closeMatch",
+        "uri": "https://www.w3.org/TR/skos-reference/"
+      },
+      "verification": "public standard (W3C SKOS), checked 2026-10-25",
+      "reasoning": "Answers: Which business term does this data entity hold? Same as the business objects: ties application data to the agreed business term.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which business term does this data entity hold?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-14"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (W3C SKOS) and checked"
+    },
+    {
+      "id": "AT-A3-34",
+      "entity": "A3.DataEntity",
+      "name": "system_of_record",
+      "type": "boolean",
+      "required": false,
+      "description": "whether this application is the authoritative source for the data",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision DA3-15 (A3 data-model review, 2026-10-25)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the data-model review 2026-10-25",
+      "reasoning": "Answers: Where is the golden source of this data? A core data-architecture question; open standards do not define the field.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Where is the golden source of this data?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-15"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A3-35",
+      "entity": "A3.DataEntity",
+      "name": "retention_period",
+      "type": "string",
+      "required": false,
+      "description": "how long the data must be kept (e.g. \"7y\")",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision DA3-16 (A3 data-model review, 2026-10-25)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the data-model review 2026-10-25",
+      "reasoning": "Answers: How long must we keep this data? Driven by law and policy that vary by bank and country; SDEM records the period only.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "How long must we keep this data?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-16"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A3-36",
+      "entity": "A3.Event",
+      "name": "event_type",
+      "type": "string",
+      "required": false,
+      "description": "the type name the event carries (e.g. \"payment.initiated\")",
+      "status": "active",
+      "source": "CloudEvents",
+      "reference": {
+        "standard": "CloudEvents 1.0 (CNCF, public)",
+        "locator": "context attribute type",
+        "uri": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md"
+      },
+      "verification": "public standard (CloudEvents), checked 2026-10-25",
+      "reasoning": "Answers: Which events exist, by type? CloudEvents required attribute; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which events exist, by type?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-17"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (CloudEvents) and checked"
+    },
+    {
+      "id": "AT-A3-37",
+      "entity": "A3.Event",
+      "name": "event_source",
+      "type": "string",
+      "required": false,
+      "description": "the source the event identifies itself with",
+      "status": "active",
+      "source": "CloudEvents",
+      "reference": {
+        "standard": "CloudEvents 1.0 (CNCF, public)",
+        "locator": "context attribute source",
+        "uri": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md"
+      },
+      "verification": "public standard (CloudEvents), checked 2026-10-25",
+      "reasoning": "Answers: Which system emits this event? CloudEvents required attribute; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which system emits this event?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-18"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (CloudEvents) and checked"
+    },
+    {
+      "id": "AT-A3-38",
+      "entity": "A3.Event",
+      "name": "schema_uri",
+      "type": "string",
+      "required": false,
+      "description": "link to the schema the event data follows",
+      "status": "active",
+      "source": "CloudEvents",
+      "reference": {
+        "standard": "CloudEvents 1.0 (CNCF, public)",
+        "locator": "context attribute dataschema",
+        "uri": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md"
+      },
+      "verification": "public standard (CloudEvents), checked 2026-10-25",
+      "reasoning": "Answers: Where is the contract for this event? CloudEvents optional attribute; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Where is the contract for this event?",
+      "approved": {
+        "review": "A3 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA3-19"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (CloudEvents) and checked"
+    },
+    {
+      "id": "AT-A4-15",
+      "entity": "A4.DeploymentEnvironment",
+      "name": "environment_kind",
+      "type": "string",
+      "required": false,
+      "description": "what the environment is for",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision DA4-01 (A4 data-model review, 2026-10-25)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the data-model review 2026-10-25",
+      "reasoning": "Answers: Which deployments are production, and which are not? The first filter on any deployment question. No open standard defines environment kinds.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which deployments are production, and which are not?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-01"
+      },
+      "kind": "enumeration",
+      "values": [
+        "production",
+        "pre-production",
+        "test",
+        "development",
+        "disaster recovery"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A4-16",
+      "entity": "A4.DeploymentEnvironment",
+      "name": "country",
+      "type": "string",
+      "required": false,
+      "description": "the country where the environment runs, as an ISO 3166-1 alpha-2 code",
+      "status": "active",
+      "source": "ISO 3166",
+      "reference": {
+        "standard": "ISO 3166-1 country codes",
+        "locator": "alpha-2 code",
+        "uri": "https://www.iso.org/iso-3166-country-codes.html"
+      },
+      "verification": "not checked: iso.org returned 403 on 2026-10-24",
+      "reasoning": "Answers: Where does our data and processing physically sit (data residency)? ISO 3166-1 is the standard for country codes, but iso.org could not be opened to check it on 2026-10-24 (403).",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Where does our data and processing physically sit (data residency)?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-02"
+      },
+      "kind": "value",
+      "confidence_basis": "ISO 3166 defines the attribute, but the source could not be checked"
+    },
+    {
+      "id": "AT-A4-17",
+      "entity": "A4.DeploymentEnvironment",
+      "name": "cloud_deployment_model",
+      "type": "string",
+      "required": false,
+      "description": "the cloud deployment model of the environment",
+      "status": "active",
+      "source": "NIST",
+      "reference": {
+        "standard": "NIST SP 800-145 The NIST Definition of Cloud Computing (public)",
+        "locator": "deployment models (§2, PDF p.7)",
+        "uri": "https://csrc.nist.gov/pubs/sp/800/145/final"
+      },
+      "verification": "public standard (NIST), checked 2026-10-25",
+      "reasoning": "Answers: Which environments are private, public or hybrid cloud? NIST defines exactly these four deployment models; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which environments are private, public or hybrid cloud?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-03"
+      },
+      "kind": "enumeration",
+      "values": [
+        "private",
+        "community",
+        "public",
+        "hybrid"
+      ],
+      "values_source": "NIST SP 800-145 The NIST Definition of Cloud Computing (public)",
+      "confidence_basis": "defined by a public standard (NIST) and checked"
+    },
+    {
+      "id": "AT-A4-18",
+      "entity": "A4.Node",
+      "name": "virtualisation",
+      "type": "string",
+      "required": false,
+      "description": "whether the node is physical, a virtual machine or a container",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept",
+        "locator": "Node (physical or virtual computational resource)",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: How much of our estate is virtualised or containerised? ArchiMate defines a node as a physical or virtual computational resource; SDEM splits virtual into VM and container.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "How much of our estate is virtualised or containerised?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-04"
+      },
+      "kind": "enumeration",
+      "values": [
+        "physical",
+        "virtual machine",
+        "container"
+      ],
+      "values_source": "ArchiMate 3.2 concept",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A4-19",
+      "entity": "A4.TechnologyService",
+      "name": "cloud_service_model",
+      "type": "string",
+      "required": false,
+      "description": "the cloud service model the service is delivered as",
+      "status": "active",
+      "source": "NIST",
+      "reference": {
+        "standard": "NIST SP 800-145 The NIST Definition of Cloud Computing (public)",
+        "locator": "service models (§2, PDF p.6–7)",
+        "uri": "https://csrc.nist.gov/pubs/sp/800/145/final"
+      },
+      "verification": "public standard (NIST), checked 2026-10-25",
+      "reasoning": "Answers: Which technology services are bought as IaaS, PaaS or SaaS? NIST defines exactly these three service models; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which technology services are bought as IaaS, PaaS or SaaS?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-05"
+      },
+      "kind": "enumeration",
+      "values": [
+        "IaaS",
+        "PaaS",
+        "SaaS"
+      ],
+      "values_source": "NIST SP 800-145 The NIST Definition of Cloud Computing (public)",
+      "confidence_basis": "defined by a public standard (NIST) and checked"
+    },
+    {
+      "id": "AT-A4-20",
+      "entity": "A4.Device",
+      "name": "cpe",
+      "type": "string",
+      "required": false,
+      "description": "the device's CPE 2.3 name, for vulnerability matching",
+      "status": "active",
+      "source": "NIST",
+      "reference": {
+        "standard": "NIST CPE 2.3 (public)",
+        "locator": "CPE 2.3 name (part h = hardware)",
+        "uri": "https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe"
+      },
+      "verification": "public standard (NIST), checked 2026-10-25",
+      "reasoning": "Answers: Which published vulnerabilities affect this hardware? NIST's standard naming for hardware too; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which published vulnerabilities affect this hardware?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-06"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (NIST) and checked"
+    },
+    {
+      "id": "AT-A4-21",
+      "entity": "A4.Device",
+      "name": "end_of_support",
+      "type": "date",
+      "required": false,
+      "description": "the date the supplier stops supporting it",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision DA4-07 (A4 data-model review, 2026-10-25)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the data-model review 2026-10-25",
+      "reasoning": "Answers: Which hardware is out of support, or soon will be? The technical-debt question; the date comes from the supplier, the field is SDEM's.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which hardware is out of support, or soon will be?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-07"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A4-22",
+      "entity": "A4.SystemSoftware",
+      "name": "cpe",
+      "type": "string",
+      "required": false,
+      "description": "the software's CPE 2.3 name, for vulnerability matching",
+      "status": "active",
+      "source": "NIST",
+      "reference": {
+        "standard": "NIST CPE 2.3 (public)",
+        "locator": "CPE 2.3 name (part a / o)",
+        "uri": "https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe"
+      },
+      "verification": "public standard (NIST), checked 2026-10-25",
+      "reasoning": "Answers: Which published vulnerabilities affect this platform software? NIST standard naming; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which published vulnerabilities affect this platform software?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-08"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (NIST) and checked"
+    },
+    {
+      "id": "AT-A4-23",
+      "entity": "A4.SystemSoftware",
+      "name": "product_version",
+      "type": "string",
+      "required": false,
+      "description": "the release of the product in use",
+      "status": "active",
+      "source": "CycloneDX",
+      "reference": {
+        "standard": "CycloneDX 1.6 (ECMA-424, public)",
+        "locator": "components[].version",
+        "uri": "https://cyclonedx.org/docs/1.6/json/"
+      },
+      "verification": "public standard (CycloneDX), checked 2026-10-25",
+      "reasoning": "Answers: Which version of the platform software is running? CycloneDX field; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which version of the platform software is running?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-09"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (CycloneDX) and checked"
+    },
+    {
+      "id": "AT-A4-24",
+      "entity": "A4.SystemSoftware",
+      "name": "license",
+      "type": "string",
+      "required": false,
+      "description": "the licence, as an SPDX identifier",
+      "status": "active",
+      "source": "SPDX",
+      "reference": {
+        "standard": "SPDX License List 3.29 (public)",
+        "locator": "license short identifier",
+        "uri": "https://spdx.org/licenses/"
+      },
+      "verification": "public standard (SPDX), checked 2026-10-25",
+      "reasoning": "Answers: Which licences does the platform depend on? SPDX identifiers; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which licences does the platform depend on?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-10"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (SPDX) and checked"
+    },
+    {
+      "id": "AT-A4-25",
+      "entity": "A4.SystemSoftware",
+      "name": "end_of_support",
+      "type": "date",
+      "required": false,
+      "description": "the date the supplier stops supporting it",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision DA4-11 (A4 data-model review, 2026-10-25)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the data-model review 2026-10-25",
+      "reasoning": "Answers: Which platform software is out of support, or soon will be? Same as for devices.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which platform software is out of support, or soon will be?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-11"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A4-26",
+      "entity": "A4.TechnologyInterface",
+      "name": "protocol",
+      "type": "string",
+      "required": false,
+      "description": "the service name of the protocol, from the IANA registry (e.g. https)",
+      "status": "active",
+      "source": "IANA",
+      "reference": {
+        "standard": "IANA Service Name and Transport Protocol Port Number Registry (public)",
+        "locator": "Service Name",
+        "uri": "https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml"
+      },
+      "verification": "public standard (IANA), checked 2026-10-25",
+      "reasoning": "Answers: Which protocols does our technology expose? IANA keeps the public registry of protocol service names; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which protocols does our technology expose?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-12"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (IANA) and checked"
+    },
+    {
+      "id": "AT-A4-27",
+      "entity": "A4.TechnologyInterface",
+      "name": "port",
+      "type": "integer",
+      "required": false,
+      "description": "the port the interface listens on",
+      "status": "active",
+      "source": "IANA",
+      "reference": {
+        "standard": "IANA Service Name and Transport Protocol Port Number Registry (public)",
+        "locator": "Port Number",
+        "uri": "https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml"
+      },
+      "verification": "public standard (IANA), checked 2026-10-25",
+      "reasoning": "Answers: Which ports are open, and for what? Same IANA registry; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which ports are open, and for what?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-13"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (IANA) and checked"
+    },
+    {
+      "id": "AT-A4-28",
+      "entity": "A4.CommunicationNetwork",
+      "name": "address_range",
+      "type": "list<string>",
+      "required": false,
+      "description": "the network's address ranges in CIDR notation (e.g. 10.20.0.0/16)",
+      "status": "active",
+      "source": "IETF",
+      "reference": {
+        "standard": "IETF RFC 4632 (BCP 122, public)",
+        "locator": "CIDR prefix notation (§3.1)",
+        "uri": "https://www.rfc-editor.org/rfc/rfc4632.html"
+      },
+      "verification": "public standard (IETF), checked 2026-10-25",
+      "reasoning": "Answers: Which address ranges does this network cover? IETF best current practice for writing address ranges; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which address ranges does this network cover?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-14"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (IETF) and checked"
+    },
+    {
+      "id": "AT-A4-29",
+      "entity": "A4.Path",
+      "name": "protocol",
+      "type": "string",
+      "required": false,
+      "description": "the service name of the protocol on the path (IANA)",
+      "status": "active",
+      "source": "IANA",
+      "reference": {
+        "standard": "IANA Service Name and Transport Protocol Port Number Registry (public)",
+        "locator": "Service Name",
+        "uri": "https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml"
+      },
+      "verification": "public standard (IANA), checked 2026-10-25",
+      "reasoning": "Answers: What traffic flows along this path? IANA registry; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What traffic flows along this path?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-15"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (IANA) and checked"
+    },
+    {
+      "id": "AT-A4-30",
+      "entity": "A4.Path",
+      "name": "encrypted",
+      "type": "boolean",
+      "required": false,
+      "description": "whether traffic on the path is encrypted in transit",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision DA4-16 (A4 data-model review, 2026-10-25)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the data-model review 2026-10-25",
+      "reasoning": "Answers: Which connections carry unencrypted traffic? A standard security question; no open standard defines the field.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which connections carry unencrypted traffic?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-16"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A4-31",
+      "entity": "A4.Artifact",
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "the content digest that identifies the exact build (e.g. sha256:…)",
+      "status": "active",
+      "source": "OCI",
+      "reference": {
+        "standard": "Open Container Initiative Image Specification (public)",
+        "locator": "descriptor digest",
+        "uri": "https://github.com/opencontainers/image-spec/blob/main/descriptor.md"
+      },
+      "verification": "public standard (OCI), checked 2026-10-25",
+      "reasoning": "Answers: Is the artefact running the exact one we built and approved? OCI defines the digest that identifies content; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Is the artefact running the exact one we built and approved?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-17"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (OCI) and checked"
+    },
+    {
+      "id": "AT-A4-32",
+      "entity": "A4.Artifact",
+      "name": "purl",
+      "type": "string",
+      "required": false,
+      "description": "the package URL (pkg:type/namespace/name@version)",
+      "status": "active",
+      "source": "purl",
+      "reference": {
+        "standard": "package-url specification (ECMA-427, public)",
+        "locator": "purl",
+        "uri": "https://github.com/package-url/purl-spec"
+      },
+      "verification": "public standard (purl), checked 2026-10-25",
+      "reasoning": "Answers: Which package is this, in standard form? Ecma standard for identifying software packages; also used by CycloneDX; checked 2026-10-24.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which package is this, in standard form?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-18"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (purl) and checked"
+    },
+    {
+      "id": "AT-A4-33",
+      "entity": "A4.Artifact",
+      "name": "artifact_kind",
+      "type": "string",
+      "required": false,
+      "description": "what kind of artefact it is",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept",
+        "locator": "Artifact (e.g. model files, scripts, binaries)",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: Which deployments use container images, packages or scripts? ArchiMate describes the kinds an artifact can be; the value list is SDEM's.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which deployments use container images, packages or scripts?",
+      "approved": {
+        "review": "A4 data-model review",
+        "date": "2026-10-25",
+        "draft_id": "DA4-19"
+      },
+      "kind": "enumeration",
+      "values": [
+        "container image",
+        "package",
+        "binary",
+        "script",
+        "configuration"
+      ],
+      "values_source": "ArchiMate 3.2 concept",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
     }
   ],
   "common_attributes": [
@@ -3073,6 +4167,15 @@
       "rule": "Retrieve → GET (guide §3.5, p.55); for other action terms, the method in BIAN's published Semantic API definition of the operation (not checked here); an `http_method` value overrides",
       "source": "BIAN Semantic API Practitioner Guide v8.1 (public)",
       "reasoning": "Lets the engine check a realising API's method with little data entry. Only Retrieve → GET is stated in the guide, so the rest of the rule rests on BIAN files not yet checked.",
+      "confidence": "medium"
+    },
+    {
+      "id": "DV-A3-01",
+      "entity": "A3.ApplicationComponent",
+      "name": "criticality",
+      "rule": "the highest criticality of the A1 processes whose Service Domains the application realises (USES_DOMAIN then REALIZED_BY)",
+      "source": "SDEM-defined derivation over approved relationships",
+      "reasoning": "Same choice as A2: derived, so it cannot drift; RTO and RPO carry the stored resilience values.",
       "confidence": "medium"
     }
   ]

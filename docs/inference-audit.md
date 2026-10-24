@@ -9,11 +9,11 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 | Layer | Total | Grounded | Oracle-confirmed | Inferred | Gated / unverified |
 |---|---|---|---|---|---|
 | Entity definitions | 44 | 32 | — | 12 (7 SDEM extensions, 5 interpreted alignments) | 0 |
-| Attributes | 97 | 32 (BIAN 16, OpenAPI 3, other public standards 13) | — | 59 (relationship held as attribute 30, SDEM-defined 29) | 1 TOGAF; plus 5 institution data (not a standards question) |
+| Attributes | 135 | 62 (BIAN 16, OpenAPI 6, other public standards 40) | — | 67 (relationship held as attribute 32, SDEM-defined 35) | 1 TOGAF; plus 5 institution data (not a standards question) |
 | Within-level rows | 132 | 16 | 113 | 1 | 2 |
 | Cross-level rules (50 that can produce a link or report) | 50 | 10 official | — | 34 (28 with no official source, 6 SDEM definitions) | 6 |
 
-**Across all four layers** (318 items, institution data excluded): 90 grounded (28%), 113 oracle-confirmed (36%), the rest inferred or gated (36%).
+**Across all four layers** (356 items, institution data excluded): 120 grounded (34%), 113 oracle-confirmed (32%), the rest inferred or gated (35%).
 
 **Where inference concentrates.** (1) **Cross-level rules**: BIAN publishes almost nothing below A2 and no capability-to-domain mapping, so most rules are SDEM's; they are the part tested by the eleven use-case runs (50 rows validated against sealed answers), not by a standard. (2) **Attributes of ArchiMate-derived entities**: ArchiMate defines no attributes, so every A1, A3 and A4 field is either a relationship SDEM chose to record on the entity or a field SDEM defined. (3) **Within-level rows** were mostly inferred, but 113 of them are now confirmed by the Archi oracle.
 
@@ -88,38 +88,76 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 | `A2.ServiceOperation.http_method` | BIAN (public) |
 | `A2.ServiceOperation.input_attributes` | BIAN (public) |
 | `A2.ServiceOperation.output_attributes` | BIAN (public) |
+| `A3.APIOperation.deprecated` | OpenAPI (public) |
 | `A3.APIOperation.method` | OpenAPI (public) |
+| `A3.APIOperation.operation_id` | OpenAPI (public) |
 | `A3.APIOperation.path` | OpenAPI (public) |
 | `A3.APIOperation.payload_fields` | OpenAPI (public) |
 | `A3.ApplicationComponent.built_as` | ArchiMate relationship or concept held as attribute |
+| `A3.ApplicationComponent.cpe` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A3.ApplicationComponent.deployed_as` | SDEM-defined |
 | `A3.ApplicationComponent.deployed_on` | ArchiMate relationship or concept held as attribute |
+| `A3.ApplicationComponent.disposition` | SDEM-defined |
+| `A3.ApplicationComponent.hosting_model` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A3.ApplicationComponent.license` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A3.ApplicationComponent.network_zone` | SDEM-defined |
-| `A3.ApplicationComponent.vendor` | SDEM-defined |
+| `A3.ApplicationComponent.recovery_point_objective` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A3.ApplicationComponent.recovery_time_objective` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A3.ApplicationComponent.release_version` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A3.ApplicationComponent.vendor` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A3.ApplicationFunction.consumes` | ArchiMate relationship or concept held as attribute |
 | `A3.ApplicationFunction.exposed_through` | SDEM-defined |
+| `A3.ApplicationInterface.contract_format` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A3.ApplicationInterface.exposed_through` | ArchiMate relationship or concept held as attribute |
 | `A3.ApplicationInterface.field_aliases` | institution data |
+| `A3.ApplicationInterface.protocol` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A3.ApplicationInterface.security_scheme` | OpenAPI (public) |
 | `A3.ApplicationService.consumes` | ArchiMate relationship or concept held as attribute |
 | `A3.DataEntity.attributes` | SDEM-defined |
 | `A3.DataEntity.field_aliases` | institution data |
+| `A3.DataEntity.glossary_uri` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A3.DataEntity.personal_information` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A3.DataEntity.retention_period` | SDEM-defined |
 | `A3.DataEntity.stored_in` | ArchiMate relationship or concept held as attribute |
+| `A3.DataEntity.system_of_record` | SDEM-defined |
+| `A3.Event.event_source` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A3.Event.event_type` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A3.Event.published_to` | SDEM-defined |
+| `A3.Event.schema_uri` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A3.SolutionBuildingBlock.components` | TOGAF (login-gated) |
+| `A4.Artifact.artifact_kind` | ArchiMate relationship or concept held as attribute |
+| `A4.Artifact.digest` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A4.Artifact.of_component` | ArchiMate relationship or concept held as attribute |
+| `A4.Artifact.purl` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A4.CommunicationNetwork.address_range` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A4.CommunicationNetwork.connects` | ArchiMate relationship or concept held as attribute |
 | `A4.Deployment.component_id` | SDEM-defined |
 | `A4.Deployment.environment_id` | SDEM-defined |
 | `A4.Deployment.platform_id` | SDEM-defined |
+| `A4.DeploymentEnvironment.cloud_deployment_model` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A4.DeploymentEnvironment.country` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A4.DeploymentEnvironment.environment_kind` | SDEM-defined |
+| `A4.Device.cpe` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A4.Device.end_of_support` | SDEM-defined |
 | `A4.Device.hosts` | ArchiMate relationship or concept held as attribute |
 | `A4.Node.hosts` | ArchiMate relationship or concept held as attribute |
+| `A4.Node.virtualisation` | ArchiMate relationship or concept held as attribute |
 | `A4.Path.carries` | SDEM-defined |
+| `A4.Path.encrypted` | SDEM-defined |
 | `A4.Path.from` | ArchiMate relationship or concept held as attribute |
 | `A4.Path.network` | ArchiMate relationship or concept held as attribute |
+| `A4.Path.protocol` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A4.Path.to` | ArchiMate relationship or concept held as attribute |
+| `A4.SystemSoftware.cpe` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A4.SystemSoftware.end_of_support` | SDEM-defined |
 | `A4.SystemSoftware.hosts` | ArchiMate relationship or concept held as attribute |
+| `A4.SystemSoftware.license` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A4.SystemSoftware.product_version` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `A4.TechnologyInterface.exposes` | SDEM-defined |
 | `A4.TechnologyInterface.of_service` | ArchiMate relationship or concept held as attribute |
+| `A4.TechnologyInterface.port` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A4.TechnologyInterface.protocol` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
+| `A4.TechnologyService.cloud_service_model` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `common.access_classification` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `common.conforms_to` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
 | `common.created` | other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …) |
@@ -161,25 +199,25 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 | `A2.BOMModel` | BIAN Service Landscape: Business Object Model | SDEM extension (inferred) | — | 1 inferred | — | definition is SDEM's |
 | `A2.Wireframe` | BIAN Service Landscape: Wireframe | grounded | — | 1 grounded | — | BIAN release not yet verified |
 | `A2.SemanticAPI` | BIAN Semantic API: Semantic API | aligned (interpreted) | `spec_format` BIAN | 1 grounded | — | definition interpreted from a standard |
-| `A3.ApplicationComponent` | ArchiMate 3.2: Application Component | grounded | `deployed_on` rel.; `deployed_as` SDEM; `built_as` rel.; `network_zone` SDEM; `vendor` SDEM | 13 inferred, oracle-confirmed, 1 inferred, unverified | 5 inferred (no official source), 3 SDEM definition, 2 official, 2 cited, unverified (S15, S16, S17, S29, S32, S33, S34, S35, S37, S38, S39, S40) | has SDEM-defined fields; 5 cross-level rule(s) with no official source |
+| `A3.ApplicationComponent` | ArchiMate 3.2: Application Component | grounded | `deployed_on` rel.; `deployed_as` SDEM; `built_as` rel.; `network_zone` SDEM; `vendor` inst.; `release_version` inst.; `license` inst.; `cpe` inst.; `hosting_model` inst.; `recovery_time_objective` inst.; `recovery_point_objective` inst.; `disposition` SDEM | 13 inferred, oracle-confirmed, 1 inferred, unverified | 5 inferred (no official source), 3 SDEM definition, 2 official, 2 cited, unverified (S15, S16, S17, S29, S32, S33, S34, S35, S37, S38, S39, S40) | has SDEM-defined fields; 5 cross-level rule(s) with no official source |
 | `A3.ApplicationService` | ArchiMate 3.2: Application Service | grounded | `consumes` rel. | 6 inferred, oracle-confirmed | 2 inferred (no official source), 2 official, 1 cited, unverified (S22, S25, S28, S41, S42) | 2 cross-level rule(s) with no official source |
-| `A3.ApplicationInterface` | ArchiMate 3.2: Application Interface | grounded | `exposed_through` rel.; `field_aliases` inst. | 3 inferred, oracle-confirmed | 3 inferred (no official source) (S23, S43, S44) | 3 cross-level rule(s) with no official source |
+| `A3.ApplicationInterface` | ArchiMate 3.2: Application Interface | grounded | `exposed_through` rel.; `field_aliases` inst.; `contract_format` inst.; `security_scheme` OpenAPI; `protocol` inst. | 3 inferred, oracle-confirmed | 3 inferred (no official source) (S23, S43, S44) | 3 cross-level rule(s) with no official source |
 | `A3.ApplicationFunction` | ArchiMate 3.2: Application Function | grounded | `exposed_through` SDEM; `consumes` rel. | 9 inferred, oracle-confirmed | 2 inferred (no official source), 1 official, 1 cited, unverified (S18, S21, S45, S46) | has SDEM-defined fields; 2 cross-level rule(s) with no official source |
-| `A3.APIOperation` | BIAN Semantic API: Service Operation (API) | SDEM extension (inferred) | `method` OpenAPI; `path` OpenAPI; `payload_fields` OpenAPI | 3 inferred, oracle-confirmed | 2 SDEM definition, 1 official, 1 inferred (no official source) (S24, S26, S47, S48) | definition is SDEM's; 1 cross-level rule(s) with no official source |
-| `A3.DataEntity` | ArchiMate 3.2: Data Object | aligned (interpreted) | `attributes` SDEM; `stored_in` rel.; `field_aliases` inst. | 8 inferred, oracle-confirmed | 4 inferred (no official source), 2 official, 1 cited, unverified (S19, S20, S27, S30, S31, S49, S50) | definition interpreted from a standard; has SDEM-defined fields; 4 cross-level rule(s) with no official source |
-| `A3.Event` | ArchiMate 3.2: Application Event | aligned (interpreted) | `published_to` SDEM | 5 inferred, oracle-confirmed | 1 inferred (no official source) (S51) | definition interpreted from a standard; has SDEM-defined fields; 1 cross-level rule(s) with no official source |
+| `A3.APIOperation` | BIAN Semantic API: Service Operation (API) | SDEM extension (inferred) | `method` OpenAPI; `path` OpenAPI; `payload_fields` OpenAPI; `operation_id` OpenAPI; `deprecated` OpenAPI | 3 inferred, oracle-confirmed | 2 SDEM definition, 1 official, 1 inferred (no official source) (S24, S26, S47, S48) | definition is SDEM's; 1 cross-level rule(s) with no official source |
+| `A3.DataEntity` | ArchiMate 3.2: Data Object | aligned (interpreted) | `attributes` SDEM; `stored_in` rel.; `field_aliases` inst.; `personal_information` inst.; `glossary_uri` inst.; `system_of_record` SDEM; `retention_period` SDEM | 8 inferred, oracle-confirmed | 4 inferred (no official source), 2 official, 1 cited, unverified (S19, S20, S27, S30, S31, S49, S50) | definition interpreted from a standard; has SDEM-defined fields; 4 cross-level rule(s) with no official source |
+| `A3.Event` | ArchiMate 3.2: Application Event | aligned (interpreted) | `published_to` SDEM; `event_type` inst.; `event_source` inst.; `schema_uri` inst. | 5 inferred, oracle-confirmed | 1 inferred (no official source) (S51) | definition interpreted from a standard; has SDEM-defined fields; 1 cross-level rule(s) with no official source |
 | `A3.SolutionBuildingBlock` | TOGAF: Solution Building Block | aligned (interpreted) | `components` TOGAF | 2 inferred, unverified | 3 inferred (no official source) (S52, S53, S54) | definition interpreted from a standard; 3 cross-level rule(s) with no official source |
 | `A4.InfrastructureComponent` | SDEM: Infrastructure Component | SDEM extension (inferred) | — | — | 1 SDEM definition, 1 inferred (no official source) (S33, S52) | definition is SDEM's; 1 cross-level rule(s) with no official source |
 | `A4.Deployment` | SDEM: Deployment | SDEM extension (inferred) | `component_id` SDEM; `environment_id` SDEM; `platform_id` SDEM | 5 inferred, oracle-confirmed | 2 SDEM definition, 1 inferred (no official source) (S32, S47, S53) | definition is SDEM's; has SDEM-defined fields; 1 cross-level rule(s) with no official source |
-| `A4.DeploymentEnvironment` | SDEM: Deployment Environment | SDEM extension (inferred) | — | 4 inferred, oracle-confirmed | 1 SDEM definition (S40) | definition is SDEM's |
-| `A4.Node` | ArchiMate 3.2: Node | grounded | `hosts` rel. | 12 inferred, oracle-confirmed | 1 cited, unverified, 1 inferred (no official source) (S34, S54) | 1 cross-level rule(s) with no official source |
-| `A4.Device` | ArchiMate 3.2: Device | grounded | `hosts` rel. | 10 inferred, oracle-confirmed | 1 inferred (no official source) (S35) | 1 cross-level rule(s) with no official source |
-| `A4.SystemSoftware` | ArchiMate 3.2: System Software | grounded | `hosts` rel. | 9 inferred, oracle-confirmed | 2 inferred (no official source) (S46, S50) | 2 cross-level rule(s) with no official source |
-| `A4.TechnologyService` | ArchiMate 3.2: Technology Service | grounded | — | 8 inferred, oracle-confirmed | 2 cited, unverified, 2 inferred (no official source) (S41, S44, S45, S51) | 2 cross-level rule(s) with no official source |
-| `A4.TechnologyInterface` | ArchiMate 3.2: Technology Interface | grounded | `of_service` rel.; `exposes` SDEM | 4 inferred, oracle-confirmed | 2 inferred (no official source), 1 SDEM definition (S42, S43, S48) | has SDEM-defined fields; 2 cross-level rule(s) with no official source |
-| `A4.CommunicationNetwork` | ArchiMate 3.2: Communication Network | grounded | `connects` rel. | 2 inferred, oracle-confirmed | 1 inferred (no official source) (S37) | 1 cross-level rule(s) with no official source |
-| `A4.Path` | ArchiMate 3.2: Path | grounded | `from` rel.; `to` rel.; `network` rel.; `carries` SDEM | 1 inferred, oracle-confirmed | 1 inferred (no official source) (S38) | has SDEM-defined fields; 1 cross-level rule(s) with no official source |
-| `A4.Artifact` | ArchiMate 3.2: Artifact | grounded | `of_component` rel. | 6 inferred, oracle-confirmed | 2 cited, unverified (S39, S49) | grounded |
+| `A4.DeploymentEnvironment` | SDEM: Deployment Environment | SDEM extension (inferred) | `environment_kind` SDEM; `country` inst.; `cloud_deployment_model` inst. | 4 inferred, oracle-confirmed | 1 SDEM definition (S40) | definition is SDEM's; has SDEM-defined fields |
+| `A4.Node` | ArchiMate 3.2: Node | grounded | `hosts` rel.; `virtualisation` rel. | 12 inferred, oracle-confirmed | 1 cited, unverified, 1 inferred (no official source) (S34, S54) | 1 cross-level rule(s) with no official source |
+| `A4.Device` | ArchiMate 3.2: Device | grounded | `hosts` rel.; `cpe` inst.; `end_of_support` SDEM | 10 inferred, oracle-confirmed | 1 inferred (no official source) (S35) | has SDEM-defined fields; 1 cross-level rule(s) with no official source |
+| `A4.SystemSoftware` | ArchiMate 3.2: System Software | grounded | `hosts` rel.; `cpe` inst.; `product_version` inst.; `license` inst.; `end_of_support` SDEM | 9 inferred, oracle-confirmed | 2 inferred (no official source) (S46, S50) | has SDEM-defined fields; 2 cross-level rule(s) with no official source |
+| `A4.TechnologyService` | ArchiMate 3.2: Technology Service | grounded | `cloud_service_model` inst. | 8 inferred, oracle-confirmed | 2 cited, unverified, 2 inferred (no official source) (S41, S44, S45, S51) | 2 cross-level rule(s) with no official source |
+| `A4.TechnologyInterface` | ArchiMate 3.2: Technology Interface | grounded | `of_service` rel.; `exposes` SDEM; `protocol` inst.; `port` inst. | 4 inferred, oracle-confirmed | 2 inferred (no official source), 1 SDEM definition (S42, S43, S48) | has SDEM-defined fields; 2 cross-level rule(s) with no official source |
+| `A4.CommunicationNetwork` | ArchiMate 3.2: Communication Network | grounded | `connects` rel.; `address_range` inst. | 2 inferred, oracle-confirmed | 1 inferred (no official source) (S37) | 1 cross-level rule(s) with no official source |
+| `A4.Path` | ArchiMate 3.2: Path | grounded | `from` rel.; `to` rel.; `network` rel.; `carries` SDEM; `protocol` inst.; `encrypted` SDEM | 1 inferred, oracle-confirmed | 1 inferred (no official source) (S38) | has SDEM-defined fields; 1 cross-level rule(s) with no official source |
+| `A4.Artifact` | ArchiMate 3.2: Artifact | grounded | `of_component` rel.; `digest` inst.; `purl` inst.; `artifact_kind` rel. | 6 inferred, oracle-confirmed | 2 cited, unverified (S39, S49) | grounded |
 
 ## 4. What would reduce the inference
 

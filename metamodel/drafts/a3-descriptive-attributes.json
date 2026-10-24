@@ -1,7 +1,7 @@
 {
   "level": "A3",
   "date": "2026-10-24",
-  "status": "DRAFT — not yet in the model",
+  "status": "APPROVED 2026-10-25. Written into metamodel/entity-attributes.json (AT-A3-20, AT-A3-38).",
   "note": "Descriptive attributes proposed for the A3 Application architecture; the 11 approved common attributes apply too. Every public source was opened and checked on 2026-10-24.",
   "attributes": [
     {
@@ -17,7 +17,7 @@
       "uri": "https://cyclonedx.org/docs/1.6/json/",
       "reasoning": "CycloneDX names the version of a component exactly this way; checked 2026-10-24. Distinct from the core `version`, which versions the architecture record.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-02",
@@ -32,7 +32,7 @@
       "uri": "https://spdx.org/licenses/",
       "reasoning": "SPDX identifiers are the public standard for naming licences and CycloneDX uses them; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-03",
@@ -47,7 +47,7 @@
       "uri": "https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe",
       "reasoning": "NIST's standard product naming, used to match vulnerability records; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-04",
@@ -68,7 +68,7 @@
       "uri": "https://csrc.nist.gov/pubs/sp/800/145/final",
       "reasoning": "NIST defines the three cloud service models; checked 2026-10-24. SDEM adds `on-premises` for applications outside any cloud, so the value list is SDEM's.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "values_source": "SDEM"
     },
     {
@@ -84,7 +84,7 @@
       "uri": "https://csrc.nist.gov/glossary/term/recovery_time_objective",
       "reasoning": "Defined in NIST SP 800-34 Rev. 1 (NIST glossary); checked 2026-10-24. The resilience measure banks report, more precise than a criticality label.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-06",
@@ -99,7 +99,7 @@
       "uri": "https://csrc.nist.gov/glossary/term/recovery_point_objective",
       "reasoning": "Defined in NIST SP 800-34 Rev. 1 (NIST glossary); checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-07",
@@ -120,7 +120,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "The application-rationalisation question. Published classifications are proprietary, so SDEM defines its own plain values.",
       "confidence": "low",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-08",
@@ -144,7 +144,7 @@
       "uri": "https://www.asyncapi.com/docs/reference/specification/v3.0.0",
       "reasoning": "Each value names a public specification (checked 2026-10-24 for OpenAPI and AsyncAPI); the list itself is SDEM's.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "values_source": "SDEM"
     },
     {
@@ -167,7 +167,7 @@
       "uri": "https://spec.openapis.org/oas/v3.1.0.html",
       "reasoning": "OpenAPI defines exactly these five scheme types; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-10",
@@ -182,7 +182,7 @@
       "uri": "https://www.asyncapi.com/docs/reference/specification/v3.0.0",
       "reasoning": "AsyncAPI names protocols this way, covering both request and event interfaces; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-11",
@@ -197,7 +197,7 @@
       "uri": "https://spec.openapis.org/oas/v3.1.0.html",
       "reasoning": "OpenAPI field; lets an export match an operation to its contract even when paths change; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-12",
@@ -212,7 +212,7 @@
       "uri": "https://spec.openapis.org/oas/v3.1.0.html",
       "reasoning": "OpenAPI field; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-13",
@@ -227,7 +227,7 @@
       "uri": "https://www.legislation.govt.nz/act/public/2020/0031/latest/LMS23223.html",
       "reasoning": "Same definition as the A1 and A2 business objects; public law.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-14",
@@ -242,7 +242,7 @@
       "uri": "https://www.w3.org/TR/skos-reference/",
       "reasoning": "Same as the business objects: ties application data to the agreed business term.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-15",
@@ -257,7 +257,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "A core data-architecture question; open standards do not define the field.",
       "confidence": "low",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-16",
@@ -272,7 +272,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Driven by law and policy that vary by bank and country; SDEM records the period only.",
       "confidence": "low",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-17",
@@ -287,7 +287,7 @@
       "uri": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md",
       "reasoning": "CloudEvents required attribute; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-18",
@@ -302,7 +302,7 @@
       "uri": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md",
       "reasoning": "CloudEvents required attribute; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA3-19",
@@ -317,7 +317,7 @@
       "uri": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md",
       "reasoning": "CloudEvents optional attribute; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     }
   ],
   "changes": [
@@ -344,5 +344,11 @@
     "**`vendor`**. *Recommended: keep the name and re-source it to CycloneDX `supplier` (high).*",
     "**Application criticality**. *Recommended: derive it (DV-A3-01) and store RTO/RPO instead*, consistent with the A2 decision.",
     "**Required attributes**. *Recommended: none required* — exports from portfolio tools vary; the completeness warnings report gaps without rejecting data."
+  ],
+  "decisions_taken": [
+    "SDEM-defined disposition, system_of_record, retention_period kept (low)",
+    "vendor keeps its name, re-sourced to CycloneDX components[].supplier (high)",
+    "application criticality derived (DV-A3-01); RTO and RPO stored",
+    "no required attributes"
   ]
 }

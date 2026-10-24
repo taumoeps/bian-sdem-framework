@@ -21,7 +21,14 @@
         "deployed_as": [
           "DEP-PAYHUB-PROD",
           "DEP-PAYHUB-UAT"
-        ]
+        ],
+        "release_version": "7.1.0",
+        "license": "LicenseRef-proprietary",
+        "hosting_model": "PaaS",
+        "recovery_time_objective": "2h",
+        "recovery_point_objective": "5m",
+        "disposition": "enhance",
+        "owner": "ROLE-PAY-OFFICER"
       }
     },
     {
@@ -76,7 +83,12 @@
       "version": "2.0",
       "name": "Payments API v2",
       "lifecycle_status": "active",
-      "description": "REST interface for payment instructions."
+      "description": "REST interface for payment instructions.",
+      "attributes": {
+        "contract_format": "OpenAPI 3.1",
+        "security_scheme": "oauth2",
+        "protocol": "https"
+      }
     },
     {
       "id": "API-PI-01",
@@ -97,7 +109,9 @@
           "remittance_information",
           "payment_instruction_reference",
           "payment_status"
-        ]
+        ],
+        "operation_id": "createPaymentInstruction",
+        "deprecated": false
       }
     },
     {
@@ -150,7 +164,9 @@
           "payment_status",
           "execution_reference",
           "authorisation_status"
-        ]
+        ],
+        "operation_id": "getPaymentInstruction",
+        "deprecated": false
       }
     },
     {
@@ -213,7 +229,11 @@
         ],
         "stored_in": [
           "INF-PG-PAY-PROD"
-        ]
+        ],
+        "personal_information": true,
+        "system_of_record": true,
+        "retention_period": "7y",
+        "glossary_uri": "https://example.org/glossary/payment-instruction"
       }
     },
     {
@@ -252,7 +272,9 @@
         ],
         "stored_in": [
           "INF-PG-PAY-PROD"
-        ]
+        ],
+        "personal_information": true,
+        "system_of_record": false
       }
     },
     {
@@ -261,7 +283,12 @@
       "version": "2.0",
       "name": "PaymentStatusChanged",
       "lifecycle_status": "active",
-      "description": "Published when an instruction changes state."
+      "description": "Published when an instruction changes state.",
+      "attributes": {
+        "event_type": "payment.status.changed",
+        "event_source": "/payments-hub",
+        "schema_uri": "https://example.org/schemas/payment-status-changed.json"
+      }
     }
   ],
   "relationships": [

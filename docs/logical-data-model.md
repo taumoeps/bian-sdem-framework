@@ -882,6 +882,13 @@ erDiagram
         string network_zone FK
         string vendor
         list accesses FK
+        string release_version
+        string license
+        string cpe
+        string hosting_model
+        string recovery_time_objective
+        string recovery_point_objective
+        string disposition
     }
     A3_ApplicationService {
         string id PK
@@ -891,6 +898,9 @@ erDiagram
         string id PK
         list exposed_through FK
         map field_aliases
+        string contract_format
+        string security_scheme
+        string protocol
     }
     A3_ApplicationFunction {
         string id PK
@@ -902,16 +912,25 @@ erDiagram
         string method
         string path
         list payload_fields
+        string operation_id
+        boolean deprecated
     }
     A3_DataEntity {
         string id PK
         list attributes
         list stored_in FK
         map field_aliases
+        boolean personal_information
+        string glossary_uri
+        boolean system_of_record
+        string retention_period
     }
     A3_Event {
         string id PK
         list published_to FK
+        string event_type
+        string event_source
+        string schema_uri
     }
     A3_SolutionBuildingBlock {
         string id PK
@@ -966,8 +985,15 @@ A modular, deployable part of an application
 | `deployed_as` | list | no | ids of its A4 deployments | `A4.Deployment` *(join key)* |
 | `built_as` | list | no | ids of the A4 artifacts it is built as | `A4.Artifact` *(join key)* |
 | `network_zone` | text | no | id of the A4 network it sits in | `A4.CommunicationNetwork` *(join key)* |
-| `vendor` | text | no | supplier name | — |
+| `vendor` | text | no | the supplier of the component ("in-house" when built by the bank) | — |
 | `accesses` *(deprecated)* | list | no | data entities it accesses | `A3.DataEntity` |
+| `release_version` | text | no | the product release that is in use (not the version of this model record) | — |
+| `license` | text | no | the licence, as an SPDX identifier (e.g. Apache-2.0) | — |
+| `cpe` | text | no | the product's CPE 2.3 name, for vulnerability matching | — |
+| `hosting_model` | text | no | how the application is hosted | one of: on-premises, IaaS, PaaS, SaaS |
+| `recovery_time_objective` | text | no | how quickly the application must be back after an outage (e.g. "4h") | — |
+| `recovery_point_objective` | text | no | how much data loss is tolerable, as a time (e.g. "15m") | — |
+| `disposition` | text | no | what the bank plans to do with the application | one of: keep, enhance, replace, retire |
 
 **Links**
 
@@ -1027,6 +1053,9 @@ An access point to an application service
 |---|---|---|---|---|
 | `exposed_through` | list | no | ids of A4 technology interfaces it is exposed through | `A4.TechnologyInterface` *(join key)* |
 | `field_aliases` | name map | no | product field name → canonical attribute name | — |
+| `contract_format` | text | no | the format of the interface's machine-readable contract | one of: OpenAPI 3.1, OpenAPI 3.0, AsyncAPI 3.0, AsyncAPI 2.6, WSDL, GraphQL, none |
+| `security_scheme` | text | no | how callers authenticate | one of: apiKey, http, mutualTLS, oauth2, openIdConnect |
+| `protocol` | text | no | the protocol the interface uses (e.g. https, amqp, kafka, mqtt) | — |
 
 **Links**
 
@@ -1080,6 +1109,8 @@ A callable operation of an API contract
 | `method` | text | yes | HTTP method, or BATCH / MQ / FILE for non-HTTP | one of: GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS, BATCH, MQ, FILE |
 | `path` | text | yes | resource path | — |
 | `payload_fields` | list | yes | request and response field names | — |
+| `operation_id` | text | no | the operation's unique id in its API contract | — |
+| `deprecated` | boolean | no | whether the operation is deprecated in its contract | — |
 
 **Links**
 
@@ -1104,6 +1135,10 @@ A logical data entity held by an application
 | `attributes` | list | yes | column names | — |
 | `stored_in` | list | no | ids of the A4 system software or artifact holding it | `A4.SystemSoftware`, `A4.Artifact` *(join key)* |
 | `field_aliases` | name map | no | column name → canonical attribute name | — |
+| `personal_information` | boolean | no | whether it holds information about an identifiable person | — |
+| `glossary_uri` | text | no | link to the agreed glossary definition | — |
+| `system_of_record` | boolean | no | whether this application is the authoritative source for the data | — |
+| `retention_period` | text | no | how long the data must be kept (e.g. "7y") | — |
 
 **Links**
 
@@ -1131,6 +1166,9 @@ An event an application produces or consumes
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `published_to` | list | no | ids of A4 technology services (brokers) it is published to | `A4.TechnologyService` *(join key)* |
+| `event_type` | text | no | the type name the event carries (e.g. "payment.initiated") | — |
+| `event_source` | text | no | the source the event identifies itself with | — |
+| `schema_uri` | text | no | link to the schema the event data follows | — |
 
 **Links**
 
@@ -1180,30 +1218,44 @@ erDiagram
     }
     A4_DeploymentEnvironment {
         string id PK
+        string environment_kind
+        string country
+        string cloud_deployment_model
     }
     A4_Node {
         string id PK
         list hosts FK
+        string virtualisation
     }
     A4_Device {
         string id PK
         list hosts FK
+        string cpe
+        date end_of_support
     }
     A4_SystemSoftware {
         string id PK
         list hosts FK
+        string cpe
+        string product_version
+        string license
+        date end_of_support
     }
     A4_TechnologyService {
         string id PK
+        string cloud_service_model
     }
     A4_TechnologyInterface {
         string id PK
         string of_service FK
         list exposes FK
+        string protocol
+        integer port
     }
     A4_CommunicationNetwork {
         string id PK
         list connects FK
+        list address_range
     }
     A4_Path {
         string id PK
@@ -1211,10 +1263,15 @@ erDiagram
         string to FK
         string network FK
         list carries FK
+        string protocol
+        boolean encrypted
     }
     A4_Artifact {
         string id PK
         string of_component FK
+        string digest
+        string purl
+        string artifact_kind
     }
     A4_Node |o--o{ A4_Node : "composition"
     A4_Node }o--o{ A4_Node : "aggregation"
@@ -1296,7 +1353,13 @@ A governed runtime boundary such as production or test
 
 **Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
 
-**Fields:** core fields only.
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `environment_kind` | text | no | what the environment is for | one of: production, pre-production, test, development, disaster recovery |
+| `country` | text | no | the country where the environment runs, as an ISO 3166-1 alpha-2 code | — |
+| `cloud_deployment_model` | text | no | the cloud deployment model of the environment | one of: private, community, public, hybrid |
 
 **Links**
 
@@ -1320,6 +1383,7 @@ A computational host, physical or virtual
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `hosts` | list | no | ids of A3 components it hosts | `A3.ApplicationComponent` *(join key)* |
+| `virtualisation` | text | no | whether the node is physical, a virtual machine or a container | one of: physical, virtual machine, container |
 
 **Links**
 
@@ -1351,6 +1415,8 @@ Physical computing hardware
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `hosts` | list | no | ids of A3 components it hosts | `A3.ApplicationComponent` *(join key)* |
+| `cpe` | text | no | the device's CPE 2.3 name, for vulnerability matching | — |
+| `end_of_support` | date | no | the date the supplier stops supporting it | — |
 
 **Links**
 
@@ -1380,6 +1446,10 @@ Platform or runtime software
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `hosts` | list | no | ids of A3 components it hosts | `A3.ApplicationComponent` *(join key)* |
+| `cpe` | text | no | the software's CPE 2.3 name, for vulnerability matching | — |
+| `product_version` | text | no | the release of the product in use | — |
+| `license` | text | no | the licence, as an SPDX identifier | — |
+| `end_of_support` | date | no | the date the supplier stops supporting it | — |
 
 **Links**
 
@@ -1403,7 +1473,11 @@ Technical behaviour delivered to consumers
 
 **Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
 
-**Fields:** core fields only.
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `cloud_service_model` | text | no | the cloud service model the service is delivered as | one of: IaaS, PaaS, SaaS |
 
 **Links**
 
@@ -1432,6 +1506,8 @@ An access point for a technology service
 |---|---|---|---|---|
 | `of_service` | text | no | id of its technology service | `A4.TechnologyService` |
 | `exposes` | list | no | ids of A3 interfaces reachable through it | `A3.ApplicationInterface` *(join key)* |
+| `protocol` | text | no | the service name of the protocol, from the IANA registry (e.g. https) | — |
+| `port` | integer | no | the port the interface listens on | — |
 
 **Links**
 
@@ -1455,6 +1531,7 @@ Communication infrastructure
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `connects` | list | no | ids of nodes and devices on the network | `A4.Node`, `A4.Device` |
+| `address_range` | list | no | the network's address ranges in CIDR notation (e.g. 10.20.0.0/16) | — |
 
 **Links**
 
@@ -1479,6 +1556,8 @@ A route between nodes
 | `to` | text | no | id of the other end | `A4.Node`, `A4.Device` |
 | `network` | text | no | id of the network realizing the path | `A4.CommunicationNetwork` |
 | `carries` | list | no | ids of A3 components whose traffic uses the path | `A3.ApplicationComponent` *(join key)* |
+| `protocol` | text | no | the service name of the protocol on the path (IANA) | — |
+| `encrypted` | boolean | no | whether traffic on the path is encrypted in transit | — |
 
 **Links**
 
@@ -1499,6 +1578,9 @@ A deployable technology-level artefact
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `of_component` | text | no | id of the A3 component it is a build of | `A3.ApplicationComponent` *(join key)* |
+| `digest` | text | no | the content digest that identifies the exact build (e.g. sha256:…) | — |
+| `purl` | text | no | the package URL (pkg:type/namespace/name@version) | — |
+| `artifact_kind` | text | no | what kind of artefact it is | one of: container image, package, binary, script, configuration |
 
 **Links**
 
@@ -1557,10 +1639,10 @@ The 7 example estates (447 instances) measured against the rules not yet enforce
 | Rule | Values checked | Failures |
 |---|---|---|
 | LC-04 | 478 | 0 |
-| LC-05 | 771 | 0 |
-| LC-06 | 575 | 0 |
+| LC-05 | 811 | 0 |
+| LC-06 | 586 | 0 |
 | LC-07 | 132 | 0 |
-| LC-08 | 135 | 0 |
+| LC-08 | 136 | 0 |
 | LC-09 | 316 | 0 |
 | LC-10 | 1106 | 0 |
 | LC-10m (warning) | 1106 | 29 |

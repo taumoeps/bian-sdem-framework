@@ -16,7 +16,10 @@
         "hosts": [
           "APP-PAY-HUB",
           "CMP-PAY-EXEC"
-        ]
+        ],
+        "product_version": "1.30",
+        "license": "Apache-2.0",
+        "end_of_support": "2027-06-30"
       }
     },
     {
@@ -38,7 +41,11 @@
       "version": "16",
       "name": "Managed PostgreSQL — payments",
       "lifecycle_status": "active",
-      "description": "Production relational store for the hub."
+      "description": "Production relational store for the hub.",
+      "attributes": {
+        "product_version": "16.4",
+        "license": "PostgreSQL"
+      }
     },
     {
       "id": "TS-MQ",
@@ -46,7 +53,10 @@
       "version": "1.0",
       "name": "Messaging service",
       "lifecycle_status": "active",
-      "description": "Managed message broker used for status events."
+      "description": "Managed message broker used for status events.",
+      "attributes": {
+        "cloud_service_model": "PaaS"
+      }
     },
     {
       "id": "TS-SECRETS",
@@ -54,7 +64,10 @@
       "version": "1.0",
       "name": "Secrets management",
       "lifecycle_status": "active",
-      "description": "Platform secrets service."
+      "description": "Platform secrets service.",
+      "attributes": {
+        "cloud_service_model": "PaaS"
+      }
     },
     {
       "id": "ENV-PAY-PROD",
@@ -62,7 +75,12 @@
       "version": "1.0",
       "name": "Production",
       "lifecycle_status": "active",
-      "description": "Production runtime environment."
+      "description": "Production runtime environment.",
+      "attributes": {
+        "environment_kind": "production",
+        "country": "NZ",
+        "cloud_deployment_model": "public"
+      }
     },
     {
       "id": "ENV-PAY-UAT",
@@ -70,7 +88,12 @@
       "version": "1.0",
       "name": "UAT",
       "lifecycle_status": "active",
-      "description": "User-acceptance environment."
+      "description": "User-acceptance environment.",
+      "attributes": {
+        "environment_kind": "test",
+        "country": "NZ",
+        "cloud_deployment_model": "public"
+      }
     },
     {
       "id": "DEP-PAYHUB-PROD",
@@ -117,7 +140,12 @@
       "version": "1.0",
       "name": "Payments private network",
       "lifecycle_status": "active",
-      "description": "Private network segment for payment services."
+      "description": "Private network segment for payment services.",
+      "attributes": {
+        "address_range": [
+          "10.20.0.0/16"
+        ]
+      }
     },
     {
       "id": "ART-PAYHUB-IMG",
@@ -125,7 +153,12 @@
       "version": "7.1",
       "name": "payments-hub:7.1",
       "lifecycle_status": "active",
-      "description": "Container image of the hub."
+      "description": "Container image of the hub.",
+      "attributes": {
+        "artifact_kind": "container image",
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "purl": "pkg:docker/example/payments-hub@7.1"
+      }
     }
   ],
   "relationships": [

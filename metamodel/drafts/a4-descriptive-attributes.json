@@ -1,7 +1,7 @@
 {
   "level": "A4",
   "date": "2026-10-24",
-  "status": "DRAFT — not yet in the model",
+  "status": "APPROVED 2026-10-25. Written into metamodel/entity-attributes.json (AT-A4-15, AT-A4-33).",
   "note": "Descriptive attributes proposed for the A4 Technology architecture; the 11 approved common attributes apply too. Public sources opened and checked on 2026-10-24, except ISO 3166 (iso.org 403).",
   "attributes": [
     {
@@ -24,7 +24,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "The first filter on any deployment question. No open standard defines environment kinds.",
       "confidence": "low",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-02",
@@ -39,7 +39,7 @@
       "uri": "https://www.iso.org/iso-3166-country-codes.html",
       "reasoning": "ISO 3166-1 is the standard for country codes, but iso.org could not be opened to check it on 2026-10-24 (403).",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "verification": "not checked: iso.org returned 403 on 2026-10-24"
     },
     {
@@ -61,7 +61,7 @@
       "uri": "https://csrc.nist.gov/pubs/sp/800/145/final",
       "reasoning": "NIST defines exactly these four deployment models; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-04",
@@ -81,7 +81,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "ArchiMate defines a node as a physical or virtual computational resource; SDEM splits virtual into VM and container.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-05",
@@ -101,7 +101,7 @@
       "uri": "https://csrc.nist.gov/pubs/sp/800/145/final",
       "reasoning": "NIST defines exactly these three service models; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-06",
@@ -116,7 +116,7 @@
       "uri": "https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe",
       "reasoning": "NIST's standard naming for hardware too; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-07",
@@ -131,7 +131,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "The technical-debt question; the date comes from the supplier, the field is SDEM's.",
       "confidence": "low",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-08",
@@ -146,7 +146,7 @@
       "uri": "https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe",
       "reasoning": "NIST standard naming; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-09",
@@ -161,7 +161,7 @@
       "uri": "https://cyclonedx.org/docs/1.6/json/",
       "reasoning": "CycloneDX field; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-10",
@@ -176,7 +176,7 @@
       "uri": "https://spdx.org/licenses/",
       "reasoning": "SPDX identifiers; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-11",
@@ -191,7 +191,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Same as for devices.",
       "confidence": "low",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-12",
@@ -206,7 +206,7 @@
       "uri": "https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml",
       "reasoning": "IANA keeps the public registry of protocol service names; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-13",
@@ -221,7 +221,7 @@
       "uri": "https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml",
       "reasoning": "Same IANA registry; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-14",
@@ -236,7 +236,7 @@
       "uri": "https://www.rfc-editor.org/rfc/rfc4632.html",
       "reasoning": "IETF best current practice for writing address ranges; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-15",
@@ -251,7 +251,7 @@
       "uri": "https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml",
       "reasoning": "IANA registry; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-16",
@@ -266,7 +266,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "A standard security question; no open standard defines the field.",
       "confidence": "low",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-17",
@@ -281,7 +281,7 @@
       "uri": "https://github.com/opencontainers/image-spec/blob/main/descriptor.md",
       "reasoning": "OCI defines the digest that identifies content; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-18",
@@ -296,7 +296,7 @@
       "uri": "https://github.com/package-url/purl-spec",
       "reasoning": "Ecma standard for identifying software packages; also used by CycloneDX; checked 2026-10-24.",
       "confidence": "high",
-      "status": "draft"
+      "status": "approved"
     },
     {
       "id": "DA4-19",
@@ -318,12 +318,17 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "ArchiMate describes the kinds an artifact can be; the value list is SDEM's.",
       "confidence": "medium",
-      "status": "draft"
+      "status": "approved"
     }
   ],
   "decisions": [
     "**The four SDEM-defined attributes** (`environment_kind`, `end_of_support` ×2, `encrypted`). *Recommended: keep all* — environment, support status and encryption are the first questions in any technology review.",
     "**`country`** stays **medium** until ISO 3166 can be checked. *Recommended: accept now*; the codes are universally used.",
     "**Required attributes**. *Recommended: none required*, as for A1–A3."
+  ],
+  "decisions_taken": [
+    "SDEM-defined environment_kind, end_of_support (device, system software), encrypted kept (low)",
+    "country accepted at medium until ISO 3166 can be checked",
+    "no required attributes"
   ]
 }
