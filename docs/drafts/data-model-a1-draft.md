@@ -1,8 +1,8 @@
 # A1 Business Architecture — Data Model (DRAFT for review)
 
-> **Status: draft, 2026-10-24.** Proposed fields are marked **proposed**; nothing here is in the model until you approve it. Record: `metamodel/drafts/a1-descriptive-attributes.json`.
+> **Status: draft, 2026-10-24.** Proposed fields are marked **proposed**; nothing here is in the model until you approve it. Record: `metamodel/drafts/a1-descriptive-attributes.json`. Rendered by `python scripts/render_data_model_draft.py a1`.
 
-**How to read each entity.** The **Data Model** table is the complete record for the entity: every field, its type, whether it is required, its allowed values and what it holds. Fields come in three groups — **Core** (identity, on every entity), **Common** (descriptive, on every entity) and **Specific** (this entity only). The **Sources** table under it gives, for each specific field, the question it answers, where it comes from, why, and how confident that basis is. The common fields' sources are in section 1. In an export file the common and specific fields sit inside the instance's `attributes` object.
+**How to read each entity.** The **Data Model** table is the complete record for the entity: every field, its type, whether it is required, its allowed values and what it holds. Fields come in groups — **Core** (identity, on every entity), **Common** (descriptive, on every entity), **Inherited** (from a parent entity) and **Specific** (this entity only). The **Sources** table under it gives, for each specific field, the question it answers, where it comes from, why, and how confident that basis is; the common fields' sources are in section 1. In an export file the common and specific fields sit inside the instance's `attributes` object.
 
 **How the draft was built.** One field per design question, each from the highest available source — BIAN → open public standards readable without login (Dublin Core, W3C ORG, W3C SKOS, public privacy law) → ArchiMate concepts (meaning only) → SDEM-defined. Not used: TOGAF and the ArchiMate text (login), paid standards, vendor schemas, your employer's model. Confidence: **high** = a public standard defines it and it was checked; **medium** = built on a standard concept as SDEM chose; **low** = SDEM-defined.
 
@@ -25,17 +25,17 @@
 
 | ID | Field | Type | Allowed values | Holds | Answers | Source | Reasoning | Confidence |
 |---|---|---|---|---|---|---|---|---|
-| DA1-01 | `source_id` | text | — | The record's own key in the tool it came from, so any node can be traced back to its system of record. | Which record in the source tool is this? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | The record's own key in the tool it came from, so any node can be traced back to its system of record. Distinct from SDEM `id`, which may be the same value. | **high** |
-| DA1-02 | `created` | date | — | Date the thing was created in the source. | How old is this? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | Date the thing was created in the source. | **high** |
-| DA1-03 | `modified` | date | — | Date of the last change in the source. | What changed recently? Is this stale? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | Date of the last change in the source; lets reviews spot stale entries. | **high** |
-| DA1-04 | `valid_from` | date | — | Start of the validity period. | Is this in force on a given date? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | Start of the validity period. Dublin Core defines `valid` as a date or range; SDEM stores the range as two dates. | **high** |
-| DA1-05 | `valid_to` | date | — | End of the validity period (empty = open). | Is this in force on a given date? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | End of the validity period (empty = open). | **high** |
-| DA1-06 | `replaces` | reference (same entity type) | — | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | What did this replace? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | **high** |
-| DA1-07 | `replaced_by` | reference (same entity type) | — | The later instance that supersedes this one. | What replaced this? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | The later instance that supersedes this one. | **high** |
-| DA1-08 | `conforms_to` | list of text | — | E.g. | Which standard, framework or policy does this follow? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | E.g. "BIAN BCM 14.0", an internal policy id. Makes alignment claims explicit and queryable. | **high** |
-| DA1-09 | `subject` | list of text | — | Free topic tags. | Find everything about a topic (e.g. "payments", "fraud"). | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | Free topic tags; lets architects slice the graph by theme. | **high** |
-| DA1-10 | `owner` | reference → A1.BusinessActor or A1.BusinessRole | — | Accountability is the most-asked design question. | Who is accountable for this? | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | Accountability is the most-asked design question. No public standard defines an "owner" field: Dublin Core's rightsHolder is about rights, not accountability. Built on ArchiMate's assignment of an actor or role. | **medium** |
-| DA1-11 | `access_classification` | enum | public, internal, confidential, restricted | Dublin Core defines the field (access or security status). | Who may see this? How sensitive is it? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | Dublin Core defines the field (access or security status); the four values are SDEM's common banking scale, not a standard. | **medium** |
+| DA1-01 | `source_id` | text | — | the record's key in the tool it came from | Which record in the source tool is this? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | The record's own key in the tool it came from, so any node can be traced back to its system of record. Distinct from SDEM `id`, which may be the same value. | **high** |
+| DA1-02 | `created` | date | — | date it was created in the source | How old is this? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | Date the thing was created in the source. | **high** |
+| DA1-03 | `modified` | date | — | date it was last changed in the source | What changed recently? Is this stale? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | Date of the last change in the source; lets reviews spot stale entries. | **high** |
+| DA1-04 | `valid_from` | date | — | date it comes into force | Is this in force on a given date? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | Start of the validity period. Dublin Core defines `valid` as a date or range; SDEM stores the range as two dates. | **high** |
+| DA1-05 | `valid_to` | date | — | date it stops being in force (empty = open-ended) | Is this in force on a given date? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | End of the validity period (empty = open). | **high** |
+| DA1-06 | `replaces` | reference (same entity type) | — | the earlier instance this one supersedes | What did this replace? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | **high** |
+| DA1-07 | `replaced_by` | reference (same entity type) | — | the later instance that supersedes this one | What replaced this? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | The later instance that supersedes this one. | **high** |
+| DA1-08 | `conforms_to` | list of text | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | Which standard, framework or policy does this follow? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | E.g. "BIAN BCM 14.0", an internal policy id. Makes alignment claims explicit and queryable. | **high** |
+| DA1-09 | `subject` | list of text | — | topic tags (e.g. "payments", "fraud") | Find everything about a topic (e.g. "payments", "fraud"). | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | Free topic tags; lets architects slice the graph by theme. | **high** |
+| DA1-10 | `owner` | reference → A1.BusinessActor or A1.BusinessRole | — | the actor or role accountable for it | Who is accountable for this? | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | Accountability is the most-asked design question. No public standard defines an "owner" field: Dublin Core's rightsHolder is about rights, not accountability. Built on ArchiMate's assignment of an actor or role. | **medium** |
+| DA1-11 | `access_classification` | enum | public, internal, confidential, restricted | how sensitive it is and who may see it | Who may see this? How sensitive is it? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | Dublin Core defines the field (access or security status); the four values are SDEM's common banking scale, not a standard. | **medium** |
 
 ## 2. A1.BusinessCapability — Data Model
 
@@ -51,21 +51,21 @@
 | 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
 | 7 | `description` | Core | text | no | — | scope statement | existing |
 | 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | The record's own key in the tool it came from, so any node can be traced back to its system of record. | proposed |
-| 10 | `created` | Common | date | no | — | Date the thing was created in the source. | proposed |
-| 11 | `modified` | Common | date | no | — | Date of the last change in the source. | proposed |
-| 12 | `valid_from` | Common | date | no | — | Start of the validity period. | proposed |
-| 13 | `valid_to` | Common | date | no | — | End of the validity period (empty = open). | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | The later instance that supersedes this one. | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | E.g. | proposed |
-| 17 | `subject` | Common | list of text | no | — | Free topic tags. | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | Accountability is the most-asked design question. | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | Dublin Core defines the field (access or security status). | proposed |
-| 20 | **`level`** | Specific | integer ≥ 1 | no | — | Depth in the capability hierarchy. | **proposed** |
-| 21 | **`strategic_importance`** | Specific | enum | no | core, differentiating, supporting, commodity | Common capability heat-map dimension. | **proposed** |
-| 22 | **`maturity_current`** | Specific | integer 1–5 | no | — | Current maturity on a 1–5 scale. | **proposed** |
-| 23 | **`maturity_target`** | Specific | integer 1–5 | no | — | Target maturity, same scale. | **proposed** |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
+| 20 | **`level`** | Specific | integer ≥ 1 | no | — | depth in the capability hierarchy (1 = top) | **proposed** |
+| 21 | **`strategic_importance`** | Specific | enum | no | core, differentiating, supporting, commodity | how much the capability matters to strategy | **proposed** |
+| 22 | **`maturity_current`** | Specific | integer 1–5 | no | — | current maturity, 1 (low) to 5 (high) | **proposed** |
+| 23 | **`maturity_target`** | Specific | integer 1–5 | no | — | target maturity, 1 to 5 | **proposed** |
 
 **Sources of the specific fields**
 
@@ -91,20 +91,20 @@
 | 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
 | 7 | `description` | Core | text | no | — | scope statement | existing |
 | 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | The record's own key in the tool it came from, so any node can be traced back to its system of record. | proposed |
-| 10 | `created` | Common | date | no | — | Date the thing was created in the source. | proposed |
-| 11 | `modified` | Common | date | no | — | Date of the last change in the source. | proposed |
-| 12 | `valid_from` | Common | date | no | — | Start of the validity period. | proposed |
-| 13 | `valid_to` | Common | date | no | — | End of the validity period (empty = open). | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | The later instance that supersedes this one. | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | E.g. | proposed |
-| 17 | `subject` | Common | list of text | no | — | Free topic tags. | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | Accountability is the most-asked design question. | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | Dublin Core defines the field (access or security status). | proposed |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
 | 20 | `stages` | Specific | list of text | no | refers to `A1.ValueStreamStage` | ordered ids of the stream's stages | existing |
-| 21 | **`stakeholder`** | Specific | text | no | — | The stakeholder the stream delivers value to. | **proposed** |
-| 22 | **`value_proposition`** | Specific | text | no | — | The value the stream produces. | **proposed** |
+| 21 | **`stakeholder`** | Specific | text | no | — | who the value stream delivers value to | **proposed** |
+| 22 | **`value_proposition`** | Specific | text | no | — | the value the stream delivers | **proposed** |
 
 **Sources of the specific fields**
 
@@ -128,23 +128,23 @@
 | 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
 | 7 | `description` | Core | text | no | — | scope statement | existing |
 | 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | The record's own key in the tool it came from, so any node can be traced back to its system of record. | proposed |
-| 10 | `created` | Common | date | no | — | Date the thing was created in the source. | proposed |
-| 11 | `modified` | Common | date | no | — | Date of the last change in the source. | proposed |
-| 12 | `valid_from` | Common | date | no | — | Start of the validity period. | proposed |
-| 13 | `valid_to` | Common | date | no | — | End of the validity period (empty = open). | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | The later instance that supersedes this one. | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | E.g. | proposed |
-| 17 | `subject` | Common | list of text | no | — | Free topic tags. | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | Accountability is the most-asked design question. | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | Dublin Core defines the field (access or security status). | proposed |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
 | 20 | `stages` | Inherited from `ValueStream` | list of text | no | refers to `A1.ValueStreamStage` | ordered ids of the stream's stages | existing |
-| 21 | `stakeholder` | Inherited from `ValueStream` | text | no | — | The stakeholder the stream delivers value to. | proposed |
-| 22 | `value_proposition` | Inherited from `ValueStream` | text | no | — | The value the stream produces. | proposed |
-| 23 | **`entrance_criteria`** | Specific | text | no | — | Condition for entering the stage. | **proposed** |
-| 24 | **`exit_criteria`** | Specific | text | no | — | Condition for leaving the stage. | **proposed** |
-| 25 | **`value_item`** | Specific | text | no | — | The value a stage contributes. | **proposed** |
+| 21 | `stakeholder` | Inherited from `ValueStream` | text | no | — | who the value stream delivers value to | proposed |
+| 22 | `value_proposition` | Inherited from `ValueStream` | text | no | — | the value the stream delivers | proposed |
+| 23 | **`entrance_criteria`** | Specific | text | no | — | condition for entering the stage | **proposed** |
+| 24 | **`exit_criteria`** | Specific | text | no | — | condition for completing the stage | **proposed** |
+| 25 | **`value_item`** | Specific | text | no | — | the value the stage adds | **proposed** |
 
 **Sources of the specific fields**
 
@@ -168,24 +168,24 @@
 | 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
 | 7 | `description` | Core | text | no | — | scope statement | existing |
 | 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | The record's own key in the tool it came from, so any node can be traced back to its system of record. | proposed |
-| 10 | `created` | Common | date | no | — | Date the thing was created in the source. | proposed |
-| 11 | `modified` | Common | date | no | — | Date of the last change in the source. | proposed |
-| 12 | `valid_from` | Common | date | no | — | Start of the validity period. | proposed |
-| 13 | `valid_to` | Common | date | no | — | End of the validity period (empty = open). | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | The later instance that supersedes this one. | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | E.g. | proposed |
-| 17 | `subject` | Common | list of text | no | — | Free topic tags. | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | Accountability is the most-asked design question. | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | Dublin Core defines the field (access or security status). | proposed |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
 | 20 | `invokes` | Specific | list of text | no | refers to `A2.ServiceOperation` | A2 operations the process steps call | existing |
-| 21 | **`level`** | Specific | integer ≥ 1 | no | — | Depth in the process hierarchy. | **proposed** |
-| 22 | **`triggered_by`** | Specific | text | no | — | The business event that starts it (e.g. | **proposed** |
-| 23 | **`outcome`** | Specific | text | no | — | The end result the process achieves. | **proposed** |
-| 24 | **`criticality`** | Specific | enum | no | high, medium, low | The single most useful field for impact analysis. | **proposed** |
-| 25 | **`frequency`** | Specific | enum | no | continuous, daily, weekly, monthly, ad hoc | How often the process runs. | **proposed** |
-| 26 | **`automation_level`** | Specific | enum | no | manual, partly automated, automated | Degree of automation. | **proposed** |
+| 21 | **`level`** | Specific | integer ≥ 1 | no | — | depth in the process hierarchy (1 = top) | **proposed** |
+| 22 | **`triggered_by`** | Specific | text | no | — | the business event that starts it | **proposed** |
+| 23 | **`outcome`** | Specific | text | no | — | the result it produces | **proposed** |
+| 24 | **`criticality`** | Specific | enum | no | high, medium, low | how critical the process is to the bank | **proposed** |
+| 25 | **`frequency`** | Specific | enum | no | continuous, daily, weekly, monthly, ad hoc | how often it runs | **proposed** |
+| 26 | **`automation_level`** | Specific | enum | no | manual, partly automated, automated | how far it is automated | **proposed** |
 
 **Sources of the specific fields**
 
@@ -213,26 +213,26 @@
 | 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
 | 7 | `description` | Core | text | no | — | scope statement | existing |
 | 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | The record's own key in the tool it came from, so any node can be traced back to its system of record. | proposed |
-| 10 | `created` | Common | date | no | — | Date the thing was created in the source. | proposed |
-| 11 | `modified` | Common | date | no | — | Date of the last change in the source. | proposed |
-| 12 | `valid_from` | Common | date | no | — | Start of the validity period. | proposed |
-| 13 | `valid_to` | Common | date | no | — | End of the validity period (empty = open). | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | The later instance that supersedes this one. | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | E.g. | proposed |
-| 17 | `subject` | Common | list of text | no | — | Free topic tags. | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | Accountability is the most-asked design question. | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | Dublin Core defines the field (access or security status). | proposed |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
 | 20 | `invokes` | Inherited from `BusinessProcess` | list of text | no | refers to `A2.ServiceOperation` | A2 operations the process steps call | existing |
-| 21 | `level` | Inherited from `BusinessProcess` | integer ≥ 1 | no | — | Depth in the process hierarchy. | proposed |
-| 22 | `triggered_by` | Inherited from `BusinessProcess` | text | no | — | The business event that starts it (e.g. | proposed |
-| 23 | `outcome` | Inherited from `BusinessProcess` | text | no | — | The end result the process achieves. | proposed |
-| 24 | `criticality` | Inherited from `BusinessProcess` | enum | no | high, medium, low | The single most useful field for impact analysis. | proposed |
-| 25 | `frequency` | Inherited from `BusinessProcess` | enum | no | continuous, daily, weekly, monthly, ad hoc | How often the process runs. | proposed |
-| 26 | `automation_level` | Inherited from `BusinessProcess` | enum | no | manual, partly automated, automated | Degree of automation. | proposed |
+| 21 | `level` | Inherited from `BusinessProcess` | integer ≥ 1 | no | — | depth in the process hierarchy (1 = top) | proposed |
+| 22 | `triggered_by` | Inherited from `BusinessProcess` | text | no | — | the business event that starts it | proposed |
+| 23 | `outcome` | Inherited from `BusinessProcess` | text | no | — | the result it produces | proposed |
+| 24 | `criticality` | Inherited from `BusinessProcess` | enum | no | high, medium, low | how critical the process is to the bank | proposed |
+| 25 | `frequency` | Inherited from `BusinessProcess` | enum | no | continuous, daily, weekly, monthly, ad hoc | how often it runs | proposed |
+| 26 | `automation_level` | Inherited from `BusinessProcess` | enum | no | manual, partly automated, automated | how far it is automated | proposed |
 | 27 | `invokes` | Specific | list of text | no | refers to `A2.ServiceOperation` | A2 operations the activity calls | existing |
-| 28 | **`sequence`** | Specific | integer ≥ 1 | no | — | Position of the step in its process. | **proposed** |
+| 28 | **`sequence`** | Specific | integer ≥ 1 | no | — | position of the step within its process | **proposed** |
 
 **Sources of the specific fields**
 
@@ -255,23 +255,23 @@
 | 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
 | 7 | `description` | Core | text | no | — | scope statement | existing |
 | 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | The record's own key in the tool it came from, so any node can be traced back to its system of record. | proposed |
-| 10 | `created` | Common | date | no | — | Date the thing was created in the source. | proposed |
-| 11 | `modified` | Common | date | no | — | Date of the last change in the source. | proposed |
-| 12 | `valid_from` | Common | date | no | — | Start of the validity period. | proposed |
-| 13 | `valid_to` | Common | date | no | — | End of the validity period (empty = open). | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | The later instance that supersedes this one. | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | E.g. | proposed |
-| 17 | `subject` | Common | list of text | no | — | Free topic tags. | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | Accountability is the most-asked design question. | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | Dublin Core defines the field (access or security status). | proposed |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
 | 20 | `inputs` | Specific | list of text | no | — | attribute names the service takes | existing |
 | 21 | `outputs` | Specific | list of text | no | — | attribute names the service returns | existing |
-| 22 | **`consumers`** | Specific | list of references → A1.BusinessActor or A1.BusinessRole | no | — | The actors or roles the service serves. | **proposed** |
-| 23 | **`customer_facing`** | Specific | boolean | no | — | Whether customers use the service directly. | **proposed** |
-| 24 | **`channels`** | Specific | list of enum | no | branch, online, mobile, contact centre, partner, API | Delivery channels. | **proposed** |
-| 25 | **`service_level`** | Specific | text | no | — | The service-level target (e.g. | **proposed** |
+| 22 | **`consumers`** | Specific | list of references → A1.BusinessActor or A1.BusinessRole | no | — | the actors or roles the service serves | **proposed** |
+| 23 | **`customer_facing`** | Specific | boolean | no | — | whether customers use it directly | **proposed** |
+| 24 | **`channels`** | Specific | list of enum | no | branch, online, mobile, contact centre, partner, API | channels it is offered through | **proposed** |
+| 25 | **`service_level`** | Specific | text | no | — | the committed service level (e.g. "same day") | **proposed** |
 
 **Sources of the specific fields**
 
@@ -298,22 +298,22 @@
 | 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
 | 7 | `description` | Core | text | no | — | scope statement | existing |
 | 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | The record's own key in the tool it came from, so any node can be traced back to its system of record. | proposed |
-| 10 | `created` | Common | date | no | — | Date the thing was created in the source. | proposed |
-| 11 | `modified` | Common | date | no | — | Date of the last change in the source. | proposed |
-| 12 | `valid_from` | Common | date | no | — | Start of the validity period. | proposed |
-| 13 | `valid_to` | Common | date | no | — | End of the validity period (empty = open). | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | The later instance that supersedes this one. | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | E.g. | proposed |
-| 17 | `subject` | Common | list of text | no | — | Free topic tags. | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | Accountability is the most-asked design question. | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | Dublin Core defines the field (access or security status). | proposed |
-| 20 | **`actor_kind`** | Specific | enum | no | formal organisation, organisational unit, person | The three kinds of agent ORG distinguishes. | **proposed** |
-| 21 | **`external`** | Specific | boolean | no | — | Whether the actor is outside the bank. | **proposed** |
-| 22 | **`classification`** | Specific | text | no | — | A category from a scheme (e.g. | **proposed** |
-| 23 | **`purpose`** | Specific | text | no | — | The organisation's or unit's purpose. | **proposed** |
-| 24 | **`location`** | Specific | text | no | — | The site where the actor is based. | **proposed** |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
+| 20 | **`actor_kind`** | Specific | enum | no | formal organisation, organisational unit, person | whether it is a formal organisation, a unit or a person | **proposed** |
+| 21 | **`external`** | Specific | boolean | no | — | whether it is outside the bank | **proposed** |
+| 22 | **`classification`** | Specific | text | no | — | its category (e.g. regulator, partner, business line) | **proposed** |
+| 23 | **`purpose`** | Specific | text | no | — | why the unit or organisation exists | **proposed** |
+| 24 | **`location`** | Specific | text | no | — | the site where it is based | **proposed** |
 
 **Sources of the specific fields**
 
@@ -339,19 +339,19 @@
 | 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
 | 7 | `description` | Core | text | no | — | scope statement | existing |
 | 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | The record's own key in the tool it came from, so any node can be traced back to its system of record. | proposed |
-| 10 | `created` | Common | date | no | — | Date the thing was created in the source. | proposed |
-| 11 | `modified` | Common | date | no | — | Date of the last change in the source. | proposed |
-| 12 | `valid_from` | Common | date | no | — | Start of the validity period. | proposed |
-| 13 | `valid_to` | Common | date | no | — | End of the validity period (empty = open). | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | The later instance that supersedes this one. | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | E.g. | proposed |
-| 17 | `subject` | Common | list of text | no | — | Free topic tags. | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | Accountability is the most-asked design question. | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | Dublin Core defines the field (access or security status). | proposed |
-| 20 | **`role_kind`** | Specific | enum | no | role, post | ORG separates a generic role from a post that exists whether or not it is filled. | **proposed** |
-| 21 | **`responsibilities`** | Specific | text | no | — | What the role does. | **proposed** |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
+| 20 | **`role_kind`** | Specific | enum | no | role, post | whether it is a generic role or a specific post | **proposed** |
+| 21 | **`responsibilities`** | Specific | text | no | — | what the role is responsible for | **proposed** |
 
 **Sources of the specific fields**
 
@@ -374,21 +374,21 @@
 | 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
 | 7 | `description` | Core | text | no | — | scope statement | existing |
 | 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | The record's own key in the tool it came from, so any node can be traced back to its system of record. | proposed |
-| 10 | `created` | Common | date | no | — | Date the thing was created in the source. | proposed |
-| 11 | `modified` | Common | date | no | — | Date of the last change in the source. | proposed |
-| 12 | `valid_from` | Common | date | no | — | Start of the validity period. | proposed |
-| 13 | `valid_to` | Common | date | no | — | End of the validity period (empty = open). | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | The later instance that supersedes this one. | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | E.g. | proposed |
-| 17 | `subject` | Common | list of text | no | — | Free topic tags. | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | Accountability is the most-asked design question. | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | Dublin Core defines the field (access or security status). | proposed |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
 | 20 | `attributes` | Specific | list of text | no | — | glossary attribute names | existing |
 | 21 | `field_aliases` | Specific | name map | no | — | glossary name → canonical attribute name | existing |
-| 22 | **`glossary_uri`** | Specific | text (URI) | no | — | Link to the business-glossary concept that defines the object. | **proposed** |
-| 23 | **`personal_information`** | Specific | boolean | no | — | Whether the object holds information about an identifiable person, as defined in public privacy law. | **proposed** |
+| 22 | **`glossary_uri`** | Specific | text (URI) | no | — | link to the agreed glossary definition | **proposed** |
+| 23 | **`personal_information`** | Specific | boolean | no | — | whether it holds information about an identifiable person | **proposed** |
 
 **Sources of the specific fields**
 
@@ -413,21 +413,21 @@
 | 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
 | 7 | `description` | Core | text | no | — | scope statement | existing |
 | 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | The record's own key in the tool it came from, so any node can be traced back to its system of record. | proposed |
-| 10 | `created` | Common | date | no | — | Date the thing was created in the source. | proposed |
-| 11 | `modified` | Common | date | no | — | Date of the last change in the source. | proposed |
-| 12 | `valid_from` | Common | date | no | — | Start of the validity period. | proposed |
-| 13 | `valid_to` | Common | date | no | — | End of the validity period (empty = open). | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | The earlier instance this one supersedes, so history can be followed through renames and re-designs. | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | The later instance that supersedes this one. | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | E.g. | proposed |
-| 17 | `subject` | Common | list of text | no | — | Free topic tags. | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | Accountability is the most-asked design question. | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | Dublin Core defines the field (access or security status). | proposed |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
 | 20 | `applies_to` | Specific | list of text | no | refers to `A1.BusinessProcess`, `A1.BusinessActivity` | ids of the processes or activities the requirement constrains | existing |
-| 21 | **`requirement_kind`** | Specific | enum | no | requirement, constraint, principle | ArchiMate has three separate concepts. | **proposed** |
-| 22 | **`derived_from`** | Specific | list of text | no | — | The origin of the requirement (e.g. | **proposed** |
-| 23 | **`priority`** | Specific | enum | no | must, should, could, won't | MoSCoW priority, a common convention with no open standard definition. | **proposed** |
+| 21 | **`requirement_kind`** | Specific | enum | no | requirement, constraint, principle | whether it is a requirement, a constraint or a principle | **proposed** |
+| 22 | **`derived_from`** | Specific | list of text | no | — | the regulation, policy or decision it comes from | **proposed** |
+| 23 | **`priority`** | Specific | enum | no | must, should, could, won't | how important it is to meet (must, should, could, won't) | **proposed** |
 
 **Sources of the specific fields**
 

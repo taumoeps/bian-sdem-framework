@@ -30,7 +30,7 @@
       "reasoning": "The record's own key in the tool it came from, so any node can be traced back to its system of record. Distinct from SDEM `id`, which may be the same value.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "The record's own key in the tool it came from, so any node can be traced back to its system of record."
+      "meaning": "the record's key in the tool it came from"
     },
     {
       "id": "DA1-02",
@@ -46,7 +46,7 @@
       "reasoning": "Date the thing was created in the source.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "Date the thing was created in the source."
+      "meaning": "date it was created in the source"
     },
     {
       "id": "DA1-03",
@@ -62,7 +62,7 @@
       "reasoning": "Date of the last change in the source; lets reviews spot stale entries.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "Date of the last change in the source."
+      "meaning": "date it was last changed in the source"
     },
     {
       "id": "DA1-04",
@@ -78,7 +78,7 @@
       "reasoning": "Start of the validity period. Dublin Core defines `valid` as a date or range; SDEM stores the range as two dates.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "Start of the validity period."
+      "meaning": "date it comes into force"
     },
     {
       "id": "DA1-05",
@@ -94,7 +94,7 @@
       "reasoning": "End of the validity period (empty = open).",
       "confidence": "high",
       "status": "draft",
-      "meaning": "End of the validity period (empty = open)."
+      "meaning": "date it stops being in force (empty = open-ended)"
     },
     {
       "id": "DA1-06",
@@ -110,7 +110,7 @@
       "reasoning": "The earlier instance this one supersedes, so history can be followed through renames and re-designs.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "The earlier instance this one supersedes, so history can be followed through renames and re-designs."
+      "meaning": "the earlier instance this one supersedes"
     },
     {
       "id": "DA1-07",
@@ -126,7 +126,7 @@
       "reasoning": "The later instance that supersedes this one.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "The later instance that supersedes this one."
+      "meaning": "the later instance that supersedes this one"
     },
     {
       "id": "DA1-08",
@@ -142,7 +142,7 @@
       "reasoning": "E.g. \"BIAN BCM 14.0\", an internal policy id. Makes alignment claims explicit and queryable.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "E.g."
+      "meaning": "standards, frameworks or policies it follows (e.g. \"BIAN BCM 14.0\")"
     },
     {
       "id": "DA1-09",
@@ -158,7 +158,7 @@
       "reasoning": "Free topic tags; lets architects slice the graph by theme.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "Free topic tags."
+      "meaning": "topic tags (e.g. \"payments\", \"fraud\")"
     },
     {
       "id": "DA1-10",
@@ -174,7 +174,7 @@
       "reasoning": "Accountability is the most-asked design question. No public standard defines an \"owner\" field: Dublin Core's rightsHolder is about rights, not accountability. Built on ArchiMate's assignment of an actor or role.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "Accountability is the most-asked design question."
+      "meaning": "the actor or role accountable for it"
     },
     {
       "id": "DA1-11",
@@ -195,7 +195,7 @@
       "reasoning": "Dublin Core defines the field (access or security status); the four values are SDEM's common banking scale, not a standard.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "Dublin Core defines the field (access or security status)."
+      "meaning": "how sensitive it is and who may see it"
     },
     {
       "id": "DA1-12",
@@ -211,7 +211,7 @@
       "reasoning": "Depth in the capability hierarchy. The hierarchy itself is the composition link between capabilities; `level` makes the depth queryable without walking it.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "Depth in the capability hierarchy."
+      "meaning": "depth in the capability hierarchy (1 = top)"
     },
     {
       "id": "DA1-13",
@@ -232,7 +232,7 @@
       "reasoning": "Common capability heat-map dimension; no open standard defines it or its values.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "Common capability heat-map dimension."
+      "meaning": "how much the capability matters to strategy"
     },
     {
       "id": "DA1-14",
@@ -248,7 +248,7 @@
       "reasoning": "Current maturity on a 1–5 scale. Maturity scales (e.g. CMMI) are proprietary; SDEM defines only the range.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "Current maturity on a 1–5 scale."
+      "meaning": "current maturity, 1 (low) to 5 (high)"
     },
     {
       "id": "DA1-15",
@@ -264,7 +264,7 @@
       "reasoning": "Target maturity, same scale; the gap to current drives investment questions.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "Target maturity, same scale."
+      "meaning": "target maturity, 1 to 5"
     },
     {
       "id": "DA1-16",
@@ -280,7 +280,7 @@
       "reasoning": "The stakeholder the stream delivers value to; ArchiMate has a Stakeholder concept.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "The stakeholder the stream delivers value to."
+      "meaning": "who the value stream delivers value to"
     },
     {
       "id": "DA1-17",
@@ -296,7 +296,7 @@
       "reasoning": "The value the stream produces; ArchiMate has a Value concept associated with value streams.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "The value the stream produces."
+      "meaning": "the value the stream delivers"
     },
     {
       "id": "DA1-18",
@@ -312,7 +312,7 @@
       "reasoning": "Condition for entering the stage. Widely used in value-stream mapping, but the source that defines it (BIZBOK) is membership-only.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "Condition for entering the stage."
+      "meaning": "condition for entering the stage"
     },
     {
       "id": "DA1-19",
@@ -328,7 +328,7 @@
       "reasoning": "Condition for leaving the stage; as above.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "Condition for leaving the stage."
+      "meaning": "condition for completing the stage"
     },
     {
       "id": "DA1-20",
@@ -344,7 +344,7 @@
       "reasoning": "The value a stage contributes; ArchiMate Value concept.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "The value a stage contributes."
+      "meaning": "the value the stage adds"
     },
     {
       "id": "DA1-21",
@@ -360,7 +360,7 @@
       "reasoning": "Depth in the process hierarchy; the hierarchy itself is the composition link.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "Depth in the process hierarchy."
+      "meaning": "depth in the process hierarchy (1 = top)"
     },
     {
       "id": "DA1-22",
@@ -376,7 +376,7 @@
       "reasoning": "The business event that starts it (e.g. \"customer submits payment\").",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "The business event that starts it (e.g."
+      "meaning": "the business event that starts it"
     },
     {
       "id": "DA1-23",
@@ -392,7 +392,7 @@
       "reasoning": "The end result the process achieves.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "The end result the process achieves."
+      "meaning": "the result it produces"
     },
     {
       "id": "DA1-24",
@@ -412,7 +412,7 @@
       "reasoning": "The single most useful field for impact analysis. No open standard defines it; business-continuity standards (ISO 22301) are paid.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "The single most useful field for impact analysis."
+      "meaning": "how critical the process is to the bank"
     },
     {
       "id": "DA1-25",
@@ -434,7 +434,7 @@
       "reasoning": "How often the process runs; informs outage impact.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "How often the process runs."
+      "meaning": "how often it runs"
     },
     {
       "id": "DA1-26",
@@ -454,7 +454,7 @@
       "reasoning": "Degree of automation; no standard scale.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "Degree of automation."
+      "meaning": "how far it is automated"
     },
     {
       "id": "DA1-27",
@@ -470,7 +470,7 @@
       "reasoning": "Position of the step in its process; ArchiMate orders steps with triggering and flow.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "Position of the step in its process."
+      "meaning": "position of the step within its process"
     },
     {
       "id": "DA1-28",
@@ -486,7 +486,7 @@
       "reasoning": "The actors or roles the service serves.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "The actors or roles the service serves."
+      "meaning": "the actors or roles the service serves"
     },
     {
       "id": "DA1-29",
@@ -502,7 +502,7 @@
       "reasoning": "Whether customers use the service directly; key for customer-impact questions.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "Whether customers use the service directly."
+      "meaning": "whether customers use it directly"
     },
     {
       "id": "DA1-30",
@@ -525,7 +525,7 @@
       "reasoning": "Delivery channels. ArchiMate models channels as business interfaces; the value list is SDEM's.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "Delivery channels."
+      "meaning": "channels it is offered through"
     },
     {
       "id": "DA1-31",
@@ -541,7 +541,7 @@
       "reasoning": "The service-level target (e.g. \"same-day\"). Service-management standards that define this (ITIL) are paid.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "The service-level target (e.g."
+      "meaning": "the committed service level (e.g. \"same day\")"
     },
     {
       "id": "DA1-32",
@@ -561,7 +561,7 @@
       "reasoning": "The three kinds of agent ORG distinguishes.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "The three kinds of agent ORG distinguishes."
+      "meaning": "whether it is a formal organisation, a unit or a person"
     },
     {
       "id": "DA1-33",
@@ -577,7 +577,7 @@
       "reasoning": "Whether the actor is outside the bank. ORG does not distinguish internal from external.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "Whether the actor is outside the bank."
+      "meaning": "whether it is outside the bank"
     },
     {
       "id": "DA1-34",
@@ -593,7 +593,7 @@
       "reasoning": "A category from a scheme (e.g. regulator, partner, business line).",
       "confidence": "high",
       "status": "draft",
-      "meaning": "A category from a scheme (e.g."
+      "meaning": "its category (e.g. regulator, partner, business line)"
     },
     {
       "id": "DA1-35",
@@ -609,7 +609,7 @@
       "reasoning": "The organisation's or unit's purpose.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "The organisation's or unit's purpose."
+      "meaning": "why the unit or organisation exists"
     },
     {
       "id": "DA1-36",
@@ -625,7 +625,7 @@
       "reasoning": "The site where the actor is based.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "The site where the actor is based."
+      "meaning": "the site where it is based"
     },
     {
       "id": "DA1-37",
@@ -644,7 +644,7 @@
       "reasoning": "ORG separates a generic role from a post that exists whether or not it is filled.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "ORG separates a generic role from a post that exists whether or not it is filled."
+      "meaning": "whether it is a generic role or a specific post"
     },
     {
       "id": "DA1-38",
@@ -660,7 +660,7 @@
       "reasoning": "What the role does; ArchiMate's role is defined by its responsibilities.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "What the role does."
+      "meaning": "what the role is responsible for"
     },
     {
       "id": "DA1-39",
@@ -676,7 +676,7 @@
       "reasoning": "Link to the business-glossary concept that defines the object.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "Link to the business-glossary concept that defines the object."
+      "meaning": "link to the agreed glossary definition"
     },
     {
       "id": "DA1-40",
@@ -692,7 +692,7 @@
       "reasoning": "Whether the object holds information about an identifiable person, as defined in public privacy law.",
       "confidence": "high",
       "status": "draft",
-      "meaning": "Whether the object holds information about an identifiable person, as defined in public privacy law."
+      "meaning": "whether it holds information about an identifiable person"
     },
     {
       "id": "DA1-41",
@@ -712,7 +712,7 @@
       "reasoning": "ArchiMate has three separate concepts; SDEM holds them as one entity with a kind field.",
       "confidence": "medium",
       "status": "draft",
-      "meaning": "ArchiMate has three separate concepts."
+      "meaning": "whether it is a requirement, a constraint or a principle"
     },
     {
       "id": "DA1-42",
@@ -728,7 +728,7 @@
       "reasoning": "The origin of the requirement (e.g. a regulation article or policy id).",
       "confidence": "high",
       "status": "draft",
-      "meaning": "The origin of the requirement (e.g."
+      "meaning": "the regulation, policy or decision it comes from"
     },
     {
       "id": "DA1-43",
@@ -749,7 +749,7 @@
       "reasoning": "MoSCoW priority, a common convention with no open standard definition.",
       "confidence": "low",
       "status": "draft",
-      "meaning": "MoSCoW priority, a common convention with no open standard definition."
+      "meaning": "how important it is to meet (must, should, could, won't)"
     }
   ],
   "supersedes": [
@@ -758,5 +758,11 @@
       "by": "common owner (reference to an actor or role)",
       "action": "deprecate the existing field when approved"
     }
+  ],
+  "decisions": [
+    "**Common fields** — accept all eleven for every architecture? `owner` and `access_classification` are the two not purely Dublin Core. Accepting `owner` replaces the existing free-text `owner` on capabilities.",
+    "**The 13 SDEM-defined (low) fields** — keep all, or drop some?",
+    "**Hierarchy stays a link, not a field** — parent capability, process and unit remain composition links; `level` records depth only.",
+    "**Required fields** — all proposed fields are optional. Should any be required (e.g. `owner`, `criticality`)?"
   ]
 }
