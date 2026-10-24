@@ -1,4 +1,4 @@
-"""Generate docs/architecture-metamodel-detail-level-spec.md — the governing, detail-level specification of the
+"""Generate docs/architecture-metamodel-detail-level-spec.md (and its diagram, .puml) — the governing, detail-level specification of the
 Architecture Metamodel — from the records, the gap register (metamodel/metamodel-spec-gaps.json) and the frozen
 high-level specification (docs/architecture-metamodel-high-level-spec.md).
 
@@ -16,6 +16,7 @@ from .metamodel import ROOT
 DOCS = ROOT / 'docs'
 HIGH = DOCS / 'architecture-metamodel-high-level-spec.md'
 OUT = DOCS / 'architecture-metamodel-detail-level-spec.md'
+PUML = DOCS / 'architecture-metamodel-detail-level-spec.puml'
 MM = ROOT / 'metamodel'
 LEVELS = (('A1', 'a1-business.json', 'A1 Business'), ('A2', 'a2-service-domain.json', 'A2 Service Domain (BIAN)'),
           ('A3', 'a3-application.json', 'A3 Application'), ('A4', 'a4-technology.json', 'A4 Technology'))
@@ -178,15 +179,74 @@ def render():
     return '\n'.join(out) + '\n'
 
 
+COLOUR = {'bian_reference': '#BBDEFB', 'bian_aligned': '#E3F2FD', 'archimate_native': '#C8E6C9', 'archimate_aligned': '#E8F5E9',
+          'togaf_informed': '#FFE0B2', 'sdem_extension': '#EEEEEE', 'sdmm_extension': '#EEEEEE', 'bank_extension': '#F8BBD0'}
+
+
+def render_diagram():
+    """docs/architecture-metamodel-detail-level-spec.puml: the detail spec's structure for visual review."""
+    gaps = {g['id']: g for g in _j(MM / 'metamodel-spec-gaps.json')['gaps']}
+    ents = [(lvl, e) for lvl, f, _ in LEVELS for e in _j(MM / f)['entities']]
+    rows = _j(MM / 'level-relationships.json')['constraints']; byl = Counter(c['level'] for c in rows)
+    rt = _j(ROOT / 'schema' / 'relationship-types.json')['relationships']
+    rules = _j(MM / 'relationship-rules.json')['mappings']; at = _j(MM / 'entity-attributes.json')
+    cases = _j(ROOT / 'examples' / 'acceptance-cases.json')['cases']
+    a = lambda t: t.replace('.', '_').lower()
+    short = lambda st: 'decided' if st.startswith('decided') else 'OPEN' if st.startswith('open') else st.split(' ')[0]
+    gtag = lambda gid: f"{gid} ({short(gaps[gid]['status'])})"
+    out = ['@startuml architecture-metamodel-detail-level-spec', '!pragma layout smetana', 'skinparam shadowing false', 'skinparam defaultFontSize 11',
+           'skinparam rectangleBorderColor #546E7A', 'skinparam packageBorderColor #90A4AE', 'skinparam packageBackgroundColor #FAFAFA', 'skinparam noteBackgroundColor #FFF8E1', 'skinparam noteBorderColor #FFB300',
+           'title SDEM Architecture Metamodel — detail-level specification (governing)\\nfollows the high-level spec section by section; generated from the records — python -m sdem.metamodel_spec', '']
+    titles = {'A1': 'A1 Business', 'A2': 'A2 Service Domain (BIAN)', 'A3': 'A3 Application', 'A4': 'A4 Technology  [high-level: Infrastructure — ' + gtag('G-04') + ']'}
+    for lvl, _, _ in LEVELS:
+        out.append(f'package "{titles[lvl]}  —  detail §5.{lvl[1]}, within-level rows: {byl[lvl]} (§6.1, {gtag("G-01")})" as P{lvl} {{')
+        for l, e in ents:
+            if l != lvl: continue
+            kind = '\\n«artefact — evidence only»' if e.get('artefact') else '\\n«abstract»' if e.get('abstract') else ''
+            out.append(f"  rectangle \"{e['type']}{kind}\\n{e['definition_source']} / {e.get('alignment_kind')}\\nevidence: {e['evidence_status'].replace('_', ' ')}\" as {a(e['type'])} {COLOUR.get(e['definition_source'], '#FFFFFF')}")
+        out.append('}')
+    out.append('')
+    for _, e in ents:
+        if e.get('extends'): out.append(f"{a(e['type'])} -[#9E9E9E,dashed]-|> {a(e['extends'])}")
+    out += ['', "' the nine cross-level relationship types (detail §6.2, aligned to high-level §6.2)"]
+    for x in rt:
+        out.append(f"{a(x['source_type'])} -[#1565C0,bold]-> {a(x['target_type'])} : **{x['relationship']}**\\n{x['authority']}")
+    conf = sum(1 for _, e in ents if e['evidence_status'] == 'confirmed_in_official_source')
+    dep = next(e for _, e in ents if e['type'] == 'A4.Deployment')
+    out += ['', f'note "**{gtag("G-03")}**\\nhigh-level: composite\\nimplemented: {dep.get("alignment_kind")}" as N_G03', 'N_G03 .. a4_deployment', '',
+            f'note "**{gtag("G-02")}**\\n{conf} ArchiMate-derived entities say\\nconfirmed in official source\\nwithout a verification record\\n(high-level §3, §9)" as N_G02', 'N_G02 .. a3_applicationcomponent', '',
+            'package "Relationship Registry — record format (detail §4, §6.2)" as PREG {',
+            f'  rectangle "Registry record\\nmapping_id · source · relationship · target\\nstatus · evidence · reviewer_id · approved_at\\nend fields: id · type · version · canonical_id\\n+ source_system · source_entity_id (optional — {gtag("G-05")})\\ndocument: registry_version · metamodel_version\\n+ profile_id (optional — {gtag("G-05")})" as reg #FFFFFF',
+            f'  rectangle "Candidate reports\\nrelationship = plan ID; never registry records\\n({gtag("G-07")})" as cand #FFFFFF', '}', '',
+            'package "Not built yet — in the high-level spec" as PNB {',
+            f'  rectangle "Bank Architecture Profiles\\nhigh-level §7 — {gtag("G-08")}\\nresolve_entity(ref) — {gtag("G-06")}" as prof #FFEBEE',
+            f'  rectangle "BIAN verification register\\nhigh-level §9 — {gtag("G-09")}" as vreg #FFEBEE', '}', '',
+            'package "Beyond the high-level spec — detail §15–19" as PADD {',
+            f"  rectangle \"Relationship Rules Model\\n{len(rules)} plan rows · fill steps · join keys\\n§15 — {gtag('G-11')}\" as rules #E1F5FE",
+            f"  rectangle \"Data model\\n{len(at['core_fields'])} core · {len(at.get('common_attributes', []))} common · {sum(1 for x in at['attributes'] if x['status'] == 'active')} specific · {len(at.get('derived_attributes', []))} derived attributes\\n14 logical rules · per-entity JSON Schemas\\n§16 — {gtag('G-12')}\" as dm #E1F5FE",
+            f"  rectangle \"Provenance and confidence\\nsource · reasoning · confidence on every record\\n§17 — {gtag('G-13')}\" as prov #E1F5FE",
+            f"  rectangle \"Inference engine\\nsteps 1–5 + design mode\\nacceptance {sum(1 for c in cases if c.get('engine_status') == 'passing')}/{len(cases)} cases\\n§18 — {gtag('G-14')}\" as eng #E1F5FE",
+            f"  rectangle \"Graph store\\nJSON Graph Format v2 · load record · baselines\\n§19 — {gtag('G-15')}\" as gstore #E1F5FE", '}', '',
+            'rules -[#0277BD]-> eng : drives', 'gstore -[#0277BD]-> eng : reads', 'eng -[#0277BD]-> reg : proposes (status proposed)', 'eng -[#0277BD]-> cand : reports',
+            'reg -[#0277BD]-> gstore : approved links', 'dm .[#0277BD].> gstore : shape of every record', 'vreg ..> prov : would compute evidence status', '',
+            'legend right',
+            '  |= Fill |= definition_source |', '  |<#BBDEFB>| bian_reference |', '  |<#E3F2FD>| bian_aligned |', '  |<#C8E6C9>| archimate_native |', '  |<#E8F5E9>| archimate_aligned |',
+            '  |<#FFE0B2>| togaf_informed |', '  |<#EEEEEE>| sdem_extension |',
+            '  Blue bold arrows: the 9 cross-level relationship types', '  Grey dashed arrows: extends (is-a)', '  Yellow notes: gaps against the high-level spec',
+            '  Within-level rows are counted per package, not drawn — see architecture-model-diagram.puml', 'endlegend', '@enduml']
+    return '\n'.join(out) + '\n'
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem-metamodel-spec', description='Generate the detail-level Architecture Metamodel specification.')
     ap.add_argument('--check', action='store_true'); args = ap.parse_args(argv)
-    text = render()
+    files = {OUT: render(), PUML: render_diagram()}
     if args.check:
-        ok = OUT.exists() and OUT.read_text(encoding='utf-8') == text
-        print(f"{OUT.name}: {'up to date' if ok else 'STALE: regenerate with python -m sdem.metamodel_spec'}"); return 0 if ok else 1
-    OUT.write_text(text, encoding='utf-8'); print(f'wrote {OUT.relative_to(ROOT)}'); return 0
-
+        stale = [p for p, t in files.items() if not p.exists() or p.read_text(encoding='utf-8') != t]
+        for p in files: print(f"{p.name}: {'STALE: regenerate with python -m sdem.metamodel_spec' if p in stale else 'up to date'}")
+        return 1 if stale else 0
+    for p, t in files.items(): p.write_text(t, encoding='utf-8'); print(f'wrote {p.relative_to(ROOT)}')
+    return 0
 
 if __name__ == '__main__':
     raise SystemExit(main())
