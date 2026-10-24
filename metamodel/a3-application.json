@@ -21,7 +21,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Application Component, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
-      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A3.ApplicationService",
@@ -42,7 +49,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Application Service, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
-      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A3.ApplicationInterface",
@@ -63,7 +77,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Application Interface, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
-      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A3.ApplicationFunction",
@@ -84,7 +105,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Application Function, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
-      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A3.APIOperation",
@@ -105,7 +133,16 @@
       "evidence_status": "proposed_extension",
       "reasoning": "SDEM extension: ArchiMate has no element for a single API operation (it stops at the interface). SDEM adds it because BIAN's Semantic API maps each service operation to one REST operation (Practitioner Guide §3.5), and its attributes follow the public OpenAPI standard (method, path, payload).",
       "confidence": "medium",
-      "confidence_basis": "built on a standard concept as SDEM chose to model it"
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "owning interface",
+          "method",
+          "path"
+        ],
+        "basis": "OpenAPI",
+        "reasoning": "OpenAPI makes an operation unique by path and method within one API"
+      }
     },
     {
       "type": "A3.DataEntity",
@@ -126,7 +163,15 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "Aligned to ArchiMate 3.2 Data Object, ch. 9 (concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated). SDEM narrows it to a logical data entity with a column list, so it can be matched to BIAN business-object attributes; ArchiMate's Data Object is broader.",
       "confidence": "medium",
-      "confidence_basis": "built on a standard concept as SDEM chose to model it"
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "stored_in",
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "a table or entity name is unique within the store that holds it"
+      }
     },
     {
       "type": "A3.Event",
@@ -147,7 +192,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "Aligned to ArchiMate 3.2 Application Event, ch. 9 (concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated). SDEM uses it for published business events; no public standard is yet cited for its fields (AsyncAPI is proposed).",
       "confidence": "medium",
-      "confidence_basis": "built on a standard concept as SDEM chose to model it"
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A3.SolutionBuildingBlock",
@@ -168,7 +220,14 @@
       "evidence_status": "interpreted_from_official_source",
       "reasoning": "TOGAF 10 Solution Building Block (Architecture Content Framework) — a real TOGAF concept, but the TOGAF specification is login-gated, so the definition is SDEM's paraphrase and unverified.",
       "confidence": "medium",
-      "confidence_basis": "login-gated TOGAF source, unverified; validated against sealed answers"
+      "confidence_basis": "login-gated TOGAF source, unverified; validated against sealed answers",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     }
   ]
 }

@@ -380,3 +380,29 @@ class ConfidenceRuleTests(unittest.TestCase):
     def test_every_record_agrees_with_the_single_confidence_rule(self):
         from sdem.confidence import apply
         self.assertEqual(apply(write=False), [])
+
+
+class LogicalDataModelTests(unittest.TestCase):
+    def test_doc_current_and_model_complete(self):
+        from sdem.logical import render
+        self.assertEqual((ROOT / 'docs/logical-data-model.md').read_text(encoding='utf-8'), render())
+        from sdem.metamodel import Metamodel
+        mm = Metamodel.load()
+        lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
+        for c in lr['constraints']:
+            cd = c.get('cardinality'); self.assertTrue(cd, c['id'])
+            for k in ('source_per_target', 'target_per_source'): self.assertIn(cd[k], ('0..1', '1..1', '0..*', '1..*'), c['id'])
+        at = json.loads((ROOT / 'metamodel/entity-attributes.json').read_text(encoding='utf-8'))
+        for a in at['attributes']:
+            self.assertIn(a.get('kind'), ('reference', 'value', 'alias map', 'enumeration'), a['id'])
+            for t in a.get('references', []): self.assertTrue(mm.known(t), f"{a['id']} → {t}")
+        for t, e in mm.entities.items():
+            self.assertIn('identifier', e, t)
+
+    def test_examples_conform_with_no_errors(self):
+        from sdem.logical import conformance, _j
+        from sdem.metamodel import Metamodel, MM_DIR
+        _, _, res = conformance(Metamodel.load(), _j(MM_DIR / 'entity-attributes.json')['attributes'])
+        for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-08', 'LC-09', 'LC-10'):
+            self.assertEqual(res[f'{lc} failed'], 0, lc)
+        self.assertEqual(res['undefined'], 0)

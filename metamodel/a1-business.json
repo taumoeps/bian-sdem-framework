@@ -21,7 +21,14 @@
       "evidence_status": "interpreted_from_official_source",
       "reasoning": "BIAN's Business Capability Model names capabilities but its capability-to-Service-Domain mapping is unpublished (v14.0 release notes §3); the same concept exists exactly as ArchiMate 3.2 Capability (ch. 7, concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated). SDEM uses the ArchiMate meaning and aligns to BIAN's.",
       "confidence": "medium",
-      "confidence_basis": "built on a standard concept as SDEM chose to model it"
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A1.ValueStream",
@@ -42,7 +49,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Value Stream, ch. 7 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
-      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A1.ValueStreamStage",
@@ -63,7 +77,14 @@
       "evidence_status": "proposed_extension",
       "reasoning": "SDEM extension: ArchiMate describes a value stream as a sequence of stages but models a stage as a value stream composed into another, not as its own element; SDEM makes the stage explicit so stages can be matched to BIAN scenario steps.",
       "confidence": "medium",
-      "confidence_basis": "built on a standard concept as SDEM chose to model it"
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A1.BusinessProcess",
@@ -84,7 +105,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Business Process, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
-      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A1.BusinessActivity",
@@ -105,7 +133,14 @@
       "evidence_status": "proposed_extension",
       "reasoning": "SDEM extension of Business Process: ArchiMate decomposes a process into sub-processes (composition) rather than a separate activity element; SDEM names the lowest level an activity, the level at which a step invokes one BIAN operation.",
       "confidence": "medium",
-      "confidence_basis": "built on a standard concept as SDEM chose to model it"
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A1.BusinessService",
@@ -126,7 +161,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Business Service, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
-      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A1.BusinessActor",
@@ -147,7 +189,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Business Actor, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
-      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A1.BusinessRole",
@@ -168,7 +217,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Business Role, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
-      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A1.BusinessObject",
@@ -189,7 +245,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Business Object, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated; aligned to BIAN's Business Object Model through the S12 cross-level rule.",
       "confidence": "high",
-      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     },
     {
       "type": "A1.BusinessRequirement",
@@ -210,7 +273,14 @@
       "evidence_status": "confirmed_in_official_source",
       "reasoning": "ArchiMate 3.2 Requirement (motivation elements), ch. 6 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated. SDEM places it in A1 because requirements are stated against business behaviour.",
       "confidence": "high",
-      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)"
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+      }
     }
   ]
 }

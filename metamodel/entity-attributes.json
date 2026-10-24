@@ -76,7 +76,13 @@
         "locator": "schema/level-model.schema.json › instance.lifecycle_status",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
-      "confidence_basis": "SDEM data-contract field, defined authoritatively by SDEM"
+      "confidence_basis": "SDEM data-contract field, defined authoritatively by SDEM",
+      "values": [
+        "planned",
+        "active",
+        "deprecated",
+        "retired"
+      ]
     },
     {
       "name": "canonical_id",
@@ -158,7 +164,12 @@
       "reasoning": "Records on the process which BIAN operations it uses, so the A1→A2 USES_DOMAIN relationship can be derived by join instead of guessed. ArchiMate expresses this as behaviour served by a service; listing the operation ids on the process is SDEM's encoding.",
       "confidence": "medium",
       "read_by": "S04",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A2.ServiceOperation"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A1-02",
@@ -178,7 +189,12 @@
       "reasoning": "As for the process, at the level where one step calls one operation; makes S06 a step-1 join.",
       "confidence": "medium",
       "read_by": "S06, S07",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A2.ServiceOperation"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A1-03",
@@ -198,7 +214,12 @@
       "reasoning": "ArchiMate composes a value stream of stages; SDEM keeps them as an ordered list because stage order is what is matched to a BIAN scenario's operation sequence.",
       "confidence": "medium",
       "read_by": "S02, S03",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A1.ValueStreamStage"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A1-04",
@@ -218,7 +239,8 @@
       "reasoning": "ArchiMate defines no attributes for a business service. SDEM adds inputs and outputs so a business service can be matched to BIAN operation inputs and outputs (S09). No standard defines them.",
       "confidence": "medium",
       "read_by": "S09",
-      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers"
+      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers",
+      "kind": "value"
     },
     {
       "id": "AT-A1-05",
@@ -238,7 +260,8 @@
       "reasoning": "As for inputs.",
       "confidence": "medium",
       "read_by": "S09",
-      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers"
+      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers",
+      "kind": "value"
     },
     {
       "id": "AT-A1-06",
@@ -258,7 +281,8 @@
       "reasoning": "ArchiMate's business object has no attributes. SDEM records the bank's glossary attributes so the object can be aligned to a BIAN business object by attribute match (S12). Built on a standard concept; the field list is SDEM's.",
       "confidence": "medium",
       "read_by": "S12",
-      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers"
+      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers",
+      "kind": "value"
     },
     {
       "id": "AT-A1-07",
@@ -278,7 +302,8 @@
       "reasoning": "The bank's decoded names, supplied as data so matching never guesses (the H2 finding).",
       "confidence": "medium",
       "read_by": "S12",
-      "confidence_basis": "institution data under an SDEM convention"
+      "confidence_basis": "institution data under an SDEM convention",
+      "kind": "alias map"
     },
     {
       "id": "AT-A1-08",
@@ -298,7 +323,13 @@
       "reasoning": "ArchiMate links a requirement to the core element that realizes it; SDEM records the targets on the requirement for joining.",
       "confidence": "medium",
       "read_by": "S13, S14",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A1.BusinessProcess",
+        "A1.BusinessActivity"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A1-09",
@@ -318,7 +349,8 @@
       "reasoning": "Informational field used by one example; no rule reads it. Kept so exports that carry it validate.",
       "confidence": "low",
       "read_by": "any rule",
-      "confidence_basis": "SDEM field with no standard concept; not validated"
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "kind": "value"
     },
     {
       "id": "AT-A2-01",
@@ -338,7 +370,12 @@
       "reasoning": "BIAN defines each Service Domain by the asset it manages; the field names it.",
       "confidence": "high",
       "read_by": "step 2 gate, S17, S19",
-      "confidence_basis": "defined by a public standard (BIAN) and checked"
+      "confidence_basis": "defined by a public standard (BIAN) and checked",
+      "kind": "reference",
+      "references": [
+        "A2.AssetType"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A2-02",
@@ -358,7 +395,12 @@
       "reasoning": "BIAN defines each Service Domain by the pattern it applies; the field names it.",
       "confidence": "high",
       "read_by": "S18",
-      "confidence_basis": "defined by a public standard (BIAN) and checked"
+      "confidence_basis": "defined by a public standard (BIAN) and checked",
+      "kind": "reference",
+      "references": [
+        "A2.FunctionalPattern"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A2-03",
@@ -378,7 +420,8 @@
       "reasoning": "The institution's decoded names for the asset, supplied as data; the token gate reads them (H1, H2 findings).",
       "confidence": "medium",
       "read_by": "the step-2 boundary gate, S17, S19",
-      "confidence_basis": "institution data under an SDEM convention"
+      "confidence_basis": "institution data under an SDEM convention",
+      "kind": "value"
     },
     {
       "id": "AT-A2-04",
@@ -398,7 +441,8 @@
       "reasoning": "BIAN defines the control record and its attributes, rationalised with the Business Object Model in release 14.",
       "confidence": "high",
       "read_by": "S20, S21",
-      "confidence_basis": "defined by a public standard (BIAN) and checked"
+      "confidence_basis": "defined by a public standard (BIAN) and checked",
+      "kind": "value"
     },
     {
       "id": "AT-A2-05",
@@ -418,7 +462,8 @@
       "reasoning": "BIAN describes a control record as tracking an asset through its lifecycle but publishes no state list; SDEM records one so functions can be related to the states they act on.",
       "confidence": "medium",
       "read_by": "S21 (informational)",
-      "confidence_basis": "SDEM field built on a standard concept"
+      "confidence_basis": "SDEM field built on a standard concept",
+      "kind": "value"
     },
     {
       "id": "AT-A2-06",
@@ -438,7 +483,28 @@
       "reasoning": "BIAN names every operation by an action term; the term determines the REST method.",
       "confidence": "high",
       "read_by": "step 2, S02",
-      "confidence_basis": "defined by a public standard (BIAN) and checked"
+      "confidence_basis": "defined by a public standard (BIAN) and checked",
+      "kind": "enumeration",
+      "values": [
+        "Activate",
+        "Configure",
+        "Feedback",
+        "Create",
+        "Initiate",
+        "Register",
+        "Evaluate",
+        "Provide",
+        "Update",
+        "Control",
+        "Exchange",
+        "Capture",
+        "Execute",
+        "Request",
+        "Grant",
+        "Retrieve",
+        "Notify"
+      ],
+      "values_source": "BIAN Semantic API Practitioner Guide §3.2.5, Figure 14 — 17 action terms"
     },
     {
       "id": "AT-A2-07",
@@ -458,7 +524,8 @@
       "reasoning": "BIAN qualifies an operation by the control-record partition it acts on; the qualifier appears in the REST path. Null when the operation acts on the whole record.",
       "confidence": "high",
       "read_by": "step 2 check 3, S26",
-      "confidence_basis": "defined by a public standard (BIAN) and checked"
+      "confidence_basis": "defined by a public standard (BIAN) and checked",
+      "kind": "value"
     },
     {
       "id": "AT-A2-08",
@@ -478,7 +545,8 @@
       "reasoning": "BIAN derives an operation's request from the control record's attributes; SDEM lists their names.",
       "confidence": "high",
       "read_by": "step 2 check 4, S09",
-      "confidence_basis": "defined by a public standard (BIAN) and checked"
+      "confidence_basis": "defined by a public standard (BIAN) and checked",
+      "kind": "value"
     },
     {
       "id": "AT-A2-09",
@@ -498,7 +566,8 @@
       "reasoning": "As for inputs, for the response.",
       "confidence": "high",
       "read_by": "step 2 check 4, S09",
-      "confidence_basis": "defined by a public standard (BIAN) and checked"
+      "confidence_basis": "defined by a public standard (BIAN) and checked",
+      "kind": "value"
     },
     {
       "id": "AT-A2-10",
@@ -518,7 +587,8 @@
       "reasoning": "Decoded names supplied as data (H2 finding).",
       "confidence": "medium",
       "read_by": "step 2 check 3",
-      "confidence_basis": "institution data under an SDEM convention"
+      "confidence_basis": "institution data under an SDEM convention",
+      "kind": "value"
     },
     {
       "id": "AT-A2-11",
@@ -538,7 +608,12 @@
       "reasoning": "BIAN publishes scenarios as sequences of operations across domains.",
       "confidence": "high",
       "read_by": "S02, S03, S28",
-      "confidence_basis": "defined by a public standard (BIAN) and checked"
+      "confidence_basis": "defined by a public standard (BIAN) and checked",
+      "kind": "reference",
+      "references": [
+        "A2.ServiceOperation"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A2-12",
@@ -558,7 +633,8 @@
       "reasoning": "BIAN's BOM defines each object's attributes.",
       "confidence": "high",
       "read_by": "S12, S30, S31",
-      "confidence_basis": "defined by a public standard (BIAN) and checked"
+      "confidence_basis": "defined by a public standard (BIAN) and checked",
+      "kind": "value"
     },
     {
       "id": "AT-A3-01",
@@ -578,7 +654,21 @@
       "reasoning": "OpenAPI keys each operation by its HTTP method; BIAN maps action terms to methods (Practitioner Guide §3.5). Non-HTTP values are SDEM's, so step 2 can mark them not applicable (H1).",
       "confidence": "high",
       "read_by": "step 2 check 2",
-      "confidence_basis": "defined by a public standard (OpenAPI) and checked"
+      "confidence_basis": "defined by a public standard (OpenAPI) and checked",
+      "kind": "enumeration",
+      "values": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "HEAD",
+        "OPTIONS",
+        "BATCH",
+        "MQ",
+        "FILE"
+      ],
+      "values_source": "HTTP methods (OpenAPI); BATCH, MQ and FILE are SDEM values for non-HTTP interfaces (use case H1)"
     },
     {
       "id": "AT-A3-02",
@@ -598,7 +688,8 @@
       "reasoning": "OpenAPI's path; BIAN places the qualifier in it.",
       "confidence": "high",
       "read_by": "step 2 checks 1, 3",
-      "confidence_basis": "defined by a public standard (OpenAPI) and checked"
+      "confidence_basis": "defined by a public standard (OpenAPI) and checked",
+      "kind": "value"
     },
     {
       "id": "AT-A3-03",
@@ -618,7 +709,8 @@
       "reasoning": "OpenAPI describes payloads as schemas; SDEM flattens them to field names, which is enough to match against BIAN attributes but loses structure.",
       "confidence": "medium",
       "read_by": "step 2 check 4",
-      "confidence_basis": "OpenAPI defines payload schemas; SDEM flattens them to field names"
+      "confidence_basis": "OpenAPI defines payload schemas; SDEM flattens them to field names",
+      "kind": "value"
     },
     {
       "id": "AT-A3-04",
@@ -638,7 +730,12 @@
       "reasoning": "The join key for DEPLOYED_ON. ArchiMate expresses hosting as a node assigned to the deployed artifact; SDEM records the platform on the component.",
       "confidence": "medium",
       "read_by": "S33, S34, S35",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A4.InfrastructureComponent"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A3-05",
@@ -658,7 +755,12 @@
       "reasoning": "The join key for DEPLOYED_AS, pointing at SDEM's Deployment entity.",
       "confidence": "medium",
       "read_by": "S32",
-      "confidence_basis": "SDEM field built on a standard concept"
+      "confidence_basis": "SDEM field built on a standard concept",
+      "kind": "reference",
+      "references": [
+        "A4.Deployment"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A3-06",
@@ -678,7 +780,12 @@
       "reasoning": "ArchiMate: an artifact realizes an application component; SDEM records the artifacts on the component.",
       "confidence": "medium",
       "read_by": "S39",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A4.Artifact"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A3-07",
@@ -698,7 +805,12 @@
       "reasoning": "No standard field; SDEM's convenience key for S37. A network's connects list is the alternative; the zone wins when they disagree (C3 finding).",
       "confidence": "medium",
       "read_by": "S37",
-      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers"
+      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers",
+      "kind": "reference",
+      "references": [
+        "A4.CommunicationNetwork"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A3-08",
@@ -718,7 +830,8 @@
       "reasoning": "Informational field used by examples; no rule reads it.",
       "confidence": "low",
       "read_by": "any rule",
-      "confidence_basis": "SDEM field with no standard concept; not validated"
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "kind": "value"
     },
     {
       "id": "AT-A3-09",
@@ -738,7 +851,12 @@
       "reasoning": "Duplicates the within-level access relationship already in the export; one example carries it. Deprecated: use the relationship.",
       "confidence": "low",
       "read_by": "—",
-      "confidence_basis": "deprecated"
+      "confidence_basis": "deprecated",
+      "kind": "reference",
+      "references": [
+        "A3.DataEntity"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A3-10",
@@ -758,7 +876,12 @@
       "reasoning": "ArchiMate: a technology service serves the application layer; SDEM records the services on the application service.",
       "confidence": "medium",
       "read_by": "S41",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A4.TechnologyService"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A3-11",
@@ -778,7 +901,12 @@
       "reasoning": "Records the gateway or listener the interface is reached through.",
       "confidence": "medium",
       "read_by": "S43",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A4.TechnologyInterface"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A3-12",
@@ -798,7 +926,8 @@
       "reasoning": "Decoded product names supplied as data; raised H2 recall from 0.78 to 1.00.",
       "confidence": "medium",
       "read_by": "step 2 check 4, S30",
-      "confidence_basis": "institution data under an SDEM convention"
+      "confidence_basis": "institution data under an SDEM convention",
+      "kind": "alias map"
     },
     {
       "id": "AT-A3-13",
@@ -818,7 +947,12 @@
       "reasoning": "No standard field; lets functions be related to BIAN operations through the APIs they serve.",
       "confidence": "medium",
       "read_by": "S18, S21",
-      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers"
+      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers",
+      "kind": "reference",
+      "references": [
+        "A3.APIOperation"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A3-14",
@@ -838,7 +972,12 @@
       "reasoning": "As for application service consumes, at function grain.",
       "confidence": "medium",
       "read_by": "S45",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A4.TechnologyService"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A3-15",
@@ -858,7 +997,8 @@
       "reasoning": "ArchiMate's data object has no attributes; SDEM records columns so tables can be matched to BIAN control records and business objects. Built on a standard concept; the field list is SDEM's.",
       "confidence": "medium",
       "read_by": "S20, S30, S31",
-      "confidence_basis": "SDEM field built on a standard concept"
+      "confidence_basis": "SDEM field built on a standard concept",
+      "kind": "value"
     },
     {
       "id": "AT-A3-16",
@@ -878,7 +1018,13 @@
       "reasoning": "Records where the data lives: a database (system software) or an object store (artifact).",
       "confidence": "medium",
       "read_by": "S49, S50",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A4.SystemSoftware",
+        "A4.Artifact"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A3-17",
@@ -898,7 +1044,8 @@
       "reasoning": "Overrides the aliases inherited from the interfaces of components that access the entity.",
       "confidence": "medium",
       "read_by": "S30, S20",
-      "confidence_basis": "institution data under an SDEM convention"
+      "confidence_basis": "institution data under an SDEM convention",
+      "kind": "alias map"
     },
     {
       "id": "AT-A3-18",
@@ -918,7 +1065,12 @@
       "reasoning": "No adopted standard yet; corresponds to an AsyncAPI channel and to ArchiMate flow to a technology service.",
       "confidence": "medium",
       "read_by": "S51; aligns with AsyncAPI channels (not adopted)",
-      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers"
+      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers",
+      "kind": "reference",
+      "references": [
+        "A4.TechnologyService"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A3-19",
@@ -938,7 +1090,12 @@
       "reasoning": "TOGAF composes solution building blocks of solution components; the specification text could not be checked.",
       "confidence": "medium",
       "read_by": "S52–S54",
-      "confidence_basis": "login-gated TOGAF source; validated against sealed answers"
+      "confidence_basis": "login-gated TOGAF source; validated against sealed answers",
+      "kind": "reference",
+      "references": [
+        "A3.ApplicationComponent"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A4-01",
@@ -958,7 +1115,12 @@
       "reasoning": "SDEM's Deployment makes ArchiMate's \"artifact assigned to node\" a record; these three fields name its parts.",
       "confidence": "medium",
       "read_by": "S32, S33, S40",
-      "confidence_basis": "SDEM field built on a standard concept"
+      "confidence_basis": "SDEM field built on a standard concept",
+      "kind": "reference",
+      "references": [
+        "A3.ApplicationComponent"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A4-02",
@@ -978,7 +1140,12 @@
       "reasoning": "As above.",
       "confidence": "medium",
       "read_by": "S40",
-      "confidence_basis": "SDEM field built on a standard concept"
+      "confidence_basis": "SDEM field built on a standard concept",
+      "kind": "reference",
+      "references": [
+        "A4.DeploymentEnvironment"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A4-03",
@@ -998,7 +1165,12 @@
       "reasoning": "As above.",
       "confidence": "medium",
       "read_by": "S33",
-      "confidence_basis": "SDEM field built on a standard concept"
+      "confidence_basis": "SDEM field built on a standard concept",
+      "kind": "reference",
+      "references": [
+        "A4.InfrastructureComponent"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A4-04",
@@ -1018,7 +1190,12 @@
       "reasoning": "The platform-side view of deployed_on; either side is enough for the join.",
       "confidence": "medium",
       "read_by": "S33, S34",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A3.ApplicationComponent"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A4-05",
@@ -1038,7 +1215,12 @@
       "reasoning": "As for Node.",
       "confidence": "medium",
       "read_by": "S35",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A3.ApplicationComponent"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A4-06",
@@ -1058,7 +1240,12 @@
       "reasoning": "As for Node.",
       "confidence": "medium",
       "read_by": "S33",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A3.ApplicationComponent"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A4-07",
@@ -1078,7 +1265,13 @@
       "reasoning": "ArchiMate associates nodes with networks.",
       "confidence": "medium",
       "read_by": "S37",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A4.Node",
+        "A4.Device"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A4-08",
@@ -1098,7 +1291,13 @@
       "reasoning": "ArchiMate: a path connects two nodes.",
       "confidence": "medium",
       "read_by": "S38",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A4.Node",
+        "A4.Device"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A4-09",
@@ -1118,7 +1317,13 @@
       "reasoning": "As above.",
       "confidence": "medium",
       "read_by": "S38",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A4.Node",
+        "A4.Device"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A4-10",
@@ -1138,7 +1343,12 @@
       "reasoning": "ArchiMate: a communication network realizes a path.",
       "confidence": "medium",
       "read_by": "—",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A4.CommunicationNetwork"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A4-11",
@@ -1158,7 +1368,12 @@
       "reasoning": "No standard field; SDEM's key for S38.",
       "confidence": "medium",
       "read_by": "S38",
-      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers"
+      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers",
+      "kind": "reference",
+      "references": [
+        "A3.ApplicationComponent"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A4-12",
@@ -1178,7 +1393,12 @@
       "reasoning": "ArchiMate: an interface is assigned to the service it exposes.",
       "confidence": "medium",
       "read_by": "S42, S44",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A4.TechnologyService"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph"
     },
     {
       "id": "AT-A4-13",
@@ -1198,7 +1418,12 @@
       "reasoning": "Platform-side view of ApplicationInterface.exposed_through.",
       "confidence": "medium",
       "read_by": "S43",
-      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers"
+      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers",
+      "kind": "reference",
+      "references": [
+        "A3.ApplicationInterface"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     },
     {
       "id": "AT-A4-14",
@@ -1218,7 +1443,12 @@
       "reasoning": "Platform-side view of built_as.",
       "confidence": "medium",
       "read_by": "S39",
-      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose"
+      "confidence_basis": "standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose",
+      "kind": "reference",
+      "references": [
+        "A3.ApplicationComponent"
+      ],
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
     }
   ]
 }

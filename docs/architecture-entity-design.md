@@ -140,6 +140,7 @@ These 12 entity types are SDEM design decisions rather than one-to-one standard 
 
 ## Related
 
+- [`logical-data-model.md`](logical-data-model.md) — the Logical Data Model assembled from the entities, attributes and relationships.
 - [`architecture-attribute-design.md`](architecture-attribute-design.md) — the attributes of each entity type.
 - [`relationships-planning.md`](relationships-planning.md) — every link allowed inside each architecture.
 - [`inference-audit.md`](inference-audit.md) — how much of SDEM is grounded, confirmed or inferred, including the source of each attribute.

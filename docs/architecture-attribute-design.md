@@ -173,6 +173,7 @@ From `schema/level-model.schema.json`. These are the instance's identity and lif
 
 ## Related
 
+- [`logical-data-model.md`](logical-data-model.md) — the Logical Data Model assembled from the entities, attributes and relationships.
 - [`architecture-entity-design.md`](architecture-entity-design.md) — the entity types.
 - [`inference-audit.md`](inference-audit.md) — how much of SDEM is grounded, confirmed or inferred.
 - `metamodel/export-conventions.json` — the join keys each rule reads; every key there appears here.

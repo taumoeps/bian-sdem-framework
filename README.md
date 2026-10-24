@@ -218,6 +218,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 |---|---|
 | [`sdem-overview.md`](docs/sdem-overview.md) | **start here** — principles, components and boundaries, the four things that look alike, a worked example, a glossary |
 | [`knowledge-graph-design.md`](docs/knowledge-graph-design.md) | how the local and federated graphs are built and queried |
+| [`logical-data-model.md`](docs/logical-data-model.md) | the Logical Data Model: identifiers, typed attributes, allowed values, references, cardinality, constraints, ER diagrams per architecture, and conformance of the examples |
 | [`architecture-attribute-design.md`](docs/architecture-attribute-design.md) | the Architecture Attribute Design: every attribute by architecture, with type, source reference, readers, verification, reasoning and confidence |
 | [`architecture-entity-design.md`](docs/architecture-entity-design.md) | the Architecture Entity Design: every entity type by architecture, with source reference, verification, reasoning and confidence |
 | [`architecture-metamodel-spec.md`](docs/architecture-metamodel-spec.md) | the Architecture Metamodel (v0.4 entity specification; current rows in `relationships-planning.md`) |

@@ -67,7 +67,13 @@
       "reference_source": "[SL14] Service Landscape (public portal)",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "1..1",
+        "target_per_source": "1..*",
+        "basis": "BIAN",
+        "reasoning": "each business domain sits in exactly one business area; an area has at least one domain (Service Landscape structure)"
+      }
     },
     {
       "level": "A2",
@@ -82,7 +88,13 @@
       "reference_source": "[SL14] Service Landscape (public portal)",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "1..1",
+        "target_per_source": "1..*",
+        "basis": "BIAN",
+        "reasoning": "each Service Domain sits in exactly one business domain"
+      }
     },
     {
       "level": "A2",
@@ -97,7 +109,13 @@
       "reference_source": "[SL14] MetaModel Overview (public portal)",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "1..1",
+        "target_per_source": "1..*",
+        "basis": "BIAN",
+        "reasoning": "each service group belongs to exactly one Service Domain; a domain offers at least one group"
+      }
     },
     {
       "level": "A2",
@@ -112,7 +130,13 @@
       "reference_source": "[SL14] MetaModel Overview (public portal)",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "1..1",
+        "target_per_source": "1..*",
+        "basis": "BIAN",
+        "reasoning": "each operation belongs to exactly one service group"
+      }
     },
     {
       "level": "A2",
@@ -127,7 +151,13 @@
       "reference_source": "[SL14] MetaModel Overview; Control Record Model (public portal)",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "1..1",
+        "target_per_source": "1..1",
+        "basis": "BIAN",
+        "reasoning": "each Service Domain governs exactly one control record, and each control record belongs to one domain"
+      }
     },
     {
       "level": "A2",
@@ -142,7 +172,13 @@
       "reference_source": "[SL14] MetaModel Overview (public portal)",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "1..1",
+        "basis": "BIAN",
+        "reasoning": "each Service Domain applies exactly one functional pattern; a pattern is shared by many domains"
+      }
     },
     {
       "level": "A2",
@@ -157,7 +193,13 @@
       "reference_source": "[SL14] MetaModel Overview (public portal)",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "1..1",
+        "basis": "BIAN",
+        "reasoning": "each Service Domain manages exactly one asset type"
+      }
     },
     {
       "level": "A2",
@@ -172,7 +214,13 @@
       "reference_source": "[SAPG] §3.2.4, §3.5",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..1",
+        "basis": "BIAN",
+        "reasoning": "an operation is qualified by at most one behaviour qualifier"
+      }
     },
     {
       "level": "A2",
@@ -187,7 +235,13 @@
       "reference_source": "[SL14] Business Scenarios; [SAPG] §3.3",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "1..*",
+        "basis": "BIAN",
+        "reasoning": "a scenario sequences at least one operation; an operation can appear in many scenarios"
+      }
     },
     {
       "level": "A2",
@@ -202,7 +256,13 @@
       "reference_source": "[SL14] Business Object Model (public portal)",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "1..1",
+        "target_per_source": "1..*",
+        "basis": "BIAN",
+        "reasoning": "each attribute belongs to exactly one business object"
+      }
     },
     {
       "level": "A2",
@@ -217,7 +277,13 @@
       "reference_source": "[SL14] MetaModel Overview; [SAPG] §3.2.4",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "1..1",
+        "target_per_source": "0..*",
+        "basis": "BIAN",
+        "reasoning": "each qualifier partitions exactly one control record"
+      }
     },
     {
       "level": "A2",
@@ -232,7 +298,13 @@
       "reference_source": "[SL14] BOM Overview; [RN14] §1.3",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "a control record draws attributes from many business objects; an object types many records"
+      }
     },
     {
       "level": "A2",
@@ -247,7 +319,13 @@
       "reference_source": "[SAPG] §3.2.5, §3.5",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "1..1",
+        "basis": "BIAN",
+        "reasoning": "each operation acts on exactly one control record — its domain's"
+      }
     },
     {
       "level": "A2",
@@ -262,7 +340,13 @@
       "reference_source": "[SAPG] §3.2.6",
       "confidence": "high",
       "verification": "verified",
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "domains connect freely"
+      }
     },
     {
       "level": "A2",
@@ -278,7 +362,13 @@
       "confidence": "high",
       "verification": "verified",
       "enforceable": false,
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "1..1",
+        "basis": "BIAN",
+        "reasoning": "each wireframe depicts one Service Domain"
+      }
     },
     {
       "level": "A2",
@@ -294,7 +384,13 @@
       "confidence": "high",
       "verification": "verified",
       "enforceable": false,
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "1..1",
+        "basis": "BIAN",
+        "reasoning": "each Semantic API is derived from one Service Domain"
+      }
     },
     {
       "level": "A2",
@@ -310,7 +406,13 @@
       "confidence": "low",
       "verification": "sdem_reading",
       "enforceable": false,
-      "confidence_basis": "SDEM reading with no standard relationship; not validated"
+      "confidence_basis": "SDEM reading with no standard relationship; not validated",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "1..*",
+        "basis": "SDEM reading",
+        "reasoning": "a BOM release aggregates the objects; SDEM reading"
+      }
     },
     {
       "level": "A1",
@@ -333,7 +435,13 @@
         "test": "Archi relationship matrix: Capability → Capability must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A1",
@@ -356,7 +464,13 @@
         "test": "Archi relationship matrix: Capability → Capability must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -379,7 +493,13 @@
         "test": "Archi relationship matrix: Capability → Value Stream must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -402,7 +522,13 @@
         "test": "Archi relationship matrix: Capability → Value Stream must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -425,7 +551,13 @@
         "test": "Archi relationship matrix: Value Stream → Value Stream must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "in ArchiMate a part belongs to at most one composite whole; a whole may have many parts"
+      }
     },
     {
       "level": "A1",
@@ -448,7 +580,13 @@
         "test": "Archi relationship matrix: Value Stream → Value Stream must list 't' (triggering)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -471,7 +609,13 @@
         "test": "Archi relationship matrix: Value Stream → Value Stream must list 'f' (flow)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -494,7 +638,13 @@
         "test": "Archi relationship matrix: Business Process → Capability must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -517,7 +667,13 @@
         "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -540,7 +696,13 @@
         "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -563,7 +725,13 @@
         "test": "Archi relationship matrix: Business Process → Business Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -586,7 +754,13 @@
         "test": "Archi relationship matrix: Business Process → Business Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -609,7 +783,13 @@
         "test": "Archi relationship matrix: Business Process → Requirement must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -632,7 +812,13 @@
         "test": "Archi relationship matrix: Business Process → Business Process must list 't' (triggering)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -655,7 +841,13 @@
         "test": "Archi relationship matrix: Business Process → Business Process must list 'f' (flow)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -678,7 +870,13 @@
         "test": "Archi relationship matrix: Business Process → Capability must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -701,7 +899,13 @@
         "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -724,7 +928,13 @@
         "test": "Archi relationship matrix: Business Process → Value Stream must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -747,7 +957,13 @@
         "test": "Archi relationship matrix: Business Process → Business Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -770,7 +986,13 @@
         "test": "Archi relationship matrix: Business Process → Business Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -793,7 +1015,13 @@
         "test": "Archi relationship matrix: Business Process → Requirement must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -816,7 +1044,13 @@
         "test": "Archi relationship matrix: Business Process → Business Process must list 't' (triggering)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -839,7 +1073,13 @@
         "test": "Archi relationship matrix: Business Process → Business Process must list 'f' (flow)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -862,7 +1102,13 @@
         "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "in ArchiMate a part belongs to at most one composite whole; a whole may have many parts"
+      }
     },
     {
       "level": "A1",
@@ -885,7 +1131,13 @@
         "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A1",
@@ -908,7 +1160,13 @@
         "test": "Archi relationship matrix: Business Process → Business Process must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A1",
@@ -931,7 +1189,13 @@
         "test": "Archi relationship matrix: Business Service → Business Process must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -954,7 +1218,13 @@
         "test": "Archi relationship matrix: Business Service → Business Process must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -977,7 +1247,13 @@
         "test": "Archi relationship matrix: Business Service → Business Role must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1000,7 +1276,13 @@
         "test": "Archi relationship matrix: Business Service → Business Actor must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1023,7 +1305,13 @@
         "test": "Archi relationship matrix: Business Service → Business Service must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A1",
@@ -1046,7 +1334,13 @@
         "test": "Archi relationship matrix: Business Service → Business Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1069,7 +1363,13 @@
         "test": "Archi relationship matrix: Business Service → Requirement must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1092,7 +1392,13 @@
         "test": "Archi relationship matrix: Capability → Requirement must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1115,7 +1421,13 @@
         "test": "Archi relationship matrix: Business Actor → Business Role must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1138,7 +1450,13 @@
         "test": "Archi relationship matrix: Business Role → Business Process must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1161,7 +1479,13 @@
         "test": "Archi relationship matrix: Business Role → Business Process must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1184,7 +1508,13 @@
         "test": "Archi relationship matrix: Business Actor → Business Process must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1207,7 +1537,13 @@
         "test": "Archi relationship matrix: Business Actor → Business Process must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1230,7 +1566,13 @@
         "test": "Archi relationship matrix: Business Actor → Business Actor must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A1",
@@ -1253,7 +1595,13 @@
         "test": "Archi relationship matrix: Business Actor → Business Actor must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1276,7 +1624,13 @@
         "test": "Archi relationship matrix: Business Role → Business Role must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A1",
@@ -1299,7 +1653,13 @@
         "test": "Archi relationship matrix: Business Role → Business Role must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1322,7 +1682,13 @@
         "test": "Archi relationship matrix: Business Object → Business Object must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A1",
@@ -1345,7 +1711,13 @@
         "test": "Archi relationship matrix: Business Object → Business Object must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1368,7 +1740,13 @@
         "test": "Archi relationship matrix: Business Object → Business Object must list 's' (specialization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A1",
@@ -1391,7 +1769,13 @@
         "test": "Archi relationship matrix: Requirement → Requirement must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A1",
@@ -1414,7 +1798,13 @@
         "test": "Archi relationship matrix: Requirement → Requirement must list 's' (specialization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1437,7 +1827,13 @@
         "test": "Archi relationship matrix: Application Component → Application Component must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A3",
@@ -1460,7 +1856,13 @@
         "test": "Archi relationship matrix: Application Component → Application Component must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1483,7 +1885,13 @@
         "test": "Archi relationship matrix: Application Component → Application Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "in ArchiMate a part belongs to at most one composite whole; a whole may have many parts"
+      }
     },
     {
       "level": "A3",
@@ -1506,7 +1914,13 @@
         "test": "Archi relationship matrix: Application Component → Application Function must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1529,7 +1943,13 @@
         "test": "Archi relationship matrix: Application Function → Application Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1552,7 +1972,13 @@
         "test": "Archi relationship matrix: Application Component → Application Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1575,7 +2001,13 @@
         "test": "Archi relationship matrix: Application Interface → Application Service must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1598,7 +2030,13 @@
         "test": "Archi relationship matrix: Application Service → Application Component must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1621,7 +2059,13 @@
         "test": "Archi relationship matrix: Application Service → Application Function must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1644,7 +2088,13 @@
         "test": "Archi relationship matrix: Application Component → Application Component must list 'f' (flow)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1667,7 +2117,13 @@
         "test": "Archi relationship matrix: Application Component → Application Component must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1690,7 +2146,13 @@
         "test": "Archi relationship matrix: Application Component → Application Component must list 't' (triggering)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1713,7 +2175,13 @@
         "test": "Archi relationship matrix: Application Function → Application Function must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A3",
@@ -1736,7 +2204,13 @@
         "test": "Archi relationship matrix: Application Function → Application Function must list 't' (triggering)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1759,7 +2233,13 @@
         "test": "Archi relationship matrix: Application Function → Application Function must list 'f' (flow)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1782,7 +2262,13 @@
         "test": "Archi relationship matrix: Application Component → Data Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1805,7 +2291,13 @@
         "test": "Archi relationship matrix: Application Function → Data Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1828,7 +2320,13 @@
         "test": "Archi relationship matrix: Application Service → Data Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1851,7 +2349,13 @@
         "test": "Archi relationship matrix: Data Object → Data Object must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A3",
@@ -1874,7 +2378,13 @@
         "test": "Archi relationship matrix: Data Object → Data Object must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1897,7 +2407,13 @@
         "test": "Archi relationship matrix: Data Object → Data Object must list 's' (specialization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1920,7 +2436,13 @@
         "test": "Archi relationship matrix: Application Component → Application Event must list 't' (triggering)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1943,7 +2465,13 @@
         "test": "Archi relationship matrix: Application Function → Application Event must list 't' (triggering)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1966,7 +2494,13 @@
         "test": "Archi relationship matrix: Application Event → Application Function must list 't' (triggering)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -1989,7 +2523,13 @@
         "test": "Archi relationship matrix: Application Event → Application Component must list 't' (triggering)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -2012,7 +2552,13 @@
         "test": "Archi relationship matrix: Application Event → Data Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -2035,7 +2581,13 @@
         "test": "Archi relationship matrix: Application Interface → Application Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "in ArchiMate a part belongs to at most one composite whole; a whole may have many parts"
+      }
     },
     {
       "level": "A3",
@@ -2058,7 +2610,13 @@
         "test": "Archi relationship matrix: Application Component → Application Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "in ArchiMate a part belongs to at most one composite whole; a whole may have many parts"
+      }
     },
     {
       "level": "A3",
@@ -2081,7 +2639,13 @@
         "test": "Archi relationship matrix: Application Interface → Data Object must list 'a' (access)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -2103,7 +2667,13 @@
         "confidence": "medium",
         "test": "Not testable against the ArchiMate matrix; check the public TOGAF content-metamodel summary (building blocks aggregate components) and report."
       },
-      "confidence_basis": "login-gated TOGAF source, unverified; exercised by the C3 coverage case"
+      "confidence_basis": "login-gated TOGAF source, unverified; exercised by the C3 coverage case",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A3",
@@ -2125,7 +2695,13 @@
         "confidence": "medium",
         "test": "Not testable against the ArchiMate matrix; check the public TOGAF content-metamodel summary (building blocks aggregate components) and report."
       },
-      "confidence_basis": "login-gated TOGAF source, unverified; exercised by the C3 coverage case"
+      "confidence_basis": "login-gated TOGAF source, unverified; exercised by the C3 coverage case",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A4",
@@ -2148,7 +2724,13 @@
         "test": "Archi relationship matrix: Node → Node must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A4",
@@ -2171,7 +2753,13 @@
         "test": "Archi relationship matrix: Node → Node must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2194,7 +2782,13 @@
         "test": "Archi relationship matrix: Node → Device must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2217,7 +2811,13 @@
         "test": "Archi relationship matrix: Node → System Software must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2240,7 +2840,13 @@
         "test": "Archi relationship matrix: Device → System Software must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2263,7 +2869,13 @@
         "test": "Archi relationship matrix: System Software → System Software must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2286,7 +2898,13 @@
         "test": "Archi relationship matrix: Node → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2309,7 +2927,13 @@
         "test": "Archi relationship matrix: Node → Technology Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2332,7 +2956,13 @@
         "test": "Archi relationship matrix: Node → Technology Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "in ArchiMate a part belongs to at most one composite whole; a whole may have many parts"
+      }
     },
     {
       "level": "A4",
@@ -2355,7 +2985,13 @@
         "test": "Archi relationship matrix: Technology Service → Node must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2378,7 +3014,13 @@
         "test": "Archi relationship matrix: Node → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2401,7 +3043,13 @@
         "test": "Archi relationship matrix: Device → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2424,7 +3072,13 @@
         "test": "Archi relationship matrix: Device → Technology Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2447,7 +3101,13 @@
         "test": "Archi relationship matrix: Device → Technology Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "in ArchiMate a part belongs to at most one composite whole; a whole may have many parts"
+      }
     },
     {
       "level": "A4",
@@ -2470,7 +3130,13 @@
         "test": "Archi relationship matrix: Technology Service → Device must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2493,7 +3159,13 @@
         "test": "Archi relationship matrix: Device → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2516,7 +3188,13 @@
         "test": "Archi relationship matrix: System Software → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2539,7 +3217,13 @@
         "test": "Archi relationship matrix: System Software → Technology Service must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2562,7 +3246,13 @@
         "test": "Archi relationship matrix: System Software → Technology Interface must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "in ArchiMate a part belongs to at most one composite whole; a whole may have many parts"
+      }
     },
     {
       "level": "A4",
@@ -2585,7 +3275,13 @@
         "test": "Archi relationship matrix: Technology Service → System Software must list 'v' (serving)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2608,7 +3304,13 @@
         "test": "Archi relationship matrix: System Software → Artifact must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2631,7 +3333,13 @@
         "test": "Archi relationship matrix: Technology Interface → Technology Service must list 'i' (assignment)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2654,7 +3362,13 @@
         "test": "Archi relationship matrix: Technology Service → Technology Service must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A4",
@@ -2677,7 +3391,13 @@
         "test": "Archi relationship matrix: Node → Node must list 'f' (flow)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2700,7 +3420,13 @@
         "test": "Archi relationship matrix: Node → Node must list 't' (triggering)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2723,7 +3449,13 @@
         "test": "Archi relationship matrix: Communication Network → Path must list 'r' (realization)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2746,7 +3478,13 @@
         "test": "Archi relationship matrix: Communication Network → Communication Network must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A4",
@@ -2769,7 +3507,13 @@
         "test": "Archi relationship matrix: Artifact → Artifact must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     },
     {
       "level": "A4",
@@ -2792,7 +3536,13 @@
         "test": "Archi relationship matrix: Artifact → Artifact must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2815,7 +3565,13 @@
         "test": "Archi relationship matrix: Device → Device must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2838,7 +3594,13 @@
         "test": "Archi relationship matrix: Node → Artifact must list 'g' (aggregation) or 'i' (assignment)",
         "oracle_verdict": "confirmed, alternative accepted"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2861,7 +3623,13 @@
         "test": "Archi relationship matrix: Node → Node must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2884,7 +3652,13 @@
         "test": "Archi relationship matrix: Node → Device must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2907,7 +3681,13 @@
         "test": "Archi relationship matrix: Node → System Software must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2930,7 +3710,13 @@
         "test": "Archi relationship matrix: Artifact → Artifact must list 'g' (aggregation)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "ArchiMate sets no multiplicity on this relationship; SDEM leaves it open"
+      }
     },
     {
       "level": "A4",
@@ -2953,7 +3739,13 @@
         "test": "Archi relationship matrix: Device → Device must list 'c' (composition)",
         "oracle_verdict": "confirmed"
       },
-      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)"
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
     }
   ],
   "policy": "Every within-level relationship must match a constraint row for its level, or be an association (ArchiMate's generic relationship, permitted between any two entities of one level). A2 rows come from BIAN's Service Landscape metamodel; A1, A3 and A4 rows are derived from ArchiMate 3.2 (ch. 6–10) and TOGAF 10 for the concepts each SDEM entity derives from (see README › Reference architecture provenance). ArchiMate and TOGAF are login-gated: those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations.",

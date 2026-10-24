@@ -147,6 +147,21 @@
             "low"
           ],
           "description": "strength of the source basis: high = the concept exists one-to-one in a public standard; medium = interpreted from, or an SDEM extension of, a standard concept; low = SDEM design with no standard concept"
+        },
+        "identifier": {
+          "type": "object",
+          "description": "logical data model: the natural key that makes an instance unique beyond its id, with its basis",
+          "properties": {
+            "key": {
+              "type": "array"
+            },
+            "basis": {
+              "type": "string"
+            },
+            "reasoning": {
+              "type": "string"
+            }
+          }
         }
       }
     }

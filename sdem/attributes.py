@@ -69,7 +69,7 @@ def render(rec=None):
             '- **`A3.ApplicationComponent.accesses` is deprecated**: it duplicates the A3 `access` relationship; exports should use the relationship.',
             '- **`A3.Event.published_to`** would gain a public source if AsyncAPI were adopted (a channel).',
             '- **Required flags reflect today\'s examples.** Turning them into checks is the next build; a real export may show that a "required" field is often missing, which is a finding, not a failure of the export.', '',
-            '## Related', '', '- [`architecture-entity-design.md`](architecture-entity-design.md) — the entity types.', '- [`inference-audit.md`](inference-audit.md) — how much of SDEM is grounded, confirmed or inferred.',
+            '## Related', '', '- [`logical-data-model.md`](logical-data-model.md) — the Logical Data Model assembled from the entities, attributes and relationships.', '- [`architecture-entity-design.md`](architecture-entity-design.md) — the entity types.', '- [`inference-audit.md`](inference-audit.md) — how much of SDEM is grounded, confirmed or inferred.',
             '- `metamodel/export-conventions.json` — the join keys each rule reads; every key there appears here.', '']
     return _terms('\n'.join(out) + '\n')
 
