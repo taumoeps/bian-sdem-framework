@@ -45,7 +45,14 @@ def render(level):
     rec = json.loads((ROOT / 'metamodel' / 'entity-attributes.json').read_text())
     lv = level.upper()
     cur = [a for a in rec['attributes'] if a['entity'].startswith(lv)]; core = [c for c in rec['core_fields'] if c['name'] != 'attributes']
-    A = d['attributes']; common = [a for a in A if a['entity'] == 'all']; common_names = {a['name'] for a in common}
+    A = d['attributes']; drafted = {a['id'] for a in A}
+    cur = [a for a in cur if (a.get('approved') or {}).get('draft_id') not in drafted]  # a re-rendered draft shows its own fields as proposed, not twice
+    common = [a for a in A if a['entity'] == 'all']; common_status = 'proposed'
+    if not common:  # common attributes already approved: show them from the attribute record
+        common_status = 'approved'
+        common = [{'id': c['id'], 'name': c['name'], 'type': c['type'], 'values': c.get('values'), 'references': c.get('references'), 'meaning': c['description'], 'question': c['question'],
+                   'reasoning': c['reasoning'].replace(f"Answers: {c['question']} ", ''), 'source': c['reference']['standard'], 'uri': c['reference']['uri'], 'term': c['reference']['locator'], 'confidence': c['confidence']} for c in rec.get('common_attributes', [])]
+    common_names = {a['name'] for a in common}
     out = [f"# {NAMES[level]} — Data Model (DRAFT for review)", '',
            f"> **Status: draft, {d['date']}.** Proposed fields are marked **proposed**; nothing here is in the model until you approve it. Record: `metamodel/drafts/{level}-descriptive-attributes.json`. Rendered by `python scripts/render_data_model_draft.py {level}`.", '',
            '**How to read each entity.** The **Data Model** table is the complete record for the entity: every field, its type, whether it is required, its allowed values, what it holds and its **source reference**. Fields come in groups — **Core** (identity, on every entity), **Common** (descriptive, on every entity), **Inherited** (from a parent entity) and **Specific** (this entity only). Each entity and each field carries its **source reference**, **reasoning** (for proposed fields, starting with the design question it answers) and **confidence**. In an export file the common and specific fields sit inside the instance\'s `attributes` object.', '',
@@ -53,19 +60,19 @@ def render(level):
            '## 1. Fields every entity has', '', '### Core fields (existing)', '', '| Field | Type | Required | Holds | Source reference | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']
     out += [f"| `{c['name']}` | {ctype(c)} | {'yes' if c['required'] else 'no'} | {c['description']} | {csrc(c)} | {c['reasoning']} | **{c['confidence']}** |" for c in core]
     if common:
-        out += ['', '### Common fields (proposed for all four architectures)', '', '| ID | Field | Type | Allowed values | Holds | Answers | Source | Reasoning | Confidence |', '|---|---|---|---|---|---|---|---|---|']
+        out += ['', f"### Common attributes ({common_status} for all four architectures)", '', '| ID | Field | Type | Allowed values | Holds | Answers | Source | Reasoning | Confidence |', '|---|---|---|---|---|---|---|---|---|']
         out += [f"| {a['id']} | `{a['name']}` | {a['type']} | {allowed(a)} | {a['meaning']} | {a['question']} | {src(a)} | {a['reasoning']} | **{a['confidence']}** |" for a in common]
     out.append('')
     n = 1
     for e in ents:
-        if e.get('abstract') or e.get('artefact'): continue
+        if e.get('abstract'): continue
         n += 1
         ex = [a for a in cur if a['entity'] == e['type']]; pr = [a for a in A if a['entity'] == e['type']]
         dup = [a for a in ex if a['name'] in common_names]; ex = [a for a in ex if a['name'] not in common_names]
         par = e.get('extends')
         pex = [a for a in cur if par and a['entity'] == par]; ppr = [a for a in A if par and a['entity'] == par]
         r = e['reference']
-        out += [f"## {n}. {e['type']} — Data Model", '', f"**{e['definition'].rstrip('.')}.**" + (f" A kind of `{par}`: it has all of its parent's fields as well." if par else ''), '',
+        out += [f"## {n}. {e['type']} — Data Model", '', ('*An artefact: a published document or model file, not an architecture element.* ' if e.get('artefact') else '') + f"**{e['definition'].rstrip('.')}.**" + (f" A kind of `{par}`: it has all of its parent's fields as well." if par else ''), '',
                 '| Entity | Source reference | Reasoning | Confidence |', '|---|---|---|---|',
                 f"| `{e['type']}` | [{r['standard']}{(' ' + r['release']) if r['release'] not in r['standard'] else ''}: {r['concept']}]({r['uri']}){(', ' + r['locator']) if r.get('locator') else ''} | {e['reasoning']} | **{e['confidence']}** |", '',
                 '| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Reasoning | Confidence | Status |', '|---|---|---|---|---|---|---|---|---|---|---|']
@@ -78,7 +85,7 @@ def render(level):
             row(f"`{c['name']}`", 'Core', ctype(c), 'yes' if c['required'] else 'no', ', '.join(c.get('values', [])) or '—',
                 ('always `' + e['type'] + '`') if c['name'] == 'type' else c['description'], csrc(c), c['reasoning'], c['confidence'], 'existing')
         for x in common:
-            row(f"`{x['name']}`", 'Common', x['type'], 'no', allowed(x), x['meaning'], src(x), f"Answers: {x['question']} {x['reasoning']}", x['confidence'], f"proposed {x['id']}")
+            row(f"`{x['name']}`", 'Common', x['type'], 'no', allowed(x), x['meaning'], src(x), f"Answers: {x['question']} {x['reasoning']}", x['confidence'], f"{common_status} {x['id']}")
         for x in pex:
             row(f"`{x['name']}`", f"Inherited from `{par.split('.')[1]}`", CT.get(x['type'], x['type']), 'yes' if x['required'] else 'no', allowed(x), x['description'], esrc(x), x['reasoning'], x['confidence'], 'existing')
         for x in ppr:
