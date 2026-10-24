@@ -2,7 +2,7 @@
 
 > **Status: draft, 2026-10-24.** Proposed fields are marked **proposed**; nothing here is in the model until you approve it. Record: `metamodel/drafts/a1-descriptive-attributes.json`. Rendered by `python scripts/render_data_model_draft.py a1`.
 
-**How to read each entity.** The **Data Model** table is the complete record for the entity: every field, its type, whether it is required, its allowed values and what it holds. Fields come in groups — **Core** (identity, on every entity), **Common** (descriptive, on every entity), **Inherited** (from a parent entity) and **Specific** (this entity only). The **Sources** table under it gives, for each specific field, the question it answers, where it comes from, why, and how confident that basis is; the common fields' sources are in section 1. In an export file the common and specific fields sit inside the instance's `attributes` object.
+**How to read each entity.** The **Data Model** table is the complete record for the entity: every field, its type, whether it is required, its allowed values, what it holds and its **source reference**. Fields come in groups — **Core** (identity, on every entity), **Common** (descriptive, on every entity), **Inherited** (from a parent entity) and **Specific** (this entity only). The **Sources** table under it gives, for each specific field, the question it answers, where it comes from, why, and how confident that basis is; the common fields' sources are in section 1. In an export file the common and specific fields sit inside the instance's `attributes` object.
 
 **How the draft was built.** One field per design question, each from the highest available source — BIAN → open public standards readable without login (Dublin Core, W3C ORG, W3C SKOS, public privacy law) → ArchiMate concepts (meaning only) → SDEM-defined. Not used: TOGAF and the ArchiMate text (login), paid standards, vendor schemas, your employer's model. Confidence: **high** = a public standard defines it and it was checked; **medium** = built on a standard concept as SDEM chose; **low** = SDEM-defined.
 
@@ -10,16 +10,16 @@
 
 ### Core fields (existing)
 
-| Field | Type | Required | Holds |
-|---|---|---|---|
-| `id` | text | yes | the instance's permanent key — the source tool's own persistent id |
-| `type` | text | yes | an entity type from the catalogue |
-| `version` | text | yes | the instance's version |
-| `name` | text | yes | human-readable name |
-| `lifecycle_status` | enum | no | lifecycle state |
-| `canonical_id` | text | no | external reference id, e.g. a BIAN concept id on A2 instances |
-| `description` | text | no | scope statement |
-| `definition_uri` | text | no | link to the source definition |
+| Field | Type | Required | Holds | Source reference |
+|---|---|---|---|---|
+| `id` | text | yes | the instance's permanent key — the source tool's own persistent id | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4 |
+| `type` | text | yes | an entity type from the catalogue | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.type |
+| `version` | text | yes | the instance's version | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.version |
+| `name` | text | yes | human-readable name | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4 |
+| `lifecycle_status` | enum | no | lifecycle state | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.lifecycle_status |
+| `canonical_id` | text | no | external reference id, e.g. a BIAN concept id on A2 instances | [BIAN Service Landscape 14.0 (concept identifiers)](https://bian.org/servicelandscape-14-0-0/): A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json |
+| `description` | text | no | scope statement | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.description |
+| `definition_uri` | text | no | link to the source definition | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.definition_uri |
 
 ### Common fields (proposed for all four architectures)
 
@@ -41,70 +41,70 @@
 
 **A business ability independent of how it is implemented.**
 
-| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Status |
-|---|---|---|---|---|---|---|---|
-| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | existing |
-| 2 | `type` | Core | text | yes | — | always `A1.BusinessCapability` | existing |
-| 3 | `version` | Core | text | yes | — | the instance's version | existing |
-| 4 | `name` | Core | text | yes | — | human-readable name | existing |
-| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | existing |
-| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
-| 7 | `description` | Core | text | no | — | scope statement | existing |
-| 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
-| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
-| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
-| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
-| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
-| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
-| 20 | **`level`** | Specific | integer ≥ 1 | no | — | depth in the capability hierarchy (1 = top) | **proposed** |
-| 21 | **`strategic_importance`** | Specific | enum | no | core, differentiating, supporting, commodity | how much the capability matters to strategy | **proposed** |
-| 22 | **`maturity_current`** | Specific | integer 1–5 | no | — | current maturity, 1 (low) to 5 (high) | **proposed** |
-| 23 | **`maturity_target`** | Specific | integer 1–5 | no | — | target maturity, 1 to 5 | **proposed** |
+| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Status |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 2 | `type` | Core | text | yes | — | always `A1.BusinessCapability` | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.type | existing |
+| 3 | `version` | Core | text | yes | — | the instance's version | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.version | existing |
+| 4 | `name` | Core | text | yes | — | human-readable name | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.lifecycle_status | existing |
+| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | [BIAN Service Landscape 14.0 (concept identifiers)](https://bian.org/servicelandscape-14-0-0/): A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json | existing |
+| 7 | `description` | Core | text | no | — | scope statement | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.description | existing |
+| 8 | `definition_uri` | Core | text | no | — | link to the source definition | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.definition_uri | existing |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | proposed |
+| 20 | **`level`** | Specific | integer ≥ 1 | no | — | depth in the capability hierarchy (1 = top) | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Capability composition (hierarchy)` | **proposed** |
+| 21 | **`strategic_importance`** | Specific | enum | no | core, differentiating, supporting, commodity | how much the capability matters to strategy | SDEM-defined — no open standard; decision DA1-13 in this draft | **proposed** |
+| 22 | **`maturity_current`** | Specific | integer 1–5 | no | — | current maturity, 1 (low) to 5 (high) | SDEM-defined — no open standard; decision DA1-14 in this draft | **proposed** |
+| 23 | **`maturity_target`** | Specific | integer 1–5 | no | — | target maturity, 1 to 5 | SDEM-defined — no open standard; decision DA1-15 in this draft | **proposed** |
 
 **Sources of the specific fields**
 
 | Field | Status | Answers | Source | Reasoning | Confidence |
 |---|---|---|---|---|---|
 | `level` | proposed DA1-12 | Show the capability map at level 1, 2 or 3. | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Capability composition (hierarchy)` | Depth in the capability hierarchy. The hierarchy itself is the composition link between capabilities; `level` makes the depth queryable without walking it. | **medium** |
-| `strategic_importance` | proposed DA1-13 | Which capabilities matter most to strategy? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | Common capability heat-map dimension; no open standard defines it or its values. | **low** |
-| `maturity_current` | proposed DA1-14 | Where do we need to invest? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | Current maturity on a 1–5 scale. Maturity scales (e.g. CMMI) are proprietary; SDEM defines only the range. | **low** |
-| `maturity_target` | proposed DA1-15 | Where do we need to invest? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | Target maturity, same scale; the gap to current drives investment questions. | **low** |
+| `strategic_importance` | proposed DA1-13 | Which capabilities matter most to strategy? | SDEM-defined — no open standard; decision DA1-13 in this draft | Common capability heat-map dimension; no open standard defines it or its values. | **low** |
+| `maturity_current` | proposed DA1-14 | Where do we need to invest? | SDEM-defined — no open standard; decision DA1-14 in this draft | Current maturity on a 1–5 scale. Maturity scales (e.g. CMMI) are proprietary; SDEM defines only the range. | **low** |
+| `maturity_target` | proposed DA1-15 | Where do we need to invest? | SDEM-defined — no open standard; decision DA1-15 in this draft | Target maturity, same scale; the gap to current drives investment questions. | **low** |
 | ~~`owner`~~ (existing text field) | **replaced** by the common `owner` | — | SDEM | Informational field used by one example; no rule reads it. Kept so exports that carry it validate. The common field supersedes it: it refers to an actor or role instead of holding free text. | low |
 
 ## 3. A1.ValueStream — Data Model
 
 **The stages by which stakeholders receive value.**
 
-| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Status |
-|---|---|---|---|---|---|---|---|
-| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | existing |
-| 2 | `type` | Core | text | yes | — | always `A1.ValueStream` | existing |
-| 3 | `version` | Core | text | yes | — | the instance's version | existing |
-| 4 | `name` | Core | text | yes | — | human-readable name | existing |
-| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | existing |
-| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
-| 7 | `description` | Core | text | no | — | scope statement | existing |
-| 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
-| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
-| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
-| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
-| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
-| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
-| 20 | `stages` | Specific | list of text | no | refers to `A1.ValueStreamStage` | ordered ids of the stream's stages | existing |
-| 21 | **`stakeholder`** | Specific | text | no | — | who the value stream delivers value to | **proposed** |
-| 22 | **`value_proposition`** | Specific | text | no | — | the value the stream delivers | **proposed** |
+| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Status |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 2 | `type` | Core | text | yes | — | always `A1.ValueStream` | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.type | existing |
+| 3 | `version` | Core | text | yes | — | the instance's version | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.version | existing |
+| 4 | `name` | Core | text | yes | — | human-readable name | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.lifecycle_status | existing |
+| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | [BIAN Service Landscape 14.0 (concept identifiers)](https://bian.org/servicelandscape-14-0-0/): A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json | existing |
+| 7 | `description` | Core | text | no | — | scope statement | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.description | existing |
+| 8 | `definition_uri` | Core | text | no | — | link to the source definition | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.definition_uri | existing |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | proposed |
+| 20 | `stages` | Specific | list of text | no | refers to `A1.ValueStreamStage` | ordered ids of the stream's stages | [ArchiMate 3.2 (relationship)](https://pubs.opengroup.org/architecture/archimate3-doc/): composition, ch. 7 | existing |
+| 21 | **`stakeholder`** | Specific | text | no | — | who the value stream delivers value to | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Stakeholder (motivation)` | **proposed** |
+| 22 | **`value_proposition`** | Specific | text | no | — | the value the stream delivers | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Value (motivation)` | **proposed** |
 
 **Sources of the specific fields**
 
@@ -118,74 +118,74 @@
 
 **One named segment of a value stream.** A kind of `A1.ValueStream`: it has all of its parent's fields as well.
 
-| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Status |
-|---|---|---|---|---|---|---|---|
-| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | existing |
-| 2 | `type` | Core | text | yes | — | always `A1.ValueStreamStage` | existing |
-| 3 | `version` | Core | text | yes | — | the instance's version | existing |
-| 4 | `name` | Core | text | yes | — | human-readable name | existing |
-| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | existing |
-| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
-| 7 | `description` | Core | text | no | — | scope statement | existing |
-| 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
-| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
-| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
-| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
-| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
-| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
-| 20 | `stages` | Inherited from `ValueStream` | list of text | no | refers to `A1.ValueStreamStage` | ordered ids of the stream's stages | existing |
-| 21 | `stakeholder` | Inherited from `ValueStream` | text | no | — | who the value stream delivers value to | proposed |
-| 22 | `value_proposition` | Inherited from `ValueStream` | text | no | — | the value the stream delivers | proposed |
-| 23 | **`entrance_criteria`** | Specific | text | no | — | condition for entering the stage | **proposed** |
-| 24 | **`exit_criteria`** | Specific | text | no | — | condition for completing the stage | **proposed** |
-| 25 | **`value_item`** | Specific | text | no | — | the value the stage adds | **proposed** |
+| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Status |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 2 | `type` | Core | text | yes | — | always `A1.ValueStreamStage` | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.type | existing |
+| 3 | `version` | Core | text | yes | — | the instance's version | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.version | existing |
+| 4 | `name` | Core | text | yes | — | human-readable name | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.lifecycle_status | existing |
+| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | [BIAN Service Landscape 14.0 (concept identifiers)](https://bian.org/servicelandscape-14-0-0/): A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json | existing |
+| 7 | `description` | Core | text | no | — | scope statement | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.description | existing |
+| 8 | `definition_uri` | Core | text | no | — | link to the source definition | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.definition_uri | existing |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | proposed |
+| 20 | `stages` | Inherited from `ValueStream` | list of text | no | refers to `A1.ValueStreamStage` | ordered ids of the stream's stages | [ArchiMate 3.2 (relationship)](https://pubs.opengroup.org/architecture/archimate3-doc/): composition, ch. 7 | existing |
+| 21 | `stakeholder` | Inherited from `ValueStream` | text | no | — | who the value stream delivers value to | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Stakeholder (motivation)` | proposed |
+| 22 | `value_proposition` | Inherited from `ValueStream` | text | no | — | the value the stream delivers | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Value (motivation)` | proposed |
+| 23 | **`entrance_criteria`** | Specific | text | no | — | condition for entering the stage | SDEM-defined — no open standard; decision DA1-18 in this draft | **proposed** |
+| 24 | **`exit_criteria`** | Specific | text | no | — | condition for completing the stage | SDEM-defined — no open standard; decision DA1-19 in this draft | **proposed** |
+| 25 | **`value_item`** | Specific | text | no | — | the value the stage adds | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Value (motivation)` | **proposed** |
 
 **Sources of the specific fields**
 
 | Field | Status | Answers | Source | Reasoning | Confidence |
 |---|---|---|---|---|---|
-| `entrance_criteria` | proposed DA1-18 | When does a stage start? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | Condition for entering the stage. Widely used in value-stream mapping, but the source that defines it (BIZBOK) is membership-only. | **low** |
-| `exit_criteria` | proposed DA1-19 | When is a stage done? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | Condition for leaving the stage; as above. | **low** |
+| `entrance_criteria` | proposed DA1-18 | When does a stage start? | SDEM-defined — no open standard; decision DA1-18 in this draft | Condition for entering the stage. Widely used in value-stream mapping, but the source that defines it (BIZBOK) is membership-only. | **low** |
+| `exit_criteria` | proposed DA1-19 | When is a stage done? | SDEM-defined — no open standard; decision DA1-19 in this draft | Condition for leaving the stage; as above. | **low** |
 | `value_item` | proposed DA1-20 | What value does each stage add? | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Value (motivation)` | The value a stage contributes; ArchiMate Value concept. | **medium** |
 
 ## 5. A1.BusinessProcess — Data Model
 
 **Coordinated business behaviour.**
 
-| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Status |
-|---|---|---|---|---|---|---|---|
-| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | existing |
-| 2 | `type` | Core | text | yes | — | always `A1.BusinessProcess` | existing |
-| 3 | `version` | Core | text | yes | — | the instance's version | existing |
-| 4 | `name` | Core | text | yes | — | human-readable name | existing |
-| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | existing |
-| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
-| 7 | `description` | Core | text | no | — | scope statement | existing |
-| 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
-| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
-| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
-| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
-| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
-| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
-| 20 | `invokes` | Specific | list of text | no | refers to `A2.ServiceOperation` | A2 operations the process steps call | existing |
-| 21 | **`level`** | Specific | integer ≥ 1 | no | — | depth in the process hierarchy (1 = top) | **proposed** |
-| 22 | **`triggered_by`** | Specific | text | no | — | the business event that starts it | **proposed** |
-| 23 | **`outcome`** | Specific | text | no | — | the result it produces | **proposed** |
-| 24 | **`criticality`** | Specific | enum | no | high, medium, low | how critical the process is to the bank | **proposed** |
-| 25 | **`frequency`** | Specific | enum | no | continuous, daily, weekly, monthly, ad hoc | how often it runs | **proposed** |
-| 26 | **`automation_level`** | Specific | enum | no | manual, partly automated, automated | how far it is automated | **proposed** |
+| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Status |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 2 | `type` | Core | text | yes | — | always `A1.BusinessProcess` | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.type | existing |
+| 3 | `version` | Core | text | yes | — | the instance's version | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.version | existing |
+| 4 | `name` | Core | text | yes | — | human-readable name | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.lifecycle_status | existing |
+| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | [BIAN Service Landscape 14.0 (concept identifiers)](https://bian.org/servicelandscape-14-0-0/): A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json | existing |
+| 7 | `description` | Core | text | no | — | scope statement | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.description | existing |
+| 8 | `definition_uri` | Core | text | no | — | link to the source definition | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.definition_uri | existing |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | proposed |
+| 20 | `invokes` | Specific | list of text | no | refers to `A2.ServiceOperation` | A2 operations the process steps call | [ArchiMate 3.2 (relationship)](https://pubs.opengroup.org/architecture/archimate3-doc/): serving / realization, ch. 5 & 8 | existing |
+| 21 | **`level`** | Specific | integer ≥ 1 | no | — | depth in the process hierarchy (1 = top) | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Business Process composition` | **proposed** |
+| 22 | **`triggered_by`** | Specific | text | no | — | the business event that starts it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Business Event triggering a process` | **proposed** |
+| 23 | **`outcome`** | Specific | text | no | — | the result it produces | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Outcome (motivation)` | **proposed** |
+| 24 | **`criticality`** | Specific | enum | no | high, medium, low | how critical the process is to the bank | SDEM-defined — no open standard; decision DA1-24 in this draft | **proposed** |
+| 25 | **`frequency`** | Specific | enum | no | continuous, daily, weekly, monthly, ad hoc | how often it runs | SDEM-defined — no open standard; decision DA1-25 in this draft | **proposed** |
+| 26 | **`automation_level`** | Specific | enum | no | manual, partly automated, automated | how far it is automated | SDEM-defined — no open standard; decision DA1-26 in this draft | **proposed** |
 
 **Sources of the specific fields**
 
@@ -195,44 +195,44 @@
 | `level` | proposed DA1-21 | Show processes at level 1, 2, 3 … | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Business Process composition` | Depth in the process hierarchy; the hierarchy itself is the composition link. | **medium** |
 | `triggered_by` | proposed DA1-22 | What starts this process? | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Business Event triggering a process` | The business event that starts it (e.g. "customer submits payment"). | **medium** |
 | `outcome` | proposed DA1-23 | What result does it produce? | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Outcome (motivation)` | The end result the process achieves. | **medium** |
-| `criticality` | proposed DA1-24 | Which critical processes depend on this platform or application? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | The single most useful field for impact analysis. No open standard defines it; business-continuity standards (ISO 22301) are paid. | **low** |
-| `frequency` | proposed DA1-25 | How often does it run? What is the blast radius of an outage? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | How often the process runs; informs outage impact. | **low** |
-| `automation_level` | proposed DA1-26 | Where is manual effort? What is a candidate for automation? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | Degree of automation; no standard scale. | **low** |
+| `criticality` | proposed DA1-24 | Which critical processes depend on this platform or application? | SDEM-defined — no open standard; decision DA1-24 in this draft | The single most useful field for impact analysis. No open standard defines it; business-continuity standards (ISO 22301) are paid. | **low** |
+| `frequency` | proposed DA1-25 | How often does it run? What is the blast radius of an outage? | SDEM-defined — no open standard; decision DA1-25 in this draft | How often the process runs; informs outage impact. | **low** |
+| `automation_level` | proposed DA1-26 | Where is manual effort? What is a candidate for automation? | SDEM-defined — no open standard; decision DA1-26 in this draft | Degree of automation; no standard scale. | **low** |
 
 ## 6. A1.BusinessActivity — Data Model
 
 **A fine-grained activity within a process.** A kind of `A1.BusinessProcess`: it has all of its parent's fields as well.
 
-| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Status |
-|---|---|---|---|---|---|---|---|
-| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | existing |
-| 2 | `type` | Core | text | yes | — | always `A1.BusinessActivity` | existing |
-| 3 | `version` | Core | text | yes | — | the instance's version | existing |
-| 4 | `name` | Core | text | yes | — | human-readable name | existing |
-| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | existing |
-| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
-| 7 | `description` | Core | text | no | — | scope statement | existing |
-| 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
-| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
-| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
-| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
-| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
-| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
-| 20 | `invokes` | Inherited from `BusinessProcess` | list of text | no | refers to `A2.ServiceOperation` | A2 operations the process steps call | existing |
-| 21 | `level` | Inherited from `BusinessProcess` | integer ≥ 1 | no | — | depth in the process hierarchy (1 = top) | proposed |
-| 22 | `triggered_by` | Inherited from `BusinessProcess` | text | no | — | the business event that starts it | proposed |
-| 23 | `outcome` | Inherited from `BusinessProcess` | text | no | — | the result it produces | proposed |
-| 24 | `criticality` | Inherited from `BusinessProcess` | enum | no | high, medium, low | how critical the process is to the bank | proposed |
-| 25 | `frequency` | Inherited from `BusinessProcess` | enum | no | continuous, daily, weekly, monthly, ad hoc | how often it runs | proposed |
-| 26 | `automation_level` | Inherited from `BusinessProcess` | enum | no | manual, partly automated, automated | how far it is automated | proposed |
-| 27 | `invokes` | Specific | list of text | no | refers to `A2.ServiceOperation` | A2 operations the activity calls | existing |
-| 28 | **`sequence`** | Specific | integer ≥ 1 | no | — | position of the step within its process | **proposed** |
+| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Status |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 2 | `type` | Core | text | yes | — | always `A1.BusinessActivity` | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.type | existing |
+| 3 | `version` | Core | text | yes | — | the instance's version | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.version | existing |
+| 4 | `name` | Core | text | yes | — | human-readable name | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.lifecycle_status | existing |
+| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | [BIAN Service Landscape 14.0 (concept identifiers)](https://bian.org/servicelandscape-14-0-0/): A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json | existing |
+| 7 | `description` | Core | text | no | — | scope statement | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.description | existing |
+| 8 | `definition_uri` | Core | text | no | — | link to the source definition | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.definition_uri | existing |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | proposed |
+| 20 | `invokes` | Inherited from `BusinessProcess` | list of text | no | refers to `A2.ServiceOperation` | A2 operations the process steps call | [ArchiMate 3.2 (relationship)](https://pubs.opengroup.org/architecture/archimate3-doc/): serving / realization, ch. 5 & 8 | existing |
+| 21 | `level` | Inherited from `BusinessProcess` | integer ≥ 1 | no | — | depth in the process hierarchy (1 = top) | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Business Process composition` | proposed |
+| 22 | `triggered_by` | Inherited from `BusinessProcess` | text | no | — | the business event that starts it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Business Event triggering a process` | proposed |
+| 23 | `outcome` | Inherited from `BusinessProcess` | text | no | — | the result it produces | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Outcome (motivation)` | proposed |
+| 24 | `criticality` | Inherited from `BusinessProcess` | enum | no | high, medium, low | how critical the process is to the bank | SDEM-defined — no open standard; decision DA1-24 in this draft | proposed |
+| 25 | `frequency` | Inherited from `BusinessProcess` | enum | no | continuous, daily, weekly, monthly, ad hoc | how often it runs | SDEM-defined — no open standard; decision DA1-25 in this draft | proposed |
+| 26 | `automation_level` | Inherited from `BusinessProcess` | enum | no | manual, partly automated, automated | how far it is automated | SDEM-defined — no open standard; decision DA1-26 in this draft | proposed |
+| 27 | `invokes` | Specific | list of text | no | refers to `A2.ServiceOperation` | A2 operations the activity calls | [ArchiMate 3.2 (relationship)](https://pubs.opengroup.org/architecture/archimate3-doc/): serving, ch. 5 & 8 | existing |
+| 28 | **`sequence`** | Specific | integer ≥ 1 | no | — | position of the step within its process | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `triggering / flow between process steps` | **proposed** |
 
 **Sources of the specific fields**
 
@@ -245,33 +245,33 @@
 
 **Business behaviour exposed to consumers.**
 
-| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Status |
-|---|---|---|---|---|---|---|---|
-| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | existing |
-| 2 | `type` | Core | text | yes | — | always `A1.BusinessService` | existing |
-| 3 | `version` | Core | text | yes | — | the instance's version | existing |
-| 4 | `name` | Core | text | yes | — | human-readable name | existing |
-| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | existing |
-| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
-| 7 | `description` | Core | text | no | — | scope statement | existing |
-| 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
-| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
-| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
-| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
-| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
-| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
-| 20 | `inputs` | Specific | list of text | no | — | attribute names the service takes | existing |
-| 21 | `outputs` | Specific | list of text | no | — | attribute names the service returns | existing |
-| 22 | **`consumers`** | Specific | list of references → A1.BusinessActor or A1.BusinessRole | no | — | the actors or roles the service serves | **proposed** |
-| 23 | **`customer_facing`** | Specific | boolean | no | — | whether customers use it directly | **proposed** |
-| 24 | **`channels`** | Specific | list of enum | no | branch, online, mobile, contact centre, partner, API | channels it is offered through | **proposed** |
-| 25 | **`service_level`** | Specific | text | no | — | the committed service level (e.g. "same day") | **proposed** |
+| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Status |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 2 | `type` | Core | text | yes | — | always `A1.BusinessService` | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.type | existing |
+| 3 | `version` | Core | text | yes | — | the instance's version | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.version | existing |
+| 4 | `name` | Core | text | yes | — | human-readable name | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.lifecycle_status | existing |
+| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | [BIAN Service Landscape 14.0 (concept identifiers)](https://bian.org/servicelandscape-14-0-0/): A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json | existing |
+| 7 | `description` | Core | text | no | — | scope statement | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.description | existing |
+| 8 | `definition_uri` | Core | text | no | — | link to the source definition | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.definition_uri | existing |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | proposed |
+| 20 | `inputs` | Specific | list of text | no | — | attribute names the service takes | [SDEM](https://github.com/taumoeps/bian-sdem-framework): SDEM rule S09 (business service ↔ operation by inputs and outputs); validated in use case C1 — docs/relationship-rules-spec.md | existing |
+| 21 | `outputs` | Specific | list of text | no | — | attribute names the service returns | [SDEM](https://github.com/taumoeps/bian-sdem-framework): SDEM rule S09; validated in use case C1 — docs/relationship-rules-spec.md | existing |
+| 22 | **`consumers`** | Specific | list of references → A1.BusinessActor or A1.BusinessRole | no | — | the actors or roles the service serves | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `serving (service serves actor or role)` | **proposed** |
+| 23 | **`customer_facing`** | Specific | boolean | no | — | whether customers use it directly | SDEM-defined — no open standard; decision DA1-29 in this draft | **proposed** |
+| 24 | **`channels`** | Specific | list of enum | no | branch, online, mobile, contact centre, partner, API | channels it is offered through | SDEM-defined — no open standard; decision DA1-30 in this draft | **proposed** |
+| 25 | **`service_level`** | Specific | text | no | — | the committed service level (e.g. "same day") | SDEM-defined — no open standard; decision DA1-31 in this draft | **proposed** |
 
 **Sources of the specific fields**
 
@@ -280,47 +280,47 @@
 | `inputs` | existing | — | SDEM (SDEM) | ArchiMate defines no attributes for a business service. SDEM adds inputs and outputs so a business service can be matched to BIAN operation inputs and outputs (S09). No standard defines them. | medium |
 | `outputs` | existing | — | SDEM (SDEM) | As for inputs. | medium |
 | `consumers` | proposed DA1-28 | Who uses this service? | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `serving (service serves actor or role)` | The actors or roles the service serves. | **medium** |
-| `customer_facing` | proposed DA1-29 | Which customer-facing services depend on this? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | Whether customers use the service directly; key for customer-impact questions. | **low** |
-| `channels` | proposed DA1-30 | Through which channels is it offered? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | Delivery channels. ArchiMate models channels as business interfaces; the value list is SDEM's. | **low** |
-| `service_level` | proposed DA1-31 | What has the bank committed to? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | The service-level target (e.g. "same-day"). Service-management standards that define this (ITIL) are paid. | **low** |
+| `customer_facing` | proposed DA1-29 | Which customer-facing services depend on this? | SDEM-defined — no open standard; decision DA1-29 in this draft | Whether customers use the service directly; key for customer-impact questions. | **low** |
+| `channels` | proposed DA1-30 | Through which channels is it offered? | SDEM-defined — no open standard; decision DA1-30 in this draft | Delivery channels. ArchiMate models channels as business interfaces; the value list is SDEM's. | **low** |
+| `service_level` | proposed DA1-31 | What has the bank committed to? | SDEM-defined — no open standard; decision DA1-31 in this draft | The service-level target (e.g. "same-day"). Service-management standards that define this (ITIL) are paid. | **low** |
 
 ## 8. A1.BusinessActor — Data Model
 
 **An individual or organisation capable of business behaviour.**
 
-| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Status |
-|---|---|---|---|---|---|---|---|
-| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | existing |
-| 2 | `type` | Core | text | yes | — | always `A1.BusinessActor` | existing |
-| 3 | `version` | Core | text | yes | — | the instance's version | existing |
-| 4 | `name` | Core | text | yes | — | human-readable name | existing |
-| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | existing |
-| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
-| 7 | `description` | Core | text | no | — | scope statement | existing |
-| 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
-| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
-| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
-| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
-| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
-| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
-| 20 | **`actor_kind`** | Specific | enum | no | formal organisation, organisational unit, person | whether it is a formal organisation, a unit or a person | **proposed** |
-| 21 | **`external`** | Specific | boolean | no | — | whether it is outside the bank | **proposed** |
-| 22 | **`classification`** | Specific | text | no | — | its category (e.g. regulator, partner, business line) | **proposed** |
-| 23 | **`purpose`** | Specific | text | no | — | why the unit or organisation exists | **proposed** |
-| 24 | **`location`** | Specific | text | no | — | the site where it is based | **proposed** |
+| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Status |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 2 | `type` | Core | text | yes | — | always `A1.BusinessActor` | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.type | existing |
+| 3 | `version` | Core | text | yes | — | the instance's version | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.version | existing |
+| 4 | `name` | Core | text | yes | — | human-readable name | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.lifecycle_status | existing |
+| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | [BIAN Service Landscape 14.0 (concept identifiers)](https://bian.org/servicelandscape-14-0-0/): A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json | existing |
+| 7 | `description` | Core | text | no | — | scope statement | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.description | existing |
+| 8 | `definition_uri` | Core | text | no | — | link to the source definition | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.definition_uri | existing |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | proposed |
+| 20 | **`actor_kind`** | Specific | enum | no | formal organisation, organisational unit, person | whether it is a formal organisation, a unit or a person | [W3C Organization Ontology](https://www.w3.org/TR/vocab-org/) `org:FormalOrganization, org:OrganizationalUnit (persons via foaf:Person, which ORG uses)` | **proposed** |
+| 21 | **`external`** | Specific | boolean | no | — | whether it is outside the bank | SDEM-defined — no open standard; decision DA1-33 in this draft | **proposed** |
+| 22 | **`classification`** | Specific | text | no | — | its category (e.g. regulator, partner, business line) | [W3C Organization Ontology](https://www.w3.org/TR/vocab-org/) `org:classification` | **proposed** |
+| 23 | **`purpose`** | Specific | text | no | — | why the unit or organisation exists | [W3C Organization Ontology](https://www.w3.org/TR/vocab-org/) `org:purpose` | **proposed** |
+| 24 | **`location`** | Specific | text | no | — | the site where it is based | [W3C Organization Ontology](https://www.w3.org/TR/vocab-org/) `org:basedAt / org:Site` | **proposed** |
 
 **Sources of the specific fields**
 
 | Field | Status | Answers | Source | Reasoning | Confidence |
 |---|---|---|---|---|---|
 | `actor_kind` | proposed DA1-32 | Is this a company, a department or a person? | [W3C Organization Ontology](https://www.w3.org/TR/vocab-org/) `org:FormalOrganization, org:OrganizationalUnit (persons via foaf:Person, which ORG uses)` | The three kinds of agent ORG distinguishes. | **high** |
-| `external` | proposed DA1-33 | Which external parties (customers, partners, regulators) are involved? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | Whether the actor is outside the bank. ORG does not distinguish internal from external. | **low** |
+| `external` | proposed DA1-33 | Which external parties (customers, partners, regulators) are involved? | SDEM-defined — no open standard; decision DA1-33 in this draft | Whether the actor is outside the bank. ORG does not distinguish internal from external. | **low** |
 | `classification` | proposed DA1-34 | What category of organisation is this? | [W3C Organization Ontology](https://www.w3.org/TR/vocab-org/) `org:classification` | A category from a scheme (e.g. regulator, partner, business line). | **high** |
 | `purpose` | proposed DA1-35 | Why does this unit exist? | [W3C Organization Ontology](https://www.w3.org/TR/vocab-org/) `org:purpose` | The organisation's or unit's purpose. | **high** |
 | `location` | proposed DA1-36 | Where is it based? | [W3C Organization Ontology](https://www.w3.org/TR/vocab-org/) `org:basedAt / org:Site` | The site where the actor is based. | **high** |
@@ -329,29 +329,29 @@
 
 **Responsibility for a class of business behaviour.**
 
-| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Status |
-|---|---|---|---|---|---|---|---|
-| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | existing |
-| 2 | `type` | Core | text | yes | — | always `A1.BusinessRole` | existing |
-| 3 | `version` | Core | text | yes | — | the instance's version | existing |
-| 4 | `name` | Core | text | yes | — | human-readable name | existing |
-| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | existing |
-| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
-| 7 | `description` | Core | text | no | — | scope statement | existing |
-| 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
-| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
-| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
-| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
-| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
-| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
-| 20 | **`role_kind`** | Specific | enum | no | role, post | whether it is a generic role or a specific post | **proposed** |
-| 21 | **`responsibilities`** | Specific | text | no | — | what the role is responsible for | **proposed** |
+| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Status |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 2 | `type` | Core | text | yes | — | always `A1.BusinessRole` | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.type | existing |
+| 3 | `version` | Core | text | yes | — | the instance's version | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.version | existing |
+| 4 | `name` | Core | text | yes | — | human-readable name | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.lifecycle_status | existing |
+| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | [BIAN Service Landscape 14.0 (concept identifiers)](https://bian.org/servicelandscape-14-0-0/): A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json | existing |
+| 7 | `description` | Core | text | no | — | scope statement | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.description | existing |
+| 8 | `definition_uri` | Core | text | no | — | link to the source definition | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.definition_uri | existing |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | proposed |
+| 20 | **`role_kind`** | Specific | enum | no | role, post | whether it is a generic role or a specific post | [W3C Organization Ontology](https://www.w3.org/TR/vocab-org/) `org:Role, org:Post` | **proposed** |
+| 21 | **`responsibilities`** | Specific | text | no | — | what the role is responsible for | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Business Role` | **proposed** |
 
 **Sources of the specific fields**
 
@@ -364,31 +364,31 @@
 
 **A business-level information concept.**
 
-| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Status |
-|---|---|---|---|---|---|---|---|
-| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | existing |
-| 2 | `type` | Core | text | yes | — | always `A1.BusinessObject` | existing |
-| 3 | `version` | Core | text | yes | — | the instance's version | existing |
-| 4 | `name` | Core | text | yes | — | human-readable name | existing |
-| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | existing |
-| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
-| 7 | `description` | Core | text | no | — | scope statement | existing |
-| 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
-| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
-| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
-| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
-| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
-| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
-| 20 | `attributes` | Specific | list of text | no | — | glossary attribute names | existing |
-| 21 | `field_aliases` | Specific | name map | no | — | glossary name → canonical attribute name | existing |
-| 22 | **`glossary_uri`** | Specific | text (URI) | no | — | link to the agreed glossary definition | **proposed** |
-| 23 | **`personal_information`** | Specific | boolean | no | — | whether it holds information about an identifiable person | **proposed** |
+| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Status |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 2 | `type` | Core | text | yes | — | always `A1.BusinessObject` | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.type | existing |
+| 3 | `version` | Core | text | yes | — | the instance's version | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.version | existing |
+| 4 | `name` | Core | text | yes | — | human-readable name | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.lifecycle_status | existing |
+| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | [BIAN Service Landscape 14.0 (concept identifiers)](https://bian.org/servicelandscape-14-0-0/): A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json | existing |
+| 7 | `description` | Core | text | no | — | scope statement | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.description | existing |
+| 8 | `definition_uri` | Core | text | no | — | link to the source definition | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.definition_uri | existing |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | proposed |
+| 20 | `attributes` | Specific | list of text | no | — | glossary attribute names | [SDEM](https://github.com/taumoeps/bian-sdem-framework): SDEM rule S12 (object alignment by attribute match); validated in use cases E2, C1 — docs/relationship-rules-spec.md | existing |
+| 21 | `field_aliases` | Specific | name map | no | — | glossary name → canonical attribute name | [institution data (SDEM convention)](https://github.com/taumoeps/bian-sdem-framework): SDEM alias convention (export-conventions.json); introduced after use case C1, finding 1 — docs/use-case-testing.md | existing |
+| 22 | **`glossary_uri`** | Specific | text (URI) | no | — | link to the agreed glossary definition | [W3C SKOS Reference](https://www.w3.org/TR/skos-reference/) `skos:Concept` | **proposed** |
+| 23 | **`personal_information`** | Specific | boolean | no | — | whether it holds information about an identifiable person | [EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7](https://eur-lex.europa.eu/eli/reg/2016/679/oj) `personal data / personal information` | **proposed** |
 
 **Sources of the specific fields**
 
@@ -403,31 +403,31 @@
 
 **An expressed architectural requirement.**
 
-| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Status |
-|---|---|---|---|---|---|---|---|
-| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | existing |
-| 2 | `type` | Core | text | yes | — | always `A1.BusinessRequirement` | existing |
-| 3 | `version` | Core | text | yes | — | the instance's version | existing |
-| 4 | `name` | Core | text | yes | — | human-readable name | existing |
-| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | existing |
-| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | existing |
-| 7 | `description` | Core | text | no | — | scope statement | existing |
-| 8 | `definition_uri` | Core | text | no | — | link to the source definition | existing |
-| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | proposed |
-| 10 | `created` | Common | date | no | — | date it was created in the source | proposed |
-| 11 | `modified` | Common | date | no | — | date it was last changed in the source | proposed |
-| 12 | `valid_from` | Common | date | no | — | date it comes into force | proposed |
-| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | proposed |
-| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | proposed |
-| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | proposed |
-| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | proposed |
-| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | proposed |
-| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | proposed |
-| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | proposed |
-| 20 | `applies_to` | Specific | list of text | no | refers to `A1.BusinessProcess`, `A1.BusinessActivity` | ids of the processes or activities the requirement constrains | existing |
-| 21 | **`requirement_kind`** | Specific | enum | no | requirement, constraint, principle | whether it is a requirement, a constraint or a principle | **proposed** |
-| 22 | **`derived_from`** | Specific | list of text | no | — | the regulation, policy or decision it comes from | **proposed** |
-| 23 | **`priority`** | Specific | enum | no | must, should, could, won't | how important it is to meet (must, should, could, won't) | **proposed** |
+| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Status |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `id` | Core | text | yes | — | the instance's permanent key — the source tool's own persistent id | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 2 | `type` | Core | text | yes | — | always `A1.BusinessRequirement` | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.type | existing |
+| 3 | `version` | Core | text | yes | — | the instance's version | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.version | existing |
+| 4 | `name` | Core | text | yes | — | human-readable name | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4 | existing |
+| 5 | `lifecycle_status` | Core | enum | no | planned, active, deprecated, retired | lifecycle state | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.lifecycle_status | existing |
+| 6 | `canonical_id` | Core | text | no | — | external reference id, e.g. a BIAN concept id on A2 instances | [BIAN Service Landscape 14.0 (concept identifiers)](https://bian.org/servicelandscape-14-0-0/): A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json | existing |
+| 7 | `description` | Core | text | no | — | scope statement | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.description | existing |
+| 8 | `definition_uri` | Core | text | no | — | link to the source definition | [SDEM level-model export schema](https://github.com/taumoeps/bian-sdem-framework): schema/level-model.schema.json › instance.definition_uri | existing |
+| 9 | `source_id` | Common | text | no | — | the record's key in the tool it came from | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:identifier` | proposed |
+| 10 | `created` | Common | date | no | — | date it was created in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:created` | proposed |
+| 11 | `modified` | Common | date | no | — | date it was last changed in the source | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:modified` | proposed |
+| 12 | `valid_from` | Common | date | no | — | date it comes into force | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 13 | `valid_to` | Common | date | no | — | date it stops being in force (empty = open-ended) | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:valid` | proposed |
+| 14 | `replaces` | Common | reference (same entity type) | no | — | the earlier instance this one supersedes | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:replaces` | proposed |
+| 15 | `replaced_by` | Common | reference (same entity type) | no | — | the later instance that supersedes this one | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:isReplacedBy` | proposed |
+| 16 | `conforms_to` | Common | list of text | no | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:conformsTo` | proposed |
+| 17 | `subject` | Common | list of text | no | — | topic tags (e.g. "payments", "fraud") | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:subject` | proposed |
+| 18 | `owner` | Common | reference → A1.BusinessActor or A1.BusinessRole | no | — | the actor or role accountable for it | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `assignment (active structure assigned to behaviour or object)` | proposed |
+| 19 | `access_classification` | Common | enum | no | public, internal, confidential, restricted | how sensitive it is and who may see it | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:accessRights` | proposed |
+| 20 | `applies_to` | Specific | list of text | no | refers to `A1.BusinessProcess`, `A1.BusinessActivity` | ids of the processes or activities the requirement constrains | [ArchiMate 3.2 (relationship)](https://pubs.opengroup.org/architecture/archimate3-doc/): realization (core element realizes requirement), ch. 6 | existing |
+| 21 | **`requirement_kind`** | Specific | enum | no | requirement, constraint, principle | whether it is a requirement, a constraint or a principle | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Requirement, Constraint, Principle (motivation)` | **proposed** |
+| 22 | **`derived_from`** | Specific | list of text | no | — | the regulation, policy or decision it comes from | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:source` | **proposed** |
+| 23 | **`priority`** | Specific | enum | no | must, should, could, won't | how important it is to meet (must, should, could, won't) | SDEM-defined — no open standard; decision DA1-43 in this draft | **proposed** |
 
 **Sources of the specific fields**
 
@@ -436,7 +436,7 @@
 | `applies_to` | existing | — | ArchiMate relationship (ArchiMate 3.2 (relationship)) | ArchiMate links a requirement to the core element that realizes it; SDEM records the targets on the requirement for joining. | medium |
 | `requirement_kind` | proposed DA1-41 | Is this something to achieve, a limit, or a guiding rule? | [ArchiMate 3.2 concept](https://pubs.opengroup.org/architecture/archimate3-doc/) `Requirement, Constraint, Principle (motivation)` | ArchiMate has three separate concepts; SDEM holds them as one entity with a kind field. | **medium** |
 | `derived_from` | proposed DA1-42 | Which regulation, policy or decision does this come from? | [Dublin Core](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) `dcterms:source` | The origin of the requirement (e.g. a regulation article or policy id). | **high** |
-| `priority` | proposed DA1-43 | What must be met first? | [SDEM-defined](https://github.com/taumoeps/bian-sdem-framework) `—` | MoSCoW priority, a common convention with no open standard definition. | **low** |
+| `priority` | proposed DA1-43 | What must be met first? | SDEM-defined — no open standard; decision DA1-43 in this draft | MoSCoW priority, a common convention with no open standard definition. | **low** |
 
 ## Summary of proposed fields
 
