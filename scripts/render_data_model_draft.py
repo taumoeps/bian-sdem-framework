@@ -48,10 +48,10 @@ def render(level):
     A = d['attributes']; common = [a for a in A if a['entity'] == 'all']; common_names = {a['name'] for a in common}
     out = [f"# {NAMES[level]} — Data Model (DRAFT for review)", '',
            f"> **Status: draft, {d['date']}.** Proposed fields are marked **proposed**; nothing here is in the model until you approve it. Record: `metamodel/drafts/{level}-descriptive-attributes.json`. Rendered by `python scripts/render_data_model_draft.py {level}`.", '',
-           '**How to read each entity.** The **Data Model** table is the complete record for the entity: every field, its type, whether it is required, its allowed values, what it holds and its **source reference**. Fields come in groups — **Core** (identity, on every entity), **Common** (descriptive, on every entity), **Inherited** (from a parent entity) and **Specific** (this entity only). The **Sources** table under it gives, for each specific field, the question it answers, where it comes from, why, and how confident that basis is; the common fields\' sources are in section 1. In an export file the common and specific fields sit inside the instance\'s `attributes` object.', '',
+           '**How to read each entity.** The **Data Model** table is the complete record for the entity: every field, its type, whether it is required, its allowed values, what it holds and its **source reference**. Fields come in groups — **Core** (identity, on every entity), **Common** (descriptive, on every entity), **Inherited** (from a parent entity) and **Specific** (this entity only). Each entity and each field carries its **source reference**, **reasoning** (for proposed fields, starting with the design question it answers) and **confidence**. In an export file the common and specific fields sit inside the instance\'s `attributes` object.', '',
            '**How the draft was built.** One field per design question, each from the highest available source — BIAN → open public standards readable without login (Dublin Core, W3C ORG, W3C SKOS, public privacy law) → ArchiMate concepts (meaning only) → SDEM-defined. Not used: TOGAF and the ArchiMate text (login), paid standards, vendor schemas, your employer\'s model. Confidence: **high** = a public standard defines it and it was checked; **medium** = built on a standard concept as SDEM chose; **low** = SDEM-defined.', '',
-           '## 1. Fields every entity has', '', '### Core fields (existing)', '', '| Field | Type | Required | Holds | Source reference |', '|---|---|---|---|---|']
-    out += [f"| `{c['name']}` | {ctype(c)} | {'yes' if c['required'] else 'no'} | {c['description']} | {csrc(c)} |" for c in core]
+           '## 1. Fields every entity has', '', '### Core fields (existing)', '', '| Field | Type | Required | Holds | Source reference | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']
+    out += [f"| `{c['name']}` | {ctype(c)} | {'yes' if c['required'] else 'no'} | {c['description']} | {csrc(c)} | {c['reasoning']} | **{c['confidence']}** |" for c in core]
     if common:
         out += ['', '### Common fields (proposed for all four architectures)', '', '| ID | Field | Type | Allowed values | Holds | Answers | Source | Reasoning | Confidence |', '|---|---|---|---|---|---|---|---|---|']
         out += [f"| {a['id']} | `{a['name']}` | {a['type']} | {allowed(a)} | {a['meaning']} | {a['question']} | {src(a)} | {a['reasoning']} | **{a['confidence']}** |" for a in common]
@@ -64,26 +64,31 @@ def render(level):
         dup = [a for a in ex if a['name'] in common_names]; ex = [a for a in ex if a['name'] not in common_names]
         par = e.get('extends')
         pex = [a for a in cur if par and a['entity'] == par]; ppr = [a for a in A if par and a['entity'] == par]
+        r = e['reference']
         out += [f"## {n}. {e['type']} — Data Model", '', f"**{e['definition'].rstrip('.')}.**" + (f" A kind of `{par}`: it has all of its parent's fields as well." if par else ''), '',
-                '| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Status |', '|---|---|---|---|---|---|---|---|---|']
+                '| Entity | Source reference | Reasoning | Confidence |', '|---|---|---|---|',
+                f"| `{e['type']}` | [{r['standard']}{(' ' + r['release']) if r['release'] not in r['standard'] else ''}: {r['concept']}]({r['uri']}){(', ' + r['locator']) if r.get('locator') else ''} | {e['reasoning']} | **{e['confidence']}** |", '',
+                '| # | Field | Group | Type | Required | Allowed values / refers to | Holds | Source reference | Reasoning | Confidence | Status |', '|---|---|---|---|---|---|---|---|---|---|---|']
         i = 0
+        def row(name, group, typ, req, allow, holds, source, why, conf, status):
+            nonlocal i
+            i += 1
+            out.append(f"| {i} | {name} | {group} | {typ} | {req} | {allow} | {holds} | {source} | {why} | **{conf}** | {status} |")
         for c in core:
-            i += 1; out.append(f"| {i} | `{c['name']}` | Core | {ctype(c)} | {'yes' if c['required'] else 'no'} | {', '.join(c.get('values', [])) or '—'} | {('always `' + e['type'] + '`') if c['name'] == 'type' else c['description']} | {csrc(c)} | existing |")
-        for a in common:
-            i += 1; out.append(f"| {i} | `{a['name']}` | Common | {a['type']} | no | {allowed(a)} | {a['meaning']} | {src(a)} | proposed |")
-        for a in pex:
-            i += 1; out.append(f"| {i} | `{a['name']}` | Inherited from `{par.split('.')[1]}` | {CT.get(a['type'], a['type'])} | {'yes' if a['required'] else 'no'} | {allowed(a)} | {a['description']} | {esrc(a)} | existing |")
-        for a in ppr:
-            i += 1; out.append(f"| {i} | `{a['name']}` | Inherited from `{par.split('.')[1]}` | {a['type']} | no | {allowed(a)} | {a['meaning']} | {src(a)} | proposed |")
-        for a in ex:
-            i += 1; out.append(f"| {i} | `{a['name']}` | Specific | {CT.get(a['type'], a['type'])} | {'yes' if a['required'] else 'no'} | {allowed(a)} | {a['description']} | {esrc(a)} | existing |")
-        for a in pr:
-            i += 1; out.append(f"| {i} | **`{a['name']}`** | Specific | {a['type']} | no | {allowed(a)} | {a['meaning']} | {src(a)} | **proposed** |")
-        if ex or pr or dup:
-            out += ['', '**Sources of the specific fields**', '', '| Field | Status | Answers | Source | Reasoning | Confidence |', '|---|---|---|---|---|---|']
-            out += [f"| `{a['name']}` | existing | — | {a['source']} ({a['reference']['standard']}) | {a['reasoning']} | {a['confidence']} |" for a in ex]
-            out += [f"| `{a['name']}` | proposed {a['id']} | {a['question']} | {src(a)} | {a['reasoning']} | **{a['confidence']}** |" for a in pr]
-            out += [f"| ~~`{a['name']}`~~ (existing text field) | **replaced** by the common `{a['name']}` | — | {a['source']} | {a['reasoning']} The common field supersedes it: it refers to an actor or role instead of holding free text. | {a['confidence']} |" for a in dup]
+            row(f"`{c['name']}`", 'Core', ctype(c), 'yes' if c['required'] else 'no', ', '.join(c.get('values', [])) or '—',
+                ('always `' + e['type'] + '`') if c['name'] == 'type' else c['description'], csrc(c), c['reasoning'], c['confidence'], 'existing')
+        for x in common:
+            row(f"`{x['name']}`", 'Common', x['type'], 'no', allowed(x), x['meaning'], src(x), f"Answers: {x['question']} {x['reasoning']}", x['confidence'], f"proposed {x['id']}")
+        for x in pex:
+            row(f"`{x['name']}`", f"Inherited from `{par.split('.')[1]}`", CT.get(x['type'], x['type']), 'yes' if x['required'] else 'no', allowed(x), x['description'], esrc(x), x['reasoning'], x['confidence'], 'existing')
+        for x in ppr:
+            row(f"`{x['name']}`", f"Inherited from `{par.split('.')[1]}`", x['type'], 'no', allowed(x), x['meaning'], src(x), f"Answers: {x['question']} {x['reasoning']}", x['confidence'], f"proposed {x['id']}")
+        for x in ex:
+            row(f"`{x['name']}`", 'Specific', CT.get(x['type'], x['type']), 'yes' if x['required'] else 'no', allowed(x), x['description'], esrc(x), x['reasoning'], x['confidence'], 'existing')
+        for x in pr:
+            row(f"**`{x['name']}`**", 'Specific', x['type'], 'no', allowed(x), x['meaning'], src(x), f"Answers: {x['question']} {x['reasoning']}", x['confidence'], f"**proposed {x['id']}**")
+        for x in dup:
+            row(f"~~`{x['name']}`~~", 'Specific (existing text field)', CT.get(x['type'], x['type']), 'no', '—', x['description'], esrc(x), x['reasoning'] + f" Replaced by the common `{x['name']}`, which refers to an actor or role instead of holding free text.", x['confidence'], '**to be replaced**')
         out.append('')
     c = Counter(a['confidence'] for a in A)
     out += ['## Summary of proposed fields', '', '| Group | Fields | High | Medium | Low |', '|---|---|---|---|---|']

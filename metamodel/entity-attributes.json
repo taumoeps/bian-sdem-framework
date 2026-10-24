@@ -342,7 +342,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "not",
+        "locator": "SDEM informational field; read by no rule",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
@@ -823,7 +823,7 @@
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
-        "locator": "not",
+        "locator": "SDEM informational field; read by no rule",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
