@@ -1,6 +1,6 @@
 # A2 Service Domain Architecture — Data Model (DRAFT for review)
 
-> **Status: APPROVED 2026-10-24 — dropped DA2-02. Written into metamodel/entity-attributes.json (AT-A2-13, AT-A2-25).** Record: `metamodel/drafts/a2-descriptive-attributes.json`. Rendered by `python scripts/render_data_model_draft.py a2`.
+> **Status: APPROVED 2026-10-24 — dropped DA2-02. Written into metamodel/entity-attributes.json (AT-A2-13…AT-A2-25).** Record: `metamodel/drafts/a2-descriptive-attributes.json`. Rendered by `python scripts/render_data_model_draft.py a2`.
 
 **How to read each entity.** The **Data Model** table is the complete record for the entity: every field, its type, whether it is required, its allowed values, what it holds and its **source reference**. Fields come in groups — **Core** (identity, on every entity), **Common** (descriptive, on every entity), **Inherited** (from a parent entity) and **Specific** (this entity only). Each entity and each field carries its **source reference**, **reasoning** (for proposed fields, starting with the design question it answers) and **confidence**. In an export file the common and specific fields sit inside the instance's `attributes` object.
 
@@ -516,14 +516,14 @@
 
 | Group | Fields | High | Medium | Low |
 |---|---|---|---|---|
-| `A2.ServiceDomain` | 2 | 0 | 0 | 2 |
+| `A2.ServiceDomain` | 1 | 0 | 0 | 1 |
 | `A2.FunctionalPattern` | 3 | 3 | 0 | 0 |
 | `A2.ServiceOperation` | 1 | 1 | 0 | 0 |
 | `A2.BusinessScenario` | 1 | 0 | 1 | 0 |
 | `A2.BusinessObject` | 3 | 3 | 0 | 0 |
 | `A2.BusinessObjectAttribute` | 3 | 2 | 1 | 0 |
 | `A2.SemanticAPI` | 1 | 0 | 1 | 0 |
-| **Total** | **14** | **9** | **3** | **2** |
+| **Total** | **13** | **9** | **3** | **1** |
 
 ## Derived attributes (computed, never stored)
 

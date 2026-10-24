@@ -1,6 +1,6 @@
 # Service Domain Enterprise Metamodel (SDEM)
 
-> **Status:** v0.7.0 — open-source reference implementation; BIAN-aligned, **not** an official BIAN standard or BIAN-endorsed framework. BIAN reference content is not included. *(Until v0.6.2 this project was called SDMM, the BIAN Service Domain Mapping Model; see [Renamed from SDMM](#renamed-from-sdmm).)*
+> **Status:** v0.7.0 released; v0.8.0 (data model, enforced conformance, physical schemas) awaiting baseline review — open-source reference implementation; BIAN-aligned, **not** an official BIAN standard or BIAN-endorsed framework. BIAN reference content is not included. *(Until v0.6.2 this project was called SDMM, the BIAN Service Domain Mapping Model; see [Renamed from SDMM](#renamed-from-sdmm).)*
 
 **Service Domain Enterprise Metamodel (SDEM)** is an open-source, model-driven enterprise architecture metamodel designed to define, validate and govern architecture entities and relationships across Business, Service Domain, Application and Technology architectures.
 
@@ -180,10 +180,14 @@ The Relationship Rules Model was run as a procedure by an AI executor (standing 
 | Architecture Metamodel (entity types, within-level rows, relationship type catalogue); Relationship Rules Model records; export and registry schemas | built |
 | Validators: `sdem-graph check` (exports), `sdem-validate` (registry records), `sdem-diff` (approved records never edited) | built |
 | Graph loader, local and federated graphs (in memory), `trace`, `impact`, `stats` | built |
+| Data model: common, entity-specific and derived attributes for A1–A4 with source reference, reasoning and confidence | built ([`architecture-attribute-design.md`](docs/architecture-attribute-design.md)) |
+| Logical data model: 14 rules, all enforced by `sdem-graph check` (`sdem/conformance.py`) | built ([`logical-data-model.md`](docs/logical-data-model.md)) |
+| Physical data model: one JSON Schema per entity type (`sdem-physical`) | built ([`physical-data-model.md`](docs/physical-data-model.md)) |
 | Generated documents and diagrams, checked current in CI | built |
+| Baseline review pack for `SDEM-METAMODEL-0.8` | built; awaiting independent review ([`baseline/`](docs/baseline/SDEM-METAMODEL-0.8-review-pack.md)) |
 | Architecture Relationship Inference Engine (`sdem-infer`) | interface, baseline and scorer built; **rule logic is the next build**, to [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) |
 | Export diff, refresh trigger, review queue, query service interface, assistant access, persistent store | specified ([`knowledge-graph-spec.md`](docs/knowledge-graph-spec.md) §11), not built |
-| Adapters from real tools | not built here — they belong in an institution's private repository |
+| Ingestion (spreadsheet templates and ingest command) | planned for v0.10; adapters for real tools belong in an institution's private repository |
 
 ---
 
@@ -208,7 +212,7 @@ python -m unittest discover -s tests                                    # the te
 
 Exit codes: `0` ok, `1` issues found, `2` usage error.
 
-**Regenerating documents and diagrams** after changing a record: `sdem-relationships`, `sdem-spec`, `sdem-kgspec`, `sdem-structure`, `sdem-diagram`. Each has `--check`, which CI runs.
+**Regenerating documents, diagrams and schemas** after changing a record: `sdem-relationships`, `sdem-spec`, `sdem-kgspec`, `sdem-structure`, `sdem-diagram`, `sdem-catalogue`, `sdem-attributes`, `sdem-logical`, `sdem-physical`; `sdem-confidence` re-applies the confidence rule. Each has `--check`, which CI runs.
 
 ---
 
@@ -231,15 +235,16 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | [`mapping-logic-planning.md`](docs/mapping-logic-planning.md) | why the relationship rules model is shaped this way: BIAN's own mappings, the supporting frameworks, the gap-fill strategy |
 | [`mapping-execution.md`](docs/mapping-execution.md) · [`use-case-testing.md`](docs/use-case-testing.md) | the procedure as executed, and the eleven test runs |
 | [`reference-architecture-provenance.md`](docs/reference-architecture-provenance.md) | every entity traced to a public standard |
-| [`ROADMAP.md`](docs/ROADMAP.md) · [`CHANGELOG.md`](CHANGELOG.md) | releases |
+| [`glossary.md`](docs/glossary.md) | the terms used across the documents, in plain language |
+| [`ROADMAP.md`](docs/ROADMAP.md) · [`CHANGELOG.md`](CHANGELOG.md) | releases and what comes next |
 
 ## Repository contents
 
 | Folder | Holds |
 |---|---|
 | `metamodel/` | Architecture Metamodel (entity catalogue A1–A4, within-level rows), Relationship Rules Model (`relationship-rules.json`, `export-conventions.json`), BIAN's official mappings, generated diagrams |
-| `schema/` | export and registry schemas, the relationship type catalogue (`relationship-types.json`), impact rules |
-| `sdem/` | validators (`validate.py`, `diff.py`), graph loader and queries (`graph.py`, `trace.py`, `metamodel.py`), inference engine interface and scorer (`inference.py`, `evaluate.py`), terminology (`terms.py`), document generators |
+| `schema/` | export and registry schemas, the relationship type catalogue (`relationship-types.json`), impact rules, per-entity schemas (`entities/`) |
+| `sdem/` | validators (`validate.py`, `diff.py`), data-model conformance (`conformance.py`), graph loader and queries (`graph.py`, `trace.py`, `metamodel.py`), inference engine interface and scorer (`inference.py`, `evaluate.py`), confidence rule (`confidence.py`), terminology (`terms.py`), document and schema generators (`catalogue.py`, `attributes.py`, `logical.py`, `physical.py`, …) |
 | `sdmm/` | deprecated compatibility shim for v0.7: re-exports `sdem` with a warning |
 | `examples/` | synthetic estates: `payment-initiation`, `legacy-core-ledger`, `acquired-fintech`, `digital-lending`, `trade-finance`, `card-fraud-alerts`, `customer-onboarding`, and `reference-structure` (generated: one link per within-level row) |
 | `docs/` | designs, specifications, test plans and results |
@@ -253,9 +258,10 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | v0.4 | entity catalogue traced to public standards, export format, local and federated graphs, impact |
 | v0.5 | engine harness (interface, baseline, scorer); mapping plan and procedure; ten use cases, eleven runs; within-level rows from BIAN, ArchiMate and TOGAF, verified |
 | v0.6 | rules spec and diagram; knowledge-graph design and spec with service specifications |
-| **v0.7** | **renamed SDEM — Service Domain Enterprise Metamodel**; model-driven terminology; registry spec; compatibility aliases |
-| **next** | the inference engine, accepted by reproducing the eleven runs; export diff; refresh and load record; a blind test case |
-| later | live BIAN reference lookup; review queue; persistent store; generated views; v1.0 conformance profile |
+| v0.7 | renamed SDEM — Service Domain Enterprise Metamodel; model-driven terminology; registry spec; compatibility aliases |
+| **v0.8** (unreleased) | **data model** for A1–A4, all logical rules enforced, per-entity JSON Schemas; baseline review pack — released on baseline approval |
+| **v0.9 — next** | the **inference engine**, with an acceptance harness over the use-case runs |
+| later | ingestion and approval (v0.10); change handling (v0.11); graph store and query service (v0.12); BIAN reference integration (v0.13); generated views (v0.14); v1.0 conformance profile |
 
 Full table with acceptance tests: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 

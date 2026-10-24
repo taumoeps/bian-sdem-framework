@@ -1,6 +1,6 @@
 # A4 Technology Architecture — Data Model (DRAFT for review)
 
-> **Status: APPROVED 2026-10-25. Written into metamodel/entity-attributes.json (AT-A4-15, AT-A4-33).** Record: `metamodel/drafts/a4-descriptive-attributes.json`. Rendered by `python scripts/render_data_model_draft.py a4`.
+> **Status: APPROVED 2026-10-25. Written into metamodel/entity-attributes.json (AT-A4-15…AT-A4-33).** Record: `metamodel/drafts/a4-descriptive-attributes.json`. Rendered by `python scripts/render_data_model_draft.py a4`.
 
 **How to read each entity.** The **Data Model** table is the complete record for the entity: every field, its type, whether it is required, its allowed values, what it holds and its **source reference**. Fields come in groups — **Core** (identity, on every entity), **Common** (descriptive, on every entity), **Inherited** (from a parent entity) and **Specific** (this entity only). Each entity and each field carries its **source reference**, **reasoning** (for proposed fields, starting with the design question it answers) and **confidence**. In an export file the common and specific fields sit inside the instance's `attributes` object.
 

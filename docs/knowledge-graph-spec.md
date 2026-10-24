@@ -281,10 +281,10 @@ flowchart LR
 | C-02 | Source tool | the institution's system of record for one level | its users | its own records | — | institution | external |
 | C-03 | Adapter | extract, translate to SDEM entities and keys, write the export | C-02; C-01 (catalogue and conventions) | one level export | C-01, C-02 | institution's private repository | not built (examples hand-written; `sdem/structure.py` is the one generator) |
 | C-04 | Level export | the file a local knowledge graph is built from | C-03 | — | C-03 | `examples/*/a[1-4]-*.json` (stand-ins) | built (format); schema `level-model.schema.json` |
-| C-05 | Export validator | checks an export against C-01 | C-04, C-01 | pass, or every failure | C-01, C-04 | `sdem-graph check` (`LevelGraph`) | built |
+| C-05 | Export validator | checks an export against C-01, including the data model: attribute types, allowed values, references, keys and link counts (logical rules LC-04…LC-13) | C-04, C-01 | pass, or every failure | C-01, C-04 | `sdem-graph check` (`LevelGraph`, `sdem/conformance.py`) | built |
 | C-06 | Graph loader | rebuilds local knowledge graphs from exports and the federated knowledge graph from the relationship registry; records the baseline | C-04 (validated), C-09 | local knowledge graphs, federated knowledge graph | C-05, C-09 | `sdem/graph.py` (`LevelGraph`, `FederatedGraph`) | built in memory; persistence and baselines not built |
 | C-07 | Export diff | compares a new export with the last loaded one: added, removed, changed instances and links | two versions of C-04 | a change list | C-04 | — | not built |
-| C-08 | Engine | applies the relationship rules model (C-01b) to the local knowledge graphs and **builds the relationship registry**: new links for what changed, re-checks of approved links, with evidence and confidence | local knowledge graphs, federated knowledge graph, C-07, C-01, C-01b | relationship registry records (status `proposed`, or `approved` where the rule is auto-approved under `enterprise_rule`), candidate reports, inference log | C-06, C-07, C-01b | `sdem/engine.py` protocol; logic proven by executor runs | partly built (protocol, baseline, eval); step logic not built |
+| C-08 | Engine | applies the relationship rules model (C-01b) to the local knowledge graphs and **builds the relationship registry**: new links for what changed, re-checks of approved links, with evidence and confidence | local knowledge graphs, federated knowledge graph, C-07, C-01, C-01b | relationship registry records (status `proposed`, or `approved` where the rule is auto-approved under `enterprise_rule`), candidate reports, inference log | C-06, C-07, C-01b | `sdem/inference.py` interface and baseline; rule logic proven by hand-executed runs, not built (v0.9) | partly built (protocol, baseline, eval); step logic not built |
 | C-09 | Relationship registry | the cross-level links with status and evidence — built by the engine from the relationship rules model; hand-made links are an exception, recorded with `created_by` naming the architect | C-08 output; architect decisions | — | C-08, C-11 | `examples/*/mappings.json`; schema `relationship-registry.schema.json` | built |
 | C-10 | Mapping validator | checks proposals and the relationship registry: registry, evidence, anchoring | C-09, C-01 | pass, or every failure | C-01 | `sdem-validate` | built |
 | C-11 | Architect review | reviews the engine's output: approves, rejects or supersedes records; corrects the relationship rules model (C-01b) when a rule produces a wrong link, rather than hand-editing the set | validated proposals; impact reports | status changes in C-09 | C-10, C-14 | a person; recorded as fields | built (as fields); review queue not built |
@@ -293,7 +293,7 @@ flowchart LR
 | C-14 | Query tools | trace, impact, check, stats; unmapped and history to come | C-13 | answers with mapping ids | C-13 | `sdem-graph`, `sdem-trace` | built (unmapped, history not built) |
 | C-15 | Refresh trigger | decides when C-03 and C-06 run: on demand, scheduled, event, refresh-on-read | source events or queries | runs | C-03, C-06 | — | not built (on demand only) |
 | C-16 | Assistant | answers design questions from C-14; runs C-08 and C-10 on request | C-14 answers | proposals via C-08 only | C-14, C-08 | per DEC-04 | not built (Opus executor runs stood in) |
-| C-17 | Generators and CI | regenerate documents, diagrams and the reference-structure estate from C-01; fail the build if any is stale; rerun acceptance cases | C-01 | generated files; pass / fail | C-01 | `sdem/diagram.py`, `relationships.py`, `structure.py`, `spec.py`, `kgspec.py`; `.github/workflows/validate.yml` | built |
+| C-17 | Generators and CI | regenerate documents, diagrams, per-entity schemas and the reference-structure estate from C-01; fail the build if any is stale; rerun acceptance cases | C-01 | generated files; pass / fail | C-01 | `sdem/diagram.py`, `relationships.py`, `structure.py`, `spec.py`, `kgspec.py`, `catalogue.py`, `attributes.py`, `logical.py`, `physical.py`, `confidence.py`; `.github/workflows/validate.yml` | built |
 
 ### 8.1 Component requirements
 
@@ -432,7 +432,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 |---|---|---|
 | 1 Extract | read the source records in scope | source unreachable → exit non-zero, no file written |
 | 2 Translate | map each record and link through the translation table | an unmapped record type → listed, not guessed; the run fails if any in-scope record is unmapped |
-| 3 Self-check | run the export validator (SDEM step 4) on the result in memory | any issue → fail |
+| 3 Self-check | run the export validator (SDEM step 4, including data-model conformance) on the result in memory | any error → fail; warnings reported |
 | 4 Write atomically | write to a temporary file, then rename over the target | a partial export is never visible |
 
 **Validity.** An adapter succeeds only if every in-scope record is translated and the export passes validation. **It fails loudly rather than writing a partial export.**

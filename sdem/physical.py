@@ -82,7 +82,7 @@ def render():
            '## What it is', '',
            'The **physical data model** is the logical data model written as files a tool can use: **one JSON Schema per entity type** that an export instance must satisfy. A tool adapter validates each record it exports against the schema for its type; `sdem-graph check` then checks what a single record cannot show on its own.', '',
            '| Layer | Document | Holds |', '|---|---|---|',
-           '| Conceptual | [architecture-entity-design.md](architecture-entity-design.md) | the entity types and how they relate |',
+           '| Conceptual | [architecture-entity-design.md](architecture-entity-design.md) | the entity types; how they relate: [relationships-planning.md](relationships-planning.md) (within a level) and [relationship-registry-spec.md](relationship-registry-spec.md) (across levels) |',
            '| Logical | [logical-data-model.md](logical-data-model.md), [architecture-attribute-design.md](architecture-attribute-design.md) | identifiers, attributes, types, allowed values, references, cardinality, rules |',
            '| **Physical (this document)** | `schema/entities/<level>/<Entity>.schema.json` | the export format of each entity, validatable by any JSON Schema 2020-12 tool |', '',
            '## How the logical model maps to JSON Schema', '',
@@ -100,7 +100,7 @@ def render():
            'A schema sees one record. These rules need the whole export or estate and are enforced by `sdem-graph check` ([logical rules](logical-data-model.md)): references resolve (LC-07 error, LC-08 warning), natural keys are unique (LC-09), cardinality (LC-10, LC-10m), within-level and cross-level relationships (LC-03, LC-11). Attributes not in the model are accepted by the schema and reported as warnings.', '',
            f"## Schemas ({len(files)} entity types)", '',
            'Artefact types (BOM model, wireframe, Semantic API) and abstract types are not export instance types and have no schema.', '',
-           '| Entity | Schema | Core fields | Common | Inherited | Specific | Required attributes | Attribute confidence (H / M / L) |', '|---|---|---|---|---|---|---|---|'] + rows + [
+           '| Entity | Schema | Core fields (besides the `attributes` container) | Common | Inherited | Specific | Required attributes | Attribute confidence (H / M / L) |', '|---|---|---|---|---|---|---|---|'] + rows + [
            '', f"Attribute definitions across all schemas: **{tot['high']} high, {tot['medium']} medium, {tot['low']} low** (the 11 common attributes are counted in every schema).", '',
            '## Using a schema', '', '```bash',
            '# any JSON Schema 2020-12 validator, e.g. check-jsonschema',

@@ -1,6 +1,6 @@
 # BIAN reference model boundary
 
-> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` now run as `sdem-*` (the old names still work in v0.7). See [`sdem-overview.md`](sdem-overview.md).
+> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` and paths under `sdmm/` are now `sdem-*` and `sdem/` (the old names still work in v0.7 and are removed in v0.8.0). See [`sdem-overview.md`](sdem-overview.md).
 
 This repository contains **only original SDEM guidance**, synthetic examples, and cross-layer modelling conventions.
 
@@ -18,6 +18,6 @@ Every registry entry carries an `authority`, and every mapping inherits it:
 No bank-specific rule may be labelled as normative BIAN terminology.
 
 ## Reference adapter
-`sdmm/reference.py` defines the `ReferenceResolver` protocol: `resolve(canonical_id, release) -> ReferenceBinding | None`. A bank with the applicable rights implements it against its own licensed copy; the repository ships only `NullReferenceResolver` and an in-memory `StaticReferenceResolver` for tests. Pass a resolver to `validate(..., resolver=...)` to have every `canonical_id` on a BIAN-grounded mapping checked against the named release.
+`sdem/reference.py` defines the `ReferenceResolver` protocol: `resolve(canonical_id, release) -> ReferenceBinding | None`. A bank with the applicable rights implements it against its own licensed copy; the repository ships only `NullReferenceResolver` and an in-memory `StaticReferenceResolver` for tests. Pass a resolver to `validate(..., resolver=...)` to have every `canonical_id` on a BIAN-grounded mapping checked against the named release.
 
 The example relationship labels are SDEM-defined, not claimed to be official BIAN/ArchiMate relationship names.

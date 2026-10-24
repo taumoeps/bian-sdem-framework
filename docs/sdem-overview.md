@@ -229,6 +229,8 @@ From `examples/payment-initiation/`:
 
 ## Glossary
 
+The essentials; the full list is in [`glossary.md`](glossary.md).
+
 | Term | Means |
 |---|---|
 | **A1 … A4** | the four architectures: Business, Service Domain (BIAN), Application, Technology |

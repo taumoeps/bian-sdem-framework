@@ -52,7 +52,7 @@ def main():
     ver = Counter(c['verification'] for c in rows)
     low_rows = [c for c in rows if c['confidence'] == 'low']
     lows = [f"`{a['entity']}.{a['name']}`" for a in attrs if a['confidence'] == 'low']
-    gated = [e['type'] for e in ents if e.get('definition_source') == 'togaf_informed'] + [c['id'] for c in rows if c['verification'] == 'unverified_togaf']
+    gated = [e['type'] for e in ents if e.get('definition_source') == 'togaf_informed'] + [c['id'] for c in rows if c['verification'] == 'unverified_togaf'] + [f"{a['entity']}.{a['name']}" for a in attrs if a['source'] == 'TOGAF']
     items = ents + rows + types + attrs + common + at['core_fields']
     H, M, L = hml(items); N = H + M + L
     o = [f'# {BASELINE} — Baseline Review Pack', '',
@@ -87,7 +87,7 @@ def main():
                      ('A1 attributes', [a for a in attrs if a['entity'].startswith('A1')]), ('A2 attributes', [a for a in attrs if a['entity'].startswith('A2')]),
                      ('A3 attributes', [a for a in attrs if a['entity'].startswith('A3')]), ('A4 attributes', [a for a in attrs if a['entity'].startswith('A4')])):
         h, m, l = hml(xs); o.append(f'| {name} | {h} | {m} | {l} |')
-    h, m, l = hml(rules, 'basis_confidence'); o.append(f'| Relationship rules (basis) | {h} | {m} | {l} |')
+    h, m, l = hml(rules, 'basis_confidence'); o.append(f'| Relationship rules (basis; {len(rules) - h - m - l} rows n/a — not used: not encodable or a historical method) | {h} | {m} | {l} |')
     o += ['', '## 4. Known limitations (approved as part of the baseline)', '',
           f"1. **Login-gated standards not checked.** TOGAF and the ArchiMate specification text need an Open Group login. Affected: {', '.join(f'`{g}`' for g in gated)}. ArchiMate relationships were checked against the open-source Archi implementation instead.",
           '2. **BIAN below A2.** BIAN publishes no capability-to-Service-Domain mapping and almost nothing below A2, so most cross-level rules are SDEM\'s design, validated by the use cases rather than by a standard.',
@@ -115,6 +115,7 @@ def main():
           '## 6. Sign-off', '',
           '| Role | Name | Decision (approve / approve with findings / reject) | Date |', '|---|---|---|---|',
           '| Model owner | Steven Taumoepeau | | |', '| Independent reviewer | | | |', '',
+          '', '**Note on "generated documents".** CI proves each document matches what its generator produces from the records; it cannot prove the wording inside the records is current. Wording was reviewed by reading all of `docs/` on 2026-10-25.', '',
           'Findings: record each as a GitHub issue labelled `baseline-0.8` and list them here.', '',
           '## 7. On approval', '',
           f'1. Record the approval in `metamodel/baseline.json` (baseline name, commit, reviewer, date, accepted findings).',

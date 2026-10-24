@@ -1,6 +1,6 @@
 {
   "metamodel_version": "0.4.0",
-  "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Not yet enforced by sdem-graph check (next build); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
+  "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Enforced by sdem-graph check (sdem/conformance.py, logical rules LC-04…LC-13) and published as per-entity JSON Schemas (sdem/physical.py); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
   "confidence_rule": "high   — defined by a public standard and checked (BIAN public material, OpenAPI, or a standard concept or\n           relationship confirmed by the open-source Archi oracle); or an SDEM data-contract field, which SDEM defines\n           authoritatively.\n  medium — built on a standard concept or relationship as SDEM chose to model it; or BIAN intent / target only;\n           or an SDEM definition, a login-gated source, or a cited-but-unverified source that was validated against\n           sealed answers; or institution data under an SDEM convention.\n  low    — no standard basis and not validated against sealed answers; or deprecated.",
   "core_fields": [
     {
@@ -828,7 +828,7 @@
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
-      "reasoning": "Duplicates the within-level access relationship already in the export; one example carries it. Deprecated: use the relationship.",
+      "reasoning": "Duplicates the within-level access relationship already in the export; the last example using it was migrated to the relationship on 2026-10-25. Deprecated: use the relationship.",
       "confidence": "low",
       "read_by": "—",
       "confidence_basis": "deprecated",
@@ -1959,7 +1959,7 @@
       "id": "AT-A1-27",
       "entity": "A1.BusinessService",
       "name": "channels",
-      "type": "string",
+      "type": "list<string>",
       "required": false,
       "description": "channels it is offered through",
       "status": "active",

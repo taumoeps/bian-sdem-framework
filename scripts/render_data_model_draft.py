@@ -47,7 +47,7 @@ def render(level):
     cur = [a for a in rec['attributes'] if a['entity'].startswith(lv)]; core = [c for c in rec['core_fields'] if c['name'] != 'attributes']
     A = d['attributes']; drafted = {a['id'] for a in A}
     cur = [a for a in cur if (a.get('approved') or {}).get('draft_id') not in drafted]  # a re-rendered draft shows its own fields as proposed, not twice
-    common = [a for a in A if a['entity'] == 'all']; common_status = 'proposed'
+    common = [a for a in A if a['entity'] == 'all']; common_status = 'approved' if common and all(a.get('status') == 'approved' for a in common) else 'proposed'
     if not common:  # common attributes already approved: show them from the attribute record
         common_status = 'approved'
         common = [{'id': c['id'], 'name': c['name'], 'type': c['type'], 'values': c.get('values'), 'references': c.get('references'), 'meaning': c['description'], 'question': c['question'],
@@ -89,7 +89,7 @@ def render(level):
         for x in pex:
             row(f"`{x['name']}`", f"Inherited from `{par.split('.')[1]}`", CT.get(x['type'], x['type']), 'yes' if x['required'] else 'no', allowed(x), x['description'], esrc(x), x['reasoning'], x['confidence'], 'existing')
         for x in ppr:
-            row(f"`{x['name']}`", f"Inherited from `{par.split('.')[1]}`", x['type'], 'no', allowed(x), x['meaning'], src(x), f"Answers: {x['question']} {x['reasoning']}", x['confidence'], f"proposed {x['id']}")
+            row(f"`{x['name']}`", f"Inherited from `{par.split('.')[1]}`", x['type'], 'no', allowed(x), x['meaning'], src(x), f"Answers: {x['question']} {x['reasoning']}", x['confidence'], f"{'approved' if x.get('status') == 'approved' else 'proposed'} {x['id']}")
         for x in ex:
             dep = x['status'] == 'deprecated'
             row(f"~~`{x['name']}`~~" if dep else f"`{x['name']}`", 'Specific', CT.get(x['type'], x['type']), 'yes' if x['required'] else 'no', allowed(x), x['description'], esrc(x), x['reasoning'], x['confidence'], '**deprecated** (removed in a later release)' if dep else 'existing')
@@ -98,12 +98,12 @@ def render(level):
         for x in dup:
             row(f"~~`{x['name']}`~~", 'Specific (existing text field)', CT.get(x['type'], x['type']), 'no', '—', x['description'], esrc(x), x['reasoning'] + f" Replaced by the common `{x['name']}`, which refers to an actor or role instead of holding free text.", x['confidence'], '**to be replaced**')
         out.append('')
-    c = Counter(a['confidence'] for a in A)
+    c = Counter(a['confidence'] for a in A if a.get('status') != 'dropped')
     out += ['## Summary of proposed fields', '', '| Group | Fields | High | Medium | Low |', '|---|---|---|---|---|']
     for scope, label in (('all', 'Common (every entity)'),) + tuple((e['type'], f"`{e['type']}`") for e in ents):
-        r = [a for a in A if a['entity'] == scope]
+        r = [a for a in A if a['entity'] == scope and a.get('status') != 'dropped']
         if r: cc = Counter(a['confidence'] for a in r); out.append(f"| {label} | {len(r)} | {cc['high']} | {cc['medium']} | {cc['low']} |")
-    out += [f"| **Total** | **{len(A)}** | **{c['high']}** | **{c['medium']}** | **{c['low']}** |", '']
+    out += [f"| **Total** | **{sum(1 for a in A if a.get('status') != 'dropped')}** | **{c['high']}** | **{c['medium']}** | **{c['low']}** |", '']
     if d.get('changes'):
         out += ['## Changes proposed to existing attributes', '', '| Attribute | Now | Proposed | Reasoning |', '|---|---|---|---|']
         out += [f"| `{x['attribute']}` | {x['now']} | {x['proposed']} | {x['reasoning']} |" for x in d['changes']] + ['']

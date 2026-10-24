@@ -409,7 +409,7 @@
             "locator": "duplicates the A3 access relationship (RA3-16)",
             "uri": "https://github.com/taumoeps/bian-sdem-framework"
           },
-          "x-sdem-reasoning": "Duplicates the within-level access relationship already in the export; one example carries it. Deprecated: use the relationship.",
+          "x-sdem-reasoning": "Duplicates the within-level access relationship already in the export; the last example using it was migrated to the relationship on 2026-10-25. Deprecated: use the relationship.",
           "x-sdem-confidence": "low"
         },
         "release_version": {

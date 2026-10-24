@@ -33,7 +33,7 @@ SERVICES = [
   'inputs': [('Source tool', 'API, report or database view of the tool'), ('Translation table', 'held with the adapter, versioned'), ('Model records', 'the catalogue and `export-conventions.json`, to know the allowed entities and keys')],
   'steps': [('1 Extract', 'read the source records in scope', 'source unreachable → exit non-zero, no file written'),
             ('2 Translate', 'map each record and link through the translation table', 'an unmapped record type → listed, not guessed; the run fails if any in-scope record is unmapped'),
-            ('3 Self-check', 'run the export validator (SDEM step 4) on the result in memory', 'any issue → fail'),
+            ('3 Self-check', 'run the export validator (SDEM step 4, including data-model conformance) on the result in memory', 'any error → fail; warnings reported'),
             ('4 Write atomically', 'write to a temporary file, then rename over the target', 'a partial export is never visible')],
   'valid': 'An adapter succeeds only if every in-scope record is translated and the export passes validation. **It fails loudly rather than writing a partial export.**',
   'target': [('Version', '`model_version` = the source tool\'s change marker if it has one (revision, last-modified), else the extraction timestamp; `source_system` names the tool; `version` reports the source\'s current marker cheaply so SVC-04 can poll'),

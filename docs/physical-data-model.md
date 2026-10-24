@@ -8,7 +8,7 @@ The **physical data model** is the logical data model written as files a tool ca
 
 | Layer | Document | Holds |
 |---|---|---|
-| Conceptual | [architecture-entity-design.md](architecture-entity-design.md) | the entity types and how they relate |
+| Conceptual | [architecture-entity-design.md](architecture-entity-design.md) | the entity types; how they relate: [relationships-planning.md](relationships-planning.md) (within a level) and [relationship-registry-spec.md](relationship-registry-spec.md) (across levels) |
 | Logical | [logical-data-model.md](logical-data-model.md), [architecture-attribute-design.md](architecture-attribute-design.md) | identifiers, attributes, types, allowed values, references, cardinality, rules |
 | **Physical (this document)** | `schema/entities/<level>/<Entity>.schema.json` | the export format of each entity, validatable by any JSON Schema 2020-12 tool |
 
@@ -34,7 +34,7 @@ A schema sees one record. These rules need the whole export or estate and are en
 
 Artefact types (BOM model, wireframe, Semantic API) and abstract types are not export instance types and have no schema.
 
-| Entity | Schema | Core fields | Common | Inherited | Specific | Required attributes | Attribute confidence (H / M / L) |
+| Entity | Schema | Core fields (besides the `attributes` container) | Common | Inherited | Specific | Required attributes | Attribute confidence (H / M / L) |
 |---|---|---|---|---|---|---|---|
 | `A1.BusinessCapability` | [`A1/BusinessCapability.schema.json`](../schema/entities/A1/BusinessCapability.schema.json) | 8 | 11 | 0 | 4 | 0 | 9 / 3 / 3 |
 | `A1.ValueStream` | [`A1/ValueStream.schema.json`](../schema/entities/A1/ValueStream.schema.json) | 8 | 11 | 0 | 3 | 0 | 9 / 5 / 0 |

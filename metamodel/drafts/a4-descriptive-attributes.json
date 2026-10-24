@@ -1,7 +1,7 @@
 {
   "level": "A4",
   "date": "2026-10-24",
-  "status": "APPROVED 2026-10-25. Written into metamodel/entity-attributes.json (AT-A4-15, AT-A4-33).",
+  "status": "APPROVED 2026-10-25. Written into metamodel/entity-attributes.json (AT-A4-15…AT-A4-33).",
   "note": "Descriptive attributes proposed for the A4 Technology architecture; the 11 approved common attributes apply too. Public sources opened and checked on 2026-10-24, except ISO 3166 (iso.org 403).",
   "attributes": [
     {

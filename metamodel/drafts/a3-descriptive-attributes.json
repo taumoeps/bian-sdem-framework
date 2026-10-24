@@ -1,7 +1,7 @@
 {
   "level": "A3",
   "date": "2026-10-24",
-  "status": "APPROVED 2026-10-25. Written into metamodel/entity-attributes.json (AT-A3-20, AT-A3-38).",
+  "status": "APPROVED 2026-10-25. Written into metamodel/entity-attributes.json (AT-A3-20…AT-A3-38).",
   "note": "Descriptive attributes proposed for the A3 Application architecture; the 11 approved common attributes apply too. Every public source was opened and checked on 2026-10-24.",
   "attributes": [
     {

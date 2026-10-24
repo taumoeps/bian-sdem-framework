@@ -33,7 +33,7 @@ def render(rec=None):
            '## 2. How each attribute is recorded', '',
            '| Field | Meaning |', '|---|---|',
            '| ID | `AT-<level>-<n>`, stable |', '| Type | `string`, `list<string>`, `map<string,string>`, or an enum |',
-           '| Required | **yes** where a rule depends on it and every example estate supplies it; otherwise optional. **Not yet enforced** by `sdem-graph check` — enforcement is the next build |',
+           '| Required | **yes** where a rule depends on it and every example estate supplies it; otherwise optional. Enforced by `sdem-graph check` (LC-04): a missing required attribute is an error |',
            '| Source / reference | the standard and section the field comes from, or SDEM / institution |',
            '| Read by | the rules (`S…`) and procedure steps that read the field |',
            '| Verification | what has been checked |',
@@ -67,7 +67,7 @@ def render(rec=None):
             name = f"`{a['name']}`" + (' *(deprecated)*' if a['status'] == 'deprecated' else '')
             out.append(f"| {a['id']} | `{a['entity']}` | {name} | {a['type']} | {'yes' if a['required'] else 'no'} | {ref} | {a['read_by']} | {a['verification']} | {a['reasoning']} | **{a['confidence']}** | {a.get('confidence_basis', '')} |")
         out.append('')
-    low = [a for a in A if a['confidence'] == 'low']
+    low = [a for a in A if a['confidence'] == 'low' and a['status'] == 'active']
     sdem = [a for a in act if a['source'] == 'SDEM']
     out += [f'## {n + 1}. Fields SDEM defines', '', f'{len(sdem)} active attributes have SDEM as their source: no standard defines the field. They are where inference concentrates and what a reviewer should challenge first; the {len(low)} rated **low** have no standard concept behind them at all.', '',
             '| ID | Attribute | Confidence | Read by |', '|---|---|---|---|'] + [f"| {a['id']} | `{a['entity']}.{a['name']}` | {a['confidence']} | {a['read_by']} |" for a in sdem] + ['']
@@ -77,7 +77,7 @@ def render(rec=None):
             '- **`A1.BusinessService.inputs` / `outputs` are medium, not high**: no standard gives a business service inputs and outputs; they rate medium only because rule S09 was validated against sealed answers in use case C1.',
             '- **`A3.ApplicationComponent.accesses` is deprecated**: it duplicates the A3 `access` relationship; exports should use the relationship.',
             '- **`A3.Event.published_to`** would gain a public source if AsyncAPI were adopted (a channel).',
-            '- **Required flags reflect today\'s examples.** Turning them into checks is the next build; a real export may show that a "required" field is often missing, which is a finding, not a failure of the export.', '',
+            '- **Required flags reflect today\'s examples.** They are enforced (LC-04); a real export may show that a "required" field is often missing, which is a finding, not a failure of the export.', '',
             '## Related', '', '- [`logical-data-model.md`](logical-data-model.md) — the Logical Data Model assembled from the entities, attributes and relationships.', '- [`architecture-entity-design.md`](architecture-entity-design.md) — the entity types.', '- [`inference-audit.md`](inference-audit.md) — how much of SDEM is grounded, confirmed or inferred.',
             '- `metamodel/export-conventions.json` — the join keys each rule reads; every key there appears here.', '']
     return _terms('\n'.join(out) + '\n')

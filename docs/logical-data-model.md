@@ -90,7 +90,7 @@ erDiagram
         list outputs
         list consumers FK
         boolean customer_facing
-        string channels
+        list channels
         string service_level
     }
     A1_BusinessActor {
@@ -338,7 +338,7 @@ Business behaviour exposed to consumers
 | `outputs` | list | no | attribute names the service returns | — |
 | `consumers` | list | no | the actors or roles the service serves | `A1.BusinessActor`, `A1.BusinessRole` |
 | `customer_facing` | boolean | no | whether customers use it directly | — |
-| `channels` | text | no | channels it is offered through | one of: branch, online, mobile, contact centre, partner, API |
+| `channels` | list | no | channels it is offered through | one of: branch, online, mobile, contact centre, partner, API |
 | `service_level` | text | no | the committed service level (e.g. "same day") | — |
 
 **Links**
@@ -1599,15 +1599,15 @@ The model above covers each architecture on its own. Links **between** architect
 
 | Relationship | From → to | How many |
 |---|---|---|
-| `SUPPORTED_BY` | `A1.BusinessCapability` → `A2.ServiceDomain` | many to to to many |
-| `ALIGNED_TO` | `A1.ValueStream` → `A2.BusinessScenario` | many to to to many |
-| `USES_DOMAIN` | `A1.BusinessProcess` → `A2.ServiceDomain` | many to to to many |
-| `ALIGNED_TO` | `A1.BusinessObject` → `A2.BusinessObject` | many to to to many |
-| `REALIZED_BY` | `A2.ServiceDomain` → `A3.ApplicationComponent` | many to to to many |
-| `IMPLEMENTED_BY` | `A2.ServiceOperation` → `A3.APIOperation` | many to to to many |
-| `MAPPED_TO` | `A2.BusinessObject` → `A3.DataEntity` | many to to to many |
-| `DEPLOYED_ON` | `A3.ApplicationComponent` → `A4.InfrastructureComponent` | many to to to many |
-| `DEPLOYED_AS` | `A3.ApplicationComponent` → `A4.Deployment` | many to to to many |
+| `SUPPORTED_BY` | `A1.BusinessCapability` → `A2.ServiceDomain` | many to many |
+| `ALIGNED_TO` | `A1.ValueStream` → `A2.BusinessScenario` | many to many |
+| `USES_DOMAIN` | `A1.BusinessProcess` → `A2.ServiceDomain` | many to many |
+| `ALIGNED_TO` | `A1.BusinessObject` → `A2.BusinessObject` | many to many |
+| `REALIZED_BY` | `A2.ServiceDomain` → `A3.ApplicationComponent` | many to many |
+| `IMPLEMENTED_BY` | `A2.ServiceOperation` → `A3.APIOperation` | many to many |
+| `MAPPED_TO` | `A2.BusinessObject` → `A3.DataEntity` | many to many |
+| `DEPLOYED_ON` | `A3.ApplicationComponent` → `A4.InfrastructureComponent` | many to many |
+| `DEPLOYED_AS` | `A3.ApplicationComponent` → `A4.Deployment` | many to many |
 
 ---
 
@@ -1622,7 +1622,7 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-03 | Within-level relationships | every relationship matches a within-level row of its level (through inheritance), or is `association` | **enforced** |
 | LC-04 | Required attributes | every attribute marked required is present | **enforced** |
 | LC-05 | Attribute types | every attribute value has its declared type | **enforced** |
-| LC-06 | Enumerations | enumerated attributes (`action_term`, `method`, `lifecycle_status`) take an allowed value | **enforced** |
+| LC-06 | Enumerations | every attribute with allowed values, and `lifecycle_status`, takes an allowed value | **enforced** |
 | LC-07 | Same-level references | a reference attribute whose target is in the same level names an instance of the declared type in the same export | **enforced** |
 | LC-08 | Cross-level references | a reference attribute whose target is in another level names an instance of the declared type in the estate | **enforced as a warning** |
 | LC-09 | Natural keys | no two instances of a type share their identifier key within an export | **enforced** |
@@ -1634,7 +1634,7 @@ The rules the data must satisfy, and which the checker enforces today.
 
 ## Appendix B. How the example data measures up
 
-The 7 example estates (447 instances) checked by `sdem-graph check` against the enforced rules. No errors; 29 completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
+The 7 example estates (447 instances) (the generated reference-structure estate excluded) checked by `sdem-graph check` against the enforced rules. No errors; 29 completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
 
 | Rule | Values checked | Failures |
 |---|---|---|
@@ -1669,5 +1669,5 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
 | **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 14 of 14 rules enforced |
-| Physical | one export JSON Schema per entity; a graph store schema | not generated yet — next build |
+| Physical | one export JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem-physical`); graph store schema not designed yet |
 

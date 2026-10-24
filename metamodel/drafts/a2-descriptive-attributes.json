@@ -1,7 +1,7 @@
 {
   "level": "A2",
   "date": "2026-10-24",
-  "status": "APPROVED 2026-10-24 — dropped DA2-02. Written into metamodel/entity-attributes.json (AT-A2-13, AT-A2-25).",
+  "status": "APPROVED 2026-10-24 — dropped DA2-02. Written into metamodel/entity-attributes.json (AT-A2-13…AT-A2-25).",
   "note": "Descriptive attributes proposed for the A2 Service Domain architecture. The 11 common attributes (approved in the A1 review) apply here too. BIAN locators checked in the public BIAN Semantic API Practitioner Guide v8.1 on 2026-10-24; BIAN portal Service Domain pages were unreachable (404), so no attribute rests on them.",
   "attributes": [
     {

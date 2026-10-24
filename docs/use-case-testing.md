@@ -1,6 +1,8 @@
 # Use-case testing of the mapping plan
 
-> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` now run as `sdem-*` (the old names still work in v0.7). See [`sdem-overview.md`](sdem-overview.md).
+> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` and paths under `sdmm/` are now `sdem-*` and `sdem/` (the old names still work in v0.7 and are removed in v0.8.0). See [`sdem-overview.md`](sdem-overview.md).
+
+> **Current state (2026-10-25).** The use-case runs as executed, by hand, following [`mapping-execution.md`](mapping-execution.md). Eleven cases; M0 ran twice, so twelve executions. E1 was not re-run against the enriched exports and has no answer key; E2 is query-only. These runs are the acceptance test for the inference engine (v0.9); see DEC-E-01…06 in [`relationship-rules-spec.md`](relationship-rules-spec.md).
 
 **Status:** ten use cases defined; all executed — E1, E2, M0, M1, M2, H1, H2 (two runs), C1, C2, C3 (see Results). **Purpose:** test `metamodel/relationship-rules.json` (the gap-fill plan, §5 of `docs/mapping-logic-planning.md`) against concrete architectures *before* any engine code exists. Execution is by hand — the analyst (or an AI session acting as the engine, following `docs/mapping-execution.md`) performs each step of §5.2 mechanically on the level exports; the existing tooling judges the result.
 
@@ -1441,6 +1443,96 @@ Regenerated after C3 (2026-10-23) from `metamodel/relationship-rules.json` and t
 | S52 | SolutionBuildingBlock → InfrastructureComponent (candidate) | derived path | 3 | medium | C3 | 3 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
 | S53 | SolutionBuildingBlock → Deployment (candidate) | derived path | 3 | medium | C3 | 2 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
 | S54 | SolutionBuildingBlock → Node (candidate) | derived path | 3 | low | C3 | 1 / 0 / 0 / 0 | **validated** — every gold target hit, no false |
+
+### C1 — results (2026-10-22, fable-executor)
+
+**Executor.** Claude Fable 5.1, following `docs/mapping-execution.md` v0.5.10 including §4c. **Given.** `c1-mappings-given.json` — 22 approved registry arrows, everything except object alignment; the four trade-finance exports. **Gold.** `c1-gold-mappings.json` and `c1-gold-candidates.json` (and `mappings.json`, `candidates.json`) were not opened until phase 5. **Files.** `examples/trade-finance/c1-proposals.json` (2 registry records), `c1-candidates.json` (24 candidate reports, `relationship` = plan ID, `created_by: candidate_rule:<ID>`), `c1-inference-log.json` (57 attempts, 21 plan IDs).
+
+**Readings and conventions, marked.** **C1-R1 (S13)** — a requirement whose `applies_to` names an *activity* closes over that activity's S06/S07 chain, not over the parent process's S04 arrows; the parent of ACT-T3 and ACT-T4 (PRC-LC-ISSUE) uses two domains, so the process route would give REQ-02 and REQ-03 two domains each. **C1-C1 (S09)** — the plan's threshold (≥ 50 %, ≥ 2) alone admits five service → operation pairs; only each service's unique best is reported, as the step-2 and S30 rules already do. **S08** — two domains are the full exported A2 landscape, so the step-5 rule's first condition holds and the ranking is not vacuous; the threshold (≥ 2 non-generic shared concepts, lead ≥ 1) was applied and met for both services. **S03** — `apply ≈ initiate` was used for the first stage (not in the guide's synonym list).
+
+#### Registry proposals (`c1-proposals.json`)
+
+| Proposal | Plan ID | Connection | Step | Confidence | Working |
+|---|---|---|---|---|---|
+| P-C1-001 | S12 | BO-LC `ALIGNED_TO` BBO-LC | 4 | 0.6 | 7/8 BIAN attributes matched by name (applicant_reference, beneficiary_reference, credit_amount, currency, expiry_date, application_status, issuance_reference); `letter_of_credit_reference` unmatched — the bank's `lc_number` has no alias in the export; one-to-one fixpoint |
+| P-C1-002 | S12 | BO-DOCSET `ALIGNED_TO` BBO-DOCSET | 4 | 0.6 | **3/5** (document_set_reference, compliance_outcome, discrepancies); `letter_of_credit_reference` (bank: `lc_number`) and `checked_at` (bank: `presented_at`) unmatched; cross pairs 0/8 and 0/5 |
+
+#### Candidate-rule reports (`c1-candidates.json`)
+
+| Reports | Plan ID | Connections | Step | Confidence | Working |
+|---|---|---|---|---|---|
+| C-C1-001…004 | S06 | ACT-T1→SO-LC-01, ACT-T2→SO-LC-02, ACT-T3→SO-DC-01, ACT-T4→SO-LC-03 | 4 assigned, **1 used** | 0.6 | `invokes` on each activity states the pair; the activity name agrees with the action term |
+| C-C1-005…008 | S07 | ACT-T1→SD-LC, ACT-T2→SD-LC, ACT-T3→SD-DC, ACT-T4→SD-LC | 3 | 0.6 | each cites its S06 report and the B10/B09 composition |
+| C-C1-009, 011, 013 | S13 | REQ-01→SD-LC (over given S04 TF-103); REQ-02→SD-DC and REQ-03→SD-LC (over S06 C-C1-003/004 and S07, reading C1-R1) | 3 | 0.4 | `applies_to` → S04 for the process-level requirement; → S06/S07 for the two activity-level ones |
+| C-C1-010, 012 | S14 | REQ-02→SO-DC-01, REQ-03→SO-LC-03 | 3 | 0.4 | `applies_to` → S06 reports; **REQ-01 gets no S14** — it applies to a process (C1.5) |
+| C-C1-014, 015 | S09 | BSV-LC-APP→SO-LC-01 (7/7), BSV-DOC-CHECK→SO-DC-01 (4/4) | 4 | 0.4 | inputs ∪ outputs vs the operation's I/O; unique best. Suppressed above threshold (C1-C1): BSV-LC-APP→SO-LC-04 5/7, →SO-LC-02 4/7; BSV-DOC-CHECK→SO-DC-02 3/4 |
+| C-C1-016, 017 | S08 | BSV-LC-APP→SD-LC, BSV-DOC-CHECK→SD-DC | 5 | 0.4 | shared non-generic concepts with the asset type and aliases; runner-up at least one behind, both services |
+| C-C1-018…020 | S03 | VSS-T1, VSS-T2, VSS-T3 → BS-LC | 3 (from approved S02 TF-102) | 0.4 | stage verb ↔ operation action term in sequence: apply ≈ Initiate (marked), check ≈ Evaluate, issue = Issuance alias |
+| C-C1-021…024 | S15, S16 | BA-TRADE→APP-LC/APP-DOC; BD-TRADE→APP-LC/APP-DOC | 3 | 0.8 | A2 composition area → domain → service domain (B02, B03) over the given S17 arrows TF-108/109; derived paths reported as candidates, never as registry arrows |
+
+#### sdmm-eval (both files)
+
+```
+$ python -m sdmm.graph check examples/trade-finance/a*.json examples/trade-finance/c1-mappings-given.json examples/trade-finance/c1-proposals.json
+OK: level A1 … A4; OK: mappings #1; OK: mappings #2
+$ python -m sdmm.validate --strict examples/trade-finance/c1-proposals.json
+WARNING ×2 (bian_release required; evidence kinds); OK (with warnings)
+
+$ python -m sdmm.evaluate examples/trade-finance/c1-gold-mappings.json --proposals examples/trade-finance/c1-proposals.json
+relationship     gold prop  tp  fp  fn   prec   rec    f1
+ALIGNED_TO          2    2   2   0   0   1.00  1.00  1.00
+OVERALL             2    2   2   0   0   1.00  1.00  1.00
+
+$ python -m sdmm.evaluate examples/trade-finance/c1-gold-candidates.json --proposals examples/trade-finance/c1-candidates.json
+relationship     gold prop  tp  fp  fn   prec   rec    f1
+S03                 3    3   3   0   0   1.00  1.00  1.00
+S06                 4    4   4   0   0   1.00  1.00  1.00
+S07                 4    4   4   0   0   1.00  1.00  1.00
+S08                 2    2   2   0   0   1.00  1.00  1.00
+S09                 2    2   2   0   0   1.00  1.00  1.00
+S13                 3    3   3   0   0   1.00  1.00  1.00
+S14                 2    2   2   0   0   1.00  1.00  1.00
+S15                 2    2   2   0   0   1.00  1.00  1.00
+S16                 2    2   2   0   0   1.00  1.00  1.00
+OVERALL            24   24  24   0   0   1.00  1.00  1.00
+```
+
+#### Tests
+
+| # | Expected | Observed | Verdict |
+|---|---|---|---|
+| C1.1 | S12 2 of 2 at medium, attribute pairs named | 2 of 2 at 0.6; pairs named; scores 7/8 and **3/5** (the case text says 4/5 — finding 1) | **holds** |
+| C1.2 | S06 / S07 / S13 / S14 = 4 / 4 / 3 / 2, each derived report citing its S06 or S04 arrow | 4 / 4 / 3 / 2; every S07, S13, S14 report names the C-C1 or TF record it closed over | **holds** |
+| C1.3 | S09 2 of 2 at medium; S08 2 of 2 at low **or** a reasoned single-candidate refusal | S09 2 of 2 at **low** (the plan's band; the case says medium — finding 2); S08 2 of 2 at low with the full-landscape reading stated | **holds** |
+| C1.4 | S15 / S16 2 / 2 at high, derived, not registry | 2 / 2 at 0.8 in the candidates file only | **holds** |
+| C1.5 | ACTOR / ROLE nothing; REQ-01 no operation | S10, S11 logged as not-a-mapping, no report; REQ-01 → no S14, its S13 only | **holds** |
+
+**Pass criteria.** Registry F1 1.00; candidate precision 1.00, recall 1.00 (≥ 0.9 required); C1.5 holds.
+
+#### Findings
+
+| # | Plan ID | What happened | Why | Proposed change |
+|---|---|---|---|---|
+| 1 | S12, case, gold | the executor scores BO-DOCSET → BBO-DOCSET at 3/5; the case says 4/5 and the gold TF-106 rationale reads "lc_number = letter_of_credit_reference" | the architect applied a glossary alias the export does not carry; the case text itself says lc_number is *not* the reference, which is consistent with 7/8 but gives 3/5, not 4/5, for the document set | `export-conventions.json`: `A1.BusinessObject.attributes.field_aliases` (glossary term → BOM attribute), the A1 counterpart of the interface field aliases; S12 reads it. Fix the case cell to 3/5 or add the alias and make it 8/8 and 4/5 |
+| 2 | S03, S09, S13, S14 (gold bands) | the gold reports carry 0.6 where the plan says low (0.4); the case text also says "S09 at medium" | the gold was authored at medium for derivations whose inputs are medium or approved; the plan's bands for institution-only rows are low by default | decide per row: either raise the plan bands for S09 (a structural match at 100 % is not low evidence) and for S13/S14/S03 when derived over approved inputs, or correct the gold to the plan. The scorer ignores confidence, so this is a consistency fix, not a score change |
+| 3 | S13 | `data_needed` says "applies_to → S04 instances"; the gold's REQ-02 and REQ-03 targets follow the activity's own operation (one domain each), which the S04 route cannot produce when the parent process uses two domains | requirements on activities are finer than S04 | S13 `data_needed`: "process-level `applies_to` → S04; activity-level `applies_to` → S06/S07 (the activity's operation's domain)" — reading C1-R1 |
+| 4 | S09 | the threshold alone admits five pairs; three would have been false | small I/O sets overlap generic attributes (reference, status, amount) across sibling operations | S09 `data_needed`: add "unique best match per service, one-to-one as S30" (C1-C1); same clause as every other attribute-overlap rule now has |
+| 5 | S06 | filed by the `invokes` key at step 1 grade while the plan still assigns step 4 | the plan's `data_needed` already names `invokes` first | S06 `fill_step` 1 with step 4 as the fallback when `invokes` is absent (M1 finding 6, still open) |
+| 6 | S03, guide step 4 synonyms | `apply ≈ initiate` was needed for the first stage and is not in the guide's list | the list has capture, validate, execute, confirm | add apply/submit/request ≈ initiate/create to the S02/S03 synonym list |
+| 7 | S08, guide step 5 | the rule's two conditions ("full exported landscape" **or** "≥ 3 domains") disagree when the landscape has two domains; the case flagged exactly this | the first condition was written for the A1 side where the export may be partial | state the precedence: a complete landscape qualifies at any size; the ≥ 3 floor applies only when the export is known to be a selection |
+
+#### No-proposal register
+
+| Plan ID | Instances | Why |
+|---|---|---|
+| S09 | BSV-LC-APP → SO-LC-04 (5/7), SO-LC-02 (4/7); BSV-DOC-CHECK → SO-DC-02 (3/4) | above threshold but not the service's best — suppressed by C1-C1; would be reported under the rule as written |
+| S14 | REQ-01 | applies to a process; S14 closes over activity-level S06 only |
+| S12 | BO-LC → BBO-DOCSET, BO-DOCSET → BBO-LC | 0/5, 0/8 |
+| S10, S11 | ACTOR-TRADE-OPS, ROLE-TRADE-OFFICER | not a mapping (plan) |
+| S05 | — | historical method; not in C1's rows |
+| S01, S02, S04, S17, S24, S30, S32, S33/S34/S35 | the 22 given arrows | given |
+
+**Summary.** The first coverage case puts nine previously untested candidate rows and the one untested registry row through the steps, and all 26 targets are reached with nothing false: registry 2 of 2, candidates 24 of 24. Three readings had to be stated where the plan or guide is loose — activity-level requirements close through their own operation, service-to-operation matching must be one-to-one, two domains are a full landscape — and each is a one-line fix to `data_needed` or the guide. The one data gap is the A1 side's missing glossary alias, which is why the document-set alignment scores 3 of 5 rather than the architect's 4 of 5.
 
 ### C1 — actions taken on the findings (v0.5.11)
 

@@ -1,8 +1,8 @@
-"""Mapping engine interface and a baseline, for the v0.7 engine to plug into.
+"""Architecture Relationship Inference Engine: the interface and a baseline, for the rule-based engine (v0.9) to plug into.
 
 An engine reads a FederatedGraph and returns *proposed* mapping records. It never writes approved
 records; everything it returns goes through sdem-validate and an architect. The baseline here exists
-to exercise the evaluation harness; it is not the v0.7 engine.
+to exercise the evaluation harness; it is not the rule-based engine specified in docs/relationship-rules-spec.md.
 """
 from pathlib import Path
 import argparse, json, re, sys
@@ -34,7 +34,7 @@ def _words(*texts):
     return {w for t in texts if t for w in re.findall(r'[a-z]+', t.lower()) if len(w) > 2 and w not in STOP}
 
 
-# Deprecated name, kept for one release (SDEM → SDEM, v0.7.0).
+# Deprecated name, kept for one release (SDMM → SDEM, v0.7.0).
 MappingEngine = RelationshipInferenceEngine
 
 

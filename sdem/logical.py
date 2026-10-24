@@ -24,7 +24,7 @@ CONSTRAINTS = [
  ('LC-03', 'Within-level relationships', 'every relationship matches a within-level row of its level (through inheritance), or is `association`', 'enforced', '`sdem-graph check`'),
  ('LC-04', 'Required attributes', 'every attribute marked required is present', 'enforced', '`sdem-graph check` (error)'),
  ('LC-05', 'Attribute types', 'every attribute value has its declared type', 'enforced', '`sdem-graph check` (error)'),
- ('LC-06', 'Enumerations', 'enumerated attributes (`action_term`, `method`, `lifecycle_status`) take an allowed value', 'enforced', '`sdem-graph check` (error)'),
+ ('LC-06', 'Enumerations', 'every attribute with allowed values, and `lifecycle_status`, takes an allowed value', 'enforced', '`sdem-graph check` (error)'),
  ('LC-07', 'Same-level references', 'a reference attribute whose target is in the same level names an instance of the declared type in the same export', 'enforced', '`sdem-graph check` (error)'),
  ('LC-08', 'Cross-level references', 'a reference attribute whose target is in another level names an instance of the declared type in the estate', 'enforced as a warning', '`sdem-graph check` (warning when the target level is loaded); resolved by the inference engine; never a federated edge'),
  ('LC-09', 'Natural keys', 'no two instances of a type share their identifier key within an export', 'enforced', '`sdem-graph check` (error)'),
@@ -122,14 +122,14 @@ def render():
     out += [f'## {n}. Links between architectures', '',
             'The model above covers each architecture on its own. Links **between** architectures are the nine relationship types below; actual links are records in the Architecture Relationship Registry, proposed by the inference engine and approved by architects.', '',
             '| Relationship | From → to | How many |', '|---|---|---|']
-    out += [f"| `{x['relationship']}` | `{x['source_type']}` → `{x['target_type']}` | {x['cardinality'].replace('_', ' to ')} |" for x in reg]
+    out += [f"| `{x['relationship']}` | `{x['source_type']}` → `{x['target_type']}` | {x['cardinality'].replace('_to_', ' to ')} |" for x in reg]
     est, inst, res = conformance(mm, attrs, common)
     out += ['', '---', '', '## Appendix A. Rules', '',
             'The rules the data must satisfy, and which the checker enforces today.', '',
             '| ID | Rule | Detail | Status |', '|---|---|---|---|']
     out += [f"| {c[0]} | {c[1]} | {c[2]} | **{c[3]}** |" for c in CONSTRAINTS]
     out += ['', '## Appendix B. How the example data measures up', '',
-            f"The {est} example estates ({inst} instances) checked by `sdem-graph check` against the enforced rules. " + ('No errors' if all(res[f'{lc} failed'] == 0 for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-09', 'LC-10')) else 'Errors are listed below') + f"; {res['LC-10m failed']} completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record)" + (f"; {res['LC-13 failed']} instance(s) still use a deprecated field" if res['LC-13 failed'] else '') + '.', '',
+            f"The {est} example estates ({inst} instances) (the generated reference-structure estate excluded) checked by `sdem-graph check` against the enforced rules. " + ('No errors' if all(res[f'{lc} failed'] == 0 for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-09', 'LC-10')) else 'Errors are listed below') + f"; {res['LC-10m failed']} completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record)" + (f"; {res['LC-13 failed']} instance(s) still use a deprecated field" if res['LC-13 failed'] else '') + '.', '',
             '| Rule | Values checked | Failures |', '|---|---|---|']
     for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-08', 'LC-09', 'LC-10', 'LC-10m'):
         out.append(f"| {lc}{' (warning)' if lc in ('LC-08', 'LC-10m') else ''} | {res[lc + ' checked']} | {res[lc + ' failed']} |")
@@ -145,7 +145,7 @@ def render():
     out += ['', '## Appendix D. Where this sits', '', '| Layer | Content | Status |', '|---|---|---|',
             '| Conceptual | which entities exist and which links are allowed | complete |',
             f"| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; {sum(1 for c in CONSTRAINTS if c[3].startswith('enforced'))} of {len(CONSTRAINTS)} rules enforced |",
-            '| Physical | one export JSON Schema per entity; a graph store schema | not generated yet — next build |', '']
+            '| Physical | one export JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem-physical`); graph store schema not designed yet |', '']
     return _terms('\n'.join(out) + '\n')
 
 

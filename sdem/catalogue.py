@@ -35,7 +35,7 @@ def render():
            '| Field | Meaning |', '|---|---|',
            '| Source reference | standard, release, concept, locator (chapter or page) and link, from the entity record |',
            '| Source type | how the entity relates to the standard: native or reference (exact), aligned (interpreted), informed (TOGAF, gated), or SDEM extension; with the alignment kind |',
-           '| Verification | what has been checked: BIAN concepts against the public portal (**a licensed release is still pending**); ArchiMate concepts against the open-source Archi implementation of the relationship tables, because the specification text is login-gated; SDEM extensions are proposals |',
+           '| Verification | what has been checked: BIAN concepts against the public portal (**a licensed release is still pending**); ArchiMate concepts against the open-source Archi implementation of the relationship tables, because the specification text is login-gated; SDEM extensions are SDEM definitions, reviewed with the model |',
            '| Reasoning | why the entity is defined this way and how its source supports it |',
            '| **Confidence** | one rule for every layer of the model (`sdem/confidence.py`): **high** — defined by a public standard and checked; **medium** — built on a standard concept as SDEM chose to model it, or BIAN intent only, or an SDEM / gated / unverified basis that was validated against sealed answers; **low** — no standard basis and not validated |', '| Confidence basis | which part of the rule applied |', '',
            '## 3. Summary', '', '| Architecture | Built on | Entity types | High | Medium | Low |', '|---|---|---|---|---|---|']

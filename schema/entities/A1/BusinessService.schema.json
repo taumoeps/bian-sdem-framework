@@ -370,15 +370,18 @@
           "x-sdem-confidence": "low"
         },
         "channels": {
-          "type": "string",
-          "enum": [
-            "branch",
-            "online",
-            "mobile",
-            "contact centre",
-            "partner",
-            "API"
-          ],
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "branch",
+              "online",
+              "mobile",
+              "contact centre",
+              "partner",
+              "API"
+            ]
+          },
           "description": "channels it is offered through",
           "x-sdem-id": "AT-A1-27",
           "x-sdem-group": "specific",

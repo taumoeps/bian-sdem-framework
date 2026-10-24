@@ -3892,6 +3892,6 @@
     "file_last_changed": "6d236081d9460f063076dbb6225f8645c5f5a7a5",
     "declared_version": "3.2",
     "date": "2026-10-23",
-    "note": "verified_against_archi = the row's concept pair and kind are listed by the oracle; distinct from verified (specification text), which needs Open Group access. Calibration: all 7 low-confidence inferences were confirmed — the low band was over-cautious for derived dynamic relationships."
+    "note": "verified_against_archi = the row's concept pair and kind are listed by the oracle; distinct from verified (specification text), which needs Open Group access. Calibration: every low-confidence inference tested in Phase 2 (7 at the time) was confirmed — the low band was over-cautious for derived dynamic relationships."
   }
 }

@@ -60,7 +60,7 @@ def approve(level, drop=(), decisions=()):
         if x['id'] in done: continue
         n += 1; a = build(x, f'AT-{lv}-{n:02d}', level); rec['attributes'].append(a); added.append(a['id'])
     rp.write_text(json.dumps(rec, indent=2, ensure_ascii=False) + '\n')
-    d['status'] = f"APPROVED {DATE}" + (f" — dropped {', '.join(drop)}" if drop else '') + f". Written into metamodel/entity-attributes.json ({', '.join(added[:1] + added[-1:]) if added else 'nothing new'})."
+    d['status'] = f"APPROVED {DATE}" + (f" — dropped {', '.join(drop)}" if drop else '') + f". Written into metamodel/entity-attributes.json ({added[0] + '…' + added[-1] if len(added) > 1 else (added[0] if added else 'nothing new')})."
     if decisions: d['decisions_taken'] = list(decisions)
     dp.write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n')
     return added

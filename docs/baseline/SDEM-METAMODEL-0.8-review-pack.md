@@ -1,6 +1,6 @@
 # SDEM-METAMODEL-0.8 — Baseline Review Pack
 
-> Prepared 2026-10-25 by `python scripts/baseline_pack.py` from the records at commit `4df07ae`. A snapshot for review, not a living document.
+> Prepared 2026-10-25 by `python scripts/baseline_pack.py` from the records at commit `a38dfe2`. A snapshot for review, not a living document.
 
 ## 1. What a baseline is, and what you are asked to approve
 
@@ -49,11 +49,11 @@ Not in scope: the inference engine (not built), the Relationship Registry conten
 | A2 attributes | 18 | 6 | 1 |
 | A3 attributes | 17 | 17 | 3 |
 | A4 attributes | 12 | 17 | 4 |
-| Relationship rules (basis) | 22 | 42 | 0 |
+| Relationship rules (basis; 5 rows n/a — not used: not encodable or a historical method) | 22 | 42 | 0 |
 
 ## 4. Known limitations (approved as part of the baseline)
 
-1. **Login-gated standards not checked.** TOGAF and the ArchiMate specification text need an Open Group login. Affected: `A3.SolutionBuildingBlock`, `RA3-30`, `RA3-31`. ArchiMate relationships were checked against the open-source Archi implementation instead.
+1. **Login-gated standards not checked.** TOGAF and the ArchiMate specification text need an Open Group login. Affected: `A3.SolutionBuildingBlock`, `RA3-30`, `RA3-31`, `A3.SolutionBuildingBlock.components`. ArchiMate relationships were checked against the open-source Archi implementation instead.
 2. **BIAN below A2.** BIAN publishes no capability-to-Service-Domain mapping and almost nothing below A2, so most cross-level rules are SDEM's design, validated by the use cases rather than by a standard.
 3. **BIAN portal Service Domain pages** returned "not found" during the A2 review; no attribute rests on them. The HTTP-method default (DV-A2-02) rests partly on BIAN's published API files, not yet checked (medium).
 4. **ISO 3166** could not be opened (iso.org 403); `country` is medium.
@@ -87,6 +87,9 @@ Answer each with **yes / no / comment**. A "no" on 1–6 blocks the baseline; ot
 |---|---|---|---|
 | Model owner | Steven Taumoepeau | | |
 | Independent reviewer | | | |
+
+
+**Note on "generated documents".** CI proves each document matches what its generator produces from the records; it cannot prove the wording inside the records is current. Wording was reviewed by reading all of `docs/` on 2026-10-25.
 
 Findings: record each as a GitHub issue labelled `baseline-0.8` and list them here.
 

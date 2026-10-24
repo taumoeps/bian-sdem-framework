@@ -190,7 +190,7 @@
         "locator": "chapter 9"
       },
       "evidence_status": "confirmed_in_official_source",
-      "reasoning": "Aligned to ArchiMate 3.2 Application Event, ch. 9 (concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated). SDEM uses it for published business events; no public standard is yet cited for its fields (AsyncAPI is proposed).",
+      "reasoning": "Aligned to ArchiMate 3.2 Application Event, ch. 9 (concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated). SDEM uses it for published business events; its fields follow CloudEvents 1.0 (type, source, dataschema; approved in the A3 data-model review 2026-10-25).",
       "confidence": "medium",
       "confidence_basis": "built on a standard concept as SDEM chose to model it",
       "identifier": {
