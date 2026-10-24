@@ -13,7 +13,7 @@ off = {m['id']: m for m in json.load(open(R / 'metamodel/official-mappings.json'
 B, O, AR, T, S, I = 'BIAN (public)', 'OpenAPI (public)', 'ArchiMate relationship or concept held as attribute', 'TOGAF (login-gated)', 'SDEM-defined', 'institution data'
 P = 'other public standard (Dublin Core, W3C, ISO 20022, SPDX, public legislation …)'
 _REC = json.load(open(R / 'metamodel/entity-attributes.json'))
-_MAP = {'BIAN': B, 'OpenAPI': O, 'ArchiMate relationship': AR, 'ArchiMate concept': AR, 'TOGAF': T, 'SDEM': S, 'institution': I, 'Dublin Core': P, 'W3C ORG': P, 'W3C SKOS': P, 'public legislation': P, 'BIAN concept': B, **{k: P for k in ('W3C', 'ISO 20022', 'AsyncAPI', 'SPDX', 'CycloneDX', 'SemVer', 'NIST', 'IANA', 'ISO 3166', 'Kubernetes', 'OCI')}}
+_MAP = {'BIAN': B, 'OpenAPI': O, 'ArchiMate relationship': AR, 'ArchiMate concept': AR, 'TOGAF': T, 'SDEM': S, 'institution': I, 'Dublin Core': P, 'W3C ORG': P, 'W3C SKOS': P, 'public legislation': P, 'BIAN concept': B, **{k: P for k in ('W3C', 'ISO 20022', 'AsyncAPI', 'SPDX', 'CycloneDX', 'SemVer', 'NIST', 'IANA', 'ISO 3166', 'Kubernetes', 'OCI', 'CloudEvents', 'IETF', 'purl')}}
 ATTR_SOURCE = {f"{x['entity']}.{x['name']}": _MAP[x['source']] for x in _REC['attributes'] if x['status'] == 'active'}
 ATTR_SOURCE.update({f"common.{x['name']}": _MAP[x['source']] for x in _REC.get('common_attributes', [])})
 attrs = {f'{e}.{k}' for e, ks in conv.items() for k in ks} - {'A1.BusinessCapability.description'}

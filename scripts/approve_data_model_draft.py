@@ -13,7 +13,7 @@ DATE = '2026-10-24'
 SOURCES = [('BIAN Semantic API Practitioner Guide', 'BIAN'), ('BIAN concept', 'BIAN concept'), ('ISO 20022', 'ISO 20022'), ('Dublin Core', 'Dublin Core'),
            ('W3C Organization Ontology', 'W3C ORG'), ('W3C SKOS', 'W3C SKOS'), ('W3C', 'W3C'), ('EU GDPR', 'public legislation'), ('ArchiMate 3.2 concept', 'ArchiMate concept'),
            ('OpenAPI', 'OpenAPI'), ('AsyncAPI', 'AsyncAPI'), ('SPDX', 'SPDX'), ('CycloneDX', 'CycloneDX'), ('Semantic Versioning', 'SemVer'), ('NIST', 'NIST'),
-           ('IANA', 'IANA'), ('ISO 3166', 'ISO 3166'), ('Kubernetes', 'Kubernetes'), ('Open Container Initiative', 'OCI'), ('SDEM-defined', 'SDEM')]
+           ('IANA', 'IANA'), ('CloudEvents', 'CloudEvents'), ('IETF', 'IETF'), ('package-url', 'purl'), ('ISO 3166', 'ISO 3166'), ('Kubernetes', 'Kubernetes'), ('Open Container Initiative', 'OCI'), ('SDEM-defined', 'SDEM')]
 CHECKED = {'BIAN': 'public BIAN Semantic API Practitioner Guide v8.1, page checked ' + DATE, 'BIAN concept': 'BIAN concept named in the public Service Landscape; the field itself not checked against a public page',
            'ArchiMate concept': 'concept confirmed by the Archi oracle; field as SDEM chose to model it', 'SDEM': f'SDEM design; approved in the data-model review {DATE}'}
 

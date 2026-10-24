@@ -91,7 +91,8 @@ def render(level):
         for x in ppr:
             row(f"`{x['name']}`", f"Inherited from `{par.split('.')[1]}`", x['type'], 'no', allowed(x), x['meaning'], src(x), f"Answers: {x['question']} {x['reasoning']}", x['confidence'], f"proposed {x['id']}")
         for x in ex:
-            row(f"`{x['name']}`", 'Specific', CT.get(x['type'], x['type']), 'yes' if x['required'] else 'no', allowed(x), x['description'], esrc(x), x['reasoning'], x['confidence'], 'existing')
+            dep = x['status'] == 'deprecated'
+            row(f"~~`{x['name']}`~~" if dep else f"`{x['name']}`", 'Specific', CT.get(x['type'], x['type']), 'yes' if x['required'] else 'no', allowed(x), x['description'], esrc(x), x['reasoning'], x['confidence'], '**deprecated** (removed in a later release)' if dep else 'existing')
         for x in pr:
             row(f"**`{x['name']}`**", 'Specific', x['type'], 'no', allowed(x), x['meaning'], src(x), f"Answers: {x['question']} {x['reasoning']}", x['confidence'], f"**{'approved' if x.get('status') == 'approved' else 'proposed'} {x['id']}**")
         for x in dup:
@@ -103,6 +104,12 @@ def render(level):
         r = [a for a in A if a['entity'] == scope]
         if r: cc = Counter(a['confidence'] for a in r); out.append(f"| {label} | {len(r)} | {cc['high']} | {cc['medium']} | {cc['low']} |")
     out += [f"| **Total** | **{len(A)}** | **{c['high']}** | **{c['medium']}** | **{c['low']}** |", '']
+    if d.get('changes'):
+        out += ['## Changes proposed to existing attributes', '', '| Attribute | Now | Proposed | Reasoning |', '|---|---|---|---|']
+        out += [f"| `{x['attribute']}` | {x['now']} | {x['proposed']} | {x['reasoning']} |" for x in d['changes']] + ['']
+    if d.get('derived'):
+        out += ['## Derived attributes (computed, never stored)', '', '| ID | Entity | Attribute | Rule | Source reference | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']
+        out += [f"| {x['id']} | `{x['entity']}` | `{x['name']}` | {x['rule']} | {x['source']} | {x['reasoning']} | **{x['confidence']}** |" for x in d['derived']] + ['']
     out += ['## Decisions for you', ''] + [f"{k}. {q}" for k, q in enumerate(d.get('decisions', []), 1)] + ['']
     path = ROOT / 'docs' / 'drafts' / f'data-model-{level}-draft.md'
     path.write_text('\n'.join(out) + '\n'); return path
