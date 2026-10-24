@@ -1,0 +1,117 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-a4",
+    "type": "sdem.local",
+    "label": "A4 local knowledge graph (synthetic-bank-a4)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "f62b06a76e531f2ef8f1429c552e64fd72d961563ecba7c0d6a0f52a20f55e4b",
+      "level": "A4",
+      "model_id": "synthetic-bank-a4",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-CMDB"
+    },
+    "nodes": {
+      "A4:INF-CLOUD-K8S-PROD@1.3": {
+        "label": "Managed Kubernetes (production)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-CLOUD-K8S-PROD",
+          "version": "1.3",
+          "lifecycle_status": "active",
+          "description": "Managed Kubernetes cluster hosting production workloads.",
+          "attributes": {
+            "hosts": [
+              "APP-FRAUD-ENGINE"
+            ]
+          }
+        }
+      },
+      "A4:INF-ONPREM-VM-CLUSTER-B@2.0": {
+        "label": "On-prem VM cluster B",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Node",
+          "id": "INF-ONPREM-VM-CLUSTER-B",
+          "version": "2.0",
+          "lifecycle_status": "deprecated",
+          "description": "Legacy on-premises VM cluster, being decommissioned."
+        }
+      },
+      "A4:ENV-PROD@1.0": {
+        "label": "Production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.DeploymentEnvironment",
+          "id": "ENV-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Production runtime environment."
+        }
+      },
+      "A4:NET-PRIVATE@1.0": {
+        "label": "Private network",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.CommunicationNetwork",
+          "id": "NET-PRIVATE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Private network segment for production services."
+        }
+      },
+      "A4:DEP-FRAUD-PROD@1.0": {
+        "label": "Fraud Engine — production deployment",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-FRAUD-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Fraud Engine 4.2 deployed to the production Kubernetes cluster.",
+          "attributes": {
+            "component_id": "APP-FRAUD-ENGINE",
+            "environment_id": "ENV-PROD",
+            "platform_id": "INF-CLOUD-K8S-PROD"
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A4:ENV-PROD-aggregation-INF-CLOUD-K8S-PROD",
+        "source": "A4:ENV-PROD@1.0",
+        "target": "A4:INF-CLOUD-K8S-PROD@1.3",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-34"
+        }
+      },
+      {
+        "id": "A4:INF-CLOUD-K8S-PROD-association-NET-PRIVATE",
+        "source": "A4:INF-CLOUD-K8S-PROD@1.3",
+        "target": "A4:NET-PRIVATE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        },
+        "label": "runs on"
+      },
+      {
+        "id": "A4:ENV-PROD-aggregation-DEP-FRAUD-PROD",
+        "source": "A4:ENV-PROD@1.0",
+        "target": "A4:DEP-FRAUD-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      }
+    ]
+  }
+}

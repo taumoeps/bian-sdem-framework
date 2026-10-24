@@ -1,0 +1,1093 @@
+{
+  "graph": {
+    "id": "sdem:federated",
+    "type": "sdem.federated",
+    "label": "Federated knowledge graph (approved cross-level links)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "metamodel_version": "0.4.0",
+      "levels": {
+        "A1": "2026.10",
+        "A2": "2026.10",
+        "A3": "2026.10",
+        "A4": "2026.10"
+      },
+      "registries": [
+        {
+          "file": "mappings.json",
+          "sha256": "5b2e716eb0a29655208fe6bd91b0067c8f89085f44e844f66bddee250028e1fd",
+          "registry_version": "0.4.0",
+          "metamodel_version": "0.4.0"
+        }
+      ],
+      "statuses": [
+        "approved"
+      ]
+    },
+    "nodes": {
+      "A1:CAP-TF@1.0": {
+        "label": "Issue Letter of Credit",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-TF",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:SD-LC@1.0": {
+        "label": "Letter of Credit (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-LC",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:VS-LC@1.0": {
+        "label": "Get a Letter of Credit",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "VS-LC",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:BS-LC@1.0": {
+        "label": "Documentary credit issuance",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "BS-LC",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:PRC-LC-APPLY@1.0": {
+        "label": "Capture letter of credit application",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-LC-APPLY",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A1:PRC-LC-ISSUE@1.0": {
+        "label": "Check documents and issue",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-LC-ISSUE",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:SD-DC@1.0": {
+        "label": "Document Checking (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-DC",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:BO-LC@1.0": {
+        "label": "Letter of Credit",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-LC",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:BBO-LC@1.0": {
+        "label": "Letter of Credit",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-LC",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:BO-DOCSET@1.0": {
+        "label": "Document Set",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-DOCSET",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:BBO-DOCSET@1.0": {
+        "label": "Document Set",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-DOCSET",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:APP-LC@3.0": {
+        "label": "LC Manager",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "APP-LC",
+          "version": "3.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A3:APP-DOC@3.0": {
+        "label": "DocCheck",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "APP-DOC",
+          "version": "3.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-LC-01@1.0": {
+        "label": "Initiate Letter of Credit",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LC-01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:API-LC-01@3.0": {
+        "label": "Create letter of credit",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-LC-01",
+          "version": "3.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-LC-02@1.0": {
+        "label": "Update Letter of Credit Amendment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LC-02",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:API-LC-02@3.0": {
+        "label": "Amend letter of credit",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-LC-02",
+          "version": "3.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-LC-03@1.0": {
+        "label": "Execute Letter of Credit Issuance",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LC-03",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:API-LC-03@3.0": {
+        "label": "Issue letter of credit",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-LC-03",
+          "version": "3.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-LC-04@1.0": {
+        "label": "Retrieve Letter of Credit",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LC-04",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:API-LC-04@3.0": {
+        "label": "Get letter of credit",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-LC-04",
+          "version": "3.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-DC-01@1.0": {
+        "label": "Evaluate Document Checking",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-DC-01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:API-DC-01@3.0": {
+        "label": "Check document set",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-DC-01",
+          "version": "3.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-DC-02@1.0": {
+        "label": "Retrieve Document Checking",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-DC-02",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:API-DC-02@3.0": {
+        "label": "Get document set",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-DC-02",
+          "version": "3.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A3:ENT-LC@3.0": {
+        "label": "letters_of_credit",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-LC",
+          "version": "3.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A3:ENT-DOCSET@3.0": {
+        "label": "document_sets",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-DOCSET",
+          "version": "3.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A4:DEP-LC-PROD@1.0": {
+        "label": "LC Manager — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-LC-PROD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A4:DEP-DOC-PROD@1.0": {
+        "label": "DocCheck — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-DOC-PROD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A4:SYS-RUNTIME-TF@1.30": {
+        "label": "Container runtime — trade",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "SYS-RUNTIME-TF",
+          "version": "1.30",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A4:NODE-TF-PROD@1.0": {
+        "label": "Trade finance node pool (production)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Node",
+          "id": "NODE-TF-PROD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A4:DEV-SCAN-01@1.0": {
+        "label": "Document scanning appliance",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Device",
+          "id": "DEV-SCAN-01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "TF-101",
+        "source": "A1:CAP-TF@1.0",
+        "target": "A2:SD-LC@1.0",
+        "relation": "SUPPORTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CAP-TF",
+            "type": "A1.BusinessCapability",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-LC",
+            "type": "A2.ServiceDomain",
+            "version": "1.0",
+            "canonical_id": "BIAN-LETTER-OF-CREDIT"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "business_architecture_document:BA-TF-2026#s2",
+            "domain_scope_assessment:DSA-TF-1"
+          ],
+          "rationale": "[S01] issuing credits is the credit domain's scope",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "TF-102",
+        "source": "A1:VS-LC@1.0",
+        "target": "A2:BS-LC@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "VS-LC",
+            "type": "A1.ValueStream",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BS-LC",
+            "type": "A2.BusinessScenario",
+            "version": "1.0",
+            "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-LC-2026",
+            "scenario_suitability_review:SCN-LC-1"
+          ],
+          "rationale": "[S02] three stages cover the scenario's three operations",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "TF-103",
+        "source": "A1:PRC-LC-APPLY@1.0",
+        "target": "A2:SD-LC@1.0",
+        "relation": "USES_DOMAIN",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "PRC-LC-APPLY",
+            "type": "A1.BusinessProcess",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-LC",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-LC-2026"
+          ],
+          "rationale": "[S04] invokes Initiate and Update",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-104",
+        "source": "A1:PRC-LC-ISSUE@1.0",
+        "target": "A2:SD-DC@1.0",
+        "relation": "USES_DOMAIN",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "PRC-LC-ISSUE",
+            "type": "A1.BusinessProcess",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-DC",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-LC-2026"
+          ],
+          "rationale": "[S04] invokes Evaluate",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-105",
+        "source": "A1:PRC-LC-ISSUE@1.0",
+        "target": "A2:SD-LC@1.0",
+        "relation": "USES_DOMAIN",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "PRC-LC-ISSUE",
+            "type": "A1.BusinessProcess",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-LC",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-LC-2026"
+          ],
+          "rationale": "[S04] invokes Execute Issuance",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-106",
+        "source": "A1:BO-LC@1.0",
+        "target": "A2:BBO-LC@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BO-LC",
+            "type": "A1.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BBO-LC",
+            "type": "A2.BusinessObject",
+            "version": "1.0",
+            "canonical_id": "BIAN-BO-LETTER-OF-CREDIT"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "business_glossary:GL-TF#letter-of-credit",
+            "object_alignment_review:OAR-TF-1"
+          ],
+          "rationale": "[S12] same meaning; 7 of 8 attributes align (lc_number = letter_of_credit_reference)",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "TF-107",
+        "source": "A1:BO-DOCSET@1.0",
+        "target": "A2:BBO-DOCSET@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BO-DOCSET",
+            "type": "A1.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BBO-DOCSET",
+            "type": "A2.BusinessObject",
+            "version": "1.0",
+            "canonical_id": "BIAN-BO-DOCUMENT-SET"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "business_glossary:GL-TF#document-set",
+            "object_alignment_review:OAR-TF-2"
+          ],
+          "rationale": "[S12] same meaning; 4 of 5 attributes align",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "TF-108",
+        "source": "A2:SD-LC@1.0",
+        "target": "A3:APP-LC@3.0",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SD-LC",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-LC",
+            "type": "A3.ApplicationComponent",
+            "version": "3.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:TF-HLD#lc"
+          ],
+          "rationale": "[S17] LC Manager implements all four credit operations",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-109",
+        "source": "A2:SD-DC@1.0",
+        "target": "A3:APP-DOC@3.0",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SD-DC",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-DOC",
+            "type": "A3.ApplicationComponent",
+            "version": "3.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:TF-HLD#doc"
+          ],
+          "rationale": "[S17] DocCheck implements both checking operations",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-110",
+        "source": "A2:SO-LC-01@1.0",
+        "target": "A3:API-LC-01@3.0",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-LC-01",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "API-LC-01",
+            "type": "A3.APIOperation",
+            "version": "3.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:trade-api-v3.yaml#API-LC-01"
+          ],
+          "rationale": "[S24] Initiate ↔ POST; 7/7",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-111",
+        "source": "A2:SO-LC-02@1.0",
+        "target": "A3:API-LC-02@3.0",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-LC-02",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "API-LC-02",
+            "type": "A3.APIOperation",
+            "version": "3.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:trade-api-v3.yaml#API-LC-02"
+          ],
+          "rationale": "[S24] Update/Amendment ↔ PATCH …/amendment; 5/5",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-112",
+        "source": "A2:SO-LC-03@1.0",
+        "target": "A3:API-LC-03@3.0",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-LC-03",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "API-LC-03",
+            "type": "A3.APIOperation",
+            "version": "3.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:trade-api-v3.yaml#API-LC-03"
+          ],
+          "rationale": "[S24] Execute/Issuance ↔ PUT …/issuance; 3/3",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-113",
+        "source": "A2:SO-LC-04@1.0",
+        "target": "A3:API-LC-04@3.0",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-LC-04",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "API-LC-04",
+            "type": "A3.APIOperation",
+            "version": "3.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:trade-api-v3.yaml#API-LC-04"
+          ],
+          "rationale": "[S24] Retrieve ↔ GET; 6/6",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-114",
+        "source": "A2:SO-DC-01@1.0",
+        "target": "A3:API-DC-01@3.0",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-DC-01",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "API-DC-01",
+            "type": "A3.APIOperation",
+            "version": "3.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:trade-api-v3.yaml#API-DC-01"
+          ],
+          "rationale": "[S24] Evaluate ↔ POST; 4/4",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-115",
+        "source": "A2:SO-DC-02@1.0",
+        "target": "A3:API-DC-02@3.0",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-DC-02",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "API-DC-02",
+            "type": "A3.APIOperation",
+            "version": "3.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:trade-api-v3.yaml#API-DC-02"
+          ],
+          "rationale": "[S24] Retrieve ↔ GET; 4/4",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-116",
+        "source": "A2:BBO-LC@1.0",
+        "target": "A3:ENT-LC@3.0",
+        "relation": "MAPPED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BBO-LC",
+            "type": "A2.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "ENT-LC",
+            "type": "A3.DataEntity",
+            "version": "3.0"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "data_model:TF-DD#letters_of_credit"
+          ],
+          "rationale": "[S30] 8/8",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-117",
+        "source": "A2:BBO-DOCSET@1.0",
+        "target": "A3:ENT-DOCSET@3.0",
+        "relation": "MAPPED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BBO-DOCSET",
+            "type": "A2.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "ENT-DOCSET",
+            "type": "A3.DataEntity",
+            "version": "3.0"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "data_model:TF-DD#document_sets"
+          ],
+          "rationale": "[S30] 5/5",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-118",
+        "source": "A3:APP-LC@3.0",
+        "target": "A4:DEP-LC-PROD@1.0",
+        "relation": "DEPLOYED_AS",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-LC",
+            "type": "A3.ApplicationComponent",
+            "version": "3.0"
+          },
+          "target_ref": {
+            "id": "DEP-LC-PROD",
+            "type": "A4.Deployment",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:TF-DD-2026#prod"
+          ],
+          "rationale": "[S32] manifest",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-119",
+        "source": "A3:APP-DOC@3.0",
+        "target": "A4:DEP-DOC-PROD@1.0",
+        "relation": "DEPLOYED_AS",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-DOC",
+            "type": "A3.ApplicationComponent",
+            "version": "3.0"
+          },
+          "target_ref": {
+            "id": "DEP-DOC-PROD",
+            "type": "A4.Deployment",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:TF-DD-2026#prod"
+          ],
+          "rationale": "[S32] manifest",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-120",
+        "source": "A3:APP-LC@3.0",
+        "target": "A4:SYS-RUNTIME-TF@1.30",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-LC",
+            "type": "A3.ApplicationComponent",
+            "version": "3.0"
+          },
+          "target_ref": {
+            "id": "SYS-RUNTIME-TF",
+            "type": "A4.SystemSoftware",
+            "version": "1.30"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:TF-DD-2026#prod"
+          ],
+          "rationale": "[S33] runtime hosts the component",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-121",
+        "source": "A3:APP-DOC@3.0",
+        "target": "A4:SYS-RUNTIME-TF@1.30",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-DOC",
+            "type": "A3.ApplicationComponent",
+            "version": "3.0"
+          },
+          "target_ref": {
+            "id": "SYS-RUNTIME-TF",
+            "type": "A4.SystemSoftware",
+            "version": "1.30"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:TF-DD-2026#prod"
+          ],
+          "rationale": "[S33] runtime hosts the component",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-122",
+        "source": "A3:APP-LC@3.0",
+        "target": "A4:NODE-TF-PROD@1.0",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-LC",
+            "type": "A3.ApplicationComponent",
+            "version": "3.0"
+          },
+          "target_ref": {
+            "id": "NODE-TF-PROD",
+            "type": "A4.Node",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:TF-DD-2026#prod"
+          ],
+          "rationale": "[S34] node pool hosts the component (Node target — plan S34)",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-123",
+        "source": "A3:APP-DOC@3.0",
+        "target": "A4:NODE-TF-PROD@1.0",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-DOC",
+            "type": "A3.ApplicationComponent",
+            "version": "3.0"
+          },
+          "target_ref": {
+            "id": "NODE-TF-PROD",
+            "type": "A4.Node",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:TF-DD-2026#prod"
+          ],
+          "rationale": "[S34] node pool hosts the component (Node target — plan S34)",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "TF-124",
+        "source": "A3:APP-DOC@3.0",
+        "target": "A4:DEV-SCAN-01@1.0",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-DOC",
+            "type": "A3.ApplicationComponent",
+            "version": "3.0"
+          },
+          "target_ref": {
+            "id": "DEV-SCAN-01",
+            "type": "A4.Device",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:TF-DD-2026#branch"
+          ],
+          "rationale": "[S35] the capture module runs on the appliance (Device target — plan S35)",
+          "baseline_id": "TF-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      }
+    ]
+  }
+}

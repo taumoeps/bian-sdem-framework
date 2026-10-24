@@ -1,0 +1,116 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-a3",
+    "type": "sdem.local",
+    "label": "A3 local knowledge graph (synthetic-bank-a3)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "b1e80538a8fc426c3423b9af3d0f8065aef4736d55b102ac03bd4e31fd4b1844",
+      "level": "A3",
+      "model_id": "synthetic-bank-a3",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-APM"
+    },
+    "nodes": {
+      "A3:APP-FRAUD-ENGINE@4.2": {
+        "label": "Fraud Engine",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "APP-FRAUD-ENGINE",
+          "version": "4.2",
+          "lifecycle_status": "active",
+          "description": "Real-time scoring of card transactions against fraud models; dispatches alerts to channels and records outcomes.",
+          "attributes": {
+            "vendor": "in-house",
+            "deployed_on": [
+              "INF-CLOUD-K8S-PROD"
+            ],
+            "deployed_as": [
+              "DEP-FRAUD-PROD"
+            ]
+          }
+        }
+      },
+      "A3:CMP-SCORING@4.2": {
+        "label": "Transaction Scoring",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "CMP-SCORING",
+          "version": "4.2",
+          "lifecycle_status": "active",
+          "description": "Scores a transaction against the active fraud models and returns a risk band."
+        }
+      },
+      "A3:IFC-FRAUD-API@3.1": {
+        "label": "Fraud API",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-FRAUD-API",
+          "version": "3.1",
+          "lifecycle_status": "active",
+          "description": "REST interface exposing fraud alert and case operations to channels."
+        }
+      },
+      "A3:POST /fraud/alerts@3.1": {
+        "label": "Create fraud alert",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "POST /fraud/alerts",
+          "version": "3.1",
+          "lifecycle_status": "active",
+          "description": "Creates a fraud alert for a transaction and triggers cardholder notification.",
+          "attributes": {
+            "method": "POST",
+            "path": "/fraud/alerts",
+            "payload_fields": [
+              "alert_reference",
+              "transaction_reference",
+              "party_reference",
+              "risk_score",
+              "notification_status",
+              "party_response"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A3:APP-FRAUD-ENGINE-composition-CMP-SCORING",
+        "source": "A3:APP-FRAUD-ENGINE@4.2",
+        "target": "A3:CMP-SCORING@4.2",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-01"
+        }
+      },
+      {
+        "id": "A3:APP-FRAUD-ENGINE-composition-IFC-FRAUD-API",
+        "source": "A3:APP-FRAUD-ENGINE@4.2",
+        "target": "A3:IFC-FRAUD-API@3.1",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A3:IFC-FRAUD-API-composition-POST /fraud/alerts",
+        "source": "A3:IFC-FRAUD-API@3.1",
+        "target": "A3:POST /fraud/alerts@3.1",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      }
+    ]
+  }
+}

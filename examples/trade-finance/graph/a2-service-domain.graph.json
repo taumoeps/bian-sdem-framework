@@ -1,0 +1,847 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-trade-a2",
+    "type": "sdem.local",
+    "label": "A2 local knowledge graph (synthetic-bank-trade-a2)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "17c8525a094f643458c378e0e312b9014ec93bb312a88e47229003d67e827ee8",
+      "level": "A2",
+      "model_id": "synthetic-bank-trade-a2",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-BIAN-WORKBENCH"
+    },
+    "nodes": {
+      "A2:BA-TRADE@1.0": {
+        "label": "Trade Finance (synthetic area)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessArea",
+          "id": "BA-TRADE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic business area grouping trade finance domains."
+        }
+      },
+      "A2:BD-TRADE@1.0": {
+        "label": "Documentary Trade (synthetic domain)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessDomain",
+          "id": "BD-TRADE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic business domain for documentary credits."
+        }
+      },
+      "A2:SD-LC@1.0": {
+        "label": "Letter of Credit (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-LC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-LETTER-OF-CREDIT",
+          "description": "Synthetic stand-in: handles a documentary letter of credit from application through amendment to issuance.",
+          "attributes": {
+            "asset_type": "AT-LC",
+            "functional_pattern": "FP-FULFIL"
+          }
+        }
+      },
+      "A2:SD-DC@1.0": {
+        "label": "Document Checking (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-DC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-DOCUMENT-CHECKING",
+          "description": "Synthetic stand-in: evaluates presented trade documents for compliance with a credit's terms and records discrepancies.",
+          "attributes": {
+            "asset_type": "AT-DOCSET",
+            "functional_pattern": "FP-ASSESS"
+          }
+        }
+      },
+      "A2:AT-LC@1.0": {
+        "label": "Letter of Credit",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-LC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The credit being handled.",
+          "attributes": {
+            "aliases": [
+              "lc",
+              "credit",
+              "letter"
+            ]
+          }
+        }
+      },
+      "A2:AT-DOCSET@1.0": {
+        "label": "Document Set",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-DOCSET",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The presented documents.",
+          "attributes": {
+            "aliases": [
+              "document",
+              "docset",
+              "docs"
+            ]
+          }
+        }
+      },
+      "A2:FP-FULFIL@1.0": {
+        "label": "Fulfil",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "FP-FULFIL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in: complete a request through a procedure."
+        }
+      },
+      "A2:FP-ASSESS@1.0": {
+        "label": "Assess",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "FP-ASSESS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in: evaluate something and record the result."
+        }
+      },
+      "A2:CR-LC@1.0": {
+        "label": "Letter of Credit Procedure",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-LC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Lifecycle of one credit.",
+          "attributes": {
+            "attributes": [
+              "letter_of_credit_reference",
+              "applicant_reference",
+              "beneficiary_reference",
+              "credit_amount",
+              "currency",
+              "expiry_date",
+              "application_status",
+              "issuance_reference",
+              "amendment_reference"
+            ],
+            "lifecycle_states": [
+              "applied",
+              "validated",
+              "amended",
+              "issued",
+              "expired"
+            ]
+          }
+        }
+      },
+      "A2:CR-DC@1.0": {
+        "label": "Document Checking Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-DC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "One document check.",
+          "attributes": {
+            "attributes": [
+              "document_set_reference",
+              "letter_of_credit_reference",
+              "compliance_outcome",
+              "discrepancies",
+              "checked_at"
+            ],
+            "lifecycle_states": [
+              "received",
+              "checked",
+              "accepted",
+              "rejected"
+            ]
+          }
+        }
+      },
+      "A2:BQ-ISSUANCE@1.0": {
+        "label": "Issuance",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-ISSUANCE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Issuing the credit.",
+          "attributes": {
+            "aliases": [
+              "issue",
+              "issuance"
+            ]
+          }
+        }
+      },
+      "A2:BQ-AMENDMENT@1.0": {
+        "label": "Amendment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-AMENDMENT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Amending the credit before issuance.",
+          "attributes": {
+            "aliases": [
+              "amend",
+              "amendment"
+            ]
+          }
+        }
+      },
+      "A2:SG-LC@1.0": {
+        "label": "Credit",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-LC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Credit operations."
+        }
+      },
+      "A2:SG-DC@1.0": {
+        "label": "Checking",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-DC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Checking operations."
+        }
+      },
+      "A2:SO-LC-01@1.0": {
+        "label": "Initiate Letter of Credit",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LC-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Start a credit from the application.",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "applicant_reference",
+              "beneficiary_reference",
+              "credit_amount",
+              "currency",
+              "expiry_date"
+            ],
+            "output_attributes": [
+              "letter_of_credit_reference",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-LC-02@1.0": {
+        "label": "Update Letter of Credit Amendment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LC-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Amend the credit before issuance.",
+          "attributes": {
+            "action_term": "Update",
+            "behavior_qualifier": "Amendment",
+            "input_attributes": [
+              "letter_of_credit_reference",
+              "credit_amount",
+              "expiry_date"
+            ],
+            "output_attributes": [
+              "amendment_reference",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-LC-03@1.0": {
+        "label": "Execute Letter of Credit Issuance",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LC-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Issue the credit.",
+          "attributes": {
+            "action_term": "Execute",
+            "behavior_qualifier": "Issuance",
+            "input_attributes": [
+              "letter_of_credit_reference"
+            ],
+            "output_attributes": [
+              "issuance_reference",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-LC-04@1.0": {
+        "label": "Retrieve Letter of Credit",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LC-04",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return the credit and its status.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "letter_of_credit_reference"
+            ],
+            "output_attributes": [
+              "application_status",
+              "credit_amount",
+              "currency",
+              "expiry_date",
+              "issuance_reference"
+            ]
+          }
+        }
+      },
+      "A2:SO-DC-01@1.0": {
+        "label": "Evaluate Document Checking",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-DC-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Evaluate a document set against the credit.",
+          "attributes": {
+            "action_term": "Evaluate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "document_set_reference",
+              "letter_of_credit_reference"
+            ],
+            "output_attributes": [
+              "compliance_outcome",
+              "discrepancies"
+            ]
+          }
+        }
+      },
+      "A2:SO-DC-02@1.0": {
+        "label": "Retrieve Document Checking",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-DC-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return a document check.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "document_set_reference"
+            ],
+            "output_attributes": [
+              "compliance_outcome",
+              "discrepancies",
+              "checked_at"
+            ]
+          }
+        }
+      },
+      "A2:BS-LC@1.0": {
+        "label": "Documentary credit issuance",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "BS-LC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE",
+          "description": "Apply, check documents, issue.",
+          "attributes": {
+            "operation_sequence": [
+              "SO-LC-01",
+              "SO-DC-01",
+              "SO-LC-03"
+            ]
+          }
+        }
+      },
+      "A2:BBO-LC@1.0": {
+        "label": "Letter of Credit",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-LC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-LETTER-OF-CREDIT",
+          "description": "Canonical.",
+          "attributes": {
+            "attributes": [
+              "letter_of_credit_reference",
+              "applicant_reference",
+              "beneficiary_reference",
+              "credit_amount",
+              "currency",
+              "expiry_date",
+              "application_status",
+              "issuance_reference"
+            ]
+          }
+        }
+      },
+      "A2:BBO-DOCSET@1.0": {
+        "label": "Document Set",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-DOCSET",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-DOCUMENT-SET",
+          "description": "Canonical.",
+          "attributes": {
+            "attributes": [
+              "document_set_reference",
+              "letter_of_credit_reference",
+              "compliance_outcome",
+              "discrepancies",
+              "checked_at"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-CREDIT-AMOUNT@1.0": {
+        "label": "credit_amount",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-CREDIT-AMOUNT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Amount of the credit."
+        }
+      },
+      "A2:BBOA-EXPIRY@1.0": {
+        "label": "expiry_date",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-EXPIRY",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Expiry of the credit."
+        }
+      },
+      "A2:BBOA-COMPLIANCE@1.0": {
+        "label": "compliance_outcome",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-COMPLIANCE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Outcome of the check."
+        }
+      },
+      "A2:BBOA-DISCREPANCIES@1.0": {
+        "label": "discrepancies",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-DISCREPANCIES",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Discrepancies found."
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A2:BA-TRADE-composition-BD-TRADE",
+        "source": "A2:BA-TRADE@1.0",
+        "target": "A2:BD-TRADE@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-01"
+        }
+      },
+      {
+        "id": "A2:BD-TRADE-composition-SD-LC",
+        "source": "A2:BD-TRADE@1.0",
+        "target": "A2:SD-LC@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:BD-TRADE-composition-SD-DC",
+        "source": "A2:BD-TRADE@1.0",
+        "target": "A2:SD-DC@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:SD-LC-association-AT-LC",
+        "source": "A2:SD-LC@1.0",
+        "target": "A2:AT-LC@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-DC-association-AT-DOCSET",
+        "source": "A2:SD-DC@1.0",
+        "target": "A2:AT-DOCSET@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-LC-association-FP-FULFIL",
+        "source": "A2:SD-LC@1.0",
+        "target": "A2:FP-FULFIL@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-DC-association-FP-ASSESS",
+        "source": "A2:SD-DC@1.0",
+        "target": "A2:FP-ASSESS@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-LC-aggregation-CR-LC",
+        "source": "A2:SD-LC@1.0",
+        "target": "A2:CR-LC@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:SD-DC-aggregation-CR-DC",
+        "source": "A2:SD-DC@1.0",
+        "target": "A2:CR-DC@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:CR-LC-composition-BQ-ISSUANCE",
+        "source": "A2:CR-LC@1.0",
+        "target": "A2:BQ-ISSUANCE@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-LC-composition-BQ-AMENDMENT",
+        "source": "A2:CR-LC@1.0",
+        "target": "A2:BQ-AMENDMENT@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-LC-association-BBO-LC",
+        "source": "A2:CR-LC@1.0",
+        "target": "A2:BBO-LC@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-DC-association-BBO-DOCSET",
+        "source": "A2:CR-DC@1.0",
+        "target": "A2:BBO-DOCSET@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:SD-LC-composition-SG-LC",
+        "source": "A2:SD-LC@1.0",
+        "target": "A2:SG-LC@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SD-DC-composition-SG-DC",
+        "source": "A2:SD-DC@1.0",
+        "target": "A2:SG-DC@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SG-LC-composition-SO-LC-01",
+        "source": "A2:SG-LC@1.0",
+        "target": "A2:SO-LC-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-LC-composition-SO-LC-02",
+        "source": "A2:SG-LC@1.0",
+        "target": "A2:SO-LC-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-LC-composition-SO-LC-03",
+        "source": "A2:SG-LC@1.0",
+        "target": "A2:SO-LC-03@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-LC-composition-SO-LC-04",
+        "source": "A2:SG-LC@1.0",
+        "target": "A2:SO-LC-04@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-DC-composition-SO-DC-01",
+        "source": "A2:SG-DC@1.0",
+        "target": "A2:SO-DC-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-DC-composition-SO-DC-02",
+        "source": "A2:SG-DC@1.0",
+        "target": "A2:SO-DC-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-LC-01-access-CR-LC",
+        "source": "A2:SO-LC-01@1.0",
+        "target": "A2:CR-LC@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-LC-02-access-CR-LC",
+        "source": "A2:SO-LC-02@1.0",
+        "target": "A2:CR-LC@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-LC-03-access-CR-LC",
+        "source": "A2:SO-LC-03@1.0",
+        "target": "A2:CR-LC@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-LC-04-access-CR-LC",
+        "source": "A2:SO-LC-04@1.0",
+        "target": "A2:CR-LC@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-DC-01-access-CR-DC",
+        "source": "A2:SO-DC-01@1.0",
+        "target": "A2:CR-DC@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-DC-02-access-CR-DC",
+        "source": "A2:SO-DC-02@1.0",
+        "target": "A2:CR-DC@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:BS-LC-aggregation-SO-LC-01",
+        "source": "A2:BS-LC@1.0",
+        "target": "A2:SO-LC-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:BS-LC-aggregation-SO-DC-01",
+        "source": "A2:BS-LC@1.0",
+        "target": "A2:SO-DC-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:BS-LC-aggregation-SO-LC-03",
+        "source": "A2:BS-LC@1.0",
+        "target": "A2:SO-LC-03@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:BBO-LC-composition-BBOA-CREDIT-AMOUNT",
+        "source": "A2:BBO-LC@1.0",
+        "target": "A2:BBOA-CREDIT-AMOUNT@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-LC-composition-BBOA-EXPIRY",
+        "source": "A2:BBO-LC@1.0",
+        "target": "A2:BBOA-EXPIRY@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-DOCSET-composition-BBOA-COMPLIANCE",
+        "source": "A2:BBO-DOCSET@1.0",
+        "target": "A2:BBOA-COMPLIANCE@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-DOCSET-composition-BBOA-DISCREPANCIES",
+        "source": "A2:BBO-DOCSET@1.0",
+        "target": "A2:BBOA-DISCREPANCIES@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:SD-LC-flow-SD-DC",
+        "source": "A2:SD-LC@1.0",
+        "target": "A2:SD-DC@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-14"
+        }
+      }
+    ]
+  }
+}

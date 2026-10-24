@@ -1,0 +1,378 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-lending-a1",
+    "type": "sdem.local",
+    "label": "A1 local knowledge graph (synthetic-bank-lending-a1)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "25103855d4227b12a7c03bb3694bced556e0c4f94b7792d8f6475051cd97b76e",
+      "level": "A1",
+      "model_id": "synthetic-bank-lending-a1",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-EA-TOOL"
+    },
+    "nodes": {
+      "A1:CAP-LEND@1.0": {
+        "label": "Originate Consumer Loan",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-LEND",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Take a consumer loan application from enquiry to a signed agreement."
+        }
+      },
+      "A1:CAP-CREDIT@1.0": {
+        "label": "Assess Credit Risk",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-CREDIT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Decide whether and on what terms the bank will lend to an applicant."
+        }
+      },
+      "A1:VS-GET-LOAN@1.0": {
+        "label": "Get a Loan",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "VS-GET-LOAN",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The customer's journey from applying to signing.",
+          "attributes": {
+            "stages": [
+              "VSS-L1",
+              "VSS-L2",
+              "VSS-L3",
+              "VSS-L4"
+            ]
+          }
+        }
+      },
+      "A1:VSS-L1@1.0": {
+        "label": "Apply",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-L1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The customer submits an application."
+        }
+      },
+      "A1:VSS-L2@1.0": {
+        "label": "Assess",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-L2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The bank evaluates the application."
+        }
+      },
+      "A1:VSS-L3@1.0": {
+        "label": "Receive offer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-L3",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The customer receives an offer."
+        }
+      },
+      "A1:VSS-L4@1.0": {
+        "label": "Sign agreement",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-L4",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The customer signs."
+        }
+      },
+      "A1:PRC-APPLY@1.0": {
+        "label": "Capture loan application",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-APPLY",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Capture and maintain the application.",
+          "attributes": {
+            "invokes": [
+              "SO-LO-01",
+              "SO-LO-02"
+            ]
+          }
+        }
+      },
+      "A1:PRC-ASSESS@1.0": {
+        "label": "Assess application",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-ASSESS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Run the credit assessment and record the decision.",
+          "attributes": {
+            "invokes": [
+              "SO-CA-01",
+              "SO-CA-02"
+            ]
+          }
+        }
+      },
+      "A1:PRC-OFFER@1.0": {
+        "label": "Offer and agree",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-OFFER",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Issue the offer and conclude the agreement.",
+          "attributes": {
+            "invokes": [
+              "SO-LO-04",
+              "SO-LO-05"
+            ]
+          }
+        }
+      },
+      "A1:ACT-L1@1.0": {
+        "label": "Capture application",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-L1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Record the applicant's request.",
+          "attributes": {
+            "invokes": [
+              "SO-LO-01"
+            ]
+          }
+        }
+      },
+      "A1:ACT-L2@1.0": {
+        "label": "Evaluate credit",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-L2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Evaluate the applicant's credit.",
+          "attributes": {
+            "invokes": [
+              "SO-CA-01"
+            ]
+          }
+        }
+      },
+      "A1:ACT-L3@1.0": {
+        "label": "Issue offer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-L3",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Issue the loan offer.",
+          "attributes": {
+            "invokes": [
+              "SO-LO-04"
+            ]
+          }
+        }
+      },
+      "A1:BO-LOAN-APP@1.0": {
+        "label": "Loan Application",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-LOAN-APP",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A customer's request for a loan.",
+          "attributes": {
+            "attributes": [
+              "application_id",
+              "customer_id",
+              "requested_amount",
+              "currency",
+              "term_months",
+              "purpose",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A1:BO-CREDIT-DEC@1.0": {
+        "label": "Credit Decision",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-CREDIT-DEC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The bank's lending decision.",
+          "attributes": {
+            "attributes": [
+              "decision_id",
+              "application_id",
+              "credit_score",
+              "decision",
+              "approved_amount",
+              "conditions"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A1:VS-GET-LOAN-composition-VSS-L1",
+        "source": "A1:VS-GET-LOAN@1.0",
+        "target": "A1:VSS-L1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-GET-LOAN-composition-VSS-L2",
+        "source": "A1:VS-GET-LOAN@1.0",
+        "target": "A1:VSS-L2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-GET-LOAN-composition-VSS-L3",
+        "source": "A1:VS-GET-LOAN@1.0",
+        "target": "A1:VSS-L3@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-GET-LOAN-composition-VSS-L4",
+        "source": "A1:VS-GET-LOAN@1.0",
+        "target": "A1:VSS-L4@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:CAP-LEND-serving-VS-GET-LOAN",
+        "source": "A1:CAP-LEND@1.0",
+        "target": "A1:VS-GET-LOAN@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        }
+      },
+      {
+        "id": "A1:PRC-APPLY-realization-CAP-LEND",
+        "source": "A1:PRC-APPLY@1.0",
+        "target": "A1:CAP-LEND@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-OFFER-realization-CAP-LEND",
+        "source": "A1:PRC-OFFER@1.0",
+        "target": "A1:CAP-LEND@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-ASSESS-realization-CAP-CREDIT",
+        "source": "A1:PRC-ASSESS@1.0",
+        "target": "A1:CAP-CREDIT@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-APPLY-composition-ACT-L1",
+        "source": "A1:PRC-APPLY@1.0",
+        "target": "A1:ACT-L1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-ASSESS-composition-ACT-L2",
+        "source": "A1:PRC-ASSESS@1.0",
+        "target": "A1:ACT-L2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-OFFER-composition-ACT-L3",
+        "source": "A1:PRC-OFFER@1.0",
+        "target": "A1:ACT-L3@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-APPLY-access-BO-LOAN-APP",
+        "source": "A1:PRC-APPLY@1.0",
+        "target": "A1:BO-LOAN-APP@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      },
+      {
+        "id": "A1:PRC-ASSESS-access-BO-CREDIT-DEC",
+        "source": "A1:PRC-ASSESS@1.0",
+        "target": "A1:BO-CREDIT-DEC@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      }
+    ]
+  }
+}

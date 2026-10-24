@@ -221,11 +221,13 @@ From `examples/payment-initiation/`:
 
 | Part | Status |
 |---|---|
-| Architecture Metamodel; exports, local and federated knowledge graphs, graph loader, traceability, change impact | built (in memory) |
+| Architecture Metamodel; exports, local and federated knowledge graphs, graph loader, traceability, change impact | built |
+| Data model: attributes, logical rules (all enforced), per-entity schemas | built |
+| Graph store: local JSON files (JSON Graph Format), load record, baselines, queries, offline HTML view ([`graph-store-design.md`](graph-store-design.md)) | built |
 | Relationship Rules Model | built as records; tested across ten use cases, eleven runs |
 | Relationship Registry format, schemas, validators, immutability guard | built |
 | Inference engine | interface, baseline and scorer built; the rules were applied by an AI executor in testing; **the rule logic is the next build** |
-| Adapters, export diff, refresh trigger, review queue, query service interface, assistant access, persistent store | specified ([`knowledge-graph-spec.md`](knowledge-graph-spec.md) §11), not built |
+| Adapters, export diff, refresh trigger, review queue, query service interface, assistant access | specified ([`knowledge-graph-spec.md`](knowledge-graph-spec.md) §11), not built |
 
 ## Glossary
 

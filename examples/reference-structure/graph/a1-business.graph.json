@@ -1,0 +1,769 @@
+{
+  "graph": {
+    "id": "sdem:reference-structure-a1",
+    "type": "sdem.local",
+    "label": "A1 local knowledge graph (reference-structure-a1)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "4a1a1d9545aad399054bd21eda254a781023ecaaff4562ee6f56039c0d8372c1",
+      "level": "A1",
+      "model_id": "reference-structure-a1",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SDEM-GENERATED-FROM-RECORD"
+    },
+    "nodes": {
+      "A1:RS-BusinessCapability-1@1.0": {
+        "label": "BusinessCapability 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "RS-BusinessCapability-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessCapability carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessCapability-2@1.0": {
+        "label": "BusinessCapability 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "RS-BusinessCapability-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessCapability carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-ValueStream-1@1.0": {
+        "label": "ValueStream 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "RS-ValueStream-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.ValueStream carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-ValueStream-2@1.0": {
+        "label": "ValueStream 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "RS-ValueStream-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.ValueStream carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-ValueStreamStage-1@1.0": {
+        "label": "ValueStreamStage 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "RS-ValueStreamStage-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.ValueStreamStage carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-ValueStreamStage-2@1.0": {
+        "label": "ValueStreamStage 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "RS-ValueStreamStage-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.ValueStreamStage carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessProcess-1@1.0": {
+        "label": "BusinessProcess 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "RS-BusinessProcess-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessProcess carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessProcess-2@1.0": {
+        "label": "BusinessProcess 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "RS-BusinessProcess-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessProcess carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessActivity-1@1.0": {
+        "label": "BusinessActivity 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "RS-BusinessActivity-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessActivity carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessActivity-2@1.0": {
+        "label": "BusinessActivity 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "RS-BusinessActivity-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessActivity carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessService-1@1.0": {
+        "label": "BusinessService 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessService",
+          "id": "RS-BusinessService-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessService carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessService-2@1.0": {
+        "label": "BusinessService 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessService",
+          "id": "RS-BusinessService-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessService carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessActor-1@1.0": {
+        "label": "BusinessActor 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActor",
+          "id": "RS-BusinessActor-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessActor carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessActor-2@1.0": {
+        "label": "BusinessActor 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActor",
+          "id": "RS-BusinessActor-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessActor carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessRole-1@1.0": {
+        "label": "BusinessRole 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRole",
+          "id": "RS-BusinessRole-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessRole carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessRole-2@1.0": {
+        "label": "BusinessRole 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRole",
+          "id": "RS-BusinessRole-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessRole carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessObject-1@1.0": {
+        "label": "BusinessObject 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "RS-BusinessObject-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessObject carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessObject-2@1.0": {
+        "label": "BusinessObject 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "RS-BusinessObject-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessObject carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessRequirement-1@1.0": {
+        "label": "BusinessRequirement 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRequirement",
+          "id": "RS-BusinessRequirement-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessRequirement carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessRequirement-2@1.0": {
+        "label": "BusinessRequirement 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRequirement",
+          "id": "RS-BusinessRequirement-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessRequirement carrying one relationship per constraint row of A1; no business meaning."
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A1:RS-BusinessCapability-1-composition-RS-BusinessCapability-2",
+        "source": "A1:RS-BusinessCapability-1@1.0",
+        "target": "A1:RS-BusinessCapability-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-01"
+        },
+        "label": "RA1-01"
+      },
+      {
+        "id": "A1:RS-BusinessCapability-1-aggregation-RS-BusinessCapability-2",
+        "source": "A1:RS-BusinessCapability-1@1.0",
+        "target": "A1:RS-BusinessCapability-2@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-02"
+        },
+        "label": "RA1-02"
+      },
+      {
+        "id": "A1:RS-BusinessCapability-1-serving-RS-ValueStream-1",
+        "source": "A1:RS-BusinessCapability-1@1.0",
+        "target": "A1:RS-ValueStream-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        },
+        "label": "RA1-03"
+      },
+      {
+        "id": "A1:RS-BusinessCapability-1-serving-RS-ValueStreamStage-1",
+        "source": "A1:RS-BusinessCapability-1@1.0",
+        "target": "A1:RS-ValueStreamStage-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        },
+        "label": "RA1-04"
+      },
+      {
+        "id": "A1:RS-ValueStream-1-composition-RS-ValueStreamStage-1",
+        "source": "A1:RS-ValueStream-1@1.0",
+        "target": "A1:RS-ValueStreamStage-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        },
+        "label": "RA1-05"
+      },
+      {
+        "id": "A1:RS-ValueStreamStage-1-triggering-RS-ValueStreamStage-2",
+        "source": "A1:RS-ValueStreamStage-1@1.0",
+        "target": "A1:RS-ValueStreamStage-2@1.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-06"
+        },
+        "label": "RA1-06"
+      },
+      {
+        "id": "A1:RS-ValueStreamStage-1-flow-RS-ValueStreamStage-2",
+        "source": "A1:RS-ValueStreamStage-1@1.0",
+        "target": "A1:RS-ValueStreamStage-2@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-07"
+        },
+        "label": "RA1-07"
+      },
+      {
+        "id": "A1:RS-BusinessProcess-1-realization-RS-BusinessCapability-1",
+        "source": "A1:RS-BusinessProcess-1@1.0",
+        "target": "A1:RS-BusinessCapability-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        },
+        "label": "RA1-08"
+      },
+      {
+        "id": "A1:RS-BusinessProcess-1-realization-RS-ValueStream-1",
+        "source": "A1:RS-BusinessProcess-1@1.0",
+        "target": "A1:RS-ValueStream-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-09"
+        },
+        "label": "RA1-09"
+      },
+      {
+        "id": "A1:RS-BusinessProcess-1-realization-RS-ValueStreamStage-1",
+        "source": "A1:RS-BusinessProcess-1@1.0",
+        "target": "A1:RS-ValueStreamStage-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-09"
+        },
+        "label": "RA1-10"
+      },
+      {
+        "id": "A1:RS-BusinessProcess-1-realization-RS-BusinessService-1",
+        "source": "A1:RS-BusinessProcess-1@1.0",
+        "target": "A1:RS-BusinessService-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-11"
+        },
+        "label": "RA1-11"
+      },
+      {
+        "id": "A1:RS-BusinessProcess-1-access-RS-BusinessObject-1",
+        "source": "A1:RS-BusinessProcess-1@1.0",
+        "target": "A1:RS-BusinessObject-1@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        },
+        "label": "RA1-12"
+      },
+      {
+        "id": "A1:RS-BusinessProcess-1-realization-RS-BusinessRequirement-1",
+        "source": "A1:RS-BusinessProcess-1@1.0",
+        "target": "A1:RS-BusinessRequirement-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-13"
+        },
+        "label": "RA1-13"
+      },
+      {
+        "id": "A1:RS-BusinessProcess-1-triggering-RS-BusinessProcess-2",
+        "source": "A1:RS-BusinessProcess-1@1.0",
+        "target": "A1:RS-BusinessProcess-2@1.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-14"
+        },
+        "label": "RA1-14"
+      },
+      {
+        "id": "A1:RS-BusinessProcess-1-flow-RS-BusinessProcess-2",
+        "source": "A1:RS-BusinessProcess-1@1.0",
+        "target": "A1:RS-BusinessProcess-2@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-15"
+        },
+        "label": "RA1-15"
+      },
+      {
+        "id": "A1:RS-BusinessActivity-1-realization-RS-BusinessCapability-1",
+        "source": "A1:RS-BusinessActivity-1@1.0",
+        "target": "A1:RS-BusinessCapability-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        },
+        "label": "RA1-16"
+      },
+      {
+        "id": "A1:RS-BusinessActivity-1-realization-RS-ValueStream-1",
+        "source": "A1:RS-BusinessActivity-1@1.0",
+        "target": "A1:RS-ValueStream-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-09"
+        },
+        "label": "RA1-17"
+      },
+      {
+        "id": "A1:RS-BusinessActivity-1-realization-RS-ValueStreamStage-1",
+        "source": "A1:RS-BusinessActivity-1@1.0",
+        "target": "A1:RS-ValueStreamStage-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-09"
+        },
+        "label": "RA1-18"
+      },
+      {
+        "id": "A1:RS-BusinessActivity-1-realization-RS-BusinessService-1",
+        "source": "A1:RS-BusinessActivity-1@1.0",
+        "target": "A1:RS-BusinessService-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-11"
+        },
+        "label": "RA1-19"
+      },
+      {
+        "id": "A1:RS-BusinessActivity-1-access-RS-BusinessObject-1",
+        "source": "A1:RS-BusinessActivity-1@1.0",
+        "target": "A1:RS-BusinessObject-1@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        },
+        "label": "RA1-20"
+      },
+      {
+        "id": "A1:RS-BusinessActivity-1-realization-RS-BusinessRequirement-1",
+        "source": "A1:RS-BusinessActivity-1@1.0",
+        "target": "A1:RS-BusinessRequirement-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-13"
+        },
+        "label": "RA1-21"
+      },
+      {
+        "id": "A1:RS-BusinessActivity-1-triggering-RS-BusinessActivity-2",
+        "source": "A1:RS-BusinessActivity-1@1.0",
+        "target": "A1:RS-BusinessActivity-2@1.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-14"
+        },
+        "label": "RA1-22"
+      },
+      {
+        "id": "A1:RS-BusinessActivity-1-flow-RS-BusinessActivity-2",
+        "source": "A1:RS-BusinessActivity-1@1.0",
+        "target": "A1:RS-BusinessActivity-2@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-15"
+        },
+        "label": "RA1-23"
+      },
+      {
+        "id": "A1:RS-BusinessProcess-1-composition-RS-BusinessActivity-1",
+        "source": "A1:RS-BusinessProcess-1@1.0",
+        "target": "A1:RS-BusinessActivity-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        },
+        "label": "RA1-24"
+      },
+      {
+        "id": "A1:RS-BusinessProcess-1-composition-RS-BusinessProcess-2",
+        "source": "A1:RS-BusinessProcess-1@1.0",
+        "target": "A1:RS-BusinessProcess-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-25"
+        },
+        "label": "RA1-25"
+      },
+      {
+        "id": "A1:RS-BusinessActivity-1-composition-RS-BusinessActivity-2",
+        "source": "A1:RS-BusinessActivity-1@1.0",
+        "target": "A1:RS-BusinessActivity-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        },
+        "label": "RA1-26"
+      },
+      {
+        "id": "A1:RS-BusinessService-1-serving-RS-BusinessProcess-1",
+        "source": "A1:RS-BusinessService-1@1.0",
+        "target": "A1:RS-BusinessProcess-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-27"
+        },
+        "label": "RA1-27"
+      },
+      {
+        "id": "A1:RS-BusinessService-1-serving-RS-BusinessActivity-1",
+        "source": "A1:RS-BusinessService-1@1.0",
+        "target": "A1:RS-BusinessActivity-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-27"
+        },
+        "label": "RA1-28"
+      },
+      {
+        "id": "A1:RS-BusinessService-1-serving-RS-BusinessRole-1",
+        "source": "A1:RS-BusinessService-1@1.0",
+        "target": "A1:RS-BusinessRole-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-29"
+        },
+        "label": "RA1-29"
+      },
+      {
+        "id": "A1:RS-BusinessService-1-serving-RS-BusinessActor-1",
+        "source": "A1:RS-BusinessService-1@1.0",
+        "target": "A1:RS-BusinessActor-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-30"
+        },
+        "label": "RA1-30"
+      },
+      {
+        "id": "A1:RS-BusinessService-1-composition-RS-BusinessService-2",
+        "source": "A1:RS-BusinessService-1@1.0",
+        "target": "A1:RS-BusinessService-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-31"
+        },
+        "label": "RA1-31"
+      },
+      {
+        "id": "A1:RS-BusinessService-1-access-RS-BusinessObject-1",
+        "source": "A1:RS-BusinessService-1@1.0",
+        "target": "A1:RS-BusinessObject-1@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-32"
+        },
+        "label": "RA1-32"
+      },
+      {
+        "id": "A1:RS-BusinessService-1-realization-RS-BusinessRequirement-1",
+        "source": "A1:RS-BusinessService-1@1.0",
+        "target": "A1:RS-BusinessRequirement-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-33"
+        },
+        "label": "RA1-33"
+      },
+      {
+        "id": "A1:RS-BusinessCapability-1-realization-RS-BusinessRequirement-1",
+        "source": "A1:RS-BusinessCapability-1@1.0",
+        "target": "A1:RS-BusinessRequirement-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-34"
+        },
+        "label": "RA1-34"
+      },
+      {
+        "id": "A1:RS-BusinessActor-1-assignment-RS-BusinessRole-1",
+        "source": "A1:RS-BusinessActor-1@1.0",
+        "target": "A1:RS-BusinessRole-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-35"
+        },
+        "label": "RA1-35"
+      },
+      {
+        "id": "A1:RS-BusinessRole-1-assignment-RS-BusinessProcess-1",
+        "source": "A1:RS-BusinessRole-1@1.0",
+        "target": "A1:RS-BusinessProcess-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-36"
+        },
+        "label": "RA1-36"
+      },
+      {
+        "id": "A1:RS-BusinessRole-1-assignment-RS-BusinessActivity-1",
+        "source": "A1:RS-BusinessRole-1@1.0",
+        "target": "A1:RS-BusinessActivity-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-36"
+        },
+        "label": "RA1-37"
+      },
+      {
+        "id": "A1:RS-BusinessActor-1-assignment-RS-BusinessProcess-1",
+        "source": "A1:RS-BusinessActor-1@1.0",
+        "target": "A1:RS-BusinessProcess-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-38"
+        },
+        "label": "RA1-38"
+      },
+      {
+        "id": "A1:RS-BusinessActor-1-assignment-RS-BusinessActivity-1",
+        "source": "A1:RS-BusinessActor-1@1.0",
+        "target": "A1:RS-BusinessActivity-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-38"
+        },
+        "label": "RA1-39"
+      },
+      {
+        "id": "A1:RS-BusinessActor-1-composition-RS-BusinessActor-2",
+        "source": "A1:RS-BusinessActor-1@1.0",
+        "target": "A1:RS-BusinessActor-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-40"
+        },
+        "label": "RA1-40"
+      },
+      {
+        "id": "A1:RS-BusinessActor-1-aggregation-RS-BusinessActor-2",
+        "source": "A1:RS-BusinessActor-1@1.0",
+        "target": "A1:RS-BusinessActor-2@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-41"
+        },
+        "label": "RA1-41"
+      },
+      {
+        "id": "A1:RS-BusinessRole-1-composition-RS-BusinessRole-2",
+        "source": "A1:RS-BusinessRole-1@1.0",
+        "target": "A1:RS-BusinessRole-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-42"
+        },
+        "label": "RA1-42"
+      },
+      {
+        "id": "A1:RS-BusinessRole-1-aggregation-RS-BusinessRole-2",
+        "source": "A1:RS-BusinessRole-1@1.0",
+        "target": "A1:RS-BusinessRole-2@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-43"
+        },
+        "label": "RA1-43"
+      },
+      {
+        "id": "A1:RS-BusinessObject-1-composition-RS-BusinessObject-2",
+        "source": "A1:RS-BusinessObject-1@1.0",
+        "target": "A1:RS-BusinessObject-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-44"
+        },
+        "label": "RA1-44"
+      },
+      {
+        "id": "A1:RS-BusinessObject-1-aggregation-RS-BusinessObject-2",
+        "source": "A1:RS-BusinessObject-1@1.0",
+        "target": "A1:RS-BusinessObject-2@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-45"
+        },
+        "label": "RA1-45"
+      },
+      {
+        "id": "A1:RS-BusinessObject-1-specialization-RS-BusinessObject-2",
+        "source": "A1:RS-BusinessObject-1@1.0",
+        "target": "A1:RS-BusinessObject-2@1.0",
+        "relation": "specialization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-46"
+        },
+        "label": "RA1-46"
+      },
+      {
+        "id": "A1:RS-BusinessRequirement-1-composition-RS-BusinessRequirement-2",
+        "source": "A1:RS-BusinessRequirement-1@1.0",
+        "target": "A1:RS-BusinessRequirement-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-47"
+        },
+        "label": "RA1-47"
+      },
+      {
+        "id": "A1:RS-BusinessRequirement-1-specialization-RS-BusinessRequirement-2",
+        "source": "A1:RS-BusinessRequirement-1@1.0",
+        "target": "A1:RS-BusinessRequirement-2@1.0",
+        "relation": "specialization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-48"
+        },
+        "label": "RA1-48"
+      }
+    ]
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-onboarding-a3",
+    "type": "sdem.local",
+    "label": "A3 local knowledge graph (synthetic-bank-onboarding-a3)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "492c70dd24166013ff543099689bef2649b88c297e38c6affa3fd786851aab1c",
+      "level": "A3",
+      "model_id": "synthetic-bank-onboarding-a3",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-APM"
+    },
+    "nodes": {
+      "A3:APP-001@1.0": {
+        "label": "Onboarding Portal",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "APP-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Captures applicant identity, orchestrates verification, creates the customer record.",
+          "attributes": {
+            "deployed_on": [
+              "INF-001"
+            ],
+            "deployed_as": [
+              "DEP-001"
+            ]
+          }
+        }
+      },
+      "A3:IFC-001@2.3": {
+        "label": "Onboarding API v2.3",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-001",
+          "version": "2.3",
+          "lifecycle_status": "active",
+          "description": "REST interface."
+        }
+      },
+      "A3:API-001@2.3": {
+        "label": "Create onboarding",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-001",
+          "version": "2.3",
+          "lifecycle_status": "active",
+          "description": "Starts an onboarding.",
+          "attributes": {
+            "method": "POST",
+            "path": "/onboardings",
+            "payload_fields": [
+              "legal_name",
+              "date_of_birth",
+              "national_id",
+              "address",
+              "onboarding_reference",
+              "onboarding_status"
+            ]
+          }
+        }
+      },
+      "A3:API-002@2.3": {
+        "label": "Get onboarding",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-002",
+          "version": "2.3",
+          "lifecycle_status": "active",
+          "description": "Returns an onboarding.",
+          "attributes": {
+            "method": "GET",
+            "path": "/onboardings/{id}",
+            "payload_fields": [
+              "onboarding_reference",
+              "onboarding_status",
+              "verification_status",
+              "customer_reference"
+            ]
+          }
+        }
+      },
+      "A3:ENT-001@1.0": {
+        "label": "customer_identity",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Portal table holding applicant identity.",
+          "attributes": {
+            "attributes": [
+              "customer_reference",
+              "legal_name",
+              "date_of_birth",
+              "national_id",
+              "address",
+              "verification_status",
+              "captured_at"
+            ],
+            "stored_in": [
+              "INF-002"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A3:APP-001-composition-IFC-001",
+        "source": "A3:APP-001@1.0",
+        "target": "A3:IFC-001@2.3",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A3:IFC-001-composition-API-001",
+        "source": "A3:IFC-001@2.3",
+        "target": "A3:API-001@2.3",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-001-composition-API-002",
+        "source": "A3:IFC-001@2.3",
+        "target": "A3:API-002@2.3",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:APP-001-access-ENT-001",
+        "source": "A3:APP-001@1.0",
+        "target": "A3:ENT-001@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      }
+    ]
+  }
+}

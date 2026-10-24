@@ -1,0 +1,96 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-onboarding-a4",
+    "type": "sdem.local",
+    "label": "A4 local knowledge graph (synthetic-bank-onboarding-a4)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "04fc9055d12614802eb1c963be01ae812b7535915648b310a6a43b2f3d12bfe9",
+      "level": "A4",
+      "model_id": "synthetic-bank-onboarding-a4",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-CMDB"
+    },
+    "nodes": {
+      "A4:INF-001@1.0": {
+        "label": "Managed Kubernetes — channels (production)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Current production platform.",
+          "attributes": {
+            "hosts": [
+              "APP-001"
+            ]
+          }
+        }
+      },
+      "A4:INF-000@1.0": {
+        "label": "Legacy VM cluster — channels",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Node",
+          "id": "INF-000",
+          "version": "1.0",
+          "lifecycle_status": "retired",
+          "description": "Previous hosting, decommissioned."
+        }
+      },
+      "A4:INF-002@16": {
+        "label": "Managed PostgreSQL — channels",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-002",
+          "version": "16",
+          "lifecycle_status": "active",
+          "description": "Production database."
+        }
+      },
+      "A4:ENV-001@1.0": {
+        "label": "Production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.DeploymentEnvironment",
+          "id": "ENV-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Production environment."
+        }
+      },
+      "A4:DEP-001@1.0": {
+        "label": "Onboarding Portal — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Portal 1.0 on the channels cluster.",
+          "attributes": {
+            "component_id": "APP-001",
+            "environment_id": "ENV-001",
+            "platform_id": "INF-001"
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A4:ENV-001-aggregation-DEP-001",
+        "source": "A4:ENV-001@1.0",
+        "target": "A4:DEP-001@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      }
+    ]
+  }
+}

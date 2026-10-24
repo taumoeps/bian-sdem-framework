@@ -1,0 +1,535 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-trade-a1",
+    "type": "sdem.local",
+    "label": "A1 local knowledge graph (synthetic-bank-trade-a1)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "b7d9cbb67238459f43aeb5af5a9dd3e704b75a989f82b95d004f85ed907a92ad",
+      "level": "A1",
+      "model_id": "synthetic-bank-trade-a1",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-EA-TOOL"
+    },
+    "nodes": {
+      "A1:CAP-TF@1.0": {
+        "label": "Issue Letter of Credit",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-TF",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Receive, validate and issue documentary letters of credit for importing customers, and check presented documents against them."
+        }
+      },
+      "A1:VS-LC@1.0": {
+        "label": "Get a Letter of Credit",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "VS-LC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The importer's journey from application to an issued, advised letter of credit.",
+          "attributes": {
+            "stages": [
+              "VSS-T1",
+              "VSS-T2",
+              "VSS-T3"
+            ]
+          }
+        }
+      },
+      "A1:VSS-T1@1.0": {
+        "label": "Apply for credit",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-T1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The importer applies for a letter of credit, stating beneficiary, amount, currency and expiry."
+        }
+      },
+      "A1:VSS-T2@1.0": {
+        "label": "Check documents",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-T2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Presented documents are evaluated for compliance with the credit's terms."
+        }
+      },
+      "A1:VSS-T3@1.0": {
+        "label": "Issue and advise",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-T3",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The letter of credit is issued and advised to the beneficiary's bank."
+        }
+      },
+      "A1:PRC-LC-APPLY@1.0": {
+        "label": "Capture letter of credit application",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-LC-APPLY",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Capture the application and any amendments before issuance.",
+          "attributes": {
+            "invokes": [
+              "SO-LC-01",
+              "SO-LC-02"
+            ]
+          }
+        }
+      },
+      "A1:PRC-LC-ISSUE@1.0": {
+        "label": "Check documents and issue",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-LC-ISSUE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Evaluate presented documents and issue the letter of credit.",
+          "attributes": {
+            "invokes": [
+              "SO-DC-01",
+              "SO-LC-03"
+            ]
+          }
+        }
+      },
+      "A1:ACT-T1@1.0": {
+        "label": "Capture application",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-T1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Record applicant, beneficiary, credit amount, currency and expiry date.",
+          "attributes": {
+            "invokes": [
+              "SO-LC-01"
+            ]
+          }
+        }
+      },
+      "A1:ACT-T2@1.0": {
+        "label": "Amend application",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-T2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Change the credit amount or expiry date before issuance.",
+          "attributes": {
+            "invokes": [
+              "SO-LC-02"
+            ]
+          }
+        }
+      },
+      "A1:ACT-T3@1.0": {
+        "label": "Evaluate documents",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-T3",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Evaluate the presented document set for compliance and record discrepancies.",
+          "attributes": {
+            "invokes": [
+              "SO-DC-01"
+            ]
+          }
+        }
+      },
+      "A1:ACT-T4@1.0": {
+        "label": "Issue letter of credit",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-T4",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Issue the credit and record the issuance reference.",
+          "attributes": {
+            "invokes": [
+              "SO-LC-03"
+            ]
+          }
+        }
+      },
+      "A1:BSV-LC-APP@1.0": {
+        "label": "Letter of credit application service",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessService",
+          "id": "BSV-LC-APP",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Offered to importers: submit an application for a documentary letter of credit and receive its reference and status.",
+          "attributes": {
+            "inputs": [
+              "applicant_reference",
+              "beneficiary_reference",
+              "credit_amount",
+              "currency",
+              "expiry_date"
+            ],
+            "outputs": [
+              "letter_of_credit_reference",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A1:BSV-DOC-CHECK@1.0": {
+        "label": "Document checking service",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessService",
+          "id": "BSV-DOC-CHECK",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Offered to beneficiaries' banks: present a document set against a credit and receive the compliance outcome and any discrepancies.",
+          "attributes": {
+            "inputs": [
+              "document_set_reference",
+              "letter_of_credit_reference"
+            ],
+            "outputs": [
+              "compliance_outcome",
+              "discrepancies"
+            ]
+          }
+        }
+      },
+      "A1:REQ-01@1.0": {
+        "label": "One-day application validation",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRequirement",
+          "id": "REQ-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Every letter of credit application is validated within one business day.",
+          "attributes": {
+            "applies_to": [
+              "PRC-LC-APPLY"
+            ]
+          }
+        }
+      },
+      "A1:REQ-02@1.0": {
+        "label": "Discrepancies recorded",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRequirement",
+          "id": "REQ-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Every document discrepancy found is recorded against the document set.",
+          "attributes": {
+            "applies_to": [
+              "ACT-T3"
+            ]
+          }
+        }
+      },
+      "A1:REQ-03@1.0": {
+        "label": "Dual authorisation on issuance",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRequirement",
+          "id": "REQ-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Issuance of a letter of credit requires two authorised officers.",
+          "attributes": {
+            "applies_to": [
+              "ACT-T4"
+            ]
+          }
+        }
+      },
+      "A1:ACTOR-TRADE-OPS@1.0": {
+        "label": "Trade Operations",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActor",
+          "id": "ACTOR-TRADE-OPS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The trade finance operations unit."
+        }
+      },
+      "A1:ROLE-TRADE-OFFICER@1.0": {
+        "label": "Trade Finance Officer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRole",
+          "id": "ROLE-TRADE-OFFICER",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Processes applications and checks documents."
+        }
+      },
+      "A1:BO-LC@1.0": {
+        "label": "Letter of Credit",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-LC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The bank's undertaking to pay the beneficiary against compliant documents.",
+          "attributes": {
+            "attributes": [
+              "lc_number",
+              "applicant_reference",
+              "beneficiary_reference",
+              "credit_amount",
+              "currency",
+              "expiry_date",
+              "application_status",
+              "issuance_reference"
+            ],
+            "field_aliases": {
+              "lc_number": "letter_of_credit_reference"
+            }
+          }
+        }
+      },
+      "A1:BO-DOCSET@1.0": {
+        "label": "Document Set",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-DOCSET",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The documents presented under a letter of credit.",
+          "attributes": {
+            "attributes": [
+              "document_set_reference",
+              "lc_number",
+              "compliance_outcome",
+              "discrepancies",
+              "presented_at"
+            ],
+            "field_aliases": {
+              "lc_number": "letter_of_credit_reference"
+            }
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A1:VS-LC-composition-VSS-T1",
+        "source": "A1:VS-LC@1.0",
+        "target": "A1:VSS-T1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-LC-composition-VSS-T2",
+        "source": "A1:VS-LC@1.0",
+        "target": "A1:VSS-T2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-LC-composition-VSS-T3",
+        "source": "A1:VS-LC@1.0",
+        "target": "A1:VSS-T3@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:CAP-TF-serving-VS-LC",
+        "source": "A1:CAP-TF@1.0",
+        "target": "A1:VS-LC@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        }
+      },
+      {
+        "id": "A1:PRC-LC-APPLY-realization-CAP-TF",
+        "source": "A1:PRC-LC-APPLY@1.0",
+        "target": "A1:CAP-TF@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-LC-ISSUE-realization-CAP-TF",
+        "source": "A1:PRC-LC-ISSUE@1.0",
+        "target": "A1:CAP-TF@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-LC-APPLY-composition-ACT-T1",
+        "source": "A1:PRC-LC-APPLY@1.0",
+        "target": "A1:ACT-T1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-LC-APPLY-composition-ACT-T2",
+        "source": "A1:PRC-LC-APPLY@1.0",
+        "target": "A1:ACT-T2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-LC-ISSUE-composition-ACT-T3",
+        "source": "A1:PRC-LC-ISSUE@1.0",
+        "target": "A1:ACT-T3@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-LC-ISSUE-composition-ACT-T4",
+        "source": "A1:PRC-LC-ISSUE@1.0",
+        "target": "A1:ACT-T4@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-LC-APPLY-realization-BSV-LC-APP",
+        "source": "A1:PRC-LC-APPLY@1.0",
+        "target": "A1:BSV-LC-APP@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-11"
+        }
+      },
+      {
+        "id": "A1:PRC-LC-ISSUE-realization-BSV-DOC-CHECK",
+        "source": "A1:PRC-LC-ISSUE@1.0",
+        "target": "A1:BSV-DOC-CHECK@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-11"
+        }
+      },
+      {
+        "id": "A1:PRC-LC-APPLY-realization-REQ-01",
+        "source": "A1:PRC-LC-APPLY@1.0",
+        "target": "A1:REQ-01@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-13"
+        }
+      },
+      {
+        "id": "A1:ACT-T3-realization-REQ-02",
+        "source": "A1:ACT-T3@1.0",
+        "target": "A1:REQ-02@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-13"
+        }
+      },
+      {
+        "id": "A1:ACT-T4-realization-REQ-03",
+        "source": "A1:ACT-T4@1.0",
+        "target": "A1:REQ-03@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-13"
+        }
+      },
+      {
+        "id": "A1:ACTOR-TRADE-OPS-assignment-ROLE-TRADE-OFFICER",
+        "source": "A1:ACTOR-TRADE-OPS@1.0",
+        "target": "A1:ROLE-TRADE-OFFICER@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-35"
+        }
+      },
+      {
+        "id": "A1:ROLE-TRADE-OFFICER-assignment-PRC-LC-ISSUE",
+        "source": "A1:ROLE-TRADE-OFFICER@1.0",
+        "target": "A1:PRC-LC-ISSUE@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-36"
+        }
+      },
+      {
+        "id": "A1:PRC-LC-APPLY-access-BO-LC",
+        "source": "A1:PRC-LC-APPLY@1.0",
+        "target": "A1:BO-LC@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      },
+      {
+        "id": "A1:PRC-LC-ISSUE-access-BO-DOCSET",
+        "source": "A1:PRC-LC-ISSUE@1.0",
+        "target": "A1:BO-DOCSET@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      }
+    ]
+  }
+}

@@ -84,8 +84,8 @@ def render():
     out += ['', 'Every allowed edge is a row in `metamodel/level-relationships.json`, listed with ID, source, reasoning and verification in `docs/relationships-planning.md`. `association` is allowed between any two nodes of one level.', '']
     req('L', 'Accept a node only if its `type` resolves to a concrete, non-artefact catalogue entity of the graph\'s level.', 'entity catalogue', 'built')
     req('L', 'Accept an edge only if both ends are nodes of this graph and (source type, kind, target type) matches a constraint row of the level through inheritance, or the kind is `association`.', 'level-relationships.json', 'built')
-    req('L', 'Reject the whole export, and keep the previously loaded local graph, if any node or edge fails; report every failure.', '`sdem-graph check`', 'built (check); keep-previous not built')
-    req('L', 'Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status.', '`LevelGraph`', 'partly built (closure in trace); per-level query API not built')
+    req('L', 'Reject the whole export, and keep the previously loaded local graph, if any node or edge fails; report every failure.', '`sdem-graph check`; `sdem-graph build` (graph store, GS-B-02)', 'built')
+    req('L', 'Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status.', '`LevelGraph`', 'partly built (closure in trace); `sdem-graph query --neighbours/--type/--where` (graph store, GS-Q-02/03)')
     out += ['### 2.4 Local graph requirements'] + inline('L')
 
     # ---- 3 federated
@@ -116,8 +116,8 @@ def render():
     out += ['## 5. Versions and baselines', '', '| Thing | Versioned by | Meaning |', '|---|---|---|',
             '| A node | `version` | the instance\'s own version, which an edge end pins |', '| A local graph | `model_version`, `metamodel_version` | which export and which catalogue it was built from |',
             '| An edge | `baseline_id`, `valid_from` / `valid_to`, `previous_mapping_id` | which release it belongs to, its validity, and what it replaced |', '| The federated graph | the set of (local graph `model_version` ×4, mapping-set commit) it was loaded from | one reproducible state |', '']
-    req('V', 'Record, for every federated load, the four local `model_version`s and the mapping-set version used — the load\'s baseline — and return it with every answer.', 'new requirement', 'not built')
-    req('V', 'Keep earlier baselines queryable, so an impact analysis can be rerun against the state it was originally run on.', 'new requirement', 'not built (git history of the files is the substitute today)')
+    req('V', 'Record, for every federated load, the four local `model_version`s and the mapping-set version used — the load\'s baseline — and return it with every answer.', 'graph store load record (GS-R-01/02)', 'built (graph store)')
+    req('V', 'Keep earlier baselines queryable, so an impact analysis can be rerun against the state it was originally run on.', '`sdem-graph baseline` (GS-R-03)', 'built (graph store)')
     req('V', 'Never edit an approved edge; change is a new edge with `previous_mapping_id` and the old one `superseded`.', '`sdem-diff`', 'built')
     req('V', 'Reject a federated load where the four local graphs disagree on `metamodel_version`.', 'Metamodel load', 'built')
     out += inline('V')
@@ -127,7 +127,7 @@ def render():
     Q = [('Trace', 'from any node, follow approved edges down (towards A4) or up (towards A1), optionally through within-level part-whole links; every hop shows the mapping id', '`sdem-graph trace`, `--follow-composition`', 'built'),
          ('Impact', f"given a node and a change kind ({', '.join(imp['kinds'])}), classify every dependent node design_change_required / review_required / no_impact and list the edges to supersede", '`sdem-graph impact`, impact-rules.json', 'built'),
          ('Check', 'validate the four local graphs and the federated edges; report every unresolved or disallowed item', '`sdem-graph check`', 'built'),
-         ('Unmapped', 'list nodes of a level with no approved cross-level edge where the plan expects one — the engine\'s work list', 'new', 'not built'),
+         ('Unmapped', 'list nodes of a level with no approved cross-level edge where the plan expects one — the engine\'s work list', '`sdem-graph query --unmapped` (GS-Q-04)', 'built'),
          ('History', 'for an edge or a node, list its superseded predecessors and the baselines it appeared in', 'mapping-set history', 'not built'),
          ('Stats', 'counts of nodes, edges and statuses per level', '`sdem-graph stats`', 'built'),
          ('Climb to the whole', 'an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation\'s operation to its Service Domain), so a trace from an API reaches the capability', 'knowledge-graph-design.md, limit of path F2', 'not built')]
@@ -141,7 +141,7 @@ def render():
             '| Step | Requirement | Status |', '|---|---|---|']
     for text, st in (('An adapter per source tool translates its records to a level export; adapters are institution-specific and live in the institution\'s private repository.', 'not built (examples are hand-written exports)'),
                      ('A local graph is rebuilt in full from its export; incremental update is an optimisation, not a requirement.', 'built (full rebuild)'),
-                     ('A failed export validation leaves the previous local graph in place and raises an alert.', 'not built'),
+                     ('A failed export validation leaves the previous local graph in place and raises an alert.', 'built (graph store: rejected build recorded, store unchanged)'),
                      ('The federated graph is rebuilt whenever a local graph or the mapping set changes.', 'built (rebuilt on every run)'),
                      ('The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§12 DEC-02).', 'not built')):
         rid = req('R', text, '§7', st); out.append(f"| {rid} | {text} | {st} |")
@@ -167,8 +167,8 @@ def render():
      ('C-10', 'Mapping validator', 'checks proposals and the mapping set: registry, evidence, anchoring', 'C-09, C-01', 'pass, or every failure', 'C-01', '`sdem-validate`', 'built'),
      ('C-11', 'Architect review', 'reviews the engine\'s output: approves, rejects or supersedes records; corrects the mapping model (C-01b) when a rule produces a wrong link, rather than hand-editing the set', 'validated proposals; impact reports', 'status changes in C-09', 'C-10, C-14', 'a person; recorded as fields', 'built (as fields); review queue not built'),
      ('C-12', 'History guard', 'rejects edits to approved records and invalid status transitions', 'two versions of C-09', 'pass, or every violation', 'C-09', '`sdem-diff`', 'built'),
-     ('C-13', 'Local graphs, federated graph', 'the graphs themselves', 'C-06', '—', 'C-06', 'in memory', 'built in memory; store is DEC-01'),
-     ('C-14', 'Query tools', 'trace, impact, check, stats; unmapped and history to come', 'C-13', 'answers with mapping ids', 'C-13', '`sdem-graph`, `sdem-trace`', 'built (unmapped, history not built)'),
+     ('C-13', 'Local graphs, federated graph', 'the graphs themselves', 'C-06', '—', 'C-06', '`sdem/store.py`; local JSON graph store (JGF v2), `examples/*/graph/`', 'built (DEC-01: local JSON files)'),
+     ('C-14', 'Query tools', 'trace, impact, check, stats, query (records, neighbours, unmapped), view', 'C-13', 'answers with mapping ids and the baseline', 'C-13', '`sdem-graph`, `sdem-trace`', 'built (history not built)'),
      ('C-15', 'Refresh trigger', 'decides when C-03 and C-06 run: on demand, scheduled, event, refresh-on-read', 'source events or queries', 'runs', 'C-03, C-06', '—', 'not built (on demand only)'),
      ('C-16', 'Assistant', 'answers design questions from C-14; runs C-08 and C-10 on request', 'C-14 answers', 'proposals via C-08 only', 'C-14, C-08', 'per DEC-04', 'not built (Opus executor runs stood in)'),
      ('C-17', 'Generators and CI', 'regenerate documents, diagrams, per-entity schemas and the reference-structure estate from C-01; fail the build if any is stale; rerun acceptance cases', 'C-01', 'generated files; pass / fail', 'C-01', '`sdem/diagram.py`, `relationships.py`, `structure.py`, `spec.py`, `kgspec.py`, `catalogue.py`, `attributes.py`, `logical.py`, `physical.py`, `confidence.py`; `.github/workflows/validate.yml`', 'built'),
@@ -211,9 +211,9 @@ def render():
 
     # ---- 11 decisions
     out += ['## 12. Open design decisions', '', '| ID | Decision | Options | SDEM default |', '|---|---|---|---|',
-            '| DEC-01 | Graph store | in memory from files (today); property graph (e.g. Neo4j: nodes and edges map one-to-one to §2 and §3); RDF store (named graph per local graph, edges as reified statements with PROV) | in memory until a team needs persistent queries; then property graph |',
+            '| DEC-01 | Graph store | in memory from files (today); property graph (e.g. Neo4j: nodes and edges map one-to-one to §2 and §3); RDF store (named graph per local graph, edges as reified statements with PROV) | **decided 2026-10-25: local JSON files in JSON Graph Format v2** ([`graph-store-spec.md`](graph-store-spec.md)), read through one access layer so a database can replace them later |',
             '| DEC-02 | Refresh trigger per source | on demand; scheduled; event-driven (webhook); refresh-on-read | on demand now; event-driven where the tool supports it |',
-            '| DEC-03 | One store or five | one store with a partition per local graph plus the federated edges; or separate stores per team federated by id | one store, partitioned, until teams need independent operation |',
+            '| DEC-03 | One store or five | one store with a partition per local graph plus the federated edges; or separate stores per team federated by id | **decided 2026-10-25: one directory — four local files and one federated file** |',
             '| DEC-04 | Agent access | CLI run by the assistant; VS Code extension; context snapshot; MCP where policy allows | per the organisation\'s Copilot policy |',
             '| DEC-05 | Standard export of the mapping set | none; SSSOM; RDF + PROV-O | SSSOM export when interoperability is needed |', '']
 

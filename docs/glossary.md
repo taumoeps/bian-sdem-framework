@@ -55,6 +55,10 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Fill steps 0–5** | the engine's order of work: load BIAN, exact joins, REST matching, closure, structural matching, bounded text matching |
 | **Proposal** | a link the engine suggests, status `proposed`, with evidence and a confidence |
 | **Trace / impact** | follow links across architectures / find what a change affects |
+| **Graph store** | the local knowledge graphs and the federated graph saved as JSON files on the device (`sdem-graph build`); no server ([`graph-store-design.md`](graph-store-design.md)) |
+| **JSON Graph Format (JGF)** | the published file format the graph store uses: `nodes` and `edges`, each with its own data |
+| **Load record** | the store's log of every build: inputs, checks, accepted or rejected, outputs |
+| **Graph access layer** | the one read interface every query, the view and the engine use, whether the graph comes from the store or from exports |
 | **Baseline (engine)** | the naive name-matching engine any real engine must beat (F1 0.62) |
 
 ## Evidence and confidence

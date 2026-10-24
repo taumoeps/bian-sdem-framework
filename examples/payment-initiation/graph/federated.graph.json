@@ -1,0 +1,851 @@
+{
+  "graph": {
+    "id": "sdem:federated",
+    "type": "sdem.federated",
+    "label": "Federated knowledge graph (approved cross-level links)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "metamodel_version": "0.4.0",
+      "levels": {
+        "A1": "2026.10",
+        "A2": "2026.10",
+        "A3": "2026.10",
+        "A4": "2026.10"
+      },
+      "registries": [
+        {
+          "file": "mappings.json",
+          "sha256": "0fc1f810205273d3366c2e46f3480a53b0ef454c2bba156a31c8618caff8cb31",
+          "registry_version": "0.4.0",
+          "metamodel_version": "0.4.0"
+        }
+      ],
+      "statuses": [
+        "approved"
+      ]
+    },
+    "nodes": {
+      "A1:CAP-PAY-010@1.0": {
+        "label": "Initiate Payment",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-PAY-010",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:SD-PI@1.0": {
+        "label": "Payment Initiation (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-PI",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:VS-MAKE-PAYMENT@1.0": {
+        "label": "Make a Payment",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "VS-MAKE-PAYMENT",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:BS-CREDIT-TRANSFER@1.0": {
+        "label": "Customer credit transfer",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "BS-CREDIT-TRANSFER",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:PRC-PAY-01@1.0": {
+        "label": "Capture and validate payment instruction",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-PAY-01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A1:PRC-PAY-02@1.0": {
+        "label": "Execute and confirm payment",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-PAY-02",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A1:BO-PAY-INSTR@1.0": {
+        "label": "Payment Instruction",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-PAY-INSTR",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:BBO-PAY-INSTR@1.0": {
+        "label": "Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PAY-INSTR",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A2:SO-PI-01@1.0": {
+        "label": "Initiate Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:API-PI-01@2.0": {
+        "label": "Create payment instruction",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-PI-01",
+          "version": "2.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PI-02@1.0": {
+        "label": "Evaluate Payment Instruction Validation",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-02",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:API-PI-02@2.0": {
+        "label": "Validate payment instruction",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-PI-02",
+          "version": "2.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PI-03@1.0": {
+        "label": "Execute Payment Instruction Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-03",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:API-PI-03@2.0": {
+        "label": "Execute payment instruction",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-PI-03",
+          "version": "2.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PI-04@1.0": {
+        "label": "Retrieve Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-04",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:API-PI-04@2.0": {
+        "label": "Get payment instruction",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-PI-04",
+          "version": "2.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PI-05@1.0": {
+        "label": "Update Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-05",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:API-PI-05@2.0": {
+        "label": "Amend payment instruction",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-PI-05",
+          "version": "2.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A3:APP-PAY-HUB@7.1": {
+        "label": "Payments Hub",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "APP-PAY-HUB",
+          "version": "7.1",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A3:ENT-PAY-INSTR@7.1": {
+        "label": "payment_instruction",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-PAY-INSTR",
+          "version": "7.1",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A4:INF-K8S-PAY-PROD@1.29": {
+        "label": "Managed Kubernetes — payments (production)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-K8S-PAY-PROD",
+          "version": "1.29",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A4:DEP-PAYHUB-PROD@1.0": {
+        "label": "Payments Hub — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-PAYHUB-PROD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A4:DEP-PAYHUB-UAT@1.0": {
+        "label": "Payments Hub — UAT",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-PAYHUB-UAT",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A3:CMP-PAY-EXEC@3.4": {
+        "label": "Execution Gateway",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "CMP-PAY-EXEC",
+          "version": "3.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A4:DEP-PAYEXEC-PROD@1.0": {
+        "label": "Execution Gateway — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-PAYEXEC-PROD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A4:INF-K8S-PAY-UAT@1.29": {
+        "label": "Managed Kubernetes — payments (UAT)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-K8S-PAY-UAT",
+          "version": "1.29",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "PAY-001",
+        "source": "A1:CAP-PAY-010@1.0",
+        "target": "A2:SD-PI@1.0",
+        "relation": "SUPPORTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CAP-PAY-010",
+            "type": "A1.BusinessCapability",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-PI",
+            "type": "A2.ServiceDomain",
+            "version": "1.0",
+            "canonical_id": "BIAN-PAYMENT-INITIATION"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "business_architecture_document:BA-PAY-2026#s2",
+            "domain_scope_assessment:DSA-PAY-INIT-001"
+          ],
+          "rationale": "Initiate Payment sits inside the payment-initiation domain's scope",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "PAY-002",
+        "source": "A1:VS-MAKE-PAYMENT@1.0",
+        "target": "A2:BS-CREDIT-TRANSFER@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "VS-MAKE-PAYMENT",
+            "type": "A1.ValueStream",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BS-CREDIT-TRANSFER",
+            "type": "A2.BusinessScenario",
+            "version": "1.0",
+            "canonical_id": "BIAN-SCENARIO-CREDIT-TRANSFER"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-MAKE-PAYMENT-2026",
+            "scenario_suitability_review:SCN-REVIEW-CT-001"
+          ],
+          "rationale": "The four stages of Make a Payment correspond to the credit-transfer scenario's four operations",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "PAY-003",
+        "source": "A1:PRC-PAY-01@1.0",
+        "target": "A2:SD-PI@1.0",
+        "relation": "USES_DOMAIN",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "PRC-PAY-01",
+            "type": "A1.BusinessProcess",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-PI",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-MAKE-PAYMENT-2026"
+          ],
+          "rationale": "Capture and validation invoke Initiate and Evaluate of the domain",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-004",
+        "source": "A1:PRC-PAY-02@1.0",
+        "target": "A2:SD-PI@1.0",
+        "relation": "USES_DOMAIN",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "PRC-PAY-02",
+            "type": "A1.BusinessProcess",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-PI",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-MAKE-PAYMENT-2026"
+          ],
+          "rationale": "Execution and confirmation invoke Execute and Retrieve of the domain",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-005",
+        "source": "A1:BO-PAY-INSTR@1.0",
+        "target": "A2:BBO-PAY-INSTR@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BO-PAY-INSTR",
+            "type": "A1.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BBO-PAY-INSTR",
+            "type": "A2.BusinessObject",
+            "version": "1.0",
+            "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "business_glossary:GL-PAY-2026#payment-instruction",
+            "object_alignment_review:OAR-PAY-001"
+          ],
+          "rationale": "The bank's Payment Instruction carries the same meaning as the canonical object; 6 of 8 attributes align",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "PAY-101",
+        "source": "A2:SO-PI-01@1.0",
+        "target": "A3:API-PI-01@2.0",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PI-01",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "API-PI-01",
+            "type": "A3.APIOperation",
+            "version": "2.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions/post"
+          ],
+          "rationale": "Initiate ↔ POST; no qualifier; 8/8 attributes in payload",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-102",
+        "source": "A2:SO-PI-02@1.0",
+        "target": "A3:API-PI-02@2.0",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PI-02",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "API-PI-02",
+            "type": "A3.APIOperation",
+            "version": "2.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1validation/post"
+          ],
+          "rationale": "Evaluate ↔ POST; Validation qualifier in path; 3/3 attributes",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-103",
+        "source": "A2:SO-PI-03@1.0",
+        "target": "A3:API-PI-03@2.0",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PI-03",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "API-PI-03",
+            "type": "A3.APIOperation",
+            "version": "2.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1execution/put"
+          ],
+          "rationale": "Execute ↔ PUT; Execution qualifier in path; 3/3 attributes",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-104",
+        "source": "A2:SO-PI-04@1.0",
+        "target": "A3:API-PI-04@2.0",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PI-04",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "API-PI-04",
+            "type": "A3.APIOperation",
+            "version": "2.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/post",
+            "application_architecture_document:ADR-PAY-017"
+          ],
+          "rationale": "Retrieve implemented as POST (legacy channel constraint, ADR-PAY-017) — approved with a recorded deviation from the REST mapping",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-105",
+        "source": "A2:SO-PI-05@1.0",
+        "target": "A3:API-PI-05@2.0",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PI-05",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "API-PI-05",
+            "type": "A3.APIOperation",
+            "version": "2.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/patch"
+          ],
+          "rationale": "Update ↔ PATCH; 4/4 attributes",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-106",
+        "source": "A2:SD-PI@1.0",
+        "target": "A3:APP-PAY-HUB@7.1",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SD-PI",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-PAY-HUB",
+            "type": "A3.ApplicationComponent",
+            "version": "7.1"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:AA-PAYHUB-HLD#s3"
+          ],
+          "rationale": "The hub implements five of the domain's six operations through Payments API v2",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-107",
+        "source": "A2:BBO-PAY-INSTR@1.0",
+        "target": "A3:ENT-PAY-INSTR@7.1",
+        "relation": "MAPPED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BBO-PAY-INSTR",
+            "type": "A2.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "ENT-PAY-INSTR",
+            "type": "A3.DataEntity",
+            "version": "7.1"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "data_model:DM-PAYHUB-7.1#payment_instruction"
+          ],
+          "rationale": "8/8 canonical attributes present in the hub table; channel_id is an extension",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-108",
+        "source": "A3:APP-PAY-HUB@7.1",
+        "target": "A4:INF-K8S-PAY-PROD@1.29",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-PAY-HUB",
+            "type": "A3.ApplicationComponent",
+            "version": "7.1"
+          },
+          "target_ref": {
+            "id": "INF-K8S-PAY-PROD",
+            "type": "A4.SystemSoftware",
+            "version": "1.29"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:DD-PAY-2026#prod"
+          ],
+          "rationale": "Production hosting",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "sam.infra",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-109",
+        "source": "A3:APP-PAY-HUB@7.1",
+        "target": "A4:DEP-PAYHUB-PROD@1.0",
+        "relation": "DEPLOYED_AS",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-PAY-HUB",
+            "type": "A3.ApplicationComponent",
+            "version": "7.1"
+          },
+          "target_ref": {
+            "id": "DEP-PAYHUB-PROD",
+            "type": "A4.Deployment",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:DD-PAY-2026#prod"
+          ],
+          "rationale": "Production deployment of the hub",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "sam.infra",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-110",
+        "source": "A3:APP-PAY-HUB@7.1",
+        "target": "A4:DEP-PAYHUB-UAT@1.0",
+        "relation": "DEPLOYED_AS",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-PAY-HUB",
+            "type": "A3.ApplicationComponent",
+            "version": "7.1"
+          },
+          "target_ref": {
+            "id": "DEP-PAYHUB-UAT",
+            "type": "A4.Deployment",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:DD-PAY-2026#uat"
+          ],
+          "rationale": "UAT deployment of the hub",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "sam.infra",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-111",
+        "source": "A3:CMP-PAY-EXEC@3.4",
+        "target": "A4:INF-K8S-PAY-PROD@1.29",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CMP-PAY-EXEC",
+            "type": "A3.ApplicationComponent",
+            "version": "3.4"
+          },
+          "target_ref": {
+            "id": "INF-K8S-PAY-PROD",
+            "type": "A4.SystemSoftware",
+            "version": "1.29"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:DD-PAY-2026#prod"
+          ],
+          "rationale": "The execution gateway is deployed separately on the production cluster",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "sam.infra",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-112",
+        "source": "A3:CMP-PAY-EXEC@3.4",
+        "target": "A4:DEP-PAYEXEC-PROD@1.0",
+        "relation": "DEPLOYED_AS",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CMP-PAY-EXEC",
+            "type": "A3.ApplicationComponent",
+            "version": "3.4"
+          },
+          "target_ref": {
+            "id": "DEP-PAYEXEC-PROD",
+            "type": "A4.Deployment",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:DD-PAY-2026#prod"
+          ],
+          "rationale": "Production deployment of the gateway",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "sam.infra",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-113",
+        "source": "A3:APP-PAY-HUB@7.1",
+        "target": "A4:INF-K8S-PAY-UAT@1.29",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-PAY-HUB",
+            "type": "A3.ApplicationComponent",
+            "version": "7.1"
+          },
+          "target_ref": {
+            "id": "INF-K8S-PAY-UAT",
+            "type": "A4.SystemSoftware",
+            "version": "1.29"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:DD-PAY-2026#uat"
+          ],
+          "rationale": "UAT hosting of the hub; DEPLOYED_ON is environment-agnostic, the environment is on DEP-PAYHUB-UAT (added after M1: the CMDB and the UAT deployment both state it)",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "sam.infra",
+          "approved_at": "2026-10-22"
+        }
+      }
+    ]
+  }
+}

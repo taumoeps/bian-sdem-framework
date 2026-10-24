@@ -1,0 +1,495 @@
+{
+  "graph": {
+    "id": "sdem:reference-structure-a2",
+    "type": "sdem.local",
+    "label": "A2 local knowledge graph (reference-structure-a2)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "de3fd9a581188b34244c644ced9646e8dae1805d30a843859e65ef98962c0c53",
+      "level": "A2",
+      "model_id": "reference-structure-a2",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SDEM-GENERATED-FROM-RECORD"
+    },
+    "nodes": {
+      "A2:RS-BusinessArea-1@1.0": {
+        "label": "BusinessArea 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessArea",
+          "id": "RS-BusinessArea-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BusinessArea carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-BusinessArea-2@1.0": {
+        "label": "BusinessArea 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessArea",
+          "id": "RS-BusinessArea-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BusinessArea carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-BusinessDomain-1@1.0": {
+        "label": "BusinessDomain 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessDomain",
+          "id": "RS-BusinessDomain-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BusinessDomain carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-BusinessDomain-2@1.0": {
+        "label": "BusinessDomain 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessDomain",
+          "id": "RS-BusinessDomain-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BusinessDomain carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-ServiceDomain-1@1.0": {
+        "label": "ServiceDomain 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "RS-ServiceDomain-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.ServiceDomain carrying one relationship per constraint row of A2; no business meaning.",
+          "attributes": {
+            "asset_type": "RS-AssetType-1",
+            "functional_pattern": "RS-FunctionalPattern-1"
+          }
+        }
+      },
+      "A2:RS-ServiceDomain-2@1.0": {
+        "label": "ServiceDomain 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "RS-ServiceDomain-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.ServiceDomain carrying one relationship per constraint row of A2; no business meaning.",
+          "attributes": {
+            "asset_type": "RS-AssetType-2",
+            "functional_pattern": "RS-FunctionalPattern-2"
+          }
+        }
+      },
+      "A2:RS-FunctionalPattern-1@1.0": {
+        "label": "FunctionalPattern 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "RS-FunctionalPattern-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.FunctionalPattern carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-FunctionalPattern-2@1.0": {
+        "label": "FunctionalPattern 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "RS-FunctionalPattern-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.FunctionalPattern carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-AssetType-1@1.0": {
+        "label": "AssetType 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "RS-AssetType-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.AssetType carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-AssetType-2@1.0": {
+        "label": "AssetType 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "RS-AssetType-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.AssetType carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-ControlRecord-1@1.0": {
+        "label": "ControlRecord 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "RS-ControlRecord-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.ControlRecord carrying one relationship per constraint row of A2; no business meaning.",
+          "attributes": {
+            "attributes": [
+              "structure"
+            ]
+          }
+        }
+      },
+      "A2:RS-ControlRecord-2@1.0": {
+        "label": "ControlRecord 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "RS-ControlRecord-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.ControlRecord carrying one relationship per constraint row of A2; no business meaning.",
+          "attributes": {
+            "attributes": [
+              "structure"
+            ]
+          }
+        }
+      },
+      "A2:RS-ServiceGroup-1@1.0": {
+        "label": "ServiceGroup 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "RS-ServiceGroup-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.ServiceGroup carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-ServiceGroup-2@1.0": {
+        "label": "ServiceGroup 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "RS-ServiceGroup-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.ServiceGroup carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-ServiceOperation-1@1.0": {
+        "label": "ServiceOperation 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "RS-ServiceOperation-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.ServiceOperation carrying one relationship per constraint row of A2; no business meaning.",
+          "attributes": {
+            "action_term": "Activate",
+            "input_attributes": [
+              "structure"
+            ],
+            "output_attributes": [
+              "structure"
+            ]
+          }
+        }
+      },
+      "A2:RS-ServiceOperation-2@1.0": {
+        "label": "ServiceOperation 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "RS-ServiceOperation-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.ServiceOperation carrying one relationship per constraint row of A2; no business meaning.",
+          "attributes": {
+            "action_term": "Activate",
+            "input_attributes": [
+              "structure"
+            ],
+            "output_attributes": [
+              "structure"
+            ]
+          }
+        }
+      },
+      "A2:RS-BehaviorQualifier-1@1.0": {
+        "label": "BehaviorQualifier 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "RS-BehaviorQualifier-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BehaviorQualifier carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-BehaviorQualifier-2@1.0": {
+        "label": "BehaviorQualifier 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "RS-BehaviorQualifier-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BehaviorQualifier carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-BusinessScenario-1@1.0": {
+        "label": "BusinessScenario 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "RS-BusinessScenario-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BusinessScenario carrying one relationship per constraint row of A2; no business meaning.",
+          "attributes": {
+            "operation_sequence": [
+              "RS-ServiceOperation-1"
+            ]
+          }
+        }
+      },
+      "A2:RS-BusinessScenario-2@1.0": {
+        "label": "BusinessScenario 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "RS-BusinessScenario-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BusinessScenario carrying one relationship per constraint row of A2; no business meaning.",
+          "attributes": {
+            "operation_sequence": [
+              "RS-ServiceOperation-2"
+            ]
+          }
+        }
+      },
+      "A2:RS-BusinessObject-1@1.0": {
+        "label": "BusinessObject 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "RS-BusinessObject-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BusinessObject carrying one relationship per constraint row of A2; no business meaning.",
+          "attributes": {
+            "attributes": [
+              "structure"
+            ]
+          }
+        }
+      },
+      "A2:RS-BusinessObject-2@1.0": {
+        "label": "BusinessObject 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "RS-BusinessObject-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BusinessObject carrying one relationship per constraint row of A2; no business meaning.",
+          "attributes": {
+            "attributes": [
+              "structure"
+            ]
+          }
+        }
+      },
+      "A2:RS-BusinessObjectAttribute-1@1.0": {
+        "label": "BusinessObjectAttribute 1 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "RS-BusinessObjectAttribute-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BusinessObjectAttribute carrying one relationship per constraint row of A2; no business meaning."
+        }
+      },
+      "A2:RS-BusinessObjectAttribute-2@1.0": {
+        "label": "BusinessObjectAttribute 2 (structure conformance)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "RS-BusinessObjectAttribute-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A2.BusinessObjectAttribute carrying one relationship per constraint row of A2; no business meaning."
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A2:RS-BusinessArea-1-composition-RS-BusinessDomain-1",
+        "source": "A2:RS-BusinessArea-1@1.0",
+        "target": "A2:RS-BusinessDomain-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-01"
+        },
+        "label": "RA2-01"
+      },
+      {
+        "id": "A2:RS-BusinessDomain-1-composition-RS-ServiceDomain-1",
+        "source": "A2:RS-BusinessDomain-1@1.0",
+        "target": "A2:RS-ServiceDomain-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        },
+        "label": "RA2-02"
+      },
+      {
+        "id": "A2:RS-ServiceDomain-1-composition-RS-ServiceGroup-1",
+        "source": "A2:RS-ServiceDomain-1@1.0",
+        "target": "A2:RS-ServiceGroup-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        },
+        "label": "RA2-03"
+      },
+      {
+        "id": "A2:RS-ServiceGroup-1-composition-RS-ServiceOperation-1",
+        "source": "A2:RS-ServiceGroup-1@1.0",
+        "target": "A2:RS-ServiceOperation-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        },
+        "label": "RA2-04"
+      },
+      {
+        "id": "A2:RS-ServiceDomain-1-aggregation-RS-ControlRecord-1",
+        "source": "A2:RS-ServiceDomain-1@1.0",
+        "target": "A2:RS-ControlRecord-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        },
+        "label": "RA2-05"
+      },
+      {
+        "id": "A2:RS-ServiceDomain-1-association-RS-FunctionalPattern-1",
+        "source": "A2:RS-ServiceDomain-1@1.0",
+        "target": "A2:RS-FunctionalPattern-1@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        },
+        "label": "RA2-06"
+      },
+      {
+        "id": "A2:RS-ServiceDomain-1-association-RS-AssetType-1",
+        "source": "A2:RS-ServiceDomain-1@1.0",
+        "target": "A2:RS-AssetType-1@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        },
+        "label": "RA2-07"
+      },
+      {
+        "id": "A2:RS-ServiceOperation-1-association-RS-BehaviorQualifier-1",
+        "source": "A2:RS-ServiceOperation-1@1.0",
+        "target": "A2:RS-BehaviorQualifier-1@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-08"
+        },
+        "label": "RA2-08"
+      },
+      {
+        "id": "A2:RS-BusinessScenario-1-aggregation-RS-ServiceOperation-1",
+        "source": "A2:RS-BusinessScenario-1@1.0",
+        "target": "A2:RS-ServiceOperation-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        },
+        "label": "RA2-09"
+      },
+      {
+        "id": "A2:RS-BusinessObject-1-composition-RS-BusinessObjectAttribute-1",
+        "source": "A2:RS-BusinessObject-1@1.0",
+        "target": "A2:RS-BusinessObjectAttribute-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        },
+        "label": "RA2-10"
+      },
+      {
+        "id": "A2:RS-ControlRecord-1-composition-RS-BehaviorQualifier-1",
+        "source": "A2:RS-ControlRecord-1@1.0",
+        "target": "A2:RS-BehaviorQualifier-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        },
+        "label": "RA2-11"
+      },
+      {
+        "id": "A2:RS-ControlRecord-1-association-RS-BusinessObject-1",
+        "source": "A2:RS-ControlRecord-1@1.0",
+        "target": "A2:RS-BusinessObject-1@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        },
+        "label": "RA2-12"
+      },
+      {
+        "id": "A2:RS-ServiceOperation-1-access-RS-ControlRecord-1",
+        "source": "A2:RS-ServiceOperation-1@1.0",
+        "target": "A2:RS-ControlRecord-1@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        },
+        "label": "RA2-13"
+      },
+      {
+        "id": "A2:RS-ServiceDomain-1-flow-RS-ServiceDomain-2",
+        "source": "A2:RS-ServiceDomain-1@1.0",
+        "target": "A2:RS-ServiceDomain-2@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-14"
+        },
+        "label": "RA2-14"
+      }
+    ]
+  }
+}

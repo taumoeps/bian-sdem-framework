@@ -1,0 +1,682 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-trade-a3",
+    "type": "sdem.local",
+    "label": "A3 local knowledge graph (synthetic-bank-trade-a3)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "88f01aa14c69a3eb6faeeccb80e950360092af1679af75a2483eba8f64b6b03d",
+      "level": "A3",
+      "model_id": "synthetic-bank-trade-a3",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-APM"
+    },
+    "nodes": {
+      "A3:SBB-TRADE@1.0": {
+        "label": "Trade Finance solution",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.SolutionBuildingBlock",
+          "id": "SBB-TRADE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The solution building block delivering documentary trade: credit manager plus document checker.",
+          "attributes": {
+            "components": [
+              "APP-LC",
+              "APP-DOC"
+            ]
+          }
+        }
+      },
+      "A3:APP-LC@3.0": {
+        "label": "LC Manager",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "APP-LC",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Manages letters of credit from application to issuance.",
+          "attributes": {
+            "deployed_on": [
+              "NODE-TF-PROD",
+              "SYS-RUNTIME-TF"
+            ],
+            "deployed_as": [
+              "DEP-LC-PROD"
+            ],
+            "built_as": [
+              "ART-LC-IMG"
+            ],
+            "network_zone": "NET-TF"
+          }
+        }
+      },
+      "A3:APP-DOC@3.0": {
+        "label": "DocCheck",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "APP-DOC",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Evaluates presented trade documents; its capture module runs on the scanning appliance.",
+          "attributes": {
+            "deployed_on": [
+              "NODE-TF-PROD",
+              "SYS-RUNTIME-TF",
+              "DEV-SCAN-01"
+            ],
+            "deployed_as": [
+              "DEP-DOC-PROD"
+            ],
+            "built_as": [
+              "ART-DOC-IMG"
+            ],
+            "network_zone": "NET-TF"
+          }
+        }
+      },
+      "A3:SVC-LC@3.0": {
+        "label": "Letter of credit service",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationService",
+          "id": "SVC-LC",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Externally exposed credit behaviour.",
+          "attributes": {
+            "consumes": [
+              "TS-QUEUE",
+              "TS-GATEWAY"
+            ]
+          }
+        }
+      },
+      "A3:SVC-DOC@3.0": {
+        "label": "Document checking service",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationService",
+          "id": "SVC-DOC",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Externally exposed checking behaviour.",
+          "attributes": {
+            "consumes": [
+              "TS-GATEWAY"
+            ]
+          }
+        }
+      },
+      "A3:IFC-LC@3.0": {
+        "label": "LC API v3",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-LC",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "REST.",
+          "attributes": {
+            "exposed_through": [
+              "TI-INGRESS"
+            ]
+          }
+        }
+      },
+      "A3:IFC-DOC@3.0": {
+        "label": "Documents API v3",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-DOC",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "REST.",
+          "attributes": {
+            "exposed_through": [
+              "TI-INGRESS"
+            ]
+          }
+        }
+      },
+      "A3:API-LC-01@3.0": {
+        "label": "Create letter of credit",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-LC-01",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "REST operation.",
+          "attributes": {
+            "method": "POST",
+            "path": "/letters-of-credit",
+            "payload_fields": [
+              "applicant_reference",
+              "beneficiary_reference",
+              "credit_amount",
+              "currency",
+              "expiry_date",
+              "letter_of_credit_reference",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A3:API-LC-02@3.0": {
+        "label": "Amend letter of credit",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-LC-02",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "REST operation.",
+          "attributes": {
+            "method": "PATCH",
+            "path": "/letters-of-credit/{id}/amendment",
+            "payload_fields": [
+              "letter_of_credit_reference",
+              "credit_amount",
+              "expiry_date",
+              "amendment_reference",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A3:API-LC-03@3.0": {
+        "label": "Issue letter of credit",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-LC-03",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "REST operation.",
+          "attributes": {
+            "method": "PUT",
+            "path": "/letters-of-credit/{id}/issuance",
+            "payload_fields": [
+              "letter_of_credit_reference",
+              "issuance_reference",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A3:API-LC-04@3.0": {
+        "label": "Get letter of credit",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-LC-04",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "REST operation.",
+          "attributes": {
+            "method": "GET",
+            "path": "/letters-of-credit/{id}",
+            "payload_fields": [
+              "letter_of_credit_reference",
+              "application_status",
+              "credit_amount",
+              "currency",
+              "expiry_date",
+              "issuance_reference"
+            ]
+          }
+        }
+      },
+      "A3:API-DC-01@3.0": {
+        "label": "Check document set",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-DC-01",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "REST operation.",
+          "attributes": {
+            "method": "POST",
+            "path": "/document-sets/{id}/check",
+            "payload_fields": [
+              "document_set_reference",
+              "letter_of_credit_reference",
+              "compliance_outcome",
+              "discrepancies"
+            ]
+          }
+        }
+      },
+      "A3:API-DC-02@3.0": {
+        "label": "Get document set",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "API-DC-02",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "REST operation.",
+          "attributes": {
+            "method": "GET",
+            "path": "/document-sets/{id}",
+            "payload_fields": [
+              "document_set_reference",
+              "compliance_outcome",
+              "discrepancies",
+              "checked_at"
+            ]
+          }
+        }
+      },
+      "A3:FN-LC-CAPTURE@3.0": {
+        "label": "Application capture",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationFunction",
+          "id": "FN-LC-CAPTURE",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Captures and amends credit applications; validates them.",
+          "attributes": {
+            "exposed_through": [
+              "API-LC-01",
+              "API-LC-02",
+              "API-LC-04"
+            ],
+            "consumes": []
+          }
+        }
+      },
+      "A3:FN-LC-ISSUE@3.0": {
+        "label": "Issuance processing",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationFunction",
+          "id": "FN-LC-ISSUE",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Issues credits with dual authorisation and digital signing.",
+          "attributes": {
+            "exposed_through": [
+              "API-LC-03"
+            ],
+            "consumes": [
+              "TS-SIGNING"
+            ]
+          }
+        }
+      },
+      "A3:FN-DOC-CHECK@3.0": {
+        "label": "Document compliance check",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationFunction",
+          "id": "FN-DOC-CHECK",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "OCR and rule-based compliance checking of presented documents.",
+          "attributes": {
+            "exposed_through": [
+              "API-DC-01",
+              "API-DC-02"
+            ],
+            "consumes": [
+              "TS-OCR"
+            ]
+          }
+        }
+      },
+      "A3:ENT-LC@3.0": {
+        "label": "letters_of_credit",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-LC",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Credit table.",
+          "attributes": {
+            "attributes": [
+              "letter_of_credit_reference",
+              "applicant_reference",
+              "beneficiary_reference",
+              "credit_amount",
+              "currency",
+              "expiry_date",
+              "application_status",
+              "issuance_reference",
+              "created_by"
+            ],
+            "stored_in": [
+              "SYS-DB-TF"
+            ]
+          }
+        }
+      },
+      "A3:ENT-LC-AMEND@3.0": {
+        "label": "lc_amendments",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-LC-AMEND",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Amendment history per credit.",
+          "attributes": {
+            "attributes": [
+              "amendment_reference",
+              "letter_of_credit_reference",
+              "credit_amount",
+              "expiry_date",
+              "amended_at"
+            ],
+            "stored_in": [
+              "SYS-DB-TF"
+            ]
+          }
+        }
+      },
+      "A3:ENT-DOCSET@3.0": {
+        "label": "document_sets",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-DOCSET",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Document sets and their scans.",
+          "attributes": {
+            "attributes": [
+              "document_set_reference",
+              "letter_of_credit_reference",
+              "compliance_outcome",
+              "discrepancies",
+              "checked_at",
+              "scan_uri"
+            ],
+            "stored_in": [
+              "SYS-DB-TF",
+              "ART-DOC-STORE"
+            ]
+          }
+        }
+      },
+      "A3:EVT-LC-ISSUED@3.0": {
+        "label": "LetterOfCreditIssued",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.Event",
+          "id": "EVT-LC-ISSUED",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Published when a credit is issued.",
+          "attributes": {
+            "published_to": [
+              "TS-QUEUE"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A3:SBB-TRADE-aggregation-APP-LC",
+        "source": "A3:SBB-TRADE@1.0",
+        "target": "A3:APP-LC@3.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-30"
+        }
+      },
+      {
+        "id": "A3:SBB-TRADE-aggregation-APP-DOC",
+        "source": "A3:SBB-TRADE@1.0",
+        "target": "A3:APP-DOC@3.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-30"
+        }
+      },
+      {
+        "id": "A3:APP-LC-realization-SVC-LC",
+        "source": "A3:APP-LC@3.0",
+        "target": "A3:SVC-LC@3.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-06"
+        }
+      },
+      {
+        "id": "A3:APP-DOC-realization-SVC-DOC",
+        "source": "A3:APP-DOC@3.0",
+        "target": "A3:SVC-DOC@3.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-06"
+        }
+      },
+      {
+        "id": "A3:IFC-LC-assignment-SVC-LC",
+        "source": "A3:IFC-LC@3.0",
+        "target": "A3:SVC-LC@3.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-07"
+        }
+      },
+      {
+        "id": "A3:IFC-DOC-assignment-SVC-DOC",
+        "source": "A3:IFC-DOC@3.0",
+        "target": "A3:SVC-DOC@3.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-07"
+        }
+      },
+      {
+        "id": "A3:IFC-LC-composition-API-LC-01",
+        "source": "A3:IFC-LC@3.0",
+        "target": "A3:API-LC-01@3.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-LC-composition-API-LC-02",
+        "source": "A3:IFC-LC@3.0",
+        "target": "A3:API-LC-02@3.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-LC-composition-API-LC-03",
+        "source": "A3:IFC-LC@3.0",
+        "target": "A3:API-LC-03@3.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-LC-composition-API-LC-04",
+        "source": "A3:IFC-LC@3.0",
+        "target": "A3:API-LC-04@3.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-DOC-composition-API-DC-01",
+        "source": "A3:IFC-DOC@3.0",
+        "target": "A3:API-DC-01@3.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-DOC-composition-API-DC-02",
+        "source": "A3:IFC-DOC@3.0",
+        "target": "A3:API-DC-02@3.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:APP-LC-assignment-FN-LC-CAPTURE",
+        "source": "A3:APP-LC@3.0",
+        "target": "A3:FN-LC-CAPTURE@3.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-04"
+        }
+      },
+      {
+        "id": "A3:APP-LC-assignment-FN-LC-ISSUE",
+        "source": "A3:APP-LC@3.0",
+        "target": "A3:FN-LC-ISSUE@3.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-04"
+        }
+      },
+      {
+        "id": "A3:APP-DOC-assignment-FN-DOC-CHECK",
+        "source": "A3:APP-DOC@3.0",
+        "target": "A3:FN-DOC-CHECK@3.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-04"
+        }
+      },
+      {
+        "id": "A3:FN-LC-CAPTURE-access-ENT-LC",
+        "source": "A3:FN-LC-CAPTURE@3.0",
+        "target": "A3:ENT-LC@3.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-17"
+        }
+      },
+      {
+        "id": "A3:FN-LC-CAPTURE-access-ENT-LC-AMEND",
+        "source": "A3:FN-LC-CAPTURE@3.0",
+        "target": "A3:ENT-LC-AMEND@3.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-17"
+        }
+      },
+      {
+        "id": "A3:FN-LC-ISSUE-access-ENT-LC",
+        "source": "A3:FN-LC-ISSUE@3.0",
+        "target": "A3:ENT-LC@3.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-17"
+        }
+      },
+      {
+        "id": "A3:FN-DOC-CHECK-access-ENT-DOCSET",
+        "source": "A3:FN-DOC-CHECK@3.0",
+        "target": "A3:ENT-DOCSET@3.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-17"
+        }
+      },
+      {
+        "id": "A3:APP-LC-access-ENT-LC",
+        "source": "A3:APP-LC@3.0",
+        "target": "A3:ENT-LC@3.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:APP-LC-access-ENT-LC-AMEND",
+        "source": "A3:APP-LC@3.0",
+        "target": "A3:ENT-LC-AMEND@3.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:APP-DOC-access-ENT-DOCSET",
+        "source": "A3:APP-DOC@3.0",
+        "target": "A3:ENT-DOCSET@3.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:APP-LC-triggering-EVT-LC-ISSUED",
+        "source": "A3:APP-LC@3.0",
+        "target": "A3:EVT-LC-ISSUED@3.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-22"
+        }
+      },
+      {
+        "id": "A3:APP-LC-composition-IFC-LC",
+        "source": "A3:APP-LC@3.0",
+        "target": "A3:IFC-LC@3.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A3:APP-DOC-composition-IFC-DOC",
+        "source": "A3:APP-DOC@3.0",
+        "target": "A3:IFC-DOC@3.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      }
+    ]
+  }
+}

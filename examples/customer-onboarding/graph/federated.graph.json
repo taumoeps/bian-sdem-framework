@@ -1,0 +1,396 @@
+{
+  "graph": {
+    "id": "sdem:federated",
+    "type": "sdem.federated",
+    "label": "Federated knowledge graph (approved cross-level links)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "metamodel_version": "0.4.0",
+      "levels": {
+        "A1": "2026.10",
+        "A2": "2026.10",
+        "A3": "2026.10",
+        "A4": "2026.10"
+      },
+      "registries": [
+        {
+          "file": "mappings.json",
+          "sha256": "558847027f775e06ab3828941423b2ee8be0566077acebaa9485d0e74b658a28",
+          "registry_version": "0.4.0",
+          "metamodel_version": "0.4.0"
+        }
+      ],
+      "statuses": [
+        "approved"
+      ]
+    },
+    "nodes": {
+      "A1:CAP-001@1.0": {
+        "label": "Onboard Customer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:SD-001@1.0": {
+        "label": "Customer Onboarding (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:APP-001@1.0": {
+        "label": "Onboarding Portal",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "APP-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A4:INF-001@1.0": {
+        "label": "Managed Kubernetes — channels (production)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A1:VS-001@1.0": {
+        "label": "Become a Customer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "VS-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:BS-001@1.0": {
+        "label": "Retail customer onboarding",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "BS-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:PRC-001@1.0": {
+        "label": "Onboard retail customer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A1:BO-001@1.0": {
+        "label": "Customer Identity",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:BBO-001@1.0": {
+        "label": "Customer Identity",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:ENT-001@1.0": {
+        "label": "customer_identity",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A4:DEP-001@1.0": {
+        "label": "Onboarding Portal — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "MAP-001",
+        "source": "A1:CAP-001@1.0",
+        "target": "A2:SD-001@1.0",
+        "relation": "SUPPORTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CAP-001",
+            "type": "A1.BusinessCapability",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-001",
+            "type": "A2.ServiceDomain",
+            "version": "1.0",
+            "canonical_id": "DEMO-BIAN-SD-ONBOARDING"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "business_architecture_document:SYNTHETIC-BA-001",
+            "domain_scope_assessment:SYNTHETIC-BA-001"
+          ],
+          "rationale": "Onboarding capability supported by the selected logical domain; synthetic example only",
+          "bian_release": "DEMO-RELEASE",
+          "baseline_id": "DEMO-BASE-001",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-01-15"
+        }
+      },
+      {
+        "id": "MAP-002",
+        "source": "A2:SD-001@1.0",
+        "target": "A3:APP-001@1.0",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SD-001",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-001",
+            "type": "A3.ApplicationComponent",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:SYNTHETIC-AA-001"
+          ],
+          "rationale": "Example onboarding application implements selected functional responsibilities",
+          "baseline_id": "DEMO-BASE-001",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-01-15"
+        }
+      },
+      {
+        "id": "MAP-003",
+        "source": "A3:APP-001@1.0",
+        "target": "A4:INF-001@1.0",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-001",
+            "type": "A3.ApplicationComponent",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "INF-001",
+            "type": "A4.InfrastructureComponent",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:SYNTHETIC-IA-002"
+          ],
+          "rationale": "Application re-hosted on the container platform; replaces the legacy VM deployment in MAP-008",
+          "baseline_id": "DEMO-BASE-002",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-03-01",
+          "previous_mapping_id": "MAP-008"
+        }
+      },
+      {
+        "id": "MAP-004",
+        "source": "A1:VS-001@1.0",
+        "target": "A2:BS-001@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "VS-001",
+            "type": "A1.ValueStream",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BS-001",
+            "type": "A2.BusinessScenario",
+            "version": "1.0",
+            "canonical_id": "DEMO-BIAN-SCENARIO-ONBOARD"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:SYNTHETIC-PM-001",
+            "scenario_suitability_review:SYNTHETIC-SCENARIO-REVIEW-001"
+          ],
+          "rationale": "Onboarding value stream stages correspond to the selected scenario's interactions; identity-verification step reviewed for fit",
+          "bian_release": "DEMO-RELEASE",
+          "baseline_id": "DEMO-BASE-001",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-01-15"
+        }
+      },
+      {
+        "id": "MAP-005",
+        "source": "A1:PRC-001@1.0",
+        "target": "A2:SD-001@1.0",
+        "relation": "USES_DOMAIN",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "PRC-001",
+            "type": "A1.BusinessProcess",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-001",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:SYNTHETIC-PM-001"
+          ],
+          "rationale": "Identity-verification process activity invokes operations of the onboarding domain",
+          "baseline_id": "DEMO-BASE-001",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-01-15"
+        }
+      },
+      {
+        "id": "MAP-006",
+        "source": "A1:BO-001@1.0",
+        "target": "A2:BBO-001@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BO-001",
+            "type": "A1.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BBO-001",
+            "type": "A2.BusinessObject",
+            "version": "1.0",
+            "canonical_id": "DEMO-BIAN-BO-CUSTOMER-IDENTITY"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "business_glossary:SYNTHETIC-GLOSSARY-001",
+            "object_alignment_review:SYNTHETIC-OBJECT-REVIEW-001"
+          ],
+          "rationale": "Bank 'Customer Identity' concept carries the same meaning as the selected BIAN business object",
+          "bian_release": "DEMO-RELEASE",
+          "baseline_id": "DEMO-BASE-001",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-01-15"
+        }
+      },
+      {
+        "id": "MAP-007",
+        "source": "A2:BBO-001@1.0",
+        "target": "A3:ENT-001@1.0",
+        "relation": "MAPPED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BBO-001",
+            "type": "A2.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "ENT-001",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "data_model:SYNTHETIC-DM-001"
+          ],
+          "rationale": "CustomerRecord entity stores the identity object; address fields are partially covered and flagged in the data model",
+          "baseline_id": "DEMO-BASE-001",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-01-15"
+        }
+      },
+      {
+        "id": "MAP-011",
+        "source": "A3:APP-001@1.0",
+        "target": "A4:DEP-001@1.0",
+        "relation": "DEPLOYED_AS",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-001",
+            "type": "A3.ApplicationComponent",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "DEP-001",
+            "type": "A4.Deployment",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:SYNTHETIC-IA-002"
+          ],
+          "rationale": "Production deployment of the onboarding application; the precise form of MAP-003's DEPLOYED_ON",
+          "baseline_id": "DEMO-BASE-002",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-03-01"
+        }
+      }
+    ]
+  }
+}

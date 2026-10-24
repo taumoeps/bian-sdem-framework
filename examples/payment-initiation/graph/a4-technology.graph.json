@@ -1,0 +1,262 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-payments-a4",
+    "type": "sdem.local",
+    "label": "A4 local knowledge graph (synthetic-bank-payments-a4)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "ca8b600cd33954c4bd98ad7a510a3c7d7cb6023f0ba33f5e1313eed3d756c0d0",
+      "level": "A4",
+      "model_id": "synthetic-bank-payments-a4",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-CMDB"
+    },
+    "nodes": {
+      "A4:INF-K8S-PAY-PROD@1.29": {
+        "label": "Managed Kubernetes — payments (production)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-K8S-PAY-PROD",
+          "version": "1.29",
+          "lifecycle_status": "active",
+          "description": "Production container platform for the payments estate.",
+          "attributes": {
+            "hosts": [
+              "APP-PAY-HUB",
+              "CMP-PAY-EXEC"
+            ],
+            "product_version": "1.30",
+            "license": "Apache-2.0",
+            "end_of_support": "2027-06-30"
+          }
+        }
+      },
+      "A4:INF-K8S-PAY-UAT@1.29": {
+        "label": "Managed Kubernetes — payments (UAT)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-K8S-PAY-UAT",
+          "version": "1.29",
+          "lifecycle_status": "active",
+          "description": "UAT container platform.",
+          "attributes": {
+            "hosts": [
+              "APP-PAY-HUB"
+            ]
+          }
+        }
+      },
+      "A4:INF-PG-PAY-PROD@16": {
+        "label": "Managed PostgreSQL — payments",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-PG-PAY-PROD",
+          "version": "16",
+          "lifecycle_status": "active",
+          "description": "Production relational store for the hub.",
+          "attributes": {
+            "product_version": "16.4",
+            "license": "PostgreSQL"
+          }
+        }
+      },
+      "A4:TS-MQ@1.0": {
+        "label": "Messaging service",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyService",
+          "id": "TS-MQ",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Managed message broker used for status events.",
+          "attributes": {
+            "cloud_service_model": "PaaS"
+          }
+        }
+      },
+      "A4:TS-SECRETS@1.0": {
+        "label": "Secrets management",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyService",
+          "id": "TS-SECRETS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Platform secrets service.",
+          "attributes": {
+            "cloud_service_model": "PaaS"
+          }
+        }
+      },
+      "A4:ENV-PAY-PROD@1.0": {
+        "label": "Production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.DeploymentEnvironment",
+          "id": "ENV-PAY-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Production runtime environment.",
+          "attributes": {
+            "environment_kind": "production",
+            "country": "NZ",
+            "cloud_deployment_model": "public"
+          }
+        }
+      },
+      "A4:ENV-PAY-UAT@1.0": {
+        "label": "UAT",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.DeploymentEnvironment",
+          "id": "ENV-PAY-UAT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "User-acceptance environment.",
+          "attributes": {
+            "environment_kind": "test",
+            "country": "NZ",
+            "cloud_deployment_model": "public"
+          }
+        }
+      },
+      "A4:DEP-PAYHUB-PROD@1.0": {
+        "label": "Payments Hub — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-PAYHUB-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Hub 7.1 on the production cluster.",
+          "attributes": {
+            "component_id": "APP-PAY-HUB",
+            "environment_id": "ENV-PAY-PROD",
+            "platform_id": "INF-K8S-PAY-PROD"
+          }
+        }
+      },
+      "A4:DEP-PAYHUB-UAT@1.0": {
+        "label": "Payments Hub — UAT",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-PAYHUB-UAT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Hub 7.1 on the UAT cluster.",
+          "attributes": {
+            "component_id": "APP-PAY-HUB",
+            "environment_id": "ENV-PAY-UAT",
+            "platform_id": "INF-K8S-PAY-UAT"
+          }
+        }
+      },
+      "A4:DEP-PAYEXEC-PROD@1.0": {
+        "label": "Execution Gateway — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-PAYEXEC-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Gateway 3.4 on the production cluster.",
+          "attributes": {
+            "component_id": "CMP-PAY-EXEC",
+            "environment_id": "ENV-PAY-PROD",
+            "platform_id": "INF-K8S-PAY-PROD"
+          }
+        }
+      },
+      "A4:NET-PAY-PRIVATE@1.0": {
+        "label": "Payments private network",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.CommunicationNetwork",
+          "id": "NET-PAY-PRIVATE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Private network segment for payment services.",
+          "attributes": {
+            "address_range": [
+              "10.20.0.0/16"
+            ]
+          }
+        }
+      },
+      "A4:ART-PAYHUB-IMG@7.1": {
+        "label": "payments-hub:7.1",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Artifact",
+          "id": "ART-PAYHUB-IMG",
+          "version": "7.1",
+          "lifecycle_status": "active",
+          "description": "Container image of the hub.",
+          "attributes": {
+            "artifact_kind": "container image",
+            "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+            "purl": "pkg:docker/example/payments-hub@7.1"
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A4:ENV-PAY-PROD-aggregation-DEP-PAYHUB-PROD",
+        "source": "A4:ENV-PAY-PROD@1.0",
+        "target": "A4:DEP-PAYHUB-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A4:ENV-PAY-PROD-aggregation-DEP-PAYEXEC-PROD",
+        "source": "A4:ENV-PAY-PROD@1.0",
+        "target": "A4:DEP-PAYEXEC-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A4:ENV-PAY-UAT-aggregation-DEP-PAYHUB-UAT",
+        "source": "A4:ENV-PAY-UAT@1.0",
+        "target": "A4:DEP-PAYHUB-UAT@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A4:INF-K8S-PAY-PROD-association-NET-PAY-PRIVATE",
+        "source": "A4:INF-K8S-PAY-PROD@1.29",
+        "target": "A4:NET-PAY-PRIVATE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A4:INF-K8S-PAY-PROD-assignment-ART-PAYHUB-IMG",
+        "source": "A4:INF-K8S-PAY-PROD@1.29",
+        "target": "A4:ART-PAYHUB-IMG@7.1",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-17"
+        }
+      }
+    ]
+  }
+}

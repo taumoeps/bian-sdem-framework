@@ -1,0 +1,210 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-a1",
+    "type": "sdem.local",
+    "label": "A1 local knowledge graph (synthetic-bank-a1)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "2894e44351e602c6f082d79617be09b851997c996545f30f745a8c756a8aabb1",
+      "level": "A1",
+      "model_id": "synthetic-bank-a1",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-EA-TOOL"
+    },
+    "nodes": {
+      "A1:CAP-310@1.0": {
+        "label": "Card Fraud Alerts",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-310",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Detect suspicious card transactions in real time and alert the cardholder through their preferred channel before the transaction settles.",
+          "attributes": {
+            "owner": "ACT-RETAIL-RISK"
+          }
+        }
+      },
+      "A1:CAP-300@1.0": {
+        "label": "Card Risk Management",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-300",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Manage the risk exposure of the card portfolio, including fraud, credit and operational risk."
+        }
+      },
+      "A1:VS-CARD-USE@1.0": {
+        "label": "Use Card Safely",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "VS-CARD-USE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The cardholder's journey from presenting a card to confirming a transaction was legitimate.",
+          "attributes": {
+            "stages": [
+              "VSS-01",
+              "VSS-02",
+              "VSS-03",
+              "VSS-04"
+            ]
+          }
+        }
+      },
+      "A1:PRC-310-01@1.0": {
+        "label": "Alert Cardholder of Suspicious Transaction",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-310-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "On a high-risk score, notify the cardholder, capture their response and release or block the transaction.",
+          "attributes": {
+            "invokes": [
+              "SO-044-07"
+            ]
+          }
+        }
+      },
+      "A1:VSS-01@1.0": {
+        "label": "Present card",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Stage of Use Card Safely: present card."
+        }
+      },
+      "A1:VSS-02@1.0": {
+        "label": "Score the transaction",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Stage of Use Card Safely: score the transaction."
+        }
+      },
+      "A1:VSS-03@1.0": {
+        "label": "Alert the cardholder",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Stage of Use Card Safely: alert the cardholder."
+        }
+      },
+      "A1:VSS-04@1.0": {
+        "label": "Confirm or block",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-04",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Stage of Use Card Safely: confirm or block."
+        }
+      },
+      "A1:ACT-RETAIL-RISK@1.0": {
+        "label": "Retail Risk",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActor",
+          "id": "ACT-RETAIL-RISK",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Retail risk organisational unit (synthetic).",
+          "attributes": {
+            "actor_kind": "organisational unit",
+            "external": false
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A1:CAP-300-composition-CAP-310",
+        "source": "A1:CAP-300@1.0",
+        "target": "A1:CAP-310@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-01"
+        }
+      },
+      {
+        "id": "A1:CAP-310-serving-VS-CARD-USE",
+        "source": "A1:CAP-310@1.0",
+        "target": "A1:VS-CARD-USE@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        }
+      },
+      {
+        "id": "A1:PRC-310-01-realization-CAP-310",
+        "source": "A1:PRC-310-01@1.0",
+        "target": "A1:CAP-310@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:VS-CARD-USE-composition-VSS-01",
+        "source": "A1:VS-CARD-USE@1.0",
+        "target": "A1:VSS-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-CARD-USE-composition-VSS-02",
+        "source": "A1:VS-CARD-USE@1.0",
+        "target": "A1:VSS-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-CARD-USE-composition-VSS-03",
+        "source": "A1:VS-CARD-USE@1.0",
+        "target": "A1:VSS-03@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-CARD-USE-composition-VSS-04",
+        "source": "A1:VS-CARD-USE@1.0",
+        "target": "A1:VSS-04@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      }
+    ]
+  }
+}

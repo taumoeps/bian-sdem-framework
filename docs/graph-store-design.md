@@ -1,6 +1,6 @@
 # SDEM — Graph Store Design (local, JSON)
 
-> **Status: DRAFT for review, 2026-10-25.** Nothing here is built yet. Companion to [`graph-store-spec.md`](graph-store-spec.md), which states the requirements (GS-*) this design meets. Once approved it closes decisions DEC-01 (graph store) and DEC-03 (one store or five) in [`knowledge-graph-spec.md`](knowledge-graph-spec.md) §12.
+> **Status: approved and built, 2026-10-25** (decisions GD-01…GD-09 as recommended). Code: `sdem/store.py`, `sdem/view.py`, `sdem-graph build | query | baseline | view`; example stores in `examples/*/graph/`. Companion to [`graph-store-spec.md`](graph-store-spec.md), which states the requirements (GS-*) this design meets. It closes decisions DEC-01 (graph store) and DEC-03 (one store or five) in [`knowledge-graph-spec.md`](knowledge-graph-spec.md) §12.
 
 ## 1. What it is, in one paragraph
 

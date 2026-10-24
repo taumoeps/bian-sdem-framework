@@ -1,6 +1,6 @@
 # SDEM — Graph Store Specification (local, JSON)
 
-> **Status: DRAFT for review, 2026-10-25.** Requirements for the local JSON graph store described in [`graph-store-design.md`](graph-store-design.md). Each requirement has an ID (GS-*), says what it satisfies in [`knowledge-graph-spec.md`](knowledge-graph-spec.md) (KG-*), and how it is accepted. Nothing is built yet; every requirement is **not built**.
+> **Status: approved and built, 2026-10-25.** Requirements for the local JSON graph store described in [`graph-store-design.md`](graph-store-design.md). Each requirement has an ID (GS-*), says what it satisfies in [`knowledge-graph-spec.md`](knowledge-graph-spec.md) (KG-*), and how it is accepted. All requirements are built. Acceptance tests AT-01…AT-10 run in `tests/test_store.py`; AT-11 in `scripts/store_perf.py` (CI) — 10,000 records and 16,125 links built in 0.6 s, opened in 0.04 s (the synthetic estate has no cross-level links, so trace timing is not yet representative). AT-10's interaction was checked in headless Chrome; a second browser is still to be checked by hand.
 
 ## 1. Scope
 
@@ -17,7 +17,7 @@
 | GS-F-01 | A store is one directory holding exactly: `a1-business.graph.json`, `a2-service-domain.graph.json`, `a3-application.graph.json`, `a4-technology.graph.json`, `federated.graph.json`, `load-record.json`; optionally `baselines/<name>/` and `view.html`. A level with no export has no file. | DEC-03 | AT-01 |
 | GS-F-02 | Every `*.graph.json` file is a valid JGF v2 document with a single top-level `graph` object (edge-based variant; no hyperedges), `directed: true`. | DEC-01 | AT-02 |
 | GS-F-03 | Every `*.graph.json` file also conforms to the **SDEM profile** `schema/graph-store.schema.json` (§3–§5), which constrains `metadata` only and never contradicts JGF. | — | AT-02 |
-| GS-F-04 | Output is deterministic: identical inputs produce byte-identical graph files — UTF-8, LF line endings, two-space indent, object keys sorted, nodes in key order, edges sorted by (`relation`, `source`, `target`, `id`). Graph files contain no build timestamps. | KG-V-01 | AT-06 |
+| GS-F-04 | Output is deterministic: identical inputs produce byte-identical graph files — UTF-8, LF line endings, two-space indent, fields in a fixed order, nodes and edges in the order of the export or registry they came from (so every reader sees records in the source's order and answers stay identical). Graph files contain no build timestamps. | KG-V-01 | AT-06 |
 
 ## 3. Graph-level metadata
 
@@ -111,10 +111,10 @@
 | AT-10 | `view.html` is generated for every estate, contains every node and edge, makes no network request (no `http` URL in a script or stylesheet reference); interaction checked by hand in two browsers. |
 | AT-11 | Performance against GS-X-02 on a generated synthetic estate of 10,000 nodes. |
 
-## 13. Changes to existing documents on approval
+## 13. Changes made to existing documents
 
 - `knowledge-graph-spec.md` §12: DEC-01 → *local JSON files in JGF v2 (this specification)*; DEC-03 → *one directory, four local files and one federated file*. KG-L-03, KG-R-03, KG-V-01, KG-V-02, KG-L-04, KG-Q-04 point to the GS requirements that build them.
-- `ROADMAP.md`: the graph store (v0.12) moves ahead of the inference engine; numbering follows.
+- `ROADMAP.md`: the graph store moved ahead of the inference engine.
 - `glossary.md`: *graph store*, *JGF*, *load record*, *baseline (graph)*.
 
 ## 14. Open questions

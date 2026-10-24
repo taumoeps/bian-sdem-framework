@@ -1,0 +1,181 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-onboarding-a1",
+    "type": "sdem.local",
+    "label": "A1 local knowledge graph (synthetic-bank-onboarding-a1)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "e5bc09de4d3fac58805140174a50ccd4e36178d2897c292c56ae531e38ebfe33",
+      "level": "A1",
+      "model_id": "synthetic-bank-onboarding-a1",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-EA-TOOL"
+    },
+    "nodes": {
+      "A1:CAP-001@1.0": {
+        "label": "Onboard Customer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Establish a new customer relationship: capture identity, verify it, and open the first product."
+        }
+      },
+      "A1:VS-001@1.0": {
+        "label": "Become a Customer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "VS-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The customer's journey from applying to being able to transact.",
+          "attributes": {
+            "stages": [
+              "VSS-001",
+              "VSS-002",
+              "VSS-003"
+            ]
+          }
+        }
+      },
+      "A1:VSS-001@1.0": {
+        "label": "Apply and capture identity",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The applicant provides identity details."
+        }
+      },
+      "A1:VSS-002@1.0": {
+        "label": "Verify identity",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-002",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The bank verifies the identity."
+        }
+      },
+      "A1:VSS-003@1.0": {
+        "label": "Confirm relationship",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-003",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The customer is confirmed."
+        }
+      },
+      "A1:PRC-001@1.0": {
+        "label": "Onboard retail customer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Capture and verify an applicant's identity and establish the relationship.",
+          "attributes": {
+            "invokes": [
+              "SO-001",
+              "SO-002"
+            ]
+          }
+        }
+      },
+      "A1:BO-001@1.0": {
+        "label": "Customer Identity",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The identity details the bank holds for a customer.",
+          "attributes": {
+            "attributes": [
+              "customer_id",
+              "legal_name",
+              "date_of_birth",
+              "national_id",
+              "address",
+              "verification_status"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A1:VS-001-composition-VSS-001",
+        "source": "A1:VS-001@1.0",
+        "target": "A1:VSS-001@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-001-composition-VSS-002",
+        "source": "A1:VS-001@1.0",
+        "target": "A1:VSS-002@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-001-composition-VSS-003",
+        "source": "A1:VS-001@1.0",
+        "target": "A1:VSS-003@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:CAP-001-serving-VS-001",
+        "source": "A1:CAP-001@1.0",
+        "target": "A1:VS-001@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        }
+      },
+      {
+        "id": "A1:PRC-001-realization-CAP-001",
+        "source": "A1:PRC-001@1.0",
+        "target": "A1:CAP-001@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-001-access-BO-001",
+        "source": "A1:PRC-001@1.0",
+        "target": "A1:BO-001@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      }
+    ]
+  }
+}

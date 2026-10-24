@@ -111,8 +111,8 @@ Every allowed edge is a row in `metamodel/level-relationships.json`, listed with
 |---|---|---|
 | KG-L-01 | Accept a node only if its `type` resolves to a concrete, non-artefact catalogue entity of the graph's level. | built |
 | KG-L-02 | Accept an edge only if both ends are nodes of this graph and (source type, kind, target type) matches a constraint row of the level through inheritance, or the kind is `association`. | built |
-| KG-L-03 | Reject the whole export, and keep the previously loaded local knowledge graph, if any node or edge fails; report every failure. | built (check); keep-previous not built |
-| KG-L-04 | Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status. | partly built (closure in trace); per-level query API not built |
+| KG-L-03 | Reject the whole export, and keep the previously loaded local knowledge graph, if any node or edge fails; report every failure. | built |
+| KG-L-04 | Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status. | partly built (closure in trace); `sdem-graph query --neighbours/--type/--where` (graph store, GS-Q-02/03) |
 
 ## 3. Federated knowledge graph
 
@@ -198,8 +198,8 @@ The federated knowledge graph points into the local knowledge graphs by id. Thes
 
 | ID | Requirement | Status |
 |---|---|---|
-| KG-V-01 | Record, for every federated load, the four local `model_version`s and the relationship-registry version used — the load's baseline — and return it with every answer. | not built |
-| KG-V-02 | Keep earlier baselines queryable, so an impact analysis can be rerun against the state it was originally run on. | not built (git history of the files is the substitute today) |
+| KG-V-01 | Record, for every federated load, the four local `model_version`s and the relationship-registry version used — the load's baseline — and return it with every answer. | built (graph store) |
+| KG-V-02 | Keep earlier baselines queryable, so an impact analysis can be rerun against the state it was originally run on. | built (graph store) |
 | KG-V-03 | Never edit an approved edge; change is a new edge with `previous_mapping_id` and the old one `superseded`. | built |
 | KG-V-04 | Reject a federated load where the four local knowledge graphs disagree on `metamodel_version`. | built |
 
@@ -210,7 +210,7 @@ The federated knowledge graph points into the local knowledge graphs by id. Thes
 | KG-Q-01 Trace | from any node, follow approved edges down (towards A4) or up (towards A1), optionally through within-level part-whole links; every hop shows the mapping id | `sdem-graph trace`, `--follow-composition` | built |
 | KG-Q-02 Impact | given a node and a change kind (modify, replace, retire, rehost), classify every dependent node design_change_required / review_required / no_impact and list the edges to supersede | `sdem-graph impact`, impact-rules.json | built |
 | KG-Q-03 Check | validate the four local knowledge graphs and the federated edges; report every unresolved or disallowed item | `sdem-graph check` | built |
-| KG-Q-04 Unmapped | list nodes of a level with no approved cross-level edge where the plan expects one — the engine's work list | new | not built |
+| KG-Q-04 Unmapped | list nodes of a level with no approved cross-level edge where the plan expects one — the engine's work list | `sdem-graph query --unmapped` (GS-Q-04) | built |
 | KG-Q-05 History | for an edge or a node, list its superseded predecessors and the baselines it appeared in | relationship-registry history | not built |
 | KG-Q-06 Stats | counts of nodes, edges and statuses per level | `sdem-graph stats` | built |
 | KG-Q-07 Climb to the whole | an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation's operation to its Service Domain), so a trace from an API reaches the capability | knowledge-graph-design.md, limit of path F2 | not built |
@@ -227,7 +227,7 @@ relationship registry (approved records) → validate → resolve ends → load 
 |---|---|---|
 | KG-R-01 | An adapter per source tool translates its records to a level export; adapters are institution-specific and live in the institution's private repository. | not built (examples are hand-written exports) |
 | KG-R-02 | A local knowledge graph is rebuilt in full from its export; incremental update is an optimisation, not a requirement. | built (full rebuild) |
-| KG-R-03 | A failed export validation leaves the previous local knowledge graph in place and raises an alert. | not built |
+| KG-R-03 | A failed export validation leaves the previous local knowledge graph in place and raises an alert. | built (graph store: rejected build recorded, store unchanged) |
 | KG-R-04 | The federated knowledge graph is rebuilt whenever a local knowledge graph or the relationship registry changes. | built (rebuilt on every run) |
 | KG-R-05 | The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§12 DEC-02). | not built |
 
@@ -289,8 +289,8 @@ flowchart LR
 | C-10 | Mapping validator | checks proposals and the relationship registry: registry, evidence, anchoring | C-09, C-01 | pass, or every failure | C-01 | `sdem-validate` | built |
 | C-11 | Architect review | reviews the engine's output: approves, rejects or supersedes records; corrects the relationship rules model (C-01b) when a rule produces a wrong link, rather than hand-editing the set | validated proposals; impact reports | status changes in C-09 | C-10, C-14 | a person; recorded as fields | built (as fields); review queue not built |
 | C-12 | History guard | rejects edits to approved records and invalid status transitions | two versions of C-09 | pass, or every violation | C-09 | `sdem-diff` | built |
-| C-13 | Local knowledge graphs, federated knowledge graph | the graphs themselves | C-06 | — | C-06 | in memory | built in memory; store is DEC-01 |
-| C-14 | Query tools | trace, impact, check, stats; unmapped and history to come | C-13 | answers with mapping ids | C-13 | `sdem-graph`, `sdem-trace` | built (unmapped, history not built) |
+| C-13 | Local knowledge graphs, federated knowledge graph | the graphs themselves | C-06 | — | C-06 | `sdem/store.py`; local JSON graph store (JGF v2), `examples/*/graph/` | built (DEC-01: local JSON files) |
+| C-14 | Query tools | trace, impact, check, stats, query (records, neighbours, unmapped), view | C-13 | answers with mapping ids and the baseline | C-13 | `sdem-graph`, `sdem-trace` | built (history not built) |
 | C-15 | Refresh trigger | decides when C-03 and C-06 run: on demand, scheduled, event, refresh-on-read | source events or queries | runs | C-03, C-06 | — | not built (on demand only) |
 | C-16 | Assistant | answers design questions from C-14; runs C-08 and C-10 on request | C-14 answers | proposals via C-08 only | C-14, C-08 | per DEC-04 | not built (Opus executor runs stood in) |
 | C-17 | Generators and CI | regenerate documents, diagrams, per-entity schemas and the reference-structure estate from C-01; fail the build if any is stale; rerun acceptance cases | C-01 | generated files; pass / fail | C-01 | `sdem/diagram.py`, `relationships.py`, `structure.py`, `spec.py`, `kgspec.py`, `catalogue.py`, `attributes.py`, `logical.py`, `physical.py`, `confidence.py`; `.github/workflows/validate.yml` | built |
@@ -391,7 +391,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 |---|---|
 | Refuse invalid loads | any issue in steps 4–5 → the new graphs are discarded, the last valid graphs stay in service, an alert is raised (SVC-04 notifies) |
 | Record each load | write a load record (below) for every attempt, valid or not |
-| Persist | write valid graphs to the store chosen under DEC-01, keyed by baseline; earlier baselines stay queryable |
+| Persist | write valid graphs to the local JSON graph store (DEC-01, `sdem-graph build`), recorded in the load record; earlier baselines stay queryable (`sdem-graph baseline`) |
 
 **Records**
 
@@ -563,8 +563,8 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 |---|---|---|
 | Trace | walk approved links (and part–whole links if asked) from the entity | — |
 | Impact | classify dependents by `schema/impact-rules.json` | — |
-| Local | neighbours and part–whole closure inside one local knowledge graph | not built (KG-L-04) |
-| Unmapped | nodes of a level with no approved cross-level link where a catalogue rule expects one | not built (KG-Q-04) |
+| Local | neighbours and part–whole closure inside one local knowledge graph | built (`sdem-graph query --neighbours`) |
+| Unmapped | nodes of a level with no approved cross-level link where a catalogue rule expects one | built (`sdem-graph query --unmapped`) |
 | History | superseded predecessors of a record; the baselines a node or link appeared in | not built (KG-Q-05) |
 
 **Validity.** Queries run only against a valid load (SVC-01 target); the answer carries that load's `baseline_id`.
@@ -674,15 +674,15 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 
 | ID | Decision | Options | SDEM default |
 |---|---|---|---|
-| DEC-01 | Graph store | in memory from files (today); property graph (e.g. Neo4j: nodes and edges map one-to-one to §2 and §3); RDF store (named graph per local knowledge graph, edges as reified statements with PROV) | in memory until a team needs persistent queries; then property graph |
+| DEC-01 | Graph store | in memory from files (today); property graph (e.g. Neo4j: nodes and edges map one-to-one to §2 and §3); RDF store (named graph per local knowledge graph, edges as reified statements with PROV) | **decided 2026-10-25: local JSON files in JSON Graph Format v2** ([`graph-store-spec.md`](graph-store-spec.md)), read through one access layer so a database can replace them later |
 | DEC-02 | Refresh trigger per source | on demand; scheduled; event-driven (webhook); refresh-on-read | on demand now; event-driven where the tool supports it |
-| DEC-03 | One store or five | one store with a partition per local knowledge graph plus the federated edges; or separate stores per team federated by id | one store, partitioned, until teams need independent operation |
+| DEC-03 | One store or five | one store with a partition per local knowledge graph plus the federated edges; or separate stores per team federated by id | **decided 2026-10-25: one directory — four local files and one federated file** |
 | DEC-04 | Agent access | CLI run by the assistant; VS Code extension; context snapshot; MCP where policy allows | per the organisation's Copilot policy |
 | DEC-05 | Standard export of the relationship registry | none; SSSOM; RDF + PROV-O | SSSOM export when interoperability is needed |
 
 ## 13. Requirements index
 
-43 requirements — built 22, not 19, partly 2. Groups: A architecture, L local knowledge graph, F federated knowledge graph, I identity, V versions, Q queries, R load and refresh, C components, G governance, S services.
+43 requirements — built 26, not 15, partly 2. Groups: A architecture, L local knowledge graph, F federated knowledge graph, I identity, V versions, Q queries, R load and refresh, C components, G governance, S services.
 
 | ID | Requirement | Basis | Status |
 |---|---|---|---|
@@ -691,8 +691,8 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 | KG-A-03 | The engine reads the four local knowledge graphs (entities, within-level links, and what changed since the last baseline) and the federated knowledge graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations. | relationship-rules-spec §6; §8 governance | partly built (reads exports and approved mappings directly; change-since-baseline not built) |
 | KG-L-01 | Accept a node only if its `type` resolves to a concrete, non-artefact catalogue entity of the graph's level. | entity catalogue | built |
 | KG-L-02 | Accept an edge only if both ends are nodes of this graph and (source type, kind, target type) matches a constraint row of the level through inheritance, or the kind is `association`. | level-relationships.json | built |
-| KG-L-03 | Reject the whole export, and keep the previously loaded local knowledge graph, if any node or edge fails; report every failure. | `sdem-graph check` | built (check); keep-previous not built |
-| KG-L-04 | Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status. | `LevelGraph` | partly built (closure in trace); per-level query API not built |
+| KG-L-03 | Reject the whole export, and keep the previously loaded local knowledge graph, if any node or edge fails; report every failure. | `sdem-graph check`; `sdem-graph build` (graph store, GS-B-02) | built |
+| KG-L-04 | Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status. | `LevelGraph` | partly built (closure in trace); `sdem-graph query --neighbours/--type/--where` (graph store, GS-Q-02/03) |
 | KG-F-01 | Load an edge only from a record with `status: approved`; keep the other statuses in the relationship registry for history but never in answers unless a query asks for them explicitly. | relationship-registry.schema.json status | built (`--status`) |
 | KG-F-02 | Resolve every edge end into its local knowledge graph by level prefix, id, version and is-a; report unresolved ends and exclude those edges. | §3.3 | built (`sdem-graph check`) |
 | KG-F-03 | Store only adjacent-level edges of the nine catalogued relationship types; derive level-skipping answers as paths with the mapping id of every hop. | relationship-types.json | built |
@@ -701,20 +701,20 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 | KG-I-02 | A rename changes `name`, never `id`. A genuine re-keying in a source tool is handled as retire-and-add: the old node is retired, the new one added, and the mappings to the old one are superseded by mappings to the new one. | new requirement; supersession | not built (needs export diff) |
 | KG-I-03 | A2 nodes that correspond to a BIAN concept carry `canonical_id`; the federated edge's A2 end repeats it, and BIAN-authority edges require it before approval. | relationship-registry.schema.json; validator | built |
 | KG-I-04 | Institution aliases (asset-type, qualifier, field and glossary aliases) are node attributes, never alternative ids. | export-conventions.json | built (convention) |
-| KG-V-01 | Record, for every federated load, the four local `model_version`s and the relationship-registry version used — the load's baseline — and return it with every answer. | new requirement | not built |
-| KG-V-02 | Keep earlier baselines queryable, so an impact analysis can be rerun against the state it was originally run on. | new requirement | not built (git history of the files is the substitute today) |
+| KG-V-01 | Record, for every federated load, the four local `model_version`s and the relationship-registry version used — the load's baseline — and return it with every answer. | graph store load record (GS-R-01/02) | built (graph store) |
+| KG-V-02 | Keep earlier baselines queryable, so an impact analysis can be rerun against the state it was originally run on. | `sdem-graph baseline` (GS-R-03) | built (graph store) |
 | KG-V-03 | Never edit an approved edge; change is a new edge with `previous_mapping_id` and the old one `superseded`. | `sdem-diff` | built |
 | KG-V-04 | Reject a federated load where the four local knowledge graphs disagree on `metamodel_version`. | Metamodel load | built |
 | KG-Q-01 | Trace: from any node, follow approved edges down (towards A4) or up (towards A1), optionally through within-level part-whole links; every hop shows the mapping id. | `sdem-graph trace`, `--follow-composition` | built |
 | KG-Q-02 | Impact: given a node and a change kind (modify, replace, retire, rehost), classify every dependent node design_change_required / review_required / no_impact and list the edges to supersede. | `sdem-graph impact`, impact-rules.json | built |
 | KG-Q-03 | Check: validate the four local knowledge graphs and the federated edges; report every unresolved or disallowed item. | `sdem-graph check` | built |
-| KG-Q-04 | Unmapped: list nodes of a level with no approved cross-level edge where the plan expects one — the engine's work list. | new | not built |
+| KG-Q-04 | Unmapped: list nodes of a level with no approved cross-level edge where the plan expects one — the engine's work list. | `sdem-graph query --unmapped` (GS-Q-04) | built |
 | KG-Q-05 | History: for an edge or a node, list its superseded predecessors and the baselines it appeared in. | relationship-registry history | not built |
 | KG-Q-06 | Stats: counts of nodes, edges and statuses per level. | `sdem-graph stats` | built |
 | KG-Q-07 | Climb to the whole: an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation's operation to its Service Domain), so a trace from an API reaches the capability. | knowledge-graph-design.md, limit of path F2 | not built |
 | KG-R-01 | An adapter per source tool translates its records to a level export; adapters are institution-specific and live in the institution's private repository. | §7 | not built (examples are hand-written exports) |
 | KG-R-02 | A local knowledge graph is rebuilt in full from its export; incremental update is an optimisation, not a requirement. | §7 | built (full rebuild) |
-| KG-R-03 | A failed export validation leaves the previous local knowledge graph in place and raises an alert. | §7 | not built |
+| KG-R-03 | A failed export validation leaves the previous local knowledge graph in place and raises an alert. | §7 | built (graph store: rejected build recorded, store unchanged) |
 | KG-R-04 | The federated knowledge graph is rebuilt whenever a local knowledge graph or the relationship registry changes. | §7 | built (rebuilt on every run) |
 | KG-R-05 | The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§12 DEC-02). | §7 | not built |
 | KG-C-01 | Build an adapter (C-03) per source tool that writes a valid level export and fails loudly rather than writing a partial one. | C-03 | not built |

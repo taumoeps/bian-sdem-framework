@@ -1,0 +1,465 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-payments-a1",
+    "type": "sdem.local",
+    "label": "A1 local knowledge graph (synthetic-bank-payments-a1)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "008fbf63a26cb51559e62d0b270d98d7c78ccffabd02f654f833806b25b3668e",
+      "level": "A1",
+      "model_id": "synthetic-bank-payments-a1",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-EA-TOOL"
+    },
+    "nodes": {
+      "A1:CAP-PAY-000@1.0": {
+        "label": "Payments",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-PAY-000",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Move money on behalf of customers: initiate, execute, settle and report payments across schemes.",
+          "attributes": {
+            "level": 1,
+            "strategic_importance": "core",
+            "maturity_current": 3,
+            "maturity_target": 4,
+            "owner": "ROLE-PAY-OFFICER",
+            "conforms_to": [
+              "BIAN BCM 14.0"
+            ],
+            "subject": [
+              "payments"
+            ]
+          }
+        }
+      },
+      "A1:CAP-PAY-010@1.0": {
+        "label": "Initiate Payment",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-PAY-010",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Capture a customer's payment instruction, validate and authorise it, and hand it to execution — for credit transfers from a customer account.",
+          "attributes": {
+            "level": 2,
+            "strategic_importance": "core",
+            "maturity_current": 2,
+            "maturity_target": 4,
+            "owner": "ROLE-PAY-OFFICER",
+            "conforms_to": [
+              "BIAN BCM 14.0"
+            ],
+            "subject": [
+              "payments"
+            ],
+            "access_classification": "internal"
+          }
+        }
+      },
+      "A1:VS-MAKE-PAYMENT@1.0": {
+        "label": "Make a Payment",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "VS-MAKE-PAYMENT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The customer's journey from deciding to pay someone to seeing the payment confirmed.",
+          "attributes": {
+            "stages": [
+              "VSS-P1",
+              "VSS-P2",
+              "VSS-P3",
+              "VSS-P4"
+            ],
+            "stakeholder": "retail customer",
+            "value_proposition": "money reaches the payee quickly and safely",
+            "owner": "ROLE-PAY-OFFICER"
+          }
+        }
+      },
+      "A1:VSS-P1@1.0": {
+        "label": "Capture payment instruction",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-P1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The customer enters payee, amount and date.",
+          "attributes": {
+            "value_item": "a complete, correct instruction",
+            "entrance_criteria": "customer decides to pay",
+            "exit_criteria": "instruction captured"
+          }
+        }
+      },
+      "A1:VSS-P2@1.0": {
+        "label": "Validate and authorise",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-P2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The instruction is checked and the customer authorises it.",
+          "attributes": {
+            "value_item": "an authorised instruction",
+            "entrance_criteria": "instruction captured",
+            "exit_criteria": "instruction authorised"
+          }
+        }
+      },
+      "A1:VSS-P3@1.0": {
+        "label": "Execute transfer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-P3",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The bank executes the transfer."
+        }
+      },
+      "A1:VSS-P4@1.0": {
+        "label": "Confirm to customer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-P4",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The customer sees the payment status."
+        }
+      },
+      "A1:PRC-PAY-01@1.0": {
+        "label": "Capture and validate payment instruction",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-PAY-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Capture the instruction from the channel, validate it against account and scheme rules, obtain authorisation.",
+          "attributes": {
+            "invokes": [
+              "SO-PI-01",
+              "SO-PI-02"
+            ],
+            "level": 2,
+            "triggered_by": "customer submits a payment",
+            "outcome": "authorised payment instruction",
+            "criticality": "high",
+            "frequency": "continuous",
+            "automation_level": "automated",
+            "owner": "ROLE-PAY-OFFICER",
+            "modified": "2026-09-30"
+          }
+        }
+      },
+      "A1:ACT-PAY-01a@1.0": {
+        "label": "Capture instruction",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-PAY-01a",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Record the payee, amount, currency and value date.",
+          "attributes": {
+            "invokes": [
+              "SO-PI-01"
+            ],
+            "sequence": 1
+          }
+        }
+      },
+      "A1:ACT-PAY-01b@1.0": {
+        "label": "Validate instruction",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-PAY-01b",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Evaluate the instruction for completeness, limits and sanctions.",
+          "attributes": {
+            "invokes": [
+              "SO-PI-02"
+            ],
+            "sequence": 2
+          }
+        }
+      },
+      "A1:PRC-PAY-02@1.0": {
+        "label": "Execute and confirm payment",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-PAY-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Execute the authorised instruction and report its status to the customer.",
+          "attributes": {
+            "invokes": [
+              "SO-PI-03",
+              "SO-PI-04"
+            ],
+            "level": 2,
+            "triggered_by": "instruction authorised",
+            "outcome": "payment executed and confirmed",
+            "criticality": "high",
+            "frequency": "continuous",
+            "automation_level": "partly automated",
+            "owner": "ROLE-PAY-OFFICER",
+            "modified": "2026-09-30"
+          }
+        }
+      },
+      "A1:ACT-PAY-02a@1.0": {
+        "label": "Execute payment",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-PAY-02a",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Submit the instruction for execution.",
+          "attributes": {
+            "invokes": [
+              "SO-PI-03"
+            ],
+            "sequence": 1
+          }
+        }
+      },
+      "A1:ACT-PAY-02b@1.0": {
+        "label": "Retrieve status",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-PAY-02b",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Obtain the current status of the instruction.",
+          "attributes": {
+            "invokes": [
+              "SO-PI-04"
+            ],
+            "sequence": 2
+          }
+        }
+      },
+      "A1:BO-PAY-INSTR@1.0": {
+        "label": "Payment Instruction",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-PAY-INSTR",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A customer's request to pay an amount to a payee on a date.",
+          "attributes": {
+            "attributes": [
+              "debtor_account",
+              "creditor_account",
+              "amount",
+              "currency",
+              "value_date",
+              "payment_reference",
+              "remittance_information"
+            ],
+            "glossary_uri": "https://example.org/glossary/payment-instruction",
+            "personal_information": true,
+            "access_classification": "confidential"
+          }
+        }
+      },
+      "A1:BO-PAYEE@1.0": {
+        "label": "Payee",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-PAYEE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A party the customer pays.",
+          "attributes": {
+            "attributes": [
+              "payee_name",
+              "payee_account",
+              "payee_bank"
+            ],
+            "glossary_uri": "https://example.org/glossary/payee",
+            "personal_information": true,
+            "access_classification": "confidential"
+          }
+        }
+      },
+      "A1:ROLE-PAY-OFFICER@1.0": {
+        "label": "Payments Operations Officer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRole",
+          "id": "ROLE-PAY-OFFICER",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Handles exceptions in payment processing.",
+          "attributes": {
+            "role_kind": "role",
+            "responsibilities": "handle exceptions in payment processing"
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A1:CAP-PAY-000-composition-CAP-PAY-010",
+        "source": "A1:CAP-PAY-000@1.0",
+        "target": "A1:CAP-PAY-010@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-01"
+        }
+      },
+      {
+        "id": "A1:VS-MAKE-PAYMENT-composition-VSS-P1",
+        "source": "A1:VS-MAKE-PAYMENT@1.0",
+        "target": "A1:VSS-P1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-MAKE-PAYMENT-composition-VSS-P2",
+        "source": "A1:VS-MAKE-PAYMENT@1.0",
+        "target": "A1:VSS-P2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-MAKE-PAYMENT-composition-VSS-P3",
+        "source": "A1:VS-MAKE-PAYMENT@1.0",
+        "target": "A1:VSS-P3@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-MAKE-PAYMENT-composition-VSS-P4",
+        "source": "A1:VS-MAKE-PAYMENT@1.0",
+        "target": "A1:VSS-P4@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:CAP-PAY-010-serving-VS-MAKE-PAYMENT",
+        "source": "A1:CAP-PAY-010@1.0",
+        "target": "A1:VS-MAKE-PAYMENT@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        }
+      },
+      {
+        "id": "A1:PRC-PAY-01-realization-CAP-PAY-010",
+        "source": "A1:PRC-PAY-01@1.0",
+        "target": "A1:CAP-PAY-010@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-PAY-02-realization-CAP-PAY-010",
+        "source": "A1:PRC-PAY-02@1.0",
+        "target": "A1:CAP-PAY-010@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-PAY-01-composition-ACT-PAY-01a",
+        "source": "A1:PRC-PAY-01@1.0",
+        "target": "A1:ACT-PAY-01a@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-PAY-01-composition-ACT-PAY-01b",
+        "source": "A1:PRC-PAY-01@1.0",
+        "target": "A1:ACT-PAY-01b@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-PAY-02-composition-ACT-PAY-02a",
+        "source": "A1:PRC-PAY-02@1.0",
+        "target": "A1:ACT-PAY-02a@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-PAY-02-composition-ACT-PAY-02b",
+        "source": "A1:PRC-PAY-02@1.0",
+        "target": "A1:ACT-PAY-02b@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:ROLE-PAY-OFFICER-assignment-PRC-PAY-02",
+        "source": "A1:ROLE-PAY-OFFICER@1.0",
+        "target": "A1:PRC-PAY-02@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-36"
+        }
+      },
+      {
+        "id": "A1:PRC-PAY-01-access-BO-PAY-INSTR",
+        "source": "A1:PRC-PAY-01@1.0",
+        "target": "A1:BO-PAY-INSTR@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      }
+    ]
+  }
+}

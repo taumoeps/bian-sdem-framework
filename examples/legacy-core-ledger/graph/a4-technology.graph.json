@@ -1,0 +1,148 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-ledger-a4",
+    "type": "sdem.local",
+    "label": "A4 local knowledge graph (synthetic-bank-ledger-a4)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "5b3b425340769403c97dc500b745f71ac010e08655f4a7c27f56c611df372313",
+      "level": "A4",
+      "model_id": "synthetic-bank-ledger-a4",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-CMDB"
+    },
+    "nodes": {
+      "A4:INF-MF-LPAR-PROD@2.0": {
+        "label": "Mainframe LPAR PROD1",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Node",
+          "id": "INF-MF-LPAR-PROD",
+          "version": "2.0",
+          "lifecycle_status": "active",
+          "description": "Production mainframe partition.",
+          "attributes": {
+            "hosts": [
+              "APP-LEDGER"
+            ]
+          }
+        }
+      },
+      "A4:INF-DB2-PROD@13": {
+        "label": "DB2 for z/OS — ledger",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-DB2-PROD",
+          "version": "13",
+          "lifecycle_status": "active",
+          "description": "Production database."
+        }
+      },
+      "A4:INF-MQ-PROD@9.3": {
+        "label": "MQ — ledger",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-MQ-PROD",
+          "version": "9.3",
+          "lifecycle_status": "active",
+          "description": "Production message queue manager."
+        }
+      },
+      "A4:TS-SCHED@1.0": {
+        "label": "Batch scheduler",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyService",
+          "id": "TS-SCHED",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Enterprise job scheduling service."
+        }
+      },
+      "A4:ENV-PROD@1.0": {
+        "label": "Production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.DeploymentEnvironment",
+          "id": "ENV-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Production environment."
+        }
+      },
+      "A4:DEP-LM-PROD@1.0": {
+        "label": "LedgerMaster — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-LM-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "LedgerMaster 12.4 on PROD1.",
+          "attributes": {
+            "component_id": "APP-LEDGER",
+            "environment_id": "ENV-PROD",
+            "platform_id": "INF-MF-LPAR-PROD"
+          }
+        }
+      },
+      "A4:NET-CORE@1.0": {
+        "label": "Core banking network",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.CommunicationNetwork",
+          "id": "NET-CORE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Private network for core systems."
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A4:ENV-PROD-aggregation-DEP-LM-PROD",
+        "source": "A4:ENV-PROD@1.0",
+        "target": "A4:DEP-LM-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A4:INF-MF-LPAR-PROD-association-NET-CORE",
+        "source": "A4:INF-MF-LPAR-PROD@2.0",
+        "target": "A4:NET-CORE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A4:INF-MF-LPAR-PROD-assignment-INF-DB2-PROD",
+        "source": "A4:INF-MF-LPAR-PROD@2.0",
+        "target": "A4:INF-DB2-PROD@13",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-04"
+        }
+      },
+      {
+        "id": "A4:INF-MF-LPAR-PROD-assignment-INF-MQ-PROD",
+        "source": "A4:INF-MF-LPAR-PROD@2.0",
+        "target": "A4:INF-MQ-PROD@9.3",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-04"
+        }
+      }
+    ]
+  }
+}

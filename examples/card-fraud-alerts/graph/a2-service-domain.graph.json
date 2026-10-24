@@ -1,0 +1,221 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-a2",
+    "type": "sdem.local",
+    "label": "A2 local knowledge graph (synthetic-bank-a2)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "9c4904dcd81d833ec16d1fa8fad974dfa72285284543e36d6a685eb038fc52b4",
+      "level": "A2",
+      "model_id": "synthetic-bank-a2",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-BIAN-WORKBENCH"
+    },
+    "nodes": {
+      "A2:BD-FRAUD@1.0": {
+        "label": "Fraud and Risk (synthetic grouping)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessDomain",
+          "id": "BD-FRAUD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic grouping of fraud and risk Service Domains."
+        }
+      },
+      "A2:SD-044@1.0": {
+        "label": "Fraud Detection (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-044",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-FRAUD-DETECTION",
+          "description": "Synthetic stand-in for a BIAN fraud-detection Service Domain: evaluates transactions and activity for indications of fraud and raises alerts.",
+          "attributes": {
+            "asset_type": "AT-FRAUD-ALERT",
+            "functional_pattern": "FP-ANALYSE"
+          }
+        }
+      },
+      "A2:SG-044-01@1.0": {
+        "label": "Fraud Case Operations",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-044-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations for raising, evaluating and resolving fraud cases."
+        }
+      },
+      "A2:SO-044-07@1.0": {
+        "label": "Notify Fraud Alert",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-044-07",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Notify an interested party of a suspected fraud event and record their response.",
+          "attributes": {
+            "action_term": "Notify",
+            "behavior_qualifier": "Alert",
+            "input_attributes": [
+              "alert_reference",
+              "party_reference",
+              "transaction_reference"
+            ],
+            "output_attributes": [
+              "alert_reference",
+              "notification_status",
+              "party_response"
+            ]
+          }
+        }
+      },
+      "A2:CR-044@1.0": {
+        "label": "Fraud Detection Control Record",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-044",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Control record tracking fraud evaluations and alert outcomes.",
+          "attributes": {
+            "attributes": [
+              "alert_reference",
+              "transaction_reference",
+              "party_reference",
+              "risk_score",
+              "alert_status",
+              "notification_status",
+              "party_response",
+              "evaluation_date"
+            ]
+          }
+        }
+      },
+      "A2:BS-FRAUD-ALERT@1.0": {
+        "label": "Suspicious card transaction alerted",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "BS-FRAUD-ALERT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A scored transaction raises an alert; the cardholder is notified and their response recorded.",
+          "attributes": {
+            "operation_sequence": [
+              "SO-044-07"
+            ]
+          }
+        }
+      },
+      "A2:AT-FRAUD-ALERT@1.0": {
+        "label": "Fraud Alert",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-FRAUD-ALERT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The suspected-fraud alert the domain raises and tracks through its lifecycle.",
+          "attributes": {
+            "aliases": [
+              "fraud",
+              "alert"
+            ]
+          }
+        }
+      },
+      "A2:FP-ANALYSE@1.0": {
+        "label": "Analyse",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "FP-ANALYSE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in for a BIAN functional pattern: evaluate activity and raise findings."
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A2:BD-FRAUD-composition-SD-044",
+        "source": "A2:BD-FRAUD@1.0",
+        "target": "A2:SD-044@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:SD-044-composition-SG-044-01",
+        "source": "A2:SD-044@1.0",
+        "target": "A2:SG-044-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SG-044-01-composition-SO-044-07",
+        "source": "A2:SG-044-01@1.0",
+        "target": "A2:SO-044-07@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SD-044-aggregation-CR-044",
+        "source": "A2:SD-044@1.0",
+        "target": "A2:CR-044@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:BS-FRAUD-ALERT-aggregation-SO-044-07",
+        "source": "A2:BS-FRAUD-ALERT@1.0",
+        "target": "A2:SO-044-07@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:SD-044-association-AT-FRAUD-ALERT",
+        "source": "A2:SD-044@1.0",
+        "target": "A2:AT-FRAUD-ALERT@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-044-association-FP-ANALYSE",
+        "source": "A2:SD-044@1.0",
+        "target": "A2:FP-ANALYSE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      }
+    ]
+  }
+}

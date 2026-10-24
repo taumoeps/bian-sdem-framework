@@ -238,7 +238,8 @@ def main(argv=None):
         sp = sub.add_parser(name)
         if name in ('trace', 'impact'):
             sp.add_argument('entity', help='instance id to start from')
-        sp.add_argument('paths', nargs='+', help='level exports and mapping documents, any order')
+        sp.add_argument('paths', nargs='*', help='level exports and mapping documents, any order (or use --graph)')
+        sp.add_argument('--graph', metavar='DIR', help='read a graph store (sdem-graph build) instead of exports')
         sp.add_argument('--status', default='approved', help='mapping statuses to treat as arrows')
         sp.add_argument('--json', action='store_true')
         if name == 'trace':
@@ -246,14 +247,59 @@ def main(argv=None):
             sp.add_argument('--follow-composition', action='store_true', help='continue a chain through within-level part-whole links — composition and aggregation (part -> whole downstream, whole -> parts upstream)')
         if name == 'impact':
             sp.add_argument('--change', choices=sorted(IMPACT_RULES), required=True)
-    args = parser.parse_args(argv)
+    sp = sub.add_parser('build', help='check exports and registry, then write the graph store')
+    sp.add_argument('paths', nargs='+', help='level exports and relationship registries')
+    sp.add_argument('--out', required=True, metavar='DIR', help='graph store directory')
+    sp.add_argument('--check', action='store_true', help='fail if the stored graph files differ from a fresh build (CI)')
+    sp = sub.add_parser('query', help='find records in a graph store')
+    sp.add_argument('--graph', required=True, metavar='DIR')
+    sp.add_argument('--level', choices=['A1', 'A2', 'A3', 'A4'])
+    sp.add_argument('--type', help='entity type; subtypes included')
+    sp.add_argument('--where', action='append', default=[], metavar='ATTR=VALUE', help='core field or attribute equals value (repeatable)')
+    sp.add_argument('--neighbours', metavar='ID', help='within-level neighbours of a record')
+    sp.add_argument('--kind', help='with --neighbours: only this relationship kind')
+    sp.add_argument('--direction', choices=['in', 'out', 'both'], default='both')
+    sp.add_argument('--unmapped', choices=['A1', 'A2', 'A3', 'A4'], help='records with no approved cross-level link where the catalogue expects one')
+    sp.add_argument('--json', action='store_true')
+    sp = sub.add_parser('view', help='write a self-contained HTML picture of a graph store')
+    sp.add_argument('--graph', required=True, metavar='DIR'); sp.add_argument('-o', '--out', metavar='FILE', help='default <DIR>/view.html')
+    sp = sub.add_parser('baseline', help='freeze the current graph store under baselines/<name>')
+    sp.add_argument('name'); sp.add_argument('--graph', required=True, metavar='DIR')
+    # paths are optional (--graph replaces them), so argparse cannot place paths written after an option; collect them here
+    args, extra = parser.parse_known_args(argv)
+    if extra:
+        if hasattr(args, 'paths') and args.cmd in ('check', 'trace', 'impact', 'stats') and not any(x.startswith('-') for x in extra): args.paths += extra
+        else: parser.error(f"unrecognized arguments: {' '.join(extra)}")
+    from sdem import store as _store
+    if args.cmd == 'build':
+        return _build(args, _store)
+    if args.cmd == 'view':
+        from sdem.view import write as _view
+        try: print(f'wrote {_view(args.graph, args.out)}'); return EXIT_OK
+        except (OSError, _store.StoreError) as exc: print(f'ERROR: {exc}', file=sys.stderr); return EXIT_USAGE
+    if args.cmd == 'baseline':
+        try: print(f'baseline written: {_store.baseline(args.graph, args.name)}'); return EXIT_OK
+        except _store.StoreError as exc: print(f'ERROR: {exc}', file=sys.stderr); return EXIT_ISSUES
     try:
-        fg = FederatedGraph.load(args.paths)
-    except (OSError, ValueError) as exc:
+        if getattr(args, 'graph', None):
+            if getattr(args, 'paths', None): print('ERROR: give export paths or --graph, not both', file=sys.stderr); return EXIT_USAGE
+            reader = _store.GraphReader.from_store(args.graph)
+        else:
+            if not args.paths: print('ERROR: give export paths or --graph', file=sys.stderr); return EXIT_USAGE
+            reader = _store.GraphReader.from_exports(args.paths)
+        fg = reader.fg
+    except (OSError, ValueError, _store.StoreError) as exc:
         print(f'ERROR: {exc}', file=sys.stderr); return EXIT_USAGE
+    if reader.origin == 'store':
+        b = reader.baseline()
+        print(f"baseline: graph store {args.graph}, build {b['build']} ({', '.join(f'{k} {v}' for k, v in b['levels'].items())})", file=sys.stderr)
+    if args.cmd == 'query':
+        return _query(args, reader)
     statuses = tuple(s.strip() for s in args.status.split(',') if s.strip())
+    if reader.origin == 'store' and set(statuses) - {'approved'}:
+        print('ERROR: a graph store holds approved links only; use the registry files for other statuses', file=sys.stderr); return EXIT_USAGE
     if args.cmd == 'check':
-        report = fg.check()
+        report = reader.check_store(args.graph) if reader.origin == 'store' else fg.check()
         failed = any(report.values())
         if args.json: print(json.dumps({'ok': not failed, 'report': report, 'warnings': fg.warnings}, indent=2))
         else:
@@ -290,6 +336,39 @@ def main(argv=None):
                 print(f"\n  mappings to supersede: {', '.join(result['mappings_to_supersede'])}")
             print("\n  Classification is structural; an architect confirms before any design changes.")
         return EXIT_OK
+
+
+def _build(args, _store):
+    if args.check:
+        ok, detail = _store.check_current(args.paths, args.out)
+        print(f"graph store {args.out}: {'up to date' if ok else 'STALE or failing: ' + ', '.join(detail[:5])}")
+        return EXIT_OK if ok else EXIT_ISSUES
+    e = _store.build(args.paths, args.out)
+    for err in e['errors']: print(f'ERROR: {err}')
+    for w in e['warnings']: print(f'WARN: {w}')
+    if e['result'] == 'accepted':
+        print(f"build {e['build']} accepted: " + ', '.join(f"{o['file']} ({o['nodes']} nodes, {o['edges']} edges)" for o in e['outputs']))
+        return EXIT_OK
+    print(f"build {e['build']} rejected: {len(e['errors'])} error(s); the previous graph store is unchanged")
+    return EXIT_ISSUES
+
+
+def _query(args, reader):
+    if args.unmapped:
+        rows = reader.unmapped(args.unmapped); cols = ('id', 'type', 'name', 'expected')
+    elif args.neighbours:
+        rows = reader.neighbours(args.neighbours, args.kind, args.direction); cols = ('direction', 'relation', 'id')
+    else:
+        where = {}
+        for w in args.where:
+            if '=' not in w: print(f'ERROR: --where needs ATTR=VALUE, got {w!r}', file=sys.stderr); return EXIT_USAGE
+            k, v = w.split('=', 1); where[k] = v
+        rows = reader.nodes(level=args.level, type=args.type, where=where or None); cols = ('id', 'type', 'name', 'version')
+    if args.json: print(json.dumps(rows, indent=2, ensure_ascii=False))
+    else:
+        for r in rows: print('  '.join(', '.join(r[c]) if isinstance(r.get(c), list) else str(r.get(c, '')) for c in cols))
+        print(f'{len(rows)} record(s)')
+    return EXIT_OK if rows else EXIT_ISSUES
 
 
 if __name__ == '__main__':

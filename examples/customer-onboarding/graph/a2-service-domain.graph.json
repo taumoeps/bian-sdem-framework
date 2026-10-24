@@ -1,0 +1,298 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-onboarding-a2",
+    "type": "sdem.local",
+    "label": "A2 local knowledge graph (synthetic-bank-onboarding-a2)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "2a0566b9e642b078e3a25a74f331696f2c053f6433fcbce313f244fcacd0c02a",
+      "level": "A2",
+      "model_id": "synthetic-bank-onboarding-a2",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-BIAN-WORKBENCH"
+    },
+    "nodes": {
+      "A2:SD-001@1.0": {
+        "label": "Customer Onboarding (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "DEMO-BIAN-SD-ONBOARDING",
+          "description": "Synthetic stand-in for a BIAN onboarding domain: establishes a new customer relationship.",
+          "attributes": {
+            "asset_type": "AT-001",
+            "functional_pattern": "FP-001"
+          }
+        }
+      },
+      "A2:AT-001@1.0": {
+        "label": "Customer Relationship",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The relationship being established.",
+          "attributes": {
+            "aliases": [
+              "onboarding",
+              "customer",
+              "applicant"
+            ]
+          }
+        }
+      },
+      "A2:FP-001@1.0": {
+        "label": "Fulfil",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "FP-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in."
+        }
+      },
+      "A2:CR-001@1.0": {
+        "label": "Customer Onboarding Procedure",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Lifecycle record of one onboarding.",
+          "attributes": {
+            "attributes": [
+              "onboarding_reference",
+              "customer_reference",
+              "legal_name",
+              "date_of_birth",
+              "national_id",
+              "address",
+              "verification_status",
+              "onboarding_status"
+            ]
+          }
+        }
+      },
+      "A2:SG-001@1.0": {
+        "label": "Onboarding",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations."
+        }
+      },
+      "A2:SO-001@1.0": {
+        "label": "Initiate Customer Onboarding",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Start an onboarding from the applicant's identity details.",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "legal_name",
+              "date_of_birth",
+              "national_id",
+              "address"
+            ],
+            "output_attributes": [
+              "onboarding_reference",
+              "onboarding_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-002@1.0": {
+        "label": "Retrieve Customer Onboarding",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-002",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return the onboarding and its verification status.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "onboarding_reference"
+            ],
+            "output_attributes": [
+              "onboarding_status",
+              "verification_status",
+              "customer_reference"
+            ]
+          }
+        }
+      },
+      "A2:BS-001@1.0": {
+        "label": "Retail customer onboarding",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "BS-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "DEMO-BIAN-SCENARIO-ONBOARD",
+          "description": "An applicant is captured, verified and confirmed.",
+          "attributes": {
+            "operation_sequence": [
+              "SO-001",
+              "SO-002"
+            ]
+          }
+        }
+      },
+      "A2:BBO-001@1.0": {
+        "label": "Customer Identity",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "DEMO-BIAN-BO-CUSTOMER-IDENTITY",
+          "description": "Canonical customer identity object.",
+          "attributes": {
+            "attributes": [
+              "customer_reference",
+              "legal_name",
+              "date_of_birth",
+              "national_id",
+              "address",
+              "verification_status"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A2:SD-001-association-AT-001",
+        "source": "A2:SD-001@1.0",
+        "target": "A2:AT-001@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-001-association-FP-001",
+        "source": "A2:SD-001@1.0",
+        "target": "A2:FP-001@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-001-aggregation-CR-001",
+        "source": "A2:SD-001@1.0",
+        "target": "A2:CR-001@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:CR-001-association-BBO-001",
+        "source": "A2:CR-001@1.0",
+        "target": "A2:BBO-001@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:SD-001-composition-SG-001",
+        "source": "A2:SD-001@1.0",
+        "target": "A2:SG-001@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SG-001-composition-SO-001",
+        "source": "A2:SG-001@1.0",
+        "target": "A2:SO-001@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-001-composition-SO-002",
+        "source": "A2:SG-001@1.0",
+        "target": "A2:SO-002@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-001-access-CR-001",
+        "source": "A2:SO-001@1.0",
+        "target": "A2:CR-001@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-002-access-CR-001",
+        "source": "A2:SO-002@1.0",
+        "target": "A2:CR-001@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:BS-001-aggregation-SO-001",
+        "source": "A2:BS-001@1.0",
+        "target": "A2:SO-001@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:BS-001-aggregation-SO-002",
+        "source": "A2:BS-001@1.0",
+        "target": "A2:SO-002@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      }
+    ]
+  }
+}

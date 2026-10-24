@@ -1,0 +1,387 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-trade-a4",
+    "type": "sdem.local",
+    "label": "A4 local knowledge graph (synthetic-bank-trade-a4)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "7feb9261e8383a24afd5db5b4a2b37120ee8edbff87464328501d07d999e3c7f",
+      "level": "A4",
+      "model_id": "synthetic-bank-trade-a4",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-CMDB"
+    },
+    "nodes": {
+      "A4:NODE-TF-PROD@1.0": {
+        "label": "Trade finance node pool (production)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Node",
+          "id": "NODE-TF-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Production compute node pool.",
+          "attributes": {
+            "hosts": [
+              "APP-LC",
+              "APP-DOC"
+            ]
+          }
+        }
+      },
+      "A4:SYS-RUNTIME-TF@1.30": {
+        "label": "Container runtime — trade",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "SYS-RUNTIME-TF",
+          "version": "1.30",
+          "lifecycle_status": "active",
+          "description": "Container runtime on the node pool.",
+          "attributes": {
+            "hosts": [
+              "APP-LC",
+              "APP-DOC"
+            ]
+          }
+        }
+      },
+      "A4:DEV-SCAN-01@1.0": {
+        "label": "Document scanning appliance",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Device",
+          "id": "DEV-SCAN-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Branch scanning appliance running DocCheck's capture module.",
+          "attributes": {
+            "hosts": [
+              "APP-DOC"
+            ]
+          }
+        }
+      },
+      "A4:SYS-DB-TF@16": {
+        "label": "PostgreSQL — trade",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "SYS-DB-TF",
+          "version": "16",
+          "lifecycle_status": "active",
+          "description": "Production database."
+        }
+      },
+      "A4:TS-QUEUE@1.0": {
+        "label": "Messaging",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyService",
+          "id": "TS-QUEUE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Managed message broker."
+        }
+      },
+      "A4:TS-GATEWAY@1.0": {
+        "label": "API gateway",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyService",
+          "id": "TS-GATEWAY",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Managed API gateway."
+        }
+      },
+      "A4:TS-SIGNING@1.0": {
+        "label": "Digital signing",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyService",
+          "id": "TS-SIGNING",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "HSM-backed signing service."
+        }
+      },
+      "A4:TS-OCR@1.0": {
+        "label": "OCR",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyService",
+          "id": "TS-OCR",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Managed document OCR service."
+        }
+      },
+      "A4:TI-INGRESS@1.0": {
+        "label": "Gateway ingress trade.example",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyInterface",
+          "id": "TI-INGRESS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Public ingress of the API gateway for trade APIs.",
+          "attributes": {
+            "of_service": "TS-GATEWAY",
+            "exposes": [
+              "IFC-LC",
+              "IFC-DOC"
+            ]
+          }
+        }
+      },
+      "A4:TI-TOPIC-LC@1.0": {
+        "label": "Topic lc-events",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyInterface",
+          "id": "TI-TOPIC-LC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Broker topic for credit events.",
+          "attributes": {
+            "of_service": "TS-QUEUE",
+            "exposes": []
+          }
+        }
+      },
+      "A4:NET-TF@1.0": {
+        "label": "Trade finance network",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.CommunicationNetwork",
+          "id": "NET-TF",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Private segment for trade systems.",
+          "attributes": {
+            "connects": [
+              "NODE-TF-PROD",
+              "DEV-SCAN-01"
+            ]
+          }
+        }
+      },
+      "A4:PATH-TF-01@1.0": {
+        "label": "Node pool to scanning appliance",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Path",
+          "id": "PATH-TF-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Mutually authenticated path between the node pool and the branch appliance.",
+          "attributes": {
+            "from": "NODE-TF-PROD",
+            "to": "DEV-SCAN-01",
+            "network": "NET-TF",
+            "carries": [
+              "APP-DOC"
+            ]
+          }
+        }
+      },
+      "A4:ART-LC-IMG@3.0": {
+        "label": "lc-manager:3.0",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Artifact",
+          "id": "ART-LC-IMG",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Container image.",
+          "attributes": {
+            "of_component": "APP-LC"
+          }
+        }
+      },
+      "A4:ART-DOC-IMG@3.0": {
+        "label": "doccheck:3.0",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Artifact",
+          "id": "ART-DOC-IMG",
+          "version": "3.0",
+          "lifecycle_status": "active",
+          "description": "Container image.",
+          "attributes": {
+            "of_component": "APP-DOC"
+          }
+        }
+      },
+      "A4:ART-DOC-STORE@1.0": {
+        "label": "Document object store (bucket trade-docs)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Artifact",
+          "id": "ART-DOC-STORE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Object store holding scanned documents."
+        }
+      },
+      "A4:ENV-TF-PROD@1.0": {
+        "label": "Production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.DeploymentEnvironment",
+          "id": "ENV-TF-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Production environment."
+        }
+      },
+      "A4:DEP-LC-PROD@1.0": {
+        "label": "LC Manager — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-LC-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "LC Manager 3.0 on the node pool.",
+          "attributes": {
+            "component_id": "APP-LC",
+            "environment_id": "ENV-TF-PROD",
+            "platform_id": "NODE-TF-PROD"
+          }
+        }
+      },
+      "A4:DEP-DOC-PROD@1.0": {
+        "label": "DocCheck — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-DOC-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "DocCheck 3.0 on the node pool.",
+          "attributes": {
+            "component_id": "APP-DOC",
+            "environment_id": "ENV-TF-PROD",
+            "platform_id": "NODE-TF-PROD"
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A4:ENV-TF-PROD-aggregation-DEP-LC-PROD",
+        "source": "A4:ENV-TF-PROD@1.0",
+        "target": "A4:DEP-LC-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A4:ENV-TF-PROD-aggregation-DEP-DOC-PROD",
+        "source": "A4:ENV-TF-PROD@1.0",
+        "target": "A4:DEP-DOC-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A4:NODE-TF-PROD-assignment-SYS-RUNTIME-TF",
+        "source": "A4:NODE-TF-PROD@1.0",
+        "target": "A4:SYS-RUNTIME-TF@1.30",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-04"
+        }
+      },
+      {
+        "id": "A4:TI-INGRESS-assignment-TS-GATEWAY",
+        "source": "A4:TI-INGRESS@1.0",
+        "target": "A4:TS-GATEWAY@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-22"
+        }
+      },
+      {
+        "id": "A4:TI-TOPIC-LC-assignment-TS-QUEUE",
+        "source": "A4:TI-TOPIC-LC@1.0",
+        "target": "A4:TS-QUEUE@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-22"
+        }
+      },
+      {
+        "id": "A4:NODE-TF-PROD-association-NET-TF",
+        "source": "A4:NODE-TF-PROD@1.0",
+        "target": "A4:NET-TF@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A4:DEV-SCAN-01-association-NET-TF",
+        "source": "A4:DEV-SCAN-01@1.0",
+        "target": "A4:NET-TF@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A4:NET-TF-realization-PATH-TF-01",
+        "source": "A4:NET-TF@1.0",
+        "target": "A4:PATH-TF-01@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-26"
+        }
+      },
+      {
+        "id": "A4:NODE-TF-PROD-assignment-ART-LC-IMG",
+        "source": "A4:NODE-TF-PROD@1.0",
+        "target": "A4:ART-LC-IMG@3.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-07"
+        }
+      },
+      {
+        "id": "A4:NODE-TF-PROD-assignment-ART-DOC-IMG",
+        "source": "A4:NODE-TF-PROD@1.0",
+        "target": "A4:ART-DOC-IMG@3.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-07"
+        }
+      },
+      {
+        "id": "A4:DEV-SCAN-01-assignment-ART-DOC-IMG",
+        "source": "A4:DEV-SCAN-01@1.0",
+        "target": "A4:ART-DOC-IMG@3.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-12"
+        }
+      }
+    ]
+  }
+}

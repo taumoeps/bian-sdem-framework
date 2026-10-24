@@ -1,0 +1,1928 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-fintech-a2",
+    "type": "sdem.local",
+    "label": "A2 local knowledge graph (synthetic-fintech-a2)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "5a7ed4869a2471fc174b5aa2a0bd540bbca2291fc1437ea1bb372fa4579cd538",
+      "level": "A2",
+      "model_id": "synthetic-fintech-a2",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-BIAN-WORKBENCH"
+    },
+    "nodes": {
+      "A2:BD-PAY@1.0": {
+        "label": "Payments (synthetic grouping)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessDomain",
+          "id": "BD-PAY",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic grouping."
+        }
+      },
+      "A2:BD-ACCT@1.0": {
+        "label": "Accounts (synthetic grouping)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessDomain",
+          "id": "BD-ACCT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic grouping."
+        }
+      },
+      "A2:BD-REF@1.0": {
+        "label": "Reference Data (synthetic grouping)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessDomain",
+          "id": "BD-REF",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic grouping."
+        }
+      },
+      "A2:BD-RISK@1.0": {
+        "label": "Risk (synthetic grouping)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessDomain",
+          "id": "BD-RISK",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic grouping."
+        }
+      },
+      "A2:SD-PI@1.0": {
+        "label": "Payment Initiation (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-PI",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PAYMENT-INITIATION",
+          "description": "Synthetic stand-in: captures, validates and hands over customer payment instructions.",
+          "attributes": {
+            "asset_type": "AT-PI",
+            "functional_pattern": "FP-FULFIL"
+          }
+        }
+      },
+      "A2:SD-PE@1.0": {
+        "label": "Payment Execution (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-PE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PAYMENT-EXECUTION",
+          "description": "Synthetic stand-in: executes payments through schemes or instantly between parties.",
+          "attributes": {
+            "asset_type": "AT-PE",
+            "functional_pattern": "FP-FULFIL"
+          }
+        }
+      },
+      "A2:SD-CA@1.0": {
+        "label": "Current Account (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-CA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-CURRENT-ACCOUNT",
+          "description": "Synthetic stand-in: opens, maintains, blocks and closes current accounts.",
+          "attributes": {
+            "asset_type": "AT-CA",
+            "functional_pattern": "FP-FULFIL"
+          }
+        }
+      },
+      "A2:SD-PRD@1.0": {
+        "label": "Party Reference Data Directory (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-PRD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-REFERENCE",
+          "description": "Synthetic stand-in: maintains the master reference record of parties.",
+          "attributes": {
+            "asset_type": "AT-PRD",
+            "functional_pattern": "FP-MAINTAIN"
+          }
+        }
+      },
+      "A2:SD-SA@1.0": {
+        "label": "Savings Account (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-SA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-SAVINGS-ACCOUNT",
+          "description": "Synthetic stand-in: opens and maintains interest-bearing savings accounts with goals.",
+          "attributes": {
+            "asset_type": "AT-SA",
+            "functional_pattern": "FP-FULFIL"
+          }
+        }
+      },
+      "A2:SD-FD@1.0": {
+        "label": "Fraud Detection (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-FD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-FRAUD-DETECTION",
+          "description": "Synthetic stand-in: assesses transactions for fraud and records the outcome.",
+          "attributes": {
+            "asset_type": "AT-FD",
+            "functional_pattern": "FP-ASSESS"
+          }
+        }
+      },
+      "A2:AT-PI@1.0": {
+        "label": "Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-PI",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A customer's payment instruction.",
+          "attributes": {
+            "aliases": [
+              "moneyflow",
+              "flow",
+              "transfer"
+            ]
+          }
+        }
+      },
+      "A2:AT-PE@1.0": {
+        "label": "Payment Transaction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-PE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "An executed payment.",
+          "attributes": {
+            "aliases": [
+              "zap",
+              "send",
+              "p2p"
+            ]
+          }
+        }
+      },
+      "A2:AT-CA@1.0": {
+        "label": "Current Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-CA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A customer's current account.",
+          "attributes": {
+            "aliases": [
+              "pot",
+              "wallet"
+            ]
+          }
+        }
+      },
+      "A2:AT-PRD@1.0": {
+        "label": "Party Reference",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-PRD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A party's master record.",
+          "attributes": {
+            "aliases": [
+              "member",
+              "buddy",
+              "profile"
+            ]
+          }
+        }
+      },
+      "A2:AT-SA@1.0": {
+        "label": "Savings Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-SA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "An interest-bearing savings account.",
+          "attributes": {
+            "aliases": [
+              "vault",
+              "goal"
+            ]
+          }
+        }
+      },
+      "A2:AT-FD@1.0": {
+        "label": "Fraud Case",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-FD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A fraud assessment of a transaction."
+        }
+      },
+      "A2:FP-FULFIL@1.0": {
+        "label": "Fulfil",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "FP-FULFIL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in."
+        }
+      },
+      "A2:FP-MAINTAIN@1.0": {
+        "label": "Maintain",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "FP-MAINTAIN",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in."
+        }
+      },
+      "A2:FP-ASSESS@1.0": {
+        "label": "Assess",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "FP-ASSESS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in."
+        }
+      },
+      "A2:CR-PI@1.0": {
+        "label": "Payment Initiation Procedure",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-PI",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Lifecycle of one instruction.",
+          "attributes": {
+            "attributes": [
+              "payment_instruction_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "payment_status",
+              "remittance_information"
+            ]
+          }
+        }
+      },
+      "A2:CR-PE@1.0": {
+        "label": "Payment Execution Procedure",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-PE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Lifecycle of one execution.",
+          "attributes": {
+            "attributes": [
+              "payment_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "execution_status",
+              "execution_date",
+              "scheme_reference"
+            ]
+          }
+        }
+      },
+      "A2:CR-CA@1.0": {
+        "label": "Current Account Facility",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-CA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Lifecycle of one account.",
+          "attributes": {
+            "attributes": [
+              "account_reference",
+              "customer_reference",
+              "account_status",
+              "currency",
+              "balance",
+              "overdraft_limit",
+              "open_date",
+              "close_date"
+            ]
+          }
+        }
+      },
+      "A2:CR-PRD@1.0": {
+        "label": "Party Reference Record",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-PRD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Master record of one party.",
+          "attributes": {
+            "attributes": [
+              "party_reference",
+              "party_name",
+              "party_type",
+              "address",
+              "contact_details",
+              "kyc_status"
+            ]
+          }
+        }
+      },
+      "A2:CR-SA@1.0": {
+        "label": "Savings Account Facility",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-SA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Lifecycle of one savings account.",
+          "attributes": {
+            "attributes": [
+              "account_reference",
+              "customer_reference",
+              "account_status",
+              "currency",
+              "balance",
+              "interest_rate",
+              "target_amount",
+              "open_date"
+            ]
+          }
+        }
+      },
+      "A2:CR-FD@1.0": {
+        "label": "Fraud Detection Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-FD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "One assessment.",
+          "attributes": {
+            "attributes": [
+              "fraud_case_reference",
+              "transaction_reference",
+              "risk_score",
+              "assessment_outcome",
+              "assessed_at"
+            ]
+          }
+        }
+      },
+      "A2:BQ-EXECUTION@1.0": {
+        "label": "Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-EXECUTION",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Hand-over to execution.",
+          "attributes": {
+            "aliases": [
+              "release"
+            ]
+          }
+        }
+      },
+      "A2:BQ-CLOSURE@1.0": {
+        "label": "Closure",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-CLOSURE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Closing an account.",
+          "attributes": {
+            "aliases": [
+              "close"
+            ]
+          }
+        }
+      },
+      "A2:SG-PI@1.0": {
+        "label": "Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-PI",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations."
+        }
+      },
+      "A2:SG-PE@1.0": {
+        "label": "Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-PE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations."
+        }
+      },
+      "A2:SG-CA@1.0": {
+        "label": "Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-CA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations."
+        }
+      },
+      "A2:SG-PRD@1.0": {
+        "label": "Party",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-PRD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations."
+        }
+      },
+      "A2:SG-SA@1.0": {
+        "label": "Savings",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-SA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations."
+        }
+      },
+      "A2:SG-FD@1.0": {
+        "label": "Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-FD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations."
+        }
+      },
+      "A2:SO-PI-01@1.0": {
+        "label": "Initiate Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Create a payment instruction.",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "remittance_information"
+            ],
+            "output_attributes": [
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PI-02@1.0": {
+        "label": "Update Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Amend an instruction before execution.",
+          "attributes": {
+            "action_term": "Update",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference",
+              "amount",
+              "value_date",
+              "creditor_account_reference"
+            ],
+            "output_attributes": [
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PI-03@1.0": {
+        "label": "Retrieve Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return the instruction and its status.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "payment_status",
+              "amount",
+              "currency",
+              "value_date",
+              "creditor_account_reference"
+            ]
+          }
+        }
+      },
+      "A2:SO-PI-04@1.0": {
+        "label": "Control Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-04",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Cancel or hold an instruction.",
+          "attributes": {
+            "action_term": "Control",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference",
+              "payment_status"
+            ],
+            "output_attributes": [
+              "payment_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PI-05@1.0": {
+        "label": "Execute Payment Instruction Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-05",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Hand the instruction to execution.",
+          "attributes": {
+            "action_term": "Execute",
+            "behavior_qualifier": "Execution",
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "execution_reference",
+              "payment_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PE-01@1.0": {
+        "label": "Initiate Payment Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PE-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Execute a payment between two accounts.",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency"
+            ],
+            "output_attributes": [
+              "payment_reference",
+              "execution_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PE-02@1.0": {
+        "label": "Retrieve Payment Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PE-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return the execution outcome.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_reference"
+            ],
+            "output_attributes": [
+              "execution_status",
+              "scheme_reference",
+              "execution_date"
+            ]
+          }
+        }
+      },
+      "A2:SO-CA-01@1.0": {
+        "label": "Initiate Current Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Open an account.",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "customer_reference",
+              "currency",
+              "overdraft_limit"
+            ],
+            "output_attributes": [
+              "account_reference",
+              "account_status",
+              "open_date"
+            ]
+          }
+        }
+      },
+      "A2:SO-CA-02@1.0": {
+        "label": "Retrieve Current Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return the account.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "account_reference"
+            ],
+            "output_attributes": [
+              "account_status",
+              "currency",
+              "balance",
+              "overdraft_limit",
+              "customer_reference"
+            ]
+          }
+        }
+      },
+      "A2:SO-CA-03@1.0": {
+        "label": "Update Current Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Amend the account terms.",
+          "attributes": {
+            "action_term": "Update",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "account_reference",
+              "overdraft_limit"
+            ],
+            "output_attributes": [
+              "account_reference",
+              "account_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-CA-04@1.0": {
+        "label": "Control Current Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-04",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Block or unblock the account.",
+          "attributes": {
+            "action_term": "Control",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "account_reference",
+              "account_status"
+            ],
+            "output_attributes": [
+              "account_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-CA-05@1.0": {
+        "label": "Execute Current Account Closure",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-05",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Close the account.",
+          "attributes": {
+            "action_term": "Execute",
+            "behavior_qualifier": "Closure",
+            "input_attributes": [
+              "account_reference"
+            ],
+            "output_attributes": [
+              "account_status",
+              "close_date"
+            ]
+          }
+        }
+      },
+      "A2:SO-PRD-01@1.0": {
+        "label": "Register Party Reference",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PRD-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Create a party record.",
+          "attributes": {
+            "action_term": "Register",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "party_name",
+              "party_type",
+              "address"
+            ],
+            "output_attributes": [
+              "party_reference"
+            ]
+          }
+        }
+      },
+      "A2:SO-PRD-02@1.0": {
+        "label": "Retrieve Party Reference",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PRD-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return a party record.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "party_reference"
+            ],
+            "output_attributes": [
+              "party_name",
+              "party_type",
+              "address",
+              "kyc_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PRD-03@1.0": {
+        "label": "Update Party Reference",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PRD-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Amend a party record.",
+          "attributes": {
+            "action_term": "Update",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "party_reference",
+              "address",
+              "contact_details"
+            ],
+            "output_attributes": [
+              "party_reference"
+            ]
+          }
+        }
+      },
+      "A2:SO-SA-01@1.0": {
+        "label": "Initiate Savings Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-SA-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Open a savings account with a goal.",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "customer_reference",
+              "currency",
+              "target_amount"
+            ],
+            "output_attributes": [
+              "account_reference",
+              "account_status",
+              "open_date"
+            ]
+          }
+        }
+      },
+      "A2:SO-SA-02@1.0": {
+        "label": "Retrieve Savings Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-SA-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return the savings account.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "account_reference"
+            ],
+            "output_attributes": [
+              "account_status",
+              "currency",
+              "balance",
+              "interest_rate",
+              "target_amount"
+            ]
+          }
+        }
+      },
+      "A2:SO-SA-03@1.0": {
+        "label": "Update Savings Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-SA-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Amend the goal or terms.",
+          "attributes": {
+            "action_term": "Update",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "account_reference",
+              "target_amount"
+            ],
+            "output_attributes": [
+              "account_reference",
+              "account_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-FD-01@1.0": {
+        "label": "Evaluate Fraud Detection",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-FD-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Assess a transaction for fraud.",
+          "attributes": {
+            "action_term": "Evaluate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "transaction_reference"
+            ],
+            "output_attributes": [
+              "fraud_case_reference",
+              "risk_score",
+              "assessment_outcome"
+            ]
+          }
+        }
+      },
+      "A2:SO-FD-02@1.0": {
+        "label": "Retrieve Fraud Detection",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-FD-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return an assessment.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "fraud_case_reference"
+            ],
+            "output_attributes": [
+              "risk_score",
+              "assessment_outcome",
+              "assessed_at"
+            ]
+          }
+        }
+      },
+      "A2:BBO-PAY-INSTR@1.0": {
+        "label": "Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PAY-INSTR",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION",
+          "description": "Canonical.",
+          "attributes": {
+            "attributes": [
+              "payment_instruction_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "payment_status",
+              "remittance_information"
+            ]
+          }
+        }
+      },
+      "A2:BBO-PAYMENT-TXN@1.0": {
+        "label": "Payment Transaction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PAYMENT-TXN",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-PAYMENT-TXN",
+          "description": "Canonical.",
+          "attributes": {
+            "attributes": [
+              "payment_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "execution_status",
+              "execution_date",
+              "scheme_reference"
+            ]
+          }
+        }
+      },
+      "A2:BBO-ACCOUNT@1.0": {
+        "label": "Current Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-ACCOUNT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-CURRENT-ACCOUNT",
+          "description": "Canonical.",
+          "attributes": {
+            "attributes": [
+              "account_reference",
+              "customer_reference",
+              "account_status",
+              "currency",
+              "balance",
+              "overdraft_limit",
+              "open_date",
+              "close_date"
+            ]
+          }
+        }
+      },
+      "A2:BBO-PARTY@1.0": {
+        "label": "Party",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PARTY",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-PARTY",
+          "description": "Canonical.",
+          "attributes": {
+            "attributes": [
+              "party_reference",
+              "party_name",
+              "party_type",
+              "address",
+              "contact_details",
+              "kyc_status"
+            ]
+          }
+        }
+      },
+      "A2:BBO-SAVINGS@1.0": {
+        "label": "Savings Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-SAVINGS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-SAVINGS-ACCOUNT",
+          "description": "Canonical.",
+          "attributes": {
+            "attributes": [
+              "account_reference",
+              "customer_reference",
+              "account_status",
+              "currency",
+              "balance",
+              "interest_rate",
+              "target_amount",
+              "open_date"
+            ]
+          }
+        }
+      },
+      "A2:BBO-FRAUD-CASE@1.0": {
+        "label": "Fraud Case",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-FRAUD-CASE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-FRAUD-CASE",
+          "description": "Canonical.",
+          "attributes": {
+            "attributes": [
+              "fraud_case_reference",
+              "transaction_reference",
+              "risk_score",
+              "assessment_outcome",
+              "assessed_at"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A2:BD-PAY-composition-SD-PI",
+        "source": "A2:BD-PAY@1.0",
+        "target": "A2:SD-PI@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:BD-PAY-composition-SD-PE",
+        "source": "A2:BD-PAY@1.0",
+        "target": "A2:SD-PE@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:BD-ACCT-composition-SD-CA",
+        "source": "A2:BD-ACCT@1.0",
+        "target": "A2:SD-CA@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:BD-ACCT-composition-SD-SA",
+        "source": "A2:BD-ACCT@1.0",
+        "target": "A2:SD-SA@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:BD-REF-composition-SD-PRD",
+        "source": "A2:BD-REF@1.0",
+        "target": "A2:SD-PRD@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:BD-RISK-composition-SD-FD",
+        "source": "A2:BD-RISK@1.0",
+        "target": "A2:SD-FD@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:SD-PI-association-AT-PI",
+        "source": "A2:SD-PI@1.0",
+        "target": "A2:AT-PI@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-PE-association-AT-PE",
+        "source": "A2:SD-PE@1.0",
+        "target": "A2:AT-PE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-CA-association-AT-CA",
+        "source": "A2:SD-CA@1.0",
+        "target": "A2:AT-CA@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-PRD-association-AT-PRD",
+        "source": "A2:SD-PRD@1.0",
+        "target": "A2:AT-PRD@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-SA-association-AT-SA",
+        "source": "A2:SD-SA@1.0",
+        "target": "A2:AT-SA@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-FD-association-AT-FD",
+        "source": "A2:SD-FD@1.0",
+        "target": "A2:AT-FD@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-PI-aggregation-CR-PI",
+        "source": "A2:SD-PI@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:SD-PE-aggregation-CR-PE",
+        "source": "A2:SD-PE@1.0",
+        "target": "A2:CR-PE@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:SD-CA-aggregation-CR-CA",
+        "source": "A2:SD-CA@1.0",
+        "target": "A2:CR-CA@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:SD-PRD-aggregation-CR-PRD",
+        "source": "A2:SD-PRD@1.0",
+        "target": "A2:CR-PRD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:SD-SA-aggregation-CR-SA",
+        "source": "A2:SD-SA@1.0",
+        "target": "A2:CR-SA@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:SD-FD-aggregation-CR-FD",
+        "source": "A2:SD-FD@1.0",
+        "target": "A2:CR-FD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:SD-PI-composition-SG-PI",
+        "source": "A2:SD-PI@1.0",
+        "target": "A2:SG-PI@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SD-PE-composition-SG-PE",
+        "source": "A2:SD-PE@1.0",
+        "target": "A2:SG-PE@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SD-CA-composition-SG-CA",
+        "source": "A2:SD-CA@1.0",
+        "target": "A2:SG-CA@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SD-PRD-composition-SG-PRD",
+        "source": "A2:SD-PRD@1.0",
+        "target": "A2:SG-PRD@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SD-SA-composition-SG-SA",
+        "source": "A2:SD-SA@1.0",
+        "target": "A2:SG-SA@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SD-FD-composition-SG-FD",
+        "source": "A2:SD-FD@1.0",
+        "target": "A2:SG-FD@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SD-PI-association-FP-FULFIL",
+        "source": "A2:SD-PI@1.0",
+        "target": "A2:FP-FULFIL@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-PE-association-FP-FULFIL",
+        "source": "A2:SD-PE@1.0",
+        "target": "A2:FP-FULFIL@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-CA-association-FP-FULFIL",
+        "source": "A2:SD-CA@1.0",
+        "target": "A2:FP-FULFIL@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-PRD-association-FP-MAINTAIN",
+        "source": "A2:SD-PRD@1.0",
+        "target": "A2:FP-MAINTAIN@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-SA-association-FP-FULFIL",
+        "source": "A2:SD-SA@1.0",
+        "target": "A2:FP-FULFIL@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-FD-association-FP-ASSESS",
+        "source": "A2:SD-FD@1.0",
+        "target": "A2:FP-ASSESS@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:CR-PI-composition-BQ-EXECUTION",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BQ-EXECUTION@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-CA-composition-BQ-CLOSURE",
+        "source": "A2:CR-CA@1.0",
+        "target": "A2:BQ-CLOSURE@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PAY-INSTR",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PAY-INSTR@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PE-association-BBO-PAYMENT-TXN",
+        "source": "A2:CR-PE@1.0",
+        "target": "A2:BBO-PAYMENT-TXN@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-CA-association-BBO-ACCOUNT",
+        "source": "A2:CR-CA@1.0",
+        "target": "A2:BBO-ACCOUNT@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PRD-association-BBO-PARTY",
+        "source": "A2:CR-PRD@1.0",
+        "target": "A2:BBO-PARTY@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-SA-association-BBO-SAVINGS",
+        "source": "A2:CR-SA@1.0",
+        "target": "A2:BBO-SAVINGS@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-FD-association-BBO-FRAUD-CASE",
+        "source": "A2:CR-FD@1.0",
+        "target": "A2:BBO-FRAUD-CASE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:SG-PI-composition-SO-PI-01",
+        "source": "A2:SG-PI@1.0",
+        "target": "A2:SO-PI-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PI-composition-SO-PI-02",
+        "source": "A2:SG-PI@1.0",
+        "target": "A2:SO-PI-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PI-composition-SO-PI-03",
+        "source": "A2:SG-PI@1.0",
+        "target": "A2:SO-PI-03@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PI-composition-SO-PI-04",
+        "source": "A2:SG-PI@1.0",
+        "target": "A2:SO-PI-04@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PI-composition-SO-PI-05",
+        "source": "A2:SG-PI@1.0",
+        "target": "A2:SO-PI-05@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PE-composition-SO-PE-01",
+        "source": "A2:SG-PE@1.0",
+        "target": "A2:SO-PE-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PE-composition-SO-PE-02",
+        "source": "A2:SG-PE@1.0",
+        "target": "A2:SO-PE-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-CA-composition-SO-CA-01",
+        "source": "A2:SG-CA@1.0",
+        "target": "A2:SO-CA-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-CA-composition-SO-CA-02",
+        "source": "A2:SG-CA@1.0",
+        "target": "A2:SO-CA-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-CA-composition-SO-CA-03",
+        "source": "A2:SG-CA@1.0",
+        "target": "A2:SO-CA-03@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-CA-composition-SO-CA-04",
+        "source": "A2:SG-CA@1.0",
+        "target": "A2:SO-CA-04@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-CA-composition-SO-CA-05",
+        "source": "A2:SG-CA@1.0",
+        "target": "A2:SO-CA-05@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PRD-composition-SO-PRD-01",
+        "source": "A2:SG-PRD@1.0",
+        "target": "A2:SO-PRD-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PRD-composition-SO-PRD-02",
+        "source": "A2:SG-PRD@1.0",
+        "target": "A2:SO-PRD-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PRD-composition-SO-PRD-03",
+        "source": "A2:SG-PRD@1.0",
+        "target": "A2:SO-PRD-03@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-SA-composition-SO-SA-01",
+        "source": "A2:SG-SA@1.0",
+        "target": "A2:SO-SA-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-SA-composition-SO-SA-02",
+        "source": "A2:SG-SA@1.0",
+        "target": "A2:SO-SA-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-SA-composition-SO-SA-03",
+        "source": "A2:SG-SA@1.0",
+        "target": "A2:SO-SA-03@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-FD-composition-SO-FD-01",
+        "source": "A2:SG-FD@1.0",
+        "target": "A2:SO-FD-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-FD-composition-SO-FD-02",
+        "source": "A2:SG-FD@1.0",
+        "target": "A2:SO-FD-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PI-01-access-CR-PI",
+        "source": "A2:SO-PI-01@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PI-02-access-CR-PI",
+        "source": "A2:SO-PI-02@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PI-03-access-CR-PI",
+        "source": "A2:SO-PI-03@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PI-04-access-CR-PI",
+        "source": "A2:SO-PI-04@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PI-05-access-CR-PI",
+        "source": "A2:SO-PI-05@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PE-01-access-CR-PE",
+        "source": "A2:SO-PE-01@1.0",
+        "target": "A2:CR-PE@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PE-02-access-CR-PE",
+        "source": "A2:SO-PE-02@1.0",
+        "target": "A2:CR-PE@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-CA-01-access-CR-CA",
+        "source": "A2:SO-CA-01@1.0",
+        "target": "A2:CR-CA@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-CA-02-access-CR-CA",
+        "source": "A2:SO-CA-02@1.0",
+        "target": "A2:CR-CA@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-CA-03-access-CR-CA",
+        "source": "A2:SO-CA-03@1.0",
+        "target": "A2:CR-CA@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-CA-04-access-CR-CA",
+        "source": "A2:SO-CA-04@1.0",
+        "target": "A2:CR-CA@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-CA-05-access-CR-CA",
+        "source": "A2:SO-CA-05@1.0",
+        "target": "A2:CR-CA@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PRD-01-access-CR-PRD",
+        "source": "A2:SO-PRD-01@1.0",
+        "target": "A2:CR-PRD@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PRD-02-access-CR-PRD",
+        "source": "A2:SO-PRD-02@1.0",
+        "target": "A2:CR-PRD@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PRD-03-access-CR-PRD",
+        "source": "A2:SO-PRD-03@1.0",
+        "target": "A2:CR-PRD@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-SA-01-access-CR-SA",
+        "source": "A2:SO-SA-01@1.0",
+        "target": "A2:CR-SA@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-SA-02-access-CR-SA",
+        "source": "A2:SO-SA-02@1.0",
+        "target": "A2:CR-SA@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-SA-03-access-CR-SA",
+        "source": "A2:SO-SA-03@1.0",
+        "target": "A2:CR-SA@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-FD-01-access-CR-FD",
+        "source": "A2:SO-FD-01@1.0",
+        "target": "A2:CR-FD@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-FD-02-access-CR-FD",
+        "source": "A2:SO-FD-02@1.0",
+        "target": "A2:CR-FD@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SD-PI-flow-SD-PE",
+        "source": "A2:SD-PI@1.0",
+        "target": "A2:SD-PE@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-14"
+        }
+      }
+    ]
+  }
+}

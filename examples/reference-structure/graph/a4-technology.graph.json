@@ -1,0 +1,647 @@
+{
+  "graph": {
+    "id": "sdem:reference-structure-a4",
+    "type": "sdem.local",
+    "label": "A4 local knowledge graph (reference-structure-a4)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "824aeedcf7c542ed3d7f22e86637daebcc717636829971257c6a98234eb2627e",
+      "level": "A4",
+      "model_id": "reference-structure-a4",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SDEM-GENERATED-FROM-RECORD"
+    },
+    "nodes": {
+      "A4:RS-Deployment-1@1.0": {
+        "label": "Deployment 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "RS-Deployment-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Deployment carrying one relationship per constraint row of A4; no business meaning.",
+          "attributes": {
+            "component_id": "RS-ApplicationComponent-1",
+            "environment_id": "RS-DeploymentEnvironment-1",
+            "platform_id": "RS-Artifact-1"
+          }
+        }
+      },
+      "A4:RS-Deployment-2@1.0": {
+        "label": "Deployment 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "RS-Deployment-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Deployment carrying one relationship per constraint row of A4; no business meaning.",
+          "attributes": {
+            "component_id": "RS-ApplicationComponent-2",
+            "environment_id": "RS-DeploymentEnvironment-2",
+            "platform_id": "RS-Artifact-2"
+          }
+        }
+      },
+      "A4:RS-DeploymentEnvironment-1@1.0": {
+        "label": "DeploymentEnvironment 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.DeploymentEnvironment",
+          "id": "RS-DeploymentEnvironment-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.DeploymentEnvironment carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-DeploymentEnvironment-2@1.0": {
+        "label": "DeploymentEnvironment 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.DeploymentEnvironment",
+          "id": "RS-DeploymentEnvironment-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.DeploymentEnvironment carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-Node-1@1.0": {
+        "label": "Node 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Node",
+          "id": "RS-Node-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Node carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-Node-2@1.0": {
+        "label": "Node 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Node",
+          "id": "RS-Node-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Node carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-Device-1@1.0": {
+        "label": "Device 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Device",
+          "id": "RS-Device-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Device carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-Device-2@1.0": {
+        "label": "Device 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Device",
+          "id": "RS-Device-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Device carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-SystemSoftware-1@1.0": {
+        "label": "SystemSoftware 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "RS-SystemSoftware-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.SystemSoftware carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-SystemSoftware-2@1.0": {
+        "label": "SystemSoftware 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "RS-SystemSoftware-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.SystemSoftware carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-TechnologyService-1@1.0": {
+        "label": "TechnologyService 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyService",
+          "id": "RS-TechnologyService-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.TechnologyService carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-TechnologyService-2@1.0": {
+        "label": "TechnologyService 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyService",
+          "id": "RS-TechnologyService-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.TechnologyService carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-TechnologyInterface-1@1.0": {
+        "label": "TechnologyInterface 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyInterface",
+          "id": "RS-TechnologyInterface-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.TechnologyInterface carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-TechnologyInterface-2@1.0": {
+        "label": "TechnologyInterface 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyInterface",
+          "id": "RS-TechnologyInterface-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.TechnologyInterface carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-CommunicationNetwork-1@1.0": {
+        "label": "CommunicationNetwork 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.CommunicationNetwork",
+          "id": "RS-CommunicationNetwork-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.CommunicationNetwork carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-CommunicationNetwork-2@1.0": {
+        "label": "CommunicationNetwork 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.CommunicationNetwork",
+          "id": "RS-CommunicationNetwork-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.CommunicationNetwork carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-Path-1@1.0": {
+        "label": "Path 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Path",
+          "id": "RS-Path-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Path carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-Path-2@1.0": {
+        "label": "Path 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Path",
+          "id": "RS-Path-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Path carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-Artifact-1@1.0": {
+        "label": "Artifact 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Artifact",
+          "id": "RS-Artifact-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Artifact carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-Artifact-2@1.0": {
+        "label": "Artifact 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Artifact",
+          "id": "RS-Artifact-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Artifact carrying one relationship per constraint row of A4; no business meaning."
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A4:RS-Node-1-composition-RS-Node-2",
+        "source": "A4:RS-Node-1@1.0",
+        "target": "A4:RS-Node-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-01"
+        },
+        "label": "RA4-01"
+      },
+      {
+        "id": "A4:RS-Node-1-aggregation-RS-Node-2",
+        "source": "A4:RS-Node-1@1.0",
+        "target": "A4:RS-Node-2@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-02"
+        },
+        "label": "RA4-02"
+      },
+      {
+        "id": "A4:RS-Node-1-aggregation-RS-Device-1",
+        "source": "A4:RS-Node-1@1.0",
+        "target": "A4:RS-Device-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-03"
+        },
+        "label": "RA4-03"
+      },
+      {
+        "id": "A4:RS-Node-1-assignment-RS-SystemSoftware-1",
+        "source": "A4:RS-Node-1@1.0",
+        "target": "A4:RS-SystemSoftware-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-04"
+        },
+        "label": "RA4-04"
+      },
+      {
+        "id": "A4:RS-Device-1-assignment-RS-SystemSoftware-1",
+        "source": "A4:RS-Device-1@1.0",
+        "target": "A4:RS-SystemSoftware-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-05"
+        },
+        "label": "RA4-05"
+      },
+      {
+        "id": "A4:RS-SystemSoftware-1-assignment-RS-SystemSoftware-2",
+        "source": "A4:RS-SystemSoftware-1@1.0",
+        "target": "A4:RS-SystemSoftware-2@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-06"
+        },
+        "label": "RA4-06"
+      },
+      {
+        "id": "A4:RS-Node-1-assignment-RS-Artifact-1",
+        "source": "A4:RS-Node-1@1.0",
+        "target": "A4:RS-Artifact-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-07"
+        },
+        "label": "RA4-07"
+      },
+      {
+        "id": "A4:RS-Node-1-realization-RS-TechnologyService-1",
+        "source": "A4:RS-Node-1@1.0",
+        "target": "A4:RS-TechnologyService-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-08"
+        },
+        "label": "RA4-08"
+      },
+      {
+        "id": "A4:RS-Node-1-composition-RS-TechnologyInterface-1",
+        "source": "A4:RS-Node-1@1.0",
+        "target": "A4:RS-TechnologyInterface-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-09"
+        },
+        "label": "RA4-09"
+      },
+      {
+        "id": "A4:RS-TechnologyService-1-serving-RS-Node-1",
+        "source": "A4:RS-TechnologyService-1@1.0",
+        "target": "A4:RS-Node-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-10"
+        },
+        "label": "RA4-10"
+      },
+      {
+        "id": "A4:RS-Node-1-assignment-RS-Deployment-1",
+        "source": "A4:RS-Node-1@1.0",
+        "target": "A4:RS-Deployment-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-11"
+        },
+        "label": "RA4-11"
+      },
+      {
+        "id": "A4:RS-Device-1-assignment-RS-Artifact-1",
+        "source": "A4:RS-Device-1@1.0",
+        "target": "A4:RS-Artifact-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-12"
+        },
+        "label": "RA4-12"
+      },
+      {
+        "id": "A4:RS-Device-1-realization-RS-TechnologyService-1",
+        "source": "A4:RS-Device-1@1.0",
+        "target": "A4:RS-TechnologyService-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-13"
+        },
+        "label": "RA4-13"
+      },
+      {
+        "id": "A4:RS-Device-1-composition-RS-TechnologyInterface-1",
+        "source": "A4:RS-Device-1@1.0",
+        "target": "A4:RS-TechnologyInterface-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-14"
+        },
+        "label": "RA4-14"
+      },
+      {
+        "id": "A4:RS-TechnologyService-1-serving-RS-Device-1",
+        "source": "A4:RS-TechnologyService-1@1.0",
+        "target": "A4:RS-Device-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-15"
+        },
+        "label": "RA4-15"
+      },
+      {
+        "id": "A4:RS-Device-1-assignment-RS-Deployment-1",
+        "source": "A4:RS-Device-1@1.0",
+        "target": "A4:RS-Deployment-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-16"
+        },
+        "label": "RA4-16"
+      },
+      {
+        "id": "A4:RS-SystemSoftware-1-assignment-RS-Artifact-1",
+        "source": "A4:RS-SystemSoftware-1@1.0",
+        "target": "A4:RS-Artifact-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-17"
+        },
+        "label": "RA4-17"
+      },
+      {
+        "id": "A4:RS-SystemSoftware-1-realization-RS-TechnologyService-1",
+        "source": "A4:RS-SystemSoftware-1@1.0",
+        "target": "A4:RS-TechnologyService-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-18"
+        },
+        "label": "RA4-18"
+      },
+      {
+        "id": "A4:RS-SystemSoftware-1-composition-RS-TechnologyInterface-1",
+        "source": "A4:RS-SystemSoftware-1@1.0",
+        "target": "A4:RS-TechnologyInterface-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-19"
+        },
+        "label": "RA4-19"
+      },
+      {
+        "id": "A4:RS-TechnologyService-1-serving-RS-SystemSoftware-1",
+        "source": "A4:RS-TechnologyService-1@1.0",
+        "target": "A4:RS-SystemSoftware-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-20"
+        },
+        "label": "RA4-20"
+      },
+      {
+        "id": "A4:RS-SystemSoftware-1-assignment-RS-Deployment-1",
+        "source": "A4:RS-SystemSoftware-1@1.0",
+        "target": "A4:RS-Deployment-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        },
+        "label": "RA4-21"
+      },
+      {
+        "id": "A4:RS-TechnologyInterface-1-assignment-RS-TechnologyService-1",
+        "source": "A4:RS-TechnologyInterface-1@1.0",
+        "target": "A4:RS-TechnologyService-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-22"
+        },
+        "label": "RA4-22"
+      },
+      {
+        "id": "A4:RS-TechnologyService-1-composition-RS-TechnologyService-2",
+        "source": "A4:RS-TechnologyService-1@1.0",
+        "target": "A4:RS-TechnologyService-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-23"
+        },
+        "label": "RA4-23"
+      },
+      {
+        "id": "A4:RS-Node-1-flow-RS-Node-2",
+        "source": "A4:RS-Node-1@1.0",
+        "target": "A4:RS-Node-2@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-24"
+        },
+        "label": "RA4-24"
+      },
+      {
+        "id": "A4:RS-Node-1-triggering-RS-Node-2",
+        "source": "A4:RS-Node-1@1.0",
+        "target": "A4:RS-Node-2@1.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-25"
+        },
+        "label": "RA4-25"
+      },
+      {
+        "id": "A4:RS-CommunicationNetwork-1-realization-RS-Path-1",
+        "source": "A4:RS-CommunicationNetwork-1@1.0",
+        "target": "A4:RS-Path-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-26"
+        },
+        "label": "RA4-26"
+      },
+      {
+        "id": "A4:RS-CommunicationNetwork-1-composition-RS-CommunicationNetwork-2",
+        "source": "A4:RS-CommunicationNetwork-1@1.0",
+        "target": "A4:RS-CommunicationNetwork-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        },
+        "label": "RA4-27"
+      },
+      {
+        "id": "A4:RS-Artifact-1-composition-RS-Artifact-2",
+        "source": "A4:RS-Artifact-1@1.0",
+        "target": "A4:RS-Artifact-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-28"
+        },
+        "label": "RA4-28"
+      },
+      {
+        "id": "A4:RS-Artifact-1-aggregation-RS-Artifact-2",
+        "source": "A4:RS-Artifact-1@1.0",
+        "target": "A4:RS-Artifact-2@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-29"
+        },
+        "label": "RA4-29"
+      },
+      {
+        "id": "A4:RS-Device-1-aggregation-RS-Device-2",
+        "source": "A4:RS-Device-1@1.0",
+        "target": "A4:RS-Device-2@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-30"
+        },
+        "label": "RA4-30"
+      },
+      {
+        "id": "A4:RS-DeploymentEnvironment-1-aggregation-RS-Deployment-1",
+        "source": "A4:RS-DeploymentEnvironment-1@1.0",
+        "target": "A4:RS-Deployment-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        },
+        "label": "RA4-31"
+      },
+      {
+        "id": "A4:RS-DeploymentEnvironment-1-aggregation-RS-Node-1",
+        "source": "A4:RS-DeploymentEnvironment-1@1.0",
+        "target": "A4:RS-Node-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-32"
+        },
+        "label": "RA4-32"
+      },
+      {
+        "id": "A4:RS-DeploymentEnvironment-1-aggregation-RS-Device-1",
+        "source": "A4:RS-DeploymentEnvironment-1@1.0",
+        "target": "A4:RS-Device-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-33"
+        },
+        "label": "RA4-33"
+      },
+      {
+        "id": "A4:RS-DeploymentEnvironment-1-aggregation-RS-SystemSoftware-1",
+        "source": "A4:RS-DeploymentEnvironment-1@1.0",
+        "target": "A4:RS-SystemSoftware-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-34"
+        },
+        "label": "RA4-34"
+      },
+      {
+        "id": "A4:RS-Deployment-1-aggregation-RS-Artifact-1",
+        "source": "A4:RS-Deployment-1@1.0",
+        "target": "A4:RS-Artifact-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-35"
+        },
+        "label": "RA4-35"
+      },
+      {
+        "id": "A4:RS-Device-1-composition-RS-Device-2",
+        "source": "A4:RS-Device-1@1.0",
+        "target": "A4:RS-Device-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-36"
+        },
+        "label": "RA4-36"
+      }
+    ]
+  }
+}

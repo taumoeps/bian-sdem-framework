@@ -1,0 +1,830 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-lending-a2",
+    "type": "sdem.local",
+    "label": "A2 local knowledge graph (synthetic-bank-lending-a2)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "4ce3b07ca9e549c30397383d86fd20925790fdf3b18abb4d1577015502518cea",
+      "level": "A2",
+      "model_id": "synthetic-bank-lending-a2",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-BIAN-WORKBENCH"
+    },
+    "nodes": {
+      "A2:BD-LEND@1.0": {
+        "label": "Lending (synthetic grouping)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessDomain",
+          "id": "BD-LEND",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic grouping."
+        }
+      },
+      "A2:SD-LO@1.0": {
+        "label": "Consumer Loan Origination (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-LO",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-CONSUMER-LOAN-ORIGINATION",
+          "description": "Synthetic stand-in: handles a consumer loan from application through offer to agreement.",
+          "attributes": {
+            "asset_type": "AT-LO",
+            "functional_pattern": "FP-FULFIL"
+          }
+        }
+      },
+      "A2:SD-CA@1.0": {
+        "label": "Credit Assessment (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-CA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-CREDIT-ASSESSMENT",
+          "description": "Synthetic stand-in: assesses an applicant's creditworthiness and records the outcome.",
+          "attributes": {
+            "asset_type": "AT-CA",
+            "functional_pattern": "FP-ASSESS"
+          }
+        }
+      },
+      "A2:AT-LO@1.0": {
+        "label": "Consumer Loan",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-LO",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The loan being originated.",
+          "attributes": {
+            "aliases": [
+              "loan",
+              "application"
+            ]
+          }
+        }
+      },
+      "A2:AT-CA@1.0": {
+        "label": "Credit Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-CA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "An assessment of creditworthiness.",
+          "attributes": {
+            "aliases": [
+              "credit",
+              "assessment",
+              "decision"
+            ]
+          }
+        }
+      },
+      "A2:FP-FULFIL@1.0": {
+        "label": "Fulfil",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "FP-FULFIL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in."
+        }
+      },
+      "A2:FP-ASSESS@1.0": {
+        "label": "Assess",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "FP-ASSESS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in."
+        }
+      },
+      "A2:CR-LO@1.0": {
+        "label": "Consumer Loan Origination Procedure",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-LO",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Lifecycle of one application.",
+          "attributes": {
+            "attributes": [
+              "loan_application_reference",
+              "customer_reference",
+              "requested_amount",
+              "currency",
+              "term_months",
+              "purpose",
+              "application_status",
+              "offer_reference",
+              "agreement_reference"
+            ]
+          }
+        }
+      },
+      "A2:CR-CA@1.0": {
+        "label": "Credit Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-CA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "One assessment.",
+          "attributes": {
+            "attributes": [
+              "credit_assessment_reference",
+              "loan_application_reference",
+              "credit_score",
+              "assessment_outcome",
+              "approved_amount",
+              "conditions"
+            ]
+          }
+        }
+      },
+      "A2:BQ-OFFER@1.0": {
+        "label": "Offer",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-OFFER",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Issuing the offer.",
+          "attributes": {
+            "aliases": [
+              "offer"
+            ]
+          }
+        }
+      },
+      "A2:BQ-AGREEMENT@1.0": {
+        "label": "Agreement",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-AGREEMENT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Concluding the agreement.",
+          "attributes": {
+            "aliases": [
+              "agreement",
+              "sign"
+            ]
+          }
+        }
+      },
+      "A2:SG-LO@1.0": {
+        "label": "Origination",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-LO",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations."
+        }
+      },
+      "A2:SG-CA@1.0": {
+        "label": "Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-CA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations."
+        }
+      },
+      "A2:SO-LO-01@1.0": {
+        "label": "Initiate Consumer Loan Origination",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LO-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Start an origination from the application.",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "customer_reference",
+              "requested_amount",
+              "currency",
+              "term_months",
+              "purpose"
+            ],
+            "output_attributes": [
+              "loan_application_reference",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-LO-02@1.0": {
+        "label": "Update Consumer Loan Origination",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LO-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Amend the application.",
+          "attributes": {
+            "action_term": "Update",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "loan_application_reference",
+              "requested_amount",
+              "term_months"
+            ],
+            "output_attributes": [
+              "loan_application_reference",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-LO-03@1.0": {
+        "label": "Retrieve Consumer Loan Origination",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LO-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return the application and its status.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "loan_application_reference"
+            ],
+            "output_attributes": [
+              "application_status",
+              "requested_amount",
+              "currency",
+              "term_months",
+              "offer_reference",
+              "agreement_reference"
+            ]
+          }
+        }
+      },
+      "A2:SO-LO-04@1.0": {
+        "label": "Execute Consumer Loan Origination Offer",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LO-04",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Issue the offer.",
+          "attributes": {
+            "action_term": "Execute",
+            "behavior_qualifier": "Offer",
+            "input_attributes": [
+              "loan_application_reference"
+            ],
+            "output_attributes": [
+              "offer_reference",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-LO-05@1.0": {
+        "label": "Execute Consumer Loan Origination Agreement",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LO-05",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Conclude the agreement.",
+          "attributes": {
+            "action_term": "Execute",
+            "behavior_qualifier": "Agreement",
+            "input_attributes": [
+              "loan_application_reference",
+              "offer_reference"
+            ],
+            "output_attributes": [
+              "agreement_reference",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-LO-06@1.0": {
+        "label": "Control Consumer Loan Origination",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-LO-06",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Withdraw or hold the application.",
+          "attributes": {
+            "action_term": "Control",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "loan_application_reference",
+              "control_action",
+              "control_reason"
+            ],
+            "output_attributes": [
+              "application_status",
+              "control_action"
+            ]
+          }
+        }
+      },
+      "A2:SO-CA-01@1.0": {
+        "label": "Evaluate Credit Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Assess the applicant and record the outcome.",
+          "attributes": {
+            "action_term": "Evaluate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "loan_application_reference"
+            ],
+            "output_attributes": [
+              "credit_assessment_reference",
+              "credit_score",
+              "assessment_outcome",
+              "approved_amount",
+              "conditions"
+            ]
+          }
+        }
+      },
+      "A2:SO-CA-02@1.0": {
+        "label": "Retrieve Credit Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return an assessment.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "credit_assessment_reference"
+            ],
+            "output_attributes": [
+              "credit_score",
+              "assessment_outcome",
+              "approved_amount",
+              "conditions"
+            ]
+          }
+        }
+      },
+      "A2:BS-LOAN@1.0": {
+        "label": "Consumer loan origination",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "BS-LOAN",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-SCENARIO-CONSUMER-LOAN",
+          "description": "Apply, assess, offer, agree.",
+          "attributes": {
+            "operation_sequence": [
+              "SO-LO-01",
+              "SO-CA-01",
+              "SO-LO-04",
+              "SO-LO-05"
+            ]
+          }
+        }
+      },
+      "A2:BBO-LOAN-APP@1.0": {
+        "label": "Loan Application",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-LOAN-APP",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-LOAN-APPLICATION",
+          "description": "Canonical.",
+          "attributes": {
+            "attributes": [
+              "loan_application_reference",
+              "customer_reference",
+              "requested_amount",
+              "currency",
+              "term_months",
+              "purpose",
+              "application_status"
+            ]
+          }
+        }
+      },
+      "A2:BBO-CREDIT-ASSESS@1.0": {
+        "label": "Credit Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-CREDIT-ASSESS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-CREDIT-ASSESSMENT",
+          "description": "Canonical.",
+          "attributes": {
+            "attributes": [
+              "credit_assessment_reference",
+              "loan_application_reference",
+              "credit_score",
+              "assessment_outcome",
+              "approved_amount",
+              "conditions"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A2:BD-LEND-composition-SD-LO",
+        "source": "A2:BD-LEND@1.0",
+        "target": "A2:SD-LO@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:BD-LEND-composition-SD-CA",
+        "source": "A2:BD-LEND@1.0",
+        "target": "A2:SD-CA@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:SD-LO-association-AT-LO",
+        "source": "A2:SD-LO@1.0",
+        "target": "A2:AT-LO@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-CA-association-AT-CA",
+        "source": "A2:SD-CA@1.0",
+        "target": "A2:AT-CA@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-LO-association-FP-FULFIL",
+        "source": "A2:SD-LO@1.0",
+        "target": "A2:FP-FULFIL@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-CA-association-FP-ASSESS",
+        "source": "A2:SD-CA@1.0",
+        "target": "A2:FP-ASSESS@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-LO-aggregation-CR-LO",
+        "source": "A2:SD-LO@1.0",
+        "target": "A2:CR-LO@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:SD-CA-aggregation-CR-CA",
+        "source": "A2:SD-CA@1.0",
+        "target": "A2:CR-CA@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:CR-LO-composition-BQ-OFFER",
+        "source": "A2:CR-LO@1.0",
+        "target": "A2:BQ-OFFER@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-LO-composition-BQ-AGREEMENT",
+        "source": "A2:CR-LO@1.0",
+        "target": "A2:BQ-AGREEMENT@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-LO-association-BBO-LOAN-APP",
+        "source": "A2:CR-LO@1.0",
+        "target": "A2:BBO-LOAN-APP@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-CA-association-BBO-CREDIT-ASSESS",
+        "source": "A2:CR-CA@1.0",
+        "target": "A2:BBO-CREDIT-ASSESS@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:SD-LO-composition-SG-LO",
+        "source": "A2:SD-LO@1.0",
+        "target": "A2:SG-LO@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SD-CA-composition-SG-CA",
+        "source": "A2:SD-CA@1.0",
+        "target": "A2:SG-CA@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SG-LO-composition-SO-LO-01",
+        "source": "A2:SG-LO@1.0",
+        "target": "A2:SO-LO-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-LO-composition-SO-LO-02",
+        "source": "A2:SG-LO@1.0",
+        "target": "A2:SO-LO-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-LO-composition-SO-LO-03",
+        "source": "A2:SG-LO@1.0",
+        "target": "A2:SO-LO-03@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-LO-composition-SO-LO-04",
+        "source": "A2:SG-LO@1.0",
+        "target": "A2:SO-LO-04@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-LO-composition-SO-LO-05",
+        "source": "A2:SG-LO@1.0",
+        "target": "A2:SO-LO-05@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-LO-composition-SO-LO-06",
+        "source": "A2:SG-LO@1.0",
+        "target": "A2:SO-LO-06@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-CA-composition-SO-CA-01",
+        "source": "A2:SG-CA@1.0",
+        "target": "A2:SO-CA-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-CA-composition-SO-CA-02",
+        "source": "A2:SG-CA@1.0",
+        "target": "A2:SO-CA-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-LO-01-access-CR-LO",
+        "source": "A2:SO-LO-01@1.0",
+        "target": "A2:CR-LO@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-LO-02-access-CR-LO",
+        "source": "A2:SO-LO-02@1.0",
+        "target": "A2:CR-LO@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-LO-03-access-CR-LO",
+        "source": "A2:SO-LO-03@1.0",
+        "target": "A2:CR-LO@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-LO-04-access-CR-LO",
+        "source": "A2:SO-LO-04@1.0",
+        "target": "A2:CR-LO@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-LO-05-access-CR-LO",
+        "source": "A2:SO-LO-05@1.0",
+        "target": "A2:CR-LO@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-LO-06-access-CR-LO",
+        "source": "A2:SO-LO-06@1.0",
+        "target": "A2:CR-LO@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-CA-01-access-CR-CA",
+        "source": "A2:SO-CA-01@1.0",
+        "target": "A2:CR-CA@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-CA-02-access-CR-CA",
+        "source": "A2:SO-CA-02@1.0",
+        "target": "A2:CR-CA@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:BS-LOAN-aggregation-SO-LO-01",
+        "source": "A2:BS-LOAN@1.0",
+        "target": "A2:SO-LO-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:BS-LOAN-aggregation-SO-CA-01",
+        "source": "A2:BS-LOAN@1.0",
+        "target": "A2:SO-CA-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:BS-LOAN-aggregation-SO-LO-04",
+        "source": "A2:BS-LOAN@1.0",
+        "target": "A2:SO-LO-04@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:BS-LOAN-aggregation-SO-LO-05",
+        "source": "A2:BS-LOAN@1.0",
+        "target": "A2:SO-LO-05@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:SD-LO-flow-SD-CA",
+        "source": "A2:SD-LO@1.0",
+        "target": "A2:SD-CA@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-14"
+        }
+      }
+    ]
+  }
+}

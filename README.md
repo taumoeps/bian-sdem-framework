@@ -184,9 +184,10 @@ The Relationship Rules Model was run as a procedure by an AI executor (standing 
 | Logical data model: 14 rules, all enforced by `sdem-graph check` (`sdem/conformance.py`) | built ([`logical-data-model.md`](docs/logical-data-model.md)) |
 | Physical data model: one JSON Schema per entity type (`sdem-physical`) | built ([`physical-data-model.md`](docs/physical-data-model.md)) |
 | Generated documents and diagrams, checked current in CI | built |
+| Graph store: local JSON files (JSON Graph Format), load record, baselines, `query`, offline HTML `view` | built ([`graph-store-design.md`](docs/graph-store-design.md)) |
 | Baseline review pack for `SDEM-METAMODEL-0.8` | built; awaiting independent review ([`baseline/`](docs/baseline/SDEM-METAMODEL-0.8-review-pack.md)) |
 | Architecture Relationship Inference Engine (`sdem-infer`) | interface, baseline and scorer built; **rule logic is the next build**, to [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) |
-| Export diff, refresh trigger, review queue, query service interface, assistant access, persistent store | specified ([`knowledge-graph-spec.md`](docs/knowledge-graph-spec.md) §11), not built |
+| Export diff, refresh trigger, review queue, query service interface, assistant access | specified ([`knowledge-graph-spec.md`](docs/knowledge-graph-spec.md) §11), not built |
 | Ingestion (spreadsheet templates and ingest command) | planned for v0.10; adapters for real tools belong in an institution's private repository |
 
 ---
@@ -202,6 +203,11 @@ sdem-graph check  $E/a*.json $E/mappings.json                          # load an
 sdem-graph trace  CAP-PAY-010 --direction down $E/a*.json $E/mappings.json   # what does this depend on?
 sdem-graph trace  INF-K8S-PAY-PROD --direction up $E/a*.json $E/mappings.json  # what depends on this?
 sdem-graph impact APP-PAY-HUB --change replace $E/a*.json $E/mappings.json    # what is affected by a change?
+
+sdem-graph build $E/a*.json $E/mappings.json --out $E/graph               # save the checked graphs as a local JSON graph store
+sdem-graph query --graph $E/graph --type A1.BusinessProcess --where criticality=high
+sdem-graph query --graph $E/graph --unmapped A2                          # records still waiting for a cross-level link
+sdem-graph view  --graph $E/graph                                        # writes $E/graph/view.html — open it in a browser
 
 sdem-validate --strict $E/mappings.json                                 # check the relationship registry
 sdem-diff --git HEAD~1 $E/mappings.json                                 # approved links not edited since last commit
@@ -222,6 +228,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 |---|---|
 | [`sdem-overview.md`](docs/sdem-overview.md) | **start here** — principles, components and boundaries, the four things that look alike, a worked example, a glossary |
 | [`knowledge-graph-design.md`](docs/knowledge-graph-design.md) | how the local and federated graphs are built and queried |
+| [`graph-store-design.md`](docs/graph-store-design.md) · [`graph-store-spec.md`](docs/graph-store-spec.md) | the local JSON graph store: files, build, load record, queries, view |
 | [`logical-data-model.md`](docs/logical-data-model.md) | the Logical Data Model: one card per entity — what it is, how it is identified, its fields and its links — with a diagram per architecture; rules and conformance in appendices |
 | [`physical-data-model.md`](docs/physical-data-model.md) | the Physical Data Model: one JSON Schema per entity type (`schema/entities/`), the export format tool adapters validate against; source, reasoning and confidence on every property |
 | [`architecture-attribute-design.md`](docs/architecture-attribute-design.md) | the Architecture Attribute Design: every attribute by architecture, with type, source reference, readers, verification, reasoning and confidence |
@@ -260,8 +267,9 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | v0.6 | rules spec and diagram; knowledge-graph design and spec with service specifications |
 | v0.7 | renamed SDEM — Service Domain Enterprise Metamodel; model-driven terminology; registry spec; compatibility aliases |
 | **v0.8** (unreleased) | **data model** for A1–A4, all logical rules enforced, per-entity JSON Schemas; baseline review pack — released on baseline approval |
-| **v0.9 — next** | the **inference engine**, with an acceptance harness over the use-case runs |
-| later | ingestion and approval (v0.10); change handling (v0.11); graph store and query service (v0.12); BIAN reference integration (v0.13); generated views (v0.14); v1.0 conformance profile |
+| **v0.9** (unreleased) | **graph store**: local JSON files, queries, offline view |
+| **v0.10 — next** | the **inference engine**, reading the graph store, with an acceptance harness over the use-case runs |
+| later | ingestion and approval (v0.11); change handling (v0.12); query service and assistant access (v0.13); BIAN reference integration (v0.14); generated views (v0.15); v1.0 conformance profile |
 
 Full table with acceptance tests: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 

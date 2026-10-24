@@ -1,0 +1,356 @@
+{
+  "graph": {
+    "id": "sdem:federated",
+    "type": "sdem.federated",
+    "label": "Federated knowledge graph (approved cross-level links)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "metamodel_version": "0.4.0",
+      "levels": {
+        "A1": "2026.10",
+        "A2": "2026.10",
+        "A3": "2026.10",
+        "A4": "2026.10"
+      },
+      "registries": [
+        {
+          "file": "mappings.json",
+          "sha256": "df75bcf1603c0ea3694f43b166b1dcb04079612a568644025c34aeb3e1290c0f",
+          "registry_version": "0.4.0",
+          "metamodel_version": "0.4.0"
+        }
+      ],
+      "statuses": [
+        "approved"
+      ]
+    },
+    "nodes": {
+      "A1:CAP-310@1.0": {
+        "label": "Card Fraud Alerts",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-310",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:SD-044@1.0": {
+        "label": "Fraud Detection (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-044",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:APP-FRAUD-ENGINE@4.2": {
+        "label": "Fraud Engine",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "APP-FRAUD-ENGINE",
+          "version": "4.2",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-044-07@1.0": {
+        "label": "Notify Fraud Alert",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-044-07",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:POST /fraud/alerts@3.1": {
+        "label": "Create fraud alert",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "POST /fraud/alerts",
+          "version": "3.1",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A4:INF-CLOUD-K8S-PROD@1.3": {
+        "label": "Managed Kubernetes (production)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-CLOUD-K8S-PROD",
+          "version": "1.3",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A4:DEP-FRAUD-PROD@1.0": {
+        "label": "Fraud Engine — production deployment",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-FRAUD-PROD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A1:VS-CARD-USE@1.0": {
+        "label": "Use Card Safely",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "VS-CARD-USE",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:BS-FRAUD-ALERT@1.0": {
+        "label": "Suspicious card transaction alerted",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "BS-FRAUD-ALERT",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:PRC-310-01@1.0": {
+        "label": "Alert Cardholder of Suspicious Transaction",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-310-01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "FRD-001",
+        "source": "A1:CAP-310@1.0",
+        "target": "A2:SD-044@1.0",
+        "relation": "SUPPORTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CAP-310",
+            "type": "A1.BusinessCapability",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-044",
+            "type": "A2.ServiceDomain",
+            "version": "1.0",
+            "canonical_id": "BIAN-FRAUD-DETECTION"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "business_architecture_document:BA-FRAUD-2026#s2",
+            "domain_scope_assessment:BA-FRAUD-2026#s2"
+          ],
+          "rationale": "Fraud-alerting capability sits inside the selected fraud-detection domain's scope",
+          "bian_release": "BIAN-RELEASE-X",
+          "baseline_id": "BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "FRD-002",
+        "source": "A2:SD-044@1.0",
+        "target": "A3:APP-FRAUD-ENGINE@4.2",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SD-044",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-FRAUD-ENGINE",
+            "type": "A3.ApplicationComponent",
+            "version": "4.2"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:AA-FRAUD-ENGINE-HLD#s3"
+          ],
+          "rationale": "Existing fraud engine covers real-time scoring and alert dispatch; case management is out of scope (separate component)",
+          "baseline_id": "BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "FRD-004",
+        "source": "A2:SO-044-07@1.0",
+        "target": "A3:POST /fraud/alerts@3.1",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-044-07",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "POST /fraud/alerts",
+            "type": "A3.APIOperation",
+            "version": "3.1"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "confidence": 0.71,
+          "evidence": [
+            "api_contract:API-FRAUD-v3.1.yaml#/paths/~1fraud~1alerts"
+          ],
+          "rationale": "Reviewed after the M0 run: POST /fraud/alerts carries the Alert qualifier in its path and 5/5 of the operation's I/O attributes in its payload (REST rules 1, 3, 4); Notify has no REST form, so rule 2 is untestable. Approved as the implementation of Notify Fraud Alert",
+          "baseline_id": "BASE-2026-Q4",
+          "created_by": "SDMM Mapping Engine",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "FRD-005",
+        "source": "A3:APP-FRAUD-ENGINE@4.2",
+        "target": "A4:INF-CLOUD-K8S-PROD@1.3",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-FRAUD-ENGINE",
+            "type": "A3.ApplicationComponent",
+            "version": "4.2"
+          },
+          "target_ref": {
+            "id": "INF-CLOUD-K8S-PROD",
+            "type": "A4.InfrastructureComponent",
+            "version": "1.3"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:IA-FRAUD-MIGRATION-2026#s5"
+          ],
+          "rationale": "Re-hosted on managed Kubernetes; L1 functional semantics unchanged, so FRD-001/002 are untouched",
+          "baseline_id": "BASE-2026-Q4",
+          "reviewer_id": "sam.infra",
+          "approved_at": "2026-10-22",
+          "previous_mapping_id": "FRD-003",
+          "valid_from": "2026-12-01"
+        }
+      },
+      {
+        "id": "FRD-006",
+        "source": "A3:APP-FRAUD-ENGINE@4.2",
+        "target": "A4:DEP-FRAUD-PROD@1.0",
+        "relation": "DEPLOYED_AS",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-FRAUD-ENGINE",
+            "type": "A3.ApplicationComponent",
+            "version": "4.2"
+          },
+          "target_ref": {
+            "id": "DEP-FRAUD-PROD",
+            "type": "A4.Deployment",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:IA-FRAUD-MIGRATION-2026#s5"
+          ],
+          "rationale": "Production deployment of the Fraud Engine on the managed Kubernetes platform; the precise form of FRD-005",
+          "baseline_id": "BASE-2026-Q4",
+          "reviewer_id": "sam.infra",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "FRD-007",
+        "source": "A1:VS-CARD-USE@1.0",
+        "target": "A2:BS-FRAUD-ALERT@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "VS-CARD-USE",
+            "type": "A1.ValueStream",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BS-FRAUD-ALERT",
+            "type": "A2.BusinessScenario",
+            "version": "1.0",
+            "canonical_id": "BIAN-SCENARIO-FRAUD-ALERT"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-CARD-USE-2026",
+            "scenario_suitability_review:SCN-REVIEW-FRAUD-001"
+          ],
+          "rationale": "The 'Use Card Safely' journey's alert stage corresponds to the suspicious-transaction scenario's interaction",
+          "bian_release": "BIAN-RELEASE-X",
+          "baseline_id": "BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "FRD-008",
+        "source": "A1:PRC-310-01@1.0",
+        "target": "A2:SD-044@1.0",
+        "relation": "USES_DOMAIN",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "PRC-310-01",
+            "type": "A1.BusinessProcess",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-044",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-CARD-USE-2026"
+          ],
+          "rationale": "The alert process invokes Notify Fraud Alert (SO-044-07), an operation of the fraud-detection domain",
+          "baseline_id": "BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,421 @@
+{
+  "graph": {
+    "id": "sdem:federated",
+    "type": "sdem.federated",
+    "label": "Federated knowledge graph (approved cross-level links)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "metamodel_version": "0.4.0",
+      "levels": {
+        "A1": "2026.10",
+        "A2": "2026.10"
+      },
+      "registries": [
+        {
+          "file": "mappings.json",
+          "sha256": "b564a598703856ab93cfa7ec686b0d8291df1d548c64980f9ba3f4739c2371e8",
+          "registry_version": "0.4.0",
+          "metamodel_version": "0.4.0"
+        }
+      ],
+      "statuses": [
+        "approved"
+      ]
+    },
+    "nodes": {
+      "A1:CAP-LEND@1.0": {
+        "label": "Originate Consumer Loan",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-LEND",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:SD-LO@1.0": {
+        "label": "Consumer Loan Origination (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-LO",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:CAP-CREDIT@1.0": {
+        "label": "Assess Credit Risk",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-CREDIT",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:SD-CA@1.0": {
+        "label": "Credit Assessment (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-CA",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:VS-GET-LOAN@1.0": {
+        "label": "Get a Loan",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "VS-GET-LOAN",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:BS-LOAN@1.0": {
+        "label": "Consumer loan origination",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "BS-LOAN",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:PRC-APPLY@1.0": {
+        "label": "Capture loan application",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-APPLY",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A1:PRC-ASSESS@1.0": {
+        "label": "Assess application",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-ASSESS",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A1:PRC-OFFER@1.0": {
+        "label": "Offer and agree",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-OFFER",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A1:BO-LOAN-APP@1.0": {
+        "label": "Loan Application",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-LOAN-APP",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:BBO-LOAN-APP@1.0": {
+        "label": "Loan Application",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-LOAN-APP",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A1:BO-CREDIT-DEC@1.0": {
+        "label": "Credit Decision",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-CREDIT-DEC",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A2:BBO-CREDIT-ASSESS@1.0": {
+        "label": "Credit Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-CREDIT-ASSESS",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "LN-001",
+        "source": "A1:CAP-LEND@1.0",
+        "target": "A2:SD-LO@1.0",
+        "relation": "SUPPORTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CAP-LEND",
+            "type": "A1.BusinessCapability",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-LO",
+            "type": "A2.ServiceDomain",
+            "version": "1.0",
+            "canonical_id": "BIAN-CONSUMER-LOAN-ORIGINATION"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "business_architecture_document:BA-LEND-2026#s2",
+            "domain_scope_assessment:DSA-LEND-1"
+          ],
+          "rationale": "origination is the domain's scope",
+          "baseline_id": "LEND-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "LN-002",
+        "source": "A1:CAP-CREDIT@1.0",
+        "target": "A2:SD-CA@1.0",
+        "relation": "SUPPORTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CAP-CREDIT",
+            "type": "A1.BusinessCapability",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-CA",
+            "type": "A2.ServiceDomain",
+            "version": "1.0",
+            "canonical_id": "BIAN-CREDIT-ASSESSMENT"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "business_architecture_document:BA-LEND-2026#s2",
+            "domain_scope_assessment:DSA-LEND-2"
+          ],
+          "rationale": "credit risk assessment is the domain's scope",
+          "baseline_id": "LEND-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "LN-003",
+        "source": "A1:VS-GET-LOAN@1.0",
+        "target": "A2:BS-LOAN@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "VS-GET-LOAN",
+            "type": "A1.ValueStream",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BS-LOAN",
+            "type": "A2.BusinessScenario",
+            "version": "1.0",
+            "canonical_id": "BIAN-SCENARIO-CONSUMER-LOAN"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-GET-LOAN-2026",
+            "scenario_suitability_review:SCN-LOAN-1"
+          ],
+          "rationale": "four stages cover the scenario's four operations",
+          "baseline_id": "LEND-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "LN-004",
+        "source": "A1:PRC-APPLY@1.0",
+        "target": "A2:SD-LO@1.0",
+        "relation": "USES_DOMAIN",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "PRC-APPLY",
+            "type": "A1.BusinessProcess",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-LO",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-GET-LOAN-2026"
+          ],
+          "rationale": "invokes Initiate and Update",
+          "baseline_id": "LEND-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LN-005",
+        "source": "A1:PRC-ASSESS@1.0",
+        "target": "A2:SD-CA@1.0",
+        "relation": "USES_DOMAIN",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "PRC-ASSESS",
+            "type": "A1.BusinessProcess",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-CA",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-GET-LOAN-2026"
+          ],
+          "rationale": "invokes Evaluate and Retrieve",
+          "baseline_id": "LEND-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LN-006",
+        "source": "A1:PRC-OFFER@1.0",
+        "target": "A2:SD-LO@1.0",
+        "relation": "USES_DOMAIN",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "PRC-OFFER",
+            "type": "A1.BusinessProcess",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-LO",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:PM-GET-LOAN-2026"
+          ],
+          "rationale": "invokes the Offer and Agreement executions",
+          "baseline_id": "LEND-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LN-007",
+        "source": "A1:BO-LOAN-APP@1.0",
+        "target": "A2:BBO-LOAN-APP@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BO-LOAN-APP",
+            "type": "A1.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BBO-LOAN-APP",
+            "type": "A2.BusinessObject",
+            "version": "1.0",
+            "canonical_id": "BIAN-BO-LOAN-APPLICATION"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "business_glossary:GL-LEND-2026#loan-application",
+            "object_alignment_review:OAR-LEND-1"
+          ],
+          "rationale": "same meaning; 6 of 7 attributes align",
+          "baseline_id": "LEND-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "LN-008",
+        "source": "A1:BO-CREDIT-DEC@1.0",
+        "target": "A2:BBO-CREDIT-ASSESS@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BO-CREDIT-DEC",
+            "type": "A1.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BBO-CREDIT-ASSESS",
+            "type": "A2.BusinessObject",
+            "version": "1.0",
+            "canonical_id": "BIAN-BO-CREDIT-ASSESSMENT"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "business_glossary:GL-LEND-2026#credit-decision",
+            "object_alignment_review:OAR-LEND-2"
+          ],
+          "rationale": "the decision is the assessment outcome; 5 of 6 attributes align",
+          "baseline_id": "LEND-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      }
+    ]
+  }
+}

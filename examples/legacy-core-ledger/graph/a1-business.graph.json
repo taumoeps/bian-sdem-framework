@@ -1,0 +1,86 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-ledger-a1-draft",
+    "type": "sdem.local",
+    "label": "A1 local knowledge graph (synthetic-bank-ledger-a1-draft)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "dc3ee4a1f8217b7bf617e1793487728e36e4020dfed701a08776566fdb8813e6",
+      "level": "A1",
+      "model_id": "synthetic-bank-ledger-a1-draft",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-DRAFT-BCM"
+    },
+    "nodes": {
+      "A1:CAP-ACCT-SVC@1.0": {
+        "label": "Account Servicing",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-ACCT-SVC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Open, maintain, block and close customer current accounts and manage their terms."
+        }
+      },
+      "A1:CAP-POSITION@1.0": {
+        "label": "Position and Balance Management",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-POSITION",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Record every financial movement on an account and maintain the resulting balances and positions."
+        }
+      },
+      "A1:CAP-PAY-EXEC@1.0": {
+        "label": "Payment Execution",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-PAY-EXEC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Execute authorised payments through clearing schemes and track their outcome."
+        }
+      },
+      "A1:CAP-PARTY-DATA@1.0": {
+        "label": "Customer Reference Data",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-PARTY-DATA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Hold the master record of each customer and counterparty: identity, addresses, contact details, KYC status."
+        }
+      },
+      "A1:CAP-LENDING@1.0": {
+        "label": "Consumer Lending",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-LENDING",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Originate, service and collect consumer loans."
+        }
+      },
+      "A1:CAP-TREASURY@1.0": {
+        "label": "Treasury Management",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-TREASURY",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Manage the bank's liquidity, funding and market risk positions."
+        }
+      }
+    },
+    "edges": []
+  }
+}

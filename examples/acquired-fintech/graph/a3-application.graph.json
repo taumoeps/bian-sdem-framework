@@ -1,0 +1,1337 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-fintech-a3",
+    "type": "sdem.local",
+    "label": "A3 local knowledge graph (synthetic-fintech-a3)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "6bb3e6128fff7c3a586db1b0c644d640c80227173c791f79ac46492fd3d48e07",
+      "level": "A3",
+      "model_id": "synthetic-fintech-a3",
+      "model_version": "2026.10",
+      "metamodel_version": "0.4.0",
+      "source_system": "SYNTHETIC-OPENAPI-STUBS"
+    },
+    "nodes": {
+      "A3:svc-flow@2026.10": {
+        "label": "flow-svc",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "svc-flow",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "Scheduled and standing money flows between pots and external handles.",
+          "attributes": {
+            "deployed_on": [
+              "INF-EKS-ZIPPA-PROD"
+            ],
+            "deployed_as": [
+              "DEP-FLOW-PROD"
+            ]
+          }
+        }
+      },
+      "A3:svc-zap@2026.10": {
+        "label": "zap-svc",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "svc-zap",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "Instant sends between members.",
+          "attributes": {
+            "deployed_on": [
+              "INF-EKS-ZIPPA-PROD"
+            ],
+            "deployed_as": [
+              "DEP-ZAP-PROD"
+            ]
+          }
+        }
+      },
+      "A3:svc-pots@2026.10": {
+        "label": "pots-svc",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "svc-pots",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "Member money pots.",
+          "attributes": {
+            "deployed_on": [
+              "INF-EKS-ZIPPA-PROD"
+            ],
+            "deployed_as": [
+              "DEP-POTS-PROD"
+            ]
+          }
+        }
+      },
+      "A3:svc-buddies@2026.10": {
+        "label": "buddies-svc",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "svc-buddies",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "Member profiles and saved contacts.",
+          "attributes": {
+            "deployed_on": [
+              "INF-EKS-ZIPPA-PROD"
+            ],
+            "deployed_as": [
+              "DEP-BUDDIES-PROD"
+            ]
+          }
+        }
+      },
+      "A3:svc-vaults@2026.10": {
+        "label": "vaults-svc",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "svc-vaults",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "Goal-based vaults with interest boosts.",
+          "attributes": {
+            "deployed_on": [
+              "INF-EKS-ZIPPA-PROD"
+            ],
+            "deployed_as": [
+              "DEP-VAULTS-PROD"
+            ]
+          }
+        }
+      },
+      "A3:svc-perks@2026.10": {
+        "label": "perks-svc",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "svc-perks",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "Cashback and referral perks.",
+          "attributes": {
+            "deployed_on": [
+              "INF-EKS-ZIPPA-PROD"
+            ],
+            "deployed_as": [
+              "DEP-PERKS-PROD"
+            ]
+          }
+        }
+      },
+      "A3:svc-shield@2026.10": {
+        "label": "shield-svc",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "svc-shield",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "Vendor risk scoring sidecar.",
+          "attributes": {
+            "deployed_on": [
+              "INF-EKS-ZIPPA-PROD"
+            ],
+            "deployed_as": [
+              "DEP-SHIELD-PROD"
+            ]
+          }
+        }
+      },
+      "A3:IFC-flow@2026.10": {
+        "label": "flow-api",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-flow",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "REST.",
+          "attributes": {
+            "field_aliases": {
+              "flow_id": "payment_instruction_reference"
+            }
+          }
+        }
+      },
+      "A3:IFC-zap@2026.10": {
+        "label": "zap-api",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-zap",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "REST.",
+          "attributes": {
+            "field_aliases": {
+              "sender": "debtor_account_reference",
+              "recipient": "creditor_account_reference",
+              "zap_id": "payment_reference",
+              "outcome": "execution_status",
+              "rail_ref": "scheme_reference",
+              "settled_at": "execution_date"
+            }
+          }
+        }
+      },
+      "A3:IFC-pots@2026.10": {
+        "label": "pots-api",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-pots",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "REST.",
+          "attributes": {
+            "field_aliases": {
+              "pot_id": "account_reference",
+              "opened_at": "open_date",
+              "closed_at": "close_date"
+            }
+          }
+        }
+      },
+      "A3:IFC-buddies@2026.10": {
+        "label": "buddies-api",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-buddies",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "REST.",
+          "attributes": {
+            "field_aliases": {
+              "member_id": "party_reference",
+              "display_name": "party_name"
+            }
+          }
+        }
+      },
+      "A3:IFC-vaults@2026.10": {
+        "label": "vaults-api",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-vaults",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "REST.",
+          "attributes": {
+            "field_aliases": {
+              "vault_id": "account_reference"
+            }
+          }
+        }
+      },
+      "A3:IFC-perks@2026.10": {
+        "label": "perks-api",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-perks",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "REST."
+        }
+      },
+      "A3:IFC-shield@2026.10": {
+        "label": "shield-api",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-shield",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "REST."
+        }
+      },
+      "A3:EP-01@2026.10": {
+        "label": "POST /v2/moneyflows",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-01",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "POST",
+            "path": "/v2/moneyflows",
+            "payload_fields": [
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "remittance_information",
+              "flow_id",
+              "payment_status"
+            ]
+          }
+        }
+      },
+      "A3:EP-02@2026.10": {
+        "label": "GET /v2/moneyflows/{id}",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-02",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "GET",
+            "path": "/v2/moneyflows/{id}",
+            "payload_fields": [
+              "flow_id",
+              "payment_status",
+              "amount",
+              "currency",
+              "value_date",
+              "creditor_account_reference",
+              "debtor_account_reference"
+            ]
+          }
+        }
+      },
+      "A3:EP-03@2026.10": {
+        "label": "PATCH /v2/moneyflows/{id}",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-03",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "PATCH",
+            "path": "/v2/moneyflows/{id}",
+            "payload_fields": [
+              "flow_id",
+              "amount",
+              "value_date",
+              "creditor_account_reference",
+              "payment_status"
+            ]
+          }
+        }
+      },
+      "A3:EP-04@2026.10": {
+        "label": "DELETE /v2/moneyflows/{id}",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-04",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "DELETE",
+            "path": "/v2/moneyflows/{id}",
+            "payload_fields": [
+              "flow_id",
+              "payment_status",
+              "cancellation_reason"
+            ]
+          }
+        }
+      },
+      "A3:EP-05@2026.10": {
+        "label": "POST /v2/moneyflows/{id}/release",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-05",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "POST",
+            "path": "/v2/moneyflows/{id}/release",
+            "payload_fields": [
+              "flow_id",
+              "payment_status",
+              "execution_reference"
+            ]
+          }
+        }
+      },
+      "A3:EP-06@2026.10": {
+        "label": "POST /zap",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-06",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "POST",
+            "path": "/zap",
+            "payload_fields": [
+              "sender",
+              "recipient",
+              "amount",
+              "currency",
+              "zap_id",
+              "outcome"
+            ]
+          }
+        }
+      },
+      "A3:EP-07@2026.10": {
+        "label": "GET /zap/{id}",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-07",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "GET",
+            "path": "/zap/{id}",
+            "payload_fields": [
+              "zap_id",
+              "outcome",
+              "rail_ref",
+              "settled_at"
+            ]
+          }
+        }
+      },
+      "A3:EP-08@2026.10": {
+        "label": "POST /v2/pots",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-08",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "POST",
+            "path": "/v2/pots",
+            "payload_fields": [
+              "customer_reference",
+              "currency",
+              "pot_id",
+              "account_status",
+              "opened_at"
+            ]
+          }
+        }
+      },
+      "A3:EP-09@2026.10": {
+        "label": "GET /v2/pots/{id}",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-09",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "GET",
+            "path": "/v2/pots/{id}",
+            "payload_fields": [
+              "pot_id",
+              "account_status",
+              "currency",
+              "balance",
+              "customer_reference"
+            ]
+          }
+        }
+      },
+      "A3:EP-10@2026.10": {
+        "label": "PUT /v2/pots/{id}/freeze",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-10",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "PUT",
+            "path": "/v2/pots/{id}/freeze",
+            "payload_fields": [
+              "pot_id",
+              "account_status",
+              "reason"
+            ]
+          }
+        }
+      },
+      "A3:EP-11@2026.10": {
+        "label": "POST /v2/pots/{id}/close",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-11",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "POST",
+            "path": "/v2/pots/{id}/close",
+            "payload_fields": [
+              "pot_id",
+              "account_status",
+              "closed_at"
+            ]
+          }
+        }
+      },
+      "A3:EP-12@2026.10": {
+        "label": "GET /v2/pots/{id}/ledger",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-12",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "GET",
+            "path": "/v2/pots/{id}/ledger",
+            "payload_fields": [
+              "pot_id",
+              "entries",
+              "balance",
+              "as_of"
+            ]
+          }
+        }
+      },
+      "A3:EP-13@2026.10": {
+        "label": "POST /v2/members",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-13",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "POST",
+            "path": "/v2/members",
+            "payload_fields": [
+              "display_name",
+              "party_type",
+              "address",
+              "member_id"
+            ]
+          }
+        }
+      },
+      "A3:EP-14@2026.10": {
+        "label": "GET /v2/members/{id}",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-14",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "GET",
+            "path": "/v2/members/{id}",
+            "payload_fields": [
+              "member_id",
+              "display_name",
+              "party_type",
+              "address",
+              "kyc_status"
+            ]
+          }
+        }
+      },
+      "A3:EP-15@2026.10": {
+        "label": "PUT /v2/members/{id}",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-15",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "PUT",
+            "path": "/v2/members/{id}",
+            "payload_fields": [
+              "member_id",
+              "address",
+              "contact_details"
+            ]
+          }
+        }
+      },
+      "A3:EP-16@2026.10": {
+        "label": "GET /v2/members/{id}/buddies",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-16",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "GET",
+            "path": "/v2/members/{id}/buddies",
+            "payload_fields": [
+              "member_id",
+              "buddy_handle",
+              "nickname"
+            ]
+          }
+        }
+      },
+      "A3:EP-17@2026.10": {
+        "label": "POST /v2/members/{id}/buddies",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-17",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "POST",
+            "path": "/v2/members/{id}/buddies",
+            "payload_fields": [
+              "member_id",
+              "buddy_handle",
+              "nickname"
+            ]
+          }
+        }
+      },
+      "A3:EP-18@2026.10": {
+        "label": "POST /v2/vaults",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-18",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "POST",
+            "path": "/v2/vaults",
+            "payload_fields": [
+              "customer_reference",
+              "currency",
+              "target_amount",
+              "vault_id",
+              "account_status"
+            ]
+          }
+        }
+      },
+      "A3:EP-19@2026.10": {
+        "label": "GET /v2/vaults/{id}",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-19",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "GET",
+            "path": "/v2/vaults/{id}",
+            "payload_fields": [
+              "vault_id",
+              "account_status",
+              "currency",
+              "balance",
+              "interest_rate",
+              "target_amount"
+            ]
+          }
+        }
+      },
+      "A3:EP-20@2026.10": {
+        "label": "PATCH /v2/vaults/{id}/target",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-20",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "PATCH",
+            "path": "/v2/vaults/{id}/target",
+            "payload_fields": [
+              "vault_id",
+              "target_amount",
+              "account_status"
+            ]
+          }
+        }
+      },
+      "A3:EP-21@2026.10": {
+        "label": "POST /v2/perks/claim",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-21",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "POST",
+            "path": "/v2/perks/claim",
+            "payload_fields": [
+              "member_id",
+              "perk_code",
+              "cashback_amount"
+            ]
+          }
+        }
+      },
+      "A3:EP-22@2026.10": {
+        "label": "GET /v2/perks",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-22",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "GET",
+            "path": "/v2/perks",
+            "payload_fields": [
+              "member_id",
+              "perk_code",
+              "earned_at"
+            ]
+          }
+        }
+      },
+      "A3:EP-23@2026.10": {
+        "label": "POST /v2/shield/score",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "EP-23",
+          "version": "2026.10",
+          "lifecycle_status": "active",
+          "description": "OpenAPI stub; no description.",
+          "attributes": {
+            "method": "POST",
+            "path": "/v2/shield/score",
+            "payload_fields": [
+              "zap_id",
+              "risk_score",
+              "verdict"
+            ]
+          }
+        }
+      },
+      "A3:ENT-FLOWS@1.0": {
+        "label": "flows",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-FLOWS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Table.",
+          "attributes": {
+            "attributes": [
+              "flow_id",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "payment_status",
+              "remittance_information",
+              "created_by"
+            ],
+            "stored_in": [
+              "INF-PG-ZIPPA-PROD"
+            ]
+          }
+        }
+      },
+      "A3:ENT-ZAPS@1.0": {
+        "label": "zaps",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-ZAPS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Table.",
+          "attributes": {
+            "attributes": [
+              "zap_id",
+              "sender",
+              "recipient",
+              "amount",
+              "currency",
+              "outcome",
+              "rail_ref",
+              "settled_at"
+            ],
+            "stored_in": [
+              "INF-PG-ZIPPA-PROD"
+            ]
+          }
+        }
+      },
+      "A3:ENT-POTS@1.0": {
+        "label": "pots",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-POTS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Table.",
+          "attributes": {
+            "attributes": [
+              "pot_id",
+              "customer_reference",
+              "account_status",
+              "currency",
+              "balance",
+              "opened_at",
+              "closed_at",
+              "theme"
+            ],
+            "stored_in": [
+              "INF-PG-ZIPPA-PROD"
+            ]
+          }
+        }
+      },
+      "A3:ENT-MEMBERS@1.0": {
+        "label": "members",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-MEMBERS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Table.",
+          "attributes": {
+            "attributes": [
+              "member_id",
+              "display_name",
+              "party_type",
+              "address",
+              "contact_details",
+              "kyc_status",
+              "avatar"
+            ],
+            "stored_in": [
+              "INF-PG-ZIPPA-PROD"
+            ]
+          }
+        }
+      },
+      "A3:ENT-BUDDIES@1.0": {
+        "label": "buddies",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-BUDDIES",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Table.",
+          "attributes": {
+            "attributes": [
+              "member_id",
+              "buddy_handle",
+              "nickname"
+            ],
+            "stored_in": [
+              "INF-PG-ZIPPA-PROD"
+            ]
+          }
+        }
+      },
+      "A3:ENT-VAULTS@1.0": {
+        "label": "vaults",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-VAULTS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Table.",
+          "attributes": {
+            "attributes": [
+              "vault_id",
+              "customer_reference",
+              "account_status",
+              "currency",
+              "balance",
+              "interest_rate",
+              "target_amount",
+              "opened_at"
+            ],
+            "stored_in": [
+              "INF-PG-ZIPPA-PROD"
+            ]
+          }
+        }
+      },
+      "A3:ENT-PERKS@1.0": {
+        "label": "perks",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-PERKS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Table.",
+          "attributes": {
+            "attributes": [
+              "member_id",
+              "perk_code",
+              "cashback_amount",
+              "earned_at"
+            ],
+            "stored_in": [
+              "INF-PG-ZIPPA-PROD"
+            ]
+          }
+        }
+      },
+      "A3:ENT-SCORES@1.0": {
+        "label": "scores",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-SCORES",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Table.",
+          "attributes": {
+            "attributes": [
+              "zap_id",
+              "risk_score",
+              "verdict",
+              "scored_at"
+            ],
+            "stored_in": [
+              "INF-REDIS-ZIPPA-PROD"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A3:svc-flow-composition-IFC-flow",
+        "source": "A3:svc-flow@2026.10",
+        "target": "A3:IFC-flow@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A3:svc-zap-composition-IFC-zap",
+        "source": "A3:svc-zap@2026.10",
+        "target": "A3:IFC-zap@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A3:svc-pots-composition-IFC-pots",
+        "source": "A3:svc-pots@2026.10",
+        "target": "A3:IFC-pots@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A3:svc-buddies-composition-IFC-buddies",
+        "source": "A3:svc-buddies@2026.10",
+        "target": "A3:IFC-buddies@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A3:svc-vaults-composition-IFC-vaults",
+        "source": "A3:svc-vaults@2026.10",
+        "target": "A3:IFC-vaults@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A3:svc-perks-composition-IFC-perks",
+        "source": "A3:svc-perks@2026.10",
+        "target": "A3:IFC-perks@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A3:svc-shield-composition-IFC-shield",
+        "source": "A3:svc-shield@2026.10",
+        "target": "A3:IFC-shield@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A3:IFC-flow-composition-EP-01",
+        "source": "A3:IFC-flow@2026.10",
+        "target": "A3:EP-01@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-flow-composition-EP-02",
+        "source": "A3:IFC-flow@2026.10",
+        "target": "A3:EP-02@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-flow-composition-EP-03",
+        "source": "A3:IFC-flow@2026.10",
+        "target": "A3:EP-03@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-flow-composition-EP-04",
+        "source": "A3:IFC-flow@2026.10",
+        "target": "A3:EP-04@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-flow-composition-EP-05",
+        "source": "A3:IFC-flow@2026.10",
+        "target": "A3:EP-05@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-zap-composition-EP-06",
+        "source": "A3:IFC-zap@2026.10",
+        "target": "A3:EP-06@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-zap-composition-EP-07",
+        "source": "A3:IFC-zap@2026.10",
+        "target": "A3:EP-07@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-pots-composition-EP-08",
+        "source": "A3:IFC-pots@2026.10",
+        "target": "A3:EP-08@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-pots-composition-EP-09",
+        "source": "A3:IFC-pots@2026.10",
+        "target": "A3:EP-09@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-pots-composition-EP-10",
+        "source": "A3:IFC-pots@2026.10",
+        "target": "A3:EP-10@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-pots-composition-EP-11",
+        "source": "A3:IFC-pots@2026.10",
+        "target": "A3:EP-11@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-pots-composition-EP-12",
+        "source": "A3:IFC-pots@2026.10",
+        "target": "A3:EP-12@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-buddies-composition-EP-13",
+        "source": "A3:IFC-buddies@2026.10",
+        "target": "A3:EP-13@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-buddies-composition-EP-14",
+        "source": "A3:IFC-buddies@2026.10",
+        "target": "A3:EP-14@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-buddies-composition-EP-15",
+        "source": "A3:IFC-buddies@2026.10",
+        "target": "A3:EP-15@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-buddies-composition-EP-16",
+        "source": "A3:IFC-buddies@2026.10",
+        "target": "A3:EP-16@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-buddies-composition-EP-17",
+        "source": "A3:IFC-buddies@2026.10",
+        "target": "A3:EP-17@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-vaults-composition-EP-18",
+        "source": "A3:IFC-vaults@2026.10",
+        "target": "A3:EP-18@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-vaults-composition-EP-19",
+        "source": "A3:IFC-vaults@2026.10",
+        "target": "A3:EP-19@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-vaults-composition-EP-20",
+        "source": "A3:IFC-vaults@2026.10",
+        "target": "A3:EP-20@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-perks-composition-EP-21",
+        "source": "A3:IFC-perks@2026.10",
+        "target": "A3:EP-21@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-perks-composition-EP-22",
+        "source": "A3:IFC-perks@2026.10",
+        "target": "A3:EP-22@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:IFC-shield-composition-EP-23",
+        "source": "A3:IFC-shield@2026.10",
+        "target": "A3:EP-23@2026.10",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A3:svc-flow-access-ENT-FLOWS",
+        "source": "A3:svc-flow@2026.10",
+        "target": "A3:ENT-FLOWS@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:svc-zap-access-ENT-ZAPS",
+        "source": "A3:svc-zap@2026.10",
+        "target": "A3:ENT-ZAPS@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:svc-pots-access-ENT-POTS",
+        "source": "A3:svc-pots@2026.10",
+        "target": "A3:ENT-POTS@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:svc-buddies-access-ENT-MEMBERS",
+        "source": "A3:svc-buddies@2026.10",
+        "target": "A3:ENT-MEMBERS@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:svc-buddies-access-ENT-BUDDIES",
+        "source": "A3:svc-buddies@2026.10",
+        "target": "A3:ENT-BUDDIES@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:svc-vaults-access-ENT-VAULTS",
+        "source": "A3:svc-vaults@2026.10",
+        "target": "A3:ENT-VAULTS@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:svc-perks-access-ENT-PERKS",
+        "source": "A3:svc-perks@2026.10",
+        "target": "A3:ENT-PERKS@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:svc-shield-access-ENT-SCORES",
+        "source": "A3:svc-shield@2026.10",
+        "target": "A3:ENT-SCORES@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:svc-zap-serving-svc-shield",
+        "source": "A3:svc-zap@2026.10",
+        "target": "A3:svc-shield@2026.10",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-11"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,1429 @@
+{
+  "graph": {
+    "id": "sdem:federated",
+    "type": "sdem.federated",
+    "label": "Federated knowledge graph (approved cross-level links)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "metamodel_version": "0.4.0",
+      "levels": {
+        "A1": "2026.10",
+        "A2": "2026.10",
+        "A3": "2026.10",
+        "A4": "2026.10"
+      },
+      "registries": [
+        {
+          "file": "mappings.json",
+          "sha256": "a188a6f8a3761956e1b88aff82343e171e3d49dc185cbe7ff617bf389269ef38",
+          "registry_version": "0.4.0",
+          "metamodel_version": "0.4.0"
+        }
+      ],
+      "statuses": [
+        "approved"
+      ]
+    },
+    "nodes": {
+      "A2:SO-CA-01@1.0": {
+        "label": "Initiate Current Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-OpenAccount@12.4": {
+        "label": "OpenAccount",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-OpenAccount",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-CA-02@1.0": {
+        "label": "Retrieve Current Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-02",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-GetAccount@12.4": {
+        "label": "GetAccount",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-GetAccount",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-CA-03@1.0": {
+        "label": "Control Current Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-03",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-BlockAccount@12.4": {
+        "label": "BlockAccount",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-BlockAccount",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-CA-04@1.0": {
+        "label": "Update Current Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-04",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-AmendOverdraft@12.4": {
+        "label": "AmendOverdraft",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-AmendOverdraft",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-CA-05@1.0": {
+        "label": "Execute Current Account Closure",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-CA-05",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-CloseAccount@12.4": {
+        "label": "CloseAccount",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-CloseAccount",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PK-01@1.0": {
+        "label": "Update Position Keeping Posting",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PK-01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-PostEntry@12.4": {
+        "label": "PostEntry",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-PostEntry",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PK-02@1.0": {
+        "label": "Retrieve Position Keeping",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PK-02",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-GetBalance@12.4": {
+        "label": "GetBalance",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-GetBalance",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PK-03@1.0": {
+        "label": "Execute Position Keeping Reversal",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PK-03",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-ReverseEntry@12.4": {
+        "label": "ReverseEntry",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-ReverseEntry",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PE-01@1.0": {
+        "label": "Initiate Payment Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PE-01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-SubmitPayment@12.4": {
+        "label": "SubmitPayment",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-SubmitPayment",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PE-02@1.0": {
+        "label": "Retrieve Payment Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PE-02",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-PaymentStatus@12.4": {
+        "label": "PaymentStatus",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-PaymentStatus",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PE-03@1.0": {
+        "label": "Control Payment Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PE-03",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-CancelPayment@12.4": {
+        "label": "CancelPayment",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-CancelPayment",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PRD-01@1.0": {
+        "label": "Register Party Reference",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PRD-01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-CreateCustomer@12.4": {
+        "label": "CreateCustomer",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-CreateCustomer",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PRD-02@1.0": {
+        "label": "Retrieve Party Reference",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PRD-02",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-GetCustomer@12.4": {
+        "label": "GetCustomer",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-GetCustomer",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SO-PRD-03@1.0": {
+        "label": "Update Party Reference",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PRD-03",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:OP-UpdateCustomer@12.4": {
+        "label": "UpdateCustomer",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.APIOperation",
+          "id": "OP-UpdateCustomer",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SD-CA@1.0": {
+        "label": "Current Account (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-CA",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:LM-ACCT@12.4": {
+        "label": "Account module",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "LM-ACCT",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SD-PK@1.0": {
+        "label": "Position Keeping (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-PK",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:LM-POST@12.4": {
+        "label": "Posting engine",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "LM-POST",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SD-PE@1.0": {
+        "label": "Payment Execution (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-PE",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:LM-PAY@12.4": {
+        "label": "Payment interface module",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "LM-PAY",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:SD-PRD@1.0": {
+        "label": "Party Reference Data Directory (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-PRD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:LM-PARTY@12.4": {
+        "label": "Customer master module",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "LM-PARTY",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:BBO-ACCOUNT@1.0": {
+        "label": "Current Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-ACCOUNT",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:ENT-ACCOUNT@12.4": {
+        "label": "ACCT_MASTER",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-ACCOUNT",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:BBO-POSTING@1.0": {
+        "label": "Posting",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-POSTING",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:ENT-POSTING@12.4": {
+        "label": "POSTING_JRNL",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-POSTING",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:BBO-PAYMENT-TXN@1.0": {
+        "label": "Payment Transaction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PAYMENT-TXN",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:ENT-PAYMENT@12.4": {
+        "label": "PAYMT_TXN",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-PAYMENT",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A2:BBO-PARTY@1.0": {
+        "label": "Party",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PARTY",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:ENT-PARTY@12.4": {
+        "label": "CUST_MASTER",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-PARTY",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A3:APP-LEDGER@12.4": {
+        "label": "LedgerMaster core ledger",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationComponent",
+          "id": "APP-LEDGER",
+          "version": "12.4",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A4:INF-MF-LPAR-PROD@2.0": {
+        "label": "Mainframe LPAR PROD1",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Node",
+          "id": "INF-MF-LPAR-PROD",
+          "version": "2.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A4:DEP-LM-PROD@1.0": {
+        "label": "LedgerMaster — production",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Deployment",
+          "id": "DEP-LM-PROD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A1:CAP-ACCT-SVC@1.0": {
+        "label": "Account Servicing",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-ACCT-SVC",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A1:CAP-POSITION@1.0": {
+        "label": "Position and Balance Management",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-POSITION",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A1:CAP-PAY-EXEC@1.0": {
+        "label": "Payment Execution",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-PAY-EXEC",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A1:CAP-PARTY-DATA@1.0": {
+        "label": "Customer Reference Data",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-PARTY-DATA",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "LM-101",
+        "source": "A2:SO-CA-01@1.0",
+        "target": "A3:OP-OpenAccount@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-CA-01",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-OpenAccount",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#OpenAccount"
+          ],
+          "rationale": "Initiate ↔ POST; 6/6",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-102",
+        "source": "A2:SO-CA-02@1.0",
+        "target": "A3:OP-GetAccount@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-CA-02",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-GetAccount",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#GetAccount",
+            "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+          ],
+          "rationale": "Retrieve implemented as POST (SOAP convention) — deviation recorded",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-103",
+        "source": "A2:SO-CA-03@1.0",
+        "target": "A3:OP-BlockAccount@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-CA-03",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-BlockAccount",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#BlockAccount",
+            "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+          ],
+          "rationale": "Control implemented as POST — deviation recorded",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-104",
+        "source": "A2:SO-CA-04@1.0",
+        "target": "A3:OP-AmendOverdraft@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-CA-04",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-AmendOverdraft",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#AmendOverdraft",
+            "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+          ],
+          "rationale": "Update implemented as POST — deviation recorded",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-105",
+        "source": "A2:SO-CA-05@1.0",
+        "target": "A3:OP-CloseAccount@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-CA-05",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-CloseAccount",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#CloseAccount",
+            "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+          ],
+          "rationale": "Execute/Closure implemented as POST — deviation recorded",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-106",
+        "source": "A2:SO-PK-01@1.0",
+        "target": "A3:OP-PostEntry@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PK-01",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-PostEntry",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#PostEntry",
+            "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+          ],
+          "rationale": "Update/Posting implemented as POST — deviation recorded",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-107",
+        "source": "A2:SO-PK-02@1.0",
+        "target": "A3:OP-GetBalance@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PK-02",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-GetBalance",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#GetBalance",
+            "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+          ],
+          "rationale": "Retrieve as POST — deviation recorded",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-108",
+        "source": "A2:SO-PK-03@1.0",
+        "target": "A3:OP-ReverseEntry@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PK-03",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-ReverseEntry",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#ReverseEntry",
+            "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+          ],
+          "rationale": "Execute/Reversal as POST — deviation recorded",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-109",
+        "source": "A2:SO-PE-01@1.0",
+        "target": "A3:OP-SubmitPayment@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PE-01",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-SubmitPayment",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#SubmitPayment"
+          ],
+          "rationale": "Initiate ↔ POST; 6/6",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-110",
+        "source": "A2:SO-PE-02@1.0",
+        "target": "A3:OP-PaymentStatus@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PE-02",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-PaymentStatus",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#PaymentStatus",
+            "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+          ],
+          "rationale": "Retrieve as POST — deviation recorded",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-111",
+        "source": "A2:SO-PE-03@1.0",
+        "target": "A3:OP-CancelPayment@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PE-03",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-CancelPayment",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#CancelPayment",
+            "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+          ],
+          "rationale": "Control as POST — deviation recorded",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-112",
+        "source": "A2:SO-PRD-01@1.0",
+        "target": "A3:OP-CreateCustomer@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PRD-01",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-CreateCustomer",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#CreateCustomer"
+          ],
+          "rationale": "Register ↔ POST; 4/4",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-113",
+        "source": "A2:SO-PRD-02@1.0",
+        "target": "A3:OP-GetCustomer@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PRD-02",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-GetCustomer",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#GetCustomer",
+            "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+          ],
+          "rationale": "Retrieve as POST — deviation recorded",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-114",
+        "source": "A2:SO-PRD-03@1.0",
+        "target": "A3:OP-UpdateCustomer@12.4",
+        "relation": "IMPLEMENTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SO-PRD-03",
+            "type": "A2.ServiceOperation",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "OP-UpdateCustomer",
+            "type": "A3.APIOperation",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "api_contract:ledger-wsdl-12.4#UpdateCustomer",
+            "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
+          ],
+          "rationale": "Update as POST — deviation recorded",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-121",
+        "source": "A2:SD-CA@1.0",
+        "target": "A3:LM-ACCT@12.4",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SD-CA",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "LM-ACCT",
+            "type": "A3.ApplicationComponent",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:LM-ARCH-12.4#modules"
+          ],
+          "rationale": "LM-ACCT exposes the operations of the domain",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-122",
+        "source": "A2:SD-PK@1.0",
+        "target": "A3:LM-POST@12.4",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SD-PK",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "LM-POST",
+            "type": "A3.ApplicationComponent",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:LM-ARCH-12.4#modules"
+          ],
+          "rationale": "LM-POST exposes the operations of the domain",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-123",
+        "source": "A2:SD-PE@1.0",
+        "target": "A3:LM-PAY@12.4",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SD-PE",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "LM-PAY",
+            "type": "A3.ApplicationComponent",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:LM-ARCH-12.4#modules"
+          ],
+          "rationale": "LM-PAY exposes the operations of the domain",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-124",
+        "source": "A2:SD-PRD@1.0",
+        "target": "A3:LM-PARTY@12.4",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "SD-PRD",
+            "type": "A2.ServiceDomain",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "LM-PARTY",
+            "type": "A3.ApplicationComponent",
+            "version": "12.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:LM-ARCH-12.4#modules"
+          ],
+          "rationale": "LM-PARTY exposes the operations of the domain",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-131",
+        "source": "A2:BBO-ACCOUNT@1.0",
+        "target": "A3:ENT-ACCOUNT@12.4",
+        "relation": "MAPPED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BBO-ACCOUNT",
+            "type": "A2.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "ENT-ACCOUNT",
+            "type": "A3.DataEntity",
+            "version": "12.4"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "data_model:LM-DD-12.4#ENT-ACCOUNT"
+          ],
+          "rationale": "canonical attributes present in the table; extensions noted",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-132",
+        "source": "A2:BBO-POSTING@1.0",
+        "target": "A3:ENT-POSTING@12.4",
+        "relation": "MAPPED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BBO-POSTING",
+            "type": "A2.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "ENT-POSTING",
+            "type": "A3.DataEntity",
+            "version": "12.4"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "data_model:LM-DD-12.4#ENT-POSTING"
+          ],
+          "rationale": "canonical attributes present in the table; extensions noted",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-133",
+        "source": "A2:BBO-PAYMENT-TXN@1.0",
+        "target": "A3:ENT-PAYMENT@12.4",
+        "relation": "MAPPED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BBO-PAYMENT-TXN",
+            "type": "A2.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "ENT-PAYMENT",
+            "type": "A3.DataEntity",
+            "version": "12.4"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "data_model:LM-DD-12.4#ENT-PAYMENT"
+          ],
+          "rationale": "canonical attributes present in the table; extensions noted",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-134",
+        "source": "A2:BBO-PARTY@1.0",
+        "target": "A3:ENT-PARTY@12.4",
+        "relation": "MAPPED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BBO-PARTY",
+            "type": "A2.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "ENT-PARTY",
+            "type": "A3.DataEntity",
+            "version": "12.4"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "data_model:LM-DD-12.4#ENT-PARTY"
+          ],
+          "rationale": "canonical attributes present in the table; extensions noted",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-141",
+        "source": "A3:APP-LEDGER@12.4",
+        "target": "A4:INF-MF-LPAR-PROD@2.0",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-LEDGER",
+            "type": "A3.ApplicationComponent",
+            "version": "12.4"
+          },
+          "target_ref": {
+            "id": "INF-MF-LPAR-PROD",
+            "type": "A4.Node",
+            "version": "2.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:LM-DD-2026#prod"
+          ],
+          "rationale": "Production LPAR",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "sam.infra",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-142",
+        "source": "A3:APP-LEDGER@12.4",
+        "target": "A4:DEP-LM-PROD@1.0",
+        "relation": "DEPLOYED_AS",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-LEDGER",
+            "type": "A3.ApplicationComponent",
+            "version": "12.4"
+          },
+          "target_ref": {
+            "id": "DEP-LM-PROD",
+            "type": "A4.Deployment",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:LM-DD-2026#prod"
+          ],
+          "rationale": "Production deployment",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "sam.infra",
+          "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "LM-151",
+        "source": "A1:CAP-ACCT-SVC@1.0",
+        "target": "A2:SD-CA@1.0",
+        "relation": "SUPPORTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CAP-ACCT-SVC",
+            "type": "A1.BusinessCapability",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-CA",
+            "type": "A2.ServiceDomain",
+            "version": "1.0",
+            "canonical_id": "BIAN-CURRENT-ACCOUNT"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "business_architecture_document:BCM-DRAFT-2026#CAP-ACCT-SVC",
+            "domain_scope_assessment:DSA-LM-1"
+          ],
+          "rationale": "account servicing is the current-account domain's scope",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "LM-152",
+        "source": "A1:CAP-POSITION@1.0",
+        "target": "A2:SD-PK@1.0",
+        "relation": "SUPPORTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CAP-POSITION",
+            "type": "A1.BusinessCapability",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-PK",
+            "type": "A2.ServiceDomain",
+            "version": "1.0",
+            "canonical_id": "BIAN-POSITION-KEEPING"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "business_architecture_document:BCM-DRAFT-2026#CAP-POSITION",
+            "domain_scope_assessment:DSA-LM-2"
+          ],
+          "rationale": "balance management is position keeping",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "LM-153",
+        "source": "A1:CAP-PAY-EXEC@1.0",
+        "target": "A2:SD-PE@1.0",
+        "relation": "SUPPORTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CAP-PAY-EXEC",
+            "type": "A1.BusinessCapability",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-PE",
+            "type": "A2.ServiceDomain",
+            "version": "1.0",
+            "canonical_id": "BIAN-PAYMENT-EXECUTION"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "business_architecture_document:BCM-DRAFT-2026#CAP-PAY-EXEC",
+            "domain_scope_assessment:DSA-LM-3"
+          ],
+          "rationale": "same scope",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      },
+      {
+        "id": "LM-154",
+        "source": "A1:CAP-PARTY-DATA@1.0",
+        "target": "A2:SD-PRD@1.0",
+        "relation": "SUPPORTED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CAP-PARTY-DATA",
+            "type": "A1.BusinessCapability",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SD-PRD",
+            "type": "A2.ServiceDomain",
+            "version": "1.0",
+            "canonical_id": "BIAN-PARTY-REFERENCE"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "business_architecture_document:BCM-DRAFT-2026#CAP-PARTY-DATA",
+            "domain_scope_assessment:DSA-LM-4"
+          ],
+          "rationale": "customer reference data is the party reference directory",
+          "baseline_id": "LM-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-10-22",
+          "bian_release": "BIAN-RELEASE-X"
+        }
+      }
+    ]
+  }
+}
