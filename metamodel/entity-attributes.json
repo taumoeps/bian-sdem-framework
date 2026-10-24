@@ -1455,7 +1455,8 @@
         "draft_id": "DA1-12"
       },
       "kind": "value",
-      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it",
+      "minimum": 1
     },
     {
       "id": "AT-A1-10",
@@ -1516,7 +1517,9 @@
         "draft_id": "DA1-14"
       },
       "kind": "value",
-      "confidence_basis": "SDEM field with no standard concept; not validated"
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "minimum": 1,
+      "maximum": 5
     },
     {
       "id": "AT-A1-12",
@@ -1543,7 +1546,9 @@
         "draft_id": "DA1-15"
       },
       "kind": "value",
-      "confidence_basis": "SDEM field with no standard concept; not validated"
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "minimum": 1,
+      "maximum": 5
     },
     {
       "id": "AT-A1-13",
@@ -1705,7 +1710,8 @@
         "draft_id": "DA1-21"
       },
       "kind": "value",
-      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it",
+      "minimum": 1
     },
     {
       "id": "AT-A1-19",
@@ -1887,7 +1893,8 @@
         "draft_id": "DA1-27"
       },
       "kind": "value",
-      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it",
+      "minimum": 1
     },
     {
       "id": "AT-A1-25",
@@ -3658,7 +3665,9 @@
         "draft_id": "DA4-13"
       },
       "kind": "value",
-      "confidence_basis": "defined by a public standard (IANA) and checked"
+      "confidence_basis": "defined by a public standard (IANA) and checked",
+      "minimum": 0,
+      "maximum": 65535
     },
     {
       "id": "AT-A4-28",

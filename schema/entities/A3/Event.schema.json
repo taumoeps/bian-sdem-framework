@@ -1,0 +1,387 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/entities/A3/Event.schema.json",
+  "title": "A3.Event",
+  "description": "An event an application produces or consumes",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "version",
+    "name"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "the instance's permanent key — the source tool's own persistent id",
+      "x-sdem-source": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "x-sdem-reasoning": "Every relationship points at it; it must be unique in its level and never reused (knowledge-graph spec KG-I-01).",
+      "x-sdem-confidence": "high"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "A3.Event"
+      ],
+      "description": "an entity type from the catalogue",
+      "x-sdem-source": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.type",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "x-sdem-reasoning": "Ties the instance to the Architecture Metamodel; must be concrete and of the export's level.",
+      "x-sdem-confidence": "high"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "the instance's version",
+      "x-sdem-source": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.version",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "x-sdem-reasoning": "Relationship ends pin it, so an approved relationship refers to a known state.",
+      "x-sdem-confidence": "high"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "human-readable name",
+      "x-sdem-source": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "x-sdem-reasoning": "Shown in traces; a rename changes the name, never the id.",
+      "x-sdem-confidence": "high"
+    },
+    "lifecycle_status": {
+      "enum": [
+        "planned",
+        "active",
+        "deprecated",
+        "retired"
+      ],
+      "description": "lifecycle state",
+      "x-sdem-source": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.lifecycle_status",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "x-sdem-reasoning": "Lets retired things stay referable and planned (design) things be marked as such in traces.",
+      "x-sdem-confidence": "high"
+    },
+    "canonical_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "external reference id, e.g. a BIAN concept id on A2 instances",
+      "x-sdem-source": {
+        "standard": "BIAN Service Landscape 14.0 (concept identifiers)",
+        "locator": "A2 end of BIAN-authority relationships; required before approval — schema/relationship-registry.schema.json",
+        "uri": "https://bian.org/servicelandscape-14-0-0/"
+      },
+      "x-sdem-reasoning": "BIAN-authority relationships require it on the A2 end before approval.",
+      "x-sdem-confidence": "high"
+    },
+    "description": {
+      "type": "string",
+      "description": "scope statement",
+      "x-sdem-source": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.description",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "x-sdem-reasoning": "Read by the step-5 text rule for capabilities and domains.",
+      "x-sdem-confidence": "high"
+    },
+    "definition_uri": {
+      "type": "string",
+      "description": "link to the source definition",
+      "x-sdem-source": {
+        "standard": "SDEM level-model export schema",
+        "locator": "schema/level-model.schema.json › instance.definition_uri",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "x-sdem-reasoning": "Points to the institution's or the standard's definition.",
+      "x-sdem-confidence": "high"
+    },
+    "attributes": {
+      "type": "object",
+      "description": "common, inherited and entity-specific attributes",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "description": "the record's key in the tool it came from",
+          "x-sdem-id": "CA-01",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+            "locator": "dcterms:identifier",
+            "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+          },
+          "x-sdem-reasoning": "Answers: Which record in the source tool is this? The record's own key in the tool it came from, so any node can be traced back to its system of record. Distinct from SDEM `id`, which may be the same value.",
+          "x-sdem-confidence": "high"
+        },
+        "created": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "date it was created in the source",
+          "x-sdem-id": "CA-02",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+            "locator": "dcterms:created",
+            "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+          },
+          "x-sdem-reasoning": "Answers: How old is this? Date the thing was created in the source.",
+          "x-sdem-confidence": "high"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "date it was last changed in the source",
+          "x-sdem-id": "CA-03",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+            "locator": "dcterms:modified",
+            "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+          },
+          "x-sdem-reasoning": "Answers: What changed recently? Is this stale? Date of the last change in the source; lets reviews spot stale entries.",
+          "x-sdem-confidence": "high"
+        },
+        "valid_from": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "date it comes into force",
+          "x-sdem-id": "CA-04",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+            "locator": "dcterms:valid",
+            "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+          },
+          "x-sdem-reasoning": "Answers: Is this in force on a given date? Start of the validity period. Dublin Core defines `valid` as a date or range; SDEM stores the range as two dates.",
+          "x-sdem-confidence": "high"
+        },
+        "valid_to": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "date it stops being in force (empty = open-ended)",
+          "x-sdem-id": "CA-05",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+            "locator": "dcterms:valid",
+            "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+          },
+          "x-sdem-reasoning": "Answers: Is this in force on a given date? End of the validity period (empty = open).",
+          "x-sdem-confidence": "high"
+        },
+        "replaces": {
+          "type": "string",
+          "description": "the earlier instance this one supersedes",
+          "x-sdem-id": "CA-06",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "same entity type"
+          ],
+          "x-sdem-source": {
+            "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+            "locator": "dcterms:replaces",
+            "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+          },
+          "x-sdem-reasoning": "Answers: What did this replace? The earlier instance this one supersedes, so history can be followed through renames and re-designs.",
+          "x-sdem-confidence": "high"
+        },
+        "replaced_by": {
+          "type": "string",
+          "description": "the later instance that supersedes this one",
+          "x-sdem-id": "CA-07",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "same entity type"
+          ],
+          "x-sdem-source": {
+            "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+            "locator": "dcterms:isReplacedBy",
+            "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+          },
+          "x-sdem-reasoning": "Answers: What replaced this? The later instance that supersedes this one.",
+          "x-sdem-confidence": "high"
+        },
+        "conforms_to": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "standards, frameworks or policies it follows (e.g. \"BIAN BCM 14.0\")",
+          "x-sdem-id": "CA-08",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+            "locator": "dcterms:conformsTo",
+            "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+          },
+          "x-sdem-reasoning": "Answers: Which standard, framework or policy does this follow? E.g. \"BIAN BCM 14.0\", an internal policy id. Makes alignment claims explicit and queryable.",
+          "x-sdem-confidence": "high"
+        },
+        "subject": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "topic tags (e.g. \"payments\", \"fraud\")",
+          "x-sdem-id": "CA-09",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+            "locator": "dcterms:subject",
+            "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+          },
+          "x-sdem-reasoning": "Answers: Find everything about a topic (e.g. \"payments\", \"fraud\"). Free topic tags; lets architects slice the graph by theme.",
+          "x-sdem-confidence": "high"
+        },
+        "owner": {
+          "type": "string",
+          "description": "the actor or role accountable for it",
+          "x-sdem-id": "CA-10",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A1.BusinessActor",
+            "A1.BusinessRole"
+          ],
+          "x-sdem-source": {
+            "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+            "locator": "assignment (active structure assigned to behaviour or object)",
+            "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+          },
+          "x-sdem-reasoning": "Answers: Who is accountable for this? Accountability is the most-asked design question. No public standard defines an \"owner\" field: Dublin Core's rightsHolder is about rights, not accountability. Built on ArchiMate's assignment of an actor or role.",
+          "x-sdem-confidence": "medium"
+        },
+        "access_classification": {
+          "type": "string",
+          "enum": [
+            "public",
+            "internal",
+            "confidential",
+            "restricted"
+          ],
+          "description": "how sensitive it is and who may see it",
+          "x-sdem-id": "CA-11",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "enumeration",
+          "x-sdem-source": {
+            "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+            "locator": "dcterms:accessRights",
+            "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+          },
+          "x-sdem-reasoning": "Answers: Who may see this? How sensitive is it? Dublin Core defines the field (access or security status); the four values are SDEM's common banking scale, not a standard.",
+          "x-sdem-confidence": "medium"
+        },
+        "published_to": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "ids of A4 technology services (brokers) it is published to",
+          "x-sdem-id": "AT-A3-18",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A4.TechnologyService"
+          ],
+          "x-sdem-source": {
+            "standard": "SDEM",
+            "locator": "SDEM join key for rule S51; corresponds to an AsyncAPI channel (not adopted) — docs/relationship-rules-spec.md",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "No adopted standard yet; corresponds to an AsyncAPI channel and to ArchiMate flow to a technology service.",
+          "x-sdem-confidence": "medium"
+        },
+        "event_type": {
+          "type": "string",
+          "description": "the type name the event carries (e.g. \"payment.initiated\")",
+          "x-sdem-id": "AT-A3-36",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "CloudEvents 1.0 (CNCF, public)",
+            "locator": "context attribute type",
+            "uri": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md"
+          },
+          "x-sdem-reasoning": "Answers: Which events exist, by type? CloudEvents required attribute; checked 2026-10-24.",
+          "x-sdem-confidence": "high"
+        },
+        "event_source": {
+          "type": "string",
+          "description": "the source the event identifies itself with",
+          "x-sdem-id": "AT-A3-37",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "CloudEvents 1.0 (CNCF, public)",
+            "locator": "context attribute source",
+            "uri": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md"
+          },
+          "x-sdem-reasoning": "Answers: Which system emits this event? CloudEvents required attribute; checked 2026-10-24.",
+          "x-sdem-confidence": "high"
+        },
+        "schema_uri": {
+          "type": "string",
+          "description": "link to the schema the event data follows",
+          "x-sdem-id": "AT-A3-38",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "CloudEvents 1.0 (CNCF, public)",
+            "locator": "context attribute dataschema",
+            "uri": "https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md"
+          },
+          "x-sdem-reasoning": "Answers: Where is the contract for this event? CloudEvents optional attribute; checked 2026-10-24.",
+          "x-sdem-confidence": "high"
+        }
+      },
+      "additionalProperties": true,
+      "x-sdem-note": "undefined attributes are allowed here but reported as warnings by sdem-graph check"
+    }
+  },
+  "x-sdem-entity": {
+    "level": "A3",
+    "extends": null,
+    "identifier": [
+      "name"
+    ],
+    "source": {
+      "standard": "ArchiMate 3.2",
+      "release": "3.2",
+      "concept": "Application Event",
+      "locator": "chapter 9",
+      "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+    },
+    "reasoning": "Aligned to ArchiMate 3.2 Application Event, ch. 9 (concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated). SDEM uses it for published business events; no public standard is yet cited for its fields (AsyncAPI is proposed).",
+    "confidence": "medium"
+  },
+  "x-sdem-generated-from": "metamodel/a1…a4-*.json, metamodel/entity-attributes.json (python -m sdem.physical)"
+}

@@ -27,6 +27,7 @@ sdem-catalogue = "sdem.catalogue:main"
 sdem-attributes = "sdem.attributes:main"
 sdem-confidence = "sdem.confidence:main"
 sdem-logical = "sdem.logical:main"
+sdem-physical = "sdem.physical:main"
 # Deprecated aliases (SDMM → SDEM, v0.7.0); removed in v0.8.0
 sdmm-validate = "sdem.validate:main"
 sdmm-diff = "sdem.diff:main"
@@ -47,5 +48,5 @@ packages = ["sdem", "sdem.data", "sdem.data.schema", "sdem.data.metamodel", "sdm
 "sdem.data.metamodel" = "metamodel"
 
 [tool.setuptools.package-data]
-"sdem.data.schema" = ["*.json"]
+"sdem.data.schema" = ["*.json", "entities/*/*.json"]
 "sdem.data.metamodel" = ["*.json"]

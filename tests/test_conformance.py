@@ -41,6 +41,10 @@ class ConformanceTests(unittest.TestCase):
         e = self._errors(self._set(self.a1, 'PRC-PAY-01', modified='30/09/2026', level=True))
         self.assertEqual(sum('LC-05' in x for x in e), 2, e)
 
+    def test_lc05_integer_range(self):
+        e = self._errors(self._set(self.a1, 'CAP-PAY-010', maturity_current=7))
+        self.assertTrue(any('LC-05' in x and 'maturity_current' in x for x in e), e)
+
     def test_lc06_value_not_allowed(self):
         e = self._errors(self._set(self.a1, 'PRC-PAY-01', criticality='urgent'))
         self.assertTrue(any('LC-06' in x and 'urgent' in x for x in e), e)
@@ -86,6 +90,42 @@ class ConformanceTests(unittest.TestCase):
         fg.levels['A1'] = LevelGraph(d, fg.mm)
         report = fg.check()
         self.assertTrue(any('LC-06' in x for x in report['level A1 (' + d['model_id'] + ')']))
+
+
+class PhysicalDataModelTests(unittest.TestCase):
+    """The per-entity JSON Schemas (sdem/physical.py) are current, carry provenance, accept the examples and reject bad records."""
+
+    @classmethod
+    def setUpClass(cls):
+        import glob
+        cls.S = {json.loads(Path(p).read_text(encoding='utf-8'))['title']: json.loads(Path(p).read_text(encoding='utf-8')) for p in glob.glob(str(ROOT / 'schema/entities/*/*.schema.json'))}
+
+    def test_current(self):
+        from sdem.physical import main
+        self.assertEqual(main(['--check']), 0)
+
+    def test_one_schema_per_instance_type(self):
+        mm = Metamodel.load()
+        self.assertEqual(set(self.S), {t for t, e in mm.entities.items() if not e.get('abstract') and not e.get('artefact')})
+
+    def test_every_property_carries_source_reasoning_confidence(self):
+        for t, s in self.S.items():
+            props = {k: v for k, v in s['properties'].items() if k != 'attributes'}; props.update(s['properties']['attributes']['properties'])
+            for k, p in props.items():
+                for x in ('x-sdem-source', 'x-sdem-reasoning', 'x-sdem-confidence'): self.assertIn(x, p, f'{t}.{k} {x}')
+            for x in ('source', 'reasoning', 'confidence'): self.assertIn(x, s['x-sdem-entity'], f'{t} entity {x}')
+
+    def test_examples_validate_and_bad_records_fail(self):
+        import glob
+        from sdem.validate import check_schema
+        for f in glob.glob(str(ROOT / 'examples/*/a[1-4]-*.json')):
+            for i in json.loads(Path(f).read_text(encoding='utf-8'))['instances']:
+                self.assertEqual(check_schema(i, self.S[i['type']]), [], f"{f} {i['id']}")
+        s = self.S['A1.BusinessProcess']; ok = {'id': 'P1', 'type': 'A1.BusinessProcess', 'version': '1', 'name': 'p'}
+        for bad in ({'criticality': 'urgent'}, {'level': 'two'}, {'modified': '30/09/2026'}, {'owner': 3}):
+            self.assertTrue(check_schema({**ok, 'attributes': bad}, s), bad)
+        self.assertTrue(check_schema({**ok, 'type': 'A1.BusinessService'}, s))
+        self.assertTrue(check_schema({**ok, 'type': 'A1.BusinessCapability', 'attributes': {'maturity_current': 9}}, self.S['A1.BusinessCapability']))
 
 
 if __name__ == '__main__':

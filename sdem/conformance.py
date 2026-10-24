@@ -47,7 +47,8 @@ def type_ok(a, v, name):
     if v is None and name == 'behavior_qualifier': return True
     if want is int and isinstance(v, bool): return False
     if not isinstance(v, want): return False
-    return not (a['type'] == 'date' and not DATE.match(v))
+    if a['type'] == 'date' and not DATE.match(v): return False
+    return not (want is int and (v < a.get('minimum', v) or v > a.get('maximum', v)))
 
 
 def check_level(doc, mm, estate_index=None):
