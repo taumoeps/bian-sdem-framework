@@ -109,7 +109,7 @@ Everything that reads the graph goes through **one interface** (in `sdem/store.p
 | **Store** | the `graph/` JSON files | queries, view, engine — the normal path |
 | **Exports** | export files directly, built in memory (today's code) | `sdem-graph check`, and as the reference the store is tested against |
 
-Every existing query must give **identical answers** from either — that is the main acceptance test. The engine (v0.9) is written only against the interface, so a database could replace the files later without changing it.
+Every existing query must give **identical answers** from either — that is the main acceptance test. The engine (v0.10) is written only against the interface, so a database could replace the files later without changing it.
 
 ## 7. Queries
 

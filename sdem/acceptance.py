@@ -103,6 +103,8 @@ def run(engine, ids=None, out=None):
             (out / f'{uc}-proposals.json').write_text(json.dumps(_doc(res.get('proposals', []), getattr(engine, 'name', ''), case), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
             if res.get('candidates') is not None:
                 (out / f'{uc}-candidates.json').write_text(json.dumps(_doc(res['candidates'], getattr(engine, 'name', ''), case), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+            for d in res.get('design', []):
+                (out / f"{uc}-design-{d['level'].lower()}.json").write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
             (out / f'{uc}-inference-log.json').write_text(json.dumps({'use_case': r['case'], 'engine': getattr(engine, 'name', ''), 'attempts': res.get('log', [])}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     return rows
 

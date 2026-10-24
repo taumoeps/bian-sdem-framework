@@ -45,5 +45,44 @@ class RulesEngineTests(unittest.TestCase):
             for m in r['result']['proposals'] + r['result']['candidates']: self.assertIn(m['mapping_id'], ids, cid)
 
 
+    def test_design_exports_are_valid_level_exports(self):
+        from sdem.graph import LevelGraph
+        from sdem.metamodel import Metamodel
+        mm = Metamodel.load(); design = self.rows['M2']['result'].get('design', [])
+        self.assertEqual({d['level'] for d in design}, {'A3', 'A4'})
+        for d in design:
+            self.assertEqual(LevelGraph(d, mm).validate(), [], d['level'])
+            for i in d['instances']: self.assertEqual(i['lifecycle_status'], 'planned')
+        for m in self.rows['M2']['result']['proposals']:
+            self.assertEqual(m['confidence'], 0.4); self.assertIn('TARGET DESIGN, not a mapping', m['rationale'])
+
+    def test_no_design_where_exports_exist(self):
+        for cid, r in self.rows.items():
+            if cid != 'M2': self.assertNotIn('design', r['result'], cid)
+
+    def test_deterministic(self):
+        from sdem.rules_engine import RulesEngine
+        again = {r['case']: r for r in run(RulesEngine(), ['M1', 'C2'])}
+        for cid in again: self.assertEqual(again[cid]['result'], self.rows[cid]['result'], cid)
+
+    def test_beats_the_baseline(self):
+        from sdem.inference import NameOverlapBaseline
+        base = {r['case']: r for r in run(NameOverlapBaseline())}
+        for cid, r in self.rows.items(): self.assertGreaterEqual(r['score']['registry']['f1'], base[cid]['score']['registry']['f1'], cid)
+
+
+class CommandTests(unittest.TestCase):
+    def test_sdem_infer_rules_on_a_store(self):
+        import contextlib, io, tempfile
+        from sdem.inference import main
+        from sdem.store import build
+        with tempfile.TemporaryDirectory() as t:
+            e = ROOT / 'examples' / 'payment-initiation'
+            build(sorted(str(p) for p in e.glob('a[1-4]-*.json')) + [str(e / 'm1-mappings-given.json')], Path(t) / 'g')
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf): self.assertEqual(main(['rules', '--graph', str(Path(t) / 'g'), '--out', str(Path(t) / 'o')]), 0)
+            self.assertEqual(len(json.loads(buf.getvalue())['mappings']), 13)
+            self.assertTrue((Path(t) / 'o' / 'inference-log.json').exists())
+
 if __name__ == '__main__':
     unittest.main()

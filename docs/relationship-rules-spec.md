@@ -423,6 +423,8 @@ The executed runs are the acceptance test (DEC-E-01): the engine, given the curr
 
 Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: 132 rows, 129 enforced (the rest are A2 artefact rows, documentation only), 113 verified against the Archi oracle, 0 contradicted.
 
+**Result (2026-10-25, v0.10).** `sdem-accept` runs the rule-based engine (`sdem/rules_engine.py`) on each scored case from a graph store built from the exports and the case's given registry only: **all 8 pass at precision and recall 1.00** (catalogue-typed proposals, and candidate reports for C1–C3); M0 and C3 score above the hand-executed runs, whose one error each came from rules since fixed. Every proposal validates. `tests/test_acceptance.py` enforces it. Caveat: OPEN-05.
+
 ## 9. Verification status and open items
 
 | ID | Item | Status |
@@ -436,7 +438,7 @@ Plan coverage after the suite: 45 rows validated clean, 5 validated with finding
 
 ### Engine decisions
 
-Settled 2026-10-25 before the engine build (v0.9), where the records and the procedure disagreed or were silent.
+Settled 2026-10-25 before and during the engine build (v0.10), where the records and the procedure disagreed or were silent.
 
 | ID | Question | Decision | Reasoning |
 |---|---|---|---|

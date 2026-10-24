@@ -1,4 +1,4 @@
-"""Architecture Relationship Inference Engine: the interface and a baseline, for the rule-based engine (v0.9) to plug into.
+"""Architecture Relationship Inference Engine: the interface and a baseline, for the rule-based engine (sdem/rules_engine.py, v0.10).
 
 An engine reads a FederatedGraph and returns *proposed* mapping records. It never writes approved
 records; everything it returns goes through sdem-validate and an architect. The baseline here exists
@@ -14,8 +14,10 @@ STOP = {'the', 'and', 'of', 'for', 'a', 'an', 'to', 'in', 'on', 'synthetic', 'se
 
 
 class RelationshipInferenceEngine(Protocol):
+    """An engine reads a graph through the access layer (sdem/store.py GraphReader) and returns
+    {'proposals': [...], 'candidates': [...], 'log': [...], 'design': [...]} — proposals only ever `proposed`."""
     name: str
-    def propose(self, graph: FederatedGraph) -> list: ...
+    def infer(self, reader, case=None) -> dict: ...
 
 
 def proposal(mapping_id, src, rel, tgt, confidence, rationale, engine, baseline_id='ENGINE-RUN'):
@@ -86,19 +88,28 @@ ENGINES = {'baseline': NameOverlapBaseline, 'rules': _rules_engine}
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdem-infer', description='Run a mapping engine over level exports and emit a document of proposed mappings.')
+    parser = argparse.ArgumentParser(prog='sdem-infer', description='Run an inference engine over a graph store (or level exports) and emit a document of proposed relationships.')
     parser.add_argument('engine', choices=sorted(ENGINES))
-    parser.add_argument('paths', nargs='+', help='level exports (and optionally existing mapping documents)')
-    parser.add_argument('--threshold', type=float, default=0.2)
+    parser.add_argument('paths', nargs='*', help='level exports and the approved registry (or use --graph)')
+    parser.add_argument('--graph', metavar='DIR', help='read a graph store (sdem-graph build) — the normal path')
+    parser.add_argument('--out', metavar='DIR', help='also write candidates, the inference log and any target-design exports here')
+    parser.add_argument('--threshold', type=float, default=0.2, help='baseline only')
     args = parser.parse_args(argv)
+    from sdem.store import GraphReader, StoreError
     try:
-        graph = FederatedGraph.load(args.paths)
-    except (OSError, ValueError) as exc:
+        reader = GraphReader.from_store(args.graph) if args.graph else GraphReader.from_exports(args.paths)
+    except (OSError, ValueError, StoreError) as exc:
         print(f'ERROR: {exc}', file=sys.stderr); return 2
     engine = ENGINES[args.engine](args.threshold) if args.engine == 'baseline' else ENGINES[args.engine]()
-    props = engine.propose(graph)
-    print(json.dumps({'registry_version': load_registry()['$schema_version'], 'metamodel_version': graph.mm.version,
-                      'engine': engine.name, 'mappings': props}, indent=2))
+    result = engine.infer(reader, {'id': 'RUN'})
+    head = {'registry_version': load_registry()['$schema_version'], 'metamodel_version': reader.mm.version, 'engine': engine.name}
+    print(json.dumps({**head, 'mappings': result['proposals']}, indent=2, ensure_ascii=False))
+    if args.out:
+        out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
+        (out / 'candidates.json').write_text(json.dumps({**head, 'mappings': result.get('candidates', [])}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+        (out / 'inference-log.json').write_text(json.dumps({'engine': engine.name, 'attempts': result.get('log', [])}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+        for d in result.get('design', []):
+            (out / f"design-{d['level'].lower()}.json").write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     return 0
 
 

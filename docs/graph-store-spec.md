@@ -67,7 +67,7 @@
 | GS-A-01 | One read interface, `sdem/store.py` `GraphReader`, with: `levels()`, `baseline()`, `node(level, id, version=None)` (latest version if omitted), `nodes(level=None, type=None, include_subtypes=True, where=None)`, `edges(scope, source=None, target=None, relation=None)`, `neighbours(node, relation=None, direction='both')`, `links(node, direction)` (approved cross-level edges), `is_a(type, ancestor)`. Return values are plain dicts in the shapes of §4–§5. | KG-L-04 | AT-03 |
 | GS-A-02 | Two implementations: `StoreReader` (reads a store directory) and `ExportReader` (builds the same structures in memory from exports and registry — today's path). | — | AT-04 |
 | GS-A-03 | `trace`, `impact`, `stats` and `query` use only `GraphReader`; for every example estate their output is identical whichever implementation backs them. | KG-Q-01, 02, 06 | AT-04 |
-| GS-A-04 | The inference engine (v0.9) reads only through `GraphReader`. | DEC-01 | engine tests |
+| GS-A-04 | The inference engine (v0.10) reads only through `GraphReader`. | DEC-01 | `tests/test_acceptance.py` |
 
 ## 9. Queries
 

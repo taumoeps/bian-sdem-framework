@@ -62,7 +62,7 @@
         ]
       },
       "note": "greenfield: no A3/A4 export; the engine produces a target design (DEC-E-05: built last)",
-      "engine_status": "pending"
+      "engine_status": "passing"
     },
     {
       "id": "C1",

@@ -26,18 +26,18 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | Baseline review pack `baseline/SDEM-METAMODEL-0.8-review-pack.md` | done; **awaiting independent review** |
 | On approval: record the baseline, `metamodel_version` 0.8.0, remove the deprecated `accesses` definition and the `sdmm` compatibility layer, tag `SDEM-METAMODEL-0.8`, release v0.8.0 | waiting on review |
 
-## Built, unreleased — v0.9
+## Built, unreleased — v0.9 and v0.10
 
 | Deliverable | Status |
 |---|---|
 | **Graph store**: local JSON files in JSON Graph Format v2, load record, baselines, `query` (records, neighbours, unmapped), offline HTML view, graph access layer ([`graph-store-design.md`](graph-store-design.md), [`graph-store-spec.md`](graph-store-spec.md)) | done — AT-01…AT-11 pass |
+| **Inference engine (v0.10)**: `sdem/rules_engine.py` — steps 1–5 and design mode, reading the graph store; acceptance harness `sdem-accept` over the 8 scored cases; decisions DEC-E-01…09 | done — 8 of 8 cases pass at precision and recall 1.00; a blind case (OPEN-05) still to come |
 
 ## Next
 
 | Release | Deliverable | Acceptance test | Status |
 |---|---|---|---|
-| v0.10 | **Inference engine**: the rule logic of `relationship-rules-spec.md` (fill steps 0–5, caps, candidate file, inference log, design mode), reading the graph store through the access layer, with an acceptance harness over the use-case runs. Decisions DEC-E-01…06 settle the open questions | On every scored run, precision and recall ≥ the hand-executed run's; every proposal validates; beats the baseline | **next** |
-| v0.11 | **Ingestion and approval**: spreadsheet templates generated from the schemas and an ingest command; review of proposals into the registry | A synthetic estate loaded from spreadsheets end to end to an impact query; proposals approved into the registry | |
+| v0.11 | **Ingestion and approval** — **next**:: spreadsheet templates generated from the schemas and an ingest command; review of proposals into the registry | A synthetic estate loaded from spreadsheets end to end to an impact query; proposals approved into the registry | |
 | v0.12 | **Change handling**: export diff, refresh trigger, re-checking links touched by a change | A changed export flags exactly the affected links | |
 | v0.13 | **Query service and assistant access** through a script (no MCP); a database behind the access layer if scale requires | Questions answered from the store with their baseline | |
 | v0.14 | **BIAN reference integration**: licensed `ReferenceResolver`, BIAN verification register, Bank Architecture Profiles | Canonical ids validated inside the licensed environment | |

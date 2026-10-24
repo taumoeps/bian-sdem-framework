@@ -7,7 +7,7 @@ Reads a graph through the graph access layer (sdem/store.py GraphReader), applie
   log        — one record per attempt, including refusals (the evidence base; REQ-O-02)
 It never approves, never invents an instance, and never re-proposes a link that is already approved.
 
-Built step by step against the acceptance harness (sdem/acceptance.py). Implemented: steps 1–5 (data joins; BIAN REST decision procedure; structural matching; derivation; bounded text inference). Design mode (M2) is not built.
+Built step by step against the acceptance harness (sdem/acceptance.py). Implemented: steps 1–5 (data joins; BIAN REST decision procedure; structural matching; derivation; bounded text inference). Design mode: a target design from BIAN's container pattern when no A3 export exists (M2).
 """
 import json, re
 from pathlib import Path
@@ -76,6 +76,7 @@ class Run:
     def __init__(self, reader, uc):
         self.r, self.mm, self.uc = reader, reader.mm, uc
         self.rules = _rules()
+        self.rules['DESIGN'] = {'fill_step': 'design', 'confidence': 'low'}
         self.proposals, self.candidates, self.log = [], [], []
         self.approved = {(e['source']['id'], e['relationship'], e['target']['id']) for e in reader.fg.edges()}
         self.proposed = {}   # (src, rel, tgt) -> proposal record (this run)
@@ -709,13 +710,72 @@ class Run:
             for bs in self.of('A1.BusinessService'):
                 self.rank('S08', bs, f"{bs['name']} {bs.get('description') or ''}")
 
+    # ------------------------------------------------------------ design targets — the one place instances are created (mapping-execution.md, M2)
+    CREATE_TERMS = {'Initiate', 'Create', 'Register', 'Evaluate', 'Provide', 'Request'}
+
+    @staticmethod
+    def _collection(asset_name):
+        words = re.findall(r'[A-Za-z0-9]+', asset_name.lower())
+        if words: words[-1] = words[-1][:-1] + 'ies' if words[-1].endswith('y') else (words[-1] if words[-1].endswith('s') else words[-1] + 's')
+        return '/' + '-'.join(words)
+
+    def _rest_form(self, op, coll):
+        term = self.attr(op, 'action_term'); q = self.attr(op, 'behavior_qualifier')
+        if term in self.CREATE_TERMS: return 'POST', coll, 'create-instance term ⇔ POST on the collection'
+        if term == 'Retrieve': return 'GET', coll + '/{id}', 'Retrieve ⇔ GET (SAPG §3.5, verified)'
+        if term == 'Update': return 'PATCH', coll + '/{id}', 'Update ⇔ PATCH on the instance'
+        if term == 'Execute' and q: return 'POST', f"{coll}/{{id}}/{str(q).lower()}", 'Execute ⇔ POST on the qualifier sub-resource'
+        if term == 'Control': return 'PUT', coll + '/{id}/control', "Control ⇔ PUT on the instance's control action"
+        if term in METHODS: return 'PUT', coll + '/{id}' + (f'/{str(q).lower()}' if q else ''), f'{term} ⇔ PUT on the instance'
+        return None, None, f'{term} has no REST form'
+
+    def design(self):
+        """When no A3 export exists, mapping ends at A2: produce a TARGET DESIGN from BIAN's container pattern (planned instances, low)."""
+        levels = set(self.r.levels())
+        if 'A3' in levels or 'A2' not in levels:
+            return []
+        self.log.append({'plan_id': 'DESIGN', 'connection': 'mapping ends at A2', 'step_assigned': None, 'step_used': 'design', 'fallback': False, 'data_read': ['levels exported: ' + ', '.join(sorted(levels))],
+                         'reasoning': 'no A3 or A4 export: no step applies below A2; a target design is produced from the BIAN container pattern', 'confidence_predicted': 'low', 'confidence_given': None, 'proposal_id': None, 'outcome': 'design'})
+        a3 = {'level': 'A3', 'model_id': f'{self.uc.lower()}-a3-TARGET-DESIGN', 'model_version': 'design', 'metamodel_version': self.mm.version,
+              'source_system': 'DESIGN-PROPOSAL (bian-container-pattern; not an APM export)', 'instances': [], 'relationships': []}
+        a4 = {'level': 'A4', 'model_id': f'{self.uc.lower()}-a4-TARGET-DESIGN', 'model_version': 'design', 'metamodel_version': self.mm.version,
+              'source_system': 'DESIGN-PROPOSAL (bian-container-pattern; not a CMDB export)', 'instances': [], 'relationships': []}
+        tag = 'TARGET DESIGN, not a mapping'
+        for dom in self.of('A2.ServiceDomain'):
+            ops = [o for o in self.of('A2.ServiceOperation') if (self.domain_of(o['id']) or {}).get('id') == dom['id']]
+            if not ops: continue
+            at = self.get(self.attr(dom, 'asset_type'), 'A2.AssetType') if self.attr(dom, 'asset_type') else None
+            base = at['name'] if at else dom['name']; coll = self._collection(base)
+            app = {'id': f"DSN-APP-{dom['id']}", 'type': 'A3.ApplicationComponent', 'version': '1.0', 'name': f'{base} service (target)', 'lifecycle_status': 'planned',
+                   'description': f"{tag}: one deployable component for {dom['name']}, exposing its service operations as a REST API (BIAN container pattern)."}
+            a3['instances'].append(app)
+            self.propose('DESIGN', 'REALIZED_BY', dom, app, 'design', f'{tag}: one component per Service Domain (BIAN container pattern)', [dom['id']], band='low')
+            for op in ops:
+                method, path, why = self._rest_form(op, coll)
+                if not method:
+                    self.attempt('S24', op['id'], None, 'design', [f"{op['id']}.action_term"], f'{tag}: {why} — no API designed'); continue
+                payload = sorted(set(_list(self.attr(op, 'input_attributes')) + _list(self.attr(op, 'output_attributes'))))
+                api = {'id': f"DSN-API-{op['id']}", 'type': 'A3.APIOperation', 'version': '1.0', 'name': f'{method} {path}', 'lifecycle_status': 'planned',
+                       'description': f"Reference API for {op['name']} ({self.attr(op, 'action_term')}); {why}.",
+                       'attributes': {'method': method, 'path': path, 'payload_fields': payload}}
+                a3['instances'].append(api); a3['relationships'].append({'source': app['id'], 'kind': 'composition', 'target': api['id']})
+                self.propose('S24', 'IMPLEMENTED_BY', op, api, 'design', f'{tag}: the API derived from the operation by the REST mapping — {why}; payload = input ∪ output', [op['id']], band='low')
+            dep = {'id': f"DSN-DEP-{dom['id']}", 'type': 'A4.Deployment', 'version': '1.0', 'name': f'{base} service — target deployment', 'lifecycle_status': 'planned',
+                   'description': f"{tag}: one deployment of {app['id']}. No environment or platform exists to name.", 'attributes': {'component_id': app['id']}}
+            a4['instances'].append(dep)
+            self.propose('S32', 'DEPLOYED_AS', app, dep, 'design', f'{tag}: one deployment per component (BIAN container pattern); no platform, environment or data entity is invented', [app['id']], band='low')
+        return [a3, a4] if a3['instances'] else []
+
     def run(self, options=None):
         self.step1()
         self.step2()
         self.step4()
         self.step3()
         self.step5(options or {})
-        return {'proposals': self.proposals, 'candidates': self.candidates, 'log': self.log}
+        design = self.design()
+        out = {'proposals': self.proposals, 'candidates': self.candidates, 'log': self.log}
+        if design: out['design'] = design
+        return out
 
 
 ENGINE_NAME = 'sdem-rules/0.10'

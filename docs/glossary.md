@@ -51,7 +51,7 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Local knowledge graph** | one architecture's records and within-level links, built from its export |
 | **Federated knowledge graph** | the four local graphs joined by approved registry links |
 | **Graph loader** | the program that builds the graphs from exports and the registry (`sdem/graph.py`) |
-| **Inference engine** (formerly *mapping engine*) | the program that reads the graphs, applies the rules and *proposes* cross-level links for an architect to approve. Specified, not built (v0.9) |
+| **Inference engine** (formerly *mapping engine*) | the program that reads the graphs, applies the rules and *proposes* cross-level links for an architect to approve. Built (v0.10): `sdem-infer rules` |
 | **Fill steps 0–5** | the engine's order of work: load BIAN, exact joins, REST matching, closure, structural matching, bounded text matching |
 | **Proposal** | a link the engine suggests, status `proposed`, with evidence and a confidence |
 | **Trace / impact** | follow links across architectures / find what a change affects |

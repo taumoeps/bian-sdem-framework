@@ -22,7 +22,7 @@ CONSTRAINTS = [
  ('LC-01', 'Instance identity', '`id` + `version` is unique within a level export', 'enforced', '`sdem-graph check`'),
  ('LC-02', 'Entity typing', 'every instance\'s `type` is a concrete, non-artefact entity type of the export\'s level', 'enforced', '`sdem-graph check`'),
  ('LC-03', 'Within-level relationships', 'every relationship matches a within-level row of its level (through inheritance), or is `association`', 'enforced', '`sdem-graph check`'),
- ('LC-04', 'Required attributes', 'every attribute marked required is present', 'enforced', '`sdem-graph check` (error)'),
+ ('LC-04', 'Required attributes', 'every attribute marked required is present; on an instance whose `lifecycle_status` is `planned` (a target design) a missing one is a warning, not an error', 'enforced', '`sdem-graph check` (error)'),
  ('LC-05', 'Attribute types', 'every attribute value has its declared type', 'enforced', '`sdem-graph check` (error)'),
  ('LC-06', 'Enumerations', 'every attribute with allowed values, and `lifecycle_status`, takes an allowed value', 'enforced', '`sdem-graph check` (error)'),
  ('LC-07', 'Same-level references', 'a reference attribute whose target is in the same level names an instance of the declared type in the same export', 'enforced', '`sdem-graph check` (error)'),

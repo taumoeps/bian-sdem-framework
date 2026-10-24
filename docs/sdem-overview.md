@@ -43,7 +43,7 @@ SDEM is BIAN-aligned but is not an official BIAN standard or BIAN-endorsed frame
 |---|---|---|---|
 | **Architecture Metamodel** | the **types**: entity types per level, the links allowed *inside* each level, and the **relationship type catalogue** — the nine kinds of link allowed *between* levels | any real entity; any rule for finding a link | `metamodel/a1…a4-*.json`, `metamodel/level-relationships.json`, `schema/relationship-types.json` |
 | **Architecture Relationship Rules Model** | the **rules**: for each cross-level pair, how a relationship is established, from which data, with what evidence and confidence | the list of allowed types (that is the metamodel); any real link | `metamodel/relationship-rules.json` (plan rows `S…`), `metamodel/export-conventions.json` (join keys) |
-| **Architecture Relationship Inference Engine** | the **program** that applies the rules to the local graphs and proposes relationships | an approver; a store | `sdem/inference.py` — interface, baseline and scorer built; **rule logic is the next build** |
+| **Architecture Relationship Inference Engine** | the **program** that applies the rules to the local graphs and proposes relationships | an approver; a store | `sdem/rules_engine.py` (`sdem-infer rules`) — built; passes all 8 acceptance cases |
 | **Architecture Relationship Registry** | the **instances**: actual relationships between real entities, with evidence, status, versions and approval provenance | rules; the graph | `examples/<estate>/mappings.json`, form `schema/relationship-registry.schema.json` |
 | **Local architecture knowledge graph** | one level's real entities and the links inside it, built from that level's export | anything cross-level | `sdem/graph.py` (`LevelGraph`), in memory |
 | **Federated architecture knowledge graph** | the four local graphs joined by the **approved** registry records | editable; a holder of proposals | `sdem/graph.py` (`FederatedGraph`), in memory |
@@ -226,7 +226,7 @@ From `examples/payment-initiation/`:
 | Graph store: local JSON files (JSON Graph Format), load record, baselines, queries, offline HTML view ([`graph-store-design.md`](graph-store-design.md)) | built |
 | Relationship Rules Model | built as records; tested across ten use cases, eleven runs |
 | Relationship Registry format, schemas, validators, immutability guard | built |
-| Inference engine | interface, baseline and scorer built; the rules were applied by an AI executor in testing; **the rule logic is the next build** |
+| Inference engine | built (v0.10): steps 1–5 and design mode; passes all 8 acceptance cases against the hand-executed runs (`sdem-accept`); a blind case is still needed to show it generalises |
 | Adapters, export diff, refresh trigger, review queue, query service interface, assistant access | specified ([`knowledge-graph-spec.md`](knowledge-graph-spec.md) §11), not built |
 
 ## Glossary

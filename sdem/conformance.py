@@ -1,7 +1,7 @@
 """Data-model conformance: enforce the logical constraints on level exports.
 
 Errors (the export does not conform):
-  LC-04 required attribute missing · LC-05 wrong type · LC-06 value not allowed · LC-07 same-level reference
+  LC-04 required attribute missing (a warning on a `planned` instance) · LC-05 wrong type · LC-06 value not allowed · LC-07 same-level reference
   does not resolve · LC-09 duplicate natural key · LC-10 cardinality maximum exceeded (BIAN / ArchiMate rows).
 Warnings (the export is usable but incomplete or dated):
   LC-08 cross-level reference does not resolve in the loaded estate (a join key the inference engine cannot use)
@@ -64,7 +64,11 @@ def check_level(doc, mm, estate_index=None):
         for k, a in defs.items():
             if a['required'] and a['status'] == 'active':
                 n['LC-04 checked'] += 1
-                if k not in at: n['LC-04 failed'] += 1; errors.append(f"{who}: required attribute {k!r} missing (LC-04)")
+                if k not in at:
+                    if i.get('lifecycle_status') == 'planned':  # a planned (target-design) record may not know every fact yet: warn, do not reject
+                        n['LC-04 planned'] += 1; warnings.append(f"{who}: planned instance — required attribute {k!r} not yet known (LC-04)")
+                    else:
+                        n['LC-04 failed'] += 1; errors.append(f"{who}: required attribute {k!r} missing (LC-04)")
         for k, v in at.items():
             a = defs.get(k)
             if not a:

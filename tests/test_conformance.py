@@ -65,6 +65,13 @@ class ConformanceTests(unittest.TestCase):
             if i['id'] == 'SD-PI': del i['attributes']['asset_type']
         self.assertTrue(any('LC-04' in x and 'asset_type' in x for x in self._errors(d)))
 
+    def test_lc04_planned_instance_warns(self):
+        d = copy.deepcopy(self.a2)
+        for i in d['instances']:
+            if i['id'] == 'SD-PI': del i['attributes']['asset_type']; i['lifecycle_status'] = 'planned'
+        errors, warnings, _ = check_level(d, self.mm, estate_index([d]))
+        self.assertFalse(any('LC-04' in x for x in errors)); self.assertTrue(any('LC-04' in w and 'asset_type' in w for w in warnings))
+
     def test_lc08_cross_level_reference_is_a_warning(self):
         d = self._set(self.a2, 'SD-PI', owner='ROLE-MISSING')  # owner refers to an A1 actor or role
         errors, warnings, _ = check_level(d, self.mm, estate_index([d, self.a1]))

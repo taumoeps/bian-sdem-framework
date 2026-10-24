@@ -102,7 +102,7 @@ flowchart TB
 | **Architecture Metamodel** | the **types**: entity types per level, the links allowed inside each level, and the **relationship type catalogue** (the nine kinds of link allowed between levels) | `metamodel/a1…a4-*.json`, `metamodel/level-relationships.json`, `schema/relationship-types.json` | built |
 | **Local architecture knowledge graphs** | one per level: real entities and the links inside the level, built from that level's export | `sdem/graph.py` (`LevelGraph`) | built (in memory) |
 | **Architecture Relationship Rules Model** | the **rules**: how each cross-level relationship is established, from which data, with what evidence and confidence | `metamodel/relationship-rules.json`, `metamodel/export-conventions.json` | built as records; tested |
-| **Architecture Relationship Inference Engine** | applies the rules to the local graphs and **proposes** relationships | `sdem/inference.py` | interface, baseline and scorer built; **rule logic is the next build** |
+| **Architecture Relationship Inference Engine** | applies the rules to the local graphs and **proposes** relationships | `sdem/rules_engine.py` | built (v0.10) |
 | **Architecture Relationship Registry** | the **instances**: actual relationships with evidence, status, versions and approval provenance | `examples/<estate>/mappings.json`; schema `schema/relationship-registry.schema.json` | built |
 | **Federated architecture knowledge graph** | the local graphs joined by **approved** registry records | `sdem/graph.py` (`FederatedGraph`) | built (in memory) |
 | **Architecture Governance and traceability** | approval, supersession, immutability; trace and change impact | `sdem-validate`, `sdem-diff`, `sdem-graph trace / impact` | built |
@@ -186,7 +186,7 @@ The Relationship Rules Model was run as a procedure by an AI executor (standing 
 | Generated documents and diagrams, checked current in CI | built |
 | Graph store: local JSON files (JSON Graph Format), load record, baselines, `query`, offline HTML `view` | built ([`graph-store-design.md`](docs/graph-store-design.md)) |
 | Baseline review pack for `SDEM-METAMODEL-0.8` | built; awaiting independent review ([`baseline/`](docs/baseline/SDEM-METAMODEL-0.8-review-pack.md)) |
-| Architecture Relationship Inference Engine (`sdem-infer`) | interface, baseline and scorer built; **rule logic is the next build**, to [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) |
+| Architecture Relationship Inference Engine (`sdem-infer rules`) | built (v0.10): all eight acceptance cases pass (`sdem-accept`); specified in [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) |
 | Export diff, refresh trigger, review queue, query service interface, assistant access | specified ([`knowledge-graph-spec.md`](docs/knowledge-graph-spec.md) §11), not built |
 | Ingestion (spreadsheet templates and ingest command) | planned for v0.10; adapters for real tools belong in an institution's private repository |
 
@@ -208,6 +208,9 @@ sdem-graph build $E/a*.json $E/mappings.json --out $E/graph               # save
 sdem-graph query --graph $E/graph --type A1.BusinessProcess --where criticality=high
 sdem-graph query --graph $E/graph --unmapped A2                          # records still waiting for a cross-level link
 sdem-graph view  --graph $E/graph                                        # writes $E/graph/view.html — open it in a browser
+
+sdem-infer rules --graph $E/graph > proposals.json                     # the inference engine proposes the missing cross-level links
+sdem-accept                                                             # the engine against the 8 acceptance cases
 
 sdem-validate --strict $E/mappings.json                                 # check the relationship registry
 sdem-diff --git HEAD~1 $E/mappings.json                                 # approved links not edited since last commit
@@ -268,8 +271,9 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | v0.7 | renamed SDEM — Service Domain Enterprise Metamodel; model-driven terminology; registry spec; compatibility aliases |
 | **v0.8** (unreleased) | **data model** for A1–A4, all logical rules enforced, per-entity JSON Schemas; baseline review pack — released on baseline approval |
 | **v0.9** (unreleased) | **graph store**: local JSON files, queries, offline view |
-| **v0.10 — next** | the **inference engine**, reading the graph store, with an acceptance harness over the use-case runs |
-| later | ingestion and approval (v0.11); change handling (v0.12); query service and assistant access (v0.13); BIAN reference integration (v0.14); generated views (v0.15); v1.0 conformance profile |
+| **v0.10** (unreleased) | the **inference engine**, reading the graph store; passes all 8 acceptance cases |
+| **v0.11 — next** | ingestion (spreadsheet templates, ingest command) and approval of proposals |
+| later | change handling (v0.12); query service and assistant access (v0.13); BIAN reference integration (v0.14); generated views (v0.15); v1.0 conformance profile |
 
 Full table with acceptance tests: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
