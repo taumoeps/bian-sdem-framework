@@ -9,11 +9,11 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 | Layer | Total | Grounded | Oracle-confirmed | Inferred | Gated / unverified |
 |---|---|---|---|---|---|
 | Entity definitions | 44 | 32 | — | 12 (7 SDEM extensions, 5 interpreted alignments) | 0 |
-| Attributes | 53 | 12 (BIAN 9, OpenAPI 3) | — | 35 (relationship held as attribute 19, SDEM-defined 16) | 1 TOGAF; plus 5 institution data (not a standards question) |
+| Attributes | 84 | 20 (BIAN 9, OpenAPI 3, other public standards 8) | — | 58 (relationship held as attribute 30, SDEM-defined 28) | 1 TOGAF; plus 5 institution data (not a standards question) |
 | Within-level rows | 132 | 16 | 113 | 1 | 2 |
 | Cross-level rules (50 that can produce a link or report) | 50 | 10 official | — | 34 (28 with no official source, 6 SDEM definitions) | 6 |
 
-**Across all four layers** (274 items, institution data excluded): 70 grounded (26%), 113 oracle-confirmed (41%), the rest inferred or gated (33%).
+**Across all four layers** (305 items, institution data excluded): 78 grounded (26%), 113 oracle-confirmed (37%), the rest inferred or gated (37%).
 
 **Where inference concentrates.** (1) **Cross-level rules**: BIAN publishes almost nothing below A2 and no capability-to-domain mapping, so most rules are SDEM's; they are the part tested by the eleven use-case runs (50 rows validated against sealed answers), not by a standard. (2) **Attributes of ArchiMate-derived entities**: ArchiMate defines no attributes, so every A1, A3 and A4 field is either a relationship SDEM chose to record on the entity or a field SDEM defined. (3) **Within-level rows** were mostly inferred, but 113 of them are now confirmed by the Archi oracle.
 
@@ -23,15 +23,46 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 
 | Attribute | Source |
 |---|---|
-| `A1.BusinessActivity.invokes` | ArchiMate relationship held as attribute |
-| `A1.BusinessCapability.owner` | SDEM-defined |
+| `A1.BusinessActivity.invokes` | ArchiMate relationship or concept held as attribute |
+| `A1.BusinessActivity.sequence` | ArchiMate relationship or concept held as attribute |
+| `A1.BusinessActor.actor_kind` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessActor.classification` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessActor.external` | SDEM-defined |
+| `A1.BusinessActor.location` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessActor.purpose` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessCapability.level` | ArchiMate relationship or concept held as attribute |
+| `A1.BusinessCapability.maturity_current` | SDEM-defined |
+| `A1.BusinessCapability.maturity_target` | SDEM-defined |
+| `A1.BusinessCapability.strategic_importance` | SDEM-defined |
 | `A1.BusinessObject.attributes` | SDEM-defined |
 | `A1.BusinessObject.field_aliases` | institution data |
-| `A1.BusinessProcess.invokes` | ArchiMate relationship held as attribute |
-| `A1.BusinessRequirement.applies_to` | ArchiMate relationship held as attribute |
+| `A1.BusinessObject.glossary_uri` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessObject.personal_information` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessProcess.automation_level` | SDEM-defined |
+| `A1.BusinessProcess.criticality` | SDEM-defined |
+| `A1.BusinessProcess.frequency` | SDEM-defined |
+| `A1.BusinessProcess.invokes` | ArchiMate relationship or concept held as attribute |
+| `A1.BusinessProcess.level` | ArchiMate relationship or concept held as attribute |
+| `A1.BusinessProcess.outcome` | ArchiMate relationship or concept held as attribute |
+| `A1.BusinessProcess.triggered_by` | ArchiMate relationship or concept held as attribute |
+| `A1.BusinessRequirement.applies_to` | ArchiMate relationship or concept held as attribute |
+| `A1.BusinessRequirement.derived_from` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessRequirement.priority` | SDEM-defined |
+| `A1.BusinessRequirement.requirement_kind` | ArchiMate relationship or concept held as attribute |
+| `A1.BusinessRole.responsibilities` | ArchiMate relationship or concept held as attribute |
+| `A1.BusinessRole.role_kind` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `A1.BusinessService.channels` | SDEM-defined |
+| `A1.BusinessService.consumers` | ArchiMate relationship or concept held as attribute |
+| `A1.BusinessService.customer_facing` | SDEM-defined |
 | `A1.BusinessService.inputs` | SDEM-defined |
 | `A1.BusinessService.outputs` | SDEM-defined |
-| `A1.ValueStream.stages` | ArchiMate relationship held as attribute |
+| `A1.BusinessService.service_level` | SDEM-defined |
+| `A1.ValueStream.stages` | ArchiMate relationship or concept held as attribute |
+| `A1.ValueStream.stakeholder` | ArchiMate relationship or concept held as attribute |
+| `A1.ValueStream.value_proposition` | ArchiMate relationship or concept held as attribute |
+| `A1.ValueStreamStage.entrance_criteria` | SDEM-defined |
+| `A1.ValueStreamStage.exit_criteria` | SDEM-defined |
+| `A1.ValueStreamStage.value_item` | ArchiMate relationship or concept held as attribute |
 | `A2.AssetType.aliases` | institution data |
 | `A2.BehaviorQualifier.aliases` | institution data |
 | `A2.BusinessObject.attributes` | BIAN (public) |
@@ -47,50 +78,61 @@ A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the reco
 | `A3.APIOperation.method` | OpenAPI (public) |
 | `A3.APIOperation.path` | OpenAPI (public) |
 | `A3.APIOperation.payload_fields` | OpenAPI (public) |
-| `A3.ApplicationComponent.built_as` | ArchiMate relationship held as attribute |
+| `A3.ApplicationComponent.built_as` | ArchiMate relationship or concept held as attribute |
 | `A3.ApplicationComponent.deployed_as` | SDEM-defined |
-| `A3.ApplicationComponent.deployed_on` | ArchiMate relationship held as attribute |
+| `A3.ApplicationComponent.deployed_on` | ArchiMate relationship or concept held as attribute |
 | `A3.ApplicationComponent.network_zone` | SDEM-defined |
 | `A3.ApplicationComponent.vendor` | SDEM-defined |
-| `A3.ApplicationFunction.consumes` | ArchiMate relationship held as attribute |
+| `A3.ApplicationFunction.consumes` | ArchiMate relationship or concept held as attribute |
 | `A3.ApplicationFunction.exposed_through` | SDEM-defined |
-| `A3.ApplicationInterface.exposed_through` | ArchiMate relationship held as attribute |
+| `A3.ApplicationInterface.exposed_through` | ArchiMate relationship or concept held as attribute |
 | `A3.ApplicationInterface.field_aliases` | institution data |
-| `A3.ApplicationService.consumes` | ArchiMate relationship held as attribute |
+| `A3.ApplicationService.consumes` | ArchiMate relationship or concept held as attribute |
 | `A3.DataEntity.attributes` | SDEM-defined |
 | `A3.DataEntity.field_aliases` | institution data |
-| `A3.DataEntity.stored_in` | ArchiMate relationship held as attribute |
+| `A3.DataEntity.stored_in` | ArchiMate relationship or concept held as attribute |
 | `A3.Event.published_to` | SDEM-defined |
 | `A3.SolutionBuildingBlock.components` | TOGAF (login-gated) |
-| `A4.Artifact.of_component` | ArchiMate relationship held as attribute |
-| `A4.CommunicationNetwork.connects` | ArchiMate relationship held as attribute |
+| `A4.Artifact.of_component` | ArchiMate relationship or concept held as attribute |
+| `A4.CommunicationNetwork.connects` | ArchiMate relationship or concept held as attribute |
 | `A4.Deployment.component_id` | SDEM-defined |
 | `A4.Deployment.environment_id` | SDEM-defined |
 | `A4.Deployment.platform_id` | SDEM-defined |
-| `A4.Device.hosts` | ArchiMate relationship held as attribute |
-| `A4.Node.hosts` | ArchiMate relationship held as attribute |
+| `A4.Device.hosts` | ArchiMate relationship or concept held as attribute |
+| `A4.Node.hosts` | ArchiMate relationship or concept held as attribute |
 | `A4.Path.carries` | SDEM-defined |
-| `A4.Path.from` | ArchiMate relationship held as attribute |
-| `A4.Path.network` | ArchiMate relationship held as attribute |
-| `A4.Path.to` | ArchiMate relationship held as attribute |
-| `A4.SystemSoftware.hosts` | ArchiMate relationship held as attribute |
+| `A4.Path.from` | ArchiMate relationship or concept held as attribute |
+| `A4.Path.network` | ArchiMate relationship or concept held as attribute |
+| `A4.Path.to` | ArchiMate relationship or concept held as attribute |
+| `A4.SystemSoftware.hosts` | ArchiMate relationship or concept held as attribute |
 | `A4.TechnologyInterface.exposes` | SDEM-defined |
-| `A4.TechnologyInterface.of_service` | ArchiMate relationship held as attribute |
+| `A4.TechnologyInterface.of_service` | ArchiMate relationship or concept held as attribute |
+| `common.access_classification` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `common.conforms_to` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `common.created` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `common.modified` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `common.owner` | ArchiMate relationship or concept held as attribute |
+| `common.replaced_by` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `common.replaces` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `common.source_id` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `common.subject` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `common.valid_from` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
+| `common.valid_to` | other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation) |
 
 ## 3. Entity by entity
 
 | Entity | Standard: concept | Definition | Attributes (source) | Within-level rows | Cross-level rules | Review note |
 |---|---|---|---|---|---|---|
-| `A1.BusinessCapability` | BIAN BCM: Business Capability | aligned (interpreted) | `owner` SDEM | 7 inferred, oracle-confirmed | 1 official (S01) | definition interpreted from a standard; has SDEM-defined fields |
-| `A1.ValueStream` | ArchiMate 3.2: Value Stream | grounded | `stages` rel. | 4 inferred, oracle-confirmed | 1 SDEM definition (S02) | grounded |
-| `A1.ValueStreamStage` | SDEM: Value Stream Stage | SDEM extension (inferred) | — | 6 inferred, oracle-confirmed | 1 inferred (no official source) (S03) | definition is SDEM's; 1 cross-level rule(s) with no official source |
-| `A1.BusinessProcess` | ArchiMate 3.2: Business Process | grounded | `invokes` rel. | 13 inferred, oracle-confirmed | 1 cited, unverified (S04) | grounded |
-| `A1.BusinessActivity` | SDEM: Business Activity | SDEM extension (inferred) | `invokes` rel. | 13 inferred, oracle-confirmed | 2 inferred (no official source) (S06, S07) | definition is SDEM's; 2 cross-level rule(s) with no official source |
-| `A1.BusinessService` | ArchiMate 3.2: Business Service | grounded | `inputs` SDEM; `outputs` SDEM | 9 inferred, oracle-confirmed | 2 inferred (no official source) (S08, S09) | has SDEM-defined fields; 2 cross-level rule(s) with no official source |
-| `A1.BusinessActor` | ArchiMate 3.2: Business Actor | grounded | — | 6 inferred, oracle-confirmed | — | grounded |
-| `A1.BusinessRole` | ArchiMate 3.2: Business Role | grounded | — | 6 inferred, oracle-confirmed | — | grounded |
-| `A1.BusinessObject` | ArchiMate 3.2: Business Object | grounded | `attributes` SDEM; `field_aliases` inst. | 6 inferred, oracle-confirmed | 1 official (S12) | has SDEM-defined fields |
-| `A1.BusinessRequirement` | ArchiMate 3.2: Requirement | grounded | `applies_to` rel. | 6 inferred, oracle-confirmed | 2 inferred (no official source) (S13, S14) | 2 cross-level rule(s) with no official source |
+| `A1.BusinessCapability` | BIAN BCM: Business Capability | aligned (interpreted) | `level` rel.; `strategic_importance` SDEM; `maturity_current` SDEM; `maturity_target` SDEM | 7 inferred, oracle-confirmed | 1 official (S01) | definition interpreted from a standard; has SDEM-defined fields |
+| `A1.ValueStream` | ArchiMate 3.2: Value Stream | grounded | `stages` rel.; `stakeholder` rel.; `value_proposition` rel. | 4 inferred, oracle-confirmed | 1 SDEM definition (S02) | grounded |
+| `A1.ValueStreamStage` | SDEM: Value Stream Stage | SDEM extension (inferred) | `entrance_criteria` SDEM; `exit_criteria` SDEM; `value_item` rel. | 6 inferred, oracle-confirmed | 1 inferred (no official source) (S03) | definition is SDEM's; has SDEM-defined fields; 1 cross-level rule(s) with no official source |
+| `A1.BusinessProcess` | ArchiMate 3.2: Business Process | grounded | `invokes` rel.; `level` rel.; `triggered_by` rel.; `outcome` rel.; `criticality` SDEM; `frequency` SDEM; `automation_level` SDEM | 13 inferred, oracle-confirmed | 1 cited, unverified (S04) | has SDEM-defined fields |
+| `A1.BusinessActivity` | SDEM: Business Activity | SDEM extension (inferred) | `invokes` rel.; `sequence` rel. | 13 inferred, oracle-confirmed | 2 inferred (no official source) (S06, S07) | definition is SDEM's; 2 cross-level rule(s) with no official source |
+| `A1.BusinessService` | ArchiMate 3.2: Business Service | grounded | `inputs` SDEM; `outputs` SDEM; `consumers` rel.; `customer_facing` SDEM; `channels` SDEM; `service_level` SDEM | 9 inferred, oracle-confirmed | 2 inferred (no official source) (S08, S09) | has SDEM-defined fields; 2 cross-level rule(s) with no official source |
+| `A1.BusinessActor` | ArchiMate 3.2: Business Actor | grounded | `actor_kind` inst.; `external` SDEM; `classification` inst.; `purpose` inst.; `location` inst. | 6 inferred, oracle-confirmed | — | has SDEM-defined fields |
+| `A1.BusinessRole` | ArchiMate 3.2: Business Role | grounded | `role_kind` inst.; `responsibilities` rel. | 6 inferred, oracle-confirmed | — | grounded |
+| `A1.BusinessObject` | ArchiMate 3.2: Business Object | grounded | `attributes` SDEM; `field_aliases` inst.; `glossary_uri` inst.; `personal_information` inst. | 6 inferred, oracle-confirmed | 1 official (S12) | has SDEM-defined fields |
+| `A1.BusinessRequirement` | ArchiMate 3.2: Requirement | grounded | `applies_to` rel.; `requirement_kind` rel.; `derived_from` inst.; `priority` SDEM | 6 inferred, oracle-confirmed | 2 inferred (no official source) (S13, S14) | has SDEM-defined fields; 2 cross-level rule(s) with no official source |
 | `A2.BusinessArea` | BIAN Service Landscape: Business Area | grounded | — | 1 grounded | 1 inferred (no official source) (S15) | 1 cross-level rule(s) with no official source; BIAN release not yet verified |
 | `A2.BusinessDomain` | BIAN Service Landscape: Business Domain | grounded | — | 2 grounded | 1 inferred (no official source) (S16) | 1 cross-level rule(s) with no official source; BIAN release not yet verified |
 | `A2.ServiceDomain` | BIAN Service Landscape: Service Domain | grounded | `asset_type` BIAN; `functional_pattern` BIAN | 8 grounded | 3 inferred (no official source), 2 official, 1 cited, unverified (S01, S04, S07, S08, S13, S17) | 3 cross-level rule(s) with no official source; BIAN release not yet verified |

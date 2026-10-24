@@ -10,10 +10,12 @@ rules = json.load(open(R / 'metamodel/relationship-rules.json'))['mappings']
 off = {m['id']: m for m in json.load(open(R / 'metamodel/official-mappings.json'))['mappings']}
 
 # ---- judgement: source of each documented attribute
-B, O, AR, T, S, I = 'BIAN (public)', 'OpenAPI (public)', 'ArchiMate relationship held as attribute', 'TOGAF (login-gated)', 'SDEM-defined', 'institution data'
+B, O, AR, T, S, I = 'BIAN (public)', 'OpenAPI (public)', 'ArchiMate relationship or concept held as attribute', 'TOGAF (login-gated)', 'SDEM-defined', 'institution data'
+P = 'other public standard (Dublin Core, W3C ORG, W3C SKOS, public legislation)'
 _REC = json.load(open(R / 'metamodel/entity-attributes.json'))
-_MAP = {'BIAN': B, 'OpenAPI': O, 'ArchiMate relationship': AR, 'TOGAF': T, 'SDEM': S, 'institution': I}
+_MAP = {'BIAN': B, 'OpenAPI': O, 'ArchiMate relationship': AR, 'ArchiMate concept': AR, 'TOGAF': T, 'SDEM': S, 'institution': I, 'Dublin Core': P, 'W3C ORG': P, 'W3C SKOS': P, 'public legislation': P}
 ATTR_SOURCE = {f"{x['entity']}.{x['name']}": _MAP[x['source']] for x in _REC['attributes'] if x['status'] == 'active'}
+ATTR_SOURCE.update({f"common.{x['name']}": _MAP[x['source']] for x in _REC.get('common_attributes', [])})
 attrs = {f'{e}.{k}' for e, ks in conv.items() for k in ks} - {'A1.BusinessCapability.description'}
 assert attrs <= set(ATTR_SOURCE), (attrs - set(ATTR_SOURCE))
 GROUNDED_ATTR = {B, O}; INFER_ATTR = {AR, S}; GATED = {T}
@@ -53,10 +55,10 @@ out = ['# SDEM inference audit', '',
        '## 1. Summary by layer', '',
        '| Layer | Total | Grounded | Oracle-confirmed | Inferred | Gated / unverified |', '|---|---|---|---|---|---|',
        f"| Entity definitions | {sum(tot['definition'].values())} | {tot['definition']['grounded']} | — | {tot['definition']['SDEM extension (inferred)'] + tot['definition']['aligned (interpreted)']} ({tot['definition']['SDEM extension (inferred)']} SDEM extensions, {tot['definition']['aligned (interpreted)']} interpreted alignments) | 0 |",
-       f"| Attributes | {sum(tot['attribute'].values())} | {tot['attribute'][B] + tot['attribute'][O]} (BIAN {tot['attribute'][B]}, OpenAPI {tot['attribute'][O]}) | — | {tot['attribute'][AR] + tot['attribute'][S]} (relationship held as attribute {tot['attribute'][AR]}, SDEM-defined {tot['attribute'][S]}) | {tot['attribute'][T]} TOGAF; plus {tot['attribute'][I]} institution data (not a standards question) |",
+       f"| Attributes | {sum(tot['attribute'].values())} | {tot['attribute'][B] + tot['attribute'][O] + tot['attribute'][P]} (BIAN {tot['attribute'][B]}, OpenAPI {tot['attribute'][O]}, other public standards {tot['attribute'][P]}) | — | {tot['attribute'][AR] + tot['attribute'][S]} (relationship held as attribute {tot['attribute'][AR]}, SDEM-defined {tot['attribute'][S]}) | {tot['attribute'][T]} TOGAF; plus {tot['attribute'][I]} institution data (not a standards question) |",
        f"| Within-level rows | {sum(tot['within'].values())} | {tot['within']['grounded']} | {tot['within']['inferred, oracle-confirmed']} | {tot['within']['inferred']} | {tot['within']['inferred, unverified']} |",
        f"| Cross-level rules (50 that can produce a link or report) | {sum(tot['cross'].values())} | {tot['cross']['official']} official | — | {tot['cross']['inferred (no official source)'] + tot['cross']['SDEM definition']} ({tot['cross']['inferred (no official source)']} with no official source, {tot['cross']['SDEM definition']} SDEM definitions) | {tot['cross']['cited, unverified']} |", '']
-grounded = tot['definition']['grounded'] + tot['attribute'][B] + tot['attribute'][O] + tot['within']['grounded'] + tot['cross']['official']
+grounded = tot['definition']['grounded'] + tot['attribute'][B] + tot['attribute'][O] + tot['attribute'][P] + tot['within']['grounded'] + tot['cross']['official']
 oracle = tot['within']['inferred, oracle-confirmed']
 allitems = sum(tot['definition'].values()) + sum(tot['attribute'].values()) - tot['attribute'][I] + sum(tot['within'].values()) + sum(tot['cross'].values())
 out += [f"**Across all four layers** ({allitems} items, institution data excluded): {grounded} grounded ({round(100*grounded/allitems)}%), {oracle} oracle-confirmed ({round(100*oracle/allitems)}%), the rest inferred or gated ({round(100*(allitems-grounded-oracle)/allitems)}%).", '',

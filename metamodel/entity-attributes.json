@@ -1,6 +1,6 @@
 {
   "metamodel_version": "0.4.0",
-  "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Not yet enforced by sdem-graph check (next build); export-conventions.json keys must all appear here (test).",
+  "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Not yet enforced by sdem-graph check (next build); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
   "confidence_rule": "high   — defined by a public standard and checked (BIAN public material, OpenAPI, or a standard concept or\n           relationship confirmed by the open-source Archi oracle); or an SDEM data-contract field, which SDEM defines\n           authoritatively.\n  medium — built on a standard concept or relationship as SDEM chose to model it; or BIAN intent / target only;\n           or an SDEM definition, a login-gated source, or a cited-but-unverified source that was validated against\n           sealed answers; or institution data under an SDEM convention.\n  low    — no standard basis and not validated against sealed answers; or deprecated.",
   "core_fields": [
     {
@@ -330,27 +330,6 @@
         "A1.BusinessActivity"
       ],
       "reference_scope": "same level — resolved by the local knowledge graph"
-    },
-    {
-      "id": "AT-A1-09",
-      "entity": "A1.BusinessCapability",
-      "name": "owner",
-      "type": "string",
-      "required": false,
-      "description": "accountable owner",
-      "status": "active",
-      "source": "SDEM",
-      "reference": {
-        "standard": "SDEM",
-        "locator": "SDEM informational field; read by no rule",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
-      },
-      "verification": "SDEM design; exercised by the use-case runs",
-      "reasoning": "Informational field used by one example; no rule reads it. Kept so exports that carry it validate.",
-      "confidence": "low",
-      "read_by": "any rule",
-      "confidence_basis": "SDEM field with no standard concept; not validated",
-      "kind": "value"
     },
     {
       "id": "AT-A2-01",
@@ -1449,6 +1428,1254 @@
         "A3.ApplicationComponent"
       ],
       "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
+    },
+    {
+      "id": "AT-A1-09",
+      "entity": "A1.BusinessCapability",
+      "name": "level",
+      "type": "integer",
+      "required": false,
+      "description": "depth in the capability hierarchy (1 = top)",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "Capability composition (hierarchy)",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: Show the capability map at level 1, 2 or 3. Depth in the capability hierarchy. The hierarchy itself is the composition link between capabilities; `level` makes the depth queryable without walking it.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Show the capability map at level 1, 2 or 3.",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-12"
+      },
+      "kind": "value",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A1-10",
+      "entity": "A1.BusinessCapability",
+      "name": "strategic_importance",
+      "type": "string",
+      "required": false,
+      "description": "how much the capability matters to strategy",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-13 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: Which capabilities matter most to strategy? Common capability heat-map dimension; no open standard defines it or its values.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which capabilities matter most to strategy?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-13"
+      },
+      "kind": "enumeration",
+      "values": [
+        "core",
+        "differentiating",
+        "supporting",
+        "commodity"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-11",
+      "entity": "A1.BusinessCapability",
+      "name": "maturity_current",
+      "type": "integer",
+      "required": false,
+      "description": "current maturity, 1 (low) to 5 (high)",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-14 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: Where do we need to invest? Current maturity on a 1–5 scale. Maturity scales (e.g. CMMI) are proprietary; SDEM defines only the range.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Where do we need to invest?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-14"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-12",
+      "entity": "A1.BusinessCapability",
+      "name": "maturity_target",
+      "type": "integer",
+      "required": false,
+      "description": "target maturity, 1 to 5",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-15 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: Where do we need to invest? Target maturity, same scale; the gap to current drives investment questions.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Where do we need to invest?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-15"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-13",
+      "entity": "A1.ValueStream",
+      "name": "stakeholder",
+      "type": "string",
+      "required": false,
+      "description": "who the value stream delivers value to",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "Stakeholder (motivation)",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: Who is this value stream for? The stakeholder the stream delivers value to; ArchiMate has a Stakeholder concept.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Who is this value stream for?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-16"
+      },
+      "kind": "value",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A1-14",
+      "entity": "A1.ValueStream",
+      "name": "value_proposition",
+      "type": "string",
+      "required": false,
+      "description": "the value the stream delivers",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "Value (motivation)",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: What value does it deliver? The value the stream produces; ArchiMate has a Value concept associated with value streams.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What value does it deliver?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-17"
+      },
+      "kind": "value",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A1-15",
+      "entity": "A1.ValueStreamStage",
+      "name": "entrance_criteria",
+      "type": "string",
+      "required": false,
+      "description": "condition for entering the stage",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-18 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: When does a stage start? Condition for entering the stage. Widely used in value-stream mapping, but the source that defines it (BIZBOK) is membership-only.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "When does a stage start?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-18"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-16",
+      "entity": "A1.ValueStreamStage",
+      "name": "exit_criteria",
+      "type": "string",
+      "required": false,
+      "description": "condition for completing the stage",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-19 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: When is a stage done? Condition for leaving the stage; as above.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "When is a stage done?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-19"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-17",
+      "entity": "A1.ValueStreamStage",
+      "name": "value_item",
+      "type": "string",
+      "required": false,
+      "description": "the value the stage adds",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "Value (motivation)",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: What value does each stage add? The value a stage contributes; ArchiMate Value concept.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What value does each stage add?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-20"
+      },
+      "kind": "value",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A1-18",
+      "entity": "A1.BusinessProcess",
+      "name": "level",
+      "type": "integer",
+      "required": false,
+      "description": "depth in the process hierarchy (1 = top)",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "Business Process composition",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: Show processes at level 1, 2, 3 … Depth in the process hierarchy; the hierarchy itself is the composition link.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Show processes at level 1, 2, 3 …",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-21"
+      },
+      "kind": "value",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A1-19",
+      "entity": "A1.BusinessProcess",
+      "name": "triggered_by",
+      "type": "string",
+      "required": false,
+      "description": "the business event that starts it",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "Business Event triggering a process",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: What starts this process? The business event that starts it (e.g. \"customer submits payment\").",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What starts this process?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-22"
+      },
+      "kind": "value",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A1-20",
+      "entity": "A1.BusinessProcess",
+      "name": "outcome",
+      "type": "string",
+      "required": false,
+      "description": "the result it produces",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "Outcome (motivation)",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: What result does it produce? The end result the process achieves.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What result does it produce?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-23"
+      },
+      "kind": "value",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A1-21",
+      "entity": "A1.BusinessProcess",
+      "name": "criticality",
+      "type": "string",
+      "required": false,
+      "description": "how critical the process is to the bank",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-24 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: Which critical processes depend on this platform or application? The single most useful field for impact analysis. No open standard defines it; business-continuity standards (ISO 22301) are paid.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which critical processes depend on this platform or application?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-24"
+      },
+      "kind": "enumeration",
+      "values": [
+        "high",
+        "medium",
+        "low"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-22",
+      "entity": "A1.BusinessProcess",
+      "name": "frequency",
+      "type": "string",
+      "required": false,
+      "description": "how often it runs",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-25 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: How often does it run? What is the blast radius of an outage? How often the process runs; informs outage impact.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "How often does it run? What is the blast radius of an outage?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-25"
+      },
+      "kind": "enumeration",
+      "values": [
+        "continuous",
+        "daily",
+        "weekly",
+        "monthly",
+        "ad hoc"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-23",
+      "entity": "A1.BusinessProcess",
+      "name": "automation_level",
+      "type": "string",
+      "required": false,
+      "description": "how far it is automated",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-26 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: Where is manual effort? What is a candidate for automation? Degree of automation; no standard scale.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Where is manual effort? What is a candidate for automation?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-26"
+      },
+      "kind": "enumeration",
+      "values": [
+        "manual",
+        "partly automated",
+        "automated"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-24",
+      "entity": "A1.BusinessActivity",
+      "name": "sequence",
+      "type": "integer",
+      "required": false,
+      "description": "position of the step within its process",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "triggering / flow between process steps",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: In what order do the steps run? Position of the step in its process; ArchiMate orders steps with triggering and flow.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "In what order do the steps run?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-27"
+      },
+      "kind": "value",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A1-25",
+      "entity": "A1.BusinessService",
+      "name": "consumers",
+      "type": "list<string>",
+      "required": false,
+      "description": "the actors or roles the service serves",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "serving (service serves actor or role)",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: Who uses this service? The actors or roles the service serves.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Who uses this service?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-28"
+      },
+      "kind": "reference",
+      "references": [
+        "A1.BusinessActor",
+        "A1.BusinessRole"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A1-26",
+      "entity": "A1.BusinessService",
+      "name": "customer_facing",
+      "type": "boolean",
+      "required": false,
+      "description": "whether customers use it directly",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-29 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: Which customer-facing services depend on this? Whether customers use the service directly; key for customer-impact questions.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which customer-facing services depend on this?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-29"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-27",
+      "entity": "A1.BusinessService",
+      "name": "channels",
+      "type": "string",
+      "required": false,
+      "description": "channels it is offered through",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-30 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: Through which channels is it offered? Delivery channels. ArchiMate models channels as business interfaces; the value list is SDEM's.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Through which channels is it offered?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-30"
+      },
+      "kind": "enumeration",
+      "values": [
+        "branch",
+        "online",
+        "mobile",
+        "contact centre",
+        "partner",
+        "API"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-28",
+      "entity": "A1.BusinessService",
+      "name": "service_level",
+      "type": "string",
+      "required": false,
+      "description": "the committed service level (e.g. \"same day\")",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-31 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: What has the bank committed to? The service-level target (e.g. \"same-day\"). Service-management standards that define this (ITIL) are paid.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What has the bank committed to?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-31"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-29",
+      "entity": "A1.BusinessActor",
+      "name": "actor_kind",
+      "type": "string",
+      "required": false,
+      "description": "whether it is a formal organisation, a unit or a person",
+      "status": "active",
+      "source": "W3C ORG",
+      "reference": {
+        "standard": "W3C Organization Ontology (W3C Recommendation 2014-01-16)",
+        "locator": "org:FormalOrganization, org:OrganizationalUnit (persons via foaf:Person, which ORG uses)",
+        "uri": "https://www.w3.org/TR/vocab-org/"
+      },
+      "verification": "public standard (W3C Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Is this a company, a department or a person? The three kinds of agent ORG distinguishes.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Is this a company, a department or a person?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-32"
+      },
+      "kind": "enumeration",
+      "values": [
+        "formal organisation",
+        "organisational unit",
+        "person"
+      ],
+      "values_source": "W3C Organization Ontology (W3C Recommendation 2014-01-16)",
+      "confidence_basis": "defined by a public standard (W3C ORG) and checked"
+    },
+    {
+      "id": "AT-A1-30",
+      "entity": "A1.BusinessActor",
+      "name": "external",
+      "type": "boolean",
+      "required": false,
+      "description": "whether it is outside the bank",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-33 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: Which external parties (customers, partners, regulators) are involved? Whether the actor is outside the bank. ORG does not distinguish internal from external.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which external parties (customers, partners, regulators) are involved?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-33"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-31",
+      "entity": "A1.BusinessActor",
+      "name": "classification",
+      "type": "string",
+      "required": false,
+      "description": "its category (e.g. regulator, partner, business line)",
+      "status": "active",
+      "source": "W3C ORG",
+      "reference": {
+        "standard": "W3C Organization Ontology (W3C Recommendation 2014-01-16)",
+        "locator": "org:classification",
+        "uri": "https://www.w3.org/TR/vocab-org/"
+      },
+      "verification": "public standard (W3C Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: What category of organisation is this? A category from a scheme (e.g. regulator, partner, business line).",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What category of organisation is this?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-34"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (W3C ORG) and checked"
+    },
+    {
+      "id": "AT-A1-32",
+      "entity": "A1.BusinessActor",
+      "name": "purpose",
+      "type": "string",
+      "required": false,
+      "description": "why the unit or organisation exists",
+      "status": "active",
+      "source": "W3C ORG",
+      "reference": {
+        "standard": "W3C Organization Ontology (W3C Recommendation 2014-01-16)",
+        "locator": "org:purpose",
+        "uri": "https://www.w3.org/TR/vocab-org/"
+      },
+      "verification": "public standard (W3C Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Why does this unit exist? The organisation's or unit's purpose.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Why does this unit exist?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-35"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (W3C ORG) and checked"
+    },
+    {
+      "id": "AT-A1-33",
+      "entity": "A1.BusinessActor",
+      "name": "location",
+      "type": "string",
+      "required": false,
+      "description": "the site where it is based",
+      "status": "active",
+      "source": "W3C ORG",
+      "reference": {
+        "standard": "W3C Organization Ontology (W3C Recommendation 2014-01-16)",
+        "locator": "org:basedAt / org:Site",
+        "uri": "https://www.w3.org/TR/vocab-org/"
+      },
+      "verification": "public standard (W3C Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Where is it based? The site where the actor is based.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Where is it based?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-36"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (W3C ORG) and checked"
+    },
+    {
+      "id": "AT-A1-34",
+      "entity": "A1.BusinessRole",
+      "name": "role_kind",
+      "type": "string",
+      "required": false,
+      "description": "whether it is a generic role or a specific post",
+      "status": "active",
+      "source": "W3C ORG",
+      "reference": {
+        "standard": "W3C Organization Ontology (W3C Recommendation 2014-01-16)",
+        "locator": "org:Role, org:Post",
+        "uri": "https://www.w3.org/TR/vocab-org/"
+      },
+      "verification": "public standard (W3C Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Is this a generic role or a specific position? ORG separates a generic role from a post that exists whether or not it is filled.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Is this a generic role or a specific position?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-37"
+      },
+      "kind": "enumeration",
+      "values": [
+        "role",
+        "post"
+      ],
+      "values_source": "W3C Organization Ontology (W3C Recommendation 2014-01-16)",
+      "confidence_basis": "defined by a public standard (W3C ORG) and checked"
+    },
+    {
+      "id": "AT-A1-35",
+      "entity": "A1.BusinessRole",
+      "name": "responsibilities",
+      "type": "string",
+      "required": false,
+      "description": "what the role is responsible for",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "Business Role",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: What is this role responsible for? What the role does; ArchiMate's role is defined by its responsibilities.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What is this role responsible for?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-38"
+      },
+      "kind": "value",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A1-36",
+      "entity": "A1.BusinessObject",
+      "name": "glossary_uri",
+      "type": "string",
+      "required": false,
+      "description": "link to the agreed glossary definition",
+      "status": "active",
+      "source": "W3C SKOS",
+      "reference": {
+        "standard": "W3C SKOS Reference (W3C Recommendation 2009-08-18)",
+        "locator": "skos:Concept",
+        "uri": "https://www.w3.org/TR/skos-reference/"
+      },
+      "verification": "public standard (W3C Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Where is the agreed definition of this term? Link to the business-glossary concept that defines the object.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Where is the agreed definition of this term?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-39"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (W3C SKOS) and checked"
+    },
+    {
+      "id": "AT-A1-37",
+      "entity": "A1.BusinessObject",
+      "name": "personal_information",
+      "type": "boolean",
+      "required": false,
+      "description": "whether it holds information about an identifiable person",
+      "status": "active",
+      "source": "public legislation",
+      "reference": {
+        "standard": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7 (public legislation)",
+        "locator": "personal data / personal information",
+        "uri": "https://eur-lex.europa.eu/eli/reg/2016/679/oj"
+      },
+      "verification": "public legislation, checked 2026-10-24",
+      "reasoning": "Answers: Which objects hold personal information? What does a privacy change affect? Whether the object holds information about an identifiable person, as defined in public privacy law.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which objects hold personal information? What does a privacy change affect?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-40"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (public legislation) and checked"
+    },
+    {
+      "id": "AT-A1-38",
+      "entity": "A1.BusinessRequirement",
+      "name": "requirement_kind",
+      "type": "string",
+      "required": false,
+      "description": "whether it is a requirement, a constraint or a principle",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "Requirement, Constraint, Principle (motivation)",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: Is this something to achieve, a limit, or a guiding rule? ArchiMate has three separate concepts; SDEM holds them as one entity with a kind field.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Is this something to achieve, a limit, or a guiding rule?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-41"
+      },
+      "kind": "enumeration",
+      "values": [
+        "requirement",
+        "constraint",
+        "principle"
+      ],
+      "values_source": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A1-39",
+      "entity": "A1.BusinessRequirement",
+      "name": "derived_from",
+      "type": "list<string>",
+      "required": false,
+      "description": "the regulation, policy or decision it comes from",
+      "status": "active",
+      "source": "Dublin Core",
+      "reference": {
+        "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+        "locator": "dcterms:source",
+        "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+      },
+      "verification": "public standard (DCMI Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Which regulation, policy or decision does this come from? The origin of the requirement (e.g. a regulation article or policy id).",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which regulation, policy or decision does this come from?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-42"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (Dublin Core) and checked"
+    },
+    {
+      "id": "AT-A1-40",
+      "entity": "A1.BusinessRequirement",
+      "name": "priority",
+      "type": "string",
+      "required": false,
+      "description": "how important it is to meet (must, should, could, won't)",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "SDEM decision DA1-43 (A1 data-model review, 2026-10-24)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
+      "reasoning": "Answers: What must be met first? MoSCoW priority, a common convention with no open standard definition.",
+      "confidence": "low",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What must be met first?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-43"
+      },
+      "kind": "enumeration",
+      "values": [
+        "must",
+        "should",
+        "could",
+        "won't"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    }
+  ],
+  "common_attributes": [
+    {
+      "id": "CA-01",
+      "entity": "all",
+      "name": "source_id",
+      "type": "string",
+      "required": false,
+      "description": "the record's key in the tool it came from",
+      "status": "active",
+      "source": "Dublin Core",
+      "reference": {
+        "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+        "locator": "dcterms:identifier",
+        "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+      },
+      "verification": "public standard (DCMI Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Which record in the source tool is this? The record's own key in the tool it came from, so any node can be traced back to its system of record. Distinct from SDEM `id`, which may be the same value.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which record in the source tool is this?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-01"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (Dublin Core) and checked"
+    },
+    {
+      "id": "CA-02",
+      "entity": "all",
+      "name": "created",
+      "type": "date",
+      "required": false,
+      "description": "date it was created in the source",
+      "status": "active",
+      "source": "Dublin Core",
+      "reference": {
+        "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+        "locator": "dcterms:created",
+        "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+      },
+      "verification": "public standard (DCMI Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: How old is this? Date the thing was created in the source.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "How old is this?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-02"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (Dublin Core) and checked"
+    },
+    {
+      "id": "CA-03",
+      "entity": "all",
+      "name": "modified",
+      "type": "date",
+      "required": false,
+      "description": "date it was last changed in the source",
+      "status": "active",
+      "source": "Dublin Core",
+      "reference": {
+        "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+        "locator": "dcterms:modified",
+        "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+      },
+      "verification": "public standard (DCMI Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: What changed recently? Is this stale? Date of the last change in the source; lets reviews spot stale entries.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What changed recently? Is this stale?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-03"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (Dublin Core) and checked"
+    },
+    {
+      "id": "CA-04",
+      "entity": "all",
+      "name": "valid_from",
+      "type": "date",
+      "required": false,
+      "description": "date it comes into force",
+      "status": "active",
+      "source": "Dublin Core",
+      "reference": {
+        "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+        "locator": "dcterms:valid",
+        "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+      },
+      "verification": "public standard (DCMI Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Is this in force on a given date? Start of the validity period. Dublin Core defines `valid` as a date or range; SDEM stores the range as two dates.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Is this in force on a given date?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-04"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (Dublin Core) and checked"
+    },
+    {
+      "id": "CA-05",
+      "entity": "all",
+      "name": "valid_to",
+      "type": "date",
+      "required": false,
+      "description": "date it stops being in force (empty = open-ended)",
+      "status": "active",
+      "source": "Dublin Core",
+      "reference": {
+        "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+        "locator": "dcterms:valid",
+        "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+      },
+      "verification": "public standard (DCMI Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Is this in force on a given date? End of the validity period (empty = open).",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Is this in force on a given date?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-05"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (Dublin Core) and checked"
+    },
+    {
+      "id": "CA-06",
+      "entity": "all",
+      "name": "replaces",
+      "type": "string",
+      "required": false,
+      "description": "the earlier instance this one supersedes",
+      "status": "active",
+      "source": "Dublin Core",
+      "reference": {
+        "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+        "locator": "dcterms:replaces",
+        "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+      },
+      "verification": "public standard (DCMI Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: What did this replace? The earlier instance this one supersedes, so history can be followed through renames and re-designs.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What did this replace?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-06"
+      },
+      "kind": "reference",
+      "references": [
+        "same entity type"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph",
+      "confidence_basis": "defined by a public standard (Dublin Core) and checked"
+    },
+    {
+      "id": "CA-07",
+      "entity": "all",
+      "name": "replaced_by",
+      "type": "string",
+      "required": false,
+      "description": "the later instance that supersedes this one",
+      "status": "active",
+      "source": "Dublin Core",
+      "reference": {
+        "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+        "locator": "dcterms:isReplacedBy",
+        "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+      },
+      "verification": "public standard (DCMI Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: What replaced this? The later instance that supersedes this one.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "What replaced this?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-07"
+      },
+      "kind": "reference",
+      "references": [
+        "same entity type"
+      ],
+      "reference_scope": "same level — resolved by the local knowledge graph",
+      "confidence_basis": "defined by a public standard (Dublin Core) and checked"
+    },
+    {
+      "id": "CA-08",
+      "entity": "all",
+      "name": "conforms_to",
+      "type": "list<string>",
+      "required": false,
+      "description": "standards, frameworks or policies it follows (e.g. \"BIAN BCM 14.0\")",
+      "status": "active",
+      "source": "Dublin Core",
+      "reference": {
+        "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+        "locator": "dcterms:conformsTo",
+        "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+      },
+      "verification": "public standard (DCMI Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Which standard, framework or policy does this follow? E.g. \"BIAN BCM 14.0\", an internal policy id. Makes alignment claims explicit and queryable.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Which standard, framework or policy does this follow?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-08"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (Dublin Core) and checked"
+    },
+    {
+      "id": "CA-09",
+      "entity": "all",
+      "name": "subject",
+      "type": "list<string>",
+      "required": false,
+      "description": "topic tags (e.g. \"payments\", \"fraud\")",
+      "status": "active",
+      "source": "Dublin Core",
+      "reference": {
+        "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+        "locator": "dcterms:subject",
+        "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+      },
+      "verification": "public standard (DCMI Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Find everything about a topic (e.g. \"payments\", \"fraud\"). Free topic tags; lets architects slice the graph by theme.",
+      "confidence": "high",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Find everything about a topic (e.g. \"payments\", \"fraud\").",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-09"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (Dublin Core) and checked"
+    },
+    {
+      "id": "CA-10",
+      "entity": "all",
+      "name": "owner",
+      "type": "string",
+      "required": false,
+      "description": "the actor or role accountable for it",
+      "status": "active",
+      "source": "ArchiMate concept",
+      "reference": {
+        "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
+        "locator": "assignment (active structure assigned to behaviour or object)",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
+      },
+      "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
+      "reasoning": "Answers: Who is accountable for this? Accountability is the most-asked design question. No public standard defines an \"owner\" field: Dublin Core's rightsHolder is about rights, not accountability. Built on ArchiMate's assignment of an actor or role.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Who is accountable for this?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-10"
+      },
+      "kind": "reference",
+      "references": [
+        "A1.BusinessActor",
+        "A1.BusinessRole"
+      ],
+      "reference_scope": "resolved in the A1 local knowledge graph (owner is always an A1 actor or role)",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "CA-11",
+      "entity": "all",
+      "name": "access_classification",
+      "type": "string",
+      "required": false,
+      "description": "how sensitive it is and who may see it",
+      "status": "active",
+      "source": "Dublin Core",
+      "reference": {
+        "standard": "Dublin Core (DCMI Metadata Terms, DCMI Recommendation 2020-01-20)",
+        "locator": "dcterms:accessRights",
+        "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+      },
+      "verification": "public standard (DCMI Recommendation), checked 2026-10-24",
+      "reasoning": "Answers: Who may see this? How sensitive is it? Dublin Core defines the field (access or security status); the four values are SDEM's common banking scale, not a standard.",
+      "confidence": "medium",
+      "read_by": "design and impact queries (descriptive attribute)",
+      "question": "Who may see this? How sensitive is it?",
+      "approved": {
+        "review": "A1 data-model review",
+        "date": "2026-10-24",
+        "draft_id": "DA1-11"
+      },
+      "kind": "enumeration",
+      "values": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "Dublin Core defines the attribute; its allowed values are SDEM-defined"
     }
   ]
 }

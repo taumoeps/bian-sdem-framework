@@ -19,7 +19,7 @@ def load(path=REC):
 
 
 def render(rec=None):
-    rec = rec or load(); A = rec['attributes']
+    rec = rec or load(); A = rec['attributes']; COM = rec.get('common_attributes', [])
     act = [a for a in A if a['status'] == 'active']
     conf = Counter(a['confidence'] for a in act); src = Counter(a['source'] for a in act)
     out = ['# SDEM Architecture Attribute Design', '',
@@ -43,11 +43,15 @@ def render(rec=None):
         r = [a for a in act if a['entity'].startswith(l)]; c = Counter(a['confidence'] for a in r)
         out.append(f"| {NAMES[l]} | {len(r)} | {c['high']} | {c['medium']} | {c['low']} | {sum(a['required'] for a in r)} |")
     out += [f"| **All** | **{len(act)}** | **{conf['high']}** | **{conf['medium']}** | **{conf['low']}** | **{sum(a['required'] for a in act)}** |", '',
-            f"Plus {len(A) - len(act)} deprecated attribute(s) and {len(rec['core_fields'])} core fields every instance carries.", '',
+            f"Plus {len(COM)} common attributes on every entity type (§4), {len(A) - len(act)} deprecated attribute(s) and {len(rec['core_fields'])} core fields every instance carries.", '',
             '| Source | Attributes |', '|---|---|'] + [f"| {k} | {v} |" for k, v in src.most_common()] + ['']
-    out += ['## 4. Core fields (every entity type)', '', 'From `schema/level-model.schema.json`. These are the instance\'s identity and lifecycle, not entity-specific attributes.', '',
+    out += ['## 4. Core fields and common attributes (every entity type)', '', 'From `schema/level-model.schema.json`. These are the instance\'s identity and lifecycle, not entity-specific attributes.', '',
             '| Field | Type | Required | Source reference | Description | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']
     out += [f"| `{c['name']}` | {c['type']} | {'yes' if c['required'] else 'no'} | {c['source']}: {c['reference']['standard']}, {c['reference']['locator']} ([link]({c['reference']['uri']})) | {c['description']} | {c['reasoning']} | **{c['confidence']}** |" for c in rec['core_fields']]
+    if COM:
+        out += ['', '### Common attributes (every entity type, all four architectures)', '', 'Approved in the A1 data-model review, 2026-10-24. Optional; they describe any architecture element the same way.', '',
+                '| ID | Attribute | Type | Allowed values / refers to | Source reference | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']
+        out += [f"| {a['id']} | `{a['name']}` | {a['type']} | {(', '.join(a['values']) if a.get('values') else ('refers to ' + ', '.join(a['references'])) if a.get('references') else '—')} | {a['source']}: [{a['reference']['standard'].split(' (')[0]}]({a['reference']['uri']}) `{a['reference']['locator']}` | {a['reasoning']} | **{a['confidence']}** |" for a in COM]
     out.append('')
     n = 4
     for l in ('A1', 'A2', 'A3', 'A4'):

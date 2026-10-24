@@ -11,7 +11,20 @@
       "version": "1.0",
       "name": "Payments",
       "lifecycle_status": "active",
-      "description": "Move money on behalf of customers: initiate, execute, settle and report payments across schemes."
+      "description": "Move money on behalf of customers: initiate, execute, settle and report payments across schemes.",
+      "attributes": {
+        "level": 1,
+        "strategic_importance": "core",
+        "maturity_current": 3,
+        "maturity_target": 4,
+        "owner": "ROLE-PAY-OFFICER",
+        "conforms_to": [
+          "BIAN BCM 14.0"
+        ],
+        "subject": [
+          "payments"
+        ]
+      }
     },
     {
       "id": "CAP-PAY-010",
@@ -19,7 +32,21 @@
       "version": "1.0",
       "name": "Initiate Payment",
       "lifecycle_status": "active",
-      "description": "Capture a customer's payment instruction, validate and authorise it, and hand it to execution — for credit transfers from a customer account."
+      "description": "Capture a customer's payment instruction, validate and authorise it, and hand it to execution — for credit transfers from a customer account.",
+      "attributes": {
+        "level": 2,
+        "strategic_importance": "core",
+        "maturity_current": 2,
+        "maturity_target": 4,
+        "owner": "ROLE-PAY-OFFICER",
+        "conforms_to": [
+          "BIAN BCM 14.0"
+        ],
+        "subject": [
+          "payments"
+        ],
+        "access_classification": "internal"
+      }
     },
     {
       "id": "VS-MAKE-PAYMENT",
@@ -34,7 +61,10 @@
           "VSS-P2",
           "VSS-P3",
           "VSS-P4"
-        ]
+        ],
+        "stakeholder": "retail customer",
+        "value_proposition": "money reaches the payee quickly and safely",
+        "owner": "ROLE-PAY-OFFICER"
       }
     },
     {
@@ -43,7 +73,12 @@
       "version": "1.0",
       "name": "Capture payment instruction",
       "lifecycle_status": "active",
-      "description": "The customer enters payee, amount and date."
+      "description": "The customer enters payee, amount and date.",
+      "attributes": {
+        "value_item": "a complete, correct instruction",
+        "entrance_criteria": "customer decides to pay",
+        "exit_criteria": "instruction captured"
+      }
     },
     {
       "id": "VSS-P2",
@@ -51,7 +86,12 @@
       "version": "1.0",
       "name": "Validate and authorise",
       "lifecycle_status": "active",
-      "description": "The instruction is checked and the customer authorises it."
+      "description": "The instruction is checked and the customer authorises it.",
+      "attributes": {
+        "value_item": "an authorised instruction",
+        "entrance_criteria": "instruction captured",
+        "exit_criteria": "instruction authorised"
+      }
     },
     {
       "id": "VSS-P3",
@@ -80,7 +120,15 @@
         "invokes": [
           "SO-PI-01",
           "SO-PI-02"
-        ]
+        ],
+        "level": 2,
+        "triggered_by": "customer submits a payment",
+        "outcome": "authorised payment instruction",
+        "criticality": "high",
+        "frequency": "continuous",
+        "automation_level": "automated",
+        "owner": "ROLE-PAY-OFFICER",
+        "modified": "2026-09-30"
       }
     },
     {
@@ -93,7 +141,8 @@
       "attributes": {
         "invokes": [
           "SO-PI-01"
-        ]
+        ],
+        "sequence": 1
       }
     },
     {
@@ -106,7 +155,8 @@
       "attributes": {
         "invokes": [
           "SO-PI-02"
-        ]
+        ],
+        "sequence": 2
       }
     },
     {
@@ -120,7 +170,15 @@
         "invokes": [
           "SO-PI-03",
           "SO-PI-04"
-        ]
+        ],
+        "level": 2,
+        "triggered_by": "instruction authorised",
+        "outcome": "payment executed and confirmed",
+        "criticality": "high",
+        "frequency": "continuous",
+        "automation_level": "partly automated",
+        "owner": "ROLE-PAY-OFFICER",
+        "modified": "2026-09-30"
       }
     },
     {
@@ -133,7 +191,8 @@
       "attributes": {
         "invokes": [
           "SO-PI-03"
-        ]
+        ],
+        "sequence": 1
       }
     },
     {
@@ -146,7 +205,8 @@
       "attributes": {
         "invokes": [
           "SO-PI-04"
-        ]
+        ],
+        "sequence": 2
       }
     },
     {
@@ -165,7 +225,10 @@
           "value_date",
           "payment_reference",
           "remittance_information"
-        ]
+        ],
+        "glossary_uri": "https://example.org/glossary/payment-instruction",
+        "personal_information": true,
+        "access_classification": "confidential"
       }
     },
     {
@@ -180,7 +243,10 @@
           "payee_name",
           "payee_account",
           "payee_bank"
-        ]
+        ],
+        "glossary_uri": "https://example.org/glossary/payee",
+        "personal_information": true,
+        "access_classification": "confidential"
       }
     },
     {
@@ -189,7 +255,11 @@
       "version": "1.0",
       "name": "Payments Operations Officer",
       "lifecycle_status": "active",
-      "description": "Handles exceptions in payment processing."
+      "description": "Handles exceptions in payment processing.",
+      "attributes": {
+        "role_kind": "role",
+        "responsibilities": "handle exceptions in payment processing"
+      }
     }
   ],
   "relationships": [

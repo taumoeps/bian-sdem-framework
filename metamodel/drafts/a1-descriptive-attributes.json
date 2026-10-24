@@ -1,5 +1,5 @@
 {
-  "status": "DRAFT for review — not part of the model until approved",
+  "status": "APPROVED 2026-10-24 as drafted — decisions: all 11 common attributes accepted; all 13 SDEM-defined attributes kept; hierarchy stays a link; all new attributes optional. Written into metamodel/entity-attributes.json (common_attributes CA-01…CA-11; A1 attributes AT-A1-10…).",
   "level": "A1",
   "date": "2026-10-24",
   "scope": "Descriptive attributes for the A1 Business Architecture entities, plus a common set proposed for every entity in all four architectures.",
@@ -29,7 +29,7 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "The record's own key in the tool it came from, so any node can be traced back to its system of record. Distinct from SDEM `id`, which may be the same value.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the record's key in the tool it came from"
     },
     {
@@ -45,7 +45,7 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "Date the thing was created in the source.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "date it was created in the source"
     },
     {
@@ -61,7 +61,7 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "Date of the last change in the source; lets reviews spot stale entries.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "date it was last changed in the source"
     },
     {
@@ -77,7 +77,7 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "Start of the validity period. Dublin Core defines `valid` as a date or range; SDEM stores the range as two dates.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "date it comes into force"
     },
     {
@@ -93,7 +93,7 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "End of the validity period (empty = open).",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "date it stops being in force (empty = open-ended)"
     },
     {
@@ -109,7 +109,7 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "The earlier instance this one supersedes, so history can be followed through renames and re-designs.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the earlier instance this one supersedes"
     },
     {
@@ -125,7 +125,7 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "The later instance that supersedes this one.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the later instance that supersedes this one"
     },
     {
@@ -141,7 +141,7 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "E.g. \"BIAN BCM 14.0\", an internal policy id. Makes alignment claims explicit and queryable.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "standards, frameworks or policies it follows (e.g. \"BIAN BCM 14.0\")"
     },
     {
@@ -157,7 +157,7 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "Free topic tags; lets architects slice the graph by theme.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "topic tags (e.g. \"payments\", \"fraud\")"
     },
     {
@@ -173,7 +173,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "Accountability is the most-asked design question. No public standard defines an \"owner\" field: Dublin Core's rightsHolder is about rights, not accountability. Built on ArchiMate's assignment of an actor or role.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the actor or role accountable for it"
     },
     {
@@ -194,7 +194,7 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "Dublin Core defines the field (access or security status); the four values are SDEM's common banking scale, not a standard.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "how sensitive it is and who may see it"
     },
     {
@@ -210,7 +210,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "Depth in the capability hierarchy. The hierarchy itself is the composition link between capabilities; `level` makes the depth queryable without walking it.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "depth in the capability hierarchy (1 = top)"
     },
     {
@@ -231,7 +231,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Common capability heat-map dimension; no open standard defines it or its values.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "how much the capability matters to strategy"
     },
     {
@@ -247,7 +247,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Current maturity on a 1–5 scale. Maturity scales (e.g. CMMI) are proprietary; SDEM defines only the range.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "current maturity, 1 (low) to 5 (high)"
     },
     {
@@ -263,7 +263,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Target maturity, same scale; the gap to current drives investment questions.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "target maturity, 1 to 5"
     },
     {
@@ -279,7 +279,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The stakeholder the stream delivers value to; ArchiMate has a Stakeholder concept.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "who the value stream delivers value to"
     },
     {
@@ -295,7 +295,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The value the stream produces; ArchiMate has a Value concept associated with value streams.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the value the stream delivers"
     },
     {
@@ -311,7 +311,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Condition for entering the stage. Widely used in value-stream mapping, but the source that defines it (BIZBOK) is membership-only.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "condition for entering the stage"
     },
     {
@@ -327,7 +327,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Condition for leaving the stage; as above.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "condition for completing the stage"
     },
     {
@@ -343,7 +343,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The value a stage contributes; ArchiMate Value concept.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the value the stage adds"
     },
     {
@@ -359,7 +359,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "Depth in the process hierarchy; the hierarchy itself is the composition link.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "depth in the process hierarchy (1 = top)"
     },
     {
@@ -375,7 +375,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The business event that starts it (e.g. \"customer submits payment\").",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the business event that starts it"
     },
     {
@@ -391,7 +391,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The end result the process achieves.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the result it produces"
     },
     {
@@ -411,7 +411,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "The single most useful field for impact analysis. No open standard defines it; business-continuity standards (ISO 22301) are paid.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "how critical the process is to the bank"
     },
     {
@@ -433,7 +433,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "How often the process runs; informs outage impact.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "how often it runs"
     },
     {
@@ -453,7 +453,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Degree of automation; no standard scale.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "how far it is automated"
     },
     {
@@ -469,7 +469,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "Position of the step in its process; ArchiMate orders steps with triggering and flow.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "position of the step within its process"
     },
     {
@@ -485,7 +485,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "The actors or roles the service serves.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the actors or roles the service serves"
     },
     {
@@ -501,7 +501,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Whether customers use the service directly; key for customer-impact questions.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "whether customers use it directly"
     },
     {
@@ -524,7 +524,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Delivery channels. ArchiMate models channels as business interfaces; the value list is SDEM's.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "channels it is offered through"
     },
     {
@@ -540,7 +540,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "The service-level target (e.g. \"same-day\"). Service-management standards that define this (ITIL) are paid.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the committed service level (e.g. \"same day\")"
     },
     {
@@ -560,7 +560,7 @@
       "uri": "https://www.w3.org/TR/vocab-org/",
       "reasoning": "The three kinds of agent ORG distinguishes.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "whether it is a formal organisation, a unit or a person"
     },
     {
@@ -576,7 +576,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "Whether the actor is outside the bank. ORG does not distinguish internal from external.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "whether it is outside the bank"
     },
     {
@@ -592,7 +592,7 @@
       "uri": "https://www.w3.org/TR/vocab-org/",
       "reasoning": "A category from a scheme (e.g. regulator, partner, business line).",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "its category (e.g. regulator, partner, business line)"
     },
     {
@@ -608,7 +608,7 @@
       "uri": "https://www.w3.org/TR/vocab-org/",
       "reasoning": "The organisation's or unit's purpose.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "why the unit or organisation exists"
     },
     {
@@ -624,7 +624,7 @@
       "uri": "https://www.w3.org/TR/vocab-org/",
       "reasoning": "The site where the actor is based.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the site where it is based"
     },
     {
@@ -643,7 +643,7 @@
       "uri": "https://www.w3.org/TR/vocab-org/",
       "reasoning": "ORG separates a generic role from a post that exists whether or not it is filled.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "whether it is a generic role or a specific post"
     },
     {
@@ -659,7 +659,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "What the role does; ArchiMate's role is defined by its responsibilities.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "what the role is responsible for"
     },
     {
@@ -675,7 +675,7 @@
       "uri": "https://www.w3.org/TR/skos-reference/",
       "reasoning": "Link to the business-glossary concept that defines the object.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "link to the agreed glossary definition"
     },
     {
@@ -691,7 +691,7 @@
       "uri": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
       "reasoning": "Whether the object holds information about an identifiable person, as defined in public privacy law.",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "whether it holds information about an identifiable person"
     },
     {
@@ -711,7 +711,7 @@
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
       "reasoning": "ArchiMate has three separate concepts; SDEM holds them as one entity with a kind field.",
       "confidence": "medium",
-      "status": "draft",
+      "status": "approved",
       "meaning": "whether it is a requirement, a constraint or a principle"
     },
     {
@@ -727,7 +727,7 @@
       "uri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
       "reasoning": "The origin of the requirement (e.g. a regulation article or policy id).",
       "confidence": "high",
-      "status": "draft",
+      "status": "approved",
       "meaning": "the regulation, policy or decision it comes from"
     },
     {
@@ -748,7 +748,7 @@
       "uri": "https://github.com/taumoeps/bian-sdem-framework",
       "reasoning": "MoSCoW priority, a common convention with no open standard definition.",
       "confidence": "low",
-      "status": "draft",
+      "status": "approved",
       "meaning": "how important it is to meet (must, should, could, won't)"
     }
   ],

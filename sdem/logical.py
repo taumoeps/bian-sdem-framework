@@ -16,7 +16,7 @@ DOC = ROOT / 'docs' / 'logical-data-model.md'
 NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
 LEFT = {'1..1': '||', '0..1': '|o', '0..*': '}o', '1..*': '}|'}
 RIGHT = {'1..1': '||', '0..1': 'o|', '0..*': 'o{', '1..*': '|{'}
-TY = {'string': str, 'list<string>': list, 'map<string,string>': dict}
+TY = {'string': str, 'list<string>': list, 'map<string,string>': dict, 'integer': int, 'boolean': bool, 'date': str}
 
 CONSTRAINTS = [
  ('LC-01', 'Instance identity', '`id` + `version` is unique within a level export', 'enforced', '`sdem-graph check`'),
@@ -39,8 +39,8 @@ CONSTRAINTS = [
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
 
 
-def conformance(mm, attrs):
-    """Measure the example estates against LC-04 … LC-09 (the constraints not yet enforced)."""
+def conformance(mm, attrs, common=()):
+    """Measure the example estates against LC-04 … LC-10 (the constraints not yet enforced)."""
     byent = {}
     for a in attrs: byent.setdefault(a['entity'], {})[a['name']] = a
     res = Counter(); estates = 0; instances = 0
@@ -54,7 +54,7 @@ def conformance(mm, attrs):
             keys = Counter()
             for i in _j(f)['instances']:
                 instances += 1
-                defs = {}
+                defs = {c['name']: c for c in common}
                 for t in list(reversed(list(mm.ancestors(i['type'])))) + [i['type']]: defs.update(byent.get(t, {}))
                 at = i.get('attributes') or {}
                 for k, a in defs.items():
@@ -65,12 +65,13 @@ def conformance(mm, attrs):
                     if not a: res['undefined'] += 1; continue
                     if a['status'] == 'deprecated': res['LC-13 failed'] += 1
                     want = TY.get(a['type'])
-                    if want: res['LC-05 checked'] += 1; res['LC-05 failed'] += not (isinstance(v, want) or (v is None and k == 'behavior_qualifier'))
+                    if want: res['LC-05 checked'] += 1; res['LC-05 failed'] += not ((isinstance(v, want) and not (want is int and isinstance(v, bool))) or (v is None and k == 'behavior_qualifier'))
                     if a.get('values'): res['LC-06 checked'] += 1; res['LC-06 failed'] += v not in a['values']
                     if a.get('kind') == 'reference':
-                        same = all(t.startswith(i['type'][:2]) for t in a['references'])
+                        targets = [i['type'] if t == 'same entity type' else t for t in a['references']]
+                        same = all(t.startswith(i['type'][:2]) for t in targets)
                         for x in (v if isinstance(v, list) else [v]):
-                            t = idx.get(x); hit = bool(t) and any(mm.is_a(t, r) for r in a['references'])
+                            t = idx.get(x); hit = bool(t) and any(mm.is_a(t, r) for r in targets)
                             lc = 'LC-07' if same else 'LC-08'
                             res[f'{lc} checked'] += 1; res[f'{lc} failed'] += not hit
                 if i.get('lifecycle_status'):
@@ -100,7 +101,7 @@ def conformance(mm, attrs):
 def render():
     mm = Metamodel.load()
     ents = [e for f in LEVEL_FILES for e in _j(MM_DIR / f)['entities']]
-    rec = _j(MM_DIR / 'entity-attributes.json'); attrs = rec['attributes']; core = rec['core_fields']
+    rec = _j(MM_DIR / 'entity-attributes.json'); attrs = rec['attributes']; core = rec['core_fields']; common = rec.get('common_attributes', [])
     lr = _j(MM_DIR / 'level-relationships.json'); reg = _j(ROOT / 'schema' / 'relationship-types.json')['relationships']
     byent = {}
     for x in attrs: byent.setdefault(x['entity'], []).append(x)
@@ -117,6 +118,9 @@ def render():
            'Every instance of every entity carries the same core fields, so the cards below do not repeat them:', '',
            '| Field | Type | Required | Meaning |', '|---|---|---|---|']
     out += [f"| `{c['name']}` | {c['type']} | {'yes' if c['required'] else 'no'} | {c['description']} |" for c in core]
+    if common:
+        out += ['', 'and these common attributes (approved 2026-10-24; optional):', '', '| Attribute | Type | Allowed values / refers to | Meaning |', '|---|---|---|---|']
+        out += [f"| `{c['name']}` | {c['type']} | {(', '.join(c['values']) if c.get('values') else ('refers to ' + ', '.join(c['references'])) if c.get('references') else '—')} | {c['description']} |" for c in common]
     out += ['', '### How to read a card', '',
             '- **Identified by** — besides `id`, the fields that make it unique as a real-world thing.',
             '- **Fields** — the entity\'s own fields. *Required* fields must be present. A field that **refers to** another entity holds that entity\'s `id`; when it points into another architecture it is a *join key* the inference engine uses, not a link in the graph.',
@@ -128,7 +132,7 @@ def render():
         rows = [c for c in lr['constraints'] if c['level'] == lvl]
         out += [f'## {n}. {NAMES[lvl]}', '', f'{len(le)} entities. The diagram shows the entities, their key fields and references, and the links between them.', '', '```mermaid', 'erDiagram']
         for e in le:
-            fields = ["        string id PK"] + [f"        {'list' if x['type'].startswith('list') else 'map' if x['type'].startswith('map') else 'string'} {x['name']}{' FK' if x.get('kind') == 'reference' else ''}" for x in byent.get(e['type'], [])]
+            fields = ["        string id PK"] + [f"        {'list' if x['type'].startswith('list') else 'map' if x['type'].startswith('map') else x['type'] if x['type'] in ('integer', 'boolean', 'date') else 'string'} {x['name']}{' FK' if x.get('kind') == 'reference' else ''}" for x in byent.get(e['type'], [])]
             out += [f"    {alias(e['type'])} {{"] + fields + ['    }']
         for c in rows:
             cd = c['cardinality']
@@ -166,7 +170,7 @@ def render():
             'The model above covers each architecture on its own. Links **between** architectures are the nine relationship types below; actual links are records in the Architecture Relationship Registry, proposed by the inference engine and approved by architects.', '',
             '| Relationship | From → to | How many |', '|---|---|---|']
     out += [f"| `{x['relationship']}` | `{x['source_type']}` → `{x['target_type']}` | {x['cardinality'].replace('_', ' to ')} |" for x in reg]
-    est, inst, res = conformance(mm, attrs)
+    est, inst, res = conformance(mm, attrs, common)
     out += ['', '---', '', '## Appendix A. Rules', '',
             'The rules the data must satisfy, and which the checker enforces today.', '',
             '| ID | Rule | Detail | Status |', '|---|---|---|---|']

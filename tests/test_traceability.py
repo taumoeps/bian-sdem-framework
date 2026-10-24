@@ -335,7 +335,7 @@ class AttributeDesignTests(unittest.TestCase):
     def test_every_join_key_is_an_attribute_and_every_used_attribute_is_recorded(self):
         import glob
         from sdem.attributes import load
-        rec = {(a['entity'], a['name']) for a in load()['attributes']}
+        L = load(); rec = {(a['entity'], a['name']) for a in L['attributes']}; common = {a['name'] for a in L.get('common_attributes', [])}
         conv = json.loads((ROOT / 'metamodel/export-conventions.json').read_text(encoding='utf-8'))['conventions']
         keys = {(e, k) for e, ks in conv.items() for k in ks} - {('A1.BusinessCapability', 'description')}  # a core field
         self.assertEqual(keys - rec, set())
@@ -343,7 +343,7 @@ class AttributeDesignTests(unittest.TestCase):
         for f in glob.glob(str(ROOT / 'examples/*/a[1-4]-*.json')):
             for i in json.loads(Path(f).read_text(encoding='utf-8'))['instances']:
                 used |= {(i['type'], k) for k in (i.get('attributes') or {})}
-        self.assertEqual(used - rec, set())
+        self.assertEqual({u for u in used - rec if u[1] not in common}, set())
 
 
 class SourceReferenceCompletenessTests(unittest.TestCase):
@@ -395,14 +395,14 @@ class LogicalDataModelTests(unittest.TestCase):
         at = json.loads((ROOT / 'metamodel/entity-attributes.json').read_text(encoding='utf-8'))
         for a in at['attributes']:
             self.assertIn(a.get('kind'), ('reference', 'value', 'alias map', 'enumeration'), a['id'])
-            for t in a.get('references', []): self.assertTrue(mm.known(t), f"{a['id']} → {t}")
+            for t in a.get('references', []): self.assertTrue(t == 'same entity type' or mm.known(t), f"{a['id']} → {t}")
         for t, e in mm.entities.items():
             self.assertIn('identifier', e, t)
 
     def test_examples_conform_with_no_errors(self):
         from sdem.logical import conformance, _j
         from sdem.metamodel import Metamodel, MM_DIR
-        _, _, res = conformance(Metamodel.load(), _j(MM_DIR / 'entity-attributes.json')['attributes'])
+        R = _j(MM_DIR / 'entity-attributes.json'); _, _, res = conformance(Metamodel.load(), R['attributes'], R.get('common_attributes', []))
         for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-08', 'LC-09', 'LC-10'):
             self.assertEqual(res[f'{lc} failed'], 0, lc)
         self.assertEqual(res['undefined'], 0)

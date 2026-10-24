@@ -12,7 +12,7 @@
       "name": "Card Fraud Alerts",
       "lifecycle_status": "active",
       "attributes": {
-        "owner": "Retail Risk"
+        "owner": "ACT-RETAIL-RISK"
       },
       "description": "Detect suspicious card transactions in real time and alert the cardholder through their preferred channel before the transaction settles."
     },
@@ -84,6 +84,18 @@
       "name": "Confirm or block",
       "lifecycle_status": "active",
       "description": "Stage of Use Card Safely: confirm or block."
+    },
+    {
+      "id": "ACT-RETAIL-RISK",
+      "type": "A1.BusinessActor",
+      "version": "1.0",
+      "name": "Retail Risk",
+      "lifecycle_status": "active",
+      "description": "Retail risk organisational unit (synthetic).",
+      "attributes": {
+        "actor_kind": "organisational unit",
+        "external": false
+      }
     }
   ],
   "relationships": [

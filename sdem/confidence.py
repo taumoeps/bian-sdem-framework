@@ -50,6 +50,10 @@ def attribute(a, val):
     rs = set(re.findall(r'S\d+', a.get('read_by', ''))); tested = bool(rs & val)
     if a['status'] == 'deprecated': return 'low', 'deprecated'
     src = a['source']
+    if src in ('Dublin Core', 'W3C ORG', 'W3C SKOS', 'public legislation'):
+        if a.get('values_source') == 'SDEM': return 'medium', f'{src} defines the attribute; its allowed values are SDEM-defined'
+        return 'high', f'defined by a public standard ({src}) and checked'
+    if src == 'ArchiMate concept': return 'medium', 'built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it'
     if src in ('BIAN', 'OpenAPI'):
         if a['entity'] == 'A3.APIOperation' and a['name'] == 'payload_fields':
             return 'medium', 'OpenAPI defines payload schemas; SDEM flattens them to field names'
@@ -105,6 +109,8 @@ def apply(write=True):
     at = _j(MM_DIR / 'entity-attributes.json')
     for a in at['attributes']:
         c, b = attribute(a, val); setc(a, 'confidence', c, b, f"{a['id']} {a['entity']}.{a['name']}")
+    for a in at.get('common_attributes', []):
+        c, b = attribute(a, val); setc(a, 'confidence', c, b, f"{a['id']} common.{a['name']}")
     for cf in at['core_fields']:
         c, b = ('high', 'BIAN concept identifier') if cf['name'] == 'canonical_id' else ('high', 'SDEM data-contract field, defined authoritatively by SDEM')
         setc(cf, 'confidence', c, b, f"core {cf['name']}")

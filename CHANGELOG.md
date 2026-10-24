@@ -2,6 +2,12 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## Unreleased
+
+- **A1 data model approved (2026-10-24).** Eleven common attributes on every entity type in all four architectures (`common_attributes` CA-01…CA-11: Dublin Core provenance, validity and versioning, plus `owner` and `access_classification`) and 32 descriptive A1 attributes (AT-A1-10…), each with source reference, reasoning and confidence. Decisions: all common attributes accepted, all SDEM-defined attributes kept, hierarchy stays a link, all new attributes optional. The free-text capability `owner` is replaced by the common `owner` (a reference to an actor or role). Draft record and review: `metamodel/drafts/a1-descriptive-attributes.json`, `docs/drafts/data-model-a1-draft.md` (renderer `scripts/render_data_model_draft.py`).
+- **Confidence rule** covers the new public sources (Dublin Core, W3C ORG, W3C SKOS, public legislation: high; SDEM values on a standard field: medium) and ArchiMate concepts (medium). The logical model checks integer, boolean and date attributes and same-type references.
+- **Examples.** The payment-initiation A1 export carries the new attributes (synthetic values); card-fraud-alerts gains a Retail Risk actor as the capability owner.
+
 ## 0.7.0 — renamed SDEM, the Service Domain Enterprise Metamodel
 
 - **Name.** SDMM → **SDEM (Service Domain Enterprise Metamodel)**, positioned as a model-driven enterprise architecture metamodel. Principles, A1–A4 levels, behaviour and data are unchanged.

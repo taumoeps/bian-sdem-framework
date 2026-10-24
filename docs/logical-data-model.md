@@ -22,6 +22,22 @@ Every instance of every entity carries the same core fields, so the cards below 
 | `definition_uri` | string | no | link to the source definition |
 | `attributes` | object | no | the entity type's own attributes (this document) |
 
+and these common attributes (approved 2026-10-24; optional):
+
+| Attribute | Type | Allowed values / refers to | Meaning |
+|---|---|---|---|
+| `source_id` | string | — | the record's key in the tool it came from |
+| `created` | date | — | date it was created in the source |
+| `modified` | date | — | date it was last changed in the source |
+| `valid_from` | date | — | date it comes into force |
+| `valid_to` | date | — | date it stops being in force (empty = open-ended) |
+| `replaces` | string | refers to same entity type | the earlier instance this one supersedes |
+| `replaced_by` | string | refers to same entity type | the later instance that supersedes this one |
+| `conforms_to` | list<string> | — | standards, frameworks or policies it follows (e.g. "BIAN BCM 14.0") |
+| `subject` | list<string> | — | topic tags (e.g. "payments", "fraud") |
+| `owner` | string | refers to A1.BusinessActor, A1.BusinessRole | the actor or role accountable for it |
+| `access_classification` | string | public, internal, confidential, restricted | how sensitive it is and who may see it |
+
 ### How to read a card
 
 - **Identified by** — besides `id`, the fields that make it unique as a real-world thing.
@@ -36,42 +52,73 @@ Every instance of every entity carries the same core fields, so the cards below 
 erDiagram
     A1_BusinessCapability {
         string id PK
-        string owner
+        integer level
+        string strategic_importance
+        integer maturity_current
+        integer maturity_target
     }
     A1_ValueStream {
         string id PK
         list stages FK
+        string stakeholder
+        string value_proposition
     }
     A1_ValueStreamStage {
         string id PK
+        string entrance_criteria
+        string exit_criteria
+        string value_item
     }
     A1_BusinessProcess {
         string id PK
         list invokes FK
+        integer level
+        string triggered_by
+        string outcome
+        string criticality
+        string frequency
+        string automation_level
     }
     A1_BusinessActivity {
         string id PK
         list invokes FK
+        integer sequence
     }
     A1_BusinessService {
         string id PK
         list inputs
         list outputs
+        list consumers FK
+        boolean customer_facing
+        string channels
+        string service_level
     }
     A1_BusinessActor {
         string id PK
+        string actor_kind
+        boolean external
+        string classification
+        string purpose
+        string location
     }
     A1_BusinessRole {
         string id PK
+        string role_kind
+        string responsibilities
     }
     A1_BusinessObject {
         string id PK
         list attributes
         map field_aliases
+        string glossary_uri
+        boolean personal_information
     }
     A1_BusinessRequirement {
         string id PK
         list applies_to FK
+        string requirement_kind
+        list derived_from
+        string priority
     }
     A1_BusinessCapability |o--o{ A1_BusinessCapability : "composition"
     A1_BusinessCapability }o--o{ A1_BusinessCapability : "aggregation"
@@ -135,7 +182,10 @@ A business ability independent of how it is implemented
 
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
-| `owner` | text | no | accountable owner | — |
+| `level` | integer | no | depth in the capability hierarchy (1 = top) | — |
+| `strategic_importance` | text | no | how much the capability matters to strategy | one of: core, differentiating, supporting, commodity |
+| `maturity_current` | integer | no | current maturity, 1 (low) to 5 (high) | — |
+| `maturity_target` | integer | no | target maturity, 1 to 5 | — |
 
 **Links**
 
@@ -162,6 +212,8 @@ The stages by which stakeholders receive value
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `stages` | list | no | ordered ids of the stream's stages | `A1.ValueStreamStage` |
+| `stakeholder` | text | no | who the value stream delivers value to | — |
+| `value_proposition` | text | no | the value the stream delivers | — |
 
 **Links**
 
@@ -180,7 +232,13 @@ One named segment of a value stream
 
 **Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
 
-**Fields:** core fields only.
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `entrance_criteria` | text | no | condition for entering the stage | — |
+| `exit_criteria` | text | no | condition for completing the stage | — |
+| `value_item` | text | no | the value the stage adds | — |
 
 **Links**
 
@@ -206,6 +264,12 @@ Coordinated business behaviour
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `invokes` | list | no | A2 operations the process steps call | `A2.ServiceOperation` *(join key)* |
+| `level` | integer | no | depth in the process hierarchy (1 = top) | — |
+| `triggered_by` | text | no | the business event that starts it | — |
+| `outcome` | text | no | the result it produces | — |
+| `criticality` | text | no | how critical the process is to the bank | one of: high, medium, low |
+| `frequency` | text | no | how often it runs | one of: continuous, daily, weekly, monthly, ad hoc |
+| `automation_level` | text | no | how far it is automated | one of: manual, partly automated, automated |
 
 **Links**
 
@@ -238,6 +302,7 @@ A fine-grained activity within a process
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `invokes` | list | no | A2 operations the activity calls | `A2.ServiceOperation` *(join key)* |
+| `sequence` | integer | no | position of the step within its process | — |
 
 **Links**
 
@@ -271,6 +336,10 @@ Business behaviour exposed to consumers
 |---|---|---|---|---|
 | `inputs` | list | no | attribute names the service takes | — |
 | `outputs` | list | no | attribute names the service returns | — |
+| `consumers` | list | no | the actors or roles the service serves | `A1.BusinessActor`, `A1.BusinessRole` |
+| `customer_facing` | boolean | no | whether customers use it directly | — |
+| `channels` | text | no | channels it is offered through | one of: branch, online, mobile, contact centre, partner, API |
+| `service_level` | text | no | the committed service level (e.g. "same day") | — |
 
 **Links**
 
@@ -294,7 +363,15 @@ An individual or organisation capable of business behaviour
 
 **Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
 
-**Fields:** core fields only.
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `actor_kind` | text | no | whether it is a formal organisation, a unit or a person | one of: formal organisation, organisational unit, person |
+| `external` | boolean | no | whether it is outside the bank | — |
+| `classification` | text | no | its category (e.g. regulator, partner, business line) | — |
+| `purpose` | text | no | why the unit or organisation exists | — |
+| `location` | text | no | the site where it is based | — |
 
 **Links**
 
@@ -315,7 +392,12 @@ Responsibility for a class of business behaviour
 
 **Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
 
-**Fields:** core fields only.
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `role_kind` | text | no | whether it is a generic role or a specific post | one of: role, post |
+| `responsibilities` | text | no | what the role is responsible for | — |
 
 **Links**
 
@@ -342,6 +424,8 @@ A business-level information concept
 |---|---|---|---|---|
 | `attributes` | list | no | glossary attribute names | — |
 | `field_aliases` | name map | no | glossary name → canonical attribute name | — |
+| `glossary_uri` | text | no | link to the agreed glossary definition | — |
+| `personal_information` | boolean | no | whether it holds information about an identifiable person | — |
 
 **Links**
 
@@ -367,6 +451,9 @@ An expressed architectural requirement
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `applies_to` | list | no | ids of the processes or activities the requirement constrains | `A1.BusinessProcess`, `A1.BusinessActivity` |
+| `requirement_kind` | text | no | whether it is a requirement, a constraint or a principle | one of: requirement, constraint, principle |
+| `derived_from` | list | no | the regulation, policy or decision it comes from | — |
+| `priority` | text | no | how important it is to meet (must, should, could, won't) | one of: must, should, could, won't |
 
 **Links**
 
@@ -1430,18 +1517,18 @@ The rules the data must satisfy, and which the checker enforces today.
 
 ## Appendix B. How the example data measures up
 
-The 7 example estates (446 instances) measured against the rules not yet enforced. No errors; 29 completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record); 7 instance(s) still use a deprecated field.
+The 7 example estates (447 instances) measured against the rules not yet enforced. No errors; 29 completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record); 7 instance(s) still use a deprecated field.
 
 | Rule | Values checked | Failures |
 |---|---|---|
 | LC-04 | 478 | 0 |
-| LC-05 | 703 | 0 |
-| LC-06 | 558 | 0 |
-| LC-07 | 126 | 0 |
+| LC-05 | 757 | 0 |
+| LC-06 | 572 | 0 |
+| LC-07 | 132 | 0 |
 | LC-08 | 134 | 0 |
-| LC-09 | 315 | 0 |
-| LC-10 | 1104 | 0 |
-| LC-10m (warning) | 1104 | 29 |
+| LC-09 | 316 | 0 |
+| LC-10 | 1106 | 0 |
+| LC-10m (warning) | 1106 | 29 |
 | LC-13 deprecated field in use | — | 7 |
 | fields not in the model | — | 0 |
 
