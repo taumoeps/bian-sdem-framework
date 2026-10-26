@@ -436,6 +436,28 @@
       "reviewer_id": "use-case-example-1 (simulated architect)",
       "approved_at": "2026-10-27",
       "bian_release": "BIAN 14.0"
+    },
+    {
+      "mapping_id": "P-UCE1-014",
+      "source": {
+        "id": "VS-MAKE-PAYMENT",
+        "type": "A1.ValueStream",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BS-CREDIT-TRANSFER",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S02 step4 4/4 scenario operations covered in order by stage verbs (100%): [('SO-PI-01', 'VSS-P1'), ('SO-PI-02', 'VSS-P2'), ('SO-PI-03', 'VSS-P3'), ('SO-PI-04', 'VSS-P4')]"
+      ],
+      "rationale": "4/4 scenario operations covered in order by stage verbs (100%): [('SO-PI-01', 'VSS-P1'), ('SO-PI-02', 'VSS-P2'), ('SO-PI-03', 'VSS-P3'), ('SO-PI-04', 'VSS-P4')]",
+      "baseline_id": "ENGINE-RUN-UCE1",
+      "created_by": "sdem-rules/0.10"
     }
   ]
 }

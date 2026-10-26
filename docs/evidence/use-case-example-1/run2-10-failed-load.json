@@ -1,0 +1,64 @@
+{
+  "second_build": {
+    "build": 2,
+    "at": "2026-10-26T21:06:00+00:00",
+    "inputs": [
+      {
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-m5fuwju9/tmp3z7mgq3p/a1-business.json",
+        "kind": "export",
+        "level": "A1",
+        "model_id": "synthetic-bank-payments-a1",
+        "model_version": "2026.10",
+        "sha256": "368e79a542df1dc95ba1c1be86cfd8764123a8a773182fdfe02f6baa5e9ad71c"
+      },
+      {
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-m5fuwju9/tmp3z7mgq3p/a2-service-domain.json",
+        "kind": "export",
+        "level": "A2",
+        "model_id": "synthetic-bank-payments-a2",
+        "model_version": "2026.10",
+        "sha256": "f06724c51a536233bd25707ef0476c26cf54440e37a17fc9e5668fb1d855456a"
+      },
+      {
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-m5fuwju9/tmp3z7mgq3p/a3-application.json",
+        "kind": "export",
+        "level": "A3",
+        "model_id": "synthetic-bank-payments-a3",
+        "model_version": "2026.10",
+        "sha256": "1c542e92326e3f0745c9746092e479110e153f64048ef70cc020668e1b4cbb81"
+      },
+      {
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-m5fuwju9/tmp3z7mgq3p/a4-technology.json",
+        "kind": "export",
+        "level": "A4",
+        "model_id": "synthetic-bank-payments-a4",
+        "model_version": "2026.10",
+        "sha256": "1bcffdcef2080921bb8b83ef87782bb460fbf6b288950f1ebc06c289077e2325"
+      },
+      {
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-m5fuwju9/tmp3z7mgq3p/registry.json",
+        "kind": "registry",
+        "registry_version": "0.4.0",
+        "sha256": "94d591beb38fe11f9b1d7a70d6f4fd2018f89d3243dff4d126ccddf0882c606b"
+      }
+    ],
+    "metamodel_version": "0.4.0",
+    "errors": [
+      "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-01: attribute 'criticality' value 'urgent' is not one of ['high', 'medium', 'low'] (LC-06)"
+    ],
+    "warnings": [
+      "level A2 (synthetic-bank-payments-a2): instance BD-PAYMENTS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+      "level A2 (synthetic-bank-payments-a2): instance SD-PE: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+      "level A2 (synthetic-bank-payments-a2): instance SD-PA: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+      "level A2 (synthetic-bank-payments-a2): instance SD-PE: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+      "level A2 (synthetic-bank-payments-a2): instance SD-PA: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+      "level A2 (synthetic-bank-payments-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)"
+    ],
+    "result": "rejected"
+  },
+  "graph_files_unchanged": true,
+  "load_record_results": [
+    "accepted",
+    "rejected"
+  ]
+}

@@ -1,0 +1,3 @@
+[
+  "$.attributes.criticality: must be one of ['high', 'medium', 'low']"
+]

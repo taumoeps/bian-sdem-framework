@@ -1,0 +1,5 @@
+{
+  "failures": [
+    " : docs/architecture-metamodel-high-level-spec.md changed: the owner must approve any edit (then update HIGH_SHA256)"
+  ]
+}

@@ -1,0 +1,495 @@
+{
+  "run_date": "2026-10-27",
+  "tests": [
+    {
+      "area": "1–3 Records, information, links inside a layer",
+      "data": "the four datasets as they are (68 records, 69 links inside layers)",
+      "should": "accepted",
+      "did": "accepted — 0 errors, 6 completeness warnings",
+      "controls": "CTL-01, CTL-02, CTL-03",
+      "evidence": "run1-01-check.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "Knowledge graph",
+      "data": "build the graph store with no links between layers",
+      "should": "built; 0 links between layers",
+      "did": "accepted; 0 links between layers",
+      "controls": "CTL-15",
+      "evidence": "run1-02-load-record.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "5 Finding links",
+      "data": "engine applies the 69 link-finding rules",
+      "should": "18 links, all correct",
+      "did": "18 proposed — 18 correct, 0 wrong, 0 missed",
+      "controls": "CTL-09, CTL-10",
+      "evidence": "run1-03-proposals.json, run1-04-inference-log.json, run1-05-score.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "4 Links between layers",
+      "data": "the 18 proposed links",
+      "should": "all valid",
+      "did": "valid",
+      "controls": "CTL-05, CTL-08",
+      "evidence": "run1-06-validate-proposals.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "6 Approving links",
+      "data": "approve the 18 links with no evidence attached",
+      "should": "rejected — each link type requires evidence",
+      "did": "rejected — 22 problems, e.g. \"evidence missing required kind(s) ['deployment_design']\"",
+      "controls": "CTL-06",
+      "evidence": "run1-07-approve-without-evidence.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "6 Approving links",
+      "data": "approve the 18 links with the required evidence",
+      "should": "accepted, except a link whose BIAN identifier is missing from the data (never invented)",
+      "did": "17 accepted; 1 blocked — bian_alignment_guidance mapping requires canonical_id on its A2 target",
+      "controls": "CTL-06",
+      "evidence": "run1-08-approve-with-evidence.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "6 Approving links",
+      "data": "change 17 proposed links to approved; the blocked one stays proposed (allowed status changes)",
+      "should": "allowed",
+      "did": "allowed",
+      "controls": "CTL-07",
+      "evidence": "run1-09b-proposed-to-approved.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "6 Approving links",
+      "data": "edit an approved link afterwards",
+      "should": "rejected",
+      "did": "rejected — \"P-UCE1-001: approved record is immutable but field(s) changed: ['rationale']\"",
+      "controls": "CTL-07",
+      "evidence": "run1-10-edit-after-approval.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "Trace",
+      "data": "from the production server up to the business",
+      "should": "reaches the Payment Initiation domain, the payment processes and the Initiate Payment capability",
+      "did": "reached: APP-PAY-HUB, CAP-PAY-010, CMP-PAY-EXEC, PRC-PAY-01, PRC-PAY-02, SD-PI",
+      "controls": "output (trace)",
+      "evidence": "run1-12-trace-and-impact.json",
+      "pass": true,
+      "kind": "output"
+    },
+    {
+      "area": "Trace",
+      "data": "from the Initiate Payment capability down to technology",
+      "should": "reaches the production server",
+      "did": "reached: APP-PAY-HUB, DEP-PAYHUB-PROD, DEP-PAYHUB-UAT, INF-K8S-PAY-PROD, INF-K8S-PAY-UAT, SD-PI",
+      "controls": "output (trace)",
+      "evidence": "run1-12-trace-and-impact.json",
+      "pass": true,
+      "kind": "output"
+    },
+    {
+      "area": "2 Record information (format)",
+      "data": "every one of the 68 records against its per-entity schema",
+      "should": "all match",
+      "did": "68 match, 0 fail",
+      "controls": "CTL-04",
+      "evidence": "run1-13-schemas.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "4 Links between layers (resolution)",
+      "data": "the 17 approved links against the datasets",
+      "should": "every end exists",
+      "did": "all resolve",
+      "controls": "CTL-08",
+      "evidence": "run1-14-approved-links-resolve.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "5 Finding links (engine discipline)",
+      "data": "run the engine again after the 17 links are approved",
+      "should": "never re-proposes an approved link; only ever outputs \"proposed\"",
+      "did": "1 proposals (ALIGNED_TO); 0 re-proposed approved links; 0 not \"proposed\"",
+      "controls": "CTL-10",
+      "evidence": "run1-15-engine-second-run.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "7 Sources",
+      "data": "every entity, link row, link type, rule and attribute in the rulebook",
+      "should": "all name their source",
+      "did": "all complete",
+      "controls": "CTL-11",
+      "evidence": "run1-19-sources-complete.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "7 Sources (confidence)",
+      "data": "every confidence rating in the rulebook",
+      "should": "all follow the single rule",
+      "did": "0 disagree",
+      "controls": "CTL-12",
+      "evidence": "run1-16-confidence-rule.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "Platform (documents)",
+      "data": "the governing specification against the rulebook",
+      "should": "matches (not stale)",
+      "did": "up to date",
+      "controls": "CTL-13",
+      "evidence": "run1-17-documents-current.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "Platform (frozen spec)",
+      "data": "the owner's high-level specification",
+      "should": "unchanged",
+      "did": "unchanged (checksum matches)",
+      "controls": "CTL-14",
+      "evidence": "run1-18-high-level-spec.json",
+      "pass": true,
+      "kind": "good"
+    },
+    {
+      "area": "1 Record types",
+      "data": "a record of an unknown kind (A1.BusinessWidget)",
+      "should": "rejected",
+      "did": "rejected — \"instance PRC-PAY-01: entity 'A1.BusinessWidget' is not in the metamodel\"",
+      "controls": "CTL-01",
+      "evidence": "run2-1-unknown-type.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "2 Record information",
+      "data": "a process with criticality \"urgent\"",
+      "should": "rejected",
+      "did": "rejected — \"attribute 'criticality' value 'urgent' is not one of ['high', 'medium', 'low'] (LC-06)\"",
+      "controls": "CTL-02",
+      "evidence": "run2-2-bad-value.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "3 Links inside a layer",
+      "data": "a process that \"contains\" a capability",
+      "should": "rejected",
+      "did": "rejected — \"A1 relationship A1.BusinessProcess -composition-> A1.BusinessCapability does not match the ArchiMate 3.2 / TOG\"",
+      "controls": "CTL-03",
+      "evidence": "run2-3-disallowed-link.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "4 Links between layers",
+      "data": "a \"uses domain\" link from a capability (only processes may use a domain)",
+      "should": "rejected",
+      "did": "rejected — \"relationship (A1.BusinessCapability, USES_DOMAIN, A2.ServiceDomain) is not in the registry\"",
+      "controls": "CTL-05",
+      "evidence": "run2-4-wrong-link-type.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "5 Finding links",
+      "data": "5a — the Payments Hub no longer names its server, but its deployment records still do",
+      "should": "the \"runs on\" links still found from the deployment records; nothing invented",
+      "did": "2 \"runs on\" links found, from the deployment records; 0 wrong",
+      "controls": "CTL-09, CTL-10",
+      "evidence": "run2-5a-application-silent.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "5 Finding links",
+      "data": "5b — nothing names the Payments Hub's server (its deployments drop it too)",
+      "should": "no \"runs on\" link made; nothing invented",
+      "did": "stricter than expected: the data is rejected before the engine runs — \"required attribute 'platform_id' missing (LC-04)\"",
+      "controls": "CTL-02, CTL-15",
+      "evidence": "run2-5b-no-server.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "7 Sources",
+      "data": "rule B01 with its source removed",
+      "should": "the completeness test fails",
+      "did": "fails — AssertionError: True is not false : rule B01",
+      "controls": "CTL-11",
+      "evidence": "run2-7-rule-without-source.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "2 Record information (format)",
+      "data": "the \"urgent\" process record against its schema",
+      "should": "fails the schema",
+      "did": "fails — \"$.attributes.criticality: must be one of ['high', 'medium', 'low']\"",
+      "controls": "CTL-04",
+      "evidence": "run2-8-schema-bad-value.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "4 Links between layers (resolution)",
+      "data": "an approved link to a server that does not exist",
+      "should": "rejected",
+      "did": "rejected — \"target A4.Deployment INF-DOES-NOT-EXIST@1.0 not found in level model\"",
+      "controls": "CTL-08",
+      "evidence": "run2-9-dangling-link.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "Platform (graph store)",
+      "data": "load bad data over a good knowledge graph",
+      "should": "load rejected; the last good graph kept; the rejection logged",
+      "did": "load rejected; graph files unchanged; load record: accepted, rejected",
+      "controls": "CTL-15",
+      "evidence": "run2-10-failed-load.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "7 Sources (confidence)",
+      "data": "attribute A1.BusinessCapability.strategic_importance (SDEM-defined) rated high",
+      "should": "the rule disagrees",
+      "did": "the rule says low, not high",
+      "controls": "CTL-12",
+      "evidence": "run2-11-confidence-overclaim.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "Platform (documents)",
+      "data": "a governing specification that no longer matches the rulebook",
+      "should": "reported stale",
+      "did": "reported stale",
+      "controls": "CTL-13",
+      "evidence": "run2-12-stale-document.json",
+      "pass": true,
+      "kind": "bad"
+    },
+    {
+      "area": "Platform (frozen spec)",
+      "data": "the owner's specification with one character added",
+      "should": "the freeze test fails",
+      "did": "fails",
+      "controls": "CTL-14",
+      "evidence": "run2-13-high-level-spec-edited.json",
+      "pass": true,
+      "kind": "bad"
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTL-01",
+      "area": "1 Record types",
+      "enforces": "Every record is a known, concrete kind of thing (not abstract, not an artefact), of its dataset's layer",
+      "good": "✅",
+      "bad": "✅",
+      "output": "rejected — \"instance PRC-PAY-01: entity 'A1.BusinessWidget' is not in the metamodel\"",
+      "evidence": [
+        "run1-01-check.json",
+        "run2-1-unknown-type.json"
+      ]
+    },
+    {
+      "id": "CTL-02",
+      "area": "2 Record information",
+      "enforces": "Attribute types, allowed values, required attributes, references and natural keys",
+      "good": "✅",
+      "bad": "✅",
+      "output": "rejected — \"attribute 'criticality' value 'urgent' is not one of ['high', 'medium', 'low'] (LC-06)\"",
+      "evidence": [
+        "run1-01-check.json",
+        "run2-2-bad-value.json",
+        "run2-5b-no-server.json"
+      ]
+    },
+    {
+      "id": "CTL-03",
+      "area": "3 Links inside a layer",
+      "enforces": "Only allowed link kinds between the right record types; link-count limits",
+      "good": "✅",
+      "bad": "✅",
+      "output": "rejected — \"A1 relationship A1.BusinessProcess -composition-> A1.BusinessCapability does not match the ArchiMate 3.2 / TOG\"",
+      "evidence": [
+        "run1-01-check.json",
+        "run2-3-disallowed-link.json"
+      ]
+    },
+    {
+      "id": "CTL-04",
+      "area": "2 Record information",
+      "enforces": "Each record matches its per-entity JSON Schema (the format an adapter writes)",
+      "good": "✅",
+      "bad": "✅",
+      "output": "fails — \"$.attributes.criticality: must be one of ['high', 'medium', 'low']\"",
+      "evidence": [
+        "run1-13-schemas.json",
+        "run2-8-schema-bad-value.json"
+      ]
+    },
+    {
+      "id": "CTL-05",
+      "area": "4 Links between layers",
+      "enforces": "A cross-layer link is one of the 9 types, between the right kinds of record, adjacent layers, no artefact ends",
+      "good": "✅",
+      "bad": "✅",
+      "output": "rejected — \"relationship (A1.BusinessCapability, USES_DOMAIN, A2.ServiceDomain) is not in the registry\"",
+      "evidence": [
+        "run1-06-validate-proposals.json",
+        "run2-4-wrong-link-type.json"
+      ]
+    },
+    {
+      "id": "CTL-06",
+      "area": "6 Approving links",
+      "enforces": "Approval needs a reviewer, a date, the evidence kinds the link type requires, and for BIAN-anchored types a BIAN release and identifier",
+      "good": "✅",
+      "bad": "✅",
+      "output": "rejected — 22 problems, e.g. \"evidence missing required kind(s) ['deployment_design']\"",
+      "evidence": [
+        "run1-07-approve-without-evidence.json",
+        "run1-08-approve-with-evidence.json"
+      ]
+    },
+    {
+      "id": "CTL-07",
+      "area": "6 Approving links",
+      "enforces": "Approved links are never edited; only allowed status changes",
+      "good": "✅",
+      "bad": "✅",
+      "output": "rejected — \"P-UCE1-001: approved record is immutable but field(s) changed: ['rationale']\"",
+      "evidence": [
+        "run1-09b-proposed-to-approved.json",
+        "run1-10-edit-after-approval.json"
+      ]
+    },
+    {
+      "id": "CTL-08",
+      "area": "4 Links between layers",
+      "enforces": "Both ends of every approved link exist, at the stated version, of the right type",
+      "good": "✅",
+      "bad": "✅",
+      "output": "rejected — \"target A4.Deployment INF-DOES-NOT-EXIST@1.0 not found in level model\"",
+      "evidence": [
+        "run1-06-validate-proposals.json",
+        "run1-14-approved-links-resolve.json",
+        "run2-9-dangling-link.json"
+      ]
+    },
+    {
+      "id": "CTL-09",
+      "area": "5 Finding links",
+      "enforces": "The engine finds the right links: precision and recall at least the hand-executed runs' on every acceptance case",
+      "good": "✅",
+      "bad": "✅",
+      "output": "2 \"runs on\" links found, from the deployment records; 0 wrong",
+      "evidence": [
+        "run1-03-proposals.json",
+        "run1-04-inference-log.json",
+        "run1-05-score.json",
+        "run2-5a-application-silent.json"
+      ]
+    },
+    {
+      "id": "CTL-10",
+      "area": "5 Finding links",
+      "enforces": "Engine output is always `proposed`, valid, never re-proposes an approved link, never names a record that does not exist",
+      "good": "✅",
+      "bad": "✅",
+      "output": "2 \"runs on\" links found, from the deployment records; 0 wrong",
+      "evidence": [
+        "run1-03-proposals.json",
+        "run1-04-inference-log.json",
+        "run1-05-score.json",
+        "run1-15-engine-second-run.json",
+        "run2-5a-application-silent.json"
+      ]
+    },
+    {
+      "id": "CTL-11",
+      "area": "7 Sources",
+      "enforces": "Every entity, link row, link type, rule and attribute names its source, reasoning and confidence",
+      "good": "✅",
+      "bad": "✅",
+      "output": "fails — AssertionError: True is not false : rule B01",
+      "evidence": [
+        "run1-19-sources-complete.json",
+        "run2-7-rule-without-source.json"
+      ]
+    },
+    {
+      "id": "CTL-12",
+      "area": "7 Sources",
+      "enforces": "Every confidence rating follows the single confidence rule",
+      "good": "✅",
+      "bad": "✅",
+      "output": "the rule says low, not high",
+      "evidence": [
+        "run1-16-confidence-rule.json",
+        "run2-11-confidence-overclaim.json"
+      ]
+    },
+    {
+      "id": "CTL-13",
+      "area": "platform",
+      "enforces": "Every generated document, diagram and schema matches the records",
+      "good": "✅",
+      "bad": "✅",
+      "output": "reported stale",
+      "evidence": [
+        "run1-17-documents-current.json",
+        "run2-12-stale-document.json"
+      ]
+    },
+    {
+      "id": "CTL-14",
+      "area": "platform",
+      "enforces": "The owner's high-level metamodel specification is unchanged",
+      "good": "✅",
+      "bad": "✅",
+      "output": "fails",
+      "evidence": [
+        "run1-18-high-level-spec.json",
+        "run2-13-high-level-spec-edited.json"
+      ]
+    },
+    {
+      "id": "CTL-15",
+      "area": "platform",
+      "enforces": "A graph store is only written from data that passes every check; a failed build keeps the last good store; every build is logged",
+      "good": "✅",
+      "bad": "✅",
+      "output": "load rejected; graph files unchanged; load record: accepted, rejected",
+      "evidence": [
+        "run1-02-load-record.json",
+        "run2-10-failed-load.json",
+        "run2-5b-no-server.json"
+      ]
+    }
+  ]
+}
