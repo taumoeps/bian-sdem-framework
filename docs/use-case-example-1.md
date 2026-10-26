@@ -41,15 +41,67 @@ The test will confirm both, and look for any others.
 
 The **payment-initiation** example (synthetic): four separate architecture datasets, 68 records, **no links between them** at the start; an answer key of the 18 links that should be found.
 
-## The output
+## The output — what you will get when the test is run
 
-One table — one row per metamodel test:
+The test produces a **results report** added to this document. It has four parts.
+
+### 1. The results table — did each part of the metamodel behave as the spec says?
+
+Each row is **one test**: we feed the metamodel some data (good or deliberately bad) and record what happened.
+
+| Column | Means |
+|---|---|
+| **Part** | which part of the metamodel is being tested (one of the seven above) |
+| **Test** | the data we fed in |
+| **Expected** | what the spec says should happen |
+| **Actual** | what really happened, copied from the tool's output |
+| **Control that acted** | the check that stopped (or allowed) it |
+| **Result** | ✅ pass — actual matches expected · ❌ fail — it doesn't |
+
+*Illustration (not yet run):*
 
 | Part | Test | Expected | Actual | Control that acted | Result |
 |---|---|---|---|---|---|
-| Attributes | criticality "urgent" | rejected | rejected: value not allowed (LC-06) | dataset check | ✅ pass |
+| 2 Attributes | a process with criticality "high" | accepted | *accepted* | dataset check | *✅* |
+| 2 Attributes | a process with criticality "urgent" (not an allowed value) | rejected | *rejected — "criticality: 'urgent' is not one of high, medium, low"* | dataset check | *✅* |
+| 3 Links within an architecture | a process "composes" a capability (not allowed in A1) | rejected | *rejected — "does not match the A1 rows"* | dataset check | *✅* |
+| 6 Mapping record | an approved link is edited afterwards | rejected | *rejected — "approved record changed"* | change guard | *✅* |
 
-Then: the control-gap list, and the trace result.
+A ❌ means the metamodel or its control is wrong and must be fixed.
+
+### 2. The links the metamodel produced
+
+The engine applies the mapping rules (part 5) to the four datasets. This table shows each link it found — and why — so you can see the rules at work:
+
+| From | Link | To | Rule | Why | Confidence | Matches answer key? |
+|---|---|---|---|---|---|---|
+| *Payments Hub (application)* | *deployed on* | *production Kubernetes cluster* | *S33* | *the application names the cluster as its platform* | *high* | *✅* |
+
+Expected: 18 links, all matching the answer key.
+
+### 3. The control gaps
+
+A list of every part of the metamodel that nothing enforces (G-A, G-B above, plus any the test finds), with the risk of each.
+
+### 4. The trace — proof the parts work together
+
+The end result in practice: starting from the production server, follow the links up through the four architectures.
+
+*Illustration:*
+
+```
+production Kubernetes cluster          (A4 Technology)
+  ← deployed on — Payments Hub          (A3 Application)   link PAY-108
+    ← realised by — Payment Initiation  (A2 BIAN domain)    link PAY-106
+      ← uses — Capture and validate payment instruction (A1 process)   link PAY-003
+      ← supported by — Initiate Payment (A1 capability)    link PAY-001
+```
+
+Expected: every hop present, each with the link that justifies it.
+
+### The verdict
+
+A summary line, for example: *"7 of 7 parts behave as specified; 2 parts have no control (G-A, G-B); trace complete."*
 
 ## Limits
 
