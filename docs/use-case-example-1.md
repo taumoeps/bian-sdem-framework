@@ -2,109 +2,114 @@
 
 > **Status: plan — not yet run.**
 
+## First, the words
+
+| Word | Plain meaning |
+|---|---|
+| **Architecture** | a description of how a bank is put together. SDEM uses four, one per layer: **A1 Business** (what the bank does), **A2 Service Domain** (the standard BIAN building blocks of banking), **A3 Application** (the software), **A4 Technology** (the servers and platforms). |
+| **Architecture dataset** | a file holding one architecture's information — e.g. a list of the bank's business processes, or its servers. There are four: one per layer. |
+| **Record** | one thing in a dataset — one process, one application, one server. |
+| **Link** | a connection between two records, e.g. *"the Payments Hub application runs on the production server"*. |
+| **Metamodel** | **the rulebook.** It says what kinds of record may exist, what information each must hold, and which links are allowed. It is the brain of SDEM: everything else follows its rules. |
+| **Control** | an automatic check that enforces a rule of the rulebook. |
+| **Accepted / rejected** | when data follows the rules, SDEM **accepts** it and loads it. When it breaks a rule, SDEM **rejects** it — refuses to load it and says why — like an online form that won't submit until a wrong field is fixed. |
+| **Engine** | the program that reads the four datasets and uses the rulebook to work out the links **between** the layers. |
+| **Knowledge graph** | all the records and links joined together, so you can follow them. |
+| **Trace** | following the links, e.g. from a server up to the business capability that depends on it. |
+
 ## Goal
 
-Test the **metamodel** — the brain of SDEM — part by part, against its specification ([`architecture-metamodel-detail-level-spec.md`](architecture-metamodel-detail-level-spec.md)).
+**Test the rulebook (the metamodel).** Prove that:
 
-| | Role in this test |
+1. every rule is **enforced** — good data is accepted, bad data is rejected;
+2. using the rules, the four separate datasets can be **linked together** correctly;
+3. the result can be **traced** from the bottom layer to the top.
+
+The engine and the trace are only how we see the rulebook at work. The rulebook is what is under test, because it is complex and brittle: a rule that nothing enforces can be broken without anyone noticing.
+
+The rulebook is written down in [`architecture-metamodel-detail-level-spec.md`](architecture-metamodel-detail-level-spec.md).
+
+## The test data
+
+The **payment-initiation** example — made-up data for a bank's payments area:
+
+- four datasets (business, BIAN, application, technology), **68 records**;
+- each dataset has links **inside** it, but there are **no links between the layers** at the start;
+- an **answer key**: the 18 links between the layers that should be found.
+
+## The seven parts of the rulebook we test
+
+| # | Rule area | In plain words | The control that enforces it |
+|---|---|---|---|
+| 1 | Record types | every record must be a known kind of thing (one of 44, e.g. *business process*, *server*) | the dataset check |
+| 2 | Record information | each kind of record holds set information, in set formats — e.g. a process's *criticality* must be *high*, *medium* or *low* | the dataset check |
+| 3 | Links inside a layer | only certain links are allowed inside each layer — e.g. a process may contain activities, but may not contain a capability | the dataset check |
+| 4 | Links between layers | only 9 kinds of link may join the layers, each between named kinds of record — e.g. *an application runs on a server* | the link checker |
+| 5 | Rules for finding links | 69 rules say how to work out each link between layers from the data | the acceptance tests only |
+| 6 | Approving links | a found link is only *proposed* until an architect approves it; once approved it can never be edited | the link checker and the change guard |
+| 7 | Sources | every rule says where it comes from (e.g. BIAN, ArchiMate), why, and how sure we are | the completeness and confidence tests |
+
+## Two test runs
+
+### Run 1 — good data
+
+The four datasets exactly as they are, with no mistakes.
+
+| What we do | What should happen |
 |---|---|
-| **Metamodel** | **what is being tested** |
-| Engine | the processor — it applies the metamodel's rules |
-| Trace | the output — proof that the parts work together |
+| check the four datasets against the rulebook | all **accepted** — no rule broken |
+| let the engine work out the links between the layers | it finds **18 links, all matching the answer key, none wrong** |
+| approve the links | allowed |
+| trace from the production server up to the business capability, and back down | every step of the way is there, each with the link that justifies it |
 
-The metamodel is complex and brittle: a rule nothing enforces can be broken without anyone noticing. So every part is tested with **good data** (accepted, and used as the spec says) and **bad data** (rejected by its control) — and any part **without a control** is reported as a gap.
+### Run 2 — bad data, on purpose
 
-## The metamodel's parts and what we test
+The same datasets with **mistakes planted deliberately**, one or more for each part of the rulebook. Examples:
 
-| # | Part | The spec says (detail §) | Control | Good-data test → expected | Bad-data test → expected |
-|---|---|---|---|---|---|
-| 1 | **Entity types** | every record is one of 44 types; types inherit (is-a) (§3, §5) | dataset check | all 68 records typed correctly → **accepted** | unknown type; abstract type → **rejected** |
-| 2 | **Attributes** | each type's fields, data types, allowed values, required fields (§16) | dataset check, schemas | every value valid → **accepted** | criticality "urgent"; text where a number is due; missing required field → **rejected** |
-| 3 | **Links within an architecture** | only the 132 allowed links, with their counts (§6.1) | dataset check | 69 links all allowed → **accepted** | a link A1 does not allow; too many links where the max is one → **rejected** |
-| 4 | **Link types between architectures** | 9 types, each only between named entity types, adjacent levels (§6.2) | registry validator | proposed links all of the 9 types → **valid** | wrong entity type; skipping a level → **rejected** |
-| 5 | **Mapping rules** | 69 rules say how each link is found (§15) | acceptance tests only | engine finds the 18 expected links → **18 of 18, none wrong** | (see gap G-A) |
-| 6 | **Mapping record and approval** | statuses, approval fields, approved links never edited (§6.4) | validator, change guard | proposed → approved → **allowed** | editing an approved link → **rejected** |
-| 7 | **Provenance and confidence** | every part has source, reasoning, confidence by one rule (§17) | completeness and confidence tests | all present and consistent → **pass** | a missing source; a rating that breaks the rule → **fail** |
-
-**Output check (all parts together):** trace from the production server up to the business capability, and back down → every hop present, each showing the link that justifies it.
-
-## Control gaps found while planning
-
-| Gap | What is not controlled | Risk |
+| Mistake planted | Rule area | What should happen |
 |---|---|---|
-| **G-A** | Mapping rules (#5): how a rule matches is written in the engine's code; the rule records describe it in plain text, which nothing checks against the code | a rule's record and the engine can drift apart unnoticed; only the acceptance tests would catch it |
-| **G-B** | Link types (#4): each type's cardinality (e.g. one-to-many) is recorded but not enforced on actual links | a link that breaks a type's cardinality is accepted |
+| a record of a kind that does not exist | 1 | **rejected** |
+| a process with criticality "urgent" | 2 | **rejected** — "urgent" is not high, medium or low |
+| a process that "contains" a capability | 3 | **rejected** — not allowed in the business layer |
+| a link between the wrong kinds of record | 4 | **rejected** |
+| an application that does not say which server it runs on | 5 | **no link made** — the engine does not guess |
+| two APIs that fit one operation equally well | 5 | **no link made** — both named, for a person to decide |
+| an approved link edited afterwards | 6 | **rejected** |
+| a rule with its source removed | 7 | **fails** the completeness test |
 
-The test will confirm both, and look for any others.
+The expected result of every mistake is **written down before the run**, so nobody can adjust it afterwards to fit.
 
-## The data
+## What you get when the test is run
 
-The **payment-initiation** example (synthetic): four separate architecture datasets, 68 records, **no links between them** at the start; an answer key of the 18 links that should be found.
+A **results report**, added to this document:
 
-## The output — what you will get when the test is run
+**1. The results table** — one row per test: what data we gave SDEM, what the rulebook says should happen, what actually happened, and ✅ if they match or ❌ if they don't.
 
-The test produces a **results report** added to this document. It has four parts.
+| Rule area | Data given | Should | Did | ✅ / ❌ |
+|---|---|---|---|---|
+| 2 Record information | a process with criticality "urgent" | be rejected | *(filled in when run)* | |
 
-### 1. The results table — did each part of the metamodel behave as the spec says?
+A ❌ means a rule is wrong or is not enforced, and must be fixed.
 
-Each row is **one test**: we feed the metamodel some data (good or deliberately bad) and record what happened.
+**2. The links found** in run 1 — each with the rule that found it, why, how sure, and whether it matches the answer key.
 
-| Column | Means |
-|---|---|
-| **Part** | which part of the metamodel is being tested (one of the seven above) |
-| **Test** | the data we fed in |
-| **Expected** | what the spec says should happen |
-| **Actual** | what really happened, copied from the tool's output |
-| **Control that acted** | the check that stopped (or allowed) it |
-| **Result** | ✅ pass — actual matches expected · ❌ fail — it doesn't |
+**3. The gaps** — any part of the rulebook that nothing enforces.
 
-*Illustration (not yet run):*
+**4. The trace** — the path from the server to the business capability, link by link.
 
-| Part | Test | Expected | Actual | Control that acted | Result |
-|---|---|---|---|---|---|
-| 2 Attributes | a process with criticality "high" | accepted | *accepted* | dataset check | *✅* |
-| 2 Attributes | a process with criticality "urgent" (not an allowed value) | rejected | *rejected — "criticality: 'urgent' is not one of high, medium, low"* | dataset check | *✅* |
-| 3 Links within an architecture | a process "composes" a capability (not allowed in A1) | rejected | *rejected — "does not match the A1 rows"* | dataset check | *✅* |
-| 6 Mapping record | an approved link is edited afterwards | rejected | *rejected — "approved record changed"* | change guard | *✅* |
+**5. A one-line verdict** — e.g. *"all rule areas enforced; 18 of 18 links correct; trace complete; 2 gaps."*
 
-A ❌ means the metamodel or its control is wrong and must be fixed.
+## Gaps already found while planning
 
-### 2. The links the metamodel produced
+| Gap | What is not enforced | Why it matters |
+|---|---|---|
+| **G-A** | Rule area 5: the rulebook describes each link-finding rule in words, but the engine holds its own copy of the logic; nothing checks the two still agree | the rulebook and the engine could quietly drift apart |
+| **G-B** | Rule area 4: each kind of link says how many may exist (e.g. one-to-many), but this is not checked | a link breaking that limit would be accepted |
 
-The engine applies the mapping rules (part 5) to the four datasets. This table shows each link it found — and why — so you can see the rules at work:
-
-| From | Link | To | Rule | Why | Confidence | Matches answer key? |
-|---|---|---|---|---|---|---|
-| *Payments Hub (application)* | *deployed on* | *production Kubernetes cluster* | *S33* | *the application names the cluster as its platform* | *high* | *✅* |
-
-Expected: 18 links, all matching the answer key.
-
-### 3. The control gaps
-
-A list of every part of the metamodel that nothing enforces (G-A, G-B above, plus any the test finds), with the risk of each.
-
-### 4. The trace — proof the parts work together
-
-The end result in practice: starting from the production server, follow the links up through the four architectures.
-
-*Illustration:*
-
-```
-production Kubernetes cluster          (A4 Technology)
-  ← deployed on — Payments Hub          (A3 Application)   link PAY-108
-    ← realised by — Payment Initiation  (A2 BIAN domain)    link PAY-106
-      ← uses — Capture and validate payment instruction (A1 process)   link PAY-003
-      ← supported by — Initiate Payment (A1 capability)    link PAY-001
-```
-
-Expected: every hop present, each with the link that justifies it.
-
-### The verdict
-
-A summary line, for example: *"7 of 7 parts behave as specified; 2 parts have no control (G-A, G-B); trace complete."*
+The test will confirm these and look for others.
 
 ## Limits
 
-- The data is synthetic.
-- The mapping rules were tuned while this example's answers were known; a test written by someone else is still needed to prove they work on unseen data.
-- Approval is done by hand until the approve command exists.
+- The data is made up, not real bank data.
+- The link-finding rules were tuned while this example's answers were visible, so passing does not prove they work on new data; a test written by someone else is still needed.
+- Approving is done by hand until an approve command exists.
