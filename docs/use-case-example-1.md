@@ -1,55 +1,58 @@
-# Use-case example 1
+# Use-case example 1 — testing the metamodel
 
 > **Status: plan — not yet run.**
 
 ## Goal
 
-Show that SDEM can take four **separate** architecture datasets — A1 Business, A2 Service Domain, A3 Application, A4 Technology — and **link them together**, so you can trace from a server all the way up to a business capability.
+Test the **metamodel** — the brain of SDEM — part by part, against its specification ([`architecture-metamodel-detail-level-spec.md`](architecture-metamodel-detail-level-spec.md)).
+
+| | Role in this test |
+|---|---|
+| **Metamodel** | **what is being tested** |
+| Engine | the processor — it applies the metamodel's rules |
+| Trace | the output — proof that the parts work together |
+
+The metamodel is complex and brittle: a rule nothing enforces can be broken without anyone noticing. So every part is tested with **good data** (accepted, and used as the spec says) and **bad data** (rejected by its control) — and any part **without a control** is reported as a gap.
+
+## The metamodel's parts and what we test
+
+| # | Part | The spec says (detail §) | Control | Good-data test → expected | Bad-data test → expected |
+|---|---|---|---|---|---|
+| 1 | **Entity types** | every record is one of 44 types; types inherit (is-a) (§3, §5) | dataset check | all 68 records typed correctly → **accepted** | unknown type; abstract type → **rejected** |
+| 2 | **Attributes** | each type's fields, data types, allowed values, required fields (§16) | dataset check, schemas | every value valid → **accepted** | criticality "urgent"; text where a number is due; missing required field → **rejected** |
+| 3 | **Links within an architecture** | only the 132 allowed links, with their counts (§6.1) | dataset check | 69 links all allowed → **accepted** | a link A1 does not allow; too many links where the max is one → **rejected** |
+| 4 | **Link types between architectures** | 9 types, each only between named entity types, adjacent levels (§6.2) | registry validator | proposed links all of the 9 types → **valid** | wrong entity type; skipping a level → **rejected** |
+| 5 | **Mapping rules** | 69 rules say how each link is found (§15) | acceptance tests only | engine finds the 18 expected links → **18 of 18, none wrong** | (see gap G-A) |
+| 6 | **Mapping record and approval** | statuses, approval fields, approved links never edited (§6.4) | validator, change guard | proposed → approved → **allowed** | editing an approved link → **rejected** |
+| 7 | **Provenance and confidence** | every part has source, reasoning, confidence by one rule (§17) | completeness and confidence tests | all present and consistent → **pass** | a missing source; a rating that breaks the rule → **fail** |
+
+**Output check (all parts together):** trace from the production server up to the business capability, and back down → every hop present, each showing the link that justifies it.
+
+## Control gaps found while planning
+
+| Gap | What is not controlled | Risk |
+|---|---|---|
+| **G-A** | Mapping rules (#5): how a rule matches is written in the engine's code; the rule records describe it in plain text, which nothing checks against the code | a rule's record and the engine can drift apart unnoticed; only the acceptance tests would catch it |
+| **G-B** | Link types (#4): each type's cardinality (e.g. one-to-many) is recorded but not enforced on actual links | a link that breaks a type's cardinality is accepted |
+
+The test will confirm both, and look for any others.
 
 ## The data
 
-The **payment-initiation** example (synthetic):
-
-- 4 architecture datasets, **68 records**
-- **No links between them** at the start
-- An **answer key** of the 18 links that should be found
-
-## Two runs
-
-| Run | Data | Why |
-|---|---|---|
-| **1 — Clean** | the datasets as they are | shows SDEM finds every link when the data is right |
-| **2 — Imperfect** | the same datasets with **8 deliberate mistakes** | real data is never perfect — shows SDEM refuses or flags bad links instead of guessing |
-
-For run 2, the expected result of each mistake is **written down before the run**, so the test is honest.
-
-## What happens in each run
-
-1. **Check** the four datasets — bad data is rejected.
-2. **Engine** proposes the links between them.
-3. **Score** the proposals against the answer key.
-4. **Approve** the links (by hand for now).
-5. **Trace** from the production server up to the capability, and back down.
+The **payment-initiation** example (synthetic): four separate architecture datasets, 68 records, **no links between them** at the start; an answer key of the 18 links that should be found.
 
 ## The output
 
-A results table — one row per link:
+One table — one row per metamodel test:
 
-| From | Link | To | Why (rule and evidence) | Confidence | Result |
+| Part | Test | Expected | Actual | Control that acted | Result |
 |---|---|---|---|---|---|
-| Retrieve Payment Instruction | implemented by | API `POST /payment-instructions/{id}` | rule S24: payload matches, but Retrieve should be GET, not POST | medium | ✅ correct, flagged |
+| Attributes | criticality "urgent" | rejected | rejected: value not allowed (LC-06) | dataset check | ✅ pass |
 
-**Result** is one of: ✅ correct · ⚠️ correct but flagged · ❌ wrong · ➖ missed · 🚫 refused (with the reason).
-
-Below the table: the totals, and whether the trace worked.
-
-## Expected
-
-- **Run 1:** 18 of 18 links found, none wrong.
-- **Run 2:** each mistake caught as written down beforehand — rejected, refused or flagged; nothing invented.
+Then: the control-gap list, and the trace result.
 
 ## Limits
 
-- The data is synthetic, not real.
-- The engine was built while this example's answers were visible, so this doesn't prove it works on unseen data — that needs a test written by someone else.
+- The data is synthetic.
+- The mapping rules were tuned while this example's answers were known; a test written by someone else is still needed to prove they work on unseen data.
 - Approval is done by hand until the approve command exists.
