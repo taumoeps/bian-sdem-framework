@@ -21,6 +21,14 @@ Prove the rulebook works:
 
 Payment-initiation example: 4 datasets, 68 records, **no links between them**, and an answer key of **18 links**.
 
+## Is the engine simulated?
+
+**No.** The real engine runs — a Python program (`sdem/rules_engine.py`), no AI, same result every time.
+
+How it works: it reads the four datasets, applies the 69 link-finding rules step by step, and writes out the links it proposes, each with its reason.
+
+Only **approval** is simulated — done by hand, standing in for an architect, until an approve command exists.
+
 ## What we test
 
 | # | Rule | Example |
