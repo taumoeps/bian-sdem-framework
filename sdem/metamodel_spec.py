@@ -42,6 +42,39 @@ def high_level_catalogue(text):
         rows[m.group(1)] = (ds.group(1).replace('sdmm_', 'sdem_') if ds else None, al.group(1) if al else None)
     return rows
 
+ROW_MEANING = {'id': 'permanent row ID (RA<level>-nn)', 'level': 'the architecture the row belongs to', 'source_type': 'entity type the link starts from (subtypes included, is-a)',
+               'kind': 'relationship kind (ArchiMate / BIAN vocabulary)', 'target_type': 'entity type the link points to (subtypes included)',
+               'cardinality': '{source_per_target, target_per_source, basis, reasoning} — e.g. 1..1 / 0..*; checked by LC-10 (maximum, error) and LC-10m (minimum, warning) where the basis is BIAN or ArchiMate',
+               'basis': 'the reference architecture the row comes from', 'official_id': 'the BIAN structural row (B-row) it encodes, if any', 'description': 'what the link means',
+               'reference_source': 'source reference (standard, section)', 'verification': 'how it was checked', 'enforceable': '`false` only for documentation rows (A2 artefacts); otherwise enforced by `sdem-graph check` (LC-03)',
+               'inference': 'how the row was first inferred, before checking {pattern, reasoning, confidence}', 'reasoning': 'why the link is allowed', 'confidence': 'high / medium / low (single rule)', 'confidence_basis': 'which clause of the rule applied'}
+INHERIT_MEANING = {'id': 'permanent row ID (XA<level>-nn)', 'level': 'architecture', 'entity': 'the specialised entity type', 'extends': 'its parent type', 'description': 'the is-a statement',
+                   'reference_source': 'source reference', 'verification': 'how it was checked', 'reasoning': 'why the type specialises the parent', 'confidence': 'high / medium / low'}
+TYPE_MEANING = {'mapping_type_id': 'permanent ID of the type (legacy name)', 'source_type': 'entity type at the source end (is-a)', 'relationship': 'the type name used in registry records',
+                'target_type': 'entity type at the target end (is-a)', 'cardinality': 'many_to_many, one_to_many, …', 'perspective': 'architecture, process or information',
+                'authority': 'bian_reference, bian_alignment_guidance or enterprise_rule (high-level §1.2)', 'direction_semantics': 'what the arrow means, read source → target',
+                'required_evidence': 'evidence kinds a record must carry before approval', 'rule_version': 'version of this type definition', 'owner': 'who governs the type',
+                'source_reference': 'source reference', 'verification': 'how the type was checked', 'confidence': 'high / medium / low', 'confidence_basis': 'which clause of the rule applied', 'reasoning': 'why the type exists'}
+RULE_MEANING = {'id': 'plan row ID (S01…S54 cross-level, B01…B15 BIAN-internal)', 'tier': 'official BIAN only, or BIAN with supporting frameworks', 'source': 'entity type the rule starts from',
+                'target': 'entity type it points to', 'relation': 'the catalogue type it produces, or `candidate` for a report', 'official': 'whether BIAN itself states the link',
+                'verification': 'how the rule\'s basis was checked', 'source_reference': 'source reference', 'rule_decision': 'registry_rule (produces registry records), candidate_rule, conditional_rule, institution_only, derived_path, … — which outputs it may produce',
+                'fill_step': 'the inference step that applies it (0–5); `None` for rows no step applies (not a mapping, not encodable, historical)', 'data_needed': 'the export data the step reads (plain text; the step logic is in the engine — see §18)',
+                'confidence': 'the band given to its output (high 0.8, medium 0.6, low 0.4)', 'reasoning': 'why the rule is shaped as it is', 'basis_confidence': 'confidence in the rule\'s basis (the single rule)',
+                'basis_confidence_reason': 'which clause applied'}
+
+
+def field_table(records, meaning, required=()):
+    """One row per field found in the records: how many records carry it, the values it takes (when few), and its meaning."""
+    keys = list(meaning) + sorted(set().union(*[set(r) for r in records]) - set(meaning))
+    out = ['| Field | Required | In records | Values | Meaning |', '|---|---|---|---|---|']
+    for k in keys:
+        n = sum(1 for r in records if k in r)
+        if not n: continue
+        vals = Counter(str(r[k]) for r in records if k in r and not isinstance(r[k], (dict, list)))
+        shown = ', '.join(f'`{v}`' for v in sorted(vals)) if 0 < len(vals) <= 12 and all(len(v) <= 40 for v in vals) else ('object' if any(isinstance(r.get(k), dict) for r in records) else 'list' if any(isinstance(r.get(k), list) for r in records) else 'text')
+        out.append(f"| `{k}` | {'yes' if (k in required or n == len(records)) else 'no'} | {n} of {len(records)} | {shown} | {meaning.get(k, '')} |")
+    return out
+
 
 def render():
     high = HIGH.read_text(encoding='utf-8'); sha = hashlib.sha256(HIGH.read_bytes()).hexdigest()
@@ -57,6 +90,10 @@ def render():
     reg_schema = json.dumps(_j(ROOT / 'schema' / 'relationship-registry.schema.json'))
     has = lambda f: ('"%s"' % f) in reg_schema
     cases = _j(ROOT / 'examples' / 'acceptance-cases.json')['cases']
+    lm_rel = _j(ROOT / 'schema' / 'level-model.schema.json')['$defs']['relationship']
+    reg_map = _j(ROOT / 'schema' / 'relationship-registry.schema.json')['$defs']['mapping']
+    from .diff import ALLOWED_TRANSITIONS, FROZEN_STATUSES, THAWED_ON_SUPERSEDE
+    from .spec import REGISTRY_FIELD_MEANING
     hl = high_level_catalogue(high)
     st = lambda gid: f"**Gap {gid}** ({G[gid]['kind']}; {G[gid]['status']})"
     al = lambda n: f'*Aligned to high-level {n}.*'
@@ -64,6 +101,14 @@ def render():
            '> **Status: governing specification** (from 2026-10-25). Generated by `python -m sdem.metamodel_spec` from the records in `metamodel/` and `schema/`, the gap register `metamodel/metamodel-spec-gaps.json` and the high-level specification; CI fails if it is stale. Do not edit by hand.', '',
            '## How this document relates to the high-level specification', '',
            f'[`architecture-metamodel-high-level-spec.md`](architecture-metamodel-high-level-spec.md) is the owner\'s v0.4 specification, kept as the **reference** and **frozen**: its content is pinned by checksum (`sha256 {sha[:16]}…`) and a test fails if it changes. This document follows its structure section for section and adds the implemented detail. Each section says either *Aligned to high-level §n* or names the **gap** where the implementation differs. Sections 15–19 cover what the high-level specification does not. Where the two differ, **this document governs**; gaps change status only on the owner\'s decision.', '',
+           '### Data model of the metamodel — where each part is defined', '',
+           '| Part | Record | Field-level definition |', '|---|---|---|',
+           '| Entity type | `metamodel/a1…a4-*.json` | §3 |', '| Entity instance and its attributes | export instances; `metamodel/entity-attributes.json` | §16 (and the attribute and logical data model documents) |',
+           '| Relationship **within** an architecture — the allowed link | `metamodel/level-relationships.json` | §6.1a, §6.1b (inheritance) |',
+           '| Relationship within an architecture — an actual link | `relationships` of a level export | §6.1c |',
+           '| Relationship type **between** architectures | `schema/relationship-types.json` | §6.2a |',
+           '| **Mapping** — an actual link between architectures | Relationship Registry (`mappings.json`) | §6.4 |',
+           '| Mapping rule — how a link is found | `metamodel/relationship-rules.json` | §15a |', '',
            '### Gap summary', '', '| ID | Kind | High-level § | Status |', '|---|---|---|---|']
     out += [f"| [{g['id']}](#gap-register) | {g['kind']} | {g['high_level_section']} | {g['status']} |" for g in gaps]
     # ---- 1
@@ -121,11 +166,26 @@ def render():
     by = Counter(c['level'] for c in rows); ver = Counter(c['verification'] for c in rows)
     out += ['', '## 6. Relationships', '', '### 6.1 Within-level relationships', '', st('G-01') + ' — **this section supersedes high-level §6.1.** Within-level relationships are in scope: each architecture\'s allowed links come from its own reference architecture and are enforced by `sdem-graph check` (LC-03).', '',
             f"{len(rows)} rows + {len(lr['inheritance'])} inheritance rows ({', '.join(f'{k} {v}' for k, v in sorted(by.items()))}); {sum(1 for c in rows if c.get('enforceable') is not False)} enforced (A2 artefact rows are documentation only). Verification: " + ', '.join(f'{k} {v}' for k, v in sorted(ver.items())) + '. Every row carries cardinality, source reference, reasoning and confidence. Detail: [`relationships-planning.md`](relationships-planning.md).', '',
+            '#### 6.1a Within-level relationship row — the allowed link', '', 'One row per (source type, kind, target type) an architecture allows. ' + st('G-01') + '.', ''] + field_table(rows, ROW_MEANING) + [
+            '', '#### 6.1b Inheritance row', '', 'One row per is-a link between entity types (the `extends` of §3), so a link allowed for a parent is allowed for its subtypes.', ''] + field_table(lr['inheritance'], INHERIT_MEANING) + [
+            '', '#### 6.1c Within-level relationship — an actual link', '', 'In a level export\'s `relationships` list (`schema/level-model.schema.json`); never in the Relationship Registry.', '',
+            '| Field | Required | Meaning |', '|---|---|---|'] + [f"| `{k}` | {'yes' if k in lm_rel.get('required', []) else 'no'} | {dict(source='id of the source instance in the same export', kind='relationship kind; must match a row of §6.1a through inheritance, or be `association`', target='id of the target instance in the same export', name='optional label').get(k, '')} |" for k in lm_rel['properties']] + [
+            '', 'Checked by `sdem-graph check`: both ends in the export (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).', '',
             '### 6.2 Cross-level relationship types', '', al('§6.2') + ' The eight v0.2.1 rules plus `DEPLOYED_AS` with the governance of high-level §14 decision 2.', '',
             '| Source | Relationship | Target | Perspective | Authority | Required evidence | Confidence |', '|---|---|---|---|---|---|---|']
     out += [f"| `{x['source_type']}` | `{x['relationship']}` | `{x['target_type']}` | {x['perspective']} | `{x['authority']}` | {', '.join(x.get('required_evidence') or []) or '—'} | {x.get('confidence', '')} |" for x in rt]
+    out += ['', '#### 6.2a Relationship type record', '', 'Every field of a relationship type in `schema/relationship-types.json`. ' + al('§6.2') + ' (fields beyond `authority` and `perspective` came from v0.2.1, high-level R7; provenance fields are ' + st('G-13') + ').', ''] + field_table(rt, TYPE_MEANING)
     out += ['', f"Is-a matching lets `DEPLOYED_ON → A4.InfrastructureComponent` accept any concrete A4 type — aligned. Detail: [`relationship-registry-spec.md`](relationship-registry-spec.md).", '',
             '### 6.3 Derived relationships', '', 'Level-skipping traceability is a query over approved edges with provenance (`sdem-graph trace`) and never a registry record — aligned. The inference engine also writes derived-path rows as **candidate reports** in a separate file, never registry records — ' + st('G-07') + '.']
+    out += ['', '### 6.4 Relationship record — the mapping between architectures', '', al('§4 and §6.2') + ' (the v0.2.1 record, retained; high-level R7). One record per actual link between instances of adjacent architectures, in the **Architecture Relationship Registry** (`examples/<estate>/mappings.json`). Field definitions are shared with [`relationship-registry-spec.md`](relationship-registry-spec.md).', '',
+            '| Field | Type / values | Required | Meaning |', '|---|---|---|---|']
+    for k, v in reg_map['properties'].items():
+        t = ', '.join(f'`{x}`' for x in v['enum']) if v.get('enum') else v.get('type') or 'entity reference (§4)'
+        m = REGISTRY_FIELD_MEANING.get(k, '').replace('(§5)', '(§6.2)').replace('(§4)', '(lifecycle below)').replace('(§3)', '(§4)')  # registry-spec section numbers -> this document's
+        out.append(f"| `{k}` | {t} | {'yes' if k in reg_map.get('required', []) else 'no'} | {m} |")
+    out += ['', '**Lifecycle** (`sdem/diff.py`):', '', '| From | May become |', '|---|---|'] + [f"| `{a_}` | {', '.join(f'`{x}`' for x in sorted(b_)) or '— (final)'} |" for a_, b_ in ALLOWED_TRANSITIONS.items()]
+    out += ['', f"**Immutability.** Records in {', '.join(f'`{x}`' for x in sorted(FROZEN_STATUSES))} are frozen; an `approved` record may only become `superseded`, changing {', '.join(f'`{x}`' for x in sorted(THAWED_ON_SUPERSEDE))}. A change is a new record whose `previous_mapping_id` names the one it supersedes; records are never deleted (enforced by `sdem-diff`). Only `approved` records enter the federated graph (graph store GD-04).", '',
+            '**Who writes what.** The inference engine writes records with status `proposed` only; an architect moves them through the lifecycle; `reviewer_id` and `approved_at` are set only on approval. Candidate reports (rule rows that are not catalogue types) are never registry records — ' + st('G-07') + '.']
     # ---- 7
     out += ['', '## 7. Bank Architecture Profiles', '', st('G-08') + '. Nothing of high-level §7 is built; the `ReferenceResolver` interface exists (`sdem/reference.py`), the `resolve_entity(ref)` form does not — ' + st('G-06') + '.']
     # ---- 8
@@ -165,6 +225,7 @@ def render():
     passing = sum(1 for c in cases if c.get('engine_status') == 'passing')
     out += ['', '## 15. Architecture Relationship Rules Model', '', st('G-11') + '.', '',
             f"{len(rules)} plan rows (`metamodel/relationship-rules.json`): " + ', '.join(f'{k} {v}' for k, v in sorted(rd.items())) + '. By fill step: ' + ', '.join(f'step {k} {v}' for k, v in sorted(fs.items())) + f". Join keys: `metamodel/export-conventions.json`. Specification: [`relationship-rules-spec.md`](relationship-rules-spec.md).", '',
+            '### 15a Mapping rule record', '', 'Every field of a plan row in `metamodel/relationship-rules.json`.', ''] + field_table(rules, RULE_MEANING) + ['',
             '## 16. Data model', '', st('G-12') + '.', '',
             f"{len(at['core_fields'])} core fields, {len(at.get('common_attributes', []))} common attributes, {len(acts)} entity-specific attributes, {len(at.get('derived_attributes', []))} derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem-graph check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](architecture-attribute-design.md), [`logical-data-model.md`](logical-data-model.md), [`physical-data-model.md`](physical-data-model.md).", '',
             '## 17. Provenance and confidence', '', st('G-13') + '.', '',

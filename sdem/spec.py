@@ -229,6 +229,13 @@ def render_diagram():
 REGISTRY_DOC = ROOT / 'docs' / 'relationship-registry-spec.md'
 
 
+REGISTRY_FIELD_MEANING = {'mapping_id': 'the record\'s permanent ID (legacy name)', 'source': 'the entity the relationship starts from (§3)', 'target': 'the entity it points to (§3)',
+    'relationship': 'one of the nine catalogued types (§5); adjacent levels only', 'perspective': 'architecture, process or information', 'status': 'lifecycle state (§4)',
+    'evidence': '`kind:reference` items; the kinds must include the type\'s required evidence (§5)', 'rationale': 'why the relationship holds: the working', 'baseline_id': 'the release the record belongs to',
+    'confidence': '0–1, the rule\'s band', 'bian_release': 'required on BIAN-authority types before approval', 'reviewer_id': 'the approving architect', 'created_by': 'who or what proposed it (engine, rule, architect)',
+    'approved_at': 'approval date', 'valid_from': 'start of validity', 'valid_to': 'end of validity; set on supersession', 'previous_mapping_id': 'the record this one supersedes (legacy name)'}
+
+
 def render_registry():
     """docs/relationship-registry-spec.md — the Architecture Relationship Registry, from its schema, the lifecycle in sdem/diff.py and the type catalogue."""
     from sdem.diff import ALLOWED_TRANSITIONS, FROZEN_STATUSES, THAWED_ON_SUPERSEDE
@@ -242,11 +249,7 @@ def render_registry():
            f"| `metamodel_version` | {'yes' if 'metamodel_version' in sch.get('required', []) else 'no'} | version of the Architecture Metamodel |",
            f"| `mappings` | yes | the list of relationship records (legacy name) |", '',
            '## 2. Relationship record', '', '| Field | Type | Required | Meaning |', '|---|---|---|---|']
-    MEAN = {'mapping_id': 'the record\'s permanent ID (legacy name)', 'source': 'the entity the relationship starts from (§3)', 'target': 'the entity it points to (§3)',
-            'relationship': 'one of the nine catalogued types (§5); adjacent levels only', 'perspective': 'architecture, process or information', 'status': 'lifecycle state (§4)',
-            'evidence': '`kind:reference` items; the kinds must include the type\'s required evidence (§5)', 'rationale': 'why the relationship holds: the working', 'baseline_id': 'the release the record belongs to',
-            'confidence': '0–1, the rule\'s band', 'bian_release': 'required on BIAN-authority types before approval', 'reviewer_id': 'the approving architect', 'created_by': 'who or what proposed it (engine, rule, architect)',
-            'approved_at': 'approval date', 'valid_from': 'start of validity', 'valid_to': 'end of validity; set on supersession', 'previous_mapping_id': 'the record this one supersedes (legacy name)'}
+    MEAN = REGISTRY_FIELD_MEANING
     for name, p in rec['properties'].items():
         t = ', '.join(p['enum']) if p.get('enum') else p.get('type') or p.get('$ref', '').split('/')[-1]
         out.append(f"| `{name}` | {t} | {'yes' if name in req else 'no'} | {MEAN.get(name, '')} |")

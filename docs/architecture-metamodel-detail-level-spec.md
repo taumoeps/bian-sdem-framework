@@ -6,6 +6,18 @@
 
 [`architecture-metamodel-high-level-spec.md`](architecture-metamodel-high-level-spec.md) is the owner's v0.4 specification, kept as the **reference** and **frozen**: its content is pinned by checksum (`sha256 2e6a7d70d1d5006d…`) and a test fails if it changes. This document follows its structure section for section and adds the implemented detail. Each section says either *Aligned to high-level §n* or names the **gap** where the implementation differs. Sections 15–19 cover what the high-level specification does not. Where the two differ, **this document governs**; gaps change status only on the owner's decision.
 
+### Data model of the metamodel — where each part is defined
+
+| Part | Record | Field-level definition |
+|---|---|---|
+| Entity type | `metamodel/a1…a4-*.json` | §3 |
+| Entity instance and its attributes | export instances; `metamodel/entity-attributes.json` | §16 (and the attribute and logical data model documents) |
+| Relationship **within** an architecture — the allowed link | `metamodel/level-relationships.json` | §6.1a, §6.1b (inheritance) |
+| Relationship within an architecture — an actual link | `relationships` of a level export | §6.1c |
+| Relationship type **between** architectures | `schema/relationship-types.json` | §6.2a |
+| **Mapping** — an actual link between architectures | Relationship Registry (`mappings.json`) | §6.4 |
+| Mapping rule — how a link is found | `metamodel/relationship-rules.json` | §15a |
+
 ### Gap summary
 
 | ID | Kind | High-level § | Status |
@@ -200,6 +212,58 @@ Catalogue check: 41 entity rows read from high-level §5; 1 differs (A4.Deployme
 
 132 rows + 12 inheritance rows (A1 48, A2 17, A3 31, A4 36); 129 enforced (A2 artefact rows are documentation only). Verification: sdem_reading 1, unverified_togaf 2, verified 16, verified_against_archi 113. Every row carries cardinality, source reference, reasoning and confidence. Detail: [`relationships-planning.md`](relationships-planning.md).
 
+#### 6.1a Within-level relationship row — the allowed link
+
+One row per (source type, kind, target type) an architecture allows. **Gap G-01** (contradiction; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed — detail §6.1 supersedes high-level §6.1).
+
+| Field | Required | In records | Values | Meaning |
+|---|---|---|---|---|
+| `id` | yes | 132 of 132 | text | permanent row ID (RA<level>-nn) |
+| `level` | yes | 132 of 132 | `A1`, `A2`, `A3`, `A4` | the architecture the row belongs to |
+| `source_type` | yes | 132 of 132 | text | entity type the link starts from (subtypes included, is-a) |
+| `kind` | yes | 132 of 132 | `access`, `aggregation`, `assignment`, `association`, `composition`, `flow`, `realization`, `serving`, `specialization`, `triggering` | relationship kind (ArchiMate / BIAN vocabulary) |
+| `target_type` | yes | 132 of 132 | text | entity type the link points to (subtypes included) |
+| `cardinality` | yes | 132 of 132 | object | {source_per_target, target_per_source, basis, reasoning} — e.g. 1..1 / 0..*; checked by LC-10 (maximum, error) and LC-10m (minimum, warning) where the basis is BIAN or ArchiMate |
+| `basis` | yes | 132 of 132 | text | the reference architecture the row comes from |
+| `official_id` | no | 17 of 132 | text | the BIAN structural row (B-row) it encodes, if any |
+| `description` | yes | 132 of 132 | text | what the link means |
+| `reference_source` | yes | 132 of 132 | text | source reference (standard, section) |
+| `verification` | yes | 132 of 132 | `sdem_reading`, `unverified_togaf`, `verified`, `verified_against_archi` | how it was checked |
+| `enforceable` | no | 3 of 132 | `False` | `false` only for documentation rows (A2 artefacts); otherwise enforced by `sdem-graph check` (LC-03) |
+| `inference` | no | 115 of 132 | object | how the row was first inferred, before checking {pattern, reasoning, confidence} |
+| `reasoning` | yes | 132 of 132 | text | why the link is allowed |
+| `confidence` | yes | 132 of 132 | `high`, `low`, `medium` | high / medium / low (single rule) |
+| `confidence_basis` | yes | 132 of 132 | text | which clause of the rule applied |
+
+#### 6.1b Inheritance row
+
+One row per is-a link between entity types (the `extends` of §3), so a link allowed for a parent is allowed for its subtypes.
+
+| Field | Required | In records | Values | Meaning |
+|---|---|---|---|---|
+| `id` | yes | 12 of 12 | `XA1-01`, `XA1-02`, `XA4-01`, `XA4-02`, `XA4-03`, `XA4-04`, `XA4-05`, `XA4-06`, `XA4-07`, `XA4-08`, `XA4-09`, `XA4-10` | permanent row ID (XA<level>-nn) |
+| `level` | yes | 12 of 12 | `A1`, `A4` | architecture |
+| `entity` | yes | 12 of 12 | `A1.BusinessActivity`, `A1.ValueStreamStage`, `A4.Artifact`, `A4.CommunicationNetwork`, `A4.Deployment`, `A4.DeploymentEnvironment`, `A4.Device`, `A4.Node`, `A4.Path`, `A4.SystemSoftware`, `A4.TechnologyInterface`, `A4.TechnologyService` | the specialised entity type |
+| `extends` | yes | 12 of 12 | `A1.BusinessProcess`, `A1.ValueStream`, `A4.InfrastructureComponent` | its parent type |
+| `description` | yes | 12 of 12 | text | the is-a statement |
+| `reference_source` | yes | 12 of 12 | text | source reference |
+| `verification` | yes | 12 of 12 | `sdem_definition` | how it was checked |
+| `reasoning` | yes | 12 of 12 | text | why the type specialises the parent |
+| `confidence` | yes | 12 of 12 | `high` | high / medium / low |
+
+#### 6.1c Within-level relationship — an actual link
+
+In a level export's `relationships` list (`schema/level-model.schema.json`); never in the Relationship Registry.
+
+| Field | Required | Meaning |
+|---|---|---|
+| `source` | yes | id of the source instance in the same export |
+| `kind` | yes | relationship kind; must match a row of §6.1a through inheritance, or be `association` |
+| `target` | yes | id of the target instance in the same export |
+| `name` | no | optional label |
+
+Checked by `sdem-graph check`: both ends in the export (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).
+
 ### 6.2 Cross-level relationship types
 
 *Aligned to high-level §6.2.* The eight v0.2.1 rules plus `DEPLOYED_AS` with the governance of high-level §14 decision 2.
@@ -216,11 +280,73 @@ Catalogue check: 41 entity rows read from high-level §5; 1 differs (A4.Deployme
 | `A3.ApplicationComponent` | `DEPLOYED_ON` | `A4.InfrastructureComponent` | architecture | `enterprise_rule` | deployment_design | medium |
 | `A3.ApplicationComponent` | `DEPLOYED_AS` | `A4.Deployment` | architecture | `enterprise_rule` | deployment_design | medium |
 
+#### 6.2a Relationship type record
+
+Every field of a relationship type in `schema/relationship-types.json`. *Aligned to high-level §6.2.* (fields beyond `authority` and `perspective` came from v0.2.1, high-level R7; provenance fields are **Gap G-13** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed)).
+
+| Field | Required | In records | Values | Meaning |
+|---|---|---|---|---|
+| `mapping_type_id` | yes | 9 of 9 | `BIAN_OBJECT_MAPPED_TO_DATA_ENTITY`, `BUSINESS_OBJECT_ALIGNED_TO_BIAN_OBJECT`, `CAPABILITY_SUPPORTED_BY_DOMAIN`, `COMPONENT_DEPLOYED_AS_DEPLOYMENT`, `COMPONENT_DEPLOYED_ON_INFRASTRUCTURE`, `DOMAIN_REALIZED_BY_COMPONENT`, `OPERATION_IMPLEMENTED_BY_API`, `PROCESS_USES_DOMAIN`, `VALUE_STREAM_ALIGNED_TO_SCENARIO` | permanent ID of the type (legacy name) |
+| `source_type` | yes | 9 of 9 | `A1.BusinessCapability`, `A1.BusinessObject`, `A1.BusinessProcess`, `A1.ValueStream`, `A2.BusinessObject`, `A2.ServiceDomain`, `A2.ServiceOperation`, `A3.ApplicationComponent` | entity type at the source end (is-a) |
+| `relationship` | yes | 9 of 9 | `ALIGNED_TO`, `DEPLOYED_AS`, `DEPLOYED_ON`, `IMPLEMENTED_BY`, `MAPPED_TO`, `REALIZED_BY`, `SUPPORTED_BY`, `USES_DOMAIN` | the type name used in registry records |
+| `target_type` | yes | 9 of 9 | `A2.BusinessObject`, `A2.BusinessScenario`, `A2.ServiceDomain`, `A3.APIOperation`, `A3.ApplicationComponent`, `A3.DataEntity`, `A4.Deployment`, `A4.InfrastructureComponent` | entity type at the target end (is-a) |
+| `cardinality` | yes | 9 of 9 | `many_to_many` | many_to_many, one_to_many, … |
+| `perspective` | yes | 9 of 9 | `architecture`, `information`, `process` | architecture, process or information |
+| `authority` | yes | 9 of 9 | `bian_alignment_guidance`, `enterprise_rule` | bian_reference, bian_alignment_guidance or enterprise_rule (high-level §1.2) |
+| `direction_semantics` | yes | 9 of 9 | text | what the arrow means, read source → target |
+| `required_evidence` | yes | 9 of 9 | list | evidence kinds a record must carry before approval |
+| `rule_version` | yes | 9 of 9 | `1.0` | version of this type definition |
+| `owner` | yes | 9 of 9 | `application-architecture`, `business-architecture`, `data-architecture`, `enterprise-architecture`, `infrastructure-architecture` | who governs the type |
+| `source_reference` | yes | 9 of 9 | text | source reference |
+| `verification` | yes | 9 of 9 | `sdem_definition`, `unverified_w135`, `verified`, `verified_intent_or_target_only` | how the type was checked |
+| `confidence` | yes | 9 of 9 | `high`, `medium` | high / medium / low |
+| `confidence_basis` | yes | 9 of 9 | text | which clause of the rule applied |
+| `reasoning` | yes | 9 of 9 | text | why the type exists |
+
 Is-a matching lets `DEPLOYED_ON → A4.InfrastructureComponent` accept any concrete A4 type — aligned. Detail: [`relationship-registry-spec.md`](relationship-registry-spec.md).
 
 ### 6.3 Derived relationships
 
 Level-skipping traceability is a query over approved edges with provenance (`sdem-graph trace`) and never a registry record — aligned. The inference engine also writes derived-path rows as **candidate reports** in a separate file, never registry records — **Gap G-07** (contradiction; decided 2026-10-25 (owner): derived paths may be written as candidate reports, never as registry records).
+
+### 6.4 Relationship record — the mapping between architectures
+
+*Aligned to high-level §4 and §6.2.* (the v0.2.1 record, retained; high-level R7). One record per actual link between instances of adjacent architectures, in the **Architecture Relationship Registry** (`examples/<estate>/mappings.json`). Field definitions are shared with [`relationship-registry-spec.md`](relationship-registry-spec.md).
+
+| Field | Type / values | Required | Meaning |
+|---|---|---|---|
+| `mapping_id` | string | yes | the record's permanent ID (legacy name) |
+| `source` | entity reference (§4) | yes | the entity the relationship starts from (§4) |
+| `target` | entity reference (§4) | yes | the entity it points to (§4) |
+| `relationship` | string | yes | one of the nine catalogued types (§6.2); adjacent levels only |
+| `perspective` | `process`, `information`, `architecture` | no | architecture, process or information |
+| `status` | `proposed`, `validated`, `needs_review`, `approved`, `rejected`, `superseded` | yes | lifecycle state (lifecycle below) |
+| `evidence` | array | yes | `kind:reference` items; the kinds must include the type's required evidence (§6.2) |
+| `rationale` | string | yes | why the relationship holds: the working |
+| `baseline_id` | string | yes | the release the record belongs to |
+| `confidence` | number | no | 0–1, the rule's band |
+| `bian_release` | string | no | required on BIAN-authority types before approval |
+| `reviewer_id` | string | no | the approving architect |
+| `created_by` | string | no | who or what proposed it (engine, rule, architect) |
+| `approved_at` | string | no | approval date |
+| `valid_from` | string | no | start of validity |
+| `valid_to` | string | no | end of validity; set on supersession |
+| `previous_mapping_id` | string | no | the record this one supersedes (legacy name) |
+
+**Lifecycle** (`sdem/diff.py`):
+
+| From | May become |
+|---|---|
+| `proposed` | `approved`, `needs_review`, `rejected`, `validated` |
+| `validated` | `approved`, `needs_review`, `rejected` |
+| `needs_review` | `approved`, `proposed`, `rejected`, `validated` |
+| `approved` | `superseded` |
+| `rejected` | — (final) |
+| `superseded` | — (final) |
+
+**Immutability.** Records in `approved`, `rejected`, `superseded` are frozen; an `approved` record may only become `superseded`, changing `status`, `valid_to`. A change is a new record whose `previous_mapping_id` names the one it supersedes; records are never deleted (enforced by `sdem-diff`). Only `approved` records enter the federated graph (graph store GD-04).
+
+**Who writes what.** The inference engine writes records with status `proposed` only; an architect moves them through the lifecycle; `reviewer_id` and `approved_at` are set only on approval. Candidate reports (rule rows that are not catalogue types) are never registry records — **Gap G-07** (contradiction; decided 2026-10-25 (owner): derived paths may be written as candidate reports, never as registry records).
 
 ## 7. Bank Architecture Profiles
 
@@ -287,6 +413,28 @@ Later decisions live with the parts they govern: data-model reviews (`metamodel/
 **Gap G-11** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
 69 plan rows (`metamodel/relationship-rules.json`): bian_internal 14, candidate_rule 5, conditional_rule 5, derived_path 17, historical_method 1, institution_only 14, not_a_mapping 2, not_encodable 1, registry_rule 9, subsumed 1. By fill step: step 0 14, step 1 16, step 2 2, step 3 24, step 4 10, step 5 1, step None 2. Join keys: `metamodel/export-conventions.json`. Specification: [`relationship-rules-spec.md`](relationship-rules-spec.md).
+
+### 15a Mapping rule record
+
+Every field of a plan row in `metamodel/relationship-rules.json`.
+
+| Field | Required | In records | Values | Meaning |
+|---|---|---|---|---|
+| `id` | yes | 69 of 69 | text | plan row ID (S01…S54 cross-level, B01…B15 BIAN-internal) |
+| `tier` | yes | 69 of 69 | `official_bian_only`, `official_bian_with_support_frameworks` | official BIAN only, or BIAN with supporting frameworks |
+| `source` | yes | 69 of 69 | text | entity type the rule starts from |
+| `target` | yes | 69 of 69 | text | entity type it points to |
+| `relation` | yes | 69 of 69 | text | the catalogue type it produces, or `candidate` for a report |
+| `official` | yes | 69 of 69 | `False`, `True` | whether BIAN itself states the link |
+| `verification` | yes | 69 of 69 | `confirmed_none`, `sdem_definition`, `unpublished`, `unverified_archimate`, `unverified_w135`, `verified`, `verified_intent_or_target_only` | how the rule's basis was checked |
+| `source_reference` | yes | 69 of 69 | text | source reference |
+| `rule_decision` | yes | 69 of 69 | `bian_internal`, `candidate_rule`, `conditional_rule`, `derived_path`, `historical_method`, `institution_only`, `not_a_mapping`, `not_encodable`, `registry_rule`, `subsumed` | registry_rule (produces registry records), candidate_rule, conditional_rule, institution_only, derived_path, … — which outputs it may produce |
+| `fill_step` | yes | 69 of 69 | `0`, `1`, `2`, `3`, `4`, `5`, `None` | the inference step that applies it (0–5); `None` for rows no step applies (not a mapping, not encodable, historical) |
+| `data_needed` | yes | 69 of 69 | text | the export data the step reads (plain text; the step logic is in the engine — see §18) |
+| `confidence` | yes | 69 of 69 | `high`, `low`, `medium` | the band given to its output (high 0.8, medium 0.6, low 0.4) |
+| `reasoning` | yes | 69 of 69 | text | why the rule is shaped as it is |
+| `basis_confidence` | yes | 69 of 69 | `high`, `medium`, `n/a` | confidence in the rule's basis (the single rule) |
+| `basis_confidence_reason` | yes | 69 of 69 | text | which clause applied |
 
 ## 16. Data model
 
