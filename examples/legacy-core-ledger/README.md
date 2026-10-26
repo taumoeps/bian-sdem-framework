@@ -2,7 +2,7 @@
 
 All identifiers are **synthetic**; `SD-CA`, `BIAN-CURRENT-ACCOUNT` and the rest are stand-ins, not BIAN content.
 
-A twenty-year-old core banking ledger ("LedgerMaster"). Its A3 — five modules, four SOAP interfaces, fourteen operations and three batch jobs, five tables — and its A4 — mainframe LPAR, DB2, MQ — are fully documented in the CMDB. **No mappings exist.** A2 is a synthetic BIAN-style export of the four domains the ledger touches. A1 is only a **draft capability list** (six names with descriptions): no processes, no value streams, no mappings.
+A twenty-year-old core banking ledger ("LedgerMaster"). Its A3 — five modules, four SOAP interfaces, fourteen operations and three batch jobs, five tables — and its A4 — mainframe LPAR, DB2, MQ — are fully documented in the CMDB. **No mappings exist.** A2 is a synthetic BIAN-style architecture dataset of the four domains the ledger touches. A1 is only a **draft capability list** (six names with descriptions): no processes, no value streams, no mappings.
 
 | File | Instances | Notes |
 |---|---|---|

@@ -1,4 +1,4 @@
-"""Data-model conformance (sdem/conformance.py): each enforced rule rejects a bad export and accepts the examples."""
+"""Data-model conformance (sdem/conformance.py): each enforced rule rejects a bad architecture dataset and accepts the examples."""
 import copy, glob, json, unittest
 from pathlib import Path
 

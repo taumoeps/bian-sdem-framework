@@ -1,6 +1,6 @@
 # Mapping execution guide — for the executor
 
-**Who this is for.** A model session (or an analyst) acting as the inference engine for one use case in `docs/use-case-testing.md`. You are executing a **plan**, not designing one. The plan is `metamodel/relationship-rules.json`; the data is the use case's level exports. Your job is to produce the connections the plan says can be produced, show the working for each, and report precisely where the plan did not work.
+**Who this is for.** A model session (or an analyst) acting as the inference engine for one use case in `docs/use-case-testing.md`. You are executing a **plan**, not designing one. The plan is `metamodel/relationship-rules.json`; the data is the use case's architecture datasets. Your job is to produce the connections the plan says can be produced, show the working for each, and report precisely where the plan did not work.
 
 **Objective.** Test whether the connections in `relationship-rules.json` are correct and producible from the data. Every miss, false proposal or forced guess is a finding that improves the plan. A clean run with no findings is less useful than an honest one.
 
@@ -14,8 +14,8 @@ Read, in this order:
 2. `docs/mapping-logic-planning.md` §5.2 — the five steps and the direction of fill.
 3. The use case's section in `docs/use-case-testing.md` — the scenario, what is *given*, the connections it exercises, the expected outcomes.
 4. `schema/relationship-types.json` — the nine catalogue rules and their required evidence kinds.
-5. `metamodel/level-relationships.json` — the within-level relationship kinds you may read from the exports.
-6. `metamodel/export-conventions.json` — the attribute keys on export instances that steps 1–4 join on. **If an export lacks the key a step needs, that is a finding about the export, and the step produces no proposal.**
+5. `metamodel/level-relationships.json` — the within-level relationship kinds you may read from the architecture datasets.
+6. `metamodel/export-conventions.json` — the attribute keys on architecture dataset instances that steps 1–4 join on. **If an architecture dataset lacks the key a step needs, that is a finding about the architecture dataset, and the step produces no proposal.**
 
 Do **not** read the use case's gold set (`<uc>-gold-mappings.json` or `gold-mappings.json`) until phase 5. The mappings you may treat as already approved are only those in the case's *given* file (`<uc>-mappings-given.json`) — not the example's full `mappings.json`. If you have already seen the gold set, say so in the report.
 
@@ -26,19 +26,19 @@ Do **not** read the use case's gold set (`<uc>-gold-mappings.json` or `gold-mapp
 | **Use only the connections in the plan.** | A proposal must correspond to an ID in `relationship-rules.json`. The `source`/`target` entity types of your proposal must be the ID's `source`/`target` (or, for A4, a concrete descendant of `A4.InfrastructureComponent`). |
 | **New connections are allowed but quarantined.** | If the data clearly supports a connection that no ID covers, record it in the **New connection candidates** section of the report, not in the proposal document. Give its entity pair, the step that found it, reasoning and confidence. It is a proposed addition to the plan, not a result. |
 | **Follow the step the plan assigns.** | Use the ID's `fill_step`. You may fall back to a *higher-numbered* step only if the assigned step cannot produce the connection from the data, and you must say so in the working. Never use a lower step than assigned (e.g. do not "derive" what the plan says must come from data) — **except** an optional step the plan's `reasoning` for that ID explicitly lists (e.g. S02's step-3 derivation); use it only after the assigned step has failed, label the proposal `optional-step`, and give it the band the plan states for that option. |
-| **Show the working for every proposal.** | Step 1: the export record(s) joined. Step 2: the rule(s) fired and the values compared. Step 3: the approved arrows closed over, by `mapping_id`. Step 4: the attributes/paths/positions matched and the score. Step 5: the texts compared and why. No working → no proposal. |
+| **Show the working for every proposal.** | Step 1: the architecture dataset record(s) joined. Step 2: the rule(s) fired and the values compared. Step 3: the approved arrows closed over, by `mapping_id`. Step 4: the attributes/paths/positions matched and the score. Step 5: the texts compared and why. No working → no proposal. |
 | **Never approve.** | Every record is `status: proposed`. You do not set `reviewer_id` or `approved_at`. |
-| **Never invent instances.** | Every `source.id` and `target.id` must exist in a level export. If the connection needs an instance that is not there, that is a finding ("no instance to map to"), not a proposal. |
+| **Never invent instances.** | Every `source.id` and `target.id` must exist in an architecture dataset. If the connection needs an instance that is not there, that is a finding ("no instance to map to"), not a proposal. |
 | **No proposal is a valid answer.** | Where the data does not support any candidate at the assigned step or a permitted fallback, record *no proposal* with the reason. Precision over recall. |
 | **Confidence is the plan's, not yours.** | Set `confidence` to the band the plan predicts for that ID (high 0.8, medium 0.6, low 0.4), adjusted down one band if you used a fallback step. **A step-3 derivation over non-approved arrows is capped by its inputs:** where the rule needs *all* its inputs (S01: every process of the capability), the cap is the weakest input's band; where *any one* input suffices (S17: one implemented operation realises the domain; S25, S22, S23), the cap is the strongest input's band (M1 finding 3). **An input lowered only by a recorded systematic interface deviation** (e.g. every SOAP operation is POST) does not lower the derivation: the deviation is about the API's form, not about which component implements the domain (H1 finding 4). If you believe the plan's band is wrong, say so in findings — do not silently change it. |
 
 ## 3. The steps, as rules
 
-### Step 0 — BIAN export
-Not executed by you. The A2 export is given. Read from it: domains, functional pattern, asset type, control record and its attributes, behaviour qualifiers, service groups, operations with action term and input/output, scenarios with their operation sequences.
+### Step 0 — BIAN architecture dataset
+Not executed by you. The A2 architecture dataset is given. Read from it: domains, functional pattern, asset type, control record and its attributes, behaviour qualifiers, service groups, operations with action term and input/output, scenarios with their operation sequences.
 
 ### Step 1 — Data join
-Read the A4 export's `relationships` and `attributes`, and the A3 export's `attributes`. Produce a proposal where a record states the fact directly:
+Read the A4 architecture dataset's `relationships` and `attributes`, and the A3 architecture dataset's `attributes`. Produce a proposal where a record states the fact directly:
 
 | Connection | Join on |
 |---|---|
@@ -49,7 +49,7 @@ Read the A4 export's `relationships` and `attributes`, and the A3 export's `attr
 | S41 / S45 | `A3.ApplicationService.attributes.consumes` (or the function's) lists `A4.TechnologyService` ids |
 | S49 | `A3.DataEntity.attributes.stored_in` lists an `A4.Artifact` id |
 
-Relationships in exports are within-level only (policy); cross-level facts live in these attributes. Keys are defined in `metamodel/export-conventions.json`.
+Relationships in architecture datasets are within-level only (policy); cross-level facts live in these attributes. Keys are defined in `metamodel/export-conventions.json`.
 
 Working: quote the record. If no record names the component, **no proposal**.
 
@@ -62,7 +62,7 @@ Rewritten after M1: a tally of "3 of 4 rules" is not a fill rule — on a six-op
 - the API's component is `REALIZED_BY` the domain (approved), **or**
 - **token gate (reverse cases):** tokenise the domain's asset-type name *and its aliases* (`A2.AssetType.attributes.aliases`, supplied by the institution — e.g. "Financial Position" → `balance, position, posting, ledger`) and tokenise the component's interface: operation names (camel-case and snake-case split), paths, descriptions, and the names of the data entities it accesses. Lower-case, singularise, drop stop words **and structural nouns** (`set, record, item, list, group, type, data, master, detail, entry`) — "Document Set" must gate on *document*, never on *set* (C2 finding 3). Pass if any asset token appears in the interface tokens.
 
-Legacy names rarely contain the literal BIAN asset name ("POSTING_JRNL" does not say "Financial Position"); a literal gate blocks half of a legacy estate (H1 finding 1). No asset type and no aliases in the export → the gate is untestable for that domain; record it. The gate is the same for every API of one component and must never count as evidence.
+Legacy names rarely contain the literal BIAN asset name ("POSTING_JRNL" does not say "Financial Position"); a literal gate blocks half of a legacy estate (H1 finding 1). No asset type and no aliases in the architecture dataset → the gate is untestable for that domain; record it. The gate is the same for every API of one component and must never count as evidence.
 
 **Checks** — each is *pass*, *fail* or *neutral*; only pass and fail are evidence:
 
@@ -70,9 +70,9 @@ Legacy names rarely contain the literal BIAN asset name ("POSTING_JRNL" does not
 |---|---|---|---|---|---|
 | 2 | Action term ↔ HTTP method | [SAPG] §3.2.5 (17 action terms), §3.5 (Retrieve → GET; Notify unused in the REST mapping) | Retrieve ⇔ GET (verified). **Executor convention, marked:** Create/Initiate/Register/Evaluate/Provide/Request ⇔ POST; Update/Control/Exchange/Capture/Grant/Execute ⇔ PUT or PATCH; Control ⇔ DELETE when the operation's purpose is cancel/terminate; Execute ⇔ POST on a sub-resource named for the qualifier (e.g. `POST …/{id}/release`); Activate/Configure/Feedback ⇔ PUT or POST (H2 run-2 finding 2) | any other combination | — (Notify or a term outside the 17: **fail** — no REST form) |
 | 3 | Behaviour qualifier ↔ path | [SAPG] §3.5 p. 55 | the operation has a qualifier and its name (or clear synonym) is a path segment after the resource | the operation has a qualifier and the path lacks it; **or** the operation has no qualifier and the path carries a segment that is another operation's qualifier | the operation has no qualifier and the path has no qualifier segment; a path segment that is neither a qualifier nor a qualifier alias of any operation of the domain (e.g. an action noun such as `check`) is **ignored** (C2 finding 4) |
-| 4 | Attributes ↔ payload | [SAPG] §3.5 (attributes filtered by action term) | ≥ 50 % of `input_attributes` ∪ `output_attributes` appear in `payload_fields`, **at least two attributes matched** (one shared field — e.g. a status — is not evidence; H2 finding 5), **and** this API is the operation's best payload match (highest overlap). Matching is by normalised name, then through `field_aliases` where the export supplies them | < 50 %, or fewer than two matched | — |
+| 4 | Attributes ↔ payload | [SAPG] §3.5 (attributes filtered by action term) | ≥ 50 % of `input_attributes` ∪ `output_attributes` appear in `payload_fields`, **at least two attributes matched** (one shared field — e.g. a status — is not evidence; H2 finding 5), **and** this API is the operation's best payload match (highest overlap). Matching is by normalised name, then through `field_aliases` where the architecture dataset supplies them | < 50 %, or fewer than two matched | — |
 
-**Aliases.** Where the export supplies them, check 3 reads `A2.BehaviorQualifier.attributes.aliases` (e.g. Closure → `close`) and check 4 reads `A3.ApplicationInterface.attributes.field_aliases` (product field → canonical attribute, e.g. `sender → debtor_account_reference`). Aliases are institution data, recorded in the export, never invented by the executor (H2 finding 4).
+**Aliases.** Where the architecture dataset supplies them, check 3 reads `A2.BehaviorQualifier.attributes.aliases` (e.g. Closure → `close`) and check 4 reads `A3.ApplicationInterface.attributes.field_aliases` (product field → canonical attribute, e.g. `sender → debtor_account_reference`). Aliases are institution data, recorded in the architecture dataset, never invented by the executor (H2 finding 4).
 
 **Decision, per operation, over the APIs that passed the precondition:**
 
@@ -85,7 +85,7 @@ Legacy names rarely contain the literal BIAN asset name ("POSTING_JRNL" does not
 
 **Systematic deviations.** When every operation of an interface fails check 2 the same way (e.g. a SOAP interface where all operations are POST), report **one** finding naming the interface and the convention, and reference it from each affected proposal — not fourteen separate findings.
 
-**Notify operations.** A *Notify* operation has no REST form; if the A3 export carries an `A3.Event` whose name matches the operation's asset and state change, report it under *New connection candidates* as `A2.ServiceOperation → A3.Event` (no plan ID yet; M1 finding 5). Never as a proposal.
+**Notify operations.** A *Notify* operation has no REST form; if the A3 architecture dataset carries an `A3.Event` whose name matches the operation's asset and state change, report it under *New connection candidates* as `A2.ServiceOperation → A3.Event` (no plan ID yet; M1 finding 5). Never as a proposal.
 
 Working: for every operation × API pair that passed the precondition, log the three check results and the decision reached, including suppressed pairs and the clause that suppressed them (M1 logged 36 pairs this way; that is the standard).
 
@@ -97,7 +97,7 @@ Closure rules. Cite the `mapping_id` of every arrow used.
 | S17 `REALIZED_BY` | if component C exposes API operations that `IMPLEMENTED_BY` (approved, or your step-2 proposals — say which) operations of domain D, then D `REALIZED_BY` C. **Fallback A (step 3, same band):** the component accesses a data entity that is `MAPPED_TO` (approved, or your step-4 proposal — say which) the domain's control record's business object — realisation closed over the information perspective (H2 finding 3). **Fallback B (step 4, one band lower):** a token of the domain's asset-type name **or its aliases** (`A2.ServiceDomain.attributes.asset_type` → `A2.AssetType.name`, `.attributes.aliases`) appears in the component's API paths or data entity names — a structural match, scored as matches / APIs+entities, threshold ≥ 1 match. **No description-only fallback**: step 5 is reserved for the A1 side (H2 finding 2) |
 | S25 | operation O `IMPLEMENTED_BY` API a; a belongs to an interface assigned to application service S (A3: interface composes operations; interface `assignment` service, ArchiMate ch. 9) ⇒ O → S |
 | S22 / S23 | the service/interface exposing the APIs of a group's operations |
-| S04 `USES_DOMAIN` | process P (or one of its activities) has `attributes.invokes` naming operation O, or an S06 proposal; O in domain D (B09/B10) ⇒ P `USES_DOMAIN` D. A process exported without activities may be matched directly to operations by the S06 verb+noun rule (step 4) |
+| S04 `USES_DOMAIN` | process P (or one of its activities) has `attributes.invokes` naming operation O, or an S06 proposal; O in domain D (B09/B10) ⇒ P `USES_DOMAIN` D. A process provided without activities in its architecture dataset may be matched directly to operations by the S06 verb+noun rule (step 4) |
 | S01 `SUPPORTED_BY` (candidate) | every process of capability K (A1 relationship) `USES_DOMAIN` D ⇒ candidate K `SUPPORTED_BY` D, confidence medium; if only some processes, low. **Report-only:** a parent capability whose composed child is `SUPPORTED_BY` D is listed under *New connection candidates*, never proposed — whether a parent's scope is covered by a child's domain is a judgement, not a derivation (M0 run 2) |
 | S02 `ALIGNED_TO` (optional step 3) | capability K serves value stream V (A1 `serving`, ArchiMate ch. 7); a process of K invokes operation O; O in scenario S's `operation_sequence` ⇒ candidate V `ALIGNED_TO` S, low. Step 4 (stages vs sequence) remains the primary route |
 | S07, S15, S16, S40, S42, S46, S47, S48, S52–S54 | derived paths — report as **queries** (the chain of arrows), not as proposal records |
@@ -117,15 +117,15 @@ Working: the attribute/stage pairs matched and the score.
 
 ### Design targets — the one place instances may be created
 
-Mapping connects things that exist. When a case has **no export below some level** (M2: no A3/A4), no step applies there and the write-up must say so: *mapping ends at <level>*. Below that line the executor may produce a **target design** from BIAN's container pattern ([SAPG] §3.5, §4.1: one deployable component per Service Domain, its operations exposed as a REST API, one deployment per component) — and only from that pattern:
+Mapping connects things that exist. When a case has **no architecture dataset below some level** (M2: no A3/A4), no step applies there and the write-up must say so: *mapping ends at <level>*. Below that line the executor may produce a **target design** from BIAN's container pattern ([SAPG] §3.5, §4.1: one deployable component per Service Domain, its operations exposed as a REST API, one deployment per component) — and only from that pattern:
 
-- Instances go in a separate export per level (`<uc>-design-a3.json`, `<uc>-design-a4.json`), every one `lifecycle_status: planned`, ids by the case's convention (`DSN-APP-<domain>`, `DSN-API-<operation>`, `DSN-DEP-<domain>`), each API with `method`, `path` and `payload_fields` from the canonical REST forms.
+- Instances go in a separate architecture dataset per level (`<uc>-design-a3.json`, `<uc>-design-a4.json`), every one `lifecycle_status: planned`, ids by the case's convention (`DSN-APP-<domain>`, `DSN-API-<operation>`, `DSN-DEP-<domain>`), each API with `method`, `path` and `payload_fields` from the canonical REST forms.
 - Arrows go in the proposal file at **low** confidence, `created_by` naming the pattern source, rationale beginning **TARGET DESIGN, not a mapping**.
 - Nothing is invented that the pattern does not give: no platform (`DEPLOYED_ON`), no data entity (`MAPPED_TO`), no environment name.
 - `sdem-graph trace` marks planned instances `[DESIGN — planned, not observed]`; a design chain is never reported as traceability.
 
 ### Step 5 — Text inference
-Only for S01 when step 3 produced nothing (capability with no mapped processes), and for the A1 side of hard cases. S08 (business service → domain) also belongs here, but only when the institution opts in; it is off by default (DEC-E-04 in `relationship-rules-spec.md`). Compare the capability description with each candidate domain's description (name, description, asset type and aliases). Count **shared concepts**: content words after stop-word removal, excluding generic banking words (`bank, customer, manage, account, service, process, record, data`) — these appear everywhere and are not evidence. Propose at most **one** domain per capability, low confidence, with the two texts quoted and the shared concepts named, **only when** the best domain shares **≥ 2 concepts** and leads the runner-up by **≥ 1** (H1 finding 3). **The candidate set must be the full exported A2 landscape, or at least three domains** — *full landscape takes precedence*: when the export holds only two domains and both are compared, the ranking is valid (C1 reading 3); with a single domain, record *single-candidate, no proposal*. Otherwise **no proposal**.
+Only for S01 when step 3 produced nothing (capability with no mapped processes), and for the A1 side of hard cases. S08 (business service → domain) also belongs here, but only when the institution opts in; it is off by default (DEC-E-04 in `relationship-rules-spec.md`). Compare the capability description with each candidate domain's description (name, description, asset type and aliases). Count **shared concepts**: content words after stop-word removal, excluding generic banking words (`bank, customer, manage, account, service, process, record, data`) — these appear everywhere and are not evidence. Propose at most **one** domain per capability, low confidence, with the two texts quoted and the shared concepts named, **only when** the best domain shares **≥ 2 concepts** and leads the runner-up by **≥ 1** (H1 finding 3). **The candidate set must be the full A2 landscape in the architecture dataset, or at least three domains** — *full landscape takes precedence*: when the architecture dataset holds only two domains and both are compared, the ranking is valid (C1 reading 3); with a single domain, record *single-candidate, no proposal*. Otherwise **no proposal**.
 
 ## 4. Output — the proposal document
 
@@ -142,7 +142,7 @@ One file per use case: `examples/<example>/<uc>-proposals.json` (e.g. `m0-propos
       "mapping_id": "P-M1-001",
       "source": {"id": "<instance id>", "type": "<entity>", "version": "<version>"},
       "relationship": "<registry relationship>",
-      "target": {"id": "<instance id>", "type": "<entity>", "version": "<version>", "canonical_id": "<if the A2 export has one>"},
+      "target": {"id": "<instance id>", "type": "<entity>", "version": "<version>", "canonical_id": "<if the A2 architecture dataset has one>"},
       "status": "proposed",
       "confidence": 0.8,
       "evidence": ["engine_rationale:S24 step2 rules 1-4 passed; action term Retrieve ↔ GET; qualifier 'Instruction' in path; 6/8 attributes in payload"],

@@ -11,7 +11,7 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | v0.2.1 | Validator hardening: approval timestamps, canonical anchoring, typed evidence, entity catalogue resolution, `sdem-diff` for lifecycle and immutability | Unanchored or edited-after-approval records rejected in CI | done |
 | v0.3 | Graph reference implementation (`sdem-trace`) | Traverse approved A1→A4 links in both directions | done |
 | v0.3.1 | A1–A4 level naming with legacy aliases; adjacency rules from the relationship type catalogue | Legacy documents validate unchanged | done |
-| v0.4.0 | Entity catalogue with `extends`/`abstract`, `DEPLOYED_AS`; level export schema; local and federated graphs (`sdem-graph check/trace/impact/stats`); impact classification — see `06-data-architecture.md` | Rehost impact leaves A1/A2 `no_impact` | done |
+| v0.4.0 | Entity catalogue with `extends`/`abstract`, `DEPLOYED_AS`; architecture dataset schema; local and federated graphs (`sdem-graph check/trace/impact/stats`); impact classification — see `06-data-architecture.md` | Rehost impact leaves A1/A2 `no_impact` | done |
 | v0.5 | Engine readiness: descriptions, reference adapter interface, engine interface with a name-overlap baseline, `sdem-eval` scorer, impact rules as data — see `07-engine-readiness.md`. Mapping plan, procedure and the use-case runs (executed by hand). Within-level rows from BIAN, ArchiMate and TOGAF, verified | Baseline proposals validate and score F1 ≥ 0.5 | done |
 | v0.6.0 | Relationship Rules Model specification (`relationship-rules-spec.md`); knowledge-graph design and specification with service specifications | Generated from the records; current in CI | done |
 | v0.7.0 | Renamed SDEM; model-driven terminology; registry specification; compatibility aliases for the old names | Behaviour byte-identical to v0.6.2 | done |
@@ -38,7 +38,7 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | Release | Deliverable | Acceptance test | Status |
 |---|---|---|---|
 | v0.11 | **Ingestion and approval** — **next**:: spreadsheet templates generated from the schemas and an ingest command; review of proposals into the registry | A synthetic estate loaded from spreadsheets end to end to an impact query; proposals approved into the registry | |
-| v0.12 | **Change handling**: export diff, refresh trigger, re-checking links touched by a change | A changed export flags exactly the affected links | |
+| v0.12 | **Change handling**: architecture dataset diff, refresh trigger, re-checking links touched by a change | A changed architecture dataset flags exactly the affected links | |
 | v0.13 | **Query service and assistant access** through a script (no MCP); a database behind the access layer if scale requires | Questions answered from the store with their baseline | |
 | v0.14 | **BIAN reference integration**: licensed `ReferenceResolver`, BIAN verification register, Bank Architecture Profiles | Canonical ids validated inside the licensed environment | |
 | v0.15 | **Generated views** (matrices, diagrams) from approved data; historical design repository | Capability-to-domain matrix generated from approved data only | |

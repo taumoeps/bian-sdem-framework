@@ -50,28 +50,28 @@ def render():
             '    subgraph SOURCES[Source tools]', '      T1[EA tool]', '      T2[BIAN workbench]', '      T3[Application portfolio]', '      T4[CMDB]', '    end',
             '    subgraph LOCAL[Local graphs — one per level]', '      L1[(A1 Business)]', '      L2[(A2 Service Domain)]', '      L3[(A3 Application)]', '      L4[(A4 Technology)]', '    end',
             '    MD[[Mapping set — approved cross-level links]]', '    FED[(Federated graph)]', '    Q[Trace · Impact · Unmapped]',
-            '    T1 -->|adapter → export| L1', '    T2 -->|adapter → export| L2', '    T3 -->|adapter → export| L3', '    T4 -->|adapter → export| L4',
+            '    T1 -->|adapter → architecture dataset| L1', '    T2 -->|adapter → architecture dataset| L2', '    T3 -->|adapter → architecture dataset| L3', '    T4 -->|adapter → architecture dataset| L4',
             '    MMOD[Relationship rules model] --> ENG', '    ARCH[Architect] -->|designs| MMOD', '    ENG[Inference engine] -->|builds| MD', '    ARCH -->|reviews| MD',
             '    L1 -.->|reads entities + changes| ENG', '    L2 -.-> ENG', '    L3 -.-> ENG', '    L4 -.-> ENG', '    FED -.->|reads approved edges| ENG',
             '    L1 -.->|entity references| FED', '    L2 -.-> FED', '    L3 -.-> FED', '    L4 -.-> FED', '    MD -->|approved edges| FED', '    FED --> Q', '```', '',
             '| Graph | Holds | Owner | Source | Built from |', '|---|---|---|---|---|']
     for l in ('A1', 'A2', 'A3', 'A4'):
-        out.append(f"| {LEVEL_NAMES[l]} local graph | the level's entity instances and the links inside the level | {OWNER[l]} | {SOURCE[l]} | one level export (`schema/level-model.schema.json`) |")
+        out.append(f"| {LEVEL_NAMES[l]} local graph | the level's entity instances and the links inside the level | {OWNER[l]} | {SOURCE[l]} | one architecture dataset (`schema/level-model.schema.json`) |")
     out += ['| Federated graph | approved cross-level edges, and references to their ends in the local graphs | enterprise architecture | the mapping set | the mapping set (`schema/relationship-registry.schema.json`) joined to the four local graphs |', '']
-    req('A', 'Hold each level in its own local graph, loaded only from that level\'s export; a change in one level never requires reloading another.', 'level-model.schema.json; `LevelGraph`', 'built (in memory)')
+    req('A', 'Hold each level in its own local graph, loaded only from that level\'s architecture dataset; a change in one level never requires reloading another.', 'level-model.schema.json; `LevelGraph`', 'built (in memory)')
     req('A', 'Hold in the federated graph only approved cross-level edges and references to their ends; never copy local content; never hold a proposed, rejected or superseded record as an edge used for answers.', 'relationship-registry.schema.json; `FederatedGraph` status filter', 'built (in memory)')
-    req('A', 'The engine reads the four local graphs (entities, within-level links, and what changed since the last baseline) and the federated graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations.', 'mapping-model-spec §6; §8 governance', 'partly built (reads exports and approved mappings directly; change-since-baseline not built)')
+    req('A', 'The engine reads the four local graphs (entities, within-level links, and what changed since the last baseline) and the federated graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations.', 'mapping-model-spec §6; §8 governance', 'partly built (reads architecture datasets and approved mappings directly; change-since-baseline not built)')
     out += inline('A')
 
     # ---- 2 local graphs
-    out += ['## 2. Local graphs', '', '### 2.1 Node schema (every level)', '', 'One node per instance in the export. Fields from `schema/level-model.schema.json` › `instance`:', '',
+    out += ['## 2. Local graphs', '', '### 2.1 Node schema (every level)', '', 'One node per instance in the architecture dataset. Fields from `schema/level-model.schema.json` › `instance`:', '',
             '| Field | Type | Required | Note |', '|---|---|---|---|']
     for n, t, r, d in _schema_rows(lm['$defs']['instance']):
         note = {'id': 'node key; see §4 identity', 'type': 'an entity from the catalogue; concrete, never abstract or artefact', 'version': 'the instance\'s version, matched by mapping ends',
                 'attributes': 'level-specific properties, including the join keys of §2.3', 'canonical_id': 'the external reference identity (e.g. a BIAN id) on A2 nodes'}.get(n, d)
         out.append(f"| `{n}` | {t} | {r} | {note} |")
     out += ['', 'Graph header fields (one per local graph): ' + ', '.join(f"`{k}`" for k in lm['properties'] if k not in ('instances', 'relationships')) + ' — `model_version` is the local graph\'s version (§5).', '',
-            '### 2.2 Edge schema (every level)', '', 'One edge per relationship in the export, from `relationship`:', '', '| Field | Type | Required |', '|---|---|---|']
+            '### 2.2 Edge schema (every level)', '', 'One edge per relationship in the architecture dataset, from `relationship`:', '', '| Field | Type | Required |', '|---|---|---|']
     for n, t, r, d in _schema_rows(lm['$defs']['relationship']):
         out.append(f"| `{n}` | {t} | {r} |")
     out += ['', '### 2.3 Node and edge types per level', '']
@@ -84,7 +84,7 @@ def render():
     out += ['', 'Every allowed edge is a row in `metamodel/level-relationships.json`, listed with ID, source, reasoning and verification in `docs/relationships-planning.md`. `association` is allowed between any two nodes of one level.', '']
     req('L', 'Accept a node only if its `type` resolves to a concrete, non-artefact catalogue entity of the graph\'s level.', 'entity catalogue', 'built')
     req('L', 'Accept an edge only if both ends are nodes of this graph and (source type, kind, target type) matches a constraint row of the level through inheritance, or the kind is `association`.', 'level-relationships.json', 'built')
-    req('L', 'Reject the whole export, and keep the previously loaded local graph, if any node or edge fails; report every failure.', '`sdem-graph check`; `sdem-graph build` (graph store, GS-B-02)', 'built')
+    req('L', 'Reject the whole architecture dataset, and keep the previously loaded local graph, if any node or edge fails; report every failure.', '`sdem-graph check`; `sdem-graph build` (graph store, GS-B-02)', 'built')
     req('L', 'Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status.', '`LevelGraph`', 'partly built (closure in trace); `sdem-graph query --neighbours/--type/--where` (graph store, GS-Q-02/03)')
     out += ['### 2.4 Local graph requirements'] + inline('L')
 
@@ -106,15 +106,15 @@ def render():
 
     # ---- 4 identity
     out += ['## 4. Identity', '', 'The federated graph points into the local graphs by id. These rules keep those pointers valid.', '']
-    req('I', 'A node id is unique within its level and stable for the life of the thing it names; it is never reused for a different thing, even after retirement.', 'new requirement', 'not enforced (uniqueness within an export is checked; stability across versions is not)')
-    req('I', 'A rename changes `name`, never `id`. A genuine re-keying in a source tool is handled as retire-and-add: the old node is retired, the new one added, and the mappings to the old one are superseded by mappings to the new one.', 'new requirement; supersession', 'not built (needs export diff)')
+    req('I', 'A node id is unique within its level and stable for the life of the thing it names; it is never reused for a different thing, even after retirement.', 'new requirement', 'not enforced (uniqueness within an architecture dataset is checked; stability across versions is not)')
+    req('I', 'A rename changes `name`, never `id`. A genuine re-keying in a source tool is handled as retire-and-add: the old node is retired, the new one added, and the mappings to the old one are superseded by mappings to the new one.', 'new requirement; supersession', 'not built (needs architecture dataset diff)')
     req('I', 'A2 nodes that correspond to a BIAN concept carry `canonical_id`; the federated edge\'s A2 end repeats it, and BIAN-authority edges require it before approval.', 'relationship-registry.schema.json; validator', 'built')
     req('I', 'Institution aliases (asset-type, qualifier, field and glossary aliases) are node attributes, never alternative ids.', 'export-conventions.json', 'built (convention)')
     out += inline('I')
 
     # ---- 5 versioning
     out += ['## 5. Versions and baselines', '', '| Thing | Versioned by | Meaning |', '|---|---|---|',
-            '| A node | `version` | the instance\'s own version, which an edge end pins |', '| A local graph | `model_version`, `metamodel_version` | which export and which catalogue it was built from |',
+            '| A node | `version` | the instance\'s own version, which an edge end pins |', '| A local graph | `model_version`, `metamodel_version` | which architecture dataset and which catalogue it was built from |',
             '| An edge | `baseline_id`, `valid_from` / `valid_to`, `previous_mapping_id` | which release it belongs to, its validity, and what it replaced |', '| The federated graph | the set of (local graph `model_version` ×4, mapping-set commit) it was loaded from | one reproducible state |', '']
     req('V', 'Record, for every federated load, the four local `model_version`s and the mapping-set version used — the load\'s baseline — and return it with every answer.', 'graph store load record (GS-R-01/02)', 'built (graph store)')
     req('V', 'Keep earlier baselines queryable, so an impact analysis can be rerun against the state it was originally run on.', '`sdem-graph baseline` (GS-R-03)', 'built (graph store)')
@@ -137,11 +137,11 @@ def render():
     out.append('')
 
     # ---- 7 load
-    out += ['## 7. Load and refresh', '', '```', 'source tool → adapter → level export → validate (local) → load local graph', '                                                  ↓', 'mapping set (approved records) → validate → resolve ends → load federated graph → record baseline', '```', '',
+    out += ['## 7. Load and refresh', '', '```', 'source tool → adapter → architecture dataset → validate (local) → load local graph', '                                                  ↓', 'mapping set (approved records) → validate → resolve ends → load federated graph → record baseline', '```', '',
             '| Step | Requirement | Status |', '|---|---|---|']
-    for text, st in (('An adapter per source tool translates its records to a level export; adapters are institution-specific and live in the institution\'s private repository.', 'not built (examples are hand-written exports)'),
-                     ('A local graph is rebuilt in full from its export; incremental update is an optimisation, not a requirement.', 'built (full rebuild)'),
-                     ('A failed export validation leaves the previous local graph in place and raises an alert.', 'built (graph store: rejected build recorded, store unchanged)'),
+    for text, st in (('An adapter per source tool translates its records to an architecture dataset; adapters are institution-specific and live in the institution\'s private repository.', 'not built (examples are hand-written architecture datasets)'),
+                     ('A local graph is rebuilt in full from its architecture dataset; incremental update is an optimisation, not a requirement.', 'built (full rebuild)'),
+                     ('A failed architecture dataset validation leaves the previous local graph in place and raises an alert.', 'built (graph store: rejected build recorded, store unchanged)'),
                      ('The federated graph is rebuilt whenever a local graph or the mapping set changes.', 'built (rebuilt on every run)'),
                      ('The refresh trigger is configurable per source: on demand, scheduled, event-driven, or refresh-on-read (§12 DEC-02).', 'not built')):
         rid = req('R', text, '§7', st); out.append(f"| {rid} | {text} | {st} |")
@@ -150,18 +150,18 @@ def render():
     # ---- 8 components and dependencies
     out += ['## 8. Components and dependencies', '', 'Every component the local and federated graphs depend on to be built, updated and changed: what it reads, what it writes, what it needs first, where it lives, and whether it exists.', '',
             '```mermaid', 'flowchart LR',
-            '    MODEL[Architecture metamodel<br/>entity types · within-level rows<br/>relationship type catalogue]', '    TOOL[Source tool]', '    ADP[Adapter]', '    EXP[Level export]', '    CHK[Export validator<br/>sdem-graph check]', '    LDR[Graph loader]', '    LG[(Local graph)]',
-            '    DIFF[Export diff]', '    ENG[Inference engine]', '    PROP[Proposals]', '    VAL[Mapping validator<br/>sdem-validate]', '    ARCH[Architect]', '    MS[[Mapping set]]', '    HIST[History guard<br/>sdem-diff]', '    FED[(Federated graph)]', '    QRY[Query tools<br/>trace · impact · unmapped]', '    AG[Assistant]', '    TRG[Refresh trigger]',
+            '    MODEL[Architecture metamodel<br/>entity types · within-level rows<br/>relationship type catalogue]', '    TOOL[Source tool]', '    ADP[Adapter]', '    EXP[Architecture dataset]', '    CHK[Architecture dataset validator<br/>sdem-graph check]', '    LDR[Graph loader]', '    LG[(Local graph)]',
+            '    DIFF[Architecture dataset diff]', '    ENG[Inference engine]', '    PROP[Proposals]', '    VAL[Mapping validator<br/>sdem-validate]', '    ARCH[Architect]', '    MS[[Mapping set]]', '    HIST[History guard<br/>sdem-diff]', '    FED[(Federated graph)]', '    QRY[Query tools<br/>trace · impact · unmapped]', '    AG[Assistant]', '    TRG[Refresh trigger]',
             '    MODEL --> ADP', '    MODEL --> CHK', '    RULES[Relationship rules model<br/>plan rows · conventions]', '    MODEL --> RULES', '    RULES --> ENG', '    TOOL --> ADP --> EXP --> CHK --> LDR --> LG', '    TRG --> ADP', '    EXP --> DIFF --> ENG', '    LG --> ENG', '    FED --> ENG', '    ENG --> PROP --> VAL --> ARCH --> MS', '    MS --> HIST', '    MS --> LDR', '    LDR --> FED', '    LG --> FED', '    FED --> QRY --> AG', '    AG -.->|runs| ENG', '```', '']
     C = [
      ('C-01', 'Architecture Metamodel', 'the entity types (`a1…a4-*.json`), the within-level rows (`level-relationships.json`) and the relationship type catalogue — the nine cross-level relationship types (`relationship-types.json`) — with `impact-rules.json`', 'SDEM model owner\'s edits', 'the rules every other component applies', '—', '`metamodel/`, `schema/`', 'built'),
      ('C-01b', 'Architecture Relationship Rules Model', 'the rules the inference engine applies to establish relationships of the nine catalogued types: the plan rows with their steps, thresholds, evidence and confidence, and the join keys and alias conventions — **designed and managed by architects**', 'architects\' edits', 'the rules C-08 applies', 'C-01', '`relationship-rules.json`, `export-conventions.json`', 'built (as records; an editing interface is not built)'),
      ('C-02', 'Source tool', 'the institution\'s system of record for one level', 'its users', 'its own records', '—', 'institution', 'external'),
-     ('C-03', 'Adapter', 'extract, translate to SDEM entities and keys, write the export', 'C-02; C-01 (catalogue and conventions)', 'one level export', 'C-01, C-02', 'institution\'s private repository', 'not built (examples hand-written; `sdem/structure.py` is the one generator)'),
-     ('C-04', 'Level export', 'the file a local graph is built from', 'C-03', '—', 'C-03', '`examples/*/a[1-4]-*.json` (stand-ins)', 'built (format); schema `level-model.schema.json`'),
-     ('C-05', 'Export validator', 'checks an export against C-01, including the data model: attribute types, allowed values, references, keys and link counts (logical rules LC-04…LC-13)', 'C-04, C-01', 'pass, or every failure', 'C-01, C-04', '`sdem-graph check` (`LevelGraph`, `sdem/conformance.py`)', 'built'),
-     ('C-06', 'Graph loader', 'rebuilds local graphs from exports and the federated graph from the mapping set; records the baseline', 'C-04 (validated), C-09', 'local graphs, federated graph', 'C-05, C-09', '`sdem/graph.py` (`LevelGraph`, `FederatedGraph`)', 'built in memory; persistence and baselines not built'),
-     ('C-07', 'Export diff', 'compares a new export with the last loaded one: added, removed, changed instances and links', 'two versions of C-04', 'a change list', 'C-04', '—', 'not built'),
+     ('C-03', 'Adapter', 'extract, translate to SDEM entities and keys, write the architecture dataset', 'C-02; C-01 (catalogue and conventions)', 'one architecture dataset', 'C-01, C-02', 'institution\'s private repository', 'not built (examples hand-written; `sdem/structure.py` is the one generator)'),
+     ('C-04', 'Architecture dataset', 'the file a local graph is built from', 'C-03', '—', 'C-03', '`examples/*/a[1-4]-*.json` (stand-ins)', 'built (format); schema `level-model.schema.json`'),
+     ('C-05', 'Architecture dataset validator', 'checks an architecture dataset against C-01, including the data model: attribute types, allowed values, references, keys and link counts (logical rules LC-04…LC-13)', 'C-04, C-01', 'pass, or every failure', 'C-01, C-04', '`sdem-graph check` (`LevelGraph`, `sdem/conformance.py`)', 'built'),
+     ('C-06', 'Graph loader', 'rebuilds local graphs from architecture datasets and the federated graph from the mapping set; records the baseline', 'C-04 (validated), C-09', 'local graphs, federated graph', 'C-05, C-09', '`sdem/graph.py` (`LevelGraph`, `FederatedGraph`)', 'built in memory; persistence and baselines not built'),
+     ('C-07', 'Architecture dataset diff', 'compares a new architecture dataset with the last loaded one: added, removed, changed instances and links', 'two versions of C-04', 'a change list', 'C-04', '—', 'not built'),
      ('C-08', 'Engine', 'applies the mapping model (C-01b) to the local graphs and **builds the mapping set**: new links for what changed, re-checks of approved links, with evidence and confidence', 'local graphs, federated graph, C-07, C-01, C-01b', 'mapping-set records (status `proposed`, or `approved` where the rule is auto-approved under `enterprise_rule`), candidate reports, inference log', 'C-06, C-07, C-01b', '`sdem/rules_engine.py` (`sdem-infer rules`); acceptance `sdem/acceptance.py`', 'built (v0.10): all 8 acceptance cases pass'),
      ('C-09', 'Mapping set', 'the cross-level links with status and evidence — built by the engine from the mapping model; hand-made links are an exception, recorded with `created_by` naming the architect', 'C-08 output; architect decisions', '—', 'C-08, C-11', '`examples/*/mappings.json`; schema `relationship-registry.schema.json`', 'built'),
      ('C-10', 'Mapping validator', 'checks proposals and the mapping set: registry, evidence, anchoring', 'C-09, C-01', 'pass, or every failure', 'C-01', '`sdem-validate`', 'built'),
@@ -176,8 +176,8 @@ def render():
     out += ['| ID | Component | Does | Reads | Writes | Depends on | Lives in | Status |', '|---|---|---|---|---|---|---|---|']
     for row in C: out.append('| ' + ' | '.join(row) + ' |')
     out.append('')
-    req('C', 'Build an adapter (C-03) per source tool that writes a valid level export and fails loudly rather than writing a partial one.', 'C-03', 'not built')
-    req('C', 'Build the export diff (C-07) so the engine re-checks only changed instances and removals are routed to impact and supersession.', 'C-07', 'not built')
+    req('C', 'Build an adapter (C-03) per source tool that writes a valid architecture dataset and fails loudly rather than writing a partial one.', 'C-03', 'not built')
+    req('C', 'Build the architecture dataset diff (C-07) so the engine re-checks only changed instances and removals are routed to impact and supersession.', 'C-07', 'not built')
     req('C', 'Build the engine step logic (C-08) to the mapping-model spec (docs/relationship-rules-spec.md), accepted by reproducing the eleven executor runs.', 'C-08; mapping-model-spec §8', 'not built')
     req('C', 'Provide a review queue for C-11 that lists proposals and pending supersessions with their evidence and impact.', 'C-11', 'not built')
     out += ['### 8.1 Component requirements'] + inline('C')
@@ -200,9 +200,9 @@ def render():
 
     # ---- 10 governance
     out += ['## 10. Governance boundary', '', '| Actor | May | May not |', '|---|---|---|',
-            '| Level owner | change its source tool; publish a new export | write federated edges |', '| Engine | read local graphs and approved edges; apply the mapping model; build mapping-set records (proposed, or approved only under an architect-declared `enterprise_rule`) | change the mapping model; write to any graph |',
+            '| Level owner | change its source tool; publish a new architecture dataset | write federated edges |', '| Engine | read local graphs and approved edges; apply the mapping model; build mapping-set records (proposed, or approved only under an architect-declared `enterprise_rule`) | change the mapping model; write to any graph |',
             '| Architect | design and manage the mapping model; review, approve, reject or supersede mapping records; declare which rules are auto-approved | edit an approved record |', '| Agent (assistant) | query the graphs; run the engine and validators | approve; write to any graph or mapping set |',
-            '| Graph loader | rebuild graphs from exports and the mapping set | change any input |', '']
+            '| Graph loader | rebuild graphs from architecture datasets and the mapping set | change any input |', '']
     req('G', 'Only an architect action sets `approved`; no automated component, engine or agent may.', 'mapping-execution.md §2; registry enterprise_rule', 'built (convention; validator requires reviewer_id and approved_at)')
     out += inline('G')
 
@@ -215,7 +215,7 @@ def render():
             '| DEC-02 | Refresh trigger per source | on demand; scheduled; event-driven (webhook); refresh-on-read | on demand now; event-driven where the tool supports it |',
             '| DEC-03 | One store or five | one store with a partition per local graph plus the federated edges; or separate stores per team federated by id | **decided 2026-10-25: one directory — four local files and one federated file** |',
             '| DEC-04 | Agent access | CLI run by the assistant; VS Code extension; context snapshot; MCP where policy allows | per the organisation\'s Copilot policy |',
-            '| DEC-05 | Standard export of the mapping set | none; SSSOM; RDF + PROV-O | SSSOM export when interoperability is needed |', '']
+            '| DEC-05 | Standard interchange format for the mapping set | none; SSSOM; RDF + PROV-O | SSSOM when interoperability is needed |', '']
 
     # ---- 10 index
     status = Counter(r[4].split(' ')[0] for r in REQ)

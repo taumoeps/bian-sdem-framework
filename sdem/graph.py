@@ -99,14 +99,14 @@ class FederatedGraph:
 
     @classmethod
     def load(cls, paths, metamodel=None, registry=None):
-        """Classify each file by content: level exports have 'level' + 'instances'; mapping docs have 'mappings'."""
+        """Classify each file by content: architecture datasets have 'level' + 'instances'; mapping docs have 'mappings'."""
         mm = metamodel or Metamodel.load()
         levels, docs = [], []
         for p in paths:
             d = json.loads(Path(p).read_text(encoding='utf-8'))
             if 'mappings' in d: docs.append(d)
             elif 'instances' in d and 'level' in d: levels.append(LevelGraph(d, mm))
-            else: raise ValueError(f'{p}: neither a level export nor a mapping document')
+            else: raise ValueError(f'{p}: neither an architecture dataset nor a mapping document')
         return cls(levels, docs, mm, registry)
 
     # ---- EntityResolver protocol: an endpoint resolves if an instance with that id/version exists in the
@@ -232,14 +232,14 @@ def render_trace(tree, direction):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdem-graph', description='Federated graph over A1-A4 level exports and mapping documents.')
+    parser = argparse.ArgumentParser(prog='sdem-graph', description='Federated graph over A1-A4 architecture datasets and mapping documents.')
     sub = parser.add_subparsers(dest='cmd', required=True)
     for name in ('check', 'trace', 'impact', 'stats'):
         sp = sub.add_parser(name)
         if name in ('trace', 'impact'):
             sp.add_argument('entity', help='instance id to start from')
-        sp.add_argument('paths', nargs='*', help='level exports and mapping documents, any order (or use --graph)')
-        sp.add_argument('--graph', metavar='DIR', help='read a graph store (sdem-graph build) instead of exports')
+        sp.add_argument('paths', nargs='*', help='architecture datasets and mapping documents, any order (or use --graph)')
+        sp.add_argument('--graph', metavar='DIR', help='read a graph store (sdem-graph build) instead of architecture datasets')
         sp.add_argument('--status', default='approved', help='mapping statuses to treat as arrows')
         sp.add_argument('--json', action='store_true')
         if name == 'trace':
@@ -247,8 +247,8 @@ def main(argv=None):
             sp.add_argument('--follow-composition', action='store_true', help='continue a chain through within-level part-whole links — composition and aggregation (part -> whole downstream, whole -> parts upstream)')
         if name == 'impact':
             sp.add_argument('--change', choices=sorted(IMPACT_RULES), required=True)
-    sp = sub.add_parser('build', help='check exports and registry, then write the graph store')
-    sp.add_argument('paths', nargs='+', help='level exports and relationship registries')
+    sp = sub.add_parser('build', help='check architecture datasets and registry, then write the graph store')
+    sp.add_argument('paths', nargs='+', help='architecture datasets and relationship registries')
     sp.add_argument('--out', required=True, metavar='DIR', help='graph store directory')
     sp.add_argument('--check', action='store_true', help='fail if the stored graph files differ from a fresh build (CI)')
     sp = sub.add_parser('query', help='find records in a graph store')
@@ -282,10 +282,10 @@ def main(argv=None):
         except _store.StoreError as exc: print(f'ERROR: {exc}', file=sys.stderr); return EXIT_ISSUES
     try:
         if getattr(args, 'graph', None):
-            if getattr(args, 'paths', None): print('ERROR: give export paths or --graph, not both', file=sys.stderr); return EXIT_USAGE
+            if getattr(args, 'paths', None): print('ERROR: give architecture dataset paths or --graph, not both', file=sys.stderr); return EXIT_USAGE
             reader = _store.GraphReader.from_store(args.graph)
         else:
-            if not args.paths: print('ERROR: give export paths or --graph', file=sys.stderr); return EXIT_USAGE
+            if not args.paths: print('ERROR: give architecture dataset paths or --graph', file=sys.stderr); return EXIT_USAGE
             reader = _store.GraphReader.from_exports(args.paths)
         fg = reader.fg
     except (OSError, ValueError, _store.StoreError) as exc:

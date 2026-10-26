@@ -16,7 +16,7 @@ DECISION_STYLE = {
     'candidate_rule':   ('#2E7D32', '',       'candidate rule (proposed for the registry)'),
     'conditional_rule': ('#EF6C00', '',       'conditional rule (fires on institution data)'),
     'derived_path':     ('#616161', 'dashed', 'derived path (closure over other arrows, never proposed)'),
-    'institution_only': ('#6A1B9A', 'dotted', 'institution-only (reported from export keys)'),
+    'institution_only': ('#6A1B9A', 'dotted', 'institution-only (reported from architecture dataset keys)'),
 }
 NOT_DRAWN = ('bian_internal', 'not_encodable', 'not_a_mapping', 'historical_method', 'subsumed')
 DRAWN = ('verified', 'verified_intent_or_target_only')
@@ -135,7 +135,7 @@ KIND_STYLE = {'composition': ('#1565C0', ''), 'aggregation': ('#1565C0', 'dashed
 
 
 def observed_patterns(examples_dir=None):
-    """(level, source_type, kind, target_type) -> count, from every level export under examples/."""
+    """(level, source_type, kind, target_type) -> count, from every architecture dataset under examples/."""
     import glob
     from collections import Counter
     root = Path(examples_dir) if examples_dir else MM_DIR.parent / 'examples'
@@ -151,7 +151,7 @@ def observed_patterns(examples_dir=None):
 def render_levels(metamodel=None, level_rels=None, examples_dir=None):
     """Render metamodel/level-relationships.puml: the within-level structure of each architecture.
     A2 is drawn from the BIAN-fixed constraint set in level-relationships.json; A1, A3 and A4 from the
-    relationship patterns observed across the example exports (the institution's own structure, using
+    relationship patterns observed across the example architecture datasets (the institution's own structure, using
     catalogued ArchiMate kinds) — observed, not prescribed."""
     mm = metamodel or Metamodel.load()
     lr = level_rels or json.loads(LEVEL_RELS.read_text(encoding='utf-8'))

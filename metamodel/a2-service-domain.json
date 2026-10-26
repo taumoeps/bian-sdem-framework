@@ -27,7 +27,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -55,7 +55,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -111,7 +111,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -139,7 +139,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -195,7 +195,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -253,7 +253,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -337,7 +337,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -363,7 +363,7 @@
       "identifier": {
         "key": [],
         "basis": "n/a",
-        "reasoning": "never instantiated in an export, so it has no identifier"
+        "reasoning": "never instantiated in an architecture dataset, so it has no identifier"
       }
     },
     {
@@ -389,7 +389,7 @@
       "identifier": {
         "key": [],
         "basis": "n/a",
-        "reasoning": "never instantiated in an export, so it has no identifier"
+        "reasoning": "never instantiated in an architecture dataset, so it has no identifier"
       }
     },
     {
@@ -415,7 +415,7 @@
       "identifier": {
         "key": [],
         "basis": "n/a",
-        "reasoning": "never instantiated in an export, so it has no identifier"
+        "reasoning": "never instantiated in an architecture dataset, so it has no identifier"
       }
     }
   ]

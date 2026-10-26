@@ -27,7 +27,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -55,7 +55,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -83,7 +83,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -111,7 +111,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -198,7 +198,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     },
     {
@@ -226,7 +226,7 @@
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "no standard key; SDEM recommends a unique name within the export so duplicates can be detected"
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     }
   ]

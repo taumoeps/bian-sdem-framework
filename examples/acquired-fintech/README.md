@@ -2,7 +2,7 @@
 
 All identifiers are **synthetic**; `SD-PI`, `BIAN-PAYMENT-INITIATION` and the rest are stand-ins, not BIAN content. "Zippa", moneyflows, zaps, pots, buddies, vaults and perks are invented product names.
 
-A recently acquired fintech. Its A3 — seven microservices, 23 REST endpoints known only from OpenAPI stubs — and A4 — one Kubernetes cluster, PostgreSQL, Redis, seven deployments from the manifest — are documented. **There is no A1 export at all** and no mappings. A2 is a synthetic BIAN-style export of six domains. The integration architect has decoded product names for four asset types (`aliases` on `AT-PI`, `AT-PE`, `AT-CA`, `AT-PRD`); **Savings Account and Fraud Case have no aliases**.
+A recently acquired fintech. Its A3 — seven microservices, 23 REST endpoints known only from OpenAPI stubs — and A4 — one Kubernetes cluster, PostgreSQL, Redis, seven deployments from the manifest — are documented. **There is no A1 architecture dataset at all** and no mappings. A2 is a synthetic BIAN-style architecture dataset of six domains. The integration architect has decoded product names for four asset types (`aliases` on `AT-PI`, `AT-PE`, `AT-CA`, `AT-PRD`); **Savings Account and Fraud Case have no aliases**.
 
 | File | Instances | Notes |
 |---|---|---|

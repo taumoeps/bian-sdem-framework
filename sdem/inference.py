@@ -24,7 +24,7 @@ def proposal(mapping_id, src, rel, tgt, confidence, rationale, engine, baseline_
     """Shape every engine output the same way: a valid record with status proposed."""
     def ref(i):
         r = {'id': i['id'], 'type': i['type'], 'version': i['version']}
-        if i.get('canonical_id'): r['canonical_id'] = i['canonical_id']   # carried from the level export, never invented
+        if i.get('canonical_id'): r['canonical_id'] = i['canonical_id']   # carried from the architecture dataset, never invented
         return r
     return {'mapping_id': mapping_id, 'source': ref(src), 'relationship': rel, 'target': ref(tgt),
             'status': 'proposed', 'confidence': round(confidence, 2),
@@ -88,11 +88,11 @@ ENGINES = {'baseline': NameOverlapBaseline, 'rules': _rules_engine}
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdem-infer', description='Run an inference engine over a graph store (or level exports) and emit a document of proposed relationships.')
+    parser = argparse.ArgumentParser(prog='sdem-infer', description='Run an inference engine over a graph store (or architecture datasets) and emit a document of proposed relationships.')
     parser.add_argument('engine', choices=sorted(ENGINES))
-    parser.add_argument('paths', nargs='*', help='level exports and the approved registry (or use --graph)')
+    parser.add_argument('paths', nargs='*', help='architecture datasets and the approved registry (or use --graph)')
     parser.add_argument('--graph', metavar='DIR', help='read a graph store (sdem-graph build) — the normal path')
-    parser.add_argument('--out', metavar='DIR', help='also write candidates, the inference log and any target-design exports here')
+    parser.add_argument('--out', metavar='DIR', help='also write candidates, the inference log and any target-design architecture datasets here')
     parser.add_argument('--threshold', type=float, default=0.2, help='baseline only')
     args = parser.parse_args(argv)
     from sdem.store import GraphReader, StoreError

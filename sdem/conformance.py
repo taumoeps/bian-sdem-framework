@@ -1,11 +1,11 @@
-"""Data-model conformance: enforce the logical constraints on level exports.
+"""Data-model conformance: enforce the logical constraints on architecture datasets.
 
-Errors (the export does not conform):
+Errors (the architecture dataset does not conform):
   LC-04 required attribute missing (a warning on a `planned` instance) · LC-05 wrong type · LC-06 value not allowed · LC-07 same-level reference
   does not resolve · LC-09 duplicate natural key · LC-10 cardinality maximum exceeded (BIAN / ArchiMate rows).
-Warnings (the export is usable but incomplete or dated):
+Warnings (the architecture dataset is usable but incomplete or dated):
   LC-08 cross-level reference does not resolve in the loaded estate (a join key the inference engine cannot use)
-  · LC-10m cardinality minimum not met (exports may be partial selections) · LC-13 deprecated attribute in use
+  · LC-10m cardinality minimum not met (architecture datasets may be partial selections) · LC-13 deprecated attribute in use
   · attribute not defined in the model.
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.
 """
@@ -52,7 +52,7 @@ def type_ok(a, v, name):
 
 
 def check_level(doc, mm, estate_index=None):
-    """Check one level export. estate_index maps instance id -> type across every loaded level (for LC-08).
+    """Check one architecture dataset. estate_index maps instance id -> type across every loaded level (for LC-08).
     Returns (errors, warnings, counts)."""
     _, _, rows = model()
     errors, warnings, n = [], [], Counter()
@@ -89,7 +89,7 @@ def check_level(doc, mm, estate_index=None):
                     if same:
                         n['LC-07 checked'] += 1; t = local.get(x)
                         if not (t and any(mm.is_a(t, r) for r in targets)):
-                            n['LC-07 failed'] += 1; errors.append(f"{who}: attribute {k!r} refers to {x!r}, which is not a {' or '.join(targets)} in this export (LC-07)")
+                            n['LC-07 failed'] += 1; errors.append(f"{who}: attribute {k!r} refers to {x!r}, which is not a {' or '.join(targets)} in this architecture dataset (LC-07)")
                     elif estate_index is not None:
                         lvls = {mm.level(t) for t in targets}
                         if not any(l in estate_index['levels'] for l in lvls): continue  # target level not loaded: nothing to check against

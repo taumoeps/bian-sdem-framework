@@ -12,7 +12,7 @@
       "reasoning": "Every relationship points at it; it must be unique in its level and never reused (knowledge-graph spec KG-I-01).",
       "confidence": "high",
       "reference": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -24,10 +24,10 @@
       "required": true,
       "source": "SDEM",
       "description": "an entity type from the catalogue",
-      "reasoning": "Ties the instance to the Architecture Metamodel; must be concrete and of the export's level.",
+      "reasoning": "Ties the instance to the Architecture Metamodel; must be concrete and of the architecture dataset's level.",
       "confidence": "high",
       "reference": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.type",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -42,7 +42,7 @@
       "reasoning": "Relationship ends pin it, so an approved relationship refers to a known state.",
       "confidence": "high",
       "reference": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.version",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -57,7 +57,7 @@
       "reasoning": "Shown in traces; a rename changes the name, never the id.",
       "confidence": "high",
       "reference": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -72,7 +72,7 @@
       "reasoning": "Lets retired things stay referable and planned (design) things be marked as such in traces.",
       "confidence": "high",
       "reference": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.lifecycle_status",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -108,7 +108,7 @@
       "reasoning": "Read by the step-5 text rule for capabilities and domains.",
       "confidence": "high",
       "reference": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.description",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -123,7 +123,7 @@
       "reasoning": "Points to the institution's or the standard's definition.",
       "confidence": "high",
       "reference": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.definition_uri",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -138,7 +138,7 @@
       "reasoning": "Container for the per-type attributes below.",
       "confidence": "high",
       "reference": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.attributes",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -806,7 +806,7 @@
         "uri": "https://cyclonedx.org/docs/1.6/json/"
       },
       "verification": "public standard (CycloneDX), checked 2026-10-24",
-      "reasoning": "Answers: Who supplies this application? Same meaning as CycloneDX supplier; name kept so existing exports stay valid (A3 data-model review, 2026-10-25).",
+      "reasoning": "Answers: Who supplies this application? Same meaning as CycloneDX supplier; name kept so existing architecture datasets stay valid (A3 data-model review, 2026-10-25).",
       "confidence": "high",
       "read_by": "design and impact queries (descriptive attribute)",
       "confidence_basis": "defined by a public standard (CycloneDX) and checked",
@@ -828,7 +828,7 @@
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
-      "reasoning": "Duplicates the within-level access relationship already in the export; the last example using it was migrated to the relationship on 2026-10-25. Deprecated: use the relationship.",
+      "reasoning": "Duplicates the within-level access relationship already in the architecture dataset; the last example using it was migrated to the relationship on 2026-10-25. Deprecated: use the relationship.",
       "confidence": "low",
       "read_by": "—",
       "confidence_basis": "deprecated",
@@ -3061,7 +3061,7 @@
         "uri": "https://spec.openapis.org/oas/v3.1.0.html"
       },
       "verification": "public standard (OpenAPI), checked 2026-10-25",
-      "reasoning": "Answers: Which contract operation is this, exactly? OpenAPI field; lets an export match an operation to its contract even when paths change; checked 2026-10-24.",
+      "reasoning": "Answers: Which contract operation is this, exactly? OpenAPI field; lets an architecture dataset match an operation to its contract even when paths change; checked 2026-10-24.",
       "confidence": "high",
       "read_by": "design and impact queries (descriptive attribute)",
       "question": "Which contract operation is this, exactly?",

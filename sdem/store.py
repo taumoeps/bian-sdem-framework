@@ -4,7 +4,7 @@ reader uses.
 
 A store is built only from inputs that pass every `sdem-graph check` rule; a failed build leaves the last good
 store untouched (GS-B-02). Output is deterministic (GS-F-04): same inputs, byte-identical graph files; records and links keep the order of
-the export and registry, so every reader sees them in the same order as the source.
+the architecture dataset and registry, so every reader sees them in the same order as the source.
 """
 import datetime, hashlib, json, os, shutil, tempfile
 from pathlib import Path
@@ -26,7 +26,7 @@ class StoreError(Exception):
 
 
 def _dump(doc):
-    return json.dumps(doc, indent=2, ensure_ascii=False) + '\n'  # input order kept: deterministic, and readers see the export's order
+    return json.dumps(doc, indent=2, ensure_ascii=False) + '\n'  # input order kept: deterministic, and readers see the architecture dataset's order
 
 
 def _sha(text):
@@ -45,7 +45,7 @@ def _row(mm, level, stype, kind, ttype):
     return 'association' if kind == 'association' else None
 
 
-# ---------------------------------------------------------------- export / registry  ->  JGF
+# ---------------------------------------------------------------- architecture dataset / registry  ->  JGF
 
 def local_graph(doc, mm, export_sha):
     lvl = doc['level']; nodes = {}; latest = {}
@@ -54,7 +54,7 @@ def local_graph(doc, mm, export_sha):
         meta.update({k: i[k] for k in CORE if k in i})
         if 'attributes' in i: meta['attributes'] = i['attributes']
         nodes[key(lvl, i['id'], i['version'])] = {'label': i['name'], 'metadata': meta}
-        latest[i['id']] = i  # relationships name instances by id; the export's last version of an id is the one linked
+        latest[i['id']] = i  # relationships name instances by id; the architecture dataset's last version of an id is the one linked
     edges, seen = [], {}
     for r in doc.get('relationships', []):
         s, t = latest[r['source']], latest[r['target']]
@@ -91,7 +91,7 @@ def federated_graph(fg, registries, statuses=('approved',)):
                       'nodes': nodes, 'edges': edges}}
 
 
-# ---------------------------------------------------------------- JGF  ->  export / registry documents
+# ---------------------------------------------------------------- JGF  ->  architecture dataset / registry documents
 
 def _export_doc(g):
     meta = g['metadata']; doc = {k: meta[k] for k in EXPORT_HEADER if k in meta}
@@ -144,8 +144,8 @@ def render(paths, mm=None):
         elif 'instances' in d and 'level' in d:
             levels.append((d, sha)); inputs.append({'path': p, 'kind': 'export', 'level': d['level'], 'model_id': d.get('model_id'), 'model_version': d.get('model_version'), 'sha256': sha})
         else:
-            raise StoreError(f'{p}: neither a level export nor a relationship registry')
-    if len({d['level'] for d, _ in levels}) != len(levels): raise StoreError('more than one export for a level')
+            raise StoreError(f'{p}: neither an architecture dataset nor a relationship registry')
+    if len({d['level'] for d, _ in levels}) != len(levels): raise StoreError('more than one architecture dataset for a level')
     names = [n for n, _, _ in registries]
     if len(set(names)) != len(names): raise StoreError('two registries share a file name')
     fg = FederatedGraph([LevelGraph(d, mm) for d, _ in levels], [d for _, d, _ in registries], mm)
@@ -214,7 +214,7 @@ def baseline(store, name):
 # ---------------------------------------------------------------- graph access layer (GS-A-01 … 03)
 
 class GraphReader:
-    """One read interface over a federated graph, whether it came from the store or from exports."""
+    """One read interface over a federated graph, whether it came from the store or from architecture datasets."""
 
     def __init__(self, fg, origin, record=None):
         self.fg, self.mm, self.origin, self._record = fg, fg.mm, origin, record
@@ -232,7 +232,7 @@ class GraphReader:
 
     @classmethod
     def from_exports(cls, paths, mm=None):
-        return cls(FederatedGraph.load(paths, mm or Metamodel.load()), 'exports')
+        return cls(FederatedGraph.load(paths, mm or Metamodel.load()), 'architecture datasets')
 
     def check_store(self, store):
         """GS-F-02/03 and resolution for a stored graph: file shapes, the local graphs, every stored link resolving.

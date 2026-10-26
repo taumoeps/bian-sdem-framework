@@ -25,7 +25,7 @@ def render(lr=None):
     from collections import Counter
     out = ['# Relationships planning — within-level entity connections', '',
            'Generated from `metamodel/level-relationships.json` by `python -m sdem.relationships`; the test suite checks this file is current. '
-           'These are the connections **inside** each architecture (A1–A4), held by each level export\'s `relationships` list and enforced by `sdem-graph check`. '
+           'These are the connections **inside** each architecture (A1–A4), held by each architecture dataset\'s `relationships` list and enforced by `sdem-graph check`. '
            'They are not mappings: the cross-level connections are planned in `docs/mapping-logic-planning.md` and recorded in `metamodel/relationship-rules.json`.', '',
            '**Rule.** A within-level relationship is accepted when it matches a row for its level (through catalogue inheritance), or when its kind is `association` — ArchiMate\'s generic relationship, permitted between any two entities of one level and therefore not listed. Every row derives from the reference architecture the level\'s entities derive from (README › *Reference architecture provenance*).', '',
            '**Inference (A1, A3, A4).** ArchiMate 3.2 and TOGAF 10 are login-gated, so every row outside A2 carries an explicit inference: the ArchiMate concept of each end (SDEM extensions through the concept they extend), the generic-metamodel pattern the row instantiates, the reasoning, SDEM\'s inference confidence, and the independent test — a lookup in the open-source Archi tool\'s relationship matrix (`relationships.xml`, github.com/archimatetool/archi), which implements the specification\'s permitted relationships per concept pair with the letters c composition, g aggregation, i assignment, r realization, v serving, a access, f flow, t triggering, s specialization, o association. The test plan for running those lookups is `docs/relationships-testing.md` §6.', '',
@@ -50,7 +50,7 @@ def render(lr=None):
                 i = c['inference']
                 out.append(f"| {c['id']} | {c['source_type']} | {c['kind']} | {c['target_type']} | {c['description']} | {i['archimate_source']} → {i['archimate_target']} | {i['pattern']} | {i['reasoning']} | {i['confidence']} | {i['test']} | {c['verification']} |")
         out.append('')
-    out += ['## Catalogue inheritance (is-a)', '', 'Not relationships in an export: the catalogue\'s `extends` links, through which a mapping\'s abstract or parent type resolves to a concrete instance.', '',
+    out += ['## Catalogue inheritance (is-a)', '', 'Not relationships in an architecture dataset: the catalogue\'s `extends` links, through which a mapping\'s abstract or parent type resolves to a concrete instance.', '',
             '| ID | Entity | extends | Description | Reference source | Reasoning | Confidence | Verification |', '|---|---|---|---|---|---|---|---|']
     for x in lr['inheritance']:
         out.append(f"| {x['id']} | {x['entity']} | {x['extends']} | {x['description']} | {x['reference_source']} | {x['reasoning']} | {x['confidence']} | {x['verification']} |")

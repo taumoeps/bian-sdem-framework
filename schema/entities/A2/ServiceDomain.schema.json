@@ -18,7 +18,7 @@
       "minLength": 1,
       "description": "the instance's permanent key — the source tool's own persistent id",
       "x-sdem-source": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -32,11 +32,11 @@
       ],
       "description": "an entity type from the catalogue",
       "x-sdem-source": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.type",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
-      "x-sdem-reasoning": "Ties the instance to the Architecture Metamodel; must be concrete and of the export's level.",
+      "x-sdem-reasoning": "Ties the instance to the Architecture Metamodel; must be concrete and of the architecture dataset's level.",
       "x-sdem-confidence": "high"
     },
     "version": {
@@ -44,7 +44,7 @@
       "minLength": 1,
       "description": "the instance's version",
       "x-sdem-source": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.version",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -56,7 +56,7 @@
       "minLength": 1,
       "description": "human-readable name",
       "x-sdem-source": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -72,7 +72,7 @@
       ],
       "description": "lifecycle state",
       "x-sdem-source": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.lifecycle_status",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -95,7 +95,7 @@
       "type": "string",
       "description": "scope statement",
       "x-sdem-source": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.description",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
@@ -106,7 +106,7 @@
       "type": "string",
       "description": "link to the source definition",
       "x-sdem-source": {
-        "standard": "SDEM level-model export schema",
+        "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.definition_uri",
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },

@@ -45,7 +45,7 @@ SDEM is BIAN-aligned but is not an official BIAN standard or BIAN-endorsed frame
 | **Architecture Relationship Rules Model** | the **rules**: for each cross-level pair, how a relationship is established, from which data, with what evidence and confidence | the list of allowed types (that is the metamodel); any real link | `metamodel/relationship-rules.json` (plan rows `S…`), `metamodel/export-conventions.json` (join keys) |
 | **Architecture Relationship Inference Engine** | the **program** that applies the rules to the local graphs and proposes relationships | an approver; a store | `sdem/rules_engine.py` (`sdem-infer rules`) — built; passes all 8 acceptance cases |
 | **Architecture Relationship Registry** | the **instances**: actual relationships between real entities, with evidence, status, versions and approval provenance | rules; the graph | `examples/<estate>/mappings.json`, form `schema/relationship-registry.schema.json` |
-| **Local architecture knowledge graph** | one level's real entities and the links inside it, built from that level's export | anything cross-level | `sdem/graph.py` (`LevelGraph`), in memory |
+| **Local architecture knowledge graph** | one level's real entities and the links inside it, built from that level's architecture dataset | anything cross-level | `sdem/graph.py` (`LevelGraph`), in memory |
 | **Federated architecture knowledge graph** | the four local graphs joined by the **approved** registry records | editable; a holder of proposals | `sdem/graph.py` (`FederatedGraph`), in memory |
 | **Architecture Governance** | approval, supersession, immutability of approved records, impact classification | automated approval | `sdem-validate`, `sdem-diff`, `schema/impact-rules.json`; [`architecture-governance-spec.md`](architecture-governance-spec.md) |
 
@@ -107,7 +107,7 @@ The same numbers appear in [`relationship-rules-spec.md`](relationship-rules-spe
 | Plan rows: rules for finding cross-level relationships | 69 | §4.2 (`S…`, `B…`) | — |
 | …of which drawn as cross-level rules | 50 | §4.3 | coloured arrows |
 | …of which catalogue rules, the only ones that produce registry records | 9 | §4.3 | blue arrows |
-| Join keys the rules read from the exports | 52 | §5 (`K…`) | — |
+| Join keys the rules read from the architecture datasets | 52 | §5 (`K…`) | — |
 | Inference engine requirements | 33 | §10 (`REQ-…`) | — |
 
 ## Reading the architecture-model diagram
@@ -148,7 +148,7 @@ flowchart TB
     end
 
     ADP["Adapters"]:::prog
-    EXP[/"Exports<br/>one file per architecture"/]:::data
+    EXP[/"Architecture datasets<br/>one file per architecture"/]:::data
 
     subgraph LOCAL["Local architecture knowledge graphs — what exists"]
         direction LR
@@ -188,7 +188,7 @@ flowchart TB
 | Colour | Means |
 |---|---|
 | Yellow | definitions: the Architecture Metamodel |
-| Blue | data about what exists: exports |
+| Blue | data about what exists: architecture datasets |
 | Teal | knowledge graphs |
 | Orange | the rules: the Relationship Rules Model |
 | Green | the instances: the Relationship Registry |
@@ -203,31 +203,31 @@ flowchart TB
 | SDEM model owner | maintains the Architecture Metamodel | approves relationships |
 | Architect | writes the Relationship Rules Model; reviews the registry; decides which rules may auto-approve | edits an approved record (it is superseded instead) |
 | Inference engine | applies the rules; writes records as `proposed` | changes the rules or the metamodel; approves its own records (except rules an architect declared auto-approved) |
-| Graph loader | loads exports and approved records | changes any input |
+| Graph loader | loads architecture datasets and approved records | changes any input |
 
 ## A worked example, start to finish
 
 From `examples/payment-initiation/`:
 
-1. **Export → local graph.** The A2 export lists `SO-PI-01 Initiate Payment Instruction` (action *Initiate*). The A3 export lists `API-PI-01 POST /payment-instructions` with its payload fields. Both pass the metamodel's checks.
+1. **Architecture dataset → local graph.** The A2 architecture dataset lists `SO-PI-01 Initiate Payment Instruction` (action *Initiate*). The A3 architecture dataset lists `API-PI-01 POST /payment-instructions` with its payload fields. Both pass the metamodel's checks.
 2. **Metamodel.** `IMPLEMENTED_BY` from `A2.ServiceOperation` to `A3.APIOperation` is a catalogued type.
 3. **Rules model.** Rule S24: the API belongs to the domain's application, the HTTP method fits the action (*Initiate* ⇔ POST), the payload carries the operation's attributes.
 4. **Inference engine.** POST fits *Initiate*, 8 of 8 attributes match. It writes `PAY-101`, status `proposed`, confidence 0.8, with that working as evidence.
 5. **Registry → governance.** Jane checks `PAY-101` and sets it to `approved`.
-6. **Graph loader → federated graph.** Loads the four exports and the approved records.
+6. **Graph loader → federated graph.** Loads the four architecture datasets and the approved records.
 7. **Traceability.** `sdem-graph trace CAP-PAY-010 --direction down` walks from the *Initiate Payment* capability to the Service Domain, the Payments Hub, and the Kubernetes cluster it runs on — each step citing its record ID.
 
 ## What is built
 
 | Part | Status |
 |---|---|
-| Architecture Metamodel; exports, local and federated knowledge graphs, graph loader, traceability, change impact | built |
+| Architecture Metamodel; architecture datasets, local and federated knowledge graphs, graph loader, traceability, change impact | built |
 | Data model: attributes, logical rules (all enforced), per-entity schemas | built |
 | Graph store: local JSON files (JSON Graph Format), load record, baselines, queries, offline HTML view ([`graph-store-design.md`](graph-store-design.md)) | built |
 | Relationship Rules Model | built as records; tested across ten use cases, eleven runs |
 | Relationship Registry format, schemas, validators, immutability guard | built |
 | Inference engine | built (v0.10): steps 1–5 and design mode; passes all 8 acceptance cases against the hand-executed runs (`sdem-accept`); a blind case is still needed to show it generalises |
-| Adapters, export diff, refresh trigger, review queue, query service interface, assistant access | specified ([`knowledge-graph-spec.md`](knowledge-graph-spec.md) §11), not built |
+| Adapters, architecture dataset diff, refresh trigger, review queue, query service interface, assistant access | specified ([`knowledge-graph-spec.md`](knowledge-graph-spec.md) §11), not built |
 
 ## Glossary
 
@@ -243,7 +243,7 @@ The essentials; the full list is in [`glossary.md`](glossary.md).
 | **Plan row / rule** | how one cross-level relationship is established, e.g. `S24` |
 | **Catalogue rule** | a plan row for one of the nine catalogued types — the only rules that produce registry records |
 | **Registry record** | one actual relationship, e.g. `PAY-101` |
-| **Export** | the file an adapter writes for one architecture |
+| **Architecture dataset** | the file an adapter writes for one architecture |
 | **Graph loader** | the program that builds the local and federated knowledge graphs |
 | **Trace / impact** | follow relationships across architectures / find what a change affects |
 

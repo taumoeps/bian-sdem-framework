@@ -27,7 +27,7 @@ def render(rec=None):
            '## 1. Design principles', '',
            '1. **A standard\'s field is used as the standard defines it.** BIAN defines the A2 fields and OpenAPI the API fields; SDEM names the section.',
            '2. **ArchiMate defines no attributes.** Its elements have a name, documentation and free-form properties only. So every A1, A3 and A4 field is either a **relationship SDEM records on the entity** (so a rule can join on it) or a **field SDEM defines**; each says which.',
-           '3. **Institution data is data.** Aliases — the bank\'s own names for assets, qualifiers, fields and glossary terms — are supplied in the export, never inferred (the H2 finding: recall 0.78 → 1.00 when they were supplied).',
+           '3. **Institution data is data.** Aliases — the bank\'s own names for assets, qualifiers, fields and glossary terms — are supplied in the architecture dataset, never inferred (the H2 finding: recall 0.78 → 1.00 when they were supplied).',
            '4. **Every field is read by something or says so.** Each attribute names the rules or steps that read it; informational fields are marked as such.',
            '5. **Redundant fields are deprecated, not deleted.** A field that duplicates a within-level relationship is kept readable and marked deprecated.', '',
            '## 2. How each attribute is recorded', '',
@@ -75,9 +75,9 @@ def render(rec=None):
             '- **`A3.APIOperation.payload_fields` is medium, not high**: OpenAPI describes payloads as schemas; SDEM flattens them to field names, which loses structure (nested objects, arrays).',
             '- **`A2.ControlRecord.lifecycle_states` is SDEM\'s**: BIAN describes a control record as tracking an asset through its lifecycle but publishes no state list.',
             '- **`A1.BusinessService.inputs` / `outputs` are medium, not high**: no standard gives a business service inputs and outputs; they rate medium only because rule S09 was validated against sealed answers in use case C1.',
-            '- **`A3.ApplicationComponent.accesses` is deprecated**: it duplicates the A3 `access` relationship; exports should use the relationship.',
+            '- **`A3.ApplicationComponent.accesses` is deprecated**: it duplicates the A3 `access` relationship; architecture datasets should use the relationship.',
             '- **`A3.Event.published_to`** would gain a public source if AsyncAPI were adopted (a channel).',
-            '- **Required flags reflect today\'s examples.** They are enforced (LC-04); a real export may show that a "required" field is often missing, which is a finding, not a failure of the export.', '',
+            '- **Required flags reflect today\'s examples.** They are enforced (LC-04); a real architecture dataset may show that a "required" field is often missing, which is a finding, not a failure of the architecture dataset.', '',
             '## Related', '', '- [`logical-data-model.md`](logical-data-model.md) — the Logical Data Model assembled from the entities, attributes and relationships.', '- [`architecture-entity-design.md`](architecture-entity-design.md) — the entity types.', '- [`inference-audit.md`](inference-audit.md) — how much of SDEM is grounded, confirmed or inferred.',
             '- `metamodel/export-conventions.json` — the join keys each rule reads; every key there appears here.', '']
     return _terms('\n'.join(out) + '\n')

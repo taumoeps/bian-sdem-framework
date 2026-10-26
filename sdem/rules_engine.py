@@ -7,7 +7,7 @@ Reads a graph through the graph access layer (sdem/store.py GraphReader), applie
   log        — one record per attempt, including refusals (the evidence base; REQ-O-02)
 It never approves, never invents an instance, and never re-proposes a link that is already approved.
 
-Built step by step against the acceptance harness (sdem/acceptance.py). Implemented: steps 1–5 (data joins; BIAN REST decision procedure; structural matching; derivation; bounded text inference). Design mode: a target design from BIAN's container pattern when no A3 export exists (M2).
+Built step by step against the acceptance harness (sdem/acceptance.py). Implemented: steps 1–5 (data joins; BIAN REST decision procedure; structural matching; derivation; bounded text inference). Design mode: a target design from BIAN's container pattern when no A3 architecture dataset exists (M2).
 """
 import json, re
 from pathlib import Path
@@ -191,7 +191,7 @@ class Run:
             for x, via in hosts.items():
                 t = self.get(x, 'A4.InfrastructureComponent', 'A4')
                 if t is None:
-                    self.attempt('S33', c['id'], x, 1, via, f'{x} is not an A4 instance in the export — no instance to map to'); continue
+                    self.attempt('S33', c['id'], x, 1, via, f'{x} is not an A4 instance in the architecture dataset — no instance to map to'); continue
                 if self.mm.is_a(t['type'], 'A4.Deployment'): continue  # a deployment is DEPLOYED_AS, not a platform
                 plan = 'S34' if self.mm.is_a(t['type'], 'A4.Node') else 'S35' if self.mm.is_a(t['type'], 'A4.Device') else 'S33'
                 note = {'S34': ', logged under S34 because the target is A4.Node', 'S35': ', logged under S35 because the target is A4.Device',
@@ -272,7 +272,7 @@ class Run:
             siblings = [o for o in ops if o['id'] != op['id'] and dom and self.climb(o['id'], 'A2.ServiceDomain', 'A2') == dom]
             other_quals = [q for q in (self._qual(self.attr(o, 'behavior_qualifier'))[0] for o in siblings) if q]
             if dom is None:
-                self.attempt('S24', op['id'], None, 2, [f"{op['id']} composition ancestors"], 'operation belongs to no exported Service Domain — no boundary'); continue
+                self.attempt('S24', op['id'], None, 2, [f"{op['id']} composition ancestors"], 'operation belongs to no Service Domain in the architecture dataset — no boundary'); continue
             at = self.get(self.attr(dom, 'asset_type'), 'A2.AssetType') if self.attr(dom, 'asset_type') else None
             gate = tokens(at['name'], *_list(self.attr(at, 'aliases'))) if at else set()
             for api in apis:
@@ -287,7 +287,7 @@ class Run:
                 if not realized:
                     if not gate:
                         self.log.append({'plan_id': 'S24', 'connection': conn, 'step_assigned': 2, 'step_used': 2, 'fallback': False, 'data_read': [dom['id']],
-                                         'reasoning': 'boundary untestable: no approved REALIZED_BY and no asset type/aliases in the export', 'outcome': 'no_proposal', 'proposal_id': None,
+                                         'reasoning': 'boundary untestable: no approved REALIZED_BY and no asset type/aliases in the architecture dataset', 'outcome': 'no_proposal', 'proposal_id': None,
                                          'confidence_predicted': 'high', 'confidence_given': None}); continue
                     texts = []
                     for x in (self.descendants(comp['id']) if comp else []):
@@ -730,16 +730,16 @@ class Run:
         return None, None, f'{term} has no REST form'
 
     def design(self):
-        """When no A3 export exists, mapping ends at A2: produce a TARGET DESIGN from BIAN's container pattern (planned instances, low)."""
+        """When no A3 architecture dataset exists, mapping ends at A2: produce a TARGET DESIGN from BIAN's container pattern (planned instances, low)."""
         levels = set(self.r.levels())
         if 'A3' in levels or 'A2' not in levels:
             return []
-        self.log.append({'plan_id': 'DESIGN', 'connection': 'mapping ends at A2', 'step_assigned': None, 'step_used': 'design', 'fallback': False, 'data_read': ['levels exported: ' + ', '.join(sorted(levels))],
-                         'reasoning': 'no A3 or A4 export: no step applies below A2; a target design is produced from the BIAN container pattern', 'confidence_predicted': 'low', 'confidence_given': None, 'proposal_id': None, 'outcome': 'design'})
+        self.log.append({'plan_id': 'DESIGN', 'connection': 'mapping ends at A2', 'step_assigned': None, 'step_used': 'design', 'fallback': False, 'data_read': ['architecture datasets: ' + ', '.join(sorted(levels))],
+                         'reasoning': 'no A3 or A4 architecture dataset: no step applies below A2; a target design is produced from the BIAN container pattern', 'confidence_predicted': 'low', 'confidence_given': None, 'proposal_id': None, 'outcome': 'design'})
         a3 = {'level': 'A3', 'model_id': f'{self.uc.lower()}-a3-TARGET-DESIGN', 'model_version': 'design', 'metamodel_version': self.mm.version,
-              'source_system': 'DESIGN-PROPOSAL (bian-container-pattern; not an APM export)', 'instances': [], 'relationships': []}
+              'source_system': 'DESIGN-PROPOSAL (bian-container-pattern; not an APM architecture dataset)', 'instances': [], 'relationships': []}
         a4 = {'level': 'A4', 'model_id': f'{self.uc.lower()}-a4-TARGET-DESIGN', 'model_version': 'design', 'metamodel_version': self.mm.version,
-              'source_system': 'DESIGN-PROPOSAL (bian-container-pattern; not a CMDB export)', 'instances': [], 'relationships': []}
+              'source_system': 'DESIGN-PROPOSAL (bian-container-pattern; not a CMDB architecture dataset)', 'instances': [], 'relationships': []}
         tag = 'TARGET DESIGN, not a mapping'
         for dom in self.of('A2.ServiceDomain'):
             ops = [o for o in self.of('A2.ServiceOperation') if (self.domain_of(o['id']) or {}).get('id') == dom['id']]

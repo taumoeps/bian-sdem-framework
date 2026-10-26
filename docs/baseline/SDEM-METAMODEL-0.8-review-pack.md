@@ -1,6 +1,6 @@
 # SDEM-METAMODEL-0.8 — Baseline Review Pack
 
-> Prepared 2026-10-26 by `python scripts/baseline_pack.py` from the records at commit `f318c99`. A snapshot for review, not a living document.
+> Prepared 2026-10-27 by `python scripts/baseline_pack.py` from the records at commit `3b45c48`. A snapshot for review, not a living document.
 
 ## 1. What a baseline is, and what you are asked to approve
 
@@ -38,7 +38,7 @@ Not in scope: the inference engine and the graph store (software built on the me
 | Cross-level rules | all 69 plan rows covered by the use-case runs: 45 validated, 5 validated with findings, 19 not applicable (`docs/relationships-testing.md`, `docs/use-case-testing.md`) |
 | Detail spec against the high-level spec | catalogue alignment computed from the high-level §5 tables: 41 entity rows read, 1 differs (`A4.Deployment`, decided G-03); every other difference is in the gap register; the high-level spec is unchanged (checksum test) |
 | Inference engine (acceptance) | 8 of 8 use-case runs pass at the hand-executed run's precision and recall or better (`sdem-accept`); every proposal validates |
-| Graph store | every trace and impact answer identical whether read from the stored graph or the exports, on all example estates (acceptance test AT-04) |
+| Graph store | every trace and impact answer identical whether read from the stored graph or the architecture datasets, on all example estates (acceptance test AT-04) |
 | Source references | every entity, row, type, rule and attribute names its source; enforced by test |
 | Confidence | one rule (`sdem/confidence.py`) assigns every rating; CI fails if any record disagrees |
 | Generated documents | every document and schema is generated from the records; CI fails if any is stale |
@@ -110,7 +110,7 @@ Findings: record each as a GitHub issue labelled `baseline-0.8` and list them he
 
 0. Resolve or explicitly accept every open gap (G-02) and record the decision in `metamodel/metamodel-spec-gaps.json`.
 1. Record the approval in `metamodel/baseline.json` (baseline name, commit, reviewer, date, accepted findings).
-2. Set `metamodel_version` to `0.8.0` in the four level files and the example exports.
+2. Set `metamodel_version` to `0.8.0` in the four level files and the example architecture datasets.
 3. Remove what was kept only for compatibility: the deprecated `accesses` attribute definition and the `sdmm` package and commands (planned for v0.8.0).
 4. Tag the commit `SDEM-METAMODEL-0.8` and publish release v0.8.0 (with your approval).
 5. From then on, model changes go through a change record and a new version.

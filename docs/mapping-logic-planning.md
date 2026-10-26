@@ -1,6 +1,6 @@
 # Mapping logic — planning (v0.6)
 
-> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` and paths under `sdmm/` are now `sdem-*` and `sdem/` (the old names still work in v0.7 and are removed in v0.8.0). See [`sdem-overview.md`](sdem-overview.md).
+> **Terminology (v0.7.0).** SDMM was renamed **SDEM — Service Domain Enterprise Metamodel**. This document keeps its original wording as a record, so read: *mapping set* / *mapping document* = **Architecture Relationship Registry**; *mapping model*, *plan* / *new mappings* = **Architecture Relationship Rules Model**; *registry* (the nine relationship types) = **relationship type catalogue**, part of the **Architecture Metamodel**; *mapping engine* / *executor* = **Architecture Relationship Inference Engine**; *local graph* / *federated graph* = **local / federated architecture knowledge graph**. Commands shown as `sdmm-*` and paths under `sdmm/` are now `sdem-*` and `sdem/` (the old names still work in v0.7 and are removed in v0.8.0). *Export* / *level export* / *level model* (the file of one architecture's records) = **architecture dataset** (renamed 2026-10-27; W3C DCAT sense of *dataset*). See [`sdem-overview.md`](sdem-overview.md).
 
 > **Current state (2026-10-25).** The planning record behind the Relationship Rules Model. The rules are now encoded in `metamodel/relationship-rules.json` and specified in [`relationship-rules-spec.md`](relationship-rules-spec.md), which are authoritative where this document differs: all B-rows are encoded, and the §5.3 summary counts predate the final encoding (now high 28 / medium 20 / low 21 on the rule rows). The engine that applies them is built (v0.10): `sdem/rules_engine.py`, run with `sdem-infer rules --graph <store>`; passes all 8 acceptance cases (`sdem-accept`).
 
@@ -974,7 +974,7 @@ a3_solutionbuildingblock -[#616161,dashed]-> a4_infrastructurecomponent : S52 st
 a3_solutionbuildingblock -[#616161,dashed]-> a4_deployment : S53 step 3 medium
 a3_solutionbuildingblock -[#616161,dashed]-> a4_node : S54 step 3 low
 
-' --- institution-only (reported from export keys) (14)
+' --- institution-only (reported from architecture dataset keys) (14)
 a1_businessactivity -[#6A1B9A,dotted]-> a2_serviceoperation : S06 step 1 medium
 a1_businessservice -[#6A1B9A,dotted]-> a2_servicedomain : S08 step 5 low
 a1_businessservice -[#6A1B9A,dotted]-> a2_serviceoperation : S09 step 4 low
@@ -995,7 +995,7 @@ legend right
   <color:#2E7D32>Solid</color>: candidate rule (proposed for the relationship type catalogue) (5)
   <color:#EF6C00>Solid</color>: conditional rule (fires on institution data) (5)
   <color:#616161>Dashed</color>: derived path (closure over other arrows, never proposed) (17)
-  <color:#6A1B9A>Dotted</color>: institution-only (reported from export keys) (14)
+  <color:#6A1B9A>Dotted</color>: institution-only (reported from architecture dataset keys) (14)
   Grey entity: no cross-level mapping by decision (artefacts are never endpoints; actors and roles are organisation, not mappings)
   Not drawn: S05 historical method, S10 not a mapping, S11 not a mapping, S36 subsumed, B01 not encodable; B02–B15 inside A2 are on official-mappings.puml
 endlegend

@@ -1,6 +1,6 @@
 """Acceptance harness for the inference engine (relationship-rules-spec.md §8; DEC-E-01, DEC-E-05).
 
-For each case in examples/acceptance-cases.json: build a graph store from the estate's exports and the case's GIVEN
+For each case in examples/acceptance-cases.json: build a graph store from the estate's architecture datasets and the case's GIVEN
 registry only (never the estate's full registry, which would leak the answers), run the engine on it through the graph
 access layer, validate its proposals, and score them against the sealed gold. The floor is the hand-executed run,
 scored the same way from its committed files. A case passes when the engine's precision and recall are each at least
@@ -34,7 +34,7 @@ def case_inputs(case):
 
 
 def open_case(case, workdir):
-    """Build the case's graph store (exports + given registry) and return a reader on it."""
+    """Build the case's graph store (architecture datasets + given registry) and return a reader on it."""
     out = Path(workdir) / case['id']
     entry = build(case_inputs(case), out)
     if entry['result'] != 'accepted':
@@ -48,7 +48,7 @@ def _doc(mappings, engine, case):
 
 
 def check_proposals(doc, reader, design=()):
-    """sdem-validate --strict on the proposal document, ends resolved against the case's graph (plus any design exports)."""
+    """sdem-validate --strict on the proposal document, ends resolved against the case's graph (plus any design architecture datasets)."""
     from .graph import FederatedGraph, LevelGraph
     fg = reader.fg
     if design:

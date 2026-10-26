@@ -176,7 +176,7 @@ erDiagram
 
 A business ability independent of how it is implemented
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -205,7 +205,7 @@ A business ability independent of how it is implemented
 
 The stages by which stakeholders receive value
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -230,7 +230,7 @@ The stages by which stakeholders receive value
 
 One named segment of a value stream
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -257,7 +257,7 @@ One named segment of a value stream
 
 Coordinated business behaviour
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -295,7 +295,7 @@ Coordinated business behaviour
 
 A fine-grained activity within a process
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -328,7 +328,7 @@ A fine-grained activity within a process
 
 Business behaviour exposed to consumers
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -361,7 +361,7 @@ Business behaviour exposed to consumers
 
 An individual or organisation capable of business behaviour
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -390,7 +390,7 @@ An individual or organisation capable of business behaviour
 
 Responsibility for a class of business behaviour
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -416,7 +416,7 @@ Responsibility for a class of business behaviour
 
 A business-level information concept
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -444,7 +444,7 @@ A business-level information concept
 
 An expressed architectural requirement
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -567,7 +567,7 @@ erDiagram
 
 Top-level grouping of the Service Landscape
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields:** core fields only.
 
@@ -583,7 +583,7 @@ Top-level grouping of the Service Landscape
 
 Coarse functional grouping within a Business Area
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields:** core fields only.
 
@@ -629,7 +629,7 @@ A discrete functional scope of the bank and its responsibilities
 
 The generic behaviour pattern a Service Domain applies
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -651,7 +651,7 @@ The generic behaviour pattern a Service Domain applies
 
 The class of asset a Service Domain manages through its lifecycle
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -695,7 +695,7 @@ Lifecycle and control information for a Service Domain's activity
 
 A grouping of a Service Domain's operations
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields:** core fields only.
 
@@ -739,7 +739,7 @@ An operation a Service Domain exposes
 
 A refinement of a Service Domain's generic behaviour
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -806,7 +806,7 @@ A canonical business information concept
 
 A property of a Business Object
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -975,7 +975,7 @@ erDiagram
 
 A modular, deployable part of an application
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1020,7 +1020,7 @@ A modular, deployable part of an application
 
 Externally exposed application behaviour
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1045,7 +1045,7 @@ Externally exposed application behaviour
 
 An access point to an application service
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1071,7 +1071,7 @@ An access point to an application service
 
 Internal application behaviour
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1159,7 +1159,7 @@ A logical data entity held by an application
 
 An event an application produces or consumes
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1186,7 +1186,7 @@ An event an application produces or consumes
 
 An organisation-defined reusable solution grouping
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1351,7 +1351,7 @@ An application as deployed into a specific environment
 
 A governed runtime boundary such as production or test
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1376,7 +1376,7 @@ A governed runtime boundary such as production or test
 
 A computational host, physical or virtual
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1408,7 +1408,7 @@ A computational host, physical or virtual
 
 Physical computing hardware
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1439,7 +1439,7 @@ Physical computing hardware
 
 Platform or runtime software
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1471,7 +1471,7 @@ Platform or runtime software
 
 Technical behaviour delivered to consumers
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1498,7 +1498,7 @@ Technical behaviour delivered to consumers
 
 An access point for a technology service
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1524,7 +1524,7 @@ An access point for a technology service
 
 Communication infrastructure
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1546,7 +1546,7 @@ Communication infrastructure
 
 A route between nodes
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1571,7 +1571,7 @@ A route between nodes
 
 A deployable technology-level artefact
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the export so duplicates can be detected
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
 
 **Fields**
 
@@ -1617,24 +1617,24 @@ The rules the data must satisfy, and which the checker enforces today.
 
 | ID | Rule | Detail | Status |
 |---|---|---|---|
-| LC-01 | Instance identity | `id` + `version` is unique within a level export | **enforced** |
-| LC-02 | Entity typing | every instance's `type` is a concrete, non-artefact entity type of the export's level | **enforced** |
+| LC-01 | Instance identity | `id` + `version` is unique within an architecture dataset | **enforced** |
+| LC-02 | Entity typing | every instance's `type` is a concrete, non-artefact entity type of the architecture dataset's level | **enforced** |
 | LC-03 | Within-level relationships | every relationship matches a within-level row of its level (through inheritance), or is `association` | **enforced** |
 | LC-04 | Required attributes | every attribute marked required is present; on an instance whose `lifecycle_status` is `planned` (a target design) a missing one is a warning, not an error | **enforced** |
 | LC-05 | Attribute types | every attribute value has its declared type | **enforced** |
 | LC-06 | Enumerations | every attribute with allowed values, and `lifecycle_status`, takes an allowed value | **enforced** |
-| LC-07 | Same-level references | a reference attribute whose target is in the same level names an instance of the declared type in the same export | **enforced** |
+| LC-07 | Same-level references | a reference attribute whose target is in the same level names an instance of the declared type in the same architecture dataset | **enforced** |
 | LC-08 | Cross-level references | a reference attribute whose target is in another level names an instance of the declared type in the estate | **enforced as a warning** |
-| LC-09 | Natural keys | no two instances of a type share their identifier key within an export | **enforced** |
+| LC-09 | Natural keys | no two instances of a type share their identifier key within an architecture dataset | **enforced** |
 | LC-10 | Cardinality — maximum | no instance exceeds the stated maximum of a BIAN or ArchiMate-composition row (e.g. a service group in two Service Domains) | **enforced** |
-| LC-10m | Cardinality — minimum (completeness) | an instance meets the stated minimum (e.g. a Service Domain has a control record); exports may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error | **enforced** |
+| LC-10m | Cardinality — minimum (completeness) | an instance meets the stated minimum (e.g. a Service Domain has a control record); architecture datasets may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error | **enforced** |
 | LC-11 | Cross-level relationship ends | both ends of every registry record resolve to instances of the right type, level and version | **enforced** |
 | LC-12 | Registry immutability | approved, rejected and superseded registry records are never edited | **enforced** |
 | LC-13 | Deprecated attributes | deprecated attributes raise a warning | **enforced** |
 
 ## Appendix B. How the example data measures up
 
-The 7 example estates (447 instances) (the generated reference-structure estate excluded) checked by `sdem-graph check` against the enforced rules. No errors; 29 completeness warning(s), where an example exports part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
+The 7 example estates (447 instances) (the generated reference-structure estate excluded) checked by `sdem-graph check` against the enforced rules. No errors; 29 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
 
 | Rule | Values checked | Failures |
 |---|---|---|
@@ -1669,5 +1669,5 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
 | **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 14 of 14 rules enforced |
-| Physical | one export JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem-physical`); graph store schema not designed yet |
+| Physical | one architecture dataset JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem-physical`); graph store schema not designed yet |
 

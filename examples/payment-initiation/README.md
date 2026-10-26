@@ -2,7 +2,7 @@
 
 All identifiers are **synthetic**; `SD-PI`, `BIAN-PAYMENT-INITIATION` and the rest are stand-ins, not BIAN content.
 
-The business and domain architecture are mapped and approved (`m1-mappings-given.json`, PAY-001…005). The payments platform exists — applications, APIs, data entities and deployments are exported from the APM and CMDB to the export conventions — but no A2→A3 or A3→A4 mappings have been written. The sealed gold (`m1-gold-mappings.json`, PAY-101…112) holds the connections an architect approved; `mappings.json` is the union.
+The business and domain architecture are mapped and approved (`m1-mappings-given.json`, PAY-001…005). The payments platform exists — applications, APIs, data entities and deployments are extracted from the APM and CMDB into architecture datasets conventions — but no A2→A3 or A3→A4 mappings have been written. The sealed gold (`m1-gold-mappings.json`, PAY-101…112) holds the connections an architect approved; `mappings.json` is the union.
 
 | File | Instances | Notes |
 |---|---|---|

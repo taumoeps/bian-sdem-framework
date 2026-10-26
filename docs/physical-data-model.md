@@ -4,13 +4,13 @@
 
 ## What it is
 
-The **physical data model** is the logical data model written as files a tool can use: **one JSON Schema per entity type** that an export instance must satisfy. A tool adapter validates each record it exports against the schema for its type; `sdem-graph check` then checks what a single record cannot show on its own.
+The **physical data model** is the logical data model written as files a tool can use: **one JSON Schema per entity type** that an architecture dataset instance must satisfy. A tool adapter validates each record it architecture datasets against the schema for its type; `sdem-graph check` then checks what a single record cannot show on its own.
 
 | Layer | Document | Holds |
 |---|---|---|
 | Conceptual | [architecture-entity-design.md](architecture-entity-design.md) | the entity types; how they relate: [relationships-planning.md](relationships-planning.md) (within a level) and [relationship-registry-spec.md](relationship-registry-spec.md) (across levels) |
 | Logical | [logical-data-model.md](logical-data-model.md), [architecture-attribute-design.md](architecture-attribute-design.md) | identifiers, attributes, types, allowed values, references, cardinality, rules |
-| **Physical (this document)** | `schema/entities/<level>/<Entity>.schema.json` | the export format of each entity, validatable by any JSON Schema 2020-12 tool |
+| **Physical (this document)** | `schema/entities/<level>/<Entity>.schema.json` | the architecture dataset format of each entity, validatable by any JSON Schema 2020-12 tool |
 
 ## How the logical model maps to JSON Schema
 
@@ -28,11 +28,11 @@ The **physical data model** is the logical data model written as files a tool ca
 
 ## What the schemas do not check
 
-A schema sees one record. These rules need the whole export or estate and are enforced by `sdem-graph check` ([logical rules](logical-data-model.md)): references resolve (LC-07 error, LC-08 warning), natural keys are unique (LC-09), cardinality (LC-10, LC-10m), within-level and cross-level relationships (LC-03, LC-11). Attributes not in the model are accepted by the schema and reported as warnings.
+A schema sees one record. These rules need the whole architecture dataset or estate and are enforced by `sdem-graph check` ([logical rules](logical-data-model.md)): references resolve (LC-07 error, LC-08 warning), natural keys are unique (LC-09), cardinality (LC-10, LC-10m), within-level and cross-level relationships (LC-03, LC-11). Attributes not in the model are accepted by the schema and reported as warnings.
 
 ## Schemas (40 entity types)
 
-Artefact types (BOM model, wireframe, Semantic API) and abstract types are not export instance types and have no schema.
+Artefact types (BOM model, wireframe, Semantic API) and abstract types are not architecture dataset instance types and have no schema.
 
 | Entity | Schema | Core fields (besides the `attributes` container) | Common | Inherited | Specific | Required attributes | Attribute confidence (H / M / L) |
 |---|---|---|---|---|---|---|---|
@@ -85,6 +85,6 @@ Attribute definitions across all schemas: **415 high, 144 medium, 25 low** (the 
 # any JSON Schema 2020-12 validator, e.g. check-jsonschema
 check-jsonschema --schemafile schema/entities/A1/BusinessProcess.schema.json my-process.json
 
-# then the whole export and estate
-python -m sdem.graph check exports/a*.json exports/mappings.json
+# then the whole architecture dataset and estate
+python -m sdem.graph check architecture datasets/a*.json architecture datasets/mappings.json
 ```

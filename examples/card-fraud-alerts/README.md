@@ -43,7 +43,7 @@ Only `approved` arrows are followed by default, so the superseded on-prem deploy
 
 ## Level models and the federated knowledge graph (v0.4)
 
-`a1-business.json` … `a4-technology.json` are synthetic exports of the four design models in `schema/level-model.schema.json` format — the instances the mappings refer to, with names and within-level relationships. They stand in for an institution's EA tool, BIAN workbench, APM and CMDB.
+`a1-business.json` … `a4-technology.json` are synthetic architecture datasets of the four design models in `schema/level-model.schema.json` format — the instances the mappings refer to, with names and within-level relationships. They stand in for an institution's EA tool, BIAN workbench, APM and CMDB.
 
 ```bash
 python -m sdem.graph check  examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json

@@ -4,14 +4,14 @@
 
 ## 1. What it is, in one paragraph
 
-Today SDEM builds its knowledge graphs **in memory** every time a command runs, from the export files, and throws them away afterwards. The **graph store** keeps them: it writes each checked local knowledge graph, and the federated graph of approved cross-architecture links, to **JSON files on the local device**. Queries (trace, impact, unmapped, …), the HTML view, and later the inference engine read those files. No server, no database, no install — Python only, so it runs on a locked-down work laptop. Files are in a published graph format, **JSON Graph Format (JGF) v2** (MIT licence), and live in git, so every change to the graph is versioned and diffable.
+Today SDEM builds its knowledge graphs **in memory** every time a command runs, from the architecture dataset files, and throws them away afterwards. The **graph store** keeps them: it writes each checked local knowledge graph, and the federated graph of approved cross-architecture links, to **JSON files on the local device**. Queries (trace, impact, unmapped, …), the HTML view, and later the inference engine read those files. No server, no database, no install — Python only, so it runs on a locked-down work laptop. Files are in a published graph format, **JSON Graph Format (JGF) v2** (MIT licence), and live in git, so every change to the graph is versioned and diffable.
 
 ## 2. Where it sits
 
 ```mermaid
 flowchart LR
   subgraph Sources
-    E1[A1 export] --- E2[A2 export] --- E3[A3 export] --- E4[A4 export]
+    E1[A1 architecture dataset] --- E2[A2 architecture dataset] --- E3[A3 architecture dataset] --- E4[A4 architecture dataset]
     REG[Relationship Registry<br/>mappings.json]
   end
   B[sdem-graph build<br/>check · convert · write]
@@ -54,7 +54,7 @@ One folder per estate. For the repository's examples that is `examples/<estate>/
 
 ## 4. What a node and an edge look like
 
-A **node** is one record from an export. JGF keys nodes by a string; SDEM's key is `<level>:<id>@<version>`, because the same id can appear in two architectures and a record can have several versions.
+A **node** is one record from an architecture dataset. JGF keys nodes by a string; SDEM's key is `<level>:<id>@<version>`, because the same id can appear in two architectures and a record can have several versions.
 
 ```json
 "A1:PRC-PAY-01@1.0": {
@@ -69,7 +69,7 @@ A **node** is one record from an export. JGF keys nodes by a string; SDEM's key 
 }
 ```
 
-A **within-architecture edge** is one relationship from the export; it records which within-level row allowed it.
+A **within-architecture edge** is one relationship from the architecture dataset; it records which within-level row allowed it.
 
 ```json
 { "id": "A1:PRC-PAY-01-composition-ACT-PAY-01a", "source": "A1:PRC-PAY-01@1.0", "target": "A1:ACT-PAY-01a@1.0",
@@ -90,9 +90,9 @@ The federated file also lists each linked record as a small **stub node** (key, 
 
 ## 5. How a build works
 
-`sdem-graph build <exports> <registry> --out graph/`
+`sdem-graph build <architecture datasets> <registry> --out graph/`
 
-1. **Read** the four exports and the registry.
+1. **Read** the four architecture datasets and the registry.
 2. **Check** them exactly as `sdem-graph check` does today: entity types, within-level rows, the data model (all 14 logical rules), the registry records and that every approved link resolves.
 3. **If anything fails** — write nothing to the graph files, keep the last good graph, add a *rejected* entry to the load record listing every error, exit with an error. (Closes KG-L-03 and KG-R-03, *keep the previous graph*.)
 4. **Otherwise convert** to JGF and write the five files — deterministically: same inputs, byte-identical files (sorted keys, fixed order, no timestamps inside the graph files), so a git diff shows only real changes.
@@ -107,7 +107,7 @@ Everything that reads the graph goes through **one interface** (in `sdem/store.p
 | Implementation | Reads from | Used by |
 |---|---|---|
 | **Store** | the `graph/` JSON files | queries, view, engine — the normal path |
-| **Exports** | export files directly, built in memory (today's code) | `sdem-graph check`, and as the reference the store is tested against |
+| **Architecture datasets** | architecture dataset files directly, built in memory (today's code) | `sdem-graph check`, and as the reference the store is tested against |
 
 Every existing query must give **identical answers** from either — that is the main acceptance test. The engine (v0.10) is written only against the interface, so a database could replace the files later without changing it.
 

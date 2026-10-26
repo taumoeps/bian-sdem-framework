@@ -58,7 +58,7 @@ TYPE_MEANING = {'mapping_type_id': 'permanent ID of the type (legacy name)', 'so
 RULE_MEANING = {'id': 'plan row ID (S01…S54 cross-level, B01…B15 BIAN-internal)', 'tier': 'official BIAN only, or BIAN with supporting frameworks', 'source': 'entity type the rule starts from',
                 'target': 'entity type it points to', 'relation': 'the catalogue type it produces, or `candidate` for a report', 'official': 'whether BIAN itself states the link',
                 'verification': 'how the rule\'s basis was checked', 'source_reference': 'source reference', 'rule_decision': 'registry_rule (produces registry records), candidate_rule, conditional_rule, institution_only, derived_path, … — which outputs it may produce',
-                'fill_step': 'the inference step that applies it (0–5); `None` for rows no step applies (not a mapping, not encodable, historical)', 'data_needed': 'the export data the step reads (plain text; the step logic is in the engine — see §18)',
+                'fill_step': 'the inference step that applies it (0–5); `None` for rows no step applies (not a mapping, not encodable, historical)', 'data_needed': 'the architecture dataset data the step reads (plain text; the step logic is in the engine — see §18)',
                 'confidence': 'the band given to its output (high 0.8, medium 0.6, low 0.4)', 'reasoning': 'why the rule is shaped as it is', 'basis_confidence': 'confidence in the rule\'s basis (the single rule)',
                 'basis_confidence_reason': 'which clause applied'}
 
@@ -103,9 +103,9 @@ def render():
            f'[`architecture-metamodel-high-level-spec.md`](architecture-metamodel-high-level-spec.md) is the owner\'s v0.4 specification, kept as the **reference** and **frozen**: its content is pinned by checksum (`sha256 {sha[:16]}…`) and a test fails if it changes. This document follows its structure section for section and adds the implemented detail. Each section says either *Aligned to high-level §n* or names the **gap** where the implementation differs. Sections 15–19 cover what the high-level specification does not. Where the two differ, **this document governs**; gaps change status only on the owner\'s decision.', '',
            '### Data model of the metamodel — where each part is defined', '',
            '| Part | Record | Field-level definition |', '|---|---|---|',
-           '| Entity type | `metamodel/a1…a4-*.json` | §3 |', '| Entity instance and its attributes | export instances; `metamodel/entity-attributes.json` | §16 (and the attribute and logical data model documents) |',
+           '| Entity type | `metamodel/a1…a4-*.json` | §3 |', '| Entity instance and its attributes | architecture dataset instances; `metamodel/entity-attributes.json` | §16 (and the attribute and logical data model documents) |',
            '| Relationship **within** an architecture — the allowed link | `metamodel/level-relationships.json` | §6.1a, §6.1b (inheritance) |',
-           '| Relationship within an architecture — an actual link | `relationships` of a level export | §6.1c |',
+           '| Relationship within an architecture — an actual link | `relationships` of an architecture dataset | §6.1c |',
            '| Relationship type **between** architectures | `schema/relationship-types.json` | §6.2a |',
            '| **Mapping** — an actual link between architectures | Relationship Registry (`mappings.json`) | §6.4 |',
            '| Mapping rule — how a link is found | `metamodel/relationship-rules.json` | §15a |', '',
@@ -168,9 +168,9 @@ def render():
             f"{len(rows)} rows + {len(lr['inheritance'])} inheritance rows ({', '.join(f'{k} {v}' for k, v in sorted(by.items()))}); {sum(1 for c in rows if c.get('enforceable') is not False)} enforced (A2 artefact rows are documentation only). Verification: " + ', '.join(f'{k} {v}' for k, v in sorted(ver.items())) + '. Every row carries cardinality, source reference, reasoning and confidence. Detail: [`relationships-planning.md`](relationships-planning.md).', '',
             '#### 6.1a Within-level relationship row — the allowed link', '', 'One row per (source type, kind, target type) an architecture allows. ' + st('G-01') + '.', ''] + field_table(rows, ROW_MEANING) + [
             '', '#### 6.1b Inheritance row', '', 'One row per is-a link between entity types (the `extends` of §3), so a link allowed for a parent is allowed for its subtypes.', ''] + field_table(lr['inheritance'], INHERIT_MEANING) + [
-            '', '#### 6.1c Within-level relationship — an actual link', '', 'In a level export\'s `relationships` list (`schema/level-model.schema.json`); never in the Relationship Registry.', '',
-            '| Field | Required | Meaning |', '|---|---|---|'] + [f"| `{k}` | {'yes' if k in lm_rel.get('required', []) else 'no'} | {dict(source='id of the source instance in the same export', kind='relationship kind; must match a row of §6.1a through inheritance, or be `association`', target='id of the target instance in the same export', name='optional label').get(k, '')} |" for k in lm_rel['properties']] + [
-            '', 'Checked by `sdem-graph check`: both ends in the export (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).', '',
+            '', '#### 6.1c Within-level relationship — an actual link', '', 'In an architecture dataset\'s `relationships` list (`schema/level-model.schema.json`); never in the Relationship Registry.', '',
+            '| Field | Required | Meaning |', '|---|---|---|'] + [f"| `{k}` | {'yes' if k in lm_rel.get('required', []) else 'no'} | {dict(source='id of the source instance in the same architecture dataset', kind='relationship kind; must match a row of §6.1a through inheritance, or be `association`', target='id of the target instance in the same architecture dataset', name='optional label').get(k, '')} |" for k in lm_rel['properties']] + [
+            '', 'Checked by `sdem-graph check`: both ends in the architecture dataset (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).', '',
             '### 6.2 Cross-level relationship types', '', al('§6.2') + ' The eight v0.2.1 rules plus `DEPLOYED_AS` with the governance of high-level §14 decision 2.', '',
             '| Source | Relationship | Target | Perspective | Authority | Required evidence | Confidence |', '|---|---|---|---|---|---|---|']
     out += [f"| `{x['source_type']}` | `{x['relationship']}` | `{x['target_type']}` | {x['perspective']} | `{x['authority']}` | {', '.join(x.get('required_evidence') or []) or '—'} | {x.get('confidence', '')} |" for x in rt]
@@ -194,11 +194,11 @@ def render():
             '| 1 Schema | well-formed document | `sdem/validate.py` `check_schema` | built |',
             '| 2 Metamodel | endpoint types exist (is-a); relationship registered for them | `sdem/validate.py` | built |',
             f"| 3 Profile | bank types satisfy their mapping | — | not built — {st('G-08')} |",
-            '| 4 Identity | both ends resolve at the stated version | `sdem-graph check` (`FederatedGraph.resolve_entity`) | built (`unverified` without exports) |',
+            '| 4 Identity | both ends resolve at the stated version | `sdem-graph check` (`FederatedGraph.resolve_entity`) | built (`unverified` without architecture datasets) |',
             f"| 5 BIAN | canonical_id valid in the stated release | `ReferenceResolver` | always `unverified` — {st('G-10')} |",
             '| 6 Governance | evidence, reviewer, timestamp, baseline, supersession, transitions | `sdem/validate.py`, `sdem-diff` | built |',
             '| 7 Semantics | evidence justifies the relationship | — | `unverified` by design (high-level §8) |',
-            '', 'Level exports are additionally checked against the data model — logical rules LC-01…LC-13 (`sdem/conformance.py`) — ' + st('G-12') + '.']
+            '', 'Architecture datasets are additionally checked against the data model — logical rules LC-01…LC-13 (`sdem/conformance.py`) — ' + st('G-12') + '.']
     # ---- 9, 10
     out += ['', '## 9. BIAN verification register', '', st('G-09') + '. `evidence_status` is recorded in the entity records (see §3).', '',
             '## 10. Compatibility and migration', '', al('§10') + ' `tests/test_v02_compatibility.py` is in the suite; unknown entity types are errors; v0.2.1 registry field names are kept (`mapping_id`, `mappings`, …) so approved records never change.']
@@ -231,7 +231,7 @@ def render():
             '## 17. Provenance and confidence', '', st('G-13') + '.', '',
             f"Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: {conf['high']} high, {conf['medium']} medium, {conf['low']} low.", '',
             '## 18. Inference engine', '', st('G-14') + '.', '',
-            f"`sdem/rules_engine.py` (`sdem-infer rules`) applies the rules model in fill-step order to the graph store and writes proposals (always `proposed`), candidate reports and an inference log; design mode where no A3 export exists. Acceptance: `sdem-accept` — {passing} of {len(cases)} cases passing. Decisions DEC-E-01…09; open item OPEN-05 (a blind case).", '',
+            f"`sdem/rules_engine.py` (`sdem-infer rules`) applies the rules model in fill-step order to the graph store and writes proposals (always `proposed`), candidate reports and an inference log; design mode where no A3 architecture dataset exists. Acceptance: `sdem-accept` — {passing} of {len(cases)} cases passing. Decisions DEC-E-01…09; open item OPEN-05 (a blind case).", '',
             '## 19. Graph store', '', st('G-15') + '.', '',
             'Local and federated knowledge graphs saved as JSON Graph Format v2 files with a load record and baselines; one graph access layer (`sdem/store.py`). Design and specification: [`graph-store-design.md`](graph-store-design.md), [`graph-store-spec.md`](graph-store-spec.md).', '',
             '## Gap register', '', 'From `metamodel/metamodel-spec-gaps.json`. Status changes only on the owner\'s decision.', '',

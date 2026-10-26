@@ -11,9 +11,9 @@
 | Part | Record | Field-level definition |
 |---|---|---|
 | Entity type | `metamodel/a1…a4-*.json` | §3 |
-| Entity instance and its attributes | export instances; `metamodel/entity-attributes.json` | §16 (and the attribute and logical data model documents) |
+| Entity instance and its attributes | architecture dataset instances; `metamodel/entity-attributes.json` | §16 (and the attribute and logical data model documents) |
 | Relationship **within** an architecture — the allowed link | `metamodel/level-relationships.json` | §6.1a, §6.1b (inheritance) |
-| Relationship within an architecture — an actual link | `relationships` of a level export | §6.1c |
+| Relationship within an architecture — an actual link | `relationships` of an architecture dataset | §6.1c |
 | Relationship type **between** architectures | `schema/relationship-types.json` | §6.2a |
 | **Mapping** — an actual link between architectures | Relationship Registry (`mappings.json`) | §6.4 |
 | Mapping rule — how a link is found | `metamodel/relationship-rules.json` | §15a |
@@ -253,16 +253,16 @@ One row per is-a link between entity types (the `extends` of §3), so a link all
 
 #### 6.1c Within-level relationship — an actual link
 
-In a level export's `relationships` list (`schema/level-model.schema.json`); never in the Relationship Registry.
+In an architecture dataset's `relationships` list (`schema/level-model.schema.json`); never in the Relationship Registry.
 
 | Field | Required | Meaning |
 |---|---|---|
-| `source` | yes | id of the source instance in the same export |
+| `source` | yes | id of the source instance in the same architecture dataset |
 | `kind` | yes | relationship kind; must match a row of §6.1a through inheritance, or be `association` |
-| `target` | yes | id of the target instance in the same export |
+| `target` | yes | id of the target instance in the same architecture dataset |
 | `name` | no | optional label |
 
-Checked by `sdem-graph check`: both ends in the export (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).
+Checked by `sdem-graph check`: both ends in the architecture dataset (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).
 
 ### 6.2 Cross-level relationship types
 
@@ -361,12 +361,12 @@ Level-skipping traceability is a query over approved edges with provenance (`sde
 | 1 Schema | well-formed document | `sdem/validate.py` `check_schema` | built |
 | 2 Metamodel | endpoint types exist (is-a); relationship registered for them | `sdem/validate.py` | built |
 | 3 Profile | bank types satisfy their mapping | — | not built — **Gap G-08** (not built; not built — planned (ROADMAP) v0.14) |
-| 4 Identity | both ends resolve at the stated version | `sdem-graph check` (`FederatedGraph.resolve_entity`) | built (`unverified` without exports) |
+| 4 Identity | both ends resolve at the stated version | `sdem-graph check` (`FederatedGraph.resolve_entity`) | built (`unverified` without architecture datasets) |
 | 5 BIAN | canonical_id valid in the stated release | `ReferenceResolver` | always `unverified` — **Gap G-10** (as designed; as designed) |
 | 6 Governance | evidence, reviewer, timestamp, baseline, supersession, transitions | `sdem/validate.py`, `sdem-diff` | built |
 | 7 Semantics | evidence justifies the relationship | — | `unverified` by design (high-level §8) |
 
-Level exports are additionally checked against the data model — logical rules LC-01…LC-13 (`sdem/conformance.py`) — **Gap G-12** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
+Architecture datasets are additionally checked against the data model — logical rules LC-01…LC-13 (`sdem/conformance.py`) — **Gap G-12** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
 ## 9. BIAN verification register
 
@@ -430,7 +430,7 @@ Every field of a plan row in `metamodel/relationship-rules.json`.
 | `source_reference` | yes | 69 of 69 | text | source reference |
 | `rule_decision` | yes | 69 of 69 | `bian_internal`, `candidate_rule`, `conditional_rule`, `derived_path`, `historical_method`, `institution_only`, `not_a_mapping`, `not_encodable`, `registry_rule`, `subsumed` | registry_rule (produces registry records), candidate_rule, conditional_rule, institution_only, derived_path, … — which outputs it may produce |
 | `fill_step` | yes | 69 of 69 | `0`, `1`, `2`, `3`, `4`, `5`, `None` | the inference step that applies it (0–5); `None` for rows no step applies (not a mapping, not encodable, historical) |
-| `data_needed` | yes | 69 of 69 | text | the export data the step reads (plain text; the step logic is in the engine — see §18) |
+| `data_needed` | yes | 69 of 69 | text | the architecture dataset data the step reads (plain text; the step logic is in the engine — see §18) |
 | `confidence` | yes | 69 of 69 | `high`, `low`, `medium` | the band given to its output (high 0.8, medium 0.6, low 0.4) |
 | `reasoning` | yes | 69 of 69 | text | why the rule is shaped as it is |
 | `basis_confidence` | yes | 69 of 69 | `high`, `medium`, `n/a` | confidence in the rule's basis (the single rule) |
@@ -452,7 +452,7 @@ Every entity, within-level row, relationship type and attribute names its source
 
 **Gap G-14** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-`sdem/rules_engine.py` (`sdem-infer rules`) applies the rules model in fill-step order to the graph store and writes proposals (always `proposed`), candidate reports and an inference log; design mode where no A3 export exists. Acceptance: `sdem-accept` — 8 of 8 cases passing. Decisions DEC-E-01…09; open item OPEN-05 (a blind case).
+`sdem/rules_engine.py` (`sdem-infer rules`) applies the rules model in fill-step order to the graph store and writes proposals (always `proposed`), candidate reports and an inference log; design mode where no A3 architecture dataset exists. Acceptance: `sdem-accept` — 8 of 8 cases passing. Decisions DEC-E-01…09; open item OPEN-05 (a blind case).
 
 ## 19. Graph store
 

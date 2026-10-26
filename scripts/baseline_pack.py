@@ -88,7 +88,7 @@ def main():
          '| Cross-level rules | all 69 plan rows covered by the use-case runs: 45 validated, 5 validated with findings, 19 not applicable (`docs/relationships-testing.md`, `docs/use-case-testing.md`) |',
          '| Detail spec against the high-level spec | catalogue alignment computed from the high-level §5 tables: 41 entity rows read, 1 differs (`A4.Deployment`, decided G-03); every other difference is in the gap register; the high-level spec is unchanged (checksum test) |',
          f"| Inference engine (acceptance) | {passing} of {len(cases)} use-case runs pass at the hand-executed run\'s precision and recall or better (`sdem-accept`); every proposal validates |",
-         '| Graph store | every trace and impact answer identical whether read from the stored graph or the exports, on all example estates (acceptance test AT-04) |',
+         '| Graph store | every trace and impact answer identical whether read from the stored graph or the architecture datasets, on all example estates (acceptance test AT-04) |',
          '| Source references | every entity, row, type, rule and attribute names its source; enforced by test |',
          '| Confidence | one rule (`sdem/confidence.py`) assigns every rating; CI fails if any record disagrees |',
          '| Generated documents | every document and schema is generated from the records; CI fails if any is stale |', '',
@@ -137,7 +137,7 @@ def main():
           '## 7. On approval', '',
           '0. Resolve or explicitly accept every open gap (' + ', '.join(g['id'] for g in gopen) + ') and record the decision in `metamodel/metamodel-spec-gaps.json`.' if gopen else '0. No open gaps.',
           f'1. Record the approval in `metamodel/baseline.json` (baseline name, commit, reviewer, date, accepted findings).',
-          '2. Set `metamodel_version` to `0.8.0` in the four level files and the example exports.',
+          '2. Set `metamodel_version` to `0.8.0` in the four level files and the example architecture datasets.',
           '3. Remove what was kept only for compatibility: the deprecated `accesses` attribute definition and the `sdmm` package and commands (planned for v0.8.0).',
           f'4. Tag the commit `{BASELINE}` and publish release v0.8.0 (with your approval).',
           '5. From then on, model changes go through a change record and a new version.', '']

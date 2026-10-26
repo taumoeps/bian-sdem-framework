@@ -60,7 +60,7 @@ flowchart TB
     end
 
     ADP["Adapters"]:::prog
-    EXP[/"Exports<br/>one file per architecture"/]:::data
+    EXP[/"Architecture datasets<br/>one file per architecture"/]:::data
 
     subgraph LOCAL["Local architecture knowledge graphs — what exists"]
         direction LR
@@ -100,7 +100,7 @@ flowchart TB
 | Component | Is | Lives in | Status |
 |---|---|---|---|
 | **Architecture Metamodel** | the **types**: entity types per level, the links allowed inside each level, and the **relationship type catalogue** (the nine kinds of link allowed between levels) | `metamodel/a1…a4-*.json`, `metamodel/level-relationships.json`, `schema/relationship-types.json` | built |
-| **Local architecture knowledge graphs** | one per level: real entities and the links inside the level, built from that level's export | `sdem/graph.py` (`LevelGraph`) | built (in memory) |
+| **Local architecture knowledge graphs** | one per level: real entities and the links inside the level, built from that level's architecture dataset | `sdem/graph.py` (`LevelGraph`) | built (in memory) |
 | **Architecture Relationship Rules Model** | the **rules**: how each cross-level relationship is established, from which data, with what evidence and confidence | `metamodel/relationship-rules.json`, `metamodel/export-conventions.json` | built as records; tested |
 | **Architecture Relationship Inference Engine** | applies the rules to the local graphs and **proposes** relationships | `sdem/rules_engine.py` | built (v0.10) |
 | **Architecture Relationship Registry** | the **instances**: actual relationships with evidence, status, versions and approval provenance | `examples/<estate>/mappings.json`; schema `schema/relationship-registry.schema.json` | built |
@@ -124,7 +124,7 @@ Three layers, easy to confuse, kept separate:
 | Within-level rows (links allowed inside each architecture) | 132 |
 | Relationship type catalogue (kinds of link allowed between architectures) | 9 |
 | Plan rows (rules for establishing cross-architecture relationships) | 69 — 9 catalogue rules that produce registry records; 41 candidate, conditional, derived or institution-only rules that are reported; 14 BIAN-internal; 5 ruled out |
-| Join keys the rules read from exports | 52 |
+| Join keys the rules read from architecture datasets | 52 |
 
 **Read:** [`sdem-overview.md`](docs/sdem-overview.md) · [`architecture-metamodel-detail-level-spec.md`](docs/architecture-metamodel-detail-level-spec.md) (governing; follows the high-level spec) and [`relationships-planning.md`](docs/relationships-planning.md) (the metamodel) · [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) (the rules and the inference engine's 33 requirements) · [`relationship-registry-spec.md`](docs/relationship-registry-spec.md) (the registry) · [`architecture-model-diagram.puml`](docs/architecture-model-diagram.puml) (metamodel and rules by ID, one picture).
 
@@ -135,11 +135,11 @@ Three layers, easy to confuse, kept separate:
 | | Local knowledge graph | Federated knowledge graph |
 |---|---|---|
 | How many | four, one per architecture | one |
-| Built from | that architecture's **export** | the **approved** records of the **relationship registry**, plus the four local knowledge graphs |
+| Built from | that architecture's **architecture dataset** | the **approved** records of the **relationship registry**, plus the four local knowledge graphs |
 | Holds | what exists, and the links inside one architecture | the links between architectures, each pointing into two local knowledge graphs |
 | Answers | "What is the Payments Hub made of?" | "What does the Initiate Payment capability run on?" |
 
-The **graph loader** builds all five on every run: it checks each export against the entity catalogue and the within-level rows, keeps approved links only, and resolves both ends of each link in the right local knowledge graph. Nothing edits a graph directly; a change reaches it by changing an export or the relationship registry.
+The **graph loader** builds all five on every run: it checks each architecture dataset against the entity catalogue and the within-level rows, keeps approved links only, and resolves both ends of each link in the right local knowledge graph. Nothing edits a graph directly; a change reaches it by changing an architecture dataset or the relationship registry.
 
 ```text
 $ sdem-graph trace CAP-PAY-010 --direction down examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
@@ -177,8 +177,8 @@ The Relationship Rules Model was run as a procedure by an AI executor (standing 
 
 | Component | Status |
 |---|---|
-| Architecture Metamodel (entity types, within-level rows, relationship type catalogue); Relationship Rules Model records; export and registry schemas | built |
-| Validators: `sdem-graph check` (exports), `sdem-validate` (registry records), `sdem-diff` (approved records never edited) | built |
+| Architecture Metamodel (entity types, within-level rows, relationship type catalogue); Relationship Rules Model records; architecture dataset and registry schemas | built |
+| Validators: `sdem-graph check` (architecture datasets), `sdem-validate` (registry records), `sdem-diff` (approved records never edited) | built |
 | Graph loader, local and federated graphs (in memory), `trace`, `impact`, `stats` | built |
 | Data model: common, entity-specific and derived attributes for A1–A4 with source reference, reasoning and confidence | built ([`architecture-attribute-design.md`](docs/architecture-attribute-design.md)) |
 | Logical data model: 14 rules, all enforced by `sdem-graph check` (`sdem/conformance.py`) | built ([`logical-data-model.md`](docs/logical-data-model.md)) |
@@ -187,7 +187,7 @@ The Relationship Rules Model was run as a procedure by an AI executor (standing 
 | Graph store: local JSON files (JSON Graph Format), load record, baselines, `query`, offline HTML `view` | built ([`graph-store-design.md`](docs/graph-store-design.md)) |
 | Baseline review pack for `SDEM-METAMODEL-0.8` | built; awaiting independent review ([`baseline/`](docs/baseline/SDEM-METAMODEL-0.8-review-pack.md)) |
 | Architecture Relationship Inference Engine (`sdem-infer rules`) | built (v0.10): all eight acceptance cases pass (`sdem-accept`); specified in [`relationship-rules-spec.md`](docs/relationship-rules-spec.md) |
-| Export diff, refresh trigger, review queue, query service interface, assistant access | specified ([`knowledge-graph-spec.md`](docs/knowledge-graph-spec.md) §11), not built |
+| Architecture dataset diff, refresh trigger, review queue, query service interface, assistant access | specified ([`knowledge-graph-spec.md`](docs/knowledge-graph-spec.md) §11), not built |
 | Ingestion (spreadsheet templates and ingest command) | planned for v0.10; adapters for real tools belong in an institution's private repository |
 
 ---
@@ -233,7 +233,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | [`knowledge-graph-design.md`](docs/knowledge-graph-design.md) | how the local and federated graphs are built and queried |
 | [`graph-store-design.md`](docs/graph-store-design.md) · [`graph-store-spec.md`](docs/graph-store-spec.md) | the local JSON graph store: files, build, load record, queries, view |
 | [`logical-data-model.md`](docs/logical-data-model.md) | the Logical Data Model: one card per entity — what it is, how it is identified, its fields and its links — with a diagram per architecture; rules and conformance in appendices |
-| [`physical-data-model.md`](docs/physical-data-model.md) | the Physical Data Model: one JSON Schema per entity type (`schema/entities/`), the export format tool adapters validate against; source, reasoning and confidence on every property |
+| [`physical-data-model.md`](docs/physical-data-model.md) | the Physical Data Model: one JSON Schema per entity type (`schema/entities/`), the architecture dataset format tool adapters validate against; source, reasoning and confidence on every property |
 | [`architecture-attribute-design.md`](docs/architecture-attribute-design.md) | the Architecture Attribute Design: every attribute by architecture, with type, source reference, readers, verification, reasoning and confidence |
 | [`architecture-entity-design.md`](docs/architecture-entity-design.md) | the Architecture Entity Design: every entity type by architecture, with source reference, verification, reasoning and confidence |
 | [`architecture-metamodel-detail-level-spec.md`](docs/architecture-metamodel-detail-level-spec.md) | **the governing Architecture Metamodel specification**: follows the high-level spec section by section, with the implemented detail and a gap register |
@@ -254,9 +254,9 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | Folder | Holds |
 |---|---|
 | `metamodel/` | Architecture Metamodel (entity catalogue A1–A4, within-level rows), Relationship Rules Model (`relationship-rules.json`, `export-conventions.json`), BIAN's official mappings, generated diagrams |
-| `schema/` | export and registry schemas, the relationship type catalogue (`relationship-types.json`), impact rules, per-entity schemas (`entities/`) |
+| `schema/` | architecture dataset and registry schemas, the relationship type catalogue (`relationship-types.json`), impact rules, per-entity schemas (`entities/`) |
 | `sdem/` | validators (`validate.py`, `diff.py`), data-model conformance (`conformance.py`), graph loader and queries (`graph.py`, `trace.py`, `metamodel.py`), inference engine interface and scorer (`inference.py`, `evaluate.py`), confidence rule (`confidence.py`), terminology (`terms.py`), document and schema generators (`catalogue.py`, `attributes.py`, `logical.py`, `physical.py`, …) |
-| `sdmm/` | deprecated compatibility shim for v0.7: re-exports `sdem` with a warning |
+| `sdmm/` | deprecated compatibility shim for v0.7: re-architecture datasets `sdem` with a warning |
 | `examples/` | synthetic estates: `payment-initiation`, `legacy-core-ledger`, `acquired-fintech`, `digital-lending`, `trade-finance`, `card-fraud-alerts`, `customer-onboarding`, and `reference-structure` (generated: one link per within-level row) |
 | `docs/` | designs, specifications, test plans and results |
 | `tests/` | the test suite |
@@ -266,7 +266,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | Release | Delivered |
 |---|---|
 | v0.1–v0.3 | rulebook, validators, traceability queries, generic A1–A4 naming |
-| v0.4 | entity catalogue traced to public standards, export format, local and federated graphs, impact |
+| v0.4 | entity catalogue traced to public standards, architecture dataset format, local and federated graphs, impact |
 | v0.5 | engine harness (interface, baseline, scorer); mapping plan and procedure; ten use cases, eleven runs; within-level rows from BIAN, ArchiMate and TOGAF, verified |
 | v0.6 | rules spec and diagram; knowledge-graph design and spec with service specifications |
 | v0.7 | renamed SDEM — Service Domain Enterprise Metamodel; model-driven terminology; registry spec; compatibility aliases |

@@ -31,27 +31,27 @@ jobs:
           python -m sdem.inference baseline examples/card-fraud-alerts/a*.json > /tmp/proposals.json
           python -m sdem.validate /tmp/proposals.json
           python -m sdem.evaluate examples/card-fraud-alerts/mappings.json --proposals /tmp/proposals.json --min-f1 0.5
-      - name: Payment Initiation (M1) exports and mappings
+      - name: Payment Initiation (M1) architecture datasets and mappings
         run: |
           python -m sdem.graph check examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
           python -m sdem.validate --strict examples/payment-initiation/mappings.json
-      - name: Legacy Core Ledger (H1) exports and mappings
+      - name: Legacy Core Ledger (H1) architecture datasets and mappings
         run: |
           python -m sdem.graph check examples/legacy-core-ledger/a*.json examples/legacy-core-ledger/mappings.json
           python -m sdem.validate --strict examples/legacy-core-ledger/mappings.json
-      - name: Acquired Fintech (H2) exports and mappings
+      - name: Acquired Fintech (H2) architecture datasets and mappings
         run: |
           python -m sdem.graph check examples/acquired-fintech/a*.json examples/acquired-fintech/mappings.json
           python -m sdem.validate --strict examples/acquired-fintech/mappings.json
-      - name: Customer Onboarding (E2) exports and mappings
+      - name: Customer Onboarding (E2) architecture datasets and mappings
         run: |
           python -m sdem.graph check examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
           python -m sdem.graph impact APP-001 --change replace examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
-      - name: Digital Lending (M2) exports and mappings
+      - name: Digital Lending (M2) architecture datasets and mappings
         run: |
           python -m sdem.graph check examples/digital-lending/a*.json examples/digital-lending/mappings.json
           python -m sdem.validate --strict examples/digital-lending/mappings.json
-      - name: Trade Finance (C1–C3) exports and mappings
+      - name: Trade Finance (C1–C3) architecture datasets and mappings
         run: |
           python -m sdem.graph check examples/trade-finance/a*.json examples/trade-finance/mappings.json
           python -m sdem.validate --strict examples/trade-finance/mappings.json

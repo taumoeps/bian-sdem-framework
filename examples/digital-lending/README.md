@@ -2,7 +2,7 @@
 
 All identifiers are **synthetic**; `SD-LO`, `BIAN-CONSUMER-LOAN-ORIGINATION` and the rest are stand-ins, not BIAN content.
 
-A new product line. A1 (two capabilities, a value stream with four stages, three processes with activities, two business objects) and A2 (two synthetic Service Domains with eight operations, control records, qualifiers, a scenario, two BOM objects) are designed and the A1→A2 arrows are approved (`m2-mappings-given.json`, LN-001…008). **There is no A3 or A4 export** — nothing has been built.
+A new product line. A1 (two capabilities, a value stream with four stages, three processes with activities, two business objects) and A2 (two synthetic Service Domains with eight operations, control records, qualifiers, a scenario, two BOM objects) are designed and the A1→A2 arrows are approved (`m2-mappings-given.json`, LN-001…008). **There is no A3 or A4 architecture dataset** — nothing has been built.
 
 | File | Instances | Notes |
 |---|---|---|

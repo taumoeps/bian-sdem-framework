@@ -1,6 +1,6 @@
 {
   "$schema_version": "0.6.1",
-  "note": "Conventional attribute keys on level-export instances. 'attributes' stays free-form in schema/level-model.schema.json; these are the keys the mapping steps (docs/mapping-execution.md §3) join on. Cross-level references are allowed ONLY as attributes (relationships stay within-level).",
+  "note": "Conventional attribute keys on level-architecture dataset instances. 'attributes' stays free-form in schema/level-model.schema.json; these are the keys the mapping steps (docs/mapping-execution.md §3) join on. Cross-level references are allowed ONLY as attributes (relationships stay within-level).",
   "conventions": {
     "A2.ServiceOperation": {
       "action_term": "one of BIAN's 17 action terms",

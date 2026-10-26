@@ -112,7 +112,7 @@ a3_solutionbuildingblock -[#616161,dashed]-> a4_infrastructurecomponent : S52 st
 a3_solutionbuildingblock -[#616161,dashed]-> a4_deployment : S53 step 3 medium
 a3_solutionbuildingblock -[#616161,dashed]-> a4_node : S54 step 3 low
 
-' --- institution-only (reported from export keys) (14)
+' --- institution-only (reported from architecture dataset keys) (14)
 a1_businessactivity -[#6A1B9A,dotted]-> a2_serviceoperation : S06 step 1 medium
 a1_businessservice -[#6A1B9A,dotted]-> a2_servicedomain : S08 step 5 low
 a1_businessservice -[#6A1B9A,dotted]-> a2_serviceoperation : S09 step 4 low
@@ -133,7 +133,7 @@ legend right
   <color:#2E7D32>Solid</color>: candidate rule (proposed for the relationship type catalogue) (5)
   <color:#EF6C00>Solid</color>: conditional rule (fires on institution data) (5)
   <color:#616161>Dashed</color>: derived path (closure over other arrows, never proposed) (17)
-  <color:#6A1B9A>Dotted</color>: institution-only (reported from export keys) (14)
+  <color:#6A1B9A>Dotted</color>: institution-only (reported from architecture dataset keys) (14)
   Grey entity: no cross-level mapping by decision (artefacts are never endpoints; actors and roles are organisation, not mappings)
   Not drawn: S05 historical method, S10 not a mapping, S11 not a mapping, S36 subsumed, B01 not encodable; B02–B15 inside A2 are on official-mappings.puml
 endlegend
