@@ -246,6 +246,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | [`mapping-logic-planning.md`](docs/mapping-logic-planning.md) | why the relationship rules model is shaped this way: BIAN's own mappings, the supporting frameworks, the gap-fill strategy |
 | [`mapping-execution.md`](docs/mapping-execution.md) · [`use-case-testing.md`](docs/use-case-testing.md) | the procedure as executed, and the eleven test runs |
 | [`reference-architecture-provenance.md`](docs/reference-architecture-provenance.md) | every entity traced to a public standard |
+| [`controls-register.md`](docs/controls-register.md) | every control that enforces the rulebook: where it runs, where its outcome is recorded, what monitors it, and the known gaps |
 | [`use-case-example-1.md`](docs/use-case-example-1.md) | worked example (plan): establishing the mappings and knowledge graph from four separate architecture datasets, clean and with planted defects |
 | [`glossary.md`](docs/glossary.md) | the terms used across the documents, in plain language |
 | [`ROADMAP.md`](docs/ROADMAP.md) · [`CHANGELOG.md`](CHANGELOG.md) | releases and what comes next |

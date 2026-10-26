@@ -1,0 +1,96 @@
+{
+  "overall": {
+    "gold": 18,
+    "proposed": 18,
+    "tp": 18,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "by_relationship": {
+    "ALIGNED_TO": {
+      "gold": 2,
+      "proposed": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "DEPLOYED_AS": {
+      "gold": 3,
+      "proposed": 3,
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "DEPLOYED_ON": {
+      "gold": 3,
+      "proposed": 3,
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "IMPLEMENTED_BY": {
+      "gold": 5,
+      "proposed": 5,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "MAPPED_TO": {
+      "gold": 1,
+      "proposed": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "REALIZED_BY": {
+      "gold": 1,
+      "proposed": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "SUPPORTED_BY": {
+      "gold": 1,
+      "proposed": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "USES_DOMAIN": {
+      "gold": 2,
+      "proposed": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  "missed": [],
+  "false_proposals": []
+}

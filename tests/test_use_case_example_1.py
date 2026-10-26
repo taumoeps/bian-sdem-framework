@@ -23,5 +23,19 @@ class UseCaseExample1Tests(unittest.TestCase):
         self.assertIn('INF-K8S-PAY-PROD', {n for _, _, n in self.R['trace']['down']})
 
 
+    def test_every_cited_control_is_registered_and_every_rule_area_is_covered(self):
+        import json
+        reg = json.loads((ROOT / 'metamodel' / 'controls.json').read_text(encoding='utf-8'))
+        ids = {c['id'] for c in reg['controls']}
+        for x in self.R['tests']:
+            for c in [c.strip() for c in x['controls'].split(',') if c.strip().startswith('CTL-')]: self.assertIn(c, ids, x['data'])
+        areas = {c['rule_area'].split(' ')[0] for c in reg['controls']}
+        for n in '1234567': self.assertIn(n, areas, f'rule area {n} has no control')
+
+    def test_controls_register_is_current(self):
+        import contextlib, io
+        from sdem.controls import main
+        with contextlib.redirect_stdout(io.StringIO()): self.assertEqual(main(['--check']), 0)
+
 if __name__ == '__main__':
     unittest.main()

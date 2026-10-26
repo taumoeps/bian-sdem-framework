@@ -1,0 +1,17 @@
+{
+  "errors": [
+    "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-01: entity 'A1.BusinessWidget' is not in the metamodel",
+    "level A1 (synthetic-bank-payments-a1): relationship PRC-PAY-01 -realization-> CAP-PAY-010: entity 'A1.BusinessWidget' is not in the metamodel",
+    "level A1 (synthetic-bank-payments-a1): relationship PRC-PAY-01 -composition-> ACT-PAY-01a: entity 'A1.BusinessWidget' is not in the metamodel",
+    "level A1 (synthetic-bank-payments-a1): relationship PRC-PAY-01 -composition-> ACT-PAY-01b: entity 'A1.BusinessWidget' is not in the metamodel",
+    "level A1 (synthetic-bank-payments-a1): relationship PRC-PAY-01 -access-> BO-PAY-INSTR: entity 'A1.BusinessWidget' is not in the metamodel"
+  ],
+  "warnings": [
+    "instance BD-PAYMENTS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+    "instance SD-PE: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+    "instance SD-PA: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+    "instance SD-PE: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+    "instance SD-PA: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+    "instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)"
+  ]
+}

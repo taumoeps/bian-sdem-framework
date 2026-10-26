@@ -1,0 +1,1116 @@
+[
+  {
+    "plan_id": "S32",
+    "connection": "APP-PAY-HUB → DEP-PAYHUB-PROD",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "DEP-PAYHUB-PROD.component_id",
+      "APP-PAY-HUB.deployed_as"
+    ],
+    "reasoning": "data join; a4 DEP-PAYHUB-PROD.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-PROD",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-001",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S32",
+    "connection": "APP-PAY-HUB → DEP-PAYHUB-UAT",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "DEP-PAYHUB-UAT.component_id",
+      "APP-PAY-HUB.deployed_as"
+    ],
+    "reasoning": "data join; a4 DEP-PAYHUB-UAT.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-UAT",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-002",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S32",
+    "connection": "CMP-PAY-EXEC → DEP-PAYEXEC-PROD",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "DEP-PAYEXEC-PROD.component_id",
+      "CMP-PAY-EXEC.deployed_as"
+    ],
+    "reasoning": "data join; a4 DEP-PAYEXEC-PROD.component_id = CMP-PAY-EXEC; a3 CMP-PAY-EXEC.deployed_as lists DEP-PAYEXEC-PROD",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-003",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S33",
+    "connection": "APP-PAY-HUB → INF-K8S-PAY-PROD",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-PROD",
+      "a4 INF-K8S-PAY-PROD.hosts lists APP-PAY-HUB",
+      "a4 deployment DEP-PAYHUB-PROD (component APP-PAY-HUB) names platform INF-K8S-PAY-PROD"
+    ],
+    "reasoning": "data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-PROD; a4 INF-K8S-PAY-PROD.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-PROD (component APP-PAY-HUB) names platform INF-K8S-PAY-PROD",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-004",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S33",
+    "connection": "APP-PAY-HUB → INF-K8S-PAY-UAT",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-UAT",
+      "a4 INF-K8S-PAY-UAT.hosts lists APP-PAY-HUB",
+      "a4 deployment DEP-PAYHUB-UAT (component APP-PAY-HUB) names platform INF-K8S-PAY-UAT"
+    ],
+    "reasoning": "data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-UAT; a4 INF-K8S-PAY-UAT.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-UAT (component APP-PAY-HUB) names platform INF-K8S-PAY-UAT",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-005",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S33",
+    "connection": "CMP-PAY-EXEC → INF-K8S-PAY-PROD",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a3 CMP-PAY-EXEC.deployed_on lists INF-K8S-PAY-PROD",
+      "a4 INF-K8S-PAY-PROD.hosts lists CMP-PAY-EXEC",
+      "a4 deployment DEP-PAYEXEC-PROD (component CMP-PAY-EXEC) names platform INF-K8S-PAY-PROD"
+    ],
+    "reasoning": "data join (S36 subsumed in S33); a3 CMP-PAY-EXEC.deployed_on lists INF-K8S-PAY-PROD; a4 INF-K8S-PAY-PROD.hosts lists CMP-PAY-EXEC; a4 deployment DEP-PAYEXEC-PROD (component CMP-PAY-EXEC) names platform INF-K8S-PAY-PROD",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-006",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S41",
+    "connection": "SVC-PAY-INIT → TS-SECRETS",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a3 SVC-PAY-INIT.consumes lists TS-SECRETS"
+    ],
+    "reasoning": "data join; a3 SVC-PAY-INIT.consumes lists TS-SECRETS",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-001",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S41",
+    "connection": "SVC-PAY-INIT → TS-MQ",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a3 SVC-PAY-INIT.consumes lists TS-MQ"
+    ],
+    "reasoning": "data join; a3 SVC-PAY-INIT.consumes lists TS-MQ",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-002",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S50",
+    "connection": "ENT-PAY-INSTR → INF-PG-PAY-PROD",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a3 ENT-PAY-INSTR.stored_in lists INF-PG-PAY-PROD"
+    ],
+    "reasoning": "data join; a3 ENT-PAY-INSTR.stored_in lists INF-PG-PAY-PROD",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-003",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S50",
+    "connection": "ENT-PAY-EVENT → INF-PG-PAY-PROD",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a3 ENT-PAY-EVENT.stored_in lists INF-PG-PAY-PROD"
+    ],
+    "reasoning": "data join; a3 ENT-PAY-EVENT.stored_in lists INF-PG-PAY-PROD",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-004",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S50",
+    "connection": "ENT-ACCOUNT-CACHE → INF-PG-PAY-PROD",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a3 ENT-ACCOUNT-CACHE.stored_in lists INF-PG-PAY-PROD"
+    ],
+    "reasoning": "data join; a3 ENT-ACCOUNT-CACHE.stored_in lists INF-PG-PAY-PROD",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-005",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S06",
+    "connection": "ACT-PAY-01a → SO-PI-01",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a1 ACT-PAY-01a.invokes lists SO-PI-01"
+    ],
+    "reasoning": "data join; a1 ACT-PAY-01a.invokes lists SO-PI-01",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-006",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S06",
+    "connection": "ACT-PAY-01b → SO-PI-02",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a1 ACT-PAY-01b.invokes lists SO-PI-02"
+    ],
+    "reasoning": "data join; a1 ACT-PAY-01b.invokes lists SO-PI-02",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-007",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S06",
+    "connection": "ACT-PAY-02a → SO-PI-03",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a1 ACT-PAY-02a.invokes lists SO-PI-03"
+    ],
+    "reasoning": "data join; a1 ACT-PAY-02a.invokes lists SO-PI-03",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-008",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S06",
+    "connection": "ACT-PAY-02b → SO-PI-04",
+    "step_assigned": 1,
+    "step_used": 1,
+    "fallback": false,
+    "data_read": [
+      "a1 ACT-PAY-02b.invokes lists SO-PI-04"
+    ],
+    "reasoning": "data join; a1 ACT-PAY-02b.invokes lists SO-PI-04",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-009",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S24",
+    "connection": "SO-PI-06 → API-PI-06",
+    "step_assigned": 2,
+    "step_used": 2,
+    "fallback": false,
+    "data_read": [
+      "SO-PI-06.action_term/qualifier/attributes",
+      "API-PI-06.method/path/payload_fields"
+    ],
+    "reasoning": "no decision: action term 'Notify' has no REST form; no qualifier, none in path; payload 1 matched (50%): ['paymentinstructionreference']",
+    "confidence_predicted": "high",
+    "confidence_given": null,
+    "proposal_id": null,
+    "outcome": "no_proposal"
+  },
+  {
+    "plan_id": "S24",
+    "connection": "SO-PI-01 → API-PI-01",
+    "step_assigned": 2,
+    "step_used": 2,
+    "fallback": false,
+    "data_read": [
+      "SO-PI-01.action_term/behavior_qualifier/input_attributes/output_attributes",
+      "API-PI-01.method/path/payload_fields"
+    ],
+    "reasoning": "decision 1: Initiate ↔ POST; no qualifier, none in path; payload 8 matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'remittanceinformation', 'valuedate']",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-007",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S24",
+    "connection": "SO-PI-02 → API-PI-02",
+    "step_assigned": 2,
+    "step_used": 2,
+    "fallback": false,
+    "data_read": [
+      "SO-PI-02.action_term/behavior_qualifier/input_attributes/output_attributes",
+      "API-PI-02.method/path/payload_fields"
+    ],
+    "reasoning": "decision 1: Evaluate ↔ POST; qualifier in path; payload 3 matched (100%): ['authorisationstatu', 'paymentinstructionreference', 'paymentstatu']",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-008",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S26",
+    "connection": "BQ-VALIDATION → API-PI-02",
+    "step_assigned": 2,
+    "step_used": 2,
+    "fallback": false,
+    "data_read": [
+      "API-PI-02.path"
+    ],
+    "reasoning": "qualifier Validation in path of API-PI-02, which implements SO-PI-02 (P-UCE1-008)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-010",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S24",
+    "connection": "SO-PI-03 → API-PI-03",
+    "step_assigned": 2,
+    "step_used": 2,
+    "fallback": false,
+    "data_read": [
+      "SO-PI-03.action_term/behavior_qualifier/input_attributes/output_attributes",
+      "API-PI-03.method/path/payload_fields"
+    ],
+    "reasoning": "decision 1: Execute ↔ PUT; qualifier in path; payload 3 matched (100%): ['executionreference', 'paymentinstructionreference', 'paymentstatu']",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-009",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S26",
+    "connection": "BQ-EXECUTION → API-PI-03",
+    "step_assigned": 2,
+    "step_used": 2,
+    "fallback": false,
+    "data_read": [
+      "API-PI-03.path"
+    ],
+    "reasoning": "qualifier Execution in path of API-PI-03, which implements SO-PI-03 (P-UCE1-009)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-011",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S24",
+    "connection": "SO-PI-05 → API-PI-05",
+    "step_assigned": 2,
+    "step_used": 2,
+    "fallback": false,
+    "data_read": [
+      "SO-PI-05.action_term/behavior_qualifier/input_attributes/output_attributes",
+      "API-PI-05.method/path/payload_fields"
+    ],
+    "reasoning": "decision 1: Update ↔ PATCH; no qualifier, none in path; payload 5 matched (100%): ['amount', 'creditoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'valuedate']",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-010",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S24",
+    "connection": "SO-PI-04 → API-PI-04",
+    "step_assigned": 2,
+    "step_used": 2,
+    "fallback": true,
+    "data_read": [
+      "SO-PI-04.action_term/behavior_qualifier/input_attributes/output_attributes",
+      "API-PI-04.method/path/payload_fields"
+    ],
+    "reasoning": "decision 2: Retrieve on POST; no qualifier, none in path; payload 4 matched (100%): ['authorisationstatu', 'executionreference', 'paymentinstructionreference', 'paymentstatu'] — method mismatch, proposed one band lower",
+    "confidence_predicted": "high",
+    "confidence_given": 0.6,
+    "proposal_id": "P-UCE1-011",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S30",
+    "connection": "BBO-PAY-INSTR → ENT-PAY-INSTR",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "BBO-PAY-INSTR.attributes",
+      "ENT-PAY-INSTR.attributes"
+    ],
+    "reasoning": "8/8 BOM attributes matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'remittanceinformation', 'valuedate']",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-012",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S20",
+    "connection": "CR-PI → ENT-PAY-INSTR",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "CR-PI.attributes",
+      "ENT-PAY-INSTR.attributes"
+    ],
+    "reasoning": "10/10 control-record attributes matched (100%)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-012",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S31",
+    "connection": "BBOA-AMOUNT → ENT-PAY-INSTR",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "ENT-PAY-INSTR.attributes"
+    ],
+    "reasoning": "attribute amount of BBO-PAY-INSTR is in ENT-PAY-INSTR (MAPPED_TO P-UCE1-012)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-013",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S12",
+    "connection": "BO-PAY-INSTR → BBO-PAY-INSTR",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "BO-PAY-INSTR.attributes/field_aliases",
+      "BBO-PAY-INSTR.attributes"
+    ],
+    "reasoning": "4/8 BOM attributes covered by the glossary (50%)",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "P-UCE1-013",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S02",
+    "connection": "VS-MAKE-PAYMENT → BS-CREDIT-TRANSFER",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "VS-MAKE-PAYMENT.stages",
+      "BS-CREDIT-TRANSFER.operation_sequence"
+    ],
+    "reasoning": "4/4 scenario operations covered in order by stage verbs (100%): [('SO-PI-01', 'VSS-P1'), ('SO-PI-02', 'VSS-P2'), ('SO-PI-03', 'VSS-P3'), ('SO-PI-04', 'VSS-P4')]",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "P-UCE1-014",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S03",
+    "connection": "VSS-P1 → BS-CREDIT-TRANSFER",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "VS-MAKE-PAYMENT.stages",
+      "BS-CREDIT-TRANSFER.operation_sequence"
+    ],
+    "reasoning": "stage VSS-P1 matches an operation of BS-CREDIT-TRANSFER (S02 for VS-MAKE-PAYMENT)",
+    "confidence_predicted": "low",
+    "confidence_given": 0.4,
+    "proposal_id": "C-UCE1-014",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S03",
+    "connection": "VSS-P2 → BS-CREDIT-TRANSFER",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "VS-MAKE-PAYMENT.stages",
+      "BS-CREDIT-TRANSFER.operation_sequence"
+    ],
+    "reasoning": "stage VSS-P2 matches an operation of BS-CREDIT-TRANSFER (S02 for VS-MAKE-PAYMENT)",
+    "confidence_predicted": "low",
+    "confidence_given": 0.4,
+    "proposal_id": "C-UCE1-015",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S03",
+    "connection": "VSS-P3 → BS-CREDIT-TRANSFER",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "VS-MAKE-PAYMENT.stages",
+      "BS-CREDIT-TRANSFER.operation_sequence"
+    ],
+    "reasoning": "stage VSS-P3 matches an operation of BS-CREDIT-TRANSFER (S02 for VS-MAKE-PAYMENT)",
+    "confidence_predicted": "low",
+    "confidence_given": 0.4,
+    "proposal_id": "C-UCE1-016",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S03",
+    "connection": "VSS-P4 → BS-CREDIT-TRANSFER",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "VS-MAKE-PAYMENT.stages",
+      "BS-CREDIT-TRANSFER.operation_sequence"
+    ],
+    "reasoning": "stage VSS-P4 matches an operation of BS-CREDIT-TRANSFER (S02 for VS-MAKE-PAYMENT)",
+    "confidence_predicted": "low",
+    "confidence_given": 0.4,
+    "proposal_id": "C-UCE1-017",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S19",
+    "connection": "AT-PAY-INSTR → ENT-PAY-INSTR",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "AT-PAY-INSTR.aliases",
+      "ENT-PAY-INSTR.name"
+    ],
+    "reasoning": "['instruct', 'payment'] of AT-PAY-INSTR in entity name 'payment_instruction'",
+    "confidence_predicted": "low",
+    "confidence_given": 0.4,
+    "proposal_id": "C-UCE1-018",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S19",
+    "connection": "AT-PAY-INSTR → ENT-PAY-EVENT",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "AT-PAY-INSTR.aliases",
+      "ENT-PAY-EVENT.name"
+    ],
+    "reasoning": "['payment'] of AT-PAY-INSTR in entity name 'payment_event'",
+    "confidence_predicted": "low",
+    "confidence_given": 0.4,
+    "proposal_id": "C-UCE1-019",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S19",
+    "connection": "AT-PAY-TXN → ENT-PAY-INSTR",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "AT-PAY-TXN.aliases",
+      "ENT-PAY-INSTR.name"
+    ],
+    "reasoning": "['payment'] of AT-PAY-TXN in entity name 'payment_instruction'",
+    "confidence_predicted": "low",
+    "confidence_given": 0.4,
+    "proposal_id": "C-UCE1-020",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S19",
+    "connection": "AT-PAY-TXN → ENT-PAY-EVENT",
+    "step_assigned": 4,
+    "step_used": 4,
+    "fallback": false,
+    "data_read": [
+      "AT-PAY-TXN.aliases",
+      "ENT-PAY-EVENT.name"
+    ],
+    "reasoning": "['payment'] of AT-PAY-TXN in entity name 'payment_event'",
+    "confidence_predicted": "low",
+    "confidence_given": 0.4,
+    "proposal_id": "C-UCE1-021",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S17",
+    "connection": "SD-PI → APP-PAY-HUB",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "IMPLEMENTED_BY P-UCE1-007",
+      "IMPLEMENTED_BY P-UCE1-008",
+      "IMPLEMENTED_BY P-UCE1-009",
+      "IMPLEMENTED_BY P-UCE1-010",
+      "IMPLEMENTED_BY P-UCE1-011"
+    ],
+    "reasoning": "implements SO-PI-01 via API-PI-01 (P-UCE1-007); SO-PI-02 via API-PI-02 (P-UCE1-008); SO-PI-03 via API-PI-03 (P-UCE1-009); SO-PI-05 via API-PI-05 (P-UCE1-010); SO-PI-04 via API-PI-04 (P-UCE1-011)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "P-UCE1-015",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S04",
+    "connection": "PRC-PAY-01 → SD-PI",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "SO-PI-01 (PRC-PAY-01.invokes)",
+      "SO-PI-02 (PRC-PAY-01.invokes)"
+    ],
+    "reasoning": "invokes SO-PI-01 (PRC-PAY-01.invokes); SO-PI-02 (PRC-PAY-01.invokes)",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "P-UCE1-016",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S04",
+    "connection": "PRC-PAY-02 → SD-PI",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "SO-PI-03 (PRC-PAY-02.invokes)",
+      "SO-PI-04 (PRC-PAY-02.invokes)"
+    ],
+    "reasoning": "invokes SO-PI-03 (PRC-PAY-02.invokes); SO-PI-04 (PRC-PAY-02.invokes)",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "P-UCE1-017",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S01",
+    "connection": "CAP-PAY-010 → SD-PI",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "PRC-PAY-01",
+      "PRC-PAY-02"
+    ],
+    "reasoning": "all 2 processes of the capability use the domain",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "P-UCE1-018",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S07",
+    "connection": "ACT-PAY-01a → SD-PI",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "C-UCE1-006"
+    ],
+    "reasoning": "S06 C-UCE1-006: ACT-PAY-01a → SO-PI-01, in SD-PI",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-022",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S07",
+    "connection": "ACT-PAY-01b → SD-PI",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "C-UCE1-007"
+    ],
+    "reasoning": "S06 C-UCE1-007: ACT-PAY-01b → SO-PI-02, in SD-PI",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-023",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S07",
+    "connection": "ACT-PAY-02a → SD-PI",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "C-UCE1-008"
+    ],
+    "reasoning": "S06 C-UCE1-008: ACT-PAY-02a → SO-PI-03, in SD-PI",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-024",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S07",
+    "connection": "ACT-PAY-02b → SD-PI",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "C-UCE1-009"
+    ],
+    "reasoning": "S06 C-UCE1-009: ACT-PAY-02b → SO-PI-04, in SD-PI",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-025",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S16",
+    "connection": "BD-PAYMENTS → APP-PAY-HUB",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-015"
+    ],
+    "reasoning": "BD-PAYMENTS composes SD-PI, REALIZED_BY APP-PAY-HUB (P-UCE1-015)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-026",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S25",
+    "connection": "SO-PI-01 → SVC-PAY-INIT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-007"
+    ],
+    "reasoning": "SO-PI-01 IMPLEMENTED_BY API-PI-01 (P-UCE1-007); IFC-PAY-API composes it and is assigned to SVC-PAY-INIT",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-027",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S22",
+    "connection": "SG-PI-1 → SVC-PAY-INIT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-007"
+    ],
+    "reasoning": "SG-PI-1 contains SO-PI-01, IMPLEMENTED_BY API-PI-01 exposed through IFC-PAY-API → SVC-PAY-INIT",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-028",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S23",
+    "connection": "SG-PI-1 → IFC-PAY-API",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-007"
+    ],
+    "reasoning": "SG-PI-1 contains SO-PI-01, IMPLEMENTED_BY API-PI-01 in IFC-PAY-API",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-029",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S25",
+    "connection": "SO-PI-02 → SVC-PAY-INIT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-008"
+    ],
+    "reasoning": "SO-PI-02 IMPLEMENTED_BY API-PI-02 (P-UCE1-008); IFC-PAY-API composes it and is assigned to SVC-PAY-INIT",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-030",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S22",
+    "connection": "SG-PI-2 → SVC-PAY-INIT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-008"
+    ],
+    "reasoning": "SG-PI-2 contains SO-PI-02, IMPLEMENTED_BY API-PI-02 exposed through IFC-PAY-API → SVC-PAY-INIT",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-031",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S23",
+    "connection": "SG-PI-2 → IFC-PAY-API",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-008"
+    ],
+    "reasoning": "SG-PI-2 contains SO-PI-02, IMPLEMENTED_BY API-PI-02 in IFC-PAY-API",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-032",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S25",
+    "connection": "SO-PI-03 → SVC-PAY-INIT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-009"
+    ],
+    "reasoning": "SO-PI-03 IMPLEMENTED_BY API-PI-03 (P-UCE1-009); IFC-PAY-API composes it and is assigned to SVC-PAY-INIT",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-033",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S25",
+    "connection": "SO-PI-05 → SVC-PAY-INIT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-010"
+    ],
+    "reasoning": "SO-PI-05 IMPLEMENTED_BY API-PI-05 (P-UCE1-010); IFC-PAY-API composes it and is assigned to SVC-PAY-INIT",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-034",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S25",
+    "connection": "SO-PI-04 → SVC-PAY-INIT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-011"
+    ],
+    "reasoning": "SO-PI-04 IMPLEMENTED_BY API-PI-04 (P-UCE1-011); IFC-PAY-API composes it and is assigned to SVC-PAY-INIT",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-035",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S28",
+    "connection": "BS-CREDIT-TRANSFER → SVC-PAY-INIT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "C-UCE1-027"
+    ],
+    "reasoning": "SO-PI-01 in the sequence → SVC-PAY-INIT (S25 C-UCE1-027)",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-036",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S29",
+    "connection": "BS-CREDIT-TRANSFER → APP-PAY-HUB",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-015"
+    ],
+    "reasoning": "SO-PI-01 in the sequence is in SD-PI, REALIZED_BY APP-PAY-HUB (P-UCE1-015)",
+    "confidence_predicted": "medium",
+    "confidence_given": 0.6,
+    "proposal_id": "C-UCE1-037",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S40",
+    "connection": "APP-PAY-HUB → ENV-PAY-PROD",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-001"
+    ],
+    "reasoning": "DEPLOYED_AS DEP-PAYHUB-PROD (P-UCE1-001) in environment ENV-PAY-PROD",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-038",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-01 → DEP-PAYHUB-PROD",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-001"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-01; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-PROD (P-UCE1-001)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-039",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-02 → DEP-PAYHUB-PROD",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-001"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-02; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-PROD (P-UCE1-001)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-040",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-03 → DEP-PAYHUB-PROD",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-001"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-03; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-PROD (P-UCE1-001)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-041",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-04 → DEP-PAYHUB-PROD",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-001"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-04; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-PROD (P-UCE1-001)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-042",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-05 → DEP-PAYHUB-PROD",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-001"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-05; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-PROD (P-UCE1-001)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-043",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-06 → DEP-PAYHUB-PROD",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-001"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-06; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-PROD (P-UCE1-001)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-044",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S40",
+    "connection": "APP-PAY-HUB → ENV-PAY-UAT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-002"
+    ],
+    "reasoning": "DEPLOYED_AS DEP-PAYHUB-UAT (P-UCE1-002) in environment ENV-PAY-UAT",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-045",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-01 → DEP-PAYHUB-UAT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-002"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-01; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-UAT (P-UCE1-002)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-046",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-02 → DEP-PAYHUB-UAT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-002"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-02; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-UAT (P-UCE1-002)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-047",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-03 → DEP-PAYHUB-UAT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-002"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-03; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-UAT (P-UCE1-002)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-048",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-04 → DEP-PAYHUB-UAT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-002"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-04; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-UAT (P-UCE1-002)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-049",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-05 → DEP-PAYHUB-UAT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-002"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-05; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-UAT (P-UCE1-002)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-050",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S47",
+    "connection": "API-PI-06 → DEP-PAYHUB-UAT",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-002"
+    ],
+    "reasoning": "APP-PAY-HUB composes … API-PI-06; APP-PAY-HUB DEPLOYED_AS DEP-PAYHUB-UAT (P-UCE1-002)",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-051",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S40",
+    "connection": "CMP-PAY-EXEC → ENV-PAY-PROD",
+    "step_assigned": 3,
+    "step_used": 3,
+    "fallback": false,
+    "data_read": [
+      "P-UCE1-003"
+    ],
+    "reasoning": "DEPLOYED_AS DEP-PAYEXEC-PROD (P-UCE1-003) in environment ENV-PAY-PROD",
+    "confidence_predicted": "high",
+    "confidence_given": 0.8,
+    "proposal_id": "C-UCE1-052",
+    "outcome": "proposed"
+  },
+  {
+    "plan_id": "S01",
+    "connection": "CAP-PAY-000",
+    "step_assigned": 3,
+    "step_used": 5,
+    "fallback": false,
+    "data_read": [
+      "CAP-PAY-000 composes ['CAP-PAY-010']"
+    ],
+    "reasoning": "parent capability — report-only, never proposed (M0 run 2)",
+    "confidence_predicted": "medium",
+    "confidence_given": null,
+    "proposal_id": null,
+    "outcome": "no_proposal"
+  }
+]

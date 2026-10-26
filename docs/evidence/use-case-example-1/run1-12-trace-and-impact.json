@@ -1,0 +1,163 @@
+{
+  "trace": {
+    "up": [
+      [
+        "P-UCE1-004",
+        "DEPLOYED_ON",
+        "APP-PAY-HUB"
+      ],
+      [
+        "P-UCE1-015",
+        "REALIZED_BY",
+        "SD-PI"
+      ],
+      [
+        "P-UCE1-016",
+        "USES_DOMAIN",
+        "PRC-PAY-01"
+      ],
+      [
+        "P-UCE1-017",
+        "USES_DOMAIN",
+        "PRC-PAY-02"
+      ],
+      [
+        "P-UCE1-018",
+        "SUPPORTED_BY",
+        "CAP-PAY-010"
+      ],
+      [
+        "P-UCE1-006",
+        "DEPLOYED_ON",
+        "CMP-PAY-EXEC"
+      ]
+    ],
+    "down": [
+      [
+        "P-UCE1-018",
+        "SUPPORTED_BY",
+        "SD-PI"
+      ],
+      [
+        "P-UCE1-015",
+        "REALIZED_BY",
+        "APP-PAY-HUB"
+      ],
+      [
+        "P-UCE1-001",
+        "DEPLOYED_AS",
+        "DEP-PAYHUB-PROD"
+      ],
+      [
+        "P-UCE1-002",
+        "DEPLOYED_AS",
+        "DEP-PAYHUB-UAT"
+      ],
+      [
+        "P-UCE1-004",
+        "DEPLOYED_ON",
+        "INF-K8S-PAY-PROD"
+      ],
+      [
+        "P-UCE1-005",
+        "DEPLOYED_ON",
+        "INF-K8S-PAY-UAT"
+      ]
+    ],
+    "federated_links": 17
+  },
+  "impact": {
+    "changed": "INF-K8S-PAY-PROD",
+    "change": "rehost",
+    "reason": "hosting changes only; deployment records must be superseded, functional layers unaffected",
+    "rules_version": "0.5.0",
+    "instances": [
+      {
+        "id": "INF-K8S-PAY-PROD",
+        "name": "Managed Kubernetes — payments (production)",
+        "type": "A4.SystemSoftware",
+        "level": "A4",
+        "relation": "self",
+        "classification": "design_change_required",
+        "via": []
+      },
+      {
+        "id": "APP-PAY-HUB",
+        "name": "Payments Hub",
+        "type": "A3.ApplicationComponent",
+        "level": "A3",
+        "relation": "up1",
+        "classification": "design_change_required",
+        "via": [
+          "P-UCE1-004"
+        ]
+      },
+      {
+        "id": "SD-PI",
+        "name": "Payment Initiation (synthetic selection)",
+        "type": "A2.ServiceDomain",
+        "level": "A2",
+        "relation": "up2+",
+        "classification": "no_impact",
+        "via": [
+          "P-UCE1-004",
+          "P-UCE1-015"
+        ]
+      },
+      {
+        "id": "PRC-PAY-01",
+        "name": "Capture and validate payment instruction",
+        "type": "A1.BusinessProcess",
+        "level": "A1",
+        "relation": "up2+",
+        "classification": "no_impact",
+        "via": [
+          "P-UCE1-004",
+          "P-UCE1-015",
+          "P-UCE1-016"
+        ]
+      },
+      {
+        "id": "PRC-PAY-02",
+        "name": "Execute and confirm payment",
+        "type": "A1.BusinessProcess",
+        "level": "A1",
+        "relation": "up2+",
+        "classification": "no_impact",
+        "via": [
+          "P-UCE1-004",
+          "P-UCE1-015",
+          "P-UCE1-017"
+        ]
+      },
+      {
+        "id": "CAP-PAY-010",
+        "name": "Initiate Payment",
+        "type": "A1.BusinessCapability",
+        "level": "A1",
+        "relation": "up2+",
+        "classification": "no_impact",
+        "via": [
+          "P-UCE1-004",
+          "P-UCE1-015",
+          "P-UCE1-018"
+        ]
+      },
+      {
+        "id": "CMP-PAY-EXEC",
+        "name": "Execution Gateway",
+        "type": "A3.ApplicationComponent",
+        "level": "A3",
+        "relation": "up1",
+        "classification": "design_change_required",
+        "via": [
+          "P-UCE1-006"
+        ]
+      }
+    ],
+    "mappings_to_supersede": [
+      "P-UCE1-004",
+      "P-UCE1-006"
+    ]
+  }
+}

@@ -1,0 +1,470 @@
+{
+  "registry": {
+    "registry_version": "0.4.0",
+    "metamodel_version": "0.4.0",
+    "mappings": [
+      {
+        "mapping_id": "P-UCE1-001",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "7.1"
+        },
+        "relationship": "DEPLOYED_AS",
+        "target": {
+          "id": "DEP-PAYHUB-PROD",
+          "type": "A4.Deployment",
+          "version": "1.0"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S32 step1 data join; a4 DEP-PAYHUB-PROD.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-PROD"
+        ],
+        "rationale": "data join; a4 DEP-PAYHUB-PROD.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-PROD",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-002",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "7.1"
+        },
+        "relationship": "DEPLOYED_AS",
+        "target": {
+          "id": "DEP-PAYHUB-UAT",
+          "type": "A4.Deployment",
+          "version": "1.0"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S32 step1 data join; a4 DEP-PAYHUB-UAT.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-UAT"
+        ],
+        "rationale": "data join; a4 DEP-PAYHUB-UAT.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-UAT",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-003",
+        "source": {
+          "id": "CMP-PAY-EXEC",
+          "type": "A3.ApplicationComponent",
+          "version": "3.4"
+        },
+        "relationship": "DEPLOYED_AS",
+        "target": {
+          "id": "DEP-PAYEXEC-PROD",
+          "type": "A4.Deployment",
+          "version": "1.0"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S32 step1 data join; a4 DEP-PAYEXEC-PROD.component_id = CMP-PAY-EXEC; a3 CMP-PAY-EXEC.deployed_as lists DEP-PAYEXEC-PROD"
+        ],
+        "rationale": "data join; a4 DEP-PAYEXEC-PROD.component_id = CMP-PAY-EXEC; a3 CMP-PAY-EXEC.deployed_as lists DEP-PAYEXEC-PROD",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-004",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "7.1"
+        },
+        "relationship": "DEPLOYED_ON",
+        "target": {
+          "id": "INF-K8S-PAY-PROD",
+          "type": "A4.SystemSoftware",
+          "version": "1.29"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S33 step1 data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-PROD; a4 INF-K8S-PAY-PROD.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-PROD (component APP-PAY-HUB) names platform INF-K8S-PAY-PROD"
+        ],
+        "rationale": "data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-PROD; a4 INF-K8S-PAY-PROD.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-PROD (component APP-PAY-HUB) names platform INF-K8S-PAY-PROD",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-005",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "7.1"
+        },
+        "relationship": "DEPLOYED_ON",
+        "target": {
+          "id": "INF-K8S-PAY-UAT",
+          "type": "A4.SystemSoftware",
+          "version": "1.29"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S33 step1 data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-UAT; a4 INF-K8S-PAY-UAT.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-UAT (component APP-PAY-HUB) names platform INF-K8S-PAY-UAT"
+        ],
+        "rationale": "data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-UAT; a4 INF-K8S-PAY-UAT.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-UAT (component APP-PAY-HUB) names platform INF-K8S-PAY-UAT",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-006",
+        "source": {
+          "id": "CMP-PAY-EXEC",
+          "type": "A3.ApplicationComponent",
+          "version": "3.4"
+        },
+        "relationship": "DEPLOYED_ON",
+        "target": {
+          "id": "INF-K8S-PAY-PROD",
+          "type": "A4.SystemSoftware",
+          "version": "1.29"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S33 step1 data join (S36 subsumed in S33); a3 CMP-PAY-EXEC.deployed_on lists INF-K8S-PAY-PROD; a4 INF-K8S-PAY-PROD.hosts lists CMP-PAY-EXEC; a4 deployment DEP-PAYEXEC-PROD (component CMP-PAY-EXEC) names platform INF-K8S-PAY-PROD"
+        ],
+        "rationale": "data join (S36 subsumed in S33); a3 CMP-PAY-EXEC.deployed_on lists INF-K8S-PAY-PROD; a4 INF-K8S-PAY-PROD.hosts lists CMP-PAY-EXEC; a4 deployment DEP-PAYEXEC-PROD (component CMP-PAY-EXEC) names platform INF-K8S-PAY-PROD",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-007",
+        "source": {
+          "id": "SO-PI-01",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "API-PI-01",
+          "type": "A3.APIOperation",
+          "version": "2.0"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S24 step2 decision 1: Initiate ↔ POST; no qualifier, none in path; payload 8 matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'remittanceinformation', 'valuedate']"
+        ],
+        "rationale": "decision 1: Initiate ↔ POST; no qualifier, none in path; payload 8 matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'remittanceinformation', 'valuedate']",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-008",
+        "source": {
+          "id": "SO-PI-02",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "API-PI-02",
+          "type": "A3.APIOperation",
+          "version": "2.0"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S24 step2 decision 1: Evaluate ↔ POST; qualifier in path; payload 3 matched (100%): ['authorisationstatu', 'paymentinstructionreference', 'paymentstatu']"
+        ],
+        "rationale": "decision 1: Evaluate ↔ POST; qualifier in path; payload 3 matched (100%): ['authorisationstatu', 'paymentinstructionreference', 'paymentstatu']",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-009",
+        "source": {
+          "id": "SO-PI-03",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "API-PI-03",
+          "type": "A3.APIOperation",
+          "version": "2.0"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S24 step2 decision 1: Execute ↔ PUT; qualifier in path; payload 3 matched (100%): ['executionreference', 'paymentinstructionreference', 'paymentstatu']"
+        ],
+        "rationale": "decision 1: Execute ↔ PUT; qualifier in path; payload 3 matched (100%): ['executionreference', 'paymentinstructionreference', 'paymentstatu']",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-010",
+        "source": {
+          "id": "SO-PI-05",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "API-PI-05",
+          "type": "A3.APIOperation",
+          "version": "2.0"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S24 step2 decision 1: Update ↔ PATCH; no qualifier, none in path; payload 5 matched (100%): ['amount', 'creditoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'valuedate']"
+        ],
+        "rationale": "decision 1: Update ↔ PATCH; no qualifier, none in path; payload 5 matched (100%): ['amount', 'creditoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'valuedate']",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-011",
+        "source": {
+          "id": "SO-PI-04",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "API-PI-04",
+          "type": "A3.APIOperation",
+          "version": "2.0"
+        },
+        "status": "approved",
+        "confidence": 0.6,
+        "evidence": [
+          "engine_rationale:S24 step2 decision 2: Retrieve on POST; no qualifier, none in path; payload 4 matched (100%): ['authorisationstatu', 'executionreference', 'paymentinstructionreference', 'paymentstatu'] — method mismatch, proposed one band lower"
+        ],
+        "rationale": "decision 2: Retrieve on POST; no qualifier, none in path; payload 4 matched (100%): ['authorisationstatu', 'executionreference', 'paymentinstructionreference', 'paymentstatu'] — method mismatch, proposed one band lower",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-012",
+        "source": {
+          "id": "BBO-PAY-INSTR",
+          "type": "A2.BusinessObject",
+          "version": "1.0",
+          "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION"
+        },
+        "relationship": "MAPPED_TO",
+        "target": {
+          "id": "ENT-PAY-INSTR",
+          "type": "A3.DataEntity",
+          "version": "7.1"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S30 step4 8/8 BOM attributes matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'remittanceinformation', 'valuedate']"
+        ],
+        "rationale": "8/8 BOM attributes matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'remittanceinformation', 'valuedate']",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-013",
+        "source": {
+          "id": "BO-PAY-INSTR",
+          "type": "A1.BusinessObject",
+          "version": "1.0"
+        },
+        "relationship": "ALIGNED_TO",
+        "target": {
+          "id": "BBO-PAY-INSTR",
+          "type": "A2.BusinessObject",
+          "version": "1.0",
+          "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION"
+        },
+        "status": "approved",
+        "confidence": 0.6,
+        "evidence": [
+          "engine_rationale:S12 step4 4/8 BOM attributes covered by the glossary (50%)"
+        ],
+        "rationale": "4/8 BOM attributes covered by the glossary (50%)",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-014",
+        "source": {
+          "id": "VS-MAKE-PAYMENT",
+          "type": "A1.ValueStream",
+          "version": "1.0"
+        },
+        "relationship": "ALIGNED_TO",
+        "target": {
+          "id": "BS-CREDIT-TRANSFER",
+          "type": "A2.BusinessScenario",
+          "version": "1.0"
+        },
+        "status": "approved",
+        "confidence": 0.6,
+        "evidence": [
+          "engine_rationale:S02 step4 4/4 scenario operations covered in order by stage verbs (100%): [('SO-PI-01', 'VSS-P1'), ('SO-PI-02', 'VSS-P2'), ('SO-PI-03', 'VSS-P3'), ('SO-PI-04', 'VSS-P4')]"
+        ],
+        "rationale": "4/4 scenario operations covered in order by stage verbs (100%): [('SO-PI-01', 'VSS-P1'), ('SO-PI-02', 'VSS-P2'), ('SO-PI-03', 'VSS-P3'), ('SO-PI-04', 'VSS-P4')]",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-015",
+        "source": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0",
+          "canonical_id": "BIAN-PAYMENT-INITIATION"
+        },
+        "relationship": "REALIZED_BY",
+        "target": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "7.1"
+        },
+        "status": "approved",
+        "confidence": 0.8,
+        "evidence": [
+          "engine_rationale:S17 step3 implements SO-PI-01 via API-PI-01 (P-UCE1-007); SO-PI-02 via API-PI-02 (P-UCE1-008); SO-PI-03 via API-PI-03 (P-UCE1-009); SO-PI-05 via API-PI-05 (P-UCE1-010); SO-PI-04 via API-PI-04 (P-UCE1-011)"
+        ],
+        "rationale": "implements SO-PI-01 via API-PI-01 (P-UCE1-007); SO-PI-02 via API-PI-02 (P-UCE1-008); SO-PI-03 via API-PI-03 (P-UCE1-009); SO-PI-05 via API-PI-05 (P-UCE1-010); SO-PI-04 via API-PI-04 (P-UCE1-011)",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-016",
+        "source": {
+          "id": "PRC-PAY-01",
+          "type": "A1.BusinessProcess",
+          "version": "1.0"
+        },
+        "relationship": "USES_DOMAIN",
+        "target": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0",
+          "canonical_id": "BIAN-PAYMENT-INITIATION"
+        },
+        "status": "approved",
+        "confidence": 0.6,
+        "evidence": [
+          "engine_rationale:S04 step3 invokes SO-PI-01 (PRC-PAY-01.invokes); SO-PI-02 (PRC-PAY-01.invokes)"
+        ],
+        "rationale": "invokes SO-PI-01 (PRC-PAY-01.invokes); SO-PI-02 (PRC-PAY-01.invokes)",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-017",
+        "source": {
+          "id": "PRC-PAY-02",
+          "type": "A1.BusinessProcess",
+          "version": "1.0"
+        },
+        "relationship": "USES_DOMAIN",
+        "target": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0",
+          "canonical_id": "BIAN-PAYMENT-INITIATION"
+        },
+        "status": "approved",
+        "confidence": 0.6,
+        "evidence": [
+          "engine_rationale:S04 step3 invokes SO-PI-03 (PRC-PAY-02.invokes); SO-PI-04 (PRC-PAY-02.invokes)"
+        ],
+        "rationale": "invokes SO-PI-03 (PRC-PAY-02.invokes); SO-PI-04 (PRC-PAY-02.invokes)",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      },
+      {
+        "mapping_id": "P-UCE1-018",
+        "source": {
+          "id": "CAP-PAY-010",
+          "type": "A1.BusinessCapability",
+          "version": "1.0"
+        },
+        "relationship": "SUPPORTED_BY",
+        "target": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0",
+          "canonical_id": "BIAN-PAYMENT-INITIATION"
+        },
+        "status": "approved",
+        "confidence": 0.6,
+        "evidence": [
+          "engine_rationale:S01 step3 all 2 processes of the capability use the domain"
+        ],
+        "rationale": "all 2 processes of the capability use the domain",
+        "baseline_id": "ENGINE-RUN-UCE1",
+        "created_by": "sdem-rules/0.10",
+        "reviewer_id": "use-case-example-1 (simulated architect)",
+        "approved_at": "2026-10-27"
+      }
+    ]
+  },
+  "issues": [
+    "mapping #1 (P-UCE1-001): evidence missing required kind(s) ['deployment_design']",
+    "mapping #2 (P-UCE1-002): evidence missing required kind(s) ['deployment_design']",
+    "mapping #3 (P-UCE1-003): evidence missing required kind(s) ['deployment_design']",
+    "mapping #4 (P-UCE1-004): evidence missing required kind(s) ['deployment_design']",
+    "mapping #5 (P-UCE1-005): evidence missing required kind(s) ['deployment_design']",
+    "mapping #6 (P-UCE1-006): evidence missing required kind(s) ['deployment_design']",
+    "mapping #7 (P-UCE1-007): evidence missing required kind(s) ['api_contract']",
+    "mapping #8 (P-UCE1-008): evidence missing required kind(s) ['api_contract']",
+    "mapping #9 (P-UCE1-009): evidence missing required kind(s) ['api_contract']",
+    "mapping #10 (P-UCE1-010): evidence missing required kind(s) ['api_contract']",
+    "mapping #11 (P-UCE1-011): evidence missing required kind(s) ['api_contract']",
+    "mapping #12 (P-UCE1-012): evidence missing required kind(s) ['data_model']",
+    "mapping #13 (P-UCE1-013): bian_alignment_guidance mapping requires bian_release",
+    "mapping #13 (P-UCE1-013): evidence missing required kind(s) ['business_glossary', 'object_alignment_review']",
+    "mapping #14 (P-UCE1-014): bian_alignment_guidance mapping requires bian_release",
+    "mapping #14 (P-UCE1-014): bian_alignment_guidance mapping requires canonical_id on its A2 target",
+    "mapping #14 (P-UCE1-014): evidence missing required kind(s) ['process_model', 'scenario_suitability_review']",
+    "mapping #15 (P-UCE1-015): evidence missing required kind(s) ['application_architecture_document']",
+    "mapping #16 (P-UCE1-016): evidence missing required kind(s) ['process_model']",
+    "mapping #17 (P-UCE1-017): evidence missing required kind(s) ['process_model']",
+    "mapping #18 (P-UCE1-018): bian_alignment_guidance mapping requires bian_release",
+    "mapping #18 (P-UCE1-018): evidence missing required kind(s) ['business_architecture_document', 'domain_scope_assessment']"
+  ]
+}

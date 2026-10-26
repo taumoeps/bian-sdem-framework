@@ -1,0 +1,13 @@
+{
+  "errors": [
+    "level A1 (synthetic-bank-payments-a1): relationship PRC-PAY-01 -composition-> CAP-PAY-010: A1 relationship A1.BusinessProcess -composition-> A1.BusinessCapability does not match the ArchiMate 3.2 / TOGAF constraints (metamodel/level-relationships.json)"
+  ],
+  "warnings": [
+    "instance BD-PAYMENTS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+    "instance SD-PE: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+    "instance SD-PA: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+    "instance SD-PE: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+    "instance SD-PA: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+    "instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)"
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "$comment": "Controls register: every automatic check that enforces the rulebook (metamodel), where it runs, where its outcome is recorded and what monitors it. Rendered into docs/controls-register.md.",
+  "monitoring_today": "Continuous integration only: every push and pull request runs all controls on the example data. There is no production monitoring, alerting or dashboard yet — that arrives with ingestion of real data (ROADMAP).",
+  "controls": [
+    {
+      "id": "CTL-01",
+      "rule_area": "1 Record types",
+      "control": "Every record is a known, concrete kind of thing (not abstract, not an artefact), of its dataset's layer",
+      "implemented_in": "sdem/graph.py `LevelGraph.validate` (LC-01, LC-02)",
+      "runs": "sdem-graph check; sdem-graph build",
+      "outcome_recorded_in": "command output (ERROR lines); graph store load record — a `rejected` entry listing every error",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_graph.py, tests/test_conformance.py"
+    },
+    {
+      "id": "CTL-02",
+      "rule_area": "2 Record information",
+      "control": "Attribute types, allowed values, required attributes, references and natural keys",
+      "implemented_in": "sdem/conformance.py `check_level` (LC-04 … LC-09, LC-13)",
+      "runs": "sdem-graph check; sdem-graph build",
+      "outcome_recorded_in": "command output (ERROR / WARN lines); graph store load record",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_conformance.py"
+    },
+    {
+      "id": "CTL-03",
+      "rule_area": "3 Links inside a layer",
+      "control": "Only allowed link kinds between the right record types; link-count limits",
+      "implemented_in": "sdem/metamodel.py `relationship_issue` (LC-03); sdem/conformance.py (LC-10, LC-10m)",
+      "runs": "sdem-graph check; sdem-graph build",
+      "outcome_recorded_in": "command output; graph store load record",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_graph.py, tests/test_conformance.py"
+    },
+    {
+      "id": "CTL-04",
+      "rule_area": "2 Record information",
+      "control": "Each record matches its per-entity JSON Schema (the format an adapter writes)",
+      "implemented_in": "schema/entities/*.schema.json (sdem/physical.py)",
+      "runs": "any JSON Schema tool; the test suite",
+      "outcome_recorded_in": "validator output",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_conformance.py (physical model)"
+    },
+    {
+      "id": "CTL-05",
+      "rule_area": "4 Links between layers",
+      "control": "A cross-layer link is one of the 9 types, between the right kinds of record, adjacent layers, no artefact ends",
+      "implemented_in": "sdem/validate.py `validate` (structural verdict)",
+      "runs": "sdem-validate; sdem-graph check; sdem-accept",
+      "outcome_recorded_in": "command output; `--json` verdicts per link",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red (sdem-validate --strict on every registry)"
+    },
+    {
+      "id": "CTL-06",
+      "rule_area": "6 Approving links",
+      "control": "Approval needs a reviewer, a date, the evidence kinds the link type requires, and for BIAN-anchored types a BIAN release and identifier",
+      "implemented_in": "sdem/validate.py `validate` (governance verdict)",
+      "runs": "sdem-validate",
+      "outcome_recorded_in": "command output; `--json` verdicts per link",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+    },
+    {
+      "id": "CTL-07",
+      "rule_area": "6 Approving links",
+      "control": "Approved links are never edited; only allowed status changes",
+      "implemented_in": "sdem/diff.py `diff`",
+      "runs": "sdem-diff (against the previous commit)",
+      "outcome_recorded_in": "command output",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red (sdem-diff --git HEAD~1)"
+    },
+    {
+      "id": "CTL-08",
+      "rule_area": "4 Links between layers",
+      "control": "Both ends of every approved link exist, at the stated version, of the right type",
+      "implemented_in": "sdem/graph.py `FederatedGraph.check` (LC-11)",
+      "runs": "sdem-graph check; sdem-graph build",
+      "outcome_recorded_in": "command output; graph store load record",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+    },
+    {
+      "id": "CTL-09",
+      "rule_area": "5 Finding links",
+      "control": "The engine finds the right links: precision and recall at least the hand-executed runs' on every acceptance case",
+      "implemented_in": "sdem/acceptance.py (`sdem-accept`)",
+      "runs": "sdem-accept; the test suite",
+      "outcome_recorded_in": "acceptance report; the engine's inference log (one record per attempt, including refusals)",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_acceptance.py"
+    },
+    {
+      "id": "CTL-10",
+      "rule_area": "5 Finding links",
+      "control": "Engine output is always `proposed`, valid, never re-proposes an approved link, never names a record that does not exist",
+      "implemented_in": "sdem/rules_engine.py; checked by sdem/acceptance.py `check_proposals`",
+      "runs": "every engine run under sdem-accept",
+      "outcome_recorded_in": "acceptance report",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_acceptance.py"
+    },
+    {
+      "id": "CTL-11",
+      "rule_area": "7 Sources",
+      "control": "Every entity, link row, link type, rule and attribute names its source, reasoning and confidence",
+      "implemented_in": "tests/test_traceability.py (source-reference and completeness tests)",
+      "runs": "the test suite",
+      "outcome_recorded_in": "test output",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+    },
+    {
+      "id": "CTL-12",
+      "rule_area": "7 Sources",
+      "control": "Every confidence rating follows the single confidence rule",
+      "implemented_in": "sdem/confidence.py `--check`",
+      "runs": "sdem-confidence --check",
+      "outcome_recorded_in": "command output",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+    },
+    {
+      "id": "CTL-13",
+      "rule_area": "platform",
+      "control": "Every generated document, diagram and schema matches the records",
+      "implemented_in": "each generator's `--check`",
+      "runs": "CI",
+      "outcome_recorded_in": "command output (STALE lines)",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+    },
+    {
+      "id": "CTL-14",
+      "rule_area": "platform",
+      "control": "The owner's high-level metamodel specification is unchanged",
+      "implemented_in": "tests/test_metamodel_spec.py (SHA-256 pin)",
+      "runs": "the test suite",
+      "outcome_recorded_in": "test output",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+    },
+    {
+      "id": "CTL-15",
+      "rule_area": "platform",
+      "control": "A graph store is only written from data that passes every check; a failed build keeps the last good store; every build is logged",
+      "implemented_in": "sdem/store.py `build`",
+      "runs": "sdem-graph build",
+      "outcome_recorded_in": "the store's `load-record.json` (accepted / rejected, inputs with checksums, errors, warnings, outputs)",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red (build --check on every example store); tests/test_store.py"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "G-A",
+      "rule_area": "5 Finding links",
+      "not_controlled": "How each rule matches lives in the engine's code; nothing checks it against the rule's description in the rulebook",
+      "risk": "the rulebook and the engine could drift apart; only CTL-09 would notice"
+    },
+    {
+      "id": "G-B",
+      "rule_area": "4 Links between layers",
+      "not_controlled": "Each link type's limit (one-to-many …) is recorded but not checked",
+      "risk": "none today — all 9 types are many-to-many"
+    }
+  ]
+}

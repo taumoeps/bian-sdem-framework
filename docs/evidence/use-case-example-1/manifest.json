@@ -1,0 +1,28 @@
+{
+  "example": "use-case-example-1",
+  "run_date": "2026-10-27",
+  "code_commit": "ee0e02d503f736cb8025a4b4672e7804732b2f2c",
+  "script": "scripts/use_case_example_1.py",
+  "script_sha256": "81f3e463bb8cc7a70633d8d179bee46066d50089d8c1d107851e8b221cb24bbd",
+  "files": {
+    "run1-01-check.json": "7e453d8d58a063d59c4135b34f5832082c9f12783d512a132ea4d14e6b7b2496",
+    "run1-02-load-record.json": "53b545c4a4e08bc66e19da057eda60adaea23d2bb5e8cd82867435d3aa980eb7",
+    "run1-03-proposals.json": "5081124f795b91b4727d26128784ac8ecd436ae9dbf9aed8f064b259cb294b3e",
+    "run1-04-inference-log.json": "b6c2a73002e7e10d44b4c27fa09839c6cc4d52b050f14d611c8fac74f51e288d",
+    "run1-05-score.json": "dcc636692aaf706630c14a6a225d28ffa241c36e497cb409aad2e1f8e39dfeca",
+    "run1-06-validate-proposals.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "run1-07-approve-without-evidence.json": "f4251f13789a167d2c51b075adc2df423f6faf1b500390e13f66687f32aea626",
+    "run1-08-approve-with-evidence.json": "d2ac2dfe5ea6e78c9baffc3c2638c8826e8e308d52b9f695a32700c788099310",
+    "run1-09-approved-registry.json": "405ee2bd0c038c7538c08040bcd1358595599b70457006de6d0f19b697b7b74d",
+    "run1-10-edit-after-approval.json": "16d78263361cf76fe469671c25429e896131609cb0d2b048c2ec5bf3f3d7d7b3",
+    "run1-11-load-record.json": "03e61d8d0cb4e8e51c5b5c3ac05df1a9cd56b15920dc9f1d62c2bee3b76c85d3",
+    "run1-12-trace-and-impact.json": "848a3065a9d0c858a0bbb62775f9256a922a5a18b54930389c841187a794dcf3",
+    "run2-1-unknown-type.json": "b02b24fa9e3a616ee02e5e20afb7a7ce0a34616cee50ad96fbd69c939a7d6099",
+    "run2-2-bad-value.json": "60f921794b3e0cbe7ea16dd929e6d4443077855df73ae144be1e19b89ee8e194",
+    "run2-3-disallowed-link.json": "60a15b236caeac793eed9fd892d287583ac38dabee4e8db8115ce0c889c64d16",
+    "run2-4-wrong-link-type.json": "d1bd63d236175a5239308827035e179b6fd6f25740b65e73e9bbe3c94ee255c4",
+    "run2-5a-application-silent.json": "0601e9530ded5a284c89860bee1e9c085a78c1704935779fb298338af7471471",
+    "run2-5b-no-server.json": "21c62e22433f504f3a98e210720b09504a3d9c77b82e38469dfa0050fac9ce3a",
+    "run2-7-rule-without-source.json": "64ce441f7f225bc1ab70f402cffc93c8dc61a44f37ab313c2751b017ea74c533"
+  }
+}
