@@ -35,6 +35,8 @@ JOURNEYS = {
                  'sdem aid project --have examples/payment-initiation/a1-business.json --catalogue bian.json --out work/prj'),
     'view':     ('J7', 'write the HTML picture of a graph store, optionally with a projection', 'sdem.graph', ['view'],
                  'sdem view --graph examples/card-fraud-alerts/graph -o work/view.html'),
+    'home':     ('J7', 'the main dashboard: the metamodel (entities, links inside and between architectures, engine rules), its picture, health, configuration — and every project', 'sdem.home', [],
+                 'sdem home -o work/sdem'),
     'matrix':   ('J5', 'business → BIAN → application → technology matrices from approved links', 'sdem.matrix', [],
                  'sdem matrix --estate examples/payment-initiation --md work/matrix.md'),
     'dashboard': ('J7', 'one read-only HTML dashboard for an estate: health, attention, review, trace & impact, matrices, changes, AID, controls', 'sdem.dashboard', [],

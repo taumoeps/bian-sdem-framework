@@ -1,6 +1,6 @@
 # SDEM Dashboard — Specification
 
-> **Status: phase 1 approved and built 2026-10-28; phase 2 proposed.** Requirements for the design in [`sdem-dashboard-design.md`](sdem-dashboard-design.md). Each requirement has an ID (DB-*), a status and how it is accepted.
+> **Status: phase 1 approved and built 2026-10-28 (with the main dashboard, `sdem home`); phase 2 proposed.** Requirements for the design in [`sdem-dashboard-design.md`](sdem-dashboard-design.md). Each requirement has an ID (DB-*), a status and how it is accepted.
 
 ## 1. Generation
 
@@ -24,6 +24,17 @@
 | DB-C06 | AID plans | with `--projection`: what was projected per layer (step, rule, confidence, reasoning), and the gap results against the real design | built |
 | DB-C07 | Controls | every control with status, where it runs, and its last tested result | built |
 | DB-C08 | Accessibility | readable in light and dark mode; keyboard-navigable tabs; works at narrow widths; prints cleanly | built |
+
+## 2a. The main dashboard — `sdem home`
+
+| ID | Requirement | Status |
+|---|---|---|
+| DB-H01 | `sdem home [-o DIR] [--root DIR …] [--estate DIR …]` writes `DIR/index.html` and one project dashboard per estate in `DIR/projects/`, each linking back home; offline, read-only. Default: the estates in `examples/`. | built |
+| DB-H02 | Home: SDEM health at a glance, the metamodel in numbers, every project with what needs attention. | built |
+| DB-H03 | The metamodel exactly as the rulebook files hold it: entity types (definition, source standard, evidence status, attributes own and inherited), links inside each architecture, link types between architectures (with evidence to approve), the engine's rules (step, decision, confidence, published source); filterable. | built |
+| DB-H04 | A metamodel picture: entity types in four bands, the link types between architectures as arrows; a clicked type shows its details. | built |
+| DB-H05 | Health computed when the page is generated: every generator's `--check`, the rules engine's acceptance cases (precision and recall against the floor), controls, known gaps, the gap register. | built |
+| DB-H06 | Configuration: where each setting lives, confidence bands, link statuses and allowed changes, impact rules, the agents. | built |
 
 ## 3. New CLI outputs
 
@@ -50,4 +61,5 @@
 | AT-DB-03 | The trace and impact shown for a record equal `sdem trace` and `sdem impact` | yes |
 | AT-DB-04 | The matrix for payment-initiation lists Initiate Payment → Payment Initiation → Payments Hub → the production cluster | yes |
 | AT-DB-05 | The Review tab lists the same proposals as `sdem review`, weakest first, each with an `sdem approve` command | yes |
+| AT-DB-07 | `sdem home` links every estate's dashboard; its metamodel figures equal the rulebook files; its health shows every generator current and 8 of 8 acceptance cases | yes — `tests/test_home.py` |
 | AT-DB-06 | An architect new to SDEM finds the estate's open issues and a record's impact without using the terminal | walkthrough |

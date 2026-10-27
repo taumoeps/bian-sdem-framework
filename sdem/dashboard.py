@@ -222,6 +222,7 @@ function lvl(l){return `<span class="lvl" style="background:${COL[l]||"var(--mut
 function rec(id,name){return `${esc(name||id)} <code>${esc(id)}</code>`;}
 function table(head,rows){return `<table><thead><tr>${head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.join("")||`<tr><td colspan="${head.length}" class="muted">none</td></tr>`}</tbody></table>`;}
 document.getElementById("sub").textContent = `estate ${D.estate} · generated ${D.generated} · rules ${D.metamodel} · read-only — act with the sdem commands shown`;
+if (D.home) { const a = document.createElement("a"); a.href = D.home; a.textContent = "← SDEM home"; a.style.marginRight = "12px"; document.getElementById("sub").prepend(a); }
 
 const R = {};
 R.overview = () => {

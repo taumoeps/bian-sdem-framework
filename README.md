@@ -200,7 +200,8 @@ Python 3.10+; no third-party dependencies. `pip install -e .` installs the `sdem
 
 ```bash
 sdem --help                                                    # every journey, J1–J8; each subcommand has --help with an example
-sdem dashboard --estate examples/payment-initiation -o work/dashboard.html   # the estate on one page — open it in a browser
+sdem home -o work/sdem                                         # the main dashboard: SDEM (metamodel, health, config) and every project — open work/sdem/index.html
+sdem dashboard --estate examples/payment-initiation -o work/dashboard.html   # one project's dashboard
 E=examples/payment-initiation
 
 sdem check --estate $E                                         # J1 check the datasets and registry against the rulebook

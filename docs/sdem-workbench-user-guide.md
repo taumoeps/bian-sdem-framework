@@ -113,7 +113,17 @@ Each time you open a new terminal later, run the `activate` line from step 4 aga
 
 **The one idea to remember:** you run SDEM in the **terminal**; Copilot **helps** in the chat. Copilot never approves anything and never changes real data on its own.
 
-## 4a. The dashboard — the estate on one page
+## 4a. The dashboards — SDEM and each project on one page
+
+**Start here:**
+
+```bash
+sdem home -o work/sdem
+```
+
+and open `work/sdem/index.html` (the command prints the full `file://` address). The **home** page shows SDEM itself — its health (checked as the page is made), the metamodel (every entity type, the links allowed inside and between the architectures, the engine's rules, a clickable picture), the configuration — and **every project**, each linking to its own dashboard. Add your own estates with `--estate <folder>` or `--root <folder of estates>`.
+
+**One project's dashboard** on its own:
 
 ```bash
 sdem dashboard --estate examples/payment-initiation -o work/dashboard.html

@@ -18,7 +18,7 @@ This project is **SDEM, the Service Domain Enterprise Metamodel**: it links an o
 | Need | Where / command |
 |---|---|
 | every command and journey | `sdem --help`; `sdem <command> --help` has a worked example |
-| the estate on one page | `sdem dashboard --estate <estate> -o <file.html>` — suggest it to architects who prefer a page to the terminal |
+| SDEM and every project on one page | `sdem home -o work/sdem` (main dashboard: metamodel, health, configuration, projects) · `sdem dashboard --estate <estate> -o <file.html>` (one project) — suggest them to architects who prefer a page to the terminal |
 | matrices, impact report | `sdem matrix --estate <estate>` · `sdem impact <id> --change <kind> --estate <estate> --report <file.md>` |
 | check data | `sdem check --estate <estate>` |
 | propose and review links | `sdem link … --out <dir>` · `sdem review <dir>/proposals.json` |
