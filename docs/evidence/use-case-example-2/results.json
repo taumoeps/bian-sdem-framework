@@ -1,0 +1,157 @@
+{
+  "date": "2026-10-27",
+  "runs": [
+    {
+      "run": 1,
+      "has": "A1 + A2",
+      "projects": "A3, A4",
+      "status": "run",
+      "rows": [
+        {
+          "layer": "A3",
+          "element": "component realising SD-PI",
+          "projected": "DSN-APP-SD-PI",
+          "real": "APP-PAY-HUB (with 3 sub-components)",
+          "result": "matched — structure differs (one projected component; the real one has sub-components)",
+          "confidence": 0.4
+        },
+        {
+          "layer": "A3",
+          "element": "API for Initiate Payment Instruction",
+          "projected": "POST /payment-instructions",
+          "real": "POST /payment-instructions",
+          "result": "matched",
+          "confidence": 0.4
+        },
+        {
+          "layer": "A3",
+          "element": "API for Update Payment Instruction",
+          "projected": "PATCH /payment-instructions/{id}",
+          "real": "PATCH /payment-instructions/{id}",
+          "result": "matched",
+          "confidence": 0.4
+        },
+        {
+          "layer": "A3",
+          "element": "API for Evaluate Payment Instruction Validation",
+          "projected": "POST /payment-instructions",
+          "real": "POST /payment-instructions/{id}/validation",
+          "result": "differs",
+          "confidence": 0.4
+        },
+        {
+          "layer": "A3",
+          "element": "API for Execute Payment Instruction Execution",
+          "projected": "POST /payment-instructions/{id}/execution",
+          "real": "PUT /payment-instructions/{id}/execution",
+          "result": "differs",
+          "confidence": 0.4
+        },
+        {
+          "layer": "A3",
+          "element": "API for Retrieve Payment Instruction",
+          "projected": "GET /payment-instructions/{id}",
+          "real": "POST /payment-instructions/{id}",
+          "result": "differs",
+          "confidence": 0.4
+        },
+        {
+          "layer": "A3",
+          "element": "API API-PI-06 (no BIAN operation mapped)",
+          "projected": "—",
+          "real": "GET /payment-instructions/{id}/events",
+          "result": "real only",
+          "confidence": null
+        },
+        {
+          "layer": "A4",
+          "element": "deployments of the Payment Initiation component",
+          "projected": "1",
+          "real": "2 (production, UAT)",
+          "result": "differs — one projected, the real one is deployed twice",
+          "confidence": 0.4
+        }
+      ],
+      "checks": [
+        [
+          "every service domain with operations gets a projected component",
+          true
+        ],
+        [
+          "every operation with a REST form gets a projected API",
+          true
+        ],
+        [
+          "no platform, environment or network invented",
+          true
+        ],
+        [
+          "APIs match the real method and path for at least 2 (2 of 5 operations that have both)",
+          true
+        ]
+      ],
+      "summary": "2 of 5 APIs match by method and path; 1 component and 1 deployment projected for the one service domain with operations; nothing invented in A4"
+    },
+    {
+      "run": 2,
+      "has": "A1 only",
+      "projects": "A2, A3, A4",
+      "status": "not built",
+      "rows": [],
+      "checks": [],
+      "summary": "AID not built yet — no projection made"
+    },
+    {
+      "run": 3,
+      "has": "A4 only",
+      "projects": "A3, A2, A1",
+      "status": "not built",
+      "rows": [],
+      "checks": [],
+      "summary": "AID not built yet — no projection made"
+    },
+    {
+      "run": 4,
+      "has": "A3 + A4",
+      "projects": "A2, A1",
+      "status": "not built",
+      "rows": [],
+      "checks": [],
+      "summary": "AID not built yet — no projection made"
+    },
+    {
+      "run": 5,
+      "has": "A1 + A3",
+      "projects": "A2",
+      "status": "not built",
+      "rows": [],
+      "checks": [],
+      "summary": "AID not built yet — no projection made"
+    }
+  ],
+  "safety": [
+    {
+      "control": "CTL-16",
+      "test": "put the projected component DSN-APP-SD-PI into the real A3 dataset",
+      "should": "rejected",
+      "did": "accepted — no control stops it yet",
+      "status": "not built",
+      "pass": false
+    },
+    {
+      "control": "CTL-17",
+      "test": "every projected element carries projection provenance and is at most medium confidence",
+      "should": "yes",
+      "did": "confidence at most medium: yes; projection provenance: no (`DSN-`, `planned` only)",
+      "status": "not built",
+      "pass": false
+    }
+  ],
+  "findings": [
+    {
+      "id": "AID-B1",
+      "what": "today's design mode marks projected records `DSN-` with lifecycle `planned`, not `PRJ-` with projection provenance (AID-D02, CTL-17)",
+      "action": "part of the AID build"
+    }
+  ]
+}

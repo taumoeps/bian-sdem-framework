@@ -1,0 +1,11 @@
+{
+  "example": "use-case-example-2",
+  "run_date": "2026-10-27",
+  "code_commit": "17dbd330e3f506004c8d488c3e3e15900e06a98c",
+  "files": {
+    "catalogue-summary.json": "12646113e972eaefd3c94eb806b5f22a861d11fc1e90c83e2a4a9f942c371b19",
+    "run1-projected-design.json": "ce64e1274340841a23729d5fc37527e6c8bf71b84e3fecee323683217d2706ac",
+    "safety-projected-record-in-real-data.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "results.json": "830993dd7490fafed0d64fb0d490a40d0dfce038b5cb5ff4025f1979088dd7f8"
+  }
+}

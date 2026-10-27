@@ -1,0 +1,18 @@
+{
+  "service_domains": [
+    "SD-001",
+    "SD-044",
+    "SD-CA",
+    "SD-DC",
+    "SD-FD",
+    "SD-LC",
+    "SD-LO",
+    "SD-PA",
+    "SD-PE",
+    "SD-PI",
+    "SD-PK",
+    "SD-PRD",
+    "SD-SA"
+  ],
+  "operations": 40
+}

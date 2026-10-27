@@ -1,0 +1,433 @@
+{
+  "design": [
+    {
+      "level": "A3",
+      "model_id": "uce2r1-a3-TARGET-DESIGN",
+      "model_version": "design",
+      "metamodel_version": "0.4.0",
+      "source_system": "DESIGN-PROPOSAL (bian-container-pattern; not an APM architecture dataset)",
+      "instances": [
+        {
+          "id": "DSN-APP-SD-PI",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0",
+          "name": "Payment Instruction service (target)",
+          "lifecycle_status": "planned",
+          "description": "TARGET DESIGN, not a mapping: one deployable component for Payment Initiation (synthetic selection), exposing its service operations as a REST API (BIAN container pattern)."
+        },
+        {
+          "id": "DSN-API-SO-PI-01",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "POST /payment-instructions",
+          "lifecycle_status": "planned",
+          "description": "Reference API for Initiate Payment Instruction (Initiate); create-instance term ⇔ POST on the collection.",
+          "attributes": {
+            "method": "POST",
+            "path": "/payment-instructions",
+            "payload_fields": [
+              "amount",
+              "creditor_account_reference",
+              "currency",
+              "debtor_account_reference",
+              "payment_instruction_reference",
+              "payment_status",
+              "remittance_information",
+              "value_date"
+            ]
+          }
+        },
+        {
+          "id": "DSN-API-SO-PI-05",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "PATCH /payment-instructions/{id}",
+          "lifecycle_status": "planned",
+          "description": "Reference API for Update Payment Instruction (Update); Update ⇔ PATCH on the instance.",
+          "attributes": {
+            "method": "PATCH",
+            "path": "/payment-instructions/{id}",
+            "payload_fields": [
+              "amount",
+              "creditor_account_reference",
+              "payment_instruction_reference",
+              "payment_status",
+              "value_date"
+            ]
+          }
+        },
+        {
+          "id": "DSN-API-SO-PI-02",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "POST /payment-instructions",
+          "lifecycle_status": "planned",
+          "description": "Reference API for Evaluate Payment Instruction Validation (Evaluate); create-instance term ⇔ POST on the collection.",
+          "attributes": {
+            "method": "POST",
+            "path": "/payment-instructions",
+            "payload_fields": [
+              "authorisation_status",
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          }
+        },
+        {
+          "id": "DSN-API-SO-PI-03",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "POST /payment-instructions/{id}/execution",
+          "lifecycle_status": "planned",
+          "description": "Reference API for Execute Payment Instruction Execution (Execute); Execute ⇔ POST on the qualifier sub-resource.",
+          "attributes": {
+            "method": "POST",
+            "path": "/payment-instructions/{id}/execution",
+            "payload_fields": [
+              "execution_reference",
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          }
+        },
+        {
+          "id": "DSN-API-SO-PI-04",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "GET /payment-instructions/{id}",
+          "lifecycle_status": "planned",
+          "description": "Reference API for Retrieve Payment Instruction (Retrieve); Retrieve ⇔ GET (SAPG §3.5, verified).",
+          "attributes": {
+            "method": "GET",
+            "path": "/payment-instructions/{id}",
+            "payload_fields": [
+              "authorisation_status",
+              "execution_reference",
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          }
+        }
+      ],
+      "relationships": [
+        {
+          "source": "DSN-APP-SD-PI",
+          "kind": "composition",
+          "target": "DSN-API-SO-PI-01"
+        },
+        {
+          "source": "DSN-APP-SD-PI",
+          "kind": "composition",
+          "target": "DSN-API-SO-PI-05"
+        },
+        {
+          "source": "DSN-APP-SD-PI",
+          "kind": "composition",
+          "target": "DSN-API-SO-PI-02"
+        },
+        {
+          "source": "DSN-APP-SD-PI",
+          "kind": "composition",
+          "target": "DSN-API-SO-PI-03"
+        },
+        {
+          "source": "DSN-APP-SD-PI",
+          "kind": "composition",
+          "target": "DSN-API-SO-PI-04"
+        }
+      ]
+    },
+    {
+      "level": "A4",
+      "model_id": "uce2r1-a4-TARGET-DESIGN",
+      "model_version": "design",
+      "metamodel_version": "0.4.0",
+      "source_system": "DESIGN-PROPOSAL (bian-container-pattern; not a CMDB architecture dataset)",
+      "instances": [
+        {
+          "id": "DSN-DEP-SD-PI",
+          "type": "A4.Deployment",
+          "version": "1.0",
+          "name": "Payment Instruction service — target deployment",
+          "lifecycle_status": "planned",
+          "description": "TARGET DESIGN, not a mapping: one deployment of DSN-APP-SD-PI. No environment or platform exists to name.",
+          "attributes": {
+            "component_id": "DSN-APP-SD-PI"
+          }
+        }
+      ],
+      "relationships": []
+    }
+  ],
+  "links": [
+    {
+      "mapping_id": "P-UCE2R1-001",
+      "source": {
+        "id": "BO-PAY-INSTR",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-PAY-INSTR",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S12 step4 4/8 BOM attributes covered by the glossary (50%)"
+      ],
+      "rationale": "4/8 BOM attributes covered by the glossary (50%)",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-UCE2R1-002",
+      "source": {
+        "id": "VS-MAKE-PAYMENT",
+        "type": "A1.ValueStream",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BS-CREDIT-TRANSFER",
+        "type": "A2.BusinessScenario",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S02 step4 4/4 scenario operations covered in order by stage verbs (100%): [('SO-PI-01', 'VSS-P1'), ('SO-PI-02', 'VSS-P2'), ('SO-PI-03', 'VSS-P3'), ('SO-PI-04', 'VSS-P4')]"
+      ],
+      "rationale": "4/4 scenario operations covered in order by stage verbs (100%): [('SO-PI-01', 'VSS-P1'), ('SO-PI-02', 'VSS-P2'), ('SO-PI-03', 'VSS-P3'), ('SO-PI-04', 'VSS-P4')]",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-UCE2R1-003",
+      "source": {
+        "id": "PRC-PAY-01",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PAYMENT-INITIATION"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S04 step3 invokes SO-PI-01 (PRC-PAY-01.invokes); SO-PI-02 (PRC-PAY-01.invokes)"
+      ],
+      "rationale": "invokes SO-PI-01 (PRC-PAY-01.invokes); SO-PI-02 (PRC-PAY-01.invokes)",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-UCE2R1-004",
+      "source": {
+        "id": "PRC-PAY-02",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PAYMENT-INITIATION"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S04 step3 invokes SO-PI-03 (PRC-PAY-02.invokes); SO-PI-04 (PRC-PAY-02.invokes)"
+      ],
+      "rationale": "invokes SO-PI-03 (PRC-PAY-02.invokes); SO-PI-04 (PRC-PAY-02.invokes)",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-UCE2R1-005",
+      "source": {
+        "id": "CAP-PAY-010",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PAYMENT-INITIATION"
+      },
+      "status": "proposed",
+      "confidence": 0.6,
+      "evidence": [
+        "engine_rationale:S01 step3 all 2 processes of the capability use the domain"
+      ],
+      "rationale": "all 2 processes of the capability use the domain",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-UCE2R1-006",
+      "source": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PAYMENT-INITIATION"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "DSN-APP-SD-PI",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:DESIGN stepdesign TARGET DESIGN, not a mapping: one component per Service Domain (BIAN container pattern)"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: one component per Service Domain (BIAN container pattern)",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-UCE2R1-007",
+      "source": {
+        "id": "SO-PI-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-PI-01",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping — create-instance term ⇔ POST on the collection; payload = input ∪ output"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping — create-instance term ⇔ POST on the collection; payload = input ∪ output",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-UCE2R1-008",
+      "source": {
+        "id": "SO-PI-05",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-PI-05",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping — Update ⇔ PATCH on the instance; payload = input ∪ output"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping — Update ⇔ PATCH on the instance; payload = input ∪ output",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-UCE2R1-009",
+      "source": {
+        "id": "SO-PI-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-PI-02",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping — create-instance term ⇔ POST on the collection; payload = input ∪ output"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping — create-instance term ⇔ POST on the collection; payload = input ∪ output",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-UCE2R1-010",
+      "source": {
+        "id": "SO-PI-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-PI-03",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping — Execute ⇔ POST on the qualifier sub-resource; payload = input ∪ output"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping — Execute ⇔ POST on the qualifier sub-resource; payload = input ∪ output",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-UCE2R1-011",
+      "source": {
+        "id": "SO-PI-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "DSN-API-SO-PI-04",
+        "type": "A3.APIOperation",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping — Retrieve ⇔ GET (SAPG §3.5, verified); payload = input ∪ output"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping — Retrieve ⇔ GET (SAPG §3.5, verified); payload = input ∪ output",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-UCE2R1-012",
+      "source": {
+        "id": "DSN-APP-SD-PI",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DSN-DEP-SD-PI",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:S32 stepdesign TARGET DESIGN, not a mapping: one deployment per component (BIAN container pattern); no platform, environment or data entity is invented"
+      ],
+      "rationale": "TARGET DESIGN, not a mapping: one deployment per component (BIAN container pattern); no platform, environment or data entity is invented",
+      "baseline_id": "ENGINE-RUN-UCE2R1",
+      "created_by": "sdem-rules/0.10"
+    }
+  ]
+}
