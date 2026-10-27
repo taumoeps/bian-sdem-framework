@@ -1,6 +1,6 @@
 # SDEM Agent Platform — Design
 
-> **Status: approved by the owner 2026-10-28 (AG-D01…D09); Level 1 built** — coordination records and commands (`sdem change`, `events`, `work`), controls CTL-19/20, the agent files in `.github/agents/`, tested in [use-case example 3](use-case-example-3.md). **To confirm in the owner's VS Code:** the spike ([`sdem-agent-platform-spike.md`](sdem-agent-platform-spike.md)). Requirements: [`sdem-agent-platform-spec.md`](sdem-agent-platform-spec.md). Builds on the SDEM workbench ([`sdem-workbench-design.md`](sdem-workbench-design.md)): VS Code, the `sdem` CLI as the only interface, GitHub Copilot Chat for AI, no MCP.
+> **Status: approved by the owner 2026-10-28 (AG-D01…D09); Level 1 built** — coordination records and commands (`sdem change`, `events`, `work`), controls CTL-19/20, the agent files in `.github/agents/`, tested in [use-case example 3](use-case-example-3.md). **To confirm in the owner's VS Code:** the spike ([`sdem-agent-platform-spike.md`](sdem-agent-platform-spike.md)). Requirements: [`sdem-agent-platform-spec.md`](sdem-agent-platform-spec.md). Assessment against what makes a good agent platform: [`sdem-agent-platform-principles.md`](sdem-agent-platform-principles.md). Builds on the SDEM workbench ([`sdem-workbench-design.md`](sdem-workbench-design.md)): VS Code, the `sdem` CLI as the only interface, GitHub Copilot Chat for AI, no MCP.
 >
 > Diagrams are Mermaid (GitHub shows them; in VS Code use the *Markdown Preview Mermaid Support* extension).
 

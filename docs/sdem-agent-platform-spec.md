@@ -42,6 +42,7 @@ All under the `sdem` CLI, with `--json`, the standard exit codes and `--help` wi
 | AG-K03 | `sdem events [--open]` | change events with their impact summary | built — `sdem events --estate DIR [--open]` |
 | AG-K04 | `sdem work plan / list / claim / block / cancel / reopen` | work items — create (orchestrator), list (by layer, status), claim, update, close | built — `sdem work plan / list / claim / block / cancel / reopen`; *done* is set by `sdem change propose --work` |
 | AG-K05 | impact stored with each change event | computes impact for every changed record and stores it as the event's impact result | built — inside `sdem change propose` (impact stored with the event) |
+| AG-K06 | `sdem change revert <CS-id> --estate DIR --agent … --person …` | reverses a change set (restores the records it changed) and records the reversal as a change event, with its impact | proposed — not built ([principles](sdem-agent-platform-principles.md) #3) |
 
 ## 5. Controls
 
@@ -86,6 +87,13 @@ All under the `sdem` CLI, with `--json`, the standard exit codes and `--help` wi
 | AG-T02 | **Level 2, queue prompts:** no listener; the durable work queue is the trigger — `sdem change propose` prints the next command for the orchestrator; `sdem events --open` shows anything waiting; optional Git hook or VS Code task to print open work. | partly — prompts built; hook / task not built |
 | AG-T03 | **Level 3, automated — only with the organisation's approval:** a GitHub Actions workflow runs Copilot CLI programmatically (`copilot -p … --agent sdem-orchestrator --no-ask-user --allow-tool 'shell(sdem:*)'`) on an event, or an issue is assigned to Copilot's cloud agent with the orchestrator; the result is a pull request a person merges. Same agent files and commands. | not built — needs approval |
 
+## 7b. Proof and audit of the agents themselves
+
+| ID | Requirement | Status |
+|---|---|---|
+| AG-E01 | **Score the agents:** after the spike, run use-case example 3 with the real Copilot agents (not scripted) several times; score how often each run drafts change sets that pass and match the expected impact, plans the right work items, and stops correctly; report the rate per agent. | proposed — not built ([principles](sdem-agent-platform-principles.md) #2) |
+| AG-O01 | **Session record:** with each change event, keep a short summary of the agent session that produced it — who asked what, which `sdem` commands ran — for audit. | proposed — not built ([principles](sdem-agent-platform-principles.md) #4) |
+
 ## 8. Acceptance — use-case example 3
 
 **Method:** as examples 1 and 2 — plan and expected results sealed (committed) before any run; evidence pack with checksums; results table with source, reasoning and confidence.
@@ -115,4 +123,4 @@ Decisions AG-D01…D09 and open questions AG-Q01…Q04: [`sdem-agent-platform-de
 4. ~~Controls CTL-19, CTL-20 (AG-S01…S07), tested with good and bad data~~ — **built**.
 5. ~~Agent definitions (AG-A01…A03)~~ — **built**, `.github/agents/`; adjust after the spike.
 6. ~~Use-case example 3~~ — **run: 8 of 8**.
-7. Next: AG-S08 (detect direct edits); AG-T02's Git hook or VS Code task; then ingestion (v0.11) and the licensed BIAN catalogue (v0.15) for real designs; AG-T03 only with the organisation's approval.
+7. Next ([principles](sdem-agent-platform-principles.md)): AG-S08 (detect direct edits), AG-E01 (score the agents after the spike), AG-K06 (undo), AG-O01 (session record); AG-T02's Git hook or VS Code task; then ingestion (v0.11) and the licensed BIAN catalogue (v0.15) for real designs; AG-T03 only with the organisation's approval.
