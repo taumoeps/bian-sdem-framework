@@ -1,6 +1,6 @@
 """`sdem history`: a Confluence HTML export of past designs → candidate architecture records (spec docs/sdem-history-spec.md).
 Run against the synthetic export in tests/fixtures/confluence-export-sample (scripts/make_confluence_sample.py)."""
-import json, re, shutil, tempfile, unittest
+import json, re, shutil, sys, tempfile, unittest
 from pathlib import Path
 
 from sdem import history
@@ -17,7 +17,7 @@ class HistoryTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp())
-        cls.x, cls.ds, cls.issues = history.extract(SAMPLE, cls.tmp / 'out', known=[KNOWN], now='2026-10-28T00:00:00')
+        cls.x, cls.ds, cls.issues = history.extract(SAMPLE, cls.tmp / 'out', known=[KNOWN], now='2026-10-28T00:00:00', ocr='off')
         cls.doc = json.loads((cls.tmp / 'out' / 'extraction.json').read_text())
         cls.by_name = {r['name']: r for r in cls.doc['records']}
 
@@ -95,7 +95,7 @@ class HistoryTests(unittest.TestCase):
 
     def test_deterministic(self):  # HI-G03
         out2 = self.tmp / 'again'
-        history.extract(SAMPLE, out2, known=[KNOWN], now='2026-10-28T00:00:00')
+        history.extract(SAMPLE, out2, known=[KNOWN], now='2026-10-28T00:00:00', ocr='off')
         for f in ('a3-application.json', 'extraction.json', 'design-index.json', 'extraction-report.md'):
             self.assertEqual((self.tmp / 'out' / f).read_text().replace(str(self.tmp / 'out'), ''), (out2 / f).read_text().replace(str(out2), ''), f)
 
@@ -103,13 +103,13 @@ class HistoryTests(unittest.TestCase):
         rules = json.loads(history.RULES.read_text())
         rules['label_words']['A3.ApplicationComponent'].append('switch')
         p = self.tmp / 'rules.json'; p.write_text(json.dumps(rules))
-        x, _, _ = history.extract(SAMPLE, self.tmp / 'tuned', rules=p, now='2026-10-28T00:00:00')
+        x, _, _ = history.extract(SAMPLE, self.tmp / 'tuned', rules=p, now='2026-10-28T00:00:00', ocr='off')
         names = {r['name'] for r in x.records.values()}
         self.assertIn('Card Authorisation Switch', names)
         self.assertFalse(any(v.get('name') == 'Card Authorisation Switch' for v in x.review))
 
     def test_inspect_shows_structure(self):  # HI-I01
-        r = history.inspect(SAMPLE)
+        r = history.inspect(SAMPLE, ocr='off')
         rules = {tuple(t['columns']): t['rule'] for t in r['tables']}
         self.assertEqual(rules[('application', 'description', 'vendor', 'status')], 'HT-01')
         self.assertTrue(any(t['rule'].startswith('not read') for t in r['tables']))
@@ -121,7 +121,7 @@ class HistoryTests(unittest.TestCase):
 
     def test_cli(self):
         from sdem.cli import main
-        self.assertEqual(main(['history', 'extract', str(SAMPLE), '-o', str(self.tmp / 'cli'), '--json']), 0)
+        self.assertEqual(main(['history', 'extract', str(SAMPLE), '-o', str(self.tmp / 'cli'), '--json', '--ocr', 'off']), 0)
         self.assertTrue((self.tmp / 'cli' / 'a3-application.json').exists())
         self.assertEqual(main(['history', 'extract', str(self.tmp / 'missing'), '-o', str(self.tmp / 'x')]), 2)
 
@@ -132,7 +132,7 @@ class FolderLayoutTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp())
-        cls.x, cls.ds, cls.issues = history.extract(FOLDER, cls.tmp / 'out', now='2026-10-28T00:00:00')
+        cls.x, cls.ds, cls.issues = history.extract(FOLDER, cls.tmp / 'out', now='2026-10-28T00:00:00', ocr='off')
         cls.doc = json.loads((cls.tmp / 'out' / 'extraction.json').read_text())
         cls.idx = {p['file']: p for p in json.loads((cls.tmp / 'out' / 'design-index.json').read_text())['designs']}
         cls.by_name = {r['name']: r for r in cls.doc['records']}
@@ -145,6 +145,7 @@ class FolderLayoutTests(unittest.TestCase):
         self.assertEqual({f for f, p in self.idx.items() if not p['diagram_only']}, {
             'archives/payments-hub-design.html', 'Payments Hub Design/1. Business Context/overview.md',
             'Payments Hub Design/2. Application Architecture/integrations.html', 'Payments Hub Design/2. Application Architecture/notes.txt',
+            'Payments Hub Design/2. Application Architecture/container-view.md',
             'Payments Hub Design/3. Infrastructure/servers.csv'})
         self.assertEqual(self.by_name['Payment Initiation']['type'], 'A1.BusinessCapability')     # Markdown table
         self.assertEqual(self.by_name['PAYAPP02']['type'], 'A4.Node')                              # CSV
@@ -160,13 +161,13 @@ class FolderLayoutTests(unittest.TestCase):
 
     def test_diagram_the_html_refers_to_is_linked_to_its_page(self):  # HI-L03
         page = self.idx['archives/payments-hub-design.html']
-        self.assertEqual([d['file'] for d in page['diagrams']], ['archives/diagrams/hub-context.png'])
+        self.assertEqual(sorted(d['file'] for d in page['diagrams']), ['archives/diagrams/hub-context.png', 'archives/diagrams/payment-sequence.svg', 'archives/diagrams/payments-components.png'])
         self.assertEqual(self.by_name['Payment Order']['sources'][0]['page_id'], '55501')
         self.assertFalse(any(v['what'] == 'picture' and 'hub-context' in v['where'] for v in self.doc['for_review']))
 
     def test_unlinked_diagrams_are_read_with_their_folder(self):  # HI-L04
         nl = {v['where'] for v in self.doc['for_review'] if v['what'] == 'diagram not linked to a page'}
-        self.assertEqual(nl, {'archives/diagrams/network-zones.drawio', 'Payments Hub Design/3. Infrastructure/infrastructure.svg'})
+        self.assertEqual(nl, {'archives/diagrams/network-zones.drawio', 'Payments Hub Design/3. Infrastructure/infrastructure.svg', 'Payments Hub Design/3. Infrastructure/deployment.puml'})
         sw = self.by_name['Core Switch']
         self.assertEqual(sw['type'], 'A4.Node'); self.assertIn('Infrastructure', sw['sources'][0]['reasoning'])
         self.assertEqual(self.by_name['PAYAPP01']['type'], 'A4.Node')        # the name from the servers table wins over the label word "app"
@@ -178,13 +179,91 @@ class FolderLayoutTests(unittest.TestCase):
         self.assertIn(('picture not shown on any page', 'rack-photo.jpg'), what)
 
     def test_inspect_layout_and_anonymous(self):  # HI-I02
-        r = history.inspect(FOLDER)
+        r = history.inspect(FOLDER, ocr='off')
         folders = {f['folder']: f for f in r['layout']}
-        self.assertEqual(folders['.']['provenance'], 3); self.assertEqual(folders['archives/diagrams']['diagram'], 2)
-        a = history.inspect(FOLDER, anonymous=True)
+        self.assertEqual(folders['.']['provenance'], 3); self.assertEqual(folders['archives/diagrams']['diagram'], 4)
+        a = history.inspect(FOLDER, anonymous=True, ocr='off')
         text = json.dumps(a)
         self.assertNotIn('Payments', text); self.assertNotIn('Infrastructure', text); self.assertIn('archives/diagrams', text)
         self.assertNotIn('tables', a); self.assertNotIn('headings', a)
+
+    def test_plantuml_in_every_form(self):  # HI-P01: PNG with the source inside, encoded SVG, Markdown code block, .puml file
+        kinds = {d['file']: d.get('kind') for p in self.idx.values() for d in p['diagrams']}
+        self.assertEqual(kinds['archives/diagrams/payments-components.png'], 'plantuml')
+        self.assertEqual(kinds['archives/diagrams/payment-sequence.svg'], 'plantuml')
+        self.assertEqual(kinds['Payments Hub Design/2. Application Architecture/container-view.md#plantuml-1'], 'plantuml')
+        self.assertEqual(kinds['Payments Hub Design/3. Infrastructure/deployment.puml'], 'plantuml')
+        t = {n: self.by_name[n]['type'] for n in ('Retail Customer', 'Sanctions Screening', 'Payments Store', 'Mobile Banking App', 'PostgreSQL 15', 'Edge Firewall')}
+        self.assertEqual(t, {'Retail Customer': 'A1.BusinessActor', 'Sanctions Screening': 'A3.ApplicationComponent', 'Payments Store': 'A4.SystemSoftware',
+                             'Mobile Banking App': 'A3.ApplicationComponent', 'PostgreSQL 15': 'A4.SystemSoftware', 'Edge Firewall': 'A4.Device'})
+        self.assertNotIn('Bank', self.by_name)                                                       # a C4 boundary is a group, not a record
+
+    def test_plantuml_relations_and_nesting(self):  # HI-P02
+        links = {(l['source'], l['kind'], l['target']) for l in self.doc['links_within']}
+        self.assertIn(('HIS-A3-SANCTIONS-SCREENING', 'serving', 'HIS-A3-PAYMENTS-HUB'), links)       # "hub --> sanc : calls"
+        self.assertIn(('HIS-A3-MOBILE-BANKING-APP', 'flow', 'HIS-A3-PAYMENTS-HUB'), links)           # C4 Rel "Sends payment to"
+        cross = {(c['source'], c['mapping_type_id'], c['target']) for c in self.doc['links_between_candidates']}
+        self.assertIn(('HIS-A3-PAYMENTS-HUB', 'COMPONENT_DEPLOYED_ON_INFRASTRUCTURE', 'HIS-A4-PAYMENTS-KUBERNETES-CLUSTER'), cross)   # nested in the node
+        self.assertIn(('HIS-A3-PAYMENTS-HUB', None, 'HIS-A4-PAYMENTS-STORE'), cross)                 # uses a database: not a deployment
+
+    def test_plantuml_parser_notations(self):  # HI-P03
+        els, rels, kind = history.plantuml_parse("""@startuml
+participant "Mobile App" as M
+alt ok
+M -> P : submit
+end
+[Hub] <-- M
+Rel_Serving(M, P, "x")
+@enduml""")
+        self.assertEqual(els['M']['name'], 'Mobile App'); self.assertIn(('M', 'Hub', '', 'line'), rels)   # '<--' points left
+        self.assertIn(('M', 'P', 'x', 'Rel_Serving'), rels)
+        self.assertEqual(history.plantuml_parse('@startmindmap\n* a\n@endmindmap')[2], 'mindmap')
+        self.assertEqual(history.plantuml_decode('SyfFKj2rKt3CoKnELR1Io4ZDoSa70000'), 'Bob -> Alice : hello')   # PlantUML's own documented example
+
+
+class OcrTests(unittest.TestCase):
+    """Text read from pictures: grouping and typing tested with a stand-in engine everywhere; the real macOS engine where present (HI-O*)."""
+    LINES = [{'text': 'Payments Hub', 'confidence': 0.99, 'x': 0.1, 'y': 0.10, 'w': 0.2, 'h': 0.04},
+             {'text': 'Java service', 'confidence': 0.95, 'x': 0.12, 'y': 0.145, 'w': 0.16, 'h': 0.03},       # second line of the same box
+             {'text': 'clearing file', 'confidence': 0.99, 'x': 0.45, 'y': 0.09, 'w': 0.1, 'h': 0.03},       # a caption on a line
+             {'text': 'Payments Kubernetes Cluster', 'confidence': 0.98, 'x': 0.35, 'y': 0.55, 'w': 0.4, 'h': 0.04},
+             {'text': 'Zx', 'confidence': 0.2, 'x': 0.9, 'y': 0.9, 'w': 0.02, 'h': 0.02}]
+
+    def test_grouping_and_filters(self):
+        labels = history.group_labels(self.LINES, json.loads(history.RULES.read_text()))
+        self.assertEqual([(l['name'], l['desc']) for l in labels], [('Payments Hub', 'Java service'), ('Payments Kubernetes Cluster', '')])
+
+    def test_stand_in_engine_makes_low_candidates_and_a_review_item(self):
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            fake = lambda path: self.LINES
+            x, _, _ = history.extract(FOLDER, tmp / 'o', now='2026-10-28T00:00:00', ocr=fake)
+            doc = json.loads((tmp / 'o' / 'extraction.json').read_text())
+            k8s = next(r for r in doc['records'] if r['name'] == 'Payments Kubernetes Cluster')
+            self.assertTrue(any(s['rule'].startswith('HO-') and s['confidence'] == 'low' for s in k8s['sources']))
+            wb = next(v for v in doc['for_review'] if v.get('name') == 'whiteboard')
+            self.assertIn('read 2 label(s) by OCR', wb['why']); self.assertIn('adds the links', wb['why'])
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    def test_tesseract_tsv(self):
+        tsv = 'level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext\n' \
+              '1\t1\t0\t0\t0\t0\t0\t0\t1000\t500\t-1\t\n' \
+              '5\t1\t1\t1\t1\t1\t100\t50\t80\t20\t96\tPayments\n5\t1\t1\t1\t1\t2\t190\t50\t50\t20\t90\tHub\n'
+        l = history.tesseract_lines(tsv)
+        self.assertEqual(l[0]['text'], 'Payments Hub'); self.assertAlmostEqual(l[0]['x'], 0.1); self.assertAlmostEqual(l[0]['confidence'], 0.93)
+
+    def test_svg_text_is_read_without_ocr(self):
+        lines = history.svg_text_lines(b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="10" y="20" font-size="10">Core <tspan>Ledger</tspan></text></svg>')
+        self.assertEqual(lines[0]['text'], 'Core Ledger')
+
+    @unittest.skipUnless(sys.platform == 'darwin' and shutil.which('osascript'), 'macOS Vision is only on macOS')
+    def test_macos_vision_reads_the_whiteboard(self):
+        engine = history.ocr_engine('vision')
+        try: lines = engine(FOLDER / 'Payments Hub Design' / '2. Application Architecture' / 'whiteboard.png')
+        except OSError as e: self.skipTest(f'Vision not usable here: {e}')
+        texts = {l['text'] for l in lines}
+        self.assertIn('Payments Hub', texts); self.assertIn('Payments Kubernetes Cluster', texts)
 
 if __name__ == '__main__':
     unittest.main()

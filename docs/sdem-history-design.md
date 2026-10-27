@@ -62,8 +62,9 @@ If the same content appears twice (e.g. a section both in the raw HTML and in it
 | **Source/target tables** (interface lists) | A row "Payments Hub → Fraud Screening" becomes a flow between the two (HL-01). Names not found elsewhere become application components. | medium (link), low (new names) |
 | **draw.io diagrams** | Read from the diagram's own file, whatever its name: a plain `.drawio`/XML file, a compressed one, or a PNG/SVG with the diagram inside it. A shape's **ArchiMate type** gives the entity type (HD-01…23); otherwise its **fill colour** gives the architecture and its **label or shape** the type ("cluster" → node, cylinder → system software). | medium (ArchiMate shape), low (colour, words) |
 | **Lines** in diagrams | A line between two shapes in one architecture becomes a relationship of the first kind the rulebook allows for the pair ("triggers" on the line → triggering); a shape drawn **inside** another is part of it — or, across architectures, deployed on it. | low |
+| **PlantUML diagrams** | Read from the **source**, not the picture: `.puml` files, `@startuml` blocks in pages (HTML code blocks, Markdown ```` ```plantuml ````, text files), PNGs with the source in their `plantuml` text chunk, SVGs with an encoded `plantuml-src`. Element keywords give the type (`component`, `node`, `database`, `actor` …), as do C4 macros (`Person`, `Container`, `ContainerDb`, `Deployment_Node` …) and ArchiMate (`archimate … <<application-component>>`, `Application_Component(…)`); arrows and `Rel(…)` give links (`Rel_Serving` → serving); nesting gives part-of or deployed-on. Activity diagrams, mind maps and Gantt charts are listed for a person (HU-*). | medium (typed), low (untyped, sequence participants) |
+| **Pictures** (screenshots, exported PNG/JPG) | **Text read by OCR on the machine**: macOS's built-in text recognition (Apple Vision — nothing to install) or Tesseract where installed; SVG pictures' text is read exactly. Stacked lines become one label (name, then description); captions in small letters (usually on lines) are skipped. A label becomes a candidate only when a name already found, a label word or the section decides its type (HO-*). **Boxes and lines are not read** — the picture is always listed for a person, with the labels read. | low |
 | **Narrative text** | Only **names already found** (in tables, diagrams or the `--known` datasets) are recognised. Two names joined by a simple phrase become a link: "X sends … to Y" → flow, "X calls Y" → Y serves X, "X is hosted on Y" → deployed on. Text **never creates** a record. | low |
-| **Pasted pictures** (screenshots, photos) | Cannot be read without AI. Listed for a person with their page and place. | — |
 | **Key-value tables** (Owner \| Payments team) | Not read; shown by `inspect`. | — |
 
 Never above medium: every record is a **candidate** until a person confirms it (as AID-B6 caps name-only evidence).
@@ -94,6 +95,8 @@ Links between architectures are **not** written to any dataset or registry: they
 |---|---|---|
 | (standard Confluence layout, still supported) HTML space export: one `.html` per page named `Title_<pageId>.html` (older: `<pageId>.html`); the body in `div#main-content`; "last modified on …" in `div.page-metadata`; files in `attachments/<pageId>/` | general knowledge of Confluence exports; not checked against Atlassian's documentation today | medium |
 | draw.io keeps the editable diagram as an attachment (XML, possibly compressed), with a PNG preview on the page | general knowledge of the draw.io Confluence app | medium |
+| PlantUML PNGs keep the source in a `plantuml` text chunk; SVGs in a `<?plantuml-src …?>` instruction, encoded as in PlantUML URLs | general knowledge of PlantUML; the decoder reproduces PlantUML's documented example (`SyfFKj2rKt3CoKnELR1Io4ZDoSa70000` = "Bob -> Alice : hello") | medium (high for the encoding) |
+| macOS Vision text recognition is usable from `osascript` (JavaScript for Automation) without installing anything | **tested on this machine** (macOS 26.4) — read every label of a rendered diagram; a locked-down Mac may block `osascript` (then Tesseract, or `--ocr off`) | high here; to confirm on the work Mac |
 | draw.io's ArchiMate 3 shapes are styled `shape=mxgraph.archimate3.application;appType=comp` (and `…tech;techType=node`, …) | general knowledge of draw.io's shape library | medium — business-layer styles least sure; `inspect` shows the styles actually used |
 
 If any of these is wrong, `inspect` shows it at once (0 pages, 0 diagrams, or shapes "unclassified"); most fixes are a rules change, the first two may need a small code change.
@@ -103,13 +106,15 @@ If any of these is wrong, `inspect` shows it at once (0 pages, 0 diagrams, or sh
 | # | Decision | Recommendation | Status |
 |---|---|---|---|
 | HI-D01 | How past designs come into SDEM | **index every design, convert with rules, a person confirms** (option 4 of the discussion: reference index plus candidates) | built 2026-10-28 |
-| HI-D02 | AI for narrative and pasted pictures | **not on the work machine**; a person handles them. Copilot (where allowed) could draft from one page at a time — an AID-D08-style decision for later | open — owner |
+| HI-D02 | AI for narrative and pictures | **No large language model on the work machine.** Pictures: **OCR** (macOS Vision built in, or Tesseract) reads their text — a local, on-device text-recognition model, no network, not a chat AI; **check your organisation allows it** (`--ocr off` turns it off). Narrative meaning stays with a person | decided for OCR 2026-10-28; LLM drafting open — owner |
 | HI-D03 | Where adopted historical records live | **a separate historical estate** (e.g. `estates/history/`) so `sdem check`, `trace` and the dashboard work on it, apart from current designs; or merged into the current estate when the system still exists | open — owner |
 | HI-D04 | Guard against candidates entering real data unreviewed | a control like CTL-16 for `CONFLUENCE-EXTRACT` datasets (today they pass `sdem check`, by design, so they can be reviewed) | proposed |
 
 ## 8. Limits
 
-- Pasted pictures, Visio and Gliffy diagrams, PDFs and Word attachments are not read (listed for a person where they appear on a page).
+- From pictures only their text is read (OCR), never their boxes and lines; OCR can misread (e.g. "Checker" → "Checkel") — always low confidence, always listed for a person.
+- Visio and Gliffy diagrams, PDFs and Word attachments are not read (listed for a person where they appear on a page).
+- PlantUML: `!include`d files and `!define` macros are not expanded; activity, mind-map and Gantt diagrams are not read.
 - Narrative text is read only for names already known and a few phrases; most narrative meaning is lost without AI.
 - Key-value tables are not read.
 - Names are matched exactly (ignoring case and punctuation): "Payments Hub" and "Payment Hub" become two records — the report shows both.

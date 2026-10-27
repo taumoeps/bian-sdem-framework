@@ -534,6 +534,7 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
    ```bash
    sdem history extract ~/designs/payarch -o work/history --rules my-rules.json --known estate/a3-application.json
    ```
+   Text in pictures is read on your Mac with its built-in text recognition (no install, no network); add `--ocr off` if your organisation does not allow it, or `--ocr tesseract` where Tesseract is installed. PlantUML diagrams are read from their source.
 5. Open `work/history/extraction-report.md`. Every record says **which page, where on it** (table and row, diagram and shape, paragraph), **which rule**, **how sure** (never above medium) and **why**. Pasted pictures are listed for you to record by hand.
 6. Keep what is right: copy the records into your estate (or keep `work/history` as a historical estate) and run `sdem check`. Links between architectures in the report are candidates for `sdem link` / `sdem approve`.
 

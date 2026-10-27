@@ -5,8 +5,11 @@ Rules only: no AI, no network, Python standard library only, so it runs on a loc
   tables          → records, by their column headings (rules HT-*), and links from source/target tables (HL-*)
   draw.io         → records from shapes (ArchiMate type, else colour, label and shape words) and links from lines;
                     read from .drawio/XML attachments, from PNGs and SVGs that carry the diagram inside them
+  PlantUML        → records and links from the source: .puml files, code blocks in pages, PNGs and SVGs that carry
+                    the source inside them (component, deployment, sequence, C4, ArchiMate notation)
   narrative       → only names already found (or given with --known), and simple phrases between two of them
-  pasted pictures → cannot be read without AI; listed for a person
+  pictures        → their text, read on the machine (macOS Vision, built in; or Tesseract), or exactly from SVG text;
+                    labels become low-confidence candidates, lines are not read; always listed for a person
 Every record is a candidate with its sources (page, where, rule, confidence, reasoning) — never above medium, never
 real until a person confirms it. The rules are in metamodel/history-rules.json; copy it and pass --rules to tune.
 
@@ -122,7 +125,7 @@ def parse_date(text):
 
 # ---------------------------------------------------------------- the export: any folder layout
 CONTENT_EXT = ('.html', '.htm', '.md', '.markdown', '.txt', '.csv')
-DIAGRAM_EXT = ('', '.drawio', '.dio', '.xml', '.png', '.svg')
+DIAGRAM_EXT = ('', '.drawio', '.dio', '.xml', '.png', '.svg') + ('.puml', '.plantuml', '.pu', '.iuml', '.wsd')
 
 
 def scan(root, rules):
@@ -143,8 +146,11 @@ def scan(root, rules):
         elif ext in CONTENT_EXT and not in_att:
             out['pages'].append(p); kind = 'page'
         else:
-            xml = find_mxfile(p.read_bytes()) if ext in DIAGRAM_EXT and p.stat().st_size <= limit else None
-            if xml: out['diagrams'][rel] = xml; kind = 'diagram'
+            data = p.read_bytes() if ext in DIAGRAM_EXT and p.stat().st_size <= limit else b''
+            xml = find_mxfile(data) if data else None
+            pu = None if xml or not data else find_plantuml(data, ext)
+            if xml: out['diagrams'][rel] = ('drawio', xml); kind = 'diagram'
+            elif pu: out['diagrams'][rel] = ('plantuml', pu); kind = 'diagram'
             elif ext in IMAGE_EXT: out['pictures'].append(rel); kind = 'picture'
             else: out['other'].append(rel); kind = 'other'
         out['layout'][folder][kind] += 1
@@ -189,8 +195,11 @@ def read_page(path, root, rules=None):
     elif ext == '.csv':
         rows = [r for r in csv.reader(io.StringIO(text.lstrip('﻿'))) if any(c.strip() for c in r)]
         if rows: page['blocks'] = [('table', ' / '.join(prefix), ('grid', [clean(c) for c in rows[0]], rows[1:]))]
-    else:  # plain text: paragraphs split by blank lines
-        page['blocks'] = [('text', ' / '.join(prefix), clean(p)) for p in re.split(r'\n\s*\n', text) if clean(p)]
+    else:  # plain text: PlantUML blocks, then paragraphs split by blank lines
+        sec = ' / '.join(prefix)
+        page['blocks'] = [('plantuml', sec, b) for b in plantuml_blocks(text)]
+        rest = re.sub(r'@start(?:uml)?\b.*?@end(?:uml)?\b', '', text, flags=re.S)
+        page['blocks'] += [('text', sec, clean(p)) for p in re.split(r'\n\s*\n', rest) if clean(p)]
     page['title'] = page['title'] or (prefix[-1] + ' — ' if prefix else '') + path.stem
     return page
 
@@ -221,6 +230,11 @@ def html_blocks(content, prefix=()):
                 continue
             if c.tag == 'img': out.append(('img', section(), img(c))); continue
             if c.tag in ('script', 'style', 'head'): continue
+            if c.tag in ('pre', 'code') or 'plantuml' in ' '.join(c.cls()).lower():
+                t = c.text()
+                if '@start' in t:
+                    for b in plantuml_blocks(t): out.append(('plantuml', section(), b))
+                    continue
             walk(c)
     walk(content)
     return out
@@ -247,6 +261,13 @@ def md_blocks(text, prefix=()):
         return [c.strip() for c in s.strip().strip('|').split('|')]
     while i < len(lines):
         s = lines[i].strip()
+        if s.startswith(('```', '~~~')):  # a fenced code block: PlantUML is read as a diagram, other code is skipped
+            fence = s[:3]; j = i + 1
+            while j < len(lines) and not lines[j].strip().startswith(fence): j += 1
+            code = '\n'.join(lines[i + 1:j]); flush()
+            for b in plantuml_blocks(code) or ([code] if s[3:].strip().lower() == 'plantuml' and code.strip() else []):
+                out.append(('plantuml', section(), b if '@start' in b else '@startuml\n' + b + '\n@enduml'))
+            i = j + 1; continue
         m = re.match(r'(#{1,6})\s+(.*?)\s*#*$', s)
         if m:
             flush(); lvl = len(m.group(1)); heads[:] = [h for h in heads if h[0] < lvl] + [(lvl, _md_plain(m.group(2)))]; i += 1; continue
@@ -366,10 +387,260 @@ def mx_cells(model):
     return cells
 
 
+# ---------------------------------------------------------------- PlantUML: read the diagram's source, not its picture
+PUML_EXT = ('.puml', '.plantuml', '.pu', '.iuml', '.wsd')
+_P64 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_'
+
+
+def plantuml_decode(code):
+    """PlantUML's text encoding (as in its URLs and SVG `plantuml-src`): its own base64 alphabet over raw deflate; '~h' = hex."""
+    code = code.strip()
+    if code.startswith('~h'): return bytes.fromhex(code[2:]).decode('utf-8')
+    if code.startswith('~1'): code = code[2:]
+    bits = [_P64.index(c) for c in code if c in _P64]
+    data = bytearray()
+    for i in range(0, len(bits) - 1, 4):
+        b = bits[i:i + 4] + [0] * (4 - len(bits[i:i + 4]))
+        data += bytes([(b[0] << 2) | (b[1] >> 4), ((b[1] & 15) << 4) | (b[2] >> 2), ((b[2] & 3) << 6) | b[3]])
+    return zlib.decompressobj(-15).decompress(bytes(data)).decode('utf-8')
+
+
+def find_plantuml(data, ext=''):
+    """PlantUML source in a file's bytes, or None: a .puml text file, a PNG with the source in its 'plantuml' text chunk,
+    or an SVG with the source in a `plantuml-src` instruction or a comment."""
+    if data[:8] == b'\x89PNG\r\n\x1a\n':
+        t = _png_text(data).get('plantuml')
+        if not t: return None
+        if '@start' not in t:
+            try: t = plantuml_decode(t)
+            except (ValueError, zlib.error, UnicodeDecodeError): return None
+        return t if '@start' in t else None
+    try: s = data.decode('utf-8')
+    except UnicodeDecodeError: return None
+    if '<svg' in s[:4000]:
+        m = re.search(r'<\?plantuml-src\s+(\S+?)\s*\?>', s)
+        if m:
+            try: return plantuml_decode(m.group(1))
+            except (ValueError, zlib.error, UnicodeDecodeError): return None
+        m = re.search(r'(@startuml.*?@enduml)', s, re.S)
+        return m.group(1) if m else None
+    if ext in PUML_EXT or s.lstrip().startswith('@start'):
+        return s if '@start' in s else None
+    return None
+
+
+def plantuml_blocks(text):
+    """Every @startuml … @enduml block in a text (a page's code block, a .txt file)."""
+    return re.findall(r'(@start(?:uml)?\b.*?@end(?:uml)?\b)', text, re.S)
+
+
+_PU_KEYWORDS = ('component', 'node', 'database', 'cloud', 'actor', 'artifact', 'interface', 'rectangle', 'queue', 'frame', 'package',
+                'folder', 'card', 'storage', 'file', 'collections', 'boundary', 'control', 'entity', 'participant', 'agent', 'stack',
+                'hexagon', 'person', 'archimate', 'usecase', 'process', 'label')
+_PU_EP = r'(\[[^\]]+\]|"[^"]+"|\(\)\s*"[^"]+"|\(\)\s*[\w.]+|:[^:]+:|[\w.]+)'
+_PU_ARROW = r'(<\|?|<<|o|\*|\+|#|x|\})?([-.=~]+)(?:\[[^\]]*\]|(?:up|down|left|right|u|d|l|r)(?=[-.=~]))?([-.=~]*)(\|?>|>>|o|\*|\+|#|x|\{)?'
+_PU_SKIP = re.compile(r'(skinparam|title|left to right|top to bottom|hide|show|legend|header|footer|caption|scale|autonumber|activate|deactivate|destroy|return|group|alt|else|opt|loop|par|break|critical|ref|box|end box|newpage|mainframe|allowmixing|together|set|end)\b', re.I)
+_PU_REL = re.compile(r'^' + _PU_EP + r'\s*' + _PU_ARROW + r'\s*' + _PU_EP + r'\s*(?::\s*(.*))?$')
+_PU_MACRO = re.compile(r'^(\w+)\s*\(\s*(\w+)\s*(?:,\s*("([^"]*)"|\w+))?\s*(?:,\s*"([^"]*)")?(?:\s*,\s*"([^"]*)")?[^)]*\)\s*(\{)?')
+
+
+def plantuml_parse(src):
+    """PlantUML source → (elements, relations, kind). elements: {key: {name, keyword, stereo, desc, parent}};
+    relations: [(a, b, label, keyword)]. Reads component, deployment, sequence, C4 and ArchiMate notation; other
+    diagram kinds (activity, mind map …) give no elements."""
+    kind = (re.search(r'@start(\w+)', src) or [None, 'uml'])[1]
+    els, rels, alias, stack = {}, [], {}, []
+    if kind != 'uml': return els, rels, kind
+    src = re.sub(r"/'.*?'/", '', src, flags=re.S)
+    lines = iter(src.splitlines())
+
+    def key_of(token):
+        t = token.strip()
+        if t.startswith('()'): t = t[2:].strip()
+        t = t.strip('"').strip()
+        if t.startswith('[') and t.endswith(']'): t = t[1:-1]
+        if t.startswith(':') and t.endswith(':'): t = t[1:-1]
+        return alias.get(t, t)
+
+    def declare(name, keyword, al=None, stereo='', desc=''):
+        name = clean(name.replace('\\n', ' '))
+        k = al or name
+        if not name: return None
+        if k not in els: els[k] = {'name': name, 'keyword': keyword, 'stereo': stereo, 'desc': desc, 'parent': stack[-1] if stack else None}
+        if al: alias[al] = k
+        alias.setdefault(name, k)
+        return k
+
+    def ensure(token, implied):
+        k = key_of(token)
+        if k not in els:
+            t = token.strip()
+            kw = 'component' if t.startswith('[') else 'interface' if t.startswith('()') else 'actor' if t.startswith(':') else implied
+            declare(k, kw)
+        return k
+    for raw in lines:
+        line = raw.strip()
+        if not line or line.startswith(("'", '@', '!', '==', '...', '|||')) or _PU_SKIP.match(line):
+            if re.match(r'legend\b', line) and not line.startswith('legend '):
+                for l2 in lines:
+                    if re.match(r'\s*(endlegend|end legend)', l2): break
+            continue
+        if re.match(r'(note|rnote|hnote)\b', line):
+            if ':' not in line:
+                for l2 in lines:
+                    if re.match(r'\s*end\s*(note|rnote|hnote)', l2): break
+            continue
+        if line.startswith('}'):
+            if stack: stack.pop()
+            continue
+        m = _PU_MACRO.match(line)
+        if m and m.group(1)[0].isupper() or (m and m.group(1).lower().startswith(('rel', 'birel'))):
+            macro = m.group(1); low = macro.lower()
+            if low.startswith(('rel', 'birel')):
+                b = m.group(4) if m.group(4) is not None else (m.group(3) or '')
+                rels.append((alias.get(m.group(2), m.group(2)), alias.get(b, b), m.group(5) or '', macro)); continue
+            name = m.group(4) if m.group(4) is not None else m.group(2)
+            k = declare(name, low, m.group(2), desc=m.group(5) or '')
+            if m.group(7) and k: stack.append(k)
+            continue
+        kw = line.split(None, 1)[0].lower() if line.split() else ''
+        if kw in _PU_KEYWORDS and len(line.split(None, 1)) > 1:
+            rest = line.split(None, 1)[1].strip()
+            opens = rest.endswith('{'); rest = rest.rstrip('{').strip()
+            stereo = ' '.join(re.findall(r'<<\s*([^>]+?)\s*>>', rest)); rest = re.sub(r'<<[^>]*>>', '', rest)
+            rest = re.sub(r'#[\w]+(\s|$)', ' ', rest).strip()
+            if kw == 'archimate': rest = re.sub(r'^#\w+\s*', '', rest)
+            m2 = re.match(r'^"([^"]+)"\s+as\s+([\w.]+)', rest) or re.match(r'^([\w.]+)\s+as\s+"([^"]+)"', rest) or re.match(r'^\[([^\]]+)\]\s+as\s+([\w.]+)', rest)
+            if m2:
+                a, b = m2.group(1), m2.group(2)
+                name, al = (b, a) if re.match(r'^[\w.]+\s+as\s+"', rest) else (a, b)
+            else:
+                m3 = re.match(r'^("([^"]+)"|\[([^\]]+)\]|([\w.]+))(?:\s+as\s+([\w.]+))?', rest)
+                if not m3: continue
+                name = m3.group(2) or m3.group(3) or m3.group(4); al = m3.group(5)
+            k = declare(name, kw, al, stereo)
+            if opens and k: stack.append(k)
+            continue
+        m = re.match(r'^(\[[^\]]+\])(?:\s+as\s+([\w.]+))?\s*(<<[^>]*>>)?\s*$', line) or re.match(r'^\(\)\s*("?[^"]+"?)(?:\s+as\s+([\w.]+))?\s*$', line)
+        if m:
+            tok = m.group(1); declare(key_of(tok) if not tok.startswith('[') else tok[1:-1], 'component' if tok.startswith('[') else 'interface', m.group(2)); continue
+        m = _PU_REL.match(line)
+        if m:
+            a_tok, head, body1, body2, tail, b_tok, label = m.group(1), m.group(2), m.group(3), m.group(4), m.group(5), m.group(6), m.group(7)
+            a, b = ensure(a_tok, 'participant'), ensure(b_tok, 'participant')
+            if head in ('<', '<|', '<<') and not tail: a, b = b, a
+            rels.append((a, b, clean(label or ''), 'dotted' if '.' in body1 + body2 else 'line'))
+    return els, rels, kind
+
+
+# ---------------------------------------------------------------- pictures: text read by OCR (local, no network) or from SVG text
+OCR_JS = r'''ObjC.import('Foundation'); ObjC.import('Vision');
+function run(argv) {
+  const out = [];
+  for (const path of argv) {
+    const req = $.VNRecognizeTextRequest.alloc.init; req.recognitionLevel = 0; req.usesLanguageCorrection = false;
+    const h = $.VNImageRequestHandler.alloc.initWithURLOptions($.NSURL.fileURLWithPath(path), $({}));
+    const lines = [];
+    if (h.performRequestsError($([req]), $())) {
+      const res = req.results;
+      for (let i = 0; i < res.count; i++) {
+        const o = res.objectAtIndex(i); const c = o.topCandidates(1).objectAtIndex(0); const b = o.boundingBox;
+        lines.push({text: c.string.js, confidence: c.confidence, x: b.origin.x, y: 1 - b.origin.y - b.size.height, w: b.size.width, h: b.size.height});
+      }
+      out.push({path: path, lines: lines});
+    } else out.push({path: path, error: 'not an image Vision can read'});
+  }
+  return JSON.stringify(out);
+}'''
+
+
+def ocr_engine(name='auto'):
+    """A function path -> [{'text', 'confidence', 'x', 'y', 'w', 'h'}] (fractions of the picture, y from the top), or None.
+    'vision': macOS's built-in text recognition (Apple Vision, on the device, nothing to install); 'tesseract': the
+    Tesseract command if installed; 'auto': whichever is available; 'off': none. Both run locally — no network."""
+    import shutil, subprocess, tempfile
+    if name == 'off': return None
+    if name in ('auto', 'vision') and sys.platform == 'darwin' and shutil.which('osascript'):
+        js = Path(tempfile.mkdtemp(prefix='sdem-ocr-')) / 'ocr.js'; js.write_text(OCR_JS, encoding='utf-8')
+
+        def vision(path):
+            r = subprocess.run(['osascript', '-l', 'JavaScript', str(js), str(Path(path).resolve())], capture_output=True, text=True, timeout=120)
+            if r.returncode != 0: raise OSError(clean(r.stderr)[:200] or 'osascript failed')
+            res = json.loads(r.stdout)[0]
+            if 'error' in res: raise OSError(res['error'])
+            return res['lines']
+        vision.engine = 'macOS Vision'
+        return vision
+    if name in ('auto', 'tesseract') and shutil.which('tesseract'):
+        def tesseract(path):
+            r = subprocess.run(['tesseract', str(path), 'stdout', 'tsv'], capture_output=True, text=True, timeout=300)
+            if r.returncode != 0: raise OSError(clean(r.stderr)[:200] or 'tesseract failed')
+            return tesseract_lines(r.stdout)
+        tesseract.engine = 'Tesseract'
+        return tesseract
+    if name in ('vision', 'tesseract'): raise ValueError(f'OCR engine {name!r} is not available on this machine')
+    return None
+
+
+def tesseract_lines(tsv):
+    """Tesseract's TSV (level 5 = words) → lines with their box as fractions of the picture."""
+    rows = list(csv.DictReader(io.StringIO(tsv), delimiter='\t', quoting=csv.QUOTE_NONE))
+    page = next((r for r in rows if r.get('level') == '1'), None)
+    W, H = (float(page['width']), float(page['height'])) if page else (1.0, 1.0)
+    lines = collections.OrderedDict()
+    for r in rows:
+        if r.get('level') != '5' or not (r.get('text') or '').strip(): continue
+        k = (r['block_num'], r['par_num'], r['line_num']); x, y, w, h = (float(r[c]) for c in ('left', 'top', 'width', 'height'))
+        l = lines.setdefault(k, {'words': [], 'x1': x, 'y1': y, 'x2': x + w, 'y2': y + h, 'conf': []})
+        l['words'].append(r['text'].strip()); l['conf'].append(float(r['conf']) / 100)
+        l['x1'], l['y1'], l['x2'], l['y2'] = min(l['x1'], x), min(l['y1'], y), max(l['x2'], x + w), max(l['y2'], y + h)
+    return [{'text': ' '.join(l['words']), 'confidence': sum(l['conf']) / len(l['conf']), 'x': l['x1'] / W, 'y': l['y1'] / H,
+             'w': (l['x2'] - l['x1']) / W, 'h': (l['y2'] - l['y1']) / H} for l in lines.values()]
+
+
+def svg_text_lines(data):
+    """The text of a plain SVG picture (not draw.io, not PlantUML): exact, no OCR needed."""
+    try: root = ET.fromstring(data)
+    except ET.ParseError: return None
+    vb = (root.get('viewBox') or '').replace(',', ' ').split()
+    W = float(vb[2]) if len(vb) == 4 else float(re.sub(r'[^\d.]', '', root.get('width') or '') or 1)
+    H = float(vb[3]) if len(vb) == 4 else float(re.sub(r'[^\d.]', '', root.get('height') or '') or 1)
+    out = []
+    for t in root.iter():
+        if t.tag.split('}')[-1] != 'text': continue
+        s = clean(''.join(t.itertext()))
+        if not s: continue
+        num = lambda v: float(re.sub(r'[^\d.\-]', '', (v or '0').split()[0]) or 0)
+        size = num(t.get('font-size') or '12')
+        out.append({'text': s, 'confidence': 1.0, 'x': num(t.get('x')) / W, 'y': (num(t.get('y')) - size) / H, 'w': len(s) * size * 0.55 / W, 'h': size / H})
+    return out
+
+
+def group_labels(lines, rules):
+    """OCR lines → labels: lines stacked closely, centred on each other, are one box's label (name, then description)."""
+    o = rules.get('ocr', {}); minc = o.get('min_confidence', 0.5)
+    ls = sorted((l for l in lines if l.get('confidence', 1) >= minc and re.search(r'[A-Za-z]{2}', l['text'])), key=lambda l: (l['y'], l['x']))
+    groups = []
+    for l in ls:
+        cx = l['x'] + l['w'] / 2
+        g = next((g for g in groups if 0 <= l['y'] - (g[-1]['y'] + g[-1]['h']) <= 0.8 * l['h'] and abs(cx - (g[-1]['x'] + g[-1]['w'] / 2)) <= max(l['w'], g[-1]['w']) / 2), None)
+        if g: g.append(l)
+        else: groups.append([l])
+    out = []
+    for g in groups:
+        name = clean(g[0]['text']); desc = clean(' '.join(x['text'] for x in g[1:]))
+        if not (o.get('min_chars', 3) <= len(name) <= o.get('max_chars', 60)) or len(name.split()) > o.get('max_words', 6): continue
+        if norm(name) in {norm(x) for x in o.get('ignore', [])}: continue
+        if o.get('skip_lowercase', True) and name[:1].islower(): continue
+        out.append({'name': name, 'desc': desc, 'confidence': min(x.get('confidence', 1) for x in g)})
+    return out
+
+
 # ---------------------------------------------------------------- the extraction
 class Extraction:
-    def __init__(self, rules=None, known=(), mm=None):
+    def __init__(self, rules=None, known=(), mm=None, ocr=None):
         self.rules = rules or json.loads(RULES.read_text(encoding='utf-8'))
+        self.ocr = ocr                 # a function path -> text lines (ocr_engine), or None
         self.mm = mm or Metamodel.load()
         self.records = {}          # (type, norm name) -> record
         self.links, self.cross, self.review, self.pages = [], [], [], []
@@ -429,8 +700,10 @@ class Extraction:
         if not types:
             types_rev = [r for r in _cross_types() if self.mm.is_a(b['type'], r['source_type']) and self.mm.is_a(a['type'], r['target_type'])]
             if types_rev: a, b, types = b, a, types_rev
+        if kind != 'deployed_on':  # only containment or "runs on / hosted on" suggests a deployment; any other line is left for a person
+            types = [t for t in types if 'DEPLOY' not in t['mapping_type_id']]
         src = {'page_id': page['page_id'], 'page_title': page['title'], 'where': where, 'rule': rule, 'confidence': self.cap[how],
-               'reasoning': reasoning + ('' if types else '; no SDEM link type joins these two types — a person decides')}
+               'reasoning': reasoning + ('' if types else '; a line between two architectures — which SDEM link type (if any) is for a person to decide')}
         mt = types[0]['mapping_type_id'] if types else None
         ex = next((c for c in self.cross if (c['source'], c['target'], c['mapping_type_id']) == (a['id'], b['id'], mt)), None)
         if ex:
@@ -576,6 +849,97 @@ class Extraction:
                 if rev: a, b = b, a
                 self.link(a, kind, b, page, f"{where}, line {c['id']}", rule or 'HD-E', 'diagram_line', 'a line between the two shapes' + (f" labelled '{lab}'" if lab else ''), lab)
 
+    def read_diagram(self, page, dname, diagram, where, context):
+        kind, source = diagram
+        if kind == 'plantuml': return self.plantuml(page, dname, source, where, context)
+        return self.diagram(page, dname, source, where, context)
+
+    def guess(self, name, desc, context, how, rule_prefix):
+        """The type of a name with no notation to go by: a name already found, a label word, then the section's architecture."""
+        k = self.known.get(norm(name))
+        if k: return k[1], f'{rule_prefix}-K', f"named like the existing {k[1].split('.')[1]} {k[0]} ({k[2]})"
+        hit = self.find(name)
+        if hit: return hit['type'], f'{rule_prefix}-N', f"named like {hit['id']}, found elsewhere in the export"
+        label = (name + ' ' + desc).lower()
+        for etype, words in self.rules['label_words'].items():
+            if etype == 'note': continue
+            w = next((w.strip() for w in words if re.search(r'\b' + re.escape(w.strip().lower()) + r'\b', label)), None)
+            if w: return etype, f'{rule_prefix}-L', f"the label contains the word '{w}'"
+        lvl = self.layer_of(context)
+        if lvl and lvl in self.rules['layer_default_type']:
+            return self.rules['layer_default_type'][lvl], f'{rule_prefix}-D', f"nothing else to go by: the {lvl} default under '{context}'"
+        return None, None, None
+
+    def plantuml(self, page, dname, src, where, context):
+        els, rels, kind = plantuml_parse(src)
+        if not els:
+            self.review.append({'page_id': page['page_id'], 'page_title': page['title'], 'what': 'PlantUML diagram not read', 'where': where,
+                                'why': f'a @start{kind} diagram with no elements SDEM reads (activity, mind map, Gantt …) — a person records it'}); return
+        self.stats['diagrams read'] += 1; self.stats['plantuml diagrams'] += 1
+        types = {re.sub(r'[^a-z]', '', k.lower()): v for k, v in self.rules['plantuml_types'].items() if k != 'note'}
+        groups = {re.sub(r'[^a-z]', '', g.lower()) for g in self.rules.get('plantuml_groups', [])}
+        recs = {}
+        for key, e in els.items():
+            kw = re.sub(r'[^a-z]', '', e['keyword'].lower()); st = re.sub(r'[^a-z]', '', (e['stereo'] or '').lower())
+            w = f"{where}, element {key}"
+            etype = types.get(st) or (types.get(kw) if kw != 'archimate' else None)
+            if etype:
+                how = 'plantuml_untyped' if kw == 'participant' else 'plantuml_typed'
+                why = f"declared as PlantUML {e['keyword']}" + (f" <<{e['stereo']}>>" if e['stereo'] else '')
+                self.inspect['shapes'][('plantuml ' + (e['stereo'] or e['keyword']), etype)] += 1
+                recs[key] = self.record(etype, e['name'], page, w, 'HU-T', how, why, e['desc'])
+                continue
+            if kw in groups or kw.endswith('boundary'):
+                self.inspect['shapes'][('plantuml ' + e['keyword'], 'group — not a record')] += 1; continue
+            etype, rule, why = self.guess(e['name'], e['desc'], ' / '.join(x for x in (context, dname) if x), 'plantuml_untyped', 'HU')
+            self.inspect['shapes'][('plantuml ' + e['keyword'], etype or 'unclassified')] += 1
+            if not etype:
+                self.review.append({'page_id': page['page_id'], 'page_title': page['title'], 'what': 'shape', 'where': w, 'name': e['name'],
+                                    'why': 'no rule decides its type — add a word to the rules, or record it by hand'}); continue
+            recs[key] = self.record(etype, e['name'], page, w, rule, 'plantuml_untyped', why, e['desc'])
+        for key, e in els.items():  # nesting: part of the group's record, or deployed on it
+            par = e['parent']
+            while par and par not in recs: par = els.get(par, {}).get('parent')
+            if key in recs and par and recs[par] is not recs[key]:
+                outer, r = recs[par], recs[key]
+                if outer['type'][:2] == r['type'][:2]: self.link(outer, 'composition', r, page, f"{where}, {key} inside {par}", 'HU-C', 'diagram_line', 'declared inside the other element')
+                else: self.link(r, 'deployed_on', outer, page, f"{where}, {key} inside {par}", 'HU-C', 'diagram_line', 'declared inside the other element')
+        for a, b, label, how in rels:
+            ra, rb = recs.get(a), recs.get(b)
+            if not ra or not rb: self.stats['lines not between two read shapes'] += 1; continue
+            m = re.match(r'(?i)(?:bi)?rel_(flow|serving|triggering|realization|realisation|assignment|composition|aggregation|access|association|specialization)', how)
+            kind, rev, rule = (m.group(1).lower().replace('realisation', 'realization'), False, 'HU-R') if m else self.phrase(label)
+            if rev: ra, rb = rb, ra
+            self.link(ra, kind, rb, page, f"{where}, {a} → {b}", rule or 'HU-E', 'diagram_line', 'a PlantUML relation' + (f" labelled '{label}'" if label else ''), label)
+
+    def picture(self, page, rel, shown_as, section, alt):
+        """A picture: its text read (SVG text exactly; other pictures by OCR, on the machine) into low-confidence candidate
+        records where a rule decides their type; lines are not read. Always listed for a person."""
+        where = f"picture {rel or shown_as}" + (f" under '{section}'" if section else '')
+        lines, how, note = None, None, ''
+        if rel and rel.lower().endswith('.svg'):
+            lines, how = svg_text_lines((self.root / rel).read_bytes()), 'svg_text'
+        elif rel and self.ocr:
+            try: lines, how = self.ocr(self.root / rel), 'ocr'; self.stats['pictures read by OCR'] += 1
+            except (OSError, ValueError, json.JSONDecodeError) as e: note = f' (OCR could not read it: {e})'
+        elif rel and not self.ocr: note = ' (OCR is off)'
+        labels = group_labels(lines or [], self.rules)
+        made, unknown = [], []
+        for lab in labels:
+            etype, rule, why = self.guess(lab['name'], lab['desc'], section, how, 'HO')
+            if not etype: unknown.append(lab['name']); continue
+            r = self.record(etype, lab['name'], page, where, rule, how, ('text read from the picture' if how == 'ocr' else 'text of the SVG picture') + f'; {why}', lab['desc'])
+            if r: made.append(r['name']); self.stats['labels read from pictures'] += 1
+        if labels: page.setdefault('_texts_extra', []).append((section, '. '.join(l['name'] for l in labels)))
+        read = (f"; read {len(labels)} label(s){' by OCR' if how == 'ocr' else ''}: " + ', '.join(l['name'] for l in labels[:12]) + (' …' if len(labels) > 12 else '')
+                + (f" — {len(made)} became candidates" if made else '') + (f"; type unknown: {', '.join(unknown[:8])}" if unknown else '')) if labels else ''
+        self.review.append({'page_id': page['page_id'], 'page_title': page['title'], 'what': 'picture', 'where': where, 'name': alt or Path(rel or shown_as).name,
+                            'why': ('lines and boxes cannot be read from a picture — a person checks the labels and adds the links' if labels else
+                                    'a pasted picture — a person records what it shows, or redraws it in draw.io or PlantUML') + read + note
+                                   + ('' if rel else ' (the file is not in the export)')})
+        page['images_for_review'].append(rel or shown_as); self.stats['pictures for a person'] += 1
+        return made
+
     def phrase(self, text):
         t = ' ' + norm(text) + ' '
         for p in self.rules['phrases']:
@@ -636,6 +1000,11 @@ class Extraction:
                 n_table += 1; self.table(p, section, x, n_table)
             elif kind == 'text':
                 texts.append((section, x))
+            elif kind == 'plantuml':
+                n_pu = sum(1 for d in p['diagrams'] if d['file'].startswith(p['file'] + '#')) + 1
+                name = f'PlantUML {n_pu}'
+                self.read_diagram(p, name, ('plantuml', x), f"PlantUML block {n_pu}" + (f" under '{section}'" if section else ''), section)
+                p['diagrams'].append({'name': name, 'file': f"{p['file']}#plantuml-{n_pu}", 'kind': 'plantuml', 'read': True})
             elif kind == 'img':
                 src = urllib.parse.unquote(x['src']).split('?')[0]
                 if not src or any(s in src for s in self.rules['skip_images']): continue
@@ -648,14 +1017,11 @@ class Extraction:
                 match = next((rel for rel, name in mine.items() if (alias and norm(name) == alias) or norm(Path(rel).stem) == norm(Path(src).stem)), None) \
                     or next((rel for rel in self.diagrams if folder is not None and os.path.dirname(rel) == folder and norm(Path(rel).stem.split('.')[0]) == norm(Path(src).stem.split('.')[0])), None)
                 if match: mine.setdefault(match, Path(match).stem); sec_of[match] = section; continue
-                self.review.append({'page_id': p['page_id'], 'page_title': p['title'], 'what': 'picture', 'where': f"picture {t or src}" + (f" under '{section}'" if section else ''),
-                                    'name': x['alt'] or Path(src).name, 'why': 'a pasted picture — SDEM cannot read pictures without AI; a person records what it shows, or redraws it in draw.io'
-                                    + ('' if t else ' (the file is not in the export)')})
-                p['images_for_review'].append(t or src); self.stats['pictures for a person'] += 1
+                self.picture(p, t, src, section, x['alt'])
         for rel, name in mine.items():
-            self.diagram(p, name, self.diagrams[rel], f"diagram '{name}' ({rel})", sec_of.get(rel, ' / '.join(p['breadcrumb'])))
-            p['diagrams'].append({'name': name, 'file': rel, 'read': True}); self.linked.add(rel)
-        p['_texts'] = texts
+            self.read_diagram(p, name, self.diagrams[rel], f"diagram '{name}' ({rel})", sec_of.get(rel, ' / '.join(p['breadcrumb'])))
+            p['diagrams'].append({'name': name, 'file': rel, 'kind': self.diagrams[rel][0], 'read': True}); self.linked.add(rel)
+        p['_texts'] = texts + p.pop('_texts_extra', [])
         self.stats['pages'] += 1; self.stats['tables'] += n_table
 
     # ---- the root files: readme, source, evidence — kept as provenance; JSON and CSV lists fill in page ids, links and dates
@@ -706,7 +1072,7 @@ class Extraction:
         if not root.is_dir(): raise ValueError(f'{root}: not a folder')
         sc = scan(root, self.rules)
         if not sc['pages']: raise ValueError(f'{root}: no pages found (.html, .md, .txt or .csv) — is this the export folder?')
-        self.layout = sc['layout']; self.diagrams = sc['diagrams']; self.files = set()
+        self.root = root; self.layout = sc['layout']; self.diagrams = sc['diagrams']; self.files = set()
         for p in root.rglob('*'):
             if p.is_file(): self.files.add(p.relative_to(root).as_posix())
         self.by_name = collections.defaultdict(list)
@@ -720,8 +1086,8 @@ class Extraction:
             if any(os.path.dirname(rel) == os.path.dirname(u) and Path(u).stem.split('.')[0] == Path(rel).stem.split('.')[0] for u in self.used_pictures): continue
             sec = ' / '.join(folder_sections(rel, self.rules))
             pg = {'page_id': rel, 'id_from': 'path', 'title': f'{Path(rel).name} (diagram file)', 'space': '', 'file': rel, 'modified': None,
-                  'breadcrumb': folder_sections(rel, self.rules), 'diagrams': [{'name': Path(rel).stem, 'file': rel, 'read': True}], 'images_for_review': [], 'url': None, 'diagram_only': True}
-            self.diagram(pg, Path(rel).stem, xml, f"diagram file {rel}", sec)
+                  'breadcrumb': folder_sections(rel, self.rules), 'diagrams': [{'name': Path(rel).stem, 'file': rel, 'kind': xml[0], 'read': True}], 'images_for_review': [], 'url': None, 'diagram_only': True}
+            self.read_diagram(pg, Path(rel).stem, xml, f"diagram file {rel}", sec)
             self.review.append({'page_id': rel, 'page_title': pg['title'], 'what': 'diagram not linked to a page', 'where': rel, 'name': Path(rel).stem,
                                 'why': 'read with its folder as context' + (f" ('{sec}')" if sec else '') + '; check which design it belongs to'})
             pg['_texts'] = []; self.pages.append(pg); self.stats['diagrams not linked'] += 1
@@ -730,9 +1096,11 @@ class Extraction:
             if rel in self.used_pictures or rel.startswith('attachments/') or any(s in rel for s in self.rules['skip_images']): continue
             if (os.path.dirname(rel), Path(rel).stem.split('.')[0].lower()) in stems: continue   # a draw.io preview
             sec = ' / '.join(folder_sections(rel, self.rules))
-            self.review.append({'what': 'picture not shown on any page', 'where': rel, 'name': Path(rel).name,
-                                'why': 'cannot be read without AI' + (f"; it sits under '{sec}'" if sec else '') + ' — a person records what it shows'})
-            self.stats['pictures for a person'] += 1
+            pg = {'page_id': rel, 'id_from': 'path', 'title': f'{Path(rel).name} (picture file)', 'space': '', 'file': rel, 'modified': None,
+                  'breadcrumb': folder_sections(rel, self.rules), 'diagrams': [], 'images_for_review': [], 'url': None, 'diagram_only': True}
+            self.picture(pg, rel, rel, sec, Path(rel).name)
+            self.review[-1]['what'] = 'picture not shown on any page'
+            pg['_texts'] = pg.pop('_texts_extra', []); self.pages.append(pg)
         for p in self.pages: self.narrative(p, p.pop('_texts'))  # after every page: names from all tables and diagrams
         dup = collections.defaultdict(list)
         for r in self.records.values(): dup[norm(r['name'])].append(r)
@@ -773,6 +1141,8 @@ class Extraction:
         conf = collections.Counter(best(r['sources']) for r in self.records.values())
         return {'pages': self.stats['pages'], 'tables': self.stats['tables'], 'diagrams_read': self.stats['diagrams read'],
                 'diagrams_not_linked': self.stats['diagrams not linked'], 'provenance_files': len(getattr(self, 'provenance_files', [])),
+                'plantuml_diagrams': self.stats['plantuml diagrams'], 'pictures_read_by_ocr': self.stats['pictures read by OCR'],
+                'labels_read_from_pictures': self.stats['labels read from pictures'], 'ocr_engine': getattr(self.ocr, 'engine', 'off') if self.ocr else 'off',
                 'pictures_for_a_person': self.stats['pictures for a person'], 'records': dict(sorted(by.items())),
                 'records_by_confidence': dict(conf), 'links_within': len(self.links), 'links_between_candidates': len(self.cross),
                 'for_review': len(self.review), 'narrative_mentions': self.stats['narrative mentions']}
@@ -793,12 +1163,12 @@ def _digest(root):
     return h.hexdigest()
 
 
-def extract(root, out, rules=None, known=(), model_id=None, now=None):
+def extract(root, out, rules=None, known=(), model_id=None, now=None, ocr='auto'):
     """Read the export at root, write the candidate datasets, extraction.json, design-index.json and
     extraction-report.md to out. Returns (extraction, written datasets, check issues per layer)."""
     from .graph import LevelGraph
     rules_doc = json.loads(Path(rules).read_text(encoding='utf-8')) if rules else None
-    x = Extraction(rules_doc, known).run(root)
+    x = Extraction(rules_doc, known, ocr=ocr if callable(ocr) else ocr_engine(ocr)).run(root)
     model_id = model_id or (re.sub(r'[^A-Z0-9]+', '-', (x.pages[0]['space'] or Path(root).name).upper()).strip('-') or 'CONFLUENCE')
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     ds = x.datasets(model_id); issues = {}
@@ -894,11 +1264,11 @@ def report(x, meta, records, links, issues, idx):
 KEEP_NAMES = {'archives', 'archive', 'attachments', 'images', 'styles', 'diagrams', '.'}
 
 
-def inspect(root, rules=None, anonymous=False):
+def inspect(root, rules=None, anonymous=False, ocr='auto'):
     """What is in the export and which rule reads it — structure only (folders, headings, column names, shape kinds),
     no records. anonymous: folder names replaced by F1, F2 … (well-known names kept) so the layout can be described safely."""
     rules_doc = json.loads(Path(rules).read_text(encoding='utf-8')) if rules else None
-    x = Extraction(rules_doc).run(root)
+    x = Extraction(rules_doc, ocr=ocr if callable(ocr) else ocr_engine(ocr)).run(root)
     names = {}
 
     def anon(folder):
@@ -920,17 +1290,20 @@ def main(argv=None):
     i = sub.add_parser('inspect', help='what is in the export and which rules read it — structure only')
     i.add_argument('export'); i.add_argument('--rules', help='your copy of metamodel/history-rules.json'); i.add_argument('--json', action='store_true')
     i.add_argument('--anonymous', action='store_true', help='folder layout only, names replaced by F1, F2 … — safe to describe to others')
+    i.add_argument('--ocr', default='auto', choices=['auto', 'vision', 'tesseract', 'off'], help='read text in pictures: macOS Vision (built in), Tesseract (if installed), auto, or off')
     e = sub.add_parser('extract', help='write candidate datasets, extraction.json, design-index.json and extraction-report.md')
     e.add_argument('export'); e.add_argument('-o', '--out', required=True); e.add_argument('--rules', help='your copy of metamodel/history-rules.json')
     e.add_argument('--known', nargs='+', default=[], help='existing SDEM datasets: their names are found in the text and flagged as the same record')
     e.add_argument('--model-id', help='name for the candidate datasets (default: the Confluence space)'); e.add_argument('--json', action='store_true')
+    e.add_argument('--ocr', default='auto', choices=['auto', 'vision', 'tesseract', 'off'], help='read text in pictures: macOS Vision (built in), Tesseract (if installed), auto, or off')
     a = ap.parse_args(argv)
     try:
         if a.cmd == 'inspect':
-            r = inspect(a.export, a.rules, a.anonymous)
+            r = inspect(a.export, a.rules, a.anonymous, a.ocr)
             if a.json: print(json.dumps({**r, 'for_review': dict(r['for_review'])}, indent=2, ensure_ascii=False)); return 0
             s = r['summary']
-            print(f"{s['pages']} pages, {s['tables']} tables, {s['diagrams_read']} draw.io diagrams read ({s['diagrams_not_linked']} not linked to a page), "
+            print(f"{s['pages']} pages, {s['tables']} tables, {s['diagrams_read']} diagrams read (draw.io and {s['plantuml_diagrams']} PlantUML; {s['diagrams_not_linked']} not linked to a page), "
+                  f"{s['pictures_read_by_ocr']} pictures read by OCR ({s['ocr_engine']}), "
                   f"{s['pictures_for_a_person']} pictures for a person, {s['provenance_files']} provenance files in the root")
             print('\nFolders (what each holds):')
             for f in r['layout']:
@@ -946,7 +1319,7 @@ def main(argv=None):
             print('\nFor a person: ' + (', '.join(f'{k} {v}' for k, v in r['for_review'].items()) or 'nothing'))
             print('\nTune: copy metamodel/history-rules.json, add the column names or shape words marked "no rule"/"unclassified", pass --rules.')
             return 0
-        x, ds, issues = extract(a.export, a.out, a.rules, a.known, a.model_id)
+        x, ds, issues = extract(a.export, a.out, a.rules, a.known, a.model_id, ocr=a.ocr)
     except (ValueError, OSError) as err:
         print(f'ERROR: {err}', file=sys.stderr); return 2
     s = x.summary(); errs = sum(len(v) for k, v in issues.items() if 'advice' not in k)

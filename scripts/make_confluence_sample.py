@@ -194,12 +194,91 @@ INFRA_MODEL = """<mxfile host="Confluence"><diagram id="i" name="Infrastructure"
 <mxCell id="s3" value="" style="endArrow=none;html=1;" edge="1" parent="1" source="s1" target="s2"><mxGeometry relative="1" as="geometry"/></mxCell>
 </root></mxGraphModel></diagram></mxfile>"""
 
+_P64 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_'
+
+
+def plantuml_encode(text):
+    """PlantUML's text encoding: raw deflate, then its own base64 alphabet (3 bytes → 4 characters)."""
+    c = zlib.compressobj(9, zlib.DEFLATED, -15); data = c.compress(text.encode('utf-8')) + c.flush()
+    out = []
+    for i in range(0, len(data), 3):
+        b = data[i:i + 3] + bytes(3 - len(data[i:i + 3]))
+        n = (b[0] << 16) | (b[1] << 8) | b[2]
+        out += [_P64[(n >> 18) & 63], _P64[(n >> 12) & 63], _P64[(n >> 6) & 63], _P64[n & 63]]
+    return ''.join(out)
+
+
+COMPONENTS_PUML = """@startuml
+title Payments components
+actor "Retail Customer" as cust
+node "Payments Kubernetes Cluster" as k8s {
+  [Payments Hub] as hub
+  component "Sanctions Screening" as sanc
+}
+database "Payments Store" as store
+cust --> hub : submits payment
+hub --> sanc : calls
+hub ..> store : writes to
+@enduml
+"""
+
+SEQUENCE_PUML = """@startuml
+participant "Payments Hub" as P
+participant "Clearing Gateway" as C
+participant "Scheme Adapter" as S
+P -> C : sends cleared payments
+C -> S : sends clearing file
+S --> C : acknowledgement
+@enduml
+"""
+
+C4_MD = """# Container view
+
+The container view, drawn in PlantUML (C4).
+
+```plantuml
+@startuml
+!include <C4/C4_Container>
+Person(cust, "Retail Customer")
+System_Boundary(bank, "Bank") {
+  Container(mob, "Mobile Banking App", "Swift")
+  Container(hub, "Payments Hub", "Java")
+  ContainerDb(store, "Payments Store", "PostgreSQL")
+}
+Rel(cust, mob, "Uses")
+Rel(mob, hub, "Sends payment to")
+Rel(hub, store, "Reads from and writes to")
+@enduml
+```
+"""
+
+DEPLOY_PUML = """@startuml
+archimate #Technology "Payments Kubernetes Cluster" as k8s <<technology-node>>
+archimate #Technology "Edge Firewall" as fw <<technology-device>>
+archimate #Technology "PostgreSQL 15" as pg <<technology-system-software>>
+fw --> k8s
+@enduml
+"""
+
+WHITEBOARD_SVG = """<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+<rect width="900" height="500" fill="#ffffff"/>
+<rect x="40" y="60" width="240" height="90" fill="#dae8fc" stroke="#333"/><text x="160" y="112" font-family="Helvetica" font-size="24" text-anchor="middle">Payments Hub</text>
+<rect x="520" y="60" width="300" height="90" fill="#dae8fc" stroke="#333"/><text x="670" y="112" font-family="Helvetica" font-size="24" text-anchor="middle">Sanctions Checker</text>
+<line x1="280" y1="105" x2="520" y2="105" stroke="#333" stroke-width="2"/><text x="400" y="95" font-family="Helvetica" font-size="16" text-anchor="middle">screening request</text>
+<rect x="40" y="300" width="780" height="140" fill="#d5e8d4" stroke="#333"/><text x="430" y="330" font-family="Helvetica" font-size="22" text-anchor="middle">Payments Kubernetes Cluster</text>
+<rect x="80" y="350" width="260" height="70" fill="#ffffff" stroke="#333"/><text x="210" y="393" font-family="Helvetica" font-size="20" text-anchor="middle">Ledger Posting Service</text>
+</svg>
+"""
+
 RAW_PAGE = """<html><head><title>Payments Hub Design</title></head><body>
 <h1>Payments Hub Design</h1>
 <p>Last updated by the payments architecture team.</p>
 <h2>Solution overview</h2>
 <p>The Payments Hub sends cleared payments to the Clearing Gateway every hour.</p>
+<p><img src="../Payments%20Hub%20Design/2.%20Application%20Architecture/whiteboard.png" alt="whiteboard"></p>
 <p><img src="diagrams/hub-context.png" alt="hub context"></p>
+<p><img src="diagrams/payments-components.png" alt="payments components"></p>
+<p><img src="diagrams/payment-sequence.svg" alt="payment sequence"></p>
 <h2>Applications</h2>
 <table><tr><th>Application</th><th>Purpose</th><th>Status</th></tr>
 <tr><td>Payments Hub</td><td>Captures and validates payment instructions</td><td>Live</td></tr>
@@ -245,6 +324,9 @@ def folder_export():
         'Payments Hub Design/1. Business Context/overview.md': OVERVIEW_MD,
         'Payments Hub Design/2. Application Architecture/integrations.html': INTEGRATIONS_HTML,
         'Payments Hub Design/2. Application Architecture/notes.txt': NOTES_TXT,
+        'Payments Hub Design/2. Application Architecture/container-view.md': C4_MD,
+        'Payments Hub Design/3. Infrastructure/deployment.puml': DEPLOY_PUML,
+        'archives/diagrams/payment-sequence.svg': f'<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><?plantuml-src {plantuml_encode(SEQUENCE_PUML)}?><rect width="10" height="10"/></svg>\n',
         'Payments Hub Design/3. Infrastructure/infrastructure.svg':
             f'<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" content="{_h.escape(INFRA_MODEL)}"><rect width="10" height="10"/></svg>\n',
     }
@@ -255,12 +337,20 @@ def folder_export():
     w.writerows([['page_id', 'file', 'check', 'checked_on'], ['55501', 'archives/payments-hub-design.html', 'exported and opened', '2026-10-01']])
     text['evidence.csv'] = buf.getvalue()
     binary = {'archives/diagrams/hub-context.png': png([('mxfile', urllib.parse.quote(CONTEXT_MODEL, safe=''))]),
+              'archives/diagrams/payments-components.png': png([('plantuml', COMPONENTS_PUML)]),
               'Payments Hub Design/1. Business Context/journey-sketch.jpg': b'\xff\xd8\xff\xe0 synthetic jpeg \xff\xd9',
               'Payments Hub Design/3. Infrastructure/rack-photo.jpg': b'\xff\xd8\xff\xe0 synthetic jpeg \xff\xd9'}
     for rel, t in text.items():
         p = FOLDER / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_text(t, encoding='utf-8')
     for rel, b in binary.items():
         p = FOLDER / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(b)
+    # a real picture of a diagram, for OCR: rendered with macOS Quick Look where available; elsewhere the committed copy is kept
+    wb = FOLDER / 'Payments Hub Design' / '2. Application Architecture' / 'whiteboard.png'
+    import shutil, subprocess, sys, tempfile
+    if sys.platform == 'darwin' and shutil.which('qlmanage'):
+        tmp = Path(tempfile.mkdtemp()); (tmp / 'whiteboard.svg').write_text(WHITEBOARD_SVG, encoding='utf-8')
+        subprocess.run(['qlmanage', '-t', '-s', '900', '-o', str(tmp), str(tmp / 'whiteboard.svg')], capture_output=True)
+        if (tmp / 'whiteboard.svg.png').exists(): shutil.copyfile(tmp / 'whiteboard.svg.png', wb)
     print(f'written {FOLDER}')
 
 

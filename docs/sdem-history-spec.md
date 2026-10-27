@@ -38,6 +38,16 @@
 | HI-L05 | Pictures shown on a page, and pictures in folders no page shows, are listed for a person | built | `test_pictures_shown_or_not_go_to_a_person` |
 | HI-I02 | `inspect` shows what each folder holds; `--anonymous` replaces folder names and leaves out headings and column names | built | `test_inspect_layout_and_anonymous` |
 
+## 3b. PlantUML and pictures
+
+| ID | Requirement | Status | Test |
+|---|---|---|---|
+| HI-P01 | PlantUML is read from its source in every form: `.puml`/`.plantuml`/`.pu`/`.iuml`/`.wsd` files, `@startuml` blocks in HTML code blocks, Markdown fenced blocks and text files, PNG `plantuml` text chunks, SVG `plantuml-src` (PlantUML's encoding) and SVG comments | built | `test_plantuml_in_every_form` |
+| HI-P02 | Element keywords, C4 macros and ArchiMate stereotypes/macros give the type (`plantuml_types` in the rules); boundaries and packages are groups; arrows (direction from the arrow head), `Rel(…)` and `Rel_<Kind>(…)` give links; nesting gives part-of or deployed-on; between architectures, only nesting or "runs on / hosted on" wording suggests a deployment | built | `test_plantuml_relations_and_nesting` |
+| HI-P03 | Sequence diagrams (participants, messages, alt/loop blocks), short forms (`[A]`, `() I`, `:A:`), and other diagram kinds reported, not read | built | `test_plantuml_parser_notations` |
+| HI-O04 | Pictures' text is read on the machine — macOS Vision (built in) or Tesseract; `--ocr auto|vision|tesseract|off`; SVG text read exactly; no network | built | `test_macos_vision_reads_the_whiteboard`, `test_tesseract_tsv`, `test_svg_text_is_read_without_ocr` |
+| HI-O05 | Stacked lines are one label; small-letter captions, short or long text and low OCR confidence are skipped; a label becomes a candidate (low) only when a name found, a label word or the section decides its type; the picture is always listed for a person with the labels read | built | `test_grouping_and_filters`, `test_stand_in_engine_makes_low_candidates_and_a_review_item` |
+
 ## 4. Candidates
 
 | ID | Requirement | Status | Test |
