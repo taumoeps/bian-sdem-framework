@@ -113,6 +113,26 @@ Each time you open a new terminal later, run the `activate` line from step 4 aga
 
 **The one idea to remember:** you run SDEM in the **terminal**; Copilot **helps** in the chat. Copilot never approves anything and never changes real data on its own.
 
+## 4a. The dashboard — the estate on one page
+
+```bash
+sdem dashboard --estate examples/payment-initiation -o work/dashboard.html
+```
+
+Open `work/dashboard.html` in your browser — or in VS Code: *Command Palette → Simple Browser: Show*, then paste the file's path. It works offline and needs no AI.
+
+| Tab | Shows |
+|---|---|
+| **Overview** | what needs your attention; the health of each architecture (errors, advice); how much of each is linked to the other layers; records not linked yet |
+| **Review** | the links the rules engine proposes, weakest first — rule, reasoning, the evidence you need to approve, and the `sdem approve` command to copy |
+| **Trace & impact** | type a record: what it depends on, what depends on it, and the impact of a change (modify, rehost, replace, retire) |
+| **Matrices** | capability → service domain → application → technology, from approved links |
+| **Changes & work** | change events, work items, change sets, and any hand edits waiting to be adopted |
+| **AID plans** | with `--projection <folder>`: the projected design beside the real one |
+| **Controls** | every control and when it was last tested |
+
+The page is **read-only**: it shows the exact `sdem` command for every action (with a *copy* button). It is a snapshot — run `sdem dashboard` again after a change. Design: [`sdem-dashboard-design.md`](sdem-dashboard-design.md).
+
 ## 5. Quick start — 15 minutes
 
 This uses the example estate `examples/payment-initiation` — a made-up bank's payments architecture, all four layers, already linked. Type each command in the terminal.
@@ -249,8 +269,10 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem build <files> --out <dir>` | J4 | checks everything and writes the graph store | after approval, before trace and impact | `sdem trace`, `sdem view` |
 | `sdem query --graph <dir> …` | J4 | finds records: `--type`, `--level`, `--where attr=value`, `--unmapped A2` (records still without a link) | to look things up | — |
 | `sdem baseline <name> --graph <dir>` | J4 | freezes the graph store under a name (e.g. a release) | at milestones | — |
+| `sdem dashboard --estate <dir> -o <file.html>` | J7 | the estate on one read-only page (§4a) | any time — start here | the commands it shows |
+| `sdem matrix --estate <dir> [--md file.md]` | J5 | capability → domain → application → technology from approved links | for a report or review | — |
 | `sdem trace <id> --graph <dir>` | J5 | follows links `--direction down` (to technology), `up` (to business) or both | "what does this depend on / what depends on it?" | `sdem impact` |
-| `sdem impact <id> --change <kind> --graph <dir>` | J5 | classifies what a change affects; kinds: `modify`, `rehost`, `replace`, `retire` | before a change | draft an impact note |
+| `sdem impact <id> --change <kind> --graph <dir> [--report file.md]` | J5 | classifies what a change affects; kinds: `modify`, `rehost`, `replace`, `retire`; `--report` writes a printable impact report | before a change | share the report |
 | `sdem aid project --have <files> --catalogue <bian> --out <dir>` | J6 | projects the layers you don't have (planning, not real data) | early design, scoping | `sdem view --projection`, `sdem explain` |
 | `sdem aid check <dir>` · `sdem aid gaps <dir> --actual <files>` | J6 | checks a projection; compares it with a real design | later, when the real design exists | — |
 | `sdem view --graph <dir> [--projection <dir>] [-o file.html]` | J7 | writes the HTML picture | to see and share | open in a browser |

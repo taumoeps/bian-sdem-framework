@@ -91,4 +91,7 @@ jobs:
           python -m sdem check examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
           python -m sdem trace CAP-310 --graph examples/card-fraud-alerts/graph
           python -m sdem model check
+          python -m sdem matrix --estate examples/payment-initiation
+          python -m sdem impact INF-K8S-PAY-PROD --change rehost --estate examples/payment-initiation --report /tmp/impact.md
+          python -m sdem dashboard --estate examples/payment-initiation -o /tmp/dashboard.html
       - run: python -m unittest discover -s tests -v

@@ -28,7 +28,7 @@ The **SDEM workbench** is how an architect uses SDEM day to day. It is not a new
 | **Rulebook** | `metamodel/`, `schema/` | what may exist and link, on what published basis | built |
 | **Repository** | architecture datasets, Relationship Registry, graph store, projection packages — JSON files | the architecture data | built |
 | **History and approval** | Git, with pull requests | who changed what and why; links are approved in reviewed changes | built (Git); approval flow to document |
-| **Views** | generated HTML graph view, PlantUML diagrams, Markdown reports | pictures and tables for review — VS Code is not a drawing tool | built |
+| **Views** | the **dashboard** (`sdem dashboard`: the estate on one read-only HTML page), the HTML graph view, matrices and impact reports, PlantUML diagrams | pictures and tables for review — VS Code is not a drawing tool; open HTML in VS Code's Simple Browser | built |
 | **Controls** | CTL-01…17 (CTL-18 proposed), CI on every push | keep people and the AI honest: nothing unchecked becomes real | built |
 
 ### 2.1 How the workbench fits into the SDEM framework
@@ -335,5 +335,6 @@ sequenceDiagram
 | WB-Q01 | Package the set-up as a VS Code extension later? | Not now — the CLI, instructions and prompt files need no extension; revisit if architects need buttons and panels |
 | WB-Q02 | Should the HTML view open inside VS Code? | Yes, as a later step (a simple preview); a browser works today |
 | WB-Q03 | Who reviews the Copilot instructions when the rulebook changes? | The rulebook owner; CI checks the instructions name only commands that exist |
+| WB-Q06 | A GUI with actions and forms? | Proposed as dashboard phase 2 (`sdem serve`, DB-D05) — would amend SDEM-D07 to "one engine, two front ends; no logic in the GUI" |
 | WB-Q05 | Agents per architecture? | Proposed in [`sdem-agent-platform-design.md`](sdem-agent-platform-design.md): Copilot custom agents per layer and an orchestrator, coordinating through the federated graph |
 | WB-Q04 | Should the use-case and baseline scripts (`scripts/*.py`) become CLI commands? | Done — `sdem model examples` and `sdem model baseline-pack` |

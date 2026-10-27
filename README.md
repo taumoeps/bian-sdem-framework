@@ -200,6 +200,7 @@ Python 3.10+; no third-party dependencies. `pip install -e .` installs the `sdem
 
 ```bash
 sdem --help                                                    # every journey, J1–J8; each subcommand has --help with an example
+sdem dashboard --estate examples/payment-initiation -o work/dashboard.html   # the estate on one page — open it in a browser
 E=examples/payment-initiation
 
 sdem check --estate $E                                         # J1 check the datasets and registry against the rulebook
@@ -257,6 +258,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error. Approving a link is done 
 | [`mapping-execution.md`](docs/mapping-execution.md) · [`use-case-testing.md`](docs/use-case-testing.md) | the procedure as executed, and the eleven test runs |
 | [`reference-architecture-provenance.md`](docs/reference-architecture-provenance.md) | every entity traced to a public standard |
 | [`aid-design.md`](docs/aid-design.md) · [`aid-spec.md`](docs/aid-spec.md) | **Architecture Inference Design (AID)** (approved, built — `sdem-aid`): projecting missing architecture layers, upstream or downstream, for planning — with gap analysis against the real design |
+| [`sdem-dashboard-design.md`](docs/sdem-dashboard-design.md) · [`sdem-dashboard-spec.md`](docs/sdem-dashboard-spec.md) | **the dashboard** (phase 1 built): one read-only HTML page per estate — health, attention, review, trace & impact, matrices, changes, AID, controls; `sdem matrix`, `sdem impact --report`; phase 2 (`sdem serve`, actions and forms) proposed |
 | [`sdem-agent-platform-principles.md`](docs/sdem-agent-platform-principles.md) | what makes a good agent platform (data, tools, guardrails, agents, prompts, skills, proof) and how SDEM measures up; the next improvements |
 | [`sdem-copilot-setup.md`](docs/sdem-copilot-setup.md) | setting up a GitHub account, a Copilot plan and VS Code for the SDEM agents (`.github/agents/`), prompt files (`.github/prompts/`) and skills (`.github/skills/`) |
 | [`sdem-workbench-user-guide.md`](docs/sdem-workbench-user-guide.md) | **start here if you are new**: the user guide for architects — set-up, the workbench screen, a 15-minute quick start, every command, workflow examples (onboard data, link and approve, trace, impact, plan with AID), working with Copilot, troubleshooting |

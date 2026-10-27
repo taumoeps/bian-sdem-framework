@@ -35,6 +35,10 @@ JOURNEYS = {
                  'sdem aid project --have examples/payment-initiation/a1-business.json --catalogue bian.json --out work/prj'),
     'view':     ('J7', 'write the HTML picture of a graph store, optionally with a projection', 'sdem.graph', ['view'],
                  'sdem view --graph examples/card-fraud-alerts/graph -o work/view.html'),
+    'matrix':   ('J5', 'business → BIAN → application → technology matrices from approved links', 'sdem.matrix', [],
+                 'sdem matrix --estate examples/payment-initiation --md work/matrix.md'),
+    'dashboard': ('J7', 'one read-only HTML dashboard for an estate: health, attention, review, trace & impact, matrices, changes, AID, controls', 'sdem.dashboard', [],
+                 'sdem dashboard --estate examples/payment-initiation -o work/dashboard.html'),
     'explain':  ('J8', 'explain one element or link: why it exists, from what, how sure', None, None,
                  'sdem explain SD-PI --projection work/prj'),
     'change':   ('AG', 'agent platform: propose a change set to one layer — checked, then its impact recorded', None, None,
@@ -55,15 +59,16 @@ GENERATORS = ['diagram', 'relationships', 'structure', 'spec', 'kgspec', 'catalo
 
 
 ESTATE_FILES = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')
-ESTATE_COMMANDS = ('check', 'validate', 'link', 'build', 'trace', 'impact')
+ESTATE_COMMANDS = ('check', 'validate', 'link', 'build', 'trace', 'impact', 'matrix')
 
 
 def _estate_files(d, registry_only=False):
-    d = Path(d)
-    files = ([] if registry_only else [d / f for f in ESTATE_FILES]) + [d / 'mappings.json']
-    missing = [str(f) for f in files if not f.exists()]
-    if missing: raise SystemExit(f"sdem: --estate {d}: not an estate folder (missing {', '.join(missing)})")
-    return [str(f) for f in files]
+    """An estate folder's files: the architecture datasets it has (one to four — a partial estate is normal) and its registry."""
+    d = Path(d); reg = d / 'mappings.json'
+    datasets = [] if registry_only else [d / f for f in ESTATE_FILES if (d / f).exists()]
+    if not reg.exists() or (not registry_only and not datasets):
+        raise SystemExit(f"sdem: --estate {d}: not an estate folder (it needs mappings.json and at least one of {', '.join(ESTATE_FILES)})")
+    return [str(f) for f in datasets + [reg]]
 
 
 def _expand(name, rest):

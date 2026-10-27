@@ -215,6 +215,31 @@ class FederatedGraph:
                 'mappings_to_supersede': sorted(set(touched))}
 
 
+def impact_report(result, generated=None):
+    """DB-K02: a printable impact report (Markdown) from an impact result."""
+    import datetime
+    ch = next((r for r in result['instances'] if r['id'] == result['changed']), {})
+    order = {'design_change_required': 0, 'review_required': 1, 'no_impact': 2}
+    rows = sorted(result['instances'], key=lambda r: (order.get(r['classification'], 3), r['level'] or '', r['id']))
+    label = {'design_change_required': 'design change required', 'review_required': 'review required', 'no_impact': 'no impact'}
+    out = [f"# Impact report — {result['change']} of {result['changed']}", '',
+           f"| | |", '|---|---|',
+           f"| Record | {ch.get('name') or result['changed']} `{result['changed']}` ({ch.get('type') or '?'}) |",
+           f"| Change | **{result['change']}** — {result['reason']} |",
+           f"| Generated | {generated or datetime.date.today().isoformat()} by `sdem impact` (impact rules {result.get('rules_version', '?')}) from approved links |", '',
+           '## Summary', '']
+    for cls in ('design_change_required', 'review_required', 'no_impact'):
+        n = [r for r in rows if r['classification'] == cls]
+        if n: out.append(f"- **{label[cls]}**: {len(n)} — " + ', '.join(f"{r['name'] or r['id']} ({r['level'] or '?'})" for r in n))
+    out += ['', '## Affected records', '', '| Layer | Record | Classification | Path (approved links) | Relation to the change |', '|---|---|---|---|---|']
+    rel = {'self': 'the changed record', 'up1': 'depends on it directly', 'up2+': 'depends on it indirectly', 'down1': 'it depends on this directly', 'down2+': 'it depends on this indirectly'}
+    out += [f"| {r['level'] or '?'} | {r['name'] or ''} `{r['id']}` | {label.get(r['classification'], r['classification'])} | {', '.join(r['via']) or '—'} | {rel.get(r['relation'], r['relation'])} |" for r in rows]
+    out += ['', '## Links to supersede', '']
+    out += [f"- `{m}` — replace with a new approved link (`sdem approve … --supersedes {m}`)" for m in result['mappings_to_supersede']] or ['None.']
+    out += ['', '---', '', '*Classification is structural; an architect confirms before any design changes.*', '']
+    return '\n'.join(out)
+
+
 def render_trace(tree, direction):
     arrow = '-' if direction == 'down' else '<-'
     def label(n):
@@ -252,6 +277,7 @@ def main(argv=None):
             sp.add_argument('--projection', metavar='DIR', help='also follow the links of an AID projection package, labelled PROJECTED (AID-O06)')
         if name == 'impact':
             sp.add_argument('--change', choices=sorted(IMPACT_RULES), required=True)
+            sp.add_argument('--report', metavar='FILE.md', help='also write a printable impact report (Markdown)')
     sp = sub.add_parser('build', help='check architecture datasets and registry, then write the graph store')
     sp.add_argument('paths', nargs='+', help='architecture datasets and relationship registries')
     sp.add_argument('--out', required=True, metavar='DIR', help='graph store directory')
@@ -354,6 +380,8 @@ def main(argv=None):
         return EXIT_OK if any(t['children'] for t in trees.values()) else EXIT_ISSUES
     if args.cmd == 'impact':
         result = fg.impact(args.entity, args.change, statuses)
+        if getattr(args, 'report', None):
+            Path(args.report).write_text(impact_report(result), encoding='utf-8'); print(f'wrote {args.report}', file=sys.stderr)
         if args.json: print(json.dumps(result, indent=2))
         else:
             print(f"IMPACT of '{args.change}' on {result['changed']}: {result['reason']}\n")
