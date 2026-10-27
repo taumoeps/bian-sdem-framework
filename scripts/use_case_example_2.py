@@ -288,19 +288,19 @@ def render(R):
     for r in R['runs']:
         out += ['', f"### Run {r['run']} — has {r['has']}, projects {r['projects']}", ''] + r['story']
         out += ['', '**Sealed expectations**', '', '| Expectation | Met |', '|---|---|'] + [f"| {cell(c)} | {'✅' if ok else '❌'} |" for c, ok in r['checks']]
-        out += ['', '**Projected design elements**', '', '| Layers (from → to) | Element | Step | Source (inferred from) | Rule — published source | Reasoning | Confidence | Result against the real design |', '|---|---|---|---|---|---|---|---|']
+        out += ['', '**Projected design elements**', '', '| Layers (from → to) | Projected Element | Step | Source (inferred from) | Rule — published source | Reasoning | Confidence | Result against the real design |', '|---|---|---|---|---|---|---|---|']
         for e in r['elements']:
-            out.append(f"| **{e['path']}** | **{cell(e['name'])}**" + (f" `{e['id']}`" if e['name'] != e['id'] else '') + f" ({e['type']}) | {e['step']} | {cell(e['source'])} | {cell(e['basis'] if e['basis'].startswith(e['rule'] + ':') else e['rule'] + ' — ' + e['basis'])} | {cell(e['reasoning'])} | {e['confidence']} | "
+            out.append(f"| **{e['path']}** | **{e['layer']} - {cell(e['name'])}**" + (f" `{e['id']}`" if e['name'] != e['id'] else '') + f" ({e['type']}) | {e['step']} | {cell(e['source'])} | {cell(e['basis'] if e['basis'].startswith(e['rule'] + ':') else e['rule'] + ' — ' + e['basis'])} | {cell(e['reasoning'])} | {e['confidence']} | "
                        f"{sym(e['result'])} {e['result']}: {cell(e['why'])}" + (f" — real: {cell(e['real'])}" if e['real'] not in ('—', None) else '') + ' |')
         if r['missed']:
-            out += ['', '**Real elements AID missed**', '', '| Layer | Element | Why it was missed |', '|---|---|---|'] + [f"| **{m['layer']}** | ➖ `{m['element']}` {cell(m['name'])} | {cell(m['reason'])} |" for m in r['missed']]
+            out += ['', '**Real elements AID missed**', '', '| Missed Real Element | Why it was missed |', '|---|---|'] + [f"| ➖ **{m['layer']} - {cell(m['name'])}** `{m['element']}` ({m['type']}) | {cell(m['reason'])} |" for m in r['missed']]
         out += ['', '**Projected links**', '', '| Projected (from → to) | Link stored as | From | Link | To | Step | Rule — published source | Reasoning | Confidence | In the real registry? |', '|---|---|---|---|---|---|---|---|---|---|']
         out += [f"| **{l['path']}** | {l['stored']} | {cell(l['from'])} | {l['rel']} | {cell(l['to'])} | {l['step']} | {cell(l['basis'] if l['basis'].startswith(l['rule'] + ':') or l['basis'].startswith(l['rule'][:3] + ':') else l['rule'] + ' — ' + l['basis'])} | {cell(l['reasoning'])} | {l['confidence']} | {sym(l['result'])} {l['result']} |" for l in r['links']]
         if r['structure']:
             ok = sum(x['result'].startswith('matched') for x in r['structure'])
             out += ['', f"<details><summary>BIAN catalogue elements brought in with the domains — {len(r['structure'])} ({ok} also in the real BIAN layer)</summary>", '',
-                    '| Layers (from → to) | Element | Type | Brought in with | Source | Confidence | Result |', '|---|---|---|---|---|---|---|']
-            out += [f"| **{x['path']}** | {cell(x['name'])} `{x['id']}` | {x['type']} | {cell(x['reasoning'])} | {cell(x['basis'])} | {x['confidence']} | {sym(x['result'])} {x['result']} |" for x in r['structure']] + ['', '</details>']
+                    '| Layers (from → to) | Projected Element | Brought in with | Source | Confidence | Result |', '|---|---|---|---|---|---|---|']
+            out += [f"| **{x['path']}** | **{x['layer']} - {cell(x['name'])}** `{x['id']}` ({x['type']}) | {cell(x['reasoning'])} | {cell(x['basis'])} | {x['confidence']} | {sym(x['result'])} {x['result']} |" for x in r['structure']] + ['', '</details>']
     out += ['', '### Safety controls — good and bad data', '', '| Control | Data | Test | Should | Did | Message | Pass |', '|---|---|---|---|---|---|---|']
     out += [f"| {s['control']} | {s['data']} | {cell(s['test'])} | {s['should']} | {s['did']} | {cell(s['message'][:160])} | {'✅' if s['pass'] else '❌'} |" for s in R['safety']]
     out += ['', '### Findings', '', '| ID | What | Action |', '|---|---|---|'] + [f"| {f['id']} | {cell(f['what'])} | {cell(f['action'])} |" for f in R['findings']]
