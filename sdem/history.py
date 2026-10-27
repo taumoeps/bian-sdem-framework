@@ -930,7 +930,6 @@ class Extraction:
             if not etype: unknown.append(lab['name']); continue
             r = self.record(etype, lab['name'], page, where, rule, how, ('text read from the picture' if how == 'ocr' else 'text of the SVG picture') + f'; {why}', lab['desc'])
             if r: made.append(r['name']); self.stats['labels read from pictures'] += 1
-        if labels: page.setdefault('_texts_extra', []).append((section, '. '.join(l['name'] for l in labels)))
         read = (f"; read {len(labels)} label(s){' by OCR' if how == 'ocr' else ''}: " + ', '.join(l['name'] for l in labels[:12]) + (' …' if len(labels) > 12 else '')
                 + (f" — {len(made)} became candidates" if made else '') + (f"; type unknown: {', '.join(unknown[:8])}" if unknown else '')) if labels else ''
         self.review.append({'page_id': page['page_id'], 'page_title': page['title'], 'what': 'picture', 'where': where, 'name': alt or Path(rel or shown_as).name,
