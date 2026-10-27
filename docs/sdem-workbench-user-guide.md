@@ -121,7 +121,7 @@ Each time you open a new terminal later, run the `activate` line from step 4 aga
 sdem home -o work/sdem
 ```
 
-and open `work/sdem/index.html` (the command prints the full `file://` address). The **home** page shows SDEM itself — its health (checked as the page is made), the metamodel (every entity type, the links allowed inside and between the architectures, the engine's rules, a clickable picture), the configuration — and **every project**, each linking to its own dashboard. Add your own estates with `--estate <folder>` or `--root <folder of estates>`.
+and open `work/sdem/index.html` (the command prints the full `file://` address). It opens on **SDEM's architecture** — every component (the BIAN reference, the rulebook, the mapping engine, validation and approval, the knowledge graph, the four architectures, AID and its projections, change coordination, the workbench), marked built or not, each clickable for what it is, where it lives and its live figures. The other tabs show SDEM itself — its health (checked as the page is made), the metamodel (every entity type, the links allowed inside and between the architectures, the engine's rules, a clickable picture), the configuration — and **every project**, each linking to its own dashboard. Add your own estates with `--estate <folder>` or `--root <folder of estates>`.
 
 **One project's dashboard** on its own:
 

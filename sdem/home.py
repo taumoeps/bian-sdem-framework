@@ -124,6 +124,93 @@ def config():
                 ('metamodel/controls.json', 'the controls and gaps'), ('metamodel/metamodel-spec-gaps.json', 'differences from the high-level spec, and decisions'))]}
 
 
+def _wrap(text, n):
+    """At most two lines of about n characters, split at words."""
+    words, lines = text.split(), ['']
+    for w in words:
+        if lines[-1] and len(lines[-1]) + 1 + len(w) > n and len(lines) < 2: lines.append(w)
+        else: lines[-1] = (lines[-1] + ' ' + w).strip()
+    return lines
+
+
+def _ex(n):
+    p = ROOT / 'docs' / 'evidence' / f'use-case-example-{n}' / 'results.json'
+    return _j(p) if p.exists() else None
+
+
+def components(m, h, projects):
+    """The SDEM component architecture (the original design's logical architecture, docs/BIAN_SDEM_Design_Specification.md §2.1,
+    plus the planning lane AID, change coordination and the workbench): boxes, status, live figures, details; and the flows."""
+    recs = {l: sum(p['layers'].get(l, 0) for p in projects) for l in LEVELS}
+    ents = {l: sum(1 for e in m['entities'] if e['level'] == l and not e['artefact']) for l in LEVELS}
+    within = {l: sum(1 for w in m['within'] if w['level'] == l) for l in LEVELS}
+    links = sum(p['links'] for p in projects); approved = sum(p['by_status'].get('approved', 0) for p in projects)
+    acc = h['acceptance']; acc_ok = sum(a['passed'] for a in acc)
+    ex2, ex3 = _ex(2), _ex(3)
+    e2 = (sum(ok for x in ex2['runs'] for _, ok in x['checks']), sum(len(x['checks']) for x in ex2['runs']), sum(s_['pass'] for s_ in ex2['safety']), len(ex2['safety'])) if ex2 else None
+    e3 = (sum(c['pass'] for c in ex3['criteria']), len(ex3['criteria']), sum(c['pass'] for c in ex3['controls_tests']), len(ex3['controls_tests'])) if ex3 else None
+    W, H = 236, 72
+    C = []
+    def add(cid, title, sub, status, x, y, what, where, figures, nxt, tabs=(), w=W, hh=H):
+        C.append({'id': cid, 'title': title, 'lines': _wrap(title, 26), 'sub': sub, 'status': status, 'x': x, 'y': y, 'w': w, 'h': hh, 'what': what, 'where': where, 'figures': figures, 'next': nxt, 'tabs': list(tabs)})
+    add('workbench', 'SDEM Workbench', 'VS Code · CLI · dashboards · Copilot', 'built', 994, 20,
+        'How architects use SDEM: the project open in VS Code, SDEM run from the terminal (the CLI is its only interface), the dashboards for an overview, GitHub Copilot Chat for optional AI support. Every function works without AI.',
+        ['sdem --help (every journey)', 'sdem home · sdem dashboard', 'docs/sdem-workbench-user-guide.md', '.github/ — Copilot instructions, agents, prompts, skills'],
+        [f"{len(projects)} project(s) in use", 'no MCP, no AI API inside SDEM'], 'Phase 2 dashboard (sdem serve, actions and forms) — proposed', ['projects', 'config'])
+    add('bian', 'BIAN Reference Architecture Repository', 'domains · operations · business objects', 'partial', 517, 20,
+        'The BIAN service landscape SDEM anchors to: every A2 element and every BIAN identity comes from here, never invented (CTL-17).',
+        ['each estate\'s a2-service-domain.json (synthetic, made-up BIAN content)', 'the AID test catalogue (merged by BIAN canonical id)'],
+        [f"{ents['A2']} BIAN entity types in the metamodel", f"{recs['A2']} A2 records across the projects"], 'A licensed BIAN catalogue with real BIAN ids — roadmap v0.15', ['entities'])
+    add('history', 'Historical Design Repository', 'past designs · decisions · baselines', 'not built', 40, 20,
+        'Earlier designs, diagrams and decisions kept unchanged and referenceable beside new BIAN-aligned designs (original design §9, acceptance criteria 6 and 10).',
+        ['graph store baselines exist (sdem baseline); the repository itself does not'], ['—'], 'Historical design repository and past-baseline views — roadmap v0.16')
+    add('metamodel', 'SDEM Mapping Metamodel & Rules', 'the rulebook', 'built', 40, 160,
+        'What may exist in each architecture, how records may be linked inside and between the architectures, and the rules the engine applies — each with its published source, reasoning and confidence.',
+        ['metamodel/ (entity types, links inside, rules, attributes)', 'schema/relationship-types.json (links between)', 'docs/architecture-metamodel-detail-level-spec.md (governing)'],
+        [f"{len(m['entities'])} entity types", f"{len(m['within'])} links allowed inside", f"{len(m['cross'])} link types between", f"{len(m['rules'])} engine rules",
+         f"generated documents {'current' if all(g['current'] for g in h['generators']) else 'STALE'}"], 'Rulebook finding G-A-1 (rule S44 step) — owner decision', ['entities', 'within', 'cross', 'rules', 'entitymap'])
+    add('engine', 'SDEM Mapping Engine', 'process · information · architecture', 'built', 517, 160,
+        'Proposes the links between the architectures by applying the rulebook to the data — rules, not AI — each proposal with rule, reasoning and confidence. Proposals only; a person approves.',
+        ['sdem link · sdem review · sdem explain', 'sdem/rules_engine.py', 'acceptance: sdem model accept'],
+        [f"{acc_ok} of {len(acc)} acceptance cases pass (run now)", 'CTL-22: engine checked against the rulebook'], 'A blind test case written by someone else', ['rules', 'health'])
+    add('aid', 'Architecture Inference Design (AID)', 'planning lane — projects missing layers', 'built', 994, 160,
+        'Projects the architecture layers you do not have from the ones you do — forward (business → technology) or reverse — as a projected design with inference confidence, for planning; then compares it with the real design (gap analysis).',
+        ['sdem aid project · check · gaps', 'sdem view --projection', 'docs/aid-design.md'],
+        ([f"use-case example 2: {e2[0]} of {e2[1]} expectations, safety {e2[2]} of {e2[3]}"] if e2 else []) + ['never above medium confidence; name-only evidence low'],
+        'AI suggestions through Copilot (AID-D08) — owner decision', ['health'])
+    add('validation', 'SDEM Validation & Approval', 'checks · controls · a person approves', 'built', 40, 300,
+        'Every dataset, link and change is checked against the rulebook before it is trusted — including BIAN identity: a BIAN-anchored link needs its BIAN release and canonical id from the reference repository. A person approves each link with the evidence its type needs, in a reviewed pull request.',
+        ['sdem check · sdem validate · sdem approve', 'metamodel/controls.json — the controls register', 'CI on every push'],
+        [f"{h['built_controls']} controls built", f"{len(h['control_gaps'])} known gaps (G-A partly closed)"], 'Phase 2: approve from the dashboard (sdem serve) — proposed', ['health'])
+    add('projections', 'Projection packages', 'PRJ- · planned, never real data', 'built', 994, 300,
+        'AID\'s projected designs, kept apart from real data: CTL-16 rejects them in datasets, the registry and graph stores; CTL-17 requires their provenance and caps their confidence.',
+        ['<folder>/projection.json, projected-*.json, projected-links.json', 'schema/projection.schema.json'],
+        ['CTL-16 · CTL-17 tested both ways'], '—', ['health'])
+    add('coordination', 'Change coordination & agents', 'change sets · events · work items', 'built', 756, 440,
+        'Changes to an architecture as checked, one-layer change sets; their impact recorded as change events; work items for the other layers. Optional Copilot agents — one per architecture and an orchestrator — work through the same records.',
+        ['sdem change propose · adopt · revert', 'sdem events · sdem work', '.github/agents/ (5 agents)', '<estate>/coordination/'],
+        ([f"use-case example 3: {e3[0]} of {e3[1]} criteria, controls {e3[2]} of {e3[3]}"] if e3 else []) + ['CTL-19 ownership · CTL-20 provenance (incl. direct edits) · CTL-21 a person approves'],
+        'Run the spike in VS Code; then score the real agents (AG-E01)', ['health'])
+    add('kg', 'Federated Knowledge Graph', 'cross-layer mapping registry & traceability', 'built', 278, 440,
+        'The approved links between the architectures (the Relationship Registry) joined with the four architecture graphs: trace any record up or down, classify the impact of a change, build matrices.',
+        ['<estate>/mappings.json (the registry)', 'sdem build → graph store', 'sdem trace · sdem impact · sdem matrix · sdem view'],
+        [f"{approved} approved links of {links} across the projects"], 'Ingestion of real designs (v0.11); an enterprise-wide graph across projects', ['projects'])
+    for n, (lvl, title) in enumerate(LEVELS.items()):
+        add(lvl.lower(), f"{lvl} {title.split(' ', 1)[1]} Graph & Schema", 'independently governed', 'built', 40 + n * 306, 620,
+            f"The {title} architecture: its own records and the links inside it, checked against its schema and rulebook rows — owned by its team, never written by another.",
+            [f"<estate>/{DATASETS[n]}", f"metamodel/{DATASETS[n]}", f"sdem check · agent sdem-{lvl.lower()}-…"],
+            [f"{ents[lvl]} entity types", f"{within[lvl]} links allowed inside", f"{recs[lvl]} records across the projects"], 'Ingestion from the organisation\'s tools (v0.11)', ['entities', 'within'], w=272)
+    E = []
+    def edge(s_, t, label='', style='solid'): E.append({'s': s_, 't': t, 'label': label, 'style': style})
+    edge('bian', 'engine', 'BIAN reference'); edge('bian', 'aid', 'catalogue'); edge('history', 'engine', 'past designs', 'dashed')
+    edge('metamodel', 'engine', 'rules'); edge('metamodel', 'validation', 'rules'); edge('engine', 'aid', 'engine rules (F1, R2)')
+    edge('engine', 'validation', 'proposed links'); edge('validation', 'kg', 'approved mappings')
+    edge('models', 'engine', 'architecture datasets'); edge('kg', 'models', 'federated references / queries', 'both')
+    edge('aid', 'projections', 'projected design'); edge('projections', 'kg', 'gap analysis (never merged)', 'dashed')
+    edge('coordination', 'models', 'change sets (one layer each)'); edge('coordination', 'engine', 'new links needed', 'dashed')
+    return {'boxes': C, 'edges': E, 'width': 1270, 'height': 712, 'band': {'x': 20, 'y': 588, 'w': 1230, 'h': 116, 'title': 'Independently governed architecture models'}}
+
+
 def collect_home(estates, project_pages, now=None):
     m = metamodel()
     projects = []
@@ -135,8 +222,9 @@ def collect_home(estates, project_pages, now=None):
                          'advice': sum(len(l['advice']) for l in d['layers']), 'links': d['registry']['links'], 'by_status': d['registry']['by_status'], 'coverage': cov,
                          'proposals': len(d['review']['rows']), 'open_work': len(open_work), 'events': len(d['changes']['events']),
                          'attention': [a['text'] for a in d['attention'] if a['level'] != 'good']})
-    return {'generated': now or datetime.datetime.now().replace(microsecond=0).isoformat(sep=' '), 'metamodel': m, 'picture': layout(m['entities'], m['cross']),
-            'health': health(m), 'config': config(), 'projects': projects,
+    hl = health(m)
+    return {'generated': now or datetime.datetime.now().replace(microsecond=0).isoformat(sep=' '), 'metamodel': m, 'entity_picture': layout(m['entities'], m['cross']),
+            'architecture': components(m, hl, projects), 'health': hl, 'config': config(), 'projects': projects,
             'package_version': re.search(r'^version = "([^"]+)"', (ROOT / 'pyproject.toml').read_text(), re.M).group(1)}
 
 
@@ -199,7 +287,7 @@ code{font:12px ui-monospace,SFMono-Regular,Menlo,monospace}.lvl{display:inline-b
 .split{display:flex;flex-wrap:wrap;gap:12px}.split>.pic{flex:1 1 640px;min-width:0;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;max-height:72vh}
 .split>.side{flex:0 1 380px;min-width:280px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;max-height:72vh;overflow:auto}
 svg text{fill:var(--fg);font-size:11px}.band{fill:var(--band)}.bandlbl{font-size:13px;font-weight:600;fill:var(--muted)}.node rect{fill:var(--panel);stroke-width:1.6;cursor:pointer}
-.node.abs rect{stroke-dasharray:4 3}.node.sel rect{stroke:var(--fg);stroke-width:3}.e{fill:none;stroke:var(--accent);stroke-width:1.3;opacity:.7}.elbl{font-size:10px;fill:var(--muted)}
+.node.abs rect{stroke-dasharray:4 3}.comp rect{fill:var(--panel)}.comp.sel rect{stroke-width:3}.node.sel rect{stroke:var(--fg);stroke-width:3}.e{fill:none;stroke:var(--accent);stroke-width:1.3;opacity:.7}.elbl{font-size:10px;fill:var(--muted)}
 .scroll{max-height:60vh;overflow:auto;border:1px solid var(--line)}
 @media print{header nav,.tool,#theme{display:none}section{display:block!important}section+section{page-break-before:always}.scroll,.pic,.side{max-height:none;overflow:visible}}
 </style></head><body>
@@ -208,7 +296,7 @@ svg text{fill:var(--fg);font-size:11px}.band{fill:var(--band)}.bandlbl{font-size
 <main id="main"></main>
 <script>
 const D = __DATA__;
-const TABS=[["home","Home"],["projects","Projects"],["entities","Architecture entities"],["picture","Metamodel picture"],["within","Links inside each architecture"],["cross","Links between architectures"],["rules","Engine rules"],["health","Health"],["config","Configuration"]];
+const TABS=[["picture","SDEM architecture"],["home","Overview"],["projects","Projects"],["entities","Architecture entities"],["entitymap","Entity map"],["within","Links inside each architecture"],["cross","Links between architectures"],["rules","Engine rules"],["health","Health"],["config","Configuration"]];
 const COL={A1:"var(--a1)",A2:"var(--a2)",A3:"var(--a3)",A4:"var(--a4)"};const M=D.metamodel,H=D.health;
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function lvl(l){return `<span class="lvl" style="background:${COL[l]||"var(--muted)"}"></span>${esc(l)}`;}
@@ -244,7 +332,10 @@ R.entities=()=>`<h2>Architecture entities</h2><p class="note">The entity types o
   <td>${esc(e.definition)}</td><td>${esc(e.standard)}${e.concept?`<div class="muted">${esc(e.concept)} ${esc(e.locator)}</div>`:""}</td><td><span class="chip">${esc(e.evidence_status)}</span></td>
   <td>${e.attributes.length}${e.inherited.length?` <span class="muted">+${e.inherited.length} inherited</span>`:""}${e.attributes.filter(a=>a.required).length?`<div class="muted">required: ${e.attributes.filter(a=>a.required).map(a=>esc(a.name)).join(", ")}</div>`:""}</td>
   <td>${e.within.length} · ${e.cross.length}</td></tr>`),"scroll");
-R.picture=()=>`<h2>Metamodel picture</h2><p class="note">The entity types of the four architectures and the ${M.cross.length} link types between them. Click a type for its definition, attributes, the links allowed for it, and the engine rules that use it.</p>
+R.picture=()=>{const A=D.architecture;const st={"built":0,"partial":0,"not built":0};A.boxes.forEach(b=>st[b.status]=(st[b.status]||0)+1);
+  return `<h2>SDEM architecture</h2><p class="note">The components of SDEM and how they work together — the mapping lane (left and centre) and the planning lane, AID (right), over the four independently governed architectures. Click a component for what it is, where it lives, its live figures and what is next. <span class="chip ok">■ built ${st["built"]}</span><span class="chip warn">■ partly built ${st["partial"]}</span><span class="chip muted">▢ not built ${st["not built"]}</span></p>
+  <div class="split"><div class="pic" id="arch"></div><div class="side" id="aside"><p class="muted">Click a component.</p><h3>Health now</h3><p>${genOK?'<span class="ok">generated documents current</span>':'<span class="bad">generated documents stale</span>'} · ${accOK?'<span class="ok">engine acceptance '+H.acceptance.length+' of '+H.acceptance.length+'</span>':'<span class="bad">engine acceptance failing</span>'}</p><p>${D.projects.length} project(s); ${D.projects.filter(p=>p.errors||p.proposals||p.open_work).length} need attention — see <a href="#projects" data-tab="projects">Projects</a>.</p></div></div>`;};
+R.entitymap=()=>`<h2>Entity map</h2><p class="note">The entity types of the four architectures and the ${M.cross.length} link types between them. Click a type for its definition, attributes, the links allowed for it, and the engine rules that use it.</p>
   <div class="split"><div class="pic" id="pic"></div><div class="side" id="side"><p class="muted">Click an entity type.</p></div></div>`;
 R.within=()=>`<h2>Links inside each architecture</h2><p class="note">The ${M.within.length} relationship rows allowed within an architecture, each from its reference architecture (BIAN for A2; ArchiMate 3.2 and TOGAF for A1, A3, A4). <code>sdem check</code> rejects any other.</p>`+filterBox("fWithin","filter: type, kind, id …")+
   table(["ID","Architecture","Source","Kind","Target","Basis","Meaning"],M.within.map(w=>`<tr data-f="${esc((w.id+" "+w.source+" "+w.kind+" "+w.target+" "+w.description).toLowerCase())}"><td><code>${esc(w.id)}</code>${w.official?`<div class="muted">${esc(w.official)}</div>`:""}</td><td>${lvl(w.level)}</td><td>${esc(w.source)}</td><td><span class="chip">${esc(w.kind)}</span></td><td>${esc(w.target)}</td><td class="muted">${esc(w.basis)}</td><td>${esc(w.description)}</td></tr>`),"scroll");
@@ -267,7 +358,34 @@ R.config=()=>{const C=D.config;let h=`<h2>Configuration</h2><p class="note">The 
   h+=`<h3>Impact rules (version ${esc(C.impact.version)})</h3>`+table(["Change","Reason","Classification by relation"],Object.entries(C.impact.kinds).map(([k,v])=>`<tr><td><b>${esc(k)}</b>${C.impact.supersede_for.includes(k)?'<div class="muted">supersedes links</div>':""}</td><td>${esc(v.reason)}</td><td>${Object.entries(v.rules).map(([r,c])=>`<span class="chip">${esc(r)}: ${esc(c)}</span>`).join("")}</td></tr>`));
   h+=`<h3>Agents (optional — GitHub Copilot)</h3><p>${C.agents["layer agents"].map(a=>`<code>${esc(a)}</code>`).join(" · ")} · orchestrator <code>${esc(C.agents.orchestrator)}</code></p>`;
   return h;};
-function drawPicture(){const P=D.picture,host=document.getElementById("pic");if(!host||host.dataset.done)return;host.dataset.done="1";const NS="http://www.w3.org/2000/svg";const[W,Hh]=P.box;
+function drawArchitecture(){const A=D.architecture,host=document.getElementById("arch");if(!host||host.dataset.done)return;host.dataset.done="1";const NS="http://www.w3.org/2000/svg";
+  const svg=document.createElementNS(NS,"svg");svg.setAttribute("viewBox",`0 0 ${A.width} ${A.height}`);svg.setAttribute("width",A.width);svg.setAttribute("height",A.height);svg.setAttribute("role","img");svg.setAttribute("aria-label","SDEM component architecture");host.appendChild(svg);
+  const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;};
+  const defs=el("defs",{});const mk=el("marker",{id:"ah",viewBox:"0 0 10 10",refX:"9",refY:"5",markerWidth:"7",markerHeight:"7",orient:"auto-start-reverse"},defs);el("path",{d:"M0,0 L10,5 L0,10 z",fill:"var(--accent)"},mk);
+  const BD=A.band;el("rect",{class:"band",x:BD.x,y:BD.y,width:BD.w,height:BD.h,rx:8});const bt=el("text",{class:"bandlbl",x:BD.x+BD.w/2,y:BD.y+18,"text-anchor":"middle"});bt.textContent=BD.title;
+  const B={};A.boxes.forEach(b=>B[b.id]=b);B.models={x:BD.x,y:BD.y,w:BD.w,h:BD.h,band:true};const eg=el("g",{}),ng=el("g",{});
+  const anchor0=(a,b)=>{const ax=a.x+a.w/2,ay=a.y+a.h/2,bx=b.x+b.w/2,by=b.y+b.h/2;if(Math.abs(by-ay)<a.h){return ax<bx?[[a.x+a.w,ay],[b.x,by]]:[[a.x,ay],[b.x+b.w,by]];}return ay<by?[[ax,a.y+a.h],[bx,b.y]]:[[ax,a.y],[bx,b.y+b.h]];};
+  const anchor=(a,b)=>{if(b.band){const x=Math.min(Math.max(a.x+a.w/2,b.x+30),b.x+b.w-30);return[[a.x+a.w/2,a.y+a.h],[x,b.y]];}if(a.band){const x=Math.min(Math.max(b.x+b.w/2,a.x+30),a.x+a.w-30);return[[x,a.y],[b.x+b.w/2,b.y+b.h]];}return anchor0(a,b);};
+  A.edges.forEach(e=>{const a=B[e.s],b=B[e.t];if(!a||!b)return;const[[x1,y1],[x2,y2]]=anchor(a,b);const vertical=Math.abs(y2-y1)>=Math.abs(x2-x1)*0.3;
+    const d=vertical?`M${x1},${y1} C${x1},${(y1+y2)/2} ${x2},${(y1+y2)/2} ${x2},${y2}`:`M${x1},${y1} C${(x1+x2)/2},${y1} ${(x1+x2)/2},${y2} ${x2},${y2}`;
+    const p=el("path",{class:"e",d:d,"marker-end":"url(#ah)"},eg);if(e.style==="both")p.setAttribute("marker-start","url(#ah)");if(e.style==="dashed"||e.style==="both")p.setAttribute("stroke-dasharray","5 4");
+    const ti=el("title",{},p);ti.textContent=`${a.title} → ${b.title}${e.label?": "+e.label:""}`;
+    if(e.label){const l=el("text",{class:"elbl",x:(x1+x2)/2+4,y:(y1+y2)/2-3},eg);l.textContent=e.label;}});
+  const stroke={"built":"var(--accent)","partial":"var(--warn)","not built":"var(--muted)"};
+  A.boxes.forEach(b=>{const g=el("g",{class:"node comp",transform:`translate(${b.x},${b.y})`,tabindex:0,role:"button","aria-label":b.title},ng);
+    const r=el("rect",{width:b.w,height:b.h,rx:6,stroke:stroke[b.status]||"var(--line)"},g);if(b.status==="not built")r.setAttribute("stroke-dasharray","5 4");
+    b.lines.forEach((ln,i)=>{const t=el("text",{x:b.w/2,y:(b.lines.length>1?20:28)+i*15,"text-anchor":"middle",style:"font-weight:600;font-size:12px"},g);t.textContent=ln;});
+    const t2=el("text",{x:b.w/2,y:b.h-12,"text-anchor":"middle",style:"fill:var(--muted);font-size:10px"},g);t2.textContent=b.sub.length>44?b.sub.slice(0,43)+"…":b.sub;
+    if(b.status!=="built"){const t3=el("text",{x:b.w-6,y:12,"text-anchor":"end",style:`fill:${stroke[b.status]};font-size:9px;font-weight:700`},g);t3.textContent=b.status.toUpperCase();}
+    const ti=el("title",{},g);ti.textContent=`${b.title} — ${b.status}`;
+    const pick=()=>{ng.querySelectorAll(".comp").forEach(x=>x.classList.remove("sel"));g.classList.add("sel");showComponent(b.id);};g.addEventListener("click",pick);g.addEventListener("keydown",ev=>{if(ev.key==="Enter")pick();});});}
+function showComponent(id){const b=D.architecture.boxes.find(x=>x.id===id);const side=document.getElementById("aside");if(!b||!side)return;
+  const names=Object.fromEntries(TABS);const cls={"built":"ok","partial":"warn","not built":"muted"}[b.status];
+  side.innerHTML=`<h3>${esc(b.title)}</h3><p><span class="chip ${cls}">${esc(b.status)}</span> <span class="muted">${esc(b.sub)}</span></p><p>${esc(b.what)}</p>
+   <h3>Figures now</h3>${b.figures.map(f=>`<div>• ${esc(f)}</div>`).join("")}
+   <h3>Where it lives</h3>${b.where.map(w=>`<div><code>${esc(w)}</code></div>`).join("")}
+   <h3>Next</h3><p>${esc(b.next)}</p>${b.tabs.length?`<h3>More</h3><p>${b.tabs.map(t=>`<a href="#${t}" data-tab="${t}">${esc(names[t]||t)}</a>`).join(" · ")}</p>`:""}`;}
+function drawPicture(){const P=D.entity_picture,host=document.getElementById("pic");if(!host||host.dataset.done)return;host.dataset.done="1";const NS="http://www.w3.org/2000/svg";const[W,Hh]=P.box;
   const svg=document.createElementNS(NS,"svg");svg.setAttribute("viewBox",`0 0 ${P.width} ${P.height}`);svg.setAttribute("width",P.width);svg.setAttribute("height",P.height);svg.setAttribute("role","img");svg.setAttribute("aria-label","Metamodel picture");host.appendChild(svg);
   const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;};
   P.bands.forEach(b=>{el("rect",{class:"band",x:8,y:b.y,width:P.width-16,height:b.h,rx:8});const t=el("text",{class:"bandlbl",x:18,y:b.y+20});t.textContent=b.title;});
@@ -287,13 +405,14 @@ function showType(t){const e=M.entities.find(x=>x.type===t);const side=document.
 const nav=document.getElementById("tabs"),main=document.getElementById("main");
 TABS.forEach(([id,label])=>{const b=document.createElement("button");b.textContent=label;b.setAttribute("role","tab");b.dataset.tab=id;b.id="tab-"+id;nav.appendChild(b);
   const s=document.createElement("section");s.id=id;s.setAttribute("role","tabpanel");s.setAttribute("aria-labelledby","tab-"+id);s.hidden=true;s.innerHTML=R[id]();main.appendChild(s);});
-function show(id){if(!document.getElementById(id))id="home";TABS.forEach(([t])=>{document.getElementById(t).hidden=(t!==id);document.getElementById("tab-"+t).setAttribute("aria-selected",String(t===id));});
-  if(id==="picture")drawPicture();try{history.replaceState(null,"","#"+id);}catch(e){}}
+function show(id){if(!document.getElementById(id))id="picture";TABS.forEach(([t])=>{document.getElementById(t).hidden=(t!==id);document.getElementById("tab-"+t).setAttribute("aria-selected",String(t===id));});
+  if(id==="picture")drawArchitecture();if(id==="entitymap")drawPicture();try{history.replaceState(null,"","#"+id);}catch(e){}}
 nav.addEventListener("click",e=>{const t=e.target.closest("button");if(t)show(t.dataset.tab);});
 nav.addEventListener("keydown",e=>{if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft")return;const i=TABS.findIndex(([t])=>!document.getElementById(t).hidden);const n=(i+(e.key==="ArrowRight"?1:TABS.length-1))%TABS.length;show(TABS[n][0]);document.getElementById("tab-"+TABS[n][0]).focus();});
+document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a[data-tab]");if(a){e.preventDefault();show(a.dataset.tab);}});
 [["fEnt","entities"],["fWithin","within"],["fRules","rules"]].forEach(([f,sec])=>{const i=document.getElementById(f);if(i)i.addEventListener("input",()=>{const q=i.value.toLowerCase();document.querySelectorAll(`#${sec} tr[data-f]`).forEach(r=>{r.hidden=q&&!r.dataset.f.includes(q);});});});
 document.getElementById("theme").onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark";};
-show((location.hash||"#home").slice(1));
+show((location.hash||"#picture").slice(1));
 </script></body></html>
 '''
 

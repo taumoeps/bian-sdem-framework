@@ -44,9 +44,17 @@ class HomeTests(unittest.TestCase):
         self.assertEqual(h['controls_total'], len(json.loads((ROOT / 'metamodel' / 'controls.json').read_text())['controls']))
 
     def test_picture_has_every_link_type(self):
-        rels = {e['rel'] for e in self.data['picture']['edges']}
+        rels = {e['rel'] for e in self.data['entity_picture']['edges']}
         self.assertEqual(rels, {x['relationship'] for x in self.data['metamodel']['cross']})
 
+
+    def test_architecture_picture_shows_every_component(self):
+        a = self.data['architecture']; ids = {b['id'] for b in a['boxes']}
+        self.assertTrue({'bian', 'history', 'metamodel', 'engine', 'validation', 'kg', 'a1', 'a2', 'a3', 'a4', 'aid', 'projections', 'coordination', 'workbench'} <= ids)
+        st = {b['id']: b['status'] for b in a['boxes']}
+        self.assertEqual(st['history'], 'not built'); self.assertEqual(st['bian'], 'partial'); self.assertEqual(st['aid'], 'built')
+        for e in a['edges']: self.assertIn(e['s'], ids); self.assertIn(e['t'], ids)
+        self.assertIn('show((location.hash||"#picture").slice(1))', self.html)   # the architecture is the landing view
 
 if __name__ == '__main__':
     unittest.main()

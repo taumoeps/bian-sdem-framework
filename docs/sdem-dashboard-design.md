@@ -71,7 +71,8 @@ flowchart LR
 
 | Tab | Shows |
 |---|---|
-| **Home** | SDEM health at a glance (generated documents current, the rules engine's acceptance cases — run when the page is generated, controls, open spec gaps); the metamodel in numbers; every project with what needs attention |
+| **SDEM architecture** (the landing view, `index.html#picture`) | the component architecture of SDEM — the original design's logical architecture plus AID, projection packages, change coordination and the workbench: BIAN reference repository, historical design repository, metamodel and rules, mapping engine, validation and approval, federated knowledge graph, the four architecture graphs and schemas — each box marked built, partly built or not built; click one for what it is, where it lives (files, commands), live figures, health and what is next |
+| **Overview** | SDEM health at a glance (generated documents current, the rules engine's acceptance cases — run when the page is generated, controls, open spec gaps); the metamodel in numbers; every project with what needs attention |
 | **Projects** | each estate: architectures present (records), links by status, coverage per architecture, errors, advice, proposals to review, open work — and a link to its dashboard |
 | **Architecture entities** | every entity type: architecture, definition, the standard it comes from, evidence status, attributes (own and inherited, required ones named), how many links it may take inside and between architectures — filterable |
 | **Metamodel picture** | the four architectures as bands, every entity type, and the link types between architectures as arrows; click a type for its definition, attributes, allowed links and the engine rules that use it |
