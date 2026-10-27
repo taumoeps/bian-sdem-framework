@@ -14,6 +14,10 @@
 
 **The output is a projected design, not a validated design.** It shows how the real design *should* align, each element with an inference confidence. It is for planning — scope, impact, gaps — never a substitute for real architecture data.
 
+## Where AID fits in SDEM
+
+AID is SDEM's **planning lane**, beside the **mapping lane** (the engine, approval, the registry and the federated knowledge graph). Both use the same rulebook and engine rules; gap analysis compares their outputs. AID may read real data but never writes into the mapping lane (control CTL-16). It works **with** the standards — TOGAF gives the method (baseline, target and gap analysis in Phases B–D), ArchiMate the relationship language, BIAN the reference — and automates the projection and the gap analysis they leave to people. Recorded in the detail-level metamodel spec §20 (gap G-18), the knowledge-graph spec (component C-18), the controls register (CTL-16, CTL-17 planned) and the ROADMAP (v0.12).
+
 ## 2. Key terms
 
 | Term | Meaning |

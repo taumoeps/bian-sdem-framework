@@ -9,7 +9,8 @@
       "implemented_in": "sdem/graph.py `LevelGraph.validate` (LC-01, LC-02)",
       "runs": "sdem-graph check; sdem-graph build",
       "outcome_recorded_in": "command output (ERROR lines); graph store load record — a `rejected` entry listing every error",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_graph.py, tests/test_conformance.py"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_graph.py, tests/test_conformance.py",
+      "status": "built"
     },
     {
       "id": "CTL-02",
@@ -18,7 +19,8 @@
       "implemented_in": "sdem/conformance.py `check_level` (LC-04 … LC-09, LC-13)",
       "runs": "sdem-graph check; sdem-graph build",
       "outcome_recorded_in": "command output (ERROR / WARN lines); graph store load record",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_conformance.py"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_conformance.py",
+      "status": "built"
     },
     {
       "id": "CTL-03",
@@ -27,7 +29,8 @@
       "implemented_in": "sdem/metamodel.py `relationship_issue` (LC-03); sdem/conformance.py (LC-10, LC-10m)",
       "runs": "sdem-graph check; sdem-graph build",
       "outcome_recorded_in": "command output; graph store load record",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_graph.py, tests/test_conformance.py"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_graph.py, tests/test_conformance.py",
+      "status": "built"
     },
     {
       "id": "CTL-04",
@@ -36,7 +39,8 @@
       "implemented_in": "schema/entities/*.schema.json (sdem/physical.py)",
       "runs": "any JSON Schema tool; the test suite",
       "outcome_recorded_in": "validator output",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_conformance.py (physical model)"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_conformance.py (physical model)",
+      "status": "built"
     },
     {
       "id": "CTL-05",
@@ -45,7 +49,8 @@
       "implemented_in": "sdem/validate.py `validate` (structural verdict)",
       "runs": "sdem-validate; sdem-graph check; sdem-accept",
       "outcome_recorded_in": "command output; `--json` verdicts per link",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red (sdem-validate --strict on every registry)"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red (sdem-validate --strict on every registry)",
+      "status": "built"
     },
     {
       "id": "CTL-06",
@@ -54,7 +59,8 @@
       "implemented_in": "sdem/validate.py `validate` (governance verdict)",
       "runs": "sdem-validate",
       "outcome_recorded_in": "command output; `--json` verdicts per link",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red",
+      "status": "built"
     },
     {
       "id": "CTL-07",
@@ -63,7 +69,8 @@
       "implemented_in": "sdem/diff.py `diff`",
       "runs": "sdem-diff (against the previous commit)",
       "outcome_recorded_in": "command output",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red (sdem-diff --git HEAD~1)"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red (sdem-diff --git HEAD~1)",
+      "status": "built"
     },
     {
       "id": "CTL-08",
@@ -72,7 +79,8 @@
       "implemented_in": "sdem/graph.py `FederatedGraph.check` (LC-11)",
       "runs": "sdem-graph check; sdem-graph build",
       "outcome_recorded_in": "command output; graph store load record",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red",
+      "status": "built"
     },
     {
       "id": "CTL-09",
@@ -81,7 +89,8 @@
       "implemented_in": "sdem/acceptance.py (`sdem-accept`)",
       "runs": "sdem-accept; the test suite",
       "outcome_recorded_in": "acceptance report; the engine's inference log (one record per attempt, including refusals)",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_acceptance.py"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_acceptance.py",
+      "status": "built"
     },
     {
       "id": "CTL-10",
@@ -90,7 +99,8 @@
       "implemented_in": "sdem/rules_engine.py; checked by sdem/acceptance.py `check_proposals`",
       "runs": "every engine run under sdem-accept",
       "outcome_recorded_in": "acceptance report",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_acceptance.py"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_acceptance.py",
+      "status": "built"
     },
     {
       "id": "CTL-11",
@@ -99,7 +109,8 @@
       "implemented_in": "tests/test_traceability.py (source-reference and completeness tests)",
       "runs": "the test suite",
       "outcome_recorded_in": "test output",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red",
+      "status": "built"
     },
     {
       "id": "CTL-12",
@@ -108,7 +119,8 @@
       "implemented_in": "sdem/confidence.py `--check`",
       "runs": "sdem-confidence --check",
       "outcome_recorded_in": "command output",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red",
+      "status": "built"
     },
     {
       "id": "CTL-13",
@@ -117,7 +129,8 @@
       "implemented_in": "each generator's `--check`",
       "runs": "CI",
       "outcome_recorded_in": "command output (STALE lines)",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red",
+      "status": "built"
     },
     {
       "id": "CTL-14",
@@ -126,7 +139,8 @@
       "implemented_in": "tests/test_metamodel_spec.py (SHA-256 pin)",
       "runs": "the test suite",
       "outcome_recorded_in": "test output",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red",
+      "status": "built"
     },
     {
       "id": "CTL-15",
@@ -135,7 +149,28 @@
       "implemented_in": "sdem/store.py `build`",
       "runs": "sdem-graph build",
       "outcome_recorded_in": "the store's `load-record.json` (accepted / rejected, inputs with checksums, errors, warnings, outputs)",
-      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red (build --check on every example store); tests/test_store.py"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red (build --check on every example store); tests/test_store.py",
+      "status": "built"
+    },
+    {
+      "id": "CTL-16",
+      "rule_area": "platform",
+      "control": "A projected design (AID) never enters an architecture dataset, the Relationship Registry or a real graph store, and a projected link is never approved",
+      "implemented_in": "planned: dataset check, registry validator and store build reject `PRJ-` ids and `projection` provenance",
+      "runs": "sdem-graph check; sdem-validate; sdem-graph build",
+      "outcome_recorded_in": "command output; graph store load record",
+      "monitored_by": "CI (when built)",
+      "status": "planned (AID)"
+    },
+    {
+      "id": "CTL-17",
+      "rule_area": "platform",
+      "control": "Every projected element carries its projection provenance, is never above medium confidence, and never invents a BIAN element",
+      "implemented_in": "planned: `schema/projection.schema.json` and the AID projector",
+      "runs": "sdem-aid project",
+      "outcome_recorded_in": "projection package metadata",
+      "monitored_by": "CI (when built)",
+      "status": "planned (AID)"
     }
   ],
   "gaps": [

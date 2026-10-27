@@ -277,7 +277,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | **v0.9** (unreleased) | **graph store**: local JSON files, queries, offline view |
 | **v0.10** (unreleased) | the **inference engine**, reading the graph store; passes all 8 acceptance cases |
 | **v0.11 — next** | ingestion (spreadsheet templates, ingest command) and approval of proposals |
-| later | change handling (v0.12); query service and assistant access (v0.13); BIAN reference integration (v0.14); generated views (v0.15); v1.0 conformance profile |
+| later | **Architecture Inference Design** — projecting missing layers for planning (v0.12); change handling (v0.13); query service and assistant access (v0.14); BIAN reference integration (v0.15); generated views (v0.16); v1.0 conformance profile |
 
 Full table with acceptance tests: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 

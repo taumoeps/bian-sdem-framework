@@ -22,8 +22,8 @@ def render():
     last = {c['id']: c for c in json.loads(res.read_text(encoding='utf-8'))['controls']} if res.exists() else {}
     when = json.loads(res.read_text(encoding='utf-8'))['run_date'] if res.exists() else None
     if when: out += [f"**Last tested:** [use-case example 1](use-case-example-1.md), run {when} — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-1/`](evidence/use-case-example-1/manifest.json).", '']
-    out += ['| ID | Rule area | Enforces | Built in | Runs | Outcome recorded in | Monitored by | Last tested (good · bad) |', '|---|---|---|---|---|---|---|---|']
-    out += [f"| {c['id']} | {c['rule_area']} | {c['control']} | {c['implemented_in']} | {c['runs']} | {c['outcome_recorded_in']} | {c['monitored_by']} | {(last[c['id']]['good'] + ' · ' + last[c['id']]['bad']) if c['id'] in last else 'not tested'} |" for c in d['controls']]
+    out += ['| ID | Status | Rule area | Enforces | Built in | Runs | Outcome recorded in | Monitored by | Last tested (good · bad) |', '|---|---|---|---|---|---|---|---|---|']
+    out += [f"| {c['id']} | {c.get('status', 'built')} | {c['rule_area']} | {c['control']} | {c['implemented_in']} | {c['runs']} | {c['outcome_recorded_in']} | {c['monitored_by']} | {(last[c['id']]['good'] + ' · ' + last[c['id']]['bad']) if c['id'] in last and c.get('status', 'built') == 'built' else 'not tested'} |" for c in d['controls']]
     out += ['', '## Gaps — rules nothing enforces', '', '| ID | Rule area | Not controlled | Risk |', '|---|---|---|---|']
     out += [f"| {g['id']} | {g['rule_area']} | {g['not_controlled']} | {g['risk']} |" for g in d['gaps']]
     out += ['', 'Each control is demonstrated both ways — accepting good data and rejecting bad — in [`use-case-example-1.md`](use-case-example-1.md).', '']

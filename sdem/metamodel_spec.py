@@ -234,6 +234,14 @@ def render():
             f"`sdem/rules_engine.py` (`sdem-infer rules`) applies the rules model in fill-step order to the graph store and writes proposals (always `proposed`), candidate reports and an inference log; design mode where no A3 architecture dataset exists. Acceptance: `sdem-accept` — {passing} of {len(cases)} cases passing. Decisions DEC-E-01…09; open item OPEN-05 (a blind case).", '',
             '## 19. Graph store', '', st('G-15') + '.', '',
             'Local and federated knowledge graphs saved as JSON Graph Format v2 files with a load record and baselines; one graph access layer (`sdem/store.py`). Design and specification: [`graph-store-design.md`](graph-store-design.md), [`graph-store-spec.md`](graph-store-spec.md).', '',
+            '## 20. Architecture Inference Design (AID)', '', st('G-18') + '.', '',
+            'A second lane beside the mapping lane, sharing the same rulebook and engine rules:', '',
+            '| | Mapping lane | Planning lane — AID |', '|---|---|---|',
+            '| Question | how is the real architecture connected? | what should the missing layers look like? |',
+            '| Input | all available architecture datasets | one or more layers, plus the BIAN reference catalogue |',
+            '| Output | approved links — Relationship Registry, federated graph | a **projected design** in a separate projection package (`PRJ-`), with inference confidence |',
+            '| Trust | validated and approved | planning only; never approved |', '',
+            'AID may read real data but never write into the mapping lane (planned control CTL-16); a projection becomes real only when the design is built, appears in a real architecture dataset and passes through the mapping lane. **Gap analysis** compares the two lanes. Design and specification: [`aid-design.md`](aid-design.md), [`aid-spec.md`](aid-spec.md).', '',
             '## Gap register', '', 'From `metamodel/metamodel-spec-gaps.json`. Status changes only on the owner\'s decision.', '',
             '| ID | Kind | High-level § | High-level says | Implemented | Recommendation | Status |', '|---|---|---|---|---|---|---|']
     out += [f"| {g['id']} | {g['kind']} | {g['high_level_section']} | {g['high_level_says']} | {g['implemented']} | {g['recommendation']} | **{g['status']}** |" for g in gaps]

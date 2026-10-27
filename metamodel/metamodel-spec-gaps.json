@@ -153,6 +153,15 @@
       "implemented": "Superseded by docs/ROADMAP.md and the current layout (detail §11–§12).",
       "recommendation": "Note only.",
       "status": "noted — the high-level spec is not changed"
+    },
+    {
+      "id": "G-18",
+      "kind": "addition",
+      "high_level_section": "—",
+      "high_level_says": "Not covered.",
+      "implemented": "Architecture Inference Design (AID): a planning lane that projects missing architecture layers (forward and reverse) as a projected design kept apart from real data, with gap analysis. Designed and specified; only forward projection from A2 is built (design mode).",
+      "recommendation": "Detail spec only.",
+      "status": "decided 2026-10-27 (owner): recorded in the detail spec; the high-level spec is not changed"
     }
   ]
 }

@@ -39,6 +39,7 @@
 | [G-15](#gap-register) | addition | — | decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed |
 | [G-16](#gap-register) | internal | §14 decision 1 vs §5 | noted — the high-level spec is not changed |
 | [G-17](#gap-register) | internal | §11, §12 | noted — the high-level spec is not changed |
+| [G-18](#gap-register) | addition | — | decided 2026-10-27 (owner): recorded in the detail spec; the high-level spec is not changed |
 
 ## 1. Purpose and normative boundary
 
@@ -460,6 +461,21 @@ Every entity, within-level row, relationship type and attribute names its source
 
 Local and federated knowledge graphs saved as JSON Graph Format v2 files with a load record and baselines; one graph access layer (`sdem/store.py`). Design and specification: [`graph-store-design.md`](graph-store-design.md), [`graph-store-spec.md`](graph-store-spec.md).
 
+## 20. Architecture Inference Design (AID)
+
+**Gap G-18** (addition; decided 2026-10-27 (owner): recorded in the detail spec; the high-level spec is not changed).
+
+A second lane beside the mapping lane, sharing the same rulebook and engine rules:
+
+| | Mapping lane | Planning lane — AID |
+|---|---|---|
+| Question | how is the real architecture connected? | what should the missing layers look like? |
+| Input | all available architecture datasets | one or more layers, plus the BIAN reference catalogue |
+| Output | approved links — Relationship Registry, federated graph | a **projected design** in a separate projection package (`PRJ-`), with inference confidence |
+| Trust | validated and approved | planning only; never approved |
+
+AID may read real data but never write into the mapping lane (planned control CTL-16); a projection becomes real only when the design is built, appears in a real architecture dataset and passes through the mapping lane. **Gap analysis** compares the two lanes. Design and specification: [`aid-design.md`](aid-design.md), [`aid-spec.md`](aid-spec.md).
+
 ## Gap register
 
 From `metamodel/metamodel-spec-gaps.json`. Status changes only on the owner's decision.
@@ -483,3 +499,4 @@ From `metamodel/metamodel-spec-gaps.json`. Status changes only on the owner's de
 | G-15 | addition | — | §1: v0.4 does not implement a persistent federated graph. | The local JSON graph store (JSON Graph Format v2) with load record, baselines and queries. | Detail spec only. | **decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed** |
 | G-16 | internal | §14 decision 1 vs §5 | §14 says "the 31 types in §5"; §5 lists 41 (+3 artefacts). | 44 types (41 + 3 artefacts), as §5. | Note only. | **noted — the high-level spec is not changed** |
 | G-17 | internal | §11, §12 | Sequencing and repository layout of v0.4 (l0-business.json, sdmm/, profiles/). | Superseded by docs/ROADMAP.md and the current layout (detail §11–§12). | Note only. | **noted — the high-level spec is not changed** |
+| G-18 | addition | — | Not covered. | Architecture Inference Design (AID): a planning lane that projects missing architecture layers (forward and reverse) as a projected design kept apart from real data, with gap analysis. Designed and specified; only forward projection from A2 is built (design mode). | Detail spec only. | **decided 2026-10-27 (owner): recorded in the detail spec; the high-level spec is not changed** |

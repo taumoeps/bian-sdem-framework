@@ -51,6 +51,21 @@ SDEM is BIAN-aligned but is not an official BIAN standard or BIAN-endorsed frame
 
 > **Two names to keep apart.** The **relationship type catalogue** (`schema/relationship-types.json`) is the nine *types* — part of the metamodel. The **Architecture Relationship Registry** is the *instances*. Every registry record carries `registry_version`: that legacy field name refers to the catalogue's version.
 
+## Two lanes: mapping and planning
+
+SDEM runs two lanes on one rulebook (the metamodel) and one set of engine rules.
+
+```
+                ┌────────── rulebook (metamodel) + BIAN reference ──────────┐
+ MAPPING LANE — "as is" (governed)                PLANNING LANE — AID, "what should be"
+ all available architecture datasets              the layers an architect has (one or more)
+   → engine proposes links                          → AID projects the missing layers
+   → architect approves → registry                  → projection package (PRJ-, never approved)
+   → federated knowledge graph (real)  ◄── gap analysis ──►  projected design
+```
+
+The planning lane — **Architecture Inference Design (AID)** — may read real data but never writes into the mapping lane. A projection becomes real only when the design is built and arrives as a real architecture dataset. See [`aid-design.md`](aid-design.md).
+
 ## The four things that look alike
 
 | | **Architecture Metamodel** | **Relationship Rules Model** | **Relationship Registry** | **Schema** |
