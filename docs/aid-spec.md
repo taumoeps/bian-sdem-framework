@@ -1,6 +1,6 @@
 # Architecture Inference Design (AID) — Specification
 
-> **Status: approved 2026-10-27 (design decisions AID-D01…07).** Requirements for the design in [`aid-design.md`](aid-design.md). Each requirement has an ID (AID-*), a status, and how it is accepted. **Built 2026-10-27** in `sdem/aid.py` (command `sdem-aid`) and tested by [use-case example 2](use-case-example-2.md); each requirement's status says what is still missing.
+> **Status: approved 2026-10-27 (design decisions AID-D01…07); §12 (AI suggestion layer, AID-D08) proposed, not approved.** Requirements for the design in [`aid-design.md`](aid-design.md). Each requirement has an ID (AID-*), a status, and how it is accepted. **Built 2026-10-27** in `sdem/aid.py` (command `sdem-aid`) and tested by [use-case example 2](use-case-example-2.md); each requirement's status says what is still missing.
 
 ## 1. Purpose and boundary
 
@@ -105,3 +105,18 @@ sdem-graph view  --graph graph/ --projection projection/      (not built — AID
 | AID-Q02 | Should AID project data entities (A3) from BIAN business objects? | Yes, low confidence, as an option — the pattern does not give them; off by default |
 | AID-Q03 | How far should reverse projection go above A2 (R3)? | Candidates only, low; revisit when BIAN publishes its capability-to-domain mapping |
 | AID-Q04 | Should F2 put a create-type operation with a behaviour qualifier (e.g. *Evaluate … Validation*) on a qualifier sub-resource (`POST …/{id}/validation`)? Found in the design illustration: today it uses the collection. | Yes — align with check 3 of step 2. **Done 2026-10-27**: APIs matched rose from 2 to 3 of 5 |
+| AID-Q05 | Should AID use AI where rules have no basis? | Proposed as AID-D08 (design §8) — rules first, AI as a marked, capped, optional helper; requirements in §12 |
+
+## 12. AI suggestion layer (proposed — AID-D08, **not approved, not built**)
+
+| ID | Requirement | Status |
+|---|---|---|
+| AID-AI01 | Rules run first; the AI layer runs only after, and only for gaps the rules left: a layer where projection ended, or an element found only by the name fallback. It never changes or re-scores a rule result. | not built |
+| AID-AI02 | AI may only **choose** BIAN elements from the catalogue (given to it as a list); any answer outside the list is discarded and logged (CTL-17 rejects it anyway). | not built |
+| AID-AI03 | Every AI element: id `PRJ-AI-<…>`; `projection.rule` = `AI suggestion`; `source_reference` = model, version and prompt id; `reasoning` = the model's explanation, prefixed **unverified**; confidence **0.2** (below every rule-based element). | not built |
+| AID-AI04 | The prompt and the raw model reply are stored in the projection package (`ai/` folder) with checksums, so a run can be audited. | not built |
+| AID-AI05 | Off by default; enabled per run (`sdem-aid project --ai <model>`). A local model is supported; a cloud model only when explicitly configured. | not built |
+| AID-AI06 | Gap analysis reports AI elements separately: precision and recall for rules only, and for rules + AI. | not built |
+| AID-AI07 | Acceptance: use-case example 2 re-run with and without AI; AI is kept only if recall rises without precision falling below an agreed limit, recorded before the run. | not built |
+
+**Control (proposed): CTL-18** — AI suggestions are marked `PRJ-AI-`, carry model, version and prompt, are at most 0.2 confidence, choose only from the BIAN catalogue, and are reported separately in gap analysis. Added to the controls register only when approved and built.

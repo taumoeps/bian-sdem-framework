@@ -1,6 +1,6 @@
 # Architecture Inference Design (AID) — Design
 
-> **Status: approved and built 2026-10-27 (decisions AID-D01…07)** — `sdem/aid.py`, command `sdem-aid`; tested in [use-case example 2](use-case-example-2.md). Not built yet: the projection schema and the PROJECTED label in the view and trace. Requirements: [`aid-spec.md`](aid-spec.md).
+> **Status: approved and built 2026-10-27 (decisions AID-D01…07); §8 AI suggestion layer (AID-D08) proposed, not approved** — `sdem/aid.py`, command `sdem-aid`; tested in [use-case example 2](use-case-example-2.md). Not built yet: the projection schema and the PROJECTED label in the view and trace. Requirements: [`aid-spec.md`](aid-spec.md).
 
 ## 1. What AID is
 
@@ -126,3 +126,53 @@ When the real layers exist (or for testing, when they are known but hidden), AID
 | AID-D05 | BIAN | projections pass through the BIAN reference catalogue; never invent BIAN elements |
 | AID-D06 | Today's design mode | becomes AID forward steps F2–F3 |
 | AID-D07 | First build order | forward F1–F3 → reverse R1–R2 → gap analysis → middle gap → R3 (weakest, last) |
+
+## 8. Option — AI suggestion layer (proposed, AID-D08 — **not approved, not built**)
+
+> **Status: proposed 2026-10-27 for the owner's decision.** Nothing here is built. Requirements: [`aid-spec.md`](aid-spec.md) §12.
+
+### The problem it solves
+
+AID's inference is **rules**: the rulebook says what may link, and the engine and AID apply it. Rules are exact and traceable, but they can only follow links that are recorded. Where the data is thin — e.g. an A4 disk called `PAY-DB-DISK-01` with nothing recorded about what it serves — the rules have no basis: AID either stops (*projection ends at …*) or falls back to weak name hints (`pay` → *Payment*), which made the wrong guesses in use-case example 2, runs 3 and 4.
+
+An AI model reads **meaning**, not just matching words, and could suggest a sensible answer where rules have none.
+
+### Why AI must not replace the rules
+
+| | Rules | AI |
+|---|---|---|
+| Source reference and reasoning | exact — rule, published source, data used | an explanation it writes itself; can sound right and be wrong |
+| Repeatable | same input → same answer | can change between runs and model versions |
+| Can it invent? | no — never beyond the rule | yes — a BIAN domain or link that does not exist |
+| Auditable | yes | hard |
+| Data security | runs on the machine | a cloud model receives the design — not acceptable for an institution's architecture data |
+
+### The proposal — rules first, AI as a marked helper
+
+```
+ datasets ─► RULES (engine + AID) ─► projected design ─► where rules found no basis ─► AI SUGGESTIONS
+                 always first           PRJ-, rule source        ("projection ends")        PRJ-AI-, capped low,
+                                                                                            marked unverified
+```
+
+1. **Rules always run first.** Anything a rule can infer, a rule infers; AI never overrides or re-scores a rule result.
+2. **AI only fills gaps** — the points where AID reports *projection ends* or only the name fallback fired.
+3. **Marked everywhere.** Ids `PRJ-AI-…`; `projection.rule` = `AI suggestion`; the source reference names the model, its version and the prompt (stored in the package); the AI's reasoning is shown, labelled **unverified**.
+4. **Capped at low**, always — below every rule-based element except the weakest.
+5. **Same controls.** CTL-17 still rejects any invented BIAN element (AI may only choose from the catalogue); CTL-16 still keeps everything out of real data; a person reviews before anything becomes real.
+6. **Off by default**; switched on per run.
+7. **Local model option** so no design data leaves the machine; a cloud model only with the institution's approval, and never with employer data in this repository (public and synthetic data only).
+8. **Measured, not assumed.** Use-case example 2 runs twice — rules only, and rules + AI — and gap analysis compares precision and recall. AI is kept only if it improves accuracy without new wrong answers above an agreed limit.
+
+### Example — the disk drive
+
+| | Rules only | Rules + AI |
+|---|---|---|
+| Disk `PAY-DB-DISK-01`, part of server `DB-PAY-01`, which hosts `APP-PAY-HUB` | traced exactly: disk → server → Payments Hub → APIs → *Payment Initiation* → capability *Initiate Payment* | same — AI is not called, rules found a basis |
+| Disk `PAY-DB-DISK-01`, nothing else recorded | *projection ends at A4*, or a low name hint `pay` → *Payment* | AI suggestion: "storage for payment processing → *Payment Execution*", low, **unverified**, model and prompt recorded |
+
+### Decision for the owner
+
+| # | Decision | Recommendation |
+|---|---|---|
+| AID-D08 | Add an AI suggestion layer to AID? | **Yes, as specified above** — rules first; AI only where rules have no basis; marked `PRJ-AI-`, capped low, off by default, local model preferred; kept only if example 2 shows it improves accuracy. **Confidence: medium** — the safety design reuses built controls (CTL-16/17); the accuracy gain is unproven until measured. |
