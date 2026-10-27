@@ -1,36 +1,46 @@
 # SDEM History — Reading past designs from Confluence
 
-> **Status: built 2026-10-28, tested on a synthetic export only.** `sdem history inspect` and `sdem history extract`. Requirements: [`sdem-history-spec.md`](sdem-history-spec.md). This is the first part of the historical design repository (original design §9; roadmap v0.11 ingestion and v0.16 history).
+> **Status: built 2026-10-28, tested on two synthetic exports only** (Confluence's standard HTML export, and a prepared export with provenance files in the root, raw HTML and diagrams in `archives/`, sections as folders — `tests/fixtures/`). `sdem history inspect` and `sdem history extract`. Requirements: [`sdem-history-spec.md`](sdem-history-spec.md). This is the first part of the historical design repository (original design §9; roadmap v0.11 ingestion and v0.16 history).
 
 ## 1. The problem
 
 Past designs live in Confluence as **narrative pages with embedded diagrams and tables**. To trace them, compare them with new BIAN-aligned designs, or reuse them, SDEM needs their content as architecture records. But:
 
 - the designs are **the organisation's confidential information** — they never leave the work machine, and nobody outside sees them;
-- the work machine has **no AI** — so the reading must be done by rules;
+- the work machine has **no AI** (no large language model) — so the reading is done by **rules**; the only machine learning used is the computer's own **on-device text recognition (OCR)** for the text in pictures, which can be switched off;
 - SDEM was built **without seeing a single real page** — so the rules must be easy to adjust on the work machine, without code.
 
 ## 2. How it works
 
+In five steps — SDEM does the first three, the architect the last two:
+
+| Step | Who | What happens |
+|---|---|---|
+| **1. Scan** | `sdem history inspect` | walks the whole export and works out its structure: root files = provenance, `.html`/`.md`/`.txt`/`.csv` = pages, folder names = sections, draw.io and PlantUML = diagrams, other images = pictures; shows which rule reads each table and shape. Writes nothing |
+| **2. Read** | `sdem history extract` | tables → entities (by column headings) and links (source/target tables); draw.io and PlantUML → entities from shapes, links from lines and nesting; text → links between names already found; pictures → names read by OCR (never links) |
+| **3. Write** | `sdem history extract` | candidate datasets (`a1…a4`, `HIS-` ids), `extraction.json` (source, rule, confidence, reasoning for every item), `design-index.json` (every page and its entities), `extraction-report.md` — into the output folder only; the estate is not touched |
+| **4. Review** | the architect | keeps, fixes or deletes each candidate against its page (confidence is never above medium) |
+| **5. Adopt** | the architect | copies what is right into the estate; `sdem check`, `sdem link`, `sdem approve` as usual |
+
 ```mermaid
 flowchart LR
-    conf[("Confluence space<br/>HTML export")] --> inspect["sdem history inspect<br/>what is there, which rules read it"]
+    conf[("Confluence export<br/>any folder layout")] --> inspect["1 · sdem history inspect<br/>structure, which rules read what"]
     inspect -->|"tune the words"| rules["your copy of<br/>history-rules.json"]
-    conf --> extract["sdem history extract<br/>rules only — no AI"]
+    conf --> extract["2 · sdem history extract<br/>rules: tables · draw.io · PlantUML · text<br/>OCR on the machine: pictures"]
     rules --> extract
     known[("existing SDEM datasets<br/>(optional --known)")] --> extract
-    extract --> cand["candidate datasets<br/>a1…a4 (HIS- ids)"]
+    extract --> cand["3 · candidate datasets<br/>a1…a4 (HIS- ids)"]
     extract --> prov["extraction.json<br/>source · rule · confidence · reasoning"]
     extract --> idx["design-index.json<br/>every page, its records"]
     extract --> rep["extraction-report.md<br/>for the architect"]
-    rep --> person(["architect reviews"])
-    person -->|"copies what is right"| estate[("estate")]
+    rep --> person(["4 · architect reviews"])
+    person -->|"5 · copies what is right"| estate[("estate")]
 ```
 
 On the work machine:
 
 ```bash
-# 1. In Confluence: Space settings → Export space → HTML; unzip into a folder, e.g. ~/designs/payarch
+# 1. Put the export in a folder outside the repository, e.g. ~/designs/payarch (Confluence's HTML export or a prepared one)
 sdem history inspect ~/designs/payarch                       # tables, diagram shapes, headings — and which rule reads each
 cp metamodel/history-rules.json my-rules.json                # 2. only if inspect shows "no rule" or "unclassified" items you want
 sdem history extract ~/designs/payarch -o work/history --rules my-rules.json --known estate/a3-application.json
@@ -87,7 +97,7 @@ Links between architectures are **not** written to any dataset or registry: they
 | Real exports differ from the sample | `inspect` shows the structure — column headings, draw.io shape names, headings, each with the rule that read it or "no rule" / "unclassified". |
 | Your pages use other words | All words, shapes, colours and phrases are in **`metamodel/history-rules.json`**. Copy it, add your words, pass `--rules`. No code changes. |
 | A wrong guess becomes "fact" | Candidates only; confidence never above medium; every item says where it came from and why; the architect copies what is right. |
-| Content leaks | No network, no AI, standard library only. The export, the outputs and the report stay on the work machine. The sample in this repository is made up. |
+| Content leaks | No network, no large language model, Python standard library only (OCR uses the computer's own text recognition, on the machine; `--ocr off` turns it off). The export, the outputs and the report stay on the work machine. The sample in this repository is made up. |
 
 ## 6. Assumptions about Confluence's export (to confirm on the first real run)
 
@@ -115,6 +125,6 @@ If any of these is wrong, `inspect` shows it at once (0 pages, 0 diagrams, or sh
 - From pictures only their text is read (OCR), never their boxes and lines; OCR can misread (e.g. "Checker" → "Checkel") — always low confidence, always listed for a person.
 - Visio and Gliffy diagrams, PDFs and Word attachments are not read (listed for a person where they appear on a page).
 - PlantUML: `!include`d files and `!define` macros are not expanded; activity, mind-map and Gantt diagrams are not read.
-- Narrative text is read only for names already known and a few phrases; most narrative meaning is lost without AI.
+- Narrative text is read only for names already known and a few phrases; most narrative meaning is left to a person.
 - Key-value tables are not read.
 - Names are matched exactly (ignoring case and punctuation): "Payments Hub" and "Payment Hub" become two records — the report shows both.
