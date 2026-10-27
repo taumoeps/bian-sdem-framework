@@ -1,6 +1,8 @@
 # SDEM Workbench — Design
 
 > **Status: draft 2026-10-28.** Direction set by the owner (decision SDEM-D01: VS Code is the SDEM tool, GitHub Copilot Chat is its AI interface). Requirements: [`sdem-workbench-spec.md`](sdem-workbench-spec.md). The commands and controls exist; the Copilot set-up (instructions and prompt files) is **not built**.
+>
+> **Diagrams** are Mermaid: GitHub shows them as pictures; in VS Code install the recommended extension *Markdown Preview Mermaid Support* (`bierner.markdown-mermaid`, listed in `.vscode/extensions.json`) and open the Markdown preview. No diagram server is used.
 
 ## 1. What the workbench is
 
@@ -26,15 +28,117 @@ The AI helps; the **rules and controls decide** what is valid. Copilot can be wr
 | **Views** | generated HTML graph view, PlantUML diagrams, Markdown reports | pictures and tables for review — VS Code is not a drawing tool | built |
 | **Controls** | CTL-01…17 (CTL-18 proposed), CI on every push | keep people and the AI honest: nothing unchecked becomes real | built |
 
+### 2.1 How the workbench fits into the SDEM framework
+
+The workbench (top) is how the architect reaches the framework (bottom). Copilot only reaches the framework **through the `sdem-*` commands**; the controls check everything that becomes real; approval is a person merging a reviewed pull request.
+
+```mermaid
+flowchart TB
+    architect(["Architect"])
+
+    subgraph WB["SDEM WORKBENCH — VS Code"]
+        direction LR
+        chat["GitHub Copilot Chat<br/>AI interface"]
+        guide["Copilot instructions<br/>+ prompt files"]
+        term["Terminal<br/>sdem-* commands"]
+        views["Views<br/>HTML graph · PlantUML · reports"]
+    end
+
+    subgraph FW["SDEM FRAMEWORK — files in the Git repository"]
+        rulebook[("Rulebook<br/>metamodel + schemas")]
+        datasets[("Architecture datasets<br/>A1 Business · A2 BIAN<br/>A3 Application · A4 Technology")]
+        subgraph ML["Mapping lane — what IS"]
+            engine["Inference engine<br/>sdem-infer"]
+            proposals[("Proposed links")]
+            registry[("Relationship Registry<br/>approved links")]
+            store[("Graph store<br/>knowledge graph")]
+        end
+        subgraph PL["Planning lane — what SHOULD BE"]
+            aid["AID<br/>sdem-aid"]
+            prj[("Projection packages<br/>PRJ- · never real data")]
+        end
+        controls{{"Controls CTL-01…18<br/>+ CI on every push"}}
+    end
+
+    git["Git pull request<br/>review and approval"]
+
+    architect -->|"asks in plain language"| chat
+    guide -.->|"guides"| chat
+    chat -->|"runs"| term
+    term --> engine
+    term --> aid
+    term --> store
+    rulebook --> engine
+    rulebook --> aid
+    datasets --> engine
+    datasets --> aid
+    engine --> proposals
+    proposals -->|"reviewed by the architect"| git
+    architect -->|"approves by merging"| git
+    git -->|"merge = approval"| registry
+    datasets --> store
+    registry --> store
+    aid --> prj
+    store --> views
+    prj --> views
+    views -->|"pictures and tables"| architect
+    controls -.->|"check"| datasets
+    controls -.->|"check"| registry
+    controls -.->|"check"| store
+    controls -.->|"check"| prj
 ```
- Architect ──► VS Code ──► Copilot Chat ──► terminal: sdem-* commands ──► rulebook + checks (controls)
-                  │              │                        │
-                  │              └── reads ──► .github/copilot-instructions.md, .github/prompts/*.prompt.md
-                  │
-                  └──► files: architecture datasets · registry · graph store · projections · views
-                                         │
-                                         └──► Git: history, pull-request review = approval
+
+### 2.2 What the architect sees in VS Code
+
 ```
+┌─ VS Code ────────────────────────────────────────────────────────────────────────────────────┐
+│ EXPLORER               │ EDITOR                               │ COPILOT CHAT                 │
+│ ▸ metamodel/  rulebook │ a3-application.json                  │ You: what does CAP-310       │
+│ ▸ schema/              │ {                                    │      depend on?              │
+│ ▾ examples/            │   "level": "A3",                     │                              │
+│   ▾ card-fraud-alerts/ │   "instances": [                     │ Copilot: ran `sdem-graph     │
+│     a1-business.json   │     { "id": "APP-FRAUD-ENGINE",      │ trace CAP-310` —             │
+│     a2-service-…json   │       "type": "A3.Application…",     │ CAP-310 → SD-044 Fraud       │
+│     a3-application.json│       ...                            │ Detection → APP-FRAUD-…      │
+│     a4-technology.json │                                      │ → INF-CLOUD-K8S-PROD.        │
+│     mappings.json      │                                      │ Source: sdem-graph trace,    │
+│ ▸ docs/                │                                      │ FRD-001…006; approved links. │
+│ ▸ .github/prompts/     │                                      │                              │
+│                        ├──────────────────────────────────────┤ /sdem-check  /sdem-trace     │
+│                        │ TERMINAL                             │ /aid-project /sdem-view      │
+│                        │ $ sdem-graph trace CAP-310 …         │                              │
+│                        │ DOWNSTREAM (depends on): …           │ [ Ask Copilot …            ] │
+└────────────────────────┴──────────────────────────────────────┴──────────────────────────────┘
+```
+
+Files on the left are the real data and the rulebook; the editor shows a dataset; the terminal shows the command Copilot ran; the chat shows the answer **with its source** and the `/` commands from the prompt files. The trace shown is the real one from the `card-fraud-alerts` example.
+
+### 2.3 How a question is answered
+
+```mermaid
+sequenceDiagram
+    actor A as Architect
+    participant C as Copilot Chat
+    participant I as Instructions + prompt file
+    participant T as Terminal
+    participant S as sdem-graph
+    participant F as Graph store + rulebook
+    A->>C: What does CAP-310 depend on?
+    C->>I: read the ground rules and /sdem-trace
+    I-->>C: run sdem-graph trace and name the source
+    C->>T: sdem-graph trace CAP-310, JSON output
+    T->>S: run the command
+    S->>F: read approved links and records
+    F-->>S: the chain from CAP-310 down to A4
+    S-->>T: chain with ids, names and link ids
+    T-->>C: command output
+    C-->>A: the chain, its source and its confidence
+    Note over A,C: The architect can re-run the same command to check the answer
+```
+
+Copilot never answers an architecture question from memory: it runs the command, reads the output, and says where the answer came from.
+
+
 
 ## 3. How an architect works — the journeys
 
@@ -50,6 +154,48 @@ Each journey works by asking Copilot or by running the command directly; the res
 | J6 | **Plan with AID** | "I only have the business design — project the rest" | `sdem-aid project`, `check`, `gaps` | a projected design, marked and capped, kept apart from real data |
 | J7 | **See it** | "show me the graph with the projection" | `sdem-graph view --projection …` | an HTML picture, projected parts dashed and labelled PROJECTED |
 | J8 | **Explain** | "why was SD-CA projected?" | reads the projection package | the element's step, rule, published source, evidence, reasoning and confidence |
+
+### 3.1 The journeys in order
+
+```mermaid
+flowchart LR
+    subgraph MAP["Mapping lane — what IS"]
+        direction LR
+        J1["J1 Check<br/>sdem-graph check"] --> J2["J2 Link<br/>sdem-infer"]
+        J2 --> J3["J3 Review + approve<br/>architect, pull request"]
+        J3 --> J4["J4 Build graph<br/>sdem-graph build"]
+        J4 --> J5["J5 Trace + impact<br/>sdem-graph trace / impact"]
+    end
+    subgraph PLAN["Planning lane — what SHOULD BE"]
+        direction LR
+        J6["J6 Plan<br/>sdem-aid project / gaps"] --> J7["J7 See<br/>sdem-graph view"]
+        J7 --> J8["J8 Explain<br/>projection provenance"]
+    end
+    J1 -.->|"datasets I have"| J6
+    J4 -.->|"real graph to compare"| J7
+```
+
+### 3.2 How a link gets approved
+
+```mermaid
+sequenceDiagram
+    actor A as Architect
+    participant C as Copilot Chat
+    participant E as sdem-infer
+    participant G as Git pull request
+    participant K as CI checks
+    participant R as Relationship Registry
+    A->>C: Propose the links for payment-initiation
+    C->>E: run sdem-infer rules on the datasets
+    E-->>C: proposed links with source, reasoning, confidence
+    C-->>A: the list, ready for review
+    A->>A: decide each link
+    A->>G: pull request - chosen links set to approved, with reviewer and time
+    G->>K: run every check and test
+    K-->>G: pass or fail
+    Note over C,G: Copilot never approves. A person reviews and merges.
+    G->>R: merge = approval
+```
 
 ## 4. Copilot's role and ground rules
 
@@ -86,6 +232,18 @@ SDEM must **work without Copilot**: every journey can be done by running the com
 | A change breaks the rulebook or a generated document | CI runs every check and test on every push |
 | AI suggestions taken as fact | marked `PRJ-AI-`, capped at 0.2, labelled UNVERIFIED (AID-D08, CTL-18 proposed) |
 
+```mermaid
+flowchart LR
+    change["A change<br/>by Copilot or a person"] --> what{"What is it?"}
+    what -->|"projected or AI record<br/>into real data"| c16["CTL-16<br/>rejected"]
+    what -->|"invented BIAN element<br/>or missing provenance"| c17["CTL-17<br/>rejected"]
+    what -->|"link set to approved"| gov["Governance check<br/>+ pull-request review<br/>by a person"]
+    what -->|"anything else"| ci["CI<br/>every check and test"]
+    gov --> ci
+    ci -->|"pass"| ok["Accepted into<br/>the repository"]
+    ci -->|"fail"| no["Rejected,<br/>with the rule broken"]
+```
+
 ## 7. AI suggestions in AID — through Copilot
 
 The AI suggestion layer proposed for AID (decision AID-D08, [`aid-design.md`](aid-design.md) §8) works **through Copilot**, not through an AI the SDEM code calls:
@@ -95,6 +253,28 @@ The AI suggestion layer proposed for AID (decision AID-D08, [`aid-design.md`](ai
 3. `sdem-aid ai-import` checks every answer — a choice from the list, evidence that exists — and adds the accepted ones marked `PRJ-AI-`, at 0.2, labelled UNVERIFIED; CTL-18.
 
 Both files stay in the projection package for audit. A re-import of the same answers gives the same result.
+
+```mermaid
+sequenceDiagram
+    actor A as Architect
+    participant C as Copilot Chat
+    participant P as sdem-aid
+    participant Q as questions.json
+    participant N as answers.json
+    A->>C: /aid-project with my business layer
+    C->>P: sdem-aid project, ask mode
+    P->>P: rules first - project what the rules support
+    P->>Q: only the gaps the rules left, each with its BIAN choices
+    A->>C: /aid-suggest
+    C->>Q: read the questions
+    C->>N: answer each, choosing only from its list
+    A->>C: /aid-import
+    C->>P: sdem-aid ai-import
+    P->>N: check every answer - choice in the list, evidence exists
+    P-->>C: accepted ones added as PRJ-AI-, 0.2, UNVERIFIED - rejected ones listed with the reason
+    C-->>A: summary, and the view with AI suggestions marked
+    Note over A,P: Proposed (AID-D08) - not approved, not built
+```
 
 ## 8. Data and privacy
 
