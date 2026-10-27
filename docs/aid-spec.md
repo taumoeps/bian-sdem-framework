@@ -70,6 +70,7 @@ AID projects the missing architecture layers from the architecture datasets an a
 | AID-S04 | No projected element above **medium** confidence; pattern-derived elements are **low**. | **CTL-17** |
 | AID-S05 | No BIAN element is invented: every projected A2 element references the catalogue. | **CTL-17** |
 | AID-S06 | Nothing beyond the rule or pattern: no platforms, environments, owners or names without a basis. | acceptance tests (§9) |
+| AID-S07 | Name-only evidence — an engine fallback (e.g. S17 fallback B), a description match, a verb-and-noun or id-word match — never gives a projected element more than **low** confidence, so a strong projection can be told from a weak one (finding AID-B6). | **CTL-17** (built) |
 
 CTL-16 and CTL-17 are in the controls register, tested with good and bad data in use-case example 2 (15 of 15 pass).
 

@@ -215,6 +215,9 @@ def safety(real, packages, cat):
                   ('set a projected link to approved', lambda p: p['links']['links'][0].update(status='approved'))]
         for what, f in tamper:
             p = copy.deepcopy(p1); f(p); rows.append(('CTL-17', 'bad', what, aid.check(p, cat), True))
+        p4 = copy.deepcopy(packages[4]); weak_dom = next(i for i in p4['layers']['A2']['instances'] if i['type'] == 'A2.ServiceDomain' and aid.weak(i['projection']['reasoning']))
+        weak_dom['projection']['confidence'] = aid.MEDIUM
+        rows.append(('CTL-17', 'bad', f"raise the name-only domain {weak_dom['id']} (run 4) back to medium (AID-B6)", aid.check(p4, cat), True))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     out = []
@@ -270,7 +273,7 @@ def run():
         {'id': 'AID-B2', 'what': 'the example estates use local ids: 37 A2 ids name different elements in different estates (e.g. `SD-CA` is Current Account in one, Credit Assessment in another)', 'action': 'the test catalogue merges by BIAN type + name and qualifies clashes (`SD-CA@digital-lending`); a real catalogue keys on BIAN canonical identity'},
         {'id': 'AID-B3', 'what': 'from A4 alone an application is known only by its id; domains come from id words (`PAY` → Payment …)', 'action': 'kept low; the weakest evidence R2 accepts — expect "projected only" domains'},
         {'id': 'AID-B5', 'what': 'run 2 projected an extra API, PUT …/control for “Control Payment Instruction”: another estate gives the same Payment Initiation domain a Control operation the real estate does not have, and the catalogue merges both', 'action': 'shown as projected only; a real BIAN catalogue has one fixed operation list per domain, so this comes from the synthetic test data'},
-        {'id': 'AID-B6', 'what': 'run 4 projected Current Account from one word, “account”, in API paths and entity names (the engine\'s S17 fallback B) — yet at medium confidence (0.6), the same as the right domain, which rests on five API matches', 'action': 'for decision: cap AID domains from fallback B at low, so the architect can tell a strong projection from a weak one'},
+        {'id': 'AID-B6', 'what': 'run 4 projected Current Account from one word, “account”, in API paths and entity names (the engine\'s S17 fallback B) — at medium confidence (0.6), the same as the right domain, which rests on five API matches', 'action': 'closed 2026-10-28 (owner approved) — name-only evidence (engine fallbacks, description matches, verb-and-noun and id-word matches) is capped at low in AID and enforced by CTL-17; run 4 now shows Payment Initiation 0.6, Current Account 0.4. The engine itself still rates fallback B medium in the mapping lane — separate question'},
         {'id': 'AID-B4', 'what': 'the projection schema (AID-O05) and the view/trace PROJECTED label (AID-O06) were not built', 'action': 'closed 2026-10-28 — `schema/projection.schema.json`, checked by CTL-17; `sdem-graph view` and `trace` take `--projection`'}]
     return R
 

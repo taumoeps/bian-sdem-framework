@@ -49,8 +49,8 @@
       "A2": {
         "records": 28,
         "by_confidence": {
-          "0.6": 28,
-          "0.4": 0
+          "0.6": 17,
+          "0.4": 11
         }
       }
     },
@@ -658,8 +658,8 @@
               "APP-PAY-HUB",
               "CMP-PAY-VALIDATE"
             ],
-            "reasoning": "the application layer points to it — S17 — fallback B: asset-type tokens ['account'] in API paths / entity names",
-            "confidence": 0.6
+            "reasoning": "the application layer points to it — S17 — fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
+            "confidence": 0.4
           }
         },
         {
@@ -683,7 +683,7 @@
               "SD-CA"
             ],
             "reasoning": "part of SD-CA in the BIAN catalogue",
-            "confidence": 0.6
+            "confidence": 0.4
           }
         },
         {
@@ -713,7 +713,7 @@
               "SD-CA"
             ],
             "reasoning": "part of SD-CA in the BIAN catalogue",
-            "confidence": 0.6
+            "confidence": 0.4
           }
         },
         {
@@ -731,7 +731,7 @@
               "SD-CA"
             ],
             "reasoning": "part of SD-CA in the BIAN catalogue",
-            "confidence": 0.6
+            "confidence": 0.4
           }
         },
         {
@@ -763,7 +763,7 @@
               "SD-CA"
             ],
             "reasoning": "part of SD-CA in the BIAN catalogue",
-            "confidence": 0.6
+            "confidence": 0.4
           }
         },
         {
@@ -795,7 +795,7 @@
               "SD-CA"
             ],
             "reasoning": "part of SD-CA in the BIAN catalogue",
-            "confidence": 0.6
+            "confidence": 0.4
           }
         },
         {
@@ -825,7 +825,7 @@
               "SD-CA"
             ],
             "reasoning": "part of SD-CA in the BIAN catalogue",
-            "confidence": 0.6
+            "confidence": 0.4
           }
         },
         {
@@ -854,7 +854,7 @@
               "SD-CA"
             ],
             "reasoning": "part of SD-CA in the BIAN catalogue",
-            "confidence": 0.6
+            "confidence": 0.4
           }
         },
         {
@@ -883,7 +883,7 @@
               "SD-CA"
             ],
             "reasoning": "part of SD-CA in the BIAN catalogue",
-            "confidence": 0.6
+            "confidence": 0.4
           }
         },
         {
@@ -906,7 +906,7 @@
               "SD-CA"
             ],
             "reasoning": "part of SD-CA in the BIAN catalogue",
-            "confidence": 0.6
+            "confidence": 0.4
           }
         },
         {
@@ -937,7 +937,7 @@
               "SD-CA"
             ],
             "reasoning": "part of SD-CA in the BIAN catalogue",
-            "confidence": 0.6
+            "confidence": 0.4
           }
         }
       ],
@@ -1345,8 +1345,8 @@
           "version": "7.1"
         },
         "status": "projected",
-        "confidence": 0.6,
-        "rationale": "PROJECTED DESIGN, not a mapping: fallback B: asset-type tokens ['account'] in API paths / entity names",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
         "projection": {
           "step": "R2",
           "rule": "S17",
@@ -1354,8 +1354,8 @@
           "inferred_from": [
             "APP-PAY-HUB"
           ],
-          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names",
-          "confidence": 0.6
+          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
+          "confidence": 0.4
         }
       },
       {
@@ -1372,8 +1372,8 @@
           "version": "7.1"
         },
         "status": "projected",
-        "confidence": 0.6,
-        "rationale": "PROJECTED DESIGN, not a mapping: fallback B: asset-type tokens ['account'] in API paths / entity names",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
         "projection": {
           "step": "R2",
           "rule": "S17",
@@ -1381,8 +1381,8 @@
           "inferred_from": [
             "CMP-PAY-VALIDATE"
           ],
-          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names",
-          "confidence": 0.6
+          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
+          "confidence": 0.4
         }
       },
       {

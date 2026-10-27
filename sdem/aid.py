@@ -43,6 +43,20 @@ def basis(rule, step=None, catalogue=None):
     return f"{rid}: {r['source_reference']}" if r else f'{rule}: no rulebook entry'
 
 
+NAME_ONLY = re.compile(r'fallback|step5|verb and noun match|contains \[.*\], which begin words')
+
+
+def weak(text):
+    """AID-B6: evidence that rests on names alone — an engine fallback (e.g. S17 fallback B: one asset-type word in API
+    paths), a description match (step 5), a verb-and-noun name match, or the id-word fallback. Never above low."""
+    return bool(NAME_ONLY.search(text or ''))
+
+
+def conf_of(item):
+    """An engine proposal's confidence, capped at low when its evidence is name-only (AID-B6)."""
+    return min(item['confidence'], LOW) if all(weak(e) for e in item['evidence']) else item['confidence']
+
+
 def why_text(items):
     """Readable reasons from engine proposals and candidates: one line per rule, without step numbers or proposal ids."""
     out = []
@@ -135,13 +149,13 @@ def forward_a2(prj, a1, registry):
     for c in cands:
         if c['relationship'] == 'S07' and c['target']['id'] in prj.cat_by_id: doms.setdefault(c['target']['id'], []).append(c)
     for d, why in doms.items():
-        best = max(x['confidence'] for x in why)
+        best = max(conf_of(x) for x in why)
         prj.take_domain(d, 'F1', 'the business layer points to it — ' + why_text(why), best, sorted({x['source']['id'] for x in why}))
     for m in props:
         if m['target']['id'] in prj.records['A2'] or m['target']['id'] in prj.cat_by_id and m['target']['id'] in doms:
             src = next(i for i in a1['instances'] if i['id'] == m['source']['id']); tgt = prj.cat_by_id[m['target']['id']]
             if m['target']['id'] not in prj.records['A2']: prj.take_domain(m['target']['id'], 'F1', m['rationale'], m['confidence'])
-            prj.link(m['relationship'], src, tgt, 'F1', m['evidence'][0].split(' ')[0].replace('engine_rationale:', ''), [m['source']['id']], m['rationale'], m['confidence'])
+            prj.link(m['relationship'], src, tgt, 'F1', m['evidence'][0].split(' ')[0].replace('engine_rationale:', ''), [m['source']['id']], m['rationale'] + (' — name-only evidence, capped low (AID-B6)' if conf_of(m) < m['confidence'] else ''), conf_of(m))
     prj.steps.append({'step': 'F1', 'domains': sorted(doms)})
     if not doms: prj.ends.append('projection ends at A1: no business record names a BIAN operation or matches a catalogue domain closely enough')
     return sorted(doms)
@@ -213,7 +227,8 @@ def reverse_a2(prj, a3, a4=None, registry=None):
     for m in props:
         if m['relationship'] == 'REALIZED_BY' and m['source']['id'] in prj.cat_by_id: doms.setdefault(m['source']['id'], []).append(m)
     for d, why in doms.items():
-        prj.take_domain(d, 'R2', 'the application layer points to it — ' + why_text(why), max(x['confidence'] for x in why), sorted({x['target']['id'] for x in why}))
+        c = max(conf_of(x) for x in why)
+        prj.take_domain(d, 'R2', 'the application layer points to it — ' + why_text(why) + (' — name-only evidence, capped low (AID-B6)' if c < max(x['confidence'] for x in why) else ''), c, sorted({x['target']['id'] for x in why}))
     a3_ids = {i['id']: i for i in a3['instances']}
     for m in props:
         s, t = m['source']['id'], m['target']['id']
@@ -223,7 +238,7 @@ def reverse_a2(prj, a3, a4=None, registry=None):
                 if dom and dom['id'] not in prj.records['A2']: prj.take_domain(dom['id'], 'R2', f'its operation {s} is implemented by {t}', m['confidence'])
             if m['relationship'] == 'MAPPED_TO' and s not in prj.records['A2']:
                 prj.record('A2', prj.cat_by_id[s], 'R2', CATALOGUE_RULE, [t], f'business object mapped from data entity {t}', m['confidence'])
-            prj.link(m['relationship'], prj.cat_by_id[s], a3_ids[t], 'R2', m['evidence'][0].split(' ')[0].replace('engine_rationale:', ''), [t], m['rationale'], m['confidence'])
+            prj.link(m['relationship'], prj.cat_by_id[s], a3_ids[t], 'R2', m['evidence'][0].split(' ')[0].replace('engine_rationale:', ''), [t], m['rationale'] + (' — name-only evidence, capped low (AID-B6)' if conf_of(m) < m['confidence'] else ''), conf_of(m))
     stubs = [i for i in a3['instances'] if (prj.records['A3'].get(i['id']) or {}).get('projection', {}).get('step') == 'R1']
     if stubs and not doms: name_fallback(prj, stubs)
     chosen = sorted({i for i, r in prj.records['A2'].items() if r['type'] == 'A2.ServiceDomain'})
@@ -350,6 +365,8 @@ def check(pkg, catalogue=None):
             missing = [k for k in PROVENANCE if k not in pr]
             if missing: issues.append(f"{i['id']}: projection provenance missing {missing}")
             if pr.get('confidence', 1) > MEDIUM: issues.append(f"{i['id']}: confidence {pr.get('confidence')} above medium")
+            if pr.get('confidence', 0) > LOW and weak(pr.get('reasoning')) and not re.search(r'\b(implements|invokes|BOM attributes)\b', pr.get('reasoning', '')):
+                issues.append(f"{i['id']}: name-only evidence above low confidence (AID-B6)")
             if lvl == 'A2' and (pr.get('rule') != CATALOGUE_RULE or (cat is not None and i['id'] not in cat)): issues.append(f"{i['id']}: an A2 element not taken from the BIAN catalogue")
             if lvl != 'A2' and not i['id'].startswith('PRJ-') and pr.get('step') != 'R1': issues.append(f"{i['id']}: a projected record must be marked PRJ-")
     for l in pkg['links']['links']:
@@ -357,6 +374,7 @@ def check(pkg, catalogue=None):
         if l.get('status') != 'projected': issues.append(f"{l['mapping_id']}: status must be 'projected'")
         if [k for k in PROVENANCE if k not in pr]: issues.append(f"{l['mapping_id']}: projection provenance missing")
         if l.get('confidence', 1) > MEDIUM: issues.append(f"{l['mapping_id']}: confidence above medium")
+        if l.get('confidence', 0) > LOW and weak(pr.get('reasoning')): issues.append(f"{l['mapping_id']}: name-only evidence above low confidence (AID-B6)")
     return issues
 
 

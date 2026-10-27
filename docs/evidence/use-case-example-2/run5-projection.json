@@ -47,8 +47,8 @@
       "A2": {
         "records": 18,
         "by_confidence": {
-          "0.6": 18,
-          "0.4": 0
+          "0.6": 17,
+          "0.4": 1
         }
       }
     },
@@ -540,7 +540,7 @@
               "SD-CA"
             ],
             "reasoning": "part of SD-CA in the BIAN catalogue",
-            "confidence": 0.6
+            "confidence": 0.4
           }
         }
       ],

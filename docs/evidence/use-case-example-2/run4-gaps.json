@@ -196,7 +196,7 @@
       "real": "—",
       "reason": "not in the real design at all",
       "matched_by": "—",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "layer": "A2",
@@ -207,7 +207,7 @@
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
       "matched_by": "—",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "layer": "A2",
@@ -218,7 +218,7 @@
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
       "matched_by": "—",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "layer": "A2",
@@ -229,7 +229,7 @@
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
       "matched_by": "—",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "layer": "A2",
@@ -240,7 +240,7 @@
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
       "matched_by": "—",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "layer": "A2",
@@ -251,7 +251,7 @@
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
       "matched_by": "—",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "layer": "A2",
@@ -262,7 +262,7 @@
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
       "matched_by": "—",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "layer": "A2",
@@ -273,7 +273,7 @@
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
       "matched_by": "—",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "layer": "A2",
@@ -284,7 +284,7 @@
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
       "matched_by": "—",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "layer": "A2",
@@ -295,7 +295,7 @@
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
       "matched_by": "—",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "layer": "A2",
@@ -306,7 +306,7 @@
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
       "matched_by": "—",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "layer": "A1",
@@ -427,7 +427,7 @@
       "target": "APP-PAY-HUB",
       "result": "projected only",
       "reason": "no such approved link in the real registry",
-      "confidence": 0.6
+      "confidence": 0.4
     },
     {
       "source": "SD-CA",
@@ -435,7 +435,7 @@
       "target": "CMP-PAY-VALIDATE",
       "result": "projected only",
       "reason": "no such approved link in the real registry",
-      "confidence": 0.6
+      "confidence": 0.4
     }
   ],
   "metrics": {
