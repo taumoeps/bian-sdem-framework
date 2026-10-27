@@ -500,7 +500,8 @@ def plantuml_parse(src):
                 b = m.group(4) if m.group(4) is not None else (m.group(3) or '')
                 rels.append((alias.get(m.group(2), m.group(2)), alias.get(b, b), m.group(5) or '', macro)); continue
             name = m.group(4) if m.group(4) is not None else m.group(2)
-            k = declare(name, low, m.group(2), desc=m.group(5) or '')
+            c4_tech = re.match(r'(container|component)', low) is not None   # C4: Container(alias, label, technology, description)
+            k = declare(name, low, m.group(2), desc=(m.group(6) if c4_tech else m.group(5)) or '')
             if m.group(7) and k: stack.append(k)
             continue
         kw = line.split(None, 1)[0].lower() if line.split() else ''
@@ -669,7 +670,8 @@ class Extraction:
         if r is None:
             r = self.records[key] = {'id': self._id(etype, name), 'type': etype, 'name': name, 'description': '', 'lifecycle_status': None,
                                      'attributes': {}, 'sources': [], 'modified': None}
-        if description and not r['description']: r['description'] = clean(description)
+        rank = {'table': 3, 'table_endpoint': 2}.get(how, 1)   # a table's description column beats a diagram's second line
+        if description and (not r['description'] or rank > r.get('_desc_rank', 0)): r['description'] = clean(description); r['_desc_rank'] = rank
         if lifecycle and not r['lifecycle_status']: r['lifecycle_status'] = lifecycle
         for k, v in (attributes or {}).items(): r['attributes'].setdefault(k, v)
         if page.get('modified') and (not r['modified'] or page['modified'] > r['modified']): r['modified'] = page['modified']
