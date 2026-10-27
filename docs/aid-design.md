@@ -127,52 +127,56 @@ When the real layers exist (or for testing, when they are known but hidden), AID
 | AID-D06 | Today's design mode | becomes AID forward steps F2–F3 |
 | AID-D07 | First build order | forward F1–F3 → reverse R1–R2 → gap analysis → middle gap → R3 (weakest, last) |
 
-## 8. Option — AI suggestion layer (proposed, AID-D08 — **not approved, not built**)
+## 8. Option — AI suggestion layer, through Copilot (proposed, AID-D08 — **not approved, not built**)
 
-> **Status: proposed 2026-10-27 for the owner's decision.** Nothing here is built. Requirements: [`aid-spec.md`](aid-spec.md) §12.
+> **Status: proposed 2026-10-27, revised 2026-10-28** to the SDEM workbench (decision SDEM-D01: VS Code is the SDEM tool, GitHub Copilot Chat its AI interface — [`sdem-workbench-design.md`](sdem-workbench-design.md)). Nothing here is built. Requirements: [`aid-spec.md`](aid-spec.md) §12.
 
 ### The problem it solves
 
-AID's inference is **rules**: the rulebook says what may link, and the engine and AID apply it. Rules are exact and traceable, but they can only follow links that are recorded. Where the data is thin — e.g. an A4 disk called `PAY-DB-DISK-01` with nothing recorded about what it serves — the rules have no basis: AID either stops (*projection ends at …*) or falls back to weak name hints (`pay` → *Payment*), which made the wrong guesses in use-case example 2, runs 3 and 4.
-
-An AI model reads **meaning**, not just matching words, and could suggest a sensible answer where rules have none.
+AID's inference is **rules**: exact and traceable, but they can only follow links that are recorded. Where the data is thin — e.g. an A4 disk called `PAY-DB-DISK-01` with nothing recorded about what it serves — the rules have no basis: AID stops (*projection ends at …*) or falls back to weak name hints, capped low (AID-B6). An AI reads **meaning** and could suggest a sensible answer there.
 
 ### Why AI must not replace the rules
 
 | | Rules | AI |
 |---|---|---|
-| Source reference and reasoning | exact — rule, published source, data used | an explanation it writes itself; can sound right and be wrong |
-| Repeatable | same input → same answer | can change between runs and model versions |
-| Can it invent? | no — never beyond the rule | yes — a BIAN domain or link that does not exist |
+| Source reference and reasoning | exact — rule, published source, data used | its own explanation; can sound right and be wrong |
+| Repeatable | same input → same answer | can change between runs and models |
+| Can it invent? | no | yes — a BIAN domain or link that does not exist |
 | Auditable | yes | hard |
-| Data security | runs on the machine | a cloud model receives the design — not acceptable for an institution's architecture data |
 
-### The proposal — rules first, AI as a marked helper
+### The design — Copilot is the AI; SDEM asks and checks
+
+SDEM does **not** call an AI, hold an API key or add a data flow. The architect's approved **GitHub Copilot Chat** answers SDEM's questions in VS Code; SDEM checks every answer.
 
 ```
- datasets ─► RULES (engine + AID) ─► projected design ─► where rules found no basis ─► AI SUGGESTIONS
-                 always first           PRJ-, rule source        ("projection ends")        PRJ-AI-, capped low,
-                                                                                            marked unverified
+ /aid-project ─► sdem-aid project … --ask ─► RULES first (as today) ─► projection package
+                                                    └─► ai/questions.json — only the gaps the rules left:
+                                                        the record, its context, the BIAN choices list,
+                                                        the exact answer format
+ /aid-suggest ─► Copilot Chat answers ─────────────────► ai/answers.json
+ /aid-import  ─► sdem-aid ai-import ─► CHECK each answer ─► accepted ones added: PRJ-AI-, 0.2, UNVERIFIED
+                                        choice in the list?      (rejected ones logged with the reason)
+                                        evidence ids exist?
 ```
 
-1. **Rules always run first.** Anything a rule can infer, a rule infers; AI never overrides or re-scores a rule result.
-2. **AI only fills gaps** — the points where AID reports *projection ends* or only the name fallback fired.
-3. **Marked everywhere.** Ids `PRJ-AI-…`; `projection.rule` = `AI suggestion`; the source reference names the model, its version and the prompt (stored in the package); the AI's reasoning is shown, labelled **unverified**.
-4. **Capped at low**, always — below every rule-based element except the weakest.
-5. **Same controls.** CTL-17 still rejects any invented BIAN element (AI may only choose from the catalogue); CTL-16 still keeps everything out of real data; a person reviews before anything becomes real.
-6. **Off by default**; switched on per run.
-7. **Local model option** so no design data leaves the machine; a cloud model only with the institution's approval, and never with employer data in this repository (public and synthetic data only).
-8. **Measured, not assumed.** Use-case example 2 runs twice — rules only, and rules + AI — and gap analysis compares precision and recall. AI is kept only if it improves accuracy without new wrong answers above an agreed limit.
+1. **Rules always run first.** Copilot answers only the gaps listed in `questions.json`; it never overrides or re-scores a rule result.
+2. **A closed question.** Copilot picks from the BIAN catalogue list (or answers *none*); it cannot add a domain.
+3. **SDEM never trusts the answer.** A choice outside the list or evidence that does not exist is rejected (CTL-17 would reject an invented BIAN element anyway).
+4. **Marked everywhere.** Ids `PRJ-AI-…`; rule `AI suggestion`; source reference = "GitHub Copilot (model as stated)" and the checksums of both files; reasoning prefixed **UNVERIFIED (AI)**.
+5. **Capped at 0.2**, below every rule-based element.
+6. **Auditable and repeatable.** `questions.json` and `answers.json` stay in the projection package; re-importing the same answers gives the same result.
+7. **Optional.** Without `--ask`, AID is rules only; SDEM works with Copilot switched off.
+8. **Measured, not assumed.** Use-case example 2 runs with and without the answers; the pass mark is set before the run. The automated tests use saved answers — no live AI.
 
 ### Example — the disk drive
 
-| | Rules only | Rules + AI |
+| | Rules only | Rules + Copilot |
 |---|---|---|
-| Disk `PAY-DB-DISK-01`, part of server `DB-PAY-01`, which hosts `APP-PAY-HUB` | traced exactly: disk → server → Payments Hub → APIs → *Payment Initiation* → capability *Initiate Payment* | same — AI is not called, rules found a basis |
-| Disk `PAY-DB-DISK-01`, nothing else recorded | *projection ends at A4*, or a low name hint `pay` → *Payment* | AI suggestion: "storage for payment processing → *Payment Execution*", low, **unverified**, model and prompt recorded |
+| Disk `PAY-DB-DISK-01`, part of server `DB-PAY-01`, which hosts `APP-PAY-HUB` | traced exactly: disk → server → Payments Hub → APIs → *Payment Initiation* → capability | the same — no question is asked, the rules found a basis |
+| Disk `PAY-DB-DISK-01`, nothing else recorded | *projection ends at A4*, or a low name hint | Copilot's suggestion: "storage for payment processing → *Payment Execution*", 0.2, **UNVERIFIED** |
 
 ### Decision for the owner
 
 | # | Decision | Recommendation |
 |---|---|---|
-| AID-D08 | Add an AI suggestion layer to AID? | **Yes, as specified above** — rules first; AI only where rules have no basis; marked `PRJ-AI-`, capped low, off by default, local model preferred; kept only if example 2 shows it improves accuracy. **Confidence: medium** — the safety design reuses built controls (CTL-16/17); the accuracy gain is unproven until measured. |
+| AID-D08 | Add an AI suggestion layer to AID? | **Yes, through Copilot as above** — rules first; Copilot answers closed questions only for the gaps; SDEM checks, marks `PRJ-AI-`, caps at 0.2; no MCP, no API, no key; kept only if example 2 shows it helps. **Confidence: medium** — the safety side reuses built controls; the accuracy gain is unproven until measured. |

@@ -64,6 +64,14 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Graph access layer** | the one read interface every query, the view and the engine use, whether the graph comes from the store or from architecture datasets |
 | **Baseline (engine)** | the naive name-matching engine any real engine must beat (F1 0.62) |
 
+## The workbench
+
+| Term | Means |
+|---|---|
+| **Copilot instructions** | `.github/copilot-instructions.md` — standing rules GitHub Copilot reads in this repository: use SDEM's commands for facts, never approve, never put projected content into real data, always give source, reasoning and confidence |
+| **Prompt file** | a `.github/prompts/*.prompt.md` file that gives Copilot Chat one `/` command for a journey, e.g. `/sdem-trace` — which SDEM command to run and what to report |
+| **SDEM workbench** | how architects use SDEM: VS Code as the enterprise architecture tool, GitHub Copilot Chat as the AI interface, the `sdem-*` commands as the engine, Git as history and approval trail ([`sdem-workbench-design.md`](sdem-workbench-design.md)) |
+
 ## Evidence and confidence
 
 | Term | Means |

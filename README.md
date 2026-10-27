@@ -247,6 +247,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | [`mapping-execution.md`](docs/mapping-execution.md) · [`use-case-testing.md`](docs/use-case-testing.md) | the procedure as executed, and the eleven test runs |
 | [`reference-architecture-provenance.md`](docs/reference-architecture-provenance.md) | every entity traced to a public standard |
 | [`aid-design.md`](docs/aid-design.md) · [`aid-spec.md`](docs/aid-spec.md) | **Architecture Inference Design (AID)** (approved, built — `sdem-aid`): projecting missing architecture layers, upstream or downstream, for planning — with gap analysis against the real design |
+| [`sdem-workbench-design.md`](docs/sdem-workbench-design.md) · [`sdem-workbench-spec.md`](docs/sdem-workbench-spec.md) | **the SDEM workbench** (draft): VS Code as the architects' enterprise architecture tool, GitHub Copilot Chat as the AI interface running the `sdem-*` commands, Git as history and approval trail — no MCP, no AI API in SDEM |
 | [`controls-register.md`](docs/controls-register.md) | every control that enforces the rulebook: where it runs, where its outcome is recorded, what monitors it, and the known gaps |
 | [`use-case-example-2.md`](docs/use-case-example-2.md) | test plan for Architecture Inference Design: hide layers of a known estate, project them, compare with the real ones (expected results sealed) |
 | [`use-case-example-1.md`](docs/use-case-example-1.md) | worked example (plan): establishing the mappings and knowledge graph from four separate architecture datasets, clean and with planted defects |

@@ -262,6 +262,10 @@ The essentials; the full list is in [`glossary.md`](glossary.md).
 | **Graph loader** | the program that builds the local and federated knowledge graphs |
 | **Trace / impact** | follow relationships across architectures / find what a change affects |
 
+## The SDEM workbench — how architects use it
+
+SDEM runs in **VS Code**, the architect's enterprise architecture tool. **GitHub Copilot Chat** is the AI interface: the architect asks in plain language ("what does CAP-310 depend on?", "project the layers I don't have"), and Copilot runs SDEM's `sdem-*` commands and explains the result. **Git** holds the history; a link is approved in a reviewed pull request, by a person. The AI helps, but the rules and controls decide what is valid — and every journey also works with Copilot switched off. Design and requirements: [`sdem-workbench-design.md`](sdem-workbench-design.md), [`sdem-workbench-spec.md`](sdem-workbench-spec.md) (decision SDEM-D01).
+
 ## Read more
 
 | Document | Specifies |
@@ -271,4 +275,5 @@ The essentials; the full list is in [`glossary.md`](glossary.md).
 | [`relationship-registry-spec.md`](relationship-registry-spec.md) | the Relationship Registry: record fields, statuses, transitions, immutability |
 | [`knowledge-graph-design.md`](knowledge-graph-design.md) · [`knowledge-graph-spec.md`](knowledge-graph-spec.md) | the local and federated architecture knowledge graphs |
 | [`architecture-governance-spec.md`](architecture-governance-spec.md) | approval, supersession, impact |
+| [`sdem-workbench-design.md`](sdem-workbench-design.md) · [`sdem-workbench-spec.md`](sdem-workbench-spec.md) | the SDEM workbench: VS Code as the architects' tool, GitHub Copilot Chat as the AI interface (no MCP) |
 | [`use-case-testing.md`](use-case-testing.md) · [`relationships-testing.md`](relationships-testing.md) | how the model was tested |

@@ -107,18 +107,20 @@ sdem-graph trace <id> --graph graph/ --projection projection/
 | AID-Q02 | Should AID project data entities (A3) from BIAN business objects? | Yes, low confidence, as an option — the pattern does not give them; off by default |
 | AID-Q03 | How far should reverse projection go above A2 (R3)? | Candidates only, low; revisit when BIAN publishes its capability-to-domain mapping |
 | AID-Q04 | Should F2 put a create-type operation with a behaviour qualifier (e.g. *Evaluate … Validation*) on a qualifier sub-resource (`POST …/{id}/validation`)? Found in the design illustration: today it uses the collection. | Yes — align with check 3 of step 2. **Done 2026-10-27**: APIs matched rose from 2 to 3 of 5 |
-| AID-Q05 | Should AID use AI where rules have no basis? | Proposed as AID-D08 (design §8) — rules first, AI as a marked, capped, optional helper; requirements in §12 |
+| AID-Q05 | Should AID use AI where rules have no basis? | Proposed as AID-D08 (design §8) — through the architect's Copilot, never an AI SDEM calls: rules first, closed questions only for gaps, every answer checked, marked and capped; requirements in §12 |
 
-## 12. AI suggestion layer (proposed — AID-D08, **not approved, not built**)
+## 12. AI suggestion layer through Copilot (proposed — AID-D08, **not approved, not built**)
+
+Revised 2026-10-28 to the SDEM workbench: the AI is the architect's GitHub Copilot Chat in VS Code; SDEM calls no AI, holds no key, uses no MCP ([`sdem-workbench-spec.md`](sdem-workbench-spec.md) §8).
 
 | ID | Requirement | Status |
 |---|---|---|
-| AID-AI01 | Rules run first; the AI layer runs only after, and only for gaps the rules left: a layer where projection ended, or an element found only by the name fallback. It never changes or re-scores a rule result. | not built |
-| AID-AI02 | AI may only **choose** BIAN elements from the catalogue (given to it as a list); any answer outside the list is discarded and logged (CTL-17 rejects it anyway). | not built |
-| AID-AI03 | Every AI element: id `PRJ-AI-<…>`; `projection.rule` = `AI suggestion`; `source_reference` = model, version and prompt id; `reasoning` = the model's explanation, prefixed **unverified**; confidence **0.2** (below every rule-based element). | not built |
-| AID-AI04 | The prompt and the raw model reply are stored in the projection package (`ai/` folder) with checksums, so a run can be audited. | not built |
-| AID-AI05 | Off by default; enabled per run (`sdem-aid project --ai <model>`). A local model is supported; a cloud model only when explicitly configured. | not built |
+| AID-AI01 | Rules run first. `sdem-aid project --ask` then writes `ai/questions.json`, one question per gap the rules left (a layer where projection ended, or an element found only by name evidence): the record, its neighbours' names and descriptions, the BIAN catalogue choices, and the answer format. | not built |
+| AID-AI02 | The answer format is closed: `{question_id, choice, evidence, reasoning}` where `choice` is an id from the question's list or `none`. Prompt file `.github/prompts/aid-suggest.prompt.md` tells Copilot to answer only in this format into `ai/answers.json`. | not built |
+| AID-AI03 | `sdem-aid ai-import` rejects (and logs) any answer whose choice is not in the list, whose evidence ids do not exist in the inputs, or that is not in the format. | not built |
+| AID-AI04 | Every accepted answer becomes an element with id `PRJ-AI-<…>`, rule `AI suggestion`, source reference "GitHub Copilot (model as stated)" plus the checksums of both files, reasoning prefixed **UNVERIFIED (AI)**, confidence **0.2**. | not built |
+| AID-AI05 | `questions.json` and `answers.json` are kept in the projection package's `ai/` folder; re-importing the same answers gives the same result. | not built |
 | AID-AI06 | Gap analysis reports AI elements separately: precision and recall for rules only, and for rules + AI. | not built |
-| AID-AI07 | Acceptance: use-case example 2 re-run with and without AI; AI is kept only if recall rises without precision falling below an agreed limit, recorded before the run. | not built |
+| AID-AI07 | Acceptance: use-case example 2 with and without the answers; AI is kept only if recall rises without precision falling below a limit recorded before the run. Automated tests use saved answers. | not built |
 
-**Control (proposed): CTL-18** — AI suggestions are marked `PRJ-AI-`, carry model, version and prompt, are at most 0.2 confidence, choose only from the BIAN catalogue, and are reported separately in gap analysis. Added to the controls register only when approved and built.
+**Control (proposed): CTL-18** — AI suggestions are marked `PRJ-AI-`, carry the stated model and both files' checksums, are at most 0.2, choose only from the BIAN catalogue, and are reported separately in gap analysis. Added to the controls register only when approved and built.
