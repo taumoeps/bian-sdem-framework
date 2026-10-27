@@ -289,6 +289,13 @@ code{font:12px ui-monospace,SFMono-Regular,Menlo,monospace}.lvl{display:inline-b
 svg text{fill:var(--fg);font-size:11px}.band{fill:var(--band)}.bandlbl{font-size:13px;font-weight:600;fill:var(--muted)}.node rect{fill:var(--panel);stroke-width:1.6;cursor:pointer}
 .node.abs rect{stroke-dasharray:4 3}.comp rect{fill:var(--panel)}.comp.sel rect{stroke-width:3}.node.sel rect{stroke:var(--fg);stroke-width:3}.e{fill:none;stroke:var(--accent);stroke-width:1.3;opacity:.7}.elbl{font-size:10px;fill:var(--muted)}
 .scroll{max-height:60vh;overflow:auto;border:1px solid var(--line)}
+main.wide{max-width:none;padding:12px 16px}
+.split>.pic.fit{max-height:none;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;padding:6px}
+.pic.fit svg{width:100%;height:auto;max-height:calc(100vh - 150px);display:block}
+.split>.side.fit{flex:0 0 340px;max-height:calc(100vh - 150px);position:sticky;top:8px}
+.pic.fit:fullscreen{background:var(--bg);align-items:center;padding:16px}.pic.fit:fullscreen svg{max-height:100vh;height:100%}
+.fsbtn{font:inherit;font-size:12px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:6px;padding:3px 10px;cursor:pointer;margin-left:6px}
+@media (max-width:900px){.split>.side.fit{flex:1 1 100%;position:static;max-height:none}}
 @media print{header nav,.tool,#theme{display:none}section{display:block!important}section+section{page-break-before:always}.scroll,.pic,.side{max-height:none;overflow:visible}}
 </style></head><body>
 <header><div class="top"><div><h1>SDEM — Service Domain Enterprise Metamodel</h1><div class="muted" id="sub"></div></div>
@@ -334,9 +341,9 @@ R.entities=()=>`<h2>Architecture entities</h2><p class="note">The entity types o
   <td>${e.within.length} · ${e.cross.length}</td></tr>`),"scroll");
 R.picture=()=>{const A=D.architecture;const st={"built":0,"partial":0,"not built":0};A.boxes.forEach(b=>st[b.status]=(st[b.status]||0)+1);
   return `<h2>SDEM architecture</h2><p class="note">The components of SDEM and how they work together — the mapping lane (left and centre) and the planning lane, AID (right), over the four independently governed architectures. Click a component for what it is, where it lives, its live figures and what is next. <span class="chip ok">■ built ${st["built"]}</span><span class="chip warn">■ partly built ${st["partial"]}</span><span class="chip muted">▢ not built ${st["not built"]}</span></p>
-  <div class="split"><div class="pic" id="arch"></div><div class="side" id="aside"><p class="muted">Click a component.</p><h3>Health now</h3><p>${genOK?'<span class="ok">generated documents current</span>':'<span class="bad">generated documents stale</span>'} · ${accOK?'<span class="ok">engine acceptance '+H.acceptance.length+' of '+H.acceptance.length+'</span>':'<span class="bad">engine acceptance failing</span>'}</p><p>${D.projects.length} project(s); ${D.projects.filter(p=>p.errors||p.proposals||p.open_work).length} need attention — see <a href="#projects" data-tab="projects">Projects</a>.</p></div></div>`;};
+  <div class="split"><div class="pic fit" id="arch"></div><div class="side fit" id="aside"><p><button class="fsbtn" data-fs="arch" aria-label="Show the diagram full screen">⛶ full screen</button></p><p class="muted">Click a component.</p><h3>Health now</h3><p>${genOK?'<span class="ok">generated documents current</span>':'<span class="bad">generated documents stale</span>'} · ${accOK?'<span class="ok">engine acceptance '+H.acceptance.length+' of '+H.acceptance.length+'</span>':'<span class="bad">engine acceptance failing</span>'}</p><p>${D.projects.length} project(s); ${D.projects.filter(p=>p.errors||p.proposals||p.open_work).length} need attention — see <a href="#projects" data-tab="projects">Projects</a>.</p></div></div>`;};
 R.entitymap=()=>`<h2>Entity map</h2><p class="note">The entity types of the four architectures and the ${M.cross.length} link types between them. Click a type for its definition, attributes, the links allowed for it, and the engine rules that use it.</p>
-  <div class="split"><div class="pic" id="pic"></div><div class="side" id="side"><p class="muted">Click an entity type.</p></div></div>`;
+  <div class="split"><div class="pic fit" id="pic"></div><div class="side fit" id="side"><p><button class="fsbtn" data-fs="pic" aria-label="Show the map full screen">⛶ full screen</button></p><p class="muted">Click an entity type.</p></div></div>`;
 R.within=()=>`<h2>Links inside each architecture</h2><p class="note">The ${M.within.length} relationship rows allowed within an architecture, each from its reference architecture (BIAN for A2; ArchiMate 3.2 and TOGAF for A1, A3, A4). <code>sdem check</code> rejects any other.</p>`+filterBox("fWithin","filter: type, kind, id …")+
   table(["ID","Architecture","Source","Kind","Target","Basis","Meaning"],M.within.map(w=>`<tr data-f="${esc((w.id+" "+w.source+" "+w.kind+" "+w.target+" "+w.description).toLowerCase())}"><td><code>${esc(w.id)}</code>${w.official?`<div class="muted">${esc(w.official)}</div>`:""}</td><td>${lvl(w.level)}</td><td>${esc(w.source)}</td><td><span class="chip">${esc(w.kind)}</span></td><td>${esc(w.target)}</td><td class="muted">${esc(w.basis)}</td><td>${esc(w.description)}</td></tr>`),"scroll");
 R.cross=()=>`<h2>Links between architectures</h2><p class="note">The only ${M.cross.length} link types allowed between architectures — the mapping relationships of the federated knowledge graph — with the evidence each needs before a person approves it.</p>`+
@@ -359,7 +366,7 @@ R.config=()=>{const C=D.config;let h=`<h2>Configuration</h2><p class="note">The 
   h+=`<h3>Agents (optional — GitHub Copilot)</h3><p>${C.agents["layer agents"].map(a=>`<code>${esc(a)}</code>`).join(" · ")} · orchestrator <code>${esc(C.agents.orchestrator)}</code></p>`;
   return h;};
 function drawArchitecture(){const A=D.architecture,host=document.getElementById("arch");if(!host||host.dataset.done)return;host.dataset.done="1";const NS="http://www.w3.org/2000/svg";
-  const svg=document.createElementNS(NS,"svg");svg.setAttribute("viewBox",`0 0 ${A.width} ${A.height}`);svg.setAttribute("width",A.width);svg.setAttribute("height",A.height);svg.setAttribute("role","img");svg.setAttribute("aria-label","SDEM component architecture");host.appendChild(svg);
+  const svg=document.createElementNS(NS,"svg");svg.setAttribute("viewBox",`0 0 ${A.width} ${A.height}`);svg.setAttribute("preserveAspectRatio","xMidYMin meet");svg.setAttribute("role","img");svg.setAttribute("aria-label","SDEM component architecture");host.appendChild(svg);
   const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;};
   const defs=el("defs",{});const mk=el("marker",{id:"ah",viewBox:"0 0 10 10",refX:"9",refY:"5",markerWidth:"7",markerHeight:"7",orient:"auto-start-reverse"},defs);el("path",{d:"M0,0 L10,5 L0,10 z",fill:"var(--accent)"},mk);
   const BD=A.band;el("rect",{class:"band",x:BD.x,y:BD.y,width:BD.w,height:BD.h,rx:8});const bt=el("text",{class:"bandlbl",x:BD.x+BD.w/2,y:BD.y+18,"text-anchor":"middle"});bt.textContent=BD.title;
@@ -386,7 +393,7 @@ function showComponent(id){const b=D.architecture.boxes.find(x=>x.id===id);const
    <h3>Where it lives</h3>${b.where.map(w=>`<div><code>${esc(w)}</code></div>`).join("")}
    <h3>Next</h3><p>${esc(b.next)}</p>${b.tabs.length?`<h3>More</h3><p>${b.tabs.map(t=>`<a href="#${t}" data-tab="${t}">${esc(names[t]||t)}</a>`).join(" · ")}</p>`:""}`;}
 function drawPicture(){const P=D.entity_picture,host=document.getElementById("pic");if(!host||host.dataset.done)return;host.dataset.done="1";const NS="http://www.w3.org/2000/svg";const[W,Hh]=P.box;
-  const svg=document.createElementNS(NS,"svg");svg.setAttribute("viewBox",`0 0 ${P.width} ${P.height}`);svg.setAttribute("width",P.width);svg.setAttribute("height",P.height);svg.setAttribute("role","img");svg.setAttribute("aria-label","Metamodel picture");host.appendChild(svg);
+  const svg=document.createElementNS(NS,"svg");svg.setAttribute("viewBox",`0 0 ${P.width} ${P.height}`);svg.setAttribute("preserveAspectRatio","xMidYMin meet");svg.setAttribute("role","img");svg.setAttribute("aria-label","Metamodel picture");host.appendChild(svg);
   const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;};
   P.bands.forEach(b=>{el("rect",{class:"band",x:8,y:b.y,width:P.width-16,height:b.h,rx:8});const t=el("text",{class:"bandlbl",x:18,y:b.y+20});t.textContent=b.title;});
   const pos={};P.nodes.forEach(n=>pos[n.type]=n);const eg=el("g",{}),ng=el("g",{});
@@ -406,10 +413,11 @@ const nav=document.getElementById("tabs"),main=document.getElementById("main");
 TABS.forEach(([id,label])=>{const b=document.createElement("button");b.textContent=label;b.setAttribute("role","tab");b.dataset.tab=id;b.id="tab-"+id;nav.appendChild(b);
   const s=document.createElement("section");s.id=id;s.setAttribute("role","tabpanel");s.setAttribute("aria-labelledby","tab-"+id);s.hidden=true;s.innerHTML=R[id]();main.appendChild(s);});
 function show(id){if(!document.getElementById(id))id="picture";TABS.forEach(([t])=>{document.getElementById(t).hidden=(t!==id);document.getElementById("tab-"+t).setAttribute("aria-selected",String(t===id));});
-  if(id==="picture")drawArchitecture();if(id==="entitymap")drawPicture();try{history.replaceState(null,"","#"+id);}catch(e){}}
+  main.classList.toggle("wide",id==="picture"||id==="entitymap");if(id==="picture")drawArchitecture();if(id==="entitymap")drawPicture();try{history.replaceState(null,"","#"+id);}catch(e){}}
 nav.addEventListener("click",e=>{const t=e.target.closest("button");if(t)show(t.dataset.tab);});
 nav.addEventListener("keydown",e=>{if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft")return;const i=TABS.findIndex(([t])=>!document.getElementById(t).hidden);const n=(i+(e.key==="ArrowRight"?1:TABS.length-1))%TABS.length;show(TABS[n][0]);document.getElementById("tab-"+TABS[n][0]).focus();});
-document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a[data-tab]");if(a){e.preventDefault();show(a.dataset.tab);}});
+document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a[data-tab]");if(a){e.preventDefault();show(a.dataset.tab);}
+  const f=e.target.closest&&e.target.closest("[data-fs]");if(f){const t=document.getElementById(f.dataset.fs);if(document.fullscreenElement)document.exitFullscreen();else if(t&&t.requestFullscreen)t.requestFullscreen();}});
 [["fEnt","entities"],["fWithin","within"],["fRules","rules"]].forEach(([f,sec])=>{const i=document.getElementById(f);if(i)i.addEventListener("input",()=>{const q=i.value.toLowerCase();document.querySelectorAll(`#${sec} tr[data-f]`).forEach(r=>{r.hidden=q&&!r.dataset.f.includes(q);});});});
 document.getElementById("theme").onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark";};
 show((location.hash||"#picture").slice(1));
