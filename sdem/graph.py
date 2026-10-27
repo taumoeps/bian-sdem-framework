@@ -269,6 +269,7 @@ def main(argv=None):
     sp = sub.add_parser('view', help='write a self-contained HTML picture of a graph store')
     sp.add_argument('--graph', required=True, metavar='DIR'); sp.add_argument('-o', '--out', metavar='FILE', help='default <DIR>/view.html')
     sp.add_argument('--projection', metavar='DIR', help='overlay an AID projection package, drawn dashed and labelled PROJECTED (AID-O06)')
+    sp.add_argument('--json', action='store_true')
     sp = sub.add_parser('baseline', help='freeze the current graph store under baselines/<name>')
     sp.add_argument('name'); sp.add_argument('--graph', required=True, metavar='DIR')
     # paths are optional (--graph replaces them), so argparse cannot place paths written after an option; collect them here
@@ -281,7 +282,9 @@ def main(argv=None):
         return _build(args, _store)
     if args.cmd == 'view':
         from sdem.view import write as _view
-        try: print(f'wrote {_view(args.graph, args.out, projection=args.projection)}'); return EXIT_OK
+        try:
+            out = _view(args.graph, args.out, projection=args.projection)
+            print(json.dumps({'wrote': str(out)}) if args.json else f'wrote {out}'); return EXIT_OK
         except (OSError, _store.StoreError) as exc: print(f'ERROR: {exc}', file=sys.stderr); return EXIT_USAGE
     if args.cmd == 'baseline':
         try: print(f'baseline written: {_store.baseline(args.graph, args.name)}'); return EXIT_OK

@@ -12,6 +12,7 @@ license = {text = "Apache-2.0"}
 dependencies = []
 
 [project.scripts]
+sdem = "sdem.cli:main"
 sdem-validate = "sdem.validate:main"
 sdem-diff = "sdem.diff:main"
 sdem-trace = "sdem.trace:main"

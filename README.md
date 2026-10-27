@@ -194,34 +194,40 @@ The Relationship Rules Model was run as a procedure by an AI executor (standing 
 
 ## Quick start
 
-Python 3.10+; no third-party dependencies. `pip install .` (or `pip install -e .` for development) installs the commands, which work from any directory; or run them with `python -m sdem.<module>`.
+**The SDEM workbench:** open this project in **VS Code**, run SDEM in the **terminal pane**, and use the **Copilot Chat** window to explain any output ([`docs/sdem-workbench-design.md`](docs/sdem-workbench-design.md)). The CLI is SDEM's only interface: one `sdem` command, a subcommand per journey.
+
+Python 3.10+; no third-party dependencies. `pip install -e .` installs the `sdem` command; without installing, `python -m sdem …` does the same.
 
 ```bash
+sdem --help                                                    # every journey, J1–J8; each subcommand has --help with an example
 E=examples/payment-initiation
 
-sdem-graph check  $E/a*.json $E/mappings.json                          # load and check the graphs
-sdem-graph trace  CAP-PAY-010 --direction down $E/a*.json $E/mappings.json   # what does this depend on?
-sdem-graph trace  INF-K8S-PAY-PROD --direction up $E/a*.json $E/mappings.json  # what depends on this?
-sdem-graph impact APP-PAY-HUB --change replace $E/a*.json $E/mappings.json    # what is affected by a change?
+sdem check $E/a*.json $E/mappings.json                         # J1 check the datasets and registry against the rulebook
+sdem build $E/a*.json $E/mappings.json --out work/graph        # J4 save the checked graphs as a local graph store
+sdem trace CAP-PAY-010 --direction down --graph work/graph     # J5 what does this depend on?
+sdem trace INF-K8S-PAY-PROD --direction up --graph work/graph  #    what depends on this?
+sdem impact APP-PAY-HUB --change replace --graph work/graph    #    what is affected by a change?
+sdem query --graph work/graph --unmapped A2                    #    records still waiting for a cross-level link
+sdem view --graph work/graph                                   # J7 writes work/graph/view.html — open it in a browser
 
-sdem-graph build $E/a*.json $E/mappings.json --out $E/graph               # save the checked graphs as a local JSON graph store
-sdem-graph query --graph $E/graph --type A1.BusinessProcess --where criticality=high
-sdem-graph query --graph $E/graph --unmapped A2                          # records still waiting for a cross-level link
-sdem-graph view  --graph $E/graph                                        # writes $E/graph/view.html — open it in a browser
+sdem link $E/a1-business.json $E/a2-service-domain.json $E/a3-application.json $E/a4-technology.json --out work/links
+                                                               # J2 the engine proposes the cross-level links
+sdem review work/links/proposals.json                          # J3 weakest first, with rule, confidence, reasoning
+sdem explain P-RUN-001 --proposals work/links/proposals.json   # J8 why one link was proposed
 
-sdem-infer rules --graph $E/graph > proposals.json                     # the inference engine proposes the missing cross-level links
-sdem-accept                                                             # the engine against the 8 acceptance cases
+sdem aid project --have $E/a1-business.json --catalogue <bian-catalogue.json> --out work/prj
+                                                               # J6 project the layers you do not have (AID)
+sdem view --graph work/graph --projection work/prj -o work/plan.html   # projected parts dashed, labelled PROJECTED
 
-sdem-validate --strict $E/mappings.json                                 # check the relationship registry
-sdem-diff --git HEAD~1 $E/mappings.json                                 # approved links not edited since last commit
-sdem-eval $E/m1-gold-mappings.json --proposals $E/m1-proposals.json     # score proposals against an answer key
-
-python -m unittest discover -s tests                                    # the test suite
+sdem validate --strict $E/mappings.json                        # check a relationship document
+sdem diff --git HEAD~1 $E/mappings.json                        # approved links not edited since last commit
+sdem model check                                               # maintainers: generated documents current (as CI)
+python -m unittest discover -s tests                           # the test suite
 ```
 
-Exit codes: `0` ok, `1` issues found, `2` usage error.
+Exit codes: `0` ok, `1` issues found, `2` usage error. Approving a link is done by a person: set it `approved` with reviewer and time in the registry, in a reviewed pull request.
 
-**Regenerating documents, diagrams and schemas** after changing a record: `sdem-relationships`, `sdem-spec`, `sdem-kgspec`, `sdem-structure`, `sdem-diagram`, `sdem-catalogue`, `sdem-attributes`, `sdem-logical`, `sdem-physical`; `sdem-confidence` re-applies the confidence rule. Each has `--check`, which CI runs.
+**Maintainers:** `sdem model regenerate` regenerates every document, diagram and schema after a record changes; `sdem model check` fails if any is stale (CI runs it); `sdem model accept` runs the engine's acceptance cases; `sdem model examples` re-runs use-case examples 1 and 2. The older `sdem-*` commands (`sdem-graph`, `sdem-infer`, `sdem-aid`, …) still work.
 
 ---
 

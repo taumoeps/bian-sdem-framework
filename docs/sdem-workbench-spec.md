@@ -1,6 +1,6 @@
 # SDEM Workbench — Specification
 
-> **Status: draft 2026-10-28** (SDEM-D01 and the CLI-only interface of SDEM-D07 set by the owner). Requirements for the design in [`sdem-workbench-design.md`](sdem-workbench-design.md). Each requirement has an ID (WB-*), a status, and how it is accepted. The CLI commands and controls are built; the single `sdem` command and the Copilot set-up are **not built**.
+> **Status: draft 2026-10-28** (SDEM-D01 and the CLI-only interface of SDEM-D07 set by the owner). Requirements for the design in [`sdem-workbench-design.md`](sdem-workbench-design.md). Each requirement has an ID (WB-*), a status, and how it is accepted. The CLI — one `sdem` command — and the controls are built; the Copilot set-up is **not built**.
 
 ## 1. Purpose and boundary
 
@@ -13,7 +13,7 @@ The workbench is how architects use SDEM: they open the **SDEM project in VS Cod
 | ID | Requirement | Status |
 |---|---|---|
 | WB-E01 | The architect opens the SDEM project (the repository folder) in VS Code; Explorer and editor show the rulebook, datasets, registry, stores, projections and documents as files. No server is needed. | built |
-| WB-E02 | The terminal pane runs SDEM: Python 3.10 or later, SDEM installed from the project (`pip install -e .`), giving the CLI. | built |
+| WB-E02 | The terminal pane runs SDEM: Python 3.10 or later, SDEM installed from the project (`pip install -e .`), giving the `sdem` command — or `python -m sdem …` without installing. | built |
 | WB-E03 | The chat window is GitHub Copilot Chat, for AI support (§4). **Optional**: every journey is a CLI command the architect can run without it. | built (CLI); Copilot set-up not built |
 | WB-E04 | Git for history; pull requests on the organisation's Git host for review and approval. | built (Git); approval flow WB-A01 not documented in the project |
 | WB-E05 | The project recommends its VS Code extensions (`.vscode/extensions.json`): Python, Copilot Chat, Mermaid preview. | built |
@@ -23,11 +23,11 @@ The workbench is how architects use SDEM: they open the **SDEM project in VS Cod
 
 | ID | Requirement | Status |
 |---|---|---|
-| WB-K01 | **Every engine and function is a CLI command.** Nothing an architect needs is reachable only from Python code or a script. | partly — the journeys are commands; `scripts/*.py` (use-case examples, baseline pack) are not (WB-Q04) |
-| WB-K02 | **One `sdem` command** with a subcommand per journey: `sdem check`, `sdem link`, `sdem build`, `sdem trace`, `sdem impact`, `sdem aid project / check / gaps / ai-import`, `sdem view`, `sdem explain`, and `sdem model …` for maintainers (regenerate, controls, acceptance, examples). | not built |
-| WB-K03 | The existing `sdem-*` commands keep working as aliases of the matching `sdem` subcommands. | built (they exist); alias wiring not built |
-| WB-K04 | The same conventions everywhere: inputs as `--graph DIR` or file paths; `--json` for machine-readable output; exit codes 0 = OK, 1 = issues found, 2 = usage error; non-interactive (no prompts). | partly — `--json` missing on `sdem-aid project` and `sdem-graph view`; exit codes to be checked per command |
-| WB-K05 | `sdem --help` lists every journey; each subcommand's `--help` includes a worked example. | not built |
+| WB-K01 | **Every engine and function is a CLI command.** Nothing an architect needs is reachable only from Python code or a script. | built — the journeys, plus `sdem model examples` and `sdem model baseline-pack` for the scripts |
+| WB-K02 | **One `sdem` command** with a subcommand per journey: `sdem check`, `sdem link`, `sdem build`, `sdem trace`, `sdem impact`, `sdem aid project / check / gaps / ai-import`, `sdem view`, `sdem explain`, and `sdem model …` for maintainers (regenerate, controls, acceptance, examples). | built — `sdem/cli.py`; also `python -m sdem` without installing |
+| WB-K03 | The existing `sdem-*` commands keep working as aliases of the matching `sdem` subcommands. | built — the `sdem-*` commands are unchanged; `sdem` hands over to the same code |
+| WB-K04 | The same conventions everywhere: inputs as `--graph DIR` or file paths; `--json` for machine-readable output; exit codes 0 = OK, 1 = issues found, 2 = usage error; non-interactive (no prompts). | built — `--json` added to `aid project`, `aid check` and `view`; `sdem` itself: 0 OK, 1 issues, 2 usage |
+| WB-K05 | `sdem --help` lists every journey; each subcommand's `--help` includes a worked example. | built — tested for every subcommand (AT-WB-09) |
 | WB-K06 | Output a person can read in the terminal: names beside ids, the rule behind each error, and where an output file was written. | built (for the journey commands) |
 
 ## 4. Copilot — AI support in the chat window (no MCP)
@@ -50,12 +50,12 @@ Each journey is a CLI command the architect runs; Copilot supports in the chat.
 |---|---|---|---|---|---|
 | WB-J01 | Check data | `sdem-graph check`, `sdem-validate` (`sdem check`) | yes | explain errors, suggest fixes | built (CLI) |
 | WB-J02 | Link the architectures | `sdem-infer rules … --out` (`sdem link`) | writes JSON | summarise proposals | built (CLI) |
-| WB-J03 | Review and approve | edit the registry; pull request (`sdem review` lists proposals for review) | — | walk through evidence; draft the pull request | partly — `sdem review` not built |
+| WB-J03 | Review and approve | edit the registry; pull request (`sdem review` lists proposals for review) | — | walk through evidence; draft the pull request | built — `sdem review` (proposals weakest first, with rule, confidence, reasoning and how to approve) |
 | WB-J04 | Build the knowledge graph | `sdem-graph build` (`sdem build`) | load record (JSON) | explain a rejected build | built (CLI) |
 | WB-J05 | Trace and impact | `sdem-graph trace`, `sdem-graph impact` (`sdem trace`, `sdem impact`) | yes | explain; draft the impact note | built (CLI) |
 | WB-J06 | Plan with AID | `sdem-aid project`, `check`, `gaps` (`sdem aid …`) | `gaps --json` | explain the projection | built (CLI) |
 | WB-J07 | See it | `sdem-graph view [--projection]` (`sdem view`) | — (HTML) | point out what to look at | built (CLI) |
-| WB-J08 | Explain an element | `sdem-aid gaps --json`; `sdem explain <id>` prints one element's provenance | — | quote step, rule, source, evidence, reasoning, confidence | partly — `sdem explain` not built |
+| WB-J08 | Explain an element | `sdem-aid gaps --json`; `sdem explain <id>` prints one element's provenance | — | quote step, rule, source, evidence, reasoning, confidence | built — `sdem explain` (projection package or proposals) |
 
 ## 6. Approval
 
@@ -110,7 +110,7 @@ Detailed requirements: [`aid-spec.md`](aid-spec.md) §12.
 | AT-WB-06 | Every command named in the instructions and prompt files exists | WB-C06 check passes | yes (CI) |
 | AT-WB-07 | No MCP, AI client or key in the project | WB-C07 check passes | yes (CI) |
 | AT-WB-08 | Copilot switched off | J1–J8 done in the terminal with the same results | walkthrough |
-| AT-WB-09 | `sdem --help` and each subcommand's `--help` run, list every journey and show an example; `--json` and exit codes follow WB-K04 | yes (CI) |
+| AT-WB-09 | `sdem --help` and each subcommand's `--help` run, list every journey and show an example; `--json` and exit codes follow WB-K04 | yes — `tests/test_cli.py`, and the CI step *sdem command* |
 
 ## 11. Decisions and open questions
 
@@ -118,9 +118,9 @@ Decisions SDEM-D01…D07 and open questions WB-Q01…Q04: [`sdem-workbench-desig
 
 ## 12. Build order (recommended)
 
-1. **WB-K02–K05** — the single `sdem` command over the existing code, with consistent options, `--json`, exit codes and `--help` (wiring, no engine change); `sdem review` and `sdem explain`.
+1. ~~**WB-K02–K05** — the single `sdem` command~~ — **built 2026-10-28** (with `sdem review` and `sdem explain`).
 2. **WB-C01–C05** — Copilot instructions and prompt files, naming the `sdem` commands.
 3. **WB-C06–C07** — the CI checks that keep them honest.
 4. **WB-E06, WB-A01** — getting-started page with the approval flow.
 5. **Walkthroughs AT-WB-01…09**, recorded as evidence.
-6. **WB-K01** (scripts as `sdem model …` commands), then AID-D08 (§9) if approved.
+6. AID-D08 (§9) if approved.

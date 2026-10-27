@@ -547,8 +547,8 @@ def trace(reader, pkg, start, direction='down'):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem-aid', description='Architecture Inference Design: project the missing architecture layers for planning.')
     sub = ap.add_subparsers(dest='cmd', required=True)
-    p = sub.add_parser('project'); p.add_argument('--have', nargs='+', required=True); p.add_argument('--catalogue'); p.add_argument('--registry'); p.add_argument('--out', required=True)
-    c = sub.add_parser('check'); c.add_argument('projection'); c.add_argument('--catalogue')
+    p = sub.add_parser('project'); p.add_argument('--have', nargs='+', required=True); p.add_argument('--catalogue'); p.add_argument('--registry'); p.add_argument('--out', required=True); p.add_argument('--json', action='store_true')
+    c = sub.add_parser('check'); c.add_argument('projection'); c.add_argument('--catalogue'); c.add_argument('--json', action='store_true')
     g = sub.add_parser('gaps'); g.add_argument('projection'); g.add_argument('--actual', nargs='+', required=True); g.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     j = lambda f: json.loads(Path(f).read_text(encoding='utf-8'))
@@ -559,11 +559,14 @@ def main(argv=None):
         issues = check(pkg, j(a.catalogue) if a.catalogue else None)
         if issues: print('ERROR: ' + '\nERROR: '.join(issues), file=sys.stderr); return 1
         write(pkg, a.out); m = pkg['projection']
+        if a.json:
+            print(json.dumps({'projection_id': m['projection_id'], 'mode': m['mode'], 'out': str(a.out), 'summary': m['summary'], 'links': m['links'], 'projection_ends': m['projection_ends']}, indent=2, ensure_ascii=False)); return 0
         print(f"projection {m['projection_id']} written to {a.out}: " + ', '.join(f"{l} {s['records']} records" for l, s in m['summary'].items()) + f", {m['links']} links")
         for e in m['projection_ends']: print(f'NOTE: {e}')
         return 0
     if a.cmd == 'check':
         issues = check(read(a.projection), j(a.catalogue) if a.catalogue else None)
+        if a.json: print(json.dumps({'valid': not issues, 'issues': issues}, indent=2)); return 1 if issues else 0
         for i in issues: print(f'ERROR: {i}')
         print('projection valid' if not issues else f'{len(issues)} issue(s)'); return 1 if issues else 0
     real, reg = {}, _registry()

@@ -85,4 +85,10 @@ jobs:
         run: python -m sdem.acceptance --engine rules || true
       - name: Store performance (GS-X-02)
         run: python scripts/store_perf.py 10000
+      - name: sdem command (SDEM's only interface)
+        run: |
+          python -m sdem --help
+          python -m sdem check examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+          python -m sdem trace CAP-310 --graph examples/card-fraud-alerts/graph
+          python -m sdem model check
       - run: python -m unittest discover -s tests -v

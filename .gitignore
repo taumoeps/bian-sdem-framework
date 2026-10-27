@@ -9,3 +9,6 @@ __pycache__/
 *.sqlite
 secrets/
 private/
+
+# SDEM workbench scratch output (README quick start writes here)
+work/

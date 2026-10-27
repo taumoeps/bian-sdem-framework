@@ -1,6 +1,6 @@
 # SDEM Workbench — Design
 
-> **Status: draft 2026-10-28.** Direction set by the owner (SDEM-D01): the architect opens the SDEM project in **VS Code**, runs SDEM from the **terminal pane (CLI)**, and uses the **Copilot Chat window** for AI support. Requirements: [`sdem-workbench-spec.md`](sdem-workbench-spec.md). The CLI commands and controls are built; the single `sdem` command (SDEM-D07) and the Copilot set-up (instructions and prompt files) are **not built**.
+> **Status: draft 2026-10-28.** Direction set by the owner (SDEM-D01): the architect opens the SDEM project in **VS Code**, runs SDEM from the **terminal pane (CLI)**, and uses the **Copilot Chat window** for AI support. Requirements: [`sdem-workbench-spec.md`](sdem-workbench-spec.md). The CLI — one `sdem` command (SDEM-D07) — and the controls are built; the Copilot set-up (instructions and prompt files) is **not built**.
 >
 > **Diagrams** are Mermaid: GitHub shows them as pictures; in VS Code install the recommended extension *Markdown Preview Mermaid Support* (`bierner.markdown-mermaid`, listed in `.vscode/extensions.json`) and open the Markdown preview. No diagram server is used.
 
@@ -22,7 +22,7 @@ The **SDEM workbench** is how an architect uses SDEM day to day. It is not a new
 | Layer | What | Role | Built? |
 |---|---|---|---|
 | **Workbench** | VS Code: Explorer, editor, terminal pane, chat window, Source Control | the architect's enterprise architecture tool | yes (VS Code) |
-| **Interface** | the **CLI** in the terminal pane — today the `sdem-*` commands; one `sdem` command with a subcommand per journey recommended (SDEM-D07) | runs every engine and function | built (`sdem-*`); `sdem` not built |
+| **Interface** | the **CLI** in the terminal pane — one `sdem` command with a subcommand per journey (SDEM-D07); the older `sdem-*` commands remain as aliases | runs every engine and function | built |
 | **AI support** | GitHub Copilot Chat | explains, suggests commands, drafts, reviews. Runs a command only when asked, visibly. **Never approves** | instructions and prompt files not built |
 | **Engine and functions** | Python package `sdem` | checks, inference engine, AID, trace, impact, gap analysis, views, generators | built |
 | **Rulebook** | `metamodel/`, `schema/` | what may exist and link, on what published basis | built |
@@ -42,7 +42,7 @@ flowchart TB
     subgraph WB["SDEM WORKBENCH — VS Code, the SDEM project open"]
         direction LR
         files["Explorer + editor<br/>project files"]
-        term["Terminal pane<br/>CLI: sdem commands"]
+        term["Terminal pane<br/>CLI: sdem &lt;journey&gt;"]
         chat["Chat window<br/>GitHub Copilot — AI support"]
         guide["Copilot instructions<br/>+ prompt files"]
     end
@@ -111,7 +111,7 @@ flowchart TB
 │     a4-technology.json │                                      │ cluster (links FRD-001…006,  │
 │     mappings.json      ├──────────────────────────────────────┤ approved). To see a rehost's │
 │ ▸ docs/                │ TERMINAL — the CLI                   │ effect, run:                 │
-│ ▸ .github/prompts/     │ $ sdem-graph trace CAP-310 \         │ sdem-graph impact            │
+│ ▸ .github/prompts/     │ $ sdem trace CAP-310 \               │ sdem impact                  │
 │                        │     --graph examples/…/graph         │   INF-CLOUD-K8S-PROD         │
 │                        │ DOWNSTREAM (depends on):             │   --change rehost …          │
 │                        │ CAP-310 'Card Fraud Alerts'          │                              │
@@ -131,15 +131,15 @@ sequenceDiagram
     participant S as SDEM engine and functions
     participant F as Project files - rulebook, datasets, graph store
     participant C as Copilot Chat
-    A->>T: sdem-graph trace CAP-310
+    A->>T: sdem trace CAP-310
     T->>S: run the command
     S->>F: read approved links and records
     F-->>S: the chain from CAP-310 down to A4
     S-->>T: chain with ids, names and link ids
     A->>C: Explain this, and what would a rehost of the cluster affect?
     C->>T: read the output in the terminal
-    C-->>A: explanation with its source, and the command to run next - sdem-graph impact
-    A->>T: sdem-graph impact INF-CLOUD-K8S-PROD, change rehost
+    C-->>A: explanation with its source, and the command to run next - sdem impact
+    A->>T: sdem impact INF-CLOUD-K8S-PROD, change rehost
     T->>S: run the command
     S-->>T: impacted records, classified
     A->>C: Summarise the impact for my design note
@@ -155,16 +155,16 @@ Every journey is a **CLI command the architect runs** in the terminal pane; Copi
 
 | # | Journey | Terminal pane — the architect runs | Chat window — Copilot supports | Result |
 |---|---|---|---|---|
-| J1 | **Check data** | `sdem-graph check …` · `sdem-validate …` | explains each error and the rule broken; suggests the fix | errors and warnings, each with the rule broken |
-| J2 | **Link the architectures** | `sdem-infer rules … --out …` | summarises the proposals by confidence | proposed links with source, reasoning, confidence — for review |
-| J3 | **Review and approve** | edits the registry (status, reviewer, time); opens a pull request | walks through each proposal's evidence; drafts the pull-request description. **Never approves** | the **architect** decides; the merged pull request is the approval |
-| J4 | **Build the knowledge graph** | `sdem-graph build … --out …` | explains a rejected build from the load record | graph store and load record |
-| J5 | **Trace and impact** | `sdem-graph trace …` · `sdem-graph impact … --change …` | explains the chain; suggests the next question; drafts the impact note | chains with names, impact classified |
-| J6 | **Plan with AID** | `sdem-aid project …` · `check` · `gaps` | explains what was projected, from what, and how sure | a projected design, marked and capped, kept apart from real data |
-| J7 | **See it** | `sdem-graph view [--projection …]` | points out what to look at in the view | an HTML picture, projected parts dashed and labelled PROJECTED |
-| J8 | **Explain an element** | `sdem-aid gaps … --json` · open the projection or proposal file | quotes the element's step, rule, published source, evidence, reasoning and confidence | the reason an element exists |
+| J1 | **Check data** | `sdem check …` · `sdem validate …` | explains each error and the rule broken; suggests the fix | errors and warnings, each with the rule broken |
+| J2 | **Link the architectures** | `sdem link … --out …` | summarises the proposals by confidence | proposed links with source, reasoning, confidence — for review |
+| J3 | **Review and approve** | `sdem review proposals.json`; then edits the registry (status, reviewer, time) and opens a pull request | walks through each proposal's evidence; drafts the pull-request description. **Never approves** | the **architect** decides; the merged pull request is the approval |
+| J4 | **Build the knowledge graph** | `sdem build … --out …` | explains a rejected build from the load record | graph store and load record |
+| J5 | **Trace and impact** | `sdem trace …` · `sdem impact … --change …` | explains the chain; suggests the next question; drafts the impact note | chains with names, impact classified |
+| J6 | **Plan with AID** | `sdem aid project …` · `check` · `gaps` | explains what was projected, from what, and how sure | a projected design, marked and capped, kept apart from real data |
+| J7 | **See it** | `sdem view [--projection …]` | points out what to look at in the view | an HTML picture, projected parts dashed and labelled PROJECTED |
+| J8 | **Explain an element** | `sdem explain <id> --projection …` or `--proposals …` | quotes the element's step, rule, published source, evidence, reasoning and confidence | the reason an element exists |
 
-Command names are today's `sdem-*` commands; with SDEM-D07 they become `sdem check`, `sdem link`, `sdem build`, `sdem trace`, `sdem impact`, `sdem aid …`, `sdem view`, `sdem explain`.
+`sdem --help` lists every journey; each subcommand's `--help` shows a worked example. Without installing, `python -m sdem …` does the same. The older `sdem-*` commands (`sdem-graph`, `sdem-infer`, `sdem-aid`, …) still work.
 
 ### 3.1 The journeys in order
 
@@ -172,15 +172,15 @@ Command names are today's `sdem-*` commands; with SDEM-D07 they become `sdem che
 flowchart LR
     subgraph MAP["Mapping lane — what IS"]
         direction LR
-        J1["J1 Check<br/>sdem-graph check"] --> J2["J2 Link<br/>sdem-infer"]
-        J2 --> J3["J3 Review + approve<br/>architect, pull request"]
-        J3 --> J4["J4 Build graph<br/>sdem-graph build"]
-        J4 --> J5["J5 Trace + impact<br/>sdem-graph trace / impact"]
+        J1["J1 Check<br/>sdem check"] --> J2["J2 Link<br/>sdem link"]
+        J2 --> J3["J3 Review + approve<br/>sdem review, pull request"]
+        J3 --> J4["J4 Build graph<br/>sdem build"]
+        J4 --> J5["J5 Trace + impact<br/>sdem trace / impact"]
     end
     subgraph PLAN["Planning lane — what SHOULD BE"]
         direction LR
-        J6["J6 Plan<br/>sdem-aid project / gaps"] --> J7["J7 See<br/>sdem-graph view"]
-        J7 --> J8["J8 Explain<br/>projection provenance"]
+        J6["J6 Plan<br/>sdem aid project / gaps"] --> J7["J7 See<br/>sdem view"]
+        J7 --> J8["J8 Explain<br/>sdem explain"]
     end
     J1 -.->|"datasets I have"| J6
     J4 -.->|"real graph to compare"| J7
@@ -196,8 +196,10 @@ sequenceDiagram
     participant G as Git pull request
     participant K as CI checks
     participant R as Relationship Registry
-    A->>T: sdem-infer rules on the payment-initiation datasets
-    T-->>A: proposed links file, with source, reasoning, confidence
+    A->>T: sdem link on the payment-initiation datasets
+    T-->>A: proposals.json - next: sdem review
+    A->>T: sdem review proposals.json
+    T-->>A: each proposed link, weakest first, with rule, confidence, reasoning
     A->>C: Walk me through these proposals, weakest first
     C-->>A: each proposal's evidence and confidence, from the file
     A->>A: decide each link
@@ -230,7 +232,7 @@ Copilot is told these rules through `.github/copilot-instructions.md`, which Cop
 | Mechanism | What it does | Why |
 |---|---|---|
 | **The CLI** in the terminal pane | the architect runs every SDEM engine and function as a command; output as text, `--json` where available | one interface for the architect, Copilot and CI; nothing hidden; works with Copilot off |
-| One `sdem` command (SDEM-D07, recommended) | `sdem <journey>` with the same options, `--json`, exit codes and `--help` everywhere; the `sdem-*` commands stay as aliases | one thing to learn; prompt files name one command |
+| One `sdem` command (SDEM-D07, built) | `sdem <journey>` with the same options, `--json`, exit codes and `--help` everywhere; the `sdem-*` commands stay as aliases | one thing to learn; prompt files name one command |
 | `.github/copilot-instructions.md` | standing instructions: the ground rules, where things are, which command answers which question | read automatically; versioned with the rulebook |
 | `.github/prompts/*.prompt.md` | one `/` command per kind of support (e.g. `/sdem-explain`, `/sdem-review`, `/aid-suggest`) | repeatable help; the architect does not need to remember options |
 | **Not** MCP | — | the organisation prohibits MCP on GitHub Copilot |
@@ -266,9 +268,9 @@ flowchart LR
 
 The AI suggestion layer proposed for AID (decision AID-D08, [`aid-design.md`](aid-design.md) §8) works **through the architect's Copilot**, not through an AI the SDEM code calls. The architect runs the CLI; Copilot answers SDEM's questions in the chat:
 
-1. In the terminal: `sdem-aid project … --ask` runs the rules and writes `ai/questions.json` — each gap the rules could not fill, its context, the list of BIAN choices, and the exact answer format.
+1. In the terminal: `sdem aid project … --ask` runs the rules and writes `ai/questions.json` — each gap the rules could not fill, its context, the list of BIAN choices, and the exact answer format.
 2. In the chat: `/aid-suggest` — Copilot answers into `ai/answers.json`, choosing only from each list.
-3. In the terminal: `sdem-aid ai-import …` checks every answer — a choice from the list, evidence that exists — and adds the accepted ones marked `PRJ-AI-`, at 0.2, labelled UNVERIFIED; CTL-18.
+3. In the terminal: `sdem aid ai-import …` checks every answer — a choice from the list, evidence that exists — and adds the accepted ones marked `PRJ-AI-`, at 0.2, labelled UNVERIFIED; CTL-18.
 
 Both files stay in the projection package for audit. A re-import of the same answers gives the same result.
 
@@ -280,14 +282,14 @@ sequenceDiagram
     participant Q as questions.json
     participant C as Copilot Chat
     participant N as answers.json
-    A->>T: sdem-aid project, ask mode, with my business layer
+    A->>T: sdem aid project, ask mode, with my business layer
     T->>P: run
     P->>P: rules first - project what the rules support
     P->>Q: only the gaps the rules left, each with its BIAN choices
     A->>C: /aid-suggest
     C->>Q: read the questions
     C->>N: answer each, choosing only from its list
-    A->>T: sdem-aid ai-import
+    A->>T: sdem aid ai-import
     T->>P: run
     P->>N: check every answer - choice in the list, evidence exists
     P-->>T: accepted ones added as PRJ-AI-, 0.2, UNVERIFIED - rejected ones listed with the reason
@@ -324,7 +326,7 @@ sequenceDiagram
 | SDEM-D04 | Diagrams | generated from the data (HTML view, PlantUML); never hand-drawn as the source of truth | recommended — as built |
 | SDEM-D05 | Copilot optional | every journey is a CLI command the architect can run without Copilot | recommended |
 | SDEM-D06 | PlantUML for real data | local or the organisation's own server, never the public one | recommended |
-| SDEM-D07 | The interface | **the CLI is SDEM's only interface** — every engine and function is a command; **one `sdem` command** with a subcommand per journey, the same options, `--json`, exit codes and `--help` everywhere; the `sdem-*` commands stay as aliases | CLI-only: **set by the owner 2026-10-28**; single `sdem` command: recommended |
+| SDEM-D07 | The interface | **the CLI is SDEM's only interface** — every engine and function is a command; **one `sdem` command** with a subcommand per journey, the same options, `--json`, exit codes and `--help` everywhere; the `sdem-*` commands stay as aliases | **set by the owner 2026-10-28; built** |
 
 ## 11. Open questions
 
@@ -333,4 +335,4 @@ sequenceDiagram
 | WB-Q01 | Package the set-up as a VS Code extension later? | Not now — the CLI, instructions and prompt files need no extension; revisit if architects need buttons and panels |
 | WB-Q02 | Should the HTML view open inside VS Code? | Yes, as a later step (a simple preview); a browser works today |
 | WB-Q03 | Who reviews the Copilot instructions when the rulebook changes? | The rulebook owner; CI checks the instructions name only commands that exist |
-| WB-Q04 | Should the use-case and baseline scripts (`scripts/*.py`) become CLI commands? | Yes — under `sdem model …`, so every function is reachable from the CLI (SDEM-D07) |
+| WB-Q04 | Should the use-case and baseline scripts (`scripts/*.py`) become CLI commands? | Done — `sdem model examples` and `sdem model baseline-pack` |
