@@ -1,0 +1,281 @@
+{
+  "date": "2026-10-28",
+  "criteria": [
+    {
+      "id": "AT-AG-01",
+      "test": "A4 agent drafts the rehost of INF-K8S-PAY-PROD",
+      "pass": true,
+      "did": "CS-001 accepted; CE-001 stored with impact. APP-PAY-HUB and CMP-PAY-EXEC: design change required; supersede PAY-108, PAY-111; A1/A2 (CAP-PAY-010, PRC-PAY-01, PRC-PAY-02, SD-PI): no impact. Matches `sdem impact INF-K8S-PAY-PROD --change rehost` on the estate before the change for every record it lists.",
+      "evidence": "events.json, change-sets/CS-001.json, reference-impact-rehost.json"
+    },
+    {
+      "id": "AT-AG-02",
+      "test": "Orchestrator plans the work",
+      "pass": true,
+      "did": "2 work items, layers ['A3']: WI-001 APP-PAY-HUB; WI-002 CMP-PAY-EXEC. None for A1 or A2. (A4 needed none: the A4 agent changed its own deployments in CS-001.)",
+      "evidence": "work-items.json"
+    },
+    {
+      "id": "AT-AG-03",
+      "test": "A3 agent answers its work items",
+      "pass": true,
+      "did": "CS-002 accepted, A3 records only, answering WI-001, WI-002; CE-002 planned: CE-002: 0 work item(s). The rules engine proposes: APP-PAY-HUB DEPLOYED_ON INF-K8S-PAY-PROD2; CMP-PAY-EXEC DEPLOYED_ON INF-K8S-PAY-PROD2 (rule S33, confidence 0.8).",
+      "evidence": "change-sets/CS-002.json, events.json, proposals.json"
+    },
+    {
+      "id": "AT-AG-04",
+      "test": "An agent tries to change another layer",
+      "pass": true,
+      "did": "rejected by CTL-19 three ways: the A3 agent proposing an A4 change set; an A4 change set touching an A3 record; the A4 agent claiming an A3 work item",
+      "evidence": "controls table"
+    },
+    {
+      "id": "AT-AG-05",
+      "test": "An agent tries to add a cross-layer link or approve",
+      "pass": true,
+      "did": "a cross-layer link and a registry write in a change set are rejected (CTL-19, change-set format); no agent command can approve; a link set to approved without a reviewer is rejected by the governance check (`sdem validate`)",
+      "evidence": "controls table"
+    },
+    {
+      "id": "AT-AG-06",
+      "test": "A change set without agent or person",
+      "pass": true,
+      "did": "rejected by CTL-20: no person; no agent; a work item claimed without a person",
+      "evidence": "controls table"
+    },
+    {
+      "id": "AT-AG-07",
+      "test": "A ripple that keeps producing impact",
+      "pass": true,
+      "did": "STOP: round limit 1 reached — 2 more design change(s) need the architect's decision",
+      "evidence": "steps"
+    },
+    {
+      "id": "AT-AG-08",
+      "test": "The architect reviews and merges",
+      "pass": true,
+      "did": "approved PAY-201, PAY-202 (superseding PAY-108, PAY-111) with deployment evidence; validate, check and build pass; the trace shows APP-PAY-HUB → INF-K8S-PAY-PROD2 via PAY-201 and no longer PAY-108. On record: 2 change sets, 2 change events, 2 work items (all done) — every one with agent and person. The rejected attempts left no trace in the data.",
+      "evidence": "events.json, work-items.json, change-sets/, registry-after-approval.json, trace-after.txt"
+    }
+  ],
+  "controls_tests": [
+    {
+      "control": "CTL-19",
+      "data": "bad",
+      "test": "the A3 agent proposes an A4 change set",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-19: agent sdem-a3-application may change only A3, not A4",
+      "pass": true
+    },
+    {
+      "control": "CTL-19",
+      "data": "bad",
+      "test": "an A4 change set that also changes an A3 record",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-19: change 5: APP-PAY-HUB has type A3.ApplicationComponent — not a A4 record",
+      "pass": true
+    },
+    {
+      "control": "CTL-19",
+      "data": "bad",
+      "test": "an A4 change set adds a link to an A3 record (a cross-layer link)",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-19: relationship INF-K8S-PAY-PROD2 → APP-PAY-HUB leaves layer A4",
+      "pass": true
+    },
+    {
+      "control": "CTL-19",
+      "data": "bad",
+      "test": "a change set that tries to write the registry",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: change set format: $: unknown property 'mappings'",
+      "pass": true
+    },
+    {
+      "control": "CTL-19",
+      "data": "bad",
+      "test": "the orchestrator proposes a change set",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-19: the orchestrator never changes layer data",
+      "pass": true
+    },
+    {
+      "control": "CTL-20",
+      "data": "bad",
+      "test": "a change set without the person behind it",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-20: a change set needs both the agent and the person behind it",
+      "pass": true
+    },
+    {
+      "control": "CTL-20",
+      "data": "bad",
+      "test": "a change set without the agent",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-20: a change set needs both the agent and the person behind it",
+      "pass": true
+    },
+    {
+      "control": "CTL-19",
+      "data": "bad",
+      "test": "the A2 agent adds a service domain without the BIAN catalogue",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-19: an A2 change set that adds records needs --catalogue (BIAN elements come only from the catalogue)",
+      "pass": true
+    },
+    {
+      "control": "CTL-16",
+      "data": "bad",
+      "test": "a change set brings a projected (PRJ-) record into real data",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-16: change 1: PRJ-APP-X is a projected or design record, never real data",
+      "pass": true
+    },
+    {
+      "control": "CTL-19",
+      "data": "good",
+      "test": "the A4 agent proposes its own A4 change set",
+      "should": "accepted",
+      "did": "accepted",
+      "message": "CS-001 applied to A4 (4 change(s)) by sdem-a4-technology for jane.architect",
+      "pass": true
+    },
+    {
+      "control": "CTL-20",
+      "data": "good",
+      "test": "a change set with agent and person",
+      "should": "accepted",
+      "did": "accepted",
+      "message": "CS-001 applied to A4 (4 change(s)) by sdem-a4-technology for jane.architect",
+      "pass": true
+    },
+    {
+      "control": "CTL-19",
+      "data": "bad",
+      "test": "the A4 agent claims an A3 work item",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-19: WI-001 is for A3; sdem-a4-technology may take only A4 work",
+      "pass": true
+    },
+    {
+      "control": "CTL-20",
+      "data": "bad",
+      "test": "a work item claimed without the person",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-20: every work-item step needs the agent and the person",
+      "pass": true
+    },
+    {
+      "control": "governance",
+      "data": "bad",
+      "test": "a link marked approved without reviewer, time or evidence",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: <work>/bad-approval.json: mapping #19 (PAY-299): approved mapping requires approved_at",
+      "pass": true
+    }
+  ],
+  "steps": [
+    {
+      "who": "sdem-a3-application",
+      "command": "sdem change propose cs-a4-rehost.json --agent sdem-a3-application",
+      "exit": 1,
+      "output": "ERROR: CTL-19: agent sdem-a3-application may change only A3, not A4"
+    },
+    {
+      "who": "sdem-a4-technology",
+      "command": "sdem change propose coordination/drafts/cs-a4-rehost.json --estate <est> --agent sdem-a4-technology --person jane.architect",
+      "exit": 0,
+      "output": "CS-001 applied to A4 (4 change(s)) by sdem-a4-technology for jane.architect\nchange event CE-001 recorded (round 1): 2 record(s) in other layers need a design change; links to supersede: PAY-108, PAY-111\n  A3  APP-PAY-HUB  Payments Hub  — rehost of INF-K8S-PAY-PROD, via PAY-108\n  A3  CMP-PAY-EXEC  Execution Gateway  — rehost of INF-K8S-PAY-PROD, via PAY-111\nnext: the orchestrator runs  sdem work plan --event CE-001 --estate <work>/est --agent sdem-orchestrator --person <name>\n      and the rules engine proposes the new links:  sdem link <work>/est/a*.json <work>/est/mappings.json --out <dir>"
+    },
+    {
+      "who": "sdem-orchestrator",
+      "command": "sdem work plan --event CE-001 --estate <est> --agent sdem-orchestrator --person jane.architect",
+      "exit": 0,
+      "output": "CE-001: 2 work item(s)\n  WI-001  A3  APP-PAY-HUB  — rehost of INF-K8S-PAY-PROD: change APP-PAY-HUB (Payments Hub) in A3 accordingly; the links PAY-108 will be superseded\n  WI-002  A3  CMP-PAY-EXEC  — rehost of INF-K8S-PAY-PROD: change CMP-PAY-EXEC (Execution Gateway) in A3 accordingly; the links PAY-111 will be superseded"
+    },
+    {
+      "who": "sdem-a3-application",
+      "command": "sdem work claim WI-001 --agent sdem-a3-application --person jane.architect",
+      "exit": 0,
+      "output": "WI-001 is now in_progress (sdem-a3-application, jane.architect)"
+    },
+    {
+      "who": "sdem-a3-application",
+      "command": "sdem work claim WI-002 --agent sdem-a3-application --person jane.architect",
+      "exit": 0,
+      "output": "WI-002 is now in_progress (sdem-a3-application, jane.architect)"
+    },
+    {
+      "who": "sdem-a3-application",
+      "command": "sdem change propose coordination/drafts/cs-a3-repoint.json --estate <est> --agent sdem-a3-application --person jane.architect --work WI-001 WI-002",
+      "exit": 0,
+      "output": "CS-002 applied to A3 (2 change(s)) by sdem-a3-application for jane.architect; answers WI-001, WI-002\nchange event CE-002 recorded (round 2): 0 record(s) in other layers need a design change\nnext: the orchestrator runs  sdem work plan --event CE-002 --estate <work>/est --agent sdem-orchestrator --person <name>\n      and the rules engine proposes the new links:  sdem link <work>/est/a*.json <work>/est/mappings.json --out <dir>"
+    },
+    {
+      "who": "sdem-orchestrator",
+      "command": "sdem work plan --event CE-002 --estate <est> --agent sdem-orchestrator --person jane.architect",
+      "exit": 0,
+      "output": "CE-002: 0 work item(s)\nfor the architect to review (no work item): A2 SD-PI, A4 DEP-PAYEXEC-PROD, A4 DEP-PAYHUB-PROD, A4 DEP-PAYHUB-UAT, A4 INF-K8S-PAY-PROD, A4 INF-K8S-PAY-UAT"
+    },
+    {
+      "who": "rules engine",
+      "command": "sdem link <est>/a*.json <est>/mappings.json --out <links>",
+      "exit": 0,
+      "output": "2 proposed link(s) written to <work>/links/proposals.json; candidates, inference log and any design datasets in <work>/links/\nnext: sdem review <work>/links/proposals.json"
+    },
+    {
+      "who": "sdem-orchestrator",
+      "command": "sdem work plan --event CE-001 --max-rounds 1  (round limit test)",
+      "exit": 1,
+      "output": "STOP: round limit 1 reached — 2 more design change(s) need the architect's decision"
+    },
+    {
+      "who": "architect",
+      "command": "sdem validate --strict <est>/mappings.json",
+      "exit": 0,
+      "output": "OK: <work>/est/mappings.json"
+    },
+    {
+      "who": "architect",
+      "command": "sdem check <est>/a*.json <est>/mappings.json",
+      "exit": 0,
+      "output": "OK: mappings #1"
+    },
+    {
+      "who": "architect",
+      "command": "sdem build … --out <graph>",
+      "exit": 0,
+      "output": "build 1 accepted: a1-business.graph.json (16 nodes, 14 edges), a2-service-domain.graph.json (24 nodes, 33 edges), a3-application.graph.json (16 nodes, 17 edges), a4-technology.graph.json (13 nodes, 6 edges), federated.graph.json (26 nodes, 18 edges)"
+    },
+    {
+      "who": "architect",
+      "command": "sdem trace APP-PAY-HUB --direction down --graph <graph>",
+      "exit": 0,
+      "output": "DOWNSTREAM (depends on):\nAPP-PAY-HUB 'Payments Hub'  [A3.ApplicationComponent]\n├─ -DEPLOYED_AS-> DEP-PAYHUB-PROD 'Payments Hub — production'  [A4.Deployment]  (PAY-109)\n├─ -DEPLOYED_AS-> DEP-PAYHUB-UAT 'Payments Hub — UAT'  [A4.Deployment]  (PAY-110)\n├─ -DEPLOYED_ON-> INF-K8S-PAY-UAT 'Managed Kubernetes — payments (UAT)'  [A4.SystemSoftware]  (PAY-113)\n└─ -DEPLOYED_ON-> INF-K8S-PAY-PROD2 'Managed Kubernetes — payments (production, new cluster)'  [A4.SystemSoftware]  (PAY-201)"
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTL-19",
+      "good": "✅",
+      "bad": "✅"
+    },
+    {
+      "id": "CTL-20",
+      "good": "✅",
+      "bad": "✅"
+    }
+  ]
+}

@@ -275,6 +275,6 @@ The architect opens the SDEM project in **VS Code**, the enterprise architecture
 | [`relationship-registry-spec.md`](relationship-registry-spec.md) | the Relationship Registry: record fields, statuses, transitions, immutability |
 | [`knowledge-graph-design.md`](knowledge-graph-design.md) · [`knowledge-graph-spec.md`](knowledge-graph-spec.md) | the local and federated architecture knowledge graphs |
 | [`architecture-governance-spec.md`](architecture-governance-spec.md) | approval, supersession, impact |
-| [`sdem-agent-platform-design.md`](sdem-agent-platform-design.md) · [`sdem-agent-platform-spec.md`](sdem-agent-platform-spec.md) | the agent platform (proposed): layer agents and a coordinator over the federated graph |
+| [`sdem-agent-platform-design.md`](sdem-agent-platform-design.md) · [`sdem-agent-platform-spec.md`](sdem-agent-platform-spec.md) | the agent platform (approved; Level 1 built): layer agents and an orchestrator over the federated graph |
 | [`sdem-workbench-design.md`](sdem-workbench-design.md) · [`sdem-workbench-spec.md`](sdem-workbench-spec.md) | the SDEM workbench: VS Code as the architects' tool, GitHub Copilot Chat as the AI interface (no MCP) |
 | [`use-case-testing.md`](use-case-testing.md) · [`relationships-testing.md`](relationships-testing.md) | how the model was tested |

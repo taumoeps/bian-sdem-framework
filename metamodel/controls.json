@@ -173,6 +173,28 @@
       "monitored_by": "GitHub Actions `validate.yml` on every push and pull request; tests/test_use_case_example_2.py",
       "status": "built",
       "tested_by": "use-case-example-2"
+    },
+    {
+      "id": "CTL-19",
+      "rule_area": "platform",
+      "control": "Layer ownership (agent platform): a change set changes exactly one declared layer and never the registry; a layer agent only its own layer, and takes only its own layer's work items; the orchestrator never changes data; A2 additions only from the BIAN catalogue",
+      "implemented_in": "sdem/agents.py `Estate.propose`, `Estate.transition`; schema/coordination.schema.json",
+      "runs": "sdem change propose; sdem work claim",
+      "outcome_recorded_in": "command output (rejections name CTL-19); accepted change sets in <estate>/coordination/",
+      "monitored_by": "GitHub Actions `validate.yml`; tests/test_agents.py; use-case example 3",
+      "status": "built",
+      "tested_by": "use-case-example-3"
+    },
+    {
+      "id": "CTL-20",
+      "rule_area": "platform",
+      "control": "Change provenance (agent platform): every change set, change event and work-item step records the agent and the person; nothing lands or moves without both",
+      "implemented_in": "sdem/agents.py `Estate.propose`, `Estate.plan`, `Estate.transition`",
+      "runs": "sdem change propose; sdem work plan / claim / block / cancel",
+      "outcome_recorded_in": "<estate>/coordination/ (change-sets, events.json, work-items.json history)",
+      "monitored_by": "GitHub Actions `validate.yml`; tests/test_agents.py; use-case example 3",
+      "status": "built",
+      "tested_by": "use-case-example-3"
     }
   ],
   "gaps": [

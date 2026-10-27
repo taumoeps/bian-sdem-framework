@@ -1,0 +1,16 @@
+{
+  "example": "use-case-example-3",
+  "run_date": "2026-10-28",
+  "code_commit": "84dc32772cb21c48786fddbf2a579b65b255e99d",
+  "files": {
+    "reference-impact-rehost.json": "d98ededdbd8b2c02f70772a8cd838d27fc677421dc6b87b69e10cd094912ab02",
+    "proposals.json": "3ac912947b4c9cdbda14b134e916fda0a6134e2aca8722b99c8c7033d4937c39",
+    "registry-after-approval.json": "2142735f310c24e85c1788bd0047a1a28a415db445a209ee7d9b237e8c4b5247",
+    "trace-after.txt": "bf2ad42914c940f74efdefffa9236d835f06e912d19cdc4dd5ab2409ac519121",
+    "events.json": "d079879cb59f410a29885ea77c61d01de3acbe902dc3af75589913d3496b9a51",
+    "work-items.json": "2c4db5c82f993755ad9b1c8d33d5ea823daf4cd23a80a4c5e6cf82f3ae7aeff1",
+    "change-sets/CS-001.json": "6527c8e39200cd7a40965cf7f4cc1419d5bb61a8591d039e9a16a004ec41eb7b",
+    "change-sets/CS-002.json": "2b76c61bf2e5dab5e38d856f0e2751fdff7351e2741a81fc485476aee0b810f3",
+    "results.json": "383dd83d7b213adc67a3e6d91f5089f2eb8909e688da23ddebec78ff106979f9"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "changed": "INF-K8S-PAY-PROD",
+  "change": "rehost",
+  "reason": "hosting changes only; deployment records must be superseded, functional layers unaffected",
+  "rules_version": "0.5.0",
+  "instances": [
+    {
+      "id": "INF-K8S-PAY-PROD",
+      "name": "Managed Kubernetes — payments (production)",
+      "type": "A4.SystemSoftware",
+      "level": "A4",
+      "relation": "self",
+      "classification": "design_change_required",
+      "via": []
+    },
+    {
+      "id": "APP-PAY-HUB",
+      "name": "Payments Hub",
+      "type": "A3.ApplicationComponent",
+      "level": "A3",
+      "relation": "up1",
+      "classification": "design_change_required",
+      "via": [
+        "PAY-108"
+      ]
+    },
+    {
+      "id": "SD-PI",
+      "name": "Payment Initiation (synthetic selection)",
+      "type": "A2.ServiceDomain",
+      "level": "A2",
+      "relation": "up2+",
+      "classification": "no_impact",
+      "via": [
+        "PAY-108",
+        "PAY-106"
+      ]
+    },
+    {
+      "id": "CAP-PAY-010",
+      "name": "Initiate Payment",
+      "type": "A1.BusinessCapability",
+      "level": "A1",
+      "relation": "up2+",
+      "classification": "no_impact",
+      "via": [
+        "PAY-108",
+        "PAY-106",
+        "PAY-001"
+      ]
+    },
+    {
+      "id": "PRC-PAY-01",
+      "name": "Capture and validate payment instruction",
+      "type": "A1.BusinessProcess",
+      "level": "A1",
+      "relation": "up2+",
+      "classification": "no_impact",
+      "via": [
+        "PAY-108",
+        "PAY-106",
+        "PAY-003"
+      ]
+    },
+    {
+      "id": "PRC-PAY-02",
+      "name": "Execute and confirm payment",
+      "type": "A1.BusinessProcess",
+      "level": "A1",
+      "relation": "up2+",
+      "classification": "no_impact",
+      "via": [
+        "PAY-108",
+        "PAY-106",
+        "PAY-004"
+      ]
+    },
+    {
+      "id": "CMP-PAY-EXEC",
+      "name": "Execution Gateway",
+      "type": "A3.ApplicationComponent",
+      "level": "A3",
+      "relation": "up1",
+      "classification": "design_change_required",
+      "via": [
+        "PAY-111"
+      ]
+    }
+  ],
+  "mappings_to_supersede": [
+    "PAY-108",
+    "PAY-111"
+  ]
+}

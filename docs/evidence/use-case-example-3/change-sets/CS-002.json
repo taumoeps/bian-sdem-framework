@@ -1,0 +1,64 @@
+{
+  "id": "CS-002",
+  "layer": "A3",
+  "reason": "Re-point the Payments Hub and the Execution Gateway to the new production cluster",
+  "changes": [
+    {
+      "op": "update",
+      "record": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1",
+        "name": "Payments Hub",
+        "lifecycle_status": "active",
+        "description": "The bank's payment initiation platform: captures instructions from channels, validates and authorises them, and hands them to execution.",
+        "attributes": {
+          "vendor": "in-house",
+          "deployed_on": [
+            "INF-K8S-PAY-PROD2",
+            "INF-K8S-PAY-UAT"
+          ],
+          "deployed_as": [
+            "DEP-PAYHUB-PROD",
+            "DEP-PAYHUB-UAT"
+          ],
+          "release_version": "7.1.0",
+          "license": "LicenseRef-proprietary",
+          "hosting_model": "PaaS",
+          "recovery_time_objective": "2h",
+          "recovery_point_objective": "5m",
+          "disposition": "enhance",
+          "owner": "ROLE-PAY-OFFICER"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "CMP-PAY-EXEC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.4",
+        "name": "Execution Gateway",
+        "lifecycle_status": "active",
+        "description": "Hands authorised instructions to scheme execution and tracks execution references.",
+        "attributes": {
+          "deployed_on": [
+            "INF-K8S-PAY-PROD2"
+          ],
+          "deployed_as": [
+            "DEP-PAYEXEC-PROD"
+          ]
+        }
+      }
+    }
+  ],
+  "agent": "sdem-a3-application",
+  "person": "jane.architect",
+  "created_at": "2026-10-28T00:00:00+00:00",
+  "work_items": [
+    "WI-001",
+    "WI-002"
+  ],
+  "event": "CE-002",
+  "branch": null
+}

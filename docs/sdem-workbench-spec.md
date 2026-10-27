@@ -34,12 +34,12 @@ The workbench is how architects use SDEM: they open the **SDEM project in VS Cod
 
 | ID | Requirement | Status |
 |---|---|---|
-| WB-C01 | `.github/copilot-instructions.md` gives Copilot the ground rules (design §4), where the rulebook, datasets, registry and stores are, and which CLI command answers which question. | not built |
+| WB-C01 | `.github/copilot-instructions.md` gives Copilot the ground rules (design §4), where the rulebook, datasets, registry and stores are, and which CLI command answers which question. | built — `.github/copilot-instructions.md` |
 | WB-C02 | Copilot's role is **support**: explain command output and errors, suggest the exact CLI command, draft (records, impact notes, pull-request text), review proposals with the architect. | not built (instruction) |
 | WB-C03 | Copilot runs a command **only when the architect asks**, and only the SDEM CLI, in the terminal pane — so the command and its output are visible. | not built (instruction) |
-| WB-C04 | Ground rules, stated in WB-C01: facts from the CLI and files with the source named; suggest the exact command; rules first; never write projected or AI content into real data; never approve; source, reasoning and confidence on every statement; no MCP, no keys, no data outside the approved Copilot; say when unsure. | not built |
+| WB-C04 | Ground rules, stated in WB-C01: facts from the CLI and files with the source named; suggest the exact command; rules first; never write projected or AI content into real data; never approve; source, reasoning and confidence on every statement; no MCP, no keys, no data outside the approved Copilot; say when unsure. | built — in `.github/copilot-instructions.md` |
 | WB-C05 | Prompt files in `.github/prompts/` for the kinds of support: `sdem-explain` (explain the last output), `sdem-fix` (explain a check error and suggest the fix), `sdem-review` (walk through proposals), `sdem-impact-note` (draft an impact note), `sdem-pr` (draft a pull-request description), `aid-explain`, `aid-suggest`. Each names the CLI command(s) involved and what to report. | not built |
-| WB-C06 | Every command the instructions or a prompt file name must exist; CI fails if one does not. | not built |
+| WB-C06 | Every command the instructions or a prompt file name must exist; CI fails if one does not. | partly — the agent files are checked (`tests/test_use_case_example_3.py`); prompt files not built yet |
 | WB-C07 | No MCP server, no AI API client, no API key in SDEM — checked in CI. | built (none present); CI check not built |
 
 ## 5. Journeys

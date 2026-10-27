@@ -1,0 +1,7 @@
+DOWNSTREAM (depends on):
+APP-PAY-HUB 'Payments Hub'  [A3.ApplicationComponent]
+├─ -DEPLOYED_AS-> DEP-PAYHUB-PROD 'Payments Hub — production'  [A4.Deployment]  (PAY-109)
+├─ -DEPLOYED_AS-> DEP-PAYHUB-UAT 'Payments Hub — UAT'  [A4.Deployment]  (PAY-110)
+├─ -DEPLOYED_ON-> INF-K8S-PAY-UAT 'Managed Kubernetes — payments (UAT)'  [A4.SystemSoftware]  (PAY-113)
+└─ -DEPLOYED_ON-> INF-K8S-PAY-PROD2 'Managed Kubernetes — payments (production, new cluster)'  [A4.SystemSoftware]  (PAY-201)
+

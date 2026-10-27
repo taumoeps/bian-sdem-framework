@@ -254,6 +254,9 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem aid check <dir>` · `sdem aid gaps <dir> --actual <files>` | J6 | checks a projection; compares it with a real design | later, when the real design exists | — |
 | `sdem view --graph <dir> [--projection <dir>] [-o file.html]` | J7 | writes the HTML picture | to see and share | open in a browser |
 | `sdem explain <id> --proposals <file>` · `--projection <dir>` | J8 | why one link or projected element exists: rule, published source, evidence, reasoning, confidence | when you question a proposal | approve, reject or fix the data |
+| `sdem change propose <file> --estate <dir> --agent … --person …` | AG | a layer's change set: checked before it lands, then its impact recorded as a change event | agent platform (§9a) | the orchestrator plans the work |
+| `sdem events --estate <dir> [--open]` | AG | change events, their impact and open work | to see what is waiting | `sdem work plan` |
+| `sdem work plan · list · claim …` | AG | work items: planned by the orchestrator, claimed and answered by the layer agents | agent platform (§9a) | `sdem change propose --work …` |
 | `sdem diff --git HEAD~1 <registry>` | — | proves approved links were not edited | before a pull request | — |
 | `sdem model check` · `regenerate` · `accept` · `examples` | — | maintainers: generated documents, engine acceptance tests, use-case examples | when changing the rulebook | — |
 
@@ -495,6 +498,17 @@ If Copilot suggests a command, read it before running it. If it is wrong, the co
 
 Copilot is optional: everything in this guide works without it.
 
+### 9a. The SDEM agents
+
+The project includes five Copilot agents (`.github/agents/`): **sdem-orchestrator** and one per architecture — **sdem-a1-business**, **sdem-a2-bian**, **sdem-a3-application**, **sdem-a4-technology**. Pick one in the Copilot Chat agent picker.
+
+- A **layer agent** changes only its own architecture, and only through a checked **change set** (`sdem change propose`). Every change records the agent and **you** as the person.
+- The **orchestrator** turns a change's impact into **work items**, calls the layer agents to do them, and reports to you. It never changes data and never approves.
+- Agents never talk to each other directly — they coordinate through the work items and change events SDEM records in the estate's `coordination/` folder.
+- You still approve, by merging the pull request.
+
+Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem-agent-platform-spike.md)): ask **sdem-a4-technology** to rehost the production payments cluster, then ask **sdem-orchestrator** to *"process the open change events"*. The full flow, with real output, is in [`use-case-example-3.md`](use-case-example-3.md); the design in [`sdem-agent-platform-design.md`](sdem-agent-platform-design.md).
+
 ## 10. Rules you must know
 
 1. **A person approves links** — in the registry, with reviewer, time and the required evidence, through a reviewed pull request. Never the engine, never Copilot.
@@ -512,6 +526,8 @@ Copilot is optional: everything in this guide works without it.
 | `ERROR: … missing required property 'name'` | a record lacks a required field | add it; `$.instances[0]` is the first record in the list |
 | `ERROR: … duplicate mapping_id` | two links share an id | give the new one an unused id |
 | `ERROR: … evidence missing required kind(s) [...]` | an approved link lacks the evidence its type needs | add `kind:document-reference` (§8.2 table) |
+| `ERROR: CTL-19: …` | a change set crosses its layer, or an agent works outside its layer | keep each change set to one layer; let the orchestrator plan the other layers' work |
+| `ERROR: CTL-20: …` | a change set or work-item step without the agent or the person | add `--agent` and `--person` |
 | `ERROR: … cannot enter a real architecture dataset (CTL-16)` | projected content was put into real data | remove it; projections stay in their own folder |
 | `WARN: … expects at least 1 (LC-10m)` | the rulebook recommends a link that is missing | advice — fix when you can |
 | `build … rejected: N error(s); the previous graph store is unchanged` | the data has errors, so the graph was not rebuilt | run `sdem check` and fix the errors |

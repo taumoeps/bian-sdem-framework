@@ -35,6 +35,12 @@ JOURNEYS = {
                  'sdem view --graph examples/card-fraud-alerts/graph -o work/view.html'),
     'explain':  ('J8', 'explain one element or link: why it exists, from what, how sure', None, None,
                  'sdem explain SD-PI --projection work/prj'),
+    'change':   ('AG', 'agent platform: propose a change set to one layer — checked, then its impact recorded', None, None,
+                 'sdem change propose cs.json --estate work/est --agent sdem-a4-technology --person jane.architect'),
+    'events':   ('AG', 'agent platform: change events, their impact and open work', None, None,
+                 'sdem events --estate work/est --open'),
+    'work':     ('AG', 'agent platform: plan, list and claim work items', None, None,
+                 'sdem work plan --event CE-001 --estate work/est --agent sdem-orchestrator --person jane.architect'),
     'diff':     ('—', 'compare two versions of a relationship document', 'sdem.diff', [],
                  'sdem diff --git HEAD~1 examples/payment-initiation/mappings.json'),
     'model':    ('—', 'maintainers: regenerate and check generated files, acceptance, evaluation, examples', None, None,
@@ -221,7 +227,7 @@ def main(argv=None):
     lines = [f"  {n:<9} {j:<3} {w}" for n, (j, w, *_rest) in JOURNEYS.items()]
     epilog = ('Journeys (J1–J8, docs/sdem-workbench-design.md §3):\n' + '\n'.join(lines) +
               '\n\nEvery subcommand takes --help with a worked example. Exit codes: 0 OK, 1 issues found, 2 usage error.'
-              '\nThe sdem-* commands (sdem-graph, sdem-infer, sdem-aid, …) remain as aliases.')
+              '\nAG = agent platform (docs/sdem-agent-platform-design.md). The sdem-* commands (sdem-graph, sdem-infer, sdem-aid, …) remain as aliases.')
     ap = argparse.ArgumentParser(prog='sdem', usage='sdem <command> [options]', epilog=epilog, formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description="SDEM — Service Domain Enterprise Metamodel. SDEM's command line: run it in VS Code's terminal pane; "
                                              'ask Copilot Chat to explain any output.')
@@ -234,6 +240,9 @@ def main(argv=None):
     if name == 'review': return review(rest)
     if name == 'explain': return explain(rest)
     if name == 'model': return model(rest)
+    if name in ('change', 'events', 'work'):
+        from . import agents
+        return {'change': agents.change_main, 'events': agents.events_main, 'work': agents.work_main}[name](rest)
     return _delegate(name, rest)
 
 

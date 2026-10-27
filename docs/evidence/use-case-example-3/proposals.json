@@ -1,0 +1,51 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.4.0",
+  "engine": "sdem-rules/0.10",
+  "mappings": [
+    {
+      "mapping_id": "P-RUN-001",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-K8S-PAY-PROD2",
+        "type": "A4.SystemSoftware",
+        "version": "1.31"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-PROD2; a4 INF-K8S-PAY-PROD2.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-PROD (component APP-PAY-HUB) names platform INF-K8S-PAY-PROD2"
+      ],
+      "rationale": "data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-PROD2; a4 INF-K8S-PAY-PROD2.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-PROD (component APP-PAY-HUB) names platform INF-K8S-PAY-PROD2",
+      "baseline_id": "ENGINE-RUN-RUN",
+      "created_by": "sdem-rules/0.10"
+    },
+    {
+      "mapping_id": "P-RUN-002",
+      "source": {
+        "id": "CMP-PAY-EXEC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.4"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-K8S-PAY-PROD2",
+        "type": "A4.SystemSoftware",
+        "version": "1.31"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:S33 step1 data join (S36 subsumed in S33); a3 CMP-PAY-EXEC.deployed_on lists INF-K8S-PAY-PROD2; a4 INF-K8S-PAY-PROD2.hosts lists CMP-PAY-EXEC; a4 deployment DEP-PAYEXEC-PROD (component CMP-PAY-EXEC) names platform INF-K8S-PAY-PROD2"
+      ],
+      "rationale": "data join (S36 subsumed in S33); a3 CMP-PAY-EXEC.deployed_on lists INF-K8S-PAY-PROD2; a4 INF-K8S-PAY-PROD2.hosts lists CMP-PAY-EXEC; a4 deployment DEP-PAYEXEC-PROD (component CMP-PAY-EXEC) names platform INF-K8S-PAY-PROD2",
+      "baseline_id": "ENGINE-RUN-RUN",
+      "created_by": "sdem-rules/0.10"
+    }
+  ]
+}

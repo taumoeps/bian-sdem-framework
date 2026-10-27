@@ -19,7 +19,7 @@ def render():
            f"**Monitoring today:** {d['monitoring_today']}", '',
            '## Controls', '']
     last = {}
-    for ex in ('use-case-example-1', 'use-case-example-2'):
+    for ex in ('use-case-example-1', 'use-case-example-2', 'use-case-example-3'):
         res = ROOT / 'docs' / 'evidence' / ex / 'results.json'
         if not res.exists(): continue
         r = json.loads(res.read_text(encoding='utf-8')); when = r.get('run_date') or r.get('date')
@@ -29,7 +29,7 @@ def render():
     out += [f"| {c['id']} | {c.get('status', 'built')} | {c['rule_area']} | {c['control']} | {c['implemented_in']} | {c['runs']} | {c['outcome_recorded_in']} | {c['monitored_by']} | {(last[c['id']]['good'] + ' · ' + last[c['id']]['bad']) if c['id'] in last and c.get('status', 'built') == 'built' else 'not tested'} |" for c in d['controls']]
     out += ['', '## Gaps — rules nothing enforces', '', '| ID | Rule area | Not controlled | Risk |', '|---|---|---|---|']
     out += [f"| {g['id']} | {g['rule_area']} | {g['not_controlled']} | {g['risk']} |" for g in d['gaps']]
-    out += ['', 'Each control is demonstrated both ways — accepting good data and rejecting bad — in [`use-case-example-1.md`](use-case-example-1.md) (CTL-01…15) and [`use-case-example-2.md`](use-case-example-2.md) (CTL-16, CTL-17).', '']
+    out += ['', 'Each control is demonstrated both ways — accepting good data and rejecting bad — in [`use-case-example-1.md`](use-case-example-1.md) (CTL-01…15) [`use-case-example-2.md`](use-case-example-2.md) (CTL-16, CTL-17) and [`use-case-example-3.md`](use-case-example-3.md) (CTL-19, CTL-20).', '']
     return '\n'.join(out)
 
 
