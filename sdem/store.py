@@ -146,6 +146,9 @@ def render(paths, mm=None):
         else:
             raise StoreError(f'{p}: neither an architecture dataset nor a relationship registry')
     if len({d['level'] for d, _ in levels}) != len(levels): raise StoreError('more than one architecture dataset for a level')
+    from .metamodel import is_projection_dataset
+    proj = [d['model_id'] for d, _ in levels if is_projection_dataset(d)]
+    if proj: raise StoreError(f"{', '.join(proj)}: a projected or target design cannot be loaded into a graph store of real data (CTL-16)")
     names = [n for n, _, _ in registries]
     if len(set(names)) != len(names): raise StoreError('two registries share a file name')
     fg = FederatedGraph([LevelGraph(d, mm) for d, _ in levels], [d for _, d, _ in registries], mm)

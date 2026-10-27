@@ -721,6 +721,7 @@ class Run:
 
     def _rest_form(self, op, coll):
         term = self.attr(op, 'action_term'); q = self.attr(op, 'behavior_qualifier')
+        if term in self.CREATE_TERMS and q: return 'POST', f"{coll}/{{id}}/{str(q).lower()}", 'create-type term with a qualifier ⇔ POST on the qualifier sub-resource (AID-Q04)'
         if term in self.CREATE_TERMS: return 'POST', coll, 'create-instance term ⇔ POST on the collection'
         if term == 'Retrieve': return 'GET', coll + '/{id}', 'Retrieve ⇔ GET (SAPG §3.5, verified)'
         if term == 'Update': return 'PATCH', coll + '/{id}', 'Update ⇔ PATCH on the instance'

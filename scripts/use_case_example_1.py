@@ -251,7 +251,7 @@ def run():
 
 
 def control_summary(R):
-    reg = [c for c in _j(ROOT / 'metamodel' / 'controls.json')['controls'] if c.get('status', 'built') == 'built']; out = []
+    reg = [c for c in _j(ROOT / 'metamodel' / 'controls.json')['controls'] if c.get('status', 'built') == 'built' and c.get('tested_by', 'use-case-example-1') == 'use-case-example-1']; out = []
     for c in reg:
         rows = sorted([x for x in R['tests'] if c['id'] in x['controls']], key=lambda x: x['controls'].index(c['id']))  # a test led by this control first
         g = [x for x in rows if x['kind'] == 'good']; b = [x for x in rows if x['kind'] == 'bad']

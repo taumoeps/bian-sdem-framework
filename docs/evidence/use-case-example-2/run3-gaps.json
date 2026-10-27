@@ -1,0 +1,65 @@
+{
+  "rows": [
+    {
+      "layer": "A2 service domains (those the real design links)",
+      "element": "SD-PI",
+      "result": "matched"
+    },
+    {
+      "layer": "A2 service domains (those the real design links)",
+      "element": "SD-PE",
+      "result": "projected only"
+    },
+    {
+      "layer": "A3 components (named by A4)",
+      "element": "APP-PAY-HUB",
+      "result": "matched"
+    },
+    {
+      "layer": "A3 components (named by A4)",
+      "element": "CMP-PAY-EXEC",
+      "result": "matched"
+    },
+    {
+      "layer": "A1 capability candidates (by the domain they point to)",
+      "element": "SD-PI",
+      "result": "matched"
+    },
+    {
+      "layer": "A1 capability candidates (by the domain they point to)",
+      "element": "SD-PE",
+      "result": "projected only"
+    }
+  ],
+  "metrics": {
+    "A2 service domains (those the real design links)": {
+      "projected": 2,
+      "real": 1,
+      "matched": 1,
+      "precision": 0.5,
+      "recall": 1.0
+    },
+    "A3 components (named by A4)": {
+      "projected": 2,
+      "real": 2,
+      "matched": 2,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "A1 capability candidates (by the domain they point to)": {
+      "projected": 2,
+      "real": 1,
+      "matched": 1,
+      "precision": 0.5,
+      "recall": 1.0
+    },
+    "links between real elements": {
+      "projected": 10,
+      "real": 7,
+      "matched": 7,
+      "precision": 0.7,
+      "recall": 1.0
+    }
+  },
+  "projection_ends": []
+}

@@ -1,0 +1,48 @@
+{
+  "rows": [
+    {
+      "layer": "A2 service domains (those the real design links)",
+      "element": "SD-PI",
+      "result": "matched"
+    },
+    {
+      "layer": "A2 service domains (those the real design links)",
+      "element": "SD-CA",
+      "result": "projected only"
+    },
+    {
+      "layer": "A1 capability candidates (by the domain they point to)",
+      "element": "SD-PI",
+      "result": "matched"
+    },
+    {
+      "layer": "A1 capability candidates (by the domain they point to)",
+      "element": "SD-CA",
+      "result": "projected only"
+    }
+  ],
+  "metrics": {
+    "A2 service domains (those the real design links)": {
+      "projected": 2,
+      "real": 1,
+      "matched": 1,
+      "precision": 0.5,
+      "recall": 1.0
+    },
+    "A1 capability candidates (by the domain they point to)": {
+      "projected": 2,
+      "real": 1,
+      "matched": 1,
+      "precision": 0.5,
+      "recall": 1.0
+    },
+    "links between real elements": {
+      "projected": 9,
+      "real": 7,
+      "matched": 7,
+      "precision": 0.78,
+      "recall": 1.0
+    }
+  },
+  "projection_ends": []
+}

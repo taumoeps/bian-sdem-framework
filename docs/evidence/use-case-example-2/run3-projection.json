@@ -1,0 +1,1288 @@
+{
+  "projection": {
+    "projection_id": "PRJ-RUN3",
+    "mode": "reverse",
+    "created_by": "sdem-aid",
+    "created_at": "2026-10-27T00:00:00+00:00",
+    "metamodel_version": "0.4.0",
+    "have": [
+      "A4"
+    ],
+    "catalogue": {
+      "model_id": "aid-test-bian-catalogue",
+      "sha256": "e3f8adb9dda50c7ed1447c22ed08a794191620404a5a132d3a99bc80590f309d"
+    },
+    "inputs": {
+      "A4": {
+        "model_id": "synthetic-bank-payments-a4",
+        "sha256": "30b652f3f81425af3984793f41ed130227eb6859ad956d284ac88287a473ca11"
+      }
+    },
+    "steps": [
+      {
+        "step": "R1",
+        "applications": [
+          "APP-PAY-HUB",
+          "CMP-PAY-EXEC"
+        ]
+      },
+      {
+        "step": "R2",
+        "domains": [
+          "SD-PE",
+          "SD-PI"
+        ]
+      },
+      {
+        "step": "R3",
+        "capability_candidates": 2
+      }
+    ],
+    "projection_ends": [],
+    "summary": {
+      "A1": {
+        "records": 2,
+        "by_confidence": {
+          "0.6": 0,
+          "0.4": 2
+        }
+      },
+      "A2": {
+        "records": 25,
+        "by_confidence": {
+          "0.6": 0,
+          "0.4": 25
+        }
+      },
+      "A3": {
+        "records": 2,
+        "by_confidence": {
+          "0.6": 2,
+          "0.4": 0
+        }
+      }
+    },
+    "links": 12
+  },
+  "layers": {
+    "A1": {
+      "level": "A1",
+      "model_id": "PRJ-RUN3-a1-PROJECTION",
+      "model_version": "projection",
+      "metamodel_version": "0.4.0",
+      "source_system": "AID-PROJECTION (sdem-aid; not a real architecture dataset)",
+      "instances": [
+        {
+          "id": "PRJ-CAP-SD-PE",
+          "type": "A1.BusinessCapability",
+          "version": "1.0",
+          "name": "Payment Execution (capability candidate)",
+          "lifecycle_status": "planned",
+          "projection": {
+            "step": "R3",
+            "rule": "domain name",
+            "inferred_from": [
+              "SD-PE"
+            ],
+            "reasoning": "a business capability is likely to be supported by Payment Execution; BIAN publishes no capability mapping, so this is a candidate only",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-CAP-SD-PI",
+          "type": "A1.BusinessCapability",
+          "version": "1.0",
+          "name": "Payment Initiation (capability candidate)",
+          "lifecycle_status": "planned",
+          "projection": {
+            "step": "R3",
+            "rule": "domain name",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "a business capability is likely to be supported by Payment Initiation; BIAN publishes no capability mapping, so this is a candidate only",
+            "confidence": 0.4
+          }
+        }
+      ],
+      "relationships": []
+    },
+    "A2": {
+      "level": "A2",
+      "model_id": "PRJ-RUN3-a2-PROJECTION",
+      "model_version": "projection",
+      "metamodel_version": "0.4.0",
+      "source_system": "AID-PROJECTION (sdem-aid; not a real architecture dataset)",
+      "instances": [
+        {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0",
+          "name": "Payment Initiation (synthetic selection)",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in for a BIAN payment-initiation Service Domain: captures, validates, authorises and hands over customer payment instructions.",
+          "attributes": {
+            "asset_type": "AT-PAY-INSTR",
+            "functional_pattern": "FP-FULFIL",
+            "adoption_status": "adopted",
+            "owner": "ROLE-PAY-OFFICER",
+            "conforms_to": [
+              "BIAN 14.0"
+            ]
+          },
+          "canonical_id": "BIAN-PAYMENT-INITIATION",
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "application id APP-PAY-HUB contains ['pay'], which begin words of Payment Initiation; nothing else is known from A4",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "AT-PAY-INSTR",
+          "type": "A2.AssetType",
+          "version": "1.0",
+          "name": "Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "The customer payment instruction the domain fulfils.",
+          "attributes": {
+            "aliases": [
+              "payment",
+              "instruction"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "FP-FULFIL",
+          "type": "A2.FunctionalPattern",
+          "version": "1.0",
+          "name": "Fulfil",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in for a BIAN functional pattern: complete a request through a procedure.",
+          "attributes": {
+            "generic_artefact": "Arrangement",
+            "behavior_qualifier_type": "Features"
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "CR-PI",
+          "type": "A2.ControlRecord",
+          "version": "1.0",
+          "name": "Payment Initiation Procedure",
+          "lifecycle_status": "active",
+          "description": "Lifecycle record of one payment instruction from capture to hand-over.",
+          "attributes": {
+            "attributes": [
+              "payment_instruction_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "payment_status",
+              "authorisation_status",
+              "execution_reference",
+              "remittance_information"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SG-PI-1",
+          "type": "A2.ServiceGroup",
+          "version": "1.0",
+          "name": "Instruction",
+          "lifecycle_status": "active",
+          "description": "Operations that create and maintain the instruction.",
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SG-PI-2",
+          "type": "A2.ServiceGroup",
+          "version": "1.0",
+          "name": "Processing",
+          "lifecycle_status": "active",
+          "description": "Operations that validate, execute and report.",
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SO-PI-02",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Evaluate Payment Instruction Validation",
+          "lifecycle_status": "active",
+          "description": "Validate the instruction and record the authorisation outcome.",
+          "attributes": {
+            "action_term": "Evaluate",
+            "behavior_qualifier": "Validation",
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "authorisation_status",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SO-PI-03",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Execute Payment Instruction Execution",
+          "lifecycle_status": "active",
+          "description": "Hand the authorised instruction to execution.",
+          "attributes": {
+            "action_term": "Execute",
+            "behavior_qualifier": "Execution",
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "execution_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SO-PI-04",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Retrieve Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Return the current state of the instruction.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "payment_status",
+              "execution_reference",
+              "authorisation_status"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SO-PI-06",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Notify Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Notify an interested party of a change in the instruction's state.",
+          "attributes": {
+            "action_term": "Notify",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SO-PI-01",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Initiate Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Create a new payment instruction procedure from the customer's details.",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "remittance_information"
+            ],
+            "output_attributes": [
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SO-PI-05",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Update Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Amend an instruction before execution.",
+          "attributes": {
+            "action_term": "Update",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference",
+              "amount",
+              "value_date",
+              "creditor_account_reference"
+            ],
+            "output_attributes": [
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SO-PI-04@acquired-fintech",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Control Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Cancel or hold an instruction.",
+          "attributes": {
+            "action_term": "Control",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference",
+              "payment_status"
+            ],
+            "output_attributes": [
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "BQ-VALIDATION",
+          "type": "A2.BehaviorQualifier",
+          "version": "1.0",
+          "name": "Validation",
+          "lifecycle_status": "active",
+          "description": "The validation and authorisation partition of the procedure.",
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "BQ-EXECUTION",
+          "type": "A2.BehaviorQualifier",
+          "version": "1.0",
+          "name": "Execution",
+          "lifecycle_status": "active",
+          "description": "The hand-over-to-execution partition of the procedure.",
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "BBO-PAY-INSTR",
+          "type": "A2.BusinessObject",
+          "version": "1.0",
+          "name": "Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Canonical payment instruction object.",
+          "attributes": {
+            "attributes": [
+              "payment_instruction_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "remittance_information",
+              "payment_status"
+            ],
+            "personal_information": true
+          },
+          "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION",
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "BBOA-AMOUNT",
+          "type": "A2.BusinessObjectAttribute",
+          "version": "1.0",
+          "name": "amount",
+          "lifecycle_status": "active",
+          "description": "Monetary amount of the instruction.",
+          "attributes": {
+            "personal_information": false,
+            "data_type": "Amount"
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SD-PE",
+          "type": "A2.ServiceDomain",
+          "version": "1.0",
+          "name": "Payment Execution (synthetic selection)",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in for a BIAN payment-execution Service Domain: executes authorised instructions through schemes.",
+          "attributes": {
+            "asset_type": "AT-PAY-TXN",
+            "functional_pattern": "FP-FULFIL",
+            "adoption_status": "partly adopted"
+          },
+          "canonical_id": "BIAN-PAYMENT-EXECUTION",
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PE"
+            ],
+            "reasoning": "application id APP-PAY-HUB contains ['pay'], which begin words of Payment Execution; nothing else is known from A4",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "AT-PAY-TXN",
+          "type": "A2.AssetType",
+          "version": "1.0",
+          "name": "Payment Transaction",
+          "lifecycle_status": "active",
+          "description": "The executed transfer.",
+          "attributes": {
+            "aliases": [
+              "payment",
+              "transaction",
+              "transfer"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PE"
+            ],
+            "reasoning": "part of SD-PE in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "CR-PE",
+          "type": "A2.ControlRecord",
+          "version": "1.0",
+          "name": "Payment Execution Procedure",
+          "lifecycle_status": "active",
+          "description": "Lifecycle of one execution.",
+          "attributes": {
+            "attributes": [
+              "payment_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "execution_status",
+              "execution_date",
+              "scheme_reference"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PE"
+            ],
+            "reasoning": "part of SD-PE in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SG-PE",
+          "type": "A2.ServiceGroup",
+          "version": "1.0",
+          "name": "Execution",
+          "lifecycle_status": "active",
+          "description": "Operations.",
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PE"
+            ],
+            "reasoning": "part of SD-PE in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SO-PE-01",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Initiate Payment Execution",
+          "lifecycle_status": "active",
+          "description": "Execute a payment between two accounts.",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency"
+            ],
+            "output_attributes": [
+              "payment_reference",
+              "execution_status"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PE"
+            ],
+            "reasoning": "part of SD-PE in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SO-PE-02",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Retrieve Payment Execution",
+          "lifecycle_status": "active",
+          "description": "Return the execution outcome.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_reference"
+            ],
+            "output_attributes": [
+              "execution_status",
+              "scheme_reference",
+              "execution_date"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PE"
+            ],
+            "reasoning": "part of SD-PE in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "SO-PE-03",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Control Payment Execution",
+          "lifecycle_status": "active",
+          "description": "Cancel or hold an execution.",
+          "attributes": {
+            "action_term": "Control",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_reference"
+            ],
+            "output_attributes": [
+              "execution_status"
+            ]
+          },
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PE"
+            ],
+            "reasoning": "part of SD-PE in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "BBO-PAYMENT-TXN",
+          "type": "A2.BusinessObject",
+          "version": "1.0",
+          "name": "Payment Transaction",
+          "lifecycle_status": "active",
+          "description": "Canonical.",
+          "attributes": {
+            "attributes": [
+              "payment_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "execution_status",
+              "execution_date",
+              "scheme_reference"
+            ]
+          },
+          "canonical_id": "BIAN-BO-PAYMENT-TXN",
+          "projection": {
+            "step": "R2",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PE"
+            ],
+            "reasoning": "part of SD-PE in the BIAN catalogue",
+            "confidence": 0.4
+          }
+        }
+      ],
+      "relationships": [
+        {
+          "source": "SD-PI",
+          "kind": "association",
+          "target": "AT-PAY-INSTR"
+        },
+        {
+          "source": "SD-PI",
+          "kind": "association",
+          "target": "FP-FULFIL"
+        },
+        {
+          "source": "SD-PI",
+          "kind": "aggregation",
+          "target": "CR-PI"
+        },
+        {
+          "source": "CR-PI",
+          "kind": "composition",
+          "target": "BQ-VALIDATION"
+        },
+        {
+          "source": "CR-PI",
+          "kind": "composition",
+          "target": "BQ-EXECUTION"
+        },
+        {
+          "source": "CR-PI",
+          "kind": "association",
+          "target": "BBO-PAY-INSTR"
+        },
+        {
+          "source": "SD-PI",
+          "kind": "composition",
+          "target": "SG-PI-1"
+        },
+        {
+          "source": "SD-PI",
+          "kind": "composition",
+          "target": "SG-PI-2"
+        },
+        {
+          "source": "SG-PI-1",
+          "kind": "composition",
+          "target": "SO-PI-01"
+        },
+        {
+          "source": "SG-PI-1",
+          "kind": "composition",
+          "target": "SO-PI-05"
+        },
+        {
+          "source": "SG-PI-2",
+          "kind": "composition",
+          "target": "SO-PI-02"
+        },
+        {
+          "source": "SG-PI-2",
+          "kind": "composition",
+          "target": "SO-PI-03"
+        },
+        {
+          "source": "SG-PI-2",
+          "kind": "composition",
+          "target": "SO-PI-04"
+        },
+        {
+          "source": "SG-PI-2",
+          "kind": "composition",
+          "target": "SO-PI-06"
+        },
+        {
+          "source": "SO-PI-01",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "SO-PI-02",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "SO-PI-03",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "SO-PI-04",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "SO-PI-05",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "SO-PI-06",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "BBO-PAY-INSTR",
+          "kind": "composition",
+          "target": "BBOA-AMOUNT"
+        },
+        {
+          "source": "SG-PI-1",
+          "kind": "composition",
+          "target": "SO-PI-04@acquired-fintech"
+        },
+        {
+          "source": "SO-PI-04@acquired-fintech",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "SD-PE",
+          "kind": "association",
+          "target": "AT-PAY-TXN"
+        },
+        {
+          "source": "SD-PE",
+          "kind": "association",
+          "target": "FP-FULFIL"
+        },
+        {
+          "source": "SD-PE",
+          "kind": "aggregation",
+          "target": "CR-PE"
+        },
+        {
+          "source": "SD-PE",
+          "kind": "composition",
+          "target": "SG-PE"
+        },
+        {
+          "source": "CR-PE",
+          "kind": "association",
+          "target": "BBO-PAYMENT-TXN"
+        },
+        {
+          "source": "SG-PE",
+          "kind": "composition",
+          "target": "SO-PE-01"
+        },
+        {
+          "source": "SG-PE",
+          "kind": "composition",
+          "target": "SO-PE-02"
+        },
+        {
+          "source": "SO-PE-01",
+          "kind": "access",
+          "target": "CR-PE"
+        },
+        {
+          "source": "SO-PE-02",
+          "kind": "access",
+          "target": "CR-PE"
+        },
+        {
+          "source": "SG-PE",
+          "kind": "composition",
+          "target": "SO-PE-03"
+        },
+        {
+          "source": "SO-PE-03",
+          "kind": "access",
+          "target": "CR-PE"
+        }
+      ]
+    },
+    "A3": {
+      "level": "A3",
+      "model_id": "PRJ-RUN3-a3-PROJECTION",
+      "model_version": "projection",
+      "metamodel_version": "0.4.0",
+      "source_system": "AID-PROJECTION (sdem-aid; not a real architecture dataset)",
+      "instances": [
+        {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0",
+          "name": "APP-PAY-HUB",
+          "projection": {
+            "step": "R1",
+            "rule": "named by A4",
+            "inferred_from": [
+              "INF-K8S-PAY-PROD.hosts",
+              "INF-K8S-PAY-UAT.hosts",
+              "DEP-PAYHUB-PROD.component_id",
+              "DEP-PAYHUB-UAT.component_id"
+            ],
+            "reasoning": "an A4 record names this application; nothing else about it is known from A4",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "CMP-PAY-EXEC",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0",
+          "name": "CMP-PAY-EXEC",
+          "projection": {
+            "step": "R1",
+            "rule": "named by A4",
+            "inferred_from": [
+              "INF-K8S-PAY-PROD.hosts",
+              "DEP-PAYEXEC-PROD.component_id"
+            ],
+            "reasoning": "an A4 record names this application; nothing else about it is known from A4",
+            "confidence": 0.6
+          }
+        }
+      ],
+      "relationships": []
+    }
+  },
+  "links": {
+    "links": [
+      {
+        "mapping_id": "PRJ-L-001",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_ON",
+        "target": {
+          "id": "INF-K8S-PAY-PROD",
+          "type": "A4.SystemSoftware",
+          "version": "1.29"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: INF-K8S-PAY-PROD hosts APP-PAY-HUB",
+        "projection": {
+          "step": "R1",
+          "rule": "S33 (A4 hosts)",
+          "inferred_from": [
+            "INF-K8S-PAY-PROD.hosts"
+          ],
+          "reasoning": "INF-K8S-PAY-PROD hosts APP-PAY-HUB",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-002",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_ON",
+        "target": {
+          "id": "INF-K8S-PAY-UAT",
+          "type": "A4.SystemSoftware",
+          "version": "1.29"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: INF-K8S-PAY-UAT hosts APP-PAY-HUB",
+        "projection": {
+          "step": "R1",
+          "rule": "S33 (A4 hosts)",
+          "inferred_from": [
+            "INF-K8S-PAY-UAT.hosts"
+          ],
+          "reasoning": "INF-K8S-PAY-UAT hosts APP-PAY-HUB",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-003",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_AS",
+        "target": {
+          "id": "DEP-PAYHUB-PROD",
+          "type": "A4.Deployment",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: DEP-PAYHUB-PROD deploys APP-PAY-HUB",
+        "projection": {
+          "step": "R1",
+          "rule": "S32 (deployment component_id)",
+          "inferred_from": [
+            "DEP-PAYHUB-PROD.component_id"
+          ],
+          "reasoning": "DEP-PAYHUB-PROD deploys APP-PAY-HUB",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-004",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_AS",
+        "target": {
+          "id": "DEP-PAYHUB-UAT",
+          "type": "A4.Deployment",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: DEP-PAYHUB-UAT deploys APP-PAY-HUB",
+        "projection": {
+          "step": "R1",
+          "rule": "S32 (deployment component_id)",
+          "inferred_from": [
+            "DEP-PAYHUB-UAT.component_id"
+          ],
+          "reasoning": "DEP-PAYHUB-UAT deploys APP-PAY-HUB",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-005",
+        "source": {
+          "id": "CMP-PAY-EXEC",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_ON",
+        "target": {
+          "id": "INF-K8S-PAY-PROD",
+          "type": "A4.SystemSoftware",
+          "version": "1.29"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: INF-K8S-PAY-PROD hosts CMP-PAY-EXEC",
+        "projection": {
+          "step": "R1",
+          "rule": "S33 (A4 hosts)",
+          "inferred_from": [
+            "INF-K8S-PAY-PROD.hosts"
+          ],
+          "reasoning": "INF-K8S-PAY-PROD hosts CMP-PAY-EXEC",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-006",
+        "source": {
+          "id": "CMP-PAY-EXEC",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_AS",
+        "target": {
+          "id": "DEP-PAYEXEC-PROD",
+          "type": "A4.Deployment",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: DEP-PAYEXEC-PROD deploys CMP-PAY-EXEC",
+        "projection": {
+          "step": "R1",
+          "rule": "S32 (deployment component_id)",
+          "inferred_from": [
+            "DEP-PAYEXEC-PROD.component_id"
+          ],
+          "reasoning": "DEP-PAYEXEC-PROD deploys CMP-PAY-EXEC",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-007",
+        "source": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "relationship": "REALIZED_BY",
+        "target": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: application id APP-PAY-HUB contains ['pay'], which begin words of Payment Initiation; nothing else is known from A4",
+        "projection": {
+          "step": "R2",
+          "rule": "name (id words)",
+          "inferred_from": [
+            "APP-PAY-HUB"
+          ],
+          "reasoning": "application id APP-PAY-HUB contains ['pay'], which begin words of Payment Initiation; nothing else is known from A4",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-008",
+        "source": {
+          "id": "SD-PE",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "relationship": "REALIZED_BY",
+        "target": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: application id APP-PAY-HUB contains ['pay'], which begin words of Payment Execution; nothing else is known from A4",
+        "projection": {
+          "step": "R2",
+          "rule": "name (id words)",
+          "inferred_from": [
+            "APP-PAY-HUB"
+          ],
+          "reasoning": "application id APP-PAY-HUB contains ['pay'], which begin words of Payment Execution; nothing else is known from A4",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-009",
+        "source": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "relationship": "REALIZED_BY",
+        "target": {
+          "id": "CMP-PAY-EXEC",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: application id CMP-PAY-EXEC contains ['pay'], which begin words of Payment Initiation; nothing else is known from A4",
+        "projection": {
+          "step": "R2",
+          "rule": "name (id words)",
+          "inferred_from": [
+            "CMP-PAY-EXEC"
+          ],
+          "reasoning": "application id CMP-PAY-EXEC contains ['pay'], which begin words of Payment Initiation; nothing else is known from A4",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-010",
+        "source": {
+          "id": "SD-PE",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "relationship": "REALIZED_BY",
+        "target": {
+          "id": "CMP-PAY-EXEC",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: application id CMP-PAY-EXEC contains ['exec', 'pay'], which begin words of Payment Execution; nothing else is known from A4",
+        "projection": {
+          "step": "R2",
+          "rule": "name (id words)",
+          "inferred_from": [
+            "CMP-PAY-EXEC"
+          ],
+          "reasoning": "application id CMP-PAY-EXEC contains ['exec', 'pay'], which begin words of Payment Execution; nothing else is known from A4",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-011",
+        "source": {
+          "id": "PRJ-CAP-SD-PE",
+          "type": "A1.BusinessCapability",
+          "version": "1.0"
+        },
+        "relationship": "SUPPORTED_BY",
+        "target": {
+          "id": "SD-PE",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: capability candidate",
+        "projection": {
+          "step": "R3",
+          "rule": "domain name",
+          "inferred_from": [
+            "SD-PE"
+          ],
+          "reasoning": "capability candidate",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-012",
+        "source": {
+          "id": "PRJ-CAP-SD-PI",
+          "type": "A1.BusinessCapability",
+          "version": "1.0"
+        },
+        "relationship": "SUPPORTED_BY",
+        "target": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: capability candidate",
+        "projection": {
+          "step": "R3",
+          "rule": "domain name",
+          "inferred_from": [
+            "SD-PI"
+          ],
+          "reasoning": "capability candidate",
+          "confidence": 0.4
+        }
+      }
+    ]
+  }
+}

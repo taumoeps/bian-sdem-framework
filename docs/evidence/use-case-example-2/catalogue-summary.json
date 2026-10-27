@@ -1,18 +1,36 @@
 {
   "service_domains": [
-    "SD-001",
-    "SD-044",
-    "SD-CA",
-    "SD-DC",
-    "SD-FD",
-    "SD-LC",
-    "SD-LO",
-    "SD-PA",
-    "SD-PE",
-    "SD-PI",
-    "SD-PK",
-    "SD-PRD",
-    "SD-SA"
+    "SD-001: Customer Onboarding (synthetic selection)",
+    "SD-CA: Current Account (synthetic selection)",
+    "SD-CA@digital-lending: Credit Assessment (synthetic selection)",
+    "SD-DC: Document Checking (synthetic selection)",
+    "SD-FD: Fraud Detection (synthetic selection)",
+    "SD-LC: Letter of Credit (synthetic selection)",
+    "SD-LO: Consumer Loan Origination (synthetic selection)",
+    "SD-PA: Party Authentication (synthetic selection)",
+    "SD-PE: Payment Execution (synthetic selection)",
+    "SD-PI: Payment Initiation (synthetic selection)",
+    "SD-PK: Position Keeping (synthetic selection)",
+    "SD-PRD: Party Reference Data Directory (synthetic selection)",
+    "SD-SA: Savings Account (synthetic selection)"
   ],
-  "operations": 40
+  "records": 141,
+  "sha256": "e3f8adb9dda50c7ed1447c22ed08a794191620404a5a132d3a99bc80590f309d",
+  "links_dropped_on_merge (LC-10: kept the earlier estate's)": [
+    {
+      "source": "SD-FD",
+      "kind": "aggregation",
+      "target": "CR-044"
+    },
+    {
+      "source": "SD-FD",
+      "kind": "association",
+      "target": "FP-ANALYSE"
+    },
+    {
+      "source": "SD-FD",
+      "kind": "association",
+      "target": "AT-FRAUD-ALERT"
+    }
+  ]
 }

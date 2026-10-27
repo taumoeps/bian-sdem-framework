@@ -18,15 +18,18 @@ def render():
            'A **control** is an automatic check that enforces a rule of the rulebook (the metamodel). This register says, for each one, what it enforces, where it is built, when it runs, **where its outcome is recorded**, and **what monitors it**.', '',
            f"**Monitoring today:** {d['monitoring_today']}", '',
            '## Controls', '']
-    res = ROOT / 'docs' / 'evidence' / 'use-case-example-1' / 'results.json'
-    last = {c['id']: c for c in json.loads(res.read_text(encoding='utf-8'))['controls']} if res.exists() else {}
-    when = json.loads(res.read_text(encoding='utf-8'))['run_date'] if res.exists() else None
-    if when: out += [f"**Last tested:** [use-case example 1](use-case-example-1.md), run {when} — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-1/`](evidence/use-case-example-1/manifest.json).", '']
+    last = {}
+    for ex in ('use-case-example-1', 'use-case-example-2'):
+        res = ROOT / 'docs' / 'evidence' / ex / 'results.json'
+        if not res.exists(): continue
+        r = json.loads(res.read_text(encoding='utf-8')); when = r.get('run_date') or r.get('date')
+        last.update({c['id']: c for c in r.get('controls', [])})
+        out += [f"**Last tested:** [use-case example {ex[-1]}]({ex}.md), run {when} — good data must be accepted, bad data rejected; evidence in [`evidence/{ex}/`](evidence/{ex}/manifest.json).", '']
     out += ['| ID | Status | Rule area | Enforces | Built in | Runs | Outcome recorded in | Monitored by | Last tested (good · bad) |', '|---|---|---|---|---|---|---|---|---|']
     out += [f"| {c['id']} | {c.get('status', 'built')} | {c['rule_area']} | {c['control']} | {c['implemented_in']} | {c['runs']} | {c['outcome_recorded_in']} | {c['monitored_by']} | {(last[c['id']]['good'] + ' · ' + last[c['id']]['bad']) if c['id'] in last and c.get('status', 'built') == 'built' else 'not tested'} |" for c in d['controls']]
     out += ['', '## Gaps — rules nothing enforces', '', '| ID | Rule area | Not controlled | Risk |', '|---|---|---|---|']
     out += [f"| {g['id']} | {g['rule_area']} | {g['not_controlled']} | {g['risk']} |" for g in d['gaps']]
-    out += ['', 'Each control is demonstrated both ways — accepting good data and rejecting bad — in [`use-case-example-1.md`](use-case-example-1.md).', '']
+    out += ['', 'Each control is demonstrated both ways — accepting good data and rejecting bad — in [`use-case-example-1.md`](use-case-example-1.md) (CTL-01…15) and [`use-case-example-2.md`](use-case-example-2.md) (CTL-16, CTL-17).', '']
     return '\n'.join(out)
 
 

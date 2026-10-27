@@ -10,6 +10,14 @@ MM_DIR = ROOT / 'metamodel'
 LEVEL_FILES = ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json']
 
 
+PROJECTED_PREFIXES = ('PRJ-', 'DSN-')  # AID projections and target designs (CTL-16)
+
+
+def is_projection_dataset(doc):
+    """A dataset that declares itself a target design or an AID projection — never real architecture data."""
+    return str(doc.get('source_system', '')).startswith(('DESIGN-PROPOSAL', 'AID-PROJECTION')) or str(doc.get('model_id', '')).endswith(('-TARGET-DESIGN', '-PROJECTION'))
+
+
 class Metamodel:
     def __init__(self, entities, relationships, version):
         self.entities = {e['type']: e for e in entities}

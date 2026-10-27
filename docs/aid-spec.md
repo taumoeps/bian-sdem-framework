@@ -1,6 +1,6 @@
 # Architecture Inference Design (AID) — Specification
 
-> **Status: approved 2026-10-27 (design decisions AID-D01…07).** Requirements for the design in [`aid-design.md`](aid-design.md). Each requirement has an ID (AID-*), a status, and how it is accepted. Built: only AID-F02/F03 (today's design mode). Everything else: **not built**.
+> **Status: approved 2026-10-27 (design decisions AID-D01…07).** Requirements for the design in [`aid-design.md`](aid-design.md). Each requirement has an ID (AID-*), a status, and how it is accepted. **Built 2026-10-27** in `sdem/aid.py` (command `sdem-aid`) and tested by [use-case example 2](use-case-example-2.md); each requirement's status says what is still missing.
 
 ## 1. Purpose and boundary
 
@@ -12,66 +12,66 @@ AID projects the missing architecture layers from the architecture datasets an a
 
 | ID | Requirement | Status |
 |---|---|---|
-| AID-I01 | Accept any non-empty subset of the four architecture datasets (A1–A4), each passing the dataset check (controls CTL-01…03). | not built |
-| AID-I02 | Accept a **BIAN reference catalogue**: an A2 architecture dataset of BIAN service domains, operations, business objects, asset types and behaviour qualifiers, used as the only source of A2 elements. | not built |
-| AID-I03 | Accept the approved links already known (a Relationship Registry), and use them before inferring anything. | not built |
+| AID-I01 | Accept any non-empty subset of the four architecture datasets (A1–A4), each passing the dataset check (controls CTL-01…03). | built — inputs must pass the dataset check |
+| AID-I02 | Accept a **BIAN reference catalogue**: an A2 architecture dataset of BIAN service domains, operations, business objects, asset types and behaviour qualifiers, used as the only source of A2 elements. | built |
+| AID-I03 | Accept the approved links already known (a Relationship Registry), and use them before inferring anything. | built — used by F1 and R2 (the engine reads it) |
 | AID-I04 | Read the rulebook (entity types, allowed links, relationship types, mapping rules) exactly as the engine does. | built (engine) |
 
 ## 3. Forward projection (downstream)
 
 | ID | Requirement | Confidence | Status |
 |---|---|---|---|
-| AID-F01 | **A1 → A2.** Project the service domains a business architecture needs: (a) domains of BIAN operations an A1 process or activity names (`invokes`); (b) otherwise by verb + noun matching of activity names to operations (rule S06) and of capability and process descriptions to domains (step 5, bounded). Each projected domain is a **reference** to the BIAN catalogue, never a new A2 element. | (a) medium, (b) low | not built |
-| AID-F02 | **A2 → A3.** For each projected or given service domain: one component; one API per service operation, method and path from BIAN's REST mapping; payload from the operation's attributes (BIAN container pattern). | low | **built** (design mode) |
-| AID-F03 | **A3 → A4.** One deployment per projected component. No platform, environment, network or location is projected. | low | **built** (design mode) |
-| AID-F04 | Projected links between layers use only the nine relationship types, between the right entity types. | as the element | partly (design mode) |
+| AID-F01 | **A1 → A2.** Project the service domains a business architecture needs: (a) domains of BIAN operations an A1 process or activity names (`invokes`); (b) otherwise by verb + noun matching of activity names to operations (rule S06) and of capability and process descriptions to domains (step 5, bounded). Each projected domain is a **reference** to the BIAN catalogue, never a new A2 element. | (a) medium, (b) low | built |
+| AID-F02 | **A2 → A3.** For each projected or given service domain: one component; one API per service operation, method and path from BIAN's REST mapping; payload from the operation's attributes (BIAN container pattern). | low | built — with the qualifier fix (AID-Q04) |
+| AID-F03 | **A3 → A4.** One deployment per projected component. No platform, environment, network or location is projected. | low | built |
+| AID-F04 | Projected links between layers use only the nine relationship types, between the right entity types. | as the element | built |
 
 ## 4. Reverse projection (upstream)
 
 | ID | Requirement | Confidence | Status |
 |---|---|---|---|
-| AID-R01 | **A4 → A3.** Project an application component for every A3 id an A4 record names (`hosts`, `component_id`, `of_component`); carry only the id and the A4 evidence. | medium (existence) | not built |
-| AID-R02 | **A3 → A2.** Map A3 elements to the BIAN catalogue with the engine's rules: API ↔ operation (step 2), data entity ↔ business object (S30), component ↔ domain (S17 and its fallbacks). Projected domains reference the catalogue. | medium → low | not built |
-| AID-R03 | **A2 → A1.** Suggest capabilities and processes a domain typically supports, from the domain's name, description and operations. Each suggestion is a low-confidence candidate, never a named A1 record of the institution. | low | not built |
-| AID-R04 | Stop at the first layer with no basis; report *projection ends at <level>* with the reason. | — | not built |
+| AID-R01 | **A4 → A3.** Project an application component for every A3 id an A4 record names (`hosts`, `component_id`, `of_component`); carry only the id and the A4 evidence. | medium (existence) | built |
+| AID-R02 | **A3 → A2.** Map A3 elements to the BIAN catalogue with the engine's rules: API ↔ operation (step 2), data entity ↔ business object (S30), component ↔ domain (S17 and its fallbacks). Projected domains reference the catalogue. | medium → low | built — plus a low-confidence fallback from id words when A4 gives only an application id |
+| AID-R03 | **A2 → A1.** Suggest capabilities and processes a domain typically supports, from the domain's name, description and operations. Each suggestion is a low-confidence candidate, never a named A1 record of the institution. | low | partly built — one capability candidate per domain, from its name; process suggestions not built |
+| AID-R04 | Stop at the first layer with no basis; report *projection ends at <level>* with the reason. | — | built |
 
 ## 5. Middle gap
 
 | ID | Requirement | Status |
 |---|---|---|
-| AID-M01 | With layers above and below a missing layer, project the missing layer from both sides (forward and reverse) and keep elements both sides support; an element supported by both is one band higher than either alone (still capped by AID-S04). | not built |
+| AID-M01 | With layers above and below a missing layer, project the missing layer from both sides (forward and reverse) and keep elements both sides support; an element supported by both is one band higher than either alone (still capped by AID-S04). | built |
 
 ## 6. Output — the projection package
 
 | ID | Requirement | Status |
 |---|---|---|
-| AID-O01 | A projection is written as a **projection package** — a folder, separate from architecture datasets, the registry and graph stores: `projection.json` (metadata), one projected architecture dataset per projected layer, and `projected-links.json`. | not built |
-| AID-O02 | `projection.json`: projection id, mode (forward / reverse / middle), the datasets and catalogue used (with checksums), rulebook version, created by, created at, and per layer a summary (elements projected, by confidence). | not built |
-| AID-O03 | Every projected record: id `PRJ-<…>`; the normal record fields for its entity type; and a `projection` object — `{step, rule, inferred_from, reasoning, confidence}`. | not built |
-| AID-O04 | Every projected link: the relationship-record fields, status `projected`, plus the `projection` object. | not built |
-| AID-O05 | The package validates against `schema/projection.schema.json` (new); projected records also pass the per-entity schemas apart from fields AID cannot know, which are omitted. | not built |
-| AID-O06 | The graph view and trace can load a projection package alongside real data, labelling every projected element **PROJECTED** and showing its confidence. | not built |
+| AID-O01 | A projection is written as a **projection package** — a folder, separate from architecture datasets, the registry and graph stores: `projection.json` (metadata), one projected architecture dataset per projected layer, and `projected-links.json`. | built |
+| AID-O02 | `projection.json`: projection id, mode (forward / reverse / middle), the datasets and catalogue used (with checksums), rulebook version, created by, created at, and per layer a summary (elements projected, by confidence). | built |
+| AID-O03 | Every projected record: id `PRJ-<…>`; the normal record fields for its entity type; and a `projection` object — `{step, rule, inferred_from, reasoning, confidence}`. | built |
+| AID-O04 | Every projected link: the relationship-record fields, status `projected`, plus the `projection` object. | built |
+| AID-O05 | The package validates against `schema/projection.schema.json` (new); projected records also pass the per-entity schemas apart from fields AID cannot know, which are omitted. | **not built** — `sdem-aid check` (CTL-17) does the checks today; the schema file is still to write |
+| AID-O06 | The graph view and trace can load a projection package alongside real data, labelling every projected element **PROJECTED** and showing its confidence. | **not built** |
 
 ## 7. Gap analysis
 
 | ID | Requirement | Status |
 |---|---|---|
-| AID-G01 | Compare a projection package with real architecture datasets and registry, per layer and per link: **matched**, **projected only**, **real only**, **differs**. | not built |
-| AID-G02 | Matching: A2 by BIAN `canonical_id`; A3 components by the BIAN operations their APIs implement, then by name; APIs by method and path; deployments by component; A1 by the domains they use, then by name. Each match states the rule that matched it. | not built |
-| AID-G03 | Report precision and recall per layer and per relationship type, and list every unmatched element with its reason. | not built |
+| AID-G01 | Compare a projection package with real architecture datasets and registry, per layer and per link: **matched**, **projected only**, **real only**, **differs**. | built — `sdem-aid gaps` |
+| AID-G02 | Matching: A2 by BIAN `canonical_id`; A3 components by the BIAN operations their APIs implement, then by name; APIs by method and path; deployments by component; A1 by the domains they use, then by name. Each match states the rule that matched it. | partly built — A2 by catalogue id (not yet `canonical_id`), A1 by domain only, not by name |
+| AID-G03 | Report precision and recall per layer and per relationship type, and list every unmatched element with its reason. | partly built — per layer and for all links together; not yet per relationship type; unmatched elements listed without a reason |
 
 ## 8. Safety rules and their controls
 
 | ID | Requirement | Control (proposed) |
 |---|---|---|
-| AID-S01 | A projection never enters an architecture dataset, the Relationship Registry or a real graph store. | **CTL-16**: the dataset check, the registry validator and the store build reject any record or link that carries a `projection` object or a `PRJ-` id |
+| AID-S01 | A projection never enters an architecture dataset, the Relationship Registry or a real graph store. | **CTL-16** (built): the dataset check, the registry validator and the store build reject `PRJ-` (and design-mode `DSN-`) records, approval of links to them, and projection datasets |
 | AID-S02 | A projected link is never approved. | **CTL-16** (status `projected` is not a registry status) |
-| AID-S03 | Every projected element carries its projection provenance. | **CTL-17**: the projection schema requires it |
+| AID-S03 | Every projected element carries its projection provenance. | **CTL-17** (built): `sdem-aid check`, run before every projection is written |
 | AID-S04 | No projected element above **medium** confidence; pattern-derived elements are **low**. | **CTL-17** |
 | AID-S05 | No BIAN element is invented: every projected A2 element references the catalogue. | **CTL-17** |
 | AID-S06 | Nothing beyond the rule or pattern: no platforms, environments, owners or names without a basis. | acceptance tests (§9) |
 
-CTL-16 and CTL-17 are added to the controls register when built.
+CTL-16 and CTL-17 are in the controls register, tested with good and bad data in use-case example 2 (15 of 15 pass).
 
 ## 9. Acceptance
 
@@ -88,12 +88,13 @@ CTL-16 and CTL-17 are added to the controls register when built.
 
 The accuracy reached is **reported, not assumed**: each run states its precision and recall per layer — the "inference accuracy" an architect plans with.
 
-## 10. Commands (proposed)
+## 10. Commands
 
 ```
 sdem-aid project --have a1.json [a2.json …] --catalogue bian.json [--registry approved.json] --out projection/
-sdem-aid gaps    --projection projection/ --actual a*.json [mappings.json]
-sdem-graph view  --graph graph/ --projection projection/
+sdem-aid check   projection/ [--catalogue bian.json]
+sdem-aid gaps    projection/ --actual a*.json mappings.json
+sdem-graph view  --graph graph/ --projection projection/      (not built — AID-O06)
 ```
 
 ## 11. Open questions
@@ -103,4 +104,4 @@ sdem-graph view  --graph graph/ --projection projection/
 | AID-Q01 | Where does the BIAN catalogue come from? | A2 dataset built from the public portal for testing; an institution's licensed copy in practice |
 | AID-Q02 | Should AID project data entities (A3) from BIAN business objects? | Yes, low confidence, as an option — the pattern does not give them; off by default |
 | AID-Q03 | How far should reverse projection go above A2 (R3)? | Candidates only, low; revisit when BIAN publishes its capability-to-domain mapping |
-| AID-Q04 | Should F2 put a create-type operation with a behaviour qualifier (e.g. *Evaluate … Validation*) on a qualifier sub-resource (`POST …/{id}/validation`)? Found in the design illustration: today it uses the collection. | Yes — align with check 3 of step 2 |
+| AID-Q04 | Should F2 put a create-type operation with a behaviour qualifier (e.g. *Evaluate … Validation*) on a qualifier sub-resource (`POST …/{id}/validation`)? Found in the design illustration: today it uses the collection. | Yes — align with check 3 of step 2. **Done 2026-10-27**: APIs matched rose from 2 to 3 of 5 |

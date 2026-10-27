@@ -1,0 +1,1181 @@
+{
+  "projection": {
+    "projection_id": "PRJ-RUN2",
+    "mode": "forward",
+    "created_by": "sdem-aid",
+    "created_at": "2026-10-27T00:00:00+00:00",
+    "metamodel_version": "0.4.0",
+    "have": [
+      "A1"
+    ],
+    "catalogue": {
+      "model_id": "aid-test-bian-catalogue",
+      "sha256": "e3f8adb9dda50c7ed1447c22ed08a794191620404a5a132d3a99bc80590f309d"
+    },
+    "inputs": {
+      "A1": {
+        "model_id": "synthetic-bank-payments-a1",
+        "sha256": "ead8cbcd16bd34899a257b7fce3ecd89f9f25aaadf61c2dbf72cc1c55a7da161"
+      }
+    },
+    "steps": [
+      {
+        "step": "F1",
+        "domains": [
+          "SD-PI"
+        ]
+      },
+      {
+        "step": "F3",
+        "deployments": 1
+      },
+      {
+        "step": "F2",
+        "components": [
+          "PRJ-APP-SD-PI"
+        ]
+      }
+    ],
+    "projection_ends": [
+      "SO-PI-06: Notify has no REST form — no API projected"
+    ],
+    "summary": {
+      "A2": {
+        "records": 17,
+        "by_confidence": {
+          "0.6": 17,
+          "0.4": 0
+        }
+      },
+      "A3": {
+        "records": 7,
+        "by_confidence": {
+          "0.6": 0,
+          "0.4": 7
+        }
+      },
+      "A4": {
+        "records": 1,
+        "by_confidence": {
+          "0.6": 0,
+          "0.4": 1
+        }
+      }
+    },
+    "links": 12
+  },
+  "layers": {
+    "A2": {
+      "level": "A2",
+      "model_id": "PRJ-RUN2-a2-PROJECTION",
+      "model_version": "projection",
+      "metamodel_version": "0.4.0",
+      "source_system": "AID-PROJECTION (sdem-aid; not a real architecture dataset)",
+      "instances": [
+        {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0",
+          "name": "Payment Initiation (synthetic selection)",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in for a BIAN payment-initiation Service Domain: captures, validates, authorises and hands over customer payment instructions.",
+          "attributes": {
+            "asset_type": "AT-PAY-INSTR",
+            "functional_pattern": "FP-FULFIL",
+            "adoption_status": "adopted",
+            "owner": "ROLE-PAY-OFFICER",
+            "conforms_to": [
+              "BIAN 14.0"
+            ]
+          },
+          "canonical_id": "BIAN-PAYMENT-INITIATION",
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "S01 step3 all 2 processes of the capability use the domain; S04 step3 invokes SO-PI-01 (PRC-PAY-01.invokes); SO-PI-02 (PRC-PAY-01.invokes); S04 step3 invokes SO-PI-03 (PRC-PAY-02.invokes); SO-PI-04 (PRC-PAY-02.invokes); S07 step3 S06 C-AID-001: ACT-PAY-01a → SO-PI-01, in SD-PI; S07 step3 S06 C-AID-0",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "AT-PAY-INSTR",
+          "type": "A2.AssetType",
+          "version": "1.0",
+          "name": "Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "The customer payment instruction the domain fulfils.",
+          "attributes": {
+            "aliases": [
+              "payment",
+              "instruction"
+            ]
+          },
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "FP-FULFIL",
+          "type": "A2.FunctionalPattern",
+          "version": "1.0",
+          "name": "Fulfil",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in for a BIAN functional pattern: complete a request through a procedure.",
+          "attributes": {
+            "generic_artefact": "Arrangement",
+            "behavior_qualifier_type": "Features"
+          },
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "CR-PI",
+          "type": "A2.ControlRecord",
+          "version": "1.0",
+          "name": "Payment Initiation Procedure",
+          "lifecycle_status": "active",
+          "description": "Lifecycle record of one payment instruction from capture to hand-over.",
+          "attributes": {
+            "attributes": [
+              "payment_instruction_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "payment_status",
+              "authorisation_status",
+              "execution_reference",
+              "remittance_information"
+            ]
+          },
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "SG-PI-1",
+          "type": "A2.ServiceGroup",
+          "version": "1.0",
+          "name": "Instruction",
+          "lifecycle_status": "active",
+          "description": "Operations that create and maintain the instruction.",
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "SG-PI-2",
+          "type": "A2.ServiceGroup",
+          "version": "1.0",
+          "name": "Processing",
+          "lifecycle_status": "active",
+          "description": "Operations that validate, execute and report.",
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "SO-PI-02",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Evaluate Payment Instruction Validation",
+          "lifecycle_status": "active",
+          "description": "Validate the instruction and record the authorisation outcome.",
+          "attributes": {
+            "action_term": "Evaluate",
+            "behavior_qualifier": "Validation",
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "authorisation_status",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "SO-PI-03",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Execute Payment Instruction Execution",
+          "lifecycle_status": "active",
+          "description": "Hand the authorised instruction to execution.",
+          "attributes": {
+            "action_term": "Execute",
+            "behavior_qualifier": "Execution",
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "execution_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "SO-PI-04",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Retrieve Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Return the current state of the instruction.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "payment_status",
+              "execution_reference",
+              "authorisation_status"
+            ]
+          },
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "SO-PI-06",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Notify Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Notify an interested party of a change in the instruction's state.",
+          "attributes": {
+            "action_term": "Notify",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "SO-PI-01",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Initiate Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Create a new payment instruction procedure from the customer's details.",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "remittance_information"
+            ],
+            "output_attributes": [
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "SO-PI-05",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Update Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Amend an instruction before execution.",
+          "attributes": {
+            "action_term": "Update",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference",
+              "amount",
+              "value_date",
+              "creditor_account_reference"
+            ],
+            "output_attributes": [
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "SO-PI-04@acquired-fintech",
+          "type": "A2.ServiceOperation",
+          "version": "1.0",
+          "name": "Control Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Cancel or hold an instruction.",
+          "attributes": {
+            "action_term": "Control",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference",
+              "payment_status"
+            ],
+            "output_attributes": [
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "BQ-VALIDATION",
+          "type": "A2.BehaviorQualifier",
+          "version": "1.0",
+          "name": "Validation",
+          "lifecycle_status": "active",
+          "description": "The validation and authorisation partition of the procedure.",
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "BQ-EXECUTION",
+          "type": "A2.BehaviorQualifier",
+          "version": "1.0",
+          "name": "Execution",
+          "lifecycle_status": "active",
+          "description": "The hand-over-to-execution partition of the procedure.",
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "BBO-PAY-INSTR",
+          "type": "A2.BusinessObject",
+          "version": "1.0",
+          "name": "Payment Instruction",
+          "lifecycle_status": "active",
+          "description": "Canonical payment instruction object.",
+          "attributes": {
+            "attributes": [
+              "payment_instruction_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "remittance_information",
+              "payment_status"
+            ],
+            "personal_information": true
+          },
+          "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION",
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "BBOA-AMOUNT",
+          "type": "A2.BusinessObjectAttribute",
+          "version": "1.0",
+          "name": "amount",
+          "lifecycle_status": "active",
+          "description": "Monetary amount of the instruction.",
+          "attributes": {
+            "personal_information": false,
+            "data_type": "Amount"
+          },
+          "projection": {
+            "step": "F1",
+            "rule": "BIAN catalogue reference",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "part of SD-PI in the BIAN catalogue",
+            "confidence": 0.6
+          }
+        }
+      ],
+      "relationships": [
+        {
+          "source": "SD-PI",
+          "kind": "association",
+          "target": "AT-PAY-INSTR"
+        },
+        {
+          "source": "SD-PI",
+          "kind": "association",
+          "target": "FP-FULFIL"
+        },
+        {
+          "source": "SD-PI",
+          "kind": "aggregation",
+          "target": "CR-PI"
+        },
+        {
+          "source": "CR-PI",
+          "kind": "composition",
+          "target": "BQ-VALIDATION"
+        },
+        {
+          "source": "CR-PI",
+          "kind": "composition",
+          "target": "BQ-EXECUTION"
+        },
+        {
+          "source": "CR-PI",
+          "kind": "association",
+          "target": "BBO-PAY-INSTR"
+        },
+        {
+          "source": "SD-PI",
+          "kind": "composition",
+          "target": "SG-PI-1"
+        },
+        {
+          "source": "SD-PI",
+          "kind": "composition",
+          "target": "SG-PI-2"
+        },
+        {
+          "source": "SG-PI-1",
+          "kind": "composition",
+          "target": "SO-PI-01"
+        },
+        {
+          "source": "SG-PI-1",
+          "kind": "composition",
+          "target": "SO-PI-05"
+        },
+        {
+          "source": "SG-PI-2",
+          "kind": "composition",
+          "target": "SO-PI-02"
+        },
+        {
+          "source": "SG-PI-2",
+          "kind": "composition",
+          "target": "SO-PI-03"
+        },
+        {
+          "source": "SG-PI-2",
+          "kind": "composition",
+          "target": "SO-PI-04"
+        },
+        {
+          "source": "SG-PI-2",
+          "kind": "composition",
+          "target": "SO-PI-06"
+        },
+        {
+          "source": "SO-PI-01",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "SO-PI-02",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "SO-PI-03",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "SO-PI-04",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "SO-PI-05",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "SO-PI-06",
+          "kind": "access",
+          "target": "CR-PI"
+        },
+        {
+          "source": "BBO-PAY-INSTR",
+          "kind": "composition",
+          "target": "BBOA-AMOUNT"
+        },
+        {
+          "source": "SG-PI-1",
+          "kind": "composition",
+          "target": "SO-PI-04@acquired-fintech"
+        },
+        {
+          "source": "SO-PI-04@acquired-fintech",
+          "kind": "access",
+          "target": "CR-PI"
+        }
+      ]
+    },
+    "A3": {
+      "level": "A3",
+      "model_id": "PRJ-RUN2-a3-PROJECTION",
+      "model_version": "projection",
+      "metamodel_version": "0.4.0",
+      "source_system": "AID-PROJECTION (sdem-aid; not a real architecture dataset)",
+      "instances": [
+        {
+          "id": "PRJ-APP-SD-PI",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0",
+          "name": "Payment Instruction service (projected)",
+          "lifecycle_status": "planned",
+          "description": "Projected: one deployable component for Payment Initiation (BIAN container pattern).",
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN container pattern",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "one component per service domain",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-API-SO-PI-02",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "POST /payment-instructions/{id}/validation",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "method": "POST",
+            "path": "/payment-instructions/{id}/validation",
+            "payload_fields": [
+              "authorisation_status",
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN REST mapping",
+            "inferred_from": [
+              "SO-PI-02"
+            ],
+            "reasoning": "create-type term with a qualifier ⇔ POST on the qualifier sub-resource (AID-Q04)",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-API-SO-PI-03",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "POST /payment-instructions/{id}/execution",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "method": "POST",
+            "path": "/payment-instructions/{id}/execution",
+            "payload_fields": [
+              "execution_reference",
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN REST mapping",
+            "inferred_from": [
+              "SO-PI-03"
+            ],
+            "reasoning": "Execute ⇔ POST on the qualifier sub-resource",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-API-SO-PI-04",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "GET /payment-instructions/{id}",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "method": "GET",
+            "path": "/payment-instructions/{id}",
+            "payload_fields": [
+              "authorisation_status",
+              "execution_reference",
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN REST mapping",
+            "inferred_from": [
+              "SO-PI-04"
+            ],
+            "reasoning": "Retrieve ⇔ GET (SAPG §3.5, verified)",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-API-SO-PI-01",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "POST /payment-instructions",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "method": "POST",
+            "path": "/payment-instructions",
+            "payload_fields": [
+              "amount",
+              "creditor_account_reference",
+              "currency",
+              "debtor_account_reference",
+              "payment_instruction_reference",
+              "payment_status",
+              "remittance_information",
+              "value_date"
+            ]
+          },
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN REST mapping",
+            "inferred_from": [
+              "SO-PI-01"
+            ],
+            "reasoning": "create-instance term ⇔ POST on the collection",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-API-SO-PI-05",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "PATCH /payment-instructions/{id}",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "method": "PATCH",
+            "path": "/payment-instructions/{id}",
+            "payload_fields": [
+              "amount",
+              "creditor_account_reference",
+              "payment_instruction_reference",
+              "payment_status",
+              "value_date"
+            ]
+          },
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN REST mapping",
+            "inferred_from": [
+              "SO-PI-05"
+            ],
+            "reasoning": "Update ⇔ PATCH on the instance",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-API-SO-PI-04@acquired-fintech",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "PUT /payment-instructions/{id}/control",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "method": "PUT",
+            "path": "/payment-instructions/{id}/control",
+            "payload_fields": [
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN REST mapping",
+            "inferred_from": [
+              "SO-PI-04@acquired-fintech"
+            ],
+            "reasoning": "Control ⇔ PUT on the instance's control action",
+            "confidence": 0.4
+          }
+        }
+      ],
+      "relationships": [
+        {
+          "source": "PRJ-APP-SD-PI",
+          "kind": "composition",
+          "target": "PRJ-API-SO-PI-02"
+        },
+        {
+          "source": "PRJ-APP-SD-PI",
+          "kind": "composition",
+          "target": "PRJ-API-SO-PI-03"
+        },
+        {
+          "source": "PRJ-APP-SD-PI",
+          "kind": "composition",
+          "target": "PRJ-API-SO-PI-04"
+        },
+        {
+          "source": "PRJ-APP-SD-PI",
+          "kind": "composition",
+          "target": "PRJ-API-SO-PI-01"
+        },
+        {
+          "source": "PRJ-APP-SD-PI",
+          "kind": "composition",
+          "target": "PRJ-API-SO-PI-05"
+        },
+        {
+          "source": "PRJ-APP-SD-PI",
+          "kind": "composition",
+          "target": "PRJ-API-SO-PI-04@acquired-fintech"
+        }
+      ]
+    },
+    "A4": {
+      "level": "A4",
+      "model_id": "PRJ-RUN2-a4-PROJECTION",
+      "model_version": "projection",
+      "metamodel_version": "0.4.0",
+      "source_system": "AID-PROJECTION (sdem-aid; not a real architecture dataset)",
+      "instances": [
+        {
+          "id": "PRJ-DEP-SD-PI",
+          "type": "A4.Deployment",
+          "version": "1.0",
+          "name": "Payment Instruction service (projected) — deployment (projected)",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "component_id": "PRJ-APP-SD-PI"
+          },
+          "projection": {
+            "step": "F3",
+            "rule": "BIAN container pattern",
+            "inferred_from": [
+              "PRJ-APP-SD-PI"
+            ],
+            "reasoning": "one deployment per component; no platform, environment or network is projected",
+            "confidence": 0.4
+          }
+        }
+      ],
+      "relationships": []
+    }
+  },
+  "links": {
+    "links": [
+      {
+        "mapping_id": "PRJ-L-001",
+        "source": {
+          "id": "BO-PAY-INSTR",
+          "type": "A1.BusinessObject",
+          "version": "1.0"
+        },
+        "relationship": "ALIGNED_TO",
+        "target": {
+          "id": "BBO-PAY-INSTR",
+          "type": "A2.BusinessObject",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: 4/8 BOM attributes covered by the glossary (50%)",
+        "projection": {
+          "step": "F1",
+          "rule": "S12",
+          "inferred_from": [
+            "BO-PAY-INSTR"
+          ],
+          "reasoning": "4/8 BOM attributes covered by the glossary (50%)",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-002",
+        "source": {
+          "id": "PRC-PAY-01",
+          "type": "A1.BusinessProcess",
+          "version": "1.0"
+        },
+        "relationship": "USES_DOMAIN",
+        "target": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: invokes SO-PI-01 (PRC-PAY-01.invokes); SO-PI-02 (PRC-PAY-01.invokes)",
+        "projection": {
+          "step": "F1",
+          "rule": "S04",
+          "inferred_from": [
+            "PRC-PAY-01"
+          ],
+          "reasoning": "invokes SO-PI-01 (PRC-PAY-01.invokes); SO-PI-02 (PRC-PAY-01.invokes)",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-003",
+        "source": {
+          "id": "PRC-PAY-02",
+          "type": "A1.BusinessProcess",
+          "version": "1.0"
+        },
+        "relationship": "USES_DOMAIN",
+        "target": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: invokes SO-PI-03 (PRC-PAY-02.invokes); SO-PI-04 (PRC-PAY-02.invokes)",
+        "projection": {
+          "step": "F1",
+          "rule": "S04",
+          "inferred_from": [
+            "PRC-PAY-02"
+          ],
+          "reasoning": "invokes SO-PI-03 (PRC-PAY-02.invokes); SO-PI-04 (PRC-PAY-02.invokes)",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-004",
+        "source": {
+          "id": "CAP-PAY-010",
+          "type": "A1.BusinessCapability",
+          "version": "1.0"
+        },
+        "relationship": "SUPPORTED_BY",
+        "target": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: all 2 processes of the capability use the domain",
+        "projection": {
+          "step": "F1",
+          "rule": "S01",
+          "inferred_from": [
+            "CAP-PAY-010"
+          ],
+          "reasoning": "all 2 processes of the capability use the domain",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-005",
+        "source": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "relationship": "REALIZED_BY",
+        "target": {
+          "id": "PRJ-APP-SD-PI",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: one component per service domain",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN container pattern",
+          "inferred_from": [
+            "SD-PI"
+          ],
+          "reasoning": "one component per service domain",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-006",
+        "source": {
+          "id": "SO-PI-02",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "PRJ-API-SO-PI-02",
+          "type": "A3.APIOperation",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: create-type term with a qualifier ⇔ POST on the qualifier sub-resource (AID-Q04)",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN REST mapping",
+          "inferred_from": [
+            "SO-PI-02"
+          ],
+          "reasoning": "create-type term with a qualifier ⇔ POST on the qualifier sub-resource (AID-Q04)",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-007",
+        "source": {
+          "id": "SO-PI-03",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "PRJ-API-SO-PI-03",
+          "type": "A3.APIOperation",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: Execute ⇔ POST on the qualifier sub-resource",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN REST mapping",
+          "inferred_from": [
+            "SO-PI-03"
+          ],
+          "reasoning": "Execute ⇔ POST on the qualifier sub-resource",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-008",
+        "source": {
+          "id": "SO-PI-04",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "PRJ-API-SO-PI-04",
+          "type": "A3.APIOperation",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: Retrieve ⇔ GET (SAPG §3.5, verified)",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN REST mapping",
+          "inferred_from": [
+            "SO-PI-04"
+          ],
+          "reasoning": "Retrieve ⇔ GET (SAPG §3.5, verified)",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-009",
+        "source": {
+          "id": "SO-PI-01",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "PRJ-API-SO-PI-01",
+          "type": "A3.APIOperation",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: create-instance term ⇔ POST on the collection",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN REST mapping",
+          "inferred_from": [
+            "SO-PI-01"
+          ],
+          "reasoning": "create-instance term ⇔ POST on the collection",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-010",
+        "source": {
+          "id": "SO-PI-05",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "PRJ-API-SO-PI-05",
+          "type": "A3.APIOperation",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: Update ⇔ PATCH on the instance",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN REST mapping",
+          "inferred_from": [
+            "SO-PI-05"
+          ],
+          "reasoning": "Update ⇔ PATCH on the instance",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-011",
+        "source": {
+          "id": "SO-PI-04@acquired-fintech",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "PRJ-API-SO-PI-04@acquired-fintech",
+          "type": "A3.APIOperation",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: Control ⇔ PUT on the instance's control action",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN REST mapping",
+          "inferred_from": [
+            "SO-PI-04@acquired-fintech"
+          ],
+          "reasoning": "Control ⇔ PUT on the instance's control action",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-012",
+        "source": {
+          "id": "PRJ-APP-SD-PI",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_AS",
+        "target": {
+          "id": "PRJ-DEP-SD-PI",
+          "type": "A4.Deployment",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: one deployment per component",
+        "projection": {
+          "step": "F3",
+          "rule": "BIAN container pattern",
+          "inferred_from": [
+            "PRJ-APP-SD-PI"
+          ],
+          "reasoning": "one deployment per component",
+          "confidence": 0.4
+        }
+      }
+    ]
+  }
+}

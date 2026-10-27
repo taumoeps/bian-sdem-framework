@@ -156,21 +156,23 @@
       "id": "CTL-16",
       "rule_area": "platform",
       "control": "A projected design (AID) never enters an architecture dataset, the Relationship Registry or a real graph store, and a projected link is never approved",
-      "implemented_in": "planned: dataset check, registry validator and store build reject `PRJ-` ids and `projection` provenance",
+      "implemented_in": "sdem/graph.py `LevelGraph.validate` (dataset check), sdem/validate.py (registry validator), sdem/store.py `render` (store build): reject `PRJ-`/`DSN-` records in real datasets, approval of links to them, and projection or target-design datasets in a real store",
       "runs": "sdem-graph check; sdem-validate; sdem-graph build",
       "outcome_recorded_in": "command output; graph store load record",
-      "monitored_by": "CI (when built)",
-      "status": "planned (AID)"
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request; tests/test_use_case_example_2.py",
+      "status": "built",
+      "tested_by": "use-case-example-2"
     },
     {
       "id": "CTL-17",
       "rule_area": "platform",
       "control": "Every projected element carries its projection provenance, is never above medium confidence, and never invents a BIAN element",
-      "implemented_in": "planned: `schema/projection.schema.json` and the AID projector",
-      "runs": "sdem-aid project",
-      "outcome_recorded_in": "projection package metadata",
-      "monitored_by": "CI (when built)",
-      "status": "planned (AID)"
+      "implemented_in": "sdem/aid.py `check` — run by `sdem-aid project` before writing, and by `sdem-aid check`",
+      "runs": "sdem-aid project; sdem-aid check",
+      "outcome_recorded_in": "projection package `projection.json`; command output",
+      "monitored_by": "GitHub Actions `validate.yml` on every push and pull request; tests/test_use_case_example_2.py",
+      "status": "built",
+      "tested_by": "use-case-example-2"
     }
   ],
   "gaps": [

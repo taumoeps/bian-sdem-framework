@@ -1,0 +1,70 @@
+{
+  "rows": [
+    {
+      "layer": "A2 service domains (those the real design links)",
+      "element": "SD-PI",
+      "result": "matched"
+    },
+    {
+      "layer": "A3 components (realising a domain)",
+      "element": "APP-PAY-HUB",
+      "result": "matched"
+    },
+    {
+      "layer": "A3 APIs",
+      "element": "SO-PI-02: projected POST /payment-instructions/{id}/validation · real POST /payment-instructions/{id}/validation",
+      "result": "matched"
+    },
+    {
+      "layer": "A3 APIs",
+      "element": "SO-PI-03: projected POST /payment-instructions/{id}/execution · real PUT /payment-instructions/{id}/execution",
+      "result": "differs"
+    },
+    {
+      "layer": "A3 APIs",
+      "element": "SO-PI-04: projected GET /payment-instructions/{id} · real POST /payment-instructions/{id}",
+      "result": "differs"
+    },
+    {
+      "layer": "A3 APIs",
+      "element": "SO-PI-01: projected POST /payment-instructions · real POST /payment-instructions",
+      "result": "matched"
+    },
+    {
+      "layer": "A3 APIs",
+      "element": "SO-PI-05: projected PATCH /payment-instructions/{id} · real PATCH /payment-instructions/{id}",
+      "result": "matched"
+    }
+  ],
+  "metrics": {
+    "A2 service domains (those the real design links)": {
+      "projected": 1,
+      "real": 1,
+      "matched": 1,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "A3 components (realising a domain)": {
+      "projected": 1,
+      "real": 1,
+      "matched": 1,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "A3 APIs (method and path)": {
+      "compared": 5,
+      "matched": 3,
+      "differs": 2
+    },
+    "links between real elements": {
+      "projected": 4,
+      "real": 5,
+      "matched": 4,
+      "precision": 1.0,
+      "recall": 0.8
+    }
+  },
+  "projection_ends": [
+    "SO-PI-06: Notify has no REST form — no API projected"
+  ]
+}

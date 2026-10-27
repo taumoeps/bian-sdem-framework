@@ -5,76 +5,65 @@
       "run": 1,
       "has": "A1 + A2",
       "projects": "A3, A4",
-      "status": "run",
+      "metrics": {
+        "A3 components (realising a domain)": {
+          "projected": 1,
+          "real": 1,
+          "matched": 1,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "A3 APIs (method and path)": {
+          "compared": 5,
+          "matched": 3,
+          "differs": 2
+        }
+      },
       "rows": [
         {
-          "layer": "A3",
-          "element": "component realising SD-PI",
-          "projected": "DSN-APP-SD-PI",
-          "real": "APP-PAY-HUB (with 3 sub-components)",
-          "result": "matched — structure differs (one projected component; the real one has sub-components)",
-          "confidence": 0.4
+          "layer": "A3 components (realising a domain)",
+          "element": "APP-PAY-HUB",
+          "result": "matched"
         },
         {
-          "layer": "A3",
-          "element": "API for Initiate Payment Instruction",
-          "projected": "POST /payment-instructions",
-          "real": "POST /payment-instructions",
-          "result": "matched",
-          "confidence": 0.4
+          "layer": "A3 APIs",
+          "element": "SO-PI-01: projected POST /payment-instructions · real POST /payment-instructions",
+          "result": "matched"
         },
         {
-          "layer": "A3",
-          "element": "API for Update Payment Instruction",
-          "projected": "PATCH /payment-instructions/{id}",
-          "real": "PATCH /payment-instructions/{id}",
-          "result": "matched",
-          "confidence": 0.4
+          "layer": "A3 APIs",
+          "element": "SO-PI-05: projected PATCH /payment-instructions/{id} · real PATCH /payment-instructions/{id}",
+          "result": "matched"
         },
         {
-          "layer": "A3",
-          "element": "API for Evaluate Payment Instruction Validation",
-          "projected": "POST /payment-instructions",
-          "real": "POST /payment-instructions/{id}/validation",
-          "result": "differs",
-          "confidence": 0.4
+          "layer": "A3 APIs",
+          "element": "SO-PI-02: projected POST /payment-instructions/{id}/validation · real POST /payment-instructions/{id}/validation",
+          "result": "matched"
         },
         {
-          "layer": "A3",
-          "element": "API for Execute Payment Instruction Execution",
-          "projected": "POST /payment-instructions/{id}/execution",
-          "real": "PUT /payment-instructions/{id}/execution",
-          "result": "differs",
-          "confidence": 0.4
+          "layer": "A3 APIs",
+          "element": "SO-PI-03: projected POST /payment-instructions/{id}/execution · real PUT /payment-instructions/{id}/execution",
+          "result": "differs"
         },
         {
-          "layer": "A3",
-          "element": "API for Retrieve Payment Instruction",
-          "projected": "GET /payment-instructions/{id}",
-          "real": "POST /payment-instructions/{id}",
-          "result": "differs",
-          "confidence": 0.4
-        },
-        {
-          "layer": "A3",
-          "element": "API API-PI-06 (no BIAN operation mapped)",
-          "projected": "—",
-          "real": "GET /payment-instructions/{id}/events",
-          "result": "real only",
-          "confidence": null
-        },
-        {
-          "layer": "A4",
-          "element": "deployments of the Payment Initiation component",
-          "projected": "1",
-          "real": "2 (production, UAT)",
-          "result": "differs — one projected, the real one is deployed twice",
-          "confidence": 0.4
+          "layer": "A3 APIs",
+          "element": "SO-PI-04: projected GET /payment-instructions/{id} · real POST /payment-instructions/{id}",
+          "result": "differs"
         }
       ],
+      "ends": [
+        "SO-PI-06: Notify has no REST form — no API projected",
+        "SD-PE: no service operations in the A2 data — no component projected",
+        "SD-PA: no service operations in the A2 data — no component projected"
+      ],
+      "records": {
+        "A3": 6,
+        "A4": 1
+      },
+      "links": 7,
       "checks": [
         [
-          "every service domain with operations gets a projected component",
+          "every service domain with operations gets a projected component — ['SD-PI']",
           true
         ],
         [
@@ -86,72 +75,463 @@
           true
         ],
         [
-          "APIs match the real method and path for at least 2 (2 of 5 operations that have both)",
+          "APIs match the real method and path for at least 2 — 3 of 5",
+          true
+        ],
+        [
+          "higher than the baseline (2) after the qualifier fix AID-Q04 — 3",
           true
         ]
-      ],
-      "summary": "2 of 5 APIs match by method and path; 1 component and 1 deployment projected for the one service domain with operations; nothing invented in A4"
+      ]
     },
     {
       "run": 2,
-      "has": "A1 only",
+      "has": "A1",
       "projects": "A2, A3, A4",
-      "status": "not built",
-      "rows": [],
-      "checks": [],
-      "summary": "AID not built yet — no projection made"
+      "metrics": {
+        "A2 service domains (those the real design links)": {
+          "projected": 1,
+          "real": 1,
+          "matched": 1,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "A3 components (realising a domain)": {
+          "projected": 1,
+          "real": 1,
+          "matched": 1,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "A3 APIs (method and path)": {
+          "compared": 5,
+          "matched": 3,
+          "differs": 2
+        },
+        "links between real elements": {
+          "projected": 4,
+          "real": 5,
+          "matched": 4,
+          "precision": 1.0,
+          "recall": 0.8
+        }
+      },
+      "rows": [
+        {
+          "layer": "A2 service domains (those the real design links)",
+          "element": "SD-PI",
+          "result": "matched"
+        },
+        {
+          "layer": "A3 components (realising a domain)",
+          "element": "APP-PAY-HUB",
+          "result": "matched"
+        },
+        {
+          "layer": "A3 APIs",
+          "element": "SO-PI-02: projected POST /payment-instructions/{id}/validation · real POST /payment-instructions/{id}/validation",
+          "result": "matched"
+        },
+        {
+          "layer": "A3 APIs",
+          "element": "SO-PI-03: projected POST /payment-instructions/{id}/execution · real PUT /payment-instructions/{id}/execution",
+          "result": "differs"
+        },
+        {
+          "layer": "A3 APIs",
+          "element": "SO-PI-04: projected GET /payment-instructions/{id} · real POST /payment-instructions/{id}",
+          "result": "differs"
+        },
+        {
+          "layer": "A3 APIs",
+          "element": "SO-PI-01: projected POST /payment-instructions · real POST /payment-instructions",
+          "result": "matched"
+        },
+        {
+          "layer": "A3 APIs",
+          "element": "SO-PI-05: projected PATCH /payment-instructions/{id} · real PATCH /payment-instructions/{id}",
+          "result": "matched"
+        }
+      ],
+      "ends": [
+        "SO-PI-06: Notify has no REST form — no API projected"
+      ],
+      "records": {
+        "A2": 17,
+        "A3": 7,
+        "A4": 1
+      },
+      "links": 12,
+      "checks": [
+        [
+          "all real service domains found where the business names its operations — ['SD-PI']",
+          true
+        ],
+        [
+          "few wrong — precision 1.0",
+          true
+        ]
+      ]
     },
     {
       "run": 3,
-      "has": "A4 only",
+      "has": "A4",
       "projects": "A3, A2, A1",
-      "status": "not built",
-      "rows": [],
-      "checks": [],
-      "summary": "AID not built yet — no projection made"
+      "metrics": {
+        "A2 service domains (those the real design links)": {
+          "projected": 2,
+          "real": 1,
+          "matched": 1,
+          "precision": 0.5,
+          "recall": 1.0
+        },
+        "A3 components (named by A4)": {
+          "projected": 2,
+          "real": 2,
+          "matched": 2,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "A1 capability candidates (by the domain they point to)": {
+          "projected": 2,
+          "real": 1,
+          "matched": 1,
+          "precision": 0.5,
+          "recall": 1.0
+        },
+        "links between real elements": {
+          "projected": 10,
+          "real": 7,
+          "matched": 7,
+          "precision": 0.7,
+          "recall": 1.0
+        }
+      },
+      "rows": [
+        {
+          "layer": "A2 service domains (those the real design links)",
+          "element": "SD-PI",
+          "result": "matched"
+        },
+        {
+          "layer": "A2 service domains (those the real design links)",
+          "element": "SD-PE",
+          "result": "projected only"
+        },
+        {
+          "layer": "A3 components (named by A4)",
+          "element": "APP-PAY-HUB",
+          "result": "matched"
+        },
+        {
+          "layer": "A3 components (named by A4)",
+          "element": "CMP-PAY-EXEC",
+          "result": "matched"
+        },
+        {
+          "layer": "A1 capability candidates (by the domain they point to)",
+          "element": "SD-PI",
+          "result": "matched"
+        },
+        {
+          "layer": "A1 capability candidates (by the domain they point to)",
+          "element": "SD-PE",
+          "result": "projected only"
+        }
+      ],
+      "ends": [],
+      "records": {
+        "A1": 2,
+        "A2": 25,
+        "A3": 2
+      },
+      "links": 12,
+      "checks": [
+        [
+          "every application the technology names is projected — recall 1.0",
+          true
+        ],
+        [
+          "BIAN domains suggested at low confidence",
+          true
+        ],
+        [
+          "the business layer marked the weakest (low)",
+          true
+        ]
+      ]
     },
     {
       "run": 4,
       "has": "A3 + A4",
       "projects": "A2, A1",
-      "status": "not built",
-      "rows": [],
-      "checks": [],
-      "summary": "AID not built yet — no projection made"
+      "metrics": {
+        "A2 service domains (those the real design links)": {
+          "projected": 2,
+          "real": 1,
+          "matched": 1,
+          "precision": 0.5,
+          "recall": 1.0
+        },
+        "A1 capability candidates (by the domain they point to)": {
+          "projected": 2,
+          "real": 1,
+          "matched": 1,
+          "precision": 0.5,
+          "recall": 1.0
+        },
+        "links between real elements": {
+          "projected": 9,
+          "real": 7,
+          "matched": 7,
+          "precision": 0.78,
+          "recall": 1.0
+        }
+      },
+      "rows": [
+        {
+          "layer": "A2 service domains (those the real design links)",
+          "element": "SD-PI",
+          "result": "matched"
+        },
+        {
+          "layer": "A2 service domains (those the real design links)",
+          "element": "SD-CA",
+          "result": "projected only"
+        },
+        {
+          "layer": "A1 capability candidates (by the domain they point to)",
+          "element": "SD-PI",
+          "result": "matched"
+        },
+        {
+          "layer": "A1 capability candidates (by the domain they point to)",
+          "element": "SD-CA",
+          "result": "projected only"
+        }
+      ],
+      "ends": [],
+      "records": {
+        "A1": 2,
+        "A2": 28
+      },
+      "links": 11,
+      "checks": [
+        [
+          "BIAN domains correct where the APIs carry BIAN-style operations — ['SD-PI']",
+          true
+        ]
+      ]
     },
     {
       "run": 5,
       "has": "A1 + A3",
       "projects": "A2",
-      "status": "not built",
-      "rows": [],
-      "checks": [],
-      "summary": "AID not built yet — no projection made"
+      "metrics": {
+        "A2 service domains (those the real design links)": {
+          "projected": 1,
+          "real": 1,
+          "matched": 1,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "links between real elements": {
+          "projected": 9,
+          "real": 9,
+          "matched": 9,
+          "precision": 1.0,
+          "recall": 1.0
+        }
+      },
+      "rows": [
+        {
+          "layer": "A2 service domains (those the real design links)",
+          "element": "SD-PI",
+          "result": "matched"
+        }
+      ],
+      "ends": [],
+      "records": {
+        "A2": 18
+      },
+      "links": 9,
+      "checks": [
+        [
+          "at least as accurate as run 2 — precision 1.0 vs 1.0",
+          true
+        ]
+      ]
     }
   ],
   "safety": [
     {
       "control": "CTL-16",
-      "test": "put the projected component DSN-APP-SD-PI into the real A3 dataset",
+      "data": "good",
+      "test": "the real datasets load as real data",
+      "should": "accepted",
+      "did": "accepted",
+      "message": "—",
+      "pass": true
+    },
+    {
+      "control": "CTL-16",
+      "data": "bad",
+      "test": "put the projected component PRJ-APP-SD-PI into the real A3 dataset",
       "should": "rejected",
-      "did": "accepted — no control stops it yet",
-      "status": "not built",
-      "pass": false
+      "did": "rejected",
+      "message": "instance PRJ-APP-SD-PI: a projected or design record cannot enter a real architecture dataset (CTL-16)",
+      "pass": true
+    },
+    {
+      "control": "CTL-16",
+      "data": "bad",
+      "test": "put a design-mode record (`DSN-`) into the real A3 dataset",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "instance DSN-APP-SD-PI: a projected or design record cannot enter a real architecture dataset (CTL-16)",
+      "pass": true
+    },
+    {
+      "control": "CTL-16",
+      "data": "bad",
+      "test": "approve the projected link PRJ-L-001 in a registry",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "mapping #1 (PRJ-L-001): a link to a projected or design record cannot be approved or validated (CTL-16)",
+      "pass": true
+    },
+    {
+      "control": "CTL-16",
+      "data": "bad",
+      "test": "load a projected layer into a graph store of real data",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "PRJ-RUN1-a3-PROJECTION: a projected or target design cannot be loaded into a graph store of real data (CTL-16)",
+      "pass": true
     },
     {
       "control": "CTL-17",
-      "test": "every projected element carries projection provenance and is at most medium confidence",
-      "should": "yes",
-      "did": "confidence at most medium: yes; projection provenance: no (`DSN-`, `planned` only)",
-      "status": "not built",
-      "pass": false
+      "data": "good",
+      "test": "run 1 projection package",
+      "should": "accepted",
+      "did": "accepted",
+      "message": "—",
+      "pass": true
+    },
+    {
+      "control": "CTL-17",
+      "data": "good",
+      "test": "run 2 projection package",
+      "should": "accepted",
+      "did": "accepted",
+      "message": "—",
+      "pass": true
+    },
+    {
+      "control": "CTL-17",
+      "data": "good",
+      "test": "run 3 projection package",
+      "should": "accepted",
+      "did": "accepted",
+      "message": "—",
+      "pass": true
+    },
+    {
+      "control": "CTL-17",
+      "data": "good",
+      "test": "run 4 projection package",
+      "should": "accepted",
+      "did": "accepted",
+      "message": "—",
+      "pass": true
+    },
+    {
+      "control": "CTL-17",
+      "data": "good",
+      "test": "run 5 projection package",
+      "should": "accepted",
+      "did": "accepted",
+      "message": "—",
+      "pass": true
+    },
+    {
+      "control": "CTL-17",
+      "data": "bad",
+      "test": "remove the provenance of a projected record",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "PRJ-APP-SD-PI: projection provenance missing ['step', 'rule', 'inferred_from', 'reasoning', 'confidence']",
+      "pass": true
+    },
+    {
+      "control": "CTL-17",
+      "data": "bad",
+      "test": "raise a projected record to 0.9 confidence",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "PRJ-APP-SD-PI: confidence 0.9 above medium",
+      "pass": true
+    },
+    {
+      "control": "CTL-17",
+      "data": "bad",
+      "test": "add a BIAN service domain not in the catalogue",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "SD-INVENTED: an A2 element not taken from the BIAN catalogue",
+      "pass": true
+    },
+    {
+      "control": "CTL-17",
+      "data": "bad",
+      "test": "drop the `PRJ-` mark from a projected component",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "APP-LOOKS-REAL: a projected record must be marked PRJ-",
+      "pass": true
+    },
+    {
+      "control": "CTL-17",
+      "data": "bad",
+      "test": "set a projected link to approved",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "PRJ-L-001: status must be 'projected'",
+      "pass": true
     }
   ],
   "findings": [
     {
       "id": "AID-B1",
-      "what": "today's design mode marks projected records `DSN-` with lifecycle `planned`, not `PRJ-` with projection provenance (AID-D02, CTL-17)",
-      "action": "part of the AID build"
+      "what": "design mode marked projections `DSN-` + `planned` only",
+      "action": "closed — AID marks `PRJ-` with a `projection` object on every element (CTL-17)"
+    },
+    {
+      "id": "AID-B2",
+      "what": "the example estates use local ids: 37 A2 ids name different elements in different estates (e.g. `SD-CA` is Current Account in one, Credit Assessment in another)",
+      "action": "the test catalogue merges by BIAN type + name and qualifies clashes (`SD-CA@digital-lending`); a real catalogue keys on BIAN canonical identity"
+    },
+    {
+      "id": "AID-B3",
+      "what": "from A4 alone an application is known only by its id; domains come from id words (`PAY` → Payment …)",
+      "action": "kept low; the weakest evidence R2 accepts — expect \"projected only\" domains"
+    },
+    {
+      "id": "AID-B4",
+      "what": "the projection schema (AID-O05) and the view/trace PROJECTED label (AID-O06) are not built",
+      "action": "next AID build items"
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTL-16",
+      "good": "✅",
+      "bad": "✅"
+    },
+    {
+      "id": "CTL-17",
+      "good": "✅",
+      "bad": "✅"
     }
   ]
 }

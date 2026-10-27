@@ -6,7 +6,7 @@ impact by rule. Nothing here decides whether a mapping is right.
 """
 from pathlib import Path
 import argparse, json, sys
-from sdem.metamodel import Metamodel
+from sdem.metamodel import Metamodel, PROJECTED_PREFIXES, is_projection_dataset
 from sdem.conformance import check_level, estate_index
 from sdem.validate import check_schema, load_registry, load_schema, normalize_type, validate, ROOT
 from sdem.trace import load_edges, walk, paths as tree_paths
@@ -56,6 +56,10 @@ class LevelGraph:
         if self.doc.get('metamodel_version') and self.doc['metamodel_version'] != self.mm.version:
             issues.append(f"metamodel_version {self.doc['metamodel_version']!r} does not match loaded metamodel {self.mm.version!r}")
         seen = set()
+        if not is_projection_dataset(self.doc):  # CTL-16: projected or design records never enter real architecture data
+            for i in self.doc.get('instances', []):
+                if str(i.get('id', '')).startswith(PROJECTED_PREFIXES):
+                    issues.append(f"instance {i['id']}: a projected or design record cannot enter a real architecture dataset (CTL-16)")
         for i in self.doc.get('instances', []):
             key = (i['id'], i['version'])
             if key in seen:

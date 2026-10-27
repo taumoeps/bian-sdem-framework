@@ -241,7 +241,7 @@ def render():
             '| Input | all available architecture datasets | one or more layers, plus the BIAN reference catalogue |',
             '| Output | approved links — Relationship Registry, federated graph | a **projected design** in a separate projection package (`PRJ-`), with inference confidence |',
             '| Trust | validated and approved | planning only; never approved |', '',
-            'AID may read real data but never write into the mapping lane (planned control CTL-16); a projection becomes real only when the design is built, appears in a real architecture dataset and passes through the mapping lane. **Gap analysis** compares the two lanes. Design and specification: [`aid-design.md`](aid-design.md), [`aid-spec.md`](aid-spec.md).', '',
+            'AID may read real data but never write into the mapping lane (control CTL-16); a projection becomes real only when the design is built, appears in a real architecture dataset and passes through the mapping lane. **Gap analysis** compares the two lanes. Built in `sdem/aid.py` (command `sdem-aid`); design and specification: [`aid-design.md`](aid-design.md), [`aid-spec.md`](aid-spec.md); tested in [`use-case-example-2.md`](use-case-example-2.md).', '',
             '## Gap register', '', 'From `metamodel/metamodel-spec-gaps.json`. Status changes only on the owner\'s decision.', '',
             '| ID | Kind | High-level § | High-level says | Implemented | Recommendation | Status |', '|---|---|---|---|---|---|---|']
     out += [f"| {g['id']} | {g['kind']} | {g['high_level_section']} | {g['high_level_says']} | {g['implemented']} | {g['recommendation']} | **{g['status']}** |" for g in gaps]

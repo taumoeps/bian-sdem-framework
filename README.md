@@ -246,7 +246,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | [`mapping-logic-planning.md`](docs/mapping-logic-planning.md) | why the relationship rules model is shaped this way: BIAN's own mappings, the supporting frameworks, the gap-fill strategy |
 | [`mapping-execution.md`](docs/mapping-execution.md) · [`use-case-testing.md`](docs/use-case-testing.md) | the procedure as executed, and the eleven test runs |
 | [`reference-architecture-provenance.md`](docs/reference-architecture-provenance.md) | every entity traced to a public standard |
-| [`aid-design.md`](docs/aid-design.md) · [`aid-spec.md`](docs/aid-spec.md) | **Architecture Inference Design (AID)** (draft): projecting missing architecture layers, upstream or downstream, for planning — with gap analysis against the real design |
+| [`aid-design.md`](docs/aid-design.md) · [`aid-spec.md`](docs/aid-spec.md) | **Architecture Inference Design (AID)** (approved, built — `sdem-aid`): projecting missing architecture layers, upstream or downstream, for planning — with gap analysis against the real design |
 | [`controls-register.md`](docs/controls-register.md) | every control that enforces the rulebook: where it runs, where its outcome is recorded, what monitors it, and the known gaps |
 | [`use-case-example-2.md`](docs/use-case-example-2.md) | test plan for Architecture Inference Design: hide layers of a known estate, project them, compare with the real ones (expected results sealed) |
 | [`use-case-example-1.md`](docs/use-case-example-1.md) | worked example (plan): establishing the mappings and knowledge graph from four separate architecture datasets, clean and with planted defects |
@@ -278,7 +278,8 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | **v0.9** (unreleased) | **graph store**: local JSON files, queries, offline view |
 | **v0.10** (unreleased) | the **inference engine**, reading the graph store; passes all 8 acceptance cases |
 | **v0.11 — next** | ingestion (spreadsheet templates, ingest command) and approval of proposals |
-| later | **Architecture Inference Design** — projecting missing layers for planning (v0.12); change handling (v0.13); query service and assistant access (v0.14); BIAN reference integration (v0.15); generated views (v0.16); v1.0 conformance profile |
+| built | **Architecture Inference Design** — projecting missing layers for planning (v0.12, unreleased; `sdem-aid project`, `check`, `gaps`) |
+| later | change handling (v0.13); query service and assistant access (v0.14); BIAN reference integration (v0.15); generated views (v0.16); v1.0 conformance profile |
 
 Full table with acceptance tests: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 

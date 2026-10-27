@@ -241,6 +241,8 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
             elif required and refs:
                 warnings.append(f"{prefix}: evidence is untyped; cannot confirm required kind(s) {sorted(required)} (use 'kind:ref')")
         status = mapping.get('status')
+        if status in ('approved', 'validated') and (str(mapping.get('mapping_id', '')).startswith(('PRJ-', 'DSN-')) or any(str((e or {}).get('id', '')).startswith(('PRJ-', 'DSN-')) for e in (source, target))):
+            fail('governance', 'a link to a projected or design record cannot be approved or validated (CTL-16)')
         if status in REVIEWED_STATUSES:
             for field in ('reviewer_id', 'approved_at'):
                 if not mapping.get(field):

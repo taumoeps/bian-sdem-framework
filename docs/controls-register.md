@@ -10,6 +10,8 @@ A **control** is an automatic check that enforces a rule of the rulebook (the me
 
 **Last tested:** [use-case example 1](use-case-example-1.md), run 2026-10-27 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-1/`](evidence/use-case-example-1/manifest.json).
 
+**Last tested:** [use-case example 2](use-case-example-2.md), run 2026-10-27 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-2/`](evidence/use-case-example-2/manifest.json).
+
 | ID | Status | Rule area | Enforces | Built in | Runs | Outcome recorded in | Monitored by | Last tested (good · bad) |
 |---|---|---|---|---|---|---|---|---|
 | CTL-01 | built | 1 Record types | Every record is a known, concrete kind of thing (not abstract, not an artefact), of its dataset's layer | sdem/graph.py `LevelGraph.validate` (LC-01, LC-02) | sdem-graph check; sdem-graph build | command output (ERROR lines); graph store load record — a `rejected` entry listing every error | GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red; tests/test_graph.py, tests/test_conformance.py | ✅ · ✅ |
@@ -27,8 +29,8 @@ A **control** is an automatic check that enforces a rule of the rulebook (the me
 | CTL-13 | built | platform | Every generated document, diagram and schema matches the records | each generator's `--check` | CI | command output (STALE lines) | GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red | ✅ · ✅ |
 | CTL-14 | built | platform | The owner's high-level metamodel specification is unchanged | tests/test_metamodel_spec.py (SHA-256 pin) | the test suite | test output | GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red | ✅ · ✅ |
 | CTL-15 | built | platform | A graph store is only written from data that passes every check; a failed build keeps the last good store; every build is logged | sdem/store.py `build` | sdem-graph build | the store's `load-record.json` (accepted / rejected, inputs with checksums, errors, warnings, outputs) | GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red (build --check on every example store); tests/test_store.py | ✅ · ✅ |
-| CTL-16 | planned (AID) | platform | A projected design (AID) never enters an architecture dataset, the Relationship Registry or a real graph store, and a projected link is never approved | planned: dataset check, registry validator and store build reject `PRJ-` ids and `projection` provenance | sdem-graph check; sdem-validate; sdem-graph build | command output; graph store load record | CI (when built) | not tested |
-| CTL-17 | planned (AID) | platform | Every projected element carries its projection provenance, is never above medium confidence, and never invents a BIAN element | planned: `schema/projection.schema.json` and the AID projector | sdem-aid project | projection package metadata | CI (when built) | not tested |
+| CTL-16 | built | platform | A projected design (AID) never enters an architecture dataset, the Relationship Registry or a real graph store, and a projected link is never approved | sdem/graph.py `LevelGraph.validate` (dataset check), sdem/validate.py (registry validator), sdem/store.py `render` (store build): reject `PRJ-`/`DSN-` records in real datasets, approval of links to them, and projection or target-design datasets in a real store | sdem-graph check; sdem-validate; sdem-graph build | command output; graph store load record | GitHub Actions `validate.yml` on every push and pull request; tests/test_use_case_example_2.py | ✅ · ✅ |
+| CTL-17 | built | platform | Every projected element carries its projection provenance, is never above medium confidence, and never invents a BIAN element | sdem/aid.py `check` — run by `sdem-aid project` before writing, and by `sdem-aid check` | sdem-aid project; sdem-aid check | projection package `projection.json`; command output | GitHub Actions `validate.yml` on every push and pull request; tests/test_use_case_example_2.py | ✅ · ✅ |
 
 ## Gaps — rules nothing enforces
 
@@ -37,4 +39,4 @@ A **control** is an automatic check that enforces a rule of the rulebook (the me
 | G-A | 5 Finding links | How each rule matches lives in the engine's code; nothing checks it against the rule's description in the rulebook | the rulebook and the engine could drift apart; only CTL-09 would notice |
 | G-B | 4 Links between layers | Each link type's limit (one-to-many …) is recorded but not checked | none today — all 9 types are many-to-many |
 
-Each control is demonstrated both ways — accepting good data and rejecting bad — in [`use-case-example-1.md`](use-case-example-1.md).
+Each control is demonstrated both ways — accepting good data and rejecting bad — in [`use-case-example-1.md`](use-case-example-1.md) (CTL-01…15) and [`use-case-example-2.md`](use-case-example-2.md) (CTL-16, CTL-17).

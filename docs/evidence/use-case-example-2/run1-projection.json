@@ -1,0 +1,464 @@
+{
+  "projection": {
+    "projection_id": "PRJ-RUN1",
+    "mode": "forward",
+    "created_by": "sdem-aid",
+    "created_at": "2026-10-27T00:00:00+00:00",
+    "metamodel_version": "0.4.0",
+    "have": [
+      "A1",
+      "A2"
+    ],
+    "catalogue": {
+      "model_id": "aid-test-bian-catalogue",
+      "sha256": "e3f8adb9dda50c7ed1447c22ed08a794191620404a5a132d3a99bc80590f309d"
+    },
+    "inputs": {
+      "A1": {
+        "model_id": "synthetic-bank-payments-a1",
+        "sha256": "ead8cbcd16bd34899a257b7fce3ecd89f9f25aaadf61c2dbf72cc1c55a7da161"
+      },
+      "A2": {
+        "model_id": "synthetic-bank-payments-a2",
+        "sha256": "1b72d829cc42d6a68995f16651070b8a3a7665b3694c9fc57cc690be226127a9"
+      }
+    },
+    "steps": [
+      {
+        "step": "F3",
+        "deployments": 1
+      },
+      {
+        "step": "F2",
+        "components": [
+          "PRJ-APP-SD-PI"
+        ]
+      }
+    ],
+    "projection_ends": [
+      "SO-PI-06: Notify has no REST form — no API projected",
+      "SD-PE: no service operations in the A2 data — no component projected",
+      "SD-PA: no service operations in the A2 data — no component projected"
+    ],
+    "summary": {
+      "A3": {
+        "records": 6,
+        "by_confidence": {
+          "0.6": 0,
+          "0.4": 6
+        }
+      },
+      "A4": {
+        "records": 1,
+        "by_confidence": {
+          "0.6": 0,
+          "0.4": 1
+        }
+      }
+    },
+    "links": 7
+  },
+  "layers": {
+    "A3": {
+      "level": "A3",
+      "model_id": "PRJ-RUN1-a3-PROJECTION",
+      "model_version": "projection",
+      "metamodel_version": "0.4.0",
+      "source_system": "AID-PROJECTION (sdem-aid; not a real architecture dataset)",
+      "instances": [
+        {
+          "id": "PRJ-APP-SD-PI",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0",
+          "name": "Payment Instruction service (projected)",
+          "lifecycle_status": "planned",
+          "description": "Projected: one deployable component for Payment Initiation (BIAN container pattern).",
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN container pattern",
+            "inferred_from": [
+              "SD-PI"
+            ],
+            "reasoning": "one component per service domain",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-API-SO-PI-01",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "POST /payment-instructions",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "method": "POST",
+            "path": "/payment-instructions",
+            "payload_fields": [
+              "amount",
+              "creditor_account_reference",
+              "currency",
+              "debtor_account_reference",
+              "payment_instruction_reference",
+              "payment_status",
+              "remittance_information",
+              "value_date"
+            ]
+          },
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN REST mapping",
+            "inferred_from": [
+              "SO-PI-01"
+            ],
+            "reasoning": "create-instance term ⇔ POST on the collection",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-API-SO-PI-05",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "PATCH /payment-instructions/{id}",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "method": "PATCH",
+            "path": "/payment-instructions/{id}",
+            "payload_fields": [
+              "amount",
+              "creditor_account_reference",
+              "payment_instruction_reference",
+              "payment_status",
+              "value_date"
+            ]
+          },
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN REST mapping",
+            "inferred_from": [
+              "SO-PI-05"
+            ],
+            "reasoning": "Update ⇔ PATCH on the instance",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-API-SO-PI-02",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "POST /payment-instructions/{id}/validation",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "method": "POST",
+            "path": "/payment-instructions/{id}/validation",
+            "payload_fields": [
+              "authorisation_status",
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN REST mapping",
+            "inferred_from": [
+              "SO-PI-02"
+            ],
+            "reasoning": "create-type term with a qualifier ⇔ POST on the qualifier sub-resource (AID-Q04)",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-API-SO-PI-03",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "POST /payment-instructions/{id}/execution",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "method": "POST",
+            "path": "/payment-instructions/{id}/execution",
+            "payload_fields": [
+              "execution_reference",
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN REST mapping",
+            "inferred_from": [
+              "SO-PI-03"
+            ],
+            "reasoning": "Execute ⇔ POST on the qualifier sub-resource",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-API-SO-PI-04",
+          "type": "A3.APIOperation",
+          "version": "1.0",
+          "name": "GET /payment-instructions/{id}",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "method": "GET",
+            "path": "/payment-instructions/{id}",
+            "payload_fields": [
+              "authorisation_status",
+              "execution_reference",
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          },
+          "projection": {
+            "step": "F2",
+            "rule": "BIAN REST mapping",
+            "inferred_from": [
+              "SO-PI-04"
+            ],
+            "reasoning": "Retrieve ⇔ GET (SAPG §3.5, verified)",
+            "confidence": 0.4
+          }
+        }
+      ],
+      "relationships": [
+        {
+          "source": "PRJ-APP-SD-PI",
+          "kind": "composition",
+          "target": "PRJ-API-SO-PI-01"
+        },
+        {
+          "source": "PRJ-APP-SD-PI",
+          "kind": "composition",
+          "target": "PRJ-API-SO-PI-05"
+        },
+        {
+          "source": "PRJ-APP-SD-PI",
+          "kind": "composition",
+          "target": "PRJ-API-SO-PI-02"
+        },
+        {
+          "source": "PRJ-APP-SD-PI",
+          "kind": "composition",
+          "target": "PRJ-API-SO-PI-03"
+        },
+        {
+          "source": "PRJ-APP-SD-PI",
+          "kind": "composition",
+          "target": "PRJ-API-SO-PI-04"
+        }
+      ]
+    },
+    "A4": {
+      "level": "A4",
+      "model_id": "PRJ-RUN1-a4-PROJECTION",
+      "model_version": "projection",
+      "metamodel_version": "0.4.0",
+      "source_system": "AID-PROJECTION (sdem-aid; not a real architecture dataset)",
+      "instances": [
+        {
+          "id": "PRJ-DEP-SD-PI",
+          "type": "A4.Deployment",
+          "version": "1.0",
+          "name": "Payment Instruction service (projected) — deployment (projected)",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "component_id": "PRJ-APP-SD-PI"
+          },
+          "projection": {
+            "step": "F3",
+            "rule": "BIAN container pattern",
+            "inferred_from": [
+              "PRJ-APP-SD-PI"
+            ],
+            "reasoning": "one deployment per component; no platform, environment or network is projected",
+            "confidence": 0.4
+          }
+        }
+      ],
+      "relationships": []
+    }
+  },
+  "links": {
+    "links": [
+      {
+        "mapping_id": "PRJ-L-001",
+        "source": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "relationship": "REALIZED_BY",
+        "target": {
+          "id": "PRJ-APP-SD-PI",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: one component per service domain",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN container pattern",
+          "inferred_from": [
+            "SD-PI"
+          ],
+          "reasoning": "one component per service domain",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-002",
+        "source": {
+          "id": "SO-PI-01",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "PRJ-API-SO-PI-01",
+          "type": "A3.APIOperation",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: create-instance term ⇔ POST on the collection",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN REST mapping",
+          "inferred_from": [
+            "SO-PI-01"
+          ],
+          "reasoning": "create-instance term ⇔ POST on the collection",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-003",
+        "source": {
+          "id": "SO-PI-05",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "PRJ-API-SO-PI-05",
+          "type": "A3.APIOperation",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: Update ⇔ PATCH on the instance",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN REST mapping",
+          "inferred_from": [
+            "SO-PI-05"
+          ],
+          "reasoning": "Update ⇔ PATCH on the instance",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-004",
+        "source": {
+          "id": "SO-PI-02",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "PRJ-API-SO-PI-02",
+          "type": "A3.APIOperation",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: create-type term with a qualifier ⇔ POST on the qualifier sub-resource (AID-Q04)",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN REST mapping",
+          "inferred_from": [
+            "SO-PI-02"
+          ],
+          "reasoning": "create-type term with a qualifier ⇔ POST on the qualifier sub-resource (AID-Q04)",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-005",
+        "source": {
+          "id": "SO-PI-03",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "PRJ-API-SO-PI-03",
+          "type": "A3.APIOperation",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: Execute ⇔ POST on the qualifier sub-resource",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN REST mapping",
+          "inferred_from": [
+            "SO-PI-03"
+          ],
+          "reasoning": "Execute ⇔ POST on the qualifier sub-resource",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-006",
+        "source": {
+          "id": "SO-PI-04",
+          "type": "A2.ServiceOperation",
+          "version": "1.0"
+        },
+        "relationship": "IMPLEMENTED_BY",
+        "target": {
+          "id": "PRJ-API-SO-PI-04",
+          "type": "A3.APIOperation",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: Retrieve ⇔ GET (SAPG §3.5, verified)",
+        "projection": {
+          "step": "F2",
+          "rule": "BIAN REST mapping",
+          "inferred_from": [
+            "SO-PI-04"
+          ],
+          "reasoning": "Retrieve ⇔ GET (SAPG §3.5, verified)",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-007",
+        "source": {
+          "id": "PRJ-APP-SD-PI",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_AS",
+        "target": {
+          "id": "PRJ-DEP-SD-PI",
+          "type": "A4.Deployment",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: one deployment per component",
+        "projection": {
+          "step": "F3",
+          "rule": "BIAN container pattern",
+          "inferred_from": [
+            "PRJ-APP-SD-PI"
+          ],
+          "reasoning": "one deployment per component",
+          "confidence": 0.4
+        }
+      }
+    ]
+  }
+}
