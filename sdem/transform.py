@@ -644,7 +644,7 @@ class Extraction:
         self.ocr = ocr                 # a function path -> text lines (ocr_engine), or None
         self.mm = mm or Metamodel.load()
         self.records = {}          # (type, norm name) -> record
-        self.links, self.cross, self.review, self.pages = [], [], [], []
+        self.links, self.cross, self.review, self.pages, self.bian_mentions = [], [], [], [], []
         self.known = {}            # norm name -> (id, type, file) from --known datasets
         self.stats = collections.Counter()
         self.inspect = {'tables': collections.Counter(), 'shapes': collections.Counter(), 'headings': collections.Counter()}
@@ -665,6 +665,12 @@ class Extraction:
     def record(self, etype, name, page, where, rule, how, reasoning, description='', lifecycle=None, attributes=None):
         name = clean(name)
         if not name or not self.mm.known(etype) or self.mm.is_abstract(etype): return None
+        if etype.startswith('A2.'):  # CTL-17: BIAN elements come from the BIAN catalogue only — a document's mention is a hint for a link, never an entity
+            k = self.known.get(norm(name))
+            m = {'name': name, 'type': etype, 'page_id': page['page_id'], 'page_title': page['title'], 'where': where,
+                 'existing_id': k[0] if k else None, 'why': 'names a BIAN element; A2 entities come from the BIAN catalogue only (CTL-17) — link to it with sdem link after adoption'}
+            if not any((x['name'], x['page_id'], x['where']) == (name, page['page_id'], where) for x in self.bian_mentions): self.bian_mentions.append(m)
+            return None
         key = (etype, norm(name))
         r = self.records.get(key)
         if r is None:
@@ -1146,7 +1152,7 @@ class Extraction:
                 'labels_read_from_pictures': self.stats['labels read from pictures'], 'ocr_engine': getattr(self.ocr, 'engine', 'off') if self.ocr else 'off',
                 'pictures_for_a_person': self.stats['pictures for a person'], 'records': dict(sorted(by.items())),
                 'records_by_confidence': dict(conf), 'links_within': len(self.links), 'links_between_candidates': len(self.cross),
-                'for_review': len(self.review), 'narrative_mentions': self.stats['narrative mentions']}
+                'for_review': len(self.review), 'narrative_mentions': self.stats['narrative mentions'], 'bian_mentions': len(self.bian_mentions)}
 
 
 def best(sources):
@@ -1185,7 +1191,7 @@ def extract(root, out, rules=None, known=(), model_id=None, now=None, ocr='auto'
                 'sources': r['sources'], **({'same_as_existing': r['same_as_existing']} if r.get('same_as_existing') else {})}
                for r in sorted(x.records.values(), key=lambda r: r['id'])]
     links = [{**l, 'confidence': best(l['sources']), 'status': 'candidate'} for l in x.links]
-    (out / 'extraction.json').write_text(json.dumps({**meta, 'records': records, 'links_within': links, 'links_between_candidates': x.cross,
+    (out / 'extraction.json').write_text(json.dumps({**meta, 'records': records, 'links_within': links, 'links_between_candidates': x.cross, 'bian_mentions': x.bian_mentions,
                                                      'for_review': x.review, 'check': issues}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     idx = []
     for p in x.pages:
@@ -1239,6 +1245,12 @@ def report(x, meta, records, links, issues, idx):
     for c in x.cross:
         frm = '<br>'.join(f"{q['page_title']} — {q['where']}" for q in c['sources'])
         L.append(f"| `{c['source']}` | `{c['target']}` | {c['mapping_type_id'] or '—'} | {c['confidence']} | {frm} | {'<br>'.join(q['reasoning'] for q in c['sources'])} |")
+    L.append('\n## BIAN elements named in the designs — not entities (CTL-17)\n')
+    L.append('A2 entities come from the BIAN catalogue only. These names are hints for `sdem link` once the entities are adopted.\n')
+    L.append('| Name | Type | Existing record | Page | Where |')
+    L.append('|---|---|---|---|---|')
+    for m in x.bian_mentions:
+        L.append(f"| {m['name']} | {m['type']} | {m['existing_id'] or '—'} | {m['page_title']} | {m['where']} |")
     L.append('\n## For a person\n')
     L.append('| What | Page | Where | Name | Why |')
     L.append('|---|---|---|---|---|')

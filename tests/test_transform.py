@@ -127,6 +127,24 @@ class TransformTests(unittest.TestCase):
 
 
 
+    def test_never_creates_a2_entities(self):  # HI-S01: BIAN elements come from the BIAN catalogue only (CTL-17)
+        a2 = ROOT / 'examples' / 'payment-initiation' / 'a2-service-domain.json'
+        names = [i['name'] for i in json.loads(a2.read_text())['instances'] if i['type'] == 'A2.ServiceDomain'][:1]
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            src = tmp / 'export' / 'Design' / '2. Application'; src.mkdir(parents=True)
+            (src / 'page.md').write_text(f"# Design\n\n| Application | Description |\n|---|---|\n| {names[0]} | a BIAN domain named in a table |\n")
+            x, ds, _ = transform.extract(tmp / 'export', tmp / 'o', known=[a2], now='2026-10-28T00:00:00', ocr='off')
+            self.assertNotIn('A2', ds)
+            self.assertFalse(any(r['type'].startswith('A2.') for r in x.records.values()))
+            rules = json.loads(transform.RULES.read_text()); rules['tables'][0]['type'] = 'A2.ServiceDomain'   # even a rules file that asks for A2
+            rp = tmp / 'r.json'; rp.write_text(json.dumps(rules))
+            x2, ds2, _ = transform.extract(tmp / 'export', tmp / 'o2', rules=rp, now='2026-10-28T00:00:00', ocr='off')
+            self.assertNotIn('A2', ds2); self.assertEqual(x2.bian_mentions[0]['name'], names[0])
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+
 class FolderLayoutTests(unittest.TestCase):
     """A prepared export: readme/source/evidence in the root, raw HTML and diagrams in archives/, sections as folders (HI-L*)."""
     @classmethod

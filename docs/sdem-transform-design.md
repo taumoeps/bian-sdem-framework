@@ -12,6 +12,38 @@ Past designs live in Confluence as **narrative pages with embedded diagrams and 
 - the work machine has **no AI** (no large language model) — so the reading is done by **rules**; the only machine learning used is the computer's own **on-device text recognition (OCR)** for the text in pictures, which can be switched off;
 - SDEM was built **without seeing a single real page** — so the rules must be easy to adjust on the work machine, without code.
 
+## 1a. Scope
+
+The transform does **one stage**: an export of past designs → **candidate architecture entities, with their evidence**. What comes before and after belongs to other steps.
+
+**In scope**
+
+| Does | Detail |
+|---|---|
+| Read the export | any folder layout: root files = provenance, pages in any folder (HTML, Markdown, text, CSV), folders = sections |
+| Read the content | tables · draw.io · PlantUML · known names and simple phrases in text · text in pictures (on-device OCR) |
+| Create **A1, A3 and A4 entities** | candidates, typed with the metamodel's entity types (§4.2) |
+| Create links **inside** each architecture | only kinds the metamodel allows (e.g. Payments Hub *flow* Clearing Gateway) |
+| List candidate links **between** architectures | e.g. Clearing Gateway *deployed on* PAYAPP01 — suggestions in `extraction.json`, never in a dataset |
+| Record evidence | page, place, rule, confidence, reasoning — for every entity and link |
+| Index the designs | every page: Confluence id, link, date, the entities found on it |
+| Check its own output | SDEM's normal dataset checks on the candidates |
+| Flag what it cannot do | pictures, unknown shapes, diagrams no page refers to, BIAN names — for a person |
+
+**Out of scope**
+
+| Does not | Done by |
+|---|---|
+| Export from Confluence | the architect / Confluence |
+| Change the metamodel | nobody here — the transform only **uses** it |
+| Create **A2 (BIAN) entities** | the BIAN catalogue only (CTL-17). A BIAN name in a design is recorded as a **BIAN mention** — a hint for `sdem link` — never as an entity. Enforced in code, even if a rules file asks for an A2 type |
+| Write to the estate | the architect, after review (adopt) |
+| Create or approve links between architectures (`mappings.json`) | `sdem link` proposes; `sdem approve` (a person) approves |
+| Build the knowledge graph | `sdem build`, from adopted entities and approved links |
+| Trace, impact, matrices, dashboards | the usual SDEM commands, once the graph exists |
+| Understand narrative text | a person — without AI only names and simple phrases are read |
+| Read boxes and arrows in pictures | a person — OCR reads text only |
+
 ## 2. How it works
 
 In five steps — SDEM does the first three, the architect the last two:
@@ -95,23 +127,54 @@ Confluence ──export──▶ folder ──sdem transform extract──▶ ca
                                                                 knowledge graph ──▶ trace, impact, dashboard
 ```
 
-| Produces | | Does not produce | Why — and how it is made |
+| Produces | Does not produce | Why — and how it is made |
+|---|---|---|
+| **A1, A3, A4 entities** (candidates) and the **links inside each architecture** | **A2 (BIAN) entities** | BIAN elements come from the BIAN catalogue only (CTL-17); BIAN names found are listed as mentions |
+| **Evidence** for every entity and link | **The metamodel** | the fixed rulebook: the transform **uses** it to type and check every entity, never changes it |
+| **Candidate links between architectures** (in `extraction.json` only) | **Approved links between architectures** (`mappings.json`) | they need a person's approval with evidence — `sdem link` proposes, `sdem approve` approves |
+| **Design index** — every page and its entities | **The knowledge graph** (graph store) | built from adopted entities and approved links only — `sdem build` |
+
+### 4.1 Expected outputs — the files
+
+Everything is written to the output folder (`-o`); nothing else is created or changed.
+
+| File | Expected content | Format | Written |
 |---|---|---|---|
-| **Architecture entities** (candidates) and the **links inside each architecture** | ✅ | **The metamodel** | the fixed rulebook (entity types, allowed links): the transform **uses** it to type and check every record, never changes it |
-| **Evidence** for every entity and link (page, place, rule, confidence, reasoning) | ✅ | **Approved links between architectures** (`mappings.json`) | they need a person's approval with evidence — `sdem link` proposes, `sdem approve` approves; the transform only lists candidates |
-| **Candidate links between architectures** (in `extraction.json`, not in any dataset) | ✅ | **The knowledge graph** (graph store) | built from reviewed, real data only — `sdem build` after adoption |
-| **Design index** — every page and its entities | ✅ | | |
+| `a1-business.json` | candidate **A1 Business** entities and the links between them | SDEM architecture dataset (`schema/level-model.schema.json`) — passes `sdem check` | when A1 entities are found |
+| `a3-application.json` | candidate **A3 Application** entities and the links between them | same | when A3 entities are found |
+| `a4-technology.json` | candidate **A4 Technology** entities and the links between them | same | when A4 entities are found |
+| *(no `a2-service-domain.json`)* | — | — | never (CTL-17) |
+| `extraction.json` | every entity and link with **all its sources** (page, place, rule, confidence, reasoning); candidate links between architectures with the SDEM link type that fits (or none — a person decides); BIAN mentions; items for a person; the check result; provenance files of the export root; fingerprints of the export and the rules; summary figures | JSON | always |
+| `design-index.json` | every page (and loose diagram or picture file): Confluence id, title, space, link, breadcrumb, file, last modified, the entities found on it, existing records it mentions, its diagrams and pictures; the provenance files | JSON | always |
+| `extraction-report.md` | the review page: Summary · Check · Records · Links inside · Links between · BIAN elements named · For a person · Export provenance · Designs · Next | Markdown | always |
 
-### The files
+**In every entity** (dataset format): `id` `HIS-<architecture>-<NAME>` · `type` (an entity type of the metamodel) · `name` · `version` = the page's last-modified date (else `1`) · `lifecycle_status` when a status column says so · `description` (a table's description column first, else a diagram's second line) · `attributes.source_id` = `confluence:<pages>` · `attributes.modified` · `source_system` `CONFLUENCE-EXTRACT` on the dataset. **In every link inside an architecture:** `source`, `kind` (one the metamodel allows for the pair), `target`, `name` (the line's or row's label).
 
-| File | Holds |
+### 4.2 Expected outputs — the entity types
+
+What each architecture's candidates can be, and what produces them (rules in `metamodel/transform-rules.json`):
+
+| Architecture | Entity types the transform can produce | From |
+|---|---|---|
+| **A1 Business** | BusinessCapability · BusinessProcess · BusinessActor · BusinessRole · BusinessService · BusinessObject · BusinessRequirement · BusinessActivity · ValueStream | tables (capability, process, actor, requirement columns), draw.io ArchiMate shapes, PlantUML (actor, person, ArchiMate business / strategy / motivation), label words (customer, merchant …), the section default (capability) |
+| **A2 Service Domain (BIAN)** | **none** — BIAN mentions only | — (CTL-17) |
+| **A3 Application** | ApplicationComponent · ApplicationService · ApplicationInterface · ApplicationFunction · DataEntity · Event | tables (application, service, interface columns), source/target tables, draw.io ArchiMate shapes, PlantUML (component, interface, participant, C4 container, ArchiMate application), label words (app, system, hub …), the section default (component) |
+| **A4 Technology** | Node · Device · SystemSoftware · TechnologyService · TechnologyInterface · Artifact · CommunicationNetwork | tables (server, database, technology service columns), draw.io ArchiMate shapes and cloud icons, PlantUML (node, database, queue, artifact, C4 deployment node, ArchiMate technology), label words (server, cluster, database, network …), the section default (node) |
+
+### 4.3 Expected outputs — the walkthrough example
+
+`sdem transform extract tests/fixtures/confluence-folder-export -o work/history` (the made-up export in the prepared layout) produces:
+
+| Output | Expected |
 |---|---|
-| `a1-business.json` … `a4-technology.json` | The candidate records in SDEM's normal dataset format, so `sdem check` works on them. Ids `HIS-<layer>-<NAME>`; `version` = the page's last-modified date; `attributes.source_id` = `confluence:<page ids>`; `source_system` = `CONFLUENCE-EXTRACT`. Only links inside one architecture. |
-| `extraction.json` | Every record and link with **all its sources** — page, place (table and row, diagram and shape, paragraph), rule, confidence, reasoning; the same name as an existing record (`--known`); candidate **links between architectures** (with the SDEM link type that fits, e.g. COMPONENT_DEPLOYED_ON_INFRASTRUCTURE); items for a person; the check result; fingerprints of the export and the rules. |
-| `design-index.json` | **Every design page**: title, space, breadcrumb, file, last modified, the records found on it, existing records it mentions, its diagrams and pictures. This is the reference record that keeps each design linked to what it describes — even pages nothing could be read from. |
-| `extraction-report.md` | The review page: summary, check, records, links, candidate links between architectures, items for a person, designs, next steps. |
+| `a1-business.json` | **3 entities**: Payment Clearing, Payment Initiation (capabilities), Retail Customer (actor) |
+| `a3-application.json` | **8 entities**: Payments Hub, Clearing Gateway, Mobile Banking App, Sanctions Screening, Scheme Adapter, Ledger Posting Service, Sanctions Checkel (an OCR misread of "Checker"), Payment Order (data); **5 links**, e.g. Payments Hub *flow* Clearing Gateway "Clearing file (SFTP)" |
+| `a4-technology.json` | **8 entities**: PAYAPP01, PAYAPP02, Payments Kubernetes Cluster, Core Switch (nodes), Edge Firewall (device), Payments DMZ (network), Payments Store, PostgreSQL 15 (system software); **2 links** |
+| `extraction.json` | 19 entities (14 medium, 5 low) with their sources — Payments Hub has 7; **6 candidate links between architectures** (3 *deployed on*, e.g. Clearing Gateway → PAYAPP01 from "is hosted on"; 3 for a person to type); **6 items for a person** (3 pictures, 3 diagrams no page refers to); check: 1 error (Payment Order needs its attribute list); 3 provenance files |
+| `design-index.json` | **10 entries**: the archive page (Confluence id 55501, 2022-05-10, 10 entities, 3 diagrams, 1 picture), 5 section files, 4 loose files |
+| `extraction-report.md` | the same, for review |
 
-Links between architectures are **not** written to any dataset or registry: they are candidates for `sdem link` and `sdem approve` once the records are real.
+These figures come from macOS with OCR on; with `--ocr off` the whiteboard's labels are not read (Ledger Posting Service and Sanctions Checkel are not produced).
 
 ## 5. Working without seeing the real pages
 

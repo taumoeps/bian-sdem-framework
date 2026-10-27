@@ -538,7 +538,7 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
 5. Open `work/history/extraction-report.md`. Every record says **which page, where on it** (table and row, diagram and shape, paragraph), **which rule**, **how sure** (never above medium) and **why**. Pasted pictures are listed for you to record by hand.
 6. Keep what is right: copy the records into your estate (or keep `work/history` as a historical estate) and run `sdem check`. Links between architectures in the report are candidates for `sdem link` / `sdem approve`.
 
-The transform writes **candidate entities** and the links inside each architecture, with evidence. It does not change the metamodel, approve links between architectures, or build the knowledge graph — those come after you adopt the entities (`sdem link`, `sdem approve`, `sdem build`).
+The transform writes **candidate A1, A3 and A4 entities** (never A2 — BIAN service domains come from the BIAN catalogue; BIAN names found are listed as mentions) and the links inside each architecture, with evidence. Expected outputs: [`sdem-transform-design.md`](sdem-transform-design.md) §4. It does not change the metamodel, approve links between architectures, or build the knowledge graph — those come after you adopt the entities (`sdem link`, `sdem approve`, `sdem build`).
 
 Try it on the made-up sample first: `sdem transform extract tests/fixtures/confluence-export-sample -o work/history`. Design: [`sdem-transform-design.md`](sdem-transform-design.md).
 
