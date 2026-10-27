@@ -8,9 +8,9 @@ A **control** is an automatic check that enforces a rule of the rulebook (the me
 
 ## Controls
 
-**Last tested:** [use-case example 1](use-case-example-1.md), run 2026-10-27 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-1/`](evidence/use-case-example-1/manifest.json).
+**Last tested:** [use-case example 1](use-case-example-1.md), run 2026-10-28 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-1/`](evidence/use-case-example-1/manifest.json).
 
-**Last tested:** [use-case example 2](use-case-example-2.md), run 2026-10-27 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-2/`](evidence/use-case-example-2/manifest.json).
+**Last tested:** [use-case example 2](use-case-example-2.md), run 2026-10-28 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-2/`](evidence/use-case-example-2/manifest.json).
 
 | ID | Status | Rule area | Enforces | Built in | Runs | Outcome recorded in | Monitored by | Last tested (good · bad) |
 |---|---|---|---|---|---|---|---|---|
@@ -30,7 +30,7 @@ A **control** is an automatic check that enforces a rule of the rulebook (the me
 | CTL-14 | built | platform | The owner's high-level metamodel specification is unchanged | tests/test_metamodel_spec.py (SHA-256 pin) | the test suite | test output | GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red | ✅ · ✅ |
 | CTL-15 | built | platform | A graph store is only written from data that passes every check; a failed build keeps the last good store; every build is logged | sdem/store.py `build` | sdem-graph build | the store's `load-record.json` (accepted / rejected, inputs with checksums, errors, warnings, outputs) | GitHub Actions `validate.yml` on every push and pull request (Python 3.10–3.12); a failure marks the commit red (build --check on every example store); tests/test_store.py | ✅ · ✅ |
 | CTL-16 | built | platform | A projected design (AID) never enters an architecture dataset, the Relationship Registry or a real graph store, and a projected link is never approved | sdem/graph.py `LevelGraph.validate` (dataset check), sdem/validate.py (registry validator), sdem/store.py `render` (store build): reject `PRJ-`/`DSN-` records in real datasets, approval of links to them, and projection or target-design datasets in a real store | sdem-graph check; sdem-validate; sdem-graph build | command output; graph store load record | GitHub Actions `validate.yml` on every push and pull request; tests/test_use_case_example_2.py | ✅ · ✅ |
-| CTL-17 | built | platform | Every projected element carries its projection provenance, is never above medium confidence, and never invents a BIAN element | sdem/aid.py `check` — run by `sdem-aid project` before writing, and by `sdem-aid check` | sdem-aid project; sdem-aid check | projection package `projection.json`; command output | GitHub Actions `validate.yml` on every push and pull request; tests/test_use_case_example_2.py | ✅ · ✅ |
+| CTL-17 | built | platform | Every projected element carries its projection provenance, is never above medium confidence, and never invents a BIAN element | `schema/projection.schema.json` and sdem/aid.py `check` — run by `sdem-aid project` before writing, and by `sdem-aid check` | sdem-aid project; sdem-aid check | projection package `projection.json`; command output | GitHub Actions `validate.yml` on every push and pull request; tests/test_use_case_example_2.py | ✅ · ✅ |
 
 ## Gaps — rules nothing enforces
 

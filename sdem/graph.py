@@ -249,6 +249,7 @@ def main(argv=None):
         if name == 'trace':
             sp.add_argument('--direction', choices=['down', 'up', 'both'], default='both')
             sp.add_argument('--follow-composition', action='store_true', help='continue a chain through within-level part-whole links — composition and aggregation (part -> whole downstream, whole -> parts upstream)')
+            sp.add_argument('--projection', metavar='DIR', help='also follow the links of an AID projection package, labelled PROJECTED (AID-O06)')
         if name == 'impact':
             sp.add_argument('--change', choices=sorted(IMPACT_RULES), required=True)
     sp = sub.add_parser('build', help='check architecture datasets and registry, then write the graph store')
@@ -267,6 +268,7 @@ def main(argv=None):
     sp.add_argument('--json', action='store_true')
     sp = sub.add_parser('view', help='write a self-contained HTML picture of a graph store')
     sp.add_argument('--graph', required=True, metavar='DIR'); sp.add_argument('-o', '--out', metavar='FILE', help='default <DIR>/view.html')
+    sp.add_argument('--projection', metavar='DIR', help='overlay an AID projection package, drawn dashed and labelled PROJECTED (AID-O06)')
     sp = sub.add_parser('baseline', help='freeze the current graph store under baselines/<name>')
     sp.add_argument('name'); sp.add_argument('--graph', required=True, metavar='DIR')
     # paths are optional (--graph replaces them), so argparse cannot place paths written after an option; collect them here
@@ -279,7 +281,7 @@ def main(argv=None):
         return _build(args, _store)
     if args.cmd == 'view':
         from sdem.view import write as _view
-        try: print(f'wrote {_view(args.graph, args.out)}'); return EXIT_OK
+        try: print(f'wrote {_view(args.graph, args.out, projection=args.projection)}'); return EXIT_OK
         except (OSError, _store.StoreError) as exc: print(f'ERROR: {exc}', file=sys.stderr); return EXIT_USAGE
     if args.cmd == 'baseline':
         try: print(f'baseline written: {_store.baseline(args.graph, args.name)}'); return EXIT_OK
@@ -316,6 +318,14 @@ def main(argv=None):
         out = {lvl: {'model_id': g.doc['model_id'], 'instances': len(g.instances), 'relationships': len(g.relationships)} for lvl, g in sorted(fg.levels.items())}
         out['mappings'] = {'documents': len(fg.mapping_docs), 'approved_edges': len(fg.edges())}
         print(json.dumps(out, indent=2)); return EXIT_OK
+    if args.cmd == 'trace' and getattr(args, 'projection', None):
+        from sdem import aid as _aid
+        pkg = _aid.read(args.projection)
+        for d in (['down', 'up'] if args.direction == 'both' else [args.direction]):
+            print('DOWNSTREAM (depends on):' if d == 'down' else 'UPSTREAM (depended on by):')
+            print('\n'.join(_aid.trace(reader, pkg, args.entity, d))); print()
+        print('PROJECTED = made by AID for planning, not real data.')
+        return EXIT_OK
     if fg.instance(args.entity) is None and not any(args.entity in (e['source']['id'], e['target']['id']) for e in fg.edges(statuses)):
         print(f'ERROR: {args.entity!r} is not an instance in any loaded level model or mapping', file=sys.stderr); return EXIT_ISSUES
     if args.cmd == 'trace':

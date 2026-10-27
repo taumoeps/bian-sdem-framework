@@ -1,19 +1,24 @@
 {
   "example": "use-case-example-2",
-  "run_date": "2026-10-27",
-  "code_commit": "b5549840bdf30402bfde1f2b8e07734d200498fd",
+  "run_date": "2026-10-28",
+  "code_commit": "5a5f7e10cda156e9bbdbd0d432d8528332a7de88",
   "files": {
     "catalogue-summary.json": "ec2cbbf7a2ef52c60e0e8b19587630a2d22904be84ae81a8796084d456cd6a6e",
     "run1-projection.json": "72f98b98779dd74c79f58ae02d0479050ca481145cac9565c75d8f97c8178ab5",
-    "run1-gaps.json": "434ea9ad28af76e307d0ad8834f0176ec4909730ec4df25bb85e5b751032e4bb",
+    "run1-gaps.json": "441760df6b96ea74ac4c934913918959862728d4e0fcb3e33bceba6ca2a88053",
     "run2-projection.json": "4cee998248ef9877242bfe3d3798fe23162883fe34c9b2e55a17cff8a336cf89",
-    "run2-gaps.json": "c2655ca594985d38908d78066a2d2976e8d59c329b251b1a22040f7fbbb55c48",
-    "run3-projection.json": "d68297e493fb0aaa1f3ce5ca3b7a66ddb8b9c65a29395094b4db808d04ca6e5f",
-    "run3-gaps.json": "d4fa336ffc3b373cb4634d2a812d63e4d3fc00874df78ea9de22cdf94a7400b0",
-    "run4-projection.json": "cab6ecfcd4e965a75aaa56ee6785cad8680f51845b12ec49c343e01cecc88d19",
-    "run4-gaps.json": "ddb83c5dc0646745e3d1c1d88a54473a5803a2a097316de49512f779c760dd72",
+    "run2-gaps.json": "881e0e3835f818c021f96191438b13bfbce095bc492bf782c38372975ccd5745",
+    "run3-projection.json": "86ad89dbb1d6baa9a50b947f60dfc2ab3fe44e3e32e748099ac65c91bfc83e0a",
+    "run3-gaps.json": "99fed5f1d828b8a6952fe0fb06ec4c87f7f75636a369a2d7327d4d4cdb9560cc",
+    "run4-projection.json": "994ca32f80e030af77b53a6c02853b8a616a51f3430ac11772bf271f5c76b7bb",
+    "run4-gaps.json": "8383bb13af008ac71801c3ead2d3ce00064f9f6ccfa9339c66c4c91abcc6e5e9",
     "run5-projection.json": "0b343ef0c495e2e130eaa2fb8083a9b87156404a2c480f204460ecef35dbf21e",
-    "run5-gaps.json": "9356f33ff6a06a51ed204d8492070789d9741dbfcecd848e203babb62e3b69e4",
-    "results.json": "4a32b8dc303326578a4c013fa315545b1ba368d1affc216908af5492a98de10d"
+    "run5-gaps.json": "1834ca73a2151b458340609f28324bb27daddea72137056098451f8fa1d61173",
+    "results.json": "45106a1017bfc703c198690b9306c0bb6e4782bd2a0bab52bfc5ce6f26f9eed2",
+    "run1-view.html": "aca95fb330d8cd779f62eeec3851cd15641ec6fb027ca43303badb6a2ab018cf",
+    "run2-view.html": "e075a442101a2adbd02d4491cd876177f279f0212642932436805df6db20d2d8",
+    "run3-view.html": "22e35f46b82b0cf656ffcf302f3efef0160de9049bfbd23fb5055eacd99170de",
+    "run4-view.html": "36f193502786a6db542e02f0a97b2e59d6cb72242f6bf507e5db7d9f2f5ed16b",
+    "run5-view.html": "b5e53c2da3aa5a4fdc290472759af3ea15ccbb6d7bbcd1c57a971192d249ca16"
   }
 }

@@ -7,7 +7,8 @@
       "type": "ApplicationComponent",
       "result": "matched — structure differs",
       "real": "APP-PAY-HUB Payments Hub",
-      "reason": "the real design realises SD-PI with one component; the real one is split into 3 sub-components (Instruction Capture, Instruction Validation, Execution Gateway), AID projects one",
+      "reason": "the real component found by the BIAN operations its APIs implement; the real one is split into 3 sub-components (Instruction Capture, Instruction Validation, Execution Gateway), AID projects one",
+      "matched_by": "the BIAN operations its APIs implement",
       "confidence": 0.4
     },
     {
@@ -18,6 +19,7 @@
       "result": "matched",
       "real": "API-PI-01 POST /payment-instructions",
       "reason": "same method and path",
+      "matched_by": "the BIAN operation it implements (SO-PI-01), then method and path",
       "confidence": 0.4
     },
     {
@@ -28,6 +30,7 @@
       "result": "matched",
       "real": "API-PI-05 PATCH /payment-instructions/{id}",
       "reason": "same method and path",
+      "matched_by": "the BIAN operation it implements (SO-PI-05), then method and path",
       "confidence": 0.4
     },
     {
@@ -38,6 +41,7 @@
       "result": "matched",
       "real": "API-PI-02 POST /payment-instructions/{id}/validation",
       "reason": "same method and path",
+      "matched_by": "the BIAN operation it implements (SO-PI-02), then method and path",
       "confidence": 0.4
     },
     {
@@ -48,6 +52,7 @@
       "result": "differs",
       "real": "API-PI-03 PUT /payment-instructions/{id}/execution",
       "reason": "the method differs — AID POST, real PUT",
+      "matched_by": "the BIAN operation it implements (SO-PI-03), then method and path",
       "confidence": 0.4
     },
     {
@@ -58,6 +63,7 @@
       "result": "differs",
       "real": "API-PI-04 POST /payment-instructions/{id}",
       "reason": "the method differs — AID GET, real POST",
+      "matched_by": "the BIAN operation it implements (SO-PI-04), then method and path",
       "confidence": 0.4
     },
     {
@@ -78,6 +84,7 @@
       "result": "differs",
       "real": "DEP-PAYHUB-PROD, DEP-PAYHUB-UAT",
       "reason": "the real component is deployed 2 times (ENV-PAY-PROD, ENV-PAY-UAT); AID projects one deployment and, by rule, no platform or environment",
+      "matched_by": "the component it deploys",
       "confidence": 0.4
     }
   ],
@@ -106,6 +113,7 @@
       "recall": 0.0
     }
   },
+  "by_relationship": {},
   "projection_ends": [
     "SO-PI-06: Notify has no REST form — no API projected",
     "SD-PE: no service operations in the A2 data — no component projected",

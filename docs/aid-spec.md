@@ -1,6 +1,6 @@
 # Architecture Inference Design (AID) — Specification
 
-> **Status: approved 2026-10-27 (design decisions AID-D01…07); §12 (AI suggestion layer, AID-D08) proposed, not approved.** Requirements for the design in [`aid-design.md`](aid-design.md). Each requirement has an ID (AID-*), a status, and how it is accepted. **Built 2026-10-27** in `sdem/aid.py` (command `sdem-aid`) and tested by [use-case example 2](use-case-example-2.md); each requirement's status says what is still missing.
+> **Status: approved 2026-10-27 (design decisions AID-D01…07); §12 (AI suggestion layer, AID-D08) proposed, not approved.** Requirements for the design in [`aid-design.md`](aid-design.md). Each requirement has an ID (AID-*), a status, and how it is accepted. **Built 2026-10-27, completed 2026-10-28** in `sdem/aid.py` (command `sdem-aid`), `schema/projection.schema.json` and the graph view and trace; tested by [use-case example 2](use-case-example-2.md). Every requirement in §2–§9 is built; §12 (AI) is proposed only.
 
 ## 1. Purpose and boundary
 
@@ -32,7 +32,7 @@ AID projects the missing architecture layers from the architecture datasets an a
 |---|---|---|---|
 | AID-R01 | **A4 → A3.** Project an application component for every A3 id an A4 record names (`hosts`, `component_id`, `of_component`); carry only the id and the A4 evidence. | medium (existence) | built |
 | AID-R02 | **A3 → A2.** Map A3 elements to the BIAN catalogue with the engine's rules: API ↔ operation (step 2), data entity ↔ business object (S30), component ↔ domain (S17 and its fallbacks). Projected domains reference the catalogue. | medium → low | built — plus a low-confidence fallback from id words when A4 gives only an application id |
-| AID-R03 | **A2 → A1.** Suggest capabilities and processes a domain typically supports, from the domain's name, description and operations. Each suggestion is a low-confidence candidate, never a named A1 record of the institution. | low | partly built — one capability candidate per domain, from its name; process suggestions not built |
+| AID-R03 | **A2 → A1.** Suggest capabilities and processes a domain typically supports, from the domain's name, description and operations. Each suggestion is a low-confidence candidate, never a named A1 record of the institution. | low | built — a capability candidate per domain (from its name) and a process candidate per BIAN service group (from its operations) |
 | AID-R04 | Stop at the first layer with no basis; report *projection ends at <level>* with the reason. | — | built |
 
 ## 5. Middle gap
@@ -49,16 +49,16 @@ AID projects the missing architecture layers from the architecture datasets an a
 | AID-O02 | `projection.json`: projection id, mode (forward / reverse / middle), the datasets and catalogue used (with checksums), rulebook version, created by, created at, and per layer a summary (elements projected, by confidence). | built |
 | AID-O03 | Every projected record: id `PRJ-<…>`; the normal record fields for its entity type; and a `projection` object — `{step, rule, inferred_from, reasoning, confidence}`. | built |
 | AID-O04 | Every projected link: the relationship-record fields, status `projected`, plus the `projection` object. | built |
-| AID-O05 | The package validates against `schema/projection.schema.json` (new); projected records also pass the per-entity schemas apart from fields AID cannot know, which are omitted. | **not built** — `sdem-aid check` (CTL-17) does the checks today; the schema file is still to write |
-| AID-O06 | The graph view and trace can load a projection package alongside real data, labelling every projected element **PROJECTED** and showing its confidence. | **not built** |
+| AID-O05 | The package validates against `schema/projection.schema.json` (new); projected records also pass the per-entity schemas apart from fields AID cannot know, which are omitted. | built — `schema/projection.schema.json`, checked first by CTL-17 |
+| AID-O06 | The graph view and trace can load a projection package alongside real data, labelling every projected element **PROJECTED** and showing its confidence. | built — `sdem-graph view --projection` (dashed, labelled PROJECTED with confidence and provenance) and `sdem-graph trace --projection` |
 
 ## 7. Gap analysis
 
 | ID | Requirement | Status |
 |---|---|---|
 | AID-G01 | Compare a projection package with real architecture datasets and registry, per layer and per link: **matched**, **projected only**, **real only**, **differs**. | built — `sdem-aid gaps` |
-| AID-G02 | Matching: A2 by BIAN `canonical_id`; A3 components by the BIAN operations their APIs implement, then by name; APIs by method and path; deployments by component; A1 by the domains they use, then by name. Each match states the rule that matched it. | partly built — A2 by catalogue id (not yet `canonical_id`), A1 by domain only, not by name |
-| AID-G03 | Report precision and recall per layer and per relationship type, and list every unmatched element with its reason. | partly built — per layer and for all links together; not yet per relationship type; unmatched elements listed without a reason |
+| AID-G02 | Matching: A2 by BIAN `canonical_id`; A3 components by the BIAN operations their APIs implement, then by name; APIs by method and path; deployments by component; A1 by the domains they use, then by name. Each match states the rule that matched it. | built — every result states the rule that matched it; A2 by BIAN `canonical_id`; a name-only resemblance is reported as *similar name*, not counted as a match |
+| AID-G03 | Report precision and recall per layer and per relationship type, and list every unmatched element with its reason. | built — per layer, per relationship type, and every unmatched element with its reason |
 
 ## 8. Safety rules and their controls
 
@@ -94,7 +94,8 @@ The accuracy reached is **reported, not assumed**: each run states its precision
 sdem-aid project --have a1.json [a2.json …] --catalogue bian.json [--registry approved.json] --out projection/
 sdem-aid check   projection/ [--catalogue bian.json]
 sdem-aid gaps    projection/ --actual a*.json mappings.json
-sdem-graph view  --graph graph/ --projection projection/      (not built — AID-O06)
+sdem-graph view  --graph graph/ --projection projection/
+sdem-graph trace <id> --graph graph/ --projection projection/
 ```
 
 ## 11. Open questions

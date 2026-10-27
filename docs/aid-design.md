@@ -1,6 +1,6 @@
 # Architecture Inference Design (AID) — Design
 
-> **Status: approved and built 2026-10-27 (decisions AID-D01…07); §8 AI suggestion layer (AID-D08) proposed, not approved** — `sdem/aid.py`, command `sdem-aid`; tested in [use-case example 2](use-case-example-2.md). Not built yet: the projection schema and the PROJECTED label in the view and trace. Requirements: [`aid-spec.md`](aid-spec.md).
+> **Status: approved and built 2026-10-27 (decisions AID-D01…07); §8 AI suggestion layer (AID-D08) proposed, not approved** — `sdem/aid.py`, command `sdem-aid`; tested in [use-case example 2](use-case-example-2.md); projection schema and the PROJECTED view and trace built 2026-10-28. Requirements: [`aid-spec.md`](aid-spec.md).
 
 ## 1. What AID is
 
@@ -112,8 +112,8 @@ When the real layers exist (or for testing, when they are known but hidden), AID
 |---|---|
 | The rulebook and the engine's rules | built |
 | BIAN reference catalogue | **partial** — public BIAN material is limited; the examples hold small synthetic A2 datasets. A complete catalogue needs licensed BIAN data |
-| Graph store and view, to show projections | built; projection mode not built (AID-O06) |
-| A projection package format | built (`sdem-aid project`); schema file not built (AID-O05) |
+| Graph store and view, to show projections | built, with a projection overlay (`--projection`, AID-O06) |
+| A projection package format | built — `sdem-aid project`, `schema/projection.schema.json` |
 
 ## 7. Decisions — approved by the owner 2026-10-27, as recommended
 

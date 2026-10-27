@@ -71,14 +71,14 @@ def catalogue(first='payment-initiation'):
     return cat
 
 
-KEY_TYPES = ('A2.ServiceDomain', 'A3.ApplicationComponent', 'A3.APIOperation', 'A4.Deployment', 'A1.BusinessCapability')
+KEY_TYPES = ('A2.ServiceDomain', 'A3.ApplicationComponent', 'A3.APIOperation', 'A4.Deployment', 'A1.BusinessCapability', 'A1.BusinessProcess')
 LAYER = {'A1': 'business layer (A1)', 'A2': 'BIAN layer (A2)', 'A3': 'application layer (A3)', 'A4': 'technology layer (A4)'}
 STEP = {'F1': 'chose BIAN service domains for the business layer, by running the rulebook\'s A1 → A2 rules against the BIAN catalogue',
         'F2': 'applied BIAN\'s container pattern: one application component per service domain, one API per service operation (BIAN REST mapping)',
         'F3': 'projected one deployment per component — and, by rule, no platform, environment or network',
         'R1': 'took the applications that the technology records name (what a cluster hosts, what a deployment deploys)',
         'R2': 'matched the application layer to the BIAN catalogue with the rulebook\'s A3 → A2 rules',
-        'R3': 'suggested one business capability candidate per domain, from the domain\'s name only (BIAN publishes no capability mapping)',
+        'R3': 'suggested one business capability candidate per domain (from its name) and one process candidate per BIAN service group (from the group\'s operations) — BIAN publishes no capability or process mapping',
         'M': 'projected the BIAN layer from both sides — forward from the business layer and back from the application layer — and kept only the domains both sides support'}
 STEP_PATH = {'F1': 'A1 → A2', 'F2': 'A2 → A3', 'F3': 'A3 → A4', 'R1': 'A4 → A3', 'R2': 'A3 → A2', 'R3': 'A2 → A1', 'M': 'A1 + A3 → A2'}
 SOURCES = [('SAPG', 'BIAN Semantic API Practitioner Guide v8.1', 'yes, in full'), ('SL14', 'BIAN Service Landscape 14.0 portal', 'portal structure only'),
@@ -106,7 +106,7 @@ def explain(n, has, pkg, g, real, cat):
             pr = i['projection']; v = verdict.get(i['id'], {})
             row = {'layer': lvl, 'path': 'BIAN catalogue → A2' if i['type'] not in KEY_TYPES and pr['rule'] == aid.CATALOGUE_RULE else path(pr['inferred_from'], lvl), 'id': i['id'], 'name': i.get('name', i['id']), 'type': i['type'].split('.')[1], 'step': pr['step'],
                    'source': '; '.join(label(x) for x in pr['inferred_from']), 'rule': pr['rule'], 'basis': pr['source_reference'], 'reasoning': pr['reasoning'],
-                   'confidence': pr['confidence'], 'result': v.get('result', '—'), 'real': v.get('real', '—'), 'why': v.get('reason', '')}
+                   'confidence': pr['confidence'], 'result': v.get('result', '—'), 'real': v.get('real', '—'), 'why': v.get('reason', ''), 'by': v.get('matched_by', '—')}
             (elements if i['type'] in KEY_TYPES else structure).append(row)
     lres = {(x['source'], x['relationship'], x['target']): x for x in g['links']}
     end = lambda x: f"[{tag(x)}] {x}" + (f" {names[x]}" if names.get(x, x) != x else '')
@@ -125,16 +125,17 @@ def explain(n, has, pkg, g, real, cat):
     for e in elements + structure: flows[e['path']] = flows.get(e['path'], 0) + 1
     order = [x for x in ('M', 'F1', 'F2', 'F3', 'R1', 'R2', 'R3') if x in steps]
     keys = [e for e in elements]
-    good = [e for e in keys if e['result'].startswith('matched')]; diff = [e for e in keys if e['result'] == 'differs'] + [e for e in keys if e['result'] == 'matched — structure differs']
-    extra = [e for e in keys if e['result'] == 'projected only']
+    good = [e for e in keys if e['result'] == 'matched']; diff = [e for e in keys if e['result'] == 'differs'] + [e for e in keys if e['result'] == 'matched — structure differs']
+    extra = [e for e in keys if e['result'] == 'projected only']; sim = [e for e in keys if e['result'] == 'similar name']
     story = [f"**The architect has** " + ' and '.join(inp) + '. Everything else is hidden from AID.', '',
              f"**Projection path:** " + ' · '.join(f"**{k}** ({v} element{'s' if v != 1 else ''})" for k, v in sorted(flows.items())), '',
              f"**What AID did, step by step:**", ''] + [f"{k + 1}. **{s}** ({STEP_PATH[s]}) — {STEP[s]}." for k, s in enumerate(order)]
     pl = lambda k, w: f'{k} {w}' + ('' if k == 1 else 's')
     story += ['', f"**What it projected:** " + ', '.join(f"{pl(v['records'], 'record')} in the {LAYER[l]}" for l, v in pkg['projection']['summary'].items()) +
               f", and {pl(pkg['projection']['links'], 'link')}. Of these, {len(keys)} are the main design elements (domains, components, APIs, deployments, capabilities) shown below; the rest are BIAN catalogue elements brought in with a domain.", '',
-              f"**Against the real design:** {len(good)} of {len(keys)} main elements match" + (f"; {len(diff)} exist in both but differ" if diff else '') + (f"; {len(extra)} {'is' if len(extra) == 1 else 'are'} projected only" if extra else '') + (f"; AID missed {pl(len(missed), 'real element')}" if missed else '') + '.']
+              f"**Against the real design:** {len(good)} of {len(keys)} main elements match" + (f"; {len(diff)} exist in both but differ" if diff else '') + (f"; {len(sim)} only {'has' if len(sim) == 1 else 'have'} a similar name in the real design" if sim else '') + (f"; {len(extra)} {'is' if len(extra) == 1 else 'are'} projected only" if extra else '') + (f"; AID missed {pl(len(missed), 'real element')}" if missed else '') + '.']
     for e in diff: story.append(f"- ≠ **{e['name']}** — {e['why']}.")
+    for e in sim: story.append(f"- ≈ **{e['name']}** — {e['why']}: {e['real']}. AID's reason: {e['reasoning']}")
     for e in extra: story.append(f"- ➕ **{e['name']}** — {e['why']}. AID's reason: {e['reasoning']}")
     for m in missed: story.append(f"- ➖ **{m['element']} {m['name']}** — {m['reason']}.")
     if g['projection_ends']: story += ['', '**Where AID stopped, and why:** ' + ' · '.join(g['projection_ends'])]
@@ -224,8 +225,26 @@ def safety(real, packages, cat):
     return out
 
 
+def view_of(n, has, pkg, real, reg):
+    """The graph view of a run (AID-O06): a store of the real layers the architect has, with their real approved links, and the projection overlaid."""
+    from sdem.view import render as view
+    tmp = Path(tempfile.mkdtemp(prefix='uce2v-'))
+    try:
+        ids = {i['id'] for l in has for i in real[l]['instances']}
+        maps = [m for m in reg['mappings'] if m['source']['id'] in ids and m['target']['id'] in ids]
+        paths = []
+        for l in has: (tmp / LEVELS[l]).write_text(json.dumps(real[l]), encoding='utf-8'); paths.append(str(tmp / LEVELS[l]))
+        (tmp / 'reg.json').write_text(json.dumps(dict(reg, mappings=maps)), encoding='utf-8'); paths.append(str(tmp / 'reg.json'))
+        e = build(paths, tmp / 'store', now='2026-10-27T00:00:00+00:00')
+        assert e['result'] == 'accepted', e['errors']
+        aid.write(pkg, tmp / 'prj')
+        return view(tmp / 'store', f'Use-case example 2 — run {n}: has {" + ".join(has)}, AID projects the rest', tmp / 'prj')
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def run():
-    R = {'date': date.today().isoformat(), 'runs': [], 'safety': [], 'findings': [], 'evidence': {}}; E = R['evidence']
+    R = {'date': date.today().isoformat(), 'runs': [], 'safety': [], 'findings': [], 'evidence': {}, 'views': {}}; E = R['evidence']
     real = {lvl: _j(EST / f) for lvl, f in LEVELS.items()}; reg = _j(EST / 'mappings.json'); cat = catalogue()
     E['catalogue-summary.json'] = {'service_domains': sorted(f"{i['id']}: {i['name']}" for i in cat['instances'] if i['type'] == 'A2.ServiceDomain'),
                                    'records': len(cat['instances']), 'sha256': aid._sha(cat),
@@ -238,7 +257,8 @@ def run():
         r = {'run': n, 'has': ' + '.join(has), 'projects': proj, 'metrics': g['metrics'], 'rows': g['rows'], 'ends': g['projection_ends'],
              'records': {l: s['records'] for l, s in pkg['projection']['summary'].items()}, 'links': pkg['projection']['links']}
         r['checks'] = expectations(n, pkg, g, real, reg, R['runs'])
-        r.update(explain(n, has, pkg, g, real, cat))
+        r.update(explain(n, has, pkg, g, real, cat)); r['by_relationship'] = g['by_relationship']
+        R['views'][f'run{n}-view.html'] = view_of(n, has, pkg, real, reg)
         R['runs'].append(r)
         E[f'run{n}-projection.json'] = pkg; E[f'run{n}-gaps.json'] = g
     R['safety'] = safety(real, packages, cat)
@@ -251,21 +271,23 @@ def run():
         {'id': 'AID-B3', 'what': 'from A4 alone an application is known only by its id; domains come from id words (`PAY` → Payment …)', 'action': 'kept low; the weakest evidence R2 accepts — expect "projected only" domains'},
         {'id': 'AID-B5', 'what': 'run 2 projected an extra API, PUT …/control for “Control Payment Instruction”: another estate gives the same Payment Initiation domain a Control operation the real estate does not have, and the catalogue merges both', 'action': 'shown as projected only; a real BIAN catalogue has one fixed operation list per domain, so this comes from the synthetic test data'},
         {'id': 'AID-B6', 'what': 'run 4 projected Current Account from one word, “account”, in API paths and entity names (the engine\'s S17 fallback B) — yet at medium confidence (0.6), the same as the right domain, which rests on five API matches', 'action': 'for decision: cap AID domains from fallback B at low, so the architect can tell a strong projection from a weak one'},
-        {'id': 'AID-B4', 'what': 'the projection schema (AID-O05) and the view/trace PROJECTED label (AID-O06) are not built', 'action': 'next AID build items'}]
+        {'id': 'AID-B4', 'what': 'the projection schema (AID-O05) and the view/trace PROJECTED label (AID-O06) were not built', 'action': 'closed 2026-10-28 — `schema/projection.schema.json`, checked by CTL-17; `sdem-graph view` and `trace` take `--projection`'}]
     return R
 
 
 def write_evidence(R):
     if EVID.exists(): shutil.rmtree(EVID)
     EVID.mkdir(parents=True); files = {}
-    for name, obj in list(R['evidence'].items()) + [('results.json', {k: v for k, v in R.items() if k != 'evidence'})]:
+    for name, obj in list(R['evidence'].items()) + [('results.json', {k: v for k, v in R.items() if k not in ('evidence', 'views')})]:
         text = json.dumps(obj, indent=2, ensure_ascii=False, default=str) + '\n'; (EVID / name).write_text(text, encoding='utf-8'); files[name] = hashlib.sha256(text.encode('utf-8')).hexdigest()
+    for name, text in R['views'].items():
+        (EVID / name).write_text(text, encoding='utf-8'); files[name] = hashlib.sha256(text.encode('utf-8')).hexdigest()
     m = {'example': 'use-case-example-2', 'run_date': R['date'], 'code_commit': subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=ROOT, capture_output=True, text=True).stdout.strip(), 'files': files}
     (EVID / 'manifest.json').write_text(json.dumps(m, indent=2) + '\n', encoding='utf-8')
 
 
 def render(R):
-    mark = {'matched': '✅', 'differs': '≠', 'projected only': '➕', 'real only': '➖', 'new element': '·'}
+    mark = {'matched': '✅', 'differs': '≠', 'similar name': '≈', 'projected only': '➕', 'real only': '➖', 'new element': '·'}
     sym = lambda r: next((v for k, v in mark.items() if r.startswith(k)), '')
     cell = lambda x: str(x).replace('|', '/').replace('\n', ' ')
     safe = all(s['pass'] for s in R['safety'])
@@ -277,7 +299,7 @@ def render(R):
            'The baseline before AID was built is kept at the end for comparison.', '',
            '**How to read the tables.** *Layers (from → to)* / *Projected (from → to)* shows the direction AID projected in — e.g. **A1 → A2** means inferred from the business layer into the BIAN layer. *Link stored as* shows the link the way the rulebook stores it, which can point the other way: AID projecting upwards **A3 → A2** still stores `REALIZED_BY` as A2 → A3. Every record is tagged with its layer and where it comes from: **real** (a layer the architect has), **projected** (made by AID in this run) or **BIAN catalogue**. Every projected element shows: the **source** — the real records it was inferred from; the **rule** and its **published source** (see *Sources* at the end); '
            'the **reasoning**; the **confidence** (0.6 = medium, 0.4 = low — AID never goes higher); and the **result** against the hidden real design: '
-           '✅ matched · ≠ differs · ➕ projected only · ➖ real only (missed).', '',
+           '✅ matched · ≠ differs · ≈ similar name only (a hint — not counted as a match) · ➕ projected only · ➖ real only (missed). *Matched by* names the rule that found the real counterpart.', '',
            '| Run | Has | Projects | Expectations met | Main result |', '|---|---|---|---|---|']
     for r in R['runs']:
         key = '; '.join(f"{k}: precision {v['precision']}, recall {v['recall']}" for k, v in r['metrics'].items() if 'recall' in v and not k.startswith('links') and v.get('precision') is not None)
@@ -288,14 +310,18 @@ def render(R):
     for r in R['runs']:
         out += ['', f"### Run {r['run']} — has {r['has']}, projects {r['projects']}", ''] + r['story']
         out += ['', '**Sealed expectations**', '', '| Expectation | Met |', '|---|---|'] + [f"| {cell(c)} | {'✅' if ok else '❌'} |" for c, ok in r['checks']]
-        out += ['', '**Projected design elements**', '', '| Layers (from → to) | Projected Element | Step | Source (inferred from) | Rule — published source | Reasoning | Confidence | Result against the real design |', '|---|---|---|---|---|---|---|---|']
+        out += ['', '**Projected design elements**', '', '| Layers (from → to) | Projected Element | Step | Source (inferred from) | Rule — published source | Reasoning | Confidence | Result against the real design | Matched by |', '|---|---|---|---|---|---|---|---|---|']
         for e in r['elements']:
             out.append(f"| **{e['path']}** | **{e['layer']} - {cell(e['name'])}**" + (f" `{e['id']}`" if e['name'] != e['id'] else '') + f" ({e['type']}) | {e['step']} | {cell(e['source'])} | {cell(e['basis'] if e['basis'].startswith(e['rule'] + ':') else e['rule'] + ' — ' + e['basis'])} | {cell(e['reasoning'])} | {e['confidence']} | "
-                       f"{sym(e['result'])} {e['result']}: {cell(e['why'])}" + (f" — real: {cell(e['real'])}" if e['real'] not in ('—', None) else '') + ' |')
+                       f"{sym(e['result'])} {e['result']}: {cell(e['why'])}" + (f" — real: {cell(e['real'])}" if e['real'] not in ('—', None) else '') + f" | {cell(e['by'])} |")
         if r['missed']:
             out += ['', '**Real elements AID missed**', '', '| Missed Real Element | Why it was missed |', '|---|---|'] + [f"| ➖ **{m['layer']} - {cell(m['name'])}** `{m['element']}` ({m['type']}) | {cell(m['reason'])} |" for m in r['missed']]
         out += ['', '**Projected links**', '', '| Projected (from → to) | Link stored as | From | Link | To | Step | Rule — published source | Reasoning | Confidence | In the real registry? |', '|---|---|---|---|---|---|---|---|---|---|']
         out += [f"| **{l['path']}** | {l['stored']} | {cell(l['from'])} | {l['rel']} | {cell(l['to'])} | {l['step']} | {cell(l['basis'] if l['basis'].startswith(l['rule'] + ':') or l['basis'].startswith(l['rule'][:3] + ':') else l['rule'] + ' — ' + l['basis'])} | {cell(l['reasoning'])} | {l['confidence']} | {sym(l['result'])} {l['result']} |" for l in r['links']]
+        if r['by_relationship']:
+            out += ['', '**Links between real elements, by relationship type**', '', '| Relationship | Projected | Real | Matched | Precision | Recall |', '|---|---|---|---|---|---|']
+            out += [f"| {t} | {v['projected']} | {v['real']} | {v['matched']} | {v['precision']} | {v['recall'] if v['recall'] is not None else '—'} |" for t, v in r['by_relationship'].items()]
+        out += ['', f"**See it:** [`run{r['run']}-view.html`](evidence/use-case-example-2/run{r['run']}-view.html) — the real layers the architect has, with the projection drawn dashed and labelled PROJECTED (download and open in a browser)."]
         if r['structure']:
             ok = sum(x['result'].startswith('matched') for x in r['structure'])
             out += ['', f"<details><summary>BIAN catalogue elements brought in with the domains — {len(r['structure'])} ({ok} also in the real BIAN layer)</summary>", '',

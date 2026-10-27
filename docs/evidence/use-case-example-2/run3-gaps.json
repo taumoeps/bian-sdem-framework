@@ -8,6 +8,7 @@
       "result": "matched",
       "real": "SD-PI Payment Initiation (synthetic selection)",
       "reason": "the real design links business or application records to this domain",
+      "matched_by": "BIAN canonical_id BIAN-PAYMENT-INITIATION",
       "confidence": 0.4
     },
     {
@@ -18,6 +19,7 @@
       "result": "matched",
       "real": "AT-PAY-INSTR Payment Instruction",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -28,6 +30,7 @@
       "result": "matched",
       "real": "FP-FULFIL Fulfil",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -38,6 +41,7 @@
       "result": "matched",
       "real": "CR-PI Payment Initiation Procedure",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -48,6 +52,7 @@
       "result": "matched",
       "real": "SG-PI-1 Instruction",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -58,6 +63,7 @@
       "result": "matched",
       "real": "SG-PI-2 Processing",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -68,6 +74,7 @@
       "result": "matched",
       "real": "SO-PI-02 Evaluate Payment Instruction Validation",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -78,6 +85,7 @@
       "result": "matched",
       "real": "SO-PI-03 Execute Payment Instruction Execution",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -88,6 +96,7 @@
       "result": "matched",
       "real": "SO-PI-04 Retrieve Payment Instruction",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -98,6 +107,7 @@
       "result": "matched",
       "real": "SO-PI-06 Notify Payment Instruction",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -108,6 +118,7 @@
       "result": "matched",
       "real": "SO-PI-01 Initiate Payment Instruction",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -118,6 +129,7 @@
       "result": "matched",
       "real": "SO-PI-05 Update Payment Instruction",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -128,6 +140,7 @@
       "result": "projected only",
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "matched_by": "—",
       "confidence": 0.4
     },
     {
@@ -138,6 +151,7 @@
       "result": "matched",
       "real": "BQ-VALIDATION Validation",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -148,6 +162,7 @@
       "result": "matched",
       "real": "BQ-EXECUTION Execution",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -158,6 +173,7 @@
       "result": "matched",
       "real": "BBO-PAY-INSTR Payment Instruction",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "BIAN canonical_id",
       "confidence": 0.4
     },
     {
@@ -168,6 +184,7 @@
       "result": "matched",
       "real": "BBOA-AMOUNT amount",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -178,6 +195,7 @@
       "result": "projected only",
       "real": "—",
       "reason": "the domain is in the real BIAN layer, but the real design links nothing to it",
+      "matched_by": "—",
       "confidence": 0.4
     },
     {
@@ -188,6 +206,7 @@
       "result": "matched",
       "real": "AT-PAY-TXN Payment Transaction",
       "reason": "the same BIAN element is in the real BIAN layer",
+      "matched_by": "same type and name",
       "confidence": 0.4
     },
     {
@@ -198,6 +217,7 @@
       "result": "projected only",
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "matched_by": "—",
       "confidence": 0.4
     },
     {
@@ -208,6 +228,7 @@
       "result": "projected only",
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "matched_by": "—",
       "confidence": 0.4
     },
     {
@@ -218,6 +239,7 @@
       "result": "projected only",
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "matched_by": "—",
       "confidence": 0.4
     },
     {
@@ -228,6 +250,7 @@
       "result": "projected only",
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "matched_by": "—",
       "confidence": 0.4
     },
     {
@@ -238,6 +261,7 @@
       "result": "projected only",
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "matched_by": "—",
       "confidence": 0.4
     },
     {
@@ -248,6 +272,7 @@
       "result": "projected only",
       "real": "—",
       "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "matched_by": "—",
       "confidence": 0.4
     },
     {
@@ -258,6 +283,7 @@
       "result": "matched",
       "real": "APP-PAY-HUB Payments Hub",
       "reason": "the application exists in the real design — its real name is “Payments Hub”, which A4 does not give",
+      "matched_by": "same id",
       "confidence": 0.6
     },
     {
@@ -268,6 +294,7 @@
       "result": "matched",
       "real": "CMP-PAY-EXEC Execution Gateway",
       "reason": "the application exists in the real design — its real name is “Execution Gateway”, which A4 does not give",
+      "matched_by": "same id",
       "confidence": 0.6
     },
     {
@@ -277,7 +304,19 @@
       "type": "BusinessCapability",
       "result": "projected only",
       "real": "—",
-      "reason": "no real capability is supported by SD-PE",
+      "reason": "no real capability is supported by SD-PE, and none has a similar name",
+      "matched_by": "—",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A1",
+      "element": "PRJ-PRC-SG-PE",
+      "name": "Execution — Payment Transaction (process candidate)",
+      "type": "BusinessProcess",
+      "result": "similar name",
+      "real": "PRC-PAY-02 Execute and confirm payment",
+      "reason": "no real process covers these operations or uses the domain; a real one has a similar name — a hint, not a match",
+      "matched_by": "name",
       "confidence": 0.4
     },
     {
@@ -287,7 +326,30 @@
       "type": "BusinessCapability",
       "result": "matched",
       "real": "CAP-PAY-010 Initiate Payment",
-      "reason": "the real capability supported by SD-PI is named “Initiate Payment”; AID can only suggest one from the domain name",
+      "reason": "real capability found by the domain it points to (SD-PI): “Initiate Payment” — AID can only suggest one from the domain name",
+      "matched_by": "the domain it points to (SD-PI)",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A1",
+      "element": "PRJ-PRC-SG-PI-1",
+      "name": "Instruction — Payment Instruction (process candidate)",
+      "type": "BusinessProcess",
+      "result": "matched",
+      "real": "PRC-PAY-01 Capture and validate payment instruction",
+      "reason": "real process(es) found by the BIAN operations it covers: “Capture and validate payment instruction” invokes SO-PI-01",
+      "matched_by": "the BIAN operations it covers",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A1",
+      "element": "PRJ-PRC-SG-PI-2",
+      "name": "Processing — Payment Instruction (process candidate)",
+      "type": "BusinessProcess",
+      "result": "matched",
+      "real": "PRC-PAY-01 Capture and validate payment instruction, PRC-PAY-02 Execute and confirm payment",
+      "reason": "real process(es) found by the BIAN operations it covers: “Capture and validate payment instruction” invokes SO-PI-02; “Execute and confirm payment” invokes SO-PI-03, SO-PI-04",
+      "matched_by": "the BIAN operations it covers",
       "confidence": 0.4
     }
   ],
@@ -395,11 +457,41 @@
       "precision": 0.5,
       "recall": 1.0
     },
+    "A1 process candidates": {
+      "projected": 3,
+      "real": 3,
+      "matched": 2,
+      "precision": 0.67,
+      "recall": 0.67
+    },
     "links between real elements": {
       "projected": 10,
       "real": 7,
       "matched": 7,
       "precision": 0.7,
+      "recall": 1.0
+    }
+  },
+  "by_relationship": {
+    "DEPLOYED_AS": {
+      "projected": 3,
+      "real": 3,
+      "matched": 3,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "DEPLOYED_ON": {
+      "projected": 3,
+      "real": 3,
+      "matched": 3,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "REALIZED_BY": {
+      "projected": 4,
+      "real": 1,
+      "matched": 1,
+      "precision": 0.25,
       "recall": 1.0
     }
   },

@@ -35,16 +35,17 @@
       },
       {
         "step": "R3",
-        "capability_candidates": 2
+        "capability_candidates": 2,
+        "process_candidates": 3
       }
     ],
     "projection_ends": [],
     "summary": {
       "A1": {
-        "records": 2,
+        "records": 5,
         "by_confidence": {
           "0.6": 0,
-          "0.4": 2
+          "0.4": 5
         }
       },
       "A2": {
@@ -62,7 +63,7 @@
         }
       }
     },
-    "links": 12
+    "links": 15
   },
   "layers": {
     "A1": {
@@ -90,6 +91,33 @@
           }
         },
         {
+          "id": "PRJ-PRC-SG-PE",
+          "type": "A1.BusinessProcess",
+          "version": "1.0",
+          "name": "Execution — Payment Transaction (process candidate)",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "invokes": [
+              "SO-PE-01",
+              "SO-PE-02",
+              "SO-PE-03"
+            ]
+          },
+          "projection": {
+            "step": "R3",
+            "rule": "service group",
+            "source_reference": "none published — SDEM pattern (AID-R03): one process candidate per BIAN service group; the grouping itself is BIAN's ([SL14])",
+            "inferred_from": [
+              "SG-PE",
+              "SO-PE-01",
+              "SO-PE-02",
+              "SO-PE-03"
+            ],
+            "reasoning": "BIAN groups the operations Initiate Payment Execution, Retrieve Payment Execution, Control Payment Execution as “Execution”; a business process typically covers one such group — a candidate only",
+            "confidence": 0.4
+          }
+        },
+        {
           "id": "PRJ-CAP-SD-PI",
           "type": "A1.BusinessCapability",
           "version": "1.0",
@@ -103,6 +131,62 @@
               "SD-PI"
             ],
             "reasoning": "a business capability is likely to be supported by Payment Initiation; BIAN publishes no capability mapping, so this is a candidate only",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-PRC-SG-PI-1",
+          "type": "A1.BusinessProcess",
+          "version": "1.0",
+          "name": "Instruction — Payment Instruction (process candidate)",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "invokes": [
+              "SO-PI-01",
+              "SO-PI-05",
+              "SO-PI-04@acquired-fintech"
+            ]
+          },
+          "projection": {
+            "step": "R3",
+            "rule": "service group",
+            "source_reference": "none published — SDEM pattern (AID-R03): one process candidate per BIAN service group; the grouping itself is BIAN's ([SL14])",
+            "inferred_from": [
+              "SG-PI-1",
+              "SO-PI-01",
+              "SO-PI-05",
+              "SO-PI-04@acquired-fintech"
+            ],
+            "reasoning": "BIAN groups the operations Initiate Payment Instruction, Update Payment Instruction, Control Payment Instruction as “Instruction”; a business process typically covers one such group — a candidate only",
+            "confidence": 0.4
+          }
+        },
+        {
+          "id": "PRJ-PRC-SG-PI-2",
+          "type": "A1.BusinessProcess",
+          "version": "1.0",
+          "name": "Processing — Payment Instruction (process candidate)",
+          "lifecycle_status": "planned",
+          "attributes": {
+            "invokes": [
+              "SO-PI-02",
+              "SO-PI-03",
+              "SO-PI-04",
+              "SO-PI-06"
+            ]
+          },
+          "projection": {
+            "step": "R3",
+            "rule": "service group",
+            "source_reference": "none published — SDEM pattern (AID-R03): one process candidate per BIAN service group; the grouping itself is BIAN's ([SL14])",
+            "inferred_from": [
+              "SG-PI-2",
+              "SO-PI-02",
+              "SO-PI-03",
+              "SO-PI-04",
+              "SO-PI-06"
+            ],
+            "reasoning": "BIAN groups the operations Evaluate Payment Instruction Validation, Execute Payment Instruction Execution, Retrieve Payment Instruction, Notify Payment Instruction as “Processing”; a business process typically covers one such group — a candidate only",
             "confidence": 0.4
           }
         }
@@ -1300,6 +1384,33 @@
       {
         "mapping_id": "PRJ-L-012",
         "source": {
+          "id": "PRJ-PRC-SG-PE",
+          "type": "A1.BusinessProcess",
+          "version": "1.0"
+        },
+        "relationship": "USES_DOMAIN",
+        "target": {
+          "id": "SD-PE",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: process candidate",
+        "projection": {
+          "step": "R3",
+          "rule": "service group",
+          "source_reference": "none published — SDEM pattern (AID-R03): one process candidate per BIAN service group; the grouping itself is BIAN's ([SL14])",
+          "inferred_from": [
+            "SG-PE"
+          ],
+          "reasoning": "process candidate",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-013",
+        "source": {
           "id": "PRJ-CAP-SD-PI",
           "type": "A1.BusinessCapability",
           "version": "1.0"
@@ -1321,6 +1432,60 @@
             "SD-PI"
           ],
           "reasoning": "capability candidate",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-014",
+        "source": {
+          "id": "PRJ-PRC-SG-PI-1",
+          "type": "A1.BusinessProcess",
+          "version": "1.0"
+        },
+        "relationship": "USES_DOMAIN",
+        "target": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: process candidate",
+        "projection": {
+          "step": "R3",
+          "rule": "service group",
+          "source_reference": "none published — SDEM pattern (AID-R03): one process candidate per BIAN service group; the grouping itself is BIAN's ([SL14])",
+          "inferred_from": [
+            "SG-PI-1"
+          ],
+          "reasoning": "process candidate",
+          "confidence": 0.4
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-015",
+        "source": {
+          "id": "PRJ-PRC-SG-PI-2",
+          "type": "A1.BusinessProcess",
+          "version": "1.0"
+        },
+        "relationship": "USES_DOMAIN",
+        "target": {
+          "id": "SD-PI",
+          "type": "A2.ServiceDomain",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.4,
+        "rationale": "PROJECTED DESIGN, not a mapping: process candidate",
+        "projection": {
+          "step": "R3",
+          "rule": "service group",
+          "source_reference": "none published — SDEM pattern (AID-R03): one process candidate per BIAN service group; the grouping itself is BIAN's ([SL14])",
+          "inferred_from": [
+            "SG-PI-2"
+          ],
+          "reasoning": "process candidate",
           "confidence": 0.4
         }
       }

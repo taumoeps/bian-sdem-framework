@@ -20,11 +20,12 @@ from pathlib import Path
 
 from .graph import FederatedGraph, LevelGraph
 from .metamodel import Metamodel
-from .rules_engine import Run, RulesEngine, _list, _rules
+from .rules_engine import Run, RulesEngine, _list, _rules, stem, tokens
 from .store import GraphReader
 from .validate import load_registry
 
 MEDIUM, LOW = 0.6, 0.4
+SCHEMA = Path(__file__).resolve().parents[1] / 'schema' / 'projection.schema.json'
 FILES = {'A1': 'projected-a1-business.json', 'A2': 'projected-a2-service-domain.json', 'A3': 'projected-a3-application.json', 'A4': 'projected-a4-technology.json'}
 CATALOGUE_RULE = 'BIAN catalogue reference'
 PROVENANCE = ('step', 'rule', 'source_reference', 'inferred_from', 'reasoning', 'confidence')
@@ -36,6 +37,7 @@ def basis(rule, step=None, catalogue=None):
     """The source reference for a projection rule: the rulebook rule and its published basis."""
     if rule == CATALOGUE_RULE: return f"BIAN reference catalogue `{(catalogue or {}).get('model_id', '?')}` — the element is copied, not invented"
     if rule == 'name (id words)': return 'none published — SDEM fallback (AID-R02): words of an application id matched to domain names'
+    if rule == 'service group': return 'none published — SDEM pattern (AID-R03): one process candidate per BIAN service group; the grouping itself is BIAN\'s ([SL14])'
     rid = 'S32' if (rule == 'BIAN container pattern' and step == 'F3') else RULE_BASIS.get(rule) or (re.match(r'(S\d\d|B\d\d)', rule or '') or [None])[0]
     r = _rules().get(rid)
     return f"{rid}: {r['source_reference']}" if r else f'{rule}: no rulebook entry'
@@ -249,14 +251,26 @@ def name_fallback(prj, stubs):
 
 
 def reverse_a1(prj, domains):
-    """R3 — one capability candidate per domain: the weakest step (BIAN publishes no capability-to-domain mapping)."""
+    """R3 — per domain, one capability candidate (from its name) and one process candidate per BIAN service group
+    (the group's operations): the weakest step, as BIAN publishes no capability- or process-to-domain mapping."""
     for d in domains:
         dom = prj.cat_by_id.get(d) or prj.records['A2'].get(d)
         if not dom: continue
         cap = prj.record('A1', {'id': f'PRJ-CAP-{d}', 'type': 'A1.BusinessCapability', 'version': '1.0', 'name': f"{_clean(dom['name'])} (capability candidate)", 'lifecycle_status': 'planned'},
                          'R3', 'domain name', [d], f"a business capability is likely to be supported by {_clean(dom['name'])}; BIAN publishes no capability mapping, so this is a candidate only", LOW)
         prj.link('SUPPORTED_BY', cap, dom, 'R3', 'domain name', [d], 'capability candidate', LOW)
-    prj.steps.append({'step': 'R3', 'capability_candidates': len(domains)})
+        rels = (prj.cat or {}).get('relationships', [])
+        groups = [prj.cat_by_id[r['target']] for r in rels if r['source'] == d and r['kind'] == 'composition' and (prj.cat_by_id.get(r['target']) or {}).get('type') == 'A2.ServiceGroup']
+        if not groups: prj.ends.append(f'{d}: no BIAN service groups in the catalogue — no process candidates'); continue
+        at = prj.cat_by_id.get((dom.get('attributes') or {}).get('asset_type')) or {}
+        for g in groups:
+            ops = [prj.cat_by_id[r['target']] for r in rels if r['source'] == g['id'] and r['kind'] == 'composition' and (prj.cat_by_id.get(r['target']) or {}).get('type') == 'A2.ServiceOperation']
+            if not ops: continue
+            why = f"BIAN groups the operations {', '.join(o['name'] for o in ops)} as “{g['name']}”; a business process typically covers one such group — a candidate only"
+            prc = prj.record('A1', {'id': f"PRJ-PRC-{g['id']}", 'type': 'A1.BusinessProcess', 'version': '1.0', 'name': f"{g['name']} — {at.get('name') or _clean(dom['name'])} (process candidate)",
+                                    'lifecycle_status': 'planned', 'attributes': {'invokes': [o['id'] for o in ops]}}, 'R3', 'service group', [g['id']] + [o['id'] for o in ops], why, LOW)
+            prj.link('USES_DOMAIN', prc, dom, 'R3', 'service group', [g['id']], 'process candidate', LOW)
+    prj.steps.append({'step': 'R3', 'capability_candidates': len(domains), 'process_candidates': sum(1 for x in prj.records['A1'] if x.startswith('PRJ-PRC-'))})
 
 
 # ------------------------------------------------------------------ orchestration
@@ -327,7 +341,9 @@ def read(path):
 
 def check(pkg, catalogue=None):
     """CTL-17: every projected element carries its provenance, is at most medium confidence, and invents no BIAN element."""
-    issues = []; cat = {i['id'] for i in catalogue['instances']} if catalogue else None
+    from .validate import check_schema
+    issues = [f'schema: {x}' for x in check_schema(pkg, json.loads(SCHEMA.read_text(encoding='utf-8')))]  # AID-O05
+    cat = {i['id'] for i in catalogue['instances']} if catalogue else None
     for lvl, d in pkg['layers'].items():
         for i in d['instances']:
             pr = i.get('projection') or {}
@@ -364,40 +380,58 @@ def gaps(pkg, real, registry):
     for s, c in rel('REALIZED_BY'): realised.setdefault(s, []).append(c)
     impl = dict(rel('IMPLEMENTED_BY'))
     parts = lambda c: [r['target'] for r in real.get('A3', {}).get('relationships', []) if r['kind'] == 'composition' and r['source'] == c and (inst.get(r['target']) or {}).get('type') == 'A3.ApplicationComponent']
-    def row(lvl, i, result, real_, reason):
+    def row(lvl, i, result, real_, reason, by='—'):
         rows.append({'layer': lvl, 'element': i['id'], 'name': i.get('name', i['id']), 'type': i['type'].split('.')[1], 'result': result, 'real': real_, 'reason': reason,
-                     'confidence': (i.get('projection') or {}).get('confidence')})
+                     'matched_by': by if result != 'projected only' else '—', 'confidence': (i.get('projection') or {}).get('confidence')})
+    canon = {}
+    for x in real.get('A2', {}).get('instances', []):
+        if x.get('canonical_id'): canon[x['canonical_id']] = x['id']
+    words = lambda t: {stem(w) for w in tokens(re.sub(r'\(.*?\)', ' ', t or ''))}
+    def by_name(name, cands):
+        """Real records whose name shares at least two words (stems) and at least half of the projected name's words — a hint, not a match."""
+        w = words(name); return [c for c in cands if w and len(w & words(c.get('name'))) >= 2 and len(w & words(c.get('name'))) * 2 >= len(w)]
+    a3run = Run(_reader({'A3': real['A3']}, mm), 'AID') if 'A3' in real else None
     L = pkg['layers']; projected_ops = set()
     for i in L.get('A2', {}).get('instances', []):
         if i['type'] == 'A2.ServiceDomain':
-            if i['id'] in used: row('A2', i, 'matched', f"{i['id']} {nm(i['id'])}", 'the real design links business or application records to this domain')
-            elif i['id'] in inst: row('A2', i, 'projected only', '—', 'the domain is in the real BIAN layer, but the real design links nothing to it')
+            rid = canon.get(i.get('canonical_id')) or (i['id'] if i['id'] in inst else None)
+            how = f"BIAN canonical_id {i['canonical_id']}" if i.get('canonical_id') in canon else 'catalogue id'
+            if rid in used: row('A2', i, 'matched', f"{rid} {nm(rid)}", 'the real design links business or application records to this domain', how)
+            elif rid: row('A2', i, 'projected only', '—', 'the domain is in the real BIAN layer, but the real design links nothing to it')
             else: row('A2', i, 'projected only', '—', 'not in the real design at all')
         else:
-            same = inst.get(i['id']); ok = same and same['type'] == i['type'] and same.get('name') == i.get('name')
-            row('A2', i, 'matched' if ok else 'projected only', f"{i['id']} {nm(i['id'])}" if ok else '—',
-                'the same BIAN element is in the real BIAN layer' if ok else 'brought in from the catalogue with its domain; the real BIAN layer does not have it')
+            same = inst.get(canon.get(i.get('canonical_id'))) if i.get('canonical_id') in canon else inst.get(i['id'])
+            ok = same and same['type'] == i['type'] and (same.get('name') == i.get('name') or i.get('canonical_id') in canon)
+            row('A2', i, 'matched' if ok else 'projected only', f"{same['id']} {same.get('name')}" if ok else '—',
+                'the same BIAN element is in the real BIAN layer' if ok else 'brought in from the catalogue with its domain; the real BIAN layer does not have it',
+                'BIAN canonical_id' if i.get('canonical_id') in canon else 'same type and name')
     for d in sorted(used - {i['id'] for i in L.get('A2', {}).get('instances', [])}) if 'A2' in L else []:
         rows.append({'layer': 'A2', 'element': d, 'name': nm(d), 'type': 'ServiceDomain', 'result': 'real only', 'real': f'{d} {nm(d)}', 'reason': 'the real design uses this domain; AID did not project it', 'confidence': None})
     for i in L.get('A3', {}).get('instances', []):
         if i['type'] == 'A3.ApplicationComponent' and i['id'].startswith('PRJ-APP-'):
-            d = i['id'][len('PRJ-APP-'):]; hit = realised.get(d, [])
-            if hit:
+            d = i['id'][len('PRJ-APP-'):]; how = 'the BIAN operations its APIs implement'
+            ops = [a['projection']['inferred_from'][0] for a in L['A3']['instances'] if a['type'] == 'A3.APIOperation' and any(r['source'] == i['id'] and r['target'] == a['id'] for r in L['A3']['relationships'])]
+            hit = sorted({(a3run.component_of(impl[o]) or {}).get('id') for o in ops if o in impl and a3run} - {None})
+            if not hit: hit, how = realised.get(d, []), f'the domain it realises ({d})'
+            if not hit:
+                hit, how = [c['id'] for c in by_name(i['name'], [x for x in real.get('A3', {}).get('instances', []) if x['type'] == 'A3.ApplicationComponent'])], 'name'
+            if hit and how == 'name': row('A3', i, 'similar name', ', '.join(f'{c} {nm(c)}' for c in hit), 'no real component realises this domain or implements these operations; a real one has a similar name — a hint, not a match', how)
+            elif hit:
                 sub = [p for c in hit for p in parts(c)]
                 row('A3', i, 'matched' if not sub else 'matched — structure differs', ', '.join(f'{c} {nm(c)}' for c in hit),
-                    f'the real design realises {d} with ' + (f'{len(hit)} components' if len(hit) > 1 else 'one component') + (f'; the real one is split into {len(sub)} sub-components ({", ".join(nm(p) for p in sub)}), AID projects one' if sub else ''))
+                    f'the real component found by {how}' + (f'; the real one is split into {len(sub)} sub-components ({", ".join(nm(p) for p in sub)}), AID projects one' if sub else ''), how)
             else: row('A3', i, 'projected only', '—', f'the real design realises {d} with no component')
         elif i['type'] == 'A3.ApplicationComponent':
             r_ = inst.get(i['id'])
             row('A3', i, 'matched' if r_ else 'projected only', f"{i['id']} {nm(i['id'])}" if r_ else '—',
-                'the application exists in the real design' + (f" — its real name is “{r_['name']}”, which A4 does not give" if r_ else '') if r_ else 'A4 names an application the real A3 does not have')
+                'the application exists in the real design' + (f" — its real name is “{r_['name']}”, which A4 does not give" if r_ else '') if r_ else 'A4 names an application the real A3 does not have', 'same id')
         elif i['type'] == 'A3.APIOperation':
             op = i['projection']['inferred_from'][0]; projected_ops.add(op); r_ = inst.get(impl.get(op))
             pf = f"{i['attributes']['method']} {i['attributes']['path']}"
             if not r_: row('A3', i, 'projected only', '—', f'the real design has no API for {op} {nm(op)}' + (' — this operation is not in the real BIAN layer' if op not in inst else '')); continue
             rf = f"{r_['attributes']['method']} {r_['attributes']['path']}"
             why = 'same method and path' if rf == pf else (f"the method differs — AID {i['attributes']['method']}, real {r_['attributes']['method']}" if r_['attributes']['path'] == i['attributes']['path'] else 'the path differs' if r_['attributes']['method'] == i['attributes']['method'] else 'method and path differ')
-            row('A3', i, 'matched' if rf == pf else 'differs', f"{r_['id']} {rf}", why)
+            row('A3', i, 'matched' if rf == pf else 'differs', f"{r_['id']} {rf}", why, f'the BIAN operation it implements ({op}), then method and path')
     stubs = {i['id'] for i in L.get('A3', {}).get('instances', []) if i['type'] == 'A3.ApplicationComponent' and not i['id'].startswith('PRJ-')}
     if stubs:
         named = {x for i in real.get('A4', {}).get('instances', []) for k in ('hosts', 'component_id', 'of_component') for x in _list((i.get('attributes') or {}).get(k))}
@@ -414,13 +448,30 @@ def gaps(pkg, real, registry):
         deps = [x for x in real.get('A4', {}).get('instances', []) if x['type'] == 'A4.Deployment' and (x.get('attributes') or {}).get('component_id') in hit]
         envs = [((x.get('attributes') or {}).get('environment_id') or '?') for x in deps]
         row('A4', i, 'matched' if len(deps) == 1 else 'differs' if deps else 'projected only', ', '.join(x['id'] for x in deps) or '—',
-            (f'the real component is deployed {len(deps)} times ({", ".join(envs)}); AID projects one deployment and, by rule, no platform or environment' if len(deps) > 1 else 'one real deployment' if deps else 'no real deployment of the realising component'))
+            (f'the real component is deployed {len(deps)} times ({", ".join(envs)}); AID projects one deployment and, by rule, no platform or environment' if len(deps) > 1 else 'one real deployment' if deps else 'no real deployment of the realising component'), 'the component it deploys')
     sup = {}
     for c, d in rel('SUPPORTED_BY'): sup.setdefault(d, []).append(c)
+    uses = {}
+    for pr_, d in rel('USES_DOMAIN'): uses.setdefault(d, []).append(pr_)
+    real_a1 = real.get('A1', {}).get('instances', [])
     for i in L.get('A1', {}).get('instances', []):
-        d = i['projection']['inferred_from'][0]; hit = sup.get(d, [])
-        row('A1', i, 'matched' if hit else 'projected only', ', '.join(f'{c} {nm(c)}' for c in hit) or '—',
-            f'the real capability supported by {d} is named “{nm(hit[0])}”; AID can only suggest one from the domain name' if hit else f'no real capability is supported by {d}')
+        src = i['projection']['inferred_from']
+        if i['type'] == 'A1.BusinessCapability':
+            d = src[0]; hit, how = sup.get(d, []), f'the domain it points to ({d})'
+            if not hit: hit, how = [c['id'] for c in by_name(i['name'], [c for c in real_a1 if c['type'] == 'A1.BusinessCapability'])], 'name'
+            row('A1', i, ('similar name' if how == 'name' else 'matched') if hit else 'projected only', ', '.join(f'{c} {nm(c)}' for c in hit) or '—',
+                (f'no real capability is supported by {d}; a real one has a similar name — a hint, not a match' if how == 'name' else f'real capability found by {how}: “{nm(hit[0])}” — AID can only suggest one from the domain name') if hit else f'no real capability is supported by {d}, and none has a similar name', how)
+        else:
+            ops = set((i.get('attributes') or {}).get('invokes', []))
+            hit = [p_['id'] for p_ in real_a1 if p_['type'] == 'A1.BusinessProcess' and ops & set((p_.get('attributes') or {}).get('invokes', []))]
+            how = 'the BIAN operations it covers'
+            if not hit:
+                dd = [l['target']['id'] for l in pkg['links']['links'] if l['source']['id'] == i['id']]
+                hit, how = [x for d in dd for x in uses.get(d, [])], 'the domain it uses'
+            if not hit: hit, how = [c['id'] for c in by_name(i['name'], [c for c in real_a1 if c['type'] == 'A1.BusinessProcess'])], 'name'
+            shared = lambda pid: sorted(ops & set((inst[pid].get('attributes') or {}).get('invokes', [])))
+            row('A1', i, ('similar name' if how == 'name' else 'matched') if hit else 'projected only', ', '.join(f'{c} {nm(c)}' for c in hit) or '—',
+                ('no real process covers these operations or uses the domain; a real one has a similar name — a hint, not a match' if how == 'name' else f'real process(es) found by {how}' + (': ' + '; '.join(f"“{nm(c)}” invokes {', '.join(shared(c))}" for c in hit) if how.startswith('the BIAN') else '')) if hit else 'no real process covers these operations or uses the domain', how)
     real_keys = {(m['source']['id'], m['relationship'], m['target']['id']) for m in approved}
     for l in pkg['links']['links']:
         s_, t_ = l['source']['id'], l['target']['id']
@@ -439,11 +490,40 @@ def gaps(pkg, real, registry):
                                                     'differs': sum(r['result'] == 'differs' for r in apis), 'projected only': sum(r['result'] == 'projected only' for r in apis),
                                                     'real only': sum(r['type'] == 'APIOperation' and r['result'] == 'real only' for r in rows)}
     tally('A4 deployments', lambda r: r['layer'] == 'A4')
-    tally('A1 capability candidates', lambda r: r['layer'] == 'A1')
+    tally('A1 capability candidates', lambda r: r['layer'] == 'A1' and r['type'] == 'BusinessCapability')
+    tally('A1 process candidates', lambda r: r['layer'] == 'A1' and r['type'] == 'BusinessProcess')
     if link_rows:
         Rl = {k for k in real_keys if k[1] in {x['relationship'] for x in link_rows}}; m_ = sum(x['result'] == 'matched' for x in link_rows)
         metrics['links between real elements'] = {'projected': len(link_rows), 'real': len(Rl), 'matched': m_, 'precision': round(m_ / len(link_rows), 2), 'recall': round(m_ / len(Rl), 2) if Rl else None}
-    return {'rows': rows, 'links': link_rows, 'metrics': metrics, 'projection_ends': pkg['projection']['projection_ends']}
+    by_rel = {}
+    for t in sorted({x['relationship'] for x in link_rows}):
+        P = [x for x in link_rows if x['relationship'] == t]; Rl = {k for k in real_keys if k[1] == t}; m_ = sum(x['result'] == 'matched' for x in P)
+        by_rel[t] = {'projected': len(P), 'real': len(Rl), 'matched': m_, 'precision': round(m_ / len(P), 2), 'recall': round(m_ / len(Rl), 2) if Rl else None}
+    return {'rows': rows, 'links': link_rows, 'metrics': metrics, 'by_relationship': by_rel, 'projection_ends': pkg['projection']['projection_ends']}
+
+
+def trace(reader, pkg, start, direction='down'):
+    """AID-O06: trace across real approved links and projected links; every projected hop and record is labelled.
+    Down = towards A4 (link source → target), up = towards A1. Returns text lines."""
+    names, level = {}, {}
+    for n in reader.nodes(): names[n['id']] = n.get('name', n['id']); level[n['id']] = n['level']
+    proj = set()
+    for lvl, d in pkg['layers'].items():
+        for i in d['instances']:
+            if i['id'] not in level: proj.add(i['id'])
+            names.setdefault(i['id'], i.get('name', i['id'])); level.setdefault(i['id'], lvl)
+    edges = [(e['source']['id'], e['relationship'], e['target']['id'], f"approved {e['mapping_id']}") for e in reader.edges('cross-level')]
+    edges += [(l['source']['id'], l['relationship'], l['target']['id'], f"PROJECTED {l['confidence']} · {l['projection']['step']} · {l['projection']['rule']}") for l in pkg['links']['links']]
+    tag = lambda x: f"[{level.get(x, '?')}{' PROJECTED' if x in proj else ''}] {x} {names.get(x, '') if names.get(x, x) != x else ''}".rstrip()
+    out, seen = [tag(start)], {start}
+    def rec(x, prefix):
+        nxt = [(r, t, how) for s_, r, t, how in ((e[0], e[1], e[2], e[3]) if direction == 'down' else (e[2], e[1], e[0], e[3]) for e in edges) if s_ == x]
+        for k, (r, t, how) in enumerate(nxt):
+            last = k == len(nxt) - 1
+            out.append(f"{prefix}{'└─ ' if last else '├─ '}{r}{' (reverse)' if direction == 'up' else ''} → {tag(t)}   ({how})")
+            if t not in seen: seen.add(t); rec(t, prefix + ('   ' if last else '│  '))
+    rec(start, '')
+    return out
 
 
 def main(argv=None):

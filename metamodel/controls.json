@@ -167,7 +167,7 @@
       "id": "CTL-17",
       "rule_area": "platform",
       "control": "Every projected element carries its projection provenance, is never above medium confidence, and never invents a BIAN element",
-      "implemented_in": "sdem/aid.py `check` — run by `sdem-aid project` before writing, and by `sdem-aid check`",
+      "implemented_in": "`schema/projection.schema.json` and sdem/aid.py `check` — run by `sdem-aid project` before writing, and by `sdem-aid check`",
       "runs": "sdem-aid project; sdem-aid check",
       "outcome_recorded_in": "projection package `projection.json`; command output",
       "monitored_by": "GitHub Actions `validate.yml` on every push and pull request; tests/test_use_case_example_2.py",
