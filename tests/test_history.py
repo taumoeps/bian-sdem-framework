@@ -10,6 +10,7 @@ from sdem.metamodel import Metamodel
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / 'tests' / 'fixtures' / 'confluence-export-sample'
 KNOWN = ROOT / 'examples' / 'payment-initiation' / 'a3-application.json'
+FOLDER = ROOT / 'tests' / 'fixtures' / 'confluence-folder-export'
 
 
 class HistoryTests(unittest.TestCase):
@@ -124,6 +125,66 @@ class HistoryTests(unittest.TestCase):
         self.assertTrue((self.tmp / 'cli' / 'a3-application.json').exists())
         self.assertEqual(main(['history', 'extract', str(self.tmp / 'missing'), '-o', str(self.tmp / 'x')]), 2)
 
+
+
+class FolderLayoutTests(unittest.TestCase):
+    """A prepared export: readme/source/evidence in the root, raw HTML and diagrams in archives/, sections as folders (HI-L*)."""
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp())
+        cls.x, cls.ds, cls.issues = history.extract(FOLDER, cls.tmp / 'out', now='2026-10-28T00:00:00')
+        cls.doc = json.loads((cls.tmp / 'out' / 'extraction.json').read_text())
+        cls.idx = {p['file']: p for p in json.loads((cls.tmp / 'out' / 'design-index.json').read_text())['designs']}
+        cls.by_name = {r['name']: r for r in cls.doc['records']}
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def test_pages_found_in_any_folder_and_format(self):  # HI-L01
+        self.assertEqual({f for f, p in self.idx.items() if not p['diagram_only']}, {
+            'archives/payments-hub-design.html', 'Payments Hub Design/1. Business Context/overview.md',
+            'Payments Hub Design/2. Application Architecture/integrations.html', 'Payments Hub Design/2. Application Architecture/notes.txt',
+            'Payments Hub Design/3. Infrastructure/servers.csv'})
+        self.assertEqual(self.by_name['Payment Initiation']['type'], 'A1.BusinessCapability')     # Markdown table
+        self.assertEqual(self.by_name['PAYAPP02']['type'], 'A4.Node')                              # CSV
+        self.assertIn('Payments Hub Design / Infrastructure', self.by_name['PAYAPP02']['sources'][0]['where'])   # folders as sections, numbers dropped
+
+    def test_root_files_are_provenance_and_fill_in_the_page(self):  # HI-L02
+        prov = {f['file']: f for f in self.doc['provenance_files']}
+        self.assertEqual(set(prov), {'README.md', 'source.json', 'evidence.csv'})
+        self.assertEqual(prov['source.json']['pages_matched'], 1); self.assertTrue(prov['README.md']['sha256'])
+        page = self.idx['archives/payments-hub-design.html']
+        self.assertEqual(page['page_id'], '55501'); self.assertIn(page['page_id_from'], ('source.json', 'evidence.csv'))   # both list it
+        self.assertEqual(page['modified'], '2022-05-10'); self.assertTrue(page['url'].endswith('/55501'))
+
+    def test_diagram_the_html_refers_to_is_linked_to_its_page(self):  # HI-L03
+        page = self.idx['archives/payments-hub-design.html']
+        self.assertEqual([d['file'] for d in page['diagrams']], ['archives/diagrams/hub-context.png'])
+        self.assertEqual(self.by_name['Payment Order']['sources'][0]['page_id'], '55501')
+        self.assertFalse(any(v['what'] == 'picture' and 'hub-context' in v['where'] for v in self.doc['for_review']))
+
+    def test_unlinked_diagrams_are_read_with_their_folder(self):  # HI-L04
+        nl = {v['where'] for v in self.doc['for_review'] if v['what'] == 'diagram not linked to a page'}
+        self.assertEqual(nl, {'archives/diagrams/network-zones.drawio', 'Payments Hub Design/3. Infrastructure/infrastructure.svg'})
+        sw = self.by_name['Core Switch']
+        self.assertEqual(sw['type'], 'A4.Node'); self.assertIn('Infrastructure', sw['sources'][0]['reasoning'])
+        self.assertEqual(self.by_name['PAYAPP01']['type'], 'A4.Node')        # the name from the servers table wins over the label word "app"
+        self.assertNotIn(('same name, different types', 'PAYAPP01'), {(v['what'], v.get('name')) for v in self.doc['for_review']})
+
+    def test_pictures_shown_or_not_go_to_a_person(self):  # HI-L05
+        what = {(v['what'], v.get('name')) for v in self.doc['for_review']}
+        self.assertIn(('picture', 'customer journey sketch'), what)
+        self.assertIn(('picture not shown on any page', 'rack-photo.jpg'), what)
+
+    def test_inspect_layout_and_anonymous(self):  # HI-I02
+        r = history.inspect(FOLDER)
+        folders = {f['folder']: f for f in r['layout']}
+        self.assertEqual(folders['.']['provenance'], 3); self.assertEqual(folders['archives/diagrams']['diagram'], 2)
+        a = history.inspect(FOLDER, anonymous=True)
+        text = json.dumps(a)
+        self.assertNotIn('Payments', text); self.assertNotIn('Infrastructure', text); self.assertIn('archives/diagrams', text)
+        self.assertNotIn('tables', a); self.assertNotIn('headings', a)
 
 if __name__ == '__main__':
     unittest.main()

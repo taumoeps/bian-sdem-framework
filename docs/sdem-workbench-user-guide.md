@@ -520,12 +520,12 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
 
 *Goal: turn the organisation's past designs (Confluence pages with tables and draw.io diagrams) into candidate records — on the work machine, without AI, without the content leaving it.*
 
-1. In Confluence: **Space settings → Export space → HTML**. Unzip it into a folder outside this repository's tracked files, e.g. `~/designs/payarch`.
+1. Put the export in a folder outside this repository's tracked files, e.g. `~/designs/payarch`. Any layout works: Confluence's own HTML export, or a prepared one (readme/source/evidence files in the root, raw HTML and diagrams in `archives/`, sections as folders).
 2. See what is there and which rules read it — structure only:
    ```bash
    sdem history inspect ~/designs/payarch
    ```
-   It lists every table's column headings with the rule that reads it (`no rule` if none), every draw.io shape kind with the type it becomes (`unclassified` if none), and the headings.
+   It shows what each folder holds (add `--anonymous` to hide the folder names), and lists every table's column headings with the rule that reads it (`no rule` if none), every draw.io shape kind with the type it becomes (`unclassified` if none), and the headings.
 3. If your pages use other words, copy the rules and add them — no code:
    ```bash
    cp metamodel/history-rules.json my-rules.json      # e.g. add "system name" to HT-01's "name" list, "switch" to label_words

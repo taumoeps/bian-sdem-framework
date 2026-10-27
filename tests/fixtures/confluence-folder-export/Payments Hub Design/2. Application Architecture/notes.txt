@@ -1,0 +1,5 @@
+Design notes
+
+The Clearing Gateway is hosted on PAYAPP01.
+
+The Scheme Adapter is out of scope for this release.

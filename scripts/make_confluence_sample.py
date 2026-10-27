@@ -1,4 +1,7 @@
-"""Write tests/fixtures/confluence-export-sample/: a synthetic Confluence HTML space export for testing `sdem history`.
+"""Write tests/fixtures/confluence-export-sample/ (Confluence's standard HTML export) and
+tests/fixtures/confluence-folder-export/ (a prepared export: provenance files in the root, raw HTML and diagrams in
+archives/, sections as folders) — synthetic exports for testing `sdem history`. First:
+tests/fixtures/confluence-export-sample/: a synthetic Confluence HTML space export for testing `sdem history`.
 
 Everything here is made up (a fictional bank's past designs). It follows the layout of a Confluence HTML export:
 one .html file per page (`Title_<pageId>.html`, or `<pageId>.html` in older exports), the page body in
@@ -169,5 +172,98 @@ def main():
     print(f'written {OUT}')
 
 
+
+# ---- the prepared layout: readme/source/evidence in the root, raw HTML and diagrams in archives/, sections as folders
+FOLDER = ROOT / 'tests' / 'fixtures' / 'confluence-folder-export'
+
+CONTEXT_MODEL = """<mxfile host="Confluence"><diagram id="c" name="Context"><mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+<mxCell id="a" value="Payments Hub" style="shape=mxgraph.archimate3.application;appType=comp;archiType=square;html=1;" vertex="1" parent="1"><mxGeometry x="0" y="0" width="120" height="60" as="geometry"/></mxCell>
+<mxCell id="b" value="Clearing Gateway" style="shape=mxgraph.archimate3.application;appType=comp;archiType=square;html=1;" vertex="1" parent="1"><mxGeometry x="200" y="0" width="120" height="60" as="geometry"/></mxCell>
+<mxCell id="c" value="Payment Order" style="shape=mxgraph.archimate3.application;appType=passive;html=1;" vertex="1" parent="1"><mxGeometry x="0" y="100" width="120" height="60" as="geometry"/></mxCell>
+<mxCell id="e" value="clearing file" style="endArrow=block;html=1;" edge="1" parent="1" source="a" target="b"><mxGeometry relative="1" as="geometry"/></mxCell>
+</root></mxGraphModel></diagram></mxfile>"""
+
+NETWORK_MODEL = """<mxfile host="Confluence"><diagram id="n" name="Network"><mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+<mxCell id="n1" value="Payments DMZ" style="rounded=0;html=1;" vertex="1" parent="1"><mxGeometry x="0" y="0" width="120" height="60" as="geometry"/></mxCell>
+<mxCell id="n2" value="Edge Firewall" style="rounded=0;html=1;" vertex="1" parent="1"><mxGeometry x="200" y="0" width="120" height="60" as="geometry"/></mxCell>
+</root></mxGraphModel></diagram></mxfile>"""
+
+INFRA_MODEL = """<mxfile host="Confluence"><diagram id="i" name="Infrastructure"><mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+<mxCell id="s1" value="Core Switch" style="rounded=0;html=1;" vertex="1" parent="1"><mxGeometry x="0" y="0" width="120" height="60" as="geometry"/></mxCell>
+<mxCell id="s2" value="PAYAPP01" style="rounded=0;html=1;" vertex="1" parent="1"><mxGeometry x="200" y="0" width="120" height="60" as="geometry"/></mxCell>
+<mxCell id="s3" value="" style="endArrow=none;html=1;" edge="1" parent="1" source="s1" target="s2"><mxGeometry relative="1" as="geometry"/></mxCell>
+</root></mxGraphModel></diagram></mxfile>"""
+
+RAW_PAGE = """<html><head><title>Payments Hub Design</title></head><body>
+<h1>Payments Hub Design</h1>
+<p>Last updated by the payments architecture team.</p>
+<h2>Solution overview</h2>
+<p>The Payments Hub sends cleared payments to the Clearing Gateway every hour.</p>
+<p><img src="diagrams/hub-context.png" alt="hub context"></p>
+<h2>Applications</h2>
+<table><tr><th>Application</th><th>Purpose</th><th>Status</th></tr>
+<tr><td>Payments Hub</td><td>Captures and validates payment instructions</td><td>Live</td></tr>
+<tr><td>Clearing Gateway</td><td>Builds clearing files for the scheme</td><td>Live</td></tr></table>
+</body></html>
+"""
+
+OVERVIEW_MD = """# Business context
+
+The bank wants one place to start every payment.
+
+| Capability | Description |
+|---|---|
+| Payment Initiation | Accept a customer's instruction to pay |
+| Payment Clearing | Exchange payments with the scheme |
+
+![customer journey sketch](journey-sketch.jpg)
+"""
+
+INTEGRATIONS_HTML = """<h3>Interfaces</h3>
+<table><tr><th>Source</th><th>Target</th><th>Interface</th></tr>
+<tr><td>Payments Hub</td><td>Clearing Gateway</td><td>Clearing file (SFTP)</td></tr>
+<tr><td>Clearing Gateway</td><td>Scheme Adapter</td><td>ISO 20022 pacs.008</td></tr></table>
+"""
+
+NOTES_TXT = """Design notes
+
+The Clearing Gateway is hosted on PAYAPP01.
+
+The Scheme Adapter is out of scope for this release.
+"""
+
+
+def folder_export():
+    import csv as _csv, html as _h, io as _io, json as _json
+    text = {
+        'README.md': '# Export of the Payments Architecture space\n\nPrepared export: raw pages and diagrams in archives/, section content in folders.\n',
+        'source.json': _json.dumps({'space': 'PAYARCH', 'exported': '2026-10-01', 'pages': [
+            {'id': '55501', 'title': 'Payments Hub Design', 'file': 'archives/payments-hub-design.html',
+             'url': 'https://confluence.example.com/spaces/PAYARCH/pages/55501', 'last_modified': '2022-05-10'}]}, indent=2) + '\n',
+        'archives/payments-hub-design.html': RAW_PAGE,
+        'archives/diagrams/network-zones.drawio': NETWORK_MODEL,
+        'Payments Hub Design/1. Business Context/overview.md': OVERVIEW_MD,
+        'Payments Hub Design/2. Application Architecture/integrations.html': INTEGRATIONS_HTML,
+        'Payments Hub Design/2. Application Architecture/notes.txt': NOTES_TXT,
+        'Payments Hub Design/3. Infrastructure/infrastructure.svg':
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" content="{_h.escape(INFRA_MODEL)}"><rect width="10" height="10"/></svg>\n',
+    }
+    buf = _io.StringIO(); w = _csv.writer(buf, lineterminator='\n')
+    w.writerows([['Server', 'Environment', 'Status'], ['PAYAPP01', 'Production', 'Live'], ['PAYAPP02', 'Disaster recovery', 'Live']])
+    text['Payments Hub Design/3. Infrastructure/servers.csv'] = buf.getvalue()
+    buf = _io.StringIO(); w = _csv.writer(buf, lineterminator='\n')
+    w.writerows([['page_id', 'file', 'check', 'checked_on'], ['55501', 'archives/payments-hub-design.html', 'exported and opened', '2026-10-01']])
+    text['evidence.csv'] = buf.getvalue()
+    binary = {'archives/diagrams/hub-context.png': png([('mxfile', urllib.parse.quote(CONTEXT_MODEL, safe=''))]),
+              'Payments Hub Design/1. Business Context/journey-sketch.jpg': b'\xff\xd8\xff\xe0 synthetic jpeg \xff\xd9',
+              'Payments Hub Design/3. Infrastructure/rack-photo.jpg': b'\xff\xd8\xff\xe0 synthetic jpeg \xff\xd9'}
+    for rel, t in text.items():
+        p = FOLDER / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_text(t, encoding='utf-8')
+    for rel, b in binary.items():
+        p = FOLDER / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(b)
+    print(f'written {FOLDER}')
+
+
 if __name__ == '__main__':
     main()
+    folder_export()

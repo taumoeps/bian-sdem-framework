@@ -37,6 +37,23 @@ sdem history extract ~/designs/payarch -o work/history --rules my-rules.json --k
 open work/history/extraction-report.md                        # 3. review
 ```
 
+## 2a. Any folder layout
+
+The reader does not depend on Confluence's own export layout. It sorts every file by **what it is and where it sits**:
+
+| File | Treated as |
+|---|---|
+| Files in the export's **root** that are not HTML pages (readme, source, evidence — Markdown, text, JSON, CSV, anything) | **provenance**: listed with size and SHA-256. JSON and CSV lists are matched to pages (a row whose value equals a page's file path, file name or title) and fill in the page id, link, title, date and space (`manifest_keys` in the rules) |
+| `.html`, `.md`, `.txt`, `.csv` **anywhere else** (e.g. raw HTML in `archives/`, section files in section folders) | **pages**: HTML headings, tables, paragraphs and pictures; Markdown headings, pipe tables, paragraphs and `![pictures]()`; text paragraphs; a CSV is one table |
+| Any file holding a **draw.io diagram** — wherever it is | a **diagram**, linked to the page whose HTML or Markdown **refers to it** (resolved from the page's own folder; or the picture the page shows has the same name in the same folder). A diagram no page refers to is still read, with its folder as context, and listed for a person |
+| Other pictures | **for a person**, whether a page shows them or they just sit in a section folder |
+
+**Folders are sections.** `Payments Hub Design/3. Infrastructure/servers.csv` is read as if under the headings "Payments Hub Design › Infrastructure" (numbering dropped; container folders such as `archives` and `attachments` left out). That is what places a shape with nothing else to go by in the right architecture.
+
+`sdem history inspect EXPORT --anonymous` prints the folder layout — what each folder holds — with folder names replaced by F1, F2 …, so the structure can be described to someone outside without naming anything.
+
+If the same content appears twice (e.g. a section both in the raw HTML and in its folder), the records merge by name and both places are listed as sources.
+
 ## 3. What it reads, and how sure it is
 
 | In the export | How (rules) | Confidence |
@@ -75,7 +92,7 @@ Links between architectures are **not** written to any dataset or registry: they
 
 | Assumption | Basis | Confidence |
 |---|---|---|
-| HTML space export: one `.html` per page named `Title_<pageId>.html` (older: `<pageId>.html`); the body in `div#main-content`; "last modified on …" in `div.page-metadata`; files in `attachments/<pageId>/` | general knowledge of Confluence exports; not checked against Atlassian's documentation today | medium |
+| (standard Confluence layout, still supported) HTML space export: one `.html` per page named `Title_<pageId>.html` (older: `<pageId>.html`); the body in `div#main-content`; "last modified on …" in `div.page-metadata`; files in `attachments/<pageId>/` | general knowledge of Confluence exports; not checked against Atlassian's documentation today | medium |
 | draw.io keeps the editable diagram as an attachment (XML, possibly compressed), with a PNG preview on the page | general knowledge of the draw.io Confluence app | medium |
 | draw.io's ArchiMate 3 shapes are styled `shape=mxgraph.archimate3.application;appType=comp` (and `…tech;techType=node`, …) | general knowledge of draw.io's shape library | medium — business-layer styles least sure; `inspect` shows the styles actually used |
 

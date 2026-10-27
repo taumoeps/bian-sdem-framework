@@ -1,6 +1,6 @@
 # SDEM History — Specification
 
-> **Status: built 2026-10-28; tested on the synthetic export `tests/fixtures/confluence-export-sample` only.** Requirements for [`sdem-history-design.md`](sdem-history-design.md). Each has an ID (HI-*), a status and its test.
+> **Status: built 2026-10-28; tested on two synthetic exports only** — Confluence's standard layout (`tests/fixtures/confluence-export-sample`) and a prepared layout with provenance files in the root, raw HTML and diagrams in `archives/` and sections as folders (`tests/fixtures/confluence-folder-export`). Requirements for [`sdem-history-design.md`](sdem-history-design.md). Each has an ID (HI-*), a status and its test.
 
 ## 1. General
 
@@ -26,6 +26,17 @@
 | HI-R03 | Lines become relationships of a kind the rulebook allows (else association); a phrase on the line chooses the kind; a shape inside another is part of it, or deployed on it across architectures; lines between architectures become candidates with their SDEM link type, merged by source, target and type | built | `test_lines_and_containment` |
 | HI-R04 | Narrative: only known names (found in the export or `--known`); phrases between two names (HP-*) give links; text never creates records; a name equal to an existing record is flagged `same_as_existing` | built | `test_narrative_uses_known_names_only` |
 | HI-R05 | Pasted pictures (not draw.io, not a draw.io preview, not an icon or emoticon) and shapes no rule types are listed for a person | built | `test_pictures_and_unknown_shapes_go_to_a_person` |
+
+## 3a. Any folder layout
+
+| ID | Requirement | Status | Test |
+|---|---|---|---|
+| HI-L01 | Pages are found in any folder and format — HTML, Markdown, text, CSV; folder names act as section headings (leading numbers dropped, container folders left out) | built | `test_pages_found_in_any_folder_and_format` |
+| HI-L02 | Files in the root that are not HTML pages are provenance (size, SHA-256); JSON and CSV lists matched to pages fill in page id, link, title, date, space | built | `test_root_files_are_provenance_and_fill_in_the_page` |
+| HI-L03 | A diagram is linked to the page that refers to it, resolved from the page's folder (or by unique file name) | built | `test_diagram_the_html_refers_to_is_linked_to_its_page` |
+| HI-L04 | A diagram no page refers to is read with its folder as context and listed for a person; names already found decide a shape's type before label words; label words match whole words | built | `test_unlinked_diagrams_are_read_with_their_folder` |
+| HI-L05 | Pictures shown on a page, and pictures in folders no page shows, are listed for a person | built | `test_pictures_shown_or_not_go_to_a_person` |
+| HI-I02 | `inspect` shows what each folder holds; `--anonymous` replaces folder names and leaves out headings and column names | built | `test_inspect_layout_and_anonymous` |
 
 ## 4. Candidates
 

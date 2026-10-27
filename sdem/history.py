@@ -13,7 +13,7 @@ real until a person confirms it. The rules are in metamodel/history-rules.json; 
   sdem history inspect EXPORT_DIR                      what is in the export and which rules match (structure only)
   sdem history extract EXPORT_DIR -o OUT [--known …]   candidate datasets, extraction.json, design-index.json, report
 """
-import argparse, base64, collections, datetime, hashlib, json, re, sys, urllib.parse, zlib
+import argparse, base64, collections, csv, datetime, hashlib, io, json, os, re, sys, urllib.parse, zlib
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
@@ -120,64 +120,148 @@ def parse_date(text):
     return None
 
 
-# ---------------------------------------------------------------- the export: pages, their content blocks, attachments
-def page_files(root, rules):
-    skip = set(rules.get('skip_files', []))
-    out = []
-    for p in sorted(Path(root).rglob('*.htm*')):
-        rel = p.relative_to(root).as_posix()
-        if p.name in skip or rel.startswith(('attachments/', 'styles/', 'images/')): continue
-        out.append(p)
+# ---------------------------------------------------------------- the export: any folder layout
+CONTENT_EXT = ('.html', '.htm', '.md', '.markdown', '.txt', '.csv')
+DIAGRAM_EXT = ('', '.drawio', '.dio', '.xml', '.png', '.svg')
+
+
+def scan(root, rules):
+    """Sort every file of the export by what it is — by content and place, not by a fixed layout:
+    provenance (files in the root that are not pages: readme, source, evidence), pages (HTML, Markdown, text, CSV),
+    draw.io diagrams (any file holding one), pictures, other. Returns a dict of lists plus the folder layout."""
+    root = Path(root); skip_files = set(rules.get('skip_files', [])); skip = [s.strip('/') for s in rules.get('skip_folders', [])]
+    att = {a.strip('/').lower() for a in rules.get('attachment_folders', [])}; limit = rules.get('max_diagram_bytes', 50_000_000)
+    out = {'provenance': [], 'pages': [], 'diagrams': {}, 'pictures': [], 'other': [], 'layout': collections.defaultdict(collections.Counter)}
+    for p in sorted(root.rglob('*')):
+        if not p.is_file(): continue
+        rel = p.relative_to(root).as_posix(); parts = rel.split('/'); folder = '/'.join(parts[:-1]) or '.'
+        if any(x.startswith('.') or x == '__MACOSX' for x in parts) or p.name in skip_files or any(('/' + rel).startswith('/' + s + '/') or f'/{s}/' in '/' + rel for s in skip):
+            out['layout'][folder]['skipped'] += 1; continue
+        ext = p.suffix.lower(); in_att = bool({x.lower() for x in parts[:-1]} & att)
+        if len(parts) == 1 and ext not in ('.html', '.htm'):
+            out['provenance'].append(p); kind = 'provenance'
+        elif ext in CONTENT_EXT and not in_att:
+            out['pages'].append(p); kind = 'page'
+        else:
+            xml = find_mxfile(p.read_bytes()) if ext in DIAGRAM_EXT and p.stat().st_size <= limit else None
+            if xml: out['diagrams'][rel] = xml; kind = 'diagram'
+            elif ext in IMAGE_EXT: out['pictures'].append(rel); kind = 'picture'
+            else: out['other'].append(rel); kind = 'other'
+        out['layout'][folder][kind] += 1
     return out
 
 
-def read_page(path, root):
-    tree = parse_html(path.read_text(encoding='utf-8', errors='replace'))
-    title = clean((tree.find(lambda n: n.attrs.get('id') == 'title-text') or tree.find(lambda n: n.tag == 'title') or Node('x')).text())
-    space = ''
-    if ' : ' in title: space, title = [x.strip() for x in title.split(' : ', 1)]
+def folder_sections(rel, rules):
+    """The folders above a file, as section headings — container folders (archives, attachments …) left out."""
+    skip = {norm(c) for c in rules.get('container_folders', [])}
+    return [re.sub(r'^\d+(\.\d+)*[\s._-]+', '', x).strip() or x for x in rel.split('/')[:-1] if norm(x) not in skip]
+
+
+def read_page(path, root, rules=None):
+    """One content file → {page_id, title, space, file, modified, breadcrumb, blocks, links, attachment_names}."""
+    rules = rules or {}
+    rel = path.relative_to(root).as_posix(); ext = path.suffix.lower(); prefix = folder_sections(rel, rules)
     m = re.search(r'_(\d+)\.html?$', path.name) or re.match(r'(\d+)\.html?$', path.name)
-    page_id = m.group(1) if m else path.stem
-    meta = tree.find(lambda n: 'page-metadata' in n.cls())
-    crumbs = tree.find(lambda n: n.attrs.get('id') == 'breadcrumbs')
-    content = tree.find(lambda n: n.attrs.get('id') == 'main-content') or tree.find(lambda n: n.tag == 'body') or tree
-    names = {}  # attachment path -> its name, from links anywhere on the page (the Attachments section)
-    for a in tree.iter():
-        href = a.attrs.get('href') or ''
-        if a.tag == 'a' and 'attachments/' in href:
-            names[urllib.parse.unquote(href.split('?')[0])] = clean(a.text())
-    return {'page_id': page_id, 'title': title or path.stem, 'space': space, 'file': path.relative_to(root).as_posix(),
-            'modified': parse_date(meta.text()) if meta else None,
-            'breadcrumb': [clean(li.text()) for li in crumbs.iter() if li.tag == 'li'] if crumbs else [],
-            'blocks': blocks(content), 'attachment_names': names}
+    page = {'page_id': m.group(1) if m else rel, 'id_from': 'file name' if m else 'path', 'title': '', 'space': '', 'file': rel,
+            'modified': None, 'breadcrumb': prefix, 'blocks': [], 'links': [], 'attachment_names': {}, 'url': None}
+    text = path.read_text(encoding='utf-8', errors='replace')
+    if ext in ('.html', '.htm'):
+        tree = parse_html(text)
+        title = clean((tree.find(lambda n: n.attrs.get('id') == 'title-text') or tree.find(lambda n: n.tag == 'title') or Node('x')).text())
+        if ' : ' in title: page['space'], title = [x.strip() for x in title.split(' : ', 1)]
+        h1 = tree.find(lambda n: n.tag == 'h1')
+        page['title'] = title or (clean(h1.text()) if h1 else '')
+        meta = tree.find(lambda n: 'page-metadata' in n.cls())
+        page['modified'] = parse_date(meta.text()) if meta else None
+        crumbs = tree.find(lambda n: n.attrs.get('id') == 'breadcrumbs')
+        if crumbs: page['breadcrumb'] = [clean(li.text()) for li in crumbs.iter() if li.tag == 'li']
+        content = tree.find(lambda n: n.attrs.get('id') == 'main-content') or tree.find(lambda n: n.tag == 'body') or tree
+        page['blocks'] = html_blocks(content, prefix)
+        for a in tree.iter():
+            ref = a.attrs.get('href') if a.tag == 'a' else a.attrs.get('data') if a.tag == 'object' else a.attrs.get('src') if a.tag in ('embed', 'iframe') else None
+            if ref: page['links'].append((ref, clean(a.text())))
+            if a.tag == 'a' and 'attachments/' in (a.attrs.get('href') or ''):
+                page['attachment_names'][urllib.parse.unquote(a.attrs['href'].split('?')[0])] = clean(a.text())
+    elif ext in ('.md', '.markdown'):
+        page['blocks'], page['links'] = md_blocks(text, prefix)
+        h = next((x for x in text.splitlines() if re.match(r'#\s', x)), None)
+        page['title'] = clean(h[1:]) if h else ''
+    elif ext == '.csv':
+        rows = [r for r in csv.reader(io.StringIO(text.lstrip('﻿'))) if any(c.strip() for c in r)]
+        if rows: page['blocks'] = [('table', ' / '.join(prefix), ('grid', [clean(c) for c in rows[0]], rows[1:]))]
+    else:  # plain text: paragraphs split by blank lines
+        page['blocks'] = [('text', ' / '.join(prefix), clean(p)) for p in re.split(r'\n\s*\n', text) if clean(p)]
+    page['title'] = page['title'] or (prefix[-1] + ' — ' if prefix else '') + path.stem
+    return page
 
 
-def blocks(content):
-    """The page in reading order: ('table', section, node), ('text', section, str), ('img', section, node)."""
+def html_blocks(content, prefix=()):
+    """The page in reading order: ('table', section, (kind, headers, rows)), ('text', section, str), ('img', section, ref)."""
     out, heads = [], []
 
     def section():
-        return ' / '.join(h for _, h in heads)
+        return ' / '.join(list(prefix) + [h for _, h in heads])
+
+    def img(n):
+        return {'src': n.attrs.get('src') or '', 'alias': n.attrs.get('data-linked-resource-default-alias') or '', 'alt': n.attrs.get('alt') or ''}
 
     def walk(n):
         for c in n.children:
             if isinstance(c, str):
-                if clean(c) and n.tag in ('div', 'td', 'body', '#root'): out.append(('text', section(), clean(c)))
+                if clean(c) and n.tag in ('div', 'td', 'body', '#root', 'section', 'article'): out.append(('text', section(), clean(c)))
                 continue
             if re.fullmatch(r'h[1-6]', c.tag):
                 lvl = int(c.tag[1]); heads[:] = [h for h in heads if h[0] < lvl] + [(lvl, clean(c.text()))]; continue
-            if c.tag == 'table': out.append(('table', section(), c)); continue
+            if c.tag == 'table': out.append(('table', section(), table_rows(c))); continue
             if c.tag in ('p', 'li'):
                 t = clean(c.text())
                 if t: out.append(('text', section(), t))
                 for i in c.iter():
-                    if i.tag == 'img': out.append(('img', section(), i))
+                    if i.tag == 'img': out.append(('img', section(), img(i)))
                 continue
-            if c.tag == 'img': out.append(('img', section(), c)); continue
-            if c.tag in ('script', 'style'): continue
+            if c.tag == 'img': out.append(('img', section(), img(c))); continue
+            if c.tag in ('script', 'style', 'head'): continue
             walk(c)
     walk(content)
     return out
+
+
+def _md_plain(s):
+    s = re.sub(r'!\[[^\]]*\]\([^)]*\)', '', s); s = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', s)
+    return clean(re.sub(r'[*_`]+', '', s))
+
+
+def md_blocks(text, prefix=()):
+    """Markdown → the same blocks: # headings, pipe tables, paragraphs and list items, ![pictures](path); and [links](path)."""
+    out, heads, para, links = [], [], [], []
+    lines = text.splitlines(); i = 0
+
+    def section():
+        return ' / '.join(list(prefix) + [h for _, h in heads])
+
+    def flush():
+        t = clean(' '.join(para)); para.clear()
+        if t: out.append(('text', section(), t))
+
+    def cells(s):
+        return [c.strip() for c in s.strip().strip('|').split('|')]
+    while i < len(lines):
+        s = lines[i].strip()
+        m = re.match(r'(#{1,6})\s+(.*?)\s*#*$', s)
+        if m:
+            flush(); lvl = len(m.group(1)); heads[:] = [h for h in heads if h[0] < lvl] + [(lvl, _md_plain(m.group(2)))]; i += 1; continue
+        if s.startswith('|') and i + 1 < len(lines) and re.match(r'^\s*\|?\s*:?-{2,}', lines[i + 1]):
+            flush(); head = [_md_plain(c) for c in cells(s)]; i += 2; rows = []
+            while i < len(lines) and lines[i].strip().startswith('|'): rows.append([_md_plain(c) for c in cells(lines[i])]); i += 1
+            out.append(('table', section(), ('grid', head, rows))); continue
+        for m in re.finditer(r'!\[([^\]]*)\]\(([^)\s]+)', s): out.append(('img', section(), {'src': m.group(2), 'alias': m.group(1), 'alt': m.group(1)}))
+        for m in re.finditer(r'(?<!!)\[([^\]]*)\]\(([^)\s]+)', s): links.append((m.group(2), m.group(1)))
+        if not s: flush()
+        elif re.match(r'([-*+]|\d+[.)])\s', s): flush(); para.append(_md_plain(re.sub(r'^([-*+]|\d+[.)])\s+', '', s))); flush()
+        else: para.append(_md_plain(s))
+        i += 1
+    flush()
+    return out, links
 
 
 def table_rows(t):
@@ -370,8 +454,8 @@ class Extraction:
         return None
 
     # ---- tables
-    def table(self, page, section, node, n):
-        kind, headers, rows = table_rows(node)
+    def table(self, page, section, data, n):
+        kind, headers, rows = data
         hn = [norm(h) for h in headers]
         where = f"table {n}" + (f" under '{section}'" if section else '')
         if kind != 'grid' or not rows:
@@ -427,22 +511,22 @@ class Extraction:
         for r in self.rules['diagram_shapes']:
             if all((st.get(k) or '').lower() == str(v).lower() or (k == 'shape' and shape == str(v).lower()) for k, v in r['match'].items()):
                 return r['type'], 'diagram_shape', r['id'], f"drawn with the ArchiMate {r['type'].split('.')[1]} shape"
-        label = ' ' + (name + ' ' + desc).lower()
+        label = (name + ' ' + desc).lower()
         fill = (st.get('fillColor') or '').lower()
         lvl = next((l for l, cs in self.rules['diagram_colours'].items() if l != 'note' and fill in [c.lower() for c in cs]), None)
+        k = self.known.get(norm(name))  # a name already known — from the --known datasets, or a table or diagram in the export
+        if k and (not lvl or k[1][:2] == lvl): return k[1], 'diagram_label', 'HD-K', f"named like the existing {k[1].split('.')[1]} {k[0]} ({k[2]})"
+        hit = self.find(name)
+        if hit and (not lvl or hit['type'][:2] == lvl): return hit['type'], 'diagram_label', 'HD-N', f"named like {hit['id']}, found elsewhere in the export"
         how = 'diagram_colour' if lvl else 'diagram_label'
         for etype, words in self.rules['label_words'].items():
             if etype == 'note' or (lvl and etype[:2] != lvl): continue
-            w = next((w for w in words if w in label), None)
-            if w: return etype, how, 'HD-L', f"the label contains '{w.strip()}'" + (f' and the fill colour {fill} is {lvl}' if lvl else '')
+            w = next((w.strip() for w in words if re.search(r'\b' + re.escape(w.strip().lower()) + r'\b', label)), None)
+            if w: return etype, how, 'HD-L', f"the label contains the word '{w}'" + (f' and the fill colour {fill} is {lvl}' if lvl else '')
         for etype, words in self.rules['shape_words'].items():
             if etype == 'note' or (lvl and etype[:2] != lvl): continue
             w = next((w for w in words if w in shape or w in bare), None)
             if w: return etype, how, 'HD-S', f"drawn with the shape '{w}'"
-        k = self.known.get(norm(name))
-        if k and (not lvl or k[1][:2] == lvl): return k[1], 'diagram_label', 'HD-K', f"named like the existing {k[1].split('.')[1]} {k[0]} ({k[2]})"
-        hit = self.find(name)
-        if hit and (not lvl or hit['type'][:2] == lvl): return hit['type'], 'diagram_label', 'HD-N', f"named like {hit['id']}, found elsewhere in the export"
         lvl = lvl or self.layer_of(context)
         if lvl and lvl in self.rules['layer_default_type']:
             return self.rules['layer_default_type'][lvl], 'diagram_label', 'HD-D', f"nothing else to go by: the {lvl} default for a diagram under '{context}'"
@@ -526,19 +610,25 @@ class Extraction:
                 if len(n) >= nr['min_name_chars'] and n not in ignore and re.search(r'\b' + re.escape(n) + r'\b', norm(text)):
                     page.setdefault('existing_mentions', set()).add(k[0])
 
+    # ---- where a page points: a file of the export, resolved from the page's own folder
+    def resolve(self, page, ref):
+        ref = urllib.parse.unquote((ref or '').split('?')[0].split('#')[0]).strip()
+        if not ref or re.match(r'^[a-z][a-z0-9+.-]*:', ref, re.I): return None   # web links, data:, mailto: — not files of the export
+        for c in (os.path.normpath(os.path.join(os.path.dirname(page['file']), ref)), os.path.normpath(ref.lstrip('/'))):
+            c = c.replace(os.sep, '/')
+            if c in self.files: return c
+        hits = self.by_name.get(Path(ref).name.lower(), [])
+        return hits[0] if len(hits) == 1 else None
+
     # ---- one page
-    def page(self, root, path):
-        p = read_page(path, root)
+    def page(self, p):
         p['diagrams'], p['images_for_review'] = [], []
-        att_dir = Path(root) / 'attachments' / p['page_id']
-        diagrams_read, covered = {}, set()
-        files = sorted(x for x in att_dir.rglob('*') if x.is_file()) if att_dir.is_dir() else []
-        for f in files:  # every draw.io diagram attached to the page, whatever its file name
-            xml = find_mxfile(f.read_bytes())
-            if xml:
-                rel = f.relative_to(root).as_posix()
-                name = p['attachment_names'].get(rel) or f.stem
-                diagrams_read[rel] = (name, xml)
+        mine = {}  # diagrams of this page: rel -> name
+        for ref, text in p['links']:  # links to diagram files (Confluence's Attachments section, or any <a href>)
+            t = self.resolve(p, ref)
+            if t in self.diagrams: mine.setdefault(t, p['attachment_names'].get(t) or text or Path(t).stem)
+        for rel in self.diagrams:  # standard Confluence export: attachments/<pageId>/
+            if rel.startswith(f"attachments/{p['page_id']}/"): mine.setdefault(rel, p['attachment_names'].get(rel) or Path(rel).stem)
         n_table, texts, sec_of = 0, [], {}
         for kind, section, x in p['blocks']:
             self.inspect['headings'][(section.split(' / ')[-1] if section else '(no heading)', self.layer_of(section) or '—')] += 1 if kind == 'text' else 0
@@ -547,27 +637,102 @@ class Extraction:
             elif kind == 'text':
                 texts.append((section, x))
             elif kind == 'img':
-                src = urllib.parse.unquote(x.attrs.get('src') or '').split('?')[0]
+                src = urllib.parse.unquote(x['src']).split('?')[0]
                 if not src or any(s in src for s in self.rules['skip_images']): continue
-                alias = norm(re.sub(r'\.(png|svg|jpe?g)$', '', x.attrs.get('data-linked-resource-default-alias') or x.attrs.get('alt') or '', flags=re.I))
-                match = next((rel for rel, (name, _) in diagrams_read.items() if rel == src or (alias and norm(name) == alias) or norm(Path(rel).stem) == norm(Path(src).stem)), None)
-                if match: covered.add(match); sec_of[match] = section; continue
-                self.review.append({'page_id': p['page_id'], 'page_title': p['title'], 'what': 'picture', 'where': f"picture {src}" + (f" under '{section}'" if section else ''),
-                                    'name': x.attrs.get('alt') or Path(src).name, 'why': 'a pasted picture — SDEM cannot read pictures without AI; a person records what it shows, or redraws it in draw.io'})
-                p['images_for_review'].append(src); self.stats['pictures for a person'] += 1
-        for rel, (name, xml) in diagrams_read.items():
-            self.diagram(p, name, xml, f"diagram '{name}' ({rel})", sec_of.get(rel, ''))
-            p['diagrams'].append({'name': name, 'file': rel, 'read': True})
+                t = self.resolve(p, src)
+                alias = norm(re.sub(r'\.(png|svg|jpe?g)$', '', x['alias'] or x['alt'], flags=re.I))
+                if t in self.diagrams:  # the picture is the diagram (a draw.io PNG or SVG)
+                    mine.setdefault(t, Path(t).stem); sec_of[t] = section; self.used_pictures.add(t); continue
+                if t: self.used_pictures.add(t)
+                folder = os.path.dirname(t) if t else None
+                match = next((rel for rel, name in mine.items() if (alias and norm(name) == alias) or norm(Path(rel).stem) == norm(Path(src).stem)), None) \
+                    or next((rel for rel in self.diagrams if folder is not None and os.path.dirname(rel) == folder and norm(Path(rel).stem.split('.')[0]) == norm(Path(src).stem.split('.')[0])), None)
+                if match: mine.setdefault(match, Path(match).stem); sec_of[match] = section; continue
+                self.review.append({'page_id': p['page_id'], 'page_title': p['title'], 'what': 'picture', 'where': f"picture {t or src}" + (f" under '{section}'" if section else ''),
+                                    'name': x['alt'] or Path(src).name, 'why': 'a pasted picture — SDEM cannot read pictures without AI; a person records what it shows, or redraws it in draw.io'
+                                    + ('' if t else ' (the file is not in the export)')})
+                p['images_for_review'].append(t or src); self.stats['pictures for a person'] += 1
+        for rel, name in mine.items():
+            self.diagram(p, name, self.diagrams[rel], f"diagram '{name}' ({rel})", sec_of.get(rel, ' / '.join(p['breadcrumb'])))
+            p['diagrams'].append({'name': name, 'file': rel, 'read': True}); self.linked.add(rel)
         p['_texts'] = texts
-        self.pages.append(p)
         self.stats['pages'] += 1; self.stats['tables'] += n_table
+
+    # ---- the root files: readme, source, evidence — kept as provenance; JSON and CSV lists fill in page ids, links and dates
+    def provenance(self, files, root):
+        keys = {k: [norm(x) for x in v] for k, v in self.rules.get('manifest_keys', {}).items() if k != 'note'}
+        index = collections.defaultdict(list)
+        for pg in self.pages:
+            for k in {pg['file'], Path(pg['file']).name, Path(pg['file']).stem, pg['title']}:
+                if k: index[norm(k)].append(pg)
+        out = []
+        for f in files:
+            data = f.read_bytes(); rel = f.relative_to(root).as_posix(); ext = f.suffix.lower()
+            e = {'file': rel, 'kind': ext.lstrip('.') or 'file', 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()}
+            rows = None
+            try:
+                if ext == '.json':
+                    d = json.loads(data.decode('utf-8-sig'))
+                    if isinstance(d, list) and all(isinstance(x, dict) for x in d): rows = d
+                    elif isinstance(d, dict):
+                        rows = next((v for v in d.values() if isinstance(v, list) and v and all(isinstance(x, dict) for x in v)), None)
+                        e['fields'] = sorted(k for k, v in d.items() if not isinstance(v, (list, dict)))
+                elif ext in ('.csv', '.tsv'):
+                    rows = list(csv.DictReader(io.StringIO(data.decode('utf-8-sig', errors='replace')), delimiter='\t' if ext == '.tsv' else ','))
+                elif ext in ('.md', '.markdown', '.txt'):
+                    first = next((l for l in data.decode('utf-8', errors='replace').splitlines() if l.strip()), '')
+                    e['title'] = clean(first.lstrip('#'))[:120]
+            except (ValueError, UnicodeDecodeError) as err:
+                e['note'] = f'not read ({err.__class__.__name__})'
+            if rows is not None:
+                e['entries'] = len(rows); matched = 0
+                for r in rows:
+                    rn = {norm(k): v for k, v in r.items() if isinstance(v, (str, int)) and str(v).strip()}
+                    pages = {id(pg): pg for v in rn.values() for pg in index.get(norm(v), [])}
+                    if len(pages) != 1: continue
+                    pg = next(iter(pages.values())); matched += 1
+                    get = lambda k: next((str(rn[x]).strip() for x in keys.get(k, []) if x in rn), None)
+                    if get('page_id') and pg['id_from'] == 'path': pg['page_id'], pg['id_from'] = get('page_id'), rel
+                    if get('url') and not pg.get('url'): pg['url'] = get('url')
+                    if get('modified') and not pg['modified']: pg['modified'] = parse_date(get('modified'))
+                    if get('title') and pg['title'].endswith(Path(pg['file']).stem): pg['title'] = get('title')
+                    if get('space') and not pg['space']: pg['space'] = get('space')
+                e['pages_matched'] = matched
+            out.append(e)
+        return out
 
     def run(self, root):
         root = Path(root)
         if not root.is_dir(): raise ValueError(f'{root}: not a folder')
-        files = page_files(root, self.rules)
-        if not files: raise ValueError(f'{root}: no Confluence pages (.html) found — is this an HTML export?')
-        for f in files: self.page(root, f)
+        sc = scan(root, self.rules)
+        if not sc['pages']: raise ValueError(f'{root}: no pages found (.html, .md, .txt or .csv) — is this the export folder?')
+        self.layout = sc['layout']; self.diagrams = sc['diagrams']; self.files = set()
+        for p in root.rglob('*'):
+            if p.is_file(): self.files.add(p.relative_to(root).as_posix())
+        self.by_name = collections.defaultdict(list)
+        for f in sorted(self.files): self.by_name[f.rsplit('/', 1)[-1].lower()].append(f)
+        self.used_pictures, self.linked = set(), set()
+        self.pages = [read_page(p, root, self.rules) for p in sc['pages']]
+        self.provenance_files = self.provenance(sc['provenance'], root)  # before extraction: page ids and dates from the manifest
+        for p in self.pages: self.page(p)
+        for rel, xml in self.diagrams.items():  # diagrams no page points to: read with their folder as context
+            if rel in self.linked: continue
+            if any(os.path.dirname(rel) == os.path.dirname(u) and Path(u).stem.split('.')[0] == Path(rel).stem.split('.')[0] for u in self.used_pictures): continue
+            sec = ' / '.join(folder_sections(rel, self.rules))
+            pg = {'page_id': rel, 'id_from': 'path', 'title': f'{Path(rel).name} (diagram file)', 'space': '', 'file': rel, 'modified': None,
+                  'breadcrumb': folder_sections(rel, self.rules), 'diagrams': [{'name': Path(rel).stem, 'file': rel, 'read': True}], 'images_for_review': [], 'url': None, 'diagram_only': True}
+            self.diagram(pg, Path(rel).stem, xml, f"diagram file {rel}", sec)
+            self.review.append({'page_id': rel, 'page_title': pg['title'], 'what': 'diagram not linked to a page', 'where': rel, 'name': Path(rel).stem,
+                                'why': 'read with its folder as context' + (f" ('{sec}')" if sec else '') + '; check which design it belongs to'})
+            pg['_texts'] = []; self.pages.append(pg); self.stats['diagrams not linked'] += 1
+        stems = {(os.path.dirname(d), Path(d).stem.split('.')[0].lower()) for d in self.diagrams}
+        for rel in sc['pictures']:  # pictures no page shows: maybe the section's content
+            if rel in self.used_pictures or rel.startswith('attachments/') or any(s in rel for s in self.rules['skip_images']): continue
+            if (os.path.dirname(rel), Path(rel).stem.split('.')[0].lower()) in stems: continue   # a draw.io preview
+            sec = ' / '.join(folder_sections(rel, self.rules))
+            self.review.append({'what': 'picture not shown on any page', 'where': rel, 'name': Path(rel).name,
+                                'why': 'cannot be read without AI' + (f"; it sits under '{sec}'" if sec else '') + ' — a person records what it shows'})
+            self.stats['pictures for a person'] += 1
         for p in self.pages: self.narrative(p, p.pop('_texts'))  # after every page: names from all tables and diagrams
         dup = collections.defaultdict(list)
         for r in self.records.values(): dup[norm(r['name'])].append(r)
@@ -607,6 +772,7 @@ class Extraction:
         by = collections.Counter(r['type'][:2] for r in self.records.values())
         conf = collections.Counter(best(r['sources']) for r in self.records.values())
         return {'pages': self.stats['pages'], 'tables': self.stats['tables'], 'diagrams_read': self.stats['diagrams read'],
+                'diagrams_not_linked': self.stats['diagrams not linked'], 'provenance_files': len(getattr(self, 'provenance_files', [])),
                 'pictures_for_a_person': self.stats['pictures for a person'], 'records': dict(sorted(by.items())),
                 'records_by_confidence': dict(conf), 'links_within': len(self.links), 'links_between_candidates': len(self.cross),
                 'for_review': len(self.review), 'narrative_mentions': self.stats['narrative mentions']}
@@ -642,7 +808,8 @@ def extract(root, out, rules=None, known=(), model_id=None, now=None):
     now = now or datetime.datetime.now().replace(microsecond=0).isoformat()
     meta = {'generated': now, 'export': str(root), 'export_sha256': _digest(root), 'rules': str(rules or RULES.relative_to(DATA_ROOT)),
             'rules_sha256': hashlib.sha256(json.dumps(x.rules, sort_keys=True).encode()).hexdigest(), 'known': [str(k) for k in known],
-            'status': 'candidate — not real architecture data until a person confirms each record', 'summary': x.summary()}
+            'status': 'candidate — not real architecture data until a person confirms each record', 'summary': x.summary(),
+            'provenance_files': x.provenance_files}
     records = [{'id': r['id'], 'type': r['type'], 'name': r['name'], 'confidence': best(r['sources']), 'status': 'candidate',
                 'sources': r['sources'], **({'same_as_existing': r['same_as_existing']} if r.get('same_as_existing') else {})}
                for r in sorted(x.records.values(), key=lambda r: r['id'])]
@@ -652,10 +819,12 @@ def extract(root, out, rules=None, known=(), model_id=None, now=None):
     idx = []
     for p in x.pages:
         ids = sorted({r['id'] for r in x.records.values() if any(s['page_id'] == p['page_id'] for s in r['sources'])})
-        idx.append({'page_id': p['page_id'], 'title': p['title'], 'space': p['space'], 'breadcrumb': p['breadcrumb'], 'file': p['file'],
-                    'modified': p['modified'], 'records': ids, 'existing_records_mentioned': sorted(p.get('existing_mentions', ())),
+        idx.append({'page_id': p['page_id'], 'page_id_from': p.get('id_from'), 'title': p['title'], 'space': p['space'], 'url': p.get('url'),
+                    'breadcrumb': p['breadcrumb'], 'file': p['file'], 'modified': p['modified'], 'diagram_only': bool(p.get('diagram_only')),
+                    'records': ids, 'existing_records_mentioned': sorted(p.get('existing_mentions', ())),
                     'diagrams': p['diagrams'], 'pictures_for_a_person': p['images_for_review']})
-    (out / 'design-index.json').write_text(json.dumps({'generated': now, 'export': str(root), 'designs': idx}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    (out / 'design-index.json').write_text(json.dumps({'generated': now, 'export': str(root), 'provenance_files': x.provenance_files, 'designs': idx},
+                                                      indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     (out / 'extraction-report.md').write_text(report(x, meta, records, links, issues, idx), encoding='utf-8')
     return x, ds, issues
 
@@ -704,6 +873,11 @@ def report(x, meta, records, links, issues, idx):
     L.append('|---|---|---|---|---|')
     for v in x.review:
         L.append(f"| {v['what']} | {v.get('page_title', '—')} | {v.get('where', '')} | {v.get('name', '')} | {v['why']} |")
+    L.append('\n## Export provenance (files in the export\'s root)\n')
+    L.append('| File | Kind | Entries | Pages matched | SHA-256 |')
+    L.append('|---|---|---|---|---|')
+    for f in meta.get('provenance_files', []):
+        L.append(f"| `{f['file']}` | {f['kind']} | {f.get('entries', '—')} | {f.get('pages_matched', '—')} | `{f['sha256'][:12]}…` |")
     L.append('\n## Designs (the reference index)\n')
     L.append('| Page | Modified | Records | Diagrams read | Pictures for a person |')
     L.append('|---|---|---|---|---|')
@@ -717,11 +891,23 @@ def report(x, meta, records, links, issues, idx):
     return '\n'.join(L)
 
 
-def inspect(root, rules=None):
-    """What is in the export and which rule reads it — structure only (headings, column names, shape kinds), no records."""
+KEEP_NAMES = {'archives', 'archive', 'attachments', 'images', 'styles', 'diagrams', '.'}
+
+
+def inspect(root, rules=None, anonymous=False):
+    """What is in the export and which rule reads it — structure only (folders, headings, column names, shape kinds),
+    no records. anonymous: folder names replaced by F1, F2 … (well-known names kept) so the layout can be described safely."""
     rules_doc = json.loads(Path(rules).read_text(encoding='utf-8')) if rules else None
     x = Extraction(rules_doc).run(root)
-    return {'summary': x.summary(),
+    names = {}
+
+    def anon(folder):
+        if not anonymous: return folder
+        return '/'.join(p if p.lower() in KEEP_NAMES else names.setdefault(p, f'F{len(names) + 1}') for p in folder.split('/'))
+    layout = [{'folder': anon(f), 'depth': 0 if f == '.' else f.count('/') + 1, **dict(c)} for f, c in sorted(x.layout.items())]
+    if anonymous:
+        return {'layout': layout, 'summary': x.summary(), 'for_review': collections.Counter(v['what'] for v in x.review)}
+    return {'layout': layout, 'summary': x.summary(),
             'tables': [{'kind': k, 'columns': list(h), 'rule': r, 'count': n} for (k, h, r), n in x.inspect['tables'].most_common()],
             'shapes': [{'shape': s, 'type': t, 'count': n} for (s, t), n in x.inspect['shapes'].most_common()],
             'headings': [{'heading': h, 'layer': l, 'paragraphs': n} for (h, l), n in x.inspect['headings'].most_common() if n],
@@ -733,6 +919,7 @@ def main(argv=None):
     sub = ap.add_subparsers(dest='cmd', required=True)
     i = sub.add_parser('inspect', help='what is in the export and which rules read it — structure only')
     i.add_argument('export'); i.add_argument('--rules', help='your copy of metamodel/history-rules.json'); i.add_argument('--json', action='store_true')
+    i.add_argument('--anonymous', action='store_true', help='folder layout only, names replaced by F1, F2 … — safe to describe to others')
     e = sub.add_parser('extract', help='write candidate datasets, extraction.json, design-index.json and extraction-report.md')
     e.add_argument('export'); e.add_argument('-o', '--out', required=True); e.add_argument('--rules', help='your copy of metamodel/history-rules.json')
     e.add_argument('--known', nargs='+', default=[], help='existing SDEM datasets: their names are found in the text and flagged as the same record')
@@ -740,10 +927,16 @@ def main(argv=None):
     a = ap.parse_args(argv)
     try:
         if a.cmd == 'inspect':
-            r = inspect(a.export, a.rules)
+            r = inspect(a.export, a.rules, a.anonymous)
             if a.json: print(json.dumps({**r, 'for_review': dict(r['for_review'])}, indent=2, ensure_ascii=False)); return 0
             s = r['summary']
-            print(f"{s['pages']} pages, {s['tables']} tables, {s['diagrams_read']} draw.io diagrams read, {s['pictures_for_a_person']} pictures for a person")
+            print(f"{s['pages']} pages, {s['tables']} tables, {s['diagrams_read']} draw.io diagrams read ({s['diagrams_not_linked']} not linked to a page), "
+                  f"{s['pictures_for_a_person']} pictures for a person, {s['provenance_files']} provenance files in the root")
+            print('\nFolders (what each holds):')
+            for f in r['layout']:
+                print(f"  {'  ' * f['depth']}{f['folder']}: " + ', '.join(f'{k} {v}' for k, v in f.items() if k not in ('folder', 'depth')))
+            if a.anonymous:
+                print('\nFor a person: ' + (', '.join(f'{k} {v}' for k, v in r['for_review'].items()) or 'nothing')); return 0
             print('\nTables (columns → rule):')
             for t in r['tables']: print(f"  {t['count']:>3} × [{' | '.join(t['columns'])}] → {t['rule']}")
             print('\nDiagram shapes (draw.io shape → type):')
