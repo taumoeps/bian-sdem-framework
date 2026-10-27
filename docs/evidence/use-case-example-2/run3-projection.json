@@ -138,7 +138,7 @@
             "rule": "BIAN catalogue reference",
             "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
-              "SD-PI"
+              "APP-PAY-HUB"
             ],
             "reasoning": "application id APP-PAY-HUB contains ['pay'], which begin words of Payment Initiation; nothing else is known from A4",
             "confidence": 0.4
@@ -577,7 +577,7 @@
             "rule": "BIAN catalogue reference",
             "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
-              "SD-PE"
+              "APP-PAY-HUB"
             ],
             "reasoning": "application id APP-PAY-HUB contains ['pay'], which begin words of Payment Execution; nothing else is known from A4",
             "confidence": 0.4

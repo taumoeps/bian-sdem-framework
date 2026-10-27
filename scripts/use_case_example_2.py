@@ -80,6 +80,7 @@ STEP = {'F1': 'chose BIAN service domains for the business layer, by running the
         'R2': 'matched the application layer to the BIAN catalogue with the rulebook\'s A3 → A2 rules',
         'R3': 'suggested one business capability candidate per domain, from the domain\'s name only (BIAN publishes no capability mapping)',
         'M': 'projected the BIAN layer from both sides — forward from the business layer and back from the application layer — and kept only the domains both sides support'}
+STEP_PATH = {'F1': 'A1 → A2', 'F2': 'A2 → A3', 'F3': 'A3 → A4', 'R1': 'A4 → A3', 'R2': 'A3 → A2', 'R3': 'A2 → A1', 'M': 'A1 + A3 → A2'}
 SOURCES = [('SAPG', 'BIAN Semantic API Practitioner Guide v8.1', 'yes, in full'), ('SL14', 'BIAN Service Landscape 14.0 portal', 'portal structure only'),
            ('RN13', 'BIAN v13.0 release notes', 'yes, in full'), ('RN14', 'BIAN v14.0 release notes', 'yes, in full'), ('WQA26', 'BIAN webinar Q&A, June 2026', 'yes, in full'),
            ('APIP', 'BIAN Semantic API portal', 'index only'), ('AM', 'ArchiMate 3.2 Specification', 'no — login required'), ('TOGAF', 'TOGAF Standard, 10th Edition', 'no — login required'),
@@ -89,18 +90,27 @@ SOURCES = [('SAPG', 'BIAN Semantic API Practitioner Guide v8.1', 'yes, in full')
 def explain(n, has, pkg, g, real, cat):
     """Plain-language story and per-element tables for one run, from the projection package and the gap analysis."""
     names = {i['id']: i.get('name', i['id']) for d in list(real.values()) + [cat] + list(pkg['layers'].values()) for i in d['instances']}
-    label = lambda x: f"{x.split('.')[0]} “{names.get(x.split('.')[0], x)}”" + (f" (its `{x.split('.')[1]}`)" if '.' in x else '') if names.get(x.split('.')[0], x) != x.split('.')[0] else f'{x}'
+    # where each id lives: a real layer the architect has, a projected layer, or the BIAN catalogue
+    where = {i['id']: (l, 'BIAN catalogue') for i in cat['instances'] for l in ('A2',)}
+    where.update({i['id']: (l, 'projected') for l, d in pkg['layers'].items() for i in d['instances']})
+    where.update({i['id']: (l, 'real') for l in has for i in real[l]['instances']})
+    lv = lambda x: where.get(x.split('.')[0], ('?', ''))[0]
+    tag = lambda x: f"**{lv(x)}** {where.get(x.split('.')[0], ('', ''))[1]}"
+    base_label = lambda x: f"{x.split('.')[0]} “{names.get(x.split('.')[0], x)}”" + (f" (its `{x.split('.')[1]}`)" if '.' in x else '') if names.get(x.split('.')[0], x) != x.split('.')[0] else f'{x}'
+    label = lambda x: f"[{tag(x)}] {base_label(x)}"
+    path = lambda srcs, dst: ' + '.join(sorted({lv(x) for x in srcs})) + f' → {dst}'
     verdict = {r['element']: r for r in g['rows']}
     elements, structure = [], []
     for lvl, d in sorted(pkg['layers'].items()):
         for i in d['instances']:
             pr = i['projection']; v = verdict.get(i['id'], {})
-            row = {'layer': lvl, 'id': i['id'], 'name': i.get('name', i['id']), 'type': i['type'].split('.')[1], 'step': pr['step'],
+            row = {'layer': lvl, 'path': 'BIAN catalogue → A2' if i['type'] not in KEY_TYPES and pr['rule'] == aid.CATALOGUE_RULE else path(pr['inferred_from'], lvl), 'id': i['id'], 'name': i.get('name', i['id']), 'type': i['type'].split('.')[1], 'step': pr['step'],
                    'source': '; '.join(label(x) for x in pr['inferred_from']), 'rule': pr['rule'], 'basis': pr['source_reference'], 'reasoning': pr['reasoning'],
                    'confidence': pr['confidence'], 'result': v.get('result', '—'), 'real': v.get('real', '—'), 'why': v.get('reason', '')}
             (elements if i['type'] in KEY_TYPES else structure).append(row)
     lres = {(x['source'], x['relationship'], x['target']): x for x in g['links']}
-    links = [{'from': f"{l['source']['id']} {names.get(l['source']['id'], '')}".strip(), 'rel': l['relationship'], 'to': f"{l['target']['id']} {names.get(l['target']['id'], '')}".strip(),
+    end = lambda x: f"[{tag(x)}] {x}" + (f" {names[x]}" if names.get(x, x) != x else '')
+    links = [{'path': STEP_PATH[l['projection']['step']], 'stored': f"{lv(l['source']['id'])} → {lv(l['target']['id'])}", 'from': end(l['source']['id']), 'rel': l['relationship'], 'to': end(l['target']['id']),
               'step': l['projection']['step'], 'rule': l['projection']['rule'], 'basis': l['projection']['source_reference'], 'reasoning': l['projection']['reasoning'], 'confidence': l['confidence'],
               'result': (lres.get((l['source']['id'], l['relationship'], l['target']['id'])) or {}).get('result', 'new element — compared above')} for l in pkg['links']['links']]
     missed = [r for r in g['rows'] if r['result'] == 'real only']
@@ -111,12 +121,15 @@ def explain(n, has, pkg, g, real, cat):
         for i in d['instances']: c[i['type'].split('.')[1]] = c.get(i['type'].split('.')[1], 0) + 1
         inp.append(f"the {LAYER[l]} — {len(d['instances'])} records (" + ', '.join(f'{v} {k}' for k, v in sorted(c.items(), key=lambda x: -x[1])[:4]) + ')')
     steps = [s['step'] for s in pkg['projection']['steps']]
+    flows = {}
+    for e in elements + structure: flows[e['path']] = flows.get(e['path'], 0) + 1
     order = [x for x in ('M', 'F1', 'F2', 'F3', 'R1', 'R2', 'R3') if x in steps]
     keys = [e for e in elements]
     good = [e for e in keys if e['result'].startswith('matched')]; diff = [e for e in keys if e['result'] == 'differs'] + [e for e in keys if e['result'] == 'matched — structure differs']
     extra = [e for e in keys if e['result'] == 'projected only']
     story = [f"**The architect has** " + ' and '.join(inp) + '. Everything else is hidden from AID.', '',
-             f"**What AID did, step by step:**", ''] + [f"{k + 1}. **{s}** — {STEP[s]}." for k, s in enumerate(order)]
+             f"**Projection path:** " + ' · '.join(f"**{k}** ({v} element{'s' if v != 1 else ''})" for k, v in sorted(flows.items())), '',
+             f"**What AID did, step by step:**", ''] + [f"{k + 1}. **{s}** ({STEP_PATH[s]}) — {STEP[s]}." for k, s in enumerate(order)]
     pl = lambda k, w: f'{k} {w}' + ('' if k == 1 else 's')
     story += ['', f"**What it projected:** " + ', '.join(f"{pl(v['records'], 'record')} in the {LAYER[l]}" for l, v in pkg['projection']['summary'].items()) +
               f", and {pl(pkg['projection']['links'], 'link')}. Of these, {len(keys)} are the main design elements (domains, components, APIs, deployments, capabilities) shown below; the rest are BIAN catalogue elements brought in with a domain.", '',
@@ -262,7 +275,7 @@ def render(R):
            + (' — every projection stayed apart, marked and capped.' if safe else ' — **a safety test failed**.'), '',
            'Generated by `python scripts/use_case_example_2.py` with `sdem/aid.py`; evidence in [`evidence/use-case-example-2/`](evidence/use-case-example-2/manifest.json) (one projection package and one gap analysis per run). '
            'The baseline before AID was built is kept at the end for comparison.', '',
-           '**How to read the tables.** Every projected element shows: the **source** — the real records it was inferred from; the **rule** and its **published source** (see *Sources* at the end); '
+           '**How to read the tables.** *Layers (from → to)* / *Projected (from → to)* shows the direction AID projected in — e.g. **A1 → A2** means inferred from the business layer into the BIAN layer. *Link stored as* shows the link the way the rulebook stores it, which can point the other way: AID projecting upwards **A3 → A2** still stores `REALIZED_BY` as A2 → A3. Every record is tagged with its layer and where it comes from: **real** (a layer the architect has), **projected** (made by AID in this run) or **BIAN catalogue**. Every projected element shows: the **source** — the real records it was inferred from; the **rule** and its **published source** (see *Sources* at the end); '
            'the **reasoning**; the **confidence** (0.6 = medium, 0.4 = low — AID never goes higher); and the **result** against the hidden real design: '
            '✅ matched · ≠ differs · ➕ projected only · ➖ real only (missed).', '',
            '| Run | Has | Projects | Expectations met | Main result |', '|---|---|---|---|---|']
@@ -275,19 +288,19 @@ def render(R):
     for r in R['runs']:
         out += ['', f"### Run {r['run']} — has {r['has']}, projects {r['projects']}", ''] + r['story']
         out += ['', '**Sealed expectations**', '', '| Expectation | Met |', '|---|---|'] + [f"| {cell(c)} | {'✅' if ok else '❌'} |" for c, ok in r['checks']]
-        out += ['', '**Projected design elements**', '', '| Element | Step | Source (inferred from) | Rule — published source | Reasoning | Confidence | Result against the real design |', '|---|---|---|---|---|---|---|']
+        out += ['', '**Projected design elements**', '', '| Layers (from → to) | Element | Step | Source (inferred from) | Rule — published source | Reasoning | Confidence | Result against the real design |', '|---|---|---|---|---|---|---|---|']
         for e in r['elements']:
-            out.append(f"| **{cell(e['name'])}** `{e['id']}` ({e['type']}) | {e['step']} | {cell(e['source'])} | {cell(e['basis'] if e['basis'].startswith(e['rule'] + ':') else e['rule'] + ' — ' + e['basis'])} | {cell(e['reasoning'])} | {e['confidence']} | "
+            out.append(f"| **{e['path']}** | **{cell(e['name'])}**" + (f" `{e['id']}`" if e['name'] != e['id'] else '') + f" ({e['type']}) | {e['step']} | {cell(e['source'])} | {cell(e['basis'] if e['basis'].startswith(e['rule'] + ':') else e['rule'] + ' — ' + e['basis'])} | {cell(e['reasoning'])} | {e['confidence']} | "
                        f"{sym(e['result'])} {e['result']}: {cell(e['why'])}" + (f" — real: {cell(e['real'])}" if e['real'] not in ('—', None) else '') + ' |')
         if r['missed']:
-            out += ['', '**Real elements AID missed**', '', '| Element | Why it was missed |', '|---|---|'] + [f"| ➖ `{m['element']}` {cell(m['name'])} | {cell(m['reason'])} |" for m in r['missed']]
-        out += ['', '**Projected links**', '', '| From | Link | To | Step | Rule — published source | Reasoning | Confidence | In the real registry? |', '|---|---|---|---|---|---|---|---|']
-        out += [f"| {cell(l['from'])} | {l['rel']} | {cell(l['to'])} | {l['step']} | {cell(l['basis'] if l['basis'].startswith(l['rule'] + ':') or l['basis'].startswith(l['rule'][:3] + ':') else l['rule'] + ' — ' + l['basis'])} | {cell(l['reasoning'])} | {l['confidence']} | {sym(l['result'])} {l['result']} |" for l in r['links']]
+            out += ['', '**Real elements AID missed**', '', '| Layer | Element | Why it was missed |', '|---|---|---|'] + [f"| **{m['layer']}** | ➖ `{m['element']}` {cell(m['name'])} | {cell(m['reason'])} |" for m in r['missed']]
+        out += ['', '**Projected links**', '', '| Projected (from → to) | Link stored as | From | Link | To | Step | Rule — published source | Reasoning | Confidence | In the real registry? |', '|---|---|---|---|---|---|---|---|---|---|']
+        out += [f"| **{l['path']}** | {l['stored']} | {cell(l['from'])} | {l['rel']} | {cell(l['to'])} | {l['step']} | {cell(l['basis'] if l['basis'].startswith(l['rule'] + ':') or l['basis'].startswith(l['rule'][:3] + ':') else l['rule'] + ' — ' + l['basis'])} | {cell(l['reasoning'])} | {l['confidence']} | {sym(l['result'])} {l['result']} |" for l in r['links']]
         if r['structure']:
             ok = sum(x['result'].startswith('matched') for x in r['structure'])
             out += ['', f"<details><summary>BIAN catalogue elements brought in with the domains — {len(r['structure'])} ({ok} also in the real BIAN layer)</summary>", '',
-                    '| Element | Type | Brought in with | Source | Confidence | Result |', '|---|---|---|---|---|---|']
-            out += [f"| {cell(x['name'])} `{x['id']}` | {x['type']} | {cell(x['reasoning'])} | {cell(x['basis'])} | {x['confidence']} | {sym(x['result'])} {x['result']} |" for x in r['structure']] + ['', '</details>']
+                    '| Layers (from → to) | Element | Type | Brought in with | Source | Confidence | Result |', '|---|---|---|---|---|---|---|']
+            out += [f"| **{x['path']}** | {cell(x['name'])} `{x['id']}` | {x['type']} | {cell(x['reasoning'])} | {cell(x['basis'])} | {x['confidence']} | {sym(x['result'])} {x['result']} |" for x in r['structure']] + ['', '</details>']
     out += ['', '### Safety controls — good and bad data', '', '| Control | Data | Test | Should | Did | Message | Pass |', '|---|---|---|---|---|---|---|']
     out += [f"| {s['control']} | {s['data']} | {cell(s['test'])} | {s['should']} | {s['did']} | {cell(s['message'][:160])} | {'✅' if s['pass'] else '❌'} |" for s in R['safety']]
     out += ['', '### Findings', '', '| ID | What | Action |', '|---|---|---|'] + [f"| {f['id']} | {cell(f['what'])} | {cell(f['action'])} |" for f in R['findings']]

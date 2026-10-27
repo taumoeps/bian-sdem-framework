@@ -244,7 +244,7 @@ def name_fallback(prj, stubs):
             hit = sorted({w for w in words for n in names if n.startswith(w)})
             if not hit: continue
             why = f"application id {st['id']} contains {hit}, which begin words of {_clean(d['name'])}; nothing else is known from A4"
-            prj.take_domain(d['id'], 'R2', why, LOW)
+            prj.take_domain(d['id'], 'R2', why, LOW, [st['id']])
             prj.link('REALIZED_BY', d, st, 'R2', 'name (id words)', [st['id']], why, LOW)
 
 
