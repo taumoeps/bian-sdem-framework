@@ -161,9 +161,10 @@ def components(m, h, projects):
         'The BIAN service landscape SDEM anchors to: every A2 element and every BIAN identity comes from here, never invented (CTL-17).',
         ['each estate\'s a2-service-domain.json (synthetic, made-up BIAN content)', 'the AID test catalogue (merged by BIAN canonical id)'],
         [f"{ents['A2']} BIAN entity types in the metamodel", f"{recs['A2']} A2 records across the projects"], 'A licensed BIAN catalogue with real BIAN ids — roadmap v0.15', ['entities'])
-    add('history', 'Historical Design Repository', 'past designs · decisions · baselines', 'not built', 40, 20,
-        'Earlier designs, diagrams and decisions kept unchanged and referenceable beside new BIAN-aligned designs (original design §9, acceptance criteria 6 and 10).',
-        ['graph store baselines exist (sdem baseline); the repository itself does not'], ['—'], 'Historical design repository and past-baseline views — roadmap v0.16')
+    add('history', 'Historical Design Repository', 'past designs · decisions · baselines', 'partial', 40, 20,
+        'Earlier designs, diagrams and decisions kept unchanged and referenceable beside new BIAN-aligned designs (original design §9, acceptance criteria 6 and 10). Built: sdem history reads a Confluence HTML export with rules (no AI) — tables, draw.io diagrams and known names in the text — into candidate records with their source, plus an index of every design; pasted pictures go to a person.',
+        ['sdem history inspect · sdem history extract', 'metamodel/history-rules.json (tune without code)', 'docs/sdem-history-design.md', 'graph store baselines (sdem baseline)'],
+        ['tested on a synthetic Confluence export (tests/fixtures/confluence-export-sample)', 'candidates never above medium confidence'], 'Run it on the real export (work machine); past-baseline views — roadmap v0.16')
     add('metamodel', 'SDEM Mapping Metamodel & Rules', 'the rulebook', 'built', 40, 160,
         'What may exist in each architecture, how records may be linked inside and between the architectures, and the rules the engine applies — each with its published source, reasoning and confidence.',
         ['metamodel/ (entity types, links inside, rules, attributes)', 'schema/relationship-types.json (links between)', 'docs/architecture-metamodel-detail-level-spec.md (governing)'],

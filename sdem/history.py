@@ -1,0 +1,770 @@
+"""`sdem history` — read a Confluence HTML export of past designs and turn it into candidate architecture records.
+
+Rules only: no AI, no network, Python standard library only, so it runs on a locked-down machine. What it reads
+(docs/sdem-history-design.md; spec HI-*):
+  tables          → records, by their column headings (rules HT-*), and links from source/target tables (HL-*)
+  draw.io         → records from shapes (ArchiMate type, else colour, label and shape words) and links from lines;
+                    read from .drawio/XML attachments, from PNGs and SVGs that carry the diagram inside them
+  narrative       → only names already found (or given with --known), and simple phrases between two of them
+  pasted pictures → cannot be read without AI; listed for a person
+Every record is a candidate with its sources (page, where, rule, confidence, reasoning) — never above medium, never
+real until a person confirms it. The rules are in metamodel/history-rules.json; copy it and pass --rules to tune.
+
+  sdem history inspect EXPORT_DIR                      what is in the export and which rules match (structure only)
+  sdem history extract EXPORT_DIR -o OUT [--known …]   candidate datasets, extraction.json, design-index.json, report
+"""
+import argparse, base64, collections, datetime, hashlib, json, re, sys, urllib.parse, zlib
+import xml.etree.ElementTree as ET
+from html.parser import HTMLParser
+from pathlib import Path
+
+from .metamodel import Metamodel
+from .paths import DATA_ROOT
+
+RULES = DATA_ROOT / 'metamodel' / 'history-rules.json'
+DATASETS = {'A1': 'a1-business.json', 'A2': 'a2-service-domain.json', 'A3': 'a3-application.json', 'A4': 'a4-technology.json'}
+RANK = {'low': 1, 'medium': 2, 'high': 3}
+SOURCE_SYSTEM = 'CONFLUENCE-EXTRACT'
+IMAGE_EXT = ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.svg', '.webp')
+
+
+# ---------------------------------------------------------------- HTML: a small tree from the standard library parser
+VOID = {'br', 'img', 'hr', 'meta', 'link', 'input', 'col', 'area', 'base', 'wbr', 'source', 'param'}
+
+
+class Node:
+    __slots__ = ('tag', 'attrs', 'children', 'parent')
+
+    def __init__(self, tag, attrs=None, parent=None):
+        self.tag, self.attrs, self.children, self.parent = tag, dict(attrs or {}), [], parent
+
+    def text(self):
+        out = []
+        for c in self.children:
+            if isinstance(c, str): out.append(c)
+            elif c.tag == 'br': out.append('\n')
+            else:
+                t = c.text()
+                out.append(f'\n{t}\n' if c.tag in ('p', 'div', 'li', 'tr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6') else t)
+        return ''.join(out)
+
+    def iter(self):
+        yield self
+        for c in self.children:
+            if isinstance(c, Node): yield from c.iter()
+
+    def find(self, pred):
+        return next((n for n in self.iter() if pred(n)), None)
+
+    def cls(self):
+        return (self.attrs.get('class') or '').split()
+
+
+class _Builder(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True); self.root = Node('#root'); self.cur = self.root
+
+    def handle_starttag(self, tag, attrs):
+        n = Node(tag, attrs, self.cur); self.cur.children.append(n)
+        if tag not in VOID: self.cur = n
+
+    def handle_startendtag(self, tag, attrs):
+        self.cur.children.append(Node(tag, attrs, self.cur))
+
+    def handle_endtag(self, tag):
+        n = self.cur
+        while n is not None and n.tag != tag: n = n.parent
+        if n is not None and n.parent is not None: self.cur = n.parent
+
+    def handle_data(self, data):
+        self.cur.children.append(data)
+
+
+def parse_html(text):
+    b = _Builder(); b.feed(text); b.close(); return b.root
+
+
+def clean(s):
+    return ' '.join(str(s or '').split())
+
+
+def norm(s):
+    """Matching form: lower case, punctuation to spaces, single spaces."""
+    return ' '.join(re.sub(r'[^0-9a-z]+', ' ', str(s or '').lower()).split())
+
+
+def first_line(s):
+    lines = [clean(x) for x in str(s or '').split('\n')]
+    lines = [x for x in lines if x]
+    return (lines[0] if lines else ''), ' '.join(lines[1:])
+
+
+MONTHS = {m: i for i, m in enumerate(['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'], 1)}
+
+
+def parse_date(text):
+    """The page's last-modified date from Confluence's page metadata line, as YYYY-MM-DD (None if not found)."""
+    t = clean(text)
+    m = re.search(r'modified (?:on )?(.*)$', t, re.I)
+    t = m.group(1) if m else t
+    for pat, order in ((r'(\d{4})-(\d{2})-(\d{2})', 'ymd'), (r'([A-Za-z]{3})[a-z]*\.? (\d{1,2}), (\d{4})', 'mdy'), (r'(\d{1,2}) ([A-Za-z]{3})[a-z]* (\d{4})', 'dmy')):
+        m = re.search(pat, t)
+        if not m: continue
+        try:
+            if order == 'ymd': y, mo, d = int(m.group(1)), int(m.group(2)), int(m.group(3))
+            elif order == 'mdy': mo, d, y = MONTHS[m.group(1).lower()], int(m.group(2)), int(m.group(3))
+            else: d, mo, y = int(m.group(1)), MONTHS[m.group(2).lower()], int(m.group(3))
+            return datetime.date(y, mo, d).isoformat()
+        except (KeyError, ValueError):
+            continue
+    return None
+
+
+# ---------------------------------------------------------------- the export: pages, their content blocks, attachments
+def page_files(root, rules):
+    skip = set(rules.get('skip_files', []))
+    out = []
+    for p in sorted(Path(root).rglob('*.htm*')):
+        rel = p.relative_to(root).as_posix()
+        if p.name in skip or rel.startswith(('attachments/', 'styles/', 'images/')): continue
+        out.append(p)
+    return out
+
+
+def read_page(path, root):
+    tree = parse_html(path.read_text(encoding='utf-8', errors='replace'))
+    title = clean((tree.find(lambda n: n.attrs.get('id') == 'title-text') or tree.find(lambda n: n.tag == 'title') or Node('x')).text())
+    space = ''
+    if ' : ' in title: space, title = [x.strip() for x in title.split(' : ', 1)]
+    m = re.search(r'_(\d+)\.html?$', path.name) or re.match(r'(\d+)\.html?$', path.name)
+    page_id = m.group(1) if m else path.stem
+    meta = tree.find(lambda n: 'page-metadata' in n.cls())
+    crumbs = tree.find(lambda n: n.attrs.get('id') == 'breadcrumbs')
+    content = tree.find(lambda n: n.attrs.get('id') == 'main-content') or tree.find(lambda n: n.tag == 'body') or tree
+    names = {}  # attachment path -> its name, from links anywhere on the page (the Attachments section)
+    for a in tree.iter():
+        href = a.attrs.get('href') or ''
+        if a.tag == 'a' and 'attachments/' in href:
+            names[urllib.parse.unquote(href.split('?')[0])] = clean(a.text())
+    return {'page_id': page_id, 'title': title or path.stem, 'space': space, 'file': path.relative_to(root).as_posix(),
+            'modified': parse_date(meta.text()) if meta else None,
+            'breadcrumb': [clean(li.text()) for li in crumbs.iter() if li.tag == 'li'] if crumbs else [],
+            'blocks': blocks(content), 'attachment_names': names}
+
+
+def blocks(content):
+    """The page in reading order: ('table', section, node), ('text', section, str), ('img', section, node)."""
+    out, heads = [], []
+
+    def section():
+        return ' / '.join(h for _, h in heads)
+
+    def walk(n):
+        for c in n.children:
+            if isinstance(c, str):
+                if clean(c) and n.tag in ('div', 'td', 'body', '#root'): out.append(('text', section(), clean(c)))
+                continue
+            if re.fullmatch(r'h[1-6]', c.tag):
+                lvl = int(c.tag[1]); heads[:] = [h for h in heads if h[0] < lvl] + [(lvl, clean(c.text()))]; continue
+            if c.tag == 'table': out.append(('table', section(), c)); continue
+            if c.tag in ('p', 'li'):
+                t = clean(c.text())
+                if t: out.append(('text', section(), t))
+                for i in c.iter():
+                    if i.tag == 'img': out.append(('img', section(), i))
+                continue
+            if c.tag == 'img': out.append(('img', section(), c)); continue
+            if c.tag in ('script', 'style'): continue
+            walk(c)
+    walk(content)
+    return out
+
+
+def table_rows(t):
+    """Rows of cell texts; header = the first row (Confluence puts headings in <th>). Key-value tables (a heading
+    down the first column) are returned with kind 'keyvalue'."""
+    rows = []
+    for tr in t.iter():
+        if tr.tag != 'tr': continue
+        cells = [c for c in tr.children if isinstance(c, Node) and c.tag in ('td', 'th')]
+        if cells: rows.append([(c.tag, c.text()) for c in cells])
+    if not rows: return 'empty', [], []
+    if all(r[0][0] == 'th' for r in rows) and len(rows) > 1 and all(len(r) == 2 for r in rows) and not any(c[0] == 'th' for c in rows[0][1:]):
+        return 'keyvalue', [clean(r[0][1]) for r in rows], [[r[1][1]] for r in rows]
+    return 'grid', [clean(c[1]) for c in rows[0]], [[c[1] for c in r] for r in rows[1:]]
+
+
+# ---------------------------------------------------------------- draw.io: find the diagram inside files of any kind
+def _png_text(data):
+    """Text chunks of a PNG: draw.io stores the diagram in a chunk named 'mxfile'."""
+    out, i = {}, 8
+    while i + 8 <= len(data):
+        n = int.from_bytes(data[i:i + 4], 'big'); kind = data[i + 4:i + 8]; body = data[i + 8:i + 8 + n]; i += 12 + n
+        try:
+            if kind == b'tEXt':
+                k, v = body.split(b'\0', 1); out[k.decode('latin-1')] = v.decode('latin-1')
+            elif kind == b'zTXt':
+                k, v = body.split(b'\0', 1); out[k.decode('latin-1')] = zlib.decompress(v[1:]).decode('latin-1')
+            elif kind == b'iTXt':
+                k, rest = body.split(b'\0', 1); comp = rest[0]; rest = rest[2:]
+                _, rest = rest.split(b'\0', 1); _, text = rest.split(b'\0', 1)
+                out[k.decode('latin-1')] = (zlib.decompress(text) if comp else text).decode('utf-8')
+        except (ValueError, zlib.error, UnicodeDecodeError):
+            continue
+        if kind == b'IEND': break
+    return out
+
+
+def find_mxfile(data):
+    """The draw.io XML in a file's bytes, or None: plain XML (.drawio), a PNG with the diagram inside, or an SVG
+    with the diagram in its content attribute."""
+    if data[:8] == b'\x89PNG\r\n\x1a\n':
+        t = _png_text(data).get('mxfile')
+        if not t: return None
+        return urllib.parse.unquote(t) if t.lstrip().startswith('%3C') else t
+    try: s = data.decode('utf-8')
+    except UnicodeDecodeError: return None
+    head = s.lstrip()[:400]
+    if head.startswith('<mxfile') or head.startswith('<mxGraphModel') or ('<mxfile' in head and head.startswith('<?xml')):
+        return s
+    if '<svg' in s[:2000]:
+        m = re.search(r'<svg[^>]*\scontent="([^"]*)"', s)
+        if m and 'mxfile' in m.group(1):
+            import html as _h
+            return _h.unescape(m.group(1))
+    return None
+
+
+def mx_pages(xml):
+    """[(page name, mxGraphModel element)] — inline or compressed (base64 → raw deflate → URL-encoded)."""
+    root = ET.fromstring(xml)
+    if root.tag == 'mxGraphModel': return [('', root)]
+    out = []
+    for d in root.iter('diagram'):
+        model = d.find('mxGraphModel')
+        if model is None and (d.text or '').strip():
+            raw = zlib.decompress(base64.b64decode(d.text.strip()), -15).decode('utf-8')
+            model = ET.fromstring(urllib.parse.unquote(raw))
+        if model is not None: out.append((d.get('name') or '', model))
+    return out
+
+
+def style_of(s):
+    out = {}
+    for part in (s or '').split(';'):
+        if not part: continue
+        if '=' in part: k, v = part.split('=', 1); out[k] = v
+        else: out.setdefault('_bare', []).append(part)
+    return out
+
+
+def label_text(value):
+    """A shape's label: draw.io labels may be HTML."""
+    if not value: return '', ''
+    if '<' in value:
+        t = parse_html(value.replace('<br>', '\n').replace('<br/>', '\n').replace('<br />', '\n')).text()
+    else:
+        t = value
+    return first_line(t)
+
+
+def mx_cells(model):
+    """Shapes and lines of one diagram page: draw.io wraps labelled cells in <object>/<UserObject>."""
+    cells = []
+    for el in model.iter():
+        if el.tag in ('object', 'UserObject'):
+            c = el.find('mxCell')
+            if c is None: continue
+            cells.append({'id': el.get('id'), 'value': el.get('label') or '', **{k: c.get(k) for k in ('style', 'parent', 'source', 'target', 'vertex', 'edge')}})
+        elif el.tag == 'mxCell':
+            if el.get('id') in {x['id'] for x in cells}: continue
+            cells.append({'id': el.get('id'), 'value': el.get('value') or '', **{k: el.get(k) for k in ('style', 'parent', 'source', 'target', 'vertex', 'edge')}})
+    return cells
+
+
+# ---------------------------------------------------------------- the extraction
+class Extraction:
+    def __init__(self, rules=None, known=(), mm=None):
+        self.rules = rules or json.loads(RULES.read_text(encoding='utf-8'))
+        self.mm = mm or Metamodel.load()
+        self.records = {}          # (type, norm name) -> record
+        self.links, self.cross, self.review, self.pages = [], [], [], []
+        self.known = {}            # norm name -> (id, type, file) from --known datasets
+        self.stats = collections.Counter()
+        self.inspect = {'tables': collections.Counter(), 'shapes': collections.Counter(), 'headings': collections.Counter()}
+        for f in known:
+            d = json.loads(Path(f).read_text(encoding='utf-8'))
+            for i in d.get('instances', []):
+                self.known.setdefault(norm(i['name']), (i['id'], i['type'], Path(f).name))
+        self.cap = self.rules['confidence']
+
+    # ---- records
+    def _id(self, etype, name):
+        lvl = etype[:2]; slug = re.sub(r'[^A-Z0-9]+', '-', name.upper()).strip('-')[:40] or 'UNNAMED'
+        base = f"{self.rules.get('id_prefix', 'HIS-')}{lvl}-{slug}"
+        used = {r['id'] for r in self.records.values()}
+        if base not in used: return base
+        return f"{base}-{etype.split('.')[1].upper()}"
+
+    def record(self, etype, name, page, where, rule, how, reasoning, description='', lifecycle=None, attributes=None):
+        name = clean(name)
+        if not name or not self.mm.known(etype) or self.mm.is_abstract(etype): return None
+        key = (etype, norm(name))
+        r = self.records.get(key)
+        if r is None:
+            r = self.records[key] = {'id': self._id(etype, name), 'type': etype, 'name': name, 'description': '', 'lifecycle_status': None,
+                                     'attributes': {}, 'sources': [], 'modified': None}
+        if description and not r['description']: r['description'] = clean(description)
+        if lifecycle and not r['lifecycle_status']: r['lifecycle_status'] = lifecycle
+        for k, v in (attributes or {}).items(): r['attributes'].setdefault(k, v)
+        if page.get('modified') and (not r['modified'] or page['modified'] > r['modified']): r['modified'] = page['modified']
+        src = {'page_id': page['page_id'], 'page_title': page['title'], 'file': page['file'], 'where': where, 'rule': rule,
+               'confidence': self.cap[how], 'reasoning': reasoning}
+        if src not in r['sources']: r['sources'].append(src)
+        self.stats[f'{how} evidence'] += 1
+        return r
+
+    def link(self, a, kind, b, page, where, rule, how, reasoning, label=''):
+        """A line between two records. Same architecture → a within-architecture relationship, the kind checked against
+        the rulebook (falls back to association, which ArchiMate allows between any two). Different architectures →
+        a candidate link between architectures, for the engine and a person."""
+        if not a or not b or a is b: return
+        if a['type'][:2] == b['type'][:2]:
+            lvl = a['type'][:2]
+            kinds = [kind] if kind and kind != 'deployed_on' else []
+            kinds += [k for k in self.rules['line_kinds']['order'] if k not in kinds]
+            chosen = next(k for k in kinds if self.mm.relationship_issue(lvl, a['type'], k, b['type']) is None)
+            if kind and chosen != kind: reasoning += f'; the rulebook does not allow {kind} between these types, so {chosen}'
+            key = (a['id'], chosen, b['id'])
+            ex = next((l for l in self.links if (l['source'], l['kind'], l['target']) == key), None)
+            src = {'page_id': page['page_id'], 'page_title': page['title'], 'where': where, 'rule': rule, 'confidence': self.cap[how], 'reasoning': reasoning}
+            if ex: ex['sources'].append(src) if src not in ex['sources'] else None
+            else: self.links.append({'source': a['id'], 'kind': chosen, 'target': b['id'], 'name': clean(label), 'sources': [src]})
+            return
+        types = [r for r in _cross_types() if self.mm.is_a(a['type'], r['source_type']) and self.mm.is_a(b['type'], r['target_type'])]
+        if not types:
+            types_rev = [r for r in _cross_types() if self.mm.is_a(b['type'], r['source_type']) and self.mm.is_a(a['type'], r['target_type'])]
+            if types_rev: a, b, types = b, a, types_rev
+        src = {'page_id': page['page_id'], 'page_title': page['title'], 'where': where, 'rule': rule, 'confidence': self.cap[how],
+               'reasoning': reasoning + ('' if types else '; no SDEM link type joins these two types — a person decides')}
+        mt = types[0]['mapping_type_id'] if types else None
+        ex = next((c for c in self.cross if (c['source'], c['target'], c['mapping_type_id']) == (a['id'], b['id'], mt)), None)
+        if ex:
+            if src not in ex['sources']: ex['sources'].append(src)
+            ex['confidence'] = best(ex['sources']); return
+        self.cross.append({'source': a['id'], 'target': b['id'], 'mapping_type_id': mt, 'name': clean(label), 'confidence': src['confidence'], 'sources': [src]})
+
+    def lifecycle(self, value):
+        v = norm(value)
+        if not v: return None
+        for status, words in self.rules['lifecycle_values'].items():
+            if any(v == norm(w) or v.startswith(norm(w) + ' ') for w in words): return status
+        return None
+
+    def layer_of(self, *texts):
+        for t in texts:
+            t = ' ' + (t or '').lower()
+            for lvl, words in self.rules['section_layers'].items():
+                if lvl == 'note': continue
+                if any(w in t for w in words): return lvl
+        return None
+
+    # ---- tables
+    def table(self, page, section, node, n):
+        kind, headers, rows = table_rows(node)
+        hn = [norm(h) for h in headers]
+        where = f"table {n}" + (f" under '{section}'" if section else '')
+        if kind != 'grid' or not rows:
+            self.inspect['tables'][(kind, tuple(hn), 'not read — ' + ('key-value table' if kind == 'keyvalue' else 'no rows'))] += 1; return
+        for lr in self.rules.get('link_tables', []):
+            si = next((i for i, h in enumerate(hn) if h in map(norm, lr['source'])), None)
+            ti = next((i for i, h in enumerate(hn) if h in map(norm, lr['target'])), None)
+            if si is None or ti is None or si == ti: continue
+            li = next((i for i, h in enumerate(hn) if h in map(norm, lr['label'])), None)
+            self.inspect['tables'][('grid', tuple(hn), lr['id'])] += 1
+            for k, row in enumerate(rows, 1):
+                if len(row) <= max(si, ti): continue
+                s, _ = first_line(row[si]); t, _ = first_line(row[ti])
+                if not s or not t: continue
+                w = f'{where}, row {k}'
+                a = self.find(s) or self.record(lr['endpoint_type'], s, page, w, lr['id'], 'table_endpoint', f"named as the source in a '{headers[si]}' column — assumed {lr['endpoint_type'].split('.')[1]}")
+                b = self.find(t) or self.record(lr['endpoint_type'], t, page, w, lr['id'], 'table_endpoint', f"named as the target in a '{headers[ti]}' column — assumed {lr['endpoint_type'].split('.')[1]}")
+                lab = first_line(row[li])[0] if li is not None and len(row) > li else ''
+                self.link(a, lr.get('kind'), b, page, w, lr['id'], 'table', f"row of a source/target table ('{headers[si]}' → '{headers[ti]}')", lab)
+            return
+        best, score = None, 0
+        for tr in self.rules['tables']:
+            ni = next((i for i, h in enumerate(hn) if h in map(norm, tr['name'])), None)
+            if ni is None: continue
+            s = 2 + sum(1 for h in hn if h in map(norm, tr.get('description', []) + tr.get('lifecycle', []) + sum(tr.get('attributes', {}).values(), [])))
+            if ni == 0: s += 1
+            if s > score: best, score = (tr, ni), s
+        if not best:
+            self.inspect['tables'][('grid', tuple(hn), 'no rule')] += 1; return
+        tr, ni = best
+        self.inspect['tables'][('grid', tuple(hn), tr['id'])] += 1
+        col = lambda words: next((i for i, h in enumerate(hn) if h in map(norm, words) and i != ni), None)
+        di, li = col(tr.get('description', [])), col(tr.get('lifecycle', []))
+        ai = {k: col(v) for k, v in tr.get('attributes', {}).items()}
+        for k, row in enumerate(rows, 1):
+            if len(row) <= ni: continue
+            name, rest = first_line(row[ni])
+            if not name: continue
+            cell = lambda i: clean(row[i]) if i is not None and i < len(row) else ''
+            attrs = {a: cell(i) for a, i in ai.items() if cell(i)}
+            self.record(tr['type'], name, page, f'{where}, row {k}', tr['id'], 'table',
+                        f"listed in a table whose '{headers[ni]}' column names {tr['type'].split('.')[1]} records",
+                        cell(di) or rest, self.lifecycle(cell(li)), attrs)
+
+    def find(self, name):
+        n = norm(name)
+        hits = [r for (t, k), r in self.records.items() if k == n]
+        return hits[0] if len(hits) == 1 else None
+
+    # ---- diagrams
+    def classify(self, cell, st, name, desc, context, container_type):
+        bare = ' '.join(st.get('_bare', [])).lower(); shape = (st.get('shape') or '').lower()
+        for r in self.rules['diagram_shapes']:
+            if all((st.get(k) or '').lower() == str(v).lower() or (k == 'shape' and shape == str(v).lower()) for k, v in r['match'].items()):
+                return r['type'], 'diagram_shape', r['id'], f"drawn with the ArchiMate {r['type'].split('.')[1]} shape"
+        label = ' ' + (name + ' ' + desc).lower()
+        fill = (st.get('fillColor') or '').lower()
+        lvl = next((l for l, cs in self.rules['diagram_colours'].items() if l != 'note' and fill in [c.lower() for c in cs]), None)
+        how = 'diagram_colour' if lvl else 'diagram_label'
+        for etype, words in self.rules['label_words'].items():
+            if etype == 'note' or (lvl and etype[:2] != lvl): continue
+            w = next((w for w in words if w in label), None)
+            if w: return etype, how, 'HD-L', f"the label contains '{w.strip()}'" + (f' and the fill colour {fill} is {lvl}' if lvl else '')
+        for etype, words in self.rules['shape_words'].items():
+            if etype == 'note' or (lvl and etype[:2] != lvl): continue
+            w = next((w for w in words if w in shape or w in bare), None)
+            if w: return etype, how, 'HD-S', f"drawn with the shape '{w}'"
+        k = self.known.get(norm(name))
+        if k and (not lvl or k[1][:2] == lvl): return k[1], 'diagram_label', 'HD-K', f"named like the existing {k[1].split('.')[1]} {k[0]} ({k[2]})"
+        hit = self.find(name)
+        if hit and (not lvl or hit['type'][:2] == lvl): return hit['type'], 'diagram_label', 'HD-N', f"named like {hit['id']}, found elsewhere in the export"
+        lvl = lvl or self.layer_of(context)
+        if lvl and lvl in self.rules['layer_default_type']:
+            return self.rules['layer_default_type'][lvl], 'diagram_label', 'HD-D', f"nothing else to go by: the {lvl} default for a diagram under '{context}'"
+        return None, None, None, None
+
+    def diagram(self, page, dname, xml, where, context):
+        try: pages = mx_pages(xml)
+        except (ET.ParseError, ValueError, zlib.error) as e:
+            self.review.append({'page_id': page['page_id'], 'page_title': page['title'], 'what': 'diagram', 'where': where, 'why': f'draw.io file could not be read ({e.__class__.__name__})'}); return
+        self.stats['diagrams read'] += 1
+        for pname, model in pages:
+            cells = mx_cells(model); by = {c['id']: c for c in cells}; recs = {}
+            ctx = ' / '.join(x for x in (context, dname, pname) if x)
+            for c in cells:
+                if c.get('vertex') != '1': continue
+                st = style_of(c.get('style'))
+                if 'text' in st.get('_bare', []) or st.get('shape') == 'text' or (c.get('parent') in by and by[c['parent']].get('edge') == '1'): continue
+                name, desc = label_text(c['value'])
+                key = st.get('shape') or (st.get('_bare') or ['(plain box)'])[0]
+                if not name:
+                    self.inspect['shapes'][(key, 'no label — skipped')] += 1; continue
+                if name.lower() in ('legend', 'key', 'title') or len(name) > 80: continue
+                etype, how, rule, why = self.classify(c, st, name, desc, ctx, None)
+                self.inspect['shapes'][(key, etype or 'unclassified')] += 1
+                w = f"{where}{' page ' + repr(pname) if pname else ''}, shape {c['id']}"
+                if not etype:
+                    self.review.append({'page_id': page['page_id'], 'page_title': page['title'], 'what': 'shape', 'where': w, 'name': name,
+                                        'why': 'no rule decides its type — add a label or shape word to the rules, or record it by hand'}); continue
+                recs[c['id']] = self.record(etype, name, page, w, rule, how, why, desc)
+            for cid, r in recs.items():  # a shape inside another: part of it (same architecture) or deployed on it
+                p = by.get(cid, {}).get('parent')
+                if p in recs and recs[p] is not r:
+                    outer = recs[p]
+                    w = f"{where}, shape {cid} inside {p}"
+                    if outer['type'][:2] == r['type'][:2]:
+                        self.link(outer, 'composition', r, page, w, 'HD-C', 'diagram_line', 'drawn inside the other shape')
+                    else:
+                        self.link(r, 'deployed_on', outer, page, w, 'HD-C', 'diagram_line', 'drawn inside the other shape')
+            for c in cells:
+                if c.get('edge') != '1': continue
+                a, b = recs.get(c.get('source')), recs.get(c.get('target'))
+                if not a or not b:
+                    self.stats['lines not between two read shapes'] += 1; continue
+                lab, _ = label_text(c['value'])
+                lab = lab or next((label_text(x['value'])[0] for x in cells if x.get('parent') == c['id'] and x.get('value')), '')
+                kind, rev, rule = self.phrase(lab)
+                if rev: a, b = b, a
+                self.link(a, kind, b, page, f"{where}, line {c['id']}", rule or 'HD-E', 'diagram_line', 'a line between the two shapes' + (f" labelled '{lab}'" if lab else ''), lab)
+
+    def phrase(self, text):
+        t = ' ' + norm(text) + ' '
+        for p in self.rules['phrases']:
+            if any(f' {norm(w)} ' in t for w in p['words']): return p['kind'], p.get('reverse', False), p['id']
+        return None, False, None
+
+    # ---- narrative
+    def narrative(self, page, texts):
+        nr = self.rules['narrative']; ignore = set(map(norm, nr['ignore_names']))
+        names = {}
+        for r in self.records.values():
+            n = norm(r['name'])
+            if len(n) >= nr['min_name_chars'] and n not in ignore: names.setdefault(n, r)
+        if not names: return
+        rx = re.compile(r'\b(' + '|'.join(re.escape(n) for n in sorted(names, key=len, reverse=True)) + r')\b')
+        for section, text in texts:
+            for sent in re.split(r'(?<=[.;!?])\s+', text):
+                s = norm(sent); hits = [(m.start(), m.end(), names[m.group(1)]) for m in rx.finditer(s)]
+                where = 'text' + (f" under '{section}'" if section else '')
+                for _, _, r in hits:
+                    src = {'page_id': page['page_id'], 'page_title': page['title'], 'file': page['file'], 'where': where, 'rule': 'HN-01',
+                           'confidence': self.cap['narrative'], 'reasoning': 'mentioned by name in the text'}
+                    if src not in r['sources']: r['sources'].append(src); self.stats['narrative mentions'] += 1
+                for (s1, e1, a), (s2, e2, b) in zip(hits, hits[1:]):
+                    between = s[e1:s2]
+                    if len(between) > nr['max_gap_chars']: continue
+                    kind, rev, rule = self.phrase(between)
+                    if not kind: continue
+                    x, y = (b, a) if rev else (a, b)
+                    self.link(x, kind, y, page, where, rule, 'narrative', f"the text says '{clean(sent)[:160]}'")
+            for n, k in self.known.items():
+                if len(n) >= nr['min_name_chars'] and n not in ignore and re.search(r'\b' + re.escape(n) + r'\b', norm(text)):
+                    page.setdefault('existing_mentions', set()).add(k[0])
+
+    # ---- one page
+    def page(self, root, path):
+        p = read_page(path, root)
+        p['diagrams'], p['images_for_review'] = [], []
+        att_dir = Path(root) / 'attachments' / p['page_id']
+        diagrams_read, covered = {}, set()
+        files = sorted(x for x in att_dir.rglob('*') if x.is_file()) if att_dir.is_dir() else []
+        for f in files:  # every draw.io diagram attached to the page, whatever its file name
+            xml = find_mxfile(f.read_bytes())
+            if xml:
+                rel = f.relative_to(root).as_posix()
+                name = p['attachment_names'].get(rel) or f.stem
+                diagrams_read[rel] = (name, xml)
+        n_table, texts, sec_of = 0, [], {}
+        for kind, section, x in p['blocks']:
+            self.inspect['headings'][(section.split(' / ')[-1] if section else '(no heading)', self.layer_of(section) or '—')] += 1 if kind == 'text' else 0
+            if kind == 'table':
+                n_table += 1; self.table(p, section, x, n_table)
+            elif kind == 'text':
+                texts.append((section, x))
+            elif kind == 'img':
+                src = urllib.parse.unquote(x.attrs.get('src') or '').split('?')[0]
+                if not src or any(s in src for s in self.rules['skip_images']): continue
+                alias = norm(re.sub(r'\.(png|svg|jpe?g)$', '', x.attrs.get('data-linked-resource-default-alias') or x.attrs.get('alt') or '', flags=re.I))
+                match = next((rel for rel, (name, _) in diagrams_read.items() if rel == src or (alias and norm(name) == alias) or norm(Path(rel).stem) == norm(Path(src).stem)), None)
+                if match: covered.add(match); sec_of[match] = section; continue
+                self.review.append({'page_id': p['page_id'], 'page_title': p['title'], 'what': 'picture', 'where': f"picture {src}" + (f" under '{section}'" if section else ''),
+                                    'name': x.attrs.get('alt') or Path(src).name, 'why': 'a pasted picture — SDEM cannot read pictures without AI; a person records what it shows, or redraws it in draw.io'})
+                p['images_for_review'].append(src); self.stats['pictures for a person'] += 1
+        for rel, (name, xml) in diagrams_read.items():
+            self.diagram(p, name, xml, f"diagram '{name}' ({rel})", sec_of.get(rel, ''))
+            p['diagrams'].append({'name': name, 'file': rel, 'read': True})
+        p['_texts'] = texts
+        self.pages.append(p)
+        self.stats['pages'] += 1; self.stats['tables'] += n_table
+
+    def run(self, root):
+        root = Path(root)
+        if not root.is_dir(): raise ValueError(f'{root}: not a folder')
+        files = page_files(root, self.rules)
+        if not files: raise ValueError(f'{root}: no Confluence pages (.html) found — is this an HTML export?')
+        for f in files: self.page(root, f)
+        for p in self.pages: self.narrative(p, p.pop('_texts'))  # after every page: names from all tables and diagrams
+        dup = collections.defaultdict(list)
+        for r in self.records.values(): dup[norm(r['name'])].append(r)
+        for n, rs in dup.items():
+            if len(rs) > 1:
+                self.review.append({'what': 'same name, different types', 'name': rs[0]['name'], 'where': ', '.join(f"{r['id']} ({r['type']})" for r in rs),
+                                    'why': 'one thing or two? keep one type, or rename'})
+        for r in self.records.values():
+            k = self.known.get(norm(r['name']))
+            if k: r['same_as_existing'] = {'id': k[0], 'type': k[1], 'file': k[2]}
+        return self
+
+    # ---- outputs
+    def datasets(self, model_id):
+        out = {}
+        for lvl in ('A1', 'A2', 'A3', 'A4'):
+            recs = sorted((r for r in self.records.values() if r['type'][:2] == lvl), key=lambda r: r['id'])
+            if not recs: continue
+            ids = {r['id'] for r in recs}
+            inst = []
+            for r in recs:
+                i = {'id': r['id'], 'type': r['type'], 'version': r['modified'] or '1', 'name': r['name']}
+                if r['lifecycle_status']: i['lifecycle_status'] = r['lifecycle_status']
+                if r['description']: i['description'] = r['description']
+                at = dict(r['attributes'])
+                pages = sorted({s['page_id'] for s in r['sources']})
+                at['source_id'] = 'confluence:' + ','.join(pages)
+                if r['modified']: at['modified'] = r['modified']
+                i['attributes'] = at
+                inst.append(i)
+            rels = [{k: l[k] for k in ('source', 'kind', 'target', 'name') if l.get(k)} for l in self.links if l['source'] in ids and l['target'] in ids]
+            out[lvl] = {'level': lvl, 'model_id': f'{model_id}-{lvl}-EXTRACT', 'model_version': datetime.date.today().isoformat(),
+                        'metamodel_version': self.mm.version, 'source_system': SOURCE_SYSTEM, 'instances': inst, 'relationships': rels}
+        return out
+
+    def summary(self):
+        by = collections.Counter(r['type'][:2] for r in self.records.values())
+        conf = collections.Counter(best(r['sources']) for r in self.records.values())
+        return {'pages': self.stats['pages'], 'tables': self.stats['tables'], 'diagrams_read': self.stats['diagrams read'],
+                'pictures_for_a_person': self.stats['pictures for a person'], 'records': dict(sorted(by.items())),
+                'records_by_confidence': dict(conf), 'links_within': len(self.links), 'links_between_candidates': len(self.cross),
+                'for_review': len(self.review), 'narrative_mentions': self.stats['narrative mentions']}
+
+
+def best(sources):
+    return max((s['confidence'] for s in sources), key=lambda c: RANK[c], default='low')
+
+
+def _cross_types():
+    return json.loads((DATA_ROOT / 'schema' / 'relationship-types.json').read_text(encoding='utf-8'))['relationships']
+
+
+def _digest(root):
+    h = hashlib.sha256()
+    for p in sorted(Path(root).rglob('*')):
+        if p.is_file(): h.update(p.relative_to(root).as_posix().encode()); h.update(p.read_bytes())
+    return h.hexdigest()
+
+
+def extract(root, out, rules=None, known=(), model_id=None, now=None):
+    """Read the export at root, write the candidate datasets, extraction.json, design-index.json and
+    extraction-report.md to out. Returns (extraction, written datasets, check issues per layer)."""
+    from .graph import LevelGraph
+    rules_doc = json.loads(Path(rules).read_text(encoding='utf-8')) if rules else None
+    x = Extraction(rules_doc, known).run(root)
+    model_id = model_id or (re.sub(r'[^A-Z0-9]+', '-', (x.pages[0]['space'] or Path(root).name).upper()).strip('-') or 'CONFLUENCE')
+    out = Path(out); out.mkdir(parents=True, exist_ok=True)
+    ds = x.datasets(model_id); issues = {}
+    for lvl, d in ds.items():
+        (out / DATASETS[lvl]).write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+        g = LevelGraph(d, x.mm); issues[lvl] = g.validate(); issues[lvl + ' advice'] = g.warnings
+    now = now or datetime.datetime.now().replace(microsecond=0).isoformat()
+    meta = {'generated': now, 'export': str(root), 'export_sha256': _digest(root), 'rules': str(rules or RULES.relative_to(DATA_ROOT)),
+            'rules_sha256': hashlib.sha256(json.dumps(x.rules, sort_keys=True).encode()).hexdigest(), 'known': [str(k) for k in known],
+            'status': 'candidate — not real architecture data until a person confirms each record', 'summary': x.summary()}
+    records = [{'id': r['id'], 'type': r['type'], 'name': r['name'], 'confidence': best(r['sources']), 'status': 'candidate',
+                'sources': r['sources'], **({'same_as_existing': r['same_as_existing']} if r.get('same_as_existing') else {})}
+               for r in sorted(x.records.values(), key=lambda r: r['id'])]
+    links = [{**l, 'confidence': best(l['sources']), 'status': 'candidate'} for l in x.links]
+    (out / 'extraction.json').write_text(json.dumps({**meta, 'records': records, 'links_within': links, 'links_between_candidates': x.cross,
+                                                     'for_review': x.review, 'check': issues}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    idx = []
+    for p in x.pages:
+        ids = sorted({r['id'] for r in x.records.values() if any(s['page_id'] == p['page_id'] for s in r['sources'])})
+        idx.append({'page_id': p['page_id'], 'title': p['title'], 'space': p['space'], 'breadcrumb': p['breadcrumb'], 'file': p['file'],
+                    'modified': p['modified'], 'records': ids, 'existing_records_mentioned': sorted(p.get('existing_mentions', ())),
+                    'diagrams': p['diagrams'], 'pictures_for_a_person': p['images_for_review']})
+    (out / 'design-index.json').write_text(json.dumps({'generated': now, 'export': str(root), 'designs': idx}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    (out / 'extraction-report.md').write_text(report(x, meta, records, links, issues, idx), encoding='utf-8')
+    return x, ds, issues
+
+
+def report(x, meta, records, links, issues, idx):
+    s = meta['summary']; L = []
+    L.append('# Confluence extraction — candidate architecture records\n')
+    L.append(f"> Generated {meta['generated']} by `sdem history extract` from `{meta['export']}` (rules `{meta['rules']}`). "
+             'Rules only — no AI. **Every record below is a candidate**: check it against the page, then copy what is right into your estate. '
+             'Confidence is never above medium.\n')
+    L.append('## Summary\n')
+    L.append('| Pages | Tables | Diagrams read | Pictures for a person | Records | Links inside | Links between (candidates) | For review |')
+    L.append('|---|---|---|---|---|---|---|---|')
+    L.append(f"| {s['pages']} | {s['tables']} | {s['diagrams_read']} | {s['pictures_for_a_person']} | "
+             + ', '.join(f'{k} {v}' for k, v in s['records'].items()) + f" | {s['links_within']} | {s['links_between_candidates']} | {s['for_review']} |\n")
+    L.append('## Check (`sdem check` on the candidate datasets)\n')
+    for lvl in ('A1', 'A2', 'A3', 'A4'):
+        if lvl in issues:
+            e, w = issues[lvl], issues[lvl + ' advice']
+            L.append(f"- **{lvl}**: {'no errors' if not e else str(len(e)) + ' error(s)'}" + (f', {len(w)} advice' if w else ''))
+            L += [f'  - {i}' for i in e[:20]]
+    L.append('')
+    L.append('## Records\n')
+    L.append('| Id | Type | Name | Confidence | From (page — where — rule) | Why |')
+    L.append('|---|---|---|---|---|---|')
+    for r in records:
+        top = sorted(r['sources'], key=lambda q: -RANK[q['confidence']])
+        frm = '<br>'.join(f"{q['page_title']} — {q['where']} — {q['rule']}" for q in top[:3]) + (f'<br>… {len(top) - 3} more' if len(top) > 3 else '')
+        same = f"<br>**same name as existing {r['same_as_existing']['id']}**" if r.get('same_as_existing') else ''
+        L.append(f"| `{r['id']}` | {r['type']} | {r['name']} | {r['confidence']} | {frm} | {top[0]['reasoning']}{same} |")
+    L.append('\n## Links inside an architecture\n')
+    L.append('| Source | Kind | Target | Confidence | From | Why |')
+    L.append('|---|---|---|---|---|---|')
+    for l in links:
+        q = l['sources'][0]
+        L.append(f"| `{l['source']}` | {l['kind']} | `{l['target']}` | {l['confidence']} | {q['page_title']} — {q['where']} | {q['reasoning']} |")
+    L.append('\n## Links between architectures — candidates for the engine and a person\n')
+    L.append('These are not written to any dataset. Approve them the usual way (`sdem link`, `sdem approve`) once the records are real.\n')
+    L.append('| Source | Target | Link type | Confidence | From | Why |')
+    L.append('|---|---|---|---|---|---|')
+    for c in x.cross:
+        frm = '<br>'.join(f"{q['page_title']} — {q['where']}" for q in c['sources'])
+        L.append(f"| `{c['source']}` | `{c['target']}` | {c['mapping_type_id'] or '—'} | {c['confidence']} | {frm} | {'<br>'.join(q['reasoning'] for q in c['sources'])} |")
+    L.append('\n## For a person\n')
+    L.append('| What | Page | Where | Name | Why |')
+    L.append('|---|---|---|---|---|')
+    for v in x.review:
+        L.append(f"| {v['what']} | {v.get('page_title', '—')} | {v.get('where', '')} | {v.get('name', '')} | {v['why']} |")
+    L.append('\n## Designs (the reference index)\n')
+    L.append('| Page | Modified | Records | Diagrams read | Pictures for a person |')
+    L.append('|---|---|---|---|---|')
+    for p in idx:
+        L.append(f"| {p['title']} (`{p['file']}`) | {p['modified'] or '—'} | {len(p['records'])} | {len(p['diagrams'])} | {len(p['pictures_for_a_person'])} |")
+    L.append('\n## Next\n')
+    L.append('1. Read each record against its page; delete what is wrong, fix names and types.')
+    L.append('2. Fill required attributes the check reports (LC-04).')
+    L.append('3. Copy the records you keep into your estate (or keep this folder as a historical estate) and run `sdem check --estate …`.')
+    L.append('4. Tune the rules for the next run: `sdem history inspect` shows the tables and shapes no rule read.\n')
+    return '\n'.join(L)
+
+
+def inspect(root, rules=None):
+    """What is in the export and which rule reads it — structure only (headings, column names, shape kinds), no records."""
+    rules_doc = json.loads(Path(rules).read_text(encoding='utf-8')) if rules else None
+    x = Extraction(rules_doc).run(root)
+    return {'summary': x.summary(),
+            'tables': [{'kind': k, 'columns': list(h), 'rule': r, 'count': n} for (k, h, r), n in x.inspect['tables'].most_common()],
+            'shapes': [{'shape': s, 'type': t, 'count': n} for (s, t), n in x.inspect['shapes'].most_common()],
+            'headings': [{'heading': h, 'layer': l, 'paragraphs': n} for (h, l), n in x.inspect['headings'].most_common() if n],
+            'for_review': collections.Counter(v['what'] for v in x.review)}
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(prog='sdem history', description='Read a Confluence HTML export of past designs and turn it into candidate architecture records (rules only, no AI, no network).')
+    sub = ap.add_subparsers(dest='cmd', required=True)
+    i = sub.add_parser('inspect', help='what is in the export and which rules read it — structure only')
+    i.add_argument('export'); i.add_argument('--rules', help='your copy of metamodel/history-rules.json'); i.add_argument('--json', action='store_true')
+    e = sub.add_parser('extract', help='write candidate datasets, extraction.json, design-index.json and extraction-report.md')
+    e.add_argument('export'); e.add_argument('-o', '--out', required=True); e.add_argument('--rules', help='your copy of metamodel/history-rules.json')
+    e.add_argument('--known', nargs='+', default=[], help='existing SDEM datasets: their names are found in the text and flagged as the same record')
+    e.add_argument('--model-id', help='name for the candidate datasets (default: the Confluence space)'); e.add_argument('--json', action='store_true')
+    a = ap.parse_args(argv)
+    try:
+        if a.cmd == 'inspect':
+            r = inspect(a.export, a.rules)
+            if a.json: print(json.dumps({**r, 'for_review': dict(r['for_review'])}, indent=2, ensure_ascii=False)); return 0
+            s = r['summary']
+            print(f"{s['pages']} pages, {s['tables']} tables, {s['diagrams_read']} draw.io diagrams read, {s['pictures_for_a_person']} pictures for a person")
+            print('\nTables (columns → rule):')
+            for t in r['tables']: print(f"  {t['count']:>3} × [{' | '.join(t['columns'])}] → {t['rule']}")
+            print('\nDiagram shapes (draw.io shape → type):')
+            for t in r['shapes']: print(f"  {t['count']:>3} × {t['shape']} → {t['type']}")
+            print('\nHeadings (→ architecture):')
+            for t in r['headings'][:40]: print(f"  {t['paragraphs']:>3} × {t['heading']} → {t['layer']}")
+            print('\nFor a person: ' + (', '.join(f'{k} {v}' for k, v in r['for_review'].items()) or 'nothing'))
+            print('\nTune: copy metamodel/history-rules.json, add the column names or shape words marked "no rule"/"unclassified", pass --rules.')
+            return 0
+        x, ds, issues = extract(a.export, a.out, a.rules, a.known, a.model_id)
+    except (ValueError, OSError) as err:
+        print(f'ERROR: {err}', file=sys.stderr); return 2
+    s = x.summary(); errs = sum(len(v) for k, v in issues.items() if 'advice' not in k)
+    if a.json: print(json.dumps({'out': str(a.out), 'summary': s, 'check_errors': errs}, indent=2)); return 0
+    print(f"{s['pages']} pages read: " + (', '.join(f'{k} {v} records' for k, v in s['records'].items()) or 'no records')
+          + f", {s['links_within']} links inside, {s['links_between_candidates']} candidate links between, {s['pictures_for_a_person']} pictures for a person")
+    print(f"written to {a.out}: " + ', '.join(DATASETS[l] for l in ds) + ', extraction.json, design-index.json, extraction-report.md')
+    print('check: ' + ('no errors' if not errs else f'{errs} error(s) — see extraction-report.md'))
+    print('All records are candidates (confidence low or medium): review extraction-report.md before using any of them.')
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

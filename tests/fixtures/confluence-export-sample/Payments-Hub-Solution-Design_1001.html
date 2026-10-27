@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Payments Architecture : Payments Hub Solution Design</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first"><span><a href="index.html">Payments Architecture</a></span></li>
+                            <li><span><a href="Solution-Designs_900.html">Solution Designs</a></span></li>
+                        </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle"><span id="title-text"> Payments Architecture : Payments Hub Solution Design </span></h1>
+                </div>
+                <div id="content" class="view">
+                    <div class="page-metadata">Created by <span class='author'> Sample Author</span>, last modified on Mar 12, 2021</div>
+                    <div id="main-content" class="wiki-content group">
+<h1 id="PaymentsHubSolutionDesign-Context">1. Business context</h1>
+<p>This design replaces the branch payment forms with a single Payments Hub. Customers start payments in the Mobile Banking App.</p>
+<div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Capability</th><th class="confluenceTh">Description</th></tr><tr><td class="confluenceTd">Payment Initiation</td><td class="confluenceTd">Accept and validate a customer&#39;s instruction to pay</td></tr><tr><td class="confluenceTd">Payment Execution</td><td class="confluenceTd">Send the payment through the scheme</td></tr></tbody></table></div>
+<h1 id="PaymentsHubSolutionDesign-Application">2. Application architecture</h1>
+<p>The Payments Hub sends authorised instructions to the Execution Gateway. The Mobile Banking App calls the Payments Hub for every new payment.</p>
+<p><span class="confluence-embedded-file-wrapper"><img class="confluence-embedded-image" src="attachments/1001/1001-preview.png" data-linked-resource-default-alias="payments-application-view.png" alt="payments-application-view"></span></p>
+<div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Application</th><th class="confluenceTh">Description</th><th class="confluenceTh">Vendor</th><th class="confluenceTh">Status</th></tr><tr><td class="confluenceTd">Payments Hub</td><td class="confluenceTd">Captures, validates and authorises payment instructions</td><td class="confluenceTd">in-house</td><td class="confluenceTd">Live</td></tr><tr><td class="confluenceTd">Execution Gateway</td><td class="confluenceTd">Hands instructions to scheme execution</td><td class="confluenceTd">in-house</td><td class="confluenceTd">Live</td></tr><tr><td class="confluenceTd">Fraud Screening</td><td class="confluenceTd">Scores each payment for fraud before release</td><td class="confluenceTd">VendorCo</td><td class="confluenceTd">Planned</td></tr><tr><td class="confluenceTd">Legacy Payment Forms</td><td class="confluenceTd">Branch payment entry</td><td class="confluenceTd">in-house</td><td class="confluenceTd">Decommissioned</td></tr></tbody></table></div>
+<h2 id="PaymentsHubSolutionDesign-Integrations">2.1 Integrations</h2>
+<div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Source System</th><th class="confluenceTh">Target System</th><th class="confluenceTh">Interface</th><th class="confluenceTh">Protocol</th></tr><tr><td class="confluenceTd">Payments Hub</td><td class="confluenceTd">Fraud Screening</td><td class="confluenceTd">Payment score request</td><td class="confluenceTd">REST</td></tr><tr><td class="confluenceTd">Execution Gateway</td><td class="confluenceTd">Scheme Connector</td><td class="confluenceTd">Scheme message</td><td class="confluenceTd">MQ</td></tr></tbody></table></div>
+<h1 id="PaymentsHubSolutionDesign-Infrastructure">3. Infrastructure</h1>
+<p>The Execution Gateway is hosted on Payments Kubernetes Cluster. The old server room photo below shows the current racks.</p>
+<p><span class="confluence-embedded-file-wrapper"><img class="confluence-embedded-image" src="attachments/1001/1003.png" data-linked-resource-default-alias="rack-photo.png" alt="rack-photo"></span></p>
+<div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Server</th><th class="confluenceTh">Environment</th><th class="confluenceTh">Status</th></tr><tr><td class="confluenceTd">Payments Kubernetes Cluster</td><td class="confluenceTd">Production</td><td class="confluenceTd">Live</td></tr><tr><td class="confluenceTd">PAYDB01</td><td class="confluenceTd">Production</td><td class="confluenceTd">Live</td></tr></tbody></table></div>
+<div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Database</th><th class="confluenceTh">Description</th></tr><tr><td class="confluenceTd">Payments Store (PostgreSQL)</td><td class="confluenceTd">Holds instructions and their status</td></tr></tbody></table></div>
+<table class="confluenceTable"><tbody><tr><th class="confluenceTh">Owner</th><td class="confluenceTd">Payments team</td></tr><tr><th class="confluenceTh">Review date</th><td class="confluenceTd">2021-03-01</td></tr></tbody></table>
+<p><img class="emoticon emoticon-tick" src="images/icons/emoticons/check.svg" alt="(tick)"> Approved by the design authority.</p>
+                    </div>
+                    <div class="pageSection group">
+                        <div class="pageSectionHeader"><h2 id="attachments" class="pageSectionTitle">Attachments:</h2></div>
+                        <div class="greybox" align="left">
+<img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/> <a href="attachments/1001/1001">payments-application-view</a> (application/vnd.jgraph.mxfile)<br/>
+<img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/> <a href="attachments/1001/1001-preview.png">payments-application-view.png</a> (image/png)<br/>
+<img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/> <a href="attachments/1001/1003.png">rack-photo.png</a> (image/png)<br/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

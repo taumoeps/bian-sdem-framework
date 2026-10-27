@@ -1,0 +1,18 @@
+<mxfile host="Confluence" type="device"><diagram id="d1" name="Application view"><mxGraphModel dx="1000" dy="600" grid="1"><root>
+<mxCell id="0"/><mxCell id="1" parent="0"/>
+<mxCell id="title" value="Payments Hub — application view" style="text;html=1;" vertex="1" parent="1"><mxGeometry x="20" y="0" width="300" height="20" as="geometry"/></mxCell>
+<mxCell id="ch" value="Mobile Banking App" style="shape=mxgraph.archimate3.application;appType=comp;archiType=square;html=1;" vertex="1" parent="1"><mxGeometry x="20" y="40" width="150" height="60" as="geometry"/></mxCell>
+<mxCell id="hub" value="&lt;b&gt;Payments Hub&lt;/b&gt;&lt;br&gt;captures and validates instructions" style="shape=mxgraph.archimate3.application;appType=comp;archiType=square;html=1;" vertex="1" parent="1"><mxGeometry x="220" y="40" width="150" height="60" as="geometry"/></mxCell>
+<mxCell id="svc" value="Payment Initiation Service" style="shape=mxgraph.archimate3.application;appType=serv;archiType=rounded;html=1;" vertex="1" parent="1"><mxGeometry x="220" y="140" width="150" height="60" as="geometry"/></mxCell>
+<mxCell id="gw" value="Execution Gateway" style="shape=mxgraph.archimate3.application;appType=comp;archiType=square;html=1;" vertex="1" parent="1"><mxGeometry x="420" y="40" width="150" height="60" as="geometry"/></mxCell>
+<mxCell id="k8s" value="Payments Kubernetes Cluster" style="shape=mxgraph.archimate3.tech;techType=node;html=1;" vertex="1" parent="1"><mxGeometry x="400" y="240" width="260" height="140" as="geometry"/></mxCell>
+<mxCell id="ledger" value="Ledger Posting Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;" vertex="1" parent="k8s"><mxGeometry x="20" y="40" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="e1" value="payment instruction" style="endArrow=block;html=1;" edge="1" parent="1" source="ch" target="hub"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e2" value="" style="endArrow=block;html=1;" edge="1" parent="1" source="hub" target="gw"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e2l" value="sends authorised instructions" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e3" value="" style="endArrow=block;dashed=1;html=1;" edge="1" parent="1" source="hub" target="svc"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e4" value="runs on" style="endArrow=block;html=1;" edge="1" parent="1" source="gw" target="k8s"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e5" value="" style="endArrow=block;html=1;" edge="1" parent="1" source="gw" target="nowhere"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="blank" value="" style="rounded=0;html=1;" vertex="1" parent="1"><mxGeometry x="700" y="40" width="40" height="40" as="geometry"/></mxCell>
+<mxCell id="cloud" value="Partner Bank" style="ellipse;shape=cloud;html=1;" vertex="1" parent="1"><mxGeometry x="700" y="100" width="120" height="80" as="geometry"/></mxCell>
+</root></mxGraphModel></diagram></mxfile>

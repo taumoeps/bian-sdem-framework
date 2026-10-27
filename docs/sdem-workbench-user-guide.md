@@ -291,6 +291,7 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem change revert <CS-id> --estate <dir> --agent … --person …` | AG | undo the latest change set of a layer — restores it exactly, on record | a change was wrong | rebuild the graph store |
 | `sdem events --estate <dir> [--open]` | AG | change events, their impact and open work | to see what is waiting | `sdem work plan` |
 | `sdem work plan · list · claim …` | AG | work items: planned by the orchestrator, claimed and answered by the layer agents | agent platform (§9a) | `sdem change propose --work …` |
+| `sdem history inspect <export>` · `sdem history extract <export> -o <dir>` | J9 | reads a Confluence HTML export of past designs with rules (no AI): tables, draw.io diagrams, known names in the text → candidate records with their source; pictures listed for you | bringing in past designs (§8.7) | review `extraction-report.md` |
 | `sdem diff --git HEAD~1 <registry>` | — | proves approved links were not edited | before a pull request | — |
 | `sdem model check` · `regenerate` · `accept` · `examples` | — | maintainers: generated documents, engine acceptance tests, use-case examples | when changing the rulebook | — |
 
@@ -514,6 +515,31 @@ sdem explain P-RUN-001 --proposals work/links/proposals.json     # a proposed li
 sdem explain SD-PI --projection work/prj                         # a projected element
 ```
 Every answer shows the **rule** (e.g. S17), its **published source** where one exists (e.g. BIAN's Semantic API Practitioner Guide), the **records it came from**, the **reasoning** and the **confidence**. Low confidence (0.4) means weak evidence — often names only; treat it as a hint.
+
+### 8.7 Bring in past designs from Confluence
+
+*Goal: turn the organisation's past designs (Confluence pages with tables and draw.io diagrams) into candidate records — on the work machine, without AI, without the content leaving it.*
+
+1. In Confluence: **Space settings → Export space → HTML**. Unzip it into a folder outside this repository's tracked files, e.g. `~/designs/payarch`.
+2. See what is there and which rules read it — structure only:
+   ```bash
+   sdem history inspect ~/designs/payarch
+   ```
+   It lists every table's column headings with the rule that reads it (`no rule` if none), every draw.io shape kind with the type it becomes (`unclassified` if none), and the headings.
+3. If your pages use other words, copy the rules and add them — no code:
+   ```bash
+   cp metamodel/history-rules.json my-rules.json      # e.g. add "system name" to HT-01's "name" list, "switch" to label_words
+   ```
+4. Extract — add your current datasets with `--known` so known names are recognised in the text and flagged when they already exist:
+   ```bash
+   sdem history extract ~/designs/payarch -o work/history --rules my-rules.json --known estate/a3-application.json
+   ```
+5. Open `work/history/extraction-report.md`. Every record says **which page, where on it** (table and row, diagram and shape, paragraph), **which rule**, **how sure** (never above medium) and **why**. Pasted pictures are listed for you to record by hand.
+6. Keep what is right: copy the records into your estate (or keep `work/history` as a historical estate) and run `sdem check`. Links between architectures in the report are candidates for `sdem link` / `sdem approve`.
+
+Try it on the made-up sample first: `sdem history extract tests/fixtures/confluence-export-sample -o work/history`. Design: [`sdem-history-design.md`](sdem-history-design.md).
+
+> **Never** put the real export or its outputs in a public repository or paste them into an AI chat outside what your organisation allows.
 
 ## 9. Working with Copilot
 

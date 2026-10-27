@@ -1,0 +1,98 @@
+# SDEM History — Reading past designs from Confluence
+
+> **Status: built 2026-10-28, tested on a synthetic export only.** `sdem history inspect` and `sdem history extract`. Requirements: [`sdem-history-spec.md`](sdem-history-spec.md). This is the first part of the historical design repository (original design §9; roadmap v0.11 ingestion and v0.16 history).
+
+## 1. The problem
+
+Past designs live in Confluence as **narrative pages with embedded diagrams and tables**. To trace them, compare them with new BIAN-aligned designs, or reuse them, SDEM needs their content as architecture records. But:
+
+- the designs are **the organisation's confidential information** — they never leave the work machine, and nobody outside sees them;
+- the work machine has **no AI** — so the reading must be done by rules;
+- SDEM was built **without seeing a single real page** — so the rules must be easy to adjust on the work machine, without code.
+
+## 2. How it works
+
+```mermaid
+flowchart LR
+    conf[("Confluence space<br/>HTML export")] --> inspect["sdem history inspect<br/>what is there, which rules read it"]
+    inspect -->|"tune the words"| rules["your copy of<br/>history-rules.json"]
+    conf --> extract["sdem history extract<br/>rules only — no AI"]
+    rules --> extract
+    known[("existing SDEM datasets<br/>(optional --known)")] --> extract
+    extract --> cand["candidate datasets<br/>a1…a4 (HIS- ids)"]
+    extract --> prov["extraction.json<br/>source · rule · confidence · reasoning"]
+    extract --> idx["design-index.json<br/>every page, its records"]
+    extract --> rep["extraction-report.md<br/>for the architect"]
+    rep --> person(["architect reviews"])
+    person -->|"copies what is right"| estate[("estate")]
+```
+
+On the work machine:
+
+```bash
+# 1. In Confluence: Space settings → Export space → HTML; unzip into a folder, e.g. ~/designs/payarch
+sdem history inspect ~/designs/payarch                       # tables, diagram shapes, headings — and which rule reads each
+cp metamodel/history-rules.json my-rules.json                # 2. only if inspect shows "no rule" or "unclassified" items you want
+sdem history extract ~/designs/payarch -o work/history --rules my-rules.json --known estate/a3-application.json
+open work/history/extraction-report.md                        # 3. review
+```
+
+## 3. What it reads, and how sure it is
+
+| In the export | How (rules) | Confidence |
+|---|---|---|
+| **Tables** with a heading row | The column headings choose the entity type: a table with an "Application" column lists application components (rule HT-01); "Server" → nodes; "Capability" → capabilities; "Database" → system software… Other columns fill the description, lifecycle status ("Live" → active, "Decommissioned" → retired) and attributes (vendor, version, hosting). | medium |
+| **Source/target tables** (interface lists) | A row "Payments Hub → Fraud Screening" becomes a flow between the two (HL-01). Names not found elsewhere become application components. | medium (link), low (new names) |
+| **draw.io diagrams** | Read from the diagram's own file, whatever its name: a plain `.drawio`/XML file, a compressed one, or a PNG/SVG with the diagram inside it. A shape's **ArchiMate type** gives the entity type (HD-01…23); otherwise its **fill colour** gives the architecture and its **label or shape** the type ("cluster" → node, cylinder → system software). | medium (ArchiMate shape), low (colour, words) |
+| **Lines** in diagrams | A line between two shapes in one architecture becomes a relationship of the first kind the rulebook allows for the pair ("triggers" on the line → triggering); a shape drawn **inside** another is part of it — or, across architectures, deployed on it. | low |
+| **Narrative text** | Only **names already found** (in tables, diagrams or the `--known` datasets) are recognised. Two names joined by a simple phrase become a link: "X sends … to Y" → flow, "X calls Y" → Y serves X, "X is hosted on Y" → deployed on. Text **never creates** a record. | low |
+| **Pasted pictures** (screenshots, photos) | Cannot be read without AI. Listed for a person with their page and place. | — |
+| **Key-value tables** (Owner \| Payments team) | Not read; shown by `inspect`. | — |
+
+Never above medium: every record is a **candidate** until a person confirms it (as AID-B6 caps name-only evidence).
+
+## 4. What it writes
+
+| File | Holds |
+|---|---|
+| `a1-business.json` … `a4-technology.json` | The candidate records in SDEM's normal dataset format, so `sdem check` works on them. Ids `HIS-<layer>-<NAME>`; `version` = the page's last-modified date; `attributes.source_id` = `confluence:<page ids>`; `source_system` = `CONFLUENCE-EXTRACT`. Only links inside one architecture. |
+| `extraction.json` | Every record and link with **all its sources** — page, place (table and row, diagram and shape, paragraph), rule, confidence, reasoning; the same name as an existing record (`--known`); candidate **links between architectures** (with the SDEM link type that fits, e.g. COMPONENT_DEPLOYED_ON_INFRASTRUCTURE); items for a person; the check result; fingerprints of the export and the rules. |
+| `design-index.json` | **Every design page**: title, space, breadcrumb, file, last modified, the records found on it, existing records it mentions, its diagrams and pictures. This is the reference record that keeps each design linked to what it describes — even pages nothing could be read from. |
+| `extraction-report.md` | The review page: summary, check, records, links, candidate links between architectures, items for a person, designs, next steps. |
+
+Links between architectures are **not** written to any dataset or registry: they are candidates for `sdem link` and `sdem approve` once the records are real.
+
+## 5. Working without seeing the real pages
+
+| Risk | How it is handled |
+|---|---|
+| Real exports differ from the sample | `inspect` shows the structure — column headings, draw.io shape names, headings, each with the rule that read it or "no rule" / "unclassified". |
+| Your pages use other words | All words, shapes, colours and phrases are in **`metamodel/history-rules.json`**. Copy it, add your words, pass `--rules`. No code changes. |
+| A wrong guess becomes "fact" | Candidates only; confidence never above medium; every item says where it came from and why; the architect copies what is right. |
+| Content leaks | No network, no AI, standard library only. The export, the outputs and the report stay on the work machine. The sample in this repository is made up. |
+
+## 6. Assumptions about Confluence's export (to confirm on the first real run)
+
+| Assumption | Basis | Confidence |
+|---|---|---|
+| HTML space export: one `.html` per page named `Title_<pageId>.html` (older: `<pageId>.html`); the body in `div#main-content`; "last modified on …" in `div.page-metadata`; files in `attachments/<pageId>/` | general knowledge of Confluence exports; not checked against Atlassian's documentation today | medium |
+| draw.io keeps the editable diagram as an attachment (XML, possibly compressed), with a PNG preview on the page | general knowledge of the draw.io Confluence app | medium |
+| draw.io's ArchiMate 3 shapes are styled `shape=mxgraph.archimate3.application;appType=comp` (and `…tech;techType=node`, …) | general knowledge of draw.io's shape library | medium — business-layer styles least sure; `inspect` shows the styles actually used |
+
+If any of these is wrong, `inspect` shows it at once (0 pages, 0 diagrams, or shapes "unclassified"); most fixes are a rules change, the first two may need a small code change.
+
+## 7. Decisions
+
+| # | Decision | Recommendation | Status |
+|---|---|---|---|
+| HI-D01 | How past designs come into SDEM | **index every design, convert with rules, a person confirms** (option 4 of the discussion: reference index plus candidates) | built 2026-10-28 |
+| HI-D02 | AI for narrative and pasted pictures | **not on the work machine**; a person handles them. Copilot (where allowed) could draft from one page at a time — an AID-D08-style decision for later | open — owner |
+| HI-D03 | Where adopted historical records live | **a separate historical estate** (e.g. `estates/history/`) so `sdem check`, `trace` and the dashboard work on it, apart from current designs; or merged into the current estate when the system still exists | open — owner |
+| HI-D04 | Guard against candidates entering real data unreviewed | a control like CTL-16 for `CONFLUENCE-EXTRACT` datasets (today they pass `sdem check`, by design, so they can be reviewed) | proposed |
+
+## 8. Limits
+
+- Pasted pictures, Visio and Gliffy diagrams, PDFs and Word attachments are not read (listed for a person where they appear on a page).
+- Narrative text is read only for names already known and a few phrases; most narrative meaning is lost without AI.
+- Key-value tables are not read.
+- Names are matched exactly (ignoring case and punctuation): "Payments Hub" and "Payment Hub" become two records — the report shows both.

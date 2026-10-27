@@ -52,7 +52,7 @@ class HomeTests(unittest.TestCase):
         a = self.data['architecture']; ids = {b['id'] for b in a['boxes']}
         self.assertTrue({'bian', 'history', 'metamodel', 'engine', 'validation', 'kg', 'a1', 'a2', 'a3', 'a4', 'aid', 'projections', 'coordination', 'workbench'} <= ids)
         st = {b['id']: b['status'] for b in a['boxes']}
-        self.assertEqual(st['history'], 'not built'); self.assertEqual(st['bian'], 'partial'); self.assertEqual(st['aid'], 'built')
+        self.assertEqual(st['history'], 'partial'); self.assertEqual(st['bian'], 'partial'); self.assertEqual(st['aid'], 'built')
         ends = ids | {'models'}   # 'models' = the band of the four architectures
         for e in a['edges']: self.assertIn(e['s'], ends); self.assertIn(e['t'], ends)
         self.assertIn('show((location.hash||"#picture").slice(1))', self.html)   # the architecture is the landing view
