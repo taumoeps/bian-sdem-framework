@@ -187,7 +187,7 @@ Feature names and file formats change between versions (subagents were experimen
 
 Set-up for a GitHub account, a Copilot plan and VS Code: [`sdem-copilot-setup.md`](sdem-copilot-setup.md).
 
-`execute` is the terminal tool's name assumed here — the spike confirms it (step S2). Layer agents need `edit` only to write their change-set drafts; their data reaches the datasets **only** through `sdem change propose` (instructions; detection of direct edits is AG-S08, not built).
+`execute` is the terminal tool's name (VS Code's tool set for terminal commands) — the spike confirms it (step S2). Layer agents need `edit` only to write their change-set drafts; their data reaches the datasets **only** through `sdem change propose` — a direct edit is detected by `sdem check` (AG-S08).
 
 ### 7.3 How the agents communicate — Level 1, on request (built)
 
@@ -235,6 +235,7 @@ All three levels use the **same agent files and the same `sdem` commands** — m
 | CTL-16 | built | projected or AI content never enters real data |
 | CTL-17 | built | projections carry provenance, are capped, invent no BIAN element |
 | **CTL-19** | built | **layer ownership** — a change set touches one declared layer; an agent's change set only its own layer |
+| **CTL-21** | built | **human approval** — a reviewer that is an agent or a tool is rejected (`sdem validate`, `sdem approve`) |
 | **CTL-20** | built | **change provenance** — every change set and work item records the agent and the person; nothing lands without both |
 | CI | built | every check and test on every push |
 | Approval | built (process) | a person merges a reviewed pull request; agents never approve |
@@ -256,7 +257,7 @@ All three levels use the **same agent files and the same `sdem` commands** — m
 | a change ripples without end | each round needs new impact; the orchestrator caps rounds and asks the architect |
 | two agents change the same records | one branch per change event; one layer per change set; Git shows conflicts |
 | Copilot features differ by version | the spike confirms them first (agent files, terminal tool name, subagents) |
-| an agent edits a dataset directly instead of proposing a change set | instructions forbid it; the pull-request diff shows it; automatic detection is AG-S08 (not built) |
+| an agent edits a dataset directly instead of proposing a change set | **detected** (AG-S08): `sdem check` verifies every layer's dataset against its chain of change sets; a person's hand edit is recorded with `sdem change adopt` |
 | agents act on made-up data only today | real use needs ingestion (v0.11) and a licensed BIAN catalogue (v0.15) |
 
 ## 11. Decisions — approved by the owner 2026-10-28

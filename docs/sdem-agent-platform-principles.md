@@ -42,7 +42,7 @@ An agent should never touch data directly: it calls **narrow, deterministic tool
 | What good looks like | Why | SDEM |
 |---|---|---|
 | **Hard logic in code, not in the model** | rules give the same answer every time; a model does not | ✅ the rules engine, impact and checks are Python; agents never decide links or impact |
-| **Every write through a checked command** | bad changes are refused before they land | ✅ `sdem change propose` checks first. ◐ An agent *could* still edit a file directly — not yet detected (**AG-S08**) |
+| **Every write through a checked command** | bad changes are refused before they land | ✅ `sdem change propose` checks first; a direct edit of a file is **detected** by `sdem check` (AG-S08) until a person adopts it (`sdem change adopt`); approvals through `sdem approve` |
 | **Machine-readable output** | agents read results reliably | ✅ `--json` on the commands |
 | **Error messages that say how to fix it** | the agent can correct itself | ✅ e.g. *"CTL-19: agent … may change only A3"*, *"evidence missing required kind …"* |
 | **Small, single-purpose commands** | easy for a model to choose the right one | ✅ one subcommand per journey |
@@ -59,7 +59,7 @@ An agent should never touch data directly: it calls **narrow, deterministic tool
 | **A person approves anything that matters** | ✅ approval only by merging a reviewed pull request |
 | **A limit on runaway loops** | ✅ the round limit — the orchestrator stops and asks |
 
-**The key test:** *anything written only in an instruction is a request, not a control.* "Never edit dataset files directly" is still an instruction — SDEM's main guardrail gap (AG-S08).
+**The key test:** *anything written only in an instruction is a request, not a control.* "Never edit dataset files directly" and "never approve" were instructions only; both are now controls — the change-set chain (AG-S08, CTL-20) and human approval (CTL-21).
 
 ## 4. Agent definitions — the roles
 
@@ -104,8 +104,8 @@ Skills hold **domain knowledge** the agent loads only when needed, keeping each 
 | Layer | How much it matters | SDEM today |
 |---|---|---|
 | Data architecture | highest | strong |
-| Tools / engine | very high | strong — gaps: direct-edit detection, undo |
-| Guardrails | very high | strong — one gap: direct edits |
+| Tools / engine | very high | strong — gap: undo |
+| Guardrails | very high | strong — direct edits detected (AG-S08), human approval enforced (CTL-21) |
 | Agent definitions | medium | good |
 | Prompts | low–medium | good |
 | Skills | medium | good |
@@ -121,12 +121,13 @@ Many agent platforms invest in prompts and skills and neglect the data and the t
 | `sdem check` checks the coordination records | AG-R07 |
 | warning when a graph store is older than its data | WB-K08 |
 | `--estate DIR` on every command; `*` patterns expanded by `sdem` | WB-K07 |
+| direct dataset edits detected (the change-set chain); `sdem change adopt` for a person's edit | AG-S08, AG-K07, CTL-20 |
+| `sdem approve` — a person approves, the registry is validated before writing; a reviewer that is an agent or tool is rejected | WB-A04, CTL-21 |
 
 ## What to do next
 
 | # | Improvement | Requirement | Why first |
 |---|---|---|---|
-| 1 | **Detect direct edits:** compare the datasets with the result of the recorded change sets; anything else is reported and blocks CI | AG-S08 | turns SDEM's main instruction-only rule into a real control |
-| 2 | **Score the agents, not just the tools:** after the spike, run example 3 with the real Copilot agents several times; score how often they draft the right change sets and plan the right work | AG-E01 | the only way to know the agents' accuracy |
-| 3 | **Undo:** `sdem change revert CS-…` reverses a change set and records the reversal as a change event | AG-K06 | cheap, recorded recovery instead of Git alone |
-| 4 | **Session record:** keep a short summary of each agent session (who asked what, which commands ran) with its change event | AG-O01 | the *why* behind a change, for audit |
+| 1 | **Score the agents, not just the tools:** after the spike, run example 3 with the real Copilot agents several times; score how often they draft the right change sets and plan the right work | AG-E01 | the only way to know the agents' accuracy |
+| 2 | **Undo:** `sdem change revert CS-…` reverses a change set and records the reversal as a change event | AG-K06 | cheap, recorded recovery instead of Git alone |
+| 3 | **Session record:** keep a short summary of each agent session (who asked what, which commands ran) with its change event | AG-O01 | the *why* behind a change, for audit |

@@ -188,11 +188,22 @@
     {
       "id": "CTL-20",
       "rule_area": "platform",
-      "control": "Change provenance (agent platform): every change set, change event and work-item step records the agent and the person; nothing lands or moves without both",
-      "implemented_in": "sdem/agents.py `Estate.propose`, `Estate.plan`, `Estate.transition`",
-      "runs": "sdem change propose; sdem work plan / claim / block / cancel",
+      "control": "Change provenance (agent platform): every change set, change event and work-item step records the agent and the person; nothing lands or moves without both; and every change to a layer's dataset since its first change set came through a change set — a direct edit is reported until a person adopts it (AG-S08)",
+      "implemented_in": "sdem/agents.py `Estate.propose`, `Estate.plan`, `Estate.transition`, `Estate.adopt`, `check_coordination` (the change-set chain)",
+      "runs": "sdem change propose / adopt; sdem work plan / claim / block / cancel; sdem check (the chain)",
       "outcome_recorded_in": "<estate>/coordination/ (change-sets, events.json, work-items.json history)",
       "monitored_by": "GitHub Actions `validate.yml`; tests/test_agents.py; use-case example 3",
+      "status": "built",
+      "tested_by": "use-case-example-3"
+    },
+    {
+      "id": "CTL-21",
+      "rule_area": "governance",
+      "control": "Human approval: a link is approved (or rejected, or superseded) only with a person as reviewer — never an agent or a tool name; `sdem approve` refuses one and validates the whole registry before writing",
+      "implemented_in": "sdem/validate.py (governance check, `NON_PERSON_REVIEWERS` and the `sdem-` prefix); sdem/approve.py",
+      "runs": "sdem validate; sdem check; sdem approve; CI on every push",
+      "outcome_recorded_in": "command output; the registry record (reviewer_id, approved_at, evidence)",
+      "monitored_by": "GitHub Actions `validate.yml`; tests/test_platform_hardening.py; use-case example 3",
       "status": "built",
       "tested_by": "use-case-example-3"
     }

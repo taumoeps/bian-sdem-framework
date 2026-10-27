@@ -43,8 +43,10 @@
           "enum": [
             "add",
             "update",
-            "retire"
-          ]
+            "retire",
+            "remove"
+          ],
+          "description": "add, update, retire; 'remove' appears only in change sets recorded by `sdem change adopt` (a record deleted by hand)"
         },
         "kind": {
           "enum": [

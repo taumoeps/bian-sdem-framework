@@ -148,6 +148,19 @@ def run():
              f"The rules engine proposes: {'; '.join(new_links)} (rule S33, confidence {', '.join(sorted({str(m['confidence']) for m in props}))}).",
              'change-sets/CS-002.json, events/, proposals.json')
 
+        # ---- AG-S08: a direct edit of a dataset (bypassing change sets) is caught; a person can adopt it
+        a4p = est / 'a4-technology.json'; keep = a4p.read_bytes(); d = _j(a4p)
+        for i in d['instances']:
+            if i['id'] == 'INF-K8S-PAY-PROD2': i['name'] = 'Managed Kubernetes — payments (production, region B)'
+        a4p.write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+        code, out, err = sdem('check', '--estate', est)
+        ctl('CTL-20', 'bad', 'a dataset edited directly, outside a change set (AG-S08)', 1 if 'AG-S08' in out else 0, out, True, 'AG-S08')
+        code, out, err = sdem('change', 'adopt', '--estate', est, '--layer', 'A4', '--person', A4, '--reason', 'x')
+        ctl('CTL-20', 'bad', 'an agent adopts a direct edit as if it were a person', code, err, True, 'CTL-20')
+        a4p.write_bytes(keep)                                     # undo the edit: the example's data stays as the agents left it
+        code, out, err = sdem('check', '--estate', est)
+        ctl('CTL-20', 'good', 'datasets exactly as the recorded change sets left them', 0 if code == 0 and 'AG-S08' not in out else 1, out, False, '')
+
         # ---- AT-AG-04/05/06 from the control tests
         t = R['controls_tests']
         def found(test): return next(x for x in t if x['test'] == test)['pass']
@@ -173,15 +186,16 @@ def run():
         step(ORCH, ['sdem work plan --event CE-001 --max-rounds 1  (round limit test)'], code, out, err)
         crit('AT-AG-07', 'A ripple that keeps producing impact', code == 1 and 'STOP' in out, out.strip() or err.strip(), 'steps')
 
-        # ---- AT-AG-08: the architect approves, supersedes and merges; the graph rebuilds
-        reg = _j(est / 'mappings.json')
+        # ---- AT-AG-08: the architect approves (sdem approve), supersedes and merges; the graph rebuilds
         chosen = sorted((m for m in props if m['relationship'] == 'DEPLOYED_ON' and m['target']['id'] == 'INF-K8S-PAY-PROD2'), key=lambda x: x['source']['id'])
+        code, out, err = sdem('approve', chosen[0]['mapping_id'], '--proposals', tmp / 'links' / 'proposals.json', '--estate', est, '--reviewer', A3, '--evidence', 'deployment_design:PAY-REHOST-2026-10#cutover', '--supersedes', 'PAY-108')
+        ctl('CTL-21', 'bad', 'an agent approves a link (reviewer = an agent name)', code, err, True, 'CTL-21')
         for n, (m, old) in enumerate(zip(chosen, ('PAY-108', 'PAY-111')), 1):
-            a = copy.deepcopy(m); a.update(mapping_id=f'PAY-2{n:02d}', status='approved', reviewer_id=PERSON, approved_at='2026-10-28', previous_mapping_id=old,
-                                           evidence=['deployment_design:PAY-REHOST-2026-10#cutover'] + a['evidence'])
-            a.pop('confidence', None); reg['mappings'].append(a)
-            o = next(x for x in reg['mappings'] if x['mapping_id'] == old); o['status'] = 'superseded'
-        _w(est / 'mappings.json', reg); E['registry-after-approval.json'] = reg
+            code, out, err = sdem('approve', m['mapping_id'], '--proposals', tmp / 'links' / 'proposals.json', '--estate', est, '--reviewer', PERSON,
+                                  '--evidence', 'deployment_design:PAY-REHOST-2026-10#cutover', '--supersedes', old, '--id', f'PAY-2{n:02d}', '--date', '2026-10-28')
+            step('architect', ['sdem approve', m['mapping_id'], '--proposals <links>/proposals.json --estate <est> --reviewer', PERSON, '--evidence deployment_design:PAY-REHOST-2026-10#cutover --supersedes', old, '--id', f'PAY-2{n:02d}'], code, out, err)
+            if n == 1: ctl('CTL-21', 'good', 'a person approves a link with the required evidence', code, out, False, '')
+        reg = _j(est / 'mappings.json'); E['registry-after-approval.json'] = reg
         cv, ov, ev_ = sdem('validate', '--strict', est / 'mappings.json'); step('architect', ['sdem validate --strict <est>/mappings.json'], cv, ov, ev_)
         cc, oc, ec = sdem('check', *sorted(map(str, est.glob('a*.json'))), est / 'mappings.json'); step('architect', ['sdem check <est>/a*.json <est>/mappings.json'], cc, oc.splitlines()[-1] if oc else '', ec)
         cb, ob, eb = sdem('build', *sorted(map(str, est.glob('a*.json'))), est / 'mappings.json', '--out', tmp / 'graph'); step('architect', ['sdem build … --out <graph>'], cb, ob.splitlines()[-1] if ob else '', eb)
@@ -191,7 +205,7 @@ def run():
         sets = [_j(f) for f in sorted((est / 'coordination' / 'change-sets').glob('CS-*.json'))]
         traceable = all(x['agent'] and x['person'] for x in evs + sets) and all(h['agent'] and h['person'] for w in wis for h in w['history']) and all(w['history'][-1]['status'] == 'done' for w in wis)
         crit('AT-AG-08', 'The architect reviews and merges', cv == 0 and cc == 0 and cb == 0 and 'INF-K8S-PAY-PROD2' in ot and 'PAY-201' in ot and 'PAY-108' not in ot and traceable and nothing_landed,
-             f"approved PAY-201, PAY-202 (superseding PAY-108, PAY-111) with deployment evidence; validate, check and build pass; the trace shows APP-PAY-HUB → INF-K8S-PAY-PROD2 via PAY-201 and no longer PAY-108. "
+             f"the architect approved PAY-201, PAY-202 with `sdem approve` (superseding PAY-108, PAY-111, deployment evidence); validate, check and build pass; the trace shows APP-PAY-HUB → INF-K8S-PAY-PROD2 via PAY-201 and no longer PAY-108. "
              f"On record: {len(sets)} change sets, {len(evs)} change events, {len(wis)} work items (all done) — every one with agent and person. The rejected attempts left no trace in the data.",
              'events/, work-items/, change-sets/, registry-after-approval.json, trace-after.txt')
         for e_ in evs: E[f"events/{e_['id']}.json"] = e_
@@ -202,7 +216,7 @@ def run():
     R['evidence'] = E
     mark = lambda xs: ('✅' if all(x['pass'] for x in xs) else '❌') if xs else '—'
     R['controls'] = [{'id': c, 'good': mark([x for x in R['controls_tests'] if x['control'] == c and x['data'] == 'good']),
-                      'bad': mark([x for x in R['controls_tests'] if x['control'] == c and x['data'] == 'bad'])} for c in ('CTL-19', 'CTL-20')]
+                      'bad': mark([x for x in R['controls_tests'] if x['control'] == c and x['data'] == 'bad'])} for c in ('CTL-19', 'CTL-20', 'CTL-21')]
     return R
 
 

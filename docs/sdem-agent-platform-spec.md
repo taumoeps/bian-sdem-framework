@@ -45,6 +45,7 @@ All under the `sdem` CLI, with `--json`, the standard exit codes and `--help` wi
 | AG-K04 | `sdem work plan / list / claim / block / cancel / reopen` | work items — create (orchestrator), list (by layer, status), claim, update, close | built — `sdem work plan / list / claim / block / cancel / reopen`; *done* is set by `sdem change propose --work` |
 | AG-K05 | impact stored with each change event | computes impact for every changed record and stores it as the event's impact result | built — inside `sdem change propose` (impact stored with the event) |
 | AG-K06 | `sdem change revert <CS-id> --estate DIR --agent … --person …` | reverses a change set (restores the records it changed) and records the reversal as a change event, with its impact | proposed — not built ([principles](sdem-agent-platform-principles.md) #3) |
+| AG-K07 | `sdem change adopt --estate DIR --layer A? --person … --reason …` | records a person's direct edit of a layer as a change set (the diff against the last snapshot, with its impact), so the chain is whole again; refuses agent names and edits that break the rulebook | built 2026-10-28 (AG-S08) |
 
 ## 5. Controls
 
@@ -55,9 +56,9 @@ All under the `sdem` CLI, with `--json`, the standard exit codes and `--help` wi
 | AG-S03 | No agent creates a cross-layer link: a change set may not touch the registry. | CTL-19 | built — relationships may not leave the layer; the change-set format has no registry field |
 | AG-S04 | Projected or AI content never lands in real data. | CTL-16 | built |
 | AG-S05 | The A2 agent adds BIAN elements only from the catalogue. | CTL-17 (projections); extended to change sets by CTL-19 | built — A2 additions need `--catalogue` and must be in it |
-| AG-S06 | Approval only by a person merging a reviewed pull request (reviewer, time, evidence on every approved link). | governance check + review | built (process) — tested in example 3 |
+| AG-S06 | Approval only by a person merging a reviewed pull request (reviewer, time, evidence on every approved link). | governance check + review | built — `sdem approve` (a person) and **CTL-21** in the governance check: a reviewer that is an agent or a tool is rejected |
 | AG-S07 | The orchestrator stops after a set number of impact rounds (default 3) and asks the architect. | orchestrator instruction + work-item round number | built — `sdem work plan` answers `STOP: round limit …` (default 3) |
-| AG-S08 | Detect dataset changes that did not come through a change set (a direct edit by an agent or a person): compare the datasets with the result of the recorded change sets since the last baseline. | proposed — CTL-20 extension | not built — pull-request review is the guard today |
+| AG-S08 | Detect dataset changes that did not come through a change set (a direct edit by an agent or a person): compare the datasets with the result of the recorded change sets since the last baseline. | proposed — CTL-20 extension | built 2026-10-28 — each change set records its dataset's checksum before and after and a snapshot; `sdem check` verifies the chain; a person records a direct edit with `sdem change adopt` |
 
 ## 6. Agents
 
@@ -125,4 +126,4 @@ Decisions AG-D01…D09 and open questions AG-Q01…Q04: [`sdem-agent-platform-de
 4. ~~Controls CTL-19, CTL-20 (AG-S01…S07), tested with good and bad data~~ — **built**.
 5. ~~Agent definitions (AG-A01…A03)~~ — **built**, `.github/agents/`; adjust after the spike.
 6. ~~Use-case example 3~~ — **run: 8 of 8**.
-7. Next ([principles](sdem-agent-platform-principles.md)): AG-S08 (detect direct edits), AG-E01 (score the agents after the spike), AG-K06 (undo), AG-O01 (session record); AG-T02's Git hook or VS Code task; then ingestion (v0.11) and the licensed BIAN catalogue (v0.15) for real designs; AG-T03 only with the organisation's approval.
+7. Next ([principles](sdem-agent-platform-principles.md)): ~~AG-S08~~ (built), AG-E01 (score the agents after the spike), AG-K06 (undo), AG-O01 (session record); AG-T02's Git hook or VS Code task; then ingestion (v0.11) and the licensed BIAN catalogue (v0.15) for real designs; AG-T03 only with the organisation's approval.

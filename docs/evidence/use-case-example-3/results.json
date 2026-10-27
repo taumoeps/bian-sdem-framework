@@ -54,7 +54,7 @@
       "id": "AT-AG-08",
       "test": "The architect reviews and merges",
       "pass": true,
-      "did": "approved PAY-201, PAY-202 (superseding PAY-108, PAY-111) with deployment evidence; validate, check and build pass; the trace shows APP-PAY-HUB → INF-K8S-PAY-PROD2 via PAY-201 and no longer PAY-108. On record: 2 change sets, 2 change events, 2 work items (all done) — every one with agent and person. The rejected attempts left no trace in the data.",
+      "did": "the architect approved PAY-201, PAY-202 with `sdem approve` (superseding PAY-108, PAY-111, deployment evidence); validate, check and build pass; the trace shows APP-PAY-HUB → INF-K8S-PAY-PROD2 via PAY-201 and no longer PAY-108. On record: 2 change sets, 2 change events, 2 work items (all done) — every one with agent and person. The rejected attempts left no trace in the data.",
       "evidence": "events/, work-items/, change-sets/, registry-after-approval.json, trace-after.txt"
     }
   ],
@@ -177,12 +177,57 @@
       "pass": true
     },
     {
+      "control": "CTL-20",
+      "data": "bad",
+      "test": "a dataset edited directly, outside a change set (AG-S08)",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: coordination (6 records): CTL-20 (AG-S08): a4-technology.json was changed outside a change set since CS-001 — propose the change as a change set, or record a person's edit: sdem change adopt --",
+      "pass": true
+    },
+    {
+      "control": "CTL-20",
+      "data": "bad",
+      "test": "an agent adopts a direct edit as if it were a person",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-20: adopt needs the name of the person who made the edit",
+      "pass": true
+    },
+    {
+      "control": "CTL-20",
+      "data": "good",
+      "test": "datasets exactly as the recorded change sets left them",
+      "should": "accepted",
+      "did": "accepted",
+      "message": "OK: level A1 (synthetic-bank-payments-a1)",
+      "pass": true
+    },
+    {
       "control": "governance",
       "data": "bad",
       "test": "a link marked approved without reviewer, time or evidence",
       "should": "rejected",
       "did": "rejected",
       "message": "ERROR: <work>/bad-approval.json: mapping #19 (PAY-299): approved mapping requires approved_at",
+      "pass": true
+    },
+    {
+      "control": "CTL-21",
+      "data": "bad",
+      "test": "an agent approves a link (reviewer = an agent name)",
+      "should": "rejected",
+      "did": "rejected",
+      "message": "ERROR: CTL-21: the reviewer must be a person, not 'sdem-a3-application' — give your own name",
+      "pass": true
+    },
+    {
+      "control": "CTL-21",
+      "data": "good",
+      "test": "a person approves a link with the required evidence",
+      "should": "accepted",
+      "did": "accepted",
+      "message": "approved PAY-201: APP-PAY-HUB -DEPLOYED_ON-> INF-K8S-PAY-PROD2  (reviewer jane.architect, 2026-10-28, evidence deployment_design:PAY-REHOST-2026-10#cutover); supersedes PAY-108",
       "pass": true
     }
   ],
@@ -243,6 +288,18 @@
     },
     {
       "who": "architect",
+      "command": "sdem approve P-RUN-001 --proposals <links>/proposals.json --estate <est> --reviewer jane.architect --evidence deployment_design:PAY-REHOST-2026-10#cutover --supersedes PAY-108 --id PAY-201",
+      "exit": 0,
+      "output": "approved PAY-201: APP-PAY-HUB -DEPLOYED_ON-> INF-K8S-PAY-PROD2  (reviewer jane.architect, 2026-10-28, evidence deployment_design:PAY-REHOST-2026-10#cutover); supersedes PAY-108\n<work>/est/mappings.json updated and checked. Next: commit on a branch and open a pull request — the reviewed merge makes it final; then rebuild the graph store (sdem build --estate … --out …)."
+    },
+    {
+      "who": "architect",
+      "command": "sdem approve P-RUN-002 --proposals <links>/proposals.json --estate <est> --reviewer jane.architect --evidence deployment_design:PAY-REHOST-2026-10#cutover --supersedes PAY-111 --id PAY-202",
+      "exit": 0,
+      "output": "approved PAY-202: CMP-PAY-EXEC -DEPLOYED_ON-> INF-K8S-PAY-PROD2  (reviewer jane.architect, 2026-10-28, evidence deployment_design:PAY-REHOST-2026-10#cutover); supersedes PAY-111\n<work>/est/mappings.json updated and checked. Next: commit on a branch and open a pull request — the reviewed merge makes it final; then rebuild the graph store (sdem build --estate … --out …)."
+    },
+    {
+      "who": "architect",
       "command": "sdem validate --strict <est>/mappings.json",
       "exit": 0,
       "output": "OK: <work>/est/mappings.json"
@@ -274,6 +331,11 @@
     },
     {
       "id": "CTL-20",
+      "good": "✅",
+      "bad": "✅"
+    },
+    {
+      "id": "CTL-21",
       "good": "✅",
       "bad": "✅"
     }

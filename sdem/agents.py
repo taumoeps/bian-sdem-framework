@@ -105,6 +105,7 @@ class Estate:
         changed = []
         for n, c in enumerate(change_set['changes'], 1):
             op, rec = c['op'], c['record']; rid = rec['id']
+            if op == 'remove': raise CoordinationError(f'change {n}: remove is not a change-set operation — retire the record instead')
             if str(rid).startswith(PROJECTED_PREFIXES): raise CoordinationError(f'CTL-16: change {n}: {rid} is a projected or design record, never real data')
             if not str(rec.get('type', layer + '.')).startswith(layer + '.'):
                 raise CoordinationError(f"CTL-19: change {n}: {rid} has type {rec.get('type')} — not a {layer} record")
@@ -139,9 +140,12 @@ class Estate:
         # land it
         cs_id = self._next('CS'); ce_id = self._next('CE')
         round_ = max(w['round'] for w in wis) + 1 if wis else 1
-        cs = {'id': cs_id, **change_set, 'agent': agent, 'person': person, 'created_at': self.now(), 'work_items': [w['id'] for w in wis], 'event': ce_id, 'branch': _branch(self.path)}
-        _w(self.coord / 'change-sets' / f'{cs_id}.json', cs)
+        before = _file_sha(self.path / FILES[layer])
         _w(self.path / FILES[layer], new[layer])
+        cs = {'id': cs_id, **change_set, 'agent': agent, 'person': person, 'created_at': self.now(), 'work_items': [w['id'] for w in wis], 'event': ce_id, 'branch': _branch(self.path),
+              'dataset': {'file': FILES[layer], 'before_sha256': before, 'after_sha256': _file_sha(self.path / FILES[layer])}}
+        _w(self.coord / 'change-sets' / f'{cs_id}.json', cs)
+        _w(self.coord / 'snapshots' / f'{cs_id}.json', new[layer])   # the layer as this change set left it (AG-S08, and undo later)
         impact = self._impact(fg, changed, layer)
         event = {'id': ce_id, 'change_set': cs_id, 'layer': layer, 'round': round_, 'at': self.now(), 'agent': agent, 'person': person, 'impact': impact}
         self._save_event(event)
@@ -149,6 +153,49 @@ class Estate:
             wi['history'].append({'status': 'done', 'at': self.now(), 'agent': agent, 'person': person, 'note': f'answered by {cs_id}'})
         if wis: self._save_work(wis)
         return cs, event
+
+    def adopt(self, layer, person, reason):
+        """AG-S08: record a person's direct edit of a layer's dataset as a change set, so the chain of change sets is whole
+        again. The edit must keep the rulebook (no new errors); its impact is recorded like any change set's."""
+        if layer not in FILES: raise CoordinationError(f'unknown layer {layer}')
+        if not (person or '').strip() or person in AGENT_LAYER or person in (ORCHESTRATOR, HUMAN): raise CoordinationError('CTL-20: adopt needs the name of the person who made the edit')
+        if not (reason or '').strip(): raise CoordinationError('adopt needs a reason')
+        last = self._last_change_set(layer)
+        if not last: raise CoordinationError(f'{layer} has no change sets yet — its current content is the starting point; nothing to adopt')
+        cur_sha = _file_sha(self.path / FILES[layer])
+        if cur_sha == last['dataset']['after_sha256']: raise CoordinationError(f"{FILES[layer]} has not changed since {last['id']} — nothing to adopt")
+        prev = _j(self.coord / 'snapshots' / f"{last['id']}.json"); cur = self.datasets()
+        old_ds = {**cur, layer: prev}
+        before_errors, old_fg = self.check(old_ds); after_errors, fg = self.check(cur)
+        added_errors = [e for e in after_errors if e not in before_errors]
+        if added_errors: raise CoordinationError('the direct edit breaks the rulebook — fix it first, then adopt:\n  ' + '\n  '.join(added_errors[:10]))
+        po = {i['id']: i for i in prev['instances']}; co = {i['id']: i for i in cur[layer]['instances']}
+        changes, changed = [], []
+        for rid, r in co.items():
+            if rid not in po: changes.append({'op': 'add', 'record': r}); changed.append((rid, None))
+            elif r != po[rid]: changes.append({'op': 'update', 'record': r}); changed.append((rid, 'modify'))
+        removed = [rid for rid in po if rid not in co]
+        for rid in removed: changes.append({'op': 'remove', 'record': po[rid]})
+        rel_add = [r for r in cur[layer].get('relationships', []) if r not in prev.get('relationships', [])]
+        rel_rem = [r for r in prev.get('relationships', []) if r not in cur[layer].get('relationships', [])]
+        cs_id = self._next('CS'); ce_id = self._next('CE')
+        impact = self._impact(fg, changed, layer)
+        if removed:   # the impact of a removal is read from the graph as it was
+            gone = self._impact(old_fg, [(rid, 'retire') for rid in removed], layer)
+            impact['records'] = sorted({r['id']: r for r in gone['records'] + impact['records']}.values(), key=lambda x: (x['level'] or '', x['id']))
+            impact['mappings_to_supersede'] = sorted(set(impact['mappings_to_supersede']) | set(gone['mappings_to_supersede'])); impact['changed'] += removed
+        cs = {'id': cs_id, 'layer': layer, 'reason': reason, 'changes': changes, 'relationships': {'add': rel_add, 'remove': rel_rem}, 'adopted': True,
+              'agent': HUMAN, 'person': person, 'created_at': self.now(), 'work_items': [], 'event': ce_id, 'branch': _branch(self.path),
+              'dataset': {'file': FILES[layer], 'before_sha256': last['dataset']['after_sha256'], 'after_sha256': cur_sha}}
+        _w(self.coord / 'change-sets' / f'{cs_id}.json', cs); _w(self.coord / 'snapshots' / f'{cs_id}.json', cur[layer])
+        event = {'id': ce_id, 'change_set': cs_id, 'layer': layer, 'round': 1, 'at': self.now(), 'agent': HUMAN, 'person': person, 'impact': impact}
+        self._save_event(event)
+        return cs, event
+
+    def _last_change_set(self, layer):
+        sets = [_j(f) for f in self.change_sets()]
+        sets = [c for c in sets if c.get('layer') == layer and c.get('dataset')]
+        return sorted(sets, key=lambda c: (c.get('created_at', ''), _seq(c['id'])))[-1] if sets else None
 
     def _impact(self, fg, changed, layer):
         """Stored impact result (AG-R03): every affected record with its strongest classification and paths."""
@@ -212,6 +259,11 @@ class Estate:
         return out
 
 
+def _file_sha(path):
+    import hashlib
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
 def _seq(rid):
     m = re.search(r'(\d+)$', rid); return int(m.group(1)) if m else 0
 
@@ -255,6 +307,8 @@ def change_main(argv=None):
     _common(p); p.add_argument('--work', nargs='*', default=[], metavar='WI', help='work item(s) this change set answers (claimed by the same agent)')
     p.add_argument('--catalogue', metavar='FILE', help='BIAN catalogue (A2 dataset) — required when an A2 change set adds records')
     s = sub.add_parser('show', help='a change set with its event and impact'); s.add_argument('id'); _common(s, who=False)
+    d = sub.add_parser('adopt', help="record a person's direct edit of a layer as a change set (AG-S08)"); _common(d, who=False)
+    d.add_argument('--layer', required=True, choices=list(FILES)); d.add_argument('--person', required=True, help='who made the edit'); d.add_argument('--reason', required=True)
     a = ap.parse_args(argv)
     try:
         est = Estate(a.estate)
@@ -270,6 +324,14 @@ def change_main(argv=None):
             print('NOTE: graph stores built from this estate are now out of date — rebuild them before trace, impact or view: sdem build --estate … --out <graph>')
             print(f"next: the orchestrator runs  sdem work plan --event {ev['id']} --estate {a.estate} --agent {ORCHESTRATOR} --person <name>"
                   + f"\n      and the rules engine proposes the new links:  sdem link {a.estate}/a*.json {a.estate}/mappings.json --out <dir>")
+            return 0
+        if a.cmd == 'adopt':
+            cs, ev = est.adopt(a.layer, a.person, a.reason)
+            if a.json: print(json.dumps({'change_set': cs, 'event': ev}, indent=2, ensure_ascii=False)); return 0
+            ops = {}
+            for c in cs['changes']: ops[c['op']] = ops.get(c['op'], 0) + 1
+            print(f"{cs['id']} records {a.person}'s direct edit of {a.layer}: " + ', '.join(f'{n} {k}' for k, n in ops.items()) + f"; change event {ev['id']} with its impact")
+            print(f"next: the orchestrator runs  sdem work plan --event {ev['id']} --estate {a.estate} --agent {ORCHESTRATOR} --person <name>")
             return 0
         f = est.coord / 'change-sets' / f'{a.id}.json'
         if not f.exists(): return _fail(f'{a.id}: no such change set')
@@ -372,4 +434,14 @@ def check_coordination(estate_dir):
         if h and h[0].get('status') != 'open': issues.append(f"work-items/{w.get('id')}: history must start 'open'")
         for a, b in zip(h, h[1:]):
             if b.get('status') not in TRANSITIONS.get(a.get('status'), set()): issues.append(f"work-items/{w.get('id')}: step {a.get('status')} → {b.get('status')} is not allowed")
+    # AG-S08 / CTL-20: every change to a layer's dataset since its first change set came through a change set
+    for layer, fname in FILES.items():
+        chain = sorted((c for c in sets.values() if c.get('layer') == layer and c.get('dataset')), key=lambda c: (c.get('created_at', ''), _seq(c['id'])))
+        for a, b in zip(chain, chain[1:]):
+            if b['dataset']['before_sha256'] != a['dataset']['after_sha256']:
+                issues.append(f"CTL-20 (AG-S08): {fname} was changed outside a change set between {a['id']} and {b['id']} (or two branches changed it in parallel)")
+        f = Path(estate_dir) / fname
+        if chain and f.exists() and _file_sha(f) != chain[-1]['dataset']['after_sha256']:
+            issues.append(f"CTL-20 (AG-S08): {fname} was changed outside a change set since {chain[-1]['id']} — propose the change as a change set, or record a person's edit: "
+                          f"sdem change adopt --estate {estate_dir} --layer {layer} --person <name> --reason <why>")
     return issues, len(sets) + len(events) + len(work)

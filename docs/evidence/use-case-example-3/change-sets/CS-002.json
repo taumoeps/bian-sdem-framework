@@ -60,5 +60,10 @@
     "WI-002"
   ],
   "event": "CE-002",
-  "branch": null
+  "branch": null,
+  "dataset": {
+    "file": "a3-application.json",
+    "before_sha256": "758862d5c017af906185736022674c0e21303d8561682c1941227a46547dc871",
+    "after_sha256": "067fa3a71b783cc9bc4d045f58ab3c7fd003cd572f885c0674f39d166e59f64b"
+  }
 }

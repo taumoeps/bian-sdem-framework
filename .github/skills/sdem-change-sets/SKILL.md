@@ -50,3 +50,4 @@ Then read the output: the change set id (`CS-…`), the change event (`CE-…`),
 | `CTL-16: … is a projected or design record` | `PRJ-` / `DSN-` records are plans, never real data |
 | `the change set breaks the rulebook — nothing was changed:` + errors | fix each listed error (missing field, wrong type, a link the rulebook does not allow) — the `sdem-records` skill explains the fields |
 | `change set format: …` | the JSON does not match the format above |
+| `CTL-20 (AG-S08): … was changed outside a change set` (from `sdem check`) | someone edited the dataset file directly — agents never do; a **person** records their own edit with `sdem change adopt --estate … --layer … --person <their name> --reason …` |

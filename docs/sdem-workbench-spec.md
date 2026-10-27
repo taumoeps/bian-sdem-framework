@@ -63,9 +63,10 @@ Each journey is a CLI command the architect runs; Copilot supports in the chat.
 
 | ID | Requirement | Status |
 |---|---|---|
-| WB-A01 | Approving a link means a pull request that changes the registry (status `approved`, reviewer, approval time, required evidence), reviewed and merged by a person. Documented in the getting-started page. | built — user guide §8.2 (walked through: proposal → evidence → validate → build) |
+| WB-A01 | Approving a link means a pull request that changes the registry (status `approved`, reviewer, approval time, required evidence), reviewed and merged by a person. Documented in the getting-started page. | built — `sdem approve` (user guide §8.2), then a reviewed pull request |
 | WB-A02 | An approved link must carry `reviewer_id` and `approved_at` — the existing governance check. | built |
-| WB-A03 | Copilot never sets a link to approved (ground rule). A person's merge is the approval. | not built (instruction) — the instruction is guidance; WB-A01's review is the control |
+| WB-A03 | Copilot never sets a link to approved (ground rule). A person's merge is the approval. | built — **CTL-21**: the governance check rejects an agent or tool as reviewer; the reviewed merge stays the final approval |
+| WB-A04 | `sdem approve <proposal> --proposals FILE --estate DIR --reviewer <person> --evidence KIND:REF [--supersedes ID]` writes a correct registry record (new id in the registry's style, status, reviewer, date, required evidence, supersession) and validates the whole registry before writing — nothing is written if a check fails. | built 2026-10-28 (T2) |
 
 ## 7. Views
 

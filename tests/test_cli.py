@@ -56,7 +56,7 @@ class CliTests(unittest.TestCase):
         self.assertEqual([r['confidence'] for r in rows], sorted(r['confidence'] for r in rows))  # weakest first
         self.assertTrue(all(r['rule'] != '—' and r['reasoning'] for r in rows))
         code, text, _ = run('review', str(out / 'proposals.json'))
-        self.assertIn('A person approves', text)
+        self.assertIn('To approve (a person', text); self.assertIn('sdem approve', text)
         code, text, _ = run('explain', rows[0]['mapping_id'], '--proposals', str(out / 'proposals.json'), '--json')
         self.assertEqual(code, 0); self.assertEqual(json.loads(text)[0]['id'], rows[0]['mapping_id'])
         self.assertEqual(run('explain', 'NOT-THERE', '--proposals', str(out / 'proposals.json'))[0], 1)

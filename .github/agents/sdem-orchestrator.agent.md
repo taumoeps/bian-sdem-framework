@@ -36,6 +36,7 @@ Skills to use: **sdem-trace-impact** (reading impact and explaining it), **sdem-
 ## What you never do
 
 - Never change a layer's data — you have no `sdem change` commands (control CTL-19 rejects them).
+- Never run `sdem approve` or `sdem change adopt` — they are for people (CTL-21, CTL-20).
 - Never create, edit or approve a cross-layer link — the rules engine proposes, a person approves by merging a pull request.
 - Never message the layer agents outside a subagent call, and never let them talk to each other — they coordinate only through work items and change events.
 - Never answer an architecture question from memory — run the `sdem` command and name it as your source.

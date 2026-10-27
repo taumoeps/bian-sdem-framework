@@ -1,6 +1,7 @@
-"""Group 1 hardening of the data architecture and tools (docs/sdem-agent-platform-principles.md; spec AG-R06, AG-R07, WB-K07, WB-K08):
+"""Hardening of the data architecture and tools — group 1 and group 2 (docs/sdem-agent-platform-principles.md; spec AG-R06, AG-R07, WB-K07, WB-K08):
 D1 coordination ids scoped to the Git branch, one file per record; D2 `sdem check` checks the coordination records;
-T3 a warning when a graph store is older than its data; T4 `--estate` and `*` patterns handled by sdem itself."""
+T3 a warning when a graph store is older than its data; T4 `--estate` and `*` patterns handled by sdem itself;
+T1 / AG-S08 direct dataset edits detected and adopted by a person; T2 `sdem approve` and CTL-21 (a person approves)."""
 import contextlib, io, json, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
@@ -86,6 +87,42 @@ class HardeningTests(unittest.TestCase):
         code, _, err = sdem('check', '--estate', self.tmp / 'nope')
         self.assertNotEqual(code, 0); self.assertIn('not an estate folder', err)
 
+
+    # T1 / AG-S08
+    def test_direct_edit_is_detected_and_adopted_by_a_person(self):
+        self.propose()
+        p = self.est / 'a3-application.json'; d = json.loads(p.read_text())
+        d['instances'][0]['description'] = 'edited by hand'; p.write_text(json.dumps(d, indent=2))
+        self.assertEqual(sdem('check', '--estate', self.est)[0], 0)          # A3 has no change sets yet: its content is the starting point
+        a4 = self.est / 'a4-technology.json'; d = json.loads(a4.read_text()); d['instances'][0]['name'] = 'renamed by hand'; a4.write_text(json.dumps(d, indent=2))
+        code, out, _ = sdem('check', '--estate', self.est)
+        self.assertEqual(code, 1); self.assertIn('CTL-20 (AG-S08): a4-technology.json was changed outside a change set since CS-001', out)
+        self.assertNotEqual(sdem('change', 'adopt', '--estate', self.est, '--layer', 'A4', '--person', 'sdem-a4-technology', '--reason', 'x')[0], 0)
+        code, out, err = sdem('change', 'adopt', '--estate', self.est, '--layer', 'A4', '--person', 'jane.architect', '--reason', 'renamed after review')
+        self.assertEqual(code, 0, err); self.assertIn("records jane.architect's direct edit of A4: 1 update", out)
+        self.assertEqual(sdem('check', '--estate', self.est)[0], 0)
+        self.assertNotEqual(sdem('change', 'adopt', '--estate', self.est, '--layer', 'A4', '--person', 'jane.architect', '--reason', 'again')[0], 0)  # nothing to adopt
+
+    # T2 / CTL-21
+    def test_approve_writes_a_valid_record_and_only_for_a_person(self):
+        reg = json.loads((self.est / 'mappings.json').read_text()); reg['mappings'] = [m for m in reg['mappings'] if m['mapping_id'] != 'PAY-106']
+        (self.est / 'mappings.json').write_text(json.dumps(reg, indent=2))
+        sdem('link', '--estate', self.est, '--out', self.tmp / 'l'); props = self.tmp / 'l' / 'proposals.json'
+        base = ('approve', 'P-RUN-001', '--proposals', props, '--estate', self.est)
+        code, _, err = sdem(*base, '--reviewer', 'sdem-orchestrator', '--evidence', 'application_architecture_document:X'); self.assertEqual(code, 1); self.assertIn('CTL-21', err)
+        code, _, err = sdem(*base, '--reviewer', 'copilot', '--evidence', 'application_architecture_document:X'); self.assertEqual(code, 1)
+        code, _, err = sdem(*base, '--reviewer', 'jane.architect', '--evidence', 'deployment_design:X'); self.assertEqual(code, 1); self.assertIn('nothing was written', err)
+        self.assertNotIn('P-RUN-001', (self.est / 'mappings.json').read_text())
+        code, out, err = sdem(*base, '--reviewer', 'jane.architect', '--evidence', 'application_architecture_document:AA#s3', '--date', '2026-10-28')
+        self.assertEqual(code, 0, err); self.assertIn('approved PAY-114', out)
+        self.assertEqual(sdem('validate', '--strict', '--estate', self.est)[0], 0)
+        self.assertEqual(sdem(*base, '--reviewer', 'jane.architect', '--evidence', 'application_architecture_document:AA')[0], 1)   # already approved
+
+    def test_validate_rejects_an_agent_as_reviewer(self):
+        reg = json.loads((self.est / 'mappings.json').read_text()); reg['mappings'][0]['reviewer_id'] = 'sdem-a1-business'
+        (self.tmp / 'r.json').write_text(json.dumps(reg))
+        code, out, err = sdem('validate', self.tmp / 'r.json')
+        self.assertEqual(code, 1); self.assertIn('CTL-21', out + err)
 
 if __name__ == '__main__':
     unittest.main()

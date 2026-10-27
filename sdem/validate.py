@@ -13,6 +13,8 @@ SCHEMA = ROOT / 'schema' / 'relationship-registry.schema.json'
 
 STATUSES = {'proposed', 'validated', 'needs_review', 'approved', 'rejected', 'superseded'}
 REVIEWED_STATUSES = {'approved', 'rejected', 'superseded'}
+# CTL-21: names that are agents or tools, never a person (sdem-* agent names are caught by prefix)
+NON_PERSON_REVIEWERS = {'architect', 'agent', 'copilot', 'github-copilot', 'engine', 'orchestrator', 'sdem', 'rules-engine', 'ai'}
 TYPE_PREFIX = re.compile(r'^([A-Za-z0-9]+)\.')
 
 EXIT_OK, EXIT_ISSUES, EXIT_USAGE = 0, 1, 2
@@ -247,6 +249,9 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
             for field in ('reviewer_id', 'approved_at'):
                 if not mapping.get(field):
                     fail('governance', f'{status} mapping requires {field}')
+            rv = str(mapping.get('reviewer_id') or '').strip().lower()
+            if rv and (rv.startswith('sdem-') or rv in NON_PERSON_REVIEWERS or rv == str(mapping.get('created_by') or '').strip().lower()):
+                fail('governance', f"reviewer_id {mapping.get('reviewer_id')!r} is an agent or a tool — a link is approved by a person (CTL-21)")
         if status == 'superseded' and mid not in successors:
             fail('governance', 'superseded mapping has no successor referencing it via previous_mapping_id')
         prev = mapping.get('previous_mapping_id')

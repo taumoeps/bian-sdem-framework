@@ -244,7 +244,8 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem check --estate <dir>` (or the files) | J1 | checks datasets and registry against the rulebook | after any change to the data | fix errors; `sdem build` |
 | `sdem validate <registry>` | J1 | checks a registry or proposals file on its own (`--strict` treats warnings as errors) | after editing `mappings.json` | `sdem check` |
 | `sdem link <files> --out <dir>` | J2 | the inference engine proposes the missing links; writes `proposals.json` | when data is new or changed | `sdem review` |
-| `sdem review <proposals.json>` | J3 | lists the proposals, weakest first, with rule, confidence and reasoning | before approving | approve in the registry (§8.2) |
+| `sdem review <proposals.json>` | J3 | lists the proposals, weakest first, with rule, confidence and reasoning | before approving | `sdem approve` (§8.2) |
+| `sdem approve <id> --proposals … --estate … --reviewer <you> --evidence <kind:ref>` | J3 | **you** approve a proposed link: writes a correct registry record, checks it first | after review | pull request |
 | `sdem build <files> --out <dir>` | J4 | checks everything and writes the graph store | after approval, before trace and impact | `sdem trace`, `sdem view` |
 | `sdem query --graph <dir> …` | J4 | finds records: `--type`, `--level`, `--where attr=value`, `--unmapped A2` (records still without a link) | to look things up | — |
 | `sdem baseline <name> --graph <dir>` | J4 | freezes the graph store under a name (e.g. a release) | at milestones | — |
@@ -325,7 +326,15 @@ In this example one approved link — *Payment Initiation is realised by the Pay
    The engine proposes it at 0.8 (high) because the hub's APIs implement five of the domain's operations. To see everything behind a proposal: `sdem explain P-RUN-001 --proposals work/links/proposals.json`.
 3. **Decide.** Ask yourself: is this true of our architecture, and do we have the document that shows it? Copilot can help:
    > *Walk me through the proposals in work/links/proposals.json, weakest first. What evidence would I need for each?*
-4. **Approve — you, in the registry.** Copy the proposal from `proposals.json` into `mappings.json` and change four things:
+4. **Approve — you, with `sdem approve`.** It writes the registry record for you — a new id, status `approved`, you as reviewer, today's date and the evidence — and checks the whole registry before writing anything:
+   ```bash
+   sdem approve P-RUN-001 --proposals work/links/proposals.json --estate work/my-estate \
+        --reviewer your.name --evidence application_architecture_document:AA-PAYHUB-HLD#s3
+   ```
+   ```
+   approved PAY-114: SD-PI -REALIZED_BY-> APP-PAY-HUB  (reviewer your.name, …, evidence application_architecture_document:AA-PAYHUB-HLD#s3)
+   ```
+   To replace an old link, add `--supersedes <old id>`. The reviewer must be a person — an agent name is refused (control CTL-21). For reference, the record it writes looks like this (you could also write it by hand):
    ```json
    {
      "mapping_id": "PAY-120",                                  ← a new id, unique in the registry
@@ -513,12 +522,13 @@ Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem
 
 ## 10. Rules you must know
 
-1. **A person approves links** — in the registry, with reviewer, time and the required evidence, through a reviewed pull request. Never the engine, never Copilot.
+1. **A person approves links** — with `sdem approve`, giving your name, the date and the required evidence, then a reviewed pull request. Never the engine, never Copilot (CTL-21 rejects an agent as reviewer).
 2. **Approved links are never edited.** To change one, add a new record that supersedes it (`sdem diff` checks this).
-3. **Projected (`PRJ-`) content is a plan, never real data.** SDEM rejects it in datasets, the registry and the graph store.
-4. **Check before you trust.** Run `sdem check` after every change; CI runs everything again on every push.
-5. **Public and made-up data only in this project.** Real architecture data goes only in your organisation's own copy.
-6. **No PlantUML public server for real data** — use a local or company server.
+3. **Once agents work on a layer, change it through change sets.** A hand edit is reported by `sdem check` until you record it with `sdem change adopt`.
+4. **Projected (`PRJ-`) content is a plan, never real data.** SDEM rejects it in datasets, the registry and the graph store.
+5. **Check before you trust.** Run `sdem check` after every change; CI runs everything again on every push.
+6. **Public and made-up data only in this project.** Real architecture data goes only in your organisation's own copy.
+7. **No PlantUML public server for real data** — use a local or company server.
 
 ## 11. Troubleshooting
 
@@ -528,6 +538,8 @@ Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem
 | `ERROR: … missing required property 'name'` | a record lacks a required field | add it; `$.instances[0]` is the first record in the list |
 | `ERROR: … duplicate mapping_id` | two links share an id | give the new one an unused id |
 | `ERROR: … evidence missing required kind(s) [...]` | an approved link lacks the evidence its type needs | add `kind:document-reference` (§8.2 table) |
+| `ERROR: … CTL-20 (AG-S08): … was changed outside a change set since CS-…` | a dataset was edited by hand after agents started changing that layer | if it was you: `sdem change adopt --estate <dir> --layer <A?> --person <you> --reason <why>`; if not, find out who and undo it |
+| `ERROR: … CTL-21 …` | a link was approved with an agent or tool as reviewer | approve as yourself: `--reviewer your.name` |
 | `ERROR: CTL-19: …` | a change set crosses its layer, or an agent works outside its layer | keep each change set to one layer; let the orchestrator plan the other layers' work |
 | `ERROR: CTL-20: …` | a change set or work-item step without the agent or the person | add `--agent` and `--person` |
 | `ERROR: … cannot enter a real architecture dataset (CTL-16)` | projected content was put into real data | remove it; projections stay in their own folder |

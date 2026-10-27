@@ -10,7 +10,11 @@ The rules engine (`sdem link`) **proposes** links; **a person approves** them in
 ## Steps
 
 1. **Review:** `sdem review <dir>/proposals.json --estate <estate>` (weakest first) and `sdem explain <P-id> --proposals <dir>/proposals.json` for one link.
-2. **For each link the architect accepts**, copy it from `proposals.json` into `mappings.json` and set:
+2. **The architect approves each accepted link with `sdem approve`** (a person runs it — never an agent; CTL-21 rejects an agent as reviewer):
+   ```bash
+   sdem approve <P-id> --proposals <dir>/proposals.json --estate <estate> --reviewer <person> --evidence <kind:ref> [--supersedes <old id>]
+   ```
+   It writes the record below and validates the whole registry first — nothing is written if a check fails. By hand, the record would be: copy it from `proposals.json` into `mappings.json` and set:
    - `mapping_id` — a new id, unique in the registry;
    - `status: "approved"`, `reviewer_id` (the person), `approved_at` (date);
    - `evidence` — **add the document that proves it**, as `kind:document-reference`; the kinds each link type needs are in [the evidence table](./evidence-by-link-type.md). The engine's reasoning alone is not enough.
@@ -27,3 +31,4 @@ The rules engine (`sdem link`) **proposes** links; **a person approves** them in
 | `duplicate mapping_id` | choose an unused id |
 | `superseded mapping has no successor referencing it via previous_mapping_id` | the new link needs `previous_mapping_id` |
 | `a link to a projected or design record cannot be approved` (CTL-16) | projections are plans — never approve links to `PRJ-` records |
+| `reviewer_id '…' is an agent or a tool` (CTL-21) | a person approves: their own name as reviewer |

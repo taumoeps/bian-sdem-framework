@@ -19,6 +19,8 @@ JOURNEYS = {
                  'sdem link --estate examples/payment-initiation --out work/links'),
     'review':   ('J3', 'list proposed links for review, weakest first', None, None,
                  'sdem review work/links/proposals.json'),
+    'approve':  ('J3', 'a person approves proposed links into the registry — reviewer, date, required evidence, validated first', None, None,
+                 'sdem approve P-RUN-001 --proposals work/links/proposals.json --estate work/est --reviewer jane.architect --evidence deployment_design:PAY-REHOST#cutover'),
     'build':    ('J4', 'check the inputs and write the graph store (knowledge graph)', 'sdem.graph', ['build'],
                  'sdem build --estate examples/card-fraud-alerts --out work/graph'),
     'query':    ('J4', 'find records in a graph store', 'sdem.graph', ['query'],
@@ -171,8 +173,8 @@ def review(argv):
         print(f"  [{m.get('confidence')}] {m['mapping_id']}  {nm(s)} -{m['relationship']}-> {nm(t)}   rule {_rule_of(m)}")
         why = re.sub(r'\s*\((?:P|C)-[A-Z0-9]+-\d+\)', '', m.get('rationale', ''))[:300]
         print(f'        why: {why}')
-    print('\nTo approve: in the registry set status "approved", reviewer_id and approved_at for the links you accept, then open a pull request. '
-          'A person approves — never the engine or Copilot.')
+    print('\nTo approve (a person — never the engine or Copilot): sdem approve <id> --proposals <file> --estate <dir> --reviewer <your name> --evidence <kind:ref>, '
+          'then open a pull request; the reviewed merge makes it final.')
     return 0
 
 
@@ -274,6 +276,9 @@ def main(argv=None):
     if name == 'review': return review(rest)
     if name == 'explain': return explain(rest)
     if name == 'model': return model(rest)
+    if name == 'approve':
+        from . import approve as _ap
+        return _ap.main(rest)
     if name in ('change', 'events', 'work'):
         from . import agents
         return {'change': agents.change_main, 'events': agents.events_main, 'work': agents.work_main}[name](rest)

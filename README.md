@@ -216,6 +216,8 @@ sdem link $E/a1-business.json $E/a2-service-domain.json $E/a3-application.json $
                                                                # J2 the engine proposes the cross-level links
 sdem review work/links/proposals.json                          # J3 weakest first, with rule, confidence, reasoning
 sdem explain P-RUN-001 --proposals work/links/proposals.json   # J8 why one link was proposed
+sdem approve P-RUN-001 --proposals work/links/proposals.json --estate <your-copy> --reviewer your.name \
+     --evidence <kind:document-ref>                            # J3 you approve it (then a pull request)
 
 sdem aid project --have $E/a1-business.json --catalogue <bian-catalogue.json> --out work/prj
                                                                # J6 project the layers you do not have (AID)
