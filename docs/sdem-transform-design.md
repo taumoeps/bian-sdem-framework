@@ -2,7 +2,7 @@
 
 `sdem transform` takes an **export** of past designs (from Confluence) and **transforms** it into SDEM architecture entities. Getting the pages out of Confluence — the export — is done by the architect or Confluence; SDEM does the transform. (Named `sdem history` until 2026-10-28.)
 
-> **Status: built 2026-10-28, tested on two synthetic exports only** (Confluence's standard HTML export, and a prepared export with provenance files in the root, raw HTML and diagrams in `archives/`, sections as folders — `tests/fixtures/`). `sdem transform inspect` and `sdem transform extract`. Requirements: [`sdem-transform-spec.md`](sdem-transform-spec.md). It is the first part of the historical design repository (original design §9; roadmap v0.11 ingestion and v0.16 history).
+> **Status: built 2026-10-28, tested on two synthetic exports only** (Confluence's standard HTML export, and a prepared export with provenance files in the root, raw HTML and diagrams in `archives/`, sections as folders — `tests/fixtures/`). `sdem transform inspect` and `sdem transform run`. Requirements: [`sdem-transform-spec.md`](sdem-transform-spec.md). It is the first part of the historical design repository (original design §9; roadmap v0.11 ingestion and v0.16 history).
 
 ## 1. The problem
 
@@ -37,9 +37,9 @@ The transform does **one stage**: an export of past designs → **candidate arch
 | Export from Confluence | the architect / Confluence |
 | Change the metamodel | nobody here — the transform only **uses** it |
 | Create **A2 (BIAN) entities** | the BIAN catalogue only (CTL-17). A BIAN name in a design is recorded as a **BIAN mention** — a hint for `sdem link` — never as an entity. Enforced in code, even if a rules file asks for an A2 type |
-| Write to the estate | the architect, after review (adopt) |
+| Write to the estate | **`sdem load`** — the L of the ETL, run by the architect after review ([`sdem-load-design.md`](sdem-load-design.md)) |
 | Create or approve links between architectures (`mappings.json`) | `sdem link` proposes; `sdem approve` (a person) approves |
-| Build the knowledge graph | `sdem build`, from adopted entities and approved links |
+| Build the knowledge graph | `sdem build`, from loaded entities and approved links — never from candidates (CTL-23) |
 | Trace, impact, matrices, dashboards | the usual SDEM commands, once the graph exists |
 | Understand narrative text | a person — without AI only names and simple phrases are read |
 | Read boxes and arrows in pictures | a person — OCR reads text only |
@@ -51,16 +51,16 @@ In five steps — SDEM does the first three, the architect the last two:
 | Step | Who | What happens |
 |---|---|---|
 | **1. Scan** | `sdem transform inspect` | walks the whole export and works out its structure: root files = provenance, `.html`/`.md`/`.txt`/`.csv` = pages, folder names = sections, draw.io and PlantUML = diagrams, other images = pictures; shows which rule reads each table and shape. Writes nothing |
-| **2. Read** | `sdem transform extract` | tables → entities (by column headings) and links (source/target tables); draw.io and PlantUML → entities from shapes, links from lines and nesting; text → links between names already found; pictures → names read by OCR (never links) |
-| **3. Write** | `sdem transform extract` | candidate datasets (`a1…a4`, `HIS-` ids), `extraction.json` (source, rule, confidence, reasoning for every item), `design-index.json` (every page and its entities), `extraction-report.md` — into the output folder only; the estate is not touched |
+| **2. Read** | `sdem transform run` | tables → entities (by column headings) and links (source/target tables); draw.io and PlantUML → entities from shapes, links from lines and nesting; text → links between names already found; pictures → names read by OCR (never links) |
+| **3. Write** | `sdem transform run` | candidate datasets (`a1…a4`, `HIS-` ids), `extraction.json` (source, rule, confidence, reasoning for every item), `design-index.json` (every page and its entities), `extraction-report.md` — into the output folder only; the estate is not touched |
 | **4. Review** | the architect | keeps, fixes or deletes each candidate against its page (confidence is never above medium) |
-| **5. Adopt** | the architect | copies what is right into the estate; `sdem check`, `sdem link`, `sdem approve` as usual |
+| **5. Load** | the architect, with `sdem load` | loads the entities kept into an estate — selected, checked first, recorded ([`sdem-load-design.md`](sdem-load-design.md)); then `sdem link`, `sdem approve`, `sdem build` as usual |
 
 ```mermaid
 flowchart LR
     conf[("Confluence export<br/>any folder layout")] --> inspect["1 · sdem transform inspect<br/>structure, which rules read what"]
     inspect -->|"tune the words"| rules["your copy of<br/>transform-rules.json"]
-    conf --> extract["2 · sdem transform extract<br/>rules: tables · draw.io · PlantUML · text<br/>OCR on the machine: pictures"]
+    conf --> extract["2 · sdem transform run<br/>rules: tables · draw.io · PlantUML · text<br/>OCR on the machine: pictures"]
     rules --> extract
     known[("existing SDEM datasets<br/>(optional --known)")] --> extract
     extract --> cand["3 · candidate datasets<br/>a1…a4 (HIS- ids)"]
@@ -68,7 +68,7 @@ flowchart LR
     extract --> idx["design-index.json<br/>every page, its records"]
     extract --> rep["extraction-report.md<br/>for the architect"]
     rep --> person(["4 · architect reviews"])
-    person -->|"5 · copies what is right"| estate[("estate")]
+    person -->|"5 · sdem load"| estate[("estate")]
 ```
 
 On the work machine:
@@ -77,7 +77,7 @@ On the work machine:
 # 1. Put the export in a folder outside the repository, e.g. ~/designs/payarch (Confluence's HTML export or a prepared one)
 sdem transform inspect ~/designs/payarch                       # tables, diagram shapes, headings — and which rule reads each
 cp metamodel/transform-rules.json my-rules.json                # 2. only if inspect shows "no rule" or "unclassified" items you want
-sdem transform extract ~/designs/payarch -o work/history --rules my-rules.json --known estate/a3-application.json
+sdem transform run ~/designs/payarch -o work/history --rules my-rules.json --known estate/a3-application.json
 open work/history/extraction-report.md                        # 3. review
 ```
 
@@ -116,9 +116,9 @@ Never above medium: every record is a **candidate** until a person confirms it (
 ## 4. What it produces — and what it does not
 
 ```
-Confluence ──export──▶ folder ──sdem transform extract──▶ candidate entities + evidence
+Confluence ──export──▶ folder ──sdem transform run──▶ candidate entities + evidence
  (architect)                          (transform)                         │
-                                                              the architect reviews and adopts
+                                                        the architect reviews, then sdem load (L)
                                                                           ▼
                                      estate (a1…a4 datasets) ──sdem link / approve──▶ mappings.json
                                                                           │
@@ -132,7 +132,7 @@ Confluence ──export──▶ folder ──sdem transform extract──▶ ca
 | **A1, A3, A4 entities** (candidates) and the **links inside each architecture** | **A2 (BIAN) entities** | BIAN elements come from the BIAN catalogue only (CTL-17); BIAN names found are listed as mentions |
 | **Evidence** for every entity and link | **The metamodel** | the fixed rulebook: the transform **uses** it to type and check every entity, never changes it |
 | **Candidate links between architectures** (in `extraction.json` only) | **Approved links between architectures** (`mappings.json`) | they need a person's approval with evidence — `sdem link` proposes, `sdem approve` approves |
-| **Design index** — every page and its entities | **The knowledge graph** (graph store) | built from adopted entities and approved links only — `sdem build` |
+| **Design index** — every page and its entities | **The knowledge graph** (graph store) | built from loaded entities and approved links only — `sdem build`; candidates are refused (CTL-23) |
 
 ### 4.1 Expected outputs — the files
 
@@ -148,7 +148,7 @@ Everything is written to the output folder (`-o`); nothing else is created or ch
 | `design-index.json` | every page (and loose diagram or picture file): Confluence id, title, space, link, breadcrumb, file, last modified, the entities found on it, existing records it mentions, its diagrams and pictures; the provenance files | JSON | always |
 | `extraction-report.md` | the review page: Summary · Check · Records · Links inside · Links between · BIAN elements named · For a person · Export provenance · Designs · Next | Markdown | always |
 
-**In every entity** (dataset format): `id` `HIS-<architecture>-<NAME>` · `type` (an entity type of the metamodel) · `name` · `version` = the page's last-modified date (else `1`) · `lifecycle_status` when a status column says so · `description` (a table's description column first, else a diagram's second line) · `attributes.source_id` = `confluence:<pages>` · `attributes.modified` · `source_system` `CONFLUENCE-EXTRACT` on the dataset. **In every link inside an architecture:** `source`, `kind` (one the metamodel allows for the pair), `target`, `name` (the line's or row's label).
+**In every entity** (dataset format): `id` `HIS-<architecture>-<NAME>` · `type` (an entity type of the metamodel) · `name` · `version` = the page's last-modified date (else `1`) · `lifecycle_status` when a status column says so · `description` (a table's description column first, else a diagram's second line) · `attributes.source_id` = `confluence:<pages>` (links the engine later proposes for it are capped at low, DEC-E-11) · `attributes.modified` · `attributes.deployed_on` for an application drawn inside, or said to run on, a node (HI-R06 — the form the engine reads) · `source_system` `CONFLUENCE-EXTRACT` on the dataset. **In every link inside an architecture:** `source`, `kind` (one the metamodel allows for the pair), `target`, `name` (the line's or row's label).
 
 ### 4.2 Expected outputs — the entity types
 
@@ -163,7 +163,7 @@ What each architecture's candidates can be, and what produces them (rules in `me
 
 ### 4.3 Expected outputs — the walkthrough example
 
-`sdem transform extract tests/fixtures/confluence-folder-export -o work/history` (the made-up export in the prepared layout) produces:
+`sdem transform run tests/fixtures/confluence-folder-export -o work/history` (the made-up export in the prepared layout) produces:
 
 | Output | Expected |
 |---|---|
@@ -182,7 +182,7 @@ These figures come from macOS with OCR on; with `--ocr off` the whiteboard's lab
 |---|---|
 | Real exports differ from the sample | `inspect` shows the structure — column headings, draw.io shape names, headings, each with the rule that read it or "no rule" / "unclassified". |
 | Your pages use other words | All words, shapes, colours and phrases are in **`metamodel/transform-rules.json`**. Copy it, add your words, pass `--rules`. No code changes. |
-| A wrong guess becomes "fact" | Candidates only; confidence never above medium; every item says where it came from and why; the architect copies what is right. |
+| A wrong guess becomes "fact" | Candidates only; confidence never above medium; every item says where it came from and why; the architect loads only what is right (`sdem load`), and a graph is never built from candidates (CTL-23). |
 | Content leaks | No network, no large language model, Python standard library only (OCR uses the computer's own text recognition, on the machine; `--ocr off` turns it off). The export, the outputs and the report stay on the work machine. The sample in this repository is made up. |
 
 ## 6. Assumptions about Confluence's export (to confirm on the first real run)
@@ -203,8 +203,8 @@ If any of these is wrong, `inspect` shows it at once (0 pages, 0 diagrams, or sh
 |---|---|---|---|
 | HI-D01 | How past designs come into SDEM | **index every design, convert with rules, a person confirms** (option 4 of the discussion: reference index plus candidates) | built 2026-10-28 |
 | HI-D02 | AI for narrative and pictures | **No large language model on the work machine.** Pictures: **OCR** (macOS Vision built in, or Tesseract) reads their text — a local, on-device text-recognition model, no network, not a chat AI; **check your organisation allows it** (`--ocr off` turns it off). Narrative meaning stays with a person | decided for OCR 2026-10-28; LLM drafting open — owner |
-| HI-D03 | Where adopted historical records live | **a separate historical estate** (e.g. `estates/history/`) so `sdem check`, `trace` and the dashboard work on it, apart from current designs; or merged into the current estate when the system still exists | open — owner |
-| HI-D04 | Guard against candidates entering real data unreviewed | a control like CTL-16 for `CONFLUENCE-EXTRACT` datasets (today they pass `sdem check`, by design, so they can be reviewed) | proposed |
+| HI-D03 | Where loaded historical records live | **a separate historical estate** (e.g. `estates/history/`) so `sdem check`, `trace` and the dashboard work on it, apart from current designs; `sdem load --estate` takes any folder | recommended 2026-10-28 |
+| HI-D04 | Guard against candidates entering real data unreviewed | **CTL-23**: `sdem build` refuses `CONFLUENCE-EXTRACT` datasets; the only way in is `sdem load` (candidates still pass `sdem check`, so they can be reviewed) | approved and built 2026-10-28 |
 
 ## 8. Limits
 

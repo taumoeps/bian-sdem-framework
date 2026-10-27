@@ -161,6 +161,8 @@ def render(paths, mm=None):
     from .metamodel import is_projection_dataset
     proj = [d['model_id'] for d, _ in levels if is_projection_dataset(d)]
     if proj: raise StoreError(f"{', '.join(proj)}: a projected or target design cannot be loaded into a graph store of real data (CTL-16)")
+    cand = [d['model_id'] for d, _ in levels if d.get('source_system') == 'CONFLUENCE-EXTRACT']
+    if cand: raise StoreError(f"{', '.join(cand)}: unreviewed candidates from sdem transform cannot be built into a graph store — review them, then `sdem load` (CTL-23)")
     names = [n for n, _, _ in registries]
     if len(set(names)) != len(names): raise StoreError('two registries share a file name')
     fg = FederatedGraph([LevelGraph(d, mm) for d, _ in levels], [d for _, d, _ in registries], mm)

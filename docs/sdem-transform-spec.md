@@ -35,6 +35,8 @@
 | HI-R04 | Narrative: only known names (found in the export or `--known`); phrases between two names (HP-*) give links; text never creates records; a name equal to an existing record is flagged `same_as_existing` | built | `test_narrative_uses_known_names_only` |
 | HI-R05 | Pasted pictures (not draw.io, not a draw.io preview, not an icon or emoticon) and shapes no rule types are listed for a person | built | `test_pictures_and_unknown_shapes_go_to_a_person` |
 
+| HI-R06 | A candidate "deployed on" (nesting, or "runs on / hosted on") from an A3 component to an A4 node is written as the component's `deployed_on` attribute — the form the engine reads | built | `test_deployed_on_written_as_data` |
+
 ## 3a. Any folder layout
 
 | ID | Requirement | Status | Test |
@@ -68,7 +70,7 @@
 
 | ID | Requirement | Status | Test |
 |---|---|---|---|
-| HI-O01 | `sdem transform extract EXPORT -o OUT [--rules] [--known …] [--model-id] [--json]` writes the candidate datasets, `extraction.json`, `design-index.json`, `extraction-report.md` | built | `test_cli` |
+| HI-O01 | `sdem transform run EXPORT -o OUT [--rules] [--known …] [--model-id] [--json]` writes the candidate datasets, `extraction.json`, `design-index.json`, `extraction-report.md` | built | `test_cli` |
 | HI-O02 | `design-index.json`: every page — id, title, space, breadcrumb, file, last modified, its records, existing records mentioned, diagrams, pictures | built | `test_design_index_and_report` |
 | HI-O03 | `extraction-report.md`: summary, check, records, links inside, candidate links between architectures, items for a person, designs, next steps | built | same |
 

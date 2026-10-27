@@ -217,6 +217,17 @@
       "monitored_by": "GitHub Actions `validate.yml`",
       "status": "built",
       "tested_by": "tests"
+    },
+    {
+      "id": "CTL-23",
+      "rule_area": "data",
+      "control": "Unreviewed candidates never enter a knowledge graph: `sdem build` refuses a dataset marked CONFLUENCE-EXTRACT (the output of `sdem transform`); the only way in is `sdem load`, run by a named person, which checks the whole estate first and records the load",
+      "implemented_in": "sdem/store.py (build); sdem/load.py (person, selection, check before writing, load record)",
+      "runs": "sdem build; sdem load",
+      "outcome_recorded_in": "build refused with CTL-23; <estate>/loads/LOAD-<n>.json",
+      "monitored_by": "tests/test_load.py on every push (GitHub Actions `validate.yml`)",
+      "status": "built",
+      "tested_by": "tests"
     }
   ],
   "gaps": [

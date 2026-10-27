@@ -14,7 +14,8 @@ Every record is a candidate with its sources (page, where, rule, confidence, rea
 real until a person confirms it. The rules are in metamodel/transform-rules.json; copy it and pass --rules to tune.
 
   sdem transform inspect EXPORT_DIR                      what is in the export and which rules match (structure only)
-  sdem transform extract EXPORT_DIR -o OUT [--known …]   candidate datasets, extraction.json, design-index.json, report
+  sdem transform run EXPORT_DIR -o OUT [--known …]       candidate datasets, extraction.json, design-index.json, report
+  then: review the report, `sdem load` the entities you keep (docs/sdem-load-design.md)
 """
 import argparse, base64, collections, csv, datetime, hashlib, io, json, os, re, sys, urllib.parse, zlib
 import xml.etree.ElementTree as ET
@@ -1133,6 +1134,8 @@ class Extraction:
                 if r['lifecycle_status']: i['lifecycle_status'] = r['lifecycle_status']
                 if r['description']: i['description'] = r['description']
                 at = dict(r['attributes'])
+                dep = sorted({c['target'] for c in self.cross if c['source'] == r['id'] and c['mapping_type_id'] == 'COMPONENT_DEPLOYED_ON_INFRASTRUCTURE'})
+                if dep: at['deployed_on'] = dep   # "deployed on" as data — the form the engine reads (HI-R06)
                 pages = sorted({s['page_id'] for s in r['sources']})
                 at['source_id'] = 'confluence:' + ','.join(pages)
                 if r['modified']: at['modified'] = r['modified']
@@ -1209,7 +1212,7 @@ def extract(root, out, rules=None, known=(), model_id=None, now=None, ocr='auto'
 def report(x, meta, records, links, issues, idx):
     s = meta['summary']; L = []
     L.append('# Confluence extraction — candidate architecture records\n')
-    L.append(f"> Generated {meta['generated']} by `sdem transform extract` from `{meta['export']}` (rules `{meta['rules']}`). "
+    L.append(f"> Generated {meta['generated']} by `sdem transform run` from `{meta['export']}` (rules `{meta['rules']}`). "
              'Rules only — no AI. **Every record below is a candidate**: check it against the page, then copy what is right into your estate. '
              'Confidence is never above medium.\n')
     L.append('## Summary\n')
@@ -1269,7 +1272,7 @@ def report(x, meta, records, links, issues, idx):
     L.append('\n## Next\n')
     L.append('1. Read each record against its page; delete what is wrong, fix names and types.')
     L.append('2. Fill required attributes the check reports (LC-04).')
-    L.append('3. Copy the records you keep into your estate (or keep this folder as a historical estate) and run `sdem check --estate …`.')
+    L.append('3. Load the records you keep: `sdem load <this folder> --estate <estate> --person <you> --exclude <ids you reject>` — then `sdem link`, `sdem approve`, `sdem build`.')
     L.append('4. Tune the rules for the next run: `sdem transform inspect` shows the tables and shapes no rule read.\n')
     return '\n'.join(L)
 
@@ -1304,7 +1307,7 @@ def main(argv=None):
     i.add_argument('export'); i.add_argument('--rules', help='your copy of metamodel/transform-rules.json'); i.add_argument('--json', action='store_true')
     i.add_argument('--anonymous', action='store_true', help='folder layout only, names replaced by F1, F2 … — safe to describe to others')
     i.add_argument('--ocr', default='auto', choices=['auto', 'vision', 'tesseract', 'off'], help='read text in pictures: macOS Vision (built in), Tesseract (if installed), auto, or off')
-    e = sub.add_parser('extract', help='write candidate datasets, extraction.json, design-index.json and extraction-report.md')
+    e = sub.add_parser('run', help='transform the export: write candidate datasets, extraction.json, design-index.json and extraction-report.md')
     e.add_argument('export'); e.add_argument('-o', '--out', required=True); e.add_argument('--rules', help='your copy of metamodel/transform-rules.json')
     e.add_argument('--known', nargs='+', default=[], help='existing SDEM datasets: their names are found in the text and flagged as the same record')
     e.add_argument('--model-id', help='name for the candidate datasets (default: the Confluence space)'); e.add_argument('--json', action='store_true')

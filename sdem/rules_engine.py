@@ -15,6 +15,7 @@ from pathlib import Path
 from .paths import DATA_ROOT
 
 BAND = {'high': 0.8, 'medium': 0.6, 'low': 0.4}
+DOCUMENT_SOURCES = ('confluence:',)  # entities transformed from a document by sdem transform: links touching them are capped at low (DEC-E-11)
 LOWER = {'high': 'medium', 'medium': 'low', 'low': 'low'}
 
 
@@ -141,6 +142,13 @@ class Run:
                          'fallback': fallback, 'data_read': data_read, 'reasoning': reasoning, 'confidence_predicted': predicted or self.rules[plan_id]['confidence'],
                          'confidence_given': given, 'proposal_id': proposal_id, 'outcome': outcome or ('proposed' if proposal_id else 'no_proposal')})
 
+    @staticmethod
+    def _document_cap(b, working, *recs):
+        """DEC-E-11: a link touching an entity transformed from a document is low, never more."""
+        doc = [r['id'] for r in recs if r and str((r.get('attributes') or {}).get('source_id', '')).startswith(DOCUMENT_SOURCES)]
+        if doc and b != 'low': return 'low', f'{working} — capped at low: {", ".join(doc)} transformed from a document (DEC-E-11)'
+        return b, working
+
     def propose(self, plan_id, rel, src, tgt, step, working, data_read, fallback=False, band=None):
         """A catalogue-typed proposal. Skips (and logs) a link already approved or already proposed in this run."""
         k = (src['id'], rel, tgt['id'])
@@ -149,6 +157,7 @@ class Run:
         if k in self.proposed:
             self.proposed[k]['evidence'].append(f'engine_rationale:{plan_id} step{step} also: {working}'); return self.proposed[k]
         b = band or self.band(plan_id, fallback); pid = f'P-{self.uc}-{len(self.proposals) + 1:03d}'
+        b, working = self._document_cap(b, working, src, tgt)
         rec = {'mapping_id': pid, 'source': self.ref(src), 'relationship': rel, 'target': self.ref(tgt), 'status': 'proposed', 'confidence': BAND[b],
                'evidence': [f'engine_rationale:{plan_id} step{step} {working}'], 'rationale': working, 'baseline_id': f'ENGINE-RUN-{self.uc}', 'created_by': ENGINE_NAME}
         self.proposals.append(rec); self.proposed[k] = rec
@@ -161,6 +170,7 @@ class Run:
         if k in self.reported:
             return self.reported[k]
         b = band or self.band(plan_id, fallback); cid = f'C-{self.uc}-{len(self.candidates) + 1:03d}'
+        b, working = self._document_cap(b, working, src, tgt)
         rec = {'mapping_id': cid, 'source': self.ref(src), 'relationship': plan_id, 'target': self.ref(tgt), 'status': 'proposed', 'confidence': BAND[b],
                'evidence': [f'engine_rationale:{plan_id} step{step} {working}'], 'rationale': working, 'created_by': f'candidate_rule:{plan_id}'}
         self.candidates.append(rec); self.reported[k] = rec

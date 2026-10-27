@@ -291,7 +291,8 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem change revert <CS-id> --estate <dir> --agent … --person …` | AG | undo the latest change set of a layer — restores it exactly, on record | a change was wrong | rebuild the graph store |
 | `sdem events --estate <dir> [--open]` | AG | change events, their impact and open work | to see what is waiting | `sdem work plan` |
 | `sdem work plan · list · claim …` | AG | work items: planned by the orchestrator, claimed and answered by the layer agents | agent platform (§9a) | `sdem change propose --work …` |
-| `sdem transform inspect <export>` · `sdem transform extract <export> -o <dir>` | J9 | **transforms** an export of past designs (Confluence) into candidate architecture entities, with rules: tables, draw.io and PlantUML diagrams, known names in the text, text in pictures (on-device OCR) → entities and links with their source; pictures listed for you | bringing in past designs (§8.7) | review `extraction-report.md` |
+| `sdem transform inspect <export>` · `sdem transform run <export> -o <dir>` | J9 | **transforms** an export of past designs (Confluence) into candidate architecture entities, with rules: tables, draw.io and PlantUML diagrams, known names in the text, text in pictures (on-device OCR) → entities and links with their source; pictures listed for you | bringing in past designs (§8.7) | review `extraction-report.md` |
+| `sdem load <candidates> --estate <dir> --person <you> --exclude <ids>` | J9 | **loads** the candidate entities you keep into an estate — checked first, recorded; `--a2` adds your BIAN layer; `--dry-run` | after reviewing a transform (§8.7) | `sdem link` |
 | `sdem diff --git HEAD~1 <registry>` | — | proves approved links were not edited | before a pull request | — |
 | `sdem model check` · `regenerate` · `accept` · `examples` | — | maintainers: generated documents, engine acceptance tests, use-case examples | when changing the rulebook | — |
 
@@ -532,15 +533,21 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
    ```
 4. Extract — add your current datasets with `--known` so known names are recognised in the text and flagged when they already exist:
    ```bash
-   sdem transform extract ~/designs/payarch -o work/history --rules my-rules.json --known estate/a3-application.json
+   sdem transform run ~/designs/payarch -o work/history --rules my-rules.json --known estate/a3-application.json
    ```
    Text in pictures is read on your Mac with its built-in text recognition (no install, no network); add `--ocr off` if your organisation does not allow it, or `--ocr tesseract` where Tesseract is installed. PlantUML diagrams are read from their source.
 5. Open `work/history/extraction-report.md`. Every record says **which page, where on it** (table and row, diagram and shape, paragraph), **which rule**, **how sure** (never above medium) and **why**. Pasted pictures are listed for you to record by hand.
-6. Keep what is right: copy the records into your estate (or keep `work/history` as a historical estate) and run `sdem check`. Links between architectures in the report are candidates for `sdem link` / `sdem approve`.
+6. **Load** what is right (the L of the ETL) — name what to leave out, or what to keep:
+   ```bash
+   sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-SANCTIONS-CHECKEL HIS-A3-PAYMENT-ORDER \
+             --a2 <your estate>/a2-service-domain.json        # once: your BIAN layer, so links to Service Domains can be proposed
+   ```
+   It checks the whole estate first (nothing is written if anything fails), records the load in `estates/history/loads/`, and lists the BIAN names found as hints. Add `--dry-run` to see what would happen.
+7. Then as for any estate: `sdem link --estate estates/history --out work/links` → `sdem review` → `sdem approve` → `sdem build`. Links involving entities read from a document come out at **low** confidence — check them against the page. A graph is never built straight from the transform's output (CTL-23).
 
-The transform writes **candidate A1, A3 and A4 entities** (never A2 — BIAN service domains come from the BIAN catalogue; BIAN names found are listed as mentions) and the links inside each architecture, with evidence. Expected outputs: [`sdem-transform-design.md`](sdem-transform-design.md) §4. It does not change the metamodel, approve links between architectures, or build the knowledge graph — those come after you adopt the entities (`sdem link`, `sdem approve`, `sdem build`).
+The transform writes **candidate A1, A3 and A4 entities** (never A2 — BIAN service domains come from the BIAN catalogue; BIAN names found are listed as mentions) and the links inside each architecture, with evidence. Expected outputs: [`sdem-transform-design.md`](sdem-transform-design.md) §4. It does not change the metamodel, approve links between architectures, or build the knowledge graph — those come after you load the entities (`sdem load`, then `sdem link`, `sdem approve`, `sdem build`). Load: [`sdem-load-design.md`](sdem-load-design.md).
 
-Try it on the made-up sample first: `sdem transform extract tests/fixtures/confluence-export-sample -o work/history`. Design: [`sdem-transform-design.md`](sdem-transform-design.md).
+Try it on the made-up sample first: `sdem transform run tests/fixtures/confluence-export-sample -o work/history`. Design: [`sdem-transform-design.md`](sdem-transform-design.md).
 
 > **Never** put the real export or its outputs in a public repository or paste them into an AI chat outside what your organisation allows.
 

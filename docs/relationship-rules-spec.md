@@ -452,6 +452,7 @@ Settled 2026-10-25 before and during the engine build (v0.10), where the records
 | DEC-E-08 | S17 fallback B: is any asset-type token in the component's paths evidence? | **Not when the token is shared with the asset type of another domain the component (or a component containing it) already realises.** | Otherwise "payment" ties every payments domain to the Payments Hub; the M1 hand-run counted 0 distinctive matches and its gold agrees. |
 | DEC-E-09 | S01 when only some of a capability's processes use the domain? | **No proposal** (logged). The rule's "low" band for partial coverage is withdrawn. | The C1 hand-run never proposed partial coverage and the gold has none; H1 and M0 do not depend on it. |
 | DEC-E-10 | S17 fallback B (an asset-type word in API paths or data entity names): what confidence? | **Low**, never more — the evidence is names only. | Use-case example 2 run 4 showed a one-word match ("account") at medium, the same as a domain backed by five implemented operations. Owner decision 2026-10-28 (T6); AID applies the same cap (AID-B6). |
+| DEC-E-11 | A link touching an entity transformed from a document (`sdem transform`; `source_id` starting `confluence:`): what confidence? | **Low**, never more — capped, with the reason in the rationale. | The entity was read from a past design by rules (table, diagram, text or OCR), not from a system of record; a person must see that before approving. Owner approval 2026-10-28 (Load design, docs/sdem-load-design.md §4). |
 
 ## 10. Requirements index
 

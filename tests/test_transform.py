@@ -121,9 +121,9 @@ class TransformTests(unittest.TestCase):
 
     def test_cli(self):
         from sdem.cli import main
-        self.assertEqual(main(['transform', 'extract', str(SAMPLE), '-o', str(self.tmp / 'cli'), '--json', '--ocr', 'off']), 0)
+        self.assertEqual(main(['transform', 'run', str(SAMPLE), '-o', str(self.tmp / 'cli'), '--json', '--ocr', 'off']), 0)
         self.assertTrue((self.tmp / 'cli' / 'a3-application.json').exists())
-        self.assertEqual(main(['transform', 'extract', str(self.tmp / 'missing'), '-o', str(self.tmp / 'x')]), 2)
+        self.assertEqual(main(['transform', 'run', str(self.tmp / 'missing'), '-o', str(self.tmp / 'x')]), 2)
 
 
 
@@ -204,6 +204,12 @@ class FolderLayoutTests(unittest.TestCase):
         text = json.dumps(a)
         self.assertNotIn('Payments', text); self.assertNotIn('Infrastructure', text); self.assertIn('archives/diagrams', text)
         self.assertNotIn('tables', a); self.assertNotIn('headings', a)
+
+    def test_deployed_on_written_as_data(self):  # HI-R06: the form the engine reads
+        a3 = {i['name']: i for i in self.ds['A3']['instances']}
+        self.assertEqual(a3['Clearing Gateway']['attributes']['deployed_on'], ['HIS-A4-PAYAPP01'])           # "is hosted on" in the text
+        self.assertEqual(a3['Payments Hub']['attributes']['deployed_on'], ['HIS-A4-PAYMENTS-KUBERNETES-CLUSTER'])  # nested in the node
+        self.assertNotIn('deployed_on', a3['Mobile Banking App'].get('attributes', {}))
 
     def test_plantuml_in_every_form(self):  # HI-P01: PNG with the source inside, encoded SVG, Markdown code block, .puml file
         kinds = {d['file']: d.get('kind') for p in self.idx.values() for d in p['diagrams']}
