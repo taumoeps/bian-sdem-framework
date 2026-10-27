@@ -335,4 +335,5 @@ sequenceDiagram
 | WB-Q01 | Package the set-up as a VS Code extension later? | Not now — the CLI, instructions and prompt files need no extension; revisit if architects need buttons and panels |
 | WB-Q02 | Should the HTML view open inside VS Code? | Yes, as a later step (a simple preview); a browser works today |
 | WB-Q03 | Who reviews the Copilot instructions when the rulebook changes? | The rulebook owner; CI checks the instructions name only commands that exist |
+| WB-Q05 | Agents per architecture? | Proposed in [`sdem-agent-platform-design.md`](sdem-agent-platform-design.md): Copilot custom agents per layer and a coordinator, coordinating through the federated graph |
 | WB-Q04 | Should the use-case and baseline scripts (`scripts/*.py`) become CLI commands? | Done — `sdem model examples` and `sdem model baseline-pack` |

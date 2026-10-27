@@ -73,6 +73,16 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Prompt file** | a `.github/prompts/*.prompt.md` file that gives Copilot Chat one `/` command for a journey, e.g. `/sdem-trace` — which SDEM command to run and what to report |
 | **SDEM workbench** | how architects use SDEM: the SDEM project open in VS Code, SDEM run from the terminal pane (the CLI), the Copilot Chat window for AI support, Git as history and approval trail ([`sdem-workbench-design.md`](sdem-workbench-design.md)) |
 
+## Agent platform (proposed)
+
+| Term | Means |
+|---|---|
+| **Change event** | a record that something changed (a change set applied, or a merge), with its stored impact result |
+| **Change set** | proposed changes to the records of **one** architecture layer, checked before they land; records the agent and the person ([`sdem-agent-platform-design.md`](sdem-agent-platform-design.md)) |
+| **Coordinator agent** | the agent that turns impact into work items and tracks them; never changes layer data, never approves |
+| **Layer agent** | the agent for one architecture (A1, A2, A3 or A4); changes only its own layer |
+| **Work item** | one task for one layer, from a change event's impact, with a status and a holder |
+
 ## Evidence and confidence
 
 | Term | Means |
