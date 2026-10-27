@@ -1,6 +1,6 @@
 # Architecture Inference Design (AID) — Specification
 
-> **Status: DRAFT for review, 2026-10-27.** Requirements for the design in [`aid-design.md`](aid-design.md). Each requirement has an ID (AID-*), a status, and how it is accepted. Built: only AID-F02/F03 (today's design mode). Everything else: **not built**.
+> **Status: approved 2026-10-27 (design decisions AID-D01…07).** Requirements for the design in [`aid-design.md`](aid-design.md). Each requirement has an ID (AID-*), a status, and how it is accepted. Built: only AID-F02/F03 (today's design mode). Everything else: **not built**.
 
 ## 1. Purpose and boundary
 

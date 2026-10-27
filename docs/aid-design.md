@@ -1,6 +1,6 @@
 # Architecture Inference Design (AID) — Design
 
-> **Status: DRAFT for review, 2026-10-27.** Not built, except the first piece (forward projection from BIAN to applications — today's "design mode", proven in test case M2). Requirements: [`aid-spec.md`](aid-spec.md).
+> **Status: approved 2026-10-27 (decisions AID-D01…07).** Not built, except the first piece (forward projection from BIAN to applications — today's "design mode", proven in test case M2). Requirements: [`aid-spec.md`](aid-spec.md).
 
 ## 1. What AID is
 
@@ -115,7 +115,7 @@ When the real layers exist (or for testing, when they are known but hidden), AID
 | Graph store and view, to show projections | built; needs a projection mode |
 | A projection package format | new (spec) |
 
-## 7. Decisions — recommendations for one approval
+## 7. Decisions — approved by the owner 2026-10-27, as recommended
 
 | # | Decision | Recommendation |
 |---|---|---|
