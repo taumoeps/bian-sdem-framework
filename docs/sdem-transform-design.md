@@ -1,6 +1,8 @@
-# SDEM History — Reading past designs from Confluence
+# SDEM Transform — Turning past designs into architecture entities
 
-> **Status: built 2026-10-28, tested on two synthetic exports only** (Confluence's standard HTML export, and a prepared export with provenance files in the root, raw HTML and diagrams in `archives/`, sections as folders — `tests/fixtures/`). `sdem history inspect` and `sdem history extract`. Requirements: [`sdem-history-spec.md`](sdem-history-spec.md). This is the first part of the historical design repository (original design §9; roadmap v0.11 ingestion and v0.16 history).
+`sdem transform` takes an **export** of past designs (from Confluence) and **transforms** it into SDEM architecture entities. Getting the pages out of Confluence — the export — is done by the architect or Confluence; SDEM does the transform. (Named `sdem history` until 2026-10-28.)
+
+> **Status: built 2026-10-28, tested on two synthetic exports only** (Confluence's standard HTML export, and a prepared export with provenance files in the root, raw HTML and diagrams in `archives/`, sections as folders — `tests/fixtures/`). `sdem transform inspect` and `sdem transform extract`. Requirements: [`sdem-transform-spec.md`](sdem-transform-spec.md). It is the first part of the historical design repository (original design §9; roadmap v0.11 ingestion and v0.16 history).
 
 ## 1. The problem
 
@@ -16,17 +18,17 @@ In five steps — SDEM does the first three, the architect the last two:
 
 | Step | Who | What happens |
 |---|---|---|
-| **1. Scan** | `sdem history inspect` | walks the whole export and works out its structure: root files = provenance, `.html`/`.md`/`.txt`/`.csv` = pages, folder names = sections, draw.io and PlantUML = diagrams, other images = pictures; shows which rule reads each table and shape. Writes nothing |
-| **2. Read** | `sdem history extract` | tables → entities (by column headings) and links (source/target tables); draw.io and PlantUML → entities from shapes, links from lines and nesting; text → links between names already found; pictures → names read by OCR (never links) |
-| **3. Write** | `sdem history extract` | candidate datasets (`a1…a4`, `HIS-` ids), `extraction.json` (source, rule, confidence, reasoning for every item), `design-index.json` (every page and its entities), `extraction-report.md` — into the output folder only; the estate is not touched |
+| **1. Scan** | `sdem transform inspect` | walks the whole export and works out its structure: root files = provenance, `.html`/`.md`/`.txt`/`.csv` = pages, folder names = sections, draw.io and PlantUML = diagrams, other images = pictures; shows which rule reads each table and shape. Writes nothing |
+| **2. Read** | `sdem transform extract` | tables → entities (by column headings) and links (source/target tables); draw.io and PlantUML → entities from shapes, links from lines and nesting; text → links between names already found; pictures → names read by OCR (never links) |
+| **3. Write** | `sdem transform extract` | candidate datasets (`a1…a4`, `HIS-` ids), `extraction.json` (source, rule, confidence, reasoning for every item), `design-index.json` (every page and its entities), `extraction-report.md` — into the output folder only; the estate is not touched |
 | **4. Review** | the architect | keeps, fixes or deletes each candidate against its page (confidence is never above medium) |
 | **5. Adopt** | the architect | copies what is right into the estate; `sdem check`, `sdem link`, `sdem approve` as usual |
 
 ```mermaid
 flowchart LR
-    conf[("Confluence export<br/>any folder layout")] --> inspect["1 · sdem history inspect<br/>structure, which rules read what"]
-    inspect -->|"tune the words"| rules["your copy of<br/>history-rules.json"]
-    conf --> extract["2 · sdem history extract<br/>rules: tables · draw.io · PlantUML · text<br/>OCR on the machine: pictures"]
+    conf[("Confluence export<br/>any folder layout")] --> inspect["1 · sdem transform inspect<br/>structure, which rules read what"]
+    inspect -->|"tune the words"| rules["your copy of<br/>transform-rules.json"]
+    conf --> extract["2 · sdem transform extract<br/>rules: tables · draw.io · PlantUML · text<br/>OCR on the machine: pictures"]
     rules --> extract
     known[("existing SDEM datasets<br/>(optional --known)")] --> extract
     extract --> cand["3 · candidate datasets<br/>a1…a4 (HIS- ids)"]
@@ -41,9 +43,9 @@ On the work machine:
 
 ```bash
 # 1. Put the export in a folder outside the repository, e.g. ~/designs/payarch (Confluence's HTML export or a prepared one)
-sdem history inspect ~/designs/payarch                       # tables, diagram shapes, headings — and which rule reads each
-cp metamodel/history-rules.json my-rules.json                # 2. only if inspect shows "no rule" or "unclassified" items you want
-sdem history extract ~/designs/payarch -o work/history --rules my-rules.json --known estate/a3-application.json
+sdem transform inspect ~/designs/payarch                       # tables, diagram shapes, headings — and which rule reads each
+cp metamodel/transform-rules.json my-rules.json                # 2. only if inspect shows "no rule" or "unclassified" items you want
+sdem transform extract ~/designs/payarch -o work/history --rules my-rules.json --known estate/a3-application.json
 open work/history/extraction-report.md                        # 3. review
 ```
 
@@ -60,7 +62,7 @@ The reader does not depend on Confluence's own export layout. It sorts every fil
 
 **Folders are sections.** `Payments Hub Design/3. Infrastructure/servers.csv` is read as if under the headings "Payments Hub Design › Infrastructure" (numbering dropped; container folders such as `archives` and `attachments` left out). That is what places a shape with nothing else to go by in the right architecture.
 
-`sdem history inspect EXPORT --anonymous` prints the folder layout — what each folder holds — with folder names replaced by F1, F2 …, so the structure can be described to someone outside without naming anything.
+`sdem transform inspect EXPORT --anonymous` prints the folder layout — what each folder holds — with folder names replaced by F1, F2 …, so the structure can be described to someone outside without naming anything.
 
 If the same content appears twice (e.g. a section both in the raw HTML and in its folder), the records merge by name and both places are listed as sources.
 
@@ -79,7 +81,28 @@ If the same content appears twice (e.g. a section both in the raw HTML and in it
 
 Never above medium: every record is a **candidate** until a person confirms it (as AID-B6 caps name-only evidence).
 
-## 4. What it writes
+## 4. What it produces — and what it does not
+
+```
+Confluence ──export──▶ folder ──sdem transform extract──▶ candidate entities + evidence
+ (architect)                          (transform)                         │
+                                                              the architect reviews and adopts
+                                                                          ▼
+                                     estate (a1…a4 datasets) ──sdem link / approve──▶ mappings.json
+                                                                          │
+                                                                     sdem build
+                                                                          ▼
+                                                                knowledge graph ──▶ trace, impact, dashboard
+```
+
+| Produces | | Does not produce | Why — and how it is made |
+|---|---|---|---|
+| **Architecture entities** (candidates) and the **links inside each architecture** | ✅ | **The metamodel** | the fixed rulebook (entity types, allowed links): the transform **uses** it to type and check every record, never changes it |
+| **Evidence** for every entity and link (page, place, rule, confidence, reasoning) | ✅ | **Approved links between architectures** (`mappings.json`) | they need a person's approval with evidence — `sdem link` proposes, `sdem approve` approves; the transform only lists candidates |
+| **Candidate links between architectures** (in `extraction.json`, not in any dataset) | ✅ | **The knowledge graph** (graph store) | built from reviewed, real data only — `sdem build` after adoption |
+| **Design index** — every page and its entities | ✅ | | |
+
+### The files
 
 | File | Holds |
 |---|---|
@@ -95,7 +118,7 @@ Links between architectures are **not** written to any dataset or registry: they
 | Risk | How it is handled |
 |---|---|
 | Real exports differ from the sample | `inspect` shows the structure — column headings, draw.io shape names, headings, each with the rule that read it or "no rule" / "unclassified". |
-| Your pages use other words | All words, shapes, colours and phrases are in **`metamodel/history-rules.json`**. Copy it, add your words, pass `--rules`. No code changes. |
+| Your pages use other words | All words, shapes, colours and phrases are in **`metamodel/transform-rules.json`**. Copy it, add your words, pass `--rules`. No code changes. |
 | A wrong guess becomes "fact" | Candidates only; confidence never above medium; every item says where it came from and why; the architect copies what is right. |
 | Content leaks | No network, no large language model, Python standard library only (OCR uses the computer's own text recognition, on the machine; `--ocr off` turns it off). The export, the outputs and the report stay on the work machine. The sample in this repository is made up. |
 

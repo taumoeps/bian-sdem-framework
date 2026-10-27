@@ -1,13 +1,13 @@
-# SDEM History — Specification
+# SDEM Transform — Specification
 
-> **Status: built 2026-10-28; tested on two synthetic exports only** — Confluence's standard layout (`tests/fixtures/confluence-export-sample`) and a prepared layout with provenance files in the root, raw HTML and diagrams in `archives/` and sections as folders (`tests/fixtures/confluence-folder-export`). Requirements for [`sdem-history-design.md`](sdem-history-design.md). Each has an ID (HI-*), a status and its test.
+> **Status: built 2026-10-28; tested on two synthetic exports only** — Confluence's standard layout (`tests/fixtures/confluence-export-sample`) and a prepared layout with provenance files in the root, raw HTML and diagrams in `archives/` and sections as folders (`tests/fixtures/confluence-folder-export`). Requirements for [`sdem-transform-design.md`](sdem-transform-design.md). Each has an ID (HI-*, kept from when the command was named `sdem history`), a status and its test.
 
 ## 1. General
 
 | ID | Requirement | Status | Test |
 |---|---|---|---|
 | HI-G01 | Rules only: no AI, no network, Python standard library only; runs offline on a locked-down machine | built | `test_no_ai_no_network` |
-| HI-G02 | Every word, shape, colour, phrase and confidence cap is in `metamodel/history-rules.json`; `--rules FILE` uses a copy; no code change needed to tune | built | `test_rules_file_tunes_without_code` |
+| HI-G02 | Every word, shape, colour, phrase and confidence cap is in `metamodel/transform-rules.json`; `--rules FILE` uses a copy; no code change needed to tune | built | `test_rules_file_tunes_without_code` |
 | HI-G03 | The same export and rules give the same output | built | `test_deterministic` |
 | HI-G04 | Exit codes: 0 done, 2 the folder is missing or holds no pages | built | `test_cli` |
 
@@ -15,7 +15,7 @@
 
 | ID | Requirement | Status | Test |
 |---|---|---|---|
-| HI-I01 | `sdem history inspect EXPORT [--rules] [--json]`: pages, tables (column headings → rule, or "no rule" / "not read"), diagram shapes (draw.io shape → type, or "unclassified"), headings (→ architecture), items for a person — structure only, no records written | built | `test_inspect_shows_structure` |
+| HI-I01 | `sdem transform inspect EXPORT [--rules] [--json]`: pages, tables (column headings → rule, or "no rule" / "not read"), diagram shapes (draw.io shape → type, or "unclassified"), headings (→ architecture), items for a person — structure only, no records written | built | `test_inspect_shows_structure` |
 
 ## 3. Reading
 
@@ -60,7 +60,7 @@
 
 | ID | Requirement | Status | Test |
 |---|---|---|---|
-| HI-O01 | `sdem history extract EXPORT -o OUT [--rules] [--known …] [--model-id] [--json]` writes the candidate datasets, `extraction.json`, `design-index.json`, `extraction-report.md` | built | `test_cli` |
+| HI-O01 | `sdem transform extract EXPORT -o OUT [--rules] [--known …] [--model-id] [--json]` writes the candidate datasets, `extraction.json`, `design-index.json`, `extraction-report.md` | built | `test_cli` |
 | HI-O02 | `design-index.json`: every page — id, title, space, breadcrumb, file, last modified, its records, existing records mentioned, diagrams, pictures | built | `test_design_index_and_report` |
 | HI-O03 | `extraction-report.md`: summary, check, records, links inside, candidate links between architectures, items for a person, designs, next steps | built | same |
 

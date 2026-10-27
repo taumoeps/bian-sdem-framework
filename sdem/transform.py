@@ -1,7 +1,7 @@
-"""`sdem history` — read a Confluence HTML export of past designs and turn it into candidate architecture records.
+"""`sdem transform` — read a Confluence HTML export of past designs and turn it into candidate architecture records.
 
 Rules only: no AI, no network, Python standard library only, so it runs on a locked-down machine. What it reads
-(docs/sdem-history-design.md; spec HI-*):
+(docs/sdem-transform-design.md; spec HI-*):
   tables          → records, by their column headings (rules HT-*), and links from source/target tables (HL-*)
   draw.io         → records from shapes (ArchiMate type, else colour, label and shape words) and links from lines;
                     read from .drawio/XML attachments, from PNGs and SVGs that carry the diagram inside them
@@ -11,10 +11,10 @@ Rules only: no AI, no network, Python standard library only, so it runs on a loc
   pictures        → their text, read on the machine (macOS Vision, built in; or Tesseract), or exactly from SVG text;
                     labels become low-confidence candidates, lines are not read; always listed for a person
 Every record is a candidate with its sources (page, where, rule, confidence, reasoning) — never above medium, never
-real until a person confirms it. The rules are in metamodel/history-rules.json; copy it and pass --rules to tune.
+real until a person confirms it. The rules are in metamodel/transform-rules.json; copy it and pass --rules to tune.
 
-  sdem history inspect EXPORT_DIR                      what is in the export and which rules match (structure only)
-  sdem history extract EXPORT_DIR -o OUT [--known …]   candidate datasets, extraction.json, design-index.json, report
+  sdem transform inspect EXPORT_DIR                      what is in the export and which rules match (structure only)
+  sdem transform extract EXPORT_DIR -o OUT [--known …]   candidate datasets, extraction.json, design-index.json, report
 """
 import argparse, base64, collections, csv, datetime, hashlib, io, json, os, re, sys, urllib.parse, zlib
 import xml.etree.ElementTree as ET
@@ -24,7 +24,7 @@ from pathlib import Path
 from .metamodel import Metamodel
 from .paths import DATA_ROOT
 
-RULES = DATA_ROOT / 'metamodel' / 'history-rules.json'
+RULES = DATA_ROOT / 'metamodel' / 'transform-rules.json'
 DATASETS = {'A1': 'a1-business.json', 'A2': 'a2-service-domain.json', 'A3': 'a3-application.json', 'A4': 'a4-technology.json'}
 RANK = {'low': 1, 'medium': 2, 'high': 3}
 SOURCE_SYSTEM = 'CONFLUENCE-EXTRACT'
@@ -1201,7 +1201,7 @@ def extract(root, out, rules=None, known=(), model_id=None, now=None, ocr='auto'
 def report(x, meta, records, links, issues, idx):
     s = meta['summary']; L = []
     L.append('# Confluence extraction — candidate architecture records\n')
-    L.append(f"> Generated {meta['generated']} by `sdem history extract` from `{meta['export']}` (rules `{meta['rules']}`). "
+    L.append(f"> Generated {meta['generated']} by `sdem transform extract` from `{meta['export']}` (rules `{meta['rules']}`). "
              'Rules only — no AI. **Every record below is a candidate**: check it against the page, then copy what is right into your estate. '
              'Confidence is never above medium.\n')
     L.append('## Summary\n')
@@ -1256,7 +1256,7 @@ def report(x, meta, records, links, issues, idx):
     L.append('1. Read each record against its page; delete what is wrong, fix names and types.')
     L.append('2. Fill required attributes the check reports (LC-04).')
     L.append('3. Copy the records you keep into your estate (or keep this folder as a historical estate) and run `sdem check --estate …`.')
-    L.append('4. Tune the rules for the next run: `sdem history inspect` shows the tables and shapes no rule read.\n')
+    L.append('4. Tune the rules for the next run: `sdem transform inspect` shows the tables and shapes no rule read.\n')
     return '\n'.join(L)
 
 
@@ -1284,14 +1284,14 @@ def inspect(root, rules=None, anonymous=False, ocr='auto'):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog='sdem history', description='Read a Confluence HTML export of past designs and turn it into candidate architecture records (rules only, no AI, no network).')
+    ap = argparse.ArgumentParser(prog='sdem transform', description='Transform an export of past designs (Confluence) into candidate architecture entities — rules only, no network; text in pictures by on-device OCR (--ocr off to disable).')
     sub = ap.add_subparsers(dest='cmd', required=True)
     i = sub.add_parser('inspect', help='what is in the export and which rules read it — structure only')
-    i.add_argument('export'); i.add_argument('--rules', help='your copy of metamodel/history-rules.json'); i.add_argument('--json', action='store_true')
+    i.add_argument('export'); i.add_argument('--rules', help='your copy of metamodel/transform-rules.json'); i.add_argument('--json', action='store_true')
     i.add_argument('--anonymous', action='store_true', help='folder layout only, names replaced by F1, F2 … — safe to describe to others')
     i.add_argument('--ocr', default='auto', choices=['auto', 'vision', 'tesseract', 'off'], help='read text in pictures: macOS Vision (built in), Tesseract (if installed), auto, or off')
     e = sub.add_parser('extract', help='write candidate datasets, extraction.json, design-index.json and extraction-report.md')
-    e.add_argument('export'); e.add_argument('-o', '--out', required=True); e.add_argument('--rules', help='your copy of metamodel/history-rules.json')
+    e.add_argument('export'); e.add_argument('-o', '--out', required=True); e.add_argument('--rules', help='your copy of metamodel/transform-rules.json')
     e.add_argument('--known', nargs='+', default=[], help='existing SDEM datasets: their names are found in the text and flagged as the same record')
     e.add_argument('--model-id', help='name for the candidate datasets (default: the Confluence space)'); e.add_argument('--json', action='store_true')
     e.add_argument('--ocr', default='auto', choices=['auto', 'vision', 'tesseract', 'off'], help='read text in pictures: macOS Vision (built in), Tesseract (if installed), auto, or off')
@@ -1316,7 +1316,7 @@ def main(argv=None):
             print('\nHeadings (→ architecture):')
             for t in r['headings'][:40]: print(f"  {t['paragraphs']:>3} × {t['heading']} → {t['layer']}")
             print('\nFor a person: ' + (', '.join(f'{k} {v}' for k, v in r['for_review'].items()) or 'nothing'))
-            print('\nTune: copy metamodel/history-rules.json, add the column names or shape words marked "no rule"/"unclassified", pass --rules.')
+            print('\nTune: copy metamodel/transform-rules.json, add the column names or shape words marked "no rule"/"unclassified", pass --rules.')
             return 0
         x, ds, issues = extract(a.export, a.out, a.rules, a.known, a.model_id, ocr=a.ocr)
     except (ValueError, OSError) as err:

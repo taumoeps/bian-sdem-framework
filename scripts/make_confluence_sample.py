@@ -1,7 +1,7 @@
 """Write tests/fixtures/confluence-export-sample/ (Confluence's standard HTML export) and
 tests/fixtures/confluence-folder-export/ (a prepared export: provenance files in the root, raw HTML and diagrams in
-archives/, sections as folders) — synthetic exports for testing `sdem history`. First:
-tests/fixtures/confluence-export-sample/: a synthetic Confluence HTML space export for testing `sdem history`.
+archives/, sections as folders) — synthetic exports for testing `sdem transform`. First:
+tests/fixtures/confluence-export-sample/: a synthetic Confluence HTML space export for testing `sdem transform`.
 
 Everything here is made up (a fictional bank's past designs). It follows the layout of a Confluence HTML export:
 one .html file per page (`Title_<pageId>.html`, or `<pageId>.html` in older exports), the page body in
@@ -167,7 +167,7 @@ def main():
         p = OUT / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_text(text, encoding='utf-8')
     for rel, data in binaries.items():
         p = OUT / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(data)
-    (OUT / 'README.md').write_text('# Synthetic Confluence export\n\nMade-up pages in the layout of a Confluence HTML space export, for testing `sdem history`. '
+    (OUT / 'README.md').write_text('# Synthetic Confluence export\n\nMade-up pages in the layout of a Confluence HTML space export, for testing `sdem transform`. '
                                    'Regenerate with `python scripts/make_confluence_sample.py`. No real designs.\n', encoding='utf-8')
     print(f'written {OUT}')
 

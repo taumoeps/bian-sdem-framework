@@ -95,5 +95,5 @@ jobs:
           python -m sdem impact INF-K8S-PAY-PROD --change rehost --estate examples/payment-initiation --report /tmp/impact.md
           python -m sdem dashboard --estate examples/payment-initiation -o /tmp/dashboard.html
           python -m sdem home -o /tmp/sdem
-          python -m sdem history extract tests/fixtures/confluence-export-sample -o /tmp/history
+          python -m sdem transform extract tests/fixtures/confluence-export-sample -o /tmp/history
       - run: python -m unittest discover -s tests -v

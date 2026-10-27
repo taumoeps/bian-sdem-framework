@@ -1,9 +1,9 @@
-"""`sdem history`: a Confluence HTML export of past designs → candidate architecture records (spec docs/sdem-history-spec.md).
+"""`sdem transform`: a Confluence HTML export of past designs → candidate architecture records (spec docs/sdem-transform-spec.md).
 Run against the synthetic export in tests/fixtures/confluence-export-sample (scripts/make_confluence_sample.py)."""
 import json, re, shutil, sys, tempfile, unittest
 from pathlib import Path
 
-from sdem import history
+from sdem import transform
 from sdem.graph import LevelGraph
 from sdem.metamodel import Metamodel
 
@@ -13,11 +13,11 @@ KNOWN = ROOT / 'examples' / 'payment-initiation' / 'a3-application.json'
 FOLDER = ROOT / 'tests' / 'fixtures' / 'confluence-folder-export'
 
 
-class HistoryTests(unittest.TestCase):
+class TransformTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp())
-        cls.x, cls.ds, cls.issues = history.extract(SAMPLE, cls.tmp / 'out', known=[KNOWN], now='2026-10-28T00:00:00', ocr='off')
+        cls.x, cls.ds, cls.issues = transform.extract(SAMPLE, cls.tmp / 'out', known=[KNOWN], now='2026-10-28T00:00:00', ocr='off')
         cls.doc = json.loads((cls.tmp / 'out' / 'extraction.json').read_text())
         cls.by_name = {r['name']: r for r in cls.doc['records']}
 
@@ -95,35 +95,35 @@ class HistoryTests(unittest.TestCase):
 
     def test_deterministic(self):  # HI-G03
         out2 = self.tmp / 'again'
-        history.extract(SAMPLE, out2, known=[KNOWN], now='2026-10-28T00:00:00', ocr='off')
+        transform.extract(SAMPLE, out2, known=[KNOWN], now='2026-10-28T00:00:00', ocr='off')
         for f in ('a3-application.json', 'extraction.json', 'design-index.json', 'extraction-report.md'):
             self.assertEqual((self.tmp / 'out' / f).read_text().replace(str(self.tmp / 'out'), ''), (out2 / f).read_text().replace(str(out2), ''), f)
 
     def test_rules_file_tunes_without_code(self):  # HI-G02
-        rules = json.loads(history.RULES.read_text())
+        rules = json.loads(transform.RULES.read_text())
         rules['label_words']['A3.ApplicationComponent'].append('switch')
         p = self.tmp / 'rules.json'; p.write_text(json.dumps(rules))
-        x, _, _ = history.extract(SAMPLE, self.tmp / 'tuned', rules=p, now='2026-10-28T00:00:00', ocr='off')
+        x, _, _ = transform.extract(SAMPLE, self.tmp / 'tuned', rules=p, now='2026-10-28T00:00:00', ocr='off')
         names = {r['name'] for r in x.records.values()}
         self.assertIn('Card Authorisation Switch', names)
         self.assertFalse(any(v.get('name') == 'Card Authorisation Switch' for v in x.review))
 
     def test_inspect_shows_structure(self):  # HI-I01
-        r = history.inspect(SAMPLE, ocr='off')
+        r = transform.inspect(SAMPLE, ocr='off')
         rules = {tuple(t['columns']): t['rule'] for t in r['tables']}
         self.assertEqual(rules[('application', 'description', 'vendor', 'status')], 'HT-01')
         self.assertTrue(any(t['rule'].startswith('not read') for t in r['tables']))
         self.assertTrue(any(s['type'] == 'unclassified' for s in r['shapes']))
 
     def test_no_ai_no_network(self):  # HI-G01
-        src = (ROOT / 'sdem' / 'history.py').read_text()
+        src = (ROOT / 'sdem' / 'transform.py').read_text()
         self.assertIsNone(re.search(r'\bimport (socket|requests|http\.client)|urllib\.request|anthropic|openai', src))
 
     def test_cli(self):
         from sdem.cli import main
-        self.assertEqual(main(['history', 'extract', str(SAMPLE), '-o', str(self.tmp / 'cli'), '--json', '--ocr', 'off']), 0)
+        self.assertEqual(main(['transform', 'extract', str(SAMPLE), '-o', str(self.tmp / 'cli'), '--json', '--ocr', 'off']), 0)
         self.assertTrue((self.tmp / 'cli' / 'a3-application.json').exists())
-        self.assertEqual(main(['history', 'extract', str(self.tmp / 'missing'), '-o', str(self.tmp / 'x')]), 2)
+        self.assertEqual(main(['transform', 'extract', str(self.tmp / 'missing'), '-o', str(self.tmp / 'x')]), 2)
 
 
 
@@ -132,7 +132,7 @@ class FolderLayoutTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp())
-        cls.x, cls.ds, cls.issues = history.extract(FOLDER, cls.tmp / 'out', now='2026-10-28T00:00:00', ocr='off')
+        cls.x, cls.ds, cls.issues = transform.extract(FOLDER, cls.tmp / 'out', now='2026-10-28T00:00:00', ocr='off')
         cls.doc = json.loads((cls.tmp / 'out' / 'extraction.json').read_text())
         cls.idx = {p['file']: p for p in json.loads((cls.tmp / 'out' / 'design-index.json').read_text())['designs']}
         cls.by_name = {r['name']: r for r in cls.doc['records']}
@@ -179,10 +179,10 @@ class FolderLayoutTests(unittest.TestCase):
         self.assertIn(('picture not shown on any page', 'rack-photo.jpg'), what)
 
     def test_inspect_layout_and_anonymous(self):  # HI-I02
-        r = history.inspect(FOLDER, ocr='off')
+        r = transform.inspect(FOLDER, ocr='off')
         folders = {f['folder']: f for f in r['layout']}
         self.assertEqual(folders['.']['provenance'], 3); self.assertEqual(folders['archives/diagrams']['diagram'], 4)
-        a = history.inspect(FOLDER, anonymous=True, ocr='off')
+        a = transform.inspect(FOLDER, anonymous=True, ocr='off')
         text = json.dumps(a)
         self.assertNotIn('Payments', text); self.assertNotIn('Infrastructure', text); self.assertIn('archives/diagrams', text)
         self.assertNotIn('tables', a); self.assertNotIn('headings', a)
@@ -207,7 +207,7 @@ class FolderLayoutTests(unittest.TestCase):
         self.assertIn(('HIS-A3-PAYMENTS-HUB', None, 'HIS-A4-PAYMENTS-STORE'), cross)                 # uses a database: not a deployment
 
     def test_plantuml_parser_notations(self):  # HI-P03
-        els, rels, kind = history.plantuml_parse("""@startuml
+        els, rels, kind = transform.plantuml_parse("""@startuml
 participant "Mobile App" as M
 alt ok
 M -> P : submit
@@ -217,8 +217,8 @@ Rel_Serving(M, P, "x")
 @enduml""")
         self.assertEqual(els['M']['name'], 'Mobile App'); self.assertIn(('M', 'Hub', '', 'line'), rels)   # '<--' points left
         self.assertIn(('M', 'P', 'x', 'Rel_Serving'), rels)
-        self.assertEqual(history.plantuml_parse('@startmindmap\n* a\n@endmindmap')[2], 'mindmap')
-        self.assertEqual(history.plantuml_decode('SyfFKj2rKt3CoKnELR1Io4ZDoSa70000'), 'Bob -> Alice : hello')   # PlantUML's own documented example
+        self.assertEqual(transform.plantuml_parse('@startmindmap\n* a\n@endmindmap')[2], 'mindmap')
+        self.assertEqual(transform.plantuml_decode('SyfFKj2rKt3CoKnELR1Io4ZDoSa70000'), 'Bob -> Alice : hello')   # PlantUML's own documented example
 
 
 class OcrTests(unittest.TestCase):
@@ -230,14 +230,14 @@ class OcrTests(unittest.TestCase):
              {'text': 'Zx', 'confidence': 0.2, 'x': 0.9, 'y': 0.9, 'w': 0.02, 'h': 0.02}]
 
     def test_grouping_and_filters(self):
-        labels = history.group_labels(self.LINES, json.loads(history.RULES.read_text()))
+        labels = transform.group_labels(self.LINES, json.loads(transform.RULES.read_text()))
         self.assertEqual([(l['name'], l['desc']) for l in labels], [('Payments Hub', 'Java service'), ('Payments Kubernetes Cluster', '')])
 
     def test_stand_in_engine_makes_low_candidates_and_a_review_item(self):
         tmp = Path(tempfile.mkdtemp())
         try:
             fake = lambda path: self.LINES
-            x, _, _ = history.extract(FOLDER, tmp / 'o', now='2026-10-28T00:00:00', ocr=fake)
+            x, _, _ = transform.extract(FOLDER, tmp / 'o', now='2026-10-28T00:00:00', ocr=fake)
             doc = json.loads((tmp / 'o' / 'extraction.json').read_text())
             k8s = next(r for r in doc['records'] if r['name'] == 'Payments Kubernetes Cluster')
             self.assertTrue(any(s['rule'].startswith('HO-') and s['confidence'] == 'low' for s in k8s['sources']))
@@ -250,16 +250,16 @@ class OcrTests(unittest.TestCase):
         tsv = 'level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\twidth\theight\tconf\ttext\n' \
               '1\t1\t0\t0\t0\t0\t0\t0\t1000\t500\t-1\t\n' \
               '5\t1\t1\t1\t1\t1\t100\t50\t80\t20\t96\tPayments\n5\t1\t1\t1\t1\t2\t190\t50\t50\t20\t90\tHub\n'
-        l = history.tesseract_lines(tsv)
+        l = transform.tesseract_lines(tsv)
         self.assertEqual(l[0]['text'], 'Payments Hub'); self.assertAlmostEqual(l[0]['x'], 0.1); self.assertAlmostEqual(l[0]['confidence'], 0.93)
 
     def test_svg_text_is_read_without_ocr(self):
-        lines = history.svg_text_lines(b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="10" y="20" font-size="10">Core <tspan>Ledger</tspan></text></svg>')
+        lines = transform.svg_text_lines(b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="10" y="20" font-size="10">Core <tspan>Ledger</tspan></text></svg>')
         self.assertEqual(lines[0]['text'], 'Core Ledger')
 
     @unittest.skipUnless(sys.platform == 'darwin' and shutil.which('osascript'), 'macOS Vision is only on macOS')
     def test_macos_vision_reads_the_whiteboard(self):
-        engine = history.ocr_engine('vision')
+        engine = transform.ocr_engine('vision')
         try: lines = engine(FOLDER / 'Payments Hub Design' / '2. Application Architecture' / 'whiteboard.png')
         except OSError as e: self.skipTest(f'Vision not usable here: {e}')
         texts = {l['text'] for l in lines}
