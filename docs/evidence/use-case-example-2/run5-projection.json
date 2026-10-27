@@ -82,10 +82,18 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
-              "SD-PI"
+              "ACT-PAY-01a",
+              "ACT-PAY-01b",
+              "ACT-PAY-02a",
+              "ACT-PAY-02b",
+              "CAP-PAY-010",
+              "PRC-PAY-01",
+              "PRC-PAY-02",
+              "APP-PAY-HUB"
             ],
-            "reasoning": "supported from both sides: the business layer (F1) and the application layer (R2)",
+            "reasoning": "supported from both sides. Business side (F1): the business layer points to it — S04 — invokes SO-PI-01 (PRC-PAY-01.invokes); SO-PI-02 (PRC-PAY-01.invokes); S04 — invokes SO-PI-03 (PRC-PAY-02.invokes); SO-PI-04 (PRC-PAY-02.invokes); S01 — all 2 processes of the capability use the domain; S07 — S06 ACT-PAY-01a → SO-PI-01, in SD-PI; S07 — S06 ACT-PAY-01b → SO-PI-02, in SD-PI; S07 — S06 ACT-PAY-02a → SO-PI-03, in SD-PI; S07 — S06 ACT-PAY-02b → SO-PI-04, in SD-PI. Application side (R2): the application layer points to it — S17 — implements SO-PI-01 via API-PI-01; SO-PI-02 via API-PI-02; SO-PI-03 via API-PI-03; SO-PI-05 via API-PI-05; SO-PI-04 via API-PI-04",
             "confidence": 0.6
           }
         },
@@ -105,6 +113,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -126,6 +135,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -157,6 +167,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -174,6 +185,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -191,6 +203,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -219,6 +232,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -247,6 +261,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -276,6 +291,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -303,6 +319,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -336,6 +353,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -367,6 +385,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -395,6 +414,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -412,6 +432,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -429,6 +450,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -460,6 +482,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -481,6 +504,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-PI"
             ],
@@ -511,6 +535,7 @@
           "projection": {
             "step": "M",
             "rule": "BIAN catalogue reference",
+            "source_reference": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
             "inferred_from": [
               "SD-CA"
             ],
@@ -659,6 +684,7 @@
         "projection": {
           "step": "M",
           "rule": "S04",
+          "source_reference": "S04: [W135]",
           "inferred_from": [
             "PRC-PAY-01"
           ],
@@ -685,6 +711,7 @@
         "projection": {
           "step": "M",
           "rule": "S04",
+          "source_reference": "S04: [W135]",
           "inferred_from": [
             "PRC-PAY-02"
           ],
@@ -711,6 +738,7 @@
         "projection": {
           "step": "M",
           "rule": "S01",
+          "source_reference": "S01: [RN14] §3; [WQA26]: mapping unpublished",
           "inferred_from": [
             "CAP-PAY-010"
           ],
@@ -737,6 +765,7 @@
         "projection": {
           "step": "M",
           "rule": "S24",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
           "inferred_from": [
             "API-PI-01"
           ],
@@ -763,6 +792,7 @@
         "projection": {
           "step": "M",
           "rule": "S24",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
           "inferred_from": [
             "API-PI-02"
           ],
@@ -789,6 +819,7 @@
         "projection": {
           "step": "M",
           "rule": "S24",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
           "inferred_from": [
             "API-PI-03"
           ],
@@ -815,6 +846,7 @@
         "projection": {
           "step": "M",
           "rule": "S24",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
           "inferred_from": [
             "API-PI-05"
           ],
@@ -841,6 +873,7 @@
         "projection": {
           "step": "M",
           "rule": "S24",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
           "inferred_from": [
             "API-PI-04"
           ],
@@ -863,14 +896,15 @@
         },
         "status": "projected",
         "confidence": 0.6,
-        "rationale": "PROJECTED DESIGN, not a mapping: implements SO-PI-01 via API-PI-01 (P-AID-001); SO-PI-02 via API-PI-02 (P-AID-002); SO-PI-03 via API-PI-03 (P-AID-003); SO-PI-05 via API-PI-05 (P-AID-004); SO-PI-04 via API-PI-04 (P-AID-005)",
+        "rationale": "PROJECTED DESIGN, not a mapping: implements SO-PI-01 via API-PI-01; SO-PI-02 via API-PI-02; SO-PI-03 via API-PI-03; SO-PI-05 via API-PI-05; SO-PI-04 via API-PI-04",
         "projection": {
           "step": "M",
           "rule": "S17",
+          "source_reference": "S17: [SAPG] §3.4 p. 52 (functional partition",
           "inferred_from": [
             "APP-PAY-HUB"
           ],
-          "reasoning": "implements SO-PI-01 via API-PI-01 (P-AID-001); SO-PI-02 via API-PI-02 (P-AID-002); SO-PI-03 via API-PI-03 (P-AID-003); SO-PI-05 via API-PI-05 (P-AID-004); SO-PI-04 via API-PI-04 (P-AID-005)",
+          "reasoning": "implements SO-PI-01 via API-PI-01; SO-PI-02 via API-PI-02; SO-PI-03 via API-PI-03; SO-PI-05 via API-PI-05; SO-PI-04 via API-PI-04",
           "confidence": 0.6
         }
       }

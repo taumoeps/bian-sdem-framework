@@ -1,38 +1,89 @@
 {
   "rows": [
     {
-      "layer": "A3 components (realising a domain)",
-      "element": "APP-PAY-HUB",
-      "result": "matched"
+      "layer": "A3",
+      "element": "PRJ-APP-SD-PI",
+      "name": "Payment Instruction service (projected)",
+      "type": "ApplicationComponent",
+      "result": "matched — structure differs",
+      "real": "APP-PAY-HUB Payments Hub",
+      "reason": "the real design realises SD-PI with one component; the real one is split into 3 sub-components (Instruction Capture, Instruction Validation, Execution Gateway), AID projects one",
+      "confidence": 0.4
     },
     {
-      "layer": "A3 APIs",
-      "element": "SO-PI-01: projected POST /payment-instructions · real POST /payment-instructions",
-      "result": "matched"
+      "layer": "A3",
+      "element": "PRJ-API-SO-PI-01",
+      "name": "POST /payment-instructions",
+      "type": "APIOperation",
+      "result": "matched",
+      "real": "API-PI-01 POST /payment-instructions",
+      "reason": "same method and path",
+      "confidence": 0.4
     },
     {
-      "layer": "A3 APIs",
-      "element": "SO-PI-05: projected PATCH /payment-instructions/{id} · real PATCH /payment-instructions/{id}",
-      "result": "matched"
+      "layer": "A3",
+      "element": "PRJ-API-SO-PI-05",
+      "name": "PATCH /payment-instructions/{id}",
+      "type": "APIOperation",
+      "result": "matched",
+      "real": "API-PI-05 PATCH /payment-instructions/{id}",
+      "reason": "same method and path",
+      "confidence": 0.4
     },
     {
-      "layer": "A3 APIs",
-      "element": "SO-PI-02: projected POST /payment-instructions/{id}/validation · real POST /payment-instructions/{id}/validation",
-      "result": "matched"
+      "layer": "A3",
+      "element": "PRJ-API-SO-PI-02",
+      "name": "POST /payment-instructions/{id}/validation",
+      "type": "APIOperation",
+      "result": "matched",
+      "real": "API-PI-02 POST /payment-instructions/{id}/validation",
+      "reason": "same method and path",
+      "confidence": 0.4
     },
     {
-      "layer": "A3 APIs",
-      "element": "SO-PI-03: projected POST /payment-instructions/{id}/execution · real PUT /payment-instructions/{id}/execution",
-      "result": "differs"
+      "layer": "A3",
+      "element": "PRJ-API-SO-PI-03",
+      "name": "POST /payment-instructions/{id}/execution",
+      "type": "APIOperation",
+      "result": "differs",
+      "real": "API-PI-03 PUT /payment-instructions/{id}/execution",
+      "reason": "the method differs — AID POST, real PUT",
+      "confidence": 0.4
     },
     {
-      "layer": "A3 APIs",
-      "element": "SO-PI-04: projected GET /payment-instructions/{id} · real POST /payment-instructions/{id}",
-      "result": "differs"
+      "layer": "A3",
+      "element": "PRJ-API-SO-PI-04",
+      "name": "GET /payment-instructions/{id}",
+      "type": "APIOperation",
+      "result": "differs",
+      "real": "API-PI-04 POST /payment-instructions/{id}",
+      "reason": "the method differs — AID GET, real POST",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A3",
+      "element": "API-PI-06",
+      "name": "GET /payment-instructions/{id}/events",
+      "type": "APIOperation",
+      "result": "real only",
+      "real": "API-PI-06",
+      "reason": "the real API implements no BIAN operation, so no rule could project it",
+      "confidence": null
+    },
+    {
+      "layer": "A4",
+      "element": "PRJ-DEP-SD-PI",
+      "name": "Payment Instruction service (projected) — deployment (projected)",
+      "type": "Deployment",
+      "result": "differs",
+      "real": "DEP-PAYHUB-PROD, DEP-PAYHUB-UAT",
+      "reason": "the real component is deployed 2 times (ENV-PAY-PROD, ENV-PAY-UAT); AID projects one deployment and, by rule, no platform or environment",
+      "confidence": 0.4
     }
   ],
+  "links": [],
   "metrics": {
-    "A3 components (realising a domain)": {
+    "A3 components": {
       "projected": 1,
       "real": 1,
       "matched": 1,
@@ -40,9 +91,19 @@
       "recall": 1.0
     },
     "A3 APIs (method and path)": {
+      "projected": 5,
       "compared": 5,
       "matched": 3,
-      "differs": 2
+      "differs": 2,
+      "projected only": 0,
+      "real only": 1
+    },
+    "A4 deployments": {
+      "projected": 1,
+      "real": 1,
+      "matched": 0,
+      "precision": 0.0,
+      "recall": 0.0
     }
   },
   "projection_ends": [

@@ -1,52 +1,394 @@
 {
   "rows": [
     {
-      "layer": "A2 service domains (those the real design links)",
+      "layer": "A2",
       "element": "SD-PI",
-      "result": "matched"
+      "name": "Payment Initiation (synthetic selection)",
+      "type": "ServiceDomain",
+      "result": "matched",
+      "real": "SD-PI Payment Initiation (synthetic selection)",
+      "reason": "the real design links business or application records to this domain",
+      "confidence": 0.4
     },
     {
-      "layer": "A2 service domains (those the real design links)",
+      "layer": "A2",
+      "element": "AT-PAY-INSTR",
+      "name": "Payment Instruction",
+      "type": "AssetType",
+      "result": "matched",
+      "real": "AT-PAY-INSTR Payment Instruction",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "FP-FULFIL",
+      "name": "Fulfil",
+      "type": "FunctionalPattern",
+      "result": "matched",
+      "real": "FP-FULFIL Fulfil",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "CR-PI",
+      "name": "Payment Initiation Procedure",
+      "type": "ControlRecord",
+      "result": "matched",
+      "real": "CR-PI Payment Initiation Procedure",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SG-PI-1",
+      "name": "Instruction",
+      "type": "ServiceGroup",
+      "result": "matched",
+      "real": "SG-PI-1 Instruction",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SG-PI-2",
+      "name": "Processing",
+      "type": "ServiceGroup",
+      "result": "matched",
+      "real": "SG-PI-2 Processing",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SO-PI-02",
+      "name": "Evaluate Payment Instruction Validation",
+      "type": "ServiceOperation",
+      "result": "matched",
+      "real": "SO-PI-02 Evaluate Payment Instruction Validation",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SO-PI-03",
+      "name": "Execute Payment Instruction Execution",
+      "type": "ServiceOperation",
+      "result": "matched",
+      "real": "SO-PI-03 Execute Payment Instruction Execution",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SO-PI-04",
+      "name": "Retrieve Payment Instruction",
+      "type": "ServiceOperation",
+      "result": "matched",
+      "real": "SO-PI-04 Retrieve Payment Instruction",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SO-PI-06",
+      "name": "Notify Payment Instruction",
+      "type": "ServiceOperation",
+      "result": "matched",
+      "real": "SO-PI-06 Notify Payment Instruction",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SO-PI-01",
+      "name": "Initiate Payment Instruction",
+      "type": "ServiceOperation",
+      "result": "matched",
+      "real": "SO-PI-01 Initiate Payment Instruction",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SO-PI-05",
+      "name": "Update Payment Instruction",
+      "type": "ServiceOperation",
+      "result": "matched",
+      "real": "SO-PI-05 Update Payment Instruction",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SO-PI-04@acquired-fintech",
+      "name": "Control Payment Instruction",
+      "type": "ServiceOperation",
+      "result": "projected only",
+      "real": "—",
+      "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "BQ-VALIDATION",
+      "name": "Validation",
+      "type": "BehaviorQualifier",
+      "result": "matched",
+      "real": "BQ-VALIDATION Validation",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "BQ-EXECUTION",
+      "name": "Execution",
+      "type": "BehaviorQualifier",
+      "result": "matched",
+      "real": "BQ-EXECUTION Execution",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "BBO-PAY-INSTR",
+      "name": "Payment Instruction",
+      "type": "BusinessObject",
+      "result": "matched",
+      "real": "BBO-PAY-INSTR Payment Instruction",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "BBOA-AMOUNT",
+      "name": "amount",
+      "type": "BusinessObjectAttribute",
+      "result": "matched",
+      "real": "BBOA-AMOUNT amount",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
       "element": "SD-PE",
-      "result": "projected only"
+      "name": "Payment Execution (synthetic selection)",
+      "type": "ServiceDomain",
+      "result": "projected only",
+      "real": "—",
+      "reason": "the domain is in the real BIAN layer, but the real design links nothing to it",
+      "confidence": 0.4
     },
     {
-      "layer": "A3 components (named by A4)",
+      "layer": "A2",
+      "element": "AT-PAY-TXN",
+      "name": "Payment Transaction",
+      "type": "AssetType",
+      "result": "matched",
+      "real": "AT-PAY-TXN Payment Transaction",
+      "reason": "the same BIAN element is in the real BIAN layer",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "CR-PE",
+      "name": "Payment Execution Procedure",
+      "type": "ControlRecord",
+      "result": "projected only",
+      "real": "—",
+      "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SG-PE",
+      "name": "Execution",
+      "type": "ServiceGroup",
+      "result": "projected only",
+      "real": "—",
+      "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SO-PE-01",
+      "name": "Initiate Payment Execution",
+      "type": "ServiceOperation",
+      "result": "projected only",
+      "real": "—",
+      "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SO-PE-02",
+      "name": "Retrieve Payment Execution",
+      "type": "ServiceOperation",
+      "result": "projected only",
+      "real": "—",
+      "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "SO-PE-03",
+      "name": "Control Payment Execution",
+      "type": "ServiceOperation",
+      "result": "projected only",
+      "real": "—",
+      "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A2",
+      "element": "BBO-PAYMENT-TXN",
+      "name": "Payment Transaction",
+      "type": "BusinessObject",
+      "result": "projected only",
+      "real": "—",
+      "reason": "brought in from the catalogue with its domain; the real BIAN layer does not have it",
+      "confidence": 0.4
+    },
+    {
+      "layer": "A3",
       "element": "APP-PAY-HUB",
-      "result": "matched"
+      "name": "APP-PAY-HUB",
+      "type": "ApplicationComponent",
+      "result": "matched",
+      "real": "APP-PAY-HUB Payments Hub",
+      "reason": "the application exists in the real design — its real name is “Payments Hub”, which A4 does not give",
+      "confidence": 0.6
     },
     {
-      "layer": "A3 components (named by A4)",
+      "layer": "A3",
       "element": "CMP-PAY-EXEC",
-      "result": "matched"
+      "name": "CMP-PAY-EXEC",
+      "type": "ApplicationComponent",
+      "result": "matched",
+      "real": "CMP-PAY-EXEC Execution Gateway",
+      "reason": "the application exists in the real design — its real name is “Execution Gateway”, which A4 does not give",
+      "confidence": 0.6
     },
     {
-      "layer": "A1 capability candidates (by the domain they point to)",
-      "element": "SD-PI",
-      "result": "matched"
+      "layer": "A1",
+      "element": "PRJ-CAP-SD-PE",
+      "name": "Payment Execution (capability candidate)",
+      "type": "BusinessCapability",
+      "result": "projected only",
+      "real": "—",
+      "reason": "no real capability is supported by SD-PE",
+      "confidence": 0.4
     },
     {
-      "layer": "A1 capability candidates (by the domain they point to)",
-      "element": "SD-PE",
-      "result": "projected only"
+      "layer": "A1",
+      "element": "PRJ-CAP-SD-PI",
+      "name": "Payment Initiation (capability candidate)",
+      "type": "BusinessCapability",
+      "result": "matched",
+      "real": "CAP-PAY-010 Initiate Payment",
+      "reason": "the real capability supported by SD-PI is named “Initiate Payment”; AID can only suggest one from the domain name",
+      "confidence": 0.4
+    }
+  ],
+  "links": [
+    {
+      "source": "APP-PAY-HUB",
+      "relationship": "DEPLOYED_ON",
+      "target": "INF-K8S-PAY-PROD",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "relationship": "DEPLOYED_ON",
+      "target": "INF-K8S-PAY-UAT",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "relationship": "DEPLOYED_AS",
+      "target": "DEP-PAYHUB-PROD",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "relationship": "DEPLOYED_AS",
+      "target": "DEP-PAYHUB-UAT",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    },
+    {
+      "source": "CMP-PAY-EXEC",
+      "relationship": "DEPLOYED_ON",
+      "target": "INF-K8S-PAY-PROD",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    },
+    {
+      "source": "CMP-PAY-EXEC",
+      "relationship": "DEPLOYED_AS",
+      "target": "DEP-PAYEXEC-PROD",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    },
+    {
+      "source": "SD-PI",
+      "relationship": "REALIZED_BY",
+      "target": "APP-PAY-HUB",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.4
+    },
+    {
+      "source": "SD-PE",
+      "relationship": "REALIZED_BY",
+      "target": "APP-PAY-HUB",
+      "result": "projected only",
+      "reason": "no such approved link in the real registry",
+      "confidence": 0.4
+    },
+    {
+      "source": "SD-PI",
+      "relationship": "REALIZED_BY",
+      "target": "CMP-PAY-EXEC",
+      "result": "projected only",
+      "reason": "no such approved link in the real registry",
+      "confidence": 0.4
+    },
+    {
+      "source": "SD-PE",
+      "relationship": "REALIZED_BY",
+      "target": "CMP-PAY-EXEC",
+      "result": "projected only",
+      "reason": "no such approved link in the real registry",
+      "confidence": 0.4
     }
   ],
   "metrics": {
-    "A2 service domains (those the real design links)": {
+    "A2 service domains": {
       "projected": 2,
       "real": 1,
       "matched": 1,
       "precision": 0.5,
       "recall": 1.0
     },
-    "A3 components (named by A4)": {
+    "A3 components": {
       "projected": 2,
       "real": 2,
       "matched": 2,
       "precision": 1.0,
       "recall": 1.0
     },
-    "A1 capability candidates (by the domain they point to)": {
+    "A1 capability candidates": {
       "projected": 2,
       "real": 1,
       "matched": 1,

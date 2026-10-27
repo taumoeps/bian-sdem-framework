@@ -76,6 +76,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN container pattern",
+            "source_reference": "S17: [SAPG] §3.4 p. 52 (functional partition",
             "inferred_from": [
               "SD-PI"
             ],
@@ -106,6 +107,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN REST mapping",
+            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
             "inferred_from": [
               "SO-PI-01"
             ],
@@ -133,6 +135,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN REST mapping",
+            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
             "inferred_from": [
               "SO-PI-05"
             ],
@@ -158,6 +161,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN REST mapping",
+            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
             "inferred_from": [
               "SO-PI-02"
             ],
@@ -183,6 +187,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN REST mapping",
+            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
             "inferred_from": [
               "SO-PI-03"
             ],
@@ -209,6 +214,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN REST mapping",
+            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
             "inferred_from": [
               "SO-PI-04"
             ],
@@ -264,6 +270,7 @@
           "projection": {
             "step": "F3",
             "rule": "BIAN container pattern",
+            "source_reference": "S32: SDEM definition — no official equivalent. Targets the SDEM Deployment entity (ArchiMate artifact assigned to node, ch. 10); registry type DEPLOYED_AS.",
             "inferred_from": [
               "PRJ-APP-SD-PI"
             ],
@@ -296,6 +303,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN container pattern",
+          "source_reference": "S17: [SAPG] §3.4 p. 52 (functional partition",
           "inferred_from": [
             "SD-PI"
           ],
@@ -322,6 +330,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN REST mapping",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
           "inferred_from": [
             "SO-PI-01"
           ],
@@ -348,6 +357,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN REST mapping",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
           "inferred_from": [
             "SO-PI-05"
           ],
@@ -374,6 +384,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN REST mapping",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
           "inferred_from": [
             "SO-PI-02"
           ],
@@ -400,6 +411,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN REST mapping",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
           "inferred_from": [
             "SO-PI-03"
           ],
@@ -426,6 +438,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN REST mapping",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
           "inferred_from": [
             "SO-PI-04"
           ],
@@ -452,6 +465,7 @@
         "projection": {
           "step": "F3",
           "rule": "BIAN container pattern",
+          "source_reference": "S32: SDEM definition — no official equivalent. Targets the SDEM Deployment entity (ArchiMate artifact assigned to node, ch. 10); registry type DEPLOYED_AS.",
           "inferred_from": [
             "PRJ-APP-SD-PI"
           ],
