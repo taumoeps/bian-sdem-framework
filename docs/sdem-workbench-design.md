@@ -1,6 +1,6 @@
 # SDEM Workbench — Design
 
-> **Status: draft 2026-10-28.** Direction set by the owner (SDEM-D01): the architect opens the SDEM project in **VS Code**, runs SDEM from the **terminal pane (CLI)**, and uses the **Copilot Chat window** for AI support. Requirements: [`sdem-workbench-spec.md`](sdem-workbench-spec.md). The CLI — one `sdem` command (SDEM-D07) — and the controls are built; the Copilot set-up (instructions and prompt files) is **not built**.
+> **Status: draft 2026-10-28.** Direction set by the owner (SDEM-D01): the architect opens the SDEM project in **VS Code**, runs SDEM from the **terminal pane (CLI)**, and uses the **Copilot Chat window** for AI support. Requirements: [`sdem-workbench-spec.md`](sdem-workbench-spec.md). How to use it: [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md). The CLI — one `sdem` command (SDEM-D07) — and the controls are built; the Copilot set-up (instructions and prompt files) is **not built**.
 >
 > **Diagrams** are Mermaid: GitHub shows them as pictures; in VS Code install the recommended extension *Markdown Preview Mermaid Support* (`bierner.markdown-mermaid`, listed in `.vscode/extensions.json`) and open the Markdown preview. No diagram server is used.
 

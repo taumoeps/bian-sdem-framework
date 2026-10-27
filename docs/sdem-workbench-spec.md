@@ -17,7 +17,7 @@ The workbench is how architects use SDEM: they open the **SDEM project in VS Cod
 | WB-E03 | The chat window is GitHub Copilot Chat, for AI support (§4). **Optional**: every journey is a CLI command the architect can run without it. | built (CLI); Copilot set-up not built |
 | WB-E04 | Git for history; pull requests on the organisation's Git host for review and approval. | built (Git); approval flow WB-A01 not documented in the project |
 | WB-E05 | The project recommends its VS Code extensions (`.vscode/extensions.json`): Python, Copilot Chat, Mermaid preview. | built |
-| WB-E06 | A getting-started page: install, open the project in VS Code, open the terminal pane and run the first check, open the chat and ask Copilot to explain the result. | not built |
+| WB-E06 | A getting-started page: install, open the project in VS Code, open the terminal pane and run the first check, open the chat and ask Copilot to explain the result. | built — [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md) §3–5 |
 
 ## 3. The CLI — SDEM's only interface (SDEM-D07)
 
@@ -61,7 +61,7 @@ Each journey is a CLI command the architect runs; Copilot supports in the chat.
 
 | ID | Requirement | Status |
 |---|---|---|
-| WB-A01 | Approving a link means a pull request that changes the registry (status `approved`, reviewer, approval time), reviewed and merged by a person. Documented in the getting-started page. | not built (documentation) |
+| WB-A01 | Approving a link means a pull request that changes the registry (status `approved`, reviewer, approval time, required evidence), reviewed and merged by a person. Documented in the getting-started page. | built — user guide §8.2 (walked through: proposal → evidence → validate → build) |
 | WB-A02 | An approved link must carry `reviewer_id` and `approved_at` — the existing governance check. | built |
 | WB-A03 | Copilot never sets a link to approved (ground rule). A person's merge is the approval. | not built (instruction) — the instruction is guidance; WB-A01's review is the control |
 

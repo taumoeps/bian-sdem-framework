@@ -194,7 +194,7 @@ The Relationship Rules Model was run as a procedure by an AI executor (standing 
 
 ## Quick start
 
-**The SDEM workbench:** open this project in **VS Code**, run SDEM in the **terminal pane**, and use the **Copilot Chat** window to explain any output ([`docs/sdem-workbench-design.md`](docs/sdem-workbench-design.md)). The CLI is SDEM's only interface: one `sdem` command, a subcommand per journey.
+**New to SDEM?** Read the [user guide](docs/sdem-workbench-user-guide.md). **The SDEM workbench:** open this project in **VS Code**, run SDEM in the **terminal pane**, and use the **Copilot Chat** window to explain any output ([`docs/sdem-workbench-design.md`](docs/sdem-workbench-design.md)). The CLI is SDEM's only interface: one `sdem` command, a subcommand per journey.
 
 Python 3.10+; no third-party dependencies. `pip install -e .` installs the `sdem` command; without installing, `python -m sdem …` does the same.
 
@@ -253,6 +253,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error. Approving a link is done 
 | [`mapping-execution.md`](docs/mapping-execution.md) · [`use-case-testing.md`](docs/use-case-testing.md) | the procedure as executed, and the eleven test runs |
 | [`reference-architecture-provenance.md`](docs/reference-architecture-provenance.md) | every entity traced to a public standard |
 | [`aid-design.md`](docs/aid-design.md) · [`aid-spec.md`](docs/aid-spec.md) | **Architecture Inference Design (AID)** (approved, built — `sdem-aid`): projecting missing architecture layers, upstream or downstream, for planning — with gap analysis against the real design |
+| [`sdem-workbench-user-guide.md`](docs/sdem-workbench-user-guide.md) | **start here if you are new**: the user guide for architects — set-up, the workbench screen, a 15-minute quick start, every command, workflow examples (onboard data, link and approve, trace, impact, plan with AID), working with Copilot, troubleshooting |
 | [`sdem-workbench-design.md`](docs/sdem-workbench-design.md) · [`sdem-workbench-spec.md`](docs/sdem-workbench-spec.md) | **the SDEM workbench** (draft): the architect opens the SDEM project in VS Code, runs SDEM from the terminal pane (the CLI — SDEM's only interface) and uses the Copilot Chat window for AI support; Git as history and approval trail — no MCP, no AI API in SDEM |
 | [`controls-register.md`](docs/controls-register.md) | every control that enforces the rulebook: where it runs, where its outcome is recorded, what monitors it, and the known gaps |
 | [`use-case-example-2.md`](docs/use-case-example-2.md) | test plan for Architecture Inference Design: hide layers of a known estate, project them, compare with the real ones (expected results sealed) |
