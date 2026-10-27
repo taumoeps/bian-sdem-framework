@@ -264,7 +264,7 @@ The essentials; the full list is in [`glossary.md`](glossary.md).
 
 ## The SDEM workbench — how architects use it
 
-SDEM runs in **VS Code**, the architect's enterprise architecture tool. **GitHub Copilot Chat** is the AI interface: the architect asks in plain language ("what does CAP-310 depend on?", "project the layers I don't have"), and Copilot runs SDEM's `sdem-*` commands and explains the result. **Git** holds the history; a link is approved in a reviewed pull request, by a person. The AI helps, but the rules and controls decide what is valid — and every journey also works with Copilot switched off. Design and requirements: [`sdem-workbench-design.md`](sdem-workbench-design.md), [`sdem-workbench-spec.md`](sdem-workbench-spec.md) (decision SDEM-D01).
+The architect opens the SDEM project in **VS Code**, the enterprise architecture tool, and runs SDEM from the **terminal pane** — the **CLI** is SDEM's only interface: every engine and function is a command. The **GitHub Copilot Chat** window gives AI support: it explains command output, suggests the right command, and drafts notes and pull requests. **Git** holds the history; a link is approved in a reviewed pull request, by a person. The AI helps, but the rules and controls decide what is valid — and every journey also works with Copilot switched off. Design and requirements: [`sdem-workbench-design.md`](sdem-workbench-design.md), [`sdem-workbench-spec.md`](sdem-workbench-spec.md) (decision SDEM-D01).
 
 ## Read more
 

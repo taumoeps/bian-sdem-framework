@@ -68,9 +68,10 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 
 | Term | Means |
 |---|---|
+| **CLI** | the command line in VS Code's terminal pane — SDEM's only interface: every engine and function is a `sdem` command (today `sdem-*`) |
 | **Copilot instructions** | `.github/copilot-instructions.md` — standing rules GitHub Copilot reads in this repository: use SDEM's commands for facts, never approve, never put projected content into real data, always give source, reasoning and confidence |
 | **Prompt file** | a `.github/prompts/*.prompt.md` file that gives Copilot Chat one `/` command for a journey, e.g. `/sdem-trace` — which SDEM command to run and what to report |
-| **SDEM workbench** | how architects use SDEM: VS Code as the enterprise architecture tool, GitHub Copilot Chat as the AI interface, the `sdem-*` commands as the engine, Git as history and approval trail ([`sdem-workbench-design.md`](sdem-workbench-design.md)) |
+| **SDEM workbench** | how architects use SDEM: the SDEM project open in VS Code, SDEM run from the terminal pane (the CLI), the Copilot Chat window for AI support, Git as history and approval trail ([`sdem-workbench-design.md`](sdem-workbench-design.md)) |
 
 ## Evidence and confidence
 
