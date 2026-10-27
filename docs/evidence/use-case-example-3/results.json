@@ -6,21 +6,21 @@
       "test": "A4 agent drafts the rehost of INF-K8S-PAY-PROD",
       "pass": true,
       "did": "CS-001 accepted; CE-001 stored with impact. APP-PAY-HUB and CMP-PAY-EXEC: design change required; supersede PAY-108, PAY-111; A1/A2 (CAP-PAY-010, PRC-PAY-01, PRC-PAY-02, SD-PI): no impact. Matches `sdem impact INF-K8S-PAY-PROD --change rehost` on the estate before the change for every record it lists.",
-      "evidence": "events.json, change-sets/CS-001.json, reference-impact-rehost.json"
+      "evidence": "events/CE-001.json, change-sets/CS-001.json, reference-impact-rehost.json"
     },
     {
       "id": "AT-AG-02",
       "test": "Orchestrator plans the work",
       "pass": true,
       "did": "2 work items, layers ['A3']: WI-001 APP-PAY-HUB; WI-002 CMP-PAY-EXEC. None for A1 or A2. (A4 needed none: the A4 agent changed its own deployments in CS-001.)",
-      "evidence": "work-items.json"
+      "evidence": "work-items/"
     },
     {
       "id": "AT-AG-03",
       "test": "A3 agent answers its work items",
       "pass": true,
       "did": "CS-002 accepted, A3 records only, answering WI-001, WI-002; CE-002 planned: CE-002: 0 work item(s). The rules engine proposes: APP-PAY-HUB DEPLOYED_ON INF-K8S-PAY-PROD2; CMP-PAY-EXEC DEPLOYED_ON INF-K8S-PAY-PROD2 (rule S33, confidence 0.8).",
-      "evidence": "change-sets/CS-002.json, events.json, proposals.json"
+      "evidence": "change-sets/CS-002.json, events/, proposals.json"
     },
     {
       "id": "AT-AG-04",
@@ -55,7 +55,7 @@
       "test": "The architect reviews and merges",
       "pass": true,
       "did": "approved PAY-201, PAY-202 (superseding PAY-108, PAY-111) with deployment evidence; validate, check and build pass; the trace shows APP-PAY-HUB → INF-K8S-PAY-PROD2 via PAY-201 and no longer PAY-108. On record: 2 change sets, 2 change events, 2 work items (all done) — every one with agent and person. The rejected attempts left no trace in the data.",
-      "evidence": "events.json, work-items.json, change-sets/, registry-after-approval.json, trace-after.txt"
+      "evidence": "events/, work-items/, change-sets/, registry-after-approval.json, trace-after.txt"
     }
   ],
   "controls_tests": [
@@ -197,7 +197,7 @@
       "who": "sdem-a4-technology",
       "command": "sdem change propose coordination/drafts/cs-a4-rehost.json --estate <est> --agent sdem-a4-technology --person jane.architect",
       "exit": 0,
-      "output": "CS-001 applied to A4 (4 change(s)) by sdem-a4-technology for jane.architect\nchange event CE-001 recorded (round 1): 2 record(s) in other layers need a design change; links to supersede: PAY-108, PAY-111\n  A3  APP-PAY-HUB  Payments Hub  — rehost of INF-K8S-PAY-PROD, via PAY-108\n  A3  CMP-PAY-EXEC  Execution Gateway  — rehost of INF-K8S-PAY-PROD, via PAY-111\nnext: the orchestrator runs  sdem work plan --event CE-001 --estate <work>/est --agent sdem-orchestrator --person <name>\n      and the rules engine proposes the new links:  sdem link <work>/est/a*.json <work>/est/mappings.json --out <dir>"
+      "output": "CS-001 applied to A4 (4 change(s)) by sdem-a4-technology for jane.architect\nchange event CE-001 recorded (round 1): 2 record(s) in other layers need a design change; links to supersede: PAY-108, PAY-111\n  A3  APP-PAY-HUB  Payments Hub  — rehost of INF-K8S-PAY-PROD, via PAY-108\n  A3  CMP-PAY-EXEC  Execution Gateway  — rehost of INF-K8S-PAY-PROD, via PAY-111\nNOTE: graph stores built from this estate are now out of date — rebuild them before trace, impact or view: sdem build --estate … --out <graph>\nnext: the orchestrator runs  sdem work plan --event CE-001 --estate <work>/est --agent sdem-orchestrator --person <name>\n      and the rules engine proposes the new links:  sdem link <work>/est/a*.json <work>/est/mappings.json --out <dir>"
     },
     {
       "who": "sdem-orchestrator",
@@ -221,7 +221,7 @@
       "who": "sdem-a3-application",
       "command": "sdem change propose coordination/drafts/cs-a3-repoint.json --estate <est> --agent sdem-a3-application --person jane.architect --work WI-001 WI-002",
       "exit": 0,
-      "output": "CS-002 applied to A3 (2 change(s)) by sdem-a3-application for jane.architect; answers WI-001, WI-002\nchange event CE-002 recorded (round 2): 0 record(s) in other layers need a design change\nnext: the orchestrator runs  sdem work plan --event CE-002 --estate <work>/est --agent sdem-orchestrator --person <name>\n      and the rules engine proposes the new links:  sdem link <work>/est/a*.json <work>/est/mappings.json --out <dir>"
+      "output": "CS-002 applied to A3 (2 change(s)) by sdem-a3-application for jane.architect; answers WI-001, WI-002\nchange event CE-002 recorded (round 2): 0 record(s) in other layers need a design change\nNOTE: graph stores built from this estate are now out of date — rebuild them before trace, impact or view: sdem build --estate … --out <graph>\nnext: the orchestrator runs  sdem work plan --event CE-002 --estate <work>/est --agent sdem-orchestrator --person <name>\n      and the rules engine proposes the new links:  sdem link <work>/est/a*.json <work>/est/mappings.json --out <dir>"
     },
     {
       "who": "sdem-orchestrator",
@@ -251,7 +251,7 @@
       "who": "architect",
       "command": "sdem check <est>/a*.json <est>/mappings.json",
       "exit": 0,
-      "output": "OK: mappings #1"
+      "output": "OK: coordination (6 records)"
     },
     {
       "who": "architect",

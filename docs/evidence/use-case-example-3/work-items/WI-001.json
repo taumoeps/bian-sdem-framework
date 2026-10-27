@@ -1,0 +1,37 @@
+{
+  "id": "WI-001",
+  "event": "CE-001",
+  "layer": "A3",
+  "records": [
+    "APP-PAY-HUB"
+  ],
+  "action": "rehost of INF-K8S-PAY-PROD: change APP-PAY-HUB (Payments Hub) in A3 accordingly; the links PAY-108 will be superseded",
+  "reason": {
+    "event": "CE-001",
+    "path": [
+      "PAY-108"
+    ]
+  },
+  "round": 1,
+  "history": [
+    {
+      "status": "open",
+      "at": "2026-10-28T00:00:00+00:00",
+      "agent": "sdem-orchestrator",
+      "person": "jane.architect"
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-10-28T00:00:00+00:00",
+      "agent": "sdem-a3-application",
+      "person": "jane.architect"
+    },
+    {
+      "status": "done",
+      "at": "2026-10-28T00:00:00+00:00",
+      "agent": "sdem-a3-application",
+      "person": "jane.architect",
+      "note": "answered by CS-002"
+    }
+  ]
+}

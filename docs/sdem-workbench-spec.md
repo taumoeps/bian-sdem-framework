@@ -29,6 +29,8 @@ The workbench is how architects use SDEM: they open the **SDEM project in VS Cod
 | WB-K04 | The same conventions everywhere: inputs as `--graph DIR` or file paths; `--json` for machine-readable output; exit codes 0 = OK, 1 = issues found, 2 = usage error; non-interactive (no prompts). | built — `--json` added to `aid project`, `aid check` and `view`; `sdem` itself: 0 OK, 1 issues, 2 usage |
 | WB-K05 | `sdem --help` lists every journey; each subcommand's `--help` includes a worked example. | built — tested for every subcommand (AT-WB-09) |
 | WB-K06 | Output a person can read in the terminal: names beside ids, the rule behind each error, and where an output file was written. | built (for the journey commands) |
+| WB-K07 | `--estate DIR` in place of the file list on `check`, `validate`, `link`, `build`, `trace`, `impact`, `review` and `explain`; `*` patterns expanded by `sdem` itself (Windows PowerShell does not). | built 2026-10-28 (T4) |
+| WB-K08 | A warning when a graph store is older than its data: `trace`, `impact`, `query`, `check --graph` and `view` compare the store's recorded input checksums with the files; `sdem change propose` reminds to rebuild. | built 2026-10-28 (T3) |
 
 ## 4. Copilot — AI support in the chat window (no MCP)
 

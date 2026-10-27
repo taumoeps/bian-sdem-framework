@@ -18,7 +18,7 @@ This project is **SDEM, the Service Domain Enterprise Metamodel**: it links an o
 | Need | Where / command |
 |---|---|
 | every command and journey | `sdem --help`; `sdem <command> --help` has a worked example |
-| check data | `sdem check <estate>/a*.json <estate>/mappings.json` |
+| check data | `sdem check --estate <estate>` |
 | propose and review links | `sdem link … --out <dir>` · `sdem review <dir>/proposals.json` |
 | trace and impact | `sdem trace <id> --graph <dir>` · `sdem impact <id> --change <kind> --graph <dir>` |
 | why something exists | `sdem explain <id> --proposals <file>` or `--projection <dir>` |

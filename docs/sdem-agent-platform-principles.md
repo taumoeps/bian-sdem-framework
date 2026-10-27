@@ -113,6 +113,15 @@ Skills hold **domain knowledge** the agent loads only when needed, keeping each 
 
 Many agent platforms invest in prompts and skills and neglect the data and the tools. SDEM is built the other way round, which is the right way.
 
+## Hardening done (2026-10-28)
+
+| Fix | Requirement |
+|---|---|
+| coordination ids scoped to the branch, one file per record — parallel work cannot clash | AG-R06 |
+| `sdem check` checks the coordination records | AG-R07 |
+| warning when a graph store is older than its data | WB-K08 |
+| `--estate DIR` on every command; `*` patterns expanded by `sdem` | WB-K07 |
+
 ## What to do next
 
 | # | Improvement | Requirement | Why first |

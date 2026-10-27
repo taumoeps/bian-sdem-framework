@@ -1,0 +1,121 @@
+{
+  "id": "CE-001",
+  "change_set": "CS-001",
+  "layer": "A4",
+  "round": 1,
+  "at": "2026-10-28T00:00:00+00:00",
+  "agent": "sdem-a4-technology",
+  "person": "jane.architect",
+  "impact": {
+    "records": [
+      {
+        "id": "CAP-PAY-010",
+        "name": "Initiate Payment",
+        "level": "A1",
+        "classification": "no_impact",
+        "via": [
+          "PAY-108",
+          "PAY-106",
+          "PAY-001"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD"
+      },
+      {
+        "id": "PRC-PAY-01",
+        "name": "Capture and validate payment instruction",
+        "level": "A1",
+        "classification": "no_impact",
+        "via": [
+          "PAY-108",
+          "PAY-106",
+          "PAY-003"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD"
+      },
+      {
+        "id": "PRC-PAY-02",
+        "name": "Execute and confirm payment",
+        "level": "A1",
+        "classification": "no_impact",
+        "via": [
+          "PAY-108",
+          "PAY-106",
+          "PAY-004"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD"
+      },
+      {
+        "id": "SD-PI",
+        "name": "Payment Initiation (synthetic selection)",
+        "level": "A2",
+        "classification": "no_impact",
+        "via": [
+          "PAY-108",
+          "PAY-106"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD"
+      },
+      {
+        "id": "APP-PAY-HUB",
+        "name": "Payments Hub",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [
+          "PAY-108"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD"
+      },
+      {
+        "id": "CMP-PAY-EXEC",
+        "name": "Execution Gateway",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [
+          "PAY-111"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD"
+      },
+      {
+        "id": "DEP-PAYEXEC-PROD",
+        "name": "Execution Gateway — production",
+        "level": "A4",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of DEP-PAYEXEC-PROD"
+      },
+      {
+        "id": "DEP-PAYHUB-PROD",
+        "name": "Payments Hub — production",
+        "level": "A4",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of DEP-PAYHUB-PROD"
+      },
+      {
+        "id": "INF-K8S-PAY-PROD",
+        "name": "Managed Kubernetes — payments (production)",
+        "level": "A4",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "rehost of INF-K8S-PAY-PROD"
+      },
+      {
+        "id": "INF-K8S-PAY-PROD2",
+        "level": "A4",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "INF-K8S-PAY-PROD2 added"
+      }
+    ],
+    "mappings_to_supersede": [
+      "PAY-108",
+      "PAY-111"
+    ],
+    "changed": [
+      "INF-K8S-PAY-PROD2",
+      "INF-K8S-PAY-PROD",
+      "DEP-PAYHUB-PROD",
+      "DEP-PAYEXEC-PROD"
+    ]
+  }
+}

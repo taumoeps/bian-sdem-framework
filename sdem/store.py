@@ -128,6 +128,18 @@ def _load_record(out):
     return json.loads(p.read_text(encoding='utf-8')) if p.exists() else {'store': Path(out).name, 'entries': []}
 
 
+def stale_inputs(store):
+    """T3: the inputs of the store's last accepted build that have changed since (checksum differs) — the stored graph is then
+    out of date. Inputs that cannot be found from here (moved, or a relative path from another folder) are not judged."""
+    rec = _load_record(store)
+    last = next((e for e in reversed(rec['entries']) if e.get('result') == 'accepted'), None)
+    out = []
+    for i in (last or {}).get('inputs', []):
+        p = Path(i['path']) if isinstance(i, dict) else None
+        if p and p.exists() and _sha(p.read_text(encoding='utf-8')) != i.get('sha256'): out.append(str(p))
+    return (last or {}).get('build'), out
+
+
 def _write_record(out, rec):
     Path(out).mkdir(parents=True, exist_ok=True); (Path(out) / LOAD_RECORD).write_text(_dump(rec), encoding='utf-8')
 

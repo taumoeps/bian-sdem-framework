@@ -21,7 +21,7 @@ One agent per architecture (A1–A4) generates and maintains designs in its own 
 
 ## 3. Coordination records
 
-Stored with the estate in `<estate>/coordination/` (Git): `change-sets/CS-nnn.json`, `events.json`, `work-items.json`; change sets validated by `schema/coordination.schema.json`. Built in `sdem/agents.py`.
+Stored with the estate in `<estate>/coordination/` (Git), one file per record: `change-sets/`, `events/`, `work-items/`; change sets validated by `schema/coordination.schema.json`. Built in `sdem/agents.py`.
 
 | ID | Requirement | Status |
 |---|---|---|
@@ -30,6 +30,8 @@ Stored with the estate in `<estate>/coordination/` (Git): `change-sets/CS-nnn.js
 | AG-R03 | **Impact result**: the change event, each affected record with level, classification (`design_change_required` / `no_impact` / …), traversal path (link ids), and links to supersede — the output of `sdem impact`, stored. | built — stored in each event (`impact`), from `sdem impact` per changed record, strongest classification kept |
 | AG-R04 | **Work item**: id, layer, record(s), action, reason (change event + impact path), status `open` → `in_progress` → `done` / `blocked` / `cancelled`, holder (agent + person), round number. | built — `work-items.json` |
 | AG-R05 | Records are append-only: a status change adds a new state with time and actor; nothing is deleted. | built — every status change appends a state with time, agent and person |
+| AG-R06 | Ids cannot clash between branches, and parallel work never edits the same file: one file per record; ids scoped to the Git branch they were made on (`CS-<branch>-001`; plain `CS-001` on main or outside Git). | built 2026-10-28 (D1) |
+| AG-R07 | `sdem check` also checks an estate's coordination records: schema, file name = id, references resolve, work-item histories follow the allowed steps, agent and person on every step. | built 2026-10-28 (D2) |
 
 ## 4. Commands (the agents' only interface)
 

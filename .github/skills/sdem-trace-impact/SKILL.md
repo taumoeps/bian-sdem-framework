@@ -5,7 +5,7 @@ description: How to run and read SDEM trace and impact results — what depends 
 
 # SDEM trace and impact
 
-Both read a graph store (`sdem build <estate>/a*.json <estate>/mappings.json --out <graph>`) and follow **approved** links only.
+Both read a graph store (`sdem build --estate <estate> --out <graph>`) and follow **approved** links only.
 
 ## Trace
 

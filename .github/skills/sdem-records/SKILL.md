@@ -35,4 +35,4 @@ Give these and the engine (`sdem link`) can propose the cross-layer links with h
 
 Example records to copy: `examples/payment-initiation/` (the user guide §6.2 explains two of them).
 
-`sdem check <estate>/a*.json <estate>/mappings.json` names any missing field as `$.instances[N]: missing required property '…'` — `N` counts from 0.
+`sdem check --estate <estate>` names any missing field as `$.instances[N]: missing required property '…'` — `N` counts from 0.

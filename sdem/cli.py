@@ -4,7 +4,7 @@ One command with a subcommand per journey. Most subcommands hand over to the exi
 `sdem-*` commands keep working as aliases); `review` and `explain` are new. Conventions everywhere: inputs as `--graph DIR`
 or file paths, `--json` for machine-readable output, exit codes 0 = OK, 1 = issues found, 2 = usage error, no prompts.
 """
-import argparse, contextlib, importlib, io, json, re, sys
+import argparse, contextlib, glob, importlib, io, json, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -12,15 +12,15 @@ ROOT = Path(__file__).resolve().parents[1]
 # name: (journey, what it does, module, fixed leading arguments, worked example)
 JOURNEYS = {
     'check':    ('J1', 'check architecture datasets and registry against the rulebook', 'sdem.graph', ['check'],
-                 'sdem check examples/payment-initiation/a*.json examples/payment-initiation/mappings.json'),
+                 'sdem check --estate examples/payment-initiation'),
     'validate': ('J1', 'validate a relationship document (registry or proposals)', 'sdem.validate', [],
-                 'sdem validate --strict examples/payment-initiation/mappings.json'),
+                 'sdem validate --strict --estate examples/payment-initiation'),
     'link':     ('J2', 'run the inference engine: propose links between the architectures', 'sdem.inference', None,
-                 'sdem link examples/payment-initiation/a*.json --out work/links'),
+                 'sdem link --estate examples/payment-initiation --out work/links'),
     'review':   ('J3', 'list proposed links for review, weakest first', None, None,
                  'sdem review work/links/proposals.json'),
     'build':    ('J4', 'check the inputs and write the graph store (knowledge graph)', 'sdem.graph', ['build'],
-                 'sdem build examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json --out work/graph'),
+                 'sdem build --estate examples/card-fraud-alerts --out work/graph'),
     'query':    ('J4', 'find records in a graph store', 'sdem.graph', ['query'],
                  'sdem query --graph examples/card-fraud-alerts/graph --level A3'),
     'baseline': ('J4', 'freeze the current graph store under a name', 'sdem.graph', ['baseline'],
@@ -52,6 +52,33 @@ GENERATORS = ['diagram', 'relationships', 'structure', 'spec', 'kgspec', 'catalo
               'logical', 'physical', 'metamodel_spec', 'controls']
 
 
+ESTATE_FILES = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')
+ESTATE_COMMANDS = ('check', 'validate', 'link', 'build', 'trace', 'impact')
+
+
+def _estate_files(d, registry_only=False):
+    d = Path(d)
+    files = ([] if registry_only else [d / f for f in ESTATE_FILES]) + [d / 'mappings.json']
+    missing = [str(f) for f in files if not f.exists()]
+    if missing: raise SystemExit(f"sdem: --estate {d}: not an estate folder (missing {', '.join(missing)})")
+    return [str(f) for f in files]
+
+
+def _expand(name, rest):
+    """T4: `--estate DIR` in place of the file list, and `*` patterns expanded by sdem itself (Windows PowerShell does not)."""
+    out = []
+    for a in rest:
+        hits = sorted(glob.glob(a)) if not a.startswith('-') and any(c in a for c in '*?[') else []
+        out += hits or [a]
+    if '--estate' in out and name in ESTATE_COMMANDS:
+        i = out.index('--estate')
+        if i + 1 >= len(out): raise SystemExit('sdem: --estate needs a folder')
+        d = out[i + 1]; del out[i:i + 2]
+        files = _estate_files(d, registry_only=(name == 'validate'))
+        out = files + out if name == 'link' else out + files   # link's parser wants paths before its options; trace/impact want the id first
+    return out
+
+
 def _main_of(module):
     return importlib.import_module(module).main
 
@@ -70,6 +97,8 @@ def _delegate(name, rest):
         if name == 'link':  # the engine is chosen by sdem link itself: rules, or --baseline
             text = re.sub(r'\s*\{baseline,rules\}', '', text).replace('positional arguments:', 'positional arguments (the rules engine runs; add --baseline for the name-overlap baseline):', 1)
             text = re.sub(r'\n\s+\{baseline,rules\}\n', '\n', text)
+        if name in ESTATE_COMMANDS:
+            text = text.rstrip() + "\n\n--estate DIR    an estate folder instead of the file list" + (" (its mappings.json)" if name == 'validate' else " (a1…a4 datasets and mappings.json)")
         print(text.rstrip() + f'\n\nExample ({journey}):\n  {example}')
         return 0
     if name == 'link':
@@ -119,8 +148,10 @@ def review(argv):
     ap.add_argument('proposals', nargs='+', help='proposals file(s), e.g. from `sdem link --out`')
     ap.add_argument('--graph', metavar='DIR', help='graph store to show record names')
     ap.add_argument('--names', nargs='*', default=[], metavar='DATASET', help='architecture datasets to show record names')
+    ap.add_argument('--estate', metavar='DIR', help='estate folder — show record names from its datasets')
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
+    if a.estate: a.names = a.names + _estate_files(a.estate)[:-1]
     rows = []
     for f in a.proposals:
         try: doc = json.loads(Path(f).read_text(encoding='utf-8'))
@@ -154,8 +185,10 @@ def explain(argv):
     ap.add_argument('--proposals', nargs='*', default=[], metavar='FILE', help='proposals file(s) from `sdem link`')
     ap.add_argument('--graph', metavar='DIR', help='graph store to show record names')
     ap.add_argument('--names', nargs='*', default=[], metavar='DATASET', help='architecture datasets to show record names')
+    ap.add_argument('--estate', metavar='DIR', help='estate folder — show record names from its datasets')
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
+    if a.estate: a.names = a.names + _estate_files(a.estate)[:-1]
     if not a.projection and not a.proposals: ap.error('give --projection DIR and/or --proposals FILE')
     found, names = [], _names(a.names, a.graph)
     if a.projection:
@@ -237,6 +270,7 @@ def main(argv=None):
     name, rest = argv[0], argv[1:]
     if name not in JOURNEYS:
         print(f"sdem: unknown command '{name}' — run 'sdem --help' for the list", file=sys.stderr); return 2
+    rest = _expand(name, rest)
     if name == 'review': return review(rest)
     if name == 'explain': return explain(rest)
     if name == 'model': return model(rest)

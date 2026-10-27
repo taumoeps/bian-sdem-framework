@@ -283,6 +283,8 @@ def main(argv=None):
     if args.cmd == 'view':
         from sdem.view import write as _view
         try:
+            build_no, stale = _store.stale_inputs(args.graph)
+            if stale: print(f"WARN: the graph store is out of date — {len(stale)} input(s) changed since build {build_no}; the view shows the store. Rebuild with: sdem build … --out {args.graph}", file=sys.stderr)
             out = _view(args.graph, args.out, projection=args.projection)
             print(json.dumps({'wrote': str(out)}) if args.json else f'wrote {out}'); return EXIT_OK
         except (OSError, _store.StoreError) as exc: print(f'ERROR: {exc}', file=sys.stderr); return EXIT_USAGE
@@ -302,6 +304,10 @@ def main(argv=None):
     if reader.origin == 'store':
         b = reader.baseline()
         print(f"baseline: graph store {args.graph}, build {b['build']} ({', '.join(f'{k} {v}' for k, v in b['levels'].items())})", file=sys.stderr)
+        build_no, stale = _store.stale_inputs(args.graph)
+        if stale:
+            print(f"WARN: the graph store is out of date — {len(stale)} input(s) changed since build {build_no}: {', '.join(stale)}. "
+                  f"Answers below reflect the store, not the current data; rebuild with: sdem build … --out {args.graph}", file=sys.stderr)
     if args.cmd == 'query':
         return _query(args, reader)
     statuses = tuple(s.strip() for s in args.status.split(',') if s.strip())
@@ -309,6 +315,11 @@ def main(argv=None):
         print('ERROR: a graph store holds approved links only; use the registry files for other statuses', file=sys.stderr); return EXIT_USAGE
     if args.cmd == 'check':
         report = reader.check_store(args.graph) if reader.origin == 'store' else fg.check()
+        if reader.origin != 'store':  # D2: the estate's coordination records (agent platform), when there are any
+            from sdem.agents import check_coordination
+            for est in sorted({Path(p).resolve().parent for p in args.paths if (Path(p).resolve().parent / 'coordination').exists()}):
+                issues, n = check_coordination(est)
+                if n: report[f'coordination ({n} records)'] = issues
         failed = any(report.values())
         if args.json: print(json.dumps({'ok': not failed, 'report': report, 'warnings': fg.warnings}, indent=2))
         else:

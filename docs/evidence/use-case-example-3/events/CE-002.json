@@ -1,0 +1,127 @@
+{
+  "id": "CE-002",
+  "change_set": "CS-002",
+  "layer": "A3",
+  "round": 2,
+  "at": "2026-10-28T00:00:00+00:00",
+  "agent": "sdem-a3-application",
+  "person": "jane.architect",
+  "impact": {
+    "records": [
+      {
+        "id": "CAP-PAY-010",
+        "name": "Initiate Payment",
+        "level": "A1",
+        "classification": "no_impact",
+        "via": [
+          "PAY-106",
+          "PAY-001"
+        ],
+        "cause": "modify of APP-PAY-HUB"
+      },
+      {
+        "id": "PRC-PAY-01",
+        "name": "Capture and validate payment instruction",
+        "level": "A1",
+        "classification": "no_impact",
+        "via": [
+          "PAY-106",
+          "PAY-003"
+        ],
+        "cause": "modify of APP-PAY-HUB"
+      },
+      {
+        "id": "PRC-PAY-02",
+        "name": "Execute and confirm payment",
+        "level": "A1",
+        "classification": "no_impact",
+        "via": [
+          "PAY-106",
+          "PAY-004"
+        ],
+        "cause": "modify of APP-PAY-HUB"
+      },
+      {
+        "id": "SD-PI",
+        "name": "Payment Initiation (synthetic selection)",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-106"
+        ],
+        "cause": "modify of APP-PAY-HUB"
+      },
+      {
+        "id": "APP-PAY-HUB",
+        "name": "Payments Hub",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of APP-PAY-HUB"
+      },
+      {
+        "id": "CMP-PAY-EXEC",
+        "name": "Execution Gateway",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of CMP-PAY-EXEC"
+      },
+      {
+        "id": "DEP-PAYEXEC-PROD",
+        "name": "Execution Gateway — production",
+        "level": "A4",
+        "classification": "review_required",
+        "via": [
+          "PAY-112"
+        ],
+        "cause": "modify of CMP-PAY-EXEC"
+      },
+      {
+        "id": "DEP-PAYHUB-PROD",
+        "name": "Payments Hub — production",
+        "level": "A4",
+        "classification": "review_required",
+        "via": [
+          "PAY-109"
+        ],
+        "cause": "modify of APP-PAY-HUB"
+      },
+      {
+        "id": "DEP-PAYHUB-UAT",
+        "name": "Payments Hub — UAT",
+        "level": "A4",
+        "classification": "review_required",
+        "via": [
+          "PAY-110"
+        ],
+        "cause": "modify of APP-PAY-HUB"
+      },
+      {
+        "id": "INF-K8S-PAY-PROD",
+        "name": "Managed Kubernetes — payments (production)",
+        "level": "A4",
+        "classification": "review_required",
+        "via": [
+          "PAY-108"
+        ],
+        "cause": "modify of APP-PAY-HUB"
+      },
+      {
+        "id": "INF-K8S-PAY-UAT",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "level": "A4",
+        "classification": "review_required",
+        "via": [
+          "PAY-113"
+        ],
+        "cause": "modify of APP-PAY-HUB"
+      }
+    ],
+    "mappings_to_supersede": [],
+    "changed": [
+      "APP-PAY-HUB",
+      "CMP-PAY-EXEC"
+    ]
+  }
+}

@@ -202,8 +202,8 @@ Python 3.10+; no third-party dependencies. `pip install -e .` installs the `sdem
 sdem --help                                                    # every journey, J1–J8; each subcommand has --help with an example
 E=examples/payment-initiation
 
-sdem check $E/a*.json $E/mappings.json                         # J1 check the datasets and registry against the rulebook
-sdem build $E/a*.json $E/mappings.json --out work/graph        # J4 save the checked graphs as a local graph store
+sdem check --estate $E                                         # J1 check the datasets and registry against the rulebook
+sdem build --estate $E --out work/graph                        # J4 save the checked graphs as a local graph store
 sdem trace CAP-PAY-010 --direction down --graph work/graph     # J5 what does this depend on?
 sdem trace INF-K8S-PAY-PROD --direction up --graph work/graph  #    what depends on this?
 sdem impact APP-PAY-HUB --change replace --graph work/graph    #    what is affected by a change?
@@ -211,6 +211,8 @@ sdem query --graph work/graph --unmapped A2                    #    records stil
 sdem view --graph work/graph                                   # J7 writes work/graph/view.html — open it in a browser
 
 sdem link $E/a1-business.json $E/a2-service-domain.json $E/a3-application.json $E/a4-technology.json --out work/links
+                                                               #    (without the registry, so there is something to review;
+                                                               #     `sdem link --estate $E` skips links already approved)
                                                                # J2 the engine proposes the cross-level links
 sdem review work/links/proposals.json                          # J3 weakest first, with rule, confidence, reasoning
 sdem explain P-RUN-001 --proposals work/links/proposals.json   # J8 why one link was proposed

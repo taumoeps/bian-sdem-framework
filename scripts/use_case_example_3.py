@@ -98,14 +98,14 @@ def run():
         bad = copy.deepcopy(cs4); bad['changes'][0]['record']['id'] = 'PRJ-APP-X'; bad['changes'][0]['record']['type'] = 'A4.SystemSoftware'; _w(drafts / 'bad-projected.json', bad)
         code, out, err = sdem('change', 'propose', drafts / 'bad-projected.json', *args, '--agent', A4, '--person', PERSON)
         ctl('CTL-16', 'bad', 'a change set brings a projected (PRJ-) record into real data', code, err, True, 'CTL-16')
-        nothing_landed = not (est / 'coordination' / 'events.json').exists() and _j(est / 'a4-technology.json') == _j(SRC / 'a4-technology.json')
+        nothing_landed = not agents.Estate(est).events() and _j(est / 'a4-technology.json') == _j(SRC / 'a4-technology.json')
 
         # ---- round 1: the A4 agent (AT-AG-01)
         code, out, err = sdem('change', 'propose', drafts / 'cs-a4-rehost.json', *args, '--agent', A4, '--person', PERSON)
         step(A4, ['sdem change propose coordination/drafts/cs-a4-rehost.json --estate <est> --agent', A4, '--person', PERSON], code, out, err)
         ctl('CTL-19', 'good', 'the A4 agent proposes its own A4 change set', code, out, False, '')
         ctl('CTL-20', 'good', 'a change set with agent and person', code, out, False, '')
-        ev1 = _j(est / 'coordination' / 'events.json')['events'][0]
+        ev1 = agents.Estate(est).events()[0]
         want = {r['id']: r['classification'] for r in ref['instances']}
         got = {r['id']: r['classification'] for r in ev1['impact']['records']}
         same = all(got.get(k) == v for k, v in want.items()) and set(ref['mappings_to_supersede']) <= set(ev1['impact']['mappings_to_supersede'])
@@ -114,16 +114,16 @@ def run():
              and ev1['impact']['mappings_to_supersede'] == ['PAY-108', 'PAY-111'] and set(a12.values()) == {'no_impact'},
              f"CS-001 accepted; CE-001 stored with impact. APP-PAY-HUB and CMP-PAY-EXEC: design change required; supersede {', '.join(ev1['impact']['mappings_to_supersede'])}; "
              f"A1/A2 ({', '.join(sorted(a12))}): no impact. Matches `sdem impact INF-K8S-PAY-PROD --change rehost` on the estate before the change for every record it lists.",
-             'events.json, change-sets/CS-001.json, reference-impact-rehost.json')
+             'events/CE-001.json, change-sets/CS-001.json, reference-impact-rehost.json')
 
         # ---- the orchestrator plans (AT-AG-02)
         code, out, err = sdem('work', 'plan', '--event', 'CE-001', *args, '--agent', ORCH, '--person', PERSON)
         step(ORCH, ['sdem work plan --event CE-001 --estate <est> --agent', ORCH, '--person', PERSON], code, out, err)
-        work = _j(est / 'coordination' / 'work-items.json')['work_items']
+        work = agents.Estate(est).work()
         layers = sorted({w['layer'] for w in work})
         crit('AT-AG-02', 'Orchestrator plans the work', code == 0 and work and set(layers) <= {'A3', 'A4'},
              f"{len(work)} work items, layers {layers}: " + '; '.join(f"{w['id']} {w['records'][0]}" for w in work) + '. None for A1 or A2. (A4 needed none: the A4 agent changed its own deployments in CS-001.)',
-             'work-items.json')
+             'work-items/')
 
         # ---- claim by the wrong agent (CTL-19), then round 2: the A3 agent (AT-AG-03)
         code, out, err = sdem('work', 'claim', 'WI-001', *args, '--agent', A4, '--person', PERSON)
@@ -146,7 +146,7 @@ def run():
         crit('AT-AG-03', 'A3 agent answers its work items', code == 0 and only_a3 and all(l in new_links for l in want_links),
              f"CS-002 accepted, A3 records only, answering {', '.join(cs2['work_items'])}; CE-002 planned: {out2.splitlines()[0] if out2 else '—'}. "
              f"The rules engine proposes: {'; '.join(new_links)} (rule S33, confidence {', '.join(sorted({str(m['confidence']) for m in props}))}).",
-             'change-sets/CS-002.json, events.json, proposals.json')
+             'change-sets/CS-002.json, events/, proposals.json')
 
         # ---- AT-AG-04/05/06 from the control tests
         t = R['controls_tests']
@@ -187,14 +187,15 @@ def run():
         cb, ob, eb = sdem('build', *sorted(map(str, est.glob('a*.json'))), est / 'mappings.json', '--out', tmp / 'graph'); step('architect', ['sdem build … --out <graph>'], cb, ob.splitlines()[-1] if ob else '', eb)
         ct, ot, et = sdem('trace', 'APP-PAY-HUB', '--direction', 'down', '--graph', tmp / 'graph'); step('architect', ['sdem trace APP-PAY-HUB --direction down --graph <graph>'], ct, ot, '')
         E['trace-after.txt'] = ot
-        evs = _j(est / 'coordination' / 'events.json')['events']; wis = _j(est / 'coordination' / 'work-items.json')['work_items']
+        evs = agents.Estate(est).events(); wis = agents.Estate(est).work()
         sets = [_j(f) for f in sorted((est / 'coordination' / 'change-sets').glob('CS-*.json'))]
         traceable = all(x['agent'] and x['person'] for x in evs + sets) and all(h['agent'] and h['person'] for w in wis for h in w['history']) and all(w['history'][-1]['status'] == 'done' for w in wis)
         crit('AT-AG-08', 'The architect reviews and merges', cv == 0 and cc == 0 and cb == 0 and 'INF-K8S-PAY-PROD2' in ot and 'PAY-201' in ot and 'PAY-108' not in ot and traceable and nothing_landed,
              f"approved PAY-201, PAY-202 (superseding PAY-108, PAY-111) with deployment evidence; validate, check and build pass; the trace shows APP-PAY-HUB → INF-K8S-PAY-PROD2 via PAY-201 and no longer PAY-108. "
              f"On record: {len(sets)} change sets, {len(evs)} change events, {len(wis)} work items (all done) — every one with agent and person. The rejected attempts left no trace in the data.",
-             'events.json, work-items.json, change-sets/, registry-after-approval.json, trace-after.txt')
-        for f in ('events.json', 'work-items.json'): E[f] = _j(est / 'coordination' / f)
+             'events/, work-items/, change-sets/, registry-after-approval.json, trace-after.txt')
+        for e_ in evs: E[f"events/{e_['id']}.json"] = e_
+        for w_ in wis: E[f"work-items/{w_['id']}.json"] = w_
         for s in sets: E[f"change-sets/{s['id']}.json"] = s
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

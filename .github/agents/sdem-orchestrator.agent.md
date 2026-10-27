@@ -30,7 +30,7 @@ Skills to use: **sdem-trace-impact** (reading impact and explaining it), **sdem-
    *"sdem-a3-application: do work items WI-001 and WI-002 in estate <estate> for <person>. Claim them, make one A3 change set that answers them, propose it with `sdem change propose … --work WI-001 WI-002`, and return the change set id, the new change event id and what changed."*
    Each subagent call is stateless — give it the estate, the work item ids and the person every time.
 5. **After each change set, check for new impact:** `sdem events --estate <estate> --open`, and plan again. **Stop after 3 rounds** — if `sdem work plan` answers `STOP: round limit …`, ask the architect.
-6. **Ask the rules engine for the new cross-layer links:** `sdem link <estate>/a*.json <estate>/mappings.json --out <dir>`, then `sdem review <dir>/proposals.json`.
+6. **Ask the rules engine for the new cross-layer links:** `sdem link --estate <estate> --out <dir>`, then `sdem review <dir>/proposals.json`.
 7. **Report to the architect:** what changed, in which layers, by which change sets; the review notices; the proposed links and the links to supersede; and that the pull request is ready for **their** review.
 
 ## What you never do

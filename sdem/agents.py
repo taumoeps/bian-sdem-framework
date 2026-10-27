@@ -3,9 +3,12 @@
 The layer agents (A1–A4) and the orchestrator coordinate only through these records, never by messaging each other
 (AG-D02). They are stored with the estate, in `<estate>/coordination/`, append-only (AG-R05):
 
-  change-sets/CS-nnn.json   one layer's proposed record changes, with agent and person (AG-R01)
-  events.json               change events, each with its stored impact result (AG-R02, AG-R03)
-  work-items.json           one task for one layer, with its history of states (AG-R04)
+  change-sets/CS-….json     one layer's proposed record changes, with agent and person (AG-R01)
+  events/CE-….json          change events, each with its stored impact result (AG-R02, AG-R03)
+  work-items/WI-….json      one task for one layer, with its history of states (AG-R04)
+
+One file per record, and ids scoped to the Git branch they were made on (CS-<branch>-001; plain CS-001 on main or
+outside Git), so agents working on different branches never create the same id or edit the same file.
 
 Controls: CTL-19 layer ownership (a change set changes one declared layer; an agent only its own layer; never the
 registry), CTL-20 change provenance (agent and person on every change set and work-item step). A change set lands only
@@ -50,12 +53,25 @@ class Estate:
     # -- records
     def datasets(self): return {lvl: _j(self.path / f) for lvl, f in FILES.items()}
     def registry(self): return _j(self.path / REGISTRY)
-    def events(self): return _j(self.coord / 'events.json')['events'] if (self.coord / 'events.json').exists() else []
-    def work(self): return _j(self.coord / 'work-items.json')['work_items'] if (self.coord / 'work-items.json').exists() else []
+    def _records(self, folder):
+        d = self.coord / folder
+        if not d.exists(): return []
+        first_at = lambda r: r.get('at') or (r.get('history') or [{}])[0].get('at', '')
+        return sorted((_j(f) for f in d.glob('*.json')), key=lambda r: (first_at(r), _seq(r['id'])))
+    def events(self): return self._records('events')
+    def work(self): return self._records('work-items')
     def change_sets(self): return sorted((self.coord / 'change-sets').glob('CS-*.json')) if (self.coord / 'change-sets').exists() else []
-    def _save_events(self, ev): _w(self.coord / 'events.json', {'events': ev})
-    def _save_work(self, wi): _w(self.coord / 'work-items.json', {'work_items': wi})
-    def _next(self, prefix, existing): return f'{prefix}-{len(existing) + 1:03d}'
+    def _save_event(self, e): _w(self.coord / 'events' / f"{e['id']}.json", e)
+    def _save_work(self, items):
+        for w in items: _w(self.coord / 'work-items' / f"{w['id']}.json", w)
+
+    def _next(self, prefix):
+        """The next id for a record kind, scoped to the Git branch (D1): CS-<branch>-001, or CS-001 on main / outside Git."""
+        folder = {'CS': 'change-sets', 'CE': 'events', 'WI': 'work-items'}[prefix]
+        scope = _scope(_branch(self.path)); head = f'{prefix}-{scope}-' if scope else f'{prefix}-'
+        used = [f.stem[len(head):] for f in (self.coord / folder).glob(f'{head}*.json')] if (self.coord / folder).exists() else []
+        n = max((int(u) for u in used if u.isdigit()), default=0) + 1
+        return f'{head}{n:03d}'
 
     def check(self, datasets=None, registry=None):
         """The estate's errors under the rulebook (the same checks as `sdem check`)."""
@@ -121,17 +137,17 @@ class Estate:
         added_errors = [e for e in after if e not in before]
         if added_errors: raise CoordinationError('the change set breaks the rulebook — nothing was changed:\n  ' + '\n  '.join(added_errors[:10]))
         # land it
-        cs_id = self._next('CS', self.change_sets()); ev = self.events(); ce_id = self._next('CE', ev)
+        cs_id = self._next('CS'); ce_id = self._next('CE')
         round_ = max(w['round'] for w in wis) + 1 if wis else 1
         cs = {'id': cs_id, **change_set, 'agent': agent, 'person': person, 'created_at': self.now(), 'work_items': [w['id'] for w in wis], 'event': ce_id, 'branch': _branch(self.path)}
         _w(self.coord / 'change-sets' / f'{cs_id}.json', cs)
         _w(self.path / FILES[layer], new[layer])
         impact = self._impact(fg, changed, layer)
         event = {'id': ce_id, 'change_set': cs_id, 'layer': layer, 'round': round_, 'at': self.now(), 'agent': agent, 'person': person, 'impact': impact}
-        ev.append(event); self._save_events(ev)
+        self._save_event(event)
         for wi in wis:
             wi['history'].append({'status': 'done', 'at': self.now(), 'agent': agent, 'person': person, 'note': f'answered by {cs_id}'})
-        if wis: self._save_work(work)
+        if wis: self._save_work(wis)
         return cs, event
 
     def _impact(self, fg, changed, layer):
@@ -165,13 +181,12 @@ class Estate:
             return {'event': event_id, 'stopped': f"round limit {max_rounds} reached — {len(todo)} more design change(s) need the architect's decision", 'work_items': [], 'review': review}
         made = []
         for r in todo:
-            wid = self._next('WI', work)
+            wid = self._next('WI')
             supersede = [m for m in ev['impact']['mappings_to_supersede'] if m in r['via']]
             action = f"{r['cause']}: change {r['id']} ({r['name']}) in {r['level']} accordingly" + (f"; the links {', '.join(supersede)} will be superseded" if supersede else '')
             w = {'id': wid, 'event': event_id, 'layer': r['level'], 'records': [r['id']], 'action': action, 'reason': {'event': event_id, 'path': r['via']},
                  'round': ev['round'], 'history': [{'status': 'open', 'at': self.now(), 'agent': agent, 'person': person}]}
-            work.append(w); made.append(w)
-        self._save_work(work)
+            work.append(w); made.append(w); self._save_work([w])
         return {'event': event_id, 'work_items': made, 'review': review}
 
     def transition(self, work_id, status, agent, person, note=''):
@@ -183,7 +198,7 @@ class Estate:
         if status not in allowed.get(cur, set()): raise CoordinationError(f'{work_id}: cannot go from {cur} to {status}')
         if status == 'in_progress' and agent not in (HUMAN,) and AGENT_LAYER.get(agent) != w['layer']:
             raise CoordinationError(f"CTL-19: {work_id} is for {w['layer']}; {agent} may take only {AGENT_LAYER.get(agent, 'no layer')} work")
-        w['history'].append({'status': status, 'at': self.now(), 'agent': agent, 'person': person, **({'note': note} if note else {})}); self._save_work(work)
+        w['history'].append({'status': status, 'at': self.now(), 'agent': agent, 'person': person, **({'note': note} if note else {})}); self._save_work([w])
         return w
 
     def status(self):
@@ -195,6 +210,16 @@ class Estate:
             out.append({**e, 'work_items': [w['id'] for w in items], 'open_work_items': open_items, 'planned': bool(items) or not any(
                 r['classification'] == 'design_change_required' and r['level'] != e['layer'] and r['id'] not in e['impact']['changed'] for r in e['impact']['records'])})
         return out
+
+
+def _seq(rid):
+    m = re.search(r'(\d+)$', rid); return int(m.group(1)) if m else 0
+
+
+def _scope(branch):
+    """A short, id-safe form of the branch name; empty on main / master / outside Git."""
+    if not branch or branch in ('main', 'master', 'HEAD'): return ''
+    return re.sub(r'[^a-z0-9]+', '-', branch.lower()).strip('-')[:24].strip('-')
 
 
 def _branch(path):
@@ -242,6 +267,7 @@ def change_main(argv=None):
                   + (f"; links to supersede: {', '.join(imp['mappings_to_supersede'])}" if imp['mappings_to_supersede'] else ''))
             for r in design: print(f"  {r['level']}  {r['id']}  {r.get('name') or ''}  — {r['cause']}, via {', '.join(r['via']) or '-'}")
             if cs.get('branch') in ('main', 'master'): print('NOTE: you are on the main branch — agent changes belong on a branch, reviewed in a pull request (AG-W01)')
+            print('NOTE: graph stores built from this estate are now out of date — rebuild them before trace, impact or view: sdem build --estate … --out <graph>')
             print(f"next: the orchestrator runs  sdem work plan --event {ev['id']} --estate {a.estate} --agent {ORCHESTRATOR} --person <name>"
                   + f"\n      and the rules engine proposes the new links:  sdem link {a.estate}/a*.json {a.estate}/mappings.json --out <dir>")
             return 0
@@ -308,3 +334,42 @@ def work_main(argv=None):
         print(json.dumps(w, indent=2, ensure_ascii=False) if a.json else f"{w['id']} is now {status} ({a.agent}, {a.person})"); return 0
     except CoordinationError as e:
         return _fail(e)
+
+
+# ------------------------------------------------------------------ D2: `sdem check` checks the coordination records too
+
+TRANSITIONS = {'open': {'in_progress', 'cancelled'}, 'in_progress': {'done', 'blocked', 'cancelled', 'open'}, 'blocked': {'in_progress', 'cancelled'}}
+
+
+def check_coordination(estate_dir):
+    """Issues in <estate>/coordination/: schema, file name = id, references resolve, work-item histories follow the allowed
+    steps, every step has agent and person (CTL-20). Empty when there is no coordination folder."""
+    coord = Path(estate_dir) / 'coordination'
+    if not coord.exists(): return [], 0
+    root = json.loads(SCHEMA.read_text(encoding='utf-8')); issues = []
+    def load(folder):
+        out = {}
+        for f in sorted((coord / folder).glob('*.json')) if (coord / folder).exists() else []:
+            try: r = _j(f)
+            except ValueError as e: issues.append(f'{folder}/{f.name}: not valid JSON ({e})'); continue
+            if r.get('id') != f.stem: issues.append(f"{folder}/{f.name}: file name does not match its id {r.get('id')!r}")
+            out[r.get('id')] = r
+        return out
+    sets, events, work = load('change-sets'), load('events'), load('work-items')
+    for e in events.values():
+        issues += [f"events/{e.get('id')}: {x}" for x in check_schema(e, root['$defs']['event'], root)]
+        if e.get('change_set') not in sets: issues.append(f"events/{e.get('id')}: change set {e.get('change_set')} not found")
+    for c in sets.values():
+        for k in ('layer', 'reason', 'changes', 'agent', 'person', 'event'):
+            if not c.get(k): issues.append(f"change-sets/{c.get('id')}: missing {k}" + (' (CTL-20)' if k in ('agent', 'person') else ''))
+        if c.get('event') and c['event'] not in events: issues.append(f"change-sets/{c.get('id')}: event {c['event']} not found")
+        for w in c.get('work_items', []):
+            if w not in work: issues.append(f"change-sets/{c.get('id')}: work item {w} not found")
+    for w in work.values():
+        issues += [f"work-items/{w.get('id')}: {x}" for x in check_schema(w, root['$defs']['work_item'], root)]
+        if w.get('event') not in events: issues.append(f"work-items/{w.get('id')}: event {w.get('event')} not found")
+        h = w.get('history') or []
+        if h and h[0].get('status') != 'open': issues.append(f"work-items/{w.get('id')}: history must start 'open'")
+        for a, b in zip(h, h[1:]):
+            if b.get('status') not in TRANSITIONS.get(a.get('status'), set()): issues.append(f"work-items/{w.get('id')}: step {a.get('status')} → {b.get('status')} is not allowed")
+    return issues, len(sets) + len(events) + len(work)

@@ -125,9 +125,9 @@ E=examples/payment-initiation
 
 **Step 2 — check the data against the rulebook (J1):**
 ```bash
-sdem check $E/a*.json $E/mappings.json
+sdem check --estate $E
 ```
-You see one `OK` line per architecture and for the registry. `WARN` lines are advice (something the rulebook expects but does not require); `ERROR` lines must be fixed.
+(`--estate` names the estate folder; it is the same as listing its five files, `$E/a*.json $E/mappings.json`.) You see one `OK` line per architecture and for the registry. `WARN` lines are advice (something the rulebook expects but does not require); `ERROR` lines must be fixed.
 ```
 OK: level A1 (synthetic-bank-payments-a1)
 WARN: level A2 (synthetic-bank-payments-a2): instance SD-PE: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)
@@ -141,7 +141,7 @@ The six warnings are expected for this example: the made-up BIAN layer leaves ou
 
 **Step 3 — build the knowledge graph (J4):**
 ```bash
-sdem build $E/a*.json $E/mappings.json --out work/graph
+sdem build --estate $E --out work/graph
 ```
 ```
 WARN: … (the same six warnings)
@@ -241,7 +241,7 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 
 | Command | Journey | What it does | When you use it | Typical next step |
 |---|---|---|---|---|
-| `sdem check <files>` | J1 | checks datasets and registry against the rulebook | after any change to the data | fix errors; `sdem build` |
+| `sdem check --estate <dir>` (or the files) | J1 | checks datasets and registry against the rulebook | after any change to the data | fix errors; `sdem build` |
 | `sdem validate <registry>` | J1 | checks a registry or proposals file on its own (`--strict` treats warnings as errors) | after editing `mappings.json` | `sdem check` |
 | `sdem link <files> --out <dir>` | J2 | the inference engine proposes the missing links; writes `proposals.json` | when data is new or changed | `sdem review` |
 | `sdem review <proposals.json>` | J3 | lists the proposals, weakest first, with rule, confidence and reasoning | before approving | approve in the registry (§8.2) |
@@ -536,7 +536,8 @@ Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem
 | `ERROR: 'CAP-999' is not an instance in any loaded level model` | that id is not in the data | check the spelling; `sdem query --graph work/graph --level A1` lists ids |
 | a trace stops early | a link in the chain is not approved yet | `sdem query --graph … --unmapped A2`; then §8.2 |
 | `no proposed links to review` | everything the engine can find is already approved | nothing to do — or add data that names its links (e.g. `invokes`) |
-| Windows PowerShell: `a*.json` not found | PowerShell does not expand `*` for programs | list the four files by name, or use VS Code's *Git Bash* terminal |
+| `WARN: the graph store is out of date …` | the data changed after the graph store was built, so trace, impact and the view show the old picture | rebuild: `sdem build --estate <estate> --out <graph>` |
+| Windows PowerShell and `a*.json` | PowerShell does not expand `*` — `sdem` does it itself | nothing to do; or use `--estate <folder>` |
 | Mermaid diagrams show as text | the preview extension is missing | install *Markdown Preview Mermaid Support*, or view the file on GitHub |
 
 ## 12. Where to go next
