@@ -13,6 +13,9 @@ Read `docs/sdem-workbench-user-guide.md` (§6 the data, §7 the commands) and `d
 
 ## How you work
 
+Skills to use: **sdem-change-sets** (writing and proposing a change set, and what each rejection means), **sdem-records** (record fields and the attributes the rules engine links from), **sdem-trace-impact** (reading trace and impact).
+
+
 1. **Your work comes from work items** (or directly from the architect):
    `sdem work list --estate <estate> --layer A2 --status open`.
 2. **Claim** each item before working on it:

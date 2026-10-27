@@ -179,7 +179,13 @@ Feature names and file formats change between versions (subagents were experimen
     ├── sdem-a2-bian.agent.md          tools: read, search, edit, execute · agents: [] · adds BIAN only from the catalogue
     ├── sdem-a3-application.agent.md   tools: read, search, edit, execute · agents: []
     └── sdem-a4-technology.agent.md    tools: read, search, edit, execute · agents: []
+├── prompts/                           / commands: sdem-explain, sdem-fix, sdem-review, sdem-impact-note, sdem-pr, aid-explain,
+│                                      sdem-process-events (orchestrator), sdem-layer-work, example3-rehost (A4 agent)
+└── skills/                            loaded when relevant: sdem-change-sets (with worked examples), sdem-records,
+                                       sdem-approve-links (with the evidence table), sdem-trace-impact
 ```
+
+Set-up for a GitHub account, a Copilot plan and VS Code: [`sdem-copilot-setup.md`](sdem-copilot-setup.md).
 
 `execute` is the terminal tool's name assumed here — the spike confirms it (step S2). Layer agents need `edit` only to write their change-set drafts; their data reaches the datasets **only** through `sdem change propose` (instructions; detection of direct edits is AG-S08, not built).
 

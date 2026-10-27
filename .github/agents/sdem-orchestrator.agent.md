@@ -18,6 +18,9 @@ Read `docs/sdem-agent-platform-design.md` for the full design and `docs/sdem-wor
 
 ## What you do
 
+Skills to use: **sdem-trace-impact** (reading impact and explaining it), **sdem-approve-links** (preparing the architect's review — you never approve). Prompt `/sdem-process-events` starts you on an estate.
+
+
 1. **Find open change events:** `sdem events --estate <estate> --open`.
 2. **Plan the work** for each event that needs planning:
    `sdem work plan --event <CE-id> --estate <estate> --agent sdem-orchestrator --person <the architect's name>`.

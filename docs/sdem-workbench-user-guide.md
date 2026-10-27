@@ -63,7 +63,7 @@ You need four things. Your IT team may install some of them for you.
 | **VS Code** | the workbench | code.visualstudio.com |
 | **Python 3.10 or later** | SDEM runs on it | python.org (check with `python3 --version`) |
 | **Git** | history, review and approval | git-scm.com (often already installed) |
-| **GitHub Copilot** (optional) | the AI help in the chat window | your organisation's Copilot licence |
+| **GitHub Copilot** (optional) | the AI help in the chat window | a Copilot plan on your GitHub account — step by step in [`sdem-copilot-setup.md`](sdem-copilot-setup.md) |
 
 Then:
 
@@ -476,6 +476,8 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
 ## 9. Working with Copilot
 
 Copilot is your **assistant**, not your architect. It reads the project's files and your terminal output and helps you understand and decide.
+
+**Ready-made prompts:** type `/` in the chat for SDEM's prompt files — `/sdem-explain`, `/sdem-fix`, `/sdem-review`, `/sdem-impact-note`, `/sdem-pr`, `/aid-explain` (and `/sdem-process-events`, `/sdem-layer-work` for the agents). Copilot also loads SDEM's skills (`.github/skills/`) when they fit your question.
 
 **Good things to ask:**
 
