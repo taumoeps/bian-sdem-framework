@@ -223,8 +223,9 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
             if mapping.get('perspective') and mapping['perspective'] != rule['perspective']:
                 fail('structural', f"perspective {mapping['perspective']!r} does not match registry {rule['perspective']!r}")
             if rule['authority'].startswith('bian_'):
-                # Proposals are drafts: BIAN anchoring is required at approval, flagged until then.
-                draft = mapping.get('status') == 'proposed'
+                # Proposals — and links marked needs_review while their BIAN identifier is awaited (F-1, owner 2026-10-28) — are
+                # drafts: BIAN anchoring is required at approval, flagged until then.
+                draft = mapping.get('status') in ('proposed', 'needs_review')
                 report = (lambda msg: warnings.append(f'{prefix}: {msg}; must be supplied before approval')) if draft else (lambda msg: fail('governance', msg))
                 if not mapping.get('bian_release'):
                     report(f"{rule['authority']} mapping requires bian_release")
@@ -236,8 +237,8 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
             kinds = {k for k, _ in map(split_evidence, refs) if k}
             if required and kinds:
                 missing = sorted(required - kinds)
-                if missing and mapping.get('status') == 'proposed':
-                    warnings.append(f"{prefix}: proposal lacks required evidence kind(s) {missing}; must be supplied before approval")
+                if missing and mapping.get('status') in ('proposed', 'needs_review'):   # drafts (F-1): evidence is required at approval
+                    warnings.append(f"{prefix}: {'proposal' if mapping.get('status') == 'proposed' else 'needs_review link'} lacks required evidence kind(s) {missing}; must be supplied before approval")
                 elif missing:
                     fail('governance', f"evidence missing required kind(s) {missing}")
             elif required and refs:

@@ -37,6 +37,10 @@ sdem change propose <estate>/coordination/drafts/<file>.json --estate <estate> -
 
 Then read the output: the change set id (`CS-…`), the change event (`CE-…`), the records in other layers that need a design change, and the links to supersede. The orchestrator plans the follow-on work.
 
+## Undo
+
+`sdem change revert <CS-id> --estate <estate> --agent <your agent> --person <name> --reason "…"` restores the layer exactly as it was before that change set, recorded as a new change set and change event; open work from the undone change is cancelled. Only the **latest** change set of a layer can be reverted, and only if nobody edited the file since.
+
 ## When it is rejected — what each message means
 
 | Message | Fix |

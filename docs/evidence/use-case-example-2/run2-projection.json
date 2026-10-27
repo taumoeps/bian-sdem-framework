@@ -10,7 +10,7 @@
     ],
     "catalogue": {
       "model_id": "aid-test-bian-catalogue",
-      "sha256": "e3f8adb9dda50c7ed1447c22ed08a794191620404a5a132d3a99bc80590f309d"
+      "sha256": "b698a3ac6bb15e7c792d7c091b1dd6ed5d14b056855445a34cfb9f0056e5b208"
     },
     "inputs": {
       "A1": {

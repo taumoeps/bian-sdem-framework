@@ -1643,7 +1643,7 @@ The 7 example estates (447 instances) (the generated reference-structure estate 
 | LC-06 | 586 | 0 |
 | LC-07 | 124 | 0 |
 | LC-08 (warning) | 136 | 0 |
-| LC-09 | 316 | 0 |
+| LC-09 | 318 | 0 |
 | LC-10 | 1106 | 0 |
 | LC-10m (warning) | 1106 | 29 |
 | LC-13 deprecated field in use | — | 0 |

@@ -42,7 +42,7 @@ def catalogue(first='payment-initiation'):
         if 'reference-structure' in str(f): continue
         d, est, local, added = _j(f), f.parent.name, {}, []
         for i in d['instances']:
-            k = (i['type'], i['name'])
+            k = ('canonical', i['canonical_id']) if i.get('canonical_id') else (i['type'], i['name'])   # BIAN identity: canonical id first (AID-B2)
             if k not in by_key:
                 nid = i['id'] if i['id'] not in used else f"{i['id']}@{est}"
                 used.add(nid); by_key[k] = nid; added.append(dict(i, id=nid))

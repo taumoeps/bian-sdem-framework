@@ -82,7 +82,7 @@ Made-up data · rules tuned on this example · approval by hand for now.
 
 ## Results — run 2026-10-28
 
-**Verdict: 30 of 30 tests pass · 18 of 18 links correct · trace complete · gaps: G-A confirmed, G-B confirmed, no risk today.**
+**Verdict: 30 of 30 tests pass · 18 of 18 links correct · trace complete · gaps: G-A partly closed (CTL-22), G-B confirmed, no risk today.**
 
 ### How we know these results are right
 
@@ -212,11 +212,11 @@ Links between layers after approval: 17 (one link blocked at approval — test 6
 
 | Gap | Finding | Detail |
 |---|---|---|
-| G-A | confirmed | the engine reads only each rule's step and confidence from the rulebook; how a rule matches is in the engine's code, and nothing checks it against the rule's description |
+| G-A | partly closed (CTL-22) | the engine reads only each rule's step and confidence from the rulebook; how a rule matches is in the engine's code. Since 2026-10-28 CTL-22 checks that the engine applies only rulebook rules, at their assigned steps, and implements every applicable one; the matching itself is still only in code |
 | G-B | confirmed, no risk today | link-type limits are not checked, but all 9 link types are many_to_many, so there is no limit to break yet |
 
 ### 5. Findings for the owner
 
 | ID | What we found | The control's message | Consequence |
 |---|---|---|---|
-| F-1 | a link that is waiting for its BIAN identifier cannot be marked "needs review" — that status is held to the approval rule | bian_alignment_guidance mapping requires bian_release | the link stays "proposed"; owner to decide whether "needs review" should be allowed without the identifier |
+| F-1 | a link that is waiting for its BIAN identifier could not be marked "needs review" | none — accepted with warnings | resolved 2026-10-28 (owner): "needs review" is allowed while the BIAN identifier and evidence are awaited; both are still required at approval |

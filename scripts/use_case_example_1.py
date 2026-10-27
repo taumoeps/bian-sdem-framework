@@ -31,7 +31,11 @@ REVIEW = 'use-case-example-1 (simulated architect)'
 
 
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
-def datasets(): return {f: _j(EST / f) for f in LEVELS}
+def datasets():
+    ds = {f: _j(EST / f) for f in LEVELS}
+    for i in ds.get('a2-service-domain.json', {}).get('instances', []):
+        if i['id'] == 'BS-CREDIT-TRANSFER': i.pop('canonical_id', None)   # planted on purpose: a BIAN identifier missing from the data must never be invented
+    return ds
 def empty_registry(): return {'registry_version': load_registry()['$schema_version'], 'metamodel_version': '0.4.0', 'mappings': []}
 
 
@@ -111,7 +115,9 @@ def run():
         held = [next(p_ for p_ in props if p_['mapping_id'] == b) for b in blocked]
         nr = validate_doc({**empty_registry(), 'mappings': [dict(h, status='needs_review') for h in held]}, ds)
         R['findings'] = [{'id': 'F-1', 'what': 'a link that is waiting for its BIAN identifier cannot be marked "needs review" — that status is held to the approval rule',
-                          'control_message': nr[0].split(': ', 1)[-1] if nr else None, 'consequence': 'the link stays "proposed"; owner to decide whether "needs review" should be allowed without the identifier'}] if nr else []
+                          'control_message': nr[0].split(': ', 1)[-1] if nr else None, 'consequence': 'the link stays "proposed"; owner to decide whether "needs review" should be allowed without the identifier'}] if nr else [
+            {'id': 'F-1', 'what': 'a link that is waiting for its BIAN identifier could not be marked "needs review"',
+             'control_message': 'none — accepted with warnings', 'consequence': 'resolved 2026-10-28 (owner): "needs review" is allowed while the BIAN identifier and evidence are awaited; both are still required at approval'}]
         good = {**full, 'mappings': [m for m in full['mappings'] if m['mapping_id'] not in blocked] + held}; E['run1-09-approved-registry.json'] = good
         ok_tr = diff(E['run1-03-proposals.json'], {**good, 'mappings': [m for m in good['mappings']]}); E['run1-09b-proposed-to-approved.json'] = ok_tr
         t('6 Approving links', 'change 17 proposed links to approved; the blocked one stays proposed (allowed status changes)', 'allowed', 'allowed' if not ok_tr else f'blocked — {ok_tr[0]}', 'CTL-07', 'run1-09b-proposed-to-approved.json', not ok_tr)
@@ -243,7 +249,7 @@ def run():
         E['run2-13-high-level-spec-edited.json'] = {'failures': [str(f[1]).splitlines()[-1] for f in o2.failures]}
         t('Platform (frozen spec)', "the owner's specification with one character added", 'the freeze test fails', 'fails' if o2.failures else 'passes', 'CTL-14', 'run2-13-high-level-spec-edited.json', bool(o2.failures))
         # ======== gaps
-        R['gaps'] = [{'id': 'G-A', 'finding': 'confirmed', 'detail': "the engine reads only each rule's step and confidence from the rulebook; how a rule matches is in the engine's code, and nothing checks it against the rule's description"},
+        R['gaps'] = [{'id': 'G-A', 'finding': 'partly closed (CTL-22)', 'detail': "the engine reads only each rule's step and confidence from the rulebook; how a rule matches is in the engine's code. Since 2026-10-28 CTL-22 checks that the engine applies only rulebook rules, at their assigned steps, and implements every applicable one; the matching itself is still only in code"},
                      {'id': 'G-B', 'finding': 'confirmed, no risk today', 'detail': 'link-type limits are not checked, but all 9 link types are ' + ', '.join(sorted({x['cardinality'] for x in load_registry()['relationships']})) + ', so there is no limit to break yet'}]
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

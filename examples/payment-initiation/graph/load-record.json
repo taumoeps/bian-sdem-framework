@@ -87,6 +87,93 @@
           "edges": 18
         }
       ]
+    },
+    {
+      "build": 2,
+      "at": "2026-10-27T17:27:05+00:00",
+      "inputs": [
+        {
+          "path": "examples/payment-initiation/a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-payments-a1",
+          "model_version": "2026.10",
+          "sha256": "008fbf63a26cb51559e62d0b270d98d7c78ccffabd02f654f833806b25b3668e"
+        },
+        {
+          "path": "examples/payment-initiation/a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-payments-a2",
+          "model_version": "2026.10",
+          "sha256": "d70b6a9d123a24a5afb26b2c5b6e16d4f0d5f99ca7ddeeb7cc1312bb7a471597"
+        },
+        {
+          "path": "examples/payment-initiation/a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-payments-a3",
+          "model_version": "2026.10",
+          "sha256": "758862d5c017af906185736022674c0e21303d8561682c1941227a46547dc871"
+        },
+        {
+          "path": "examples/payment-initiation/a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-a4",
+          "model_version": "2026.10",
+          "sha256": "ca8b600cd33954c4bd98ad7a510a3c7d7cb6023f0ba33f5e1313eed3d756c0d0"
+        },
+        {
+          "path": "examples/payment-initiation/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "0fc1f810205273d3366c2e46f3480a53b0ef454c2bba156a31c8618caff8cb31"
+        }
+      ],
+      "metamodel_version": "0.4.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-payments-a2): instance BD-PAYMENTS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-payments-a2): instance SD-PE: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-payments-a2): instance SD-PA: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-payments-a2): instance SD-PE: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-payments-a2): instance SD-PA: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-payments-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "60dfbee0e519ec5944782daba13896e0613359702a5c33ca67589f5c0c1a620e",
+          "nodes": 16,
+          "edges": 14
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "210136bff05b8636ff4ac9c73b3970d02ada395a0635ea60835bac8605f6c5d8",
+          "nodes": 24,
+          "edges": 33
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "7913ef1a699275e5c392127a5bbf4188e691cde2487429e8092019c0eb2883f6",
+          "nodes": 16,
+          "edges": 17
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "60e29b143980f40c7f04ec037a0907c7ca6f230c5e768d5733c9efceb86ffe2a",
+          "nodes": 12,
+          "edges": 5
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "3a0dad0b1de38a6b44a2e195635e829f54568a49628adb7766a708910fe0d8f0",
+          "nodes": 26,
+          "edges": 18
+        }
+      ]
     }
   ]
 }

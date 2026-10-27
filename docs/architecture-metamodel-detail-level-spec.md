@@ -23,7 +23,7 @@
 | ID | Kind | High-level § | Status |
 |---|---|---|---|
 | [G-01](#gap-register) | contradiction | §1, §6.1 | decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed — detail §6.1 supersedes high-level §6.1 |
-| [G-02](#gap-register) | contradiction | §3, §9, approval criterion | open — awaiting the owner's decision |
+| [G-02](#gap-register) | contradiction | §3, §9, approval criterion | decided 2026-10-28 (owner): downgraded to interpreted_from_official_source until a release-specific verification record exists |
 | [G-03](#gap-register) | contradiction | §5.4 | decided 2026-10-25 (owner): keep related; composite is not an allowed value — the high-level spec is not changed |
 | [G-04](#gap-register) | contradiction | §5.4, header | decided 2026-10-25 (owner): A4 is named Technology (ArchiMate's Technology Layer), as implemented — the high-level spec is not changed |
 | [G-05](#gap-register) | contradiction | §4, §14 decision 4 | decided 2026-10-25 (owner): added as optional fields to schema/relationship-registry.schema.json |
@@ -98,7 +98,7 @@ Attributes add further public sources (Dublin Core, W3C ORG and SKOS, ISO 20022,
 | `definition_source` | yes | yes |  |
 | `alignment_kind` | yes | yes | values: `exact`, `specialization`, `related`, `conceptual`, `none` |
 | `reference` | yes | yes | standard, release, concept, uri; records add `locator` (section/page) |
-| `evidence_status` | yes | yes | see below — **Gap G-02** (contradiction; open — awaiting the owner's decision) |
+| `evidence_status` | yes | yes | see below — **Gap G-02** (contradiction; decided 2026-10-28 (owner): downgraded to interpreted_from_official_source until a release-specific verification record exists) |
 | `artefact` | yes | yes |  |
 | `confidence` | **added** | yes | high / medium / low under the single confidence rule (`sdem/confidence.py`) |
 | `confidence_basis` | **added** | yes | which clause of the rule applied |
@@ -109,14 +109,14 @@ Attributes add further public sources (Dublin Core, W3C ORG and SKOS, ISO 20022,
 
 | evidence_status | definition_source | Entity types |
 |---|---|---|
-| `confirmed_in_official_source` | `archimate_aligned` | 2 |
-| `confirmed_in_official_source` | `archimate_native` | 19 |
+| `interpreted_from_official_source` | `archimate_aligned` | 2 |
+| `interpreted_from_official_source` | `archimate_native` | 19 |
 | `interpreted_from_official_source` | `bian_aligned` | 2 |
 | `interpreted_from_official_source` | `togaf_informed` | 1 |
 | `pending_release_validation` | `bian_reference` | 13 |
 | `proposed_extension` | `sdem_extension` | 7 |
 
-All `bian_reference` types are `pending_release_validation` — aligned. The `confirmed_in_official_source` rows have no verification record — **Gap G-02** (contradiction; open — awaiting the owner's decision).
+All `bian_reference` types are `pending_release_validation` — aligned. The `confirmed_in_official_source` rows have no verification record — **Gap G-02** (contradiction; decided 2026-10-28 (owner): downgraded to interpreted_from_official_source until a release-specific verification record exists).
 
 Rules (high-level §3): artefacts are never endpoints — **enforced** (`sdem/validate.py`; `sdem-graph check` rejects artefact instances); is-a matching — **enforced** (`sdem/metamodel.py` `is_a`).
 
@@ -144,15 +144,15 @@ Document pins: `registry_version` — yes; `metamodel_version` — yes; `profile
 | Type | Kind | Definition | definition_source | alignment_kind | evidence_status | Confidence | Alignment |
 |---|---|---|---|---|---|---|---|
 | `A1.BusinessCapability` | concrete | A business ability independent of how it is implemented | `bian_aligned` | `conceptual` | `interpreted_from_official_source` | medium | ✓ |
-| `A1.ValueStream` | concrete | The stages by which stakeholders receive value | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
+| `A1.ValueStream` | concrete | The stages by which stakeholders receive value | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
 | `A1.ValueStreamStage` | extends `A1.ValueStream` | One named segment of a value stream | `sdem_extension` | `specialization` | `proposed_extension` | medium | ✓ |
-| `A1.BusinessProcess` | concrete | Coordinated business behaviour | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
+| `A1.BusinessProcess` | concrete | Coordinated business behaviour | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
 | `A1.BusinessActivity` | extends `A1.BusinessProcess` | A fine-grained activity within a process | `sdem_extension` | `conceptual` | `proposed_extension` | medium | ✓ |
-| `A1.BusinessService` | concrete | Business behaviour exposed to consumers | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A1.BusinessActor` | concrete | An individual or organisation capable of business behaviour | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A1.BusinessRole` | concrete | Responsibility for a class of business behaviour | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A1.BusinessObject` | concrete | A business-level information concept | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A1.BusinessRequirement` | concrete | An expressed architectural requirement | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
+| `A1.BusinessService` | concrete | Business behaviour exposed to consumers | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A1.BusinessActor` | concrete | An individual or organisation capable of business behaviour | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A1.BusinessRole` | concrete | Responsibility for a class of business behaviour | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A1.BusinessObject` | concrete | A business-level information concept | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A1.BusinessRequirement` | concrete | An expressed architectural requirement | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
 
 ### 5.2 A2 Service Domain (BIAN) (15)
 
@@ -178,13 +178,13 @@ Document pins: `registry_version` — yes; `metamodel_version` — yes; `profile
 
 | Type | Kind | Definition | definition_source | alignment_kind | evidence_status | Confidence | Alignment |
 |---|---|---|---|---|---|---|---|
-| `A3.ApplicationComponent` | concrete | A modular, deployable part of an application | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A3.ApplicationService` | concrete | Externally exposed application behaviour | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A3.ApplicationInterface` | concrete | An access point to an application service | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A3.ApplicationFunction` | concrete | Internal application behaviour | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
+| `A3.ApplicationComponent` | concrete | A modular, deployable part of an application | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A3.ApplicationService` | concrete | Externally exposed application behaviour | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A3.ApplicationInterface` | concrete | An access point to an application service | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A3.ApplicationFunction` | concrete | Internal application behaviour | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
 | `A3.APIOperation` | concrete | A callable operation of an API contract | `sdem_extension` | `related` | `proposed_extension` | medium | ✓ |
-| `A3.DataEntity` | concrete | A logical data entity held by an application | `archimate_aligned` | `related` | `confirmed_in_official_source` | medium | ✓ |
-| `A3.Event` | concrete | An event an application produces or consumes | `archimate_aligned` | `related` | `confirmed_in_official_source` | medium | ✓ |
+| `A3.DataEntity` | concrete | A logical data entity held by an application | `archimate_aligned` | `related` | `interpreted_from_official_source` | medium | ✓ |
+| `A3.Event` | concrete | An event an application produces or consumes | `archimate_aligned` | `related` | `interpreted_from_official_source` | medium | ✓ |
 | `A3.SolutionBuildingBlock` | concrete | An organisation-defined reusable solution grouping | `togaf_informed` | `conceptual` | `interpreted_from_official_source` | medium | ✓ |
 
 ### 5.4 A4 Technology (high-level: "Infrastructure") — **Gap G-04** (contradiction; decided 2026-10-25 (owner): A4 is named Technology (ArchiMate's Technology Layer), as implemented — the high-level spec is not changed) (11)
@@ -194,14 +194,14 @@ Document pins: `registry_version` — yes; `metamodel_version` — yes; `profile
 | `A4.InfrastructureComponent` | abstract | Abstract supertype of every Technology Architecture entity; retained for compatibility with earlier mapping documents | `sdem_extension` | `none` | `proposed_extension` | medium | ✓ |
 | `A4.Deployment` | extends `A4.InfrastructureComponent` | An application as deployed into a specific environment | `sdem_extension` | `related` | `proposed_extension` | medium | alignment composite → related — **Gap G-03** (contradiction; decided 2026-10-25 (owner): keep related; composite is not an allowed value — the high-level spec is not changed) |
 | `A4.DeploymentEnvironment` | extends `A4.InfrastructureComponent` | A governed runtime boundary such as production or test | `sdem_extension` | `related` | `proposed_extension` | medium | ✓ |
-| `A4.Node` | extends `A4.InfrastructureComponent` | A computational host, physical or virtual | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A4.Device` | extends `A4.InfrastructureComponent` | Physical computing hardware | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A4.SystemSoftware` | extends `A4.InfrastructureComponent` | Platform or runtime software | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A4.TechnologyService` | extends `A4.InfrastructureComponent` | Technical behaviour delivered to consumers | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A4.TechnologyInterface` | extends `A4.InfrastructureComponent` | An access point for a technology service | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A4.CommunicationNetwork` | extends `A4.InfrastructureComponent` | Communication infrastructure | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A4.Path` | extends `A4.InfrastructureComponent` | A route between nodes | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
-| `A4.Artifact` | extends `A4.InfrastructureComponent` | A deployable technology-level artefact | `archimate_native` | `exact` | `confirmed_in_official_source` | high | ✓ |
+| `A4.Node` | extends `A4.InfrastructureComponent` | A computational host, physical or virtual | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A4.Device` | extends `A4.InfrastructureComponent` | Physical computing hardware | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A4.SystemSoftware` | extends `A4.InfrastructureComponent` | Platform or runtime software | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A4.TechnologyService` | extends `A4.InfrastructureComponent` | Technical behaviour delivered to consumers | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A4.TechnologyInterface` | extends `A4.InfrastructureComponent` | An access point for a technology service | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A4.CommunicationNetwork` | extends `A4.InfrastructureComponent` | Communication infrastructure | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A4.Path` | extends `A4.InfrastructureComponent` | A route between nodes | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
+| `A4.Artifact` | extends `A4.InfrastructureComponent` | A deployable technology-level artefact | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
 
 Catalogue check: 41 entity rows read from high-level §5; 1 differs (A4.Deployment). Dropped from core per high-level §5.3 and absent here: `A3.Application`, `A3.Integration` — aligned. The example-cloud types moved to profiles do not exist — **Gap G-08** (not built; not built — planned (ROADMAP) v0.14).
 
@@ -326,7 +326,7 @@ Level-skipping traceability is a query over approved edges with provenance (`sde
 | `rationale` | string | yes | why the relationship holds: the working |
 | `baseline_id` | string | yes | the release the record belongs to |
 | `confidence` | number | no | 0–1, the rule's band |
-| `bian_release` | string | no | required on BIAN-authority types before approval |
+| `bian_release` | string | no | required on BIAN-authority types before approval (a proposed or needs_review link may wait for it — F-1) |
 | `reviewer_id` | string | no | the approving architect |
 | `created_by` | string | no | who or what proposed it (engine, rule, architect) |
 | `approved_at` | string | no | approval date |
@@ -483,7 +483,7 @@ From `metamodel/metamodel-spec-gaps.json`. Status changes only on the owner's de
 | ID | Kind | High-level § | High-level says | Implemented | Recommendation | Status |
 |---|---|---|---|---|---|---|
 | G-01 | contradiction | §1, §6.1 | Within-level relationships are out of scope; nothing in SDEM reads or validates them. | 132 within-level rows, stored in metamodel/level-relationships.json and enforced by sdem-graph check (built at the owner's later request). | Bring within-level relationships into scope. | **decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed — detail §6.1 supersedes high-level §6.1** |
-| G-02 | contradiction | §3, §9, approval criterion | No entity may claim canonical-standard status without a release-specific verification record; evidence_status is computed from the register. | 21 ArchiMate-derived entities carry evidence_status confirmed_in_official_source, set by hand at v0.4.0 on the strength of the open-source Archi relationship tables; no verification record exists. | Set them to interpreted_from_official_source until a register entry exists. | **open — awaiting the owner's decision** |
+| G-02 | contradiction | §3, §9, approval criterion | No entity may claim canonical-standard status without a release-specific verification record; evidence_status is computed from the register. | 21 ArchiMate-derived entities were set to confirmed_in_official_source by hand at v0.4.0 without a verification record; set to interpreted_from_official_source on 2026-10-28. | Set them to interpreted_from_official_source until a register entry exists. | **decided 2026-10-28 (owner): downgraded to interpreted_from_official_source until a release-specific verification record exists** |
 | G-03 | contradiction | §5.4 | A4.Deployment alignment_kind = composite. | alignment_kind = related; composite is not one of the values §3 allows. | Keep related. | **decided 2026-10-25 (owner): keep related; composite is not an allowed value — the high-level spec is not changed** |
 | G-04 | contradiction | §5.4, header | A4 is named "Infrastructure". | A4 is named "Technology" in records, files (a4-technology.json), documents and diagrams. | Owner to choose the name. | **decided 2026-10-25 (owner): A4 is named Technology (ArchiMate's Technology Layer), as implemented — the high-level spec is not changed** |
 | G-05 | contradiction | §4, §14 decision 4 | Optional reference fields source_system and source_entity_id; optional document pin profile_id. | source_system and source_entity_id (endpoint) and profile_id (document) are optional fields of schema/relationship-registry.schema.json since 2026-10-25. | Add the three as optional fields. | **decided 2026-10-25 (owner): added as optional fields to schema/relationship-registry.schema.json** |

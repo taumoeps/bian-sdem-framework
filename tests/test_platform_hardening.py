@@ -124,5 +124,17 @@ class HardeningTests(unittest.TestCase):
         code, out, err = sdem('validate', self.tmp / 'r.json')
         self.assertEqual(code, 1); self.assertIn('CTL-21', out + err)
 
+    # T5 / AG-K06
+    def test_revert_restores_the_layer_exactly_and_on_record(self):
+        orig = (self.est / 'a4-technology.json').read_text()
+        self.propose(); agents.Estate(self.est).plan('CE-001', 'sdem-orchestrator', 'jane')
+        self.assertNotEqual(sdem('change', 'revert', 'CS-001', '--estate', self.est, '--agent', 'sdem-a3-application', '--person', 'jane')[0], 0)   # CTL-19
+        self.assertNotEqual(sdem('change', 'revert', 'CS-001', '--estate', self.est, '--agent', 'sdem-a4-technology', '--person', '')[0], 0)       # CTL-20
+        code, out, err = sdem('change', 'revert', 'CS-001', '--estate', self.est, '--agent', 'sdem-a4-technology', '--person', 'jane', '--reason', 'postponed')
+        self.assertEqual(code, 0, err); self.assertIn('CS-002 reverts CS-001', out); self.assertIn('cancelled open work items WI-001, WI-002', out)
+        self.assertEqual((self.est / 'a4-technology.json').read_text(), orig)
+        self.assertEqual(sdem('check', '--estate', self.est)[0], 0)
+        self.assertIn('not the latest change set', sdem('change', 'revert', 'CS-001', '--estate', self.est, '--agent', 'sdem-a4-technology', '--person', 'jane')[2])
+
 if __name__ == '__main__':
     unittest.main()

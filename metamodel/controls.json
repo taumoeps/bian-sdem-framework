@@ -206,14 +206,25 @@
       "monitored_by": "GitHub Actions `validate.yml`; tests/test_platform_hardening.py; use-case example 3",
       "status": "built",
       "tested_by": "use-case-example-3"
+    },
+    {
+      "id": "CTL-22",
+      "rule_area": "rules",
+      "control": "Engine–rulebook agreement: the inference engine applies only rules that are in the rulebook, each at the step the rulebook assigns (documented exceptions only), and implements every rule the rulebook says it applies",
+      "implemented_in": "tests/test_engine_rulebook.py (runs the engine on every example estate and compares its log with metamodel/relationship-rules.json)",
+      "runs": "the test suite, on every push",
+      "outcome_recorded_in": "test result; documented exceptions and open finding G-A-1 in the test",
+      "monitored_by": "GitHub Actions `validate.yml`",
+      "status": "built",
+      "tested_by": "tests"
     }
   ],
   "gaps": [
     {
       "id": "G-A",
       "rule_area": "5 Finding links",
-      "not_controlled": "How each rule matches lives in the engine's code; nothing checks it against the rule's description in the rulebook",
-      "risk": "the rulebook and the engine could drift apart; only CTL-09 would notice"
+      "not_controlled": "How each rule matches is still only in the engine's code — its description in words cannot be checked by machine. (Partly closed 2026-10-28 by CTL-22: which rules the engine applies, at which step, and that every applicable rule is implemented, are checked.)",
+      "risk": "a rule's matching logic could drift from its description; CTL-09 (the acceptance cases) and CTL-22 would catch most drift. Open finding G-A-1: rule S44 is applied in step 3, the rulebook says step 1"
     },
     {
       "id": "G-B",

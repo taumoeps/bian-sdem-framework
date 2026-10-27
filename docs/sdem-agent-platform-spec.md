@@ -44,7 +44,7 @@ All under the `sdem` CLI, with `--json`, the standard exit codes and `--help` wi
 | AG-K03 | `sdem events [--open]` | change events with their impact summary | built — `sdem events --estate DIR [--open]` |
 | AG-K04 | `sdem work plan / list / claim / block / cancel / reopen` | work items — create (orchestrator), list (by layer, status), claim, update, close | built — `sdem work plan / list / claim / block / cancel / reopen`; *done* is set by `sdem change propose --work` |
 | AG-K05 | impact stored with each change event | computes impact for every changed record and stores it as the event's impact result | built — inside `sdem change propose` (impact stored with the event) |
-| AG-K06 | `sdem change revert <CS-id> --estate DIR --agent … --person …` | reverses a change set (restores the records it changed) and records the reversal as a change event, with its impact | proposed — not built ([principles](sdem-agent-platform-principles.md) #3) |
+| AG-K06 | `sdem change revert <CS-id> --estate DIR --agent … --person … [--reason …]` | restores the layer as it was before the change set (from its before-snapshot) and records the reversal as a change set and change event, with its impact | built 2026-10-28 (T5) — only the latest change set of a layer, only when the layer is exactly as it left it; CTL-19/20 apply; open work from the reverted event is cancelled |
 | AG-K07 | `sdem change adopt --estate DIR --layer A? --person … --reason …` | records a person's direct edit of a layer as a change set (the diff against the last snapshot, with its impact), so the chain is whole again; refuses agent names and edits that break the rulebook | built 2026-10-28 (AG-S08) |
 
 ## 5. Controls
@@ -126,4 +126,4 @@ Decisions AG-D01…D09 and open questions AG-Q01…Q04: [`sdem-agent-platform-de
 4. ~~Controls CTL-19, CTL-20 (AG-S01…S07), tested with good and bad data~~ — **built**.
 5. ~~Agent definitions (AG-A01…A03)~~ — **built**, `.github/agents/`; adjust after the spike.
 6. ~~Use-case example 3~~ — **run: 8 of 8**.
-7. Next ([principles](sdem-agent-platform-principles.md)): ~~AG-S08~~ (built), AG-E01 (score the agents after the spike), AG-K06 (undo), AG-O01 (session record); AG-T02's Git hook or VS Code task; then ingestion (v0.11) and the licensed BIAN catalogue (v0.15) for real designs; AG-T03 only with the organisation's approval.
+7. Next ([principles](sdem-agent-platform-principles.md)): ~~AG-S08~~, ~~AG-K06~~ (built), AG-E01 (score the agents after the spike), AG-O01 (session record); AG-T02's Git hook or VS Code task; then ingestion (v0.11) and the licensed BIAN catalogue (v0.15) for real designs; AG-T03 only with the organisation's approval.

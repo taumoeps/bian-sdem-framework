@@ -199,7 +199,8 @@ def render():
             '| DEC-E-06 | Are the executor\'s conventions binding? | **Yes** — the contention tie-break (OPEN-04) and the method rows of step 2 check 2 are part of the specification. | They were applied in every run that scored 1.00; leaving them open would make the engine\'s behaviour undefined. |',
             '| DEC-E-07 | What is a "clear synonym" in step 2 check 3? | **A shared word stem** between the qualifier (or its aliases) and a path segment: closure ↔ close, posting ↔ post, reversal ↔ reverse, validation ↔ validate (engine convention EC-01, `sdem/rules_engine.py` `stem`). | The H1 hand-run matched exactly these on a SOAP estate; with exact words only, 4 of H1\'s 14 `IMPLEMENTED_BY` links are lost. Added 2026-10-25 while building step 2; no false proposal introduced in any case. |',
             '| DEC-E-08 | S17 fallback B: is any asset-type token in the component\'s paths evidence? | **Not when the token is shared with the asset type of another domain the component (or a component containing it) already realises.** | Otherwise "payment" ties every payments domain to the Payments Hub; the M1 hand-run counted 0 distinctive matches and its gold agrees. |',
-            '| DEC-E-09 | S01 when only some of a capability\'s processes use the domain? | **No proposal** (logged). The rule\'s "low" band for partial coverage is withdrawn. | The C1 hand-run never proposed partial coverage and the gold has none; H1 and M0 do not depend on it. |', '']
+            '| DEC-E-09 | S01 when only some of a capability\'s processes use the domain? | **No proposal** (logged). The rule\'s "low" band for partial coverage is withdrawn. | The C1 hand-run never proposed partial coverage and the gold has none; H1 and M0 do not depend on it. |',
+            '| DEC-E-10 | S17 fallback B (an asset-type word in API paths or data entity names): what confidence? | **Low**, never more — the evidence is names only. | Use-case example 2 run 4 showed a one-word match ("account") at medium, the same as a domain backed by five implemented operations. Owner decision 2026-10-28 (T6); AID applies the same cap (AID-B6). |', '']
 
     # ---- 10 index
     out += ['## 10. Requirements index', '', f"{len(REQ)} requirements. Groups: V vocabulary, S structure, M mapping model, D data, P procedure, O outputs, A acceptance.", '',
@@ -232,7 +233,7 @@ REGISTRY_DOC = ROOT / 'docs' / 'relationship-registry-spec.md'
 REGISTRY_FIELD_MEANING = {'mapping_id': 'the record\'s permanent ID (legacy name)', 'source': 'the entity the relationship starts from (§3)', 'target': 'the entity it points to (§3)',
     'relationship': 'one of the nine catalogued types (§5); adjacent levels only', 'perspective': 'architecture, process or information', 'status': 'lifecycle state (§4)',
     'evidence': '`kind:reference` items; the kinds must include the type\'s required evidence (§5)', 'rationale': 'why the relationship holds: the working', 'baseline_id': 'the release the record belongs to',
-    'confidence': '0–1, the rule\'s band', 'bian_release': 'required on BIAN-authority types before approval', 'reviewer_id': 'the approving architect', 'created_by': 'who or what proposed it (engine, rule, architect)',
+    'confidence': '0–1, the rule\'s band', 'bian_release': 'required on BIAN-authority types before approval (a proposed or needs_review link may wait for it — F-1)', 'reviewer_id': 'the approving architect', 'created_by': 'who or what proposed it (engine, rule, architect)',
     'approved_at': 'approval date', 'valid_from': 'start of validity', 'valid_to': 'end of validity; set on supersession', 'previous_mapping_id': 'the record this one supersedes (legacy name)'}
 
 

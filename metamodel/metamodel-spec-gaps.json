@@ -15,9 +15,9 @@
       "kind": "contradiction",
       "high_level_section": "§3, §9, approval criterion",
       "high_level_says": "No entity may claim canonical-standard status without a release-specific verification record; evidence_status is computed from the register.",
-      "implemented": "21 ArchiMate-derived entities carry evidence_status confirmed_in_official_source, set by hand at v0.4.0 on the strength of the open-source Archi relationship tables; no verification record exists.",
+      "implemented": "21 ArchiMate-derived entities were set to confirmed_in_official_source by hand at v0.4.0 without a verification record; set to interpreted_from_official_source on 2026-10-28.",
       "recommendation": "Set them to interpreted_from_official_source until a register entry exists.",
-      "status": "open — awaiting the owner's decision"
+      "status": "decided 2026-10-28 (owner): downgraded to interpreted_from_official_source until a release-specific verification record exists"
     },
     {
       "id": "G-03",

@@ -11,15 +11,15 @@ title SDEM Architecture Metamodel — detail-level specification (governing)\nfo
 
 package "A1 Business  —  detail §5.1, within-level rows: 48 (§6.1, G-01 (decided))" as PA1 {
   rectangle "A1.BusinessCapability\nbian_aligned / conceptual\nevidence: interpreted from official source" as a1_businesscapability #E3F2FD
-  rectangle "A1.ValueStream\narchimate_native / exact\nevidence: confirmed in official source" as a1_valuestream #C8E6C9
+  rectangle "A1.ValueStream\narchimate_native / exact\nevidence: interpreted from official source" as a1_valuestream #C8E6C9
   rectangle "A1.ValueStreamStage\nsdem_extension / specialization\nevidence: proposed extension" as a1_valuestreamstage #EEEEEE
-  rectangle "A1.BusinessProcess\narchimate_native / exact\nevidence: confirmed in official source" as a1_businessprocess #C8E6C9
+  rectangle "A1.BusinessProcess\narchimate_native / exact\nevidence: interpreted from official source" as a1_businessprocess #C8E6C9
   rectangle "A1.BusinessActivity\nsdem_extension / conceptual\nevidence: proposed extension" as a1_businessactivity #EEEEEE
-  rectangle "A1.BusinessService\narchimate_native / exact\nevidence: confirmed in official source" as a1_businessservice #C8E6C9
-  rectangle "A1.BusinessActor\narchimate_native / exact\nevidence: confirmed in official source" as a1_businessactor #C8E6C9
-  rectangle "A1.BusinessRole\narchimate_native / exact\nevidence: confirmed in official source" as a1_businessrole #C8E6C9
-  rectangle "A1.BusinessObject\narchimate_native / exact\nevidence: confirmed in official source" as a1_businessobject #C8E6C9
-  rectangle "A1.BusinessRequirement\narchimate_native / exact\nevidence: confirmed in official source" as a1_businessrequirement #C8E6C9
+  rectangle "A1.BusinessService\narchimate_native / exact\nevidence: interpreted from official source" as a1_businessservice #C8E6C9
+  rectangle "A1.BusinessActor\narchimate_native / exact\nevidence: interpreted from official source" as a1_businessactor #C8E6C9
+  rectangle "A1.BusinessRole\narchimate_native / exact\nevidence: interpreted from official source" as a1_businessrole #C8E6C9
+  rectangle "A1.BusinessObject\narchimate_native / exact\nevidence: interpreted from official source" as a1_businessobject #C8E6C9
+  rectangle "A1.BusinessRequirement\narchimate_native / exact\nevidence: interpreted from official source" as a1_businessrequirement #C8E6C9
 }
 package "A2 Service Domain (BIAN)  —  detail §5.2, within-level rows: 17 (§6.1, G-01 (decided))" as PA2 {
   rectangle "A2.BusinessArea\nbian_reference / exact\nevidence: pending release validation" as a2_businessarea #BBDEFB
@@ -39,27 +39,27 @@ package "A2 Service Domain (BIAN)  —  detail §5.2, within-level rows: 17 (§6
   rectangle "A2.SemanticAPI\n«artefact — evidence only»\nbian_aligned / related\nevidence: interpreted from official source" as a2_semanticapi #E3F2FD
 }
 package "A3 Application  —  detail §5.3, within-level rows: 31 (§6.1, G-01 (decided))" as PA3 {
-  rectangle "A3.ApplicationComponent\narchimate_native / exact\nevidence: confirmed in official source" as a3_applicationcomponent #C8E6C9
-  rectangle "A3.ApplicationService\narchimate_native / exact\nevidence: confirmed in official source" as a3_applicationservice #C8E6C9
-  rectangle "A3.ApplicationInterface\narchimate_native / exact\nevidence: confirmed in official source" as a3_applicationinterface #C8E6C9
-  rectangle "A3.ApplicationFunction\narchimate_native / exact\nevidence: confirmed in official source" as a3_applicationfunction #C8E6C9
+  rectangle "A3.ApplicationComponent\narchimate_native / exact\nevidence: interpreted from official source" as a3_applicationcomponent #C8E6C9
+  rectangle "A3.ApplicationService\narchimate_native / exact\nevidence: interpreted from official source" as a3_applicationservice #C8E6C9
+  rectangle "A3.ApplicationInterface\narchimate_native / exact\nevidence: interpreted from official source" as a3_applicationinterface #C8E6C9
+  rectangle "A3.ApplicationFunction\narchimate_native / exact\nevidence: interpreted from official source" as a3_applicationfunction #C8E6C9
   rectangle "A3.APIOperation\nsdem_extension / related\nevidence: proposed extension" as a3_apioperation #EEEEEE
-  rectangle "A3.DataEntity\narchimate_aligned / related\nevidence: confirmed in official source" as a3_dataentity #E8F5E9
-  rectangle "A3.Event\narchimate_aligned / related\nevidence: confirmed in official source" as a3_event #E8F5E9
+  rectangle "A3.DataEntity\narchimate_aligned / related\nevidence: interpreted from official source" as a3_dataentity #E8F5E9
+  rectangle "A3.Event\narchimate_aligned / related\nevidence: interpreted from official source" as a3_event #E8F5E9
   rectangle "A3.SolutionBuildingBlock\ntogaf_informed / conceptual\nevidence: interpreted from official source" as a3_solutionbuildingblock #FFE0B2
 }
 package "A4 Technology  [high-level: Infrastructure — G-04 (decided)]  —  detail §5.4, within-level rows: 36 (§6.1, G-01 (decided))" as PA4 {
   rectangle "A4.InfrastructureComponent\n«abstract»\nsdem_extension / none\nevidence: proposed extension" as a4_infrastructurecomponent #EEEEEE
   rectangle "A4.Deployment\nsdem_extension / related\nevidence: proposed extension" as a4_deployment #EEEEEE
   rectangle "A4.DeploymentEnvironment\nsdem_extension / related\nevidence: proposed extension" as a4_deploymentenvironment #EEEEEE
-  rectangle "A4.Node\narchimate_native / exact\nevidence: confirmed in official source" as a4_node #C8E6C9
-  rectangle "A4.Device\narchimate_native / exact\nevidence: confirmed in official source" as a4_device #C8E6C9
-  rectangle "A4.SystemSoftware\narchimate_native / exact\nevidence: confirmed in official source" as a4_systemsoftware #C8E6C9
-  rectangle "A4.TechnologyService\narchimate_native / exact\nevidence: confirmed in official source" as a4_technologyservice #C8E6C9
-  rectangle "A4.TechnologyInterface\narchimate_native / exact\nevidence: confirmed in official source" as a4_technologyinterface #C8E6C9
-  rectangle "A4.CommunicationNetwork\narchimate_native / exact\nevidence: confirmed in official source" as a4_communicationnetwork #C8E6C9
-  rectangle "A4.Path\narchimate_native / exact\nevidence: confirmed in official source" as a4_path #C8E6C9
-  rectangle "A4.Artifact\narchimate_native / exact\nevidence: confirmed in official source" as a4_artifact #C8E6C9
+  rectangle "A4.Node\narchimate_native / exact\nevidence: interpreted from official source" as a4_node #C8E6C9
+  rectangle "A4.Device\narchimate_native / exact\nevidence: interpreted from official source" as a4_device #C8E6C9
+  rectangle "A4.SystemSoftware\narchimate_native / exact\nevidence: interpreted from official source" as a4_systemsoftware #C8E6C9
+  rectangle "A4.TechnologyService\narchimate_native / exact\nevidence: interpreted from official source" as a4_technologyservice #C8E6C9
+  rectangle "A4.TechnologyInterface\narchimate_native / exact\nevidence: interpreted from official source" as a4_technologyinterface #C8E6C9
+  rectangle "A4.CommunicationNetwork\narchimate_native / exact\nevidence: interpreted from official source" as a4_communicationnetwork #C8E6C9
+  rectangle "A4.Path\narchimate_native / exact\nevidence: interpreted from official source" as a4_path #C8E6C9
+  rectangle "A4.Artifact\narchimate_native / exact\nevidence: interpreted from official source" as a4_artifact #C8E6C9
 }
 
 a1_valuestreamstage -[#9E9E9E,dashed]-|> a1_valuestream
@@ -89,7 +89,7 @@ a3_applicationcomponent -[#1565C0,bold]-> a4_deployment : **DEPLOYED_AS**\nenter
 note "**G-03 (decided)**\nhigh-level: composite\nimplemented: related" as N_G03
 N_G03 .. a4_deployment
 
-note "**G-02 (OPEN)**\n21 ArchiMate-derived entities say\nconfirmed in official source\nwithout a verification record\n(high-level §3, §9)" as N_G02
+note "**G-02 (decided)**\n0 ArchiMate-derived entities say\nconfirmed in official source\nwithout a verification record\n(high-level §3, §9)" as N_G02
 N_G02 .. a3_applicationcomponent
 
 package "Relationship Registry — record format (detail §4, §6.2)" as PREG {

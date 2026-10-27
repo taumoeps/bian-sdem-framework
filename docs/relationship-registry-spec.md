@@ -26,7 +26,7 @@ The **Architecture Relationship Registry** holds the actual relationships betwee
 | `rationale` | string | yes | why the relationship holds: the working |
 | `baseline_id` | string | yes | the release the record belongs to |
 | `confidence` | number | no | 0–1, the rule's band |
-| `bian_release` | string | no | required on BIAN-authority types before approval |
+| `bian_release` | string | no | required on BIAN-authority types before approval (a proposed or needs_review link may wait for it — F-1) |
 | `reviewer_id` | string | no | the approving architect |
 | `created_by` | string | no | who or what proposed it (engine, rule, architect) |
 | `approved_at` | string | no | approval date |

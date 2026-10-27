@@ -102,7 +102,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Node, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -130,7 +130,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Device, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -158,7 +158,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 System Software, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -186,7 +186,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Technology Service, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -214,7 +214,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Technology Interface, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -242,7 +242,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Communication Network, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -270,7 +270,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Path, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -298,7 +298,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 10"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Artifact, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",

@@ -46,7 +46,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 7"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Value Stream, ch. 7 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -102,7 +102,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 8"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Business Process, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -158,7 +158,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 8"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Business Service, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -186,7 +186,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 8"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Business Actor, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -214,7 +214,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 8"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Business Role, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -242,7 +242,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 8"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Business Object, ch. 8 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated; aligned to BIAN's Business Object Model through the S12 cross-level rule.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
@@ -270,7 +270,7 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
         "locator": "chapter 6"
       },
-      "evidence_status": "confirmed_in_official_source",
+      "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Requirement (motivation elements), ch. 6 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated. SDEM places it in A1 because requirements are stated against business behaviour.",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",

@@ -566,7 +566,7 @@ class Run:
                         de = self.get(e, 'A3.DataEntity', 'A3')
                         if de: texts.append(de['name'])
                 hit = (toks - explained) & stems(tokens(*texts))
-                if hit: self.propose('S17', 'REALIZED_BY', dom, comp, 4, f'fallback B: asset-type tokens {sorted(hit)} in API paths / entity names', [f"{comp['id']} API paths, data entities"], fallback=True)
+                if hit: self.propose('S17', 'REALIZED_BY', dom, comp, 4, f'fallback B: asset-type tokens {sorted(hit)} in API paths / entity names', [f"{comp['id']} API paths, data entities"], fallback=True, band='low')  # name-only evidence: low, never more (T6, owner 2026-10-28)
         # S04 USES_DOMAIN: a process (or one of its activities) invokes an operation of the domain, or an S06 report links its activity
         for prc in self.of('A1.BusinessProcess'):
             if self.mm.is_a(prc['type'], 'A1.BusinessActivity'): continue

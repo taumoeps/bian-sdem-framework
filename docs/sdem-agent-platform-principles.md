@@ -46,7 +46,7 @@ An agent should never touch data directly: it calls **narrow, deterministic tool
 | **Machine-readable output** | agents read results reliably | ✅ `--json` on the commands |
 | **Error messages that say how to fix it** | the agent can correct itself | ✅ e.g. *"CTL-19: agent … may change only A3"*, *"evidence missing required kind …"* |
 | **Small, single-purpose commands** | easy for a model to choose the right one | ✅ one subcommand per journey |
-| **Safe to retry and undo** | agents retry; mistakes happen | ◐ no undo command — undo is a Git revert (**AG-K06**) |
+| **Safe to retry and undo** | agents retry; mistakes happen | ✅ `sdem change revert` restores a layer exactly and records it (AG-K06) |
 
 **Strong.** Gaps: detecting direct edits, a proper undo.
 
@@ -104,7 +104,7 @@ Skills hold **domain knowledge** the agent loads only when needed, keeping each 
 | Layer | How much it matters | SDEM today |
 |---|---|---|
 | Data architecture | highest | strong |
-| Tools / engine | very high | strong — gap: undo |
+| Tools / engine | very high | strong — undo built; engine–rulebook agreement checked (CTL-22) |
 | Guardrails | very high | strong — direct edits detected (AG-S08), human approval enforced (CTL-21) |
 | Agent definitions | medium | good |
 | Prompts | low–medium | good |
@@ -123,11 +123,13 @@ Many agent platforms invest in prompts and skills and neglect the data and the t
 | `--estate DIR` on every command; `*` patterns expanded by `sdem` | WB-K07 |
 | direct dataset edits detected (the change-set chain); `sdem change adopt` for a person's edit | AG-S08, AG-K07, CTL-20 |
 | `sdem approve` — a person approves, the registry is validated before writing; a reviewer that is an agent or tool is rejected | WB-A04, CTL-21 |
+| `sdem change revert` — undo the latest change set of a layer, exactly, on record | AG-K06 |
+| the engine checked against the rulebook (rules, steps, implementation) | CTL-22 (gap G-A partly closed) |
+| fallback B capped at low in the engine (DEC-E-10); needs_review allowed while the BIAN id is awaited (F-1); 21 entities downgraded until verified (G-02); scenario BIAN ids added | owner decisions |
 
 ## What to do next
 
 | # | Improvement | Requirement | Why first |
 |---|---|---|---|
 | 1 | **Score the agents, not just the tools:** after the spike, run example 3 with the real Copilot agents several times; score how often they draft the right change sets and plan the right work | AG-E01 | the only way to know the agents' accuracy |
-| 2 | **Undo:** `sdem change revert CS-…` reverses a change set and records the reversal as a change event | AG-K06 | cheap, recorded recovery instead of Git alone |
-| 3 | **Session record:** keep a short summary of each agent session (who asked what, which commands ran) with its change event | AG-O01 | the *why* behind a change, for audit |
+| 2 | **Session record:** keep a short summary of each agent session (who asked what, which commands ran) with its change event | AG-O01 | the *why* behind a change, for audit |

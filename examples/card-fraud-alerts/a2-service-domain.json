@@ -81,6 +81,7 @@
       "type": "A2.BusinessScenario",
       "version": "1.0",
       "name": "Suspicious card transaction alerted",
+      "canonical_id": "BIAN-SCENARIO-FRAUD-ALERT",
       "lifecycle_status": "active",
       "description": "A scored transaction raises an alert; the cardholder is notified and their response recorded.",
       "attributes": {

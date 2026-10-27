@@ -308,6 +308,7 @@
       "type": "A2.BusinessScenario",
       "version": "1.0",
       "name": "Customer credit transfer",
+      "canonical_id": "BIAN-SCENARIO-CREDIT-TRANSFER",
       "lifecycle_status": "active",
       "description": "A customer initiates a credit transfer; it is validated, executed and its status reported.",
       "attributes": {

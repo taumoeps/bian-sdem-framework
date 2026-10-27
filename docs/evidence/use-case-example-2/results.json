@@ -3100,7 +3100,7 @@
           "step": "R2",
           "rule": "S17",
           "basis": "S17: [SAPG] §3.4 p. 52 (functional partition",
-          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
+          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names",
           "confidence": 0.4,
           "result": "projected only"
         },
@@ -3113,7 +3113,7 @@
           "step": "R2",
           "rule": "S17",
           "basis": "S17: [SAPG] §3.4 p. 52 (functional partition",
-          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
+          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names",
           "confidence": 0.4,
           "result": "projected only"
         },
@@ -3204,7 +3204,7 @@
         "**Against the real design:** 4 of 7 main elements match; 3 are projected only.",
         "- ➕ **Current Account (capability candidate)** — no real capability is supported by SD-CA, and none has a similar name. AID's reason: a business capability is likely to be supported by Current Account; BIAN publishes no capability mapping, so this is a candidate only",
         "- ➕ **Account — Current Account (process candidate)** — no real process covers these operations or uses the domain. AID's reason: BIAN groups the operations Initiate Current Account, Retrieve Current Account, Update Current Account, Control Current Account, Execute Current Account Closure as “Account”; a business process typically covers one such group — a candidate only",
-        "- ➕ **Current Account (synthetic selection)** — not in the real design at all. AID's reason: the application layer points to it — S17 — fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)"
+        "- ➕ **Current Account (synthetic selection)** — not in the real design at all. AID's reason: the application layer points to it — S17 — fallback B: asset-type tokens ['account'] in API paths / entity names"
       ],
       "elements": [
         {
@@ -3319,7 +3319,7 @@
           "source": "[**A3** real] APP-PAY-HUB “Payments Hub”; [**A3** real] CMP-PAY-VALIDATE “Instruction Validation”",
           "rule": "BIAN catalogue reference",
           "basis": "BIAN reference catalogue `aid-test-bian-catalogue` — the element is copied, not invented",
-          "reasoning": "the application layer points to it — S17 — fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
+          "reasoning": "the application layer points to it — S17 — fallback B: asset-type tokens ['account'] in API paths / entity names",
           "confidence": 0.4,
           "result": "projected only",
           "real": "—",

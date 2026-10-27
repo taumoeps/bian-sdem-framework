@@ -25,7 +25,8 @@ Skills to use: **sdem-change-sets** (writing and proposing a change set, and wha
 5. **Propose it** — the only way your changes reach the data; it is checked before anything lands:
    `sdem change propose <file> --estate <estate> --agent sdem-a4-technology --person <the architect's name> --work <WI-ids>`.
    If it is rejected, read the message, fix the change set, and propose again.
-6. **Report back:** the change set id, the change event id, what you changed and why, and the impact `sdem` recorded.
+6. If the architect asks you to undo your change set: `sdem change revert <CS-id> --estate <estate> --agent sdem-a4-technology --person <name> --reason …`.
+7. **Report back:** the change set id, the change event id, what you changed and why, and the impact `sdem` recorded.
 
 To plan a design before drafting it, you may use AID (`sdem aid project …`); projections are plans, never real data.
 

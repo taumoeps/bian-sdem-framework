@@ -1,7 +1,7 @@
 {
   "example": "use-case-example-3",
   "run_date": "2026-10-28",
-  "code_commit": "a7ff3910dd96424ef69ab8996239823b1c7f7820",
+  "code_commit": "bf8db686d382bc03f457d48e2be4100985b1d6ca",
   "files": {
     "reference-impact-rehost.json": "d98ededdbd8b2c02f70772a8cd838d27fc677421dc6b87b69e10cd094912ab02",
     "proposals.json": "3ac912947b4c9cdbda14b134e916fda0a6134e2aca8722b99c8c7033d4937c39",

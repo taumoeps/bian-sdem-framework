@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "29f775c9c59872470c007544e7d9386880c1dd14ec28983e4c99fc31585b48e2",
+      "export_sha256": "d70b6a9d123a24a5afb26b2c5b6e16d4f0d5f99ca7ddeeb7cc1312bb7a471597",
       "level": "A2",
       "model_id": "synthetic-bank-payments-a2",
       "model_version": "2026.10",
@@ -380,6 +380,7 @@
           "id": "BS-CREDIT-TRANSFER",
           "version": "1.0",
           "lifecycle_status": "active",
+          "canonical_id": "BIAN-SCENARIO-CREDIT-TRANSFER",
           "description": "A customer initiates a credit transfer; it is validated, executed and its status reported.",
           "attributes": {
             "operation_sequence": [

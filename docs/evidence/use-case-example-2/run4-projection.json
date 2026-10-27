@@ -11,7 +11,7 @@
     ],
     "catalogue": {
       "model_id": "aid-test-bian-catalogue",
-      "sha256": "e3f8adb9dda50c7ed1447c22ed08a794191620404a5a132d3a99bc80590f309d"
+      "sha256": "b698a3ac6bb15e7c792d7c091b1dd6ed5d14b056855445a34cfb9f0056e5b208"
     },
     "inputs": {
       "A3": {
@@ -658,7 +658,7 @@
               "APP-PAY-HUB",
               "CMP-PAY-VALIDATE"
             ],
-            "reasoning": "the application layer points to it — S17 — fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
+            "reasoning": "the application layer points to it — S17 — fallback B: asset-type tokens ['account'] in API paths / entity names",
             "confidence": 0.4
           }
         },
@@ -1346,7 +1346,7 @@
         },
         "status": "projected",
         "confidence": 0.4,
-        "rationale": "PROJECTED DESIGN, not a mapping: fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
+        "rationale": "PROJECTED DESIGN, not a mapping: fallback B: asset-type tokens ['account'] in API paths / entity names",
         "projection": {
           "step": "R2",
           "rule": "S17",
@@ -1354,7 +1354,7 @@
           "inferred_from": [
             "APP-PAY-HUB"
           ],
-          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
+          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names",
           "confidence": 0.4
         }
       },
@@ -1373,7 +1373,7 @@
         },
         "status": "projected",
         "confidence": 0.4,
-        "rationale": "PROJECTED DESIGN, not a mapping: fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
+        "rationale": "PROJECTED DESIGN, not a mapping: fallback B: asset-type tokens ['account'] in API paths / entity names",
         "projection": {
           "step": "R2",
           "rule": "S17",
@@ -1381,7 +1381,7 @@
           "inferred_from": [
             "CMP-PAY-VALIDATE"
           ],
-          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names — name-only evidence, capped low (AID-B6)",
+          "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names",
           "confidence": 0.4
         }
       },

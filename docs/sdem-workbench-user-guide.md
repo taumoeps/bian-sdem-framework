@@ -256,6 +256,7 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem view --graph <dir> [--projection <dir>] [-o file.html]` | J7 | writes the HTML picture | to see and share | open in a browser |
 | `sdem explain <id> --proposals <file>` · `--projection <dir>` | J8 | why one link or projected element exists: rule, published source, evidence, reasoning, confidence | when you question a proposal | approve, reject or fix the data |
 | `sdem change propose <file> --estate <dir> --agent … --person …` | AG | a layer's change set: checked before it lands, then its impact recorded as a change event | agent platform (§9a) | the orchestrator plans the work |
+| `sdem change revert <CS-id> --estate <dir> --agent … --person …` | AG | undo the latest change set of a layer — restores it exactly, on record | a change was wrong | rebuild the graph store |
 | `sdem events --estate <dir> [--open]` | AG | change events, their impact and open work | to see what is waiting | `sdem work plan` |
 | `sdem work plan · list · claim …` | AG | work items: planned by the orchestrator, claimed and answered by the layer agents | agent platform (§9a) | `sdem change propose --work …` |
 | `sdem diff --git HEAD~1 <registry>` | — | proves approved links were not edited | before a pull request | — |
