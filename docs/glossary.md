@@ -53,6 +53,9 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Graph loader** | the program that builds the graphs from architecture datasets and the registry (`sdem/graph.py`) |
 | **Inference engine** (formerly *mapping engine*) | the program that reads the graphs, applies the rules and *proposes* cross-level links for an architect to approve. Built (v0.10): `sdem-infer rules` |
 | **Fill steps 0–5** | the engine's order of work: load BIAN, exact joins, REST matching, closure, structural matching, bounded text matching |
+| **Architecture Inference Design (AID)** | the planning function that projects missing architecture layers from the ones an architect has — forward (down) or reverse (up) — as a **projected design** with inference confidence, not a validated design ([`aid-design.md`](aid-design.md)) |
+| **Projected design** | records and links inferred, not observed; kept apart from real data, marked `PRJ-`, never approved |
+| **Gap analysis** | comparing a projected design with the real one: matched, projected only, real only, differs |
 | **Proposal** | a link the engine suggests, status `proposed`, with evidence and a confidence |
 | **Trace / impact** | follow links across architectures / find what a change affects |
 | **Graph store** | the local knowledge graphs and the federated graph saved as JSON files on the device (`sdem-graph build`); no server ([`graph-store-design.md`](graph-store-design.md)) |
