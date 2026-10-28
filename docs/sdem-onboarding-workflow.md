@@ -1,6 +1,6 @@
 # SDEM onboarding — bringing your existing designs into SDEM
 
-> **Status: current guide — design onboarding is built (v0.9.3); every command shown was run on the test exports.**
+> **Status: current guide — design onboarding is built (v0.9.4); every command shown was run on the test exports.**
 
 > **One document for design onboarding** (built 2026-10-28): what onboarding is, how to do it — the commands and each step with what you will see — what each step does to the data, and when the data is ready. To **test** it step by step with sealed expected results: [`use-case-example-4.md`](evidence/use-case-example-4.md). Technical detail: [`sdem-transform-design.md`](design/sdem-transform-design.md) (reading the designs), [`sdem-load-design.md`](design/sdem-load-design.md) (loading, gap records). For architects; no AI needed.
 
@@ -95,7 +95,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 4. **Put your export under `work/`**, e.g. `work/imports/payarch/`. Only `work/`, `private/` and `secrets/` are kept out of Git — anywhere else, your designs could be committed and shared.
 5. Have your **BIAN layer** to hand — one file, `a2-service-domain.json`, needed once so SDEM can connect your designs to BIAN. What it is and where it comes from: [*Your BIAN (A2) layer*](#your-bian-a2-layer) below. **For the made-up sample, make it from the base BIAN** that ships with SDEM: `sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json`.
 
-> The examples below show what you will see with the made-up export `examples/designs/confluence-folder-export`, with `--ocr off` (the same on every machine). Try it first: `cp -r examples/designs/confluence-folder-export work/imports/payarch`.
+> The examples below show what you will see with the made-up export `examples/designs/confluence-folder-export`, with `--ocr off` (the same on every machine). Try it first: `mkdir -p work/imports && cp -r examples/designs/confluence-folder-export work/imports/payarch`.
 
 ### Your BIAN (A2) layer
 
@@ -171,13 +171,13 @@ Coverage: 80% captured (45 captured, 11 not captured, 4 skipped by design)
 ```
 **If a table or diagram you need shows *no rule* or *unclassified***, SDEM does not know your words yet — copy the rules and add them, then look again:
 ```bash
-sdem transform rules -o work/my-rules.json                # a copy of SDEM's rules; e.g. add "system name" as an application column
-sdem transform inspect work/imports/payarch --rules work/my-rules.json
+sdem transform rules -o rules/transform-rules.json        # a copy of SDEM's rules, committed in your estate repository; e.g. add "system name" as an application column
+sdem transform inspect work/imports/payarch --rules rules/transform-rules.json --ocr off
 ```
 
 ### 2 · Read the designs
 ```bash
-sdem transform run work/imports/payarch -o work/history          # add --rules work/my-rules.json if you made one
+sdem transform run work/imports/payarch -o work/history --ocr off     # add --rules rules/transform-rules.json if you made one
 ```
 ```
 6 pages read: A1 3 records, A3 6 records, A4 8 records, 7 links inside, 6 candidate links between, 3 pictures for a person
@@ -273,7 +273,7 @@ build 1 accepted: … designs.graph.json (24 nodes, 42 edges), federated.graph.j
 ### 9 · Ask questions
 ```bash
 sdem trace HIS-A1-PAYMENT-INITIATION --direction down --graph work/graph   # what does this capability depend on?
-sdem impact HIS-A4-PAYAPP01 --change retire --graph work/graph      # what breaks if we retire this server?
+sdem impact HIS-A4-PAYMENTS-KUBERNETES-CLUSTER --change retire --graph work/graph   # what breaks if we retire this cluster?
 sdem dashboard --estate estates/history -o work/dashboard.html     # open it in your browser
 ```
 ```
@@ -282,7 +282,14 @@ HIS-A1-PAYMENT-INITIATION 'Payment Initiation'  [A1.BusinessCapability]
    └─ -REALIZED_BY-> HIS-A3-PAYMENTS-HUB 'Payments Hub'  [A3.ApplicationComponent]  (MAP-003)
       └─ -DEPLOYED_ON-> HIS-A4-PAYMENTS-KUBERNETES-CLUSTER 'Payments Kubernetes Cluster'  [A4.Node]  (MAP-001)
 ```
-Capability → BIAN → application → technology, every step an approved connection. The trace ends with **where the item is documented** — its Confluence pages and their open gaps. The dashboard shows everything, clickable, with a **Designs & gaps** tab.
+Capability → BIAN → application → technology, every step an approved connection. The impact of retiring the cluster follows the same approved connections back up:
+```
+  design_change_required   A4  HIS-A4-PAYMENTS-KUBERNETES-CLUSTER  Payments Kubernetes Cluster  via -
+  design_change_required   A3  HIS-A3-PAYMENTS-HUB                 Payments Hub  via MAP-001
+  review_required          A2  SD-PAYMENT-ORDER-INITIATION         Payment Order Initiation  via MAP-001, MAP-003
+  review_required          A1  HIS-A1-PAYMENT-INITIATION           Payment Initiation  via MAP-001, MAP-003, MAP-002
+```
+Only approved connections count — an item whose connection you did not approve shows no impact. The trace ends with **where the item is documented** — its Confluence pages and their open gaps. The dashboard shows everything, clickable, with a **Designs & gaps** tab.
 
 ### 10 · Tidy up the gaps
 ```bash
@@ -305,31 +312,7 @@ Never copy `work/` — it holds the export. **Your approvals become final when t
 
 ## 6. What each step does to the data
 
-```mermaid
-flowchart LR
-    C[("Confluence")] -->|"export<br/>(you)"| X[("export folder<br/>pages · diagrams · pictures")]
-    X -->|"sdem transform run"| W[("work/history<br/>CANDIDATE data")]
-    W -->|"you review<br/>extraction-report.md"| W
-    W -->|"sdem load"| E[("estates/history<br/>LOADED data")]
-    E -->|"sdem link"| P[("work/links/proposals.json<br/>PROPOSED links")]
-    P -->|"sdem approve<br/>(you)"| M[("estates/history/mappings.json<br/>APPROVED links")]
-    E -->|"sdem build"| G[("work/graph<br/>KNOWLEDGE GRAPH")]
-    M --> G
-    G -->|"use"| U(["trace · impact · matrix · dashboard"])
-    MM[["metamodel + schemas<br/>(the rulebook)"]] -.->|"checks every step"| W & E & P & M & G
-```
-
-**Only two steps create anything new:** the **transform** creates the architecture data; **`sdem build`** creates the graphs. Every other step reviews, moves, proposes or approves.
-
-| Stage | Who | What happens to the data | Produces | Lives in | Stopped by | Data is now |
-|---|---|---|---|---|---|---|
-| **Export** | you / Confluence | pages, diagrams and pictures leave Confluence | an export folder (any layout) | `work/imports/…` — never committed | — | **raw** |
-| **Transform** — `sdem transform run` | SDEM (rules; on-device OCR for pictures) | every item is accounted for — captured, skipped by design, or **not captured** (listed with its place and text); **the architecture data is created**: A1, A3, A4 entities and the links inside each architecture, each with its source | candidate datasets `a1/a3/a4-*.json`, `extraction.json`, `design-index.json`, `extraction-report.md` | `work/history` | nothing is refused — problems are **reported** so you can see them | **candidate**: right format, *not yet* reviewed, *maybe* not valid |
-| **Review** | you | you decide what is right — validation cannot tell an OCR misread from a real name | the ids to reject | — | your judgement | **reviewed** |
-| **Load** — `sdem load` | you run it | **the data is not changed**: the entities you keep are copied, unchanged, into the estate; the ones you reject are left out; your decision is recorded; what did not fit is kept as **gap records** | the estate's datasets (+ A2 with `--a2`), `designs/design-records.json`, `mappings.json` (empty for a new estate), `loads/LOAD-<n>.json` with the reconciliation | `estates/history` | **refused, nothing written**, if the estate would fail validation, an entity there would change, or the person is not a person | **loaded**: validated *and* reviewed |
-| **Link** — `sdem link` | SDEM (rules engine) | links **between** architectures are **proposed**; those touching onboarded entities are never above *low* until the entity is confirmed | `proposals.json` | `work/links` | — (proposals only) | **proposed links** |
-| **Approve** — `sdem approve` | you | a proposal becomes an approved record — your name, the date, the evidence, the BIAN release for BIAN links | records in `mappings.json` | `estates/history/mappings.json` | **refused** if evidence or the BIAN release is missing, or the reviewer is not a person | **approved links** |
-| **Build** — `sdem build` | SDEM | **the graphs are created** from the loaded data and approved links | a graph per architecture, `federated.graph.json` (the knowledge graph), `designs.graph.json` (pages and gaps) | `work/graph` | **refused** if any data fails validation, or it is unloaded candidate data (CTL-23) | **ready** |
+In short: the **transform** reads and writes *candidates* (nothing in your estate changes); the **load** copies the ones you keep, unchanged, and records what did not fit as gap records; **link** proposes connections and **approve**/**connect** make them real; **build** makes the knowledge graph from approved data only. Step by step, with a diagram of where every file goes, for those who want the detail: [onboarding — what happens to the data](design/sdem-onboarding-internals.md#what-each-step-does-to-the-data).
 
 ## 7. Validated and reviewed — both are needed
 
@@ -357,18 +340,7 @@ You are told in the transform report, the load's output, `sdem trace` (*N open g
 
 ## 9. The metamodel and schemas — the rulebook, not an output
 
-The metamodel (`metamodel/`) and the schemas (`schema/`) are **written and approved before any data**. Onboarding never generates or changes them; every step checks the data against them.
-
-| Rulebook file | Used by | For |
-|---|---|---|
-| `metamodel/a1…a4-*.json`, `entity-attributes.json` | transform, load, check, build | which entity types exist, their attributes |
-| `metamodel/level-relationships.json` | transform, load, check, build | which links are allowed **inside** an architecture |
-| `schema/relationship-types.json`, `metamodel/relationship-rules.json` | transform, link | which links may exist **between** architectures; the engine's rules |
-| `schema/level-model.schema.json`, `schema/entities/<A>/<Entity>.schema.json` | transform, load, check | the format of a dataset and of each entity |
-| `schema/design-records.schema.json` | load, check, build | the format of design and gap records |
-| `schema/relationship-registry.schema.json` | approve | the format of an approved link |
-| `schema/graph-store.schema.json` | build | the format of the graph store |
-| `metamodel/transform-rules.json` | transform | how to read tables, diagrams and text (yours to tune) |
+Onboarding never changes the rulebook (the metamodel and schemas): your designs are checked **against** it. If something in your designs has no place in it, it is kept as a gap record and your in-house SDEM lead can raise it. More: [onboarding — the rulebook is not an output](design/sdem-onboarding-internals.md#the-rulebook-is-not-an-output).
 
 ## 10. Next time
 

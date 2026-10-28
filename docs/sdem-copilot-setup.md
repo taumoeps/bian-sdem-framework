@@ -30,7 +30,7 @@ No MCP servers and no API keys are used — SDEM runs through its `sdem` command
 
 Sign up at **github.com/signup** (or use an existing account). Turn on two-factor authentication (*Settings → Password and authentication*).
 
-**Use a personal account for this project.** It holds public and made-up data only. Never put an employer's architecture data in it, and follow your organisation's rules for any work account (for example, no MCP on Copilot).
+**Which account.** *Learning, with the SDEM project's made-up data:* a personal account is fine. *Real work, in your organisation's estate repository:* use **your organisation's** GitHub account and Copilot licence, under its rules (for example, no MCP) — never a personal account with employer data.
 
 ### 2. A GitHub Copilot plan
 
@@ -82,7 +82,7 @@ If the agents do not appear, check that the folder is trusted and that VS Code i
 
 ### 7. Run the spike
 
-Follow [`sdem-agent-platform-spike.md`](sdem-agent-platform-spike.md) — nine steps that confirm the agents work in your set-up; the prompt `/example3-rehost` runs step S3 for you. Record the results in its table.
+Follow [`sdem-agent-platform-spike.md`](sdem-agent-platform-spike.md) — eleven steps (S1–S11) that confirm the agents work in your set-up; the prompt `/example3-rehost` runs step S3 for you. Record the results in its table.
 
 ## Using it day to day
 

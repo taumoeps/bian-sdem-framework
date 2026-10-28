@@ -1,12 +1,12 @@
 # SDEM Workbench — User Guide
 
-> **Status: current guide (v0.9.3) — the one full command reference is §7.**
+> **Status: current guide (v0.9.4) — the one full command reference is §7.**
 
 > For architects who are new to SDEM. No prior knowledge assumed. Every command and output in this guide was run on the examples in this project (2026-10-28).
 >
 > Related: [read this first](sdem-overview.md) (what SDEM is) · [glossary](glossary.md) (every term) · [configuration](sdem-configuration.md) and [administration](sdem-administration.md) (setting SDEM up for a team).
 
-**Contents:** [1 What SDEM is](#1-what-sdem-is--in-two-minutes) · [2 Key words](#2-key-words) · [3 Set up](#3-set-up--once) · [4 The workbench screen](#4-the-workbench-screen) · [5 Quick start](#5-quick-start--15-minutes) · [6 Your architecture data](#6-your-architecture-data) · [7 Operations](#7-command-reference) · [8 Workflow examples](#8-workflow-examples) · [9 Working with Copilot](#9-working-with-copilot) · [10 Rules you must know](#10-rules-you-must-know) · [11 Troubleshooting](#11-troubleshooting) · [12 Where to go next](#12-where-to-go-next)
+**Contents:** [1 What SDEM is](#1-what-sdem-is--in-two-minutes) · [2 Key words](#2-key-words) · [3 Set up](#3-set-up--once) · [4 The workbench screen](#4-the-workbench-screen) · [5 Quick start](#5-quick-start--15-minutes) · [6 Your architecture data](#6-your-architecture-data) · [7 Command reference](#7-command-reference) · [8 Workflow examples](#8-workflow-examples) · [9 Working with Copilot](#9-working-with-copilot) · [10 Rules you must know](#10-rules-you-must-know) · [11 Troubleshooting](#11-troubleshooting) · [12 Questions people ask](#12-questions-people-ask) · [13 Where to go next](#13-where-to-go-next)
 
 ---
 
@@ -71,10 +71,10 @@ Then:
 
 1. **Get the SDEM project** (the tool and the made-up examples — public):
    ```bash
-   git clone https://github.com/taumoeps/bian-sdem-framework.git sdem
+   git clone https://github.com/taumoeps/bian-sdem-framework.git && cd bian-sdem-framework
    ```
    Your organisation's **real** data is in its private estate repository, set up from [`templates/estate-repo`](../templates/estate-repo/README.md) — its README installs SDEM the same way, pinned to a release.
-2. **Open it in VS Code:** *File → Open Folder…* → choose the `sdem` folder. When VS Code offers to install the **recommended extensions** (Python, GitHub Copilot Chat, Markdown Preview Mermaid Support), accept.
+2. **Open it in VS Code:** *File → Open Folder…* → choose the `bian-sdem-framework` folder. When VS Code offers to install the **recommended extensions** (Python, GitHub Copilot Chat, Markdown Preview Mermaid Support), accept.
 3. **Open the terminal pane:** *View → Terminal* (shortcut **Ctrl+`**).
 4. **Find your Python 3.10 or later.** `python3 --version` — if it says 3.10 or later, use `python3` below. If it says 3.9, or `python3.13` gives *command not found* after you installed it, it is in Homebrew's folder:
    ```bash
@@ -168,14 +168,14 @@ sdem check --estate $E
 (`--estate` names the estate folder; it is the same as listing its five files, `$E/a*.json $E/mappings.json`.) You see one `OK` line per architecture and for the registry. `WARN` lines are advice (something the rulebook expects but does not require); `ERROR` lines must be fixed.
 ```
 OK: level A1 (synthetic-bank-payments-a1)
-WARN: level A2 (synthetic-bank-payments-a2): instance SD-PE: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)
+WARN: level A2 (synthetic-bank-payments-a2): instance BD-PAYMENTS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)
 … (six WARN lines in all)
 OK: level A2 (synthetic-bank-payments-a2)
 OK: level A3 (synthetic-bank-payments-a3)
 OK: level A4 (synthetic-bank-payments-a4)
 OK: mappings #1
 ```
-The six warnings are expected for this example: the made-up BIAN layer leaves out some detail the rulebook recommends (here, the service groups of *Payment Execution*). `OK` on every layer means the data is accepted.
+The six warnings are expected for this example: the made-up BIAN layer leaves out some detail the rulebook recommends — a business area, the service groups and control records of two service domains, and the attributes of one business object. `OK` on every layer means the data is accepted.
 
 **Step 3 — build the knowledge graph (J4):**
 ```bash
@@ -192,6 +192,7 @@ build 1 accepted: a1-business.graph.json (16 nodes, 14 edges), …, federated.gr
 sdem trace PRC-PAY-01 --direction down --graph work/graph
 ```
 ```
+baseline: graph store work/graph, build 1 (A1 2026.10, A2 2026.10, A3 2026.10, A4 2026.10)
 DOWNSTREAM (depends on):
 PRC-PAY-01 'Capture and validate payment instruction'  [A1.BusinessProcess]
 └─ -USES_DOMAIN-> SD-PI 'Payment Initiation (synthetic selection)'  [A2.ServiceDomain]  (PAY-003)
@@ -220,7 +221,7 @@ Copilot reads the terminal output and explains it, naming the links. If it sugge
 
 ### 6.1 The files
 
-An estate is a folder with five files:
+An estate is a folder with up to five data files — and, once you use them, the records SDEM keeps beside them (loads, gaps, BIAN updates; [the full list](sdem-architecture.md#inside-an-estate)):
 
 | File | Holds |
 |---|---|
@@ -277,12 +278,14 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 
 ## 7. Command reference
 
+The *Journey* column groups commands by task: **J1** check · **J2** propose links · **J3** review and approve · **J4** build and store · **J5** trace, impact, matrices · **J6** plan missing layers (AID) · **J7** dashboards and views · **J8** explain · **J9** onboarding and your BIAN layer · **AG** agents.
+
 **This is the one full list of SDEM's commands** — other documents show only the commands of their own task and link here. `sdem --help` lists them all; `sdem <command> --help` shows the options and a worked example. Exit codes: `0` OK, `1` issues found (or a check refused the action), `2` the command was typed wrongly or its input is unusable (a missing folder, a file that is not valid JSON), `3` an internal error in SDEM — one line; set `SDEM_DEBUG=1` to see the details. `sdem --version` shows the version.
 
 | Command | Journey | What it does | When you use it | Typical next step |
 |---|---|---|---|---|
 | `sdem check --estate <dir>` (or the files) | J1 | checks datasets and registry against the rulebook | after any change to the data | fix errors; `sdem build` |
-| `sdem validate <registry>` | J1 | checks a registry or proposals file on its own (`--strict` treats warnings as errors) | after editing `mappings.json` | `sdem check` |
+| `sdem validate <registry>` | J1 | checks a registry or proposals file on its own (`--strict` treats warnings as errors) | after `sdem approve` or `sdem connect`, or before a pull request | `sdem check` |
 | `sdem link <files> --out <dir>` | J2 | the inference engine proposes the missing links; writes `proposals.json` | when data is new or changed | `sdem review` |
 | `sdem review <proposals.json>` | J3 | lists the proposals, weakest first, with rule, confidence and reasoning | before approving | `sdem approve` (§8.2) |
 | `sdem approve <id> --proposals … --estate … --reviewer <you> --evidence <kind:ref> [--bian-release <release>]` | J3 | **you** approve a proposed link: writes a correct registry record, checks it first | after review | pull request |
@@ -301,8 +304,9 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem change propose <file> --estate <dir> --agent … --person …` | AG | a layer's change set: checked before it lands, then its impact recorded as a change event | agent platform (§9a) | the orchestrator plans the work |
 | `sdem change revert <CS-id> --estate <dir> --agent … --person …` | AG | undo the latest change set of a layer — restores it exactly, on record | a change was wrong | rebuild the graph store |
 | `sdem connect <source> <TYPE> <target> --estate <dir> --reviewer <you> --evidence <kind:ref> --rationale "<why>"` | J3 | **you** state a connection the engine did not propose (e.g. a BIAN service domain *realised by* an application) — the same checks as `sdem approve` | when you know a connection the design does not show in detail | pull request |
-| `sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you>` | J9 | brings every estate's BIAN layer up to date with your shared one — checked; never strands an approved connection | after changing the shared BIAN layer | pull request |
+| `sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you>` | J9 | brings every estate's BIAN layer up to date with your shared one — checked; never strands an approved connection; `--dry-run` first shows what would change | after changing the shared BIAN layer | pull request |
 | `sdem copilot install [--to <repo>] [--dry-run] [--force]` | AG | puts SDEM's Copilot instructions, agents, prompts and skills into your estate repository's `.github/`, matching this SDEM version; keeps files your team changed | once after installing SDEM in an estate repository; again after each upgrade | reload VS Code |
+| `sdem change adopt --estate <dir> --layer <A1…A4> --person <you> --reason "<what you changed>"` | AG | records a hand edit to a layer that agents work on through change sets, so their next change set starts from it | when SDEM says a dataset *was changed outside a change set* | `sdem check` |
 | `sdem events --estate <dir> [--open]` | AG | change events, their impact and open work | to see what is waiting | `sdem work plan` |
 | `sdem work plan · list · claim …` | AG | work items: planned by the orchestrator, claimed and answered by the layer agents | agent platform (§9a) | `sdem change propose --work …` |
 | `sdem transform inspect <export>` · `sdem transform run <export> -o <dir>` | J9 | **transforms** an export of past designs (Confluence) into candidate architecture entities, with rules: tables, draw.io and PlantUML diagrams, known names in the text, text in pictures (on-device OCR) → entities and links with their source; pictures listed for you | bringing in past designs (§8.7) | review `extraction-report.md` |
@@ -491,51 +495,7 @@ Other kinds of change: `--change modify`, `--change replace` (e.g. an applicatio
 
 ### 8.5 Plan a new design with AID
 
-*Goal: you have only the business design; see what BIAN domains, applications and deployments it implies — before anything is built.*
-
-AID needs a **BIAN catalogue** — the BIAN service domains your organisation uses, as an A2 dataset. Here the example estate's A2 file stands in for it.
-
-```bash
-sdem aid project --have work/my-estate/a1-business.json --catalogue work/my-estate/a2-service-domain.json --out work/prj
-```
-```
-projection PRJ-A1 written to work/prj: A2 16 records, A3 6 records, A4 1 records, 11 links
-NOTE: SO-PI-06: Notify has no REST form — no API projected
-```
-
-- AID chose the BIAN domain the business needs (*Payment Initiation*, because the processes name its operations), projected **one application component** for it, **one API per operation** in BIAN's REST style, and **one deployment** — but **no platform or environment**, because nothing in the business design says anything about them.
-- Everything projected has an id starting `PRJ-`, a confidence (never above 0.6) and its reasoning. **It is a plan, not real data** — SDEM refuses to load it into real data.
-
-See it on top of what you have:
-```bash
-sdem view --graph work/graph --projection work/prj -o work/plan.html
-```
-Projected records and links are **dashed** and labelled **PROJECTED**. Ask why any element exists:
-```bash
-sdem explain SD-PI --projection work/prj
-```
-```
-PROJECTED ELEMENT  SD-PI  Payment Initiation (synthetic selection)  (A2 A2.ServiceDomain)
-  step              F1
-  rule              BIAN catalogue reference
-  source reference  BIAN reference catalogue … — the element is copied, not invented
-  inferred from     ACT-PAY-01a 'Capture instruction', …, PRC-PAY-01 'Capture and validate payment instruction', …
-  reasoning         the business layer points to it — S04 — invokes SO-PI-01 (PRC-PAY-01.invokes); …
-  confidence        0.6
-```
-
-**Later, when the real design exists**, compare plan and reality:
-```bash
-sdem aid gaps work/prj --actual work/my-estate/a2-service-domain.json work/my-estate/a3-application.json work/my-estate/a4-technology.json work/my-estate/mappings.json
-```
-```
-A2 service domains: {'projected': 1, 'real': 1, 'matched': 1, 'precision': 1.0, 'recall': 1.0}
-A3 APIs (method and path): {'projected': 5, 'compared': 5, 'matched': 3, 'differs': 2, …}
-A4 deployments: {'projected': 1, 'real': 1, 'matched': 0, …}
-```
-Each line says how close the plan was: here the domain and component were right, 3 of 5 APIs matched the real method and path, and the real application is deployed twice where AID planned once.
-
-AID also works upwards — e.g. from technology only (`--have a4-technology.json`) it suggests the applications, domains and capabilities that technology appears to support, at low confidence. See [`aid-design.md`](design/aid-design.md).
+*Goal: you have only the business design; see what BIAN domains, applications and deployments it implies — before anything is built.* `sdem aid project` projects the missing layers as a **planned** design, kept apart from your real data and never approved. Step by step, with every command and output: [planning missing layers with AID](sdem-planning-with-aid.md).
 
 ### 8.6 Question a proposal or projection
 
@@ -554,8 +514,8 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
 **The full walkthrough, every step with what you will see, is the [onboarding workflow](sdem-onboarding-workflow.md)** — follow that. In short:
 
 ```bash
-cp -r examples/designs/confluence-folder-export work/imports/payarch     # the made-up sample; your real export goes in work/imports/<name>/
-sdem transform inspect work/imports/payarch                              # what is in the export, what SDEM can read — changes nothing
+mkdir -p work/imports && cp -r examples/designs/confluence-folder-export work/imports/payarch     # the made-up sample; your real export goes in work/imports/<name>/
+sdem transform inspect work/imports/payarch --ocr off                    # what is in the export, what SDEM can read — changes nothing
 sdem transform run work/imports/payarch -o work/history --ocr off        # suggestions + work/history/extraction-report.md
 # read the report; note the ids you reject
 sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
@@ -574,7 +534,7 @@ sdem link --estate estates/history --out work/links                      # then 
 
 Copilot is your **assistant**, not your architect. It reads the project's files and your terminal output and helps you understand and decide.
 
-**Ready-made prompts:** type `/` in the chat for SDEM's prompt files — `/sdem-explain`, `/sdem-fix`, `/sdem-review`, `/sdem-impact-note`, `/sdem-pr`, `/aid-explain` (and `/sdem-process-events`, `/sdem-layer-work` for the agents). Copilot also loads SDEM's skills (`.github/skills/`) when they fit your question.
+**Ready-made prompts:** type `/` in the chat for SDEM's prompt files — `/sdem-explain`, `/sdem-fix`, `/sdem-review`, `/sdem-impact-note`, `/sdem-pr`, `/aid-explain`, `/sdem-onboarding-review` (and `/sdem-process-events`, `/sdem-layer-work` for the agents). Copilot also loads SDEM's skills (`.github/skills/`) when they fit your question.
 
 **Good things to ask:**
 
@@ -626,10 +586,10 @@ Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem
 | `ERROR: … missing required property 'name'` | a record lacks a required field | add it; `$.instances[0]` is the first record in the list |
 | `ERROR: … duplicate mapping_id` | two links share an id | give the new one an unused id |
 | `ERROR: … evidence missing required kind(s) [...]` | an approved link lacks the evidence its type needs | add `kind:document-reference` (§8.2 table) |
-| `ERROR: … CTL-20 (AG-S08): … was changed outside a change set since CS-…` | a dataset was edited by hand after agents started changing that layer | if it was you: `sdem change adopt --estate <dir> --layer <A?> --person <you> --reason <why>`; if not, find out who and undo it |
+| `ERROR: … CTL-20 (AG-S08): … was changed outside a change set since CS-…` | **change provenance (CTL-20):** a dataset was edited by hand after agents started changing that layer | if it was you: `sdem change adopt --estate <dir> --layer <A?> --person <you> --reason <why>`; if not, find out who and undo it |
 | `ERROR: … CTL-21 …` | a link was approved with an agent or tool as reviewer | approve as yourself: `--reviewer your.name` |
 | `ERROR: CTL-19: …` | a change set crosses its layer, or an agent works outside its layer | keep each change set to one layer; let the orchestrator plan the other layers' work |
-| `ERROR: CTL-20: …` | a change set or work-item step without the agent or the person | add `--agent` and `--person` |
+| `ERROR: CTL-20: …` (other messages) | **change provenance (CTL-20):** a change set or work-item step without the agent or the person behind it | add `--agent` and `--person` |
 | `ERROR: … cannot enter a real architecture dataset (CTL-16)` | projected content was put into real data | remove it; projections stay in their own folder |
 | `WARN: … expects at least 1 (LC-10m)` | the rulebook recommends a link that is missing | advice — fix when you can |
 | `build … rejected: N error(s); the previous graph store is unchanged` | the data has errors, so the graph was not rebuilt | run `sdem check` and fix the errors |
@@ -640,7 +600,19 @@ Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem
 | Windows PowerShell and `a*.json` | PowerShell does not expand `*` — `sdem` does it itself | nothing to do; or use `--estate <folder>` |
 | Mermaid diagrams show as text | the preview extension is missing | install *Markdown Preview Mermaid Support*, or view the file on GitHub |
 
-## 12. Where to go next
+## 12. Questions people ask
+
+**How do I reject a proposal?** Don't approve it. Proposals are only suggestions: they live in the `proposals.json` that `sdem link` writes to `work/`, and are made afresh each time you run it. Nothing is stored for a proposal you leave alone.
+
+**An approved connection turned out to be wrong. How do I remove it?** Approved connections are never edited or deleted — that is how the history stays trustworthy. Replace it with the right one: `sdem approve <the right proposal> … --supersedes <wrong id>` (or `sdem connect … ` and then supersede). SDEM has **no command yet to withdraw a connection without a replacement**; until it does, ask your in-house SDEM lead — never edit `mappings.json` by hand.
+
+**How do I retire an application or a server?** First see what it affects: `sdem impact <id> --change retire --graph <graph>`. Then, on a branch, set the record's `lifecycle_status` to `retired` in its layer's file (`planned`, `active`, `deprecated` and `retired` are the allowed values), supersede the connections the impact report lists, run `sdem check`, and open a pull request. Keep the record — history is kept, not deleted.
+
+**Does SDEM work on Windows or Linux?** Yes — it needs only Python 3.10 or later (its checks run on Linux on every release). On Windows, activate the environment with `.venv\Scripts\activate`, and PowerShell does not expand `a*.json` (use `--estate`). Reading text in pictures uses the Mac's own text recognition, or Tesseract where it is installed; otherwise add `--ocr off`. PlantUML previews need Java and Graphviz.
+
+**How does SDEM relate to our EA tool or CMDB?** It does not replace them. Today data comes in from designs (onboarding) or as files in SDEM's format; reading straight from tools — spreadsheets, a CMDB, an application portfolio — is planned (*tool onboarding*, see the ROADMAP). What SDEM builds is open: the knowledge graph is written as JSON Graph Format files (`sdem build`), and the estate itself is plain JSON in documented formats, so other tools can read both.
+
+## 13. Where to go next
 
 | To learn … | Read |
 |---|---|

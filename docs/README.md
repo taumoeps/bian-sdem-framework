@@ -1,6 +1,6 @@
 # SDEM documentation
 
-> **Status: current (v0.9.3)** — start here. Everything on this page is written for people who will use or run SDEM; nothing assumes you know it already.
+> **Status: current (v0.9.4)** — start here. Everything on this page is written for people who will use or run SDEM; nothing assumes you know it already.
 
 ## New to SDEM? Read these, in order
 
@@ -15,6 +15,12 @@ flowchart LR
 | 2 | [**User guide**](sdem-workbench-user-guide.md) | install, a 15-minute quick start, every task step by step, **the command reference** (§7), troubleshooting |
 | 3 | [**Onboarding your existing designs**](sdem-onboarding-workflow.md) | turning a Confluence export into SDEM data, step by step |
 | — | [Glossary](glossary.md) | any word you do not know |
+
+## More tasks
+
+| Read | For |
+|---|---|
+| [Planning missing layers with AID](sdem-planning-with-aid.md) | projecting the BIAN, application and technology layers you do not have yet — a planned design, kept apart from real data |
 
 ## Understanding SDEM
 

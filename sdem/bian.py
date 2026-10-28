@@ -540,7 +540,8 @@ def main(argv=None):
     print(f"wrote {out}: {len(chosen)} service domain(s) from BIAN release {dataset['model_version']} — " + ', '.join(f'{k} {v}' for k, v in sorted(c.items())))
     print(f"checked: no errors ({len(warnings)} advice); report {report_path}")
     if rep['derived']: print(f"confirm: {len(rep['derived'])} derived asset type(s) and functional pattern(s) — listed in the report")
-    print(f"next: sdem load <candidates> --estate <estate> --person <you> --a2 {out}")
+    if a.previous: print(f"next: bring your estates up to date — sdem bian update --root estates --a2 {out} --person <you> --dry-run")
+    else: print(f"next: sdem load <candidates> --estate <estate> --person <you> --a2 {out}   (first load of a domain)")
     return 0
 
 

@@ -1,13 +1,13 @@
 # SDEM operating model — running SDEM for real
 
-> **Status: approved by the SDEM owner 2026-10-29** (the four decisions in §7). How an organisation runs SDEM on real architecture data: where things live, who does what, how changes, upgrades and rulebook changes flow, support, and what has to be true before starting. The pilot that tests it: [`sdem-pilot-plan.md`](sdem-pilot-plan.md).
+> **Status: current (v0.9.4)**. How an organisation runs SDEM on real architecture data: where things live, who does what, how changes, upgrades and rulebook changes flow, support, and what has to be true before starting. The pilot that tests it: [`sdem-pilot-plan.md`](sdem-pilot-plan.md).
 
 ## 1. Where things live
 
 ```mermaid
 flowchart LR
     subgraph PUB["Public — this repository"]
-      T["SDEM tool + rulebook<br/>made-up data only"] --> REL["Tagged releases<br/>v0.9.3 …"]
+      T["SDEM tool + rulebook<br/>made-up data only"] --> REL["Tagged releases<br/>v0.9.4 …"]
     end
     subgraph ORG["Inside the organisation"]
       ER["Estate repository (private)<br/>estates/ · pinned SDEM · CI"]
@@ -28,17 +28,17 @@ flowchart LR
 
 **One estate per domain.** Every domain works the same way — same rulebook, same commands, same checks; a domain joins by adding a folder in `estates/` with its owner and code owners. There are no per-domain settings; the one optional setting — the table headings your organisation's designs use — is shared by every domain ([pilot plan](sdem-pilot-plan.md#no-per-domain-settings)).
 
-**Why:** the employer owns its designs; this repository is public. One private estate repository per organisation (or per division) keeps the boundary simple and auditable. **Confidence: high** — follows from the IP constraint and the 2026-10-29 audit finding.
+**Why:** the employer owns its designs; this repository is public. One private estate repository per organisation (or per division) keeps the boundary simple and auditable.
 
 ## 2. Roles
 
 | Role | Who | Does |
 |---|---|---|
-| **Architect** | the architects of A1, A3, A4 (and A2 where licensed) | onboard designs, keep their layer's data current, propose and approve links in their area, resolve gaps |
+| **Architect** | the architects of each layer (A1, A3, A4; A2 if your organisation keeps its own BIAN layer) | onboard designs, keep their layer's data current, propose and approve links in their area, resolve gaps |
 | **Reviewer** (code owner) | named senior architects per layer, in `CODEOWNERS` | review and merge pull requests; a reviewer is always a person |
 | **Estate owner** | one person per estate — usually the domain's lead architect | accountable for the estate's quality: gaps worked down, links reviewed, CI green |
 | **In-house SDEM lead** | one named person **in your organisation** — usually the estate owner of the first domain, or an architecture lead | looks after SDEM for your organisation: keeps the pinned version current, triages questions and rulebook requests before they go upstream, owns `bian/` and the `--patterns` table, and acts if the SDEM maintainer is unavailable (§4) |
-| **Rulebook owner** (upstream) | the SDEM owner (today: Steven Taumoepeau) | approves every rulebook change and baseline; the high-level spec stays frozen without them |
+| **Rulebook owner** (upstream) | the SDEM project's owner (see the SDEM repository) | approves every rulebook change and baseline; the high-level spec stays frozen without them |
 | **SDEM maintainer** (upstream) | whoever builds SDEM (today: the owner) | tool fixes and releases, migrations, answering SDEM questions |
 | **Platform owner** | the organisation's engineering platform team | the private repository, branch protection, CI runners, internal hosting, Copilot policy |
 
@@ -47,7 +47,7 @@ flowchart LR
 | Activity | Architect | Reviewer | Estate owner | Rulebook owner | Maintainer | Platform |
 |---|---|---|---|---|---|---|
 | Onboard a design | R | C | A | | | |
-| Approve a link (`sdem approve`) | R | | A | | | |
+| Approve a link (`sdem approve`, `sdem connect`) — final when its pull request is merged | R | R (merges) | A | | | |
 | Merge a pull request | | R | A | | | |
 | Resolve or accept a gap | R | C | A | C (if it needs a new entity type) | | |
 | Change the rulebook | C | | C | **A** | R | |
@@ -98,16 +98,18 @@ SDEM failures say what to do: exit `1` a check refused (read the message), `2` t
 |---|---|---|---|
 | 1 | **Legal, data, security and AI clearance** to run SDEM on the organisation's designs — the [adoption checklist](sdem-adoption-checklist.md) | owner | the designs belong to the employer; SDEM is personal open source |
 | 2 | Private estate repository with **branch protection and code owners** | platform | without it a person's approval is not enforced ([`sdem-repository-protection.md`](sdem-repository-protection.md)) |
-| 3 | **Python 3.10 or later** on architects' machines (3.13 recommended) | platform | SDEM requires 3.10; Python 3.9 reached end of life in October 2025 (PEP 596 — high confidence) |
-| 4 | **Dashboard hosting decided** — decided: local HTML files for now (OM-3) | owner | dashboards show real architecture |
+| 3 | **Python 3.10 or later** on architects' machines (3.13 recommended) | platform | SDEM requires 3.10; Python 3.9 reached end of life in October 2025 |
+| 4 | **Dashboard hosting decided** — local HTML files to start (§7) | owner | dashboards show real architecture |
 | 5 | **Copilot and OCR policies** known — Copilot allowed or not (no MCP); reading text in pictures allowed or `--ocr off` | platform | SDEM works without Copilot; with it, Copilot files must match the pinned release |
 | 6 | **A2 (BIAN)**: which BIAN to use — the **base** that ships with SDEM (BIAN's public Semantic APIs 14.0.0, Apache-2.0), or your organisation's own, packed with `sdem bian pack` | owner | business connects to applications only through BIAN; the base works for everyone, your own BIAN replaces it |
 
-## 7. Decisions — approved by the owner 2026-10-29
+## 7. Starting choices — our recommendations
 
-| # | Decision | Decided | Confidence |
-|---|---|---|---|
-| OM-1 | One estate repository for the organisation, or one per division | **one**, with one folder per estate — simplest to protect and to report across | medium — depends on how divisions share data |
-| OM-2 | Who is the first estate owner | the architect leading the pilot domain | high |
-| OM-3 | Where dashboards are hosted | **local HTML files for now** (owner, 2026-10-29): `sdem home -o work/sdem`, open `work/sdem/index.html`; nothing to set up, nothing leaves the machine. Revisit internal hosting behind sign-in when more people need to see them | high |
-| OM-4 | Support hours | best effort during the pilot; review at its end | high |
+Your organisation makes these; these are the defaults we recommend for a first pilot.
+
+| Choice | Recommended | Why |
+|---|---|---|
+| One estate repository for the organisation, or one per division | **one**, with one folder per estate | simplest to protect and to report across — split only if divisions must not see each other's data |
+| Who is the first estate owner | the architect leading the pilot domain (often also the in-house SDEM lead) | they know the designs and review the work anyway |
+| Where dashboards are hosted | **local HTML files** to start (`sdem home -o work/sdem`, open `work/sdem/index.html`) — nothing to set up, nothing leaves the machine | move to internal hosting behind sign-in when more people need to see them |
+| Support | best effort during the pilot, reviewed at its end | the pilot shows what support is really needed |

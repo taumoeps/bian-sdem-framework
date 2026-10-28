@@ -18,11 +18,11 @@ flowchart LR
 4. **Protect `main`** — after the checks have run once (open a first pull request): require a pull request; **1 approval** and **review from Code Owners**; dismiss stale approvals; require the status check **`check`** (shown as *Estate checks / check* — not `validate`, which is SDEM's own); block force pushes and deletion; include administrators. Step by step, and how to test it: SDEM's [repository protection guide](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-repository-protection.md) §1–§4.
 5. **Dashboards** — local HTML files for now; later, authenticated internal hosting only (see *Dashboards* below).
 6. **Copilot (optional)** — only if your organisation allows it; SDEM works without it. After step 2, in this repository: `sdem copilot install` — it writes SDEM's Copilot instructions, agents, prompts and skills into `.github/`, matching the SDEM version you pinned. Commit them.
-7. **Your BIAN layer** — once, by whoever owns BIAN for you, shared by every domain:
+7. **Your BIAN layer** — once, by your in-house SDEM lead, shared by every domain:
    ```bash
-   sdem bian import --base --only "<service domain>" "<service domain>" … -o bian/a2-service-domain.json
+   sdem bian import --base --only "<service domain>" … -o bian/a2-service-domain.json
    ```
-   Read `bian/a2-service-domain.report.md` (confirm the derived asset types and functional patterns), then commit `bian/`. `--base` is BIAN's public Semantic APIs that ship with SDEM; to use your organisation's own BIAN instead, see [`bian/README.md`](bian/README.md). Add service domains later the same way, with `--previous bian/a2-service-domain.json` — then bring every estate up to date: `sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you>` (checked; it never strands an approved connection). Which service domains: search the base for your capabilities' words (`sdem bian list --base | grep -i <word>`); derived patterns are fine for a pilot, confirmed later by your BIAN owner.
+   Confirm the report, commit `bian/`. Choosing service domains, your own BIAN instead of the base, and keeping every estate up to date (`sdem bian update`): [`bian/README.md`](bian/README.md).
 8. **Policies to confirm** before real designs come in: legal and IP clearance, Copilot (allowed or not), and reading text in pictures (OCR — allowed or `--ocr off`). The checklist: SDEM's [adoption checklist](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-adoption-checklist.md).
 
 ## Every architect (once)
@@ -73,7 +73,7 @@ After a merge to `main`, CI builds the home page and one dashboard per estate (`
 
 They show real architecture. Publish them **only** behind your organisation's sign-in — an internal web server or intranet, or GitHub Pages with **private** visibility if your plan offers it. Never public GitHub Pages, a public bucket, or a link without sign-in. Add your upload step at the end of `.github/workflows/estate-ci.yml`.
 
-**For now (OM-3): local files.** Each architect builds them on their own machine — `sdem home --root estates -o work/sdem`, then open `work/sdem/index.html` in a browser. `work/` is never committed. CI's *sdem-dashboards* artifact is the same pages, for anyone without SDEM installed.
+**To start: local files.** Each architect builds them on their own machine — `sdem home --root estates -o work/sdem`, then open `work/sdem/index.html` in a browser. `work/` is never committed. CI's *sdem-dashboards* artifact is the same pages, for anyone without SDEM installed.
 
 ## Upgrading SDEM
 

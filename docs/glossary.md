@@ -44,7 +44,7 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Physical model** | the files a tool uses: one JSON Schema per entity type (`schema/entities/`, `physical-data-model.md`) |
 | **Conformance** | whether an architecture dataset obeys the logical rules; checked by `sdem check` — errors fail the architecture dataset, warnings do not |
 | **Architecture dataset** | one architecture's records and the links between them, in SDEM's format — e.g. the A1 architecture dataset `a1-business.json`. A *dataset* in the W3C DCAT sense (a collection of data from one source); its format is the architecture dataset schema `schema/level-model.schema.json`. Earlier documents call it an *export*, *level export* or *level model* |
-| **Estate** | a project's architecture data in one folder: the architecture datasets (one to four), the registry `mappings.json`, and — when used — `designs/` (design and gap records), `loads/` (load records) and `coordination/` (agent records). Dashboards call an estate a *project*. Example: `examples/payment-initiation/` |
+| **Estate** | a project's architecture data in one folder: the architecture datasets (one to four), the registry `mappings.json`, and the records SDEM keeps beside them ([the full list](sdem-architecture.md#inside-an-estate)). Dashboards call an estate a *project*. Example: `examples/payment-initiation/` |
 | **Adapter** | the program that converts a tool's own data into an architecture dataset; not built yet |
 | **Onboarding** | bringing data from a new source into SDEM until it is governed and ready for use: **ingestion**, then **normal processing**. Two routes: **design onboarding** and **tool onboarding** ([`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md)) |
 | **Design onboarding** | existing designs (documents exported from Confluence): `sdem transform` → a person reviews → `sdem load`, then normal processing; what does not fit an entity is kept as gap records — **built** |
@@ -86,7 +86,7 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 |---|---|
 | **CLI** | the command line in VS Code's terminal pane — SDEM's only interface: every engine and function is a `sdem` command (today `sdem-*`) |
 | **Copilot instructions** | `.github/copilot-instructions.md` — standing rules GitHub Copilot reads in this repository: use SDEM's commands for facts, never approve, never put projected content into real data, always give source, reasoning and confidence |
-| **Prompt file** | a `.github/prompts/*.prompt.md` file that gives Copilot Chat one `/` command for a journey, e.g. `/sdem-trace` — which SDEM command to run and what to report |
+| **Prompt file** | a `.github/prompts/*.prompt.md` file that gives Copilot Chat one `/` command for a journey, e.g. `/sdem-explain` — which SDEM command to run and what to report |
 | **Skill** | a `.github/skills/<name>/SKILL.md` file: know-how Copilot loads when a task needs it (e.g. `sdem-onboard-designs`) |
 | **Agent file** | a `.github/agents/<name>.agent.md` file: one Copilot agent's role, boundaries and tools |
 | **Dashboard** | a read-only HTML page SDEM generates: one per estate (`sdem dashboard`) and the home page for SDEM and every project (`sdem home`) |

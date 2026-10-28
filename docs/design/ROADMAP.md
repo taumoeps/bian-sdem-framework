@@ -1,6 +1,6 @@
 # Roadmap
 
-> **Status: current** — updated with every release; v0.9.3 released 2026-10-29.
+> **Status: current** — updated with every release; v0.9.4 released 2026-10-29.
 
 Realigned 2026-10-25 after a full review of `docs/` against the code. Release numbers before v0.8 are history; earlier plans for v0.6–v0.8 (engine, BIAN reference integration, generated views) were renumbered below because v0.6.0 and v0.7.0 shipped the rules specification and the rename instead.
 
@@ -18,6 +18,7 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | v0.6.0 | Relationship Rules Model specification (`relationship-rules-spec.md`); knowledge-graph design and specification with service specifications | Generated from the records; current in CI | done |
 | v0.7.0 | Renamed SDEM; model-driven terminology; registry specification; compatibility aliases for the old names | Behaviour byte-identical to v0.6.2 | done |
 | v0.8.0 | The tool release — see below | the full suite; acceptance 8 of 8; use-case examples 1–4; installed-package job | done |
+| v0.9.4 | Documentation review fixes: one estate-contents list, plain language in user documents, a FAQ, AID planning on its own page, recaptured samples; CI fix | the full suite; every CI step run locally | done |
 | v0.9.3 | Fixes from the fifth walkthrough: one BIAN source in the onboarding workflow, code owners for SDEM's records, the in-house SDEM lead, the sample export in `examples/designs/` | the full suite | done |
 | v0.9.2 | Gaps found by the fourth walkthrough: `sdem bian update` (the shared BIAN layer reaches every estate, never stranding an approved connection) and `sdem connect` (a person states a connection the engine cannot see) — onboarded designs now trace from capability to technology | the full suite; end-to-end test | done |
 | v0.9.1 | Team set-up fixes from the third new-architect walkthrough: estate-first protection, local check compares with main, shared BIAN layer, `sdem transform rules`, adoption checklist; nine rule source references closed | the full suite | done |

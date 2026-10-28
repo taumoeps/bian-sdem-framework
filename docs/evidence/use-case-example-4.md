@@ -58,7 +58,7 @@ Each command does one job. The steps below use them in this order.
 | P1 | VS Code open on the SDEM project; a terminal pane; `python3 -m sdem --help` works | |
 | P2 | On a new branch: `git checkout -b import/<name>` | |
 | P3 | **The export is under `work/`** (e.g. `work/imports/payarch/`) — only `work/`, `private/` and `secrets/` are kept out of Git | |
-| P4 | Run A: `cp -r examples/designs/confluence-folder-export work/imports/payarch` | |
+| P4 | Run A: `mkdir -p work/imports && cp -r examples/designs/confluence-folder-export work/imports/payarch` | |
 | P5 | Your organisation's A2 (BIAN) dataset to hand — Run A uses `examples/payment-initiation/a2-service-domain.json` | |
 | P6 | Run A uses `--ocr off` everywhere, so the results are the same on every machine. Run B: OCR on (the default) unless your organisation does not allow it | |
 
@@ -80,8 +80,8 @@ Run B: if tables or shapes you need show *no rule* / *unclassified*, do step 2. 
 
 ### 2 · Tune the rules — only if needed
 ```bash
-cp metamodel/transform-rules.json work/my-rules.json     # add your column names, label words, shapes
-sdem transform inspect work/imports/payarch --rules work/my-rules.json
+sdem transform rules -o rules/transform-rules.json      # a copy of SDEM's rules; add your column names, label words, shapes
+sdem transform inspect work/imports/payarch --rules rules/transform-rules.json --ocr off
 ```
 Run A: not needed. Run B: record which words you added (not the content).
 

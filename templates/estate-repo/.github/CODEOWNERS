@@ -9,7 +9,7 @@ estates/*/mappings.json        @YOUR-ORG/architecture-reviewers
 estates/*/designs/             @YOUR-ORG/architecture-reviewers
 estates/*/loads/               @YOUR-ORG/architecture-reviewers
 estates/*/bian-updates/        @YOUR-ORG/architecture-reviewers
-estates/*/migrations/          @YOUR-ORG/sdem-maintainers
+estates/*/migrations/          @YOUR-ORG/sdem-lead
 estates/*/coordination/        @YOUR-ORG/architecture-reviewers
 
 # Each architecture's data — its layer owner
@@ -19,9 +19,10 @@ estates/*/a3-application.json  @YOUR-ORG/application-architects
 estates/*/a4-technology.json   @YOUR-ORG/technology-architects
 
 # The SDEM version, CI and these rules
-requirements.txt               @YOUR-ORG/sdem-maintainers
-ci/                            @YOUR-ORG/sdem-maintainers
-.github/                       @YOUR-ORG/sdem-maintainers
+requirements.txt               @YOUR-ORG/sdem-lead
+ci/                            @YOUR-ORG/sdem-lead
+.github/                       @YOUR-ORG/sdem-lead
 
-# Your BIAN layer and any BIAN pack
-bian/                          @YOUR-ORG/architecture-reviewers
+# Your BIAN layer (and any BIAN pack) and your tuned transform rules — the in-house SDEM lead
+bian/                          @YOUR-ORG/sdem-lead
+rules/                         @YOUR-ORG/sdem-lead

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sdem"
-version = "0.9.3"
+version = "0.9.4"
 description = "Service Domain Enterprise Metamodel (SDEM): model-driven enterprise architecture metamodel, relationship registry and architecture knowledge graphs"
 readme = "README.md"
 requires-python = ">=3.10"

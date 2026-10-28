@@ -2,7 +2,7 @@
 
 **SDEM connects a bank's architecture — from what the business does, through BIAN, to the applications and the technology underneath — into one picture you can question.** It checks every connection against a rulebook and keeps a person in charge of every decision.
 
-> **Status:** v0.9.3 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). Open source; aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
+> **Status:** v0.9.4 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). Open source; aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
 
 ## Start here
 
@@ -27,8 +27,8 @@ flowchart TB
     A3["<b>A3 · Applications</b><br/>the systems that do the work<br/><i>e.g. Payments Hub</i>"]
     A4["<b>A4 · Technology</b><br/>where the systems run<br/><i>e.g. the Kubernetes platform</i>"]
     A1 -->|"is supported by"| A2
-    A2 -->|"is delivered by"| A3
-    A3 -->|"runs on"| A4
+    A2 -->|"is realised by"| A3
+    A3 -->|"is deployed on"| A4
     classDef l fill:#E3F2FD,stroke:#1565C0,color:#0D47A1
     class A1,A2,A3,A4 l
 ```
@@ -94,8 +94,8 @@ flowchart LR
 ```mermaid
 flowchart LR
     A["<b>Initiate Payment</b><br/>A1 · capability"] -->|"supported by"| B["<b>Payment Initiation</b><br/>A2 · BIAN domain"]
-    B -->|"delivered by"| C["<b>Payments Hub</b><br/>A3 · application"]
-    C -->|"runs on"| D["<b>Kubernetes — production</b><br/>A4 · platform"]
+    B -->|"realised by"| C["<b>Payments Hub</b><br/>A3 · application"]
+    C -->|"deployed on"| D["<b>Kubernetes — production</b><br/>A4 · platform"]
     classDef a1 fill:#FFF8E1,stroke:#F9A825
     classDef a2 fill:#F3E5F5,stroke:#6A1B9A
     classDef a3 fill:#E3F2FD,stroke:#1565C0
@@ -200,7 +200,7 @@ git clone https://github.com/taumoeps/bian-sdem-framework.git && cd bian-sdem-fr
 python3.13 -m venv .venv               # or the full path you found, e.g. /opt/homebrew/bin/python3.13 -m venv .venv
 source .venv/bin/activate              # do this in every new terminal
 pip install -e .                       # installs the sdem command
-sdem --version                         # 0.9.3
+sdem --version                         # 0.9.4
 ```
 
 If `pip` says *File "setup.py" … not found* or *requires a different Python*, the `.venv` was made with an old Python: delete it (`rm -rf .venv`) and make it again with 3.13. More: [administration — troubleshooting](docs/sdem-administration.md#troubleshooting).

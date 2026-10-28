@@ -1,6 +1,6 @@
 # Protecting the repository — so a person approves what matters
 
-> **Status: current (v0.9.3)** — branch protection and code owners are GitHub settings the repository's owner turns on (steps below). **Most readers protect their estate repository** (§1–§4); the SDEM project's own settings are in §5. Why it matters, for builders: [`sdem-agent-platform-principles.md`](design/sdem-agent-platform-principles.md) §3.
+> **Status: current (v0.9.4)** — branch protection and code owners are GitHub settings the repository's owner turns on (steps below). **Most readers protect their estate repository** (§1–§4); the SDEM project's own settings are in §5. Why it matters, for builders: [`sdem-agent-platform-principles.md`](design/sdem-agent-platform-principles.md) §3.
 
 SDEM's controls refuse bad data and refuse an agent's or tool's name as a reviewer (CTL-21). They **cannot** stop someone — or an agent with a terminal — from typing a person's name. The final safeguard is GitHub: **nothing reaches `main` without a pull request that a person reviews and the checks pass.** That is a repository setting, not code — until it is on, approval by a reviewed pull request is a practice, not a control.
 
@@ -12,8 +12,10 @@ The estate template's `.github/CODEOWNERS` names who must review changes to:
 |---|---|---|
 | `estates/*/mappings.json` | the approved connections between layers — the decisions | your architecture reviewers |
 | `estates/*/a1-business.json` … `a4-technology.json` | each layer's data | that layer's architects |
-| `bian/` | your BIAN layer and any BIAN pack | whoever owns BIAN for you |
-| `requirements.txt`, `ci/`, `.github/` | the SDEM version, the checks, Copilot's files | your SDEM maintainers or platform team |
+| `estates/*/designs/`, `loads/`, `bian-updates/`, `coordination/` | decisions SDEM records: gaps accepted or resolved, loads, BIAN updates, agents' change sets | your architecture reviewers |
+| `estates/*/migrations/` | moves to a new rulebook version | your in-house SDEM lead |
+| `bian/`, `rules/` | your BIAN layer (and any BIAN pack); your tuned transform rules | your **in-house SDEM lead** |
+| `requirements.txt`, `ci/`, `.github/` | the SDEM version, the checks, Copilot's files | your in-house SDEM lead or platform team |
 
 Replace every `@YOUR-ORG/…` placeholder with **real people or teams** — never a bot or an agent account.
 

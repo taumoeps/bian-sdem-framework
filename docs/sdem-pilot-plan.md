@@ -1,6 +1,6 @@
 # SDEM pilot plan — one domain, ten weeks
 
-> **Status: approved by the owner 2026-10-29** (audit phase 4). The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's rulebook covers the whole bank (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own estate. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
+> **Status: current (v0.9.4)**. The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's rulebook covers the whole bank (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own estate. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
 
 ## The question the pilot answers
 
@@ -14,7 +14,7 @@
 | People | 2–3 architects (A1, A3, A4 between them), 1 reviewer, the estate owner (one of the architects) who is also the **in-house SDEM lead**, and the upstream SDEM maintainer for questions |
 | Time | 10 weeks, about half a day a week per architect after set-up |
 | Data | 3–5 existing designs onboarded; the domain's changes during the pilot kept in SDEM |
-| SDEM | v0.9.3 (or later), pinned |
+| SDEM | v0.9.4 (or later), pinned |
 
 ## Choosing the domain
 
@@ -31,7 +31,7 @@ A smaller domain with willing architects beats an important one with busy archit
 
 ## No per-domain settings
 
-SDEM needs **no settings per domain**. The rulebook and checks are the same everywhere — the example estates span seven domains (payments, cards and fraud, customer onboarding, lending, a core ledger, trade finance, an acquired fintech) — and design onboarding has been tested on two (payments and lending: `tests/test_lending_onboarding.py`, run with no lending-specific rules: 18 of 18 records found, nothing lost, no records made from general words like *loan* or *credit*).
+SDEM needs **no settings per domain**. The rulebook and checks are the same everywhere — the example estates span seven domains (payments, cards and fraud, customer onboarding, lending, a core ledger, trade finance, an acquired fintech) — and design onboarding has been tested on two (payments and lending — the lending design run with no lending-specific rules: 18 of 18 records found, nothing lost, no records made from general words like *loan* or *credit*).
 
 What may need tuning depends on **how your organisation writes designs**, not on the domain: if your designs use table headings or column names SDEM does not recognise (e.g. *Platform* for an application, or a column like *Data classification*), those items become gap records. Add the headings to the estate repository's copy of `transform-rules.json` (`tables`) and run `sdem transform run … --rules rules/transform-rules.json`. Do this once, on the first design, and keep the copy for every domain.
 

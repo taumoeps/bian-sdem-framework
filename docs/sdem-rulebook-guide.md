@@ -1,6 +1,6 @@
 # The rulebook in plain words
 
-> **Status: current (v0.9.3)** — what SDEM's rulebook (the *metamodel*) contains and how to read it. The full, generated detail is in [`reference/`](reference/README.md); you do not need it to use SDEM.
+> **Status: current (v0.9.4)** — what SDEM's rulebook (the *metamodel*) contains and how to read it. The full, generated detail is in [`reference/`](reference/README.md); you do not need it to use SDEM.
 
 The **rulebook** decides what SDEM will accept. Every record and every connection is checked against it, and SDEM refuses anything that breaks it. It lives in the `metamodel/` and `schema/` folders, and only the SDEM owner changes it ([how a change is made](sdem-administration.md#when-the-rulebook-changes)).
 
