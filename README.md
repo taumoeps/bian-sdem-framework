@@ -2,7 +2,7 @@
 
 **SDEM connects a bank's architecture — from what the business does, through BIAN, to the applications and the technology underneath — into one picture you can question.** It checks every connection against a rulebook and keeps a person in charge of every decision.
 
-> **Status:** v0.7.0 released. Everything since is built on `main` and not yet released — releases are tagged after the owner's review. Open source; aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Uses made-up example data only.
+> **Status:** v0.8.0 released (2026-10-29) — the tool release; the 0.8 rulebook baseline awaits independent review. Releases are tagged after the owner's review. Open source; aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Uses made-up example data only.
 
 ---
 
