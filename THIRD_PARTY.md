@@ -1,5 +1,11 @@
 # Third-party content and trademark notice
 
-BIAN and its Service Landscape are third-party reference materials. This starter repository does not redistribute official BIAN reference-model content. Verify the applicable BIAN usage, redistribution, attribution, and trademark conditions before adding references, screenshots, diagrams, or extracts.
+## BIAN Semantic APIs — the base BIAN (`bian/`)
 
-No affiliation or endorsement by Banking Industry Architecture Network e.V. is claimed. Project title uses BIAN descriptively; verify trademark usage before public release.
+SDEM includes one piece of third-party content: **BIAN's public Semantic APIs, release 14.0.0**, published by the Banking Industry Architecture Network (BIAN e.V.) at [github.com/bian-official/public](https://github.com/bian-official/public) under the **Apache License 2.0**. They are packed into `bian/base-14.0.0.json` (names, operations and their fields, control records, behaviour qualifiers); BIAN's descriptions and object schemas are left out. BIAN's licence is in `bian/LICENSE`; what was changed is stated in `bian/README.md`.
+
+SDEM contains no other BIAN material — no BIAN portal or member content, no Service Landscape descriptions, no BIAN text in its documentation. The examples' BIAN layers are made up.
+
+## Trademarks
+
+BIAN® is a trademark of BIAN e.V.; ArchiMate® and TOGAF® are trademarks of The Open Group. No affiliation with or endorsement by them is claimed. The project title uses BIAN descriptively.

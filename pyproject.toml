@@ -37,12 +37,14 @@ sdem-metamodel-spec = "sdem.metamodel_spec:main"
 sdem-controls = "sdem.controls:main"
 
 [tool.setuptools]
-packages = ["sdem", "sdem.data", "sdem.data.schema", "sdem.data.metamodel"]
+packages = ["sdem", "sdem.data", "sdem.data.schema", "sdem.data.metamodel", "sdem.data.bian"]
 
 [tool.setuptools.package-dir]
 "sdem.data.schema" = "schema"
 "sdem.data.metamodel" = "metamodel"
+"sdem.data.bian" = "bian"
 
 [tool.setuptools.package-data]
 "sdem.data.schema" = ["*.json", "entities/*/*.json"]
 "sdem.data.metamodel" = ["*.json"]
+"sdem.data.bian" = ["*.json", "LICENSE", "*.md"]

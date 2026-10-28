@@ -144,6 +144,8 @@ flowchart LR
     class G g
 ```
 
+**BIAN is included.** SDEM ships with a **base BIAN** — BIAN's public Semantic APIs (release 14.0.0) — so your BIAN layer is one command (`sdem bian import --base --only "<service domain>"`); your organisation can replace it with its own BIAN.
+
 Every suggestion says **which page it came from, where, and how sure SDEM is** — never above "medium" until a person checks it. **Nothing is thrown away:** what does not fit — a risk table, text, a picture — is kept as a *gap record* beside the data. It works for any domain (tested on payments and lending).
 
 **How:** the [onboarding workflow](docs/sdem-onboarding-workflow.md) — every step, its command, and what you will see. Data from tools (spreadsheets, CMDB) is planned.
@@ -248,4 +250,4 @@ Every entity type comes from a **public reference architecture** — BIAN, Archi
 
 ## Licences
 
-Source code, schemas and templates: Apache-2.0 (`LICENSE`). Original prose in `docs/` and this README: CC BY 4.0 (`LICENSES.md`). External BIAN content is not relicensed (`THIRD_PARTY.md`). An independent community proposal — not affiliated with, endorsed by, or sponsored by BIAN or any bank; no guarantees of fitness, correctness or compliance.
+Source code, schemas and templates: Apache-2.0 (`LICENSE`). Original prose in `docs/` and this README: CC BY 4.0 (`LICENSES.md`). The **base BIAN** in `bian/` is BIAN's public Semantic APIs 14.0.0, distributed under BIAN's Apache-2.0 licence (`bian/LICENSE`, `THIRD_PARTY.md`). An independent community proposal — not affiliated with, endorsed by, or sponsored by BIAN or any bank; no guarantees of fitness, correctness or compliance.

@@ -5,10 +5,12 @@ what a downloaded release holds; `sdem bian import` turns the service domains yo
 domain, operations with their input and output fields, control record, behaviour qualifiers, the service groups that
 hold the operations, and the asset type and functional pattern the rulebook requires — checked before it is written.
 
-  sdem bian list ~/bian/release14.0.0
-  sdem bian import ~/bian/release14.0.0 --only "Payment Order Initiation" -o work/bian/a2-service-domain.json
+  sdem bian list --base                       # the base BIAN that ships with SDEM (BIAN's Semantic APIs 14.0.0)
+  sdem bian import --base --only "Payment Order Initiation" -o work/bian/a2-service-domain.json
+  sdem bian pack ~/acme-bian -o bian/acme-bian.json      # your own BIAN, packed the same way; then --base bian/acme-bian.json
 
-Offline: it reads a folder you downloaded. BIAN's descriptions are left out unless you ask (--descriptions).
+Offline: it reads the base, a pack, or a folder you downloaded. BIAN's descriptions are left out unless you ask
+(--descriptions, from BIAN's files). Base BIAN: docs/design/sdem-bian-base-design.md.
 """
 import argparse, csv, difflib, json, re, sys
 from collections import Counter
@@ -25,6 +27,9 @@ PATTERNS = {'DIRECT': 'Strategy', 'MANAGE': 'Management Plan', 'ADMINISTER': 'Ad
 _BY_ARTIFACT = sorted(((a.replace(' ', ''), p) for p, a in PATTERNS.items()), key=lambda ap: -len(ap[0]))
 PATTERN_SOURCE = 'BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9'
 METHODS = ('get', 'put', 'post', 'patch', 'delete')
+
+
+PACK_FORMAT = 'sdem-bian-pack/1'
 
 
 class BianError(ValueError):
@@ -200,6 +205,38 @@ def read_release(folder):
     return domains, refused
 
 
+# ---------------------------------------------------------------- the base and packs (BB-*)
+def base_file():
+    """The base BIAN that ships with SDEM — the newest bian/base-<release>.json (BB-S01, BB-S03)."""
+    from .paths import DATA_ROOT
+    found = sorted((DATA_ROOT / 'bian').glob('base-*.json'), key=lambda p: [int(x) if x.isdigit() else x for x in re.split(r'[.-]', p.stem)])
+    if not found: raise BianError('the base BIAN is not installed with this SDEM (bian/base-*.json) — import from a folder of BIAN files instead')
+    return found[-1]
+
+
+def pack(domains):
+    """A packed BIAN: what the import uses, without descriptions or object schemas (BB-D1, BB-D2)."""
+    releases = sorted({d['release'] for d in domains})
+    keep = ('file', 'name', 'release', 'operations', 'control_record', 'qualifiers', 'control_record_fields')
+    return {'format': PACK_FORMAT, 'release': releases[-1] if releases else '', 'domains': [{k: d[k] for k in keep} for d in domains]}
+
+
+def dump_pack(p):
+    """One service domain per line, so a new release shows as a readable diff."""
+    head = json.dumps({k: v for k, v in p.items() if k != 'domains'}, ensure_ascii=False)[:-1]
+    return head + ', "domains": [\n' + ',\n'.join(json.dumps(d, ensure_ascii=False, separators=(',', ':')) for d in p['domains']) + '\n]}\n'
+
+
+def read_pack(path):
+    """A packed BIAN (the base, or your own from `sdem bian pack`) → its service domains, as read_release gives them."""
+    path = Path(path)
+    try: p = json.loads(path.read_text(encoding='utf-8'))
+    except (OSError, ValueError) as e: raise BianError(f'{path}: not a readable BIAN pack ({e})')
+    if not isinstance(p, dict) or p.get('format') != PACK_FORMAT:
+        raise BianError(f'{path}: not a BIAN pack (expected format {PACK_FORMAT}) — make one with `sdem bian pack <folder> -o <file>`')
+    return [{**d, 'description': None, 'objects': {}} for d in p['domains']]
+
+
 # ---------------------------------------------------------------- building the A2 dataset (BI-W01…W07)
 def derive(control_record):
     """(asset type, functional pattern) from a control record's name, or (None, None) — BI-W02."""
@@ -368,10 +405,15 @@ def main(argv=None):
                                         '  sdem bian import ~/bian/release14.0.0 --only "Payment Order Initiation" "Payment Execution" -o work/bian/a2-service-domain.json',
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
-    ls = sub.add_parser('list', help='the service domains in a BIAN release folder; writes nothing')
-    ls.add_argument('folder'); ls.add_argument('--json', action='store_true')
-    im = sub.add_parser('import', help='write an A2 dataset for the service domains you choose — checked first')
-    im.add_argument('folder'); im.add_argument('-o', '--out', required=True, metavar='FILE')
+    src = argparse.ArgumentParser(add_help=False)
+    src.add_argument('folder', nargs='?', help='a folder of BIAN-format files (e.g. a release downloaded from BIAN\'s GitHub)')
+    src.add_argument('--base', nargs='?', const='', metavar='FILE', help='the base BIAN that ships with SDEM — or, with FILE, your own packed BIAN')
+    ls = sub.add_parser('list', parents=[src], help='the service domains in the base, a pack or a folder; writes nothing')
+    ls.add_argument('--json', action='store_true')
+    pk = sub.add_parser('pack', help='pack a folder of BIAN-format files into one file — your own base')
+    pk.add_argument('folder'); pk.add_argument('-o', '--out', required=True, metavar='FILE')
+    im = sub.add_parser('import', parents=[src], help='write an A2 dataset for the service domains you choose — checked first')
+    im.add_argument('-o', '--out', required=True, metavar='FILE')
     im.add_argument('--only', nargs='+', metavar='NAME', help='service domains by name (or file name)')
     im.add_argument('--from', dest='from_file', metavar='FILE', help='a file of service-domain names, one per line')
     im.add_argument('--all', action='store_true', help='every service domain in the release (about 3,000 records for release 14)')
@@ -381,16 +423,33 @@ def main(argv=None):
     im.add_argument('--previous', metavar='FILE', help='a previous A2 dataset: report what was added, dropped or renamed')
     im.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
-    domains, refused = read_release(a.folder)
-    if a.cmd == 'list':
-        rows = [{'name': d['name'], 'release': d['release'], 'operations': len(d['operations']), 'control_record': d['control_record'], 'file': d['file']}
-                for d in sorted(domains, key=lambda d: d['name'].lower())]
-        if a.json: print(json.dumps({'domains': rows, 'not_read': refused}, indent=2)); return 0
-        rel = sorted({r['release'] for r in rows})
-        print(f"{len(rows)} service domains in BIAN release {', '.join(rel)}" + (f'; {len(refused)} file(s) not read' if refused else ''))
-        for r in rows: print(f"  {r['name']:<45} {r['operations']:>3} operations   control record {r['control_record'] or '—'}")
+    if a.cmd == 'pack':
+        domains, refused = read_release(a.folder)
+        from .files import write_text
+        write_text(Path(a.out), dump_pack(pack(domains)))
+        print(f"packed {len(domains)} service domain(s) of BIAN release {pack(domains)['release']} into {a.out}" + (f'; {len(refused)} file(s) not read' if refused else ''))
         for r in refused: print(f'  not read: {r}')
-        print('next: sdem bian import <folder> --only "<name>" … -o <file>')
+        print(f'next: sdem bian import --base {a.out} --only "<name>" … -o <file>')
+        return 0
+    if (a.folder is None) == (a.base is None):
+        raise BianError('name one BIAN source: --base (the base that ships with SDEM), --base <your pack>, or a folder of BIAN files')
+    if a.base is not None:
+        source = Path(a.base) if a.base else base_file()
+        domains, refused, where = read_pack(source), [], f'--base {a.base}' if a.base else '--base'
+        if a.cmd == 'import' and (a.descriptions or a.objects):
+            raise BianError('the base leaves out BIAN\'s descriptions and object schemas — for --descriptions or --objects, import from BIAN\'s files (a downloaded release folder)')
+    else:
+        domains, refused = read_release(a.folder); where = a.folder
+    if a.cmd == 'list':
+        rows = [{'name': d['name'], 'release': d['release'], 'operations': len(d['operations']), 'control_record': d['control_record'], 'file': d['file'],
+                 'needs_pattern': not derive(d['control_record'])[0]} for d in sorted(domains, key=lambda d: d['name'].lower())]
+        if a.json: print(json.dumps({'domains': rows, 'not_read': refused}, indent=2)); return 0
+        rel = sorted({r['release'] for r in rows}); need = sum(r['needs_pattern'] for r in rows)
+        print(f"{len(rows)} service domains in BIAN release {', '.join(rel)}" + (f'; {len(refused)} file(s) not read' if refused else '')
+              + (f"; {need} marked 'needs your pattern' (give it with --patterns)" if need else ''))
+        for r in rows: print(f"  {r['name']:<45} {r['operations']:>3} operations   control record {r['control_record'] or '—'}" + ('   needs your pattern' if r['needs_pattern'] else ''))
+        for r in refused: print(f'  not read: {r}')
+        print(f'next: sdem bian import {where} --only "<name>" … -o <file>')
         return 0
     from .metamodel import Metamodel
     chosen = select(domains, a.only, a.from_file, a.all)

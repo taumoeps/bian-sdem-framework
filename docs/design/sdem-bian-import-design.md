@@ -53,7 +53,7 @@ The links inside A2 that the rulebook expects (domain → control record, domain
 - **Offline.** SDEM reads a folder you downloaded; it never fetches anything.
 - **Nothing written unless it passes.** The A2 dataset is checked with the rulebook before it is written (all-or-nothing, like `sdem load`).
 - **The rulebook does not change.** The import produces what the rulebook already defines (A2 record kinds, their attributes, the links inside A2).
-- **BIAN content stays with the bank.** The output goes wherever you write it — your private estate repository; the public SDEM repository holds the converter and a made-up test file only.
+- **BIAN content stays with the bank.** The output goes wherever you write it — your private estate repository. *(Since 2026-10-29 SDEM also ships BIAN's public Semantic APIs as its base BIAN — see [`sdem-bian-base-design.md`](sdem-bian-base-design.md).)*
 - **Provenance on every record:** BIAN release, source file, and how each value was obtained (read · derived · from your table).
 - **Re-import is safe.** Importing a newer release reports what was added, renamed or dropped; it does not silently change records already approved links point to (an existing id is kept; a dropped domain is reported, not deleted).
 

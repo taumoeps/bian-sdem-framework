@@ -1,6 +1,6 @@
 # Contributing — the maintainer's guide
 
-Please open an issue first for changes to entity types or link semantics. A pull request explains its purpose, the source and target types, cardinality, provenance, the expected lifecycle effect, examples and regression tests. **Never submit confidential banking artefacts** (this repository is public and holds made-up data only) or third-party reference models without redistribution rights. Contributions must be independently owned and offered under the repository's licenses; a contributor agreement or DCO policy can be added before community contributions begin.
+Please open an issue first for changes to entity types or link semantics. A pull request explains its purpose, the source and target types, cardinality, provenance, the expected lifecycle effect, examples and regression tests. **Never submit confidential banking artefacts** (this repository is public and holds made-up data only) or third-party reference models without redistribution rights. The one third-party model included is the base BIAN in `bian/` (BIAN's public Semantic APIs, Apache-2.0) — change it only with `scripts/build_bian_base.py`, keeping `bian/LICENSE` and `bian/README.md` current. Contributions must be independently owned and offered under the repository's licenses; a contributor agreement or DCO policy can be added before community contributions begin.
 
 ## Set up
 

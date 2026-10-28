@@ -23,7 +23,7 @@
 | Has 3–5 designs in Confluence | there is something real to onboard |
 | Has change coming in the next 2–3 months | the pilot needs a real change to test trace and impact |
 | Its architects are willing and have half a day a week | the pilot depends on their time more than on the tool |
-| Covers business, applications and technology | business connects to applications only through the BIAN layer — start it from BIAN's public Semantic APIs (Apache-2.0), see the [onboarding workflow](sdem-onboarding-workflow.md#your-bian-a2-layer) |
+| Covers business, applications and technology | business connects to applications only through the BIAN layer — start it from the **base BIAN** that ships with SDEM (`sdem bian import --base`), see the [onboarding workflow](sdem-onboarding-workflow.md#your-bian-a2-layer) |
 | Mid-sized, not on the critical path | big enough to be real; a slow start hurts no one |
 | Designs reasonably consistent | a fair test of the transform's coverage |
 
@@ -90,5 +90,5 @@ gantt
 | Designs are less structured than expected (low coverage) | medium | gap records keep everything; tune the domain's copy of `transform-rules.json` on the first design |
 | Your designs use table headings SDEM does not recognise | medium | those items become gap records, so nothing is lost; add the headings to your copy of the rules (above) |
 | Architects lack time | high | half a day a week, agreed with their manager before starting |
-| No BIAN (A2) layer — then business never connects to applications | medium | build it in week 1 from BIAN's public Semantic APIs (Apache-2.0, on GitHub) for the domain's service domains |
+| No BIAN (A2) layer — then business never connects to applications | medium | build it in week 1 from the base BIAN (`sdem bian import --base --only …`) for the domain's service domains |
 | Old Python on work machines | medium | precondition 3 |

@@ -173,5 +173,58 @@ class BianImportTests(unittest.TestCase):
         self.assertEqual(json.loads((self.tmp / 'estate' / 'a2-service-domain.json').read_text())['source_system'], 'BIAN-SEMANTIC-API-99.0.0')
 
 
+
+class BaseBianTests(unittest.TestCase):
+    """The base BIAN that ships with SDEM (docs/design/sdem-bian-base-spec.md, BB-*)."""
+    def setUp(self): self.tmp = Path(tempfile.mkdtemp())
+    def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_the_base_is_bians_release_14_without_descriptions(self):  # BB-S01, BB-S02
+        f = bian.base_file(); self.assertEqual(f.name, 'base-14.0.0.json')
+        p = json.loads(f.read_text(encoding='utf-8'))
+        self.assertEqual((p['format'], p['release'], len(p['domains'])), (bian.PACK_FORMAT, '14.0.0', 258))
+        for d in p['domains']:
+            self.assertEqual(set(d), {'file', 'name', 'release', 'operations', 'control_record', 'qualifiers', 'control_record_fields'}, d['name'])
+        self.assertIn('Apache License', (ROOT / 'bian' / 'LICENSE').read_text())
+        readme = (ROOT / 'bian' / 'README.md').read_text()
+        for must in ('github.com/bian-official/public', 'Apache License 2.0', 'left out', 'not affiliated with, endorsed by'):
+            self.assertIn(must, readme)
+        self.assertIn('bian/base-14.0.0.json', (ROOT / 'THIRD_PARTY.md').read_text())
+
+    def test_import_from_the_base(self):  # BB-C01
+        out = self.tmp / 'a2.json'
+        code, text = sdem('import', '--base', '--only', 'Payment Order Initiation', '-o', out)
+        self.assertEqual(code, 0, text); self.assertIn('BIAN release 14.0.0', text)
+        d = json.loads(out.read_text())
+        self.assertEqual(d['source_system'], 'BIAN-SEMANTIC-API-14.0.0')
+        self.assertIn('SO-PAYMENT-ORDER-INITIATION-INITIATE', {i['id'] for i in d['instances']})
+        self.assertEqual(bian.check(d)[0], [])
+
+    def test_list_marks_what_needs_your_pattern(self):  # BB-C02
+        code, text = sdem('list', '--base')
+        self.assertEqual(code, 0); self.assertIn("66 marked 'needs your pattern'", text)
+        line = next(l for l in text.splitlines() if l.strip().startswith('Virtual Account'))
+        self.assertTrue(line.endswith('needs your pattern'))
+
+    def test_pack_your_own_and_import_the_same(self):  # BB-C03, BB-C05: a pack gives exactly what its folder gives
+        mine = self.tmp / 'acme-bian.json'
+        code, text = sdem('pack', SAMPLE, '-o', mine)
+        self.assertEqual(code, 0, text); self.assertIn('packed 5 service domain(s)', text)
+        names = ('Sample Order Initiation', 'Sample Party Directory', 'Sample Twin Services')
+        a, b = self.tmp / 'from-folder.json', self.tmp / 'from-pack.json'
+        self.assertEqual(sdem('import', SAMPLE, '--only', *names, '-o', a)[0], 0)
+        self.assertEqual(sdem('import', '--base', mine, '--only', *names, '-o', b)[0], 0)
+        self.assertEqual(json.loads(a.read_text()), json.loads(b.read_text()))
+        code, text = sdem('pack', BAD, '-o', self.tmp / 'x.json')
+        self.assertEqual(code, 2); self.assertFalse((self.tmp / 'x.json').exists())
+
+    def test_one_source_and_no_descriptions_from_the_base(self):  # BB-C01, BB-C04
+        code, text = sdem('list'); self.assertEqual(code, 2); self.assertIn('name one BIAN source', text)
+        code, text = sdem('list', SAMPLE, '--base'); self.assertEqual(code, 2)
+        code, text = sdem('import', '--base', '--only', 'Payment Order Initiation', '--descriptions', '-o', self.tmp / 'x.json')
+        self.assertEqual(code, 2); self.assertIn('import from BIAN', text); self.assertFalse((self.tmp / 'x.json').exists())
+        code, text = sdem('list', '--base', str(self.tmp / 'missing.json')); self.assertEqual(code, 2)
+
+
 if __name__ == '__main__':
     unittest.main()

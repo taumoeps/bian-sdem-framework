@@ -60,12 +60,15 @@ You **cannot** change how sure SDEM is allowed to be: onboarded records are neve
 
 ## Your BIAN layer (`sdem bian`)
 
+SDEM ships with a **base BIAN** — BIAN's public Semantic APIs 14.0.0 (Apache-2.0; `bian/`). To use your organisation's own BIAN instead, pack it once (`sdem bian pack <folder> -o bian/our-bian.json`, kept in your estate repository) and use `--base bian/our-bian.json`. Every A2 record records which BIAN it came from.
+
 | Option | Means |
 |---|---|
+| `--base` · `--base <file>` · `<folder>` | the BIAN to import from: the base that ships with SDEM · your own pack · a folder of BIAN's files (one must be named) |
 | `--only <names>` · `--from <file>` · `--all` | which service domains to import (you must choose; a whole release is about 7,000 records) |
 | `--patterns <csv>` | asset type and functional pattern per service domain (`service domain,asset type,functional pattern`) — for domains SDEM cannot work them out for, or to correct a derived one |
-| `--descriptions` | include BIAN's descriptions (left out by default) |
-| `--objects` | also import BIAN's business objects |
+| `--descriptions` | include BIAN's descriptions — from a folder of BIAN's files only (the base leaves them out) |
+| `--objects` | also import BIAN's business objects — from a folder only |
 | `--previous <file>` | report what changed against your previous BIAN layer (nothing is removed from your estate) |
 
 Keep the BIAN files you downloaded and the A2 file in your private estate repository's working area; the A2 file is part of your estate. How: [onboarding — your BIAN (A2) layer](sdem-onboarding-workflow.md#your-bian-a2-layer).

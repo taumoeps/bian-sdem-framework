@@ -51,6 +51,7 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Tool onboarding** | data from tools (spreadsheets, CMDB, application portfolio): source → adapter → architecture dataset → check → load, then normal processing — **planned (v0.11)** |
 | **Ingestion** | the first part of onboarding: getting the data into an estate (for designs: transform → review → load) |
 | **Normal processing** | the second part of onboarding, the same for every estate however its data arrived: `sdem check` → `sdem link` → `sdem approve` → `sdem build` |
+| **Base BIAN** | the BIAN that ships with SDEM — BIAN's public Semantic APIs 14.0.0, packed into `bian/base-14.0.0.json` (Apache-2.0); `sdem bian import --base` builds your BIAN layer from it; your organisation's own BIAN can replace it (`sdem bian pack`, `--base <file>`) |
 | **BIAN Semantic APIs** | BIAN's published API definitions, one file per service domain, free under Apache-2.0 (github.com/bian-official/public); `sdem bian import` turns the ones you choose into your BIAN (A2) layer |
 | **Candidate** | a record the transform suggests from a design; not real data until a person loads it (`sdem load`). Ids `HIS-…`; never above medium confidence |
 | **Transform** | `sdem transform run`: reads an export of designs and writes candidates with their evidence (page, place, rule, confidence, reasoning) |

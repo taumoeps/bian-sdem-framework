@@ -96,7 +96,7 @@ SDEM failures say what to do: exit `1` a check refused (read the message), `2` t
 | 3 | **Python 3.10 or later** on architects' machines (3.13 recommended) | platform | SDEM requires 3.10; Python 3.9 reached end of life in October 2025 (PEP 596 — high confidence) |
 | 4 | **Dashboard hosting decided** — decided: local HTML files for now (OM-3) | owner | dashboards show real architecture |
 | 5 | **Copilot policy** known (allowed or not; no MCP) | platform | SDEM works without Copilot; with it, Copilot files must match the pinned release |
-| 6 | **A2 (BIAN)**: the organisation's BIAN licence position | owner | real BIAN ids need a licensed catalogue (ROADMAP v0.15); without it, A2 holds only what is public |
+| 6 | **A2 (BIAN)**: which BIAN to use — the **base** that ships with SDEM (BIAN's public Semantic APIs 14.0.0, Apache-2.0), or your organisation's own, packed with `sdem bian pack` | owner | business connects to applications only through BIAN; the base works for everyone, your own BIAN replaces it |
 
 ## 7. Decisions — approved by the owner 2026-10-29
 

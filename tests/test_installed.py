@@ -13,7 +13,7 @@ def package_data():
     """The package-data globs of pyproject.toml: {'schema': [...], 'metamodel': [...]}."""
     text = (ROOT / 'pyproject.toml').read_text()
     out = {}
-    for pkg, src in (('sdem.data.schema', 'schema'), ('sdem.data.metamodel', 'metamodel')):
+    for pkg, src in (('sdem.data.schema', 'schema'), ('sdem.data.metamodel', 'metamodel'), ('sdem.data.bian', 'bian')):
         m = re.search(r'"' + re.escape(pkg) + r'"\s*=\s*\[([^\]]*)\]', text.split('[tool.setuptools.package-data]')[1])
         out[src] = re.findall(r'"([^"]+)"', m.group(1))
     return out
@@ -54,7 +54,7 @@ class InstalledLayoutTests(unittest.TestCase):
                      ['link', '--estate', 'est', '--out', 'links'], ['dashboard', '--estate', 'est', '-o', 'dash.html'], ['home', '--estate', 'est', '-o', 'site'],
                      ['events', '--estate', 'est'], ['transform', 'run', 'export', '-o', 'history', '--ocr', 'off'],
                      ['load', 'history', '--estate', 'hist', '--person', 'jane.architect', '--exclude', 'HIS-A3-PAYMENT-ORDER'],
-                     ['bian', 'list', 'bian'], ['bian', 'import', 'bian', '--only', 'Sample Order Initiation', '-o', 'bian-a2.json'],
+                     ['bian', 'list', 'bian'], ['bian', 'list', '--base'], ['bian', 'import', '--base', '--only', 'Payment Order Initiation', '-o', 'base-a2.json'], ['bian', 'import', 'bian', '--only', 'Sample Order Initiation', '-o', 'bian-a2.json'],
                      ['designs', '--estate', 'hist', '--gaps'], ['explain', 'P-RUN-001', '--proposals', 'links/proposals.json']):
             code, out = self.sdem(*args)
             self.assertIn(code, (0, 1), f'sdem {" ".join(args)} → {code}\n{out[-800:]}')

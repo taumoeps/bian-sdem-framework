@@ -70,6 +70,7 @@ flowchart LR
 
 | Where | What | Committed? |
 |---|---|---|
+| **The base BIAN** — `bian/` (inside the installed SDEM) | BIAN's public Semantic APIs 14.0.0, packed — where your BIAN layer is imported from unless you use your own | in the SDEM repository; replaced by your own pack if you have one |
 | **The rulebook** — `metamodel/`, `schema/` (inside the installed SDEM) | the kinds of thing, links, rules, controls, file formats | in the SDEM repository; changed only by the SDEM owner |
 | **An estate** — a folder, e.g. `estates/payments/` | your data — see below | **yes**, in your private estate repository |
 | **The graph store** — e.g. `work/graph/` | the knowledge graph `sdem build` writes | no — rebuilt from the estate at any time |
