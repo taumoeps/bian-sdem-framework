@@ -12,7 +12,7 @@ The rules engine (`sdem link`) **proposes** links; **a person approves** them in
 1. **Review:** `sdem review <dir>/proposals.json --estate <estate>` (weakest first) and `sdem explain <P-id> --proposals <dir>/proposals.json` for one link.
 2. **The architect approves each accepted link with `sdem approve`** (a person runs it — never an agent; CTL-21 rejects an agent as reviewer):
    ```bash
-   sdem approve <P-id> --proposals <dir>/proposals.json --estate <estate> --reviewer <person> --evidence <kind:ref> [--supersedes <old id>]
+   sdem approve <P-id> --proposals <dir>/proposals.json --estate <estate> --reviewer <person> --evidence <kind:ref> [--bian-release <release>] [--supersedes <old id>]
    ```
    It writes the record below and validates the whole registry first — nothing is written if a check fails. By hand, the record would be: copy it from `proposals.json` into `mappings.json` and set:
    - `mapping_id` — a new id, unique in the registry;
@@ -28,6 +28,7 @@ The rules engine (`sdem link`) **proposes** links; **a person approves** them in
 |---|---|
 | `approved mapping requires reviewer_id` / `approved_at` | add who approved and when |
 | `evidence missing required kind(s) [...]` | add evidence of that kind (table) |
+| `… mapping requires bian_release` | a link to a BIAN element: add `--bian-release <release>` — the BIAN release the link relies on (the person states it) |
 | `duplicate mapping_id` | choose an unused id |
 | `superseded mapping has no successor referencing it via previous_mapping_id` | the new link needs `previous_mapping_id` |
 | `a link to a projected or design record cannot be approved` (CTL-16) | projections are plans — never approve links to `PRJ-` records |

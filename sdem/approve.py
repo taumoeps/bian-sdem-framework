@@ -26,7 +26,7 @@ def _next_id(mappings):
     return f'{p}{max(nums, default=0) + 1:0{width}d}'
 
 
-def approve(registry, proposals, ids, reviewer, evidence, supersedes=None, new_id=None, date=None):
+def approve(registry, proposals, ids, reviewer, evidence, supersedes=None, new_id=None, date=None, bian_release=None):
     """Returns the new registry (a copy) and the approved records; raises ApproveError with the reason when it cannot."""
     who = (reviewer or '').strip()
     if not who or who.lower().startswith('sdem-') or who.lower() in NON_PERSON_REVIEWERS:
@@ -45,6 +45,7 @@ def approve(registry, proposals, ids, reviewer, evidence, supersedes=None, new_i
         r = copy.deepcopy(p)
         r.update(mapping_id=new_id or _next_id(reg['mappings']), status='approved', reviewer_id=who, approved_at=date or datetime.date.today().isoformat(),
                  evidence=list(evidence) + [e for e in p.get('evidence', []) if e not in evidence])
+        if bian_release: r['bian_release'] = bian_release   # the BIAN release a BIAN-anchored link relies on (the person states it)
         if supersedes:
             old = next((m for m in reg['mappings'] if m['mapping_id'] == supersedes), None)
             if not old: raise ApproveError(f'{supersedes}: not in the registry')
@@ -52,7 +53,9 @@ def approve(registry, proposals, ids, reviewer, evidence, supersedes=None, new_i
             old['status'] = 'superseded'; r['previous_mapping_id'] = supersedes
         reg['mappings'].append(r); out.append(r)
     issues = validate(reg, load_registry(), load_schema(), metamodel=Metamodel.load())
-    if issues: raise ApproveError('the registry would not pass its checks — nothing was written:\n  ' + '\n  '.join(issues[:10]))
+    if issues:
+        hint = '\n  → a link to a BIAN element needs the BIAN release it relies on: add --bian-release <release>' if any('requires bian_release' in i for i in issues) else ''
+        raise ApproveError('the registry would not pass its checks — nothing was written:\n  ' + '\n  '.join(issues[:10]) + hint)
     return reg, out
 
 
@@ -71,6 +74,7 @@ def main(argv=None):
     ap.add_argument('--evidence', action='append', default=[], metavar='KIND:REF', help='the document that proves the link (repeatable)')
     ap.add_argument('--supersedes', metavar='MAPPING_ID', help='the approved link this one replaces (it becomes superseded)')
     ap.add_argument('--id', dest='new_id', metavar='MAPPING_ID', help='the new link id (default: the next in the registry\'s style)')
+    ap.add_argument('--bian-release', metavar='RELEASE', help='for a link to a BIAN element: the BIAN release it relies on (required by the registry rules)')
     ap.add_argument('--date', help='approval date (default today)'); ap.add_argument('--dry-run', action='store_true', help='show the record; write nothing')
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
@@ -78,7 +82,7 @@ def main(argv=None):
     if not a.registry and not a.estate: ap.error('give --estate DIR or --registry FILE')
     try:
         reg = json.loads(reg_path.read_text(encoding='utf-8')); props = json.loads(Path(a.proposals).read_text(encoding='utf-8'))
-        new, recs = approve(reg, props, a.ids, a.reviewer, a.evidence, a.supersedes, a.new_id, a.date)
+        new, recs = approve(reg, props, a.ids, a.reviewer, a.evidence, a.supersedes, a.new_id, a.date, a.bian_release)
     except (OSError, ValueError) as e:
         print(f'ERROR: {e}', file=sys.stderr); return 2
     except ApproveError as e:

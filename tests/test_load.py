@@ -116,6 +116,18 @@ class LoadTests(unittest.TestCase):
         code, out, _ = run('trace', 'HIS-A3-CLEARING-GATEWAY', '--graph', graph)
         self.assertIn('HIS-A4-PAYAPP01', out)
 
+    def test_bian_link_approved_with_its_release(self):  # with --a2 the engine proposes capability → Service Domain; approval needs the BIAN release
+        e = self.est('e12'); links = self.tmp / 'links12'
+        load.load(self.cand, e, 'jane.architect', exclude=[BAD], a2=A2)
+        run('link', '--estate', e, '--out', links)
+        p = next(m for m in json.loads((links / 'proposals.json').read_text())['mappings'] if m['relationship'] == 'SUPPORTED_BY')
+        ev = ['--evidence', 'business_architecture_document:PAYARCH-55501#context', '--evidence', 'domain_scope_assessment:DSA-1']
+        code, out, err = run('approve', p['mapping_id'], '--proposals', links / 'proposals.json', '--estate', e, '--reviewer', 'jane.architect', *ev)
+        self.assertEqual(code, 1); self.assertIn('--bian-release', err)
+        code, out, err = run('approve', p['mapping_id'], '--proposals', links / 'proposals.json', '--estate', e, '--reviewer', 'jane.architect', *ev, '--bian-release', 'BIAN-RELEASE-X')
+        self.assertEqual(code, 0, err)
+        self.assertEqual(json.loads((e / 'mappings.json').read_text())['mappings'][-1]['bian_release'], 'BIAN-RELEASE-X')
+
     def test_cli(self):  # LD-G01, LD-B01
         cand = self.tmp / 'cand-bian'; shutil.rmtree(cand, ignore_errors=True); shutil.copytree(self.cand, cand)
         x = json.loads((cand / 'extraction.json').read_text())

@@ -275,7 +275,7 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem validate <registry>` | J1 | checks a registry or proposals file on its own (`--strict` treats warnings as errors) | after editing `mappings.json` | `sdem check` |
 | `sdem link <files> --out <dir>` | J2 | the inference engine proposes the missing links; writes `proposals.json` | when data is new or changed | `sdem review` |
 | `sdem review <proposals.json>` | J3 | lists the proposals, weakest first, with rule, confidence and reasoning | before approving | `sdem approve` (§8.2) |
-| `sdem approve <id> --proposals … --estate … --reviewer <you> --evidence <kind:ref>` | J3 | **you** approve a proposed link: writes a correct registry record, checks it first | after review | pull request |
+| `sdem approve <id> --proposals … --estate … --reviewer <you> --evidence <kind:ref> [--bian-release <release>]` | J3 | **you** approve a proposed link: writes a correct registry record, checks it first | after review | pull request |
 | `sdem build <files> --out <dir>` | J4 | checks everything and writes the graph store | after approval, before trace and impact | `sdem trace`, `sdem view` |
 | `sdem query --graph <dir> …` | J4 | finds records: `--type`, `--level`, `--where attr=value`, `--unmapped A2` (records still without a link) | to look things up | — |
 | `sdem baseline <name> --graph <dir>` | J4 | freezes the graph store under a name (e.g. a release) | at milestones | — |
