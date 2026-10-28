@@ -32,16 +32,22 @@ bash ci/check-estates.sh                                 # the same checks CI ru
 ## Daily work — always on a branch, always through a pull request
 
 ```bash
-git switch -c onboard/payments-hub
-sdem transform run work/payments-hub-export -o work/history       # work/ is never committed
-sdem load work/history --estate estates/payments --person <you>   # keep what is right; gaps are recorded
-sdem check --estate estates/payments
-sdem link --estate estates/payments -o work/links                 # proposed links
-sdem approve P-RUN-001 --proposals work/links/proposals.json --estate estates/payments \
+git switch -c onboard/<design>
+sdem transform run work/<design>-export -o work/history       # work/ is never committed
+sdem load work/history --estate estates/<domain> --person <you>   # keep what is right; gaps are recorded
+sdem check --estate estates/<domain>
+sdem link --estate estates/<domain> -o work/links                 # proposed links
+sdem approve P-RUN-001 --proposals work/links/proposals.json --estate estates/<domain> \
     --reviewer <you> --evidence application_architecture_document:<doc>#<section>   # a person approves, with evidence
-git add estates/payments && git commit -m "Onboard Payments Hub (LOAD-001)" && git push -u origin HEAD
+git add estates/<domain> && git commit -m "Onboard <design> (LOAD-001)" && git push -u origin HEAD
 ```
 Open a pull request; CI runs the **Estate checks**; a code owner reviews and merges. **Approvals become final when the pull request is merged.** The full walk-through: SDEM's [onboarding workflow](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md) and [user guide](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-workbench-user-guide.md).
+
+## Adding a domain
+
+Any domain works the same way: create `estates/<domain>/` (by onboarding its designs, or with its datasets and an empty `mappings.json`), add its reviewers to `.github/CODEOWNERS`, and name its estate owner. CI picks it up automatically.
+
+**Tune the transform for the domain (optional):** copy SDEM's `metamodel/transform-rules.json` to `rules/transform-rules.json`, add the domain's general words to `narrative.ignore_names` (for lending: `loan`, `lending`), and run `sdem transform run … --rules rules/transform-rules.json`. Otherwise the transform suggests a few extra candidates named after those words, which reviewers reject.
 
 ## What CI checks (`ci/check-estates.sh`)
 

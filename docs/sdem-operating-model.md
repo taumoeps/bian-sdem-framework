@@ -26,6 +26,8 @@ flowchart LR
 | Design exports (Confluence) | `work/` on the machine allowed to hold them | any repository |
 | Dashboards | authenticated internal hosting | public Pages, public buckets, links without sign-in |
 
+**One estate per domain.** Every domain works the same way — same rulebook, same commands, same checks; a domain joins by adding a folder in `estates/` with its owner and code owners. The only per-domain setting is the transform's word list ([pilot plan — tuning](sdem-pilot-plan.md#tuning-for-the-domain)).
+
 **Why:** the employer owns its designs; this repository is public. One private estate repository per organisation (or per division) keeps the boundary simple and auditable. **Confidence: high** — follows from the IP constraint and the 2026-10-29 audit finding.
 
 ## 2. Roles
@@ -34,7 +36,7 @@ flowchart LR
 |---|---|---|
 | **Architect** | the architects of A1, A3, A4 (and A2 where licensed) | onboard designs, keep their layer's data current, propose and approve links in their area, resolve gaps |
 | **Reviewer** (code owner) | named senior architects per layer, in `CODEOWNERS` | review and merge pull requests; a reviewer is always a person |
-| **Estate owner** | one person per estate (e.g. the domain architect for Payments) | accountable for the estate's quality: gaps worked down, links reviewed, CI green |
+| **Estate owner** | one person per estate — usually the domain's lead architect | accountable for the estate's quality: gaps worked down, links reviewed, CI green |
 | **Rulebook owner** | the SDEM owner (today: Steven Taumoepeau) | approves every rulebook change and baseline; the high-level spec stays frozen without them |
 | **SDEM maintainer** | whoever builds SDEM (today: the owner) | tool fixes and releases, migrations, answering SDEM questions |
 | **Platform owner** | the organisation's engineering platform team | the private repository, branch protection, CI runners, internal hosting, Copilot policy |

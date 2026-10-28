@@ -1,5 +1,5 @@
 ## What changed
-<!-- e.g. Onboarded the Payments Hub design (LOAD-001); approved 2 links; resolved GAP-003 -->
+<!-- e.g. Onboarded the <design> design into estates/<domain> (LOAD-001); approved 2 links; resolved GAP-003 -->
 
 ## Checks
 - [ ] Changes made with SDEM commands (`sdem load`, `sdem approve`, `sdem designs resolve` …), not by editing files by hand
