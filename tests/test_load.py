@@ -138,6 +138,8 @@ class LoadTests(unittest.TestCase):
         self.assertTrue({'no entity type', 'column not mapped', 'text not read', 'needs a person', 'file not read', 'rejected at load'} <= cats, cats)
         hub = next(g for g in rec['gaps'] if g['category'] == 'column not mapped' and g['about'] == ['HIS-A3-PAYMENTS-HUB'])
         self.assertEqual(hub['text'], 'Support hours: 24x7'); self.assertTrue(hub['where'].startswith('table'))   # placed at the table it came from
+        for g in [g for g in rec['gaps'] if g['category'] == 'column not mapped' and 'Support hours' in g['text']]:
+            self.assertIn("'Payments Hub Design / Applications'", g['where'], g)   # the applications table — not another table the entity appears in
         page = next(d for d in rec['documents'] if d['id'] == 'DOC-55501')
         self.assertEqual(page['facts']['Owner'], 'Payments architecture team'); self.assertIn('HIS-A3-PAYMENTS-HUB', page['entities'])
         rej = next(g for g in rec['gaps'] if g['category'] == 'rejected at load')

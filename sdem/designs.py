@@ -65,7 +65,7 @@ def from_transform(meta, index, ledger, records, loaded, excluded, person, load_
     for r in records:
         first = r['sources'][0]; did = document(first['page_id'], first.get('file'), first.get('page_title'))
         if r['id'] in loaded:
-            tab = next((x for x in r['sources'] if x['where'].startswith('table')), first)   # the table the unmapped columns came from
+            tab = next((x for x in r['sources'] if str(x.get('rule', '')).startswith('HT-')), first)   # the entity table the unmapped columns came from
             tdid = document(tab['page_id'], tab.get('file'), tab.get('page_title'))
             for col, val in (r.get('unmapped') or {}).items():
                 gaps.append({'id': gap_id(tdid, 'column not mapped', col, val, [r['id']]), 'document': tdid, 'category': 'column not mapped', 'kind': 'column',
