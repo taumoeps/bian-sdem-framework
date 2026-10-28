@@ -4,7 +4,7 @@ Everything is computed here, with the same functions the CLI uses (checks, the r
 AID gaps, controls); the page only displays the results and shows the exact `sdem` command for every action. No server,
 no network, no AI. Regenerate after a change.
 """
-import argparse, datetime, html, json, re, sys
+import argparse, collections, datetime, html, json, re, sys
 from pathlib import Path
 
 from .store import GraphReader, stale_inputs
@@ -120,6 +120,15 @@ def collect(estate, proposals=None, projection=None, catalogue=None, graph=None,
     stale = None
     if graph:
         b, s = stale_inputs(graph); stale = {'graph': str(graph), 'build': b, 'changed': s}
+    # design records and gap records — what did not fit an entity (DB-C09)
+    designs = None
+    if (estate / 'designs' / 'design-records.json').exists():
+        dr = _j(estate / 'designs' / 'design-records.json'); titles = {d['id']: d['title'] for d in dr['documents']}
+        open_gaps = [{**{k: g.get(k) for k in ('id', 'category', 'where', 'text', 'about', 'reason')}, 'page': titles.get(g['document'], g['document'])}
+                     for g in dr['gaps'] if g['status'] == 'open']
+        designs = {'documents': [{k: d.get(k) for k in ('id', 'title', 'modified', 'url', 'facts', 'coverage', 'entities', 'kind')} for d in dr['documents']],
+                   'open': open_gaps, 'by_category': dict(collections.Counter(g['category'] for g in open_gaps).most_common()),
+                   'by_status': dict(collections.Counter(g['status'] for g in dr['gaps']))}
     attention = []
     errs = sum(len(l['errors']) for l in layers) + len(reg_errors) + len([i for i in coord_issues if 'AG-S08' not in i])
     if errs: attention.append({'text': f'{errs} error(s) in the data — fix before trusting anything else', 'tab': 'overview', 'cmd': f'sdem check --estate {estate}', 'level': 'bad'})
@@ -129,6 +138,7 @@ def collect(estate, proposals=None, projection=None, catalogue=None, graph=None,
     if open_work: attention.append({'text': f'{len(open_work)} open work item(s)', 'tab': 'changes', 'cmd': f'sdem work list --estate {estate}', 'level': 'warn'})
     unplanned = [e for e in Estate(estate).status() if not e['planned']] if events else []
     if unplanned: attention.append({'text': f'{len(unplanned)} change event(s) waiting to be planned', 'tab': 'changes', 'cmd': f'sdem work plan --event {unplanned[0]["id"]} --estate {estate} --agent sdem-orchestrator --person <you>', 'level': 'warn'})
+    if designs and designs['open']: attention.append({'text': f"{len(designs['open'])} open gap(s) — what did not fit an entity in imported designs", 'tab': 'designs', 'cmd': f'sdem designs --estate {estate} --gaps --status open', 'level': 'warn'})
     if stale and stale['changed']: attention.append({'text': f"the graph store {stale['graph']} is out of date", 'tab': 'overview', 'cmd': f"sdem build --estate {estate} --out {stale['graph']}", 'level': 'warn'})
     if not attention: attention.append({'text': 'nothing needs your attention', 'tab': 'overview', 'cmd': '', 'level': 'good'})
     return {'estate': str(estate), 'name': estate.resolve().name, 'generated': now or datetime.datetime.now().replace(microsecond=0).isoformat(sep=' '),
@@ -136,7 +146,7 @@ def collect(estate, proposals=None, projection=None, catalogue=None, graph=None,
             'coordination': {'records': coord_n, 'issues': coord_issues}, 'coverage': _coverage(reader), 'attention': attention,
             'review': {'source': props_src, 'rows': review}, 'records': records, 'kinds': list(KINDS), 'matrix': matrices(fg),
             'changes': {'events': events, 'work': work, 'change_sets': [{k: c.get(k) for k in ('id', 'layer', 'reason', 'agent', 'person', 'created_at', 'event', 'reverts', 'adopted')} | {'changes': len(c.get('changes', []))} for c in sets], 'direct_edits': direct},
-            'aid': aid, 'controls': _controls(), 'stale': stale}
+            'aid': aid, 'controls': _controls(), 'stale': stale, 'designs': designs}
 
 
 def render(data, title=None):
@@ -213,7 +223,7 @@ details summary{cursor:pointer;color:var(--accent)}.c-design_change_required{col
 <main id="main"></main>
 <script>
 const D = __DATA__;
-const TABS = [["overview","Overview"],["review","Review"],["trace","Trace & impact"],["matrix","Matrices"],["changes","Changes & work"],["aid","AID plans"],["controls","Controls"]];
+const TABS = [["overview","Overview"],["review","Review"],["trace","Trace & impact"],["matrix","Matrices"],["changes","Changes & work"],["designs","Designs & gaps"],["aid","AID plans"],["controls","Controls"]];
 const COL = {A1:"var(--a1)",A2:"var(--a2)",A3:"var(--a3)",A4:"var(--a4)"};
 const CLS = {design_change_required:"design change required",review_required:"review required",no_impact:"no impact"};
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
@@ -307,6 +317,18 @@ R.aid = () => {
   if (A.ends.length) h += `<p class="note">Where AID stopped: ${A.ends.map(esc).join(" · ")}</p>`;
   h += `<h3>Against the real design</h3>` + table(["Measure","Projected","Real","Matched","Precision","Recall"], Object.entries(A.metrics).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.projected??""}</td><td>${v.real??v.compared??""}</td><td>${v.matched??""}</td><td>${v.precision??"—"}</td><td>${v.recall??"—"}</td></tr>`));
   h += `<h3>Projected elements</h3>` + table(["Layer","Element","Step","Rule — source","Why","Confidence"], A.elements.filter(e=>!["A2.ServiceOperation","A2.BusinessObject","A2.ControlRecord","A2.ServiceGroup","A2.AssetType","A2.BehaviorQualifier","A2.BusinessObjectAttribute"].includes(e.type)).map(e=>`<tr><td>${lvl(e.level)}</td><td>${rec(e.id,e.name)}<div class="muted">${esc(e.type)}</div></td><td>${esc(e.step)}</td><td>${esc(e.source_reference)}</td><td>${esc(e.reasoning)}</td><td>${e.confidence}</td></tr>`));
+  return h;
+};
+R.designs = () => {
+  const G = D.designs;
+  if (!G) return `<h2>Designs & gaps</h2><p class="note">This project has no imported designs. Past designs from Confluence come in with <code>sdem transform run</code> and <code>sdem load</code>; what does not fit an entity is kept here as gap records.</p>`;
+  const st = G.by_status, n = G.open.length;
+  let h = `<h2>Designs & gaps</h2><p class="note">What did not fit an architecture entity in imported designs — kept, not lost. <b>${n} open</b> · ${st.resolved||0} resolved · ${st.accepted||0} accepted. Resolve a gap when what it held is now in the data; accept it when it is left as it is, on purpose — your name and note are recorded.</p>`;
+  if (n) {
+    h += `<h3>Open gaps by kind</h3>` + table(["Kind","Open"], Object.entries(G.by_category).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v}</td></tr>`));
+    h += `<h3>Open gaps</h3>` + table(["Gap","Kind","Page — where","What it holds","About","Deal with it"], G.open.map(g=>`<tr><td><code>${esc(g.id)}</code></td><td>${esc(g.category)}</td><td>${esc(g.page)}<div class="muted">${esc(g.where)}</div></td><td>${esc(g.text||"")}</td><td>${(g.about||[]).map(a=>`<code>${esc(a)}</code>`).join(" ")}</td><td>${cmd(`sdem designs resolve ${g.id} --estate ${D.estate} --person <you> --note "<now in the data: …>"`)}${cmd(`sdem designs accept ${g.id} --estate ${D.estate} --person <you> --note "<why it stays>"`)}</td></tr>`));
+  }
+  h += `<h3>Pages the designs came from</h3>` + table(["Page","Date","Captured","Entities","Facts"], G.documents.map(d=>`<tr><td>${d.url?`<a href="${esc(d.url)}">${esc(d.title)}</a>`:esc(d.title)}<div class="muted">${esc(d.id)}</div></td><td>${esc(d.modified||"—")}</td><td>${d.coverage?d.coverage.percent+"%":"—"}</td><td>${(d.entities||[]).length}</td><td>${Object.entries(d.facts||{}).map(([k,v])=>`${esc(k)}: ${esc(v)}`).join("<br>")}</td></tr>`));
   return h;
 };
 R.controls = () => {

@@ -184,6 +184,36 @@ class LoadTests(unittest.TestCase):
         code, out, err = run('build', '--estate', e, '--out', self.tmp / 'g5graph')
         self.assertNotEqual(code, 0); self.assertIn('DOC-NOPE', out + err)
 
+    def test_gap_resolve_accept_reopen(self):  # LD-R05
+        e = self.est('g6'); load.load(self.cand, e, 'jane.architect', exclude=[BAD])
+        rec = json.loads((e / 'designs' / 'design-records.json').read_text())
+        risk = next(g['id'] for g in rec['gaps'] if g['category'] == 'no entity type')
+        pdf = next(g['id'] for g in rec['gaps'] if g['category'] == 'file not read')
+        self.assertEqual(run('designs', 'accept', risk, '--estate', e, '--person', 'jane.architect')[0], 1)                       # a note is required
+        self.assertEqual(run('designs', 'resolve', pdf, '--estate', e, '--person', 'copilot', '--note', 'x')[0], 1)              # never an agent
+        code, out, _ = run('designs', 'accept', risk, '--estate', e, '--person', 'jane.architect', '--note', 'risks stay in the risk register')
+        self.assertEqual(code, 0); self.assertIn('open gap(s) left', out)
+        code, _, _ = run('designs', 'resolve', pdf, '--estate', e, '--person', 'jane.architect', '--note', 'HLD recorded as HIS-A3-… by hand')
+        rec = json.loads((e / 'designs' / 'design-records.json').read_text()); g = {x['id']: x for x in rec['gaps']}
+        self.assertEqual((g[risk]['status'], g[pdf]['status']), ('accepted', 'resolved'))
+        self.assertEqual(g[risk]['history'][-1]['person'], 'jane.architect')
+        self.assertEqual(run('check', '--estate', e)[0], 0)
+        run('designs', 'reopen', pdf, '--estate', e, '--person', 'jane.architect', '--note', 'not complete')
+        self.assertEqual(json.loads((e / 'designs' / 'design-records.json').read_text())['gaps'][[x['id'] for x in rec['gaps']].index(pdf)]['status'], 'open')
+        p = e / 'designs' / 'design-records.json'; d = json.loads(p.read_text())                                                      # a status changed by hand, with no person on record
+        next(x for x in d['gaps'] if x['status'] == 'open')['status'] = 'resolved'; p.write_text(json.dumps(d))
+        code, out, _ = run('check', '--estate', e); self.assertEqual(code, 1); self.assertIn("without a person's decision", out)
+
+    def test_dashboard_shows_open_gaps(self):  # DB-C09, DB-H08
+        e = self.est('g7'); load.load(self.cand, e, 'jane.architect', exclude=[BAD])
+        from sdem import dashboard, home
+        d = dashboard.collect(e)
+        self.assertEqual(len(d['designs']['open']), len(json.loads((e / 'designs' / 'design-records.json').read_text())['gaps']))
+        self.assertTrue(any('open gap(s)' in a['text'] and a['tab'] == 'designs' for a in d['attention']))
+        self.assertIn('"designs","Designs & gaps"', dashboard.render(d))
+        h = home.collect_home([e], [('projects/g7.html', d)])
+        self.assertEqual(h['projects'][0]['open_gaps'], len(d['designs']['open']))
+
     def test_cli(self):  # LD-G01, LD-B01
         cand = self.tmp / 'cand-bian'; shutil.rmtree(cand, ignore_errors=True); shutil.copytree(self.cand, cand)
         x = json.loads((cand / 'extraction.json').read_text())

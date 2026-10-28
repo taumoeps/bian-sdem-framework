@@ -5,8 +5,9 @@ design, and a gap record (GAP-…) per item that did not fit. `sdem build` turns
 architecture graphs. Information, not architecture: the rules engine and impact analysis never read them.
 
   sdem designs --estate DIR | --graph DIR [--entity ID] [--gaps] [--category C] [--status S] [--json]
+  sdem designs resolve | accept | reopen GAP-… --estate DIR --person NAME --note TEXT     (a person's decision, on record)
 """
-import argparse, collections, hashlib, json, re, sys
+import argparse, collections, datetime, hashlib, json, re, sys
 from pathlib import Path
 
 from .paths import DATA_ROOT
@@ -113,6 +114,9 @@ def check(doc, entity_ids=None):
             seen.add(x['id'])
     for g in doc['gaps']:
         if g['document'] not in ids: errors.append(f"gap record {g['id']}: design record {g['document']} does not exist")
+        last = (g.get('history') or [None])[-1]   # LD-R05: a status other than open is a person's decision, on record
+        if g['status'] != 'open' and (not last or last['status'] != g['status'] or not _is_person(last['person'])):
+            errors.append(f"gap record {g['id']}: status {g['status']!r} without a person's decision in its history — use sdem designs {'resolve' if g['status'] == 'resolved' else 'accept'}")
     if entity_ids is not None:
         for x in doc['documents'] + doc['gaps']:
             gone = [e for e in x.get('entities', []) + x.get('about', []) if e not in entity_ids]
@@ -137,6 +141,29 @@ def graph(doc, node_key):
     return {'graph': {'id': 'sdem:designs', 'type': 'sdem.designs', 'label': 'Design records and gap records', 'directed': True,
                       'metadata': {'sdem_store_version': '1.0', 'records_version': doc['records_version'], 'documents': len(doc['documents']), 'gaps': len(doc['gaps'])},
                       'nodes': nodes, 'edges': edges}}
+
+
+def _is_person(name):
+    from .validate import NON_PERSON_REVIEWERS
+    n = (name or '').strip().lower()
+    return bool(n) and not n.startswith('sdem-') and n not in NON_PERSON_REVIEWERS
+
+
+def set_status(doc, ids, status, person, note, now=None):
+    """LD-R05: a person resolves, accepts or reopens gaps; the change is added to each gap's history."""
+    if not _is_person(person): raise ValueError(f"--person {person!r}: dealing with a gap is a person's decision — give your own name, never an agent or tool")
+    if status in ('resolved', 'accepted') and not (note or '').strip(): raise ValueError(f'--note is required: say why the gap is {status}')
+    by = {g['id']: g for g in doc['gaps']}
+    missing = [i for i in ids if i not in by]
+    if missing: raise ValueError(f"no such gap record: {', '.join(missing)}")
+    at = now or datetime.datetime.now().replace(microsecond=0).isoformat()
+    changed = []
+    for i in ids:
+        g = by[i]
+        if g['status'] == status: continue
+        g['status'] = status; g.setdefault('history', []).append({'status': status, 'at': at, 'person': person, 'note': note or ''})
+        changed.append(i)
+    return changed
 
 
 def from_graph(g):
@@ -165,7 +192,31 @@ def load(estate=None, graph_dir=None):
     return json.loads(p.read_text(encoding='utf-8'))
 
 
+def _set_main(argv):
+    verb = argv[0]; status = {'resolve': 'resolved', 'accept': 'accepted', 'reopen': 'open'}[verb]
+    ap = argparse.ArgumentParser(prog=f'sdem designs {verb}', description={'resolve': 'Mark gaps resolved — what they held is now in the data.',
+                                 'accept': 'Mark gaps accepted — left as they are, on purpose.', 'reopen': 'Reopen gaps.'}[verb])
+    ap.add_argument('gaps', nargs='+', metavar='GAP-ID'); ap.add_argument('--estate', required=True, metavar='DIR')
+    ap.add_argument('--person', required=True, help='your name — a person, never an agent'); ap.add_argument('--note', default='', help='why (required to resolve or accept)')
+    a = ap.parse_args(argv[1:])
+    p = Path(a.estate) / RECORDS
+    try:
+        doc = json.loads(p.read_text(encoding='utf-8'))
+        changed = set_status(doc, a.gaps, status, a.person, a.note)
+        errs, _ = check(doc)
+        if errs: raise ValueError('; '.join(errs[:5]))
+    except (OSError, ValueError) as e:
+        print(f'ERROR: {e}', file=sys.stderr); return 1
+    p.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    left = sum(1 for g in doc['gaps'] if g['status'] == 'open')
+    print(f"{status}: {', '.join(changed) or 'nothing changed'} (by {a.person}); {left} open gap(s) left in {a.estate}")
+    print('Commit the change on a branch and open a pull request — it is a decision on record.')
+    return 0
+
+
 def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] in ('resolve', 'accept', 'reopen'): return _set_main(argv)
     ap = argparse.ArgumentParser(prog='sdem designs', description='List the design records (one per source page of an imported design) and gap records (what did not fit an architecture entity).')
     src = ap.add_mutually_exclusive_group(required=True)
     src.add_argument('--estate', metavar='DIR'); src.add_argument('--graph', metavar='DIR')

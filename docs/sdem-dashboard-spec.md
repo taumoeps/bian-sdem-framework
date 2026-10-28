@@ -23,6 +23,7 @@
 | DB-C05 | Changes & work | change events (with impact summary), change sets, work items with history; direct edits waiting to be adopted | built |
 | DB-C06 | AID plans | with `--projection`: what was projected per layer (step, rule, confidence, reasoning), and the gap results against the real design | built |
 | DB-C07 | Controls | every control with status, where it runs, and its last tested result | built |
+| DB-C09 | Designs & gaps | when the estate has design records: open gaps by category; each open gap with its page, place, text, the entities it is about, and the `sdem designs resolve` / `accept` commands; resolved and accepted counts; the design records (title, date, coverage, entities, facts). *What needs your attention* shows *N open gap(s)* | built |
 | DB-C08 | Accessibility | readable in light and dark mode; keyboard-navigable tabs; works at narrow widths; prints cleanly | built |
 
 ## 2a. The main dashboard — `sdem home`
@@ -35,6 +36,7 @@
 | DB-H04 | A metamodel picture: entity types in four bands, the link types between architectures as arrows; a clicked type shows its details. | built |
 | DB-H05 | Health computed when the page is generated: every generator's `--check`, the rules engine's acceptance cases (precision and recall against the floor), controls, known gaps, the gap register. | built |
 | DB-H06 | Configuration: where each setting lives, confidence bands, link statuses and allowed changes, impact rules, the agents. | built |
+| DB-H08 | The projects table has an **Open gaps** column; a project with open gaps counts as needing attention | built |
 | DB-H07 | The landing view is SDEM's component architecture (`index.html#picture`): every key component of the design — BIAN reference repository, historical design repository, metamodel and rules, mapping engine, validation and approval, federated knowledge graph, A1–A4 graphs and schemas — plus AID, projection packages, change coordination and agents, and the workbench; the flows between them; each marked built / partly built / not built; a clicked component shows what it is, where it lives, live figures, health and what is next. The entity-type picture moves to its own tab (Entity map). Both diagrams use the full window width, scale to fit beside their details panel without scrolling, and have a full-screen button. | built |
 
 ## 3. New CLI outputs

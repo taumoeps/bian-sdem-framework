@@ -222,6 +222,7 @@ def collect_home(estates, project_pages, now=None):
                          'missing': [x['level'] for x in d['missing_layers']], 'errors': sum(len(l['errors']) for l in d['layers']) + len(d['registry']['errors']) + len(d['coordination']['issues']),
                          'advice': sum(len(l['advice']) for l in d['layers']), 'links': d['registry']['links'], 'by_status': d['registry']['by_status'], 'coverage': cov,
                          'proposals': len(d['review']['rows']), 'open_work': len(open_work), 'events': len(d['changes']['events']),
+                         'open_gaps': len(d['designs']['open']) if d.get('designs') else 0,
                          'attention': [a['text'] for a in d['attention'] if a['level'] != 'good']})
     hl = health(m)
     return {'generated': now or datetime.datetime.now().replace(microsecond=0).isoformat(sep=' '), 'metamodel': m, 'entity_picture': layout(m['entities'], m['cross']),
@@ -258,7 +259,7 @@ def main(argv=None):
     if a.json: print(json.dumps(data, indent=2, ensure_ascii=False)); return 0
     h = data['health']; ok = all(g['current'] for g in h['generators']) and all(x['passed'] for x in h['acceptance'])
     print(f"wrote {page} and {len(data['projects'])} project dashboard(s) in {Path(a.out) / 'projects'} — SDEM health: {'OK' if ok else 'ATTENTION'}; "
-          f"{sum(1 for p in data['projects'] if p['errors'] or p['proposals'] or p['open_work'])} project(s) need attention")
+          f"{sum(1 for p in data['projects'] if p['errors'] or p['proposals'] or p['open_work'] or p.get('open_gaps'))} project(s) need attention")
     print(f"open: file://{page.resolve()}")
     return 0
 
@@ -323,15 +324,15 @@ R.home=()=>{
    <div class="card"><b>Spec gaps</b><div class="big">${H.spec_gaps.filter(g=>/^open/.test(g.status)).length}</div><div class="muted">open of ${H.spec_gaps.length} (the rest decided)</div></div></div>`;
   h+=`<h2>The metamodel</h2><div class="cards">${["A1","A2","A3","A4"].map(l=>`<div class="card">${lvl(l)} <b>${esc(l)}</b><div class="big">${n(l)}</div><div class="muted">entity types · ${M.within.filter(w=>w.level===l).length} links allowed inside</div></div>`).join("")}
    <div class="card"><b>Between architectures</b><div class="big">${M.cross.length}</div><div class="muted">link types · ${M.rules.length} engine rules</div></div></div>`;
-  const att=D.projects.filter(p=>p.errors||p.proposals||p.open_work);
+  const att=D.projects.filter(p=>p.errors||p.proposals||p.open_work||p.open_gaps);
   h+=`<h2>Projects (${D.projects.length})</h2><p class="note">${att.length?`${att.length} need attention.`:"None needs attention."} Open a project for its own dashboard.</p>`+projTable();
   return h;};
-function projTable(){return table(["Project","Architectures (records)","Links","Coverage","Errors","Advice","To review","Open work","Needs attention"],D.projects.map(p=>`<tr>
+function projTable(){return table(["Project","Architectures (records)","Links","Coverage","Errors","Advice","To review","Open work","Open gaps","Needs attention"],D.projects.map(p=>`<tr>
   <td><a href="${esc(p.page)}"><b>${esc(p.name)}</b></a><div class="muted">${esc(p.path)}</div></td>
   <td>${["A1","A2","A3","A4"].map(l=>p.layers[l]!=null?`<span class="chip">${lvl(l)}${p.layers[l]}</span>`:`<span class="chip muted">${esc(l)} —</span>`).join("")}</td>
   <td>${p.links}<div class="muted">${Object.entries(p.by_status).map(([k,v])=>`${v} ${esc(k)}`).join(", ")}</div></td>
   <td>${Object.entries(p.coverage).map(([l,v])=>`<div>${lvl(l)}${v==null?"—":v+"%"}</div>`).join("")}</td>
-  <td class="${p.errors?"bad":"ok"}">${p.errors}</td><td class="${p.advice?"warn":""}">${p.advice}</td><td class="${p.proposals?"warn":""}">${p.proposals}</td><td class="${p.open_work?"warn":""}">${p.open_work}</td>
+  <td class="${p.errors?"bad":"ok"}">${p.errors}</td><td class="${p.advice?"warn":""}">${p.advice}</td><td class="${p.proposals?"warn":""}">${p.proposals}</td><td class="${p.open_work?"warn":""}">${p.open_work}</td><td class="${p.open_gaps?"warn":""}">${p.open_gaps||0}</td>
   <td>${p.attention.map(esc).join("<br>")||'<span class="ok">nothing</span>'}</td></tr>`));}
 R.projects=()=>`<h2>Projects in use</h2><p class="note">Every estate found. Coverage = records linked to another architecture by an approved link, of those the rulebook expects to be linked. Regenerate with <code>sdem home</code>.</p>`+projTable();
 R.entities=()=>`<h2>Architecture entities</h2><p class="note">The entity types of each architecture, where each comes from, and its evidence status. Dashed = abstract (groups others, never has records of its own).</p>`+filterBox("fEnt","filter: type, standard, definition …")+
@@ -342,7 +343,7 @@ R.entities=()=>`<h2>Architecture entities</h2><p class="note">The entity types o
   <td>${e.within.length} · ${e.cross.length}</td></tr>`),"scroll");
 R.picture=()=>{const A=D.architecture;const st={"built":0,"partial":0,"not built":0};A.boxes.forEach(b=>st[b.status]=(st[b.status]||0)+1);
   return `<h2>SDEM architecture</h2><p class="note">The components of SDEM and how they work together — the mapping lane (left and centre) and the planning lane, AID (right), over the four independently governed architectures. Click a component for what it is, where it lives, its live figures and what is next. <span class="chip ok">■ built ${st["built"]}</span><span class="chip warn">■ partly built ${st["partial"]}</span><span class="chip muted">▢ not built ${st["not built"]}</span></p>
-  <div class="split"><div class="pic fit" id="arch"></div><div class="side fit" id="aside"><p><button class="fsbtn" data-fs="arch" aria-label="Show the diagram full screen">⛶ full screen</button></p><p class="muted">Click a component.</p><h3>Health now</h3><p>${genOK?'<span class="ok">generated documents current</span>':'<span class="bad">generated documents stale</span>'} · ${accOK?'<span class="ok">engine acceptance '+H.acceptance.length+' of '+H.acceptance.length+'</span>':'<span class="bad">engine acceptance failing</span>'}</p><p>${D.projects.length} project(s); ${D.projects.filter(p=>p.errors||p.proposals||p.open_work).length} need attention — see <a href="#projects" data-tab="projects">Projects</a>.</p></div></div>`;};
+  <div class="split"><div class="pic fit" id="arch"></div><div class="side fit" id="aside"><p><button class="fsbtn" data-fs="arch" aria-label="Show the diagram full screen">⛶ full screen</button></p><p class="muted">Click a component.</p><h3>Health now</h3><p>${genOK?'<span class="ok">generated documents current</span>':'<span class="bad">generated documents stale</span>'} · ${accOK?'<span class="ok">engine acceptance '+H.acceptance.length+' of '+H.acceptance.length+'</span>':'<span class="bad">engine acceptance failing</span>'}</p><p>${D.projects.length} project(s); ${D.projects.filter(p=>p.errors||p.proposals||p.open_work||p.open_gaps).length} need attention — see <a href="#projects" data-tab="projects">Projects</a>.</p></div></div>`;};
 R.entitymap=()=>`<h2>Entity map</h2><p class="note">The entity types of the four architectures and the ${M.cross.length} link types between them. Click a type for its definition, attributes, the links allowed for it, and the engine rules that use it.</p>
   <div class="split"><div class="pic fit" id="pic"></div><div class="side fit" id="side"><p><button class="fsbtn" data-fs="pic" aria-label="Show the map full screen">⛶ full screen</button></p><p class="muted">Click an entity type.</p></div></div>`;
 R.within=()=>`<h2>Links inside each architecture</h2><p class="note">The ${M.within.length} relationship rows allowed within an architecture, each from its reference architecture (BIAN for A2; ArchiMate 3.2 and TOGAF for A1, A3, A4). <code>sdem check</code> rejects any other.</p>`+filterBox("fWithin","filter: type, kind, id …")+

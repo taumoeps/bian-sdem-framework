@@ -100,6 +100,19 @@ flowchart LR
 - **Kept apart:** gap records are information, not architecture — the link engine, impact and the four graphs never see them. The metamodel is unchanged.
 - **Stable ids:** a record's id comes from its page and content, so loading the same transform again adds nothing twice.
 - **Reconciliation** in the load record: candidates = loaded + already in the estate + excluded; transform items = captured + skipped by design + gaps.
+### Dealing with a gap — and where you are told
+
+```mermaid
+flowchart LR
+    O(["⚠️ open"]) -->|"sdem designs resolve<br/>(now in the data)"| R(["✅ resolved"])
+    O -->|"sdem designs accept<br/>(left as it is, on purpose)"| A(["➖ accepted"])
+    R -->|"sdem designs reopen"| O
+    A -->|"sdem designs reopen"| O
+```
+
+- `sdem designs resolve|accept|reopen GAP-… --estate DIR --person <you> --note "<why>"` — a **person's** decision: their name, the date and the note are added to the gap's **history**; an agent's or tool's name is refused (as CTL-21). `sdem check` rejects a gap whose status was changed by hand without that history.
+- **Where you are told:** the transform's report and the load's output (as before); `sdem trace` (*N open gap(s)*); `sdem designs --gaps --status open`; and the **dashboards** — the project dashboard's *What needs your attention* (*N open gap(s)*) and its **Designs & gaps** tab (open gaps by category, each with the command to resolve or accept it; the pages with their facts and coverage), and the home page's projects table (*Open gaps* column). No e-mail or chat alerts — nothing leaves the machine.
+
 - **Access:** `sdem designs --estate DIR` (or `--graph DIR`) lists design records and gaps — `--entity ID` shows an entity's pages and gaps; `sdem trace` ends with *documented in*: the entity's pages and their open gaps. A recurring *no entity type* is evidence for a metamodel decision by the owner.
 
 ## 5. The control — CTL-23

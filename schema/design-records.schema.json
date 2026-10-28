@@ -47,7 +47,11 @@
         "about": {"type": "array", "items": {"type": "string"}, "description": "ids of the entities the gap is about"},
         "status": {"enum": ["open", "resolved", "accepted"], "description": "open until a person deals with it; resolved (now in the data) or accepted (left as it is, on purpose)"},
         "first_load": {"type": "string", "pattern": "^LOAD-[0-9]+$"},
-        "note": {"type": "string"}
+        "note": {"type": "string"},
+        "history": {"type": "array", "description": "every status change, by a person (sdem designs resolve | accept | reopen)", "items": {
+          "type": "object", "additionalProperties": false, "required": ["status", "at", "person", "note"],
+          "properties": {"status": {"enum": ["open", "resolved", "accepted"]}, "at": {"type": "string", "minLength": 1},
+                         "person": {"type": "string", "minLength": 1}, "note": {"type": "string"}}}}
       }
     }
   }

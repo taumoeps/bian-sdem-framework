@@ -56,7 +56,7 @@ Then give the architect the load command to run themselves, e.g.:
 
 ## After loading — what to expect
 
-- What did not fit an entity is kept as **gap records** beside the estate (`<estate>/designs/design-records.json`): `sdem designs --estate <estate> --gaps` lists them by category; `sdem designs --entity <id>` shows an entity's pages and gaps. Help the architect work through the open ones; a recurring *no entity type* is evidence for a metamodel decision by the owner — never change `metamodel/`.
+- What did not fit an entity is kept as **gap records** beside the estate (`<estate>/designs/design-records.json`): `sdem designs --estate <estate> --gaps` lists them by category; `sdem designs --entity <id>` shows an entity's pages and gaps. Help the architect work through the open ones — suggest, per gap, whether it is now in the data (`sdem designs resolve`) or stays as it is (`sdem designs accept`), with a note; **the architect runs those commands** (their name is recorded); a recurring *no entity type* is evidence for a metamodel decision by the owner — never change `metamodel/`.
 
 - Loaded records keep their `HIS-` ids and `attributes.source_id` = `confluence:<pages>`.
 - `sdem link` proposes links between architectures from them — **capped at low** when an end was read from a document (DEC-E-11); say so when you explain a proposal, and suggest checking it against the page (`design-index.json` gives the page).

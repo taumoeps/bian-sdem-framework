@@ -43,6 +43,7 @@ flowchart LR
 | **Changes & work** | change events with impact, work items with their history, direct edits waiting to be adopted | `sdem work …`, `sdem change …` |
 | **AID plans** | a projection beside the real design: what was projected, from what, how sure; gap results | `sdem aid …` |
 | **Controls** | every control, where it runs, its last tested result | — |
+| **Designs & gaps** (when the estate has imported designs) | the pages designs came from (facts, coverage) and the **open gap records** — what did not fit an entity — by category | `sdem designs resolve` / `accept` (copy button) |
 
 ## 4. New CLI outputs the dashboard needs (useful on their own)
 
