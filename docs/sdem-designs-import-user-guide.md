@@ -2,6 +2,23 @@
 
 > For architects. How to bring designs you already have (exported from Confluence) into SDEM, check them, connect them, and ask questions of them. No AI needed. To **test** the workflow step by step with expected results, use [`use-case-example-4.md`](use-case-example-4.md); for the reasoning behind each step, [`sdem-designs-import-workflow.md`](sdem-designs-import-workflow.md).
 
+## Where this fits
+
+This is **SDEM's design ingestion** — getting your existing designs into an estate (steps 1–4 below) — followed by SDEM's **normal processing** (steps 5–8), the same for every estate. Afterwards your designs are ready for queries and changes.
+
+```mermaid
+flowchart LR
+    subgraph IN["Ingestion — getting data into an estate"]
+        direction TB
+        D["📄 <b>Design ingestion</b> — built<br/>existing designs (Confluence export)<br/>transform → review → load"]
+        T["🗄️ <b>Tool ingestion</b> — planned (v0.11)<br/>spreadsheets, CMDB, application portfolio<br/>adapter → check → load"]
+    end
+    D --> E[("Estate<br/>architecture data")]
+    T --> E
+    E --> N["<b>Normal processing</b> — the same for every estate<br/>check → link → approve → build"]
+    N --> U(["ready for queries and changes"])
+```
+
 ## What you will do
 
 ```mermaid

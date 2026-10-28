@@ -2,6 +2,23 @@
 
 > **Status: describes what is built (2026-10-28).** One page for the whole journey of past designs into SDEM: what each step does to the data, what it produces, where it lives, what stops bad data, and how ready the data is after each step. Step by step, with the expected result of each step (a test script): [`use-case-example-4.md`](use-case-example-4.md). Details: [`sdem-transform-design.md`](sdem-transform-design.md) (transform), [`sdem-load-design.md`](sdem-load-design.md) (load), [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md) §8.7 (commands).
 
+## 0. Where this fits — SDEM's design ingestion
+
+This workflow is **SDEM's design ingestion** (steps 1–4: export → transform → review → load), followed by SDEM's **normal processing** (steps 5–7: link → approve → build), which is the same for every estate. Together they make your existing designs **ready for queries and changes**. The other way data comes in — **tool ingestion** from spreadsheets and tools — is planned (v0.11).
+
+```mermaid
+flowchart LR
+    subgraph IN["Ingestion — getting data into an estate"]
+        direction TB
+        D["📄 <b>Design ingestion</b> — built<br/>existing designs (Confluence export)<br/>transform → review → load"]
+        T["🗄️ <b>Tool ingestion</b> — planned (v0.11)<br/>spreadsheets, CMDB, application portfolio<br/>adapter → check → load"]
+    end
+    D --> E[("Estate<br/>architecture data")]
+    T --> E
+    E --> N["<b>Normal processing</b> — the same for every estate<br/>check → link → approve → build"]
+    N --> U(["ready for queries and changes"])
+```
+
 ## 1. The whole journey in one picture
 
 ```mermaid

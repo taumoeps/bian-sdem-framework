@@ -269,7 +269,7 @@ flowchart TB
 
 ## Using SDEM with your existing designs
 
-How an architect brings designs they already have — exported from Confluence — into SDEM, in their own VS Code terminal. Full guide: **[`docs/sdem-designs-import-user-guide.md`](docs/sdem-designs-import-user-guide.md)**.
+This is **SDEM's design ingestion**: how an architect brings designs they already have — exported from Confluence — into SDEM (steps 1–4 below), followed by SDEM's **normal processing** (steps 5–9: check, link, approve, build) that makes them ready for queries and changes. Data from other tools (spreadsheets, CMDB) will come in by **tool ingestion**, planned (v0.11). Full guide: **[`docs/sdem-designs-import-user-guide.md`](docs/sdem-designs-import-user-guide.md)**.
 
 ```mermaid
 flowchart LR
