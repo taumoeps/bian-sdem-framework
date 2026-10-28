@@ -62,5 +62,27 @@ class EstateTemplateTests(unittest.TestCase):
         self.assertFalse([f for f in files if f.suffix == '.json' and f.parent.name != '.vscode'], 'the template carries no data')
 
 
+    def test_a_local_run_compares_with_main_by_default(self):  # the walkthrough ran it without a base and the diff was skipped
+        self.git('branch', '-M', 'main')
+        p = self.repo / 'estates' / 'payments' / 'mappings.json'; d = json.loads(p.read_text())
+        m = next(x for x in d['mappings'] if x.get('status') == 'approved'); m['rationale'] = (m.get('rationale') or '') + ' edited'
+        p.write_text(json.dumps(d, indent=2))
+        code, out = self.ci()
+        self.assertIn('comparing approved links with main', out)
+        self.assertEqual(code, 1); self.assertIn('an approved link was edited or removed', out)
+
+    def test_a_run_without_main_says_the_check_was_skipped(self):
+        self.git('branch', '-M', 'trunk')
+        code, out = self.ci()
+        self.assertEqual(code, 0, out[-800:]); self.assertIn("the 'approved links unchanged' check is skipped", out)
+
+    def test_the_template_covers_the_bian_layer_and_names_the_right_check(self):
+        self.assertIn('bian/', (T / '.github' / 'CODEOWNERS').read_text())
+        self.assertIn('-o bian/a2-service-domain.json', (T / 'bian' / 'README.md').read_text())
+        readme = (T / 'README.md').read_text()
+        self.assertIn('status check **`check`**', readme); self.assertIn('--a2 bian/a2-service-domain.json', readme)
+        self.assertIn('sdem transform rules -o rules/transform-rules.json', readme)
+        self.assertIn('select **`check`**', (ROOT / 'docs' / 'sdem-repository-protection.md').read_text())
+
 if __name__ == '__main__':
     unittest.main()

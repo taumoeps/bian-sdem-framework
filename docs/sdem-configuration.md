@@ -71,7 +71,7 @@ SDEM ships with a **base BIAN** — BIAN's public Semantic APIs 14.0.0 (Apache-2
 | `--objects` | also import BIAN's business objects — from a folder only |
 | `--previous <file>` | report what changed against your previous BIAN layer (nothing is removed from your estate) |
 
-Keep the BIAN files you downloaded and the A2 file in your private estate repository's working area; the A2 file is part of your estate. How: [onboarding — your BIAN (A2) layer](sdem-onboarding-workflow.md#your-bian-a2-layer).
+**Where it lives:** in your estate repository, write it to `bian/a2-service-domain.json` and commit it — one file shared by every domain (`sdem load … --a2 bian/a2-service-domain.json`); keep a `--patterns` table beside it (`bian/patterns.csv`) and your own pack if you have one (`bian/our-bian.json`). The estate template's `bian/README.md` walks through it. How: [onboarding — your BIAN (A2) layer](sdem-onboarding-workflow.md#your-bian-a2-layer).
 
 ## Text in pictures (OCR)
 
@@ -110,7 +110,7 @@ If your organisation allows GitHub Copilot, SDEM's Copilot files make it useful 
 |---|---|
 | `.github/copilot-instructions.md` | the rules Copilot follows in this project (suggest commands, never approve) |
 | `.github/agents/` | five agents: one per layer (A1–A4) and an orchestrator |
-| `.github/prompts/` | ten prompts: `/sdem-explain`, `/sdem-fix`, `/sdem-review`, `/sdem-onboarding-review` … |
+| `.github/prompts/` | prompts (9 installed into an estate repository; the SDEM project also has one for its made-up example): `/sdem-explain`, `/sdem-fix`, `/sdem-review`, `/sdem-onboarding-review` … |
 | `.github/skills/` | five skills: change sets, records, approving links, trace and impact, onboarding designs |
 
 In an estate repository, put them in place with `sdem copilot install` — they match the SDEM version you installed; run it again after an upgrade (files your team changed are kept and listed). Agents work in rounds; the limit is a cap an agent may lower but never raise — the architect decides. Set-up: [Copilot set-up](sdem-copilot-setup.md).

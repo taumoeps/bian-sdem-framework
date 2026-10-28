@@ -369,11 +369,11 @@ def compare(previous, dataset):
             'renamed': sorted((i, old[i]['name'], new[i]['name']) for i in set(old) & set(new) if old[i]['name'] != new[i]['name'])}
 
 
-def report_md(dataset, report, refused, warnings, changes=None, descriptions=False):
+def report_md(dataset, report, refused, warnings, changes=None, descriptions=False, source='the BIAN files you downloaded'):
     c = Counter(i['type'] for i in dataset['instances'])
     L = [f"# BIAN import — {dataset['source_system']}", '',
          f"{len(dataset['instances'])} records, {len(dataset['relationships'])} links inside A2, from BIAN's Semantic API release {dataset['model_version']}. "
-         'Read from the files you downloaded; nothing was fetched. ' + ('BIAN descriptions included (--descriptions).' if descriptions else 'BIAN descriptions left out.'), '',
+         f'Read from {source}; nothing was fetched. ' + ('BIAN descriptions included (--descriptions).' if descriptions else 'BIAN descriptions left out.'), '',
          '| Kind | Records |', '|---|---|'] + [f'| {t} | {n} |' for t, n in sorted(c.items())]
     L += ['', '## Asset type and functional pattern — confirm', '',
           f'BIAN\'s API files do not state them. **Derived** values come from the control record\'s name ({PATTERN_SOURCE}: a control record is named asset type + generic artifact); '
@@ -436,10 +436,11 @@ def main(argv=None):
     if a.base is not None:
         source = Path(a.base) if a.base else base_file()
         domains, refused, where = read_pack(source), [], f'--base {a.base}' if a.base else '--base'
+        described = f'your BIAN pack {a.base}' if a.base else f"the base BIAN that ships with SDEM ({source.name})"
         if a.cmd == 'import' and (a.descriptions or a.objects):
             raise BianError('the base leaves out BIAN\'s descriptions and object schemas — for --descriptions or --objects, import from BIAN\'s files (a downloaded release folder)')
     else:
-        domains, refused = read_release(a.folder); where = a.folder
+        domains, refused = read_release(a.folder); where = a.folder; described = f'the BIAN files in {a.folder}'
     if a.cmd == 'list':
         rows = [{'name': d['name'], 'release': d['release'], 'operations': len(d['operations']), 'control_record': d['control_record'], 'file': d['file'],
                  'needs_pattern': not derive(d['control_record'])[0]} for d in sorted(domains, key=lambda d: d['name'].lower())]
@@ -467,7 +468,7 @@ def main(argv=None):
     changes = compare(json.loads(Path(a.previous).read_text(encoding='utf-8')), dataset) if a.previous else None
     out = Path(a.out); report_path = out.with_name(out.stem + '.report.md')
     from .files import Batch
-    b = Batch(); b.json(out, dataset); b.text(report_path, report_md(dataset, rep, refused, warnings, changes, a.descriptions)); b.commit()
+    b = Batch(); b.json(out, dataset); b.text(report_path, report_md(dataset, rep, refused, warnings, changes, a.descriptions, described)); b.commit()
     c = Counter(i['type'].split('.')[1] for i in dataset['instances'])
     res = {'out': str(out), 'report': str(report_path), 'release': dataset['model_version'], 'domains': len(chosen), 'records': dict(c),
            'derived_to_confirm': len(rep['derived']), 'warnings': len(warnings), 'changes': changes}

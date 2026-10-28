@@ -11,7 +11,7 @@ Rules only: no AI, no network, Python standard library only, so it runs on a loc
   pictures        → their text, read on the machine (macOS Vision, built in; or Tesseract), or exactly from SVG text;
                     labels become low-confidence candidates, lines are not read; always listed for a person
 Every record is a candidate with its sources (page, where, rule, confidence, reasoning) — never above medium, never
-real until a person confirms it. The rules are in metamodel/transform-rules.json; copy it and pass --rules to tune.
+real until a person confirms it. The rules are in metamodel/transform-rules.json; `sdem transform rules -o FILE` writes a copy to tune, passed with --rules.
 
   sdem transform inspect EXPORT_DIR                      what is in the export and which rules match (structure only)
   sdem transform run EXPORT_DIR -o OUT [--known …]       candidate datasets, extraction.json, design-index.json, report
@@ -1472,15 +1472,25 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem transform', description='Transform an export of past designs (Confluence) into candidate architecture entities — rules only, no network; text in pictures by on-device OCR (--ocr off to disable).')
     sub = ap.add_subparsers(dest='cmd', required=True)
     i = sub.add_parser('inspect', help='what is in the export and which rules read it — structure only')
-    i.add_argument('export'); i.add_argument('--rules', help='your copy of metamodel/transform-rules.json'); i.add_argument('--json', action='store_true')
+    i.add_argument('export'); i.add_argument('--rules', help='your copy of the rules (make one with `sdem transform rules -o FILE`)'); i.add_argument('--json', action='store_true')
     i.add_argument('--anonymous', action='store_true', help='folder layout only, names replaced by F1, F2 … — safe to describe to others')
     i.add_argument('--ocr', default='auto', choices=['auto', 'vision', 'tesseract', 'off'], help='read text in pictures: macOS Vision (built in), Tesseract (if installed), auto, or off')
     e = sub.add_parser('run', help='transform the export: write candidate datasets, extraction.json, design-index.json and extraction-report.md')
-    e.add_argument('export'); e.add_argument('-o', '--out', required=True); e.add_argument('--rules', help='your copy of metamodel/transform-rules.json')
+    e.add_argument('export'); e.add_argument('-o', '--out', required=True); e.add_argument('--rules', help='your copy of the rules (make one with `sdem transform rules -o FILE`)')
     e.add_argument('--known', nargs='+', default=[], help='existing SDEM datasets: their names are found in the text and flagged as the same record')
     e.add_argument('--model-id', help='name for the candidate datasets (default: the Confluence space)'); e.add_argument('--json', action='store_true')
     e.add_argument('--ocr', default='auto', choices=['auto', 'vision', 'tesseract', 'off'], help='read text in pictures: macOS Vision (built in), Tesseract (if installed), auto, or off')
+    r_ = sub.add_parser('rules', help="write a copy of SDEM's transform rules to tune for your organisation's designs (then pass it with --rules)")
+    r_.add_argument('-o', '--out', required=True, metavar='FILE', help='e.g. rules/transform-rules.json in your estate repository')
     a = ap.parse_args(argv)
+    if a.cmd == 'rules':
+        out = Path(a.out)
+        if out.exists(): print(f'ERROR: {out} exists — tune that copy, or remove it to start again from SDEM\'s rules', file=sys.stderr); return 2
+        from .files import write_text
+        write_text(out, RULES.read_text(encoding='utf-8'))
+        print(f"wrote {out} — SDEM's transform rules (version {json.loads(RULES.read_text(encoding='utf-8')).get('metamodel_version', '')}); add your table headings under `tables`, then:\n"
+              f'next: sdem transform inspect <export> --rules {out}   ·   sdem transform run <export> -o work/history --rules {out}')
+        return 0
     try:
         if a.cmd == 'inspect':
             r = inspect(a.export, a.rules, a.anonymous, a.ocr)
@@ -1508,7 +1518,7 @@ def main(argv=None):
             print(f"\nCoverage: {o['percent']}% captured ({o['captured']} captured, {o['not_captured']} not captured, {o['skipped']} skipped by design)"
                   + (' — not captured: ' + ', '.join(f'{k} {v}' for k, v in r['coverage']['not_captured_by_category'].items()) if o['not_captured'] else ''))
             print('  by kind: ' + ', '.join(f"{k} {v['percent']}%" for k, v in r['coverage'].get('by_kind', {}).items()))
-            print('\nTune: copy metamodel/transform-rules.json, add the column names or shape words marked "no rule"/"unclassified", pass --rules.')
+            print('\nTune: `sdem transform rules -o rules/transform-rules.json`, add the column names or shape words marked "no rule"/"unclassified", pass --rules.')
             return 0
         x, ds, issues = extract(a.export, a.out, a.rules, a.known, a.model_id, ocr=a.ocr)
     except (ValueError, OSError) as err:

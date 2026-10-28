@@ -158,7 +158,7 @@ flowchart TB
         direction LR
         d1["✅ Rulebook and data model"]
         d2["✅ Connections and<br/>knowledge graph"]
-        d3["⏭️ Licensed BIAN catalogue"]
+        d3["✅ Base BIAN included<br/>(BIAN Semantic APIs 14.0.0)"]
     end
     subgraph B2["2 · Tools"]
         direction LR
@@ -180,8 +180,8 @@ flowchart TB
     B1 ~~~ B2 ~~~ B3 ~~~ B4
     classDef b fill:#E8F5E9,stroke:#2E7D32
     classDef n fill:#ECEFF1,stroke:#607D8B
-    class d1,d2,t1,t2,t3,a1,o1 b
-    class d3,t4,a2,o2 n
+    class d1,d2,d3,t1,t2,t3,a1,o1 b
+    class t4,a2,o2 n
 ```
 
 ✅ built · ⏭️ next. Details: [ROADMAP](docs/design/ROADMAP.md) · what changed: [CHANGELOG](CHANGELOG.md).

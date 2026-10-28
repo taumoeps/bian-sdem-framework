@@ -268,6 +268,8 @@ Links **inside** one architecture go in that file's `relationships` list, e.g. `
 
 You don't need to memorise the rules: write the data, run `sdem check`, and it tells you exactly what is missing or not allowed — and Copilot can explain each message.
 
+**Editing by hand is fine for a layer's records** — add an application to `a3-application.json`, correct a name — then run `sdem check --estate <dir>` and open a pull request. Two things are never edited by hand: **approved connections** (`mappings.json` — use `sdem approve`, and `--supersedes` to replace one; CI refuses an edited approved connection) and **SDEM's records** (`loads/`, `designs/`, `coordination/`). Once agents work on a layer through change sets, SDEM asks you to record a hand edit with `sdem change adopt` — it tells you when.
+
 ### 6.3 Where your real data may go
 
 - **This project holds public and made-up data only.** Your organisation's real architecture data belongs in its **private estate repository** ([template](../templates/estate-repo/README.md); [operating model](sdem-operating-model.md)). `estates/` and `work/` are ignored here, so real data cannot be pushed to this repository by mistake.
@@ -424,7 +426,7 @@ cp work/practice-links/m1-mappings-given.json work/practice-links/mappings.json 
    ```bash
    sdem approve P-RUN-… --proposals … --estate … --reviewer your.name \
         --evidence business_architecture_document:BA-PAYMENTS#cap-map --evidence domain_scope_assessment:DSA-2026-04 \
-        --bian-release 13.0
+        --bian-release 14.0.0
    ```
    If something is missing, SDEM says exactly what — e.g. `evidence missing required kind(s) ['domain_scope_assessment']`, or `add --bian-release <release>`.
 5. **Check:**

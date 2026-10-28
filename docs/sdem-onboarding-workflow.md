@@ -119,8 +119,10 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 - **BIAN's descriptions are left out.** The base never has them; to include them, or business objects (`--objects`), import from a folder of BIAN's files with `--descriptions`.
 - **Every record says which BIAN it came from** — release, file — so moving later from the base to your own BIAN is reported, not silent (`--previous <your current file>`).
 
+**Where to write it.** In your **estate repository**: `-o bian/a2-service-domain.json`, then commit it — one BIAN layer shared by every domain, used with `--a2 bian/a2-service-domain.json`. Practising **in the SDEM project**: `-o work/bian/a2-service-domain.json` (the SDEM project's own `bian/` folder holds the base).
+
 ```bash
-sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json
+sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json     # practising in the SDEM project
 ```
 ```
 wrote work/bian/a2-service-domain.json: 2 service domain(s) from BIAN release 14.0.0 — AssetType 2, BehaviorQualifier 7, ControlRecord 2, FunctionalPattern 2, ServiceDomain 2, ServiceGroup 9, ServiceOperation 43

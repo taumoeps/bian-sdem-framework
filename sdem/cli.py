@@ -41,7 +41,7 @@ JOURNEYS = {
                  'sdem load work/history --estate estates/history --person jane.architect --exclude HIS-A3-X'),
     'designs':  ('J9', 'design records and gap records: the pages onboarded designs came from, and what did not fit an entity', 'sdem.designs', [],
                  'sdem designs --estate estates/history --entity HIS-A3-PAYMENTS-HUB'),
-    'bian':     ('J9', "the BIAN (A2) layer from BIAN's public Semantic APIs: list a downloaded release, import the service domains you choose — checked", 'sdem.bian', [],
+    'bian':     ('J9', "the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files — list, import the service domains you choose (checked), pack", 'sdem.bian', [],
                  'sdem bian import ~/bian/release14.0.0 --only "Payment Order Initiation" -o work/bian/a2-service-domain.json'),
     'transform': ('J9', 'transform an export of past designs (Confluence) into candidate architecture entities: inspect it, extract (rules; on-device OCR for pictures)', 'sdem.transform', [],
                  'sdem transform run tests/fixtures/confluence-export-sample -o work/history --known examples/payment-initiation/a3-application.json'),

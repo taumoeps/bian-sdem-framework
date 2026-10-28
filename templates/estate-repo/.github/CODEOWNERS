@@ -15,3 +15,6 @@ estates/*/a4-technology.json   @YOUR-ORG/technology-architects
 requirements.txt               @YOUR-ORG/sdem-maintainers
 ci/                            @YOUR-ORG/sdem-maintainers
 .github/                       @YOUR-ORG/sdem-maintainers
+
+# Your BIAN layer and any BIAN pack
+bian/                          @YOUR-ORG/architecture-reviewers

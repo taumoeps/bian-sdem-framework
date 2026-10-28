@@ -271,6 +271,15 @@ Rel_Serving(M, P, "x")
             if i['status'] == 'not captured': self.assertTrue(i.get('category'), i)
             if i['status'] == 'skipped': self.assertTrue(i['reason'], i)
 
+    def test_rules_command_writes_sdems_rules_and_never_overwrites(self):  # so an estate repository need not find metamodel/
+        import subprocess, sys, tempfile
+        d = Path(tempfile.mkdtemp()); out = d / 'rules' / 'transform-rules.json'
+        run = lambda: subprocess.run([sys.executable, '-m', 'sdem', 'transform', 'rules', '-o', str(out)], cwd=ROOT, capture_output=True, text=True)
+        r = run(); self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(out.read_text(encoding='utf-8'), (ROOT / 'metamodel' / 'transform-rules.json').read_text(encoding='utf-8'))
+        out.write_text('{"tuned": true}', encoding='utf-8')
+        r = run(); self.assertEqual(r.returncode, 2); self.assertEqual(out.read_text(), '{"tuned": true}')
+
     def test_coverage_by_kind(self):  # HI-N02: what rules read, apart from what needs AI or a person
         from sdem.transform import coverage
         led = [{'page_id': 'p', 'page_title': 'P', 'file': 'f', 'kind': k, 'status': st} for k, st in

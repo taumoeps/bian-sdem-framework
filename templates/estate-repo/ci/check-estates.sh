@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 # Estate CI — every estate in estates/ follows the rulebook, builds, and keeps its approved links unchanged.
 # Usage: bash ci/check-estates.sh [BASE]
-#   BASE  the git revision to compare approved links against (a pull request's base branch); omit to skip that check.
+#   BASE  the git revision to compare approved links against (a pull request's base branch). Omitted: origin/main, else
+#         main — so a local run checks everything CI checks; if neither exists, that one check is skipped and the run says so.
 # Exit: 0 all estates pass; 1 an estate fails; 2 SDEM is not installed.
 set -uo pipefail
 base="${1:-}"
+if [ -z "$base" ]; then
+  for b in origin/main main; do
+    if git rev-parse --verify --quiet "$b" > /dev/null 2>&1; then base="$b"; break; fi
+  done
+  if [ -n "$base" ]; then echo "comparing approved links with $base (give another base as the first argument)"
+  else echo "NOTE: no main branch to compare with — the 'approved links unchanged' check is skipped"; fi
+fi
 fail=0; n=0
 
 sdem --version || { echo "ERROR: sdem is not installed — run: pip install -r requirements.txt"; exit 2; }

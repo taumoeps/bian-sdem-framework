@@ -74,7 +74,7 @@ Open Copilot Chat (**Ctrl+Alt+I**, Mac **⌃⌘I**). The **model picker** at the
 | Check | Expect |
 |---|---|
 | open the **agent picker** in the chat | the five `sdem-…` agents are listed |
-| type **`/`** in the chat | the nine SDEM prompts (and the skills) are listed |
+| type **`/`** in the chat | SDEM's prompts (9 in an estate repository; 10 in the SDEM project, which adds one for its made-up example) and the skills are listed |
 | pick `sdem-a4-technology` and ask *"Run `sdem --help`."* | Copilot runs it in the terminal (approve the command when asked) |
 | *Configure Tools* (tools icon in the chat) | **Run Subagent** is available for the orchestrator |
 
