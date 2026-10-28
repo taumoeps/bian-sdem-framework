@@ -1,6 +1,6 @@
 # SDEM operating model — running SDEM for real
 
-> **Status: proposed 2026-10-29** (audit phase 4), for the owner's approval. How an organisation runs SDEM on real architecture data: where things live, who does what, how changes, upgrades and rulebook changes flow, support, and what has to be true before starting. The pilot that tests it: [`sdem-pilot-plan.md`](sdem-pilot-plan.md).
+> **Status: approved by the owner 2026-10-29** (audit phase 4; decisions OM-1…OM-4 below). How an organisation runs SDEM on real architecture data: where things live, who does what, how changes, upgrades and rulebook changes flow, support, and what has to be true before starting. The pilot that tests it: [`sdem-pilot-plan.md`](sdem-pilot-plan.md).
 
 ## 1. Where things live
 
@@ -98,9 +98,9 @@ SDEM failures say what to do: exit `1` a check refused (read the message), `2` t
 | 5 | **Copilot policy** known (allowed or not; no MCP) | platform | SDEM works without Copilot; with it, Copilot files must match the pinned release |
 | 6 | **A2 (BIAN)**: the organisation's BIAN licence position | owner | real BIAN ids need a licensed catalogue (ROADMAP v0.15); without it, A2 holds only what is public |
 
-## 7. Decisions for the owner
+## 7. Decisions — approved by the owner 2026-10-29
 
-| # | Decision | Recommendation | Confidence |
+| # | Decision | Decided | Confidence |
 |---|---|---|---|
 | OM-1 | One estate repository for the organisation, or one per division | **one**, with one folder per estate — simplest to protect and to report across | medium — depends on how divisions share data |
 | OM-2 | Who is the first estate owner | the architect leading the pilot domain | high |

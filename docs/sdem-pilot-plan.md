@@ -1,6 +1,6 @@
 # SDEM pilot plan — one domain, ten weeks
 
-> **Status: proposed 2026-10-29** (audit phase 4), for the owner's approval. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's rulebook covers the whole bank (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own estate. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
+> **Status: approved by the owner 2026-10-29** (audit phase 4). The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's rulebook covers the whole bank (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own estate. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
 
 ## The question the pilot answers
 
