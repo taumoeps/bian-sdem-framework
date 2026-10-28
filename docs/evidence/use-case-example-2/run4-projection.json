@@ -1161,7 +1161,7 @@
         "projection": {
           "step": "R2",
           "rule": "S24",
-          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
           "inferred_from": [
             "API-PI-01"
           ],
@@ -1188,7 +1188,7 @@
         "projection": {
           "step": "R2",
           "rule": "S24",
-          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
           "inferred_from": [
             "API-PI-02"
           ],
@@ -1215,7 +1215,7 @@
         "projection": {
           "step": "R2",
           "rule": "S24",
-          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
           "inferred_from": [
             "API-PI-03"
           ],
@@ -1242,7 +1242,7 @@
         "projection": {
           "step": "R2",
           "rule": "S24",
-          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
           "inferred_from": [
             "API-PI-05"
           ],
@@ -1269,7 +1269,7 @@
         "projection": {
           "step": "R2",
           "rule": "S24",
-          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
           "inferred_from": [
             "API-PI-04"
           ],

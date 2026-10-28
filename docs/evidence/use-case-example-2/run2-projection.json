@@ -683,7 +683,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN REST mapping",
-            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
             "inferred_from": [
               "SO-PI-02"
             ],
@@ -709,7 +709,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN REST mapping",
-            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
             "inferred_from": [
               "SO-PI-03"
             ],
@@ -736,7 +736,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN REST mapping",
-            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
             "inferred_from": [
               "SO-PI-04"
             ],
@@ -767,7 +767,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN REST mapping",
-            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
             "inferred_from": [
               "SO-PI-01"
             ],
@@ -795,7 +795,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN REST mapping",
-            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
             "inferred_from": [
               "SO-PI-05"
             ],
@@ -820,7 +820,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN REST mapping",
-            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+            "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
             "inferred_from": [
               "SO-PI-04@acquired-fintech"
             ],
@@ -1049,7 +1049,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN REST mapping",
-          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
           "inferred_from": [
             "SO-PI-02"
           ],
@@ -1076,7 +1076,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN REST mapping",
-          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
           "inferred_from": [
             "SO-PI-03"
           ],
@@ -1103,7 +1103,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN REST mapping",
-          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
           "inferred_from": [
             "SO-PI-04"
           ],
@@ -1130,7 +1130,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN REST mapping",
-          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
           "inferred_from": [
             "SO-PI-01"
           ],
@@ -1157,7 +1157,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN REST mapping",
-          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
           "inferred_from": [
             "SO-PI-05"
           ],
@@ -1184,7 +1184,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN REST mapping",
-          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP]",
+          "source_reference": "S24: [SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
           "inferred_from": [
             "SO-PI-04@acquired-fintech"
           ],

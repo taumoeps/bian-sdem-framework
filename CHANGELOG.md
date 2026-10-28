@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- **Rulebook: nine more source references closed** (approved by the owner 2026-10-29) — rules S20, S21, S24, S25, S28, S29, S41, S45 and S49 had the same unclosed bracket as S17; every rule's source reference is now balanced.
+
 ## 0.9.0 — base BIAN and operational readiness (2026-10-29)
 
 SDEM ready for a pilot on real designs. **New:** the base BIAN (BIAN's public Semantic APIs 14.0.0, Apache-2.0) and `sdem bian list / import / pack`; `sdem copilot install`; the documentation reorganised for newcomers and checked on every push; an approved operating model, pilot plan and private estate-repository template. **Rulebook:** CTL-24 registered; rule S17's source reference closed (metamodel version unchanged, 0.4.0). **Fixed:** files written owner-only; findings from two new-architect walkthroughs. Upgrade: change the pin to `@v0.9.0`, `pip install -r requirements.txt`, then `sdem copilot install` if you use Copilot.
