@@ -1669,5 +1669,5 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
 | **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 14 of 14 rules enforced |
-| Physical | one architecture dataset JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem-physical`); graph store schema not designed yet |
+| Physical | one architecture dataset JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem model regenerate (physical)`); graph store schema not designed yet |
 

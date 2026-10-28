@@ -11,7 +11,7 @@ Please open an issue first for changes to entity types or link semantics. A pull
 ## Before every pull request
 
 ```bash
-python -m unittest discover -s tests          # the test suite (about 350 tests, under 10 seconds)
+python -m unittest discover -s tests          # the test suite (under 10 seconds)
 python -m sdem model check                     # every generated document and schema is current
 python -m sdem model accept                    # the rules engine passes its acceptance cases (8 of 8)
 python scripts/engine_perf.py 30 30            # the rules engine on 2,040 records within 30 s

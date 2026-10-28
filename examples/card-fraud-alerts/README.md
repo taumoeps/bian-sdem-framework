@@ -29,7 +29,7 @@ python -m sdem.validate --strict --catalogue examples/card-fraud-alerts/entities
 python -m sdem.diff --git HEAD~1 examples/card-fraud-alerts/mappings.json
 ```
 
-Try breaking it: remove `previous_mapping_id` from FRD-005 and the validator reports that FRD-003 has no successor. Change FRD-001's `rationale` and `sdem-diff` reports an edit to an approved record. Point FRD-001 at `SD-NOT-REAL` and the catalogue check fails.
+Try breaking it: remove `previous_mapping_id` from FRD-005 and the validator reports that FRD-003 has no successor. Change FRD-001's `rationale` and `sdem diff` reports an edit to an approved record. Point FRD-001 at `SD-NOT-REAL` and the catalogue check fails.
 
 ## Walk the chain
 
@@ -52,6 +52,6 @@ python -m sdem.graph impact INF-CLOUD-K8S-PROD --change rehost examples/card-fra
 python -m sdem.graph impact SD-044 --change retire examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
 ```
 
-`proposals-baseline.json` is the output of `sdem-infer baseline` over the level files; `sdem-eval mappings.json --proposals proposals-baseline.json` scores it at F1 0.62 — four of five approved arrows found, the deployment to the platform missed.
+`proposals-baseline.json` is the output of `sdem link --baseline` over the level files; `sdem model eval mappings.json --proposals proposals-baseline.json` scores it at F1 0.62 — four of five approved arrows found, the deployment to the platform missed.
 
 Notice that `INF-CLOUD-K8S-PROD` is an `A4.SystemSoftware` in the level model while the mappings call it `A4.InfrastructureComponent`: the federated knowledge graph resolves it through the entity hierarchy. The rehost impact marks A4 and A3 `design_change_required`, A2 and A1 `no_impact`, and names `FRD-005` as the mapping to supersede.

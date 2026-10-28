@@ -30,7 +30,8 @@ def render():
     out += ['', '## Gaps — rules nothing enforces', '', '| ID | Rule area | Not controlled | Risk |', '|---|---|---|---|']
     out += [f"| {g['id']} | {g['rule_area']} | {g['not_controlled']} | {g['risk']} |" for g in d['gaps']]
     out += ['', 'Each control is demonstrated both ways — accepting good data and rejecting bad — in [`use-case-example-1.md`](use-case-example-1.md) (CTL-01…15) [`use-case-example-2.md`](use-case-example-2.md) (CTL-16, CTL-17) and [`use-case-example-3.md`](use-case-example-3.md) (CTL-19, CTL-20).', '']
-    return '\n'.join(out)
+    from .terms import apply_commands
+    return apply_commands('\n'.join(out))
 
 
 def main(argv=None):

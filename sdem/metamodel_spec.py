@@ -309,7 +309,8 @@ def render_diagram():
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem-metamodel-spec', description='Generate the detail-level Architecture Metamodel specification.')
     ap.add_argument('--check', action='store_true'); args = ap.parse_args(argv)
-    files = {OUT: render(), PUML: render_diagram()}
+    from .terms import apply_commands
+    files = {OUT: apply_commands(render()), PUML: render_diagram()}
     if args.check:
         stale = [p for p, t in files.items() if not p.exists() or p.read_text(encoding='utf-8') != t]
         for p in files: print(f"{p.name}: {'STALE: regenerate with python -m sdem.metamodel_spec' if p in stale else 'up to date'}")

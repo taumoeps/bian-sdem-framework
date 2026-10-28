@@ -4,14 +4,14 @@ Find your role, start at the top of its list. **Generated** documents are rebuil
 
 ```mermaid
 flowchart LR
-    U["🧑‍💼 <b>Use</b><br/>architects"] --- N["💡 <b>Understand</b><br/>everyone"] --- G["⚖️ <b>Govern</b><br/>owner, reviewers"] --- B["🛠️ <b>Build</b><br/>maintainers"] --- R["📚 <b>Reference</b><br/>generated"] --- T["🧪 <b>Test</b><br/>evidence"] --- H["🗄️ <b>History</b><br/>records"]
+    U["🧑‍💼 <b>Use</b><br/>architects"] --- N["💡 <b>Understand</b><br/>everyone"] --- G["⚖️ <b>Govern</b><br/>owner, reviewers"] --- B["🛠️ <b>Build</b><br/>maintainers"] --- R["📚 <b>Reference</b><br/>generated"] --- T["🧪 <b>Test</b><br/>evidence"] --- E["🧾 <b>Reasoning</b><br/>records"] --- H["🗄️ <b>History</b>"]
 ```
 
 ## 🧑‍💼 Use — architects
 
 | Read | For |
 |---|---|
-| [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md) | **start here**: set-up, the workbench screen, a 15-minute quick start, every command, workflow examples, troubleshooting |
+| [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md) | **start here**: set-up, the workbench screen, a 15-minute quick start, **the command reference** (§7 — the one full list), workflow examples, troubleshooting |
 | [`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md) | **onboarding your existing designs** (Confluence): the commands in plain words, every step with what you will see, gaps |
 | [`sdem-copilot-setup.md`](sdem-copilot-setup.md) | GitHub Copilot, VS Code, the agents, prompts and skills |
 | [`glossary.md`](glossary.md) | every term in plain words |
@@ -77,17 +77,25 @@ Each feature has a **design** (why and how) and a **spec** (numbered, testable r
 | [`use-case-example-2.md`](use-case-example-2.md) | planning missing layers (AID) — 12 of 12, safety 16 of 16 |
 | [`use-case-example-3.md`](use-case-example-3.md) | the agents carry a technology change to an approved link — 8 of 8, controls 19 of 19 |
 | [`use-case-example-4.md`](use-case-example-4.md) | onboarding existing designs, export to build — the test script (replayed on every push) |
+| `tests/test_lending_onboarding.py` | design onboarding on a second domain (lending), expectations sealed first — 18 of 18 records |
 | [`relationships-testing.md`](relationships-testing.md) | how the 132 within-level rows were tested |
 | `evidence/` | the recorded inputs and outputs of each example run |
 
-## 🗄️ History — records, kept as written
+## 🧾 Reasoning and evidence behind the rulebook
 
-They use the old names (SDMM, *mapping*, `sdem-graph` …); see [`history/renamed-from-sdmm.md`](history/renamed-from-sdmm.md).
+Cited by the rulebook and the governing specification as *why the rules are shaped this way* and *the runs that tested them*. Records, kept as written — they use some old names (SDMM, *mapping*); see [`history/renamed-from-sdmm.md`](history/renamed-from-sdmm.md).
 
 | Read | For |
 |---|---|
-| [`BIAN_SDEM_Design_Specification.md`](BIAN_SDEM_Design_Specification.md) | the original design |
-| [`mapping-logic-planning.md`](mapping-logic-planning.md) · [`mapping-execution.md`](mapping-execution.md) | how the rules were planned and hand-executed (v0.5–v0.6) |
-| [`use-case-testing.md`](use-case-testing.md) · [`inference-audit.md`](inference-audit.md) | the hand-executed test runs; the 2026-10-23 inference audit |
+| [`mapping-logic-planning.md`](mapping-logic-planning.md) | why the cross-level rules are shaped as they are (cited by `metamodel/relationship-rules.json`) |
+| [`mapping-execution.md`](mapping-execution.md) | the procedure the engine follows, as first run by hand |
+| [`use-case-testing.md`](use-case-testing.md) | the ten use cases and eleven hand-executed runs that validated the rules |
+| [`inference-audit.md`](inference-audit.md) | how much of SDEM is grounded in a standard, confirmed or inferred (`scripts/inference_audit.py`) |
 | `drafts/` | the A1–A4 data-model reviews (approved 2026-10-24/25) |
+
+## 🗄️ History — no longer current
+
+| Read | For |
+|---|---|
+| [`history/BIAN_SDEM_Design_Specification.md`](history/BIAN_SDEM_Design_Specification.md) | the original design |
 | [`history/`](history/) | early notes (v0.4–v0.5): first mapping notes, the reference-model boundary, data architecture, engine readiness; the SDMM rename |

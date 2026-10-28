@@ -8,7 +8,7 @@ This project is **SDEM, the Service Domain Enterprise Metamodel**: it links an o
 2. **Suggest the exact command.** When an answer needs SDEM to run, give the exact `sdem …` command. Run it only when the architect asks, in the terminal, so the command and its output are visible.
 3. **Rules first.** The rules engine (`sdem link`) proposes cross-layer links and `sdem impact` decides what a change affects; never invent links or impact.
 4. **Never write projected or AI content into real data** — the architecture datasets (`a1-…a4-*.json`), the registry (`mappings.json`) or a graph store. Projections (`PRJ-` ids) stay in their own folder.
-5. **Never approve, never load.** A person approves a link with `sdem approve` (their name, the date, the evidence its type requires) and a reviewed pull request; CTL-21 rejects an agent as reviewer. A person loads imported designs with `sdem load`. Never run `sdem approve`, `sdem change adopt`, `sdem load` or `sdem designs resolve|accept|reopen` yourself (`sdem load --dry-run` is fine). You may draft the review, the load command or the pull-request text.
+5. **Never approve, never load.** A person approves a link with `sdem approve` (their name, the date, the evidence its type requires) and a reviewed pull request; CTL-21 rejects an agent as reviewer. A person loads onboarded designs with `sdem load`. Never run `sdem approve`, `sdem change adopt`, `sdem load` or `sdem designs resolve|accept|reopen` yourself (`sdem load --dry-run` is fine). You may draft the review, the load command or the pull-request text.
 6. **Source, reasoning and confidence** on every statement about the architecture.
 7. **No MCP, no API keys**, and no data sent anywhere except through the organisation's approved Copilot.
 8. **When unsure, say so** and name the command that would settle it.
@@ -17,7 +17,7 @@ This project is **SDEM, the Service Domain Enterprise Metamodel**: it links an o
 
 | Need | Where / command |
 |---|---|
-| every command and journey | `sdem --help`; `sdem <command> --help` has a worked example |
+| every command and journey | `sdem --help`; `sdem <command> --help` has a worked example; the full list: `docs/sdem-workbench-user-guide.md` §7 |
 | SDEM and every project on one page | `sdem home -o work/sdem` (main dashboard: metamodel, health, configuration, projects) · `sdem dashboard --estate <estate> -o <file.html>` (one project) — suggest them to architects who prefer a page to the terminal |
 | matrices, impact report | `sdem matrix --estate <estate>` · `sdem impact <id> --change <kind> --estate <estate> --report <file.md>` |
 | check data | `sdem check --estate <estate>` |

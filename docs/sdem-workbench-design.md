@@ -164,7 +164,7 @@ Every journey is a **CLI command the architect runs** in the terminal pane; Copi
 | J7 | **See it** | `sdem view [--projection …]` | points out what to look at in the view | an HTML picture, projected parts dashed and labelled PROJECTED |
 | J8 | **Explain an element** | `sdem explain <id> --projection …` or `--proposals …` | quotes the element's step, rule, published source, evidence, reasoning and confidence | the reason an element exists |
 
-`sdem --help` lists every journey; each subcommand's `--help` shows a worked example. Without installing, `python -m sdem …` does the same. The older `sdem-*` commands (`sdem-graph`, `sdem link`, `sdem aid`, …) still work.
+`sdem --help` lists every journey; each subcommand's `--help` shows a worked example. Without installing, `python -m sdem …` does the same. The older `sdem-*` commands still work as aliases of `sdem <verb>`; the documents use only `sdem <verb>`.
 
 ### 3.1 The journeys in order
 

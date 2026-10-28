@@ -61,21 +61,22 @@ You need four things. Your IT team may install some of them for you.
 | Tool | Why | Get it |
 |---|---|---|
 | **VS Code** | the workbench | code.visualstudio.com |
-| **Python 3.10 or later** | SDEM runs on it | python.org (check with `python3 --version`) |
+| **Python 3.10 or later** (3.13 recommended) | SDEM runs on it | check with `python3 --version`; on a Mac `brew install python@3.13` or the installer from python.org |
 | **Git** | history, review and approval | git-scm.com (often already installed) |
 | **GitHub Copilot** (optional) | the AI help in the chat window | a Copilot plan on your GitHub account — step by step in [`sdem-copilot-setup.md`](sdem-copilot-setup.md) |
 
 Then:
 
-1. **Get the SDEM project.** Ask the SDEM owner for your organisation's repository link, then in a terminal:
+1. **Get the SDEM project** (the tool and the made-up examples — public):
    ```bash
-   git clone <repository-link> sdem
+   git clone https://github.com/taumoeps/bian-sdem-framework.git sdem
    ```
+   Your organisation's **real** data is in its private estate repository, set up from [`templates/estate-repo`](../templates/estate-repo/README.md) — its README installs SDEM the same way, pinned to a release.
 2. **Open it in VS Code:** *File → Open Folder…* → choose the `sdem` folder. When VS Code offers to install the **recommended extensions** (Python, GitHub Copilot Chat, Markdown Preview Mermaid Support), accept.
 3. **Open the terminal pane:** *View → Terminal* (shortcut **Ctrl+`**).
 4. **Install SDEM** into a private Python environment for this project:
    ```bash
-   python3 -m venv .venv
+   python3 -m venv .venv              # or python3.13 -m venv .venv if python3 is older than 3.10
    source .venv/bin/activate          # Windows: .venv\Scripts\activate
    pip install -e .
    ```
@@ -262,12 +263,12 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 
 ### 6.3 Where your real data may go
 
-- **This project holds public and made-up data only.** Your organisation's real architecture data belongs in your organisation's own copy of the project, under its rules.
+- **This project holds public and made-up data only.** Your organisation's real architecture data belongs in its **private estate repository** ([template](../templates/estate-repo/README.md); [operating model](sdem-operating-model.md)). `estates/` and `work/` are ignored here, so real data cannot be pushed to this repository by mistake.
 - Diagrams previewed with the PlantUML extension are drawn **on your machine** (this project's setting; it needs Java and Graphviz — `brew install plantuml`). Never switch it to the public PlantUML server for real data.
 
-## 7. Operations — every command
+## 7. Command reference
 
-`sdem --help` lists them all; `sdem <command> --help` shows the options and a worked example. Exit codes: `0` OK, `1` issues found (or a check refused the action), `2` the command was typed wrongly or its input is unusable (a missing folder, a file that is not valid JSON), `3` an internal error in SDEM — one line; set `SDEM_DEBUG=1` to see the details. `sdem --version` shows the version.
+**This is the one full list of SDEM's commands** — other documents show only the commands of their own task and link here. `sdem --help` lists them all; `sdem <command> --help` shows the options and a worked example. Exit codes: `0` OK, `1` issues found (or a check refused the action), `2` the command was typed wrongly or its input is unusable (a missing folder, a file that is not valid JSON), `3` an internal error in SDEM — one line; set `SDEM_DEBUG=1` to see the details. `sdem --version` shows the version.
 
 | Command | Journey | What it does | When you use it | Typical next step |
 |---|---|---|---|---|
@@ -279,7 +280,8 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem build <files> --out <dir>` | J4 | checks everything and writes the graph store | after approval, before trace and impact | `sdem trace`, `sdem view` |
 | `sdem query --graph <dir> …` | J4 | finds records: `--type`, `--level`, `--where attr=value`, `--unmapped A2` (records still without a link) | to look things up | — |
 | `sdem baseline <name> --graph <dir>` | J4 | freezes the graph store under a name (e.g. a release) | at milestones | — |
-| `sdem dashboard --estate <dir> -o <file.html>` | J7 | the estate on one read-only page (§4a) | any time — start here | the commands it shows |
+| `sdem home -o <dir> [--root <folder of estates>] [--estate <dir>]` | J7 | the home page: SDEM's architecture, health, and a dashboard for every project (§4a) | first, and any time | open `<dir>/index.html` |
+| `sdem dashboard --estate <dir> -o <file.html>` | J7 | one estate on one read-only page (§4a) | any time | the commands it shows |
 | `sdem matrix --estate <dir> [--md file.md]` | J5 | capability → domain → application → technology from approved links | for a report or review | — |
 | `sdem trace <id> --graph <dir>` | J5 | follows links `--direction down` (to technology), `up` (to business) or both | "what does this depend on / what depends on it?" | `sdem impact` |
 | `sdem impact <id> --change <kind> --graph <dir> [--report file.md]` | J5 | classifies what a change affects; kinds: `modify`, `rehost`, `replace`, `retire`; `--report` writes a printable impact report | before a change | share the report |
@@ -293,7 +295,8 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem work plan · list · claim …` | AG | work items: planned by the orchestrator, claimed and answered by the layer agents | agent platform (§9a) | `sdem change propose --work …` |
 | `sdem transform inspect <export>` · `sdem transform run <export> -o <dir>` | J9 | **transforms** an export of past designs (Confluence) into candidate architecture entities, with rules: tables, draw.io and PlantUML diagrams, known names in the text, text in pictures (on-device OCR) → entities and links with their source; pictures listed for you | bringing in past designs (§8.7) | review `extraction-report.md` |
 | `sdem load <candidates> --estate <dir> --person <you> --exclude <ids>` | J9 | **loads** the candidate entities you keep into an estate — checked first, recorded; `--a2` adds your BIAN layer; `--dry-run` | after reviewing a transform (§8.7) | `sdem link` |
-| `sdem designs --estate <dir> [--entity <id>] [--gaps] [--category …]` | J9 | the pages imported designs came from, and the **gap records** — what did not fit an entity, by category; `sdem trace` also ends with an entity's pages | after a load; to find what still needs a person | — |
+| `sdem designs --estate <dir> [--entity <id>] [--gaps] [--category …] [--status open]` | J9 | the pages onboarded designs came from, and the **gap records** — what did not fit an entity, by category; `sdem trace` also ends with an entity's pages | after a load; to find what still needs a person | — |
+| `sdem designs resolve <gap id …> --estate <dir> --person <you> --note "<what you did>"` · `accept` (same options) · `reopen` | J9 | closes a gap — *resolved* (now recorded in an entity) or *accepted* (deliberately not modelled); reopens one; each step kept in the gap's history | working down the gaps | `sdem designs --gaps --status open` |
 | `sdem diff --git HEAD~1 <registry>` | — | proves approved links were not edited | before a pull request | — |
 | `sdem migrate --estate <dir> --person <you> [--dry-run]` | — | moves an estate to a new rulebook version ([versioning](sdem-rulebook-versioning.md)) | when SDEM says the `metamodel_version` does not match | — |
 | `sdem model check` · `regenerate` · `accept` · `examples` | — | maintainers: generated documents, engine acceptance tests, use-case examples | when changing the rulebook | — |

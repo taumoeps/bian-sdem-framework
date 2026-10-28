@@ -290,7 +290,7 @@ flowchart LR
 | C-11 | Architect review | reviews the engine's output: approves, rejects or supersedes records; corrects the relationship rules model (C-01b) when a rule produces a wrong link, rather than hand-editing the set | validated proposals; impact reports | status changes in C-09 | C-10, C-14 | a person; recorded as fields | built (as fields); review queue not built |
 | C-12 | History guard | rejects edits to approved records and invalid status transitions | two versions of C-09 | pass, or every violation | C-09 | `sdem diff` | built |
 | C-13 | Local knowledge graphs, federated knowledge graph | the graphs themselves | C-06 | — | C-06 | `sdem/store.py`; local JSON graph store (JGF v2), `examples/*/graph/` | built (DEC-01: local JSON files) |
-| C-14 | Query tools | trace, impact, check, stats, query (records, neighbours, unmapped), view | C-13 | answers with mapping ids and the baseline | C-13 | `sdem-graph`, `sdem-trace` | built (history not built) |
+| C-14 | Query tools | trace, impact, check, stats, query (records, neighbours, unmapped), view | C-13 | answers with mapping ids and the baseline | C-13 | `sdem check`, `sdem trace` | built (history not built) |
 | C-15 | Refresh trigger | decides when C-03 and C-06 run: on demand, scheduled, event, refresh-on-read | source events or queries | runs | C-03, C-06 | — | not built (on demand only) |
 | C-16 | Assistant | answers design questions from C-14; runs C-08 and C-10 on request | C-14 answers | proposals via C-08 only | C-14, C-08 | per DEC-04 — GitHub Copilot Chat (SDEM workbench) | not built — Copilot instructions and prompt files (WB-C01…C03) |
 | C-17 | Generators and CI | regenerate documents, diagrams, per-entity schemas and the reference-structure estate from C-01; fail the build if any is stale; rerun acceptance cases | C-01 | generated files; pass / fail | C-01 | `sdem/diagram.py`, `relationships.py`, `structure.py`, `spec.py`, `kgspec.py`, `catalogue.py`, `attributes.py`, `logical.py`, `physical.py`, `confidence.py`; `.github/workflows/validate.yml` | built |
@@ -360,7 +360,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 
 | | |
 |---|---|
-| Command | `sdem-graph <check|trace|impact|stats> [args] <files…>` — files in any order; each is classified by content |
+| Command | `sdem check <check|trace|impact|stats> [args] <files…>` — files in any order; each is classified by content |
 | Library | `FederatedGraph.load(paths)` → `FederatedGraph`; `LevelGraph.load(path)` → `LevelGraph` |
 | Exit codes | 0 ok · 1 issues found (or an empty trace) · 2 usage error (unreadable file, unknown command) |
 
@@ -462,7 +462,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 
 | | |
 |---|---|
-| Command | `sdem-graph diff <old-architecture dataset> <new-architecture dataset> [--json]` |
+| Command | `sdem check diff <old-architecture dataset> <new-architecture dataset> [--json]` |
 | Library | `diff_exports(old, new)` → change list |
 
 **Inputs**

@@ -1,6 +1,6 @@
 # Licensing by asset type
 
-- `sdem/` (and the deprecated `sdmm/` shim), `schema/`, `tests/`, `examples/`, `.github/`: Apache License 2.0; see `LICENSE`.
+- `sdem/`, `schema/`, `tests/`, `examples/`, `.github/`: Apache License 2.0; see `LICENSE`.
 - `docs/` and original explanatory text in `README.md`: Creative Commons Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/legalcode
 - Code excerpts embedded in documentation: Apache-2.0.
 - Trademarks and third-party reference materials are excluded from these grants.

@@ -140,7 +140,7 @@ def _ex(n):
 
 
 def components(m, h, projects):
-    """The SDEM component architecture (the original design's logical architecture, docs/BIAN_SDEM_Design_Specification.md §2.1,
+    """The SDEM component architecture (the original design's logical architecture, docs/history/BIAN_SDEM_Design_Specification.md §2.1,
     plus the planning lane AID, change coordination and the workbench): boxes, status, live figures, details; and the flows."""
     recs = {l: sum(p['layers'].get(l, 0) for p in projects) for l in LEVELS}
     ents = {l: sum(1 for e in m['entities'] if e['level'] == l and not e['artefact']) for l in LEVELS}

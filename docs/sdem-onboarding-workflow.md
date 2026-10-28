@@ -58,6 +58,8 @@ At the end, your designs are **architecture data** — business capabilities, ap
 
 ## 3. The commands in plain words
 
+Every command's full options: the [user guide's command reference](sdem-workbench-user-guide.md#7-command-reference).
+
 | # | Command | In plain words |
 |---|---|---|
 | 1 | `sdem transform inspect <export folder>` | **Look before you start.** Shows what is in your export and what SDEM can read. Changes nothing |

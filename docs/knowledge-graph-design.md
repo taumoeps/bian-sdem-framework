@@ -39,7 +39,7 @@ In the payment-initiation example:
 
 ## How the graph loader builds them
 
-The graph loader is `sdem/graph.py`, run as `sdem-graph`. It does the same steps every run.
+The graph loader is `sdem/graph.py`, run as `sdem check` and `sdem build`. It does the same steps every run.
 
 ```
  1. For each architecture:
@@ -127,7 +127,7 @@ Assignment, realization, serving, flow and triggering are **not** part–whole, 
 
 ### Status
 
-There is **no `sdem-graph` command for local queries yet** (requirement KG-L-04, partly built). The local knowledge graphs exist and are validated; the examples above were produced by reading one architecture dataset directly. Part–whole paths are available today inside a federated trace with `--follow-composition`.
+There is **no command for local queries yet** (requirement KG-L-04, partly built). The local knowledge graphs exist and are validated; the examples above were produced by reading one architecture dataset directly. Part–whole paths are available today inside a federated trace with `--follow-composition`.
 
 ---
 

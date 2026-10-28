@@ -15,6 +15,8 @@ flowchart LR
 
 ## The commands in plain words
 
+The same table as the [onboarding workflow §3](sdem-onboarding-workflow.md#3-the-commands-in-plain-words) (a test keeps them identical). Every command's full options: the [user guide's command reference](sdem-workbench-user-guide.md#7-command-reference).
+
 Each command does one job. The steps below use them in this order.
 
 | # | Command | In plain words |

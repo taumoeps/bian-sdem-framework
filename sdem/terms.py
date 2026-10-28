@@ -40,7 +40,30 @@ TERMS = [
     # commands
     (r'\bsdmm-engine\b', 'sdem link'), (r'\bsdmm-', 'sdem-'), (r'python -m sdmm\.', 'python -m sdem.'), (r'`sdmm/', '`sdem/'), (r'\bsdmm/', 'sdem/'),
 ]
+
+# Old command names → the one `sdem <verb>` command (v0.8.0). Applied with TERMS, and alone (apply_commands) to generated
+# documents whose prose must not otherwise change — the governing detail spec and the controls register. Records in
+# metamodel/ keep their words; only the documents generated from them change.
+COMMANDS = [
+    (r'(?<![\w./-])sdem-graph (check|build|trace|impact|query|view|baseline|stats)\b', r'sdem \1'),
+    (r'(?<![\w./-])sdem-graph\b(?![./-])', 'sdem check'),
+    (r'(?<![\w./-])sdem-infer rules\b', 'sdem link'), (r'(?<![\w./-])sdem-infer\b(?![./-])', 'sdem link'),
+    (r'(?<![\w./-])sdem-aid\b(?![./-])', 'sdem aid'), (r'(?<![\w./-])sdem-accept\b(?![./-])', 'sdem model accept'),
+    (r'(?<![\w./-])sdem-(trace|impact|query|view|matrix|explain|review|approve|home|dashboard|link)\b(?![./-])', r'sdem \1'),
+    (r'(?<![\w./-])sdem-validate\b(?![./-])', 'sdem validate'), (r'(?<![\w./-])sdem-diff\b(?![./-])', 'sdem diff'),
+    (r'(?<![\w./-])sdem-(structure|relationships|spec|kgspec|catalogue|attributes|logical|physical|controls|metamodel-spec)\b(?![./-])', r'sdem model regenerate (\1)'),
+]
+TERMS += COMMANDS
 _COMPILED = [(re.compile(p), r) for p, r in TERMS]
+
+
+_COMMANDS = [(re.compile(p), r) for p, r in COMMANDS]
+
+
+def apply_commands(text):
+    for pat, rep in _COMMANDS:
+        text = pat.sub(rep, text)
+    return text
 
 
 def apply(text):

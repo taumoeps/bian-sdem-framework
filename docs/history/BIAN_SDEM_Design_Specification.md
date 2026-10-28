@@ -1,9 +1,9 @@
 # Service Domain Enterprise Metamodel (SDEM)
 
-> **A record, in its original words.** It uses SDEM's old names (SDMM, *mapping set*, *export*, `sdmm-*` …) — what each means today: [`renamed-from-sdmm.md`](history/renamed-from-sdmm.md).
+> **A record, in its original words.** It uses SDEM's old names (SDMM, *mapping set*, *export*, `sdmm-*` …) — what each means today: [`renamed-from-sdmm.md`](renamed-from-sdmm.md).
 ## Solution Design Specification
 
-> **Current state (2026-10-25).** The original solution design, kept as a record. The relationship type catalogue now has **nine** types (`DEPLOYED_AS` added to the eight listed in §5.1 and §12); `A1.ProcessActivity` is `A1.BusinessActivity`; the *SDEM Mapping Engine* is the Architecture Relationship Inference Engine, specified in [`relationship-rules-spec.md`](relationship-rules-spec.md) and built (v0.10): `sdem/rules_engine.py`, run with `sdem-infer rules --graph <store>`; passes all 8 acceptance cases (`sdem-accept`). Delivery phases are tracked in [`ROADMAP.md`](ROADMAP.md).
+> **Current state (2026-10-25).** The original solution design, kept as a record. The relationship type catalogue now has **nine** types (`DEPLOYED_AS` added to the eight listed in §5.1 and §12); `A1.ProcessActivity` is `A1.BusinessActivity`; the *SDEM Mapping Engine* is the Architecture Relationship Inference Engine, specified in [`relationship-rules-spec.md`](../relationship-rules-spec.md) and built (v0.10): `sdem/rules_engine.py`, run with `sdem-infer rules --graph <store>`; passes all 8 acceptance cases (`sdem-accept`). Delivery phases are tracked in [`ROADMAP.md`](../ROADMAP.md).
 
 **Document status:** Proposed design baseline / draft for architecture review  
 **Version:** 1.0  

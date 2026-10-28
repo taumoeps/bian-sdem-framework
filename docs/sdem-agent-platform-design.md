@@ -121,7 +121,7 @@ sequenceDiagram
 
 ## 5. Coordination records
 
-These records are the agents' only channel to each other. They live in the project (Git), next to the registry, so every step is visible and auditable — one file per record in `<estate>/coordination/change-sets/`, `events/` and `work-items/`, with ids scoped to the Git branch they were made on, so agents on different branches never clash; `sdem check` checks them. They implement the original design's `mapping_change_event` and `mapping_impact` entities ([`BIAN_SDEM_Design_Specification.md`](BIAN_SDEM_Design_Specification.md) §9).
+These records are the agents' only channel to each other. They live in the project (Git), next to the registry, so every step is visible and auditable — one file per record in `<estate>/coordination/change-sets/`, `events/` and `work-items/`, with ids scoped to the Git branch they were made on, so agents on different branches never clash; `sdem check` checks them. They implement the original design's `mapping_change_event` and `mapping_impact` entities ([`BIAN_SDEM_Design_Specification.md`](history/BIAN_SDEM_Design_Specification.md) §9).
 
 | Record | Holds | Written by |
 |---|---|---|

@@ -15,7 +15,7 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | v0.5 | Engine readiness: descriptions, reference adapter interface, engine interface with a name-overlap baseline, `sdem-eval` scorer, impact rules as data — see `07-engine-readiness.md`. Mapping plan, procedure and the use-case runs (executed by hand). Within-level rows from BIAN, ArchiMate and TOGAF, verified | Baseline proposals validate and score F1 ≥ 0.5 | done |
 | v0.6.0 | Relationship Rules Model specification (`relationship-rules-spec.md`); knowledge-graph design and specification with service specifications | Generated from the records; current in CI | done |
 | v0.7.0 | Renamed SDEM; model-driven terminology; registry specification; compatibility aliases for the old names | Behaviour byte-identical to v0.6.2 | done |
-| v0.8.0 | The tool release — see below | 355 tests; acceptance 8 of 8; use-case examples 1–4; installed-package job | done |
+| v0.8.0 | The tool release — see below | the full suite; acceptance 8 of 8; use-case examples 1–4; installed-package job | done |
 
 ## v0.8.0 — the tool release (2026-10-29)
 
