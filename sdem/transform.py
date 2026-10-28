@@ -1264,6 +1264,12 @@ class Extraction:
                 'coverage': coverage(self.ledger)['overall'] if self.ledger else None}
 
 
+# HI-N02 by kind: what rules can read (tables and diagrams) apart from what needs AI or a person (text, pictures) — the pilot measure
+KIND_GROUP = {'table': 'tables and diagrams', 'column': 'tables and diagrams', 'shape': 'tables and diagrams', 'line': 'tables and diagrams',
+              'paragraph': 'text', 'picture': 'pictures'}
+KIND_GROUP_ORDER = ('tables and diagrams', 'text', 'pictures', 'files')
+
+
 def coverage(ledger):
     """HI-N02: captured ÷ (captured + not captured), overall and per page; skipped items are left out."""
     def fig(items):
@@ -1273,7 +1279,9 @@ def coverage(ledger):
                 'percent': round(100 * c['captured'] / done) if done else 100}
     by = collections.defaultdict(list)
     for i in ledger: by[i['page_id']].append(i)
-    return {'overall': fig(ledger), 'by_page': {k: {'title': v[0]['page_title'], 'file': v[0]['file'], **fig(v)} for k, v in by.items()},
+    kinds = collections.defaultdict(list)
+    for i in ledger: kinds[KIND_GROUP.get(i['kind'], 'files')].append(i)
+    return {'overall': fig(ledger), 'by_kind': {g: fig(kinds[g]) for g in KIND_GROUP_ORDER if kinds[g]}, 'by_page': {k: {'title': v[0]['page_title'], 'file': v[0]['file'], **fig(v)} for k, v in by.items()},
             'not_captured_by_category': dict(collections.Counter(i.get('category') for i in ledger if i['status'] == 'not captured').most_common())}
 
 
@@ -1347,6 +1355,11 @@ def report(x, meta, records, links, issues, idx, cov=None):
         L.append('## Coverage — nothing silently lost\n')
         L.append(f"**{o['percent']}% captured** — {o['captured']} items captured, {o['not_captured']} not captured, {o['skipped']} skipped by design "
                  f"({o['items']} items: tables, columns, paragraphs, shapes, lines, pictures, files). Every item not captured is listed under *Not captured*.\n")
+        if cov.get('by_kind'):
+            L.append('| Kind | Captured | Not captured | Skipped | Coverage |')
+            L.append('|---|---|---|---|---|')
+            for k, v in cov['by_kind'].items(): L.append(f"| {k} | {v['captured']} | {v['not_captured']} | {v['skipped']} | {v['percent']}% |")
+            L.append('\n*Tables and diagrams* is what the rules read; *text* is not read without AI and *pictures* need OCR or a person — their items are kept as gap records.\n')
         L.append('| Page or file | Captured | Not captured | Skipped | Coverage |')
         L.append('|---|---|---|---|---|')
         for k, v in sorted(cov['by_page'].items(), key=lambda kv: kv[1]['percent']):
@@ -1447,7 +1460,7 @@ def inspect(root, rules=None, anonymous=False, ocr='auto'):
     if anonymous:
         cov = coverage(x.ledger)
         return {'layout': layout, 'summary': x.summary(), 'for_review': collections.Counter(v['what'] for v in x.review),
-                'coverage': {'overall': cov['overall'], 'not_captured_by_category': cov['not_captured_by_category']}}
+                'coverage': {'overall': cov['overall'], 'by_kind': cov['by_kind'], 'not_captured_by_category': cov['not_captured_by_category']}}
     return {'layout': layout, 'summary': x.summary(),
             'tables': [{'kind': k, 'columns': list(h), 'rule': r, 'count': n} for (k, h, r), n in x.inspect['tables'].most_common()],
             'shapes': [{'shape': s, 'type': t, 'count': n} for (s, t), n in x.inspect['shapes'].most_common()],
@@ -1494,6 +1507,7 @@ def main(argv=None):
             o = r['coverage']['overall']
             print(f"\nCoverage: {o['percent']}% captured ({o['captured']} captured, {o['not_captured']} not captured, {o['skipped']} skipped by design)"
                   + (' — not captured: ' + ', '.join(f'{k} {v}' for k, v in r['coverage']['not_captured_by_category'].items()) if o['not_captured'] else ''))
+            print('  by kind: ' + ', '.join(f"{k} {v['percent']}%" for k, v in r['coverage'].get('by_kind', {}).items()))
             print('\nTune: copy metamodel/transform-rules.json, add the column names or shape words marked "no rule"/"unclassified", pass --rules.')
             return 0
         x, ds, issues = extract(a.export, a.out, a.rules, a.known, a.model_id, ocr=a.ocr)
@@ -1504,6 +1518,8 @@ def main(argv=None):
     print(f"{s['pages']} pages read: " + (', '.join(f'{k} {v} records' for k, v in s['records'].items()) or 'no records')
           + f", {s['links_within']} links inside, {s['links_between_candidates']} candidate links between, {s['pictures_for_a_person']} pictures for a person")
     print(f"written to {a.out}: " + ', '.join(DATASETS[l] for l in ds) + ', extraction.json, design-index.json, extraction-report.md')
+    cov = coverage(x.ledger) if x.ledger else None
+    if cov: print(f"coverage: {cov['overall']['percent']}% of items captured — " + ', '.join(f"{k} {v['percent']}%" for k, v in cov['by_kind'].items()) + '; the rest kept for gap records')
     print('check: ' + ('no errors' if not errs else f'{errs} error(s) — see extraction-report.md'))
     print('All records are candidates (confidence low or medium): review extraction-report.md before using any of them.')
     return 0

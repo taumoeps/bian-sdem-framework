@@ -63,7 +63,7 @@
 | ID | Requirement | Status | Test |
 |---|---|---|---|
 | HI-N01 | Every table, column, paragraph, picture, diagram shape, diagram line, diagram and file is accounted for as **captured**, **skipped** (with the reason) or **not captured** (with its category, place and text); per page the three add up to the total | built | `test_every_item_accounted_for` |
-| HI-N02 | Coverage per page and overall (captured ÷ (captured + not captured)) in `extraction.json`, `design-index.json`, the report and `inspect` | built | `test_coverage_reported` |
+| HI-N02 | Coverage per page, per kind and overall (captured ÷ (captured + not captured)) in `extraction.json`, `design-index.json`, the report, `run` and `inspect`. Kinds: *tables and diagrams* (tables, columns, diagram shapes and lines — what the rules read), *text*, *pictures*, *files* | built | `test_coverage_reported`, `test_coverage_by_kind` |
 | HI-N03 | Columns no rule maps are kept with their entity or link as `unmapped` (column → value) and reported as *column not mapped* | built | `test_unmapped_columns_kept` |
 | HI-N04 | A key-value table is read as the page's **facts** (e.g. owner, review date) in the design index | built | `test_key_value_table_becomes_page_facts` |
 | HI-N05 | A table whose headings contain a `no_entity_type_words` word is reported as *no entity type* (a candidate metamodel gap), never typed | built | `test_no_entity_type_reported_not_forced` |

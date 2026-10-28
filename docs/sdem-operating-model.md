@@ -85,7 +85,7 @@ SDEM failures say what to do: exit `1` a check refused (read the message), `2` t
 | Open gaps | `sdem designs --gaps --status open`, dashboard | going down month on month |
 | Proposals waiting | dashboard *Attention* | reviewed within two weeks |
 | SDEM version | `requirements.txt` | the latest release, or the one before |
-| Coverage of onboarded designs | each load's `extraction.json` | 90% or more of items captured |
+| Coverage of onboarded designs | `sdem transform run`; each load's reconciliation | tables and diagrams 90% or more captured; every item captured or kept as a gap record |
 
 ## 6. Before starting — what must be true
 

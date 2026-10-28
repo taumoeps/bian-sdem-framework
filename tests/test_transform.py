@@ -271,6 +271,14 @@ Rel_Serving(M, P, "x")
             if i['status'] == 'not captured': self.assertTrue(i.get('category'), i)
             if i['status'] == 'skipped': self.assertTrue(i['reason'], i)
 
+    def test_coverage_by_kind(self):  # HI-N02: what rules read, apart from what needs AI or a person
+        from sdem.transform import coverage
+        led = [{'page_id': 'p', 'page_title': 'P', 'file': 'f', 'kind': k, 'status': st} for k, st in
+               (('table', 'captured'), ('shape', 'captured'), ('line', 'captured'), ('column', 'not captured'), ('paragraph', 'not captured'), ('picture', 'skipped'))]
+        c = coverage(led)['by_kind']
+        self.assertEqual(c['tables and diagrams']['percent'], 75); self.assertEqual(c['text']['percent'], 0)
+        self.assertEqual(c['pictures']['skipped'], 1); self.assertNotIn('files', c)
+
     def test_coverage_reported(self):  # HI-N02
         o = self.doc['coverage']['overall']
         self.assertEqual(o['captured'] + o['skipped'] + o['not_captured'], o['items'])

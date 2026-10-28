@@ -90,6 +90,7 @@ sdem transform run work/imports/payarch -o work/history --ocr off
 | Expected (Run A) | A ✓ | B — record |
 |---|---|---|
 | `6 pages read: A1 3 records, A3 6 records, A4 8 records, 7 links inside, 6 candidate links between, 3 pictures for a person` | | entities per layer |
+| `coverage: … tables and diagrams 95% …` (text and pictures vary with OCR) | | coverage by kind |
 | `check: 1 error(s)` | | errors |
 | writes `a1-business.json`, `a3-application.json`, `a4-technology.json`, `extraction.json`, `design-index.json`, `extraction-report.md` — **no A2** | | |
 

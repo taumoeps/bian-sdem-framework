@@ -65,7 +65,8 @@ gantt
 
 | Measure | How | Target |
 |---|---|---|
-| Coverage | `extraction.json` per load | ≥ 90% of items captured |
+| Coverage — tables and diagrams | `sdem transform run` prints it; `coverage.by_kind` in `extraction.json` | ≥ 90% captured (payments and lending test designs: 95%) |
+| Coverage — nothing lost | load reconciliation | **every** item captured or kept as a gap record — plain text and pictures are not read without AI or a person, so they are measured by being kept, not by being captured |
 | Time to onboard a design | architects' log | ≤ 1 day per design, falling |
 | Link quality | proposals approved ÷ proposals reviewed | known and stable (a baseline, not a target, in a first pilot) |
 | Gaps | open gaps over time | falling; each new entity-type request decided |

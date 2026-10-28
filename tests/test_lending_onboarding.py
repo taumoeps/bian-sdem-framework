@@ -52,6 +52,7 @@ class LendingOnboardingTests(unittest.TestCase):
         c = self.ex['coverage']['overall']
         self.assertEqual(c['items'], c['captured'] + c['skipped'] + c['not_captured'])
         self.assertGreaterEqual(c['percent'], 80)
+        self.assertGreaterEqual(self.ex['coverage']['by_kind']['tables and diagrams']['percent'], 90)   # the pilot measure
 
     def test_loads_into_an_estate_and_keeps_the_rest_as_gaps(self):
         est = self.tmp / 'lending'

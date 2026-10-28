@@ -118,8 +118,10 @@ sdem transform run work/imports/payarch -o work/history          # add --rules w
 ```
 ```
 6 pages read: A1 3 records, A3 6 records, A4 8 records, 7 links inside, 6 candidate links between
+coverage: 82% of items captured — tables and diagrams 95%, text 38%, pictures 33%, files 75%; the rest kept for gap records
 check: 1 error(s) — see extraction-report.md
 ```
+**Tables and diagrams** is the number to watch (aim for 90% or more): it is what SDEM's rules read. Plain text and pictures are not read without AI or a person — they are kept as gap records, so nothing is lost.
 These are **suggestions** — nothing is in your project yet.
 
 ### 3 · Check the suggestions
