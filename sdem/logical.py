@@ -44,6 +44,7 @@ def conformance(mm, attrs=None, common=None):
     from .conformance import check_level, estate_index
     res = Counter(); estates = 0; instances = 0
     for est in sorted(glob.glob(str(ROOT / 'examples' / '*') + '/')):
+        if not Path(est, 'mappings.json').exists(): continue   # examples/designs/ holds design exports, not an estate
         if 'reference-structure' in est: continue
         estates += 1; docs = [_j(f) for f in sorted(glob.glob(est + 'a[1-4]-*.json'))]; index = estate_index(docs)
         for d in docs:

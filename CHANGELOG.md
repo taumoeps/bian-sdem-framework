@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## 0.9.3 — fixes from the fifth walkthrough (2026-10-29)
+
+Upgrade: change the pin to `@v0.9.3`, `pip install -r requirements.txt`; copy the estate template's updated `.github/CODEOWNERS`, `.gitignore` and `estates/README.md`; name your in-house SDEM lead. Rulebook metamodel version unchanged (0.4.0).
+
+- **Fixes from a fifth new-architect walkthrough** (learning *ready*; team set-up *nearly ready* — it set up an estate, traced a capability to technology on onboarded data and updated the shared BIAN layer, all from the docs). **One BIAN source in the onboarding workflow:** the sample now uses a BIAN layer made from the base (`sdem bian import --base …`), so the `sdem connect` step finds its service domain — followed literally, it had failed; every sample output re-captured from a real run, ending in the full trace. **Code owners for SDEM's records** in each estate (`designs/`, `loads/`, `bian-updates/`, `migrations/`, `coordination/`) — accepting a gap or updating BIAN had needed no owner's review; the template's estates guide lists them. **An in-house SDEM lead** in the operating model, pilot plan, adoption checklist and glossary: who looks after SDEM inside an adopting organisation, takes rulebook requests upstream, and decides what to do if the upstream maintainer is unavailable. **The sample design export moved to `examples/designs/`** (from `tests/fixtures/`). Also: `sdem approve` and `sdem connect` print every piece of evidence; `private/` ignored in the estate template; the last rules-copy line replaced by `sdem transform rules`.
+
 ## 0.9.2 — the BIAN layer across estates, and connections a person states (2026-10-29)
 
 Two gaps found by the fourth new-architect walkthrough, closed. New commands `sdem bian update` and `sdem connect`; onboarded designs now trace from capability through BIAN to applications and technology. Upgrade: change the pin to `@v0.9.2`, `pip install -r requirements.txt`; `sdem copilot install` if you use Copilot (the agents and skills now know the two commands are for people). Rulebook metamodel version unchanged (0.4.0).

@@ -115,6 +115,7 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Validated against sealed answers** | a rule's output matched the answer key in at least one run |
 | **Precision / recall / F1** | of the links proposed, how many were right / of the right links, how many were found / the balance of both |
 | **Baseline (model)** | a frozen, reviewed version of the model, e.g. `SDEM-METAMODEL-0.8` |
+| **In-house SDEM lead** | the one person in an adopting organisation who looks after SDEM there: the pinned version, `bian/`, triage of questions and rulebook requests, and what to do if the upstream maintainer is unavailable ([operating model](sdem-operating-model.md) §2) |
 | **Control** | an automatic check that enforces a rule — e.g. CTL-21 *a reviewer is a person*. Every control, where it runs and its last result: `controls-register.md` |
 
 ## Reading the codes in SDEM's output

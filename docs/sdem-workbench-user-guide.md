@@ -1,6 +1,6 @@
 # SDEM Workbench — User Guide
 
-> **Status: current guide (v0.9.2) — the one full command reference is §7.**
+> **Status: current guide (v0.9.3) — the one full command reference is §7.**
 
 > For architects who are new to SDEM. No prior knowledge assumed. Every command and output in this guide was run on the examples in this project (2026-10-28).
 >
@@ -554,12 +554,12 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
 **The full walkthrough, every step with what you will see, is the [onboarding workflow](sdem-onboarding-workflow.md)** — follow that. In short:
 
 ```bash
-cp -r tests/fixtures/confluence-folder-export work/imports/payarch     # the made-up sample; your real export goes in work/imports/<name>/
+cp -r examples/designs/confluence-folder-export work/imports/payarch     # the made-up sample; your real export goes in work/imports/<name>/
 sdem transform inspect work/imports/payarch                              # what is in the export, what SDEM can read — changes nothing
 sdem transform run work/imports/payarch -o work/history --ocr off        # suggestions + work/history/extraction-report.md
 # read the report; note the ids you reject
 sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
-     --a2 examples/payment-initiation/a2-service-domain.json             # your own BIAN layer for real work — see the workflow
+     --a2 work/bian/a2-service-domain.json   # made first with: sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json
 sdem link --estate estates/history --out work/links                      # then review, approve, build — as in §8.2
 ```
 

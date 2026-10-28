@@ -1,13 +1,13 @@
 # SDEM operating model — running SDEM for real
 
-> **Status: approved by the owner 2026-10-29** (audit phase 4; decisions OM-1…OM-4 below). How an organisation runs SDEM on real architecture data: where things live, who does what, how changes, upgrades and rulebook changes flow, support, and what has to be true before starting. The pilot that tests it: [`sdem-pilot-plan.md`](sdem-pilot-plan.md).
+> **Status: approved by the SDEM owner 2026-10-29** (the four decisions in §7). How an organisation runs SDEM on real architecture data: where things live, who does what, how changes, upgrades and rulebook changes flow, support, and what has to be true before starting. The pilot that tests it: [`sdem-pilot-plan.md`](sdem-pilot-plan.md).
 
 ## 1. Where things live
 
 ```mermaid
 flowchart LR
     subgraph PUB["Public — this repository"]
-      T["SDEM tool + rulebook<br/>made-up data only"] --> REL["Tagged releases<br/>v0.9.2 …"]
+      T["SDEM tool + rulebook<br/>made-up data only"] --> REL["Tagged releases<br/>v0.9.3 …"]
     end
     subgraph ORG["Inside the organisation"]
       ER["Estate repository (private)<br/>estates/ · pinned SDEM · CI"]
@@ -37,8 +37,9 @@ flowchart LR
 | **Architect** | the architects of A1, A3, A4 (and A2 where licensed) | onboard designs, keep their layer's data current, propose and approve links in their area, resolve gaps |
 | **Reviewer** (code owner) | named senior architects per layer, in `CODEOWNERS` | review and merge pull requests; a reviewer is always a person |
 | **Estate owner** | one person per estate — usually the domain's lead architect | accountable for the estate's quality: gaps worked down, links reviewed, CI green |
-| **Rulebook owner** | the SDEM owner (today: Steven Taumoepeau) | approves every rulebook change and baseline; the high-level spec stays frozen without them |
-| **SDEM maintainer** | whoever builds SDEM (today: the owner) | tool fixes and releases, migrations, answering SDEM questions |
+| **In-house SDEM lead** | one named person **in your organisation** — usually the estate owner of the first domain, or an architecture lead | looks after SDEM for your organisation: keeps the pinned version current, triages questions and rulebook requests before they go upstream, owns `bian/` and the `--patterns` table, and acts if the SDEM maintainer is unavailable (§4) |
+| **Rulebook owner** (upstream) | the SDEM owner (today: Steven Taumoepeau) | approves every rulebook change and baseline; the high-level spec stays frozen without them |
+| **SDEM maintainer** (upstream) | whoever builds SDEM (today: the owner) | tool fixes and releases, migrations, answering SDEM questions |
 | **Platform owner** | the organisation's engineering platform team | the private repository, branch protection, CI runners, internal hosting, Copilot policy |
 
 ### Who does what (R = does it, A = accountable, C = consulted)
@@ -54,6 +55,8 @@ flowchart LR
 | Upgrade SDEM in the estate repository | | R | A | | C | |
 | Migrate an estate (`sdem migrate`) | R | R | A | | C | |
 | Branch protection, CI, hosting | | | C | | C | **R/A** |
+
+The **in-house SDEM lead** is consulted on every row above and is accountable for *Upgrade SDEM*, for `bian/`, and for taking rulebook requests upstream.
 
 ## 3. How work flows
 
@@ -71,9 +74,11 @@ flowchart LR
 |---|---|---|
 | An SDEM error or bug | an issue on the SDEM repository | **no real data** — reproduce with the examples or describe it |
 | A question about our data | the estate owner | in the estate repository's issues or the team channel |
-| A rule seems wrong | the rulebook owner | describe the kind of thing, not the design |
+| A rule seems wrong, or a new kind of thing is needed (e.g. a *no entity type* gap) | your **in-house SDEM lead**, who raises it with the upstream rulebook owner | describe the kind of thing, not the design |
 | Security | SDEM's [`SECURITY.md`](../SECURITY.md) — private report | |
 | CI or hosting is down | the platform owner | |
+
+**If the upstream maintainer is unavailable.** Nothing stops: your estates keep working on the release you pinned, and your data is plain JSON files in your repository. The in-house SDEM lead decides between (1) staying on the pinned release, (2) keeping `no entity type` gaps open — they lose nothing — until a rulebook change is possible, or (3) under Apache-2.0, maintaining your own copy (fork) of SDEM, with your organisation's open-source process ([adoption checklist §5](sdem-adoption-checklist.md#5-depending-on-an-open-source-tool)).
 
 SDEM failures say what to do: exit `1` a check refused (read the message), `2` the input is wrong, `3` a fault in SDEM — report it with `SDEM_DEBUG=1` output, after removing any real names.
 

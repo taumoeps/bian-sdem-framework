@@ -203,7 +203,7 @@ What each architecture's candidates can be, and what produces them (rules in `me
 
 ### 4.3 Expected outputs — the walkthrough example
 
-`sdem transform run tests/fixtures/confluence-folder-export -o work/history` (the made-up export in the prepared layout) produces:
+`sdem transform run examples/designs/confluence-folder-export -o work/history` (the made-up export in the prepared layout) produces:
 
 | Output | Expected |
 |---|---|

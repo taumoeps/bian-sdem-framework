@@ -1,5 +1,5 @@
 """Write tests/fixtures/confluence-export-sample/ (Confluence's standard HTML export) and
-tests/fixtures/confluence-folder-export/ (a prepared export: provenance files in the root, raw HTML and diagrams in
+examples/designs/confluence-folder-export/ (a prepared export: provenance files in the root, raw HTML and diagrams in
 archives/, sections as folders) — synthetic exports for testing `sdem transform`. First:
 tests/fixtures/confluence-export-sample/: a synthetic Confluence HTML space export for testing `sdem transform`.
 
@@ -174,7 +174,7 @@ def main():
 
 
 # ---- the prepared layout: readme/source/evidence in the root, raw HTML and diagrams in archives/, sections as folders
-FOLDER = ROOT / 'tests' / 'fixtures' / 'confluence-folder-export'
+FOLDER = ROOT / 'examples' / 'designs' / 'confluence-folder-export'
 
 CONTEXT_MODEL = """<mxfile host="Confluence"><diagram id="c" name="Context"><mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>
 <mxCell id="a" value="Payments Hub" style="shape=mxgraph.archimate3.application;appType=comp;archiType=square;html=1;" vertex="1" parent="1"><mxGeometry x="0" y="0" width="120" height="60" as="geometry"/></mxCell>

@@ -31,7 +31,7 @@ class DashboardTests(unittest.TestCase):
 
     def test_generates_for_every_example_offline(self):   # AT-DB-01
         for d in sorted(glob.glob(str(ROOT / 'examples') + '/*/')):
-            if 'reference-structure' in d: continue
+            if 'reference-structure' in d or not (Path(d) / 'mappings.json').exists(): continue   # examples/designs/ is not an estate
             out = self.tmp / (Path(d).name + '.html')
             code, _, err = sdem('dashboard', '--estate', d, '-o', out)
             self.assertEqual(code, 0, err)

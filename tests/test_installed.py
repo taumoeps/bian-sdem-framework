@@ -35,7 +35,7 @@ class InstalledLayoutTests(unittest.TestCase):
                     dest.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(f, dest)
         cls.work = cls.tmp / 'work'; cls.work.mkdir()
         shutil.copytree(ROOT / 'examples' / 'payment-initiation', cls.work / 'est', ignore=shutil.ignore_patterns('graph'))
-        shutil.copytree(ROOT / 'tests' / 'fixtures' / 'confluence-folder-export', cls.work / 'export')
+        shutil.copytree(ROOT / 'examples' / 'designs' / 'confluence-folder-export', cls.work / 'export')
         shutil.copytree(ROOT / 'tests' / 'fixtures' / 'bian-release-sample', cls.work / 'bian')
         cls.env = {**os.environ, 'PYTHONPATH': str(site)}
 

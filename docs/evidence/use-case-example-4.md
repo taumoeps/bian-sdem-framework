@@ -48,7 +48,7 @@ Each command does one job. The steps below use them in this order.
 
 | Run | Data | Purpose | Results |
 |---|---|---|---|
-| **A — rehearsal** | the made-up export `tests/fixtures/confluence-folder-export` (Payments Hub Design) | learn the steps; prove SDEM behaves as expected | must match the **expected** column exactly |
+| **A — rehearsal** | the made-up export `examples/designs/confluence-folder-export` (Payments Hub Design) | learn the steps; prove SDEM behaves as expected | must match the **expected** column exactly |
 | **B — real** | your Confluence export, on the work machine | prove the workflow on real designs | record **counts and observations only** — never content, names or screenshots of real designs outside the organisation |
 
 ## Before you start
@@ -58,7 +58,7 @@ Each command does one job. The steps below use them in this order.
 | P1 | VS Code open on the SDEM project; a terminal pane; `python3 -m sdem --help` works | |
 | P2 | On a new branch: `git checkout -b import/<name>` | |
 | P3 | **The export is under `work/`** (e.g. `work/imports/payarch/`) — only `work/`, `private/` and `secrets/` are kept out of Git | |
-| P4 | Run A: `cp -r tests/fixtures/confluence-folder-export work/imports/payarch` | |
+| P4 | Run A: `cp -r examples/designs/confluence-folder-export work/imports/payarch` | |
 | P5 | Your organisation's A2 (BIAN) dataset to hand — Run A uses `examples/payment-initiation/a2-service-domain.json` | |
 | P6 | Run A uses `--ocr off` everywhere, so the results are the same on every machine. Run B: OCR on (the default) unless your organisation does not allow it | |
 

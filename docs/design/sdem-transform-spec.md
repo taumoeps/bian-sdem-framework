@@ -1,6 +1,6 @@
 # SDEM Transform — Specification
 
-> **Status: built 2026-10-28; tested on two synthetic exports only** — Confluence's standard layout (`tests/fixtures/confluence-export-sample`) and a prepared layout with provenance files in the root, raw HTML and diagrams in `archives/` and sections as folders (`tests/fixtures/confluence-folder-export`). Requirements for [`sdem-transform-design.md`](sdem-transform-design.md). Each has an ID (HI-*, kept from when the command was named `sdem history`), a status and its test.
+> **Status: built 2026-10-28; tested on two synthetic exports only** — Confluence's standard layout (`tests/fixtures/confluence-export-sample`) and a prepared layout with provenance files in the root, raw HTML and diagrams in `archives/` and sections as folders (`examples/designs/confluence-folder-export`). Requirements for [`sdem-transform-design.md`](sdem-transform-design.md). Each has an ID (HI-*, kept from when the command was named `sdem history`), a status and its test.
 
 ## 0. Scope
 

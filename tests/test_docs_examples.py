@@ -15,7 +15,7 @@ class DocumentedExamplesTests(unittest.TestCase):
         tmp = Path(tempfile.mkdtemp())
         try:
             (tmp / 'a2-service-domain.json').write_text(json.dumps(starter), encoding='utf-8')
-            transform.extract(ROOT / 'tests' / 'fixtures' / 'confluence-folder-export', tmp / 'history', ocr='off')
+            transform.extract(ROOT / 'examples' / 'designs' / 'confluence-folder-export', tmp / 'history', ocr='off')
             res = load.load(tmp / 'history', tmp / 'estate', 'jane.architect', exclude=['HIS-A3-PAYMENT-ORDER'], a2=tmp / 'a2-service-domain.json')
             self.assertGreater(res['reconciliation']['loaded'], 0)
             self.assertTrue((tmp / 'estate' / 'a2-service-domain.json').exists())

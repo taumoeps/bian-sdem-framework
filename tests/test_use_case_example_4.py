@@ -23,7 +23,7 @@ class UseCaseExample4(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp()); cls.cwd = os.getcwd(); os.chdir(cls.tmp)
-        shutil.copytree(ROOT / 'tests' / 'fixtures' / 'confluence-folder-export', 'work/imports/payarch')
+        shutil.copytree(ROOT / 'examples' / 'designs' / 'confluence-folder-export', 'work/imports/payarch')
         cls.out = {}
         for name, argv in [
             ('inspect', ['transform', 'inspect', 'work/imports/payarch', '--ocr', 'off']),

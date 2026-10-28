@@ -10,7 +10,7 @@ from sdem.metamodel import Metamodel
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / 'tests' / 'fixtures' / 'confluence-export-sample'
 KNOWN = ROOT / 'examples' / 'payment-initiation' / 'a3-application.json'
-FOLDER = ROOT / 'tests' / 'fixtures' / 'confluence-folder-export'
+FOLDER = ROOT / 'examples' / 'designs' / 'confluence-folder-export'
 
 
 class TransformTests(unittest.TestCase):

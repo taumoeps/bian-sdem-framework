@@ -14,7 +14,7 @@ class BianUpdateAndConnectTests(unittest.TestCase):
     def setUpClass(cls):
         cls.base = Path(tempfile.mkdtemp())
         run = lambda *a: subprocess.run([sys.executable, '-m', 'sdem', *map(str, a)], cwd=cls.base, capture_output=True, text=True, env={'PYTHONPATH': str(ROOT), 'PATH': '/usr/bin:/bin'})
-        shutil.copytree(ROOT / 'tests' / 'fixtures' / 'confluence-folder-export', cls.base / 'export')
+        shutil.copytree(ROOT / 'examples' / 'designs' / 'confluence-folder-export', cls.base / 'export')
         for a in (('bian', 'import', '--base', '--only', 'Payment Order Initiation', 'Payment Rail', '-o', 'bian/a2-service-domain.json'),
                   ('transform', 'run', 'export', '-o', 'history', '--ocr', 'off'),
                   ('load', 'history', '--estate', 'estates/payments', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER', '--a2', 'bian/a2-service-domain.json'),

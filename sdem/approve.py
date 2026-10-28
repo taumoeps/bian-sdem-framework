@@ -91,7 +91,7 @@ def main(argv=None):
     else:
         for r in recs:
             print(f"{'would approve' if a.dry_run else 'approved'} {r['mapping_id']}: {r['source']['id']} -{r['relationship']}-> {r['target']['id']}  "
-                  f"(reviewer {r['reviewer_id']}, {r['approved_at']}, evidence {r['evidence'][0]})" + (f"; supersedes {r['previous_mapping_id']}" if r.get('previous_mapping_id') else ''))
+                  f"(reviewer {r['reviewer_id']}, {r['approved_at']}, evidence {'; '.join(e for e in r['evidence'] if not e.startswith('engine_rationale:'))})" + (f"; supersedes {r['previous_mapping_id']}" if r.get('previous_mapping_id') else ''))
     if a.dry_run: return 0
     from .files import write_json
     write_json(reg_path, new)   # in one step: never a half-written registry

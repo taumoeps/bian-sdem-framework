@@ -1,6 +1,6 @@
 # SDEM onboarding — bringing your existing designs into SDEM
 
-> **Status: current guide — design onboarding is built (v0.9.2); every command shown was run on the test exports.**
+> **Status: current guide — design onboarding is built (v0.9.3); every command shown was run on the test exports.**
 
 > **One document for design onboarding** (built 2026-10-28): what onboarding is, how to do it — the commands and each step with what you will see — what each step does to the data, and when the data is ready. To **test** it step by step with sealed expected results: [`use-case-example-4.md`](evidence/use-case-example-4.md). Technical detail: [`sdem-transform-design.md`](design/sdem-transform-design.md) (reading the designs), [`sdem-load-design.md`](design/sdem-load-design.md) (loading, gap records). For architects; no AI needed.
 
@@ -93,9 +93,9 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 2. Check SDEM works: `source .venv/bin/activate`, then `sdem --version` (not installed yet? [user guide §3](sdem-workbench-user-guide.md#3-set-up--once)).
 3. Start a branch for this work: `git checkout -b onboard/<name>`.
 4. **Put your export under `work/`**, e.g. `work/imports/payarch/`. Only `work/`, `private/` and `secrets/` are kept out of Git — anywhere else, your designs could be committed and shared.
-5. Have your **BIAN layer** to hand — one file, `a2-service-domain.json`, needed once so SDEM can connect your designs to BIAN. What it is and where it comes from: [*Your BIAN (A2) layer*](#your-bian-a2-layer) below. **For the made-up sample, use** `examples/payment-initiation/a2-service-domain.json`.
+5. Have your **BIAN layer** to hand — one file, `a2-service-domain.json`, needed once so SDEM can connect your designs to BIAN. What it is and where it comes from: [*Your BIAN (A2) layer*](#your-bian-a2-layer) below. **For the made-up sample, make it from the base BIAN** that ships with SDEM: `sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json`.
 
-> The examples below show what you will see with the made-up export `tests/fixtures/confluence-folder-export`, with `--ocr off` (the same on every machine). Try it first: `cp -r tests/fixtures/confluence-folder-export work/imports/payarch`.
+> The examples below show what you will see with the made-up export `examples/designs/confluence-folder-export`, with `--ocr off` (the same on every machine). Try it first: `cp -r examples/designs/confluence-folder-export work/imports/payarch`.
 
 ### Your BIAN (A2) layer
 
@@ -171,7 +171,7 @@ Coverage: 80% captured (45 captured, 11 not captured, 4 skipped by design)
 ```
 **If a table or diagram you need shows *no rule* or *unclassified***, SDEM does not know your words yet — copy the rules and add them, then look again:
 ```bash
-cp metamodel/transform-rules.json work/my-rules.json      # e.g. add "system name" as an application column
+sdem transform rules -o work/my-rules.json                # a copy of SDEM's rules; e.g. add "system name" as an application column
 sdem transform inspect work/imports/payarch --rules work/my-rules.json
 ```
 
@@ -205,13 +205,13 @@ Write down the ids of the items you do **not** want, e.g. `HIS-A3-PAYMENT-ORDER`
 Try it first with `--dry-run` (writes nothing), then run it for real:
 ```bash
 sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
-  --a2 examples/payment-initiation/a2-service-domain.json --dry-run          # your own BIAN layer for real work
+  --a2 work/bian/a2-service-domain.json --dry-run          # in your estate repository: --a2 bian/a2-service-domain.json
 sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
-  --a2 examples/payment-initiation/a2-service-domain.json
+  --a2 work/bian/a2-service-domain.json
 ```
 ```
-loaded (LOAD-001) into estates/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added from examples/payment-initiation/a2-service-domain.json
-gap records: 13 — what did not fit an entity, kept beside the estate
+loaded (LOAD-001) into estates/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added from work/bian/a2-service-domain.json
+design records: 11 page(s); gap records: 13 — what did not fit an entity, kept beside the estate (…)
 reconciliation: 17 candidates = 16 loaded + 0 already in the estate + 1 excluded
 ```
 The *reconciliation* proves nothing was lost. `--a2` is needed only the first time. **Ingestion is now complete**; the rest is normal processing.
@@ -228,17 +228,27 @@ sdem link --estate estates/history --out work/links
 sdem review work/links/proposals.json
 ```
 ```
-[0.4] P-RUN-001  Clearing Gateway   DEPLOYED_ON  PAYAPP01    — capped at low: from a document
-[0.4] P-RUN-005  Payment Initiation SUPPORTED_BY SD-PI (BIAN)
+4 proposed link(s), weakest first:
+  [0.4] P-RUN-001  HIS-A3-CLEARING-GATEWAY -DEPLOYED_ON-> HIS-A4-PAYAPP01   rule S34
+  [0.4] P-RUN-002  HIS-A3-PAYMENTS-HUB -DEPLOYED_ON-> HIS-A4-PAYMENTS-KUBERNETES-CLUSTER   rule S34
+  [0.4] P-RUN-003  HIS-A3-SANCTIONS-SCREENING -DEPLOYED_ON-> HIS-A4-PAYMENTS-KUBERNETES-CLUSTER   rule S34
+  [0.4] P-RUN-004  HIS-A1-PAYMENT-INITIATION -SUPPORTED_BY-> SD-PAYMENT-ORDER-INITIATION   rule S01
 ```
 Every connection from a past design is marked **low** — check each against its Confluence page. `sdem designs --estate estates/history --entity <id>` tells you which page an item came from.
 
 ### 7 · Accept the right connections
 ```bash
-sdem approve P-RUN-001 --proposals work/links/proposals.json --estate estates/history \
+sdem approve P-RUN-002 --proposals work/links/proposals.json --estate estates/history \
   --reviewer <your name> --evidence deployment_design:<page or document id>
+sdem approve P-RUN-004 --proposals work/links/proposals.json --estate estates/history \
+  --reviewer <your name> --evidence business_architecture_document:<doc> --evidence domain_scope_assessment:<doc> \
+  --bian-release 14.0.0
 ```
-For a connection to BIAN, also give the BIAN release: `--bian-release <release>` (SDEM tells you if it is missing). The **evidence** is the document that proves the connection — SDEM tells you which kind each connection needs.
+```
+approved MAP-001: HIS-A3-PAYMENTS-HUB -DEPLOYED_ON-> HIS-A4-PAYMENTS-KUBERNETES-CLUSTER  (reviewer …, evidence deployment_design:…)
+approved MAP-002: HIS-A1-PAYMENT-INITIATION -SUPPORTED_BY-> SD-PAYMENT-ORDER-INITIATION  (reviewer …, evidence business_architecture_document:…; domain_scope_assessment:…)
+```
+The **evidence** is the document that proves the connection — SDEM tells you which kinds each connection needs; a connection resting on BIAN's guidance (like *supported by*) also needs the BIAN release, `--bian-release 14.0.0`.
 
 **Connections SDEM cannot see.** Designs rarely give an application's API operations in enough detail for SDEM to work out which BIAN service domain the application **realises** — and without that connection, a capability never traces through to the applications and technology. When you know it, and have the document that shows it, state it yourself:
 ```bash
@@ -246,24 +256,33 @@ sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --estat
   --reviewer <your name> --evidence application_architecture_document:<page or document id> \
   --rationale "The Payments Hub design names it as the payment-order initiation service"
 ```
-It gets the same checks as `sdem approve` — your name, the evidence the connection needs, both records must exist — and the record says it was stated by you. Then the trace runs all the way: capability → BIAN service domain → application → technology.
+```
+connected MAP-003: SD-PAYMENT-ORDER-INITIATION -REALIZED_BY-> HIS-A3-PAYMENTS-HUB  (stated by …, evidence application_architecture_document:…)
+```
+It gets the same checks as `sdem approve` — your name, the evidence the connection needs, both records must exist — and the record says it was stated by you. Then the trace runs all the way: capability → BIAN service domain → application → technology (step 9).
 
 ### 8 · Make the picture
 ```bash
 sdem build --estate estates/history --out work/graph
 ```
 ```
-build 1 accepted: … federated.graph.json (4 nodes, 2 edges), designs.graph.json (24 nodes, 42 edges)
+build 1 accepted: … designs.graph.json (24 nodes, 42 edges), federated.graph.json (4 nodes, 3 edges)
 ```
 **The data is now ready for queries and changes.**
 
 ### 9 · Ask questions
 ```bash
-sdem trace HIS-A1-PAYMENT-INITIATION --graph work/graph            # what does this capability depend on?
+sdem trace HIS-A1-PAYMENT-INITIATION --direction down --graph work/graph   # what does this capability depend on?
 sdem impact HIS-A4-PAYAPP01 --change retire --graph work/graph      # what breaks if we retire this server?
 sdem dashboard --estate estates/history -o work/dashboard.html     # open it in your browser
 ```
-The trace ends with **where the item is documented** — its Confluence pages and their open gaps. The dashboard shows everything, clickable, with a **Designs & gaps** tab.
+```
+HIS-A1-PAYMENT-INITIATION 'Payment Initiation'  [A1.BusinessCapability]
+└─ -SUPPORTED_BY-> SD-PAYMENT-ORDER-INITIATION 'Payment Order Initiation'  [A2.ServiceDomain]  (MAP-002)
+   └─ -REALIZED_BY-> HIS-A3-PAYMENTS-HUB 'Payments Hub'  [A3.ApplicationComponent]  (MAP-003)
+      └─ -DEPLOYED_ON-> HIS-A4-PAYMENTS-KUBERNETES-CLUSTER 'Payments Kubernetes Cluster'  [A4.Node]  (MAP-001)
+```
+Capability → BIAN → application → technology, every step an approved connection. The trace ends with **where the item is documented** — its Confluence pages and their open gaps. The dashboard shows everything, clickable, with a **Designs & gaps** tab.
 
 ### 10 · Tidy up the gaps
 ```bash

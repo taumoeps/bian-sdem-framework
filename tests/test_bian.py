@@ -167,7 +167,7 @@ class BianImportTests(unittest.TestCase):
     def test_the_output_is_a_bian_layer_sdem_load_accepts(self):  # the point: an A2 layer for onboarding
         from sdem import load, transform
         code, out, f = self.imp(names=('Sample Order Initiation', 'Sample Party Directory'))
-        transform.extract(ROOT / 'tests' / 'fixtures' / 'confluence-folder-export', self.tmp / 'history', ocr='off')
+        transform.extract(ROOT / 'examples' / 'designs' / 'confluence-folder-export', self.tmp / 'history', ocr='off')
         res = load.load(self.tmp / 'history', self.tmp / 'estate', 'jane.architect', exclude=['HIS-A3-PAYMENT-ORDER'], a2=f)
         self.assertGreater(res['reconciliation']['loaded'], 0)
         self.assertEqual(json.loads((self.tmp / 'estate' / 'a2-service-domain.json').read_text())['source_system'], 'BIAN-SEMANTIC-API-99.0.0')

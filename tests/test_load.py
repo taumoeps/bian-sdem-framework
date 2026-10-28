@@ -7,7 +7,7 @@ from sdem import load, transform
 from sdem.cli import main
 
 ROOT = Path(__file__).resolve().parents[1]
-FOLDER = ROOT / 'tests' / 'fixtures' / 'confluence-folder-export'
+FOLDER = ROOT / 'examples' / 'designs' / 'confluence-folder-export'
 A2 = ROOT / 'examples' / 'payment-initiation' / 'a2-service-domain.json'
 BAD = 'HIS-A3-PAYMENT-ORDER'   # a data entity drawn without its attribute list: fails the check (LC-04)
 

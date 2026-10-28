@@ -5,6 +5,13 @@
 # Approved links between architectures — the decisions
 estates/*/mappings.json        @YOUR-ORG/architecture-reviewers
 
+# Decisions recorded by SDEM — gaps accepted or resolved, loads, BIAN updates, migrations, agents' change sets
+estates/*/designs/             @YOUR-ORG/architecture-reviewers
+estates/*/loads/               @YOUR-ORG/architecture-reviewers
+estates/*/bian-updates/        @YOUR-ORG/architecture-reviewers
+estates/*/migrations/          @YOUR-ORG/sdem-maintainers
+estates/*/coordination/        @YOUR-ORG/architecture-reviewers
+
 # Each architecture's data — its layer owner
 estates/*/a1-business.json     @YOUR-ORG/business-architects
 estates/*/a2-service-domain.json  @YOUR-ORG/architecture-reviewers

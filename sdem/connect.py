@@ -83,7 +83,7 @@ def main(argv=None):
         print(f'ERROR: {e}', file=sys.stderr); return 1
     if a.json: print(json.dumps(r, indent=2, ensure_ascii=False))
     else: print(f"{'would connect' if a.dry_run else 'connected'} {r['mapping_id']}: {r['source']['id']} -{r['relationship']}-> {r['target']['id']}  "
-                f"(stated by {r['reviewer_id']}, {r['approved_at']}, evidence {r['evidence'][0]})")
+                f"(stated by {r['reviewer_id']}, {r['approved_at']}, evidence {'; '.join(r['evidence'])})")
     if a.dry_run: return 0
     from .files import write_json
     write_json(Path(a.estate) / 'mappings.json', new)

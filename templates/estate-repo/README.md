@@ -50,7 +50,7 @@ sdem connect <BIAN service domain> REALIZED_BY <application> --estate estates/<d
     --reviewer <you> --evidence application_architecture_document:<doc> --rationale "<why>"     # a connection SDEM cannot see from the design
 git add estates/<domain> && git commit -m "Onboard <design> (LOAD-001)" && git push -u origin HEAD
 ```
-Open a pull request; CI runs the **Estate checks**; a code owner reviews and merges. **Approvals become final when the pull request is merged.** Your BIAN layer is `bian/a2-service-domain.json` (set-up step 7; [what it is](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md#your-bian-a2-layer)). To practise first, the made-up sample export is in a clone of SDEM: `tests/fixtures/confluence-folder-export`. The full walk-through: SDEM's [onboarding workflow](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md) and [user guide](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-workbench-user-guide.md).
+Open a pull request; CI runs the **Estate checks**; a code owner reviews and merges. **Approvals become final when the pull request is merged.** Your BIAN layer is `bian/a2-service-domain.json` (set-up step 7; [what it is](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md#your-bian-a2-layer)). To practise first, the made-up sample export is in a clone of SDEM: `examples/designs/confluence-folder-export`. The full walk-through: SDEM's [onboarding workflow](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md) and [user guide](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-workbench-user-guide.md).
 
 ## Adding a domain
 

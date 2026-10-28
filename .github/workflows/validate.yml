@@ -120,7 +120,7 @@ jobs:
       - name: Run the journeys from outside the repository
         run: |
           cp -r examples/payment-initiation /tmp/est && rm -rf /tmp/est/graph
-          cp -r tests/fixtures/confluence-folder-export /tmp/export
+          cp -r examples/designs/confluence-folder-export /tmp/export
           cd /tmp
           S=/tmp/venv/bin/sdem
           $S --version

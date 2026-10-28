@@ -27,6 +27,7 @@ ALLOWED = {
 def engine_log():
     log = []
     for d in sorted(glob.glob(str(ROOT / 'examples') + '/*/')):
+        if not (Path(d) / 'mappings.json').exists(): continue   # examples/designs/ is not an estate
         if 'reference-structure' in d: continue
         files = sorted(glob.glob(d + 'a*.json')) + [d + 'mappings.json']
         log += RulesEngine().infer(GraphReader.from_exports(files), {'id': 'CTL22'})['log']
