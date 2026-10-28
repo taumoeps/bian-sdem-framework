@@ -64,6 +64,8 @@ After a merge to `main`, CI builds the home page and one dashboard per estate (`
 
 They show real architecture. Publish them **only** behind your organisation's sign-in — an internal web server or intranet, or GitHub Pages with **private** visibility if your plan offers it. Never public GitHub Pages, a public bucket, or a link without sign-in. Add your upload step at the end of `.github/workflows/estate-ci.yml`.
 
+**For now (OM-3): local files.** Each architect builds them on their own machine — `sdem home --root estates -o work/sdem`, then open `work/sdem/index.html` in a browser. `work/` is never committed. CI's *sdem-dashboards* artifact is the same pages, for anyone without SDEM installed.
+
 ## Upgrading SDEM
 
 1. On a branch, change the tag in `requirements.txt` to the new release; read its CHANGELOG.

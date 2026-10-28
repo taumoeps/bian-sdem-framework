@@ -12,7 +12,7 @@ flowchart LR
     subgraph ORG["Inside the organisation"]
       ER["Estate repository (private)<br/>estates/ · pinned SDEM · CI"]
       WS["Architect's machine<br/>VS Code · sdem · work/ (exports)"]
-      H["Internal hosting<br/>dashboards, sign-in only"]
+      H["Dashboards<br/>local HTML files (for now)"]
     end
     REL -- "pinned by tag" --> ER
     WS -- "pull requests" --> ER
@@ -24,7 +24,7 @@ flowchart LR
 | The tool and the rulebook | this public repository, as tagged releases | — |
 | Real architecture data (estates) | the organisation's **private estate repository**, made from [`templates/estate-repo`](../templates/estate-repo/README.md) | this repository, issues, public chat |
 | Design exports (Confluence) | `work/` on the machine allowed to hold them | any repository |
-| Dashboards | authenticated internal hosting | public Pages, public buckets, links without sign-in |
+| Dashboards | **local HTML files for now** — each architect runs `sdem home` / `sdem dashboard` and opens the page; later, authenticated internal hosting | public Pages, public buckets, links without sign-in, email attachments outside the organisation |
 
 **One estate per domain.** Every domain works the same way — same rulebook, same commands, same checks; a domain joins by adding a folder in `estates/` with its owner and code owners. There are no per-domain settings; the one optional setting — the table headings your organisation's designs use — is shared by every domain ([pilot plan](sdem-pilot-plan.md#no-per-domain-settings)).
 
@@ -94,7 +94,7 @@ SDEM failures say what to do: exit `1` a check refused (read the message), `2` t
 | 1 | **Legal and IP clearance** to run SDEM on the organisation's designs ([`PUBLICATION_CHECKLIST.md`](PUBLICATION_CHECKLIST.md)) | owner | the designs belong to the employer; SDEM is personal open source |
 | 2 | Private estate repository with **branch protection and code owners** | platform | without it a person's approval is not enforced ([`sdem-repository-protection.md`](sdem-repository-protection.md)) |
 | 3 | **Python 3.10 or later** on architects' machines (3.11+ recommended) | platform | SDEM requires 3.10; Python 3.9 reached end of life in October 2025 (PEP 596 — high confidence) |
-| 4 | **Dashboard hosting decided** — internal, sign-in only | platform | dashboards show real architecture |
+| 4 | **Dashboard hosting decided** — decided: local HTML files for now (OM-3) | owner | dashboards show real architecture |
 | 5 | **Copilot policy** known (allowed or not; no MCP) | platform | SDEM works without Copilot; with it, Copilot files must match the pinned release |
 | 6 | **A2 (BIAN)**: the organisation's BIAN licence position | owner | real BIAN ids need a licensed catalogue (ROADMAP v0.15); without it, A2 holds only what is public |
 
@@ -104,5 +104,5 @@ SDEM failures say what to do: exit `1` a check refused (read the message), `2` t
 |---|---|---|---|
 | OM-1 | One estate repository for the organisation, or one per division | **one**, with one folder per estate — simplest to protect and to report across | medium — depends on how divisions share data |
 | OM-2 | Who is the first estate owner | the architect leading the pilot domain | high |
-| OM-3 | Where dashboards are hosted | the organisation's existing intranet or internal static hosting behind sign-in | medium — depends on what exists |
+| OM-3 | Where dashboards are hosted | **local HTML files for now** (owner, 2026-10-29): `sdem home -o work/sdem`, open `work/sdem/index.html`; nothing to set up, nothing leaves the machine. Revisit internal hosting behind sign-in when more people need to see them | high |
 | OM-4 | Support hours | best effort during the pilot; review at its end | high |
