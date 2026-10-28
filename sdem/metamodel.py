@@ -47,7 +47,11 @@ class Metamodel:
         return out
 
     def is_a(self, t, ancestor):
-        return t == ancestor or ancestor in self.ancestors(t)
+        if t == ancestor: return True
+        cache = self.__dict__.setdefault('_is_a', {})   # the catalogue does not change once loaded
+        k = (t, ancestor)
+        if k not in cache: cache[k] = ancestor in self.ancestors(t)
+        return cache[k]
 
     def level(self, t):
         e = self.entities.get(t)

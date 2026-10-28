@@ -9,7 +9,7 @@ It never approves, never invents an instance, and never re-proposes a link that 
 
 Built step by step against the acceptance harness (sdem/acceptance.py). Implemented: steps 1–5 (data joins; BIAN REST decision procedure; structural matching; derivation; bounded text inference). Design mode: a target design from BIAN's container pattern when no A3 architecture dataset exists (M2).
 """
-import json, re
+import collections, functools, json, re
 from pathlib import Path
 
 from .paths import DATA_ROOT
@@ -37,6 +37,7 @@ METHODS = {'Retrieve': {'GET'}, 'Create': {'POST'}, 'Initiate': {'POST'}, 'Regis
            'Execute': {'PUT', 'PATCH', 'POST'}, 'Activate': {'PUT', 'POST'}, 'Configure': {'PUT', 'POST'}, 'Feedback': {'PUT', 'POST'}}
 
 
+@functools.lru_cache(maxsize=None)   # pure functions of their text: remembered (the engine reads the same names many times)
 def _sing(w):
     if len(w) > 4 and w.endswith('ies'): return w[:-3] + 'y'
     if len(w) > 3 and w.endswith('s') and not w.endswith('ss'): return w[:-1]
@@ -45,16 +46,25 @@ def _sing(w):
 
 def tokens(*texts, structural=True):
     """Lower-case words: camel- and snake-case split, singularised; stop words (and structural nouns) dropped."""
+    return set(_tokens(tuple(str(t) if t else '' for t in texts), structural))
+
+
+_WORDS = re.compile(r'[A-Z]+(?=[A-Z][a-z])|[A-Z]?[a-z]+|[A-Z]+|[0-9]+')
+
+
+@functools.lru_cache(maxsize=None)
+def _tokens(texts, structural):
     out = set()
     for t in texts:
         if not t: continue
-        for part in re.findall(r'[A-Z]+(?=[A-Z][a-z])|[A-Z]?[a-z]+|[A-Z]+|[0-9]+', str(t)):
+        for part in _WORDS.findall(t):
             w = _sing(part.lower())
             if w in STOP or (structural and w in STRUCTURAL) or w.isdigit(): continue
             out.add(w)
-    return out
+    return frozenset(out)
 
 
+@functools.lru_cache(maxsize=None)
 def stem(w):
     """Light stem for check 3's 'clear synonym': a qualifier noun and its verb share a stem (closure/close, posting/post,
     reversal/reverse, validation/validate). Engine convention EC-01 (relationship-rules-spec.md DEC-E-07)."""
@@ -67,8 +77,13 @@ def stems(ws):
     return {stem(w) for w in ws}
 
 
+@functools.lru_cache(maxsize=None)
+def _norm(name):
+    return _sing(re.sub(r'[^a-z0-9]', '', name.lower()))
+
+
 def norm(name):
-    return _sing(re.sub(r'[^a-z0-9]', '', str(name).lower()))
+    return _norm(str(name))
 
 
 class Run:
@@ -79,32 +94,53 @@ class Run:
         self.rules = _rules()
         self.rules['DESIGN'] = {'fill_step': 'design', 'confidence': 'low'}
         self.proposals, self.candidates, self.log = [], [], []
-        self.approved = {(e['source']['id'], e['relationship'], e['target']['id']) for e in reader.fg.edges()}
+        self.approved_order = list(dict.fromkeys((e['source']['id'], e['relationship'], e['target']['id']) for e in reader.fg.edges()))   # registry order: output is the same on every run
+        self.approved = set(self.approved_order)   # membership only — never iterated (set order varies between runs)
         self.proposed = {}   # (src, rel, tgt) -> proposal record (this run)
         self.reported = {}   # (src, plan id, tgt) -> candidate record (this run)
         self.ids = {}        # (level, id) -> node, latest version
         for n in reader.nodes(): self.ids[(n['level'], n['id'])] = n
         self.wedges = reader.edges('within-level')
+        # indexes — the same answers as scanning, in the same order, without scanning (scaling: thousands of records)
+        self.by_id = {}
+        for (lvl, i), n in self.ids.items(): self.by_id.setdefault(i, []).append((lvl, n))
+        self._out, self._in = {}, {}
+        for e in self.wedges:
+            self._out.setdefault((e['source'], e['kind']), []).append(e['target'])
+            self._in.setdefault((e['target'], e['kind']), []).append(e['source'])
+        self._climb, self._desc, self._bound = {}, {}, {}
+        self._of, self._aliases = {}, {}
+        self._approved_by_rel, self._proposed_by_rel, self._reported_by_plan, self._by_mapping_id = {}, {}, {}, {}
+        for a, r, b in self.approved_order: self._approved_by_rel.setdefault(r, []).append((a, b, 'approved'))
+        # links by end, numbered in links() order (approved in registry order, then proposals as made) — kept live as proposals are made
+        self._lix, self._rix, self._seq = {}, {}, 0
+        for a, r, b in self.approved_order: self._index_link(r, a, b, 'approved')
 
     # -- lookups
     def of(self, etype):
-        return self.r.nodes(type=etype)
+        if etype not in self._of: self._of[etype] = self.r.nodes(type=etype)
+        return list(self._of[etype])
 
     def get(self, iid, etype=None, level=None):
         """The instance with this id (of this type or a subtype), or None — never invented."""
-        for (lvl, i), n in self.ids.items():
-            if i == iid and (level is None or lvl == level) and (etype is None or self.mm.is_a(n['type'], etype)):
+        for lvl, n in self.by_id.get(iid, ()):
+            if (level is None or lvl == level) and (etype is None or self.mm.is_a(n['type'], etype)):
                 return n
         return None
 
     def parents(self, iid, kind='composition'):
-        return [e['source'] for e in self.wedges if e['target'] == iid and e['kind'] == kind]
+        return list(self._in.get((iid, kind), ()))
 
     def children(self, iid, kind='composition'):
-        return [e['target'] for e in self.wedges if e['source'] == iid and e['kind'] == kind]
+        return list(self._out.get((iid, kind), ()))
 
     def climb(self, iid, etype, level):
-        """Nearest composition ancestor (or self) of the given type."""
+        """Nearest composition ancestor (or self) of the given type. Remembered: the data does not change during a run."""
+        k = (iid, etype, level)
+        if k not in self._climb: self._climb[k] = self._climb_(iid, etype, level)
+        return self._climb[k]
+
+    def _climb_(self, iid, etype, level):
         seen, todo = set(), [iid]
         while todo:
             x = todo.pop(0)
@@ -114,7 +150,29 @@ class Run:
             todo += self.parents(x)
         return None
 
+    def _boundary_tokens(self, comp):
+        """The words of a component's boundary — its API operations and the data entities they access. Depends only on the
+        component, so it is worked out once per component, not once per operation × API pair."""
+        key = comp['id'] if comp else None
+        if key not in self._bound:
+            texts = []
+            for x in (self.descendants(comp['id']) if comp else []):
+                n = self.get(x, level='A3')
+                if not n: continue
+                if self.mm.is_a(n['type'], 'A3.APIOperation'): texts += [n['name'], self.attr(n, 'path'), n.get('description'), self.attr(n, 'operation_id')]
+            for c in (self.descendants(comp['id']) if comp else []):
+                for e in self.children(c, 'access'):
+                    de = self.get(e, 'A3.DataEntity', 'A3')
+                    if de: texts.append(de['name'])
+            self._bound[key] = tokens(*texts)
+        return self._bound[key]
+
     def descendants(self, iid, kinds=('composition',)):
+        k = (iid, tuple(kinds))
+        if k not in self._desc: self._desc[k] = self._descendants(iid, kinds)
+        return list(self._desc[k])
+
+    def _descendants(self, iid, kinds):
         seen, todo = [], [iid]
         while todo:
             x = todo.pop(0)
@@ -161,6 +219,7 @@ class Run:
         rec = {'mapping_id': pid, 'source': self.ref(src), 'relationship': rel, 'target': self.ref(tgt), 'status': 'proposed', 'confidence': BAND[b],
                'evidence': [f'engine_rationale:{plan_id} step{step} {working}'], 'rationale': working, 'baseline_id': f'ENGINE-RUN-{self.uc}', 'created_by': ENGINE_NAME}
         self.proposals.append(rec); self.proposed[k] = rec
+        self._proposed_by_rel.setdefault(rel, []).append(k); self._by_mapping_id[pid] = rec; self._index_link(rel, k[0], k[2], pid)
         self.attempt(plan_id, src['id'], tgt['id'], step, data_read, working, pid, fallback, given=BAND[b])
         return rec
 
@@ -174,6 +233,7 @@ class Run:
         rec = {'mapping_id': cid, 'source': self.ref(src), 'relationship': plan_id, 'target': self.ref(tgt), 'status': 'proposed', 'confidence': BAND[b],
                'evidence': [f'engine_rationale:{plan_id} step{step} {working}'], 'rationale': working, 'created_by': f'candidate_rule:{plan_id}'}
         self.candidates.append(rec); self.reported[k] = rec
+        self._reported_by_plan.setdefault(plan_id, []).append(k); self._rix.setdefault((plan_id, k[0]), []).append((k[0], k[2], cid))
         self.attempt(plan_id, src['id'], tgt['id'], step, data_read, working, cid, fallback, given=BAND[b])
         return rec
 
@@ -299,16 +359,7 @@ class Run:
                         self.log.append({'plan_id': 'S24', 'connection': conn, 'step_assigned': 2, 'step_used': 2, 'fallback': False, 'data_read': [dom['id']],
                                          'reasoning': 'boundary untestable: no approved REALIZED_BY and no asset type/aliases in the architecture dataset', 'outcome': 'no_proposal', 'proposal_id': None,
                                          'confidence_predicted': 'high', 'confidence_given': None}); continue
-                    texts = []
-                    for x in (self.descendants(comp['id']) if comp else []):
-                        n = self.get(x, level='A3')
-                        if not n: continue
-                        if self.mm.is_a(n['type'], 'A3.APIOperation'): texts += [n['name'], self.attr(n, 'path'), n.get('description'), self.attr(n, 'operation_id')]
-                    for c in (self.descendants(comp['id']) if comp else []):
-                        for e in self.children(c, 'access'):
-                            de = self.get(e, 'A3.DataEntity', 'A3')
-                            if de: texts.append(de['name'])
-                    hit = gate & tokens(*texts)
+                    hit = gate & self._boundary_tokens(comp)
                     if not hit: continue  # outside the boundary: not a candidate pair (not logged per pair; the gate is per component)
                 if method not in HTTP:
                     self.attempt('S24', op['id'], api['id'], 2, [f"{api['id']}.method"], f'method {method or "?"} is not HTTP — the BIAN REST mapping does not apply'); continue
@@ -320,14 +371,20 @@ class Run:
                               'qual_hit': bool(qual & stems(tokens(self.attr(api, 'path')) | tokens(api['name'])))})
         filed, removed = [], set()
         def live(): return [p for p in pairs if id(p) not in removed]
-        def c4(p, pool):
-            if p['cnt'] < 2 or p['ratio'] < 0.5: return False
-            mine = [q for q in pool if q['op'] is p['op'] and q['cnt'] >= 2 and q['ratio'] >= 0.5]
-            best = max((q['cnt'], q['ratio']) for q in mine)
-            tops = [q for q in mine if (q['cnt'], q['ratio']) == best]
-            if len(tops) > 1:
-                tops = [q for q in tops if q['qual_hit']] or tops
-            return len(tops) == 1 and tops[0] is p
+        def c4_winners(pool):
+            """C4 for every pair at once: per operation, the single best payload overlap (count, then ratio, then the qualifier
+            in the path). Grouped by operation — the same result as checking each pair against the whole pool."""
+            groups = {}
+            for q in pool:
+                if q['cnt'] >= 2 and q['ratio'] >= 0.5: groups.setdefault(id(q['op']), []).append(q)
+            ok = set()
+            for mine in groups.values():
+                best = max((q['cnt'], q['ratio']) for q in mine)
+                tops = [q for q in mine if (q['cnt'], q['ratio']) == best]
+                if len(tops) > 1:
+                    tops = [q for q in tops if q['qual_hit']] or tops
+                if len(tops) == 1: ok.add(id(tops[0]))
+            return ok
         def award(cands):
             """Contention for one API between operations: count, then ratio, then the qualifier the path carries; a tie is no proposal."""
             out = []
@@ -349,11 +406,11 @@ class Run:
                 if q is not p and (q['op'] is p['op'] or q['api'] is p['api']): removed.add(id(q))
             removed.add(id(p))
         while True:
-            pool = live()
-            d1 = award([p for p in pool if p['c2'] == 'pass' and p['c3'] != 'fail' and c4(p, pool)])
+            pool = live(); win = c4_winners(pool)
+            d1 = award([p for p in pool if p['c2'] == 'pass' and p['c3'] != 'fail' and id(p) in win])
             for p in d1: file(p, 1)
-            pool = live()
-            d2 = award([p for p in pool if p['c2'] == 'fail' and p['c3'] != 'fail' and c4(p, pool)]) if not d1 else []
+            pool = live(); win = c4_winners(pool)
+            d2 = award([p for p in pool if p['c2'] == 'fail' and p['c3'] != 'fail' and id(p) in win]) if not d1 else []
             for p in d2: file(p, 2)
             if not d1 and not d2: break
         for p in live():
@@ -368,18 +425,35 @@ class Run:
     # ------------------------------------------------------------ shared: links known so far (approved, or proposed in this run)
     def links(self, rel):
         """(source id, target id, label) for a catalogue relationship: approved arrows and this run's proposals, labelled which."""
-        out = [(a, b, 'approved') for a, r, b in self.approved if r == rel]
-        out += [(k[0], k[2], self.proposed[k]['mapping_id']) for k in self.proposed if k[1] == rel]
+        out = list(self._approved_by_rel.get(rel, ()))
+        out += [(k[0], k[2], self.proposed[k]['mapping_id']) for k in self._proposed_by_rel.get(rel, ())]
         return out
+
+    def _index_link(self, rel, a, b, label):
+        self._seq += 1; e = (self._seq, a, b, label)
+        self._lix.setdefault((rel, 's', a), []).append(e); self._lix.setdefault((rel, 't', b), []).append(e)
+
+    def links_by(self, rel, src=None, tgt=None, srcs=None, tgts=None):
+        """links(rel) restricted to these sources or targets — the same entries in the same order, without scanning."""
+        keys = [('s', x) for x in ([src] if src is not None else srcs or ())] + [('t', x) for x in ([tgt] if tgt is not None else tgts or ())]
+        seen, out = set(), []
+        for side, x in keys:
+            for e in self._lix.get((rel, side, x), ()):
+                if e[0] not in seen: seen.add(e[0]); out.append(e)
+        return [(a, b, lab) for _, a, b, lab in sorted(out)]
+
+    def reports_from(self, plan_id, src):
+        """reports(plan_id) whose source is src — in the same order."""
+        return list(self._rix.get((plan_id, src), ()))
 
     def band_of(self, label):
         """Confidence band of an input arrow: approved counts as high; a proposal carries its own."""
         if label == 'approved': return 'high'
-        rec = next(r for r in self.proposals if r['mapping_id'] == label)
+        rec = self._by_mapping_id[label]
         return {0.8: 'high', 0.6: 'medium', 0.4: 'low'}[rec['confidence']]
 
     def reports(self, plan_id):
-        return [(k[0], k[2], v['mapping_id']) for k, v in self.reported.items() if k[1] == plan_id]
+        return [(k[0], k[2], self.reported[k]['mapping_id']) for k in self._reported_by_plan.get(plan_id, ())]
 
     def domain_of(self, op_id):
         return self.climb(op_id, 'A2.ServiceDomain', 'A2')
@@ -389,15 +463,16 @@ class Run:
 
     def entity_aliases(self, de):
         """field_aliases a data entity carries: inherited from every interface of a component that accesses it; its own take precedence."""
-        al = {}
-        for e in self.wedges:
-            if e['kind'] == 'access' and e['target'] == de['id']:
-                comp = self.get(e['source'], 'A3.ApplicationComponent', 'A3')
+        if de['id'] not in self._aliases:
+            al = {}
+            for src in self.parents(de['id'], 'access'):   # the components that access it, in the data's order
+                comp = self.get(src, 'A3.ApplicationComponent', 'A3')
                 for x in (self.descendants(comp['id']) if comp else []):
                     ifc = self.get(x, 'A3.ApplicationInterface', 'A3')
                     if ifc: al.update(self.attr(ifc, 'field_aliases') or {})
-        al.update(self.attr(de, 'field_aliases') or {})
-        return al
+            al.update(self.attr(de, 'field_aliases') or {})
+            self._aliases[de['id']] = al
+        return dict(self._aliases[de['id']])
 
     def one_to_one(self, plan_id, scored, file):
         """File the highest-scoring pair, drop pairs sharing either end, repeat; a tie at the top is no proposal (both named)."""
@@ -405,12 +480,14 @@ class Run:
         while pool:
             top = max(x[0] for x in pool)
             best = [x for x in pool if x[0] == top]
-            tied = [x for x in best if any(y is not x and (y[1]['id'] == x[1]['id'] or y[2]['id'] == x[2]['id']) for y in best)]
+            ns, nt = collections.Counter(x[1]['id'] for x in best), collections.Counter(x[2]['id'] for x in best)   # another top pair sharing an end
+            tied = [x for x in best if ns[x[1]['id']] > 1 or nt[x[2]['id']] > 1]
+            tied_ids, best_ids = {id(x) for x in tied}, {id(x) for x in best}
             for x in tied:
                 self.attempt(plan_id, x[1]['id'], x[2]['id'], 4, x[4], f'tie at score {top:.2f} with another pair sharing an end — no proposal')
-            filed = [x for x in best if x not in tied]
+            filed = [x for x in best if id(x) not in tied_ids]
             if not filed:
-                pool = [x for x in pool if x not in best]; continue
+                pool = [x for x in pool if id(x) not in best_ids]; continue
             for x in filed: file(x)
             ends = {e for x in filed + tied for e in (('s', x[1]['id']), ('t', x[2]['id']))}
             pool = [x for x in pool if ('s', x[1]['id']) not in ends and ('t', x[2]['id']) not in ends]
@@ -563,7 +640,7 @@ class Run:
                 # DEC-E-08: a token shared with the asset type of a domain this component (or one containing it) already realises explains nothing new
                 lineage = {comp['id']} | set(self.parents(comp['id']))
                 explained = set()
-                for dd, cc, _ in self.links('REALIZED_BY'):
+                for dd, cc, _ in self.links_by('REALIZED_BY', tgts=lineage):
                     if cc in lineage and dd != dom['id']:
                         a2 = self.get(self.attr(self.get(dd, 'A2.ServiceDomain'), 'asset_type'), 'A2.AssetType')
                         if a2: explained |= stems(tokens(a2['name'], *_list(self.attr(a2, 'aliases'))))
@@ -584,7 +661,7 @@ class Run:
             ops = {o: f"{prc['id']}.invokes" for o in _list(self.attr(prc, 'invokes'))}
             for a in acts:
                 for o in _list(self.attr(self.get(a, 'A1.BusinessActivity'), 'invokes')): ops.setdefault(o, f'{a}.invokes')
-                for s_, o, lab in self.reports('S06'):
+                for s_, o, lab in self.reports_from('S06', a):
                     if s_ == a: ops.setdefault(o, f'S06 {lab}')
             doms = {}
             for o, why in ops.items():
@@ -597,7 +674,7 @@ class Run:
             prcs = [e['source'] for e in self.wedges if e['kind'] == 'realization' and e['target'] == cap['id'] and self.get(e['source'], 'A1.BusinessProcess') and not self.get(e['source'], 'A1.BusinessActivity')]
             if not prcs: continue
             uses = {}
-            for p_, d, lab in self.links('USES_DOMAIN'):
+            for p_, d, lab in self.links_by('USES_DOMAIN', srcs=list(dict.fromkeys(prcs))):
                 if p_ in prcs: uses.setdefault(d, set()).add(p_)
             for d, ps in uses.items():
                 if len(ps) == len(prcs):
@@ -613,13 +690,13 @@ class Run:
                 tn = self.get(t, level='A1')
                 if not tn: continue
                 if self.mm.is_a(tn['type'], 'A1.BusinessActivity'):
-                    ops = [o for s_, o, _ in self.reports('S06') if s_ == t] + _list(self.attr(tn, 'invokes'))
+                    ops = [o for s_, o, _ in self.reports_from('S06', t) if s_ == t] + _list(self.attr(tn, 'invokes'))
                     for o in dict.fromkeys(ops):
                         on = self.get(o, 'A2.ServiceOperation'); d = self.domain_of(o)
                         if on: self.report('S14', req, on, 3, f'applies to activity {t}, which invokes {o}', [f"{req['id']}.applies_to"])
                         if d: self.report('S13', req, d, 3, f'applies to activity {t}, whose operation {o} is in {d["id"]}', [f"{req['id']}.applies_to"])
                 else:
-                    for p_, d, lab in self.links('USES_DOMAIN'):
+                    for p_, d, lab in self.links_by('USES_DOMAIN', src=t):
                         if p_ == t: self.report('S13', req, self.get(d, 'A2.ServiceDomain'), 3, f'applies to {t}, which USES_DOMAIN {d} ({lab})', [f"{req['id']}.applies_to"])
         for d, c, lab in self.links('REALIZED_BY'):
             comp = self.get(c, 'A3.ApplicationComponent')
@@ -646,10 +723,10 @@ class Run:
                         if crn: self.report('S21', crn, fn, 3, f'{fn["id"]} exposed through {api_id}; {op_id} accesses {cr}', [lab])
         for sc_ in self.of('A2.BusinessScenario'):
             for o in _list(self.attr(sc_, 'operation_sequence')):
-                for s_, sv, lab in self.reports('S25'):
+                for s_, sv, lab in self.reports_from('S25', o):
                     if s_ == o: self.report('S28', sc_, self.get(sv, 'A3.ApplicationService'), 3, f'{o} in the sequence → {sv} (S25 {lab})', [lab])
                 d = self.domain_of(o)
-                for dd, c, lab in self.links('REALIZED_BY'):
+                for dd, c, lab in (self.links_by('REALIZED_BY', src=d['id']) if d else []):
                     if d and dd == d['id']: self.report('S29', sc_, self.get(c, 'A3.ApplicationComponent'), 3, f'{o} in the sequence is in {dd}, REALIZED_BY {c} ({lab})', [lab])
         # technology derived paths (C3)
         dep_as = self.links('DEPLOYED_AS'); dep_on = self.links('DEPLOYED_ON')

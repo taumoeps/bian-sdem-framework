@@ -9,7 +9,7 @@ import argparse, collections, copy, datetime, json, re, sys
 from pathlib import Path
 
 from .metamodel import Metamodel
-from .validate import NON_PERSON_REVIEWERS, load_registry, load_schema, validate
+from .validate import is_person, load_registry, load_schema, validate
 
 
 class ApproveError(Exception):
@@ -29,7 +29,7 @@ def _next_id(mappings):
 def approve(registry, proposals, ids, reviewer, evidence, supersedes=None, new_id=None, date=None, bian_release=None):
     """Returns the new registry (a copy) and the approved records; raises ApproveError with the reason when it cannot."""
     who = (reviewer or '').strip()
-    if not who or who.lower().startswith('sdem-') or who.lower() in NON_PERSON_REVIEWERS:
+    if not is_person(who):
         raise ApproveError(f'CTL-21: the reviewer must be a person, not {reviewer!r} — give your own name')
     if not evidence: raise ApproveError('--evidence is required: the document that proves the link, as kind:reference (see `sdem approve --help`)')
     if any(':' not in e for e in evidence): raise ApproveError('evidence must be written kind:reference, e.g. deployment_design:PAY-REHOST#cutover')
@@ -70,7 +70,7 @@ def main(argv=None):
     ap.add_argument('ids', nargs='+', metavar='PROPOSAL', help='proposal id(s) from `sdem review`')
     ap.add_argument('--proposals', required=True, metavar='FILE'); ap.add_argument('--estate', metavar='DIR', help='estate folder (its mappings.json)')
     ap.add_argument('--registry', metavar='FILE', help='the registry, if not <estate>/mappings.json')
-    ap.add_argument('--reviewer', required=True, help='your name — a person (CTL-21)')
+    ap.add_argument('--reviewer', '--person', dest='reviewer', required=True, help='your name — a person (CTL-21); --person works too, as in the other commands')
     ap.add_argument('--evidence', action='append', default=[], metavar='KIND:REF', help='the document that proves the link (repeatable)')
     ap.add_argument('--supersedes', metavar='MAPPING_ID', help='the approved link this one replaces (it becomes superseded)')
     ap.add_argument('--id', dest='new_id', metavar='MAPPING_ID', help='the new link id (default: the next in the registry\'s style)')
@@ -93,7 +93,8 @@ def main(argv=None):
             print(f"{'would approve' if a.dry_run else 'approved'} {r['mapping_id']}: {r['source']['id']} -{r['relationship']}-> {r['target']['id']}  "
                   f"(reviewer {r['reviewer_id']}, {r['approved_at']}, evidence {r['evidence'][0]})" + (f"; supersedes {r['previous_mapping_id']}" if r.get('previous_mapping_id') else ''))
     if a.dry_run: return 0
-    reg_path.write_text(json.dumps(new, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    from .files import write_json
+    write_json(reg_path, new)   # in one step: never a half-written registry
     if not a.json:
         print(f'{reg_path} updated and checked. Next: commit on a branch and open a pull request — the reviewed merge makes it final; then rebuild the graph store (sdem build --estate … --out …).')
     return 0

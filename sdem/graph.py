@@ -290,7 +290,7 @@ def main(argv=None):
             sp.add_argument('--report', metavar='FILE.md', help='also write a printable impact report (Markdown)')
     sp = sub.add_parser('build', help='check architecture datasets and registry, then write the graph store')
     sp.add_argument('paths', nargs='+', help='architecture datasets and relationship registries')
-    sp.add_argument('--out', required=True, metavar='DIR', help='graph store directory')
+    sp.add_argument('-o', '--out', required=True, metavar='DIR', help='graph store directory')
     sp.add_argument('--check', action='store_true', help='fail if the stored graph files differ from a fresh build (CI)')
     sp = sub.add_parser('query', help='find records in a graph store')
     sp.add_argument('--graph', required=True, metavar='DIR')

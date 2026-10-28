@@ -144,9 +144,8 @@ def graph(doc, node_key):
 
 
 def _is_person(name):
-    from .validate import NON_PERSON_REVIEWERS
-    n = (name or '').strip().lower()
-    return bool(n) and not n.startswith('sdem-') and n not in NON_PERSON_REVIEWERS
+    from .validate import is_person
+    return is_person(name)
 
 
 def set_status(doc, ids, status, person, note, now=None):
@@ -207,7 +206,8 @@ def _set_main(argv):
         if errs: raise ValueError('; '.join(errs[:5]))
     except (OSError, ValueError) as e:
         print(f'ERROR: {e}', file=sys.stderr); return 1
-    p.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    from .files import write_json
+    write_json(p, doc)
     left = sum(1 for g in doc['gaps'] if g['status'] == 'open')
     print(f"{status}: {', '.join(changed) or 'nothing changed'} (by {a.person}); {left} open gap(s) left in {a.estate}")
     print('Commit the change on a branch and open a pull request — it is a decision on record.')

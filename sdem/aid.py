@@ -25,7 +25,8 @@ from .store import GraphReader
 from .validate import load_registry
 
 MEDIUM, LOW = 0.6, 0.4
-SCHEMA = Path(__file__).resolve().parents[1] / 'schema' / 'projection.schema.json'
+from .paths import DATA_ROOT as _DATA_ROOT
+SCHEMA = _DATA_ROOT / 'schema' / 'projection.schema.json'
 FILES = {'A1': 'projected-a1-business.json', 'A2': 'projected-a2-service-domain.json', 'A3': 'projected-a3-application.json', 'A4': 'projected-a4-technology.json'}
 CATALOGUE_RULE = 'BIAN catalogue reference'
 PROVENANCE = ('step', 'rule', 'source_reference', 'inferred_from', 'reasoning', 'confidence')
@@ -547,7 +548,7 @@ def trace(reader, pkg, start, direction='down'):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem-aid', description='Architecture Inference Design: project the missing architecture layers for planning.')
     sub = ap.add_subparsers(dest='cmd', required=True)
-    p = sub.add_parser('project'); p.add_argument('--have', nargs='+', required=True); p.add_argument('--catalogue'); p.add_argument('--registry'); p.add_argument('--out', required=True); p.add_argument('--json', action='store_true')
+    p = sub.add_parser('project'); p.add_argument('--have', nargs='+', required=True); p.add_argument('--catalogue'); p.add_argument('--registry'); p.add_argument('-o', '--out', required=True); p.add_argument('--json', action='store_true')
     c = sub.add_parser('check'); c.add_argument('projection'); c.add_argument('--catalogue'); c.add_argument('--json', action='store_true')
     g = sub.add_parser('gaps'); g.add_argument('projection'); g.add_argument('--actual', nargs='+', required=True); g.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)

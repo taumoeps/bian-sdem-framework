@@ -9,7 +9,7 @@ from pathlib import Path
 
 from .store import GraphReader, stale_inputs
 
-ROOT = Path(__file__).resolve().parents[1]
+from .paths import DATA_ROOT as ROOT, repo_path
 FILES = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')
 LEVEL_NAMES = {'A1': 'A1 Business', 'A2': 'A2 Service domain (BIAN)', 'A3': 'A3 Application', 'A4': 'A4 Technology'}
 KINDS = ('modify', 'rehost', 'replace', 'retire')
@@ -48,7 +48,7 @@ def _evidence_needed(rel, source_type, mm):
 def _controls():
     d = _j(ROOT / 'metamodel' / 'controls.json'); last = {}; tested = []
     for ex in ('use-case-example-1', 'use-case-example-2', 'use-case-example-3'):
-        p = ROOT / 'docs' / 'evidence' / ex / 'results.json'
+        p = repo_path('docs', 'evidence', ex, 'results.json') or Path('/nonexistent')
         if p.exists():
             r = _j(p); tested.append({'example': ex, 'date': r.get('run_date') or r.get('date')})
             last.update({c['id']: f"{c['good']} · {c['bad']}" for c in r.get('controls', [])})

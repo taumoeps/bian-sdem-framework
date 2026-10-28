@@ -19,10 +19,11 @@ from pathlib import Path
 
 from .graph import FederatedGraph
 from .metamodel import Metamodel, PROJECTED_PREFIXES
+from .validate import is_person
 from .validate import check_schema
 
-ROOT = Path(__file__).resolve().parents[1]
-SCHEMA = ROOT / 'schema' / 'coordination.schema.json'
+from .paths import DATA_ROOT
+SCHEMA = DATA_ROOT / 'schema' / 'coordination.schema.json'
 FILES = {'A1': 'a1-business.json', 'A2': 'a2-service-domain.json', 'A3': 'a3-application.json', 'A4': 'a4-technology.json'}
 REGISTRY = 'mappings.json'
 AGENT_LAYER = {'sdem-a1-business': 'A1', 'sdem-a2-bian': 'A2', 'sdem-a3-application': 'A3', 'sdem-a4-technology': 'A4'}
@@ -37,9 +38,15 @@ class CoordinationError(Exception):
     """A request the controls reject; the message names the control."""
 
 
+class EstateNotFound(ValueError):
+    """The folder is not an estate — an input error (exit 2), not a refusal."""
+
+
 def _now(): return datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
-def _w(p, obj): Path(p).parent.mkdir(parents=True, exist_ok=True); Path(p).write_text(json.dumps(obj, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+def _w(p, obj):
+    from .files import write_json
+    write_json(p, obj)   # in one step — never a half-written record
 
 
 class Estate:
@@ -47,11 +54,11 @@ class Estate:
 
     def __init__(self, path, now=None):
         self.path = Path(path); self.coord = self.path / 'coordination'; self.now = now or _now
-        missing = [f for f in list(FILES.values()) + [REGISTRY] if not (self.path / f).exists()]
-        if missing: raise CoordinationError(f'{self.path}: not an estate folder (missing {", ".join(missing)})')
+        if not (self.path / REGISTRY).exists() or not any((self.path / f).exists() for f in FILES.values()):   # one to four layers, as everywhere
+            raise EstateNotFound(f'{self.path}: not an estate folder (it needs {REGISTRY} and at least one of {", ".join(FILES.values())})')
 
     # -- records
-    def datasets(self): return {lvl: _j(self.path / f) for lvl, f in FILES.items()}
+    def datasets(self): return {lvl: _j(self.path / f) for lvl, f in FILES.items() if (self.path / f).exists()}
     def registry(self): return _j(self.path / REGISTRY)
     def _records(self, folder):
         d = self.coord / folder
@@ -84,8 +91,8 @@ class Estate:
     def propose(self, change_set, agent, person, work_ids=(), catalogue=None):
         issues = check_schema(change_set, json.loads(SCHEMA.read_text(encoding='utf-8'))['$defs']['change_set_input'], json.loads(SCHEMA.read_text(encoding='utf-8')))
         if issues: raise CoordinationError('change set format: ' + '; '.join(issues[:5]))
-        if not (agent or '').strip() or not (person or '').strip():
-            raise CoordinationError('CTL-20: a change set needs both the agent and the person behind it')
+        if not (agent or '').strip() or not is_person(person):
+            raise CoordinationError('CTL-20: a change set needs both the agent and the person behind it — the person is a person, never an agent or tool (CTL-21)')
         layer = change_set['layer']
         if agent == ORCHESTRATOR: raise CoordinationError('CTL-19: the orchestrator never changes layer data')
         if agent != HUMAN and AGENT_LAYER.get(agent) != layer:
@@ -98,6 +105,7 @@ class Estate:
             if wi['layer'] != layer: raise CoordinationError(f"CTL-19: {work_id} is for {wi['layer']}, not {layer}")
             if st['status'] != 'in_progress' or st['agent'] != agent: raise CoordinationError(f'CTL-20: {work_id} is not claimed by {agent} — run sdem work claim first')
             wis.append(wi)
+        if layer not in ds: raise CoordinationError(f'the estate has no {layer} dataset ({FILES[layer]}) — a change set changes an existing layer')
         before, _ = self.check(ds)
         new = copy.deepcopy(ds); target = new[layer]; by_id = {i['id']: i for i in target['instances']}
         ids_anywhere = {i['id'] for d in ds.values() for i in d['instances']}
@@ -194,7 +202,7 @@ class Estate:
         """AG-S08: record a person's direct edit of a layer's dataset as a change set, so the chain of change sets is whole
         again. The edit must keep the rulebook (no new errors); its impact is recorded like any change set's."""
         if layer not in FILES: raise CoordinationError(f'unknown layer {layer}')
-        if not (person or '').strip() or person in AGENT_LAYER or person in (ORCHESTRATOR, HUMAN): raise CoordinationError('CTL-20: adopt needs the name of the person who made the edit')
+        if not is_person(person) or person in AGENT_LAYER or person in (ORCHESTRATOR, HUMAN): raise CoordinationError('CTL-20: adopt needs the name of the person who made the edit')
         if not (reason or '').strip(): raise CoordinationError('adopt needs a reason')
         last = self._last_change_set(layer)
         if not last: raise CoordinationError(f'{layer} has no change sets yet — its current content is the starting point; nothing to adopt')
@@ -209,7 +217,7 @@ class Estate:
         f = self.coord / 'change-sets' / f'{cs_id}.json'
         if not f.exists(): raise CoordinationError(f'{cs_id}: no such change set')
         target = _j(f); layer = target['layer']
-        if not (agent or '').strip() or not (person or '').strip(): raise CoordinationError('CTL-20: a revert needs both the agent and the person behind it')
+        if not (agent or '').strip() or not is_person(person): raise CoordinationError('CTL-20: a revert needs both the agent and the person behind it')
         if agent == ORCHESTRATOR: raise CoordinationError('CTL-19: the orchestrator never changes layer data')
         if agent != HUMAN and AGENT_LAYER.get(agent) != layer: raise CoordinationError(f"CTL-19: agent {agent} may change only {AGENT_LAYER.get(agent, 'no layer')}, not {layer}")
         last = self._last_change_set(layer)
@@ -250,7 +258,7 @@ class Estate:
         """The orchestrator turns an event's impact into work items: one per record outside the changed layer that needs a
         design change. Review notices are reported, not turned into work (impact rules: 'nothing further')."""
         if agent != ORCHESTRATOR and agent != HUMAN: raise CoordinationError(f'only the orchestrator (or an architect) plans work, not {agent}')
-        if not (person or '').strip(): raise CoordinationError('CTL-20: planning needs the person behind it')
+        if not is_person(person): raise CoordinationError('CTL-20: planning needs the person behind it (a person, never an agent or tool)')
         if max_rounds > MAX_ROUNDS and agent != HUMAN:  # AG-S07: a cap, not a default — an agent may lower it, never raise it
             raise CoordinationError(f'AG-S07: the round limit is {MAX_ROUNDS}; an agent may lower it, never raise it — the architect decides (--agent architect)')
         ev = next((e for e in self.events() if e['id'] == event_id), None)
@@ -272,7 +280,7 @@ class Estate:
         return {'event': event_id, 'work_items': made, 'review': review}
 
     def transition(self, work_id, status, agent, person, note=''):
-        if not (agent or '').strip() or not (person or '').strip(): raise CoordinationError('CTL-20: every work-item step needs the agent and the person')
+        if not (agent or '').strip() or not is_person(person): raise CoordinationError('CTL-20: every work-item step needs the agent and the person')
         work = self.work(); w = next((x for x in work if x['id'] == work_id), None)
         if not w: raise CoordinationError(f'{work_id}: no such work item')
         cur = w['history'][-1]['status']
@@ -360,7 +368,7 @@ def change_main(argv=None):
             if cs.get('branch') in ('main', 'master'): print('NOTE: you are on the main branch — agent changes belong on a branch, reviewed in a pull request (AG-W01)')
             print('NOTE: graph stores built from this estate are now out of date — rebuild them before trace, impact or view: sdem build --estate … --out <graph>')
             print(f"next: the orchestrator runs  sdem work plan --event {ev['id']} --estate {a.estate} --agent {ORCHESTRATOR} --person <name>"
-                  + f"\n      and the rules engine proposes the new links:  sdem link {a.estate}/a*.json {a.estate}/mappings.json --out <dir>")
+                  + f"\n      and the rules engine proposes the new links:  sdem link --estate {a.estate} --out <dir>")
             return 0
         if a.cmd == 'revert':
             cs, ev, cancelled = est.revert(a.id, a.agent, a.person, a.reason)

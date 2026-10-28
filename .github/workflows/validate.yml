@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.10', '3.11', '3.12']
+        python-version: ['3.10', '3.11', '3.12', '3.13']
     steps:
       - uses: actions/checkout@v4
         with:
@@ -85,6 +85,8 @@ jobs:
         run: python -m sdem.acceptance --engine rules || true
       - name: Store performance (GS-X-02)
         run: python scripts/store_perf.py 10000
+      - name: Rules-engine performance (2,040 records within 30 s; the audit measured minutes before the fix)
+        run: python scripts/engine_perf.py 30 30
       - name: sdem command (SDEM's only interface)
         run: |
           python -m sdem --help
@@ -98,3 +100,39 @@ jobs:
           python -m sdem transform run tests/fixtures/confluence-export-sample -o /tmp/history --ocr off
           python -m sdem load /tmp/history --estate /tmp/history-estate --person ci.check --all --dry-run
       - run: python -m unittest discover -s tests -v
+  package:
+    # SDEM as an organisation installs it: build the wheel, install it in a clean environment, run every journey from
+    # outside the repository — catches anything that needs the repository's folders (docs/, examples/, scripts/).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build the wheel
+        run: |
+          python -m pip install --upgrade build
+          python -m build --wheel --outdir /tmp/dist
+      - name: Install in a clean environment
+        run: |
+          python -m venv /tmp/venv
+          /tmp/venv/bin/pip install /tmp/dist/*.whl
+      - name: Run the journeys from outside the repository
+        run: |
+          cp -r examples/payment-initiation /tmp/est && rm -rf /tmp/est/graph
+          cp -r tests/fixtures/confluence-folder-export /tmp/export
+          cd /tmp
+          S=/tmp/venv/bin/sdem
+          $S --version
+          $S check --estate est
+          $S build --estate est -o graph
+          $S trace CAP-PAY-010 --graph graph
+          $S impact INF-K8S-PAY-PROD --change retire --graph graph
+          $S matrix --estate est
+          $S link --estate est -o links
+          $S dashboard --estate est -o dash.html
+          $S home --estate est -o site
+          $S events --estate est
+          $S transform run export -o history --ocr off
+          $S load history --estate hist --person ci.check --exclude HIS-A3-PAYMENT-ORDER
+          $S designs --estate hist --gaps

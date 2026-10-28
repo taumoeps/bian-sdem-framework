@@ -9,6 +9,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+
+class UsageError(Exception):
+    """The command was given something it cannot use — reported as one line, exit 2."""
+
 # name: (journey, what it does, module, fixed leading arguments, worked example)
 JOURNEYS = {
     'check':    ('J1', 'check architecture datasets and registry against the rulebook', 'sdem.graph', ['check'],
@@ -76,7 +80,7 @@ def _estate_files(d, registry_only=False, designs=False):
     d = Path(d); reg = d / 'mappings.json'
     datasets = [] if registry_only else [d / f for f in ESTATE_FILES if (d / f).exists()]
     if not reg.exists() or (not registry_only and not datasets):
-        raise SystemExit(f"sdem: --estate {d}: not an estate folder (it needs mappings.json and at least one of {', '.join(ESTATE_FILES)})")
+        raise UsageError(f"--estate {d}: not an estate folder (it needs mappings.json and at least one of {', '.join(ESTATE_FILES)})")
     extra = [d / 'designs' / 'design-records.json'] if designs and (d / 'designs' / 'design-records.json').exists() else []
     return [str(f) for f in datasets + [reg] + extra]
 
@@ -89,7 +93,7 @@ def _expand(name, rest):
         out += hits or [a]
     if '--estate' in out and name in ESTATE_COMMANDS:
         i = out.index('--estate')
-        if i + 1 >= len(out): raise SystemExit('sdem: --estate needs a folder')
+        if i + 1 >= len(out): raise UsageError('--estate needs a folder')
         d = out[i + 1]; del out[i:i + 2]
         files = _estate_files(d, registry_only=(name == 'validate'), designs=name in ('check', 'build', 'trace', 'impact'))
         out = files + out if name == 'link' else out + files   # link's parser wants paths before its options; trace/impact want the id first
@@ -125,7 +129,8 @@ def _delegate(name, rest):
 
 def _link(argv):
     """The engine (sdem-infer) — and, with --out, also keep the proposals as proposals.json for `sdem review`."""
-    out = argv[argv.index('--out') + 1] if '--out' in argv and argv.index('--out') + 1 < len(argv) else None
+    flag = next((f for f in ('--out', '-o') if f in argv), None)
+    out = argv[argv.index(flag) + 1] if flag and argv.index(flag) + 1 < len(argv) else None
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
         code = _main_of('sdem.inference')(argv)
@@ -160,7 +165,7 @@ def _names(paths, graph):
 
 def review(argv):
     ap = argparse.ArgumentParser(prog='sdem review', description='List proposed links for review, weakest first — each with its rule, confidence and reasoning. '
-                                 'Approving is done by a person: set status approved, reviewer_id and approved_at in the registry, and open a pull request.',
+                                 'Approving is done by a person: sdem approve <id> --proposals <file> --estate <dir> --reviewer <your name> --evidence <kind:ref>, then a pull request.',
                                  epilog=f"Example (J3):\n  {JOURNEYS['review'][4]}", formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('proposals', nargs='+', help='proposals file(s), e.g. from `sdem link --out`')
     ap.add_argument('--graph', metavar='DIR', help='graph store to show record names')
@@ -250,6 +255,9 @@ def model(argv):
     sub.add_parser('eval', help='score proposals against approved links (sdem-eval)', add_help=False)
     sub.add_parser('examples', help='re-run use-case examples 1 and 2 (evidence packs and results)')
     sub.add_parser('baseline-pack', help='write the metamodel baseline review pack')
+    from .paths import CHECKOUT
+    if not CHECKOUT:
+        print('sdem model: maintainer commands need a checkout of the SDEM repository (they read and write docs/, examples/ and scripts/)', file=sys.stderr); return 2
     a, rest = ap.parse_known_args(argv)
     if a.cmd in ('accept', 'eval'):
         return _main_of('sdem.acceptance' if a.cmd == 'accept' else 'sdem.evaluate')(rest)
@@ -275,8 +283,8 @@ def model(argv):
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     lines = [f"  {n:<9} {j:<3} {w}" for n, (j, w, *_rest) in JOURNEYS.items()]
-    epilog = ('Journeys (J1–J8, docs/sdem-workbench-design.md §3):\n' + '\n'.join(lines) +
-              '\n\nEvery subcommand takes --help with a worked example. Exit codes: 0 OK, 1 issues found, 2 usage error.'
+    epilog = ('Journeys (J1–J9, docs/sdem-workbench-design.md §3):\n' + '\n'.join(lines) +
+              '\n\nEvery subcommand takes --help with a worked example. Exit codes: 0 OK, 1 issues found, 2 usage or input error, 3 internal error.'
               '\nAG = agent platform (docs/sdem-agent-platform-design.md). The sdem-* commands (sdem-graph, sdem-infer, sdem-aid, …) remain as aliases.')
     ap = argparse.ArgumentParser(prog='sdem', usage='sdem <command> [options]', epilog=epilog, formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description="SDEM — Service Domain Enterprise Metamodel. SDEM's command line: run it in VS Code's terminal pane; "
@@ -284,6 +292,28 @@ def main(argv=None):
     ap.add_argument('command', nargs='?', choices=list(JOURNEYS), metavar='command', help='one of the commands below')
     if not argv or argv[0] in ('-h', '--help'):
         ap.print_help(); return 0 if argv else 2
+    if argv[0] in ('--version', '-V'):
+        from .paths import version
+        print(f'sdem {version()}'); return 0
+    try:
+        return _run(argv)
+    except KeyboardInterrupt:
+        print('sdem: stopped', file=sys.stderr); return 130
+    except UsageError as e:
+        print(f'ERROR: {e}', file=sys.stderr); return 2
+    except json.JSONDecodeError as e:   # a data file that is not valid JSON — the user's input, not SDEM
+        print(f'ERROR: a file is not valid JSON — {e.msg} at line {e.lineno}, column {e.colno}', file=sys.stderr); return 2
+    except OSError as e:
+        print(f"ERROR: {e.strerror or e}" + (f': {e.filename}' if getattr(e, 'filename', None) else ''), file=sys.stderr); return 2
+    except (ValueError, KeyError) as e:
+        print(f'ERROR: {e}', file=sys.stderr); return 2
+    except Exception as e:   # a fault in SDEM itself: one line, and the traceback only when asked for
+        import os, traceback
+        if os.environ.get('SDEM_DEBUG'): traceback.print_exc()
+        print(f'ERROR: internal error ({e.__class__.__name__}: {e}) — please report it; set SDEM_DEBUG=1 for the details', file=sys.stderr); return 3
+
+
+def _run(argv):
     name, rest = argv[0], argv[1:]
     if name not in JOURNEYS:
         print(f"sdem: unknown command '{name}' — run 'sdem --help' for the list", file=sys.stderr); return 2

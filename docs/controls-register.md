@@ -8,11 +8,11 @@ A **control** is an automatic check that enforces a rule of the rulebook (the me
 
 ## Controls
 
-**Last tested:** [use-case example 1](use-case-example-1.md), run 2026-10-28 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-1/`](evidence/use-case-example-1/manifest.json).
+**Last tested:** [use-case example 1](use-case-example-1.md), run 2026-10-29 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-1/`](evidence/use-case-example-1/manifest.json).
 
-**Last tested:** [use-case example 2](use-case-example-2.md), run 2026-10-28 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-2/`](evidence/use-case-example-2/manifest.json).
+**Last tested:** [use-case example 2](use-case-example-2.md), run 2026-10-29 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-2/`](evidence/use-case-example-2/manifest.json).
 
-**Last tested:** [use-case example 3](use-case-example-3.md), run 2026-10-28 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-3/`](evidence/use-case-example-3/manifest.json).
+**Last tested:** [use-case example 3](use-case-example-3.md), run 2026-10-29 — good data must be accepted, bad data rejected; evidence in [`evidence/use-case-example-3/`](evidence/use-case-example-3/manifest.json).
 
 | ID | Status | Rule area | Enforces | Built in | Runs | Outcome recorded in | Monitored by | Last tested (good · bad) |
 |---|---|---|---|---|---|---|---|---|

@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-28",
+  "date": "2026-10-29",
   "criteria": [
     {
       "id": "AT-AG-01",
@@ -110,7 +110,7 @@
       "test": "a change set without the person behind it",
       "should": "rejected",
       "did": "rejected",
-      "message": "ERROR: CTL-20: a change set needs both the agent and the person behind it",
+      "message": "ERROR: CTL-20: a change set needs both the agent and the person behind it — the person is a person, never an agent or tool (CTL-21)",
       "pass": true
     },
     {
@@ -119,7 +119,7 @@
       "test": "a change set without the agent",
       "should": "rejected",
       "did": "rejected",
-      "message": "ERROR: CTL-20: a change set needs both the agent and the person behind it",
+      "message": "ERROR: CTL-20: a change set needs both the agent and the person behind it — the person is a person, never an agent or tool (CTL-21)",
       "pass": true
     },
     {
@@ -242,7 +242,7 @@
       "who": "sdem-a4-technology",
       "command": "sdem change propose coordination/drafts/cs-a4-rehost.json --estate <est> --agent sdem-a4-technology --person jane.architect",
       "exit": 0,
-      "output": "CS-001 applied to A4 (4 change(s)) by sdem-a4-technology for jane.architect\nchange event CE-001 recorded (round 1): 2 record(s) in other layers need a design change; links to supersede: PAY-108, PAY-111\n  A3  APP-PAY-HUB  Payments Hub  — rehost of INF-K8S-PAY-PROD, via PAY-108\n  A3  CMP-PAY-EXEC  Execution Gateway  — rehost of INF-K8S-PAY-PROD, via PAY-111\nNOTE: graph stores built from this estate are now out of date — rebuild them before trace, impact or view: sdem build --estate … --out <graph>\nnext: the orchestrator runs  sdem work plan --event CE-001 --estate <work>/est --agent sdem-orchestrator --person <name>\n      and the rules engine proposes the new links:  sdem link <work>/est/a*.json <work>/est/mappings.json --out <dir>"
+      "output": "CS-001 applied to A4 (4 change(s)) by sdem-a4-technology for jane.architect\nchange event CE-001 recorded (round 1): 2 record(s) in other layers need a design change; links to supersede: PAY-108, PAY-111\n  A3  APP-PAY-HUB  Payments Hub  — rehost of INF-K8S-PAY-PROD, via PAY-108\n  A3  CMP-PAY-EXEC  Execution Gateway  — rehost of INF-K8S-PAY-PROD, via PAY-111\nNOTE: graph stores built from this estate are now out of date — rebuild them before trace, impact or view: sdem build --estate … --out <graph>\nnext: the orchestrator runs  sdem work plan --event CE-001 --estate <work>/est --agent sdem-orchestrator --person <name>\n      and the rules engine proposes the new links:  sdem link --estate <work>/est --out <dir>"
     },
     {
       "who": "sdem-orchestrator",
@@ -266,7 +266,7 @@
       "who": "sdem-a3-application",
       "command": "sdem change propose coordination/drafts/cs-a3-repoint.json --estate <est> --agent sdem-a3-application --person jane.architect --work WI-001 WI-002",
       "exit": 0,
-      "output": "CS-002 applied to A3 (2 change(s)) by sdem-a3-application for jane.architect; answers WI-001, WI-002\nchange event CE-002 recorded (round 2): 0 record(s) in other layers need a design change\nNOTE: graph stores built from this estate are now out of date — rebuild them before trace, impact or view: sdem build --estate … --out <graph>\nnext: the orchestrator runs  sdem work plan --event CE-002 --estate <work>/est --agent sdem-orchestrator --person <name>\n      and the rules engine proposes the new links:  sdem link <work>/est/a*.json <work>/est/mappings.json --out <dir>"
+      "output": "CS-002 applied to A3 (2 change(s)) by sdem-a3-application for jane.architect; answers WI-001, WI-002\nchange event CE-002 recorded (round 2): 0 record(s) in other layers need a design change\nNOTE: graph stores built from this estate are now out of date — rebuild them before trace, impact or view: sdem build --estate … --out <graph>\nnext: the orchestrator runs  sdem work plan --event CE-002 --estate <work>/est --agent sdem-orchestrator --person <name>\n      and the rules engine proposes the new links:  sdem link --estate <work>/est --out <dir>"
     },
     {
       "who": "sdem-orchestrator",

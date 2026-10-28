@@ -388,7 +388,7 @@ sdem model check                                         # generated documents c
 python -m unittest discover -s tests                     # the test suite
 ```
 
-Exit codes: `0` ok, `1` issues found, `2` usage error.
+Exit codes: `0` ok, `1` issues found or refused by a check, `2` usage or input error (a missing folder, a file that is not valid JSON), `3` an internal error in SDEM (one line; `SDEM_DEBUG=1` shows the details). `sdem --version` shows the version.
 
 ### Documentation map
 

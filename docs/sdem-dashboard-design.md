@@ -109,4 +109,4 @@ A local web app (Python standard library, `localhost` only, no external access) 
 | a snapshot, not live | regenerate after a change (`sdem dashboard …`); the page shows when it was generated and warns if the graph store is out of date |
 | read-only | actions are copied commands until phase 2 |
 | one estate per page | estates are separate today; an enterprise-wide view comes with real ingestion |
-| size | precomputed traces and impacts for every record — fine for hundreds of records; very large estates may need phase 2's on-demand queries |
+| size | precomputed traces and impacts for every record. Measured 2026-10-29: 2,000 records → 1 s and a 3.8 MB page; 8,000 records → 13 s and a 20 MB page. Comfortable up to a few thousand records per estate; larger estates need on-demand queries (phase 2) or several estates |

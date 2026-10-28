@@ -10,7 +10,7 @@ from pathlib import Path
 
 from .metamodel import Metamodel
 
-ROOT = Path(__file__).resolve().parents[1]
+from .paths import DATA_ROOT as ROOT, repo_path, version as _version
 LEVELS = {'A1': 'A1 Business', 'A2': 'A2 Service domain (BIAN)', 'A3': 'A3 Application', 'A4': 'A4 Technology'}
 DATASETS = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')
 BOX_W, BOX_H, STEP_X, STEP_Y, PER_ROW, PAD = 196, 36, 210, 50, 6, 20
@@ -88,13 +88,14 @@ def health(mm_data):
     from .cli import GENERATORS
     from . import acceptance
     from .inference import ENGINES
-    gens = []
-    for g in GENERATORS:
+    from .paths import CHECKOUT
+    gens, acc = [], []
+    for g in (GENERATORS if CHECKOUT else []):   # maintainer checks: they need the repository's docs and examples
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(io.StringIO()):
             mod = __import__(f'sdem.{g}', fromlist=['main']); code = mod.main(['--check'])
         gens.append({'name': g, 'current': code == 0})
-    rows = acceptance.run(ENGINES['rules']())
+    rows = acceptance.run(ENGINES['rules']()) if CHECKOUT else []
     acc = [{'case': r['case'], 'estate': r['estate'], 'passed': r['passed'], 'precision': round(r['score']['registry']['precision'], 2), 'recall': round(r['score']['registry']['recall'], 2),
             'floor_precision': round(r['floor']['registry']['precision'], 2), 'floor_recall': round(r['floor']['registry']['recall'], 2)} for r in rows]
     ctl = _j(ROOT / 'metamodel' / 'controls.json')
@@ -103,7 +104,7 @@ def health(mm_data):
     entities = mm_data['entities']
     ev = {}
     for e in entities: ev[e['evidence_status']] = ev.get(e['evidence_status'], 0) + 1
-    return {'generators': gens, 'acceptance': acc, 'controls': _controls(), 'built_controls': sum(1 for c in ctl['controls'] if c.get('status', 'built') == 'built'),
+    return {'checkout': CHECKOUT, 'generators': gens, 'acceptance': acc, 'controls': _controls(), 'built_controls': sum(1 for c in ctl['controls'] if c.get('status', 'built') == 'built'),
             'controls_total': len(ctl['controls']), 'control_gaps': ctl['gaps'],
             'spec_gaps': [{'id': g['id'], 'kind': g['kind'], 'implemented': g['implemented'], 'status': g['status']} for g in gaps],
             'evidence_status': ev}
@@ -134,7 +135,7 @@ def _wrap(text, n):
 
 
 def _ex(n):
-    p = ROOT / 'docs' / 'evidence' / f'use-case-example-{n}' / 'results.json'
+    p = repo_path('docs', 'evidence', f'use-case-example-{n}', 'results.json') or Path('/nonexistent')
     return _j(p) if p.exists() else None
 
 
@@ -173,7 +174,7 @@ def components(m, h, projects):
     add('engine', 'SDEM Mapping Engine', 'process · information · architecture', 'built', 517, 160,
         'Proposes the links between the architectures by applying the rulebook to the data — rules, not AI — each proposal with rule, reasoning and confidence. Proposals only; a person approves.',
         ['sdem link · sdem review · sdem explain', 'sdem/rules_engine.py', 'acceptance: sdem model accept'],
-        [f"{acc_ok} of {len(acc)} acceptance cases pass (run now)", 'CTL-22: engine checked against the rulebook'], 'A blind test case written by someone else', ['rules', 'health'])
+        [f"{acc_ok} of {len(acc)} acceptance cases pass (run now)" if acc else 'acceptance cases: run in the repository (sdem model accept)', 'CTL-22: engine checked against the rulebook'], 'A blind test case written by someone else', ['rules', 'health'])
     add('aid', 'Architecture Inference Design (AID)', 'planning lane — projects missing layers', 'built', 994, 160,
         'Projects the architecture layers you do not have from the ones you do — forward (business → technology) or reverse — as a projected design with inference confidence, for planning; then compares it with the real design (gap analysis).',
         ['sdem aid project · check · gaps', 'sdem view --projection', 'docs/aid-design.md'],
@@ -227,7 +228,7 @@ def collect_home(estates, project_pages, now=None):
     hl = health(m)
     return {'generated': now or datetime.datetime.now().replace(microsecond=0).isoformat(sep=' '), 'metamodel': m, 'entity_picture': layout(m['entities'], m['cross']),
             'architecture': components(m, hl, projects), 'health': hl, 'config': config(), 'projects': projects,
-            'package_version': re.search(r'^version = "([^"]+)"', (ROOT / 'pyproject.toml').read_text(), re.M).group(1)}
+            'package_version': _version()}
 
 
 def write(out, roots=(), estates=(), now=None):
@@ -254,7 +255,10 @@ def main(argv=None):
     ap.add_argument('--estate', action='append', default=[], metavar='DIR', help='one more estate (repeatable)')
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
-    roots = a.root or ([] if a.estate else [str(ROOT / 'examples')])
+    ex = repo_path('examples')
+    if not (a.root or a.estate or ex):
+        print('ERROR: give --root DIR or --estate DIR (the example estates are only in a checkout of the repository)', file=sys.stderr); return 2
+    roots = a.root or ([] if a.estate else [str(ex)])
     page, data = write(a.out, roots, a.estate)
     if a.json: print(json.dumps(data, indent=2, ensure_ascii=False)); return 0
     h = data['health']; ok = all(g['current'] for g in h['generators']) and all(x['passed'] for x in h['acceptance'])
@@ -313,13 +317,13 @@ function lvlOf(t){const m=String(t||"").match(/^(A[1-4])\./);return m?m[1]:"";}
 function table(head,rows,cls){return `<div class="${cls||""}"><table><thead><tr>${head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.join("")||`<tr><td colspan="${head.length}" class="muted">none</td></tr>`}</tbody></table></div>`;}
 function filterBox(id,ph){return `<div class="tool"><input id="${id}" placeholder="${esc(ph)}" aria-label="Filter"></div>`;}
 document.getElementById("sub").textContent=`metamodel ${M.version} · package ${D.package_version} · generated ${D.generated} · offline, read-only`;
-const genOK=H.generators.every(g=>g.current),accOK=H.acceptance.every(a=>a.passed);
+const genOK=!H.checkout||H.generators.every(g=>g.current),accOK=!H.checkout||H.acceptance.every(a=>a.passed);
 const R={};
 R.home=()=>{
   const n=l=>M.entities.filter(e=>e.level===l&&!e.artefact).length;
   let h=`<h2>SDEM health</h2><div class="cards">
-   <div class="card"><b>Generated documents</b><div class="big ${genOK?"ok":"bad"}">${genOK?"current":"stale"}</div><div class="muted">${H.generators.filter(g=>g.current).length} of ${H.generators.length} generators current</div></div>
-   <div class="card"><b>Rules engine</b><div class="big ${accOK?"ok":"bad"}">${H.acceptance.filter(a=>a.passed).length} of ${H.acceptance.length}</div><div class="muted">acceptance cases pass (run now)</div></div>
+   <div class="card"><b>Generated documents</b><div class="big ${H.checkout?(genOK?"ok":"bad"):""}">${!H.checkout?"checked in the repository":genOK?"current":"stale"}</div><div class="muted">${H.generators.filter(g=>g.current).length} of ${H.generators.length} generators current</div></div>
+   <div class="card"><b>Rules engine</b><div class="big ${H.checkout?(accOK?"ok":"bad"):""}">${H.checkout?H.acceptance.filter(a=>a.passed).length+" of "+H.acceptance.length:"checked in the repository"}</div><div class="muted">acceptance cases pass (run now)</div></div>
    <div class="card"><b>Controls</b><div class="big">${H.built_controls}</div><div class="muted">of ${H.controls_total} built · ${H.control_gaps.length} known gaps</div></div>
    <div class="card"><b>Spec gaps</b><div class="big">${H.spec_gaps.filter(g=>/^open/.test(g.status)).length}</div><div class="muted">open of ${H.spec_gaps.length} (the rest decided)</div></div></div>`;
   h+=`<h2>The metamodel</h2><div class="cards">${["A1","A2","A3","A4"].map(l=>`<div class="card">${lvl(l)} <b>${esc(l)}</b><div class="big">${n(l)}</div><div class="muted">entity types · ${M.within.filter(w=>w.level===l).length} links allowed inside</div></div>`).join("")}
@@ -343,7 +347,7 @@ R.entities=()=>`<h2>Architecture entities</h2><p class="note">The entity types o
   <td>${e.within.length} · ${e.cross.length}</td></tr>`),"scroll");
 R.picture=()=>{const A=D.architecture;const st={"built":0,"partial":0,"not built":0};A.boxes.forEach(b=>st[b.status]=(st[b.status]||0)+1);
   return `<h2>SDEM architecture</h2><p class="note">The components of SDEM and how they work together — the mapping lane (left and centre) and the planning lane, AID (right), over the four independently governed architectures. Click a component for what it is, where it lives, its live figures and what is next. <span class="chip ok">■ built ${st["built"]}</span><span class="chip warn">■ partly built ${st["partial"]}</span><span class="chip muted">▢ not built ${st["not built"]}</span></p>
-  <div class="split"><div class="pic fit" id="arch"></div><div class="side fit" id="aside"><p><button class="fsbtn" data-fs="arch" aria-label="Show the diagram full screen">⛶ full screen</button></p><p class="muted">Click a component.</p><h3>Health now</h3><p>${genOK?'<span class="ok">generated documents current</span>':'<span class="bad">generated documents stale</span>'} · ${accOK?'<span class="ok">engine acceptance '+H.acceptance.length+' of '+H.acceptance.length+'</span>':'<span class="bad">engine acceptance failing</span>'}</p><p>${D.projects.length} project(s); ${D.projects.filter(p=>p.errors||p.proposals||p.open_work||p.open_gaps).length} need attention — see <a href="#projects" data-tab="projects">Projects</a>.</p></div></div>`;};
+  <div class="split"><div class="pic fit" id="arch"></div><div class="side fit" id="aside"><p><button class="fsbtn" data-fs="arch" aria-label="Show the diagram full screen">⛶ full screen</button></p><p class="muted">Click a component.</p><h3>Health now</h3><p>${genOK?'<span class="ok">generated documents current</span>':'<span class="bad">generated documents stale</span>'} · ${!H.checkout?'<span class="muted">maintainer checks run in the repository</span>':accOK?'<span class="ok">engine acceptance '+H.acceptance.length+' of '+H.acceptance.length+'</span>':'<span class="bad">engine acceptance failing</span>'}</p><p>${D.projects.length} project(s); ${D.projects.filter(p=>p.errors||p.proposals||p.open_work||p.open_gaps).length} need attention — see <a href="#projects" data-tab="projects">Projects</a>.</p></div></div>`;};
 R.entitymap=()=>`<h2>Entity map</h2><p class="note">The entity types of the four architectures and the ${M.cross.length} link types between them. Click a type for its definition, attributes, the links allowed for it, and the engine rules that use it.</p>
   <div class="split"><div class="pic fit" id="pic"></div><div class="side fit" id="side"><p><button class="fsbtn" data-fs="pic" aria-label="Show the map full screen">⛶ full screen</button></p><p class="muted">Click an entity type.</p></div></div>`;
 R.within=()=>`<h2>Links inside each architecture</h2><p class="note">The ${M.within.length} relationship rows allowed within an architecture, each from its reference architecture (BIAN for A2; ArchiMate 3.2 and TOGAF for A1, A3, A4). <code>sdem check</code> rejects any other.</p>`+filterBox("fWithin","filter: type, kind, id …")+

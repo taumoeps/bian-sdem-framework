@@ -92,7 +92,7 @@ def main(argv=None):
     parser.add_argument('engine', choices=sorted(ENGINES))
     parser.add_argument('paths', nargs='*', help='architecture datasets and the approved registry (or use --graph)')
     parser.add_argument('--graph', metavar='DIR', help='read a graph store (sdem-graph build) — the normal path')
-    parser.add_argument('--out', metavar='DIR', help='also write candidates, the inference log and any target-design architecture datasets here')
+    parser.add_argument('-o', '--out', metavar='DIR', help='also write candidates, the inference log and any target-design architecture datasets here')
     parser.add_argument('--threshold', type=float, default=0.2, help='baseline only')
     args = parser.parse_args(argv)
     from sdem.store import GraphReader, StoreError

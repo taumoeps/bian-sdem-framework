@@ -17,6 +17,13 @@ REVIEWED_STATUSES = {'approved', 'rejected', 'superseded'}
 NON_PERSON_REVIEWERS = {'architect', 'agent', 'copilot', 'github-copilot', 'engine', 'orchestrator', 'sdem', 'rules-engine', 'ai'}
 TYPE_PREFIX = re.compile(r'^([A-Za-z0-9]+)\.')
 
+
+def is_person(name):
+    """CTL-21: a decision on record (approve, load, a gap, a change set) is a person's — never an agent's or a tool's name.
+    The one place this is decided; it cannot tell a real person from a typed name — branch protection and review do that."""
+    n = (name or '').strip().lower()
+    return bool(n) and not n.startswith('sdem-') and n not in NON_PERSON_REVIEWERS
+
 EXIT_OK, EXIT_ISSUES, EXIT_USAGE = 0, 1, 2
 
 

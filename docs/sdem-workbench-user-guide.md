@@ -267,7 +267,7 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 
 ## 7. Operations — every command
 
-`sdem --help` lists them all; `sdem <command> --help` shows the options and a worked example. Exit codes: `0` OK, `1` issues found, `2` the command was typed wrongly.
+`sdem --help` lists them all; `sdem <command> --help` shows the options and a worked example. Exit codes: `0` OK, `1` issues found (or a check refused the action), `2` the command was typed wrongly or its input is unusable (a missing folder, a file that is not valid JSON), `3` an internal error in SDEM — one line; set `SDEM_DEBUG=1` to see the details. `sdem --version` shows the version.
 
 | Command | Journey | What it does | When you use it | Typical next step |
 |---|---|---|---|---|

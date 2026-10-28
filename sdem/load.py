@@ -14,14 +14,18 @@ from . import designs as _designs
 from .graph import FederatedGraph, LevelGraph
 from .metamodel import Metamodel
 from .transform import DATASETS, SOURCE_SYSTEM
-from .validate import NON_PERSON_REVIEWERS
+from .validate import is_person
 
 LOADED_SYSTEM = 'SDEM-LOAD'
 EMPTY_REGISTRY = {'registry_version': '0.4.0', 'metamodel_version': '0.4.0', 'mappings': []}
 
 
 class LoadError(Exception):
-    pass
+    """The load is refused (a check failed) — exit 1."""
+
+
+class LoadInputError(LoadError):
+    """The command was given something it cannot use (not a transform output, no selection, not a person) — exit 2."""
 
 
 def _j(p):
@@ -32,32 +36,31 @@ def read_candidates(src):
     """The transform output: its extraction.json and candidate datasets. Anything else is refused (LD-G02)."""
     src = Path(src)
     if not (src / 'extraction.json').exists():
-        raise LoadError(f'{src}: not a transform output (no extraction.json) — run `sdem transform run` first')
+        raise LoadInputError(f'{src}: not a transform output (no extraction.json) — run `sdem transform run` first')
     meta, ds = _j(src / 'extraction.json'), {}
     meta['_index'] = _j(src / 'design-index.json')['designs'] if (src / 'design-index.json').exists() else []
     for lvl, name in DATASETS.items():
         if (src / name).exists():
             d = _j(src / name)
             if d.get('source_system') != SOURCE_SYSTEM:
-                raise LoadError(f"{src / name}: not a transform candidate dataset (source_system {d.get('source_system')!r})")
+                raise LoadInputError(f"{src / name}: not a transform candidate dataset (source_system {d.get('source_system')!r})")
             ds[lvl] = d
-    if not ds: raise LoadError(f'{src}: no candidate datasets to load')
+    if not ds: raise LoadInputError(f'{src}: no candidate datasets to load')
     return meta, ds
 
 
 def check_person(person):
-    p = (person or '').strip().lower()
-    if not p or p.startswith('sdem-') or p in NON_PERSON_REVIEWERS:
-        raise LoadError(f'--person {person!r}: loading is a person\'s decision — give your own name, never an agent or tool (as CTL-21)')
+    if not is_person(person):
+        raise LoadInputError(f'--person {person!r}: loading is a person\'s decision — give your own name, never an agent or tool (as CTL-21)')
 
 
 def select(ds, all_=False, only=None, exclude=None):
     """Which candidates to load: exactly one of everything, only these, all but these (LD-S01)."""
     ids = {i['id'] for d in ds.values() for i in d['instances']}
     if sum(1 for x in (all_, only, exclude) if x) != 1:
-        raise LoadError('choose what to load — one of --all, --only ID …, --exclude ID … or --keep FILE')
+        raise LoadInputError('choose what to load — one of --all, --only ID …, --exclude ID … or --keep FILE')
     unknown = sorted(set(only or exclude or []) - ids)
-    if unknown: raise LoadError(f"not among the candidates: {', '.join(unknown)}")
+    if unknown: raise LoadInputError(f"not among the candidates: {', '.join(unknown)}")
     keep = set(ids) if all_ else set(only) if only else ids - set(exclude)
     return keep, sorted(ids - keep)
 
@@ -153,18 +156,17 @@ def load(src, estate, person, keep=None, exclude=None, all_=False, a2=None, dry_
         raise LoadError('refused — nothing written:\n  ' + '\n  '.join(res['errors'][:30]))
     if dry_run: return res
     estate = Path(estate); estate.mkdir(parents=True, exist_ok=True)
-    rec_path.parent.mkdir(parents=True, exist_ok=True)
-    rec_path.write_text(json.dumps(records, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    for lvl, d in changed.items():
-        (estate / DATASETS[lvl]).write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    if not (estate / 'mappings.json').exists():
-        (estate / 'mappings.json').write_text(json.dumps(registry, indent=2) + '\n', encoding='utf-8')
-    loads = estate / 'loads'; loads.mkdir(exist_ok=True)
+    from .files import Batch
+    batch = Batch()   # all-or-nothing: every file is written to a temporary copy first, then all are moved into place
+    batch.json(rec_path, records)
+    for lvl, d in changed.items(): batch.json(estate / DATASETS[lvl], d)
+    if not (estate / 'mappings.json').exists(): batch.json(estate / 'mappings.json', registry)
     record = {'id': res['load_id'], 'at': now, 'person': person, 'from': str(src), 'transform': res['transform'], 'loaded': res['loaded'],
               'links_loaded': res['links'], 'skipped_same_content': res['skipped_same'], 'excluded': excluded, 'dropped': res['dropped'],
               'a2_added': res['a2_added'], 'design_records': res['designs'], 'reconciliation': res['reconciliation'],
               'check': {'errors': 0, 'warnings': res['warnings']}}
-    (loads / f"{res['load_id']}.json").write_text(json.dumps(record, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    batch.json(estate / 'loads' / f"{res['load_id']}.json", record)
+    batch.commit()
     return res
 
 
@@ -184,6 +186,8 @@ def main(argv=None):
     a = ap.parse_args(argv)
     try:
         res = load(a.candidates, a.estate, a.person, keep_file(a.keep) if a.keep else a.only, a.exclude, a.all, a.a2, a.dry_run)
+    except LoadInputError as e:
+        print(f'ERROR: {e}', file=sys.stderr); return 2
     except LoadError as e:
         print(f'ERROR: {e}', file=sys.stderr); return 1
     except (OSError, ValueError) as e:

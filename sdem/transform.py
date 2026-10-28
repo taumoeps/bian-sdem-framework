@@ -566,7 +566,9 @@ def ocr_engine(name='auto'):
     import shutil, subprocess, tempfile
     if name == 'off': return None
     if name in ('auto', 'vision') and sys.platform == 'darwin' and shutil.which('osascript'):
-        js = Path(tempfile.mkdtemp(prefix='sdem-ocr-')) / 'ocr.js'; js.write_text(OCR_JS, encoding='utf-8')
+        import atexit
+        tmpdir = tempfile.mkdtemp(prefix='sdem-ocr-'); atexit.register(shutil.rmtree, tmpdir, True)   # removed when SDEM exits
+        js = Path(tmpdir) / 'ocr.js'; js.write_text(OCR_JS, encoding='utf-8')
 
         def vision(path):
             r = subprocess.run(['osascript', '-l', 'JavaScript', str(js), str(Path(path).resolve())], capture_output=True, text=True, timeout=120)
