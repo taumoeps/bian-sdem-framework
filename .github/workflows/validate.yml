@@ -78,7 +78,7 @@ jobs:
         run: python -m sdem.graph check examples/reference-structure/a*.json examples/reference-structure/mappings.json
       - name: Graph stores are current (sdem-graph build --check)
         run: |
-          for e in examples/*/; do python -m sdem.graph build $e/a*.json $e/mappings.json --out $e/graph --check || exit 1; done
+          for e in examples/*/; do [ -f "$e/mappings.json" ] || continue; python -m sdem.graph build $e/a*.json $e/mappings.json --out $e/graph --check || exit 1; done   # examples/designs/ is not an estate
       - name: Acceptance harness proven on the hand-executed runs
         run: python -m sdem.acceptance --engine replay
       - name: Inference engine progress (report only; the test suite enforces cases marked passing)

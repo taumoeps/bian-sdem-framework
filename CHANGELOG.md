@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- **CI fixed:** the *graph stores are current* step built every folder in `examples/` as an estate, and failed on `examples/designs/` (added in 0.9.3; the release's code is unaffected — only the SDEM project's own CI step). It now skips folders without a `mappings.json`. Every CI test step was re-run locally before pushing.
+
 ## 0.9.3 — fixes from the fifth walkthrough (2026-10-29)
 
 Upgrade: change the pin to `@v0.9.3`, `pip install -r requirements.txt`; copy the estate template's updated `.github/CODEOWNERS`, `.gitignore` and `estates/README.md`; name your in-house SDEM lead. Rulebook metamodel version unchanged (0.4.0).
