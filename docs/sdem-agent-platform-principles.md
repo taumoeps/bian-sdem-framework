@@ -54,12 +54,14 @@ An agent should never touch data directly: it calls **narrow, deterministic tool
 
 | What good looks like | SDEM |
 |---|---|
-| **Enforced in code**, not only asked for in instructions | ✅ CTL-16, CTL-17, CTL-19, CTL-20 and the governance check refuse bad actions |
-| **Least privilege** — each agent only the tools it needs | ✅ tool lists per agent; layer agents cannot call other agents (`agents: []`) |
-| **A person approves anything that matters** | ✅ approval only by merging a reviewed pull request |
-| **A limit on runaway loops** | ✅ the round limit — the orchestrator stops and asks |
+| **Enforced in code**, not only asked for in instructions | ✅ CTL-16, CTL-17, CTL-19, CTL-20, CTL-21, CTL-23 and the governance check refuse bad actions |
+| **Least privilege** — each agent only the tools it needs | ⚠️ **partly.** Tool lists per agent; layer agents cannot call other agents (`agents: []`). But a layer agent has `edit` and `execute`, and Copilot cannot limit them to certain files — an agent *can* edit another layer's dataset or `mappings.json`. That is **detected afterwards** (AG-S08 change-set chain, `sdem check`, CI), **not prevented** |
+| **A person approves anything that matters** | ⚠️ **enforced once branch protection is on.** CTL-21 refuses an agent's or tool's name as reviewer, but cannot stop a person's name being typed; the real control is a required, code-owner-reviewed pull request (`.github/CODEOWNERS` added) — a GitHub setting the owner turns on: [`sdem-repository-protection.md`](sdem-repository-protection.md) |
+| **A limit on runaway loops** | ✅ the round limit (3) — the orchestrator stops and asks; since 2026-10-28 a **cap**: an agent may lower it, never raise it — only the architect can (AG-S07) |
 
 **The key test:** *anything written only in an instruction is a request, not a control.* "Never edit dataset files directly" and "never approve" were instructions only; both are now controls — the change-set chain (AG-S08, CTL-20) and human approval (CTL-21).
+
+**Checked 2026-10-28** against the code and the repository: the round limit was only a default (an agent could pass a higher `--max-rounds`) — now a cap; least privilege is detection, not prevention; and approval by a reviewed pull request depends on branch protection, which was not on (changes were pushed straight to `main`).
 
 ## 4. Agent definitions — the roles
 
@@ -105,7 +107,7 @@ Skills hold **domain knowledge** the agent loads only when needed, keeping each 
 |---|---|---|
 | Data architecture | highest | strong |
 | Tools / engine | very high | strong — undo built; engine–rulebook agreement checked (CTL-22) |
-| Guardrails | very high | strong — direct edits detected (AG-S08), human approval enforced (CTL-21) |
+| Guardrails | very high | strong in code (CTL-16…23, round cap); direct edits **detected**, not prevented (AG-S08); human approval **enforced only with branch protection on** |
 | Agent definitions | medium | good |
 | Prompts | low–medium | good |
 | Skills | medium | good |

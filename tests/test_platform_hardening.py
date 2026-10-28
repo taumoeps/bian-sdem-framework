@@ -125,6 +125,14 @@ class HardeningTests(unittest.TestCase):
         self.assertEqual(code, 1); self.assertIn('CTL-21', out + err)
 
     # T5 / AG-K06
+    def test_round_limit_is_a_cap_an_agent_cannot_raise(self):  # AG-S07
+        self.propose(); e = agents.Estate(self.est)
+        with self.assertRaises(agents.CoordinationError) as c: e.plan('CE-001', 'sdem-orchestrator', 'jane', max_rounds=agents.MAX_ROUNDS + 1)
+        self.assertIn('never raise it', str(c.exception))
+        self.assertIn('stopped', e.plan('CE-001', 'sdem-orchestrator', 'jane', max_rounds=0))       # lowering is allowed
+        r = agents.Estate(self.est).plan('CE-001', 'architect', 'jane', max_rounds=agents.MAX_ROUNDS + 2)   # the architect may raise it
+        self.assertNotIn('stopped', r)
+
     def test_revert_restores_the_layer_exactly_and_on_record(self):
         orig = (self.est / 'a4-technology.json').read_text()
         self.propose(); agents.Estate(self.est).plan('CE-001', 'sdem-orchestrator', 'jane')

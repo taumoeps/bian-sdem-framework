@@ -1,5 +1,7 @@
 # SDEM — Setting up GitHub Copilot
 
+> **Before agents work on real data:** turn on branch protection for `main` — [`sdem-repository-protection.md`](sdem-repository-protection.md). Without it, a person's approval is a practice, not a control.
+
 > How to set up a GitHub account and GitHub Copilot so the SDEM agents, prompt files and skills work in VS Code. Then run the spike ([`sdem-agent-platform-spike.md`](sdem-agent-platform-spike.md)). Written 2026-10-28 — Copilot plans, prices and feature names change; check the linked GitHub pages for the current details.
 
 ## What is in the project

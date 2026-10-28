@@ -1,0 +1,19 @@
+# A person reviews every change that matters (docs/sdem-repository-protection.md).
+# This file only takes effect when branch protection on `main` requires a review from code owners.
+# In your organisation's copy, replace @taumoeps with the architects or team who approve (e.g. @your-org/architecture).
+
+# the rulebook and the formats
+/metamodel/                 @taumoeps
+/schema/                    @taumoeps
+
+# approved links and architecture data, in any estate
+**/mappings.json            @taumoeps
+**/a1-business.json         @taumoeps
+**/a2-service-domain.json   @taumoeps
+**/a3-application.json      @taumoeps
+**/a4-technology.json       @taumoeps
+**/loads/                   @taumoeps
+**/coordination/            @taumoeps
+
+# what the agents are allowed to do, and the checks that run on every push
+/.github/                   @taumoeps

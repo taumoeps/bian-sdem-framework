@@ -251,6 +251,8 @@ class Estate:
         design change. Review notices are reported, not turned into work (impact rules: 'nothing further')."""
         if agent != ORCHESTRATOR and agent != HUMAN: raise CoordinationError(f'only the orchestrator (or an architect) plans work, not {agent}')
         if not (person or '').strip(): raise CoordinationError('CTL-20: planning needs the person behind it')
+        if max_rounds > MAX_ROUNDS and agent != HUMAN:  # AG-S07: a cap, not a default — an agent may lower it, never raise it
+            raise CoordinationError(f'AG-S07: the round limit is {MAX_ROUNDS}; an agent may lower it, never raise it — the architect decides (--agent architect)')
         ev = next((e for e in self.events() if e['id'] == event_id), None)
         if not ev: raise CoordinationError(f'{event_id}: no such change event')
         work = self.work()
@@ -410,7 +412,7 @@ def work_main(argv=None):
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
     p = sub.add_parser('plan', help='orchestrator: turn a change event\'s impact into work items'); p.add_argument('--event', required=True); _common(p)
-    p.add_argument('--max-rounds', type=int, default=MAX_ROUNDS, help=f'stop and ask the architect after this many rounds (default {MAX_ROUNDS})')
+    p.add_argument('--max-rounds', type=int, default=MAX_ROUNDS, help=f'stop and ask the architect after this many rounds (default and most {MAX_ROUNDS}; only the architect may raise it)')
     l = sub.add_parser('list', help='work items'); _common(l, who=False); l.add_argument('--layer', choices=list(FILES)); l.add_argument('--status', choices=['open', 'in_progress', 'done', 'blocked', 'cancelled'])
     for name, hlp in (('claim', 'a layer agent takes a work item'), ('block', 'a work item cannot proceed — say why'), ('cancel', 'drop a work item — say why'), ('reopen', 'return a work item to open')):
         x = sub.add_parser(name, help=hlp); x.add_argument('id'); _common(x); x.add_argument('--note', default='')
