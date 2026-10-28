@@ -1,6 +1,6 @@
 # Roadmap
 
-> **Status: current** — updated with every release; v0.8.0 released 2026-10-29.
+> **Status: current** — updated with every release; v0.9.0 released 2026-10-29.
 
 Realigned 2026-10-25 after a full review of `docs/` against the code. Release numbers before v0.8 are history; earlier plans for v0.6–v0.8 (engine, BIAN reference integration, generated views) were renumbered below because v0.6.0 and v0.7.0 shipped the rules specification and the rename instead.
 
@@ -18,6 +18,16 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | v0.6.0 | Relationship Rules Model specification (`relationship-rules-spec.md`); knowledge-graph design and specification with service specifications | Generated from the records; current in CI | done |
 | v0.7.0 | Renamed SDEM; model-driven terminology; registry specification; compatibility aliases for the old names | Behaviour byte-identical to v0.6.2 | done |
 | v0.8.0 | The tool release — see below | the full suite; acceptance 8 of 8; use-case examples 1–4; installed-package job | done |
+| v0.9.0 | Base BIAN and operational readiness — see below | the full suite; BIAN import checked on releases 10.0–14.0; two new-architect walkthroughs | done |
+
+## v0.9.0 — base BIAN and operational readiness (2026-10-29)
+
+| Deliverable | Status |
+|---|---|
+| **Base BIAN**: BIAN's public Semantic APIs 14.0.0 ship with SDEM (Apache-2.0); `sdem bian list / import / pack` builds the BIAN layer from it or from an organisation's own BIAN | done |
+| **Copilot where real work happens**: `sdem copilot install` puts the agents, prompts and skills into the estate repository, matching the SDEM version | done |
+| **Operating it**: approved operating model and pilot plan; private estate-repository template with CI; documentation reorganised for newcomers and checked on every push (status, links, owners, drift); two new-architect walkthroughs and their fixes | done |
+| **Rulebook**: CTL-24 registered; rule S17's source reference closed | done |
 
 ## v0.8.0 — the tool release (2026-10-29)
 
