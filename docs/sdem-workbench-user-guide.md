@@ -520,7 +520,7 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
 
 ### 8.7 Transform past designs from Confluence into entities
 
-> The whole journey on one page — export → transform → review → load → link → approve → build, what each step does to the data and when it is ready: [`sdem-designs-import-workflow.md`](sdem-designs-import-workflow.md).
+> The whole journey on one page — export → transform → review → load → link → approve → build, what each step does to the data and when it is ready: [`sdem-designs-import-workflow.md`](sdem-designs-import-workflow.md). **Step-by-step runbook and test script**, with the expected result of every step: [`use-case-example-4.md`](use-case-example-4.md).
 
 *Goal: turn the organisation's past designs (Confluence pages with tables and draw.io diagrams) into candidate records — on the work machine, without AI, without the content leaving it.*
 

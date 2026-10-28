@@ -1,6 +1,6 @@
 # From a Confluence export to the knowledge graph — the workflow
 
-> **Status: describes what is built (2026-10-28).** One page for the whole journey of past designs into SDEM: what each step does to the data, what it produces, where it lives, what stops bad data, and how ready the data is after each step. Details: [`sdem-transform-design.md`](sdem-transform-design.md) (transform), [`sdem-load-design.md`](sdem-load-design.md) (load), [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md) §8.7 (commands).
+> **Status: describes what is built (2026-10-28).** One page for the whole journey of past designs into SDEM: what each step does to the data, what it produces, where it lives, what stops bad data, and how ready the data is after each step. Step by step, with the expected result of each step (a test script): [`use-case-example-4.md`](use-case-example-4.md). Details: [`sdem-transform-design.md`](sdem-transform-design.md) (transform), [`sdem-load-design.md`](sdem-load-design.md) (load), [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md) §8.7 (commands).
 
 ## 1. The whole journey in one picture
 

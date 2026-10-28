@@ -327,7 +327,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | **Importing past designs** | [workflow](docs/sdem-designs-import-workflow.md) · [transform design](docs/sdem-transform-design.md) / [spec](docs/sdem-transform-spec.md) · [load design](docs/sdem-load-design.md) / [spec](docs/sdem-load-spec.md) |
 | **AI agents and Copilot** | [principles](docs/sdem-agent-platform-principles.md) · [design](docs/sdem-agent-platform-design.md) / [spec](docs/sdem-agent-platform-spec.md) · [Copilot set-up](docs/sdem-copilot-setup.md) · [spike](docs/sdem-agent-platform-spike.md) · [repository protection](docs/sdem-repository-protection.md) |
 | **Controls** | [controls register](docs/controls-register.md) |
-| **Tests and examples** | [use-case testing](docs/use-case-testing.md) · [example 1](docs/use-case-example-1.md) (mappings and graph) · [example 2](docs/use-case-example-2.md) (AID) · [example 3](docs/use-case-example-3.md) (agents) |
+| **Tests and examples** | [use-case testing](docs/use-case-testing.md) · [example 1](docs/use-case-example-1.md) (mappings and graph) · [example 2](docs/use-case-example-2.md) (AID) · [example 3](docs/use-case-example-3.md) (agents) · [example 4](docs/use-case-example-4.md) (importing past designs, export to build) |
 | **Releases and history** | [roadmap](docs/ROADMAP.md) · [changelog](CHANGELOG.md) · [renamed from SDMM](docs/renamed-from-sdmm.md) |
 
 ### Repository contents
