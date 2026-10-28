@@ -558,7 +558,7 @@
       "relation": "REALIZED_BY",
       "official": true,
       "verification": "verified",
-      "source_reference": "[SAPG] §3.4 p. 52 (functional partition",
+      "source_reference": "[SAPG] §3.4 p. 52 (functional partition)",
       "rule_decision": "registry_rule",
       "fill_step": 3,
       "data_needed": "approved or step-2 IMPLEMENTED_BY instances plus A3 structure (component composes interface; interface composes API operations) (step 3; confidence capped at the strongest step-2 input's band — DEC-E-02); fallback step 4: A2.ServiceDomain.attributes.asset_type's name in the component's API paths / data entity names; no description-only fallback (DEC-E-03)",

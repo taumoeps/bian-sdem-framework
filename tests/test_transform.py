@@ -131,7 +131,7 @@ class TransformTests(unittest.TestCase):
 
 
 
-    def test_never_creates_a2_entities(self):  # HI-S01: BIAN elements come from the BIAN catalogue only
+    def test_never_creates_a2_entities(self):  # HI-S01, CTL-24: BIAN elements come from a BIAN source only
         a2 = ROOT / 'examples' / 'payment-initiation' / 'a2-service-domain.json'
         names = [i['name'] for i in json.loads(a2.read_text())['instances'] if i['type'] == 'A2.ServiceDomain'][:1]
         tmp = Path(tempfile.mkdtemp())

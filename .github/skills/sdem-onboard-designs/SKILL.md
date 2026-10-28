@@ -49,7 +49,7 @@ Point these out, with the reason; **the architect decides**:
 
 Also report:
 - **pictures** and **diagrams not linked to a page** — the architect records or places them by hand;
-- **BIAN names** found — they are never entities (A2 comes only from the BIAN catalogue — the transform never creates A2 records); they are hints for `sdem link` once the entities are loaded.
+- **BIAN names** found — they are never entities (A2 comes only from a BIAN source — the transform never creates A2 records, CTL-24); they are hints for `sdem link` once the entities are loaded.
 
 Then give the architect the load command to run themselves, e.g.:
 `sdem load work/history --estate estates/history --person <their name> --exclude HIS-A3-… HIS-A3-…` (add `--a2 <their A2 dataset>` the first time).

@@ -900,7 +900,7 @@
         "projection": {
           "step": "M",
           "rule": "S17",
-          "source_reference": "S17: [SAPG] §3.4 p. 52 (functional partition",
+          "source_reference": "S17: [SAPG] §3.4 p. 52 (functional partition)",
           "inferred_from": [
             "APP-PAY-HUB"
           ],

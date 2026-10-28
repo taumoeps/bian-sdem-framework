@@ -685,10 +685,10 @@ class Extraction:
     def record(self, etype, name, page, where, rule, how, reasoning, description='', lifecycle=None, attributes=None):
         name = clean(name)
         if not name or not self.mm.known(etype) or self.mm.is_abstract(etype): return None
-        if etype.startswith('A2.'):  # BIAN elements come from the BIAN catalogue only — a document's mention is a hint for a link, never an entity
+        if etype.startswith('A2.'):  # CTL-24: BIAN elements come from a BIAN source only — a document's mention is a hint for a link, never an entity
             k = self.known.get(norm(name))
             m = {'name': name, 'type': etype, 'page_id': page['page_id'], 'page_title': page['title'], 'where': where,
-                 'existing_id': k[0] if k else None, 'why': 'names a BIAN element; A2 entities come from the BIAN catalogue only — link to it with sdem link after adoption'}
+                 'existing_id': k[0] if k else None, 'why': 'names a BIAN element; A2 entities come from a BIAN source only (CTL-24) — link to it with sdem link after adoption'}
             if not any((x['name'], x['page_id'], x['where']) == (name, page['page_id'], where) for x in self.bian_mentions): self.bian_mentions.append(m)
             return None
         key = (etype, norm(name))
@@ -1393,7 +1393,7 @@ def report(x, meta, records, links, issues, idx, cov=None):
     for c in x.cross:
         frm = '<br>'.join(f"{q['page_title']} — {q['where']}" for q in c['sources'])
         L.append(f"| `{c['source']}` | `{c['target']}` | {c['mapping_type_id'] or '—'} | {c['confidence']} | {frm} | {'<br>'.join(q['reasoning'] for q in c['sources'])} |")
-    L.append('\n## BIAN elements named in the designs — not entities (BIAN records come from your BIAN layer only)\n')
+    L.append('\n## BIAN elements named in the designs — not entities (BIAN records come from your BIAN layer only, CTL-24)\n')
     L.append('A2 entities come from the BIAN catalogue only. These names are hints for `sdem link` once the entities are adopted.\n')
     L.append('| Name | Type | Existing record | Page | Where |')
     L.append('|---|---|---|---|---|')

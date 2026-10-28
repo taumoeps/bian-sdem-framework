@@ -52,7 +52,7 @@ python -m sdem model check                     # what CI checks
 ## Rules that must not be broken
 
 - **The high-level spec is frozen.** `docs/design/architecture-metamodel-high-level-spec.md` is the owner's reference, pinned by a SHA-256 test. Changes go through the detail-level spec, and only with the owner's approval; gaps are called out first.
-- **Controls stay controls.** A rule enforced in code (CTL-01…23, the round cap) is never weakened to an instruction. A new rule that matters gets a control and a test (good data accepted, bad data rejected) and a row in `metamodel/controls.json`.
+- **Controls stay controls.** A rule enforced in code (CTL-01…24, the round cap) is never weakened to an instruction. A new rule that matters gets a control and a test (good data accepted, bad data rejected) and a row in `metamodel/controls.json`.
 - **Rules, not AI, inside SDEM.** No AI API client, no MCP server, no API key (`tests/test_copilot_setup.py` checks it). Copilot is optional and outside SDEM.
 - **Source, reasoning and confidence** on every entity type, attribute, rule and decision — high only when the public source was checked.
 - **Use-case examples are evidence.** After a change to the engine, the transform or the controls, re-run them (`python -m sdem model examples`; `python scripts/use_case_example_3.py`) and commit the updated evidence with the change.

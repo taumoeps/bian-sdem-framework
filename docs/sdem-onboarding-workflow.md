@@ -364,5 +364,5 @@ Repeat the steps for the next export, into the **same** `estates/history`. SDEM 
 | Why not just copy the files? | `sdem build` refuses unloaded candidate data (CTL-23); the load checks the estate as a whole, refuses conflicts instead of overwriting, and records who approved what. |
 | Where do links between architectures come from? | `sdem link` proposes them from the loaded data; **you** approve them. The transform's "deployed on" findings are written as data so `sdem link` finds them. |
 | Where does the metamodel come from? | It is the rulebook, written and approved beforehand. Nothing generates it from data. |
-| Is A2 (BIAN) data taken from the designs? | Never — the transform does not create BIAN records. BIAN names found are listed as hints; your A2 dataset (from the BIAN catalogue) is added once with `--a2`. |
+| Is A2 (BIAN) data taken from the designs? | Never — the transform does not create BIAN records (control CTL-24). BIAN names found are listed as hints; your A2 dataset (from the BIAN catalogue) is added once with `--a2`. |
 | Is the knowledge graph saved? | No — `work/graph/` is rebuilt from the estate with `sdem build` whenever needed. The estate is what you save. |

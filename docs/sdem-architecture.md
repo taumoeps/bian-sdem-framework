@@ -121,7 +121,7 @@ sequenceDiagram
 | Pull request (estate CI) | `sdem check`, `sdem build`, approved connections unchanged since the base branch | the pull request cannot merge (with branch protection) |
 | Merge | a code owner's review | — |
 
-All 22 controls in plain words: [the rulebook guide](sdem-rulebook-guide.md#the-controls--what-sdem-refuses).
+Every control in plain words: [the rulebook guide](sdem-rulebook-guide.md#the-controls--what-sdem-refuses).
 
 ## What runs where, and what leaves the machine
 

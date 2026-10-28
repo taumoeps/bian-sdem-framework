@@ -657,7 +657,7 @@
           "projection": {
             "step": "F2",
             "rule": "BIAN container pattern",
-            "source_reference": "S17: [SAPG] §3.4 p. 52 (functional partition",
+            "source_reference": "S17: [SAPG] §3.4 p. 52 (functional partition)",
             "inferred_from": [
               "SD-PI"
             ],
@@ -1022,7 +1022,7 @@
         "projection": {
           "step": "F2",
           "rule": "BIAN container pattern",
-          "source_reference": "S17: [SAPG] §3.4 p. 52 (functional partition",
+          "source_reference": "S17: [SAPG] §3.4 p. 52 (functional partition)",
           "inferred_from": [
             "SD-PI"
           ],

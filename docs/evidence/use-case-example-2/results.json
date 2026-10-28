@@ -136,7 +136,7 @@
           "to": "[**A3** projected] PRJ-APP-SD-PI Payment Instruction service (projected)",
           "step": "F2",
           "rule": "BIAN container pattern",
-          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition",
+          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition)",
           "reasoning": "one component per service domain",
           "confidence": 0.4,
           "result": "new element — compared above"
@@ -273,7 +273,7 @@
           "step": "F2",
           "source": "[**A2** real] SD-PI “Payment Initiation (synthetic selection)”",
           "rule": "BIAN container pattern",
-          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition",
+          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition)",
           "reasoning": "one component per service domain",
           "confidence": 0.4,
           "result": "matched — structure differs",
@@ -797,7 +797,7 @@
           "to": "[**A3** projected] PRJ-APP-SD-PI Payment Instruction service (projected)",
           "step": "F2",
           "rule": "BIAN container pattern",
-          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition",
+          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition)",
           "reasoning": "one component per service domain",
           "confidence": 0.4,
           "result": "new element — compared above"
@@ -954,7 +954,7 @@
           "step": "F2",
           "source": "[**A2** projected] SD-PI “Payment Initiation (synthetic selection)”",
           "rule": "BIAN container pattern",
-          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition",
+          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition)",
           "reasoning": "one component per service domain",
           "confidence": 0.4,
           "result": "matched — structure differs",
@@ -3086,7 +3086,7 @@
           "to": "[**A3** real] APP-PAY-HUB Payments Hub",
           "step": "R2",
           "rule": "S17",
-          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition",
+          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition)",
           "reasoning": "implements SO-PI-01 via API-PI-01; SO-PI-02 via API-PI-02; SO-PI-03 via API-PI-03; SO-PI-05 via API-PI-05; SO-PI-04 via API-PI-04",
           "confidence": 0.6,
           "result": "matched"
@@ -3099,7 +3099,7 @@
           "to": "[**A3** real] APP-PAY-HUB Payments Hub",
           "step": "R2",
           "rule": "S17",
-          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition",
+          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition)",
           "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names",
           "confidence": 0.4,
           "result": "projected only"
@@ -3112,7 +3112,7 @@
           "to": "[**A3** real] CMP-PAY-VALIDATE Instruction Validation",
           "step": "R2",
           "rule": "S17",
-          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition",
+          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition)",
           "reasoning": "fallback B: asset-type tokens ['account'] in API paths / entity names",
           "confidence": 0.4,
           "result": "projected only"
@@ -4133,7 +4133,7 @@
           "to": "[**A3** real] APP-PAY-HUB Payments Hub",
           "step": "M",
           "rule": "S17",
-          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition",
+          "basis": "S17: [SAPG] §3.4 p. 52 (functional partition)",
           "reasoning": "implements SO-PI-01 via API-PI-01; SO-PI-02 via API-PI-02; SO-PI-03 via API-PI-03; SO-PI-05 via API-PI-05; SO-PI-04 via API-PI-04",
           "confidence": 0.6,
           "result": "matched"
