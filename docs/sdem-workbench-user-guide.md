@@ -539,6 +539,7 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
    ```
    Text in pictures is read on your Mac with its built-in text recognition (no install, no network); add `--ocr off` if your organisation does not allow it, or `--ocr tesseract` where Tesseract is installed. PlantUML diagrams are read from their source.
 5. Open `work/history/extraction-report.md`. Every record says **which page, where on it** (table and row, diagram and shape, paragraph), **which rule**, **how sure** (never above medium) and **why**. Pasted pictures are listed for you to record by hand.
+   **Nothing is silently lost:** the *Coverage* section gives the share of each page captured, and *Not captured* lists everything SDEM read but could not use — with its place and text — grouped as *no entity type* (e.g. a table of risks: a possible gap in the metamodel, for the owner), *column not mapped* (kept with each entity), *text not read*, *needs a person* (pictures), *file not read* (PDF, Word …) and more. Key-value tables (owner, review date) become the page's facts in `design-index.json`.
 6. **Load** what is right (the L of the ETL) — name what to leave out, or what to keep:
    ```bash
    sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-SANCTIONS-CHECKEL HIS-A3-PAYMENT-ORDER \

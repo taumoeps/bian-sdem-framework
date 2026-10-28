@@ -112,12 +112,16 @@ class TransformTests(unittest.TestCase):
         r = transform.inspect(SAMPLE, ocr='off')
         rules = {tuple(t['columns']): t['rule'] for t in r['tables']}
         self.assertEqual(rules[('application', 'description', 'vendor', 'status')], 'HT-01')
-        self.assertTrue(any(t['rule'].startswith('not read') for t in r['tables']))
+        self.assertTrue(any(t['rule'] == 'page facts' for t in r['tables']))   # the key-value table (HI-N04)
         self.assertTrue(any(s['type'] == 'unclassified' for s in r['shapes']))
 
     def test_no_ai_no_network(self):  # HI-G01
         src = (ROOT / 'sdem' / 'transform.py').read_text()
         self.assertIsNone(re.search(r'\bimport (socket|requests|http\.client)|urllib\.request|anthropic|openai', src))
+
+    def test_unmapped_link_column_kept(self):  # HI-N03 on a source/target table: 'Protocol' stays with the link
+        link = next(l for l in self.doc['links_within'] if l['source'] == 'HIS-A3-PAYMENTS-HUB' and l['target'] == 'HIS-A3-FRAUD-SCREENING')
+        self.assertEqual(link['unmapped'], {'Protocol': 'REST'})
 
     def test_cli(self):
         from sdem.cli import main
@@ -243,6 +247,67 @@ Rel_Serving(M, P, "x")
         self.assertIn(('M', 'P', 'x', 'Rel_Serving'), rels)
         self.assertEqual(transform.plantuml_parse('@startmindmap\n* a\n@endmindmap')[2], 'mindmap')
         self.assertEqual(transform.plantuml_decode('SyfFKj2rKt3CoKnELR1Io4ZDoSa70000'), 'Bob -> Alice : hello')   # PlantUML's own documented example
+
+
+    # ---- nothing silently lost (HI-N01…N06)
+    def test_every_item_accounted_for(self):  # HI-N01 — counted independently of the ledger
+        led = self.doc['coverage']['items']
+        page = transform.read_page(FOLDER / 'archives' / 'payments-hub-design.html', FOLDER, json.loads(transform.RULES.read_text()))
+        mine = [i for i in led if i['file'] == 'archives/payments-hub-design.html']
+        self.assertEqual(sum(1 for b in page['blocks'] if b[0] == 'table'), sum(1 for i in mine if i['kind'] == 'table'))
+        self.assertEqual(sum(1 for b in page['blocks'] if b[0] == 'text'), sum(1 for i in mine if i['kind'] == 'paragraph'))
+        xml = (FOLDER / 'archives' / 'diagrams' / 'network-zones.drawio').read_text()
+        cells = transform.mx_cells(transform.mx_pages(xml)[0][1])
+        dia = [i for i in led if 'network-zones.drawio' in i['where']]
+        self.assertEqual(sum(1 for c in cells if c.get('vertex') == '1'), sum(1 for i in dia if i['kind'] == 'shape'))
+        self.assertEqual(sum(1 for c in cells if c.get('edge') == '1'), sum(1 for i in dia if i['kind'] == 'line'))
+        accounted = {i['file'] for i in led} | {d['file'] for p in self.idx.values() for d in p['diagrams']} | set(self.idx)
+        for f in FOLDER.rglob('*'):
+            if f.is_file():
+                rel = f.relative_to(FOLDER).as_posix()
+                self.assertTrue(rel in accounted or any(rel in i['where'] for i in led), f'{rel}: not accounted for')
+        for i in led: self.assertIn(i['status'], ('captured', 'skipped', 'not captured'))
+        for i in led:
+            if i['status'] == 'not captured': self.assertTrue(i.get('category'), i)
+            if i['status'] == 'skipped': self.assertTrue(i['reason'], i)
+
+    def test_coverage_reported(self):  # HI-N02
+        o = self.doc['coverage']['overall']
+        self.assertEqual(o['captured'] + o['skipped'] + o['not_captured'], o['items'])
+        self.assertEqual(o['percent'], round(100 * o['captured'] / (o['captured'] + o['not_captured'])))
+        self.assertIn('percent', self.idx['archives/payments-hub-design.html']['coverage'])
+        rep = (self.tmp / 'out' / 'extraction-report.md').read_text()
+        self.assertIn('## Coverage — nothing silently lost', rep); self.assertIn(f"**{o['percent']}% captured**", rep)
+        self.assertIn('Coverage:', run_inspect(FOLDER))
+
+    def test_unmapped_columns_kept(self):  # HI-N03
+        hub = next(r for r in self.doc['records'] if r['name'] == 'Payments Hub')
+        self.assertEqual(hub['unmapped'], {'Support hours': '24x7'})
+        self.assertTrue(any(i.get('category') == 'column not mapped' and 'Support hours' in i['where'] for i in self.doc['coverage']['items']))
+
+    def test_key_value_table_becomes_page_facts(self):  # HI-N04
+        facts = self.idx['archives/payments-hub-design.html']['facts']
+        self.assertEqual(facts['Owner'], 'Payments architecture team'); self.assertEqual(facts['Review date'], '2022-05-01')
+
+    def test_no_entity_type_reported_not_forced(self):  # HI-N05
+        risk = [i for i in self.doc['coverage']['items'] if i.get('category') == 'no entity type']
+        self.assertEqual(len(risk), 1); self.assertIn('Clearing file late', risk[0]['text']); self.assertIn("'risk'", risk[0]['reason'])
+        self.assertNotIn('Clearing file late', self.by_name)
+
+    def test_not_captured_section_and_files(self):  # HI-N06
+        rep = (self.tmp / 'out' / 'extraction-report.md').read_text()
+        self.assertIn('## Not captured', rep); self.assertIn('### file not read (1)', rep); self.assertIn('payments-hub-design', rep)
+        pdf = [i for i in self.doc['coverage']['items'] if i['file'] == 'archives/legacy/payments-hld-v1.pdf']
+        self.assertEqual([(i['status'], i['category']) for i in pdf], [('not captured', 'file not read')])
+        para = [i for i in self.doc['coverage']['items'] if i['kind'] == 'paragraph' and 'two review rounds' in i.get('text', '')]
+        self.assertEqual(para[0]['category'], 'text not read')
+
+
+def run_inspect(folder):
+    import contextlib, io
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf): transform.main(['inspect', str(folder), '--ocr', 'off'])
+    return buf.getvalue()
 
 
 class OcrTests(unittest.TestCase):

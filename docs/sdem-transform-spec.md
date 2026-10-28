@@ -58,6 +58,17 @@
 | HI-O04 | Pictures' text is read on the machine — macOS Vision (built in) or Tesseract; `--ocr auto|vision|tesseract|off`; SVG text read exactly; no network | built | `test_macos_vision_reads_the_whiteboard`, `test_tesseract_tsv`, `test_svg_text_is_read_without_ocr` |
 | HI-O05 | Stacked lines are one label; small-letter captions, short or long text and low OCR confidence are skipped; a label becomes a candidate (low) only when a name found, a label word or the section decides its type; the picture is always listed for a person with the labels read | built | `test_grouping_and_filters`, `test_stand_in_engine_makes_low_candidates_and_a_review_item` |
 
+## 3c. Nothing silently lost
+
+| ID | Requirement | Status | Test |
+|---|---|---|---|
+| HI-N01 | Every table, column, paragraph, picture, diagram shape, diagram line, diagram and file is accounted for as **captured**, **skipped** (with the reason) or **not captured** (with its category, place and text); per page the three add up to the total | built | `test_every_item_accounted_for` |
+| HI-N02 | Coverage per page and overall (captured ÷ (captured + not captured)) in `extraction.json`, `design-index.json`, the report and `inspect` | built | `test_coverage_reported` |
+| HI-N03 | Columns no rule maps are kept with their entity or link as `unmapped` (column → value) and reported as *column not mapped* | built | `test_unmapped_columns_kept` |
+| HI-N04 | A key-value table is read as the page's **facts** (e.g. owner, review date) in the design index | built | `test_key_value_table_becomes_page_facts` |
+| HI-N05 | A table whose headings contain a `no_entity_type_words` word is reported as *no entity type* (a candidate metamodel gap), never typed | built | `test_no_entity_type_reported_not_forced` |
+| HI-N06 | The report has a *Not captured* section grouped by category; files of types not read (PDF, Word, Excel, Visio …) are listed | built | `test_not_captured_section_and_files` |
+
 ## 4. Candidates
 
 | ID | Requirement | Status | Test |

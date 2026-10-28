@@ -115,6 +115,44 @@ If the same content appears twice (e.g. a section both in the raw HTML and in it
 
 Never above medium: every record is a **candidate** until a person confirms it (as AID-B6 caps name-only evidence).
 
+## 3a. Nothing silently lost — every item accounted for
+
+The transform cannot read everything, but it must **say what it did not read**. Every item in the export is accounted for with one of three outcomes:
+
+```mermaid
+flowchart LR
+    I["every item in the export<br/>table · column · paragraph · shape · line · picture · file"] --> C["✅ <b>captured</b><br/>became an entity, a link,<br/>an attribute or a page fact"]
+    I --> S["➖ <b>skipped by design</b><br/>with the reason: icon, caption,<br/>title box, empty, a diagram's preview"]
+    I --> N["⚠️ <b>not captured</b><br/>listed with its place and its text,<br/>for a person"]
+```
+
+A test proves the three add up to the total on every page — nothing disappears.
+
+| Item | Captured when | Skipped by design | Not captured (category) |
+|---|---|---|---|
+| **Table** | a rule reads it (entities or links); a key-value table → **page facts** | empty | no rule matched · **no entity type** |
+| **Column** of a table that was read | it fills the name, description, status, a link end or a mapped attribute | — | **column not mapped** — and the values are kept with the entity or link (`unmapped`) |
+| **Paragraph** | it names a known entity, or a phrase between two names gives a link (the *meaning* is not read) | — | text not read |
+| **Picture** | it is a diagram (read as one), or OCR labels became candidates (lines still for a person) | an icon; a diagram's preview | needs a person |
+| **Diagram shape** | it became an entity | a text box, caption, legend or title; no label; a group | no rule matched |
+| **Diagram line** | it became a link | — | line without both ends |
+| **Diagram** (PlantUML) of a kind not read | — | — | diagram kind not read |
+| **File** | a page, a diagram, a picture, or a provenance file in the root | styles, icons, the space index | file not read (PDF, Word, Excel, Visio …) |
+
+### Content that does not fit an architecture entity
+
+| Case | Example | Where it goes |
+|---|---|---|
+| a **detail of an entity** | a table's *RTO*, *Vendor*, *Protocol* column | onto the entity when the data model has the attribute and the rules map it; otherwise kept as **not mapped** beside the entity, for a person to map |
+| **about the page**, not an entity | owner, review date, approval status | the page's **facts** in the design index (from key-value tables) |
+| a **kind of thing SDEM has no type for** | risks, issues, costs, SLAs, decisions, constraints | **not captured — no entity type**, listed with its place and text; never forced into a wrong type. Recurring ones are **candidate metamodel gaps** for the owner — the metamodel changes only with the owner's approval |
+
+Words that signal *no entity type* (e.g. "risk", "cost", "SLA") are in `metamodel/transform-rules.json` (`no_entity_type_words`), so a table of risks is reported as a possible gap, not as "no rule".
+
+### Coverage
+
+Per page and overall: **captured ÷ (captured + not captured)**, skipped items left out. Shown in the report, the design index (with each page's facts and its not-captured count) and `sdem transform inspect`.
+
 ## 4. What it produces — and what it does not
 
 ```
@@ -148,7 +186,7 @@ Everything is written to the output folder (`-o`); nothing else is created or ch
 | *(no `a2-service-domain.json`)* | — | — | never (CTL-17) |
 | `extraction.json` | every entity and link with **all its sources** (page, place, rule, confidence, reasoning); candidate links between architectures with the SDEM link type that fits (or none — a person decides); BIAN mentions; items for a person; the check result; provenance files of the export root; fingerprints of the export and the rules; summary figures | JSON | always |
 | `design-index.json` | every page (and loose diagram or picture file): Confluence id, title, space, link, breadcrumb, file, last modified, the entities found on it, existing records it mentions, its diagrams and pictures; the provenance files | JSON | always |
-| `extraction-report.md` | the review page: Summary · Check · Records · Links inside · Links between · BIAN elements named · For a person · Export provenance · Designs · Next | Markdown | always |
+| `extraction-report.md` | the review page: Summary · **Coverage** · Check · Records · Links inside · Links between · BIAN elements named · For a person · **Not captured** · Export provenance · Designs · Next | Markdown | always |
 
 **In every entity** (dataset format): `id` `HIS-<architecture>-<NAME>` · `type` (an entity type of the metamodel) · `name` · `version` = the page's last-modified date (else `1`) · `lifecycle_status` when a status column says so · `description` (a table's description column first, else a diagram's second line) · `attributes.source_id` = `confluence:<pages>` (links the engine later proposes for it are capped at low, DEC-E-11) · `attributes.modified` · `attributes.deployed_on` for an application drawn inside, or said to run on, a node (HI-R06 — the form the engine reads) · `source_system` `CONFLUENCE-EXTRACT` on the dataset. **In every link inside an architecture:** `source`, `kind` (one the metamodel allows for the pair), `target`, `name` (the line's or row's label).
 

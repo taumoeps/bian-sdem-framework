@@ -282,6 +282,22 @@
       ]
     }
   ],
+  "no_entity_type_words": [
+    "risk",
+    "issue",
+    "assumption",
+    "decision",
+    "dependency",
+    "constraint",
+    "cost",
+    "budget",
+    "sla",
+    "kpi",
+    "principle",
+    "mitigation",
+    "action item",
+    "open question"
+  ],
   "link_tables": [
     {
       "id": "HL-01",

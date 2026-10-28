@@ -135,12 +135,15 @@ def scan(root, rules):
     draw.io diagrams (any file holding one), pictures, other. Returns a dict of lists plus the folder layout."""
     root = Path(root); skip_files = set(rules.get('skip_files', [])); skip = [s.strip('/') for s in rules.get('skip_folders', [])]
     att = {a.strip('/').lower() for a in rules.get('attachment_folders', [])}; limit = rules.get('max_diagram_bytes', 50_000_000)
-    out = {'provenance': [], 'pages': [], 'diagrams': {}, 'pictures': [], 'other': [], 'layout': collections.defaultdict(collections.Counter)}
+    out = {'provenance': [], 'pages': [], 'diagrams': {}, 'pictures': [], 'other': [], 'skipped': [], 'layout': collections.defaultdict(collections.Counter)}
     for p in sorted(root.rglob('*')):
         if not p.is_file(): continue
         rel = p.relative_to(root).as_posix(); parts = rel.split('/'); folder = '/'.join(parts[:-1]) or '.'
         if any(x.startswith('.') or x == '__MACOSX' for x in parts) or p.name in skip_files or any(('/' + rel).startswith('/' + s + '/') or f'/{s}/' in '/' + rel for s in skip):
-            out['layout'][folder]['skipped'] += 1; continue
+            out['layout'][folder]['skipped'] += 1
+            out['skipped'].append((rel, 'a hidden or system file' if any(x.startswith('.') or x == '__MACOSX' for x in parts) else
+                                   'listed in skip_files (e.g. the space index)' if p.name in skip_files else 'in a skipped folder (styles, icons)'))
+            continue
         ext = p.suffix.lower(); in_att = bool({x.lower() for x in parts[:-1]} & att)
         if len(parts) == 1 and ext not in ('.html', '.htm'):
             out['provenance'].append(p); kind = 'provenance'
@@ -648,12 +651,26 @@ class Extraction:
         self.links, self.cross, self.review, self.pages, self.bian_mentions = [], [], [], [], []
         self.known = {}            # norm name -> (id, type, file) from --known datasets
         self.stats = collections.Counter()
+        self.ledger = []           # every item: captured, skipped (with the reason) or not captured (with category, place, text) — HI-N01
         self.inspect = {'tables': collections.Counter(), 'shapes': collections.Counter(), 'headings': collections.Counter()}
         for f in known:
             d = json.loads(Path(f).read_text(encoding='utf-8'))
             for i in d.get('instances', []):
                 self.known.setdefault(norm(i['name']), (i['id'], i['type'], Path(f).name))
         self.cap = self.rules['confidence']
+
+    # ---- the ledger: nothing silently lost (HI-N01)
+    def account(self, page, kind, where, status, reason, category=None, text='', refs=()):
+        e = {'page_id': page['page_id'], 'page_title': page['title'], 'file': page['file'], 'kind': kind, 'where': where, 'status': status, 'reason': reason}
+        if category: e['category'] = category
+        if text: e['text'] = clean(text)[:240]
+        refs = sorted({r for r in refs if r})
+        if refs: e['records'] = refs
+        self.ledger.append(e)
+
+    def no_entity_type(self, words):
+        t = ' ' + norm(' '.join(words)) + ' '
+        return next((w for w in self.rules.get('no_entity_type_words', []) if f' {norm(w)} ' in t or f' {norm(w)}s ' in t), None)
 
     # ---- records
     def _id(self, etype, name):
@@ -688,11 +705,11 @@ class Extraction:
         self.stats[f'{how} evidence'] += 1
         return r
 
-    def link(self, a, kind, b, page, where, rule, how, reasoning, label=''):
+    def link(self, a, kind, b, page, where, rule, how, reasoning, label='', unmapped=None):
         """A line between two records. Same architecture → a within-architecture relationship, the kind checked against
         the rulebook (falls back to association, which ArchiMate allows between any two). Different architectures →
         a candidate link between architectures, for the engine and a person."""
-        if not a or not b or a is b: return
+        if not a or not b or a is b: return False
         if a['type'][:2] == b['type'][:2]:
             lvl = a['type'][:2]
             kinds = [kind] if kind and kind != 'deployed_on' else []
@@ -702,9 +719,11 @@ class Extraction:
             key = (a['id'], chosen, b['id'])
             ex = next((l for l in self.links if (l['source'], l['kind'], l['target']) == key), None)
             src = {'page_id': page['page_id'], 'page_title': page['title'], 'where': where, 'rule': rule, 'confidence': self.cap[how], 'reasoning': reasoning}
-            if ex: ex['sources'].append(src) if src not in ex['sources'] else None
-            else: self.links.append({'source': a['id'], 'kind': chosen, 'target': b['id'], 'name': clean(label), 'sources': [src]})
-            return
+            if not ex:
+                ex = {'source': a['id'], 'kind': chosen, 'target': b['id'], 'name': clean(label), 'sources': []}; self.links.append(ex)
+            if src not in ex['sources']: ex['sources'].append(src)
+            if unmapped: ex.setdefault('unmapped', {}).update(unmapped)
+            return True
         types = [r for r in _cross_types() if self.mm.is_a(a['type'], r['source_type']) and self.mm.is_a(b['type'], r['target_type'])]
         if not types:
             types_rev = [r for r in _cross_types() if self.mm.is_a(b['type'], r['source_type']) and self.mm.is_a(a['type'], r['target_type'])]
@@ -717,8 +736,11 @@ class Extraction:
         ex = next((c for c in self.cross if (c['source'], c['target'], c['mapping_type_id']) == (a['id'], b['id'], mt)), None)
         if ex:
             if src not in ex['sources']: ex['sources'].append(src)
-            ex['confidence'] = best(ex['sources']); return
-        self.cross.append({'source': a['id'], 'target': b['id'], 'mapping_type_id': mt, 'name': clean(label), 'confidence': src['confidence'], 'sources': [src]})
+            ex['confidence'] = best(ex['sources'])
+        else:
+            ex = {'source': a['id'], 'target': b['id'], 'mapping_type_id': mt, 'name': clean(label), 'confidence': src['confidence'], 'sources': [src]}; self.cross.append(ex)
+        if unmapped: ex.setdefault('unmapped', {}).update(unmapped)
+        return True
 
     def lifecycle(self, value):
         v = norm(value)
@@ -740,14 +762,22 @@ class Extraction:
         kind, headers, rows = data
         hn = [norm(h) for h in headers]
         where = f"table {n}" + (f" under '{section}'" if section else '')
+        if kind == 'keyvalue':  # a heading down the first column: facts about the page (HI-N04)
+            facts = {clean(k): clean(r[0]) for k, r in zip(headers, rows) if clean(k) and r and clean(r[0])}
+            page.setdefault('facts', {}).update(facts)
+            self.inspect['tables'][(kind, tuple(hn), 'page facts')] += 1
+            self.account(page, 'table', where, 'captured', 'a key-value table — read as the page\'s facts: ' + ', '.join(facts), text=' | '.join(f'{k}: {v}' for k, v in facts.items())); return
         if kind != 'grid' or not rows:
-            self.inspect['tables'][(kind, tuple(hn), 'not read — ' + ('key-value table' if kind == 'keyvalue' else 'no rows'))] += 1; return
+            self.inspect['tables'][(kind, tuple(hn), 'not read — no rows')] += 1
+            self.account(page, 'table', where, 'skipped', 'empty — headings only, no rows', text=' | '.join(headers)); return
         for lr in self.rules.get('link_tables', []):
             si = next((i for i, h in enumerate(hn) if h in map(norm, lr['source'])), None)
             ti = next((i for i, h in enumerate(hn) if h in map(norm, lr['target'])), None)
             if si is None or ti is None or si == ti: continue
             li = next((i for i, h in enumerate(hn) if h in map(norm, lr['label'])), None)
             self.inspect['tables'][('grid', tuple(hn), lr['id'])] += 1
+            used, refs = {si, ti} | ({li} if li is not None else set()), set()
+            extra = [i for i in range(len(headers)) if i not in used]
             for k, row in enumerate(rows, 1):
                 if len(row) <= max(si, ti): continue
                 s, _ = first_line(row[si]); t, _ = first_line(row[ti])
@@ -756,7 +786,11 @@ class Extraction:
                 a = self.find(s) or self.record(lr['endpoint_type'], s, page, w, lr['id'], 'table_endpoint', f"named as the source in a '{headers[si]}' column — assumed {lr['endpoint_type'].split('.')[1]}")
                 b = self.find(t) or self.record(lr['endpoint_type'], t, page, w, lr['id'], 'table_endpoint', f"named as the target in a '{headers[ti]}' column — assumed {lr['endpoint_type'].split('.')[1]}")
                 lab = first_line(row[li])[0] if li is not None and len(row) > li else ''
-                self.link(a, lr.get('kind'), b, page, w, lr['id'], 'table', f"row of a source/target table ('{headers[si]}' → '{headers[ti]}')", lab)
+                um = {headers[i]: clean(row[i]) for i in extra if i < len(row) and clean(row[i])}
+                self.link(a, lr.get('kind'), b, page, w, lr['id'], 'table', f"row of a source/target table ('{headers[si]}' → '{headers[ti]}')", lab, um)
+                refs |= {x['id'] for x in (a, b) if x}
+            self.account(page, 'table', where, 'captured', f"links read by rule {lr['id']} ({len(rows)} rows)", text=' | '.join(headers), refs=refs)
+            self._unmapped_columns(page, where, headers, rows, extra, 'kept with each link as unmapped')
             return
         best, score = None, 0
         for tr in self.rules['tables']:
@@ -766,21 +800,45 @@ class Extraction:
             if ni == 0: s += 1
             if s > score: best, score = (tr, ni), s
         if not best:
-            self.inspect['tables'][('grid', tuple(hn), 'no rule')] += 1; return
+            w = self.no_entity_type(headers)
+            self.inspect['tables'][('grid', tuple(hn), 'no entity type' if w else 'no rule')] += 1
+            if w: self.account(page, 'table', where, 'not captured', f"the headings name '{w}' — SDEM has no entity type for it (a candidate metamodel gap for the owner)",
+                               'no entity type', ' | '.join(headers) + f' — {len(rows)} rows, e.g. ' + ' | '.join(clean(c) for c in rows[0]))
+            else: self.account(page, 'table', where, 'not captured', 'no rule reads these headings — add the column name to the rules if it lists entities',
+                               'no rule matched', ' | '.join(headers) + f' — {len(rows)} rows, e.g. ' + ' | '.join(clean(c) for c in rows[0]))
+            return
         tr, ni = best
         self.inspect['tables'][('grid', tuple(hn), tr['id'])] += 1
         col = lambda words: next((i for i, h in enumerate(hn) if h in map(norm, words) and i != ni), None)
         di, li = col(tr.get('description', [])), col(tr.get('lifecycle', []))
         ai = {k: col(v) for k, v in tr.get('attributes', {}).items()}
+        used = {ni, di, li} | set(ai.values()); extra = [i for i in range(len(headers)) if i not in used]
+        refs, empty = set(), 0
         for k, row in enumerate(rows, 1):
-            if len(row) <= ni: continue
+            if len(row) <= ni: empty += 1; continue
             name, rest = first_line(row[ni])
-            if not name: continue
+            if not name: empty += 1; continue
             cell = lambda i: clean(row[i]) if i is not None and i < len(row) else ''
             attrs = {a: cell(i) for a, i in ai.items() if cell(i)}
-            self.record(tr['type'], name, page, f'{where}, row {k}', tr['id'], 'table',
-                        f"listed in a table whose '{headers[ni]}' column names {tr['type'].split('.')[1]} records",
-                        cell(di) or rest, self.lifecycle(cell(li)), attrs)
+            r = self.record(tr['type'], name, page, f'{where}, row {k}', tr['id'], 'table',
+                            f"listed in a table whose '{headers[ni]}' column names {tr['type'].split('.')[1]} records",
+                            cell(di) or rest, self.lifecycle(cell(li)), attrs)
+            if r:
+                refs.add(r['id'])
+                um = {headers[i]: cell(i) for i in extra if cell(i)}
+                if um: r.setdefault('unmapped', {}).update(um)
+        self.account(page, 'table', where, 'captured', f"{tr['type'].split('.')[1]} entities read by rule {tr['id']} ({len(rows) - empty} rows)", text=' | '.join(headers), refs=refs)
+        if empty: self.account(page, 'table rows', where, 'skipped', f'{empty} row(s) with an empty name')
+        self._unmapped_columns(page, where, headers, rows, extra, 'kept with each entity as unmapped')
+
+    def _unmapped_columns(self, page, where, headers, rows, extra, kept):
+        """HI-N03: a column no rule maps is not lost — its values stay with the entity or link, and it is reported."""
+        for i in extra:
+            vals = [clean(r[i]) for r in rows if i < len(r) and clean(r[i])]
+            if not vals: self.account(page, 'column', f"{where}, column '{headers[i]}'", 'skipped', 'an empty column'); continue
+            self.account(page, 'column', f"{where}, column '{headers[i]}'", 'not captured',
+                         f"no rule maps this column — {kept}; map it in the rules if the data model has an attribute for it",
+                         'column not mapped', f"{headers[i]}: " + ', '.join(dict.fromkeys(vals))[:200])
 
     def find(self, name):
         n = norm(name)
@@ -817,7 +875,8 @@ class Extraction:
     def diagram(self, page, dname, xml, where, context):
         try: pages = mx_pages(xml)
         except (ET.ParseError, ValueError, zlib.error) as e:
-            self.review.append({'page_id': page['page_id'], 'page_title': page['title'], 'what': 'diagram', 'where': where, 'why': f'draw.io file could not be read ({e.__class__.__name__})'}); return
+            self.review.append({'page_id': page['page_id'], 'page_title': page['title'], 'what': 'diagram', 'where': where, 'why': f'draw.io file could not be read ({e.__class__.__name__})'})
+            self.account(page, 'diagram', where, 'not captured', f'the draw.io file could not be read ({e.__class__.__name__})', 'file not read'); return
         self.stats['diagrams read'] += 1
         for pname, model in pages:
             cells = mx_cells(model); by = {c['id']: c for c in cells}; recs = {}
@@ -825,19 +884,26 @@ class Extraction:
             for c in cells:
                 if c.get('vertex') != '1': continue
                 st = style_of(c.get('style'))
-                if 'text' in st.get('_bare', []) or st.get('shape') == 'text' or (c.get('parent') in by and by[c['parent']].get('edge') == '1'): continue
+                w = f"{where}{' page ' + repr(pname) if pname else ''}, shape {c['id']}"
                 name, desc = label_text(c['value'])
+                if c.get('parent') in by and by[c['parent']].get('edge') == '1':
+                    self.account(page, 'shape', w, 'skipped', 'the caption of a line (read with the line)', text=name); continue
+                if 'text' in st.get('_bare', []) or st.get('shape') == 'text':
+                    self.account(page, 'shape', w, 'skipped', 'a text box — a title or note, not an element', text=name); continue
                 key = st.get('shape') or (st.get('_bare') or ['(plain box)'])[0]
                 if not name:
-                    self.inspect['shapes'][(key, 'no label — skipped')] += 1; continue
-                if name.lower() in ('legend', 'key', 'title') or len(name) > 80: continue
+                    self.inspect['shapes'][(key, 'no label — skipped')] += 1
+                    self.account(page, 'shape', w, 'skipped', 'no label — nothing to name an entity by'); continue
+                if name.lower() in ('legend', 'key', 'title') or len(name) > 80:
+                    self.account(page, 'shape', w, 'skipped', 'a legend, key or title, or a paragraph of text', text=name); continue
                 etype, how, rule, why = self.classify(c, st, name, desc, ctx, None)
                 self.inspect['shapes'][(key, etype or 'unclassified')] += 1
-                w = f"{where}{' page ' + repr(pname) if pname else ''}, shape {c['id']}"
                 if not etype:
                     self.review.append({'page_id': page['page_id'], 'page_title': page['title'], 'what': 'shape', 'where': w, 'name': name,
-                                        'why': 'no rule decides its type — add a label or shape word to the rules, or record it by hand'}); continue
+                                        'why': 'no rule decides its type — add a label or shape word to the rules, or record it by hand'})
+                    self.account(page, 'shape', w, 'not captured', 'no rule decides its type', 'no rule matched', name); continue
                 recs[c['id']] = self.record(etype, name, page, w, rule, how, why, desc)
+                self.account(page, 'shape', w, 'captured', f"{etype.split('.')[1]} ({rule})", text=name, refs=[recs[c['id']]['id'] if recs[c['id']] else None])
             for cid, r in recs.items():  # a shape inside another: part of it (same architecture) or deployed on it
                 p = by.get(cid, {}).get('parent')
                 if p in recs and recs[p] is not r:
@@ -850,13 +916,16 @@ class Extraction:
             for c in cells:
                 if c.get('edge') != '1': continue
                 a, b = recs.get(c.get('source')), recs.get(c.get('target'))
-                if not a or not b:
-                    self.stats['lines not between two read shapes'] += 1; continue
                 lab, _ = label_text(c['value'])
                 lab = lab or next((label_text(x['value'])[0] for x in cells if x.get('parent') == c['id'] and x.get('value')), '')
+                wl = f"{where}{' page ' + repr(pname) if pname else ''}, line {c['id']}"
+                if not a or not b:
+                    self.stats['lines not between two read shapes'] += 1
+                    self.account(page, 'line', wl, 'not captured', 'one or both ends are not a shape that became an entity', 'line without both ends', lab); continue
                 kind, rev, rule = self.phrase(lab)
                 if rev: a, b = b, a
                 self.link(a, kind, b, page, f"{where}, line {c['id']}", rule or 'HD-E', 'diagram_line', 'a line between the two shapes' + (f" labelled '{lab}'" if lab else ''), lab)
+                self.account(page, 'line', wl, 'captured', 'a link', text=lab, refs=[a['id'], b['id']])
 
     def read_diagram(self, page, dname, diagram, where, context):
         kind, source = diagram
@@ -883,7 +952,8 @@ class Extraction:
         els, rels, kind = plantuml_parse(src)
         if not els:
             self.review.append({'page_id': page['page_id'], 'page_title': page['title'], 'what': 'PlantUML diagram not read', 'where': where,
-                                'why': f'a @start{kind} diagram with no elements SDEM reads (activity, mind map, Gantt …) — a person records it'}); return
+                                'why': f'a @start{kind} diagram with no elements SDEM reads (activity, mind map, Gantt …) — a person records it'})
+            self.account(page, 'diagram', where, 'not captured', f'a @start{kind} diagram with no elements SDEM reads', 'diagram kind not read', src[:200]); return
         self.stats['diagrams read'] += 1; self.stats['plantuml diagrams'] += 1
         types = {re.sub(r'[^a-z]', '', k.lower()): v for k, v in self.rules['plantuml_types'].items() if k != 'note'}
         groups = {re.sub(r'[^a-z]', '', g.lower()) for g in self.rules.get('plantuml_groups', [])}
@@ -897,15 +967,19 @@ class Extraction:
                 why = f"declared as PlantUML {e['keyword']}" + (f" <<{e['stereo']}>>" if e['stereo'] else '')
                 self.inspect['shapes'][('plantuml ' + (e['stereo'] or e['keyword']), etype)] += 1
                 recs[key] = self.record(etype, e['name'], page, w, 'HU-T', how, why, e['desc'])
+                self.account(page, 'shape', w, 'captured', f"{etype.split('.')[1]} (HU-T)", text=e['name'], refs=[recs[key]['id'] if recs[key] else None])
                 continue
             if kw in groups or kw.endswith('boundary'):
-                self.inspect['shapes'][('plantuml ' + e['keyword'], 'group — not a record')] += 1; continue
+                self.inspect['shapes'][('plantuml ' + e['keyword'], 'group — not a record')] += 1
+                self.account(page, 'shape', w, 'skipped', f"a {e['keyword']} — a group of elements, not an element", text=e['name']); continue
             etype, rule, why = self.guess(e['name'], e['desc'], ' / '.join(x for x in (context, dname) if x), 'plantuml_untyped', 'HU')
             self.inspect['shapes'][('plantuml ' + e['keyword'], etype or 'unclassified')] += 1
             if not etype:
                 self.review.append({'page_id': page['page_id'], 'page_title': page['title'], 'what': 'shape', 'where': w, 'name': e['name'],
-                                    'why': 'no rule decides its type — add a word to the rules, or record it by hand'}); continue
+                                    'why': 'no rule decides its type — add a word to the rules, or record it by hand'})
+                self.account(page, 'shape', w, 'not captured', 'no rule decides its type', 'no rule matched', e['name']); continue
             recs[key] = self.record(etype, e['name'], page, w, rule, 'plantuml_untyped', why, e['desc'])
+            self.account(page, 'shape', w, 'captured', f"{etype.split('.')[1]} ({rule})", text=e['name'], refs=[recs[key]['id'] if recs[key] else None])
         for key, e in els.items():  # nesting: part of the group's record, or deployed on it
             par = e['parent']
             while par and par not in recs: par = els.get(par, {}).get('parent')
@@ -915,7 +989,10 @@ class Extraction:
                 else: self.link(r, 'deployed_on', outer, page, f"{where}, {key} inside {par}", 'HU-C', 'diagram_line', 'declared inside the other element')
         for a, b, label, how in rels:
             ra, rb = recs.get(a), recs.get(b)
-            if not ra or not rb: self.stats['lines not between two read shapes'] += 1; continue
+            if not ra or not rb:
+                self.stats['lines not between two read shapes'] += 1
+                self.account(page, 'line', f"{where}, {a} → {b}", 'not captured', 'one or both ends are not an element that became an entity', 'line without both ends', label); continue
+            self.account(page, 'line', f"{where}, {a} → {b}", 'captured', 'a link', text=label, refs=[ra['id'], rb['id']])
             m = re.match(r'(?i)(?:bi)?rel_(flow|serving|triggering|realization|realisation|assignment|composition|aggregation|access|association|specialization)', how)
             kind, rev, rule = (m.group(1).lower().replace('realisation', 'realization'), False, 'HU-R') if m else self.phrase(label)
             if rev: ra, rb = rb, ra
@@ -946,6 +1023,10 @@ class Extraction:
                                     'a pasted picture — a person records what it shows, or redraws it in draw.io or PlantUML') + read + note
                                    + ('' if rel else ' (the file is not in the export)')})
         page['images_for_review'].append(rel or shown_as); self.stats['pictures for a person'] += 1
+        if made: self.account(page, 'picture', where, 'captured', f"{len(made)} label(s) read into candidates — its boxes and lines are for a person", text=', '.join(made),
+                              refs=[r['id'] for r in self.records.values() if r['name'] in made])
+        else: self.account(page, 'picture', where, 'not captured', 'a picture — ' + ('its labels have no type a rule decides' if labels else 'nothing could be read from it') + note,
+                           'needs a person', ', '.join(l['name'] for l in labels) or (alt or ''))
         return made
 
     def phrase(self, text):
@@ -961,12 +1042,17 @@ class Extraction:
         for r in self.records.values():
             n = norm(r['name'])
             if len(n) >= nr['min_name_chars'] and n not in ignore: names.setdefault(n, r)
-        if not names: return
+        if not names:
+            for section, text in texts:
+                self.account(page, 'paragraph', 'text' + (f" under '{section}'" if section else ''), 'not captured', 'no known name in it — its meaning is not read without AI', 'text not read', text)
+            return
         rx = re.compile(r'\b(' + '|'.join(re.escape(n) for n in sorted(names, key=len, reverse=True)) + r')\b')
         for section, text in texts:
+            found, linked = set(), 0
             for sent in re.split(r'(?<=[.;!?])\s+', text):
                 s = norm(sent); hits = [(m.start(), m.end(), names[m.group(1)]) for m in rx.finditer(s)]
                 where = 'text' + (f" under '{section}'" if section else '')
+                found |= {r['id'] for _, _, r in hits}
                 for _, _, r in hits:
                     src = {'page_id': page['page_id'], 'page_title': page['title'], 'file': page['file'], 'where': where, 'rule': 'HN-01',
                            'confidence': self.cap['narrative'], 'reasoning': 'mentioned by name in the text'}
@@ -977,7 +1063,10 @@ class Extraction:
                     kind, rev, rule = self.phrase(between)
                     if not kind: continue
                     x, y = (b, a) if rev else (a, b)
-                    self.link(x, kind, y, page, where, rule, 'narrative', f"the text says '{clean(sent)[:160]}'")
+                    self.link(x, kind, y, page, where, rule, 'narrative', f"the text says '{clean(sent)[:160]}'"); linked += 1
+            w = 'text' + (f" under '{section}'" if section else '')
+            if found: self.account(page, 'paragraph', w, 'captured', f"names {len(found)} known entit{'y' if len(found) == 1 else 'ies'}" + (f', {linked} link(s) from its phrases' if linked else '') + ' — the rest of its meaning is not read', text=text, refs=found)
+            else: self.account(page, 'paragraph', w, 'not captured', 'no known name in it — its meaning is not read without AI', 'text not read', text)
             for n, k in self.known.items():
                 if len(n) >= nr['min_name_chars'] and n not in ignore and re.search(r'\b' + re.escape(n) + r'\b', norm(text)):
                     page.setdefault('existing_mentions', set()).add(k[0])
@@ -1015,16 +1104,20 @@ class Extraction:
                 p['diagrams'].append({'name': name, 'file': f"{p['file']}#plantuml-{n_pu}", 'kind': 'plantuml', 'read': True})
             elif kind == 'img':
                 src = urllib.parse.unquote(x['src']).split('?')[0]
-                if not src or any(s in src for s in self.rules['skip_images']): continue
+                if not src or any(s in src for s in self.rules['skip_images']):
+                    self.account(p, 'picture', f"picture {src or '(no source)'}", 'skipped', 'an icon or emoticon', text=x.get('alt', '')); continue
                 t = self.resolve(p, src)
                 alias = norm(re.sub(r'\.(png|svg|jpe?g)$', '', x['alias'] or x['alt'], flags=re.I))
                 if t in self.diagrams:  # the picture is the diagram (a draw.io PNG or SVG)
-                    mine.setdefault(t, Path(t).stem); sec_of[t] = section; self.used_pictures.add(t); continue
+                    mine.setdefault(t, Path(t).stem); sec_of[t] = section; self.used_pictures.add(t)
+                    self.account(p, 'picture', f'picture {t}', 'skipped', 'the picture is a diagram — read as a diagram (its shapes and lines are accounted for)'); continue
                 if t: self.used_pictures.add(t)
                 folder = os.path.dirname(t) if t else None
                 match = next((rel for rel, name in mine.items() if (alias and norm(name) == alias) or norm(Path(rel).stem) == norm(Path(src).stem)), None) \
                     or next((rel for rel in self.diagrams if folder is not None and os.path.dirname(rel) == folder and norm(Path(rel).stem.split('.')[0]) == norm(Path(src).stem.split('.')[0])), None)
-                if match: mine.setdefault(match, Path(match).stem); sec_of[match] = section; continue
+                if match:
+                    mine.setdefault(match, Path(match).stem); sec_of[match] = section
+                    self.account(p, 'picture', f'picture {t or src}', 'skipped', f'the preview of diagram {match} — the diagram itself is read'); continue
                 self.picture(p, t, src, section, x['alt'])
         for rel, name in mine.items():
             self.read_diagram(p, name, self.diagrams[rel], f"diagram '{name}' ({rel})", sec_of.get(rel, ' / '.join(p['breadcrumb'])))
@@ -1091,7 +1184,6 @@ class Extraction:
         for p in self.pages: self.page(p)
         for rel, xml in self.diagrams.items():  # diagrams no page points to: read with their folder as context
             if rel in self.linked: continue
-            if any(os.path.dirname(rel) == os.path.dirname(u) and Path(u).stem.split('.')[0] == Path(rel).stem.split('.')[0] for u in self.used_pictures): continue
             sec = ' / '.join(folder_sections(rel, self.rules))
             pg = {'page_id': rel, 'id_from': 'path', 'title': f'{Path(rel).name} (diagram file)', 'space': '', 'file': rel, 'modified': None,
                   'breadcrumb': folder_sections(rel, self.rules), 'diagrams': [{'name': Path(rel).stem, 'file': rel, 'kind': xml[0], 'read': True}], 'images_for_review': [], 'url': None, 'diagram_only': True}
@@ -1100,9 +1192,15 @@ class Extraction:
                                 'why': 'read with its folder as context' + (f" ('{sec}')" if sec else '') + '; check which design it belongs to'})
             pg['_texts'] = []; self.pages.append(pg); self.stats['diagrams not linked'] += 1
         stems = {(os.path.dirname(d), Path(d).stem.split('.')[0].lower()) for d in self.diagrams}
+        fileitem = lambda rel: {'page_id': rel, 'title': Path(rel).name, 'file': rel}
         for rel in sc['pictures']:  # pictures no page shows: maybe the section's content
-            if rel in self.used_pictures or rel.startswith('attachments/') or any(s in rel for s in self.rules['skip_images']): continue
-            if (os.path.dirname(rel), Path(rel).stem.split('.')[0].lower()) in stems: continue   # a draw.io preview
+            if rel in self.used_pictures: continue   # accounted on the page that shows it
+            if any(s in rel for s in self.rules['skip_images']):
+                self.account(fileitem(rel), 'file', rel, 'skipped', 'an icon or emoticon'); continue
+            if (os.path.dirname(rel), Path(rel).stem.split('.')[0].lower()) in stems:
+                self.account(fileitem(rel), 'file', rel, 'skipped', 'the preview picture of a diagram that is read'); continue
+            if rel.startswith('attachments/'):
+                self.account(fileitem(rel), 'file', rel, 'skipped', 'a Confluence attachment no page shows (Confluence keeps old versions and previews)'); continue
             sec = ' / '.join(folder_sections(rel, self.rules))
             pg = {'page_id': rel, 'id_from': 'path', 'title': f'{Path(rel).name} (picture file)', 'space': '', 'file': rel, 'modified': None,
                   'breadcrumb': folder_sections(rel, self.rules), 'diagrams': [], 'images_for_review': [], 'url': None, 'diagram_only': True}
@@ -1110,6 +1208,11 @@ class Extraction:
             self.review[-1]['what'] = 'picture not shown on any page'
             pg['_texts'] = pg.pop('_texts_extra', []); self.pages.append(pg)
         for p in self.pages: self.narrative(p, p.pop('_texts'))  # after every page: names from all tables and diagrams
+        for rel, why in sc['skipped']: self.account(fileitem(rel), 'file', rel, 'skipped', why)
+        for f in self.provenance_files: self.account(fileitem(f['file']), 'file', f['file'], 'captured', 'a provenance file of the export (fingerprinted' + (f", {f['pages_matched']} page(s) matched" if f.get('pages_matched') else '') + ')')
+        for rel in sc['other']:
+            ext = Path(rel).suffix.lower() or '(no extension)'
+            self.account(fileitem(rel), 'file', rel, 'not captured', f'a {ext} file — SDEM does not read this type; a person records what it holds', 'file not read')
         dup = collections.defaultdict(list)
         for r in self.records.values(): dup[norm(r['name'])].append(r)
         for n, rs in dup.items():
@@ -1155,7 +1258,21 @@ class Extraction:
                 'labels_read_from_pictures': self.stats['labels read from pictures'], 'ocr_engine': getattr(self.ocr, 'engine', 'off') if self.ocr else 'off',
                 'pictures_for_a_person': self.stats['pictures for a person'], 'records': dict(sorted(by.items())),
                 'records_by_confidence': dict(conf), 'links_within': len(self.links), 'links_between_candidates': len(self.cross),
-                'for_review': len(self.review), 'narrative_mentions': self.stats['narrative mentions'], 'bian_mentions': len(self.bian_mentions)}
+                'for_review': len(self.review), 'narrative_mentions': self.stats['narrative mentions'], 'bian_mentions': len(self.bian_mentions),
+                'coverage': coverage(self.ledger)['overall'] if self.ledger else None}
+
+
+def coverage(ledger):
+    """HI-N02: captured ÷ (captured + not captured), overall and per page; skipped items are left out."""
+    def fig(items):
+        c = collections.Counter(i['status'] for i in items)
+        done = c['captured'] + c['not captured']
+        return {'captured': c['captured'], 'skipped': c['skipped'], 'not_captured': c['not captured'], 'items': len(items),
+                'percent': round(100 * c['captured'] / done) if done else 100}
+    by = collections.defaultdict(list)
+    for i in ledger: by[i['page_id']].append(i)
+    return {'overall': fig(ledger), 'by_page': {k: {'title': v[0]['page_title'], 'file': v[0]['file'], **fig(v)} for k, v in by.items()},
+            'not_captured_by_category': dict(collections.Counter(i.get('category') for i in ledger if i['status'] == 'not captured').most_common())}
 
 
 def best(sources):
@@ -1191,25 +1308,28 @@ def extract(root, out, rules=None, known=(), model_id=None, now=None, ocr='auto'
             'status': 'candidate — not real architecture data until a person confirms each record', 'summary': x.summary(),
             'provenance_files': x.provenance_files}
     records = [{'id': r['id'], 'type': r['type'], 'name': r['name'], 'confidence': best(r['sources']), 'status': 'candidate',
-                'sources': r['sources'], **({'same_as_existing': r['same_as_existing']} if r.get('same_as_existing') else {})}
+                'sources': r['sources'], **({'same_as_existing': r['same_as_existing']} if r.get('same_as_existing') else {}),
+                **({'unmapped': r['unmapped']} if r.get('unmapped') else {})}
                for r in sorted(x.records.values(), key=lambda r: r['id'])]
     links = [{**l, 'confidence': best(l['sources']), 'status': 'candidate'} for l in x.links]
     (out / 'extraction.json').write_text(json.dumps({**meta, 'records': records, 'links_within': links, 'links_between_candidates': x.cross, 'bian_mentions': x.bian_mentions,
+                                                     'coverage': {**coverage(x.ledger), 'items': x.ledger},
                                                      'for_review': x.review, 'check': issues}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    idx = []
+    idx, cov = [], coverage(x.ledger)
     for p in x.pages:
         ids = sorted({r['id'] for r in x.records.values() if any(s['page_id'] == p['page_id'] for s in r['sources'])})
         idx.append({'page_id': p['page_id'], 'page_id_from': p.get('id_from'), 'title': p['title'], 'space': p['space'], 'url': p.get('url'),
                     'breadcrumb': p['breadcrumb'], 'file': p['file'], 'modified': p['modified'], 'diagram_only': bool(p.get('diagram_only')),
                     'records': ids, 'existing_records_mentioned': sorted(p.get('existing_mentions', ())),
-                    'diagrams': p['diagrams'], 'pictures_for_a_person': p['images_for_review']})
+                    'diagrams': p['diagrams'], 'pictures_for_a_person': p['images_for_review'],
+                    'facts': p.get('facts', {}), 'coverage': cov['by_page'].get(p['page_id'])})
     (out / 'design-index.json').write_text(json.dumps({'generated': now, 'export': str(root), 'provenance_files': x.provenance_files, 'designs': idx},
                                                       indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    (out / 'extraction-report.md').write_text(report(x, meta, records, links, issues, idx), encoding='utf-8')
+    (out / 'extraction-report.md').write_text(report(x, meta, records, links, issues, idx, cov), encoding='utf-8')
     return x, ds, issues
 
 
-def report(x, meta, records, links, issues, idx):
+def report(x, meta, records, links, issues, idx, cov=None):
     s = meta['summary']; L = []
     L.append('# Confluence extraction — candidate architecture records\n')
     L.append(f"> Generated {meta['generated']} by `sdem transform run` from `{meta['export']}` (rules `{meta['rules']}`). "
@@ -1220,6 +1340,16 @@ def report(x, meta, records, links, issues, idx):
     L.append('|---|---|---|---|---|---|---|---|')
     L.append(f"| {s['pages']} | {s['tables']} | {s['diagrams_read']} | {s['pictures_for_a_person']} | "
              + ', '.join(f'{k} {v}' for k, v in s['records'].items()) + f" | {s['links_within']} | {s['links_between_candidates']} | {s['for_review']} |\n")
+    if cov:
+        o = cov['overall']
+        L.append('## Coverage — nothing silently lost\n')
+        L.append(f"**{o['percent']}% captured** — {o['captured']} items captured, {o['not_captured']} not captured, {o['skipped']} skipped by design "
+                 f"({o['items']} items: tables, columns, paragraphs, shapes, lines, pictures, files). Every item not captured is listed under *Not captured*.\n")
+        L.append('| Page or file | Captured | Not captured | Skipped | Coverage |')
+        L.append('|---|---|---|---|---|')
+        for k, v in sorted(cov['by_page'].items(), key=lambda kv: kv[1]['percent']):
+            L.append(f"| {v['title']} (`{v['file']}`) | {v['captured']} | {v['not_captured']} | {v['skipped']} | {v['percent']}% |")
+        L.append('')
     L.append('## Check (`sdem check` on the candidate datasets)\n')
     for lvl in ('A1', 'A2', 'A3', 'A4'):
         if lvl in issues:
@@ -1259,6 +1389,27 @@ def report(x, meta, records, links, issues, idx):
     L.append('|---|---|---|---|---|')
     for v in x.review:
         L.append(f"| {v['what']} | {v.get('page_title', '—')} | {v.get('where', '')} | {v.get('name', '')} | {v['why']} |")
+    if cov:
+        notes = {'no entity type': 'SDEM has no entity type for this kind of thing — a candidate metamodel gap for the owner; never forced into a wrong type',
+                 'no rule matched': 'add the words to your copy of the rules, or record it by hand',
+                 'column not mapped': 'the values are kept with each entity or link (`unmapped` in extraction.json); map the column in the rules if the data model has an attribute for it',
+                 'text not read': 'narrative with no known name in it — its meaning needs a person',
+                 'needs a person': 'pictures SDEM could not turn into entities',
+                 'line without both ends': 'a line whose ends did not both become entities',
+                 'diagram kind not read': 'diagram kinds SDEM does not read (activity, mind map …)',
+                 'file not read': 'file types SDEM does not read (PDF, Word, Excel, Visio …)'}
+        L.append('\n## Not captured\n')
+        L.append('Everything the transform read but could not turn into an entity, link, attribute or page fact — with its place and text, so nothing is lost.\n')
+        items = [i for i in x.ledger if i['status'] == 'not captured']
+        for cat, n in cov['not_captured_by_category'].items():
+            L.append(f"### {cat} ({n})\n")
+            L.append(f"{notes.get(cat, '')}\n")
+            L.append('| Page | Where | Text |')
+            L.append('|---|---|---|')
+            for i in [i for i in items if i.get('category') == cat][:60]:
+                L.append(f"| {i['page_title']} | {i['where']} | {i.get('text', '').replace('|', '/')} |")
+            if n > 60: L.append(f'| … | {n - 60} more in extraction.json (`coverage.items`) | |')
+            L.append('')
     L.append('\n## Export provenance (files in the export\'s root)\n')
     L.append('| File | Kind | Entries | Pages matched | SHA-256 |')
     L.append('|---|---|---|---|---|')
@@ -1292,12 +1443,14 @@ def inspect(root, rules=None, anonymous=False, ocr='auto'):
         return '/'.join(p if p.lower() in KEEP_NAMES else names.setdefault(p, f'F{len(names) + 1}') for p in folder.split('/'))
     layout = [{'folder': anon(f), 'depth': 0 if f == '.' else f.count('/') + 1, **dict(c)} for f, c in sorted(x.layout.items())]
     if anonymous:
-        return {'layout': layout, 'summary': x.summary(), 'for_review': collections.Counter(v['what'] for v in x.review)}
+        cov = coverage(x.ledger)
+        return {'layout': layout, 'summary': x.summary(), 'for_review': collections.Counter(v['what'] for v in x.review),
+                'coverage': {'overall': cov['overall'], 'not_captured_by_category': cov['not_captured_by_category']}}
     return {'layout': layout, 'summary': x.summary(),
             'tables': [{'kind': k, 'columns': list(h), 'rule': r, 'count': n} for (k, h, r), n in x.inspect['tables'].most_common()],
             'shapes': [{'shape': s, 'type': t, 'count': n} for (s, t), n in x.inspect['shapes'].most_common()],
             'headings': [{'heading': h, 'layer': l, 'paragraphs': n} for (h, l), n in x.inspect['headings'].most_common() if n],
-            'for_review': collections.Counter(v['what'] for v in x.review)}
+            'for_review': collections.Counter(v['what'] for v in x.review), 'coverage': coverage(x.ledger)}
 
 
 def main(argv=None):
@@ -1325,7 +1478,10 @@ def main(argv=None):
             for f in r['layout']:
                 print(f"  {'  ' * f['depth']}{f['folder']}: " + ', '.join(f'{k} {v}' for k, v in f.items() if k not in ('folder', 'depth')))
             if a.anonymous:
-                print('\nFor a person: ' + (', '.join(f'{k} {v}' for k, v in r['for_review'].items()) or 'nothing')); return 0
+                o = r['coverage']['overall']
+                print('\nFor a person: ' + (', '.join(f'{k} {v}' for k, v in r['for_review'].items()) or 'nothing'))
+                print(f"Coverage: {o['percent']}% captured ({o['captured']} captured, {o['not_captured']} not captured, {o['skipped']} skipped by design)"
+                      + (' — not captured: ' + ', '.join(f'{k} {v}' for k, v in r['coverage']['not_captured_by_category'].items()) if o['not_captured'] else '')); return 0
             print('\nTables (columns → rule):')
             for t in r['tables']: print(f"  {t['count']:>3} × [{' | '.join(t['columns'])}] → {t['rule']}")
             print('\nDiagram shapes (draw.io shape → type):')
@@ -1333,6 +1489,9 @@ def main(argv=None):
             print('\nHeadings (→ architecture):')
             for t in r['headings'][:40]: print(f"  {t['paragraphs']:>3} × {t['heading']} → {t['layer']}")
             print('\nFor a person: ' + (', '.join(f'{k} {v}' for k, v in r['for_review'].items()) or 'nothing'))
+            o = r['coverage']['overall']
+            print(f"\nCoverage: {o['percent']}% captured ({o['captured']} captured, {o['not_captured']} not captured, {o['skipped']} skipped by design)"
+                  + (' — not captured: ' + ', '.join(f'{k} {v}' for k, v in r['coverage']['not_captured_by_category'].items()) if o['not_captured'] else ''))
             print('\nTune: copy metamodel/transform-rules.json, add the column names or shape words marked "no rule"/"unclassified", pass --rules.')
             return 0
         x, ds, issues = extract(a.export, a.out, a.rules, a.known, a.model_id, ocr=a.ocr)

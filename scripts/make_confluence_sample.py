@@ -279,10 +279,15 @@ RAW_PAGE = """<html><head><title>Payments Hub Design</title></head><body>
 <p><img src="diagrams/hub-context.png" alt="hub context"></p>
 <p><img src="diagrams/payments-components.png" alt="payments components"></p>
 <p><img src="diagrams/payment-sequence.svg" alt="payment sequence"></p>
+<table><tr><th>Owner</th><td>Payments architecture team</td></tr><tr><th>Review date</th><td>2022-05-01</td></tr><tr><th>Approval</th><td>Design authority, approved</td></tr></table>
+<h2>Risks</h2>
+<table><tr><th>Risk</th><th>Impact</th><th>Mitigation</th></tr>
+<tr><td>Clearing file late</td><td>Payments miss the scheme cut-off</td><td>Hourly retries and an alert</td></tr></table>
 <h2>Applications</h2>
-<table><tr><th>Application</th><th>Purpose</th><th>Status</th></tr>
-<tr><td>Payments Hub</td><td>Captures and validates payment instructions</td><td>Live</td></tr>
-<tr><td>Clearing Gateway</td><td>Builds clearing files for the scheme</td><td>Live</td></tr></table>
+<table><tr><th>Application</th><th>Purpose</th><th>Status</th><th>Support hours</th></tr>
+<tr><td>Payments Hub</td><td>Captures and validates payment instructions</td><td>Live</td><td>24x7</td></tr>
+<tr><td>Clearing Gateway</td><td>Builds clearing files for the scheme</td><td>Live</td><td>Business hours</td></tr></table>
+<p>This design was approved by the design authority after two review rounds.</p>
 </body></html>
 """
 
@@ -339,7 +344,8 @@ def folder_export():
     binary = {'archives/diagrams/hub-context.png': png([('mxfile', urllib.parse.quote(CONTEXT_MODEL, safe=''))]),
               'archives/diagrams/payments-components.png': png([('plantuml', COMPONENTS_PUML)]),
               'Payments Hub Design/1. Business Context/journey-sketch.jpg': b'\xff\xd8\xff\xe0 synthetic jpeg \xff\xd9',
-              'Payments Hub Design/3. Infrastructure/rack-photo.jpg': b'\xff\xd8\xff\xe0 synthetic jpeg \xff\xd9'}
+              'Payments Hub Design/3. Infrastructure/rack-photo.jpg': b'\xff\xd8\xff\xe0 synthetic jpeg \xff\xd9',
+              'archives/legacy/payments-hld-v1.pdf': b'%PDF-1.4 synthetic, not a real document %%EOF'}
     for rel, t in text.items():
         p = FOLDER / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_text(t, encoding='utf-8')
     for rel, b in binary.items():
