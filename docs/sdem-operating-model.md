@@ -7,7 +7,7 @@
 ```mermaid
 flowchart LR
     subgraph PUB["Public — this repository"]
-      T["SDEM tool + rulebook<br/>made-up data only"] --> REL["Tagged releases<br/>v0.9.1 …"]
+      T["SDEM tool + rulebook<br/>made-up data only"] --> REL["Tagged releases<br/>v0.9.2 …"]
     end
     subgraph ORG["Inside the organisation"]
       ER["Estate repository (private)<br/>estates/ · pinned SDEM · CI"]

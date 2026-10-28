@@ -36,6 +36,10 @@ class BianError(ValueError):
     """The input cannot be read or the request is wrong (exit 2)."""
 
 
+class BianRefused(Exception):
+    """A check refused the update — nothing written (exit 1)."""
+
+
 # ---------------------------------------------------------------- reading BIAN's files (BI-C04, BI-C05)
 def _scalar(v, where):
     v = v.strip()
@@ -397,6 +401,49 @@ def report_md(dataset, report, refused, warnings, changes=None, descriptions=Fal
     return '\n'.join(L)
 
 
+# ---------------------------------------------------------------- updating estates (BU-01…BU-05)
+def update_estates(estates, a2_file, person, dry_run=False, now=None):
+    """Replace each estate's BIAN layer with `a2_file` — checked for every estate before any is written."""
+    import datetime
+    from .connect import estate_docs, estate_errors
+    from .validate import is_person
+    if not is_person(person): raise BianError(f"--person {person!r}: updating an estate's BIAN layer is a person's decision — give your own name")
+    new = json.loads(Path(a2_file).read_text(encoding='utf-8'))
+    if new.get('level') != 'A2': raise BianError(f'{a2_file}: not an A2 dataset (level {new.get("level")!r})')
+    new_by = {i['id']: i for i in new.get('instances', [])}
+    plans, refused = [], []
+    for est in estates:
+        docs, reg = estate_docs(est)
+        old = docs.get('a2-service-domain.json') or {'instances': []}
+        old_by = {i['id']: i for i in old.get('instances', [])}
+        change = {'estate': str(est), 'added': sorted(set(new_by) - set(old_by)), 'dropped': sorted(set(old_by) - set(new_by)),
+                  'renamed': sorted([i, old_by[i]['name'], new_by[i]['name']] for i in set(old_by) & set(new_by) if old_by[i]['name'] != new_by[i]['name'])}
+        change['unchanged'] = old == new
+        lost = [f"{m['mapping_id']} ({m['source']['id']} -{m['relationship']}-> {m['target']['id']})" for m in reg.get('mappings', [])
+                if m.get('status') == 'approved' and ({m['source']['id'], m['target']['id']} & set(change['dropped']))]
+        if lost:
+            refused.append(f"{est}: approved connection(s) point to BIAN records that would disappear — supersede them first: " + '; '.join(lost)); continue
+        errors = [] if change['unchanged'] else estate_errors({**docs, 'a2-service-domain.json': new}, reg)
+        if errors:
+            refused.append(f'{est}: would not pass its checks with the new BIAN layer:\n    ' + '\n    '.join(errors[:8])); continue
+        plans.append(change)
+    if refused: raise BianRefused('refused — nothing written:\n  ' + '\n  '.join(refused))
+    if not dry_run:
+        from .files import Batch
+        b = Batch()
+        for c in plans:
+            if c['unchanged']: continue
+            est = Path(c['estate']); folder = est / 'bian-updates'
+            n = 1 + max([int(p.stem.split('-')[1]) for p in folder.glob('BU-*.json')] or [0]) if folder.exists() else 1
+            c['id'] = f'BU-{n:03d}'
+            b.json(est / 'a2-service-domain.json', new)
+            b.json(folder / f"{c['id']}.json", {'id': c['id'], 'at': now or datetime.datetime.now().replace(microsecond=0).isoformat(), 'person': person,
+                                                'from': str(a2_file), 'source_system': new.get('source_system'), 'model_version': new.get('model_version'),
+                                                **{k: c[k] for k in ('added', 'dropped', 'renamed')}})
+        b.commit()
+    return plans
+
+
 # ---------------------------------------------------------------- command line
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem bian', description="The BIAN (A2) layer from BIAN's public Semantic APIs (github.com/bian-official/public, Apache-2.0): "
@@ -422,7 +469,24 @@ def main(argv=None):
     im.add_argument('--objects', action='store_true', help='also write BIAN business objects (many)')
     im.add_argument('--previous', metavar='FILE', help='a previous A2 dataset: report what was added, dropped or renamed')
     im.add_argument('--json', action='store_true')
+    up = sub.add_parser('update', help="replace an estate's BIAN layer with your shared one — checked; never strands an approved connection")
+    where = up.add_mutually_exclusive_group(required=True)
+    where.add_argument('--estate', metavar='DIR', help='one estate'); where.add_argument('--root', metavar='DIR', help='every estate in a folder, e.g. estates')
+    up.add_argument('--a2', required=True, metavar='FILE', help='your shared BIAN layer, e.g. bian/a2-service-domain.json')
+    up.add_argument('--person', required=True, help='your name — a person'); up.add_argument('--dry-run', action='store_true'); up.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
+    if a.cmd == 'update':
+        estates = [Path(a.estate)] if a.estate else sorted(p for p in Path(a.root).iterdir() if (p / 'mappings.json').exists())
+        if not estates: raise BianError(f'{a.root}: no estates in it (folders with a mappings.json)')
+        try: plans = update_estates(estates, a.a2, a.person, a.dry_run)
+        except BianRefused as e: print(f'ERROR: {e}', file=sys.stderr); return 1
+        if a.json: print(json.dumps(plans, indent=2)); return 0
+        for c in plans:
+            if c['unchanged']: print(f"{c['estate']}: already this BIAN layer — unchanged"); continue
+            print(f"{c['estate']}: {'would update' if a.dry_run else 'updated'}" + (f" ({c['id']})" if c.get('id') else '')
+                  + f" — added {len(c['added'])}, dropped {len(c['dropped'])}, renamed {len(c['renamed'])}")
+        print('checked: every estate passes with the new BIAN layer' + ('' if a.dry_run else '. Next: commit on a branch and open a pull request.'))
+        return 0
     if a.cmd == 'pack':
         domains, refused = read_release(a.folder)
         from .files import write_text

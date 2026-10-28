@@ -11,7 +11,11 @@ sdem bian import --base --only "<service domain>" … -o bian/a2-service-domain.
 
 Read `a2-service-domain.report.md`: confirm the asset types and functional patterns SDEM worked out; for service domains marked *needs your pattern*, give them in `bian/patterns.csv` (`service domain,asset type,functional pattern`, from the BIAN portal) and add `--patterns bian/patterns.csv`. Commit this folder.
 
-**Add service domains later:** run the import again with all of them and `--previous bian/a2-service-domain.json` — the report shows what changed.
+**Add service domains later:** run the import again with all of them and `--previous bian/a2-service-domain.json` — the report shows what changed. Then bring every estate up to date:
+
+```bash
+sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you>     # checked; refuses if an approved connection would lose its BIAN end
+```
 
 **Your organisation's own BIAN instead of the base** (a newer release, your own selection or extensions, in BIAN's format): pack it once and use it in place of `--base`:
 

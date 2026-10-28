@@ -1,6 +1,6 @@
 # Configuring SDEM
 
-> **Status: current (v0.9.1)** — everything you can set, where, and who decides. SDEM works with no configuration at all; this page is for setting it up for a team.
+> **Status: current (v0.9.2)** — everything you can set, where, and who decides. SDEM works with no configuration at all; this page is for setting it up for a team.
 
 SDEM has **no configuration file and no server settings**. What you can set is: where your data lives, how design onboarding reads your documents, your tools (VS Code, Copilot), and your estate repository. The rulebook itself is **not** configurable — it is the same for everyone, and only the SDEM owner changes it.
 
@@ -30,7 +30,7 @@ To start an estate: onboard designs into a new folder (`sdem load … --estate e
 The estate repository installs one **released** version of SDEM, named in `requirements.txt`:
 
 ```
-sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.9.1
+sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.9.2
 ```
 
 Never point it at `main`. If your network cannot reach GitHub, mirror the SDEM repository internally and point the line at the mirror. Changing the version: [Administration — upgrading](sdem-administration.md#upgrading-sdem).
@@ -40,7 +40,7 @@ Never point it at `main`. If your network cannot reach GitHub, mirror the SDEM r
 `sdem transform` reads Confluence exports using **rules in a file**, `transform-rules.json`. SDEM's own rules work for any domain. If your organisation writes designs differently, make a copy once and pass it every time:
 
 ```bash
-cp <sdem>/metamodel/transform-rules.json rules/transform-rules.json      # in your estate repository
+sdem transform rules -o rules/transform-rules.json                      # in your estate repository: a copy to tune
 sdem transform run work/<export> -o work/history --rules rules/transform-rules.json
 ```
 
@@ -70,6 +70,8 @@ SDEM ships with a **base BIAN** — BIAN's public Semantic APIs 14.0.0 (Apache-2
 | `--descriptions` | include BIAN's descriptions — from a folder of BIAN's files only (the base leaves them out) |
 | `--objects` | also import BIAN's business objects — from a folder only |
 | `--previous <file>` | report what changed against your previous BIAN layer (nothing is removed from your estate) |
+
+After changing the shared file, `sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you>` brings every estate up to date — checked, all-or-nothing, recorded in each estate's `bian-updates/`; it refuses if an approved connection points to a service domain you dropped.
 
 **Where it lives:** in your estate repository, write it to `bian/a2-service-domain.json` and commit it — one file shared by every domain (`sdem load … --a2 bian/a2-service-domain.json`); keep a `--patterns` table beside it (`bian/patterns.csv`) and your own pack if you have one (`bian/our-bian.json`). The estate template's `bian/README.md` walks through it. How: [onboarding — your BIAN (A2) layer](sdem-onboarding-workflow.md#your-bian-a2-layer).
 

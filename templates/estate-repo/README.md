@@ -22,7 +22,7 @@ flowchart LR
    ```bash
    sdem bian import --base --only "<service domain>" "<service domain>" … -o bian/a2-service-domain.json
    ```
-   Read `bian/a2-service-domain.report.md` (confirm the derived asset types and functional patterns), then commit `bian/`. `--base` is BIAN's public Semantic APIs that ship with SDEM; to use your organisation's own BIAN instead, see [`bian/README.md`](bian/README.md). Add service domains later the same way, with `--previous bian/a2-service-domain.json`.
+   Read `bian/a2-service-domain.report.md` (confirm the derived asset types and functional patterns), then commit `bian/`. `--base` is BIAN's public Semantic APIs that ship with SDEM; to use your organisation's own BIAN instead, see [`bian/README.md`](bian/README.md). Add service domains later the same way, with `--previous bian/a2-service-domain.json` — then bring every estate up to date: `sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you>` (checked; it never strands an approved connection). Which service domains: search the base for your capabilities' words (`sdem bian list --base | grep -i <word>`); derived patterns are fine for a pilot, confirmed later by your BIAN owner.
 8. **Policies to confirm** before real designs come in: legal and IP clearance, Copilot (allowed or not), and reading text in pictures (OCR — allowed or `--ocr off`). The checklist: SDEM's [adoption checklist](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-adoption-checklist.md).
 
 ## Every architect (once)
@@ -46,6 +46,8 @@ sdem check --estate estates/<domain>
 sdem link --estate estates/<domain> --out work/links              # proposed links
 sdem approve P-RUN-001 --proposals work/links/proposals.json --estate estates/<domain> \
     --reviewer <you> --evidence application_architecture_document:<doc>#<section>   # a person approves, with evidence
+sdem connect <BIAN service domain> REALIZED_BY <application> --estate estates/<domain> \
+    --reviewer <you> --evidence application_architecture_document:<doc> --rationale "<why>"     # a connection SDEM cannot see from the design
 git add estates/<domain> && git commit -m "Onboard <design> (LOAD-001)" && git push -u origin HEAD
 ```
 Open a pull request; CI runs the **Estate checks**; a code owner reviews and merges. **Approvals become final when the pull request is merged.** Your BIAN layer is `bian/a2-service-domain.json` (set-up step 7; [what it is](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md#your-bian-a2-layer)). To practise first, the made-up sample export is in a clone of SDEM: `tests/fixtures/confluence-folder-export`. The full walk-through: SDEM's [onboarding workflow](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md) and [user guide](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-workbench-user-guide.md).

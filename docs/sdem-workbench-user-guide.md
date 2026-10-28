@@ -1,6 +1,6 @@
 # SDEM Workbench — User Guide
 
-> **Status: current guide (v0.9.1) — the one full command reference is §7.**
+> **Status: current guide (v0.9.2) — the one full command reference is §7.**
 
 > For architects who are new to SDEM. No prior knowledge assumed. Every command and output in this guide was run on the examples in this project (2026-10-28).
 >
@@ -300,6 +300,8 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem explain <id> --proposals <file>` · `--projection <dir>` | J8 | why one link or projected element exists: rule, published source, evidence, reasoning, confidence | when you question a proposal | approve, reject or fix the data |
 | `sdem change propose <file> --estate <dir> --agent … --person …` | AG | a layer's change set: checked before it lands, then its impact recorded as a change event | agent platform (§9a) | the orchestrator plans the work |
 | `sdem change revert <CS-id> --estate <dir> --agent … --person …` | AG | undo the latest change set of a layer — restores it exactly, on record | a change was wrong | rebuild the graph store |
+| `sdem connect <source> <TYPE> <target> --estate <dir> --reviewer <you> --evidence <kind:ref> --rationale "<why>"` | J3 | **you** state a connection the engine did not propose (e.g. a BIAN service domain *realised by* an application) — the same checks as `sdem approve` | when you know a connection the design does not show in detail | pull request |
+| `sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you>` | J9 | brings every estate's BIAN layer up to date with your shared one — checked; never strands an approved connection | after changing the shared BIAN layer | pull request |
 | `sdem copilot install [--to <repo>] [--dry-run] [--force]` | AG | puts SDEM's Copilot instructions, agents, prompts and skills into your estate repository's `.github/`, matching this SDEM version; keeps files your team changed | once after installing SDEM in an estate repository; again after each upgrade | reload VS Code |
 | `sdem events --estate <dir> [--open]` | AG | change events, their impact and open work | to see what is waiting | `sdem work plan` |
 | `sdem work plan · list · claim …` | AG | work items: planned by the orchestrator, claimed and answered by the layer agents | agent platform (§9a) | `sdem change propose --work …` |

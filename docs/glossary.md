@@ -127,9 +127,12 @@ SDEM's messages name the rule behind them, so a reviewer can look it up. You do 
 | **LC-nn** | a **data check** on a record | `LC-04` a required attribute is missing · `LC-08` a reference to another layer does not resolve | [logical data model](reference/logical-data-model.md) |
 | **LC-10m** | *advice*: the rulebook expects a link that is not there yet (a `WARN`, not an error) | a service domain with no control record yet | fix when you can |
 | **RAn-nn** | a kind of link **allowed inside a layer** | `RA3-27` an application interface is made up of API operations | [links inside a layer](reference/relationships-planning.md) |
-| **Snn**, **Bnn** | a **rule for finding a connection** between layers | `S24` operation implemented by API · `S17` domain realised by application | `sdem explain <proposal>` says it in words |
+| **Snn**, **Bnn** | a **rule for finding a connection** between layers | `S24` operation implemented by API · `S17` domain realised by application · `S34` application deployed on a server (from the design's hosting details) | `sdem explain <proposal>` says it in words |
 | **HT-**, **HD-**, **HU-**, **HP-**, **HL-**, **HN-** | a **transform rule** — how onboarding read an item: a **t**able, a **d**raw.io diagram, a Plant**U**ML diagram, a **p**hrase, a **l**ink table, a name in the **n**arrative | `HT-07` a table whose *Capability* column names capabilities | your copy of `transform-rules.json` ([configuration](sdem-configuration.md#onboarding--reading-your-designs)) |
 | **J1 … J9**, **AG** | a **journey** (a group of commands) in `sdem --help`; AG = the agent platform | J1 check · J2 link · J3 approve · J4 build · J5 trace and impact | [command reference](sdem-workbench-user-guide.md#7-command-reference) |
+| **DEC-E-nn** | an **engine decision** quoted in a proposal's reason | `DEC-E-11`: a connection to a record taken from a design document is never above *low* confidence until it is confirmed | — |
 | **AG-xnn**, **WB-xnn**, **DEC-x-nn**, **REQ-nn** | a **requirement or design decision** in a specification | `AG-S07` the agents' round limit | for builders: [`design/`](design/README.md) |
+
+**"Need attention"** (in `sdem home` and the dashboards): a project with errors, proposals waiting for review, open agent work or open gaps — the page lists which.
 
 **Ids of records SDEM creates:** `P-RUN-nnn` a proposed connection · `PAY-nnn` (or your estate's prefix) an approved connection · `HIS-…` a candidate from onboarding · `DOC-…` a design record · `GAP-…` a gap record · `LOAD-nnn` a load · `MIG-nnn` a migration · `CS-…` an agent's change set · `PRJ-…` a planned (AID) element.

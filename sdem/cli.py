@@ -63,6 +63,8 @@ JOURNEYS = {
                  'sdem work plan --event CE-001 --estate work/est --agent sdem-orchestrator --person jane.architect'),
     'copilot':  ('AG', "put SDEM's Copilot instructions, agents, prompts and skills into your estate repository, matching this SDEM version", 'sdem.copilot', [],
                  'sdem copilot install --dry-run'),
+    'connect':  ('J3', 'a person states a connection the engine did not propose — the same checks as approve, both ends in the estate', 'sdem.connect', [],
+                 'sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --estate estates/payments --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 --rationale "…"'),
     'migrate':  ('—', 'move an estate to the current rulebook version — recorded migrations applied, checked, written all-or-nothing, recorded', 'sdem.migrate', [],
                  'sdem migrate --estate estates/history --person jane.architect --dry-run'),
     'diff':     ('—', 'compare two versions of a relationship document', 'sdem.diff', [],

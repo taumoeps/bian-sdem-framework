@@ -36,7 +36,7 @@ To plan a design before drafting it, you may use AID (`sdem aid project …`); p
 
 - Never change another layer, the registry (`mappings.json`) or anything outside your change set — CTL-19 rejects it.
 - Never edit `A1` dataset files directly — only through `sdem change propose`.
-- Never run `sdem approve`, `sdem change adopt` or `sdem load` (except `sdem load … --dry-run`) — they are for people (CTL-21, CTL-20, CTL-23).
+- Never run `sdem approve`, `sdem connect`, `sdem bian update`, `sdem change adopt` or `sdem load` (except `--dry-run`) — they are for people (CTL-21, CTL-20, CTL-23).
 - Never create, edit or approve a cross-layer link — the rules engine proposes them, a person approves by merging a pull request.
 - Never put projected (`PRJ-`) or AI-suggested content into real data — CTL-16 rejects it.
 - Never call or message another agent — work comes and goes through work items and change events.

@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## 0.9.2 — the BIAN layer across estates, and connections a person states (2026-10-29)
+
+Two gaps found by the fourth new-architect walkthrough, closed. New commands `sdem bian update` and `sdem connect`; onboarded designs now trace from capability through BIAN to applications and technology. Upgrade: change the pin to `@v0.9.2`, `pip install -r requirements.txt`; `sdem copilot install` if you use Copilot (the agents and skills now know the two commands are for people). Rulebook metamodel version unchanged (0.4.0).
+
+- **Fixes from a fourth new-architect walkthrough** (verdicts unchanged: learning *ready*, team set-up *nearly ready*; two real gaps in SDEM itself — [design and spec](docs/design/sdem-bian-update-and-connect-design.md), approved by the owner). **`sdem bian update --estate DIR | --root DIR --a2 FILE --person NAME`** brings each estate's BIAN layer up to date with the shared one: `sdem load --a2` had added it only to an estate with none, so later changes never reached existing estates. Every estate is checked before any is written; a service domain an approved connection depends on cannot be dropped (refused, naming the connection — supersede it first); each update is recorded in `bian-updates/BU-nnn.json`. **`sdem connect SOURCE TYPE TARGET … --evidence … --rationale …`** lets a person state a connection the engine did not propose — with `sdem approve`'s checks, both ends in the estate, the whole estate checked, the record marked `created_by: sdem connect`. Onboarded designs rarely give the API detail the only *realised by* rule needs, so capability → BIAN → application → technology never appeared; now it does (tested end to end). Also: the extraction report lists its advice (it only counted it — which hid a tuning entry pointing at an undefined attribute); `sdem home` says what *need attention* means; the glossary explains `S34`, `DEC-E-nn` and *need attention*; which BIAN service domains to import, and that derived patterns are fine for a pilot; the last `cp metamodel/transform-rules.json` replaced by `sdem transform rules`.
+
 ## 0.9.1 — team set-up fixes (2026-10-29)
 
 Fixes from the third new-architect walkthrough, the first to set SDEM up for a team. Upgrade: change the pin to `@v0.9.1`, `pip install -r requirements.txt`; copy the estate template's updated `ci/check-estates.sh`, `.github/CODEOWNERS` (adds `bian/`) and `bian/README.md` into your estate repository; `sdem copilot install` if you use Copilot. Rulebook metamodel version unchanged (0.4.0).

@@ -1371,6 +1371,7 @@ def report(x, meta, records, links, issues, idx, cov=None):
             e, w = issues[lvl], issues[lvl + ' advice']
             L.append(f"- **{lvl}**: {'no errors' if not e else str(len(e)) + ' error(s)'}" + (f', {len(w)} advice' if w else ''))
             L += [f'  - {i}' for i in e[:20]]
+            L += [f'  - advice: {i}' for i in w[:20]] + ([f'  - … {len(w) - 20} more advice'] if len(w) > 20 else [])
     L.append('')
     L.append('## Records\n')
     L.append('| Id | Type | Name | Confidence | From (page — where — rule) | Why |')

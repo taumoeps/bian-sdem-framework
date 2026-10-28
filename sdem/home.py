@@ -263,7 +263,8 @@ def main(argv=None):
     if a.json: print(json.dumps(data, indent=2, ensure_ascii=False)); return 0
     h = data['health']; ok = all(g['current'] for g in h['generators']) and all(x['passed'] for x in h['acceptance'])
     print(f"wrote {page} and {len(data['projects'])} project dashboard(s) in {Path(a.out) / 'projects'} — SDEM health: {'OK' if ok else 'ATTENTION'}; "
-          f"{sum(1 for p in data['projects'] if p['errors'] or p['proposals'] or p['open_work'] or p.get('open_gaps'))} project(s) need attention")
+          f"{sum(1 for p in data['projects'] if p['errors'] or p['proposals'] or p['open_work'] or p.get('open_gaps'))} project(s) need attention "
+          "(errors, proposals waiting for review, open work or open gaps — the page lists them)")
     print(f"open: file://{page.resolve()}")
     return 0
 

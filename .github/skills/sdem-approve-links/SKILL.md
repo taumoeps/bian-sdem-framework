@@ -14,11 +14,12 @@ The rules engine (`sdem link`) **proposes** links; **a person approves** them in
    ```bash
    sdem approve <P-id> --proposals <dir>/proposals.json --estate <estate> --reviewer <person> --evidence <kind:ref> [--bian-release <release>] [--supersedes <old id>]
    ```
-   It writes the record below and validates the whole registry first — nothing is written if a check fails. By hand, the record would be: copy it from `proposals.json` into `mappings.json` and set:
-   - `mapping_id` — a new id, unique in the registry;
-   - `status: "approved"`, `reviewer_id` (the person), `approved_at` (date);
-   - `evidence` — **add the document that proves it**, as `kind:document-reference`; the kinds each link type needs are in [the evidence table](evidence-by-link-type.md). The engine's reasoning alone is not enough.
-3. **Superseding an old link** (e.g. after a rehost): set the old one's `status` to `superseded` and give the new one `previous_mapping_id: "<old id>"`. Never edit an approved link in any other way.
+   It writes the record and validates the whole registry first — nothing is written if a check fails. The record gets a new id, `status: "approved"`, the reviewer and date, and the **evidence** — the document that proves it, as `kind:document-reference`; the kinds each link type needs are in [the evidence table](evidence-by-link-type.md). The engine's reasoning alone is not enough. **Never write or edit records in `mappings.json` by hand** — CI refuses an edited approved link.
+2a. **A link the engine did not propose** — e.g. the architect knows an application *realises* a BIAN service domain but the designs lack the API detail the rule needs: the architect states it with `sdem connect` (same checks as `sdem approve`, both ends must exist). You may draft the command with its evidence and a one-sentence rationale; the architect runs it:
+   ```bash
+   sdem connect <source id> <TYPE> <target id> --estate <estate> --reviewer <person> --evidence <kind:ref> --rationale "<why>" [--bian-release <release>]
+   ```
+3. **Superseding an old link** (e.g. after a rehost): approve the new one with `--supersedes <old id>` — SDEM marks the old one `superseded` and links the two. Never edit an approved link.
 4. **Check:** `sdem validate --strict --estate <estate>` and `sdem check --estate <estate>`.
 5. **Pull request** on a branch; a reviewer merges — **the merge is the approval**. Then `sdem build … --out <graph>` and `sdem trace …` show the link in use.
 

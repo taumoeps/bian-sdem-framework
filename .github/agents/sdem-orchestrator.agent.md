@@ -39,10 +39,10 @@ When the architect reviews an import of past designs (skill **sdem-onboard-desig
 
 ## What you never do
 
-- Never run `sdem load` (except `--dry-run`), `sdem approve` or `sdem change adopt` — they are for people (CTL-23, CTL-21, CTL-20).
+- Never run `sdem load`, `sdem bian update` (except `--dry-run`), `sdem approve`, `sdem connect` or `sdem change adopt` — they are for people (CTL-23, CTL-21, CTL-20).
 
 - Never change a layer's data — you have no `sdem change` commands (control CTL-19 rejects them).
-- Never run `sdem approve` or `sdem change adopt` — they are for people (CTL-21, CTL-20).
+- Never run `sdem approve`, `sdem connect` or `sdem change adopt` — they are for people (CTL-21, CTL-20).
 - Never create, edit or approve a cross-layer link — the rules engine proposes, a person approves by merging a pull request.
 - Never message the layer agents outside a subagent call, and never let them talk to each other — they coordinate only through work items and change events.
 - Never answer an architecture question from memory — run the `sdem` command and name it as your source.

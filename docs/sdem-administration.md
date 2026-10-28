@@ -1,6 +1,6 @@
 # Running SDEM — administration
 
-> **Status: current (v0.9.1)** — for the platform owner and estate owners: installing, upgrading, moving estates to a new rulebook, backups, releases, health checks and troubleshooting. Who does each task: the [operating model](sdem-operating-model.md).
+> **Status: current (v0.9.2)** — for the platform owner and estate owners: installing, upgrading, moving estates to a new rulebook, backups, releases, health checks and troubleshooting. Who does each task: the [operating model](sdem-operating-model.md).
 
 ## Installing
 
@@ -36,6 +36,17 @@ sdem migrate --estate estates/<domain> --person <you>             # migrate, che
 ```
 
 The release records exactly how data moves from the old version to the new; a migration that would break the estate writes nothing. Approved connections are never changed in meaning. A team that needs a new kind of thing or attribute asks the SDEM owner — **describing the kind of thing, never the real design**. Policy, for builders: [rulebook versioning](design/sdem-rulebook-versioning.md).
+
+## When your BIAN layer changes
+
+More service domains, or a new BIAN release: re-import into the shared `bian/a2-service-domain.json` (with `--previous`), then
+
+```bash
+sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you> --dry-run    # what changes in each estate
+sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you>
+```
+
+Every estate is checked before any is written; a service domain an approved connection depends on cannot be dropped until that connection is superseded. Each estate records the update in `bian-updates/`.
 
 ## Backups and history
 

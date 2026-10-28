@@ -14,7 +14,7 @@
 | People | 2–3 architects (A1, A3, A4 between them), 1 reviewer, the estate owner (one of the architects), the SDEM owner as maintainer |
 | Time | 10 weeks, about half a day a week per architect after set-up |
 | Data | 3–5 existing designs onboarded; the domain's changes during the pilot kept in SDEM |
-| SDEM | v0.9.1 (or later), pinned |
+| SDEM | v0.9.2 (or later), pinned |
 
 ## Choosing the domain
 
@@ -87,7 +87,7 @@ gantt
 | Risk | Likelihood | Mitigation |
 |---|---|---|
 | Legal clearance takes longer than planned | medium | start week 0 only when it is granted; prepare everything else meanwhile |
-| Designs are less structured than expected (low coverage) | medium | gap records keep everything; tune the domain's copy of `transform-rules.json` on the first design |
+| Designs are less structured than expected (low coverage) | medium | gap records keep everything; tune your copy of the transform rules (`sdem transform rules`, shared by every domain) on the first design |
 | Your designs use table headings SDEM does not recognise | medium | those items become gap records, so nothing is lost; add the headings to your copy of the rules (above) |
 | Architects lack time | high | half a day a week, agreed with their manager before starting |
 | No BIAN (A2) layer — then business never connects to applications | medium | build it in week 1 from the base BIAN (`sdem bian import --base --only …`) for the domain's service domains |

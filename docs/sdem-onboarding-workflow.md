@@ -1,6 +1,6 @@
 # SDEM onboarding — bringing your existing designs into SDEM
 
-> **Status: current guide — design onboarding is built (v0.9.1); every command shown was run on the test exports.**
+> **Status: current guide — design onboarding is built (v0.9.2); every command shown was run on the test exports.**
 
 > **One document for design onboarding** (built 2026-10-28): what onboarding is, how to do it — the commands and each step with what you will see — what each step does to the data, and when the data is ready. To **test** it step by step with sealed expected results: [`use-case-example-4.md`](evidence/use-case-example-4.md). Technical detail: [`sdem-transform-design.md`](design/sdem-transform-design.md) (reading the designs), [`sdem-load-design.md`](design/sdem-load-design.md) (loading, gap records). For architects; no AI needed.
 
@@ -113,13 +113,15 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 | **A starter file, by hand** | you have no catalogue yet | list the service domains your area uses, from BIAN's public Service Landscape — **names only, described in your own words** (do not copy BIAN text) — as below |
 | **None yet** | you want to start without BIAN | load without `--a2`; applications still connect to technology — but **business does not connect to applications at all**, because every one of SDEM's connections between those layers passes through BIAN. Add the layer before you need business-to-technology traces |
 
+**Which service domains to import.** Start from your designs' capabilities and applications: search the base for the words they use — `sdem bian list --base | grep -i payment` — and import the service domains that match; add more later. **Are the derived asset types and patterns good enough?** Yes for a pilot: they are marked *to confirm* in the report, and whoever owns BIAN for you confirms them later (it needs access to the BIAN portal).
+
 **Importing your BIAN layer.** SDEM reads the base (or your own pack, or a folder of BIAN's files) — nothing is fetched — and writes each service domain you name with its operations (and their input and output fields, which the engine matches your APIs against), its control record, behaviour qualifiers and service groups, recording BIAN's release on every record. Two things to know:
 
 - **Asset type and functional pattern** are not in BIAN's API files. SDEM works them out from the control record's name where BIAN's published naming allows (about three in four domains) and lists them in the report **to confirm**; for the rest it stops and lists them, and you give them in a small CSV from the BIAN portal: `--patterns patterns.csv` with rows `service domain,asset type,functional pattern`.
 - **BIAN's descriptions are left out.** The base never has them; to include them, or business objects (`--objects`), import from a folder of BIAN's files with `--descriptions`.
 - **Every record says which BIAN it came from** — release, file — so moving later from the base to your own BIAN is reported, not silent (`--previous <your current file>`).
 
-**Where to write it.** In your **estate repository**: `-o bian/a2-service-domain.json`, then commit it — one BIAN layer shared by every domain, used with `--a2 bian/a2-service-domain.json`. Practising **in the SDEM project**: `-o work/bian/a2-service-domain.json` (the SDEM project's own `bian/` folder holds the base).
+**Where to write it.** In your **estate repository**: `-o bian/a2-service-domain.json`, then commit it — one BIAN layer shared by every domain, used with `--a2 bian/a2-service-domain.json` when a domain is first loaded. **When you change it later** (more service domains, a new BIAN release), bring every estate up to date: `sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you>` — checked first; it refuses if an approved connection points to a service domain you dropped (supersede that connection first). Practising **in the SDEM project**: `-o work/bian/a2-service-domain.json` (the SDEM project's own `bian/` folder holds the base).
 
 ```bash
 sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json     # practising in the SDEM project
@@ -237,6 +239,14 @@ sdem approve P-RUN-001 --proposals work/links/proposals.json --estate estates/hi
   --reviewer <your name> --evidence deployment_design:<page or document id>
 ```
 For a connection to BIAN, also give the BIAN release: `--bian-release <release>` (SDEM tells you if it is missing). The **evidence** is the document that proves the connection — SDEM tells you which kind each connection needs.
+
+**Connections SDEM cannot see.** Designs rarely give an application's API operations in enough detail for SDEM to work out which BIAN service domain the application **realises** — and without that connection, a capability never traces through to the applications and technology. When you know it, and have the document that shows it, state it yourself:
+```bash
+sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --estate estates/history \
+  --reviewer <your name> --evidence application_architecture_document:<page or document id> \
+  --rationale "The Payments Hub design names it as the payment-order initiation service"
+```
+It gets the same checks as `sdem approve` — your name, the evidence the connection needs, both records must exist — and the record says it was stated by you. Then the trace runs all the way: capability → BIAN service domain → application → technology.
 
 ### 8 · Make the picture
 ```bash
