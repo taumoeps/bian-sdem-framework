@@ -2,7 +2,16 @@
 
 > **Status: approved 2026-10-28 ("go ahead"); built 2026-10-28.** `sdem load`. Requirements: [`sdem-load-spec.md`](sdem-load-spec.md). The **L** of the ETL for past designs; the **T** is [`sdem transform`](sdem-transform-design.md).
 
-**Objective:** take the candidate entities `sdem transform` produced, **after an architect has reviewed them**, and load the ones the architect keeps into an SDEM estate — checked first, recorded, never unreviewed.
+**Objective:** move the entities an architect has **reviewed and kept** from the transform's output into an SDEM estate — **checked and recorded**. The whole journey, export to knowledge graph, is in [`sdem-past-designs-workflow.md`](sdem-past-designs-workflow.md).
+
+**The load does not change the data.** The transform creates the architecture data; the load copies the entities you keep, **unchanged**, into the estate. It:
+- leaves out the ones you reject (and any link or `deployed_on` that would point to them)
+- relabels the datasets from *candidate* to *loaded*
+- merges into what the estate already holds
+- checks the whole estate before writing
+- records your decision
+
+It is a **review gate**, not a data step. It exists because `link`, `approve` and `build` work on the estate, and the estate must hold only data that is both **validated** (checked by SDEM) and **reviewed** (judged correct by you).
 
 ## 1. Where it fits — the ETL
 
@@ -11,7 +20,7 @@
 | **E — Extract** | get the designs out of Confluence | the Confluence export (architect) | an export folder |
 | **T — Transform** | read the export → candidate A1, A3, A4 entities with evidence | `sdem transform run` | a candidates folder (`work/history`) |
 | *review* | the architect reads `extraction-report.md` and decides what to keep | — | a decision |
-| **L — Load** | put the kept entities into an estate | **`sdem load`** | the estate's datasets, a load record |
+| **L — Load** | copy the kept entities, **unchanged**, into an estate — checked and recorded | **`sdem load`** | the estate's datasets, a load record |
 | *after* | SDEM's normal processing — the same for every estate | `sdem link` → `sdem approve` → `sdem build` | proposals, `mappings.json`, the knowledge graph |
 
 `link`, `approve` and `build` are not part of the ETL: they are SDEM's governance, the same however data arrived.

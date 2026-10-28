@@ -519,6 +519,8 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
 
 ### 8.7 Transform past designs from Confluence into entities
 
+> The whole journey on one page — export → transform → review → load → link → approve → build, what each step does to the data and when it is ready: [`sdem-past-designs-workflow.md`](sdem-past-designs-workflow.md).
+
 *Goal: turn the organisation's past designs (Confluence pages with tables and draw.io diagrams) into candidate records — on the work machine, without AI, without the content leaving it.*
 
 1. Put the export in a folder outside this repository's tracked files, e.g. `~/designs/payarch`. Any layout works: Confluence's own HTML export, or a prepared one (readme/source/evidence files in the root, raw HTML and diagrams in `archives/`, sections as folders).
