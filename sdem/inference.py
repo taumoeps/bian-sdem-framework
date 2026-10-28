@@ -1,7 +1,7 @@
 """Architecture Relationship Inference Engine: the interface and a baseline, for the rule-based engine (sdem/rules_engine.py, v0.10).
 
 An engine reads a FederatedGraph and returns *proposed* mapping records. It never writes approved
-records; everything it returns goes through sdem-validate and an architect. The baseline here exists
+records; everything it returns goes through sdem validate and an architect. The baseline here exists
 to exercise the evaluation harness; it is not the rule-based engine specified in docs/relationship-rules-spec.md.
 """
 from pathlib import Path
@@ -88,10 +88,10 @@ ENGINES = {'baseline': NameOverlapBaseline, 'rules': _rules_engine}
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdem-infer', description='Run an inference engine over a graph store (or architecture datasets) and emit a document of proposed relationships.')
+    parser = argparse.ArgumentParser(prog='sdem link', description='Run an inference engine over a graph store (or architecture datasets) and emit a document of proposed relationships.')
     parser.add_argument('engine', choices=sorted(ENGINES))
     parser.add_argument('paths', nargs='*', help='architecture datasets and the approved registry (or use --graph)')
-    parser.add_argument('--graph', metavar='DIR', help='read a graph store (sdem-graph build) — the normal path')
+    parser.add_argument('--graph', metavar='DIR', help='read a graph store (sdem build) — the normal path')
     parser.add_argument('-o', '--out', metavar='DIR', help='also write candidates, the inference log and any target-design architecture datasets here')
     parser.add_argument('--threshold', type=float, default=0.2, help='baseline only')
     args = parser.parse_args(argv)

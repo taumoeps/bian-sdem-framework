@@ -68,15 +68,26 @@ class CopilotSetupTests(unittest.TestCase):
             self.assertRegex(text, r'(?m)^' + re.escape(pattern) + r'\s+@\S+', pattern)
 
     def test_agents_know_imports_and_never_load(self):  # AG-A07: built skills → agents → prompts
-        skill = (GH / 'skills' / 'sdem-import-designs' / 'SKILL.md').read_text(encoding='utf-8')
+        skill = (GH / 'skills' / 'sdem-onboard-designs' / 'SKILL.md').read_text(encoding='utf-8')
         self.assertIn('You never run `sdem load`', skill); self.assertIn('--dry-run', skill); self.assertIn('CTL-17', skill)
         for p in (GH / 'agents').glob('*.agent.md'):
             text = p.read_text(encoding='utf-8')
             self.assertRegex(text, r'Never run[^\n]*`sdem load`', p.name)
-            if p.name != 'sdem-a2-bian.agent.md': self.assertIn('sdem-import-designs', text, p.name)
-        prompt = (GH / 'prompts' / 'sdem-import-review.prompt.md').read_text(encoding='utf-8')
-        self.assertIn('Never run `sdem load` without `--dry-run`', prompt); self.assertIn('sdem-import-designs', prompt)
+            if p.name != 'sdem-a2-bian.agent.md': self.assertIn('sdem-onboard-designs', text, p.name)
+        prompt = (GH / 'prompts' / 'sdem-onboarding-review.prompt.md').read_text(encoding='utf-8')
+        self.assertIn('Never run `sdem load` without `--dry-run`', prompt); self.assertIn('sdem-onboard-designs', prompt)
         self.assertIn('sdem load', (GH / 'copilot-instructions.md').read_text(encoding='utf-8'))
+
+    def test_no_mcp_no_ai_client(self):  # WB-C07: no MCP server, no AI API client, no API key in SDEM
+        self.assertFalse((ROOT / '.vscode' / 'mcp.json').exists())
+        for f in (ROOT / '.vscode').glob('*.json'):
+            self.assertNotIn('mcpServers', f.read_text(encoding='utf-8'), f.name)
+        for f in (ROOT / 'sdem').glob('*.py'):
+            src = f.read_text(encoding='utf-8')
+            self.assertIsNone(re.search(r'^\s*(import|from)\s+(anthropic|openai|google\.generativeai|requests|httpx)\b', src, re.M), f.name)
+            self.assertIsNone(re.search(r'(ANTHROPIC|OPENAI)_API_KEY|api_key\s*=', src), f.name)
+        for f in GH.glob('agents/*.md'):
+            self.assertNotIn('mcp', front(f.read_text(encoding='utf-8')).get('tools', '').lower(), f.name)
 
 if __name__ == '__main__':
     unittest.main()

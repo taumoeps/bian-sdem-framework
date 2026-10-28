@@ -69,7 +69,7 @@ def load_revision(path, rev):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdem-diff', description='Check lifecycle and immutability between two versions of a mapping document.')
+    parser = argparse.ArgumentParser(prog='sdem diff', description='Check lifecycle and immutability between two versions of a mapping document.')
     parser.add_argument('new', nargs='+', help='current mapping document(s)')
     parser.add_argument('--old', help='previous version (file); use with a single document')
     parser.add_argument('--git', metavar='REV', help='compare each document against this git revision, e.g. HEAD~1')

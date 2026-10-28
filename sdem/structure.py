@@ -1,7 +1,7 @@
 """Generate examples/reference-structure/ from metamodel/level-relationships.json: two instances per concrete entity,
 one relationship per enforceable constraint row (relationship name = row ID), and a valid value for every required
 attribute (taken from the attribute record). Every row the record allows is thereby exercised on committed data and
-accepted by sdem-graph check, including the data-model conformance rules."""
+accepted by sdem check, including the data-model conformance rules."""
 from pathlib import Path
 import argparse, json
 from sdem.metamodel import Metamodel, MM_DIR

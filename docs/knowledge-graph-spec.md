@@ -59,8 +59,8 @@ flowchart TB
 
 | ID | Requirement | Status |
 |---|---|---|
-| KG-A-01 | Hold each level in its own local knowledge graph, loaded only from that level's architecture dataset; a change in one level never requires reloading another. | built (in memory) |
-| KG-A-02 | Hold in the federated knowledge graph only approved cross-level edges and references to their ends; never copy local content; never hold a proposed, rejected or superseded record as an edge used for answers. | built (in memory) |
+| KG-A-01 | Hold each level in its own local knowledge graph, loaded only from that level's architecture dataset; a change in one level never requires reloading another. | built (in memory; persisted by the graph store, `sdem build`) |
+| KG-A-02 | Hold in the federated knowledge graph only approved cross-level edges and references to their ends; never copy local content; never hold a proposed, rejected or superseded record as an edge used for answers. | built (in memory; persisted by the graph store, `sdem build`) |
 | KG-A-03 | The engine reads the four local knowledge graphs (entities, within-level links, and what changed since the last baseline) and the federated knowledge graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations. | partly built (reads architecture datasets and approved mappings directly; change-since-baseline not built) |
 
 ## 2. Local knowledge graphs
@@ -112,7 +112,7 @@ Every allowed edge is a row in `metamodel/level-relationships.json`, listed with
 | KG-L-01 | Accept a node only if its `type` resolves to a concrete, non-artefact catalogue entity of the graph's level. | built |
 | KG-L-02 | Accept an edge only if both ends are nodes of this graph and (source type, kind, target type) matches a constraint row of the level through inheritance, or the kind is `association`. | built |
 | KG-L-03 | Reject the whole architecture dataset, and keep the previously loaded local knowledge graph, if any node or edge fails; report every failure. | built |
-| KG-L-04 | Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status. | partly built (closure in trace); `sdem-graph query --neighbours/--type/--where` (graph store, GS-Q-02/03) |
+| KG-L-04 | Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status. | partly built (closure in trace); `sdem query --neighbours/--type/--where` (graph store, GS-Q-02/03) |
 
 ## 3. Federated knowledge graph
 
@@ -170,7 +170,7 @@ Each end (`source`, `target`) is a reference, not a copy: `id`, `type`, `version
 | ID | Requirement | Status |
 |---|---|---|
 | KG-F-01 | Load an edge only from a record with `status: approved`; keep the other statuses in the relationship registry for history but never in answers unless a query asks for them explicitly. | built (`--status`) |
-| KG-F-02 | Resolve every edge end into its local knowledge graph by level prefix, id, version and is-a; report unresolved ends and exclude those edges. | built (`sdem-graph check`) |
+| KG-F-02 | Resolve every edge end into its local knowledge graph by level prefix, id, version and is-a; report unresolved ends and exclude those edges. | built (`sdem check`) |
 | KG-F-03 | Store only adjacent-level edges of the nine catalogued relationship types; derive level-skipping answers as paths with the mapping id of every hop. | built |
 | KG-F-04 | Collapse duplicate edges between the same two nodes with the same relationship into one answer hop listing every mapping id. | built |
 
@@ -207,12 +207,12 @@ The federated knowledge graph points into the local knowledge graphs by id. Thes
 
 | Query | Must answer | Implemented by | Status |
 |---|---|---|---|
-| KG-Q-01 Trace | from any node, follow approved edges down (towards A4) or up (towards A1), optionally through within-level part-whole links; every hop shows the mapping id | `sdem-graph trace`, `--follow-composition` | built |
-| KG-Q-02 Impact | given a node and a change kind (modify, replace, retire, rehost), classify every dependent node design_change_required / review_required / no_impact and list the edges to supersede | `sdem-graph impact`, impact-rules.json | built |
-| KG-Q-03 Check | validate the four local knowledge graphs and the federated edges; report every unresolved or disallowed item | `sdem-graph check` | built |
-| KG-Q-04 Unmapped | list nodes of a level with no approved cross-level edge where the plan expects one — the engine's work list | `sdem-graph query --unmapped` (GS-Q-04) | built |
+| KG-Q-01 Trace | from any node, follow approved edges down (towards A4) or up (towards A1), optionally through within-level part-whole links; every hop shows the mapping id | `sdem trace`, `--follow-composition` | built |
+| KG-Q-02 Impact | given a node and a change kind (modify, replace, retire, rehost), classify every dependent node design_change_required / review_required / no_impact and list the edges to supersede | `sdem impact`, impact-rules.json | built |
+| KG-Q-03 Check | validate the four local knowledge graphs and the federated edges; report every unresolved or disallowed item | `sdem check` | built |
+| KG-Q-04 Unmapped | list nodes of a level with no approved cross-level edge where the plan expects one — the engine's work list | `sdem query --unmapped` (GS-Q-04) | built |
 | KG-Q-05 History | for an edge or a node, list its superseded predecessors and the baselines it appeared in | relationship-registry history | not built |
-| KG-Q-06 Stats | counts of nodes, edges and statuses per level | `sdem-graph stats` | built |
+| KG-Q-06 Stats | counts of nodes, edges and statuses per level | `sdem stats` | built |
 | KG-Q-07 Climb to the whole | an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation's operation to its Service Domain), so a trace from an API reaches the capability | knowledge-graph-design.md, limit of path F2 | not built |
 
 ## 7. Load and refresh
@@ -241,16 +241,16 @@ flowchart LR
     TOOL[Source tool]
     ADP[Adapter]
     EXP[Architecture dataset]
-    CHK[Architecture dataset validator<br/>sdem-graph check]
+    CHK[Architecture dataset validator<br/>sdem check]
     LDR[Graph loader]
     LG[(Local knowledge graph)]
     DIFF[Architecture dataset diff]
     ENG[Inference engine]
     PROP[Proposals]
-    VAL[Mapping validator<br/>sdem-validate]
+    VAL[Mapping validator<br/>sdem validate]
     ARCH[Architect]
     MS[[Relationship registry]]
-    HIST[History guard<br/>sdem-diff]
+    HIST[History guard<br/>sdem diff]
     FED[(Federated knowledge graph)]
     QRY[Query tools<br/>trace · impact · unmapped]
     AG[Assistant]
@@ -281,20 +281,20 @@ flowchart LR
 | C-02 | Source tool | the institution's system of record for one level | its users | its own records | — | institution | external |
 | C-03 | Adapter | extract, translate to SDEM entities and keys, write the architecture dataset | C-02; C-01 (catalogue and conventions) | one architecture dataset | C-01, C-02 | institution's private repository | not built (examples hand-written; `sdem/structure.py` is the one generator) |
 | C-04 | Architecture dataset | the file a local knowledge graph is built from | C-03 | — | C-03 | `examples/*/a[1-4]-*.json` (stand-ins) | built (format); schema `level-model.schema.json` |
-| C-05 | Architecture dataset validator | checks an architecture dataset against C-01, including the data model: attribute types, allowed values, references, keys and link counts (logical rules LC-04…LC-13) | C-04, C-01 | pass, or every failure | C-01, C-04 | `sdem-graph check` (`LevelGraph`, `sdem/conformance.py`) | built |
+| C-05 | Architecture dataset validator | checks an architecture dataset against C-01, including the data model: attribute types, allowed values, references, keys and link counts (logical rules LC-04…LC-13) | C-04, C-01 | pass, or every failure | C-01, C-04 | `sdem check` (`LevelGraph`, `sdem/conformance.py`) | built |
 | C-06 | Graph loader | rebuilds local knowledge graphs from architecture datasets and the federated knowledge graph from the relationship registry; records the baseline | C-04 (validated), C-09 | local knowledge graphs, federated knowledge graph | C-05, C-09 | `sdem/graph.py` (`LevelGraph`, `FederatedGraph`) | built in memory; persistence and baselines not built |
 | C-07 | Architecture dataset diff | compares a new architecture dataset with the last loaded one: added, removed, changed instances and links | two versions of C-04 | a change list | C-04 | — | not built |
-| C-08 | Engine | applies the relationship rules model (C-01b) to the local knowledge graphs and **builds the relationship registry**: new links for what changed, re-checks of approved links, with evidence and confidence | local knowledge graphs, federated knowledge graph, C-07, C-01, C-01b | relationship registry records (status `proposed`, or `approved` where the rule is auto-approved under `enterprise_rule`), candidate reports, inference log | C-06, C-07, C-01b | `sdem/rules_engine.py` (`sdem-infer rules`); acceptance `sdem/acceptance.py` | built (v0.10): all 8 acceptance cases pass |
+| C-08 | Engine | applies the relationship rules model (C-01b) to the local knowledge graphs and **builds the relationship registry**: new links for what changed, re-checks of approved links, with evidence and confidence | local knowledge graphs, federated knowledge graph, C-07, C-01, C-01b | relationship registry records (status `proposed`, or `approved` where the rule is auto-approved under `enterprise_rule`), candidate reports, inference log | C-06, C-07, C-01b | `sdem/rules_engine.py` (`sdem link`); acceptance `sdem/acceptance.py` | built (v0.10): all 8 acceptance cases pass |
 | C-09 | Relationship registry | the cross-level links with status and evidence — built by the engine from the relationship rules model; hand-made links are an exception, recorded with `created_by` naming the architect | C-08 output; architect decisions | — | C-08, C-11 | `examples/*/mappings.json`; schema `relationship-registry.schema.json` | built |
-| C-10 | Mapping validator | checks proposals and the relationship registry: registry, evidence, anchoring | C-09, C-01 | pass, or every failure | C-01 | `sdem-validate` | built |
+| C-10 | Mapping validator | checks proposals and the relationship registry: registry, evidence, anchoring | C-09, C-01 | pass, or every failure | C-01 | `sdem validate` | built |
 | C-11 | Architect review | reviews the engine's output: approves, rejects or supersedes records; corrects the relationship rules model (C-01b) when a rule produces a wrong link, rather than hand-editing the set | validated proposals; impact reports | status changes in C-09 | C-10, C-14 | a person; recorded as fields | built (as fields); review queue not built |
-| C-12 | History guard | rejects edits to approved records and invalid status transitions | two versions of C-09 | pass, or every violation | C-09 | `sdem-diff` | built |
+| C-12 | History guard | rejects edits to approved records and invalid status transitions | two versions of C-09 | pass, or every violation | C-09 | `sdem diff` | built |
 | C-13 | Local knowledge graphs, federated knowledge graph | the graphs themselves | C-06 | — | C-06 | `sdem/store.py`; local JSON graph store (JGF v2), `examples/*/graph/` | built (DEC-01: local JSON files) |
 | C-14 | Query tools | trace, impact, check, stats, query (records, neighbours, unmapped), view | C-13 | answers with mapping ids and the baseline | C-13 | `sdem-graph`, `sdem-trace` | built (history not built) |
 | C-15 | Refresh trigger | decides when C-03 and C-06 run: on demand, scheduled, event, refresh-on-read | source events or queries | runs | C-03, C-06 | — | not built (on demand only) |
 | C-16 | Assistant | answers design questions from C-14; runs C-08 and C-10 on request | C-14 answers | proposals via C-08 only | C-14, C-08 | per DEC-04 — GitHub Copilot Chat (SDEM workbench) | not built — Copilot instructions and prompt files (WB-C01…C03) |
 | C-17 | Generators and CI | regenerate documents, diagrams, per-entity schemas and the reference-structure estate from C-01; fail the build if any is stale; rerun acceptance cases | C-01 | generated files; pass / fail | C-01 | `sdem/diagram.py`, `relationships.py`, `structure.py`, `spec.py`, `kgspec.py`, `catalogue.py`, `attributes.py`, `logical.py`, `physical.py`, `confidence.py`; `.github/workflows/validate.yml` | built |
-| C-18 | AID projector | Architecture Inference Design: projects missing layers forward or reverse from the datasets an architect has, using C-01b rules and BIAN patterns; writes a projection package kept apart from C-09 and C-13; gap analysis against real data | C-04 (one or more levels), BIAN reference catalogue, C-01, C-01b | projection package (`PRJ-` records and links, inference confidence) | C-01, C-01b | `sdem/aid.py` (`sdem-aid project`, `check`, `gaps`); `docs/aid-spec.md` | built — with `schema/projection.schema.json` and the view and trace overlay |
+| C-18 | AID projector | Architecture Inference Design: projects missing layers forward or reverse from the datasets an architect has, using C-01b rules and BIAN patterns; writes a projection package kept apart from C-09 and C-13; gap analysis against real data | C-04 (one or more levels), BIAN reference catalogue, C-01, C-01b | projection package (`PRJ-` records and links, inference confidence) | C-01, C-01b | `sdem/aid.py` (`sdem aid project`, `check`, `gaps`); `docs/aid-spec.md` | built — with `schema/projection.schema.json` and the view and trace overlay |
 
 ### 8.1 Component requirements
 
@@ -342,19 +342,19 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 
 | ID | Service | Component | Status |
 |---|---|---|---|
-| SVC-01 | Graph loader | C-06 | built in memory (`sdem/graph.py`); failure handling, load record and persistence not built |
+| SVC-01 | Graph loader | C-06 | built in memory (`sdem/graph.py`); built: persisted to the graph store with its load record and failure handling (`sdem build`, `sdem/store.py`; graph-store-spec.md) |
 | SVC-02 | Adapter contract | C-03 | not built — adapters are institution-specific; `sdem/structure.py` is the one generator in this repository |
 | SVC-03 | Architecture dataset diff | C-07 | not built |
 | SVC-04 | Refresh trigger | C-15 | not built (on demand only: someone runs a command) |
 | SVC-05 | Query service | C-14 | built as commands with `--json`; a programmatic interface and the history, unmapped and local queries are not built |
-| SVC-06 | Review queue | C-11 | not built (today: architects edit the relationship-registry file; `sdem-diff` guards history) |
+| SVC-06 | Review queue | C-11 | not built (today: architects edit the relationship-registry file; `sdem diff` guards history) |
 | SVC-07 | Assistant access | C-16 | not built — transport per DEC-04 (CLI run by the assistant, VS Code extension, context snapshot, or MCP where allowed) |
 
 ### 11.1 SVC-01 Graph loader (C-06)
 
 **Purpose.** Build the four local knowledge graphs from their architecture datasets and the federated knowledge graph from the approved relationship registry, every time it runs; nothing else ever writes a graph.
 
-**Status.** built in memory (`sdem/graph.py`); failure handling, load record and persistence not built
+**Status.** built in memory (`sdem/graph.py`); built: persisted to the graph store with its load record and failure handling (`sdem build`, `sdem/store.py`; graph-store-spec.md)
 
 **Interface**
 
@@ -392,7 +392,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 |---|---|
 | Refuse invalid loads | any issue in steps 4–5 → the new graphs are discarded, the last valid graphs stay in service, an alert is raised (SVC-04 notifies) |
 | Record each load | write a load record (below) for every attempt, valid or not |
-| Persist | write valid graphs to the local JSON graph store (DEC-01, `sdem-graph build`), recorded in the load record; earlier baselines stay queryable (`sdem-graph baseline`) |
+| Persist | write valid graphs to the local JSON graph store (DEC-01, `sdem build`), recorded in the load record; earlier baselines stay queryable (`sdem baseline`) |
 
 **Records**
 
@@ -549,7 +549,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 
 | | |
 |---|---|
-| Command (today) | `sdem-graph trace|impact|stats … [--json]` |
+| Command (today) | `sdem trace|impact|stats … [--json]` |
 | Function interface (target) | one function per query below, same parameters, returning the JSON shown; wrapped by any transport the institution chooses (CLI, HTTP, assistant tool) |
 
 **Inputs**
@@ -564,8 +564,8 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 |---|---|---|
 | Trace | walk approved links (and part–whole links if asked) from the entity | — |
 | Impact | classify dependents by `schema/impact-rules.json` | — |
-| Local | neighbours and part–whole closure inside one local knowledge graph | built (`sdem-graph query --neighbours`) |
-| Unmapped | nodes of a level with no approved cross-level link where a catalogue rule expects one | built (`sdem-graph query --unmapped`) |
+| Local | neighbours and part–whole closure inside one local knowledge graph | built (`sdem query --neighbours`) |
+| Unmapped | nodes of a level with no approved cross-level link where a catalogue rule expects one | built (`sdem query --unmapped`) |
 | History | superseded predecessors of a record; the baselines a node or link appeared in | not built (KG-Q-05) |
 
 **Validity.** Queries run only against a valid load (SVC-01 target); the answer carries that load's `baseline_id`.
@@ -588,7 +588,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 
 **Purpose.** Give architects one place to decide on the engine's output and on links affected by change, and write each decision back to the relationship registry.
 
-**Status.** not built (today: architects edit the relationship-registry file; `sdem-diff` guards history)
+**Status.** not built (today: architects edit the relationship-registry file; `sdem diff` guards history)
 
 **Interface**
 
@@ -612,7 +612,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 | Reject | status → `rejected`, reason recorded | reason required |
 | Supersede | old record → `superseded`, `valid_to` set; a replacement record (if any) gets `previous_mapping_id` | — |
 | Send back | status → `needs_review` with a comment; typically "fix the rule" — routed to the relationship-rules owner | — |
-| Write back | each decision is a change to the relationship registry that passes `sdem-validate` and `sdem-diff` before it is saved | a decision that fails validation is not saved |
+| Write back | each decision is a change to the relationship registry that passes `sdem validate` and `sdem diff` before it is saved | a decision that fails validation is not saved |
 
 **Validity.** Only a named architect can decide; the engine and the assistant cannot (§10 governance).
 
@@ -654,7 +654,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 | `graph_trace`, `graph_impact`, `graph_local`, `graph_unmapped`, `graph_history` | read-only queries (SVC-05) | limit: answers must cite `baseline_id` and mapping ids; no write |
 | `graph_refresh` | ask SVC-04 for an on-demand refresh of one source | limit: rate-limited (e.g. once per source per 15 min); returns the load result, never edits an architecture dataset |
 | `engine_propose` | run the engine for a named entity or estate | limit: writes `proposed` records only, to the review queue; never `approved` |
-| `validate` | run `sdem-validate` / `sdem-graph check` on a file | limit: read-only |
+| `validate` | run `sdem validate` / `sdem check` on a file | limit: read-only |
 | **not available** | approve, reject, supersede; edit an architecture dataset, the relationship registry or the relationship rules model | these stay human (§10 governance) |
 
 **Validity.** Every tool call is logged with the user it acted for; the assistant sees only what that user may see (access control is not yet specified).
@@ -687,15 +687,15 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 
 | ID | Requirement | Basis | Status |
 |---|---|---|---|
-| KG-A-01 | Hold each level in its own local knowledge graph, loaded only from that level's architecture dataset; a change in one level never requires reloading another. | level-model.schema.json; `LevelGraph` | built (in memory) |
-| KG-A-02 | Hold in the federated knowledge graph only approved cross-level edges and references to their ends; never copy local content; never hold a proposed, rejected or superseded record as an edge used for answers. | relationship-registry.schema.json; `FederatedGraph` status filter | built (in memory) |
+| KG-A-01 | Hold each level in its own local knowledge graph, loaded only from that level's architecture dataset; a change in one level never requires reloading another. | level-model.schema.json; `LevelGraph` | built (in memory; persisted by the graph store, `sdem build`) |
+| KG-A-02 | Hold in the federated knowledge graph only approved cross-level edges and references to their ends; never copy local content; never hold a proposed, rejected or superseded record as an edge used for answers. | relationship-registry.schema.json; `FederatedGraph` status filter | built (in memory; persisted by the graph store, `sdem build`) |
 | KG-A-03 | The engine reads the four local knowledge graphs (entities, within-level links, and what changed since the last baseline) and the federated knowledge graph (approved edges), read-only; it never writes to either. Approved edges stop it re-proposing what exists and are the inputs to its step-3 derivations. | relationship-rules-spec §6; §8 governance | partly built (reads architecture datasets and approved mappings directly; change-since-baseline not built) |
 | KG-L-01 | Accept a node only if its `type` resolves to a concrete, non-artefact catalogue entity of the graph's level. | entity catalogue | built |
 | KG-L-02 | Accept an edge only if both ends are nodes of this graph and (source type, kind, target type) matches a constraint row of the level through inheritance, or the kind is `association`. | level-relationships.json | built |
-| KG-L-03 | Reject the whole architecture dataset, and keep the previously loaded local knowledge graph, if any node or edge fails; report every failure. | `sdem-graph check`; `sdem-graph build` (graph store, GS-B-02) | built |
-| KG-L-04 | Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status. | `LevelGraph` | partly built (closure in trace); `sdem-graph query --neighbours/--type/--where` (graph store, GS-Q-02/03) |
+| KG-L-03 | Reject the whole architecture dataset, and keep the previously loaded local knowledge graph, if any node or edge fails; report every failure. | `sdem check`; `sdem build` (graph store, GS-B-02) | built |
+| KG-L-04 | Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status. | `LevelGraph` | partly built (closure in trace); `sdem query --neighbours/--type/--where` (graph store, GS-Q-02/03) |
 | KG-F-01 | Load an edge only from a record with `status: approved`; keep the other statuses in the relationship registry for history but never in answers unless a query asks for them explicitly. | relationship-registry.schema.json status | built (`--status`) |
-| KG-F-02 | Resolve every edge end into its local knowledge graph by level prefix, id, version and is-a; report unresolved ends and exclude those edges. | §3.3 | built (`sdem-graph check`) |
+| KG-F-02 | Resolve every edge end into its local knowledge graph by level prefix, id, version and is-a; report unresolved ends and exclude those edges. | §3.3 | built (`sdem check`) |
 | KG-F-03 | Store only adjacent-level edges of the nine catalogued relationship types; derive level-skipping answers as paths with the mapping id of every hop. | relationship-types.json | built |
 | KG-F-04 | Collapse duplicate edges between the same two nodes with the same relationship into one answer hop listing every mapping id. | `walk` via['also'] | built |
 | KG-I-01 | A node id is unique within its level and stable for the life of the thing it names; it is never reused for a different thing, even after retirement. | new requirement | not enforced (uniqueness within an architecture dataset is checked; stability across versions is not) |
@@ -703,15 +703,15 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 | KG-I-03 | A2 nodes that correspond to a BIAN concept carry `canonical_id`; the federated edge's A2 end repeats it, and BIAN-authority edges require it before approval. | relationship-registry.schema.json; validator | built |
 | KG-I-04 | Institution aliases (asset-type, qualifier, field and glossary aliases) are node attributes, never alternative ids. | export-conventions.json | built (convention) |
 | KG-V-01 | Record, for every federated load, the four local `model_version`s and the relationship-registry version used — the load's baseline — and return it with every answer. | graph store load record (GS-R-01/02) | built (graph store) |
-| KG-V-02 | Keep earlier baselines queryable, so an impact analysis can be rerun against the state it was originally run on. | `sdem-graph baseline` (GS-R-03) | built (graph store) |
-| KG-V-03 | Never edit an approved edge; change is a new edge with `previous_mapping_id` and the old one `superseded`. | `sdem-diff` | built |
+| KG-V-02 | Keep earlier baselines queryable, so an impact analysis can be rerun against the state it was originally run on. | `sdem baseline` (GS-R-03) | built (graph store) |
+| KG-V-03 | Never edit an approved edge; change is a new edge with `previous_mapping_id` and the old one `superseded`. | `sdem diff` | built |
 | KG-V-04 | Reject a federated load where the four local knowledge graphs disagree on `metamodel_version`. | Metamodel load | built |
-| KG-Q-01 | Trace: from any node, follow approved edges down (towards A4) or up (towards A1), optionally through within-level part-whole links; every hop shows the mapping id. | `sdem-graph trace`, `--follow-composition` | built |
-| KG-Q-02 | Impact: given a node and a change kind (modify, replace, retire, rehost), classify every dependent node design_change_required / review_required / no_impact and list the edges to supersede. | `sdem-graph impact`, impact-rules.json | built |
-| KG-Q-03 | Check: validate the four local knowledge graphs and the federated edges; report every unresolved or disallowed item. | `sdem-graph check` | built |
-| KG-Q-04 | Unmapped: list nodes of a level with no approved cross-level edge where the plan expects one — the engine's work list. | `sdem-graph query --unmapped` (GS-Q-04) | built |
+| KG-Q-01 | Trace: from any node, follow approved edges down (towards A4) or up (towards A1), optionally through within-level part-whole links; every hop shows the mapping id. | `sdem trace`, `--follow-composition` | built |
+| KG-Q-02 | Impact: given a node and a change kind (modify, replace, retire, rehost), classify every dependent node design_change_required / review_required / no_impact and list the edges to supersede. | `sdem impact`, impact-rules.json | built |
+| KG-Q-03 | Check: validate the four local knowledge graphs and the federated edges; report every unresolved or disallowed item. | `sdem check` | built |
+| KG-Q-04 | Unmapped: list nodes of a level with no approved cross-level edge where the plan expects one — the engine's work list. | `sdem query --unmapped` (GS-Q-04) | built |
 | KG-Q-05 | History: for an edge or a node, list its superseded predecessors and the baselines it appeared in. | relationship-registry history | not built |
-| KG-Q-06 | Stats: counts of nodes, edges and statuses per level. | `sdem-graph stats` | built |
+| KG-Q-06 | Stats: counts of nodes, edges and statuses per level. | `sdem stats` | built |
 | KG-Q-07 | Climb to the whole: an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation's operation to its Service Domain), so a trace from an API reaches the capability. | knowledge-graph-design.md, limit of path F2 | not built |
 | KG-R-01 | An adapter per source tool translates its records to an architecture dataset; adapters are institution-specific and live in the institution's private repository. | §7 | not built (examples are hand-written architecture datasets) |
 | KG-R-02 | A local knowledge graph is rebuilt in full from its architecture dataset; incremental update is an optimisation, not a requirement. | §7 | built (full rebuild) |

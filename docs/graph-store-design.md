@@ -1,6 +1,6 @@
 # SDEM — Graph Store Design (local, JSON)
 
-> **Status: approved and built, 2026-10-25** (decisions GD-01…GD-09 as recommended). Code: `sdem/store.py`, `sdem/view.py`, `sdem-graph build | query | baseline | view`; example stores in `examples/*/graph/`. Companion to [`graph-store-spec.md`](graph-store-spec.md), which states the requirements (GS-*) this design meets. It closes decisions DEC-01 (graph store) and DEC-03 (one store or five) in [`knowledge-graph-spec.md`](knowledge-graph-spec.md) §12.
+> **Status: approved and built, 2026-10-25** (decisions GD-01…GD-09 as recommended). Code: `sdem/store.py`, `sdem/view.py`, `sdem build | query | baseline | view`; example stores in `examples/*/graph/`. Companion to [`graph-store-spec.md`](graph-store-spec.md), which states the requirements (GS-*) this design meets. It closes decisions DEC-01 (graph store) and DEC-03 (one store or five) in [`knowledge-graph-spec.md`](knowledge-graph-spec.md) §12.
 
 ## 1. What it is, in one paragraph
 
@@ -14,7 +14,7 @@ flowchart LR
     E1[A1 architecture dataset] --- E2[A2 architecture dataset] --- E3[A3 architecture dataset] --- E4[A4 architecture dataset]
     REG[Relationship Registry<br/>mappings.json]
   end
-  B[sdem-graph build<br/>check · convert · write]
+  B[sdem build<br/>check · convert · write]
   subgraph Store["Graph store (graph/ folder, JSON)"]
     L1[a1-business.graph.json]
     L2[a2-service-domain.graph.json]
@@ -90,10 +90,10 @@ The federated file also lists each linked record as a small **stub node** (key, 
 
 ## 5. How a build works
 
-`sdem-graph build <architecture datasets> <registry> --out graph/`
+`sdem build <architecture datasets> <registry> --out graph/`
 
 1. **Read** the four architecture datasets and the registry.
-2. **Check** them exactly as `sdem-graph check` does today: entity types, within-level rows, the data model (all 14 logical rules), the registry records and that every approved link resolves.
+2. **Check** them exactly as `sdem check` does today: entity types, within-level rows, the data model (all 14 logical rules), the registry records and that every approved link resolves.
 3. **If anything fails** — write nothing to the graph files, keep the last good graph, add a *rejected* entry to the load record listing every error, exit with an error. (Closes KG-L-03 and KG-R-03, *keep the previous graph*.)
 4. **Otherwise convert** to JGF and write the five files — deterministically: same inputs, byte-identical files (sorted keys, fixed order, no timestamps inside the graph files), so a git diff shows only real changes.
 5. **Record** the build in the load record: input files with their versions and checksums, metamodel version, counts, warnings, output checksums. That entry is the load's **baseline** (KG-V-01).
@@ -107,7 +107,7 @@ Everything that reads the graph goes through **one interface** (in `sdem/store.p
 | Implementation | Reads from | Used by |
 |---|---|---|
 | **Store** | the `graph/` JSON files | queries, view, engine — the normal path |
-| **Architecture datasets** | architecture dataset files directly, built in memory (today's code) | `sdem-graph check`, and as the reference the store is tested against |
+| **Architecture datasets** | architecture dataset files directly, built in memory (today's code) | `sdem check`, and as the reference the store is tested against |
 
 Every existing query must give **identical answers** from either — that is the main acceptance test. The engine (v0.10) is written only against the interface, so a database could replace the files later without changing it.
 
@@ -115,17 +115,17 @@ Every existing query must give **identical answers** from either — that is the
 
 | Query | Command | Status today |
 |---|---|---|
-| Trace (down / up, with part–whole) | `sdem-graph trace … --graph graph/` | built in memory; gains `--graph` |
-| Impact | `sdem-graph impact … --graph graph/` | built in memory; gains `--graph` |
-| Stats | `sdem-graph stats --graph graph/` | built in memory; gains `--graph` |
-| **Find records** by level, type, attribute value | `sdem-graph query --type A1.BusinessProcess --where criticality=high` | new |
-| **Neighbours** within an architecture | `sdem-graph query --neighbours PRC-PAY-01 --kind composition` | new (KG-L-04) |
-| **Unmapped** — records with no approved cross-level link where a rule expects one (the engine's work list) | `sdem-graph query --unmapped A2` | new (KG-Q-04) |
+| Trace (down / up, with part–whole) | `sdem trace … --graph graph/` | built in memory; gains `--graph` |
+| Impact | `sdem impact … --graph graph/` | built in memory; gains `--graph` |
+| Stats | `sdem stats --graph graph/` | built in memory; gains `--graph` |
+| **Find records** by level, type, attribute value | `sdem query --type A1.BusinessProcess --where criticality=high` | new |
+| **Neighbours** within an architecture | `sdem query --neighbours PRC-PAY-01 --kind composition` | new (KG-L-04) |
+| **Unmapped** — records with no approved cross-level link where a rule expects one (the engine's work list) | `sdem query --unmapped A2` | new (KG-Q-04) |
 | Baseline — answer against a frozen copy | any query with `--graph graph/baselines/<name>` | new (KG-V-02) |
 
 ## 8. Seeing it — the HTML view
 
-`sdem-graph view --graph graph/` writes `graph/view.html`: **one self-contained file, no internet needed** (no CDN). It draws the four architectures as horizontal bands — A1 at the top, A4 at the bottom — with within-level links inside a band and approved links crossing between bands. Click a record to see its attributes and links; filter by architecture or type; pick a record to highlight its trace up or down.
+`sdem view --graph graph/` writes `graph/view.html`: **one self-contained file, no internet needed** (no CDN). It draws the four architectures as horizontal bands — A1 at the top, A4 at the bottom — with within-level links inside a band and approved links crossing between bands. Click a record to see its attributes and links; filter by architecture or type; pick a record to highlight its trace up or down.
 
 ## 9. Limits, honestly
 

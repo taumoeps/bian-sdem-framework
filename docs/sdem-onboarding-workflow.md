@@ -134,7 +134,7 @@ Open `work/history/extraction-report.md` (in VS Code: right-click → *Open Prev
 | **For a person** | pictures and diagrams only you can interpret |
 
 Write down the ids of the items you do **not** want, e.g. `HIS-A3-PAYMENT-ORDER`.
-*Tip:* in Copilot Chat, `/sdem-import-review work/history` explains each item and suggests what to reject — you decide.
+*Tip:* in Copilot Chat, `/sdem-onboarding-review work/history` explains each item and suggests what to reject — you decide.
 
 ### 4 · Keep the good ones
 Try it first with `--dry-run` (writes nothing), then run it for real:

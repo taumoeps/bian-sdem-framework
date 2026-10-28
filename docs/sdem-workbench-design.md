@@ -1,6 +1,6 @@
 # SDEM Workbench — Design
 
-> **Status: draft 2026-10-28.** Direction set by the owner (SDEM-D01): the architect opens the SDEM project in **VS Code**, runs SDEM from the **terminal pane (CLI)**, and uses the **Copilot Chat window** for AI support. Requirements: [`sdem-workbench-spec.md`](sdem-workbench-spec.md). How to use it: [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md). The CLI — one `sdem` command (SDEM-D07) — and the controls are built; the Copilot set-up (instructions and prompt files) is **not built**.
+> **Status: approved by the owner and built (2026-10-28).** Direction set by the owner (SDEM-D01): the architect opens the SDEM project in **VS Code**, runs SDEM from the **terminal pane (CLI)**, and uses the **Copilot Chat window** for AI support. Requirements: [`sdem-workbench-spec.md`](sdem-workbench-spec.md). How to use it: [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md). The CLI — one `sdem` command (SDEM-D07) — and the controls are built; the Copilot set-up (instructions and prompt files) is **not built**.
 >
 > **Diagrams** are Mermaid: GitHub shows them as pictures; in VS Code install the recommended extension *Markdown Preview Mermaid Support* (`bierner.markdown-mermaid`, listed in `.vscode/extensions.json`) and open the Markdown preview. No diagram server is used.
 
@@ -164,7 +164,7 @@ Every journey is a **CLI command the architect runs** in the terminal pane; Copi
 | J7 | **See it** | `sdem view [--projection …]` | points out what to look at in the view | an HTML picture, projected parts dashed and labelled PROJECTED |
 | J8 | **Explain an element** | `sdem explain <id> --projection …` or `--proposals …` | quotes the element's step, rule, published source, evidence, reasoning and confidence | the reason an element exists |
 
-`sdem --help` lists every journey; each subcommand's `--help` shows a worked example. Without installing, `python -m sdem …` does the same. The older `sdem-*` commands (`sdem-graph`, `sdem-infer`, `sdem-aid`, …) still work.
+`sdem --help` lists every journey; each subcommand's `--help` shows a worked example. Without installing, `python -m sdem …` does the same. The older `sdem-*` commands (`sdem-graph`, `sdem link`, `sdem aid`, …) still work.
 
 ### 3.1 The journeys in order
 
@@ -278,7 +278,7 @@ Both files stay in the projection package for audit. A re-import of the same ans
 sequenceDiagram
     actor A as Architect
     participant T as Terminal pane - CLI
-    participant P as sdem-aid
+    participant P as sdem aid
     participant Q as questions.json
     participant C as Copilot Chat
     participant N as answers.json

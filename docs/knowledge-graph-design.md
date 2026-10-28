@@ -140,7 +140,7 @@ A federated query starts in one local knowledge graph, crosses to the next by an
 *"What does the Initiate Payment capability run on?"*
 
 ```
-sdem-graph trace CAP-PAY-010 --direction down <architecture datasets> mappings.json
+sdem trace CAP-PAY-010 --direction down <architecture datasets> mappings.json
 ```
 
 ```
@@ -160,7 +160,7 @@ Path: **A1 local → (PAY-001) → A2 local → (PAY-106) → A3 local → (PAY-
 *"What depends on the production Kubernetes cluster?"*
 
 ```
-sdem-graph trace INF-K8S-PAY-PROD --direction up <architecture datasets> mappings.json
+sdem trace INF-K8S-PAY-PROD --direction up <architecture datasets> mappings.json
 ```
 
 ```
@@ -180,7 +180,7 @@ A federated trace can also walk part–whole links *inside* each architecture, s
 *"Where does the Create Payment Instruction API run?"*
 
 ```
-sdem-graph trace API-PI-01 --direction down --follow-composition <architecture datasets> mappings.json
+sdem trace API-PI-01 --direction down --follow-composition <architecture datasets> mappings.json
 ```
 
 ```
@@ -200,7 +200,7 @@ Path: **A3 local (part → whole) → (PAY-108, PAY-109) → A4 local (part → 
 *"What is affected if we replace the Payments Hub?"*
 
 ```
-sdem-graph impact APP-PAY-HUB --change replace <architecture datasets> mappings.json
+sdem impact APP-PAY-HUB --change replace <architecture datasets> mappings.json
 ```
 
 | Classification | Nodes | Reached by |
@@ -233,7 +233,7 @@ The next step, from an operation up to its Service Domain, is a *local* A2 link 
 | Each step shows | the link kind (composition, assignment …) | the relationship registry record ID (PAY-106 …) for every crossing |
 | Paths | L1 contents · L2 part–whole · L3 all of a kind | F1 downstream · F2 upstream · F3 with local structure · F4 impact |
 | Typical asker | the team that owns that architecture | enterprise architects; impact analysis |
-| Command | not built yet (KG-L-04) | `sdem-graph trace`, `sdem-graph impact` |
+| Command | not built yet (KG-L-04) | `sdem trace`, `sdem impact` |
 
 ---
 

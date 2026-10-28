@@ -10,8 +10,8 @@
 |---|---|---|
 | `.github/copilot-instructions.md` | SDEM's ground rules for Copilot | read automatically by every Copilot chat in this project |
 | `.github/agents/` | 5 custom agents: `sdem-orchestrator`, `sdem-a1-business`, `sdem-a2-bian`, `sdem-a3-application`, `sdem-a4-technology` | pick one in the chat's **agent picker** |
-| `.github/prompts/` | 9 prompt files — `/sdem-explain`, `/sdem-fix`, `/sdem-review`, `/sdem-impact-note`, `/sdem-pr`, `/aid-explain`, `/sdem-process-events`, `/sdem-layer-work`, `/example3-rehost` | type `/` in the chat |
-| `.github/skills/` | 4 skills: `sdem-change-sets`, `sdem-records`, `sdem-approve-links`, `sdem-trace-impact` | loaded by Copilot when relevant; or type `/` and the skill name |
+| `.github/prompts/` | prompt files — `/sdem-explain`, `/sdem-fix`, `/sdem-review`, `/sdem-impact-note`, `/sdem-pr`, `/aid-explain`, `/sdem-onboarding-review`, `/sdem-process-events`, `/sdem-layer-work`, `/example3-rehost` | type `/` in the chat |
+| `.github/skills/` | skills: `sdem-change-sets`, `sdem-records`, `sdem-approve-links`, `sdem-trace-impact`, `sdem-onboard-designs` | loaded by Copilot when relevant; or type `/` and the skill name |
 
 No MCP servers and no API keys are used — SDEM runs through its `sdem` command in the terminal.
 

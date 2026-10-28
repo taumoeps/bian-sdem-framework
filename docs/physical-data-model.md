@@ -4,7 +4,7 @@
 
 ## What it is
 
-The **physical data model** is the logical data model written as files a tool can use: **one JSON Schema per entity type** that an architecture dataset instance must satisfy. A tool adapter validates each record it architecture datasets against the schema for its type; `sdem-graph check` then checks what a single record cannot show on its own.
+The **physical data model** is the logical data model written as files a tool can use: **one JSON Schema per entity type** that an architecture dataset instance must satisfy. A tool adapter validates each record it architecture datasets against the schema for its type; `sdem check` then checks what a single record cannot show on its own.
 
 | Layer | Document | Holds |
 |---|---|---|
@@ -22,13 +22,13 @@ The **physical data model** is the logical data model written as files a tool ca
 | text / list / map / boolean / integer | `string` / `array` of `string` / `object` / `boolean` / `integer` (with `minimum`/`maximum` where defined) |
 | date | `string`, `format: date`, pattern `YYYY-MM-DD` |
 | enumeration | `enum` |
-| reference | `string` (or array) plus `x-sdem-references` naming the target types; resolution is checked by `sdem-graph check` |
+| reference | `string` (or array) plus `x-sdem-references` naming the target types; resolution is checked by `sdem check` |
 | deprecated attribute | `deprecated: true` |
 | source reference, reasoning, confidence | `x-sdem-source`, `x-sdem-reasoning`, `x-sdem-confidence` on every property and in `x-sdem-entity` |
 
 ## What the schemas do not check
 
-A schema sees one record. These rules need the whole architecture dataset or estate and are enforced by `sdem-graph check` ([logical rules](logical-data-model.md)): references resolve (LC-07 error, LC-08 warning), natural keys are unique (LC-09), cardinality (LC-10, LC-10m), within-level and cross-level relationships (LC-03, LC-11). Attributes not in the model are accepted by the schema and reported as warnings.
+A schema sees one record. These rules need the whole architecture dataset or estate and are enforced by `sdem check` ([logical rules](logical-data-model.md)): references resolve (LC-07 error, LC-08 warning), natural keys are unique (LC-09), cardinality (LC-10, LC-10m), within-level and cross-level relationships (LC-03, LC-11). Attributes not in the model are accepted by the schema and reported as warnings.
 
 ## Schemas (40 entity types)
 

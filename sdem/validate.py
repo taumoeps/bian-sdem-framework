@@ -315,7 +315,7 @@ def validate_files(paths, registry=None, schema=None, resolver=None, entity_reso
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdem-validate', description='Validate SDEM mapping documents.')
+    parser = argparse.ArgumentParser(prog='sdem validate', description='Validate SDEM mapping documents.')
     parser.add_argument('paths', nargs='+', help='mapping JSON file(s)')
     parser.add_argument('--registry', default=RULES, help='relationship registry (default: bundled)')
     parser.add_argument('--catalogue', help='entity catalogue JSON; every endpoint must exist in it')

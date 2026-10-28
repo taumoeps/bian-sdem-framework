@@ -39,7 +39,7 @@ JOURNEYS = {
                  'sdem aid project --have examples/payment-initiation/a1-business.json --catalogue bian.json --out work/prj'),
     'load':     ('J9', 'load reviewed candidate entities from sdem transform into an estate — selected, checked first, recorded (the L of the ETL)', 'sdem.load', [],
                  'sdem load work/history --estate estates/history --person jane.architect --exclude HIS-A3-X'),
-    'designs':  ('J9', 'design records and gap records: the pages imported designs came from, and what did not fit an entity', 'sdem.designs', [],
+    'designs':  ('J9', 'design records and gap records: the pages onboarded designs came from, and what did not fit an entity', 'sdem.designs', [],
                  'sdem designs --estate estates/history --entity HIS-A3-PAYMENTS-HUB'),
     'transform': ('J9', 'transform an export of past designs (Confluence) into candidate architecture entities: inspect it, extract (rules; on-device OCR for pictures)', 'sdem.transform', [],
                  'sdem transform run tests/fixtures/confluence-export-sample -o work/history --known examples/payment-initiation/a3-application.json'),

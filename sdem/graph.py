@@ -278,7 +278,7 @@ def main(argv=None):
         if name in ('trace', 'impact'):
             sp.add_argument('entity', help='instance id to start from')
         sp.add_argument('paths', nargs='*', help='architecture datasets and mapping documents, any order (or use --graph)')
-        sp.add_argument('--graph', metavar='DIR', help='read a graph store (sdem-graph build) instead of architecture datasets')
+        sp.add_argument('--graph', metavar='DIR', help='read a graph store (sdem build) instead of architecture datasets')
         sp.add_argument('--status', default='approved', help='mapping statuses to treat as arrows')
         sp.add_argument('--json', action='store_true')
         if name == 'trace':

@@ -38,7 +38,7 @@ TERMS = [
     (r'\bLocal graph\b', 'Local knowledge graph'), (r'\blocal graph\b', 'local knowledge graph'),
     (r'\bknowledge knowledge graph', 'knowledge graph'),
     # commands
-    (r'\bsdmm-engine\b', 'sdem-infer'), (r'\bsdmm-', 'sdem-'), (r'python -m sdmm\.', 'python -m sdem.'), (r'`sdmm/', '`sdem/'), (r'\bsdmm/', 'sdem/'),
+    (r'\bsdmm-engine\b', 'sdem link'), (r'\bsdmm-', 'sdem-'), (r'python -m sdmm\.', 'python -m sdem.'), (r'`sdmm/', '`sdem/'), (r'\bsdmm/', 'sdem/'),
 ]
 _COMPILED = [(re.compile(p), r) for p, r in TERMS]
 

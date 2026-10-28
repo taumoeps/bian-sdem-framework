@@ -378,7 +378,7 @@ sdem review work/links/proposals.json                    # weakest first, with r
 sdem approve P-RUN-001 --proposals work/links/proposals.json --estate <your copy> \
      --reviewer <your name> --evidence <kind:document> [--bian-release <release>]   # a person, then a pull request
 
-# import past designs
+# onboard existing designs
 sdem transform run <confluence export> -o work/history   # candidates with their evidence
 sdem load work/history --estate estates/history --person <your name> --exclude <ids you reject>
 
@@ -392,6 +392,8 @@ Exit codes: `0` ok, `1` issues found or refused by a check, `2` usage or input e
 
 ### Documentation map
 
+All documents, by reader (use · understand · govern · build · reference · test · history): **[`docs/README.md`](docs/README.md)**.
+
 | Area | Documents |
 |---|---|
 | **Using SDEM** | [user guide](docs/sdem-workbench-user-guide.md) · [workbench design](docs/sdem-workbench-design.md) / [spec](docs/sdem-workbench-spec.md) · [dashboards](docs/sdem-dashboard-design.md) / [spec](docs/sdem-dashboard-spec.md) · [overview](docs/sdem-overview.md) · [glossary](docs/glossary.md) |
@@ -402,7 +404,7 @@ Exit codes: `0` ok, `1` issues found or refused by a check, `2` usage or input e
 | **AI agents and Copilot** | [principles](docs/sdem-agent-platform-principles.md) · [design](docs/sdem-agent-platform-design.md) / [spec](docs/sdem-agent-platform-spec.md) · [Copilot set-up](docs/sdem-copilot-setup.md) · [spike](docs/sdem-agent-platform-spike.md) · [repository protection](docs/sdem-repository-protection.md) |
 | **Controls** | [controls register](docs/controls-register.md) |
 | **Tests and examples** | [use-case testing](docs/use-case-testing.md) · [example 1](docs/use-case-example-1.md) (mappings and graph) · [example 2](docs/use-case-example-2.md) (AID) · [example 3](docs/use-case-example-3.md) (agents) · [example 4](docs/use-case-example-4.md) (importing past designs, export to build) |
-| **Releases and history** | [roadmap](docs/ROADMAP.md) · [changelog](CHANGELOG.md) · [renamed from SDMM](docs/renamed-from-sdmm.md) |
+| **Releases and history** | [roadmap](docs/ROADMAP.md) · [changelog](CHANGELOG.md) · [renamed from SDMM](docs/history/renamed-from-sdmm.md) |
 
 ### Repository contents
 
@@ -428,7 +430,7 @@ Exit codes: `0` ok, `1` issues found or refused by a check, `2` usage or input e
 | Use-case example 3 — agents carry a technology change to an approved link | 8 of 8; controls 19 of 19 |
 | Earlier procedure runs — ten use cases, eleven runs ([`use-case-testing.md`](docs/use-case-testing.md)) | every proposable rule reached its sealed answers |
 | Links allowed inside a layer | 132 rows: 16 checked on BIAN's public pages, 113 against the open-source ArchiMate implementation, 0 contradicted |
-| Automated tests | 317, on every push (GitHub Actions), with a check that generated documents are current |
+| Automated tests | the full suite (about 350 tests) on every push (GitHub Actions), with a check that generated documents are current |
 
 **Caveats.** All data and answer keys were made by this project; a blind test by someone else is still to come. The ArchiMate and TOGAF specifications need a login, so those rows were checked against an implementation. The AI agents have not yet run in real Copilot.
 

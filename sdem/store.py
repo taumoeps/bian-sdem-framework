@@ -2,7 +2,7 @@
 approved links, persisted as JSON Graph Format v2 files, plus a load record; and the graph access layer every
 reader uses.
 
-A store is built only from inputs that pass every `sdem-graph check` rule; a failed build leaves the last good
+A store is built only from inputs that pass every `sdem check` rule; a failed build leaves the last good
 store untouched (GS-B-02). Output is deterministic (GS-F-04): same inputs, byte-identical graph files; records and links keep the order of
 the architecture dataset and registry, so every reader sees them in the same order as the source.
 """

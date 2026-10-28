@@ -1,5 +1,56 @@
-# Contributing
+# Contributing — the maintainer's guide
 
-Please open an issue first for changes to entity types or mapping semantics. PRs must explain purpose, source/target types, cardinality, provenance, expected lifecycle effect, examples, and regression tests. Do not submit confidential banking artefacts or third-party reference models without redistribution rights.
+Please open an issue first for changes to entity types or link semantics. A pull request explains its purpose, the source and target types, cardinality, provenance, the expected lifecycle effect, examples and regression tests. **Never submit confidential banking artefacts** (this repository is public and holds made-up data only) or third-party reference models without redistribution rights. Contributions must be independently owned and offered under the repository's licenses; a contributor agreement or DCO policy can be added before community contributions begin.
 
-Run `python -m unittest discover -s tests -v` before submitting. Contributions must be independently owned and offered under the applicable repository licenses. A formal contributor agreement or DCO policy can be added before community contributions begin.
+## Set up
+
+- Python **3.10 or later** (CI tests 3.10–3.13). No other dependencies.
+- `pip install -e .` installs the `sdem` command; without installing, `python -m sdem …` does the same.
+- Open the project in VS Code; run SDEM in the terminal pane ([user guide](docs/sdem-workbench-user-guide.md)).
+
+## Before every pull request
+
+```bash
+python -m unittest discover -s tests          # the test suite (about 350 tests, under 10 seconds)
+python -m sdem model check                     # every generated document and schema is current
+python -m sdem model accept                    # the rules engine passes its acceptance cases (8 of 8)
+python scripts/engine_perf.py 30 30            # the rules engine on 2,040 records within 30 s
+```
+CI (`.github/workflows/validate.yml`) runs these and more on every push, on Python 3.10–3.13, plus a job that builds the wheel, installs it in a clean environment and runs every journey from outside the repository.
+
+## Generated files — never edit them by hand
+
+Many documents and schemas are generated from the records in `metamodel/` and `schema/`. Edit the **source** — the JSON record or the generator in `sdem/` — then:
+
+```bash
+python -m sdem model regenerate                # rewrite every generated document, diagram and schema
+python -m sdem model check                     # what CI checks
+```
+
+| Generated | From |
+|---|---|
+| `docs/relationship-rules-spec.md`, `docs/architecture-model-diagram.puml` | `sdem/spec.py`, `sdem/diagram.py` — rules, decisions |
+| `docs/knowledge-graph-spec.md` | `sdem/kgspec.py`, `sdem/kgspec_services.py` |
+| `docs/architecture-metamodel-detail-level-spec.md` | `sdem/metamodel_spec.py` |
+| `docs/architecture-entity-design.md`, `docs/architecture-attribute-design.md` | `sdem/catalogue.py`, `sdem/attributes.py` |
+| `docs/logical-data-model.md`, `docs/physical-data-model.md`, `schema/entities/` | `sdem/logical.py`, `sdem/physical.py` |
+| `docs/relationships-planning.md`, structure and confidence tables | `sdem/relationships.py`, `sdem/structure.py`, `sdem/confidence.py` |
+| `docs/controls-register.md` | `sdem/controls.py` from `metamodel/controls.json` |
+
+`sdem model --help` lists every maintainer command; they need a checkout of the repository.
+
+## Rules that must not be broken
+
+- **The high-level spec is frozen.** `docs/architecture-metamodel-high-level-spec.md` is the owner's reference, pinned by a SHA-256 test. Changes go through the detail-level spec, and only with the owner's approval; gaps are called out first.
+- **Controls stay controls.** A rule enforced in code (CTL-01…23, the round cap) is never weakened to an instruction. A new rule that matters gets a control and a test (good data accepted, bad data rejected) and a row in `metamodel/controls.json`.
+- **Rules, not AI, inside SDEM.** No AI API client, no MCP server, no API key (`tests/test_copilot_setup.py` checks it). Copilot is optional and outside SDEM.
+- **Source, reasoning and confidence** on every entity type, attribute, rule and decision — high only when the public source was checked.
+- **Use-case examples are evidence.** After a change to the engine, the transform or the controls, re-run them (`python -m sdem model examples`; `python scripts/use_case_example_3.py`) and commit the updated evidence with the change.
+
+## Releases
+
+Releases are tagged by the owner. Before a tag: the CHANGELOG's *Unreleased* section moves under the version, `pyproject.toml`'s version is set to match, and the checks above pass. See [`docs/ROADMAP.md`](docs/ROADMAP.md).
+
+## Where things are
+
+The documentation is indexed by reader in [`docs/README.md`](docs/README.md); the code in `sdem/` (one module per journey, plus the generators), the rulebook in `metamodel/` and `schema/`, the made-up estates in `examples/`, scripts for examples and checks in `scripts/`, the Copilot agents, prompts and skills in `.github/`.

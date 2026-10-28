@@ -1,6 +1,6 @@
 # Architecture Inference Design (AID) — Specification
 
-> **Status: approved 2026-10-27 (design decisions AID-D01…07); §12 (AI suggestion layer, AID-D08) proposed, not approved.** Requirements for the design in [`aid-design.md`](aid-design.md). Each requirement has an ID (AID-*), a status, and how it is accepted. **Built 2026-10-27, completed 2026-10-28** in `sdem/aid.py` (command `sdem-aid`), `schema/projection.schema.json` and the graph view and trace; tested by [use-case example 2](use-case-example-2.md). Every requirement in §2–§9 is built; §12 (AI) is proposed only.
+> **Status: approved 2026-10-27 (design decisions AID-D01…07); §12 (AI suggestion layer, AID-D08) proposed, not approved.** Requirements for the design in [`aid-design.md`](aid-design.md). Each requirement has an ID (AID-*), a status, and how it is accepted. **Built 2026-10-27, completed 2026-10-28** in `sdem/aid.py` (command `sdem aid`), `schema/projection.schema.json` and the graph view and trace; tested by [use-case example 2](use-case-example-2.md). Every requirement in §2–§9 is built; §12 (AI) is proposed only.
 
 ## 1. Purpose and boundary
 
@@ -50,13 +50,13 @@ AID projects the missing architecture layers from the architecture datasets an a
 | AID-O03 | Every projected record: id `PRJ-<…>`; the normal record fields for its entity type; and a `projection` object — `{step, rule, inferred_from, reasoning, confidence}`. | built |
 | AID-O04 | Every projected link: the relationship-record fields, status `projected`, plus the `projection` object. | built |
 | AID-O05 | The package validates against `schema/projection.schema.json` (new); projected records also pass the per-entity schemas apart from fields AID cannot know, which are omitted. | built — `schema/projection.schema.json`, checked first by CTL-17 |
-| AID-O06 | The graph view and trace can load a projection package alongside real data, labelling every projected element **PROJECTED** and showing its confidence. | built — `sdem-graph view --projection` (dashed, labelled PROJECTED with confidence and provenance) and `sdem-graph trace --projection` |
+| AID-O06 | The graph view and trace can load a projection package alongside real data, labelling every projected element **PROJECTED** and showing its confidence. | built — `sdem view --projection` (dashed, labelled PROJECTED with confidence and provenance) and `sdem trace --projection` |
 
 ## 7. Gap analysis
 
 | ID | Requirement | Status |
 |---|---|---|
-| AID-G01 | Compare a projection package with real architecture datasets and registry, per layer and per link: **matched**, **projected only**, **real only**, **differs**. | built — `sdem-aid gaps` |
+| AID-G01 | Compare a projection package with real architecture datasets and registry, per layer and per link: **matched**, **projected only**, **real only**, **differs**. | built — `sdem aid gaps` |
 | AID-G02 | Matching: A2 by BIAN `canonical_id`; A3 components by the BIAN operations their APIs implement, then by name; APIs by method and path; deployments by component; A1 by the domains they use, then by name. Each match states the rule that matched it. | built — every result states the rule that matched it; A2 by BIAN `canonical_id`; a name-only resemblance is reported as *similar name*, not counted as a match |
 | AID-G03 | Report precision and recall per layer and per relationship type, and list every unmatched element with its reason. | built — per layer, per relationship type, and every unmatched element with its reason |
 
@@ -66,7 +66,7 @@ AID projects the missing architecture layers from the architecture datasets an a
 |---|---|---|
 | AID-S01 | A projection never enters an architecture dataset, the Relationship Registry or a real graph store. | **CTL-16** (built): the dataset check, the registry validator and the store build reject `PRJ-` (and design-mode `DSN-`) records, approval of links to them, and projection datasets |
 | AID-S02 | A projected link is never approved. | **CTL-16** (status `projected` is not a registry status) |
-| AID-S03 | Every projected element carries its projection provenance. | **CTL-17** (built): `sdem-aid check`, run before every projection is written |
+| AID-S03 | Every projected element carries its projection provenance. | **CTL-17** (built): `sdem aid check`, run before every projection is written |
 | AID-S04 | No projected element above **medium** confidence; pattern-derived elements are **low**. | **CTL-17** |
 | AID-S05 | No BIAN element is invented: every projected A2 element references the catalogue. | **CTL-17** |
 | AID-S06 | Nothing beyond the rule or pattern: no platforms, environments, owners or names without a basis. | acceptance tests (§9) |
@@ -92,11 +92,11 @@ The accuracy reached is **reported, not assumed**: each run states its precision
 ## 10. Commands
 
 ```
-sdem-aid project --have a1.json [a2.json …] --catalogue bian.json [--registry approved.json] --out projection/
-sdem-aid check   projection/ [--catalogue bian.json]
-sdem-aid gaps    projection/ --actual a*.json mappings.json
-sdem-graph view  --graph graph/ --projection projection/
-sdem-graph trace <id> --graph graph/ --projection projection/
+sdem aid project --have a1.json [a2.json …] --catalogue bian.json [--registry approved.json] --out projection/
+sdem aid check   projection/ [--catalogue bian.json]
+sdem aid gaps    projection/ --actual a*.json mappings.json
+sdem view  --graph graph/ --projection projection/
+sdem trace <id> --graph graph/ --projection projection/
 ```
 
 ## 11. Open questions
@@ -115,9 +115,9 @@ Revised 2026-10-28 to the SDEM workbench: the AI is the architect's GitHub Copil
 
 | ID | Requirement | Status |
 |---|---|---|
-| AID-AI01 | Rules run first. `sdem-aid project --ask` then writes `ai/questions.json`, one question per gap the rules left (a layer where projection ended, or an element found only by name evidence): the record, its neighbours' names and descriptions, the BIAN catalogue choices, and the answer format. | not built |
+| AID-AI01 | Rules run first. `sdem aid project --ask` then writes `ai/questions.json`, one question per gap the rules left (a layer where projection ended, or an element found only by name evidence): the record, its neighbours' names and descriptions, the BIAN catalogue choices, and the answer format. | not built |
 | AID-AI02 | The answer format is closed: `{question_id, choice, evidence, reasoning}` where `choice` is an id from the question's list or `none`. Prompt file `.github/prompts/aid-suggest.prompt.md` tells Copilot to answer only in this format into `ai/answers.json`. | not built |
-| AID-AI03 | `sdem-aid ai-import` rejects (and logs) any answer whose choice is not in the list, whose evidence ids do not exist in the inputs, or that is not in the format. | not built |
+| AID-AI03 | `sdem aid ai-import` rejects (and logs) any answer whose choice is not in the list, whose evidence ids do not exist in the inputs, or that is not in the format. | not built |
 | AID-AI04 | Every accepted answer becomes an element with id `PRJ-AI-<…>`, rule `AI suggestion`, source reference "GitHub Copilot (model as stated)" plus the checksums of both files, reasoning prefixed **UNVERIFIED (AI)**, confidence **0.2**. | not built |
 | AID-AI05 | `questions.json` and `answers.json` are kept in the projection package's `ai/` folder; re-importing the same answers gives the same result. | not built |
 | AID-AI06 | Gap analysis reports AI elements separately: precision and recall for rules only, and for rules + AI. | not built |

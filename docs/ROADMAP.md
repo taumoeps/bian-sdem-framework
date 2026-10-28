@@ -8,10 +8,10 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 |---|---|---|---|
 | v0.1 | Mapping entities, lifecycle, sample mappings, static validation | Example validates | done |
 | v0.2 | Full registry metadata, JSON-Schema enforcement, supersession rules, reference-adapter interface, two examples, packaging, CI matrix | 35 tests green on 3.10–3.12 | done |
-| v0.2.1 | Validator hardening: approval timestamps, canonical anchoring, typed evidence, entity catalogue resolution, `sdem-diff` for lifecycle and immutability | Unanchored or edited-after-approval records rejected in CI | done |
+| v0.2.1 | Validator hardening: approval timestamps, canonical anchoring, typed evidence, entity catalogue resolution, `sdem diff` for lifecycle and immutability | Unanchored or edited-after-approval records rejected in CI | done |
 | v0.3 | Graph reference implementation (`sdem-trace`) | Traverse approved A1→A4 links in both directions | done |
 | v0.3.1 | A1–A4 level naming with legacy aliases; adjacency rules from the relationship type catalogue | Legacy documents validate unchanged | done |
-| v0.4.0 | Entity catalogue with `extends`/`abstract`, `DEPLOYED_AS`; architecture dataset schema; local and federated graphs (`sdem-graph check/trace/impact/stats`); impact classification — see `06-data-architecture.md` | Rehost impact leaves A1/A2 `no_impact` | done |
+| v0.4.0 | Entity catalogue with `extends`/`abstract`, `DEPLOYED_AS`; architecture dataset schema; local and federated graphs (`sdem check/trace/impact/stats`); impact classification — see `06-data-architecture.md` | Rehost impact leaves A1/A2 `no_impact` | done |
 | v0.5 | Engine readiness: descriptions, reference adapter interface, engine interface with a name-overlap baseline, `sdem-eval` scorer, impact rules as data — see `07-engine-readiness.md`. Mapping plan, procedure and the use-case runs (executed by hand). Within-level rows from BIAN, ArchiMate and TOGAF, verified | Baseline proposals validate and score F1 ≥ 0.5 | done |
 | v0.6.0 | Relationship Rules Model specification (`relationship-rules-spec.md`); knowledge-graph design and specification with service specifications | Generated from the records; current in CI | done |
 | v0.7.0 | Renamed SDEM; model-driven terminology; registry specification; compatibility aliases for the old names | Behaviour byte-identical to v0.6.2 | done |
@@ -21,7 +21,7 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | Deliverable | Status |
 |---|---|
 | Data model: 11 common, 135 entity-specific and 3 derived attributes for A1–A4, each with source reference, reasoning and confidence (reviews in `drafts/`) | done |
-| Logical data model: all 14 rules enforced by `sdem-graph check` (`sdem/conformance.py`) | done |
+| Logical data model: all 14 rules enforced by `sdem check` (`sdem/conformance.py`) | done |
 | Physical data model: 40 per-entity JSON Schemas (`sdem-physical`) | done |
 | Baseline review pack `baseline/SDEM-METAMODEL-0.8-review-pack.md` | done; **awaiting independent review** |
 | On approval: record the baseline, `metamodel_version` 0.8.0, remove the deprecated `accesses` definition and the `sdmm` compatibility layer, tag `SDEM-METAMODEL-0.8`, release v0.8.0 | waiting on review |
@@ -31,7 +31,7 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | Deliverable | Status |
 |---|---|
 | **Graph store**: local JSON files in JSON Graph Format v2, load record, baselines, `query` (records, neighbours, unmapped), offline HTML view, graph access layer ([`graph-store-design.md`](graph-store-design.md), [`graph-store-spec.md`](graph-store-spec.md)) | done — AT-01…AT-11 pass |
-| **Inference engine (v0.10)**: `sdem/rules_engine.py` — steps 1–5 and design mode, reading the graph store; acceptance harness `sdem-accept` over the 8 scored cases; decisions DEC-E-01…09 | done — 8 of 8 cases pass at precision and recall 1.00; a blind case (OPEN-05) still to come |
+| **Inference engine (v0.10)**: `sdem/rules_engine.py` — steps 1–5 and design mode, reading the graph store; acceptance harness `sdem model accept` over the 8 scored cases; decisions DEC-E-01…09 | done — 8 of 8 cases pass at precision and recall 1.00; a blind case (OPEN-05) still to come |
 
 ## Next — and what is already built of it
 

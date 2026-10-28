@@ -1,9 +1,9 @@
 ---
-name: sdem-import-designs
-description: How past designs (a Confluence export) become SDEM architecture entities — running `sdem transform`, reading its extraction report, explaining each candidate's evidence, and suggesting what the architect should keep or reject before they run `sdem load`. Use when the architect asks about importing, transforming or loading past designs, or about HIS- records.
+name: sdem-onboard-designs
+description: Design onboarding — how past designs (a Confluence export) become SDEM architecture entities — running `sdem transform`, reading its extraction report, explaining each candidate's evidence, and suggesting what the architect should keep or reject before they run `sdem load`. Use when the architect asks about importing, transforming or loading past designs, or about HIS- records.
 ---
 
-# Importing past designs
+# Onboarding past designs
 
 The whole journey (design onboarding): [`docs/sdem-onboarding-workflow.md`](../../../docs/sdem-onboarding-workflow.md). In short:
 

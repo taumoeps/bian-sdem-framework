@@ -12,7 +12,7 @@ Architects want **agents** to help generate and manage designs at each architect
 
 ## 2. Is the data architecture ready for agents?
 
-Both sides are now built for Level 1 (2026-10-28). Real designs still need ingestion and a licensed BIAN catalogue.
+Both sides are now built for Level 1 (2026-10-28). Real designs come in by design onboarding (built); data from tools still needs tool onboarding, and BIAN ids a licensed BIAN catalogue.
 
 | Agents need to … | Ready? | What exists / what is missing |
 |---|---|---|
@@ -27,7 +27,7 @@ Both sides are now built for Level 1 (2026-10-28). Real designs still need inges
 | record **change events** and **work items** | ✅ | `<estate>/coordination/`: change sets, events with stored impact, work items |
 | show **which agent and which person** changed what | ✅ | CTL-20 on every change set and work-item step |
 | work in parallel without clashing | ◐ | Git branches can; not designed |
-| work on real designs | ❌ | ingestion (v0.11), licensed BIAN catalogue (v0.15) |
+| work on real designs | ◐ | design onboarding built; tool onboarding (v0.11), licensed BIAN catalogue (v0.15) |
 
 ## 3. The approach — layer agents and an orchestrator over one shared graph
 
@@ -258,7 +258,7 @@ All three levels use the **same agent files and the same `sdem` commands** — m
 | two agents change the same records | one branch per change event; one layer per change set; Git shows conflicts |
 | Copilot features differ by version | the spike confirms them first (agent files, terminal tool name, subagents) |
 | an agent edits a dataset directly instead of proposing a change set | **detected** (AG-S08): `sdem check` verifies every layer's dataset against its chain of change sets; a person's hand edit is recorded with `sdem change adopt` |
-| agents act on made-up data only today | real use needs ingestion (v0.11) and a licensed BIAN catalogue (v0.15) |
+| agents act on made-up data only today | real use needs design onboarding (built) or tool onboarding (v0.11), and a licensed BIAN catalogue (v0.15) |
 
 ## 11. Decisions — approved by the owner 2026-10-28
 

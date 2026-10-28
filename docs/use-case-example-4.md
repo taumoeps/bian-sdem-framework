@@ -1,4 +1,4 @@
-# Use-case example 4 — Importing past designs: from a Confluence export to the knowledge graph
+# Use-case example 4 — Onboarding existing designs: from a Confluence export to the knowledge graph
 
 > **Status: test script, 2026-10-29.** The plain guide for the same workflow: [`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md). Expected results for Run A are sealed below and checked automatically on every push (`tests/test_use_case_example_4.py`). Run B is yours to do on the work machine with a real export. The whole workflow is explained in [`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md); commands in the [user guide](sdem-workbench-user-guide.md) §8.7.
 
@@ -102,7 +102,7 @@ sdem transform run work/imports/payarch -o work/history --ocr off
 | Not captured | text not read 5, needs a person 3, no entity type 1 (the Risks table), column not mapped 1 (*Support hours*), file not read 1 (`payments-hld-v1.pdf`) | | categories and counts |
 | **Decision** | reject `HIS-A3-PAYMENT-ORDER` (fails the check) | | ids rejected, and why |
 
-Optional: in Copilot Chat, `/sdem-import-review work/history` explains each candidate and suggests the rejections.
+Optional: in Copilot Chat, `/sdem-onboarding-review work/history` explains each candidate and suggests the rejections.
 
 ### 5 · Load — dry run first
 ```bash

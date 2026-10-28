@@ -13,7 +13,7 @@ Projects the architecture layers an architect does not have from the ones they d
   gaps     projected vs real: matched, projected only, real only, differs
 
 BIAN elements are always references to the catalogue, never invented. No element is above medium confidence.
-Usage: sdem-aid project --have a1.json [...] --catalogue bian.json --out DIR · sdem-aid check DIR · sdem-aid gaps DIR --actual a*.json mappings.json
+Usage: sdem aid project --have a1.json [...] --catalogue bian.json --out DIR · sdem aid check DIR · sdem aid gaps DIR --actual a*.json mappings.json
 """
 import argparse, datetime, hashlib, json, re, sys
 from pathlib import Path
@@ -117,10 +117,10 @@ class Projection:
         for lvl, recs in self.records.items():
             if not recs: continue
             layers[lvl] = {'level': lvl, 'model_id': f'{pid}-{lvl.lower()}-PROJECTION', 'model_version': 'projection', 'metamodel_version': self.mm.version,
-                           'source_system': 'AID-PROJECTION (sdem-aid; not a real architecture dataset)', 'instances': list(recs.values()), 'relationships': self.rels[lvl]}
+                           'source_system': 'AID-PROJECTION (sdem aid; not a real architecture dataset)', 'instances': list(recs.values()), 'relationships': self.rels[lvl]}
         H = set(self.have)
         mode = 'forward' if min(H) == 'A1' and not ({'A1', 'A3'} <= H and 'A2' not in H) and max(H) <= 'A2' else 'middle' if {'A1', 'A3'} <= H and 'A2' not in H else 'reverse' if min(H) >= 'A3' else 'forward and reverse'
-        meta = {'projection_id': pid, 'mode': mode, 'created_by': 'sdem-aid', 'created_at': created_at, 'metamodel_version': self.mm.version,
+        meta = {'projection_id': pid, 'mode': mode, 'created_by': 'sdem aid', 'created_at': created_at, 'metamodel_version': self.mm.version,
                 'have': sorted(self.have), 'catalogue': {'model_id': (self.cat or {}).get('model_id'), 'sha256': _sha(self.cat) if self.cat else None},
                 'inputs': {lvl: {'model_id': d.get('model_id'), 'sha256': _sha(d)} for lvl, d in sorted(self.have.items())},
                 'steps': self.steps, 'projection_ends': self.ends,
@@ -546,7 +546,7 @@ def trace(reader, pkg, start, direction='down'):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog='sdem-aid', description='Architecture Inference Design: project the missing architecture layers for planning.')
+    ap = argparse.ArgumentParser(prog='sdem aid', description='Architecture Inference Design: project the missing architecture layers for planning.')
     sub = ap.add_subparsers(dest='cmd', required=True)
     p = sub.add_parser('project'); p.add_argument('--have', nargs='+', required=True); p.add_argument('--catalogue'); p.add_argument('--registry'); p.add_argument('-o', '--out', required=True); p.add_argument('--json', action='store_true')
     c = sub.add_parser('check'); c.add_argument('projection'); c.add_argument('--catalogue'); c.add_argument('--json', action='store_true')

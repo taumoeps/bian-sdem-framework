@@ -555,7 +555,7 @@ Precision = how much of what AID projected is real. Recall = how much of the rea
 | AID-B3 | from A4 alone an application is known only by its id; domains come from id words (`PAY` → Payment …) | kept low; the weakest evidence R2 accepts — expect "projected only" domains |
 | AID-B5 | run 2 projected an extra API, PUT …/control for “Control Payment Instruction”: another estate gives the same Payment Initiation domain a Control operation the real estate does not have, and the catalogue merges both | shown as projected only; a real BIAN catalogue has one fixed operation list per domain, so this comes from the synthetic test data |
 | AID-B6 | run 4 projected Current Account from one word, “account”, in API paths and entity names (the engine's S17 fallback B) — at medium confidence (0.6), the same as the right domain, which rests on five API matches | closed 2026-10-28 (owner approved) — name-only evidence (engine fallbacks, description matches, verb-and-noun and id-word matches) is capped at low in AID and enforced by CTL-17; run 4 now shows Payment Initiation 0.6, Current Account 0.4. The engine itself still rates fallback B medium in the mapping lane — separate question |
-| AID-B4 | the projection schema (AID-O05) and the view/trace PROJECTED label (AID-O06) were not built | closed 2026-10-28 — `schema/projection.schema.json`, checked by CTL-17; `sdem-graph view` and `trace` take `--projection` |
+| AID-B4 | the projection schema (AID-O05) and the view/trace PROJECTED label (AID-O06) were not built | closed 2026-10-28 — `schema/projection.schema.json`, checked by CTL-17; `sdem view` and `trace` take `--projection` |
 
 ### Sources
 

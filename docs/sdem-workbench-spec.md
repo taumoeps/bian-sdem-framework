@@ -1,6 +1,6 @@
 # SDEM Workbench — Specification
 
-> **Status: draft 2026-10-28** (SDEM-D01 and the CLI-only interface of SDEM-D07 set by the owner). Requirements for the design in [`sdem-workbench-design.md`](sdem-workbench-design.md). Each requirement has an ID (WB-*), a status, and how it is accepted. The CLI — one `sdem` command — and the controls are built; the Copilot set-up is **not built**.
+> **Status: approved by the owner and built (2026-10-28)** (SDEM-D01 and the CLI-only interface of SDEM-D07). Requirements for the design in [`sdem-workbench-design.md`](sdem-workbench-design.md). Each requirement has an ID (WB-*), a status, and how it is accepted. The CLI — one `sdem` command — the controls and the Copilot set-up (`.github/`) are built.
 
 ## 1. Purpose and boundary
 
@@ -14,7 +14,7 @@ The workbench is how architects use SDEM: they open the **SDEM project in VS Cod
 |---|---|---|
 | WB-E01 | The architect opens the SDEM project (the repository folder) in VS Code; Explorer and editor show the rulebook, datasets, registry, stores, projections and documents as files. No server is needed. | built |
 | WB-E02 | The terminal pane runs SDEM: Python 3.10 or later, SDEM installed from the project (`pip install -e .`), giving the `sdem` command — or `python -m sdem …` without installing. | built |
-| WB-E03 | The chat window is GitHub Copilot Chat, for AI support (§4). **Optional**: every journey is a CLI command the architect can run without it. | built (CLI); Copilot set-up not built |
+| WB-E03 | The chat window is GitHub Copilot Chat, for AI support (§4). **Optional**: every journey is a CLI command the architect can run without it. | built — CLI and Copilot set-up (`.github/copilot-instructions.md`, agents, prompts, skills) |
 | WB-E04 | Git for history; pull requests on the organisation's Git host for review and approval. | built (Git); approval flow WB-A01 not documented in the project |
 | WB-E05 | The project recommends its VS Code extensions (`.vscode/extensions.json`): Python, Copilot Chat, Mermaid preview. | built |
 | WB-E06 | A getting-started page: install, open the project in VS Code, open the terminal pane and run the first check, open the chat and ask Copilot to explain the result. | built — [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md) §3–5 |
@@ -38,11 +38,11 @@ The workbench is how architects use SDEM: they open the **SDEM project in VS Cod
 |---|---|---|
 | WB-C01 | `.github/copilot-instructions.md` gives Copilot the ground rules (design §4), where the rulebook, datasets, registry and stores are, and which CLI command answers which question. | built — `.github/copilot-instructions.md` |
 | WB-C02 | Copilot's role is **support**: explain command output and errors, suggest the exact CLI command, draft (records, impact notes, pull-request text), review proposals with the architect. | not built (instruction) |
-| WB-C03 | Copilot runs a command **only when the architect asks**, and only the SDEM CLI, in the terminal pane — so the command and its output are visible. | not built (instruction) |
+| WB-C03 | Copilot runs a command **only when the architect asks**, and only the SDEM CLI, in the terminal pane — so the command and its output are visible. | built — an instruction (`.github/copilot-instructions.md` rule 2): a request to Copilot, not a control |
 | WB-C04 | Ground rules, stated in WB-C01: facts from the CLI and files with the source named; suggest the exact command; rules first; never write projected or AI content into real data; never approve; source, reasoning and confidence on every statement; no MCP, no keys, no data outside the approved Copilot; say when unsure. | built — in `.github/copilot-instructions.md` |
-| WB-C05 | Prompt files in `.github/prompts/` for the kinds of support: `sdem-explain` (explain the last output), `sdem-fix` (explain a check error and suggest the fix), `sdem-review` (walk through proposals), `sdem-impact-note` (draft an impact note), `sdem-pr` (draft a pull-request description), `aid-explain`, `aid-suggest`. Each names the CLI command(s) involved and what to report. | built — 9 prompt files in `.github/prompts/` (support: explain, fix, review, impact note, pull request, AID; agent flows: process events, layer work, example 3) and 4 skills in `.github/skills/` |
+| WB-C05 | Prompt files in `.github/prompts/` for the kinds of support: `sdem-explain` (explain the last output), `sdem-fix` (explain a check error and suggest the fix), `sdem-review` (walk through proposals), `sdem-impact-note` (draft an impact note), `sdem-pr` (draft a pull-request description), `aid-explain`, `aid-suggest`. Each names the CLI command(s) involved and what to report. | built — the prompt files in `.github/prompts/` (support: explain, fix, review, impact note, pull request, AID, onboarding review; agent flows: process events, layer work, example 3) and the skills in `.github/skills/` (counts: `ls .github/prompts .github/skills`) |
 | WB-C06 | Every command the instructions or a prompt file name must exist; CI fails if one does not. | built — `tests/test_copilot_setup.py` checks every command named in the instructions, agents, prompt files and skills, and that prompts, agents and skills load |
-| WB-C07 | No MCP server, no AI API client, no API key in SDEM — checked in CI. | built (none present); CI check not built |
+| WB-C07 | No MCP server, no AI API client, no API key in SDEM — checked in CI. | built — `tests/test_copilot_setup.py::test_no_mcp_no_ai_client` on every push |
 
 ## 5. Journeys
 
@@ -50,14 +50,14 @@ Each journey is a CLI command the architect runs; Copilot supports in the chat.
 
 | ID | Journey | CLI today (SDEM-D07 name) | `--json` | Copilot support | Status |
 |---|---|---|---|---|---|
-| WB-J01 | Check data | `sdem-graph check`, `sdem-validate` (`sdem check`) | yes | explain errors, suggest fixes | built (CLI) |
-| WB-J02 | Link the architectures | `sdem-infer rules … --out` (`sdem link`) | writes JSON | summarise proposals | built (CLI) |
+| WB-J01 | Check data | `sdem check`, `sdem validate` (`sdem check`) | yes | explain errors, suggest fixes | built (CLI) |
+| WB-J02 | Link the architectures | `sdem link … --out` (`sdem link`) | writes JSON | summarise proposals | built (CLI) |
 | WB-J03 | Review and approve | edit the registry; pull request (`sdem review` lists proposals for review) | — | walk through evidence; draft the pull request | built — `sdem review` (proposals weakest first, with rule, confidence, reasoning and how to approve) |
-| WB-J04 | Build the knowledge graph | `sdem-graph build` (`sdem build`) | load record (JSON) | explain a rejected build | built (CLI) |
-| WB-J05 | Trace and impact | `sdem-graph trace`, `sdem-graph impact` (`sdem trace`, `sdem impact`) | yes | explain; draft the impact note | built (CLI) |
-| WB-J06 | Plan with AID | `sdem-aid project`, `check`, `gaps` (`sdem aid …`) | `gaps --json` | explain the projection | built (CLI) |
-| WB-J07 | See it | `sdem-graph view [--projection]` (`sdem view`) | — (HTML) | point out what to look at | built (CLI) |
-| WB-J08 | Explain an element | `sdem-aid gaps --json`; `sdem explain <id>` prints one element's provenance | — | quote step, rule, source, evidence, reasoning, confidence | built — `sdem explain` (projection package or proposals) |
+| WB-J04 | Build the knowledge graph | `sdem build` (`sdem build`) | load record (JSON) | explain a rejected build | built (CLI) |
+| WB-J05 | Trace and impact | `sdem trace`, `sdem impact` (`sdem trace`, `sdem impact`) | yes | explain; draft the impact note | built (CLI) |
+| WB-J06 | Plan with AID | `sdem aid project`, `check`, `gaps` (`sdem aid …`) | `gaps --json` | explain the projection | built (CLI) |
+| WB-J07 | See it | `sdem view [--projection]` (`sdem view`) | — (HTML) | point out what to look at | built (CLI) |
+| WB-J08 | Explain an element | `sdem aid gaps --json`; `sdem explain <id>` prints one element's provenance | — | quote step, rule, source, evidence, reasoning, confidence | built — `sdem explain` (projection package or proposals) |
 
 ## 6. Approval
 
@@ -93,9 +93,9 @@ The controls apply whoever makes a change — the architect or Copilot.
 
 | ID | Requirement | Status |
 |---|---|---|
-| WB-AI01 | In the terminal, `sdem-aid project --ask` writes `ai/questions.json`: per gap, the record, its context, the BIAN choices list and the answer format. | not built |
+| WB-AI01 | In the terminal, `sdem aid project --ask` writes `ai/questions.json`: per gap, the record, its context, the BIAN choices list and the answer format. | not built |
 | WB-AI02 | In the chat, prompt file `aid-suggest` has Copilot answer into `ai/answers.json` in that format only. | not built |
-| WB-AI03 | In the terminal, `sdem-aid ai-import` accepts an answer only if its choice is in the list and its evidence ids exist; marks accepted ones `PRJ-AI-`, 0.2, UNVERIFIED; records the stated model and both files' checksums. | not built |
+| WB-AI03 | In the terminal, `sdem aid ai-import` accepts an answer only if its choice is in the list and its evidence ids exist; marks accepted ones `PRJ-AI-`, 0.2, UNVERIFIED; records the stated model and both files' checksums. | not built |
 
 Detailed requirements: [`aid-spec.md`](aid-spec.md) §12.
 

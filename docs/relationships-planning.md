@@ -1,6 +1,6 @@
 # Relationships planning — within-level entity connections
 
-Generated from `metamodel/level-relationships.json` by `python -m sdem.relationships`; the test suite checks this file is current. These are the connections **inside** each architecture (A1–A4), held by each architecture dataset's `relationships` list and enforced by `sdem-graph check`. They are not mappings: the cross-level connections are planned in `docs/mapping-logic-planning.md` and recorded in `metamodel/relationship-rules.json`.
+Generated from `metamodel/level-relationships.json` by `python -m sdem.relationships`; the test suite checks this file is current. These are the connections **inside** each architecture (A1–A4), held by each architecture dataset's `relationships` list and enforced by `sdem check`. They are not mappings: the cross-level connections are planned in `docs/mapping-logic-planning.md` and recorded in `metamodel/relationship-rules.json`.
 
 **Rule.** A within-level relationship is accepted when it matches a row for its level (through catalogue inheritance), or when its kind is `association` — ArchiMate's generic relationship, permitted between any two entities of one level and therefore not listed. Every row derives from the reference architecture the level's entities derive from (README › *Reference architecture provenance*).
 

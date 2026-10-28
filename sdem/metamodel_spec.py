@@ -46,7 +46,7 @@ ROW_MEANING = {'id': 'permanent row ID (RA<level>-nn)', 'level': 'the architectu
                'kind': 'relationship kind (ArchiMate / BIAN vocabulary)', 'target_type': 'entity type the link points to (subtypes included)',
                'cardinality': '{source_per_target, target_per_source, basis, reasoning} — e.g. 1..1 / 0..*; checked by LC-10 (maximum, error) and LC-10m (minimum, warning) where the basis is BIAN or ArchiMate',
                'basis': 'the reference architecture the row comes from', 'official_id': 'the BIAN structural row (B-row) it encodes, if any', 'description': 'what the link means',
-               'reference_source': 'source reference (standard, section)', 'verification': 'how it was checked', 'enforceable': '`false` only for documentation rows (A2 artefacts); otherwise enforced by `sdem-graph check` (LC-03)',
+               'reference_source': 'source reference (standard, section)', 'verification': 'how it was checked', 'enforceable': '`false` only for documentation rows (A2 artefacts); otherwise enforced by `sdem check` (LC-03)',
                'inference': 'how the row was first inferred, before checking {pattern, reasoning, confidence}', 'reasoning': 'why the link is allowed', 'confidence': 'high / medium / low (single rule)', 'confidence_basis': 'which clause of the rule applied'}
 INHERIT_MEANING = {'id': 'permanent row ID (XA<level>-nn)', 'level': 'architecture', 'entity': 'the specialised entity type', 'extends': 'its parent type', 'description': 'the is-a statement',
                    'reference_source': 'source reference', 'verification': 'how it was checked', 'reasoning': 'why the type specialises the parent', 'confidence': 'high / medium / low'}
@@ -136,7 +136,7 @@ def render():
     out += ['', '**Evidence status as recorded** (high-level: `bian_reference` types ship `pending_release_validation`; confirmation only through a register entry):', '', '| evidence_status | definition_source | Entity types |', '|---|---|---|']
     out += [f'| `{a}` | `{b}` | {n} |' for (a, b), n in sorted(ev.items())]
     out += ['', 'All `bian_reference` types are `pending_release_validation` — aligned. The `confirmed_in_official_source` rows have no verification record — ' + st('G-02') + '.', '',
-            'Rules (high-level §3): artefacts are never endpoints — **enforced** (`sdem/validate.py`; `sdem-graph check` rejects artefact instances); is-a matching — **enforced** (`sdem/metamodel.py` `is_a`).']
+            'Rules (high-level §3): artefacts are never endpoints — **enforced** (`sdem/validate.py`; `sdem check` rejects artefact instances); is-a matching — **enforced** (`sdem/metamodel.py` `is_a`).']
     # ---- 4
     out += ['', '## 4. Entity reference (relationship endpoint)', '', 'The registry endpoint fields as implemented in `schema/relationship-registry.schema.json`:', '', '| Field | High-level §4 | Implemented |', '|---|---|---|']
     for f, req in (('id', 'yes'), ('type', 'yes'), ('version', 'yes'), ('canonical_id', 'A2 ends of bian_* rules'), ('source_system', 'optional'), ('source_entity_id', 'optional')):
@@ -164,19 +164,19 @@ def render():
     out += ['', f"Catalogue check: {len(hl)} entity rows read from high-level §5; {len(mism)} {'differs' if len(mism) == 1 else 'differ'} ({', '.join(mism) or 'none'}). Dropped from core per high-level §5.3 and absent here: `A3.Application`, `A3.Integration` — aligned. The example-cloud types moved to profiles do not exist — {st('G-08')}."]
     # ---- 6
     by = Counter(c['level'] for c in rows); ver = Counter(c['verification'] for c in rows)
-    out += ['', '## 6. Relationships', '', '### 6.1 Within-level relationships', '', st('G-01') + ' — **this section supersedes high-level §6.1.** Within-level relationships are in scope: each architecture\'s allowed links come from its own reference architecture and are enforced by `sdem-graph check` (LC-03).', '',
+    out += ['', '## 6. Relationships', '', '### 6.1 Within-level relationships', '', st('G-01') + ' — **this section supersedes high-level §6.1.** Within-level relationships are in scope: each architecture\'s allowed links come from its own reference architecture and are enforced by `sdem check` (LC-03).', '',
             f"{len(rows)} rows + {len(lr['inheritance'])} inheritance rows ({', '.join(f'{k} {v}' for k, v in sorted(by.items()))}); {sum(1 for c in rows if c.get('enforceable') is not False)} enforced (A2 artefact rows are documentation only). Verification: " + ', '.join(f'{k} {v}' for k, v in sorted(ver.items())) + '. Every row carries cardinality, source reference, reasoning and confidence. Detail: [`relationships-planning.md`](relationships-planning.md).', '',
             '#### 6.1a Within-level relationship row — the allowed link', '', 'One row per (source type, kind, target type) an architecture allows. ' + st('G-01') + '.', ''] + field_table(rows, ROW_MEANING) + [
             '', '#### 6.1b Inheritance row', '', 'One row per is-a link between entity types (the `extends` of §3), so a link allowed for a parent is allowed for its subtypes.', ''] + field_table(lr['inheritance'], INHERIT_MEANING) + [
             '', '#### 6.1c Within-level relationship — an actual link', '', 'In an architecture dataset\'s `relationships` list (`schema/level-model.schema.json`); never in the Relationship Registry.', '',
             '| Field | Required | Meaning |', '|---|---|---|'] + [f"| `{k}` | {'yes' if k in lm_rel.get('required', []) else 'no'} | {dict(source='id of the source instance in the same architecture dataset', kind='relationship kind; must match a row of §6.1a through inheritance, or be `association`', target='id of the target instance in the same architecture dataset', name='optional label').get(k, '')} |" for k in lm_rel['properties']] + [
-            '', 'Checked by `sdem-graph check`: both ends in the architecture dataset (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).', '',
+            '', 'Checked by `sdem check`: both ends in the architecture dataset (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).', '',
             '### 6.2 Cross-level relationship types', '', al('§6.2') + ' The eight v0.2.1 rules plus `DEPLOYED_AS` with the governance of high-level §14 decision 2.', '',
             '| Source | Relationship | Target | Perspective | Authority | Required evidence | Confidence |', '|---|---|---|---|---|---|---|']
     out += [f"| `{x['source_type']}` | `{x['relationship']}` | `{x['target_type']}` | {x['perspective']} | `{x['authority']}` | {', '.join(x.get('required_evidence') or []) or '—'} | {x.get('confidence', '')} |" for x in rt]
     out += ['', '#### 6.2a Relationship type record', '', 'Every field of a relationship type in `schema/relationship-types.json`. ' + al('§6.2') + ' (fields beyond `authority` and `perspective` came from v0.2.1, high-level R7; provenance fields are ' + st('G-13') + ').', ''] + field_table(rt, TYPE_MEANING)
     out += ['', f"Is-a matching lets `DEPLOYED_ON → A4.InfrastructureComponent` accept any concrete A4 type — aligned. Detail: [`relationship-registry-spec.md`](relationship-registry-spec.md).", '',
-            '### 6.3 Derived relationships', '', 'Level-skipping traceability is a query over approved edges with provenance (`sdem-graph trace`) and never a registry record — aligned. The inference engine also writes derived-path rows as **candidate reports** in a separate file, never registry records — ' + st('G-07') + '.']
+            '### 6.3 Derived relationships', '', 'Level-skipping traceability is a query over approved edges with provenance (`sdem trace`) and never a registry record — aligned. The inference engine also writes derived-path rows as **candidate reports** in a separate file, never registry records — ' + st('G-07') + '.']
     out += ['', '### 6.4 Relationship record — the mapping between architectures', '', al('§4 and §6.2') + ' (the v0.2.1 record, retained; high-level R7). One record per actual link between instances of adjacent architectures, in the **Architecture Relationship Registry** (`examples/<estate>/mappings.json`). Field definitions are shared with [`relationship-registry-spec.md`](relationship-registry-spec.md).', '',
             '| Field | Type / values | Required | Meaning |', '|---|---|---|---|']
     for k, v in reg_map['properties'].items():
@@ -184,19 +184,19 @@ def render():
         m = REGISTRY_FIELD_MEANING.get(k, '').replace('(§5)', '(§6.2)').replace('(§4)', '(lifecycle below)').replace('(§3)', '(§4)')  # registry-spec section numbers -> this document's
         out.append(f"| `{k}` | {t} | {'yes' if k in reg_map.get('required', []) else 'no'} | {m} |")
     out += ['', '**Lifecycle** (`sdem/diff.py`):', '', '| From | May become |', '|---|---|'] + [f"| `{a_}` | {', '.join(f'`{x}`' for x in sorted(b_)) or '— (final)'} |" for a_, b_ in ALLOWED_TRANSITIONS.items()]
-    out += ['', f"**Immutability.** Records in {', '.join(f'`{x}`' for x in sorted(FROZEN_STATUSES))} are frozen; an `approved` record may only become `superseded`, changing {', '.join(f'`{x}`' for x in sorted(THAWED_ON_SUPERSEDE))}. A change is a new record whose `previous_mapping_id` names the one it supersedes; records are never deleted (enforced by `sdem-diff`). Only `approved` records enter the federated graph (graph store GD-04).", '',
+    out += ['', f"**Immutability.** Records in {', '.join(f'`{x}`' for x in sorted(FROZEN_STATUSES))} are frozen; an `approved` record may only become `superseded`, changing {', '.join(f'`{x}`' for x in sorted(THAWED_ON_SUPERSEDE))}. A change is a new record whose `previous_mapping_id` names the one it supersedes; records are never deleted (enforced by `sdem diff`). Only `approved` records enter the federated graph (graph store GD-04).", '',
             '**Who writes what.** The inference engine writes records with status `proposed` only; an architect moves them through the lifecycle; `reviewer_id` and `approved_at` are set only on approval. Candidate reports (rule rows that are not catalogue types) are never registry records — ' + st('G-07') + '.']
     # ---- 7
     out += ['', '## 7. Bank Architecture Profiles', '', st('G-08') + '. Nothing of high-level §7 is built; the `ReferenceResolver` interface exists (`sdem/reference.py`), the `resolve_entity(ref)` form does not — ' + st('G-06') + '.']
     # ---- 8
-    out += ['', '## 8. Validation stages and verdicts', '', al('§8') + ' except where noted. Verdicts are kept per stage and never collapsed (`sdem-validate --json`).', '',
+    out += ['', '## 8. Validation stages and verdicts', '', al('§8') + ' except where noted. Verdicts are kept per stage and never collapsed (`sdem validate --json`).', '',
             '| Stage | High-level question | Implemented by | Status |', '|---|---|---|---|',
             '| 1 Schema | well-formed document | `sdem/validate.py` `check_schema` | built |',
             '| 2 Metamodel | endpoint types exist (is-a); relationship registered for them | `sdem/validate.py` | built |',
             f"| 3 Profile | bank types satisfy their mapping | — | not built — {st('G-08')} |",
-            '| 4 Identity | both ends resolve at the stated version | `sdem-graph check` (`FederatedGraph.resolve_entity`) | built (`unverified` without architecture datasets) |',
+            '| 4 Identity | both ends resolve at the stated version | `sdem check` (`FederatedGraph.resolve_entity`) | built (`unverified` without architecture datasets) |',
             f"| 5 BIAN | canonical_id valid in the stated release | `ReferenceResolver` | always `unverified` — {st('G-10')} |",
-            '| 6 Governance | evidence, reviewer, timestamp, baseline, supersession, transitions | `sdem/validate.py`, `sdem-diff` | built |',
+            '| 6 Governance | evidence, reviewer, timestamp, baseline, supersession, transitions | `sdem/validate.py`, `sdem diff` | built |',
             '| 7 Semantics | evidence justifies the relationship | — | `unverified` by design (high-level §8) |',
             '', 'Architecture datasets are additionally checked against the data model — logical rules LC-01…LC-13 (`sdem/conformance.py`) — ' + st('G-12') + '.']
     # ---- 9, 10
@@ -227,11 +227,11 @@ def render():
             f"{len(rules)} plan rows (`metamodel/relationship-rules.json`): " + ', '.join(f'{k} {v}' for k, v in sorted(rd.items())) + '. By fill step: ' + ', '.join(f'step {k} {v}' for k, v in sorted(fs.items())) + f". Join keys: `metamodel/export-conventions.json`. Specification: [`relationship-rules-spec.md`](relationship-rules-spec.md).", '',
             '### 15a Mapping rule record', '', 'Every field of a plan row in `metamodel/relationship-rules.json`.', ''] + field_table(rules, RULE_MEANING) + ['',
             '## 16. Data model', '', st('G-12') + '.', '',
-            f"{len(at['core_fields'])} core fields, {len(at.get('common_attributes', []))} common attributes, {len(acts)} entity-specific attributes, {len(at.get('derived_attributes', []))} derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem-graph check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](architecture-attribute-design.md), [`logical-data-model.md`](logical-data-model.md), [`physical-data-model.md`](physical-data-model.md).", '',
+            f"{len(at['core_fields'])} core fields, {len(at.get('common_attributes', []))} common attributes, {len(acts)} entity-specific attributes, {len(at.get('derived_attributes', []))} derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](architecture-attribute-design.md), [`logical-data-model.md`](logical-data-model.md), [`physical-data-model.md`](physical-data-model.md).", '',
             '## 17. Provenance and confidence', '', st('G-13') + '.', '',
             f"Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: {conf['high']} high, {conf['medium']} medium, {conf['low']} low.", '',
             '## 18. Inference engine', '', st('G-14') + '.', '',
-            f"`sdem/rules_engine.py` (`sdem-infer rules`) applies the rules model in fill-step order to the graph store and writes proposals (always `proposed`), candidate reports and an inference log; design mode where no A3 architecture dataset exists. Acceptance: `sdem-accept` — {passing} of {len(cases)} cases passing. Decisions DEC-E-01…09; open item OPEN-05 (a blind case).", '',
+            f"`sdem/rules_engine.py` (`sdem link`) applies the rules model in fill-step order to the graph store and writes proposals (always `proposed`), candidate reports and an inference log; design mode where no A3 architecture dataset exists. Acceptance: `sdem model accept` — {passing} of {len(cases)} cases passing. Decisions DEC-E-01…09; open item OPEN-05 (a blind case).", '',
             '## 19. Graph store', '', st('G-15') + '.', '',
             'Local and federated knowledge graphs saved as JSON Graph Format v2 files with a load record and baselines; one graph access layer (`sdem/store.py`). Design and specification: [`graph-store-design.md`](graph-store-design.md), [`graph-store-spec.md`](graph-store-spec.md).', '',
             '## 20. Architecture Inference Design (AID)', '', st('G-18') + '.', '',
@@ -241,7 +241,7 @@ def render():
             '| Input | all available architecture datasets | one or more layers, plus the BIAN reference catalogue |',
             '| Output | approved links — Relationship Registry, federated graph | a **projected design** in a separate projection package (`PRJ-`), with inference confidence |',
             '| Trust | validated and approved | planning only; never approved |', '',
-            'AID may read real data but never write into the mapping lane (control CTL-16); a projection becomes real only when the design is built, appears in a real architecture dataset and passes through the mapping lane. **Gap analysis** compares the two lanes. Built in `sdem/aid.py` (command `sdem-aid`); design and specification: [`aid-design.md`](aid-design.md), [`aid-spec.md`](aid-spec.md); tested in [`use-case-example-2.md`](use-case-example-2.md).', '',
+            'AID may read real data but never write into the mapping lane (control CTL-16); a projection becomes real only when the design is built, appears in a real architecture dataset and passes through the mapping lane. **Gap analysis** compares the two lanes. Built in `sdem/aid.py` (command `sdem aid`); design and specification: [`aid-design.md`](aid-design.md), [`aid-spec.md`](aid-spec.md); tested in [`use-case-example-2.md`](use-case-example-2.md).', '',
             '## Gap register', '', 'From `metamodel/metamodel-spec-gaps.json`. Status changes only on the owner\'s decision.', '',
             '| ID | Kind | High-level § | High-level says | Implemented | Recommendation | Status |', '|---|---|---|---|---|---|---|']
     out += [f"| {g['id']} | {g['kind']} | {g['high_level_section']} | {g['high_level_says']} | {g['implemented']} | {g['recommendation']} | **{g['status']}** |" for g in gaps]

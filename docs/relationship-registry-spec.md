@@ -58,7 +58,7 @@ An end must resolve to an instance in the local architecture knowledge graph its
 | `rejected` | — (final) |
 | `superseded` | — (final) |
 
-**Immutability.** A record in `approved`, `rejected`, `superseded` is frozen: no field may change, except that an `approved` record may become `superseded`, changing only `status`, `valid_to`. A change is a **new record** whose `previous_mapping_id` names the old one. Records are never deleted. `sdem-diff` enforces this against the previous version.
+**Immutability.** A record in `approved`, `rejected`, `superseded` is frozen: no field may change, except that an `approved` record may become `superseded`, changing only `status`, `valid_to`. A change is a **new record** whose `previous_mapping_id` names the old one. Records are never deleted. `sdem diff` enforces this against the previous version.
 
 ## 5. Relationship types and required evidence
 
@@ -80,9 +80,9 @@ From the relationship type catalogue (Architecture Metamodel).
 
 | Check | Tool |
 |---|---|
-| record shape, catalogued type, adjacency, evidence kinds, BIAN fields | `sdem-validate` |
-| both ends resolve in the local knowledge graphs | `sdem-graph check` |
-| no edits to frozen records; only permitted transitions | `sdem-diff` |
+| record shape, catalogued type, adjacency, evidence kinds, BIAN fields | `sdem validate` |
+| both ends resolve in the local knowledge graphs | `sdem check` |
+| no edits to frozen records; only permitted transitions | `sdem diff` |
 
 ## 7. Legacy names
 

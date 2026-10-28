@@ -118,7 +118,7 @@ Attributes add further public sources (Dublin Core, W3C ORG and SKOS, ISO 20022,
 
 All `bian_reference` types are `pending_release_validation` — aligned. The `confirmed_in_official_source` rows have no verification record — **Gap G-02** (contradiction; decided 2026-10-28 (owner): downgraded to interpreted_from_official_source until a release-specific verification record exists).
 
-Rules (high-level §3): artefacts are never endpoints — **enforced** (`sdem/validate.py`; `sdem-graph check` rejects artefact instances); is-a matching — **enforced** (`sdem/metamodel.py` `is_a`).
+Rules (high-level §3): artefacts are never endpoints — **enforced** (`sdem/validate.py`; `sdem check` rejects artefact instances); is-a matching — **enforced** (`sdem/metamodel.py` `is_a`).
 
 ## 4. Entity reference (relationship endpoint)
 
@@ -209,7 +209,7 @@ Catalogue check: 41 entity rows read from high-level §5; 1 differs (A4.Deployme
 
 ### 6.1 Within-level relationships
 
-**Gap G-01** (contradiction; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed — detail §6.1 supersedes high-level §6.1) — **this section supersedes high-level §6.1.** Within-level relationships are in scope: each architecture's allowed links come from its own reference architecture and are enforced by `sdem-graph check` (LC-03).
+**Gap G-01** (contradiction; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed — detail §6.1 supersedes high-level §6.1) — **this section supersedes high-level §6.1.** Within-level relationships are in scope: each architecture's allowed links come from its own reference architecture and are enforced by `sdem check` (LC-03).
 
 132 rows + 12 inheritance rows (A1 48, A2 17, A3 31, A4 36); 129 enforced (A2 artefact rows are documentation only). Verification: sdem_reading 1, unverified_togaf 2, verified 16, verified_against_archi 113. Every row carries cardinality, source reference, reasoning and confidence. Detail: [`relationships-planning.md`](relationships-planning.md).
 
@@ -230,7 +230,7 @@ One row per (source type, kind, target type) an architecture allows. **Gap G-01*
 | `description` | yes | 132 of 132 | text | what the link means |
 | `reference_source` | yes | 132 of 132 | text | source reference (standard, section) |
 | `verification` | yes | 132 of 132 | `sdem_reading`, `unverified_togaf`, `verified`, `verified_against_archi` | how it was checked |
-| `enforceable` | no | 3 of 132 | `False` | `false` only for documentation rows (A2 artefacts); otherwise enforced by `sdem-graph check` (LC-03) |
+| `enforceable` | no | 3 of 132 | `False` | `false` only for documentation rows (A2 artefacts); otherwise enforced by `sdem check` (LC-03) |
 | `inference` | no | 115 of 132 | object | how the row was first inferred, before checking {pattern, reasoning, confidence} |
 | `reasoning` | yes | 132 of 132 | text | why the link is allowed |
 | `confidence` | yes | 132 of 132 | `high`, `low`, `medium` | high / medium / low (single rule) |
@@ -263,7 +263,7 @@ In an architecture dataset's `relationships` list (`schema/level-model.schema.js
 | `target` | yes | id of the target instance in the same architecture dataset |
 | `name` | no | optional label |
 
-Checked by `sdem-graph check`: both ends in the architecture dataset (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).
+Checked by `sdem check`: both ends in the architecture dataset (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).
 
 ### 6.2 Cross-level relationship types
 
@@ -308,7 +308,7 @@ Is-a matching lets `DEPLOYED_ON → A4.InfrastructureComponent` accept any concr
 
 ### 6.3 Derived relationships
 
-Level-skipping traceability is a query over approved edges with provenance (`sdem-graph trace`) and never a registry record — aligned. The inference engine also writes derived-path rows as **candidate reports** in a separate file, never registry records — **Gap G-07** (contradiction; decided 2026-10-25 (owner): derived paths may be written as candidate reports, never as registry records).
+Level-skipping traceability is a query over approved edges with provenance (`sdem trace`) and never a registry record — aligned. The inference engine also writes derived-path rows as **candidate reports** in a separate file, never registry records — **Gap G-07** (contradiction; decided 2026-10-25 (owner): derived paths may be written as candidate reports, never as registry records).
 
 ### 6.4 Relationship record — the mapping between architectures
 
@@ -345,7 +345,7 @@ Level-skipping traceability is a query over approved edges with provenance (`sde
 | `rejected` | — (final) |
 | `superseded` | — (final) |
 
-**Immutability.** Records in `approved`, `rejected`, `superseded` are frozen; an `approved` record may only become `superseded`, changing `status`, `valid_to`. A change is a new record whose `previous_mapping_id` names the one it supersedes; records are never deleted (enforced by `sdem-diff`). Only `approved` records enter the federated graph (graph store GD-04).
+**Immutability.** Records in `approved`, `rejected`, `superseded` are frozen; an `approved` record may only become `superseded`, changing `status`, `valid_to`. A change is a new record whose `previous_mapping_id` names the one it supersedes; records are never deleted (enforced by `sdem diff`). Only `approved` records enter the federated graph (graph store GD-04).
 
 **Who writes what.** The inference engine writes records with status `proposed` only; an architect moves them through the lifecycle; `reviewer_id` and `approved_at` are set only on approval. Candidate reports (rule rows that are not catalogue types) are never registry records — **Gap G-07** (contradiction; decided 2026-10-25 (owner): derived paths may be written as candidate reports, never as registry records).
 
@@ -355,16 +355,16 @@ Level-skipping traceability is a query over approved edges with provenance (`sde
 
 ## 8. Validation stages and verdicts
 
-*Aligned to high-level §8.* except where noted. Verdicts are kept per stage and never collapsed (`sdem-validate --json`).
+*Aligned to high-level §8.* except where noted. Verdicts are kept per stage and never collapsed (`sdem validate --json`).
 
 | Stage | High-level question | Implemented by | Status |
 |---|---|---|---|
 | 1 Schema | well-formed document | `sdem/validate.py` `check_schema` | built |
 | 2 Metamodel | endpoint types exist (is-a); relationship registered for them | `sdem/validate.py` | built |
 | 3 Profile | bank types satisfy their mapping | — | not built — **Gap G-08** (not built; not built — planned (ROADMAP) v0.14) |
-| 4 Identity | both ends resolve at the stated version | `sdem-graph check` (`FederatedGraph.resolve_entity`) | built (`unverified` without architecture datasets) |
+| 4 Identity | both ends resolve at the stated version | `sdem check` (`FederatedGraph.resolve_entity`) | built (`unverified` without architecture datasets) |
 | 5 BIAN | canonical_id valid in the stated release | `ReferenceResolver` | always `unverified` — **Gap G-10** (as designed; as designed) |
-| 6 Governance | evidence, reviewer, timestamp, baseline, supersession, transitions | `sdem/validate.py`, `sdem-diff` | built |
+| 6 Governance | evidence, reviewer, timestamp, baseline, supersession, transitions | `sdem/validate.py`, `sdem diff` | built |
 | 7 Semantics | evidence justifies the relationship | — | `unverified` by design (high-level §8) |
 
 Architecture datasets are additionally checked against the data model — logical rules LC-01…LC-13 (`sdem/conformance.py`) — **Gap G-12** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
@@ -441,7 +441,7 @@ Every field of a plan row in `metamodel/relationship-rules.json`.
 
 **Gap G-12** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-9 core fields, 11 common attributes, 135 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem-graph check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](architecture-attribute-design.md), [`logical-data-model.md`](logical-data-model.md), [`physical-data-model.md`](physical-data-model.md).
+9 core fields, 11 common attributes, 135 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](architecture-attribute-design.md), [`logical-data-model.md`](logical-data-model.md), [`physical-data-model.md`](physical-data-model.md).
 
 ## 17. Provenance and confidence
 
@@ -453,7 +453,7 @@ Every entity, within-level row, relationship type and attribute names its source
 
 **Gap G-14** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-`sdem/rules_engine.py` (`sdem-infer rules`) applies the rules model in fill-step order to the graph store and writes proposals (always `proposed`), candidate reports and an inference log; design mode where no A3 architecture dataset exists. Acceptance: `sdem-accept` — 8 of 8 cases passing. Decisions DEC-E-01…09; open item OPEN-05 (a blind case).
+`sdem/rules_engine.py` (`sdem link`) applies the rules model in fill-step order to the graph store and writes proposals (always `proposed`), candidate reports and an inference log; design mode where no A3 architecture dataset exists. Acceptance: `sdem model accept` — 8 of 8 cases passing. Decisions DEC-E-01…09; open item OPEN-05 (a blind case).
 
 ## 19. Graph store
 
@@ -474,7 +474,7 @@ A second lane beside the mapping lane, sharing the same rulebook and engine rule
 | Output | approved links — Relationship Registry, federated graph | a **projected design** in a separate projection package (`PRJ-`), with inference confidence |
 | Trust | validated and approved | planning only; never approved |
 
-AID may read real data but never write into the mapping lane (control CTL-16); a projection becomes real only when the design is built, appears in a real architecture dataset and passes through the mapping lane. **Gap analysis** compares the two lanes. Built in `sdem/aid.py` (command `sdem-aid`); design and specification: [`aid-design.md`](aid-design.md), [`aid-spec.md`](aid-spec.md); tested in [`use-case-example-2.md`](use-case-example-2.md).
+AID may read real data but never write into the mapping lane (control CTL-16); a projection becomes real only when the design is built, appears in a real architecture dataset and passes through the mapping lane. **Gap analysis** compares the two lanes. Built in `sdem/aid.py` (command `sdem aid`); design and specification: [`aid-design.md`](aid-design.md), [`aid-spec.md`](aid-spec.md); tested in [`use-case-example-2.md`](use-case-example-2.md).
 
 ## Gap register
 

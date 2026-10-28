@@ -19,20 +19,20 @@ RIGHT = {'1..1': '||', '0..1': 'o|', '0..*': 'o{', '1..*': '|{'}
 TY = {'string': str, 'list<string>': list, 'map<string,string>': dict, 'integer': int, 'boolean': bool, 'date': str}
 
 CONSTRAINTS = [
- ('LC-01', 'Instance identity', '`id` + `version` is unique within an architecture dataset', 'enforced', '`sdem-graph check`'),
- ('LC-02', 'Entity typing', 'every instance\'s `type` is a concrete, non-artefact entity type of the architecture dataset\'s level', 'enforced', '`sdem-graph check`'),
- ('LC-03', 'Within-level relationships', 'every relationship matches a within-level row of its level (through inheritance), or is `association`', 'enforced', '`sdem-graph check`'),
- ('LC-04', 'Required attributes', 'every attribute marked required is present; on an instance whose `lifecycle_status` is `planned` (a target design) a missing one is a warning, not an error', 'enforced', '`sdem-graph check` (error)'),
- ('LC-05', 'Attribute types', 'every attribute value has its declared type', 'enforced', '`sdem-graph check` (error)'),
- ('LC-06', 'Enumerations', 'every attribute with allowed values, and `lifecycle_status`, takes an allowed value', 'enforced', '`sdem-graph check` (error)'),
- ('LC-07', 'Same-level references', 'a reference attribute whose target is in the same level names an instance of the declared type in the same architecture dataset', 'enforced', '`sdem-graph check` (error)'),
- ('LC-08', 'Cross-level references', 'a reference attribute whose target is in another level names an instance of the declared type in the estate', 'enforced as a warning', '`sdem-graph check` (warning when the target level is loaded); resolved by the inference engine; never a federated edge'),
- ('LC-09', 'Natural keys', 'no two instances of a type share their identifier key within an architecture dataset', 'enforced', '`sdem-graph check` (error)'),
- ('LC-10', 'Cardinality — maximum', 'no instance exceeds the stated maximum of a BIAN or ArchiMate-composition row (e.g. a service group in two Service Domains)', 'enforced', '`sdem-graph check` (error)'),
- ('LC-10m', 'Cardinality — minimum (completeness)', 'an instance meets the stated minimum (e.g. a Service Domain has a control record); architecture datasets may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error', 'enforced', '`sdem-graph check` (warning)'),
- ('LC-11', 'Cross-level relationship ends', 'both ends of every registry record resolve to instances of the right type, level and version', 'enforced', '`sdem-graph check`'),
- ('LC-12', 'Registry immutability', 'approved, rejected and superseded registry records are never edited', 'enforced', '`sdem-diff`'),
- ('LC-13', 'Deprecated attributes', 'deprecated attributes raise a warning', 'enforced', '`sdem-graph check` (warning)'),
+ ('LC-01', 'Instance identity', '`id` + `version` is unique within an architecture dataset', 'enforced', '`sdem check`'),
+ ('LC-02', 'Entity typing', 'every instance\'s `type` is a concrete, non-artefact entity type of the architecture dataset\'s level', 'enforced', '`sdem check`'),
+ ('LC-03', 'Within-level relationships', 'every relationship matches a within-level row of its level (through inheritance), or is `association`', 'enforced', '`sdem check`'),
+ ('LC-04', 'Required attributes', 'every attribute marked required is present; on an instance whose `lifecycle_status` is `planned` (a target design) a missing one is a warning, not an error', 'enforced', '`sdem check` (error)'),
+ ('LC-05', 'Attribute types', 'every attribute value has its declared type', 'enforced', '`sdem check` (error)'),
+ ('LC-06', 'Enumerations', 'every attribute with allowed values, and `lifecycle_status`, takes an allowed value', 'enforced', '`sdem check` (error)'),
+ ('LC-07', 'Same-level references', 'a reference attribute whose target is in the same level names an instance of the declared type in the same architecture dataset', 'enforced', '`sdem check` (error)'),
+ ('LC-08', 'Cross-level references', 'a reference attribute whose target is in another level names an instance of the declared type in the estate', 'enforced as a warning', '`sdem check` (warning when the target level is loaded); resolved by the inference engine; never a federated edge'),
+ ('LC-09', 'Natural keys', 'no two instances of a type share their identifier key within an architecture dataset', 'enforced', '`sdem check` (error)'),
+ ('LC-10', 'Cardinality — maximum', 'no instance exceeds the stated maximum of a BIAN or ArchiMate-composition row (e.g. a service group in two Service Domains)', 'enforced', '`sdem check` (error)'),
+ ('LC-10m', 'Cardinality — minimum (completeness)', 'an instance meets the stated minimum (e.g. a Service Domain has a control record); architecture datasets may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error', 'enforced', '`sdem check` (warning)'),
+ ('LC-11', 'Cross-level relationship ends', 'both ends of every registry record resolve to instances of the right type, level and version', 'enforced', '`sdem check`'),
+ ('LC-12', 'Registry immutability', 'approved, rejected and superseded registry records are never edited', 'enforced', '`sdem diff`'),
+ ('LC-13', 'Deprecated attributes', 'deprecated attributes raise a warning', 'enforced', '`sdem check` (warning)'),
 ]
 
 
@@ -129,7 +129,7 @@ def render():
             '| ID | Rule | Detail | Status |', '|---|---|---|---|']
     out += [f"| {c[0]} | {c[1]} | {c[2]} | **{c[3]}** |" for c in CONSTRAINTS]
     out += ['', '## Appendix B. How the example data measures up', '',
-            f"The {est} example estates ({inst} instances) (the generated reference-structure estate excluded) checked by `sdem-graph check` against the enforced rules. " + ('No errors' if all(res[f'{lc} failed'] == 0 for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-09', 'LC-10')) else 'Errors are listed below') + f"; {res['LC-10m failed']} completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record)" + (f"; {res['LC-13 failed']} instance(s) still use a deprecated field" if res['LC-13 failed'] else '') + '.', '',
+            f"The {est} example estates ({inst} instances) (the generated reference-structure estate excluded) checked by `sdem check` against the enforced rules. " + ('No errors' if all(res[f'{lc} failed'] == 0 for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-09', 'LC-10')) else 'Errors are listed below') + f"; {res['LC-10m failed']} completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record)" + (f"; {res['LC-13 failed']} instance(s) still use a deprecated field" if res['LC-13 failed'] else '') + '.', '',
             '| Rule | Values checked | Failures |', '|---|---|---|']
     for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-08', 'LC-09', 'LC-10', 'LC-10m'):
         out.append(f"| {lc}{' (warning)' if lc in ('LC-08', 'LC-10m') else ''} | {res[lc + ' checked']} | {res[lc + ' failed']} |")

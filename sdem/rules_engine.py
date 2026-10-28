@@ -2,7 +2,7 @@
 
 Reads a graph through the graph access layer (sdem/store.py GraphReader), applies the Relationship Rules Model
 (metamodel/relationship-rules.json) in fill-step order, and returns:
-  proposals  — catalogue-typed records (the nine relationship types), status `proposed`, for sdem-validate and an architect
+  proposals  — catalogue-typed records (the nine relationship types), status `proposed`, for sdem validate and an architect
   candidates — reports for candidate, conditional, institution-only and derived-path rows, `relationship` = the plan ID
   log        — one record per attempt, including refusals (the evidence base; REQ-O-02)
 It never approves, never invents an instance, and never re-proposes a link that is already approved.

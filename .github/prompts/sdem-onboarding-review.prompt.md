@@ -1,11 +1,11 @@
 ---
-name: sdem-import-review
-description: "Review an import of past designs with me: explain each candidate's evidence, suggest what to reject, and give me the load command"
+name: sdem-onboarding-review
+description: "Review a design onboarding with me: explain each candidate's evidence, suggest what to reject, and give me the load command"
 agent: agent
 argument-hint: "the transform output folder, e.g. work/history"
 ---
 
-Help me review the import of past designs in ${input:candidates:work/history} (the output of `sdem transform run`). Use skill `sdem-import-designs`.
+Help me review the onboarding of past designs in ${input:candidates:work/history} (the output of `sdem transform run`). Use skill `sdem-onboard-designs`.
 
 1. Read `${input:candidates}/extraction-report.md` and `${input:candidates}/extraction.json`.
 2. Report, in this format:

@@ -35,7 +35,7 @@ prompts  ← the entry points         (start an agent on a task, with inputs)
 
 | Build | Because |
 |---|---|
-| **1. Skills** | agents and prompts point to them — the know-how is written once, and an agent file stays short ("for imports, use the *sdem-import-designs* skill") |
+| **1. Skills** | agents and prompts point to them — the know-how is written once, and an agent file stays short ("for imports, use the *sdem-onboard-designs* skill") |
 | **2. Agent definitions** | the roles and boundaries ("you do X; you never do Y") refer to the skills; the safety-relevant wording lives here |
 | **3. Prompts** | they start an agent on a task — the agent and its skills must exist first |
 

@@ -35,7 +35,7 @@ Skills to use: **sdem-trace-impact** (reading impact and explaining it), **sdem-
 
 ## Past designs (import)
 
-When the architect reviews an import of past designs (skill **sdem-import-designs**), you may split the review by layer: ask `sdem-a1-business`, `sdem-a3-application` and `sdem-a4-technology` each to explain their layer's candidates and suggest rejections, then give the architect one list and the `sdem load` command **for them to run**. Never run `sdem load` (only `--dry-run`), and never `sdem build` from the transform's output — it is refused (CTL-23).
+When the architect reviews an import of past designs (skill **sdem-onboard-designs**), you may split the review by layer: ask `sdem-a1-business`, `sdem-a3-application` and `sdem-a4-technology` each to explain their layer's candidates and suggest rejections, then give the architect one list and the `sdem load` command **for them to run**. Never run `sdem load` (only `--dry-run`), and never `sdem build` from the transform's output — it is refused (CTL-23).
 
 ## What you never do
 

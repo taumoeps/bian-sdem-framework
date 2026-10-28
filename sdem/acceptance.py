@@ -48,14 +48,14 @@ def _doc(mappings, engine, case):
 
 
 def check_proposals(doc, reader, design=()):
-    """sdem-validate --strict on the proposal document, ends resolved against the case's graph (plus any design architecture datasets)."""
+    """sdem validate --strict on the proposal document, ends resolved against the case's graph (plus any design architecture datasets)."""
     from .graph import FederatedGraph, LevelGraph
     fg = reader.fg
     if design:
         fg = FederatedGraph(list(reader.fg.levels.values()) + [LevelGraph(d, reader.mm) for d in design], reader.fg.mapping_docs, reader.mm)
     warnings = []
     issues = validate(doc, load_registry(), load_schema(), entity_resolver=fg, warnings=warnings, metamodel=reader.mm)
-    return list(issues) + [w for w in warnings if 'must be supplied before approval' not in w]  # --strict, as sdem-validate
+    return list(issues) + [w for w in warnings if 'must be supplied before approval' not in w]  # --strict, as sdem validate
 
 
 def _scoped(docs, scope):
@@ -140,7 +140,7 @@ def engines():
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog='sdem-accept', description='Run an inference engine over the acceptance cases and score it against the hand-executed runs.')
+    ap = argparse.ArgumentParser(prog='sdem model accept', description='Run an inference engine over the acceptance cases and score it against the hand-executed runs.')
     ap.add_argument('--engine', default='rules', choices=sorted(engines()))
     ap.add_argument('--case', nargs='*', help='case ids (default: all)')
     ap.add_argument('--out', help='write each case\'s proposals, candidates and inference log here')

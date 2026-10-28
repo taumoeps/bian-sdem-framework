@@ -1,6 +1,6 @@
 # Architecture Inference Design (AID) — Design
 
-> **Status: approved and built 2026-10-27 (decisions AID-D01…07); §8 AI suggestion layer (AID-D08) proposed, not approved** — `sdem/aid.py`, command `sdem-aid`; tested in [use-case example 2](use-case-example-2.md); projection schema and the PROJECTED view and trace built 2026-10-28. Requirements: [`aid-spec.md`](aid-spec.md).
+> **Status: approved and built 2026-10-27 (decisions AID-D01…07); §8 AI suggestion layer (AID-D08) proposed, not approved** — `sdem/aid.py`, command `sdem aid`; tested in [use-case example 2](use-case-example-2.md); projection schema and the PROJECTED view and trace built 2026-10-28. Requirements: [`aid-spec.md`](aid-spec.md).
 
 ## 1. What AID is
 
@@ -113,7 +113,7 @@ When the real layers exist (or for testing, when they are known but hidden), AID
 | The rulebook and the engine's rules | built |
 | BIAN reference catalogue | **partial** — public BIAN material is limited; the examples hold small synthetic A2 datasets. A complete catalogue needs licensed BIAN data |
 | Graph store and view, to show projections | built, with a projection overlay (`--projection`, AID-O06) |
-| A projection package format | built — `sdem-aid project`, `schema/projection.schema.json` |
+| A projection package format | built — `sdem aid project`, `schema/projection.schema.json` |
 
 ## 7. Decisions — approved by the owner 2026-10-27, as recommended
 
@@ -149,12 +149,12 @@ AID's inference is **rules**: exact and traceable, but they can only follow link
 SDEM does **not** call an AI, hold an API key or add a data flow. The architect's approved **GitHub Copilot Chat** answers SDEM's questions in VS Code; SDEM checks every answer.
 
 ```
- /aid-project ─► sdem-aid project … --ask ─► RULES first (as today) ─► projection package
+ /aid-project ─► sdem aid project … --ask ─► RULES first (as today) ─► projection package
                                                     └─► ai/questions.json — only the gaps the rules left:
                                                         the record, its context, the BIAN choices list,
                                                         the exact answer format
  /aid-suggest ─► Copilot Chat answers ─────────────────► ai/answers.json
- /aid-import  ─► sdem-aid ai-import ─► CHECK each answer ─► accepted ones added: PRJ-AI-, 0.2, UNVERIFIED
+ /aid-import  ─► sdem aid ai-import ─► CHECK each answer ─► accepted ones added: PRJ-AI-, 0.2, UNVERIFIED
                                         choice in the list?      (rejected ones logged with the reason)
                                         evidence ids exist?
 ```

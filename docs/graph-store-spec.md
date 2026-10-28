@@ -6,7 +6,7 @@
 
 **In scope:** persisting the four local knowledge graphs and the federated graph of approved links as JSON files on the local device; building them from checked architecture datasets and the Relationship Registry; a single read interface (the graph access layer); queries over the stored files; baselines; a self-contained HTML view.
 
-**Out of scope:** adapters from source tools (ingestion, v0.10); change detection and refresh triggers (v0.11); a database server or multi-user editing (later, behind the same interface); proposing links (the inference engine, v0.9 — a *consumer* of the store).
+**Out of scope:** adapters from source tools (tool onboarding, v0.11); change detection and refresh triggers (v0.13); a database server or multi-user editing (later, behind the same interface); proposing links (the inference engine, v0.9 — a *consumer* of the store).
 
 **Normative references:** JSON Graph Format v2 (`https://github.com/jsongraph/json-graph-specification`, schema `json-graph-schema_v2.json`, `$id` `http://jsongraphformat.info/v2.1/json-graph-schema.json`, MIT licence; checked 2026-10-25); SDEM architecture dataset schema (`schema/level-model.schema.json`); Relationship Registry schema (`schema/relationship-registry.schema.json`); SDEM logical rules LC-01…LC-13 (`logical-data-model.md`).
 
@@ -40,7 +40,7 @@
 |---|---|---|---|
 | GS-E-01 | Every within-level relationship of an architecture dataset becomes one edge in its level's file: `source`/`target` = node keys, `relation` = the relationship `kind`, `id` = `<level>:<source id>-<kind>-<target id>` (suffixed `#2`, `#3` … when repeated), `label` = the relationship `name` if present. `metadata` = `scope: "within-level"` and `row` = the ID of the within-level row that allowed it (or `"association"`). | KG-L-02 | AT-03 |
 | GS-E-02 | Every registry record whose `status` is in the federated graph's `statuses` (default: approved only) becomes one edge in the federated file: `id` = `mapping_id`, `relation` = `relationship`, `source`/`target` = node keys from the record's ends (id and version as recorded), `metadata` = `scope: "cross-level"` plus every other field of the record unchanged. | KG-V-03 | AT-03 |
-| GS-E-03 | An approved record whose end does not resolve to a node fails the build (it would already fail `sdem-graph check`). | LC-11 | AT-05 |
+| GS-E-03 | An approved record whose end does not resolve to a node fails the build (it would already fail `sdem check`). | LC-11 | AT-05 |
 
 ## 5a. Designs graph (added 2026-10-28, owner approval)
 
@@ -54,7 +54,7 @@
 
 | ID | Requirement | Satisfies | Acceptance |
 |---|---|---|---|
-| GS-B-01 | `sdem-graph build <architecture datasets…> <registry…> --out <dir>` reads the inputs, runs every check `sdem-graph check` runs (entity typing, within-level rows, data-model conformance LC-04…LC-13, registry validation, resolution), and writes the store only if there are **no errors**. Warnings are recorded, not fatal. | KG-L-01…03 | AT-01, AT-05 |
+| GS-B-01 | `sdem build <architecture datasets…> <registry…> --out <dir>` reads the inputs, runs every check `sdem check` runs (entity typing, within-level rows, data-model conformance LC-04…LC-13, registry validation, resolution), and writes the store only if there are **no errors**. Warnings are recorded, not fatal. | KG-L-01…03 | AT-01, AT-05 |
 | GS-B-02 | On any error the existing graph files are left untouched; a `rejected` entry listing every error is appended to `load-record.json`; exit code 1. | KG-L-03, KG-R-03 | AT-05 |
 | GS-B-03 | Files are written to a temporary directory and moved into place only when all are complete, so a crash never leaves a half-written store. | KG-R-03 | AT-05 |
 | GS-B-04 | Rebuilds are full; a build of unchanged inputs changes no graph file (only a new load-record entry). | KG-R-02 | AT-06 |
@@ -66,7 +66,7 @@
 |---|---|---|---|
 | GS-R-01 | `load-record.json` = `{ "store": <dir name>, "entries": [ … ] }`, newest last. Each entry: `build` (sequence number), `at` (UTC timestamp), `result` (`accepted` / `rejected`), `inputs` (per file: path, kind, `model_id`/`model_version` or `registry_version`, sha256), `metamodel_version`, `errors`, `warnings`, and for accepted builds `outputs` (per file: name, sha256, node and edge counts). | KG-V-01 | AT-01, AT-05 |
 | GS-R-02 | Every query answer from the store states the baseline it was answered from: the latest accepted entry's `build` number and the local `model_version`s. | KG-V-01 | AT-04 |
-| GS-R-03 | `sdem-graph baseline <name> --graph <dir>` copies the current graph files and the latest accepted entry into `<dir>/baselines/<name>/`; any query accepts `--graph <dir>/baselines/<name>` to answer against it. A baseline is never overwritten. | KG-V-02 | AT-08 |
+| GS-R-03 | `sdem baseline <name> --graph <dir>` copies the current graph files and the latest accepted entry into `<dir>/baselines/<name>/`; any query accepts `--graph <dir>/baselines/<name>` to answer against it. A baseline is never overwritten. | KG-V-02 | AT-08 |
 
 ## 8. Graph access layer
 
@@ -82,7 +82,7 @@
 | ID | Requirement | Satisfies | Acceptance |
 |---|---|---|---|
 | GS-Q-01 | `trace`, `impact`, `stats` accept `--graph <dir>` as an alternative to architecture dataset paths; behaviour and output otherwise unchanged. | KG-Q-01, 02, 06 | AT-04 |
-| GS-Q-02 | `sdem-graph query --graph <dir>` with filters `--level`, `--type` (subtypes included), `--where attr=value` (repeatable; matches core fields and attributes; list attributes match on membership), output as a table or `--json`. | KG-L-04 | AT-09 |
+| GS-Q-02 | `sdem query --graph <dir>` with filters `--level`, `--type` (subtypes included), `--where attr=value` (repeatable; matches core fields and attributes; list attributes match on membership), output as a table or `--json`. | KG-L-04 | AT-09 |
 | GS-Q-03 | `--neighbours <id> [--kind <relation>] [--direction in|out|both]` lists within-level neighbours. | KG-L-04 | AT-09 |
 | GS-Q-04 | `--unmapped <level>` lists nodes of that level with no approved cross-level edge where a catalogue relationship type expects one for their type — the engine's work list. | KG-Q-04 | AT-09 |
 
@@ -90,7 +90,7 @@
 
 | ID | Requirement | Acceptance |
 |---|---|---|
-| GS-V-01 | `sdem-graph view --graph <dir> [-o file]` writes one self-contained HTML file (data, script and style inline; no network access, no CDN), default `<dir>/view.html`. | AT-10 |
+| GS-V-01 | `sdem view --graph <dir> [-o file]` writes one self-contained HTML file (data, script and style inline; no network access, no CDN), default `<dir>/view.html`. | AT-10 |
 | GS-V-02 | Layout: four horizontal bands A1 (top) … A4 (bottom); within-level edges inside a band; approved cross-level edges between bands. Node colour by level; shape or badge by entity type. | AT-10 |
 | GS-V-03 | Interaction: click a node to see its metadata and links; filter by level and type; select a node and highlight its trace down or up. Works in current Chrome, Edge, Firefox and Safari; readable at phone width. | AT-10 (manual) |
 

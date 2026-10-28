@@ -33,7 +33,7 @@ def render(rec=None):
            '## 2. How each attribute is recorded', '',
            '| Field | Meaning |', '|---|---|',
            '| ID | `AT-<level>-<n>`, stable |', '| Type | `string`, `list<string>`, `map<string,string>`, or an enum |',
-           '| Required | **yes** where a rule depends on it and every example estate supplies it; otherwise optional. Enforced by `sdem-graph check` (LC-04): a missing required attribute is an error |',
+           '| Required | **yes** where a rule depends on it and every example estate supplies it; otherwise optional. Enforced by `sdem check` (LC-04): a missing required attribute is an error |',
            '| Source / reference | the standard and section the field comes from, or SDEM / institution |',
            '| Read by | the rules (`S…`) and procedure steps that read the field |',
            '| Verification | what has been checked |',

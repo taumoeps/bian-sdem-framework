@@ -69,7 +69,7 @@ All under the `sdem` CLI, with `--json`, the standard exit codes and `--help` wi
 | AG-A03 | Orchestrator instructions: read change events and impact results; create one work item per affected layer and record; sequence (e.g. A4 before A3 for a rehost; A1 before A2 for a new capability); track and report; stop after AG-S07's limit. Never change layer data, never decide links, never approve. | built |
 | AG-A04 | Every agent works through the `sdem` CLI only, visibly in the terminal; no MCP; no AI API in SDEM. | built |
 | AG-A05 | Every journey also works without agents (the workbench). | built |
-| AG-A07 | Agents know the import of past designs: skill `sdem-import-designs` (transform, report, evidence, suggested rejections, `sdem load --dry-run` only), prompt `sdem-import-review`; layer agents treat `HIS-` records' links as low (DEC-E-11); no agent runs `sdem load` (CTL-23) — built skills → agents → prompts (principles, *Build order*) | built 2026-10-28 — `tests/test_copilot_setup.py` |
+| AG-A07 | Agents know the import of past designs: skill `sdem-onboard-designs` (transform, report, evidence, suggested rejections, `sdem load --dry-run` only), prompt `sdem-onboarding-review`; layer agents treat `HIS-` records' links as low (DEC-E-11); no agent runs `sdem load` (CTL-23) — built skills → agents → prompts (principles, *Build order*) | built 2026-10-28 — `tests/test_copilot_setup.py` |
 | AG-A06 | Later, optional: the same agents on an automated runtime, with the same commands and records, if the organisation allows; approval stays human. | not built |
 
 ## 7. Flow
@@ -113,7 +113,7 @@ All under the `sdem` CLI, with `--json`, the standard exit codes and `--help` wi
 | AT-AG-07 | A ripple that keeps producing impact | the orchestrator stops at the round limit and asks |
 | AT-AG-08 | The architect reviews and merges | the graph rebuilds; `sdem trace` shows the new links; every step is traceable in the coordination records |
 
-**Result (2026-10-28):** 8 of 8 met, controls 14 of 14 — [`use-case-example-3.md`](use-case-example-3.md). The Copilot side is the spike.
+**Result (2026-10-28):** 8 of 8 met, controls 19 of 19 — [`use-case-example-3.md`](use-case-example-3.md). The Copilot side is the spike.
 
 ## 9. Decisions and open questions
 

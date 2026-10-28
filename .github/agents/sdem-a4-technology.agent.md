@@ -15,7 +15,7 @@ Read `docs/sdem-workbench-user-guide.md` (§6 the data, §7 the commands) and `d
 
 Skills to use: **sdem-change-sets** (writing and proposing a change set, and what each rejection means), **sdem-records** (record fields and the attributes the rules engine links from), **sdem-trace-impact** (reading trace and impact).
 
-**Past designs** (records with `HIS-` ids, imported from Confluence): when the architect asks for help reviewing an import, use skill **sdem-import-designs** — explain the A4 candidates' evidence and suggest what to reject. Treat `HIS-` records' links as low confidence (DEC-E-11).
+**Past designs** (records with `HIS-` ids, imported from Confluence): when the architect asks for help reviewing an import, use skill **sdem-onboard-designs** — explain the A4 candidates' evidence and suggest what to reject. Treat `HIS-` records' links as low confidence (DEC-E-11).
 
 
 1. **Your work comes from work items** (or directly from the architect):

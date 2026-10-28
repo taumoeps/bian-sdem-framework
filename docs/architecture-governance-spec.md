@@ -26,11 +26,11 @@
 | `approved` | `superseded` only |
 | `rejected`, `superseded` | nothing — terminal |
 
-`sdem-diff` enforces these between two versions of a document (a previous file, or a git revision such as `HEAD~1`). Run it in CI so an illegal transition cannot merge.
+`sdem diff` enforces these between two versions of a document (a previous file, or a git revision such as `HEAD~1`). Run it in CI so an illegal transition cannot merge.
 
 ### Immutability
 
-Once a record is `approved`, `rejected` or `superseded` its fields are frozen. The only permitted edit is `approved → superseded`, which may also set `valid_to`. Records are never deleted. `sdem-diff` reports any other change. One exception: evidence references may be *re-typed* (`kind:ref` added to an existing reference) because that annotates the evidence without changing which artefact is cited.
+Once a record is `approved`, `rejected` or `superseded` its fields are frozen. The only permitted edit is `approved → superseded`, which may also set `valid_to`. Records are never deleted. `sdem diff` reports any other change. One exception: evidence references may be *re-typed* (`kind:ref` added to an existing reference) because that annotates the evidence without changing which artefact is cited.
 
 ### Evidence
 

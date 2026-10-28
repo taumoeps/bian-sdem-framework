@@ -414,7 +414,7 @@
         }
       },
       "additionalProperties": true,
-      "x-sdem-note": "undefined attributes are allowed here but reported as warnings by sdem-graph check"
+      "x-sdem-note": "undefined attributes are allowed here but reported as warnings by sdem check"
     }
   },
   "x-sdem-entity": {
