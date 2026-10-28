@@ -13,6 +13,35 @@ flowchart LR
     S9 --> S10["10 · use"] --> S11["11 · deal with gaps"] --> S12["12 · pull request"]
 ```
 
+## The commands in plain words
+
+Each command does one job. The steps below use them in this order.
+
+| # | Command | In plain words |
+|---|---|---|
+| 1 | `sdem transform inspect <export folder>` | **Look before you start.** Shows what is in your export and what SDEM can read. Changes nothing |
+| 2 | `sdem transform run <export folder> -o work/history` | **Read the designs.** Turns the pages into a list of *suggested* architecture items, and writes a report for you to read |
+| 3 | *(you read `work/history/extraction-report.md`)* | **Check the suggestions.** Decide which are wrong |
+| 4 | `sdem load work/history --estate estates/history --person <you> --exclude <wrong ones>` | **Keep the good ones.** Copies the items you accept into your project; whatever did not fit is kept as *gaps*. Add `--dry-run` first to see what would happen |
+| 5 | `sdem check --estate estates/history` | **Health check.** Confirms everything follows the rules |
+| 6 | `sdem link --estate estates/history --out work/links` | **Suggest connections.** SDEM proposes how items connect across layers (e.g. *this app runs on this server*) |
+| 7 | `sdem review work/links/proposals.json` | **See the suggested connections**, weakest first |
+| 8 | `sdem approve <id> … --reviewer <you> --evidence <document>` | **Accept a connection.** You confirm it, and name the document that proves it |
+| 9 | `sdem build --estate estates/history --out work/graph` | **Make the picture.** Builds the connected view — the knowledge graph — from what you accepted |
+| 10 | `sdem trace <item>` · `sdem impact <item> --change retire` | **Ask questions.** *What does this depend on?* · *What breaks if we remove this?* |
+| 11 | `sdem dashboard --estate estates/history -o work/dashboard.html` | **See it as a web page** — everything above, clickable, in your browser |
+| 12 | `sdem designs --estate estates/history --gaps` | **See the gaps** — what did not fit, still waiting for you |
+| 13 | `sdem designs accept` · `resolve <gap id> … --person <you> --note "<why>"` | **Close a gap.** *Accept* = leave it as it is; *resolve* = you have dealt with it |
+| 14 | `git add estates/history` → commit → pull request | **Save and share** — your accepted work goes for review |
+
+**In short:** **read** (1–2) → **you check** (3) → **keep** (4–5) → **connect** (6–8) → **picture** (9) → **use** (10–11) → **tidy up** (12–13) → **save** (14).
+
+**Remember:**
+- `--person` / `--reviewer` is always **your name** — only a person can accept items, connections and gaps.
+- `work/` is your **scratch area** — never saved to Git; keep the export there.
+- `estates/history/` is **the real result** — that is what you save.
+- Any command explains itself: add `--help` (e.g. `sdem load --help`).
+
 ## Two runs
 
 | Run | Data | Purpose | Results |
