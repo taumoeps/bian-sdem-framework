@@ -46,7 +46,78 @@ flowchart LR
     Today ==> With
 ```
 
-## How it works
+## SDEM in three layers
+
+SDEM is built from the ground up in three layers. Each one stands on the one below — **the agents are optional; the data and the tools are not.**
+
+```mermaid
+flowchart TB
+    L3["<b>3 · AI agents</b> — optional<br/>helpers in GitHub Copilot that draft and explain,<br/>using only the tools"]
+    L2["<b>2 · Tools</b><br/>the sdem tool and dashboards: check, connect,<br/>approve, trace, impact, plan, import"]
+    L1["<b>1 · Data architecture</b> — the foundation<br/>the rulebook, the architecture data,<br/>the approved connections, the knowledge graph"]
+    L3 -->|"use"| L2
+    L2 -->|"read and write, checked"| L1
+    classDef l1 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+    classDef l2 fill:#E3F2FD,stroke:#1565C0,color:#0D47A1
+    classDef l3 fill:#FFF3E0,stroke:#EF6C00,color:#E65100
+    class L1 l1
+    class L2 l2
+    class L3 l3
+```
+
+| Layer | What it is | Who uses it |
+|---|---|---|
+| **1 · Data architecture** | what SDEM knows, and the rules it must follow | everything above it |
+| **2 · Tools** | how people (and agents) work with that knowledge | architects, every day |
+| **3 · AI agents** | optional helpers that use the tools | architects who want AI support |
+
+## Layer 1 — Data architecture
+
+The foundation: **the rules, the data, and the connections** — kept as files, checked, with a full history.
+
+```mermaid
+flowchart LR
+    R["📘 <b>The rulebook</b><br/>(metamodel and schemas)<br/>what may exist in each layer,<br/>how layers may connect"]
+    D["🗂️ <b>Architecture data</b><br/>A1 · A2 · A3 · A4<br/>each layer owned by its team"]
+    M["🔗 <b>Approved connections</b><br/>between the layers —<br/>who approved, when, the evidence"]
+    K["🕸️ <b>Knowledge graph</b><br/>all four layers<br/>joined into one picture"]
+    R -.->|"checks"| D
+    R -.->|"checks"| M
+    D --> K
+    M --> K
+    classDef r fill:#FFF8E1,stroke:#F9A825
+    classDef d fill:#E8F5E9,stroke:#2E7D32
+    class R r
+    class D,M,K d
+```
+
+| Part | In plain words |
+|---|---|
+| **The rulebook** | 44 types of thing (capability, application, server …), which may be linked inside a layer (132 rules) and between layers (9 kinds of connection), and the rules for proposing them (69) — each traced to a public standard (BIAN, ArchiMate, TOGAF) |
+| **Architecture data** | the bank's records for each layer — one file per layer, in a fixed format |
+| **Approved connections** | the links between layers, each a record of who approved it, when, and the document that proves it |
+| **Knowledge graph** | built from the data and the approved connections; what every question is answered from |
+
+## Layer 2 — Tools
+
+One tool, `sdem`, and dashboards on top of it. **Every function works without AI.**
+
+```mermaid
+flowchart LR
+    subgraph T["The sdem tool"]
+        direction TB
+        t1["✔️ <b>Check</b><br/>data against the rulebook"]
+        t2["🔗 <b>Connect</b><br/>propose links · review · approve"]
+        t3["🔎 <b>Ask</b><br/>trace · impact · matrices"]
+        t4["🗺️ <b>Plan</b><br/>project missing layers (AID)"]
+        t5["📥 <b>Import</b><br/>past designs from Confluence"]
+    end
+    T --> DB["📊 <b>Dashboards</b><br/>the same answers,<br/>on clickable pages"]
+    classDef t fill:#E3F2FD,stroke:#1565C0
+    class t1,t2,t3,t4,t5 t
+```
+
+### How it works
 
 ```mermaid
 flowchart LR
@@ -104,7 +175,7 @@ flowchart BT
 
 Two applications need a design change; one BIAN domain, one capability and two processes need a review. An architect confirms before anything changes.
 
-## Bringing in past designs
+### Bringing in past designs
 
 Years of designs live in Confluence as pages, diagrams and pictures. SDEM can turn them into architecture data — on your own machine, without AI.
 
@@ -118,7 +189,7 @@ flowchart LR
 
 Every item SDEM finds says **which page it came from, where on the page, and how sure SDEM is** — never more than "medium" until a person checks it. Pictures it cannot read are listed for you. Full journey: [`docs/sdem-designs-import-workflow.md`](docs/sdem-designs-import-workflow.md).
 
-## People stay in charge
+### People stay in charge
 
 ```mermaid
 flowchart LR
@@ -144,7 +215,7 @@ flowchart LR
 
 These rules are built into the software — SDEM refuses an approval with no evidence, or one signed by an AI agent.
 
-## AI agents (optional)
+## Layer 3 — AI agents (optional)
 
 Architects can work with AI helpers in **GitHub Copilot**: one for each layer and a coordinator. They draft changes and explain results — but work only through SDEM's checked commands, and never approve.
 
@@ -166,33 +237,35 @@ Every function also works without AI. The agents are built; trying them in Copil
 ## What's built and what's next
 
 ```mermaid
-flowchart LR
-    subgraph Built["✅ Built"]
-        direction TB
-        b1["Rulebook and data model"]
-        b2["Checks and 22 controls"]
-        b3["Connection proposals<br/>and approval"]
-        b4["Knowledge graph,<br/>trace and impact"]
-        b5["Dashboards"]
-        b6["Planning missing layers (AID)"]
-        b7["Importing past designs"]
-        b8["AI agents (Level 1)"]
+flowchart TB
+    subgraph B1["1 · Data architecture"]
+        direction LR
+        d1["✅ Rulebook and data model"]
+        d2["✅ Approved connections<br/>and knowledge graph"]
+        d3["⏭️ The licensed<br/>BIAN catalogue"]
+        d4["⏭️ Views of past baselines"]
     end
-    subgraph Next["⏭️ Next"]
-        direction TB
-        n1["Try the agents in Copilot"]
-        n2["Import from other tools<br/>(spreadsheets, CMDB)"]
-        n3["The licensed BIAN catalogue"]
-        n4["Views of past baselines"]
+    subgraph B2["2 · Tools"]
+        direction LR
+        t1["✅ Check, connect, approve"]
+        t2["✅ Trace, impact, dashboards"]
+        t3["✅ Plan missing layers (AID)"]
+        t4["✅ Import past designs"]
+        t5["⏭️ Import from other tools<br/>(spreadsheets, CMDB)"]
     end
-    Built --> Next
+    subgraph B3["3 · AI agents"]
+        direction LR
+        a1["✅ Agents, prompts, skills (Level 1)"]
+        a2["⏭️ Try them in Copilot"]
+    end
+    B1 ~~~ B2 ~~~ B3
     classDef b fill:#E8F5E9,stroke:#2E7D32
     classDef n fill:#ECEFF1,stroke:#607D8B
-    class b1,b2,b3,b4,b5,b6,b7,b8 b
-    class n1,n2,n3,n4 n
+    class d1,d2,t1,t2,t3,t4,a1 b
+    class d3,d4,t5,a2 n
 ```
 
-Details and dates: [`docs/ROADMAP.md`](docs/ROADMAP.md).
+✅ built · ⏭️ next. Details and dates: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## Start here
 
