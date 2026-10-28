@@ -1,6 +1,6 @@
 # Use-case example 4 — Importing past designs: from a Confluence export to the knowledge graph
 
-> **Status: test script, 2026-10-29.** Expected results for Run A are sealed below and checked automatically on every push (`tests/test_use_case_example_4.py`). Run B is yours to do on the work machine with a real export. The whole workflow is explained in [`sdem-designs-import-workflow.md`](sdem-designs-import-workflow.md); commands in the [user guide](sdem-workbench-user-guide.md) §8.7.
+> **Status: test script, 2026-10-29.** The plain user guide for the same workflow: [`sdem-designs-import-user-guide.md`](sdem-designs-import-user-guide.md). Expected results for Run A are sealed below and checked automatically on every push (`tests/test_use_case_example_4.py`). Run B is yours to do on the work machine with a real export. The whole workflow is explained in [`sdem-designs-import-workflow.md`](sdem-designs-import-workflow.md); commands in the [user guide](sdem-workbench-user-guide.md) §8.7.
 
 ## What this tests
 

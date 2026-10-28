@@ -267,13 +267,50 @@ flowchart TB
 
 ✅ built · ⏭️ next. Details and dates: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
+## Using SDEM with your existing designs
+
+How an architect brings designs they already have — exported from Confluence — into SDEM, in their own VS Code terminal. Full guide: **[`docs/sdem-designs-import-user-guide.md`](docs/sdem-designs-import-user-guide.md)**.
+
+```mermaid
+flowchart LR
+    E["📄 Confluence<br/>export"] --> R["1 · SDEM reads it<br/>(suggestions)"]
+    R --> C["2 · You check<br/>the report"]
+    C --> K["3 · You keep<br/>the good ones"]
+    K --> L["4 · SDEM suggests<br/>connections —<br/>you approve"]
+    L --> P["5 · SDEM builds<br/>the picture"]
+    P --> Q["6 · You ask questions<br/>and tidy up gaps"]
+    classDef you fill:#F3E5F5,stroke:#6A1B9A
+    classDef sdem fill:#E3F2FD,stroke:#1565C0
+    class C,K,Q you
+    class R,L,P sdem
+```
+
+| # | Command | In plain words |
+|---|---|---|
+| 1 | `sdem transform inspect <export folder>` | **Look before you start** — what is in the export, what SDEM can read. Changes nothing |
+| 2 | `sdem transform run <export folder> -o work/history` | **Read the designs** — suggested architecture items, and a report for you |
+| 3 | *(read `work/history/extraction-report.md`)* | **Check the suggestions** — decide which are wrong |
+| 4 | `sdem load work/history --estate estates/history --person <you> --exclude <wrong ones>` | **Keep the good ones** — into your project; what did not fit is kept as *gaps* (`--dry-run` first) |
+| 5 | `sdem check --estate estates/history` | **Health check** — everything follows the rules |
+| 6 | `sdem link --estate estates/history --out work/links` | **Suggest connections** between the layers |
+| 7 | `sdem review work/links/proposals.json` | **See the suggested connections**, weakest first |
+| 8 | `sdem approve <id> … --reviewer <you> --evidence <document>` | **Accept a connection**, with the document that proves it |
+| 9 | `sdem build --estate estates/history --out work/graph` | **Make the picture** — the knowledge graph |
+| 10 | `sdem trace <item>` · `sdem impact <item> --change retire` | **Ask questions** — what it depends on · what breaks if it goes |
+| 11 | `sdem dashboard --estate estates/history -o work/dashboard.html` | **See it as a web page** |
+| 12 | `sdem designs --estate estates/history --gaps` | **See the gaps** — what did not fit |
+| 13 | `sdem designs accept` · `resolve <gap id> … --person <you> --note "<why>"` | **Close a gap** |
+| 14 | `git add estates/history` → commit → pull request | **Save and share** for review |
+
+**In short:** read → you check → keep → connect → picture → use → tidy up → save. Your name is on every decision; keep the export in `work/` (never saved to Git); `estates/history/` is the result you save. To rehearse it with expected results, use [`docs/use-case-example-4.md`](docs/use-case-example-4.md).
+
 ## Start here
 
 | You are… | Start with |
 |---|---|
 | **Seeing SDEM for the first time** | the dashboard — run `sdem home -o work/sdem` and open `work/sdem/index.html`: SDEM's architecture, the rulebook, health and the example projects, all clickable |
 | **An architect who will use it** | the [user guide](docs/sdem-workbench-user-guide.md) — set-up, a 15-minute quick start, every task step by step |
-| **Bringing in past designs** | [the import workflow](docs/sdem-designs-import-workflow.md) |
+| **Bringing in your existing designs** | [the user guide for existing designs](docs/sdem-designs-import-user-guide.md) (step by step, with the commands) · [the workflow explained](docs/sdem-designs-import-workflow.md) · [the test script](docs/use-case-example-4.md) |
 | **Setting up the AI agents** | [Copilot set-up](docs/sdem-copilot-setup.md), then [the spike](docs/sdem-agent-platform-spike.md) |
 | **Wanting the concepts** | [the overview](docs/sdem-overview.md) and the [glossary](docs/glossary.md) |
 | **A maintainer** | [CONTRIBUTING.md](CONTRIBUTING.md) and the technical section below |
@@ -324,7 +361,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | **The rulebook (metamodel) and data** | [governing detail spec](docs/architecture-metamodel-detail-level-spec.md) · [high-level spec](docs/architecture-metamodel-high-level-spec.md) (frozen reference) · [entities](docs/architecture-entity-design.md) · [attributes](docs/architecture-attribute-design.md) · [logical data model](docs/logical-data-model.md) · [physical data model](docs/physical-data-model.md) · [provenance](docs/reference-architecture-provenance.md) |
 | **Connections, engine and graph** | [relationship rules](docs/relationship-rules-spec.md) · [registry](docs/relationship-registry-spec.md) · [governance](docs/architecture-governance-spec.md) · [knowledge graph](docs/knowledge-graph-design.md) / [spec](docs/knowledge-graph-spec.md) · [graph store](docs/graph-store-design.md) / [spec](docs/graph-store-spec.md) · [within-level rows](docs/relationships-planning.md) / [testing](docs/relationships-testing.md) · [mapping logic](docs/mapping-logic-planning.md) · [execution](docs/mapping-execution.md) |
 | **Planning missing layers (AID)** | [design](docs/aid-design.md) · [spec](docs/aid-spec.md) |
-| **Importing past designs** | [workflow](docs/sdem-designs-import-workflow.md) · [transform design](docs/sdem-transform-design.md) / [spec](docs/sdem-transform-spec.md) · [load design](docs/sdem-load-design.md) / [spec](docs/sdem-load-spec.md) |
+| **Importing past designs** | [**user guide**](docs/sdem-designs-import-user-guide.md) · [workflow](docs/sdem-designs-import-workflow.md) · [transform design](docs/sdem-transform-design.md) / [spec](docs/sdem-transform-spec.md) · [load design](docs/sdem-load-design.md) / [spec](docs/sdem-load-spec.md) |
 | **AI agents and Copilot** | [principles](docs/sdem-agent-platform-principles.md) · [design](docs/sdem-agent-platform-design.md) / [spec](docs/sdem-agent-platform-spec.md) · [Copilot set-up](docs/sdem-copilot-setup.md) · [spike](docs/sdem-agent-platform-spike.md) · [repository protection](docs/sdem-repository-protection.md) |
 | **Controls** | [controls register](docs/controls-register.md) |
 | **Tests and examples** | [use-case testing](docs/use-case-testing.md) · [example 1](docs/use-case-example-1.md) (mappings and graph) · [example 2](docs/use-case-example-2.md) (AID) · [example 3](docs/use-case-example-3.md) (agents) · [example 4](docs/use-case-example-4.md) (importing past designs, export to build) |
