@@ -32,7 +32,7 @@ Each command does one job. The steps below use them in this order.
 | 11 | `sdem dashboard --estate estates/history -o work/dashboard.html` | **See it as a web page** — everything above, clickable, in your browser |
 | 12 | `sdem designs --estate estates/history --gaps` | **See the gaps** — what did not fit, still waiting for you |
 | 13 | `sdem designs accept` · `resolve <gap id> … --person <you> --note "<why>"` | **Close a gap.** *Accept* = leave it as it is; *resolve* = you have dealt with it |
-| 14 | `git add estates/history` → commit → pull request | **Save and share** — your accepted work goes for review |
+| 14 | copy `estates/history` to your team's **private** estate repository → commit → pull request | **Save and share** — your accepted work goes for review |
 
 **In short:** **read** (1–2) → **you check** (3) → **keep** (4–5) → **connect** (6–8) → **picture** (9) → **use** (10–11) → **tidy up** (12–13) → **save** (14).
 
@@ -194,7 +194,9 @@ sdem check --estate estates/history
 
 ### 12 · Commit through a pull request
 ```bash
-git add estates/history                # datasets, mappings.json, designs/, loads/ — never work/
+# in your team's PRIVATE estate repository — the SDEM repository ignores estates/ and work/
+cp -R ../bian-sdem-framework/estates/history history
+git add history                        # datasets, mappings.json, designs/, loads/ — never work/
 git commit -m "Import Payments Hub Design (LOAD-001), 2 approved links"
 git push -u origin import/payarch      # open a pull request; a reviewer merges it
 ```

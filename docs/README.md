@@ -33,6 +33,7 @@ flowchart LR
 | [`architecture-metamodel-detail-level-spec.md`](architecture-metamodel-detail-level-spec.md) | **the governing specification** (generated): the high-level spec section by section, with the detail and the gap register |
 | [`controls-register.md`](controls-register.md) | every control: what it enforces, where it runs, its last result (generated) |
 | [`architecture-governance-spec.md`](architecture-governance-spec.md) | approval, supersession, impact |
+| [`../SECURITY.md`](../SECURITY.md) | reporting a problem; keeping real data out of this public repository |
 | [`sdem-repository-protection.md`](sdem-repository-protection.md) | branch protection and code owners — so a person's approval is a control |
 | [`reference-architecture-provenance.md`](reference-architecture-provenance.md) | every entity type traced to a public standard |
 | [`baseline/SDEM-METAMODEL-0.8-review-pack.md`](baseline/SDEM-METAMODEL-0.8-review-pack.md) | the 0.8 baseline, awaiting independent review |
@@ -52,6 +53,7 @@ Each feature has a **design** (why and how) and a **spec** (numbered, testable r
 | Design onboarding — load, gap records | [`sdem-load-design.md`](sdem-load-design.md) | [`sdem-load-spec.md`](sdem-load-spec.md) |
 | Agent platform | [`sdem-agent-platform-design.md`](sdem-agent-platform-design.md) · [spike](sdem-agent-platform-spike.md) | [`sdem-agent-platform-spec.md`](sdem-agent-platform-spec.md) |
 | Relationship registry | — | [`relationship-registry-spec.md`](relationship-registry-spec.md) |
+| Rulebook versions and `sdem migrate` | — | [`sdem-rulebook-versioning.md`](sdem-rulebook-versioning.md) |
 
 ## 📚 Reference — generated from the rulebook
 

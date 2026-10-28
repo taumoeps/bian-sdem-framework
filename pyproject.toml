@@ -35,20 +35,9 @@ sdem-physical = "sdem.physical:main"
 sdem-accept = "sdem.acceptance:main"
 sdem-metamodel-spec = "sdem.metamodel_spec:main"
 sdem-controls = "sdem.controls:main"
-# Deprecated aliases (SDMM → SDEM, v0.7.0); removed in v0.8.0
-sdmm-validate = "sdem.validate:main"
-sdmm-diff = "sdem.diff:main"
-sdmm-trace = "sdem.trace:main"
-sdmm-graph = "sdem.graph:main"
-sdmm-engine = "sdem.inference:main"
-sdmm-eval = "sdem.evaluate:main"
-sdmm-relationships = "sdem.relationships:main"
-sdmm-structure = "sdem.structure:main"
-sdmm-spec = "sdem.spec:main"
-sdmm-kgspec = "sdem.kgspec:main"
 
 [tool.setuptools]
-packages = ["sdem", "sdem.data", "sdem.data.schema", "sdem.data.metamodel", "sdmm"]
+packages = ["sdem", "sdem.data", "sdem.data.schema", "sdem.data.metamodel"]
 
 [tool.setuptools.package-dir]
 "sdem.data.schema" = "schema"

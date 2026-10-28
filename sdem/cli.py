@@ -59,6 +59,8 @@ JOURNEYS = {
                  'sdem events --estate work/est --open'),
     'work':     ('AG', 'agent platform: plan, list and claim work items', None, None,
                  'sdem work plan --event CE-001 --estate work/est --agent sdem-orchestrator --person jane.architect'),
+    'migrate':  ('—', 'move an estate to the current rulebook version — recorded migrations applied, checked, written all-or-nothing, recorded', 'sdem.migrate', [],
+                 'sdem migrate --estate estates/history --person jane.architect --dry-run'),
     'diff':     ('—', 'compare two versions of a relationship document', 'sdem.diff', [],
                  'sdem diff --git HEAD~1 examples/payment-initiation/mappings.json'),
     'model':    ('—', 'maintainers: regenerate and check generated files, acceptance, evaluation, examples', None, None,

@@ -54,7 +54,7 @@ class LevelGraph:
         if issues:
             return issues
         if self.doc.get('metamodel_version') and self.doc['metamodel_version'] != self.mm.version:
-            issues.append(f"metamodel_version {self.doc['metamodel_version']!r} does not match loaded metamodel {self.mm.version!r}")
+            issues.append(f"metamodel_version {self.doc['metamodel_version']!r} does not match loaded metamodel {self.mm.version!r} — move the estate with `sdem migrate --estate <dir> --person <you>`")
         seen = set()
         if not is_projection_dataset(self.doc):  # CTL-16: projected or design records never enter real architecture data
             for i in self.doc.get('instances', []):

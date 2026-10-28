@@ -73,7 +73,7 @@ At the end, your designs are **architecture data** — business capabilities, ap
 | 11 | `sdem dashboard --estate estates/history -o work/dashboard.html` | **See it as a web page** — everything above, clickable, in your browser |
 | 12 | `sdem designs --estate estates/history --gaps` | **See the gaps** — what did not fit, still waiting for you |
 | 13 | `sdem designs accept` · `resolve <gap id> … --person <you> --note "<why>"` | **Close a gap.** *Accept* = leave it as it is; *resolve* = you have dealt with it |
-| 14 | `git add estates/history` → commit → pull request | **Save and share** — your accepted work goes for review |
+| 14 | copy `estates/history` to your team's **private** estate repository → commit → pull request | **Save and share** — your accepted work goes for review |
 
 **In short:** **read** (1–2) → **you check** (3) → **keep** (4–5) → **connect** (6–8) → **picture** (9) → **use** (10–11) → **tidy up** (12–13) → **save** (14). Commands 1–4 are **ingestion**; 5–9 are **normal processing**.
 
@@ -202,11 +202,13 @@ You do not have to close every gap at once — the dashboard keeps showing what 
 
 ### 11 · Save and share
 ```bash
-git add estates/history
+cd ../our-estates                       # your team's PRIVATE estate repository — never the public SDEM one
+cp -R ../bian-sdem-framework/estates/history history
+git add history
 git commit -m "Onboard <design name> (LOAD-001)"
 git push -u origin onboard/<name>       # then open a pull request; a reviewer merges it
 ```
-Never add `work/` — it holds the export. **Your approvals become final when the pull request is merged.**
+The SDEM repository ignores `estates/` and `work/`, so real data cannot be pushed to it by mistake. Never copy `work/` — it holds the export. **Your approvals become final when the pull request is merged.**
 
 ## 6. What each step does to the data
 
@@ -271,7 +273,7 @@ The metamodel (`metamodel/`) and the schemas (`schema/`) are **written and appro
 | `schema/relationship-types.json`, `metamodel/relationship-rules.json` | transform, link | which links may exist **between** architectures; the engine's rules |
 | `schema/level-model.schema.json`, `schema/entities/<A>/<Entity>.schema.json` | transform, load, check | the format of a dataset and of each entity |
 | `schema/design-records.schema.json` | load, check, build | the format of design and gap records |
-| `schema/relationship-registry.schema.json`, `mapping.schema.json` | approve | the format of an approved link |
+| `schema/relationship-registry.schema.json` | approve | the format of an approved link |
 | `schema/graph-store.schema.json` | build | the format of the graph store |
 | `metamodel/transform-rules.json` | transform | how to read tables, diagrams and text (yours to tune) |
 

@@ -264,7 +264,7 @@ def render_registry():
         out.append(f"| `{r['relationship']}` ({r['mapping_type_id']}) | {r['source_type']} → {r['target_type']} | {r['authority']} | {', '.join(r['required_evidence'])} |")
     out += ['', '## 6. Validation', '', '| Check | Tool |', '|---|---|',
             '| record shape, catalogued type, adjacency, evidence kinds, BIAN fields | `sdem validate` |', '| both ends resolve in the local knowledge graphs | `sdem check` |', '| no edits to frozen records; only permitted transitions | `sdem diff` |', '',
-            '## 7. Legacy names', '', 'The registry keeps the field names `mappings`, `mapping_id` and `previous_mapping_id`, and the catalogue keeps `mapping_type_id` and `registry_version`, because they sit inside immutable approved records. Renaming them would need a versioned migration (a reader accepting both names and a converter), with approved history preserved by supersession. The previous schema path `schema/mapping.schema.json` is kept as a deprecated copy for v0.7.', '']
+            '## 7. Legacy names', '', 'The registry keeps the field names `mappings`, `mapping_id` and `previous_mapping_id`, and the catalogue keeps `mapping_type_id` and `registry_version`, because they sit inside immutable approved records. Renaming them would need a versioned migration (a reader accepting both names and a converter), with approved history preserved by supersession. The previous schema path `schema/mapping.schema.json`, a deprecated copy, was removed in the 2026-10-29 audit.', '']
     return _terms('\n'.join(out) + '\n')
 
 

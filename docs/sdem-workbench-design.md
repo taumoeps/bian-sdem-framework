@@ -303,7 +303,7 @@ sequenceDiagram
 - Architecture data stays in the repository and the architect's VS Code.
 - The only AI is the organisation's approved Copilot; what it may see is set by the organisation's Copilot policy, not by SDEM.
 - **This repository holds public and synthetic data only** — never an employer's architecture data.
-- **PlantUML preview:** `.vscode/settings.json` points the PlantUML extension at the **public** server `www.plantuml.com`, which receives the diagram text. That is acceptable for this repository's synthetic data; for real architecture data use a local PlantUML (Java) or the organisation's own server.
+- **PlantUML preview:** `.vscode/settings.json` sets the PlantUML extension to render **locally** (`plantuml.render: Local` — needs Java and Graphviz), so no diagram text leaves the machine. Never point it at the public server `www.plantuml.com` for real architecture data; an organisation's own server is fine.
 
 ## 9. Limits
 

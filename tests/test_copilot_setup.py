@@ -89,5 +89,11 @@ class CopilotSetupTests(unittest.TestCase):
         for f in GH.glob('agents/*.md'):
             self.assertNotIn('mcp', front(f.read_text(encoding='utf-8')).get('tools', '').lower(), f.name)
 
+    def test_plantuml_renders_locally_and_estates_are_ignored(self):  # WB-V03; real data never pushed to this public repository
+        for f in (ROOT / '.vscode').glob('*.json'):
+            self.assertNotIn('plantuml.com', f.read_text(encoding='utf-8'), f.name)
+        ignored = (ROOT / '.gitignore').read_text(encoding='utf-8').split('\n')
+        self.assertIn('estates/', ignored); self.assertIn('work/', ignored)
+
 if __name__ == '__main__':
     unittest.main()

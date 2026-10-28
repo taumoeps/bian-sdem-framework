@@ -86,5 +86,5 @@ From the relationship type catalogue (Architecture Metamodel).
 
 ## 7. Legacy names
 
-The relationship type catalogue keeps the field names `mappings`, `mapping_id` and `previous_mapping_id`, and the catalogue keeps `mapping_type_id` and `registry_version`, because they sit inside immutable approved records. Renaming them would need a versioned migration (a reader accepting both names and a converter), with approved history preserved by supersession. The previous schema path `schema/mapping.schema.json` is kept as a deprecated copy for v0.7.
+The relationship type catalogue keeps the field names `mappings`, `mapping_id` and `previous_mapping_id`, and the catalogue keeps `mapping_type_id` and `registry_version`, because they sit inside immutable approved records. Renaming them would need a versioned migration (a reader accepting both names and a converter), with approved history preserved by supersession. The previous schema path `schema/mapping.schema.json`, a deprecated copy, was removed in the 2026-10-29 audit.
 

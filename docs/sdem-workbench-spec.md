@@ -74,7 +74,7 @@ Each journey is a CLI command the architect runs; Copilot supports in the chat.
 |---|---|---|
 | WB-V01 | Graph view as one self-contained HTML file (no network), with projections dashed and labelled PROJECTED. | built |
 | WB-V02 | PlantUML diagrams generated from the rulebook and data. | built |
-| WB-V03 | PlantUML preview for **real** data uses a local renderer or the organisation's own server, never `www.plantuml.com`; the project's setting (public server) is for its synthetic data only, and says so. | not built (documented in design §8) |
+| WB-V03 | PlantUML preview for **real** data uses a local renderer or the organisation's own server, never `www.plantuml.com`. | built — the project's setting renders locally (`.vscode/settings.json`); a test checks no setting names the public server |
 | WB-V04 | Open the HTML view inside VS Code (preview). | not built (WB-Q02) |
 
 ## 8. Safety

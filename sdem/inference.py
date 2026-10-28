@@ -36,9 +36,6 @@ def _words(*texts):
     return {w for t in texts if t for w in re.findall(r'[a-z]+', t.lower()) if len(w) > 2 and w not in STOP}
 
 
-# Deprecated name, kept for one release (SDMM → SDEM, v0.7.0).
-MappingEngine = RelationshipInferenceEngine
-
 
 class NameOverlapBaseline:
     """Proposes an arrow for every registry rule where the two instances' names/descriptions share enough words

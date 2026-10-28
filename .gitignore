@@ -12,3 +12,6 @@ private/
 
 # SDEM workbench scratch output (README quick start writes here)
 work/
+
+# Real estates never go in this public repository — keep them in your team's private estate repository
+estates/

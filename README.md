@@ -334,7 +334,7 @@ flowchart LR
 | 11 | `sdem dashboard --estate estates/history -o work/dashboard.html` | **See it as a web page** |
 | 12 | `sdem designs --estate estates/history --gaps` | **See the gaps** — what did not fit |
 | 13 | `sdem designs accept` · `resolve <gap id> … --person <you> --note "<why>"` | **Close a gap** |
-| 14 | `git add estates/history` → commit → pull request | **Save and share** for review |
+| 14 | copy `estates/history` to your team's **private** estate repository → commit → pull request | **Save and share** for review |
 
 **In short:** read → you check → keep → connect → picture → use → tidy up → save. Commands 1–4 are *ingestion*, 5–9 *normal processing*. Your name is on every decision; keep the export in `work/` (never saved to Git); `estates/history/` is the result you save.
 

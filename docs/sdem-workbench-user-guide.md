@@ -263,7 +263,7 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 ### 6.3 Where your real data may go
 
 - **This project holds public and made-up data only.** Your organisation's real architecture data belongs in your organisation's own copy of the project, under its rules.
-- Diagrams previewed with the PlantUML extension are sent to the public PlantUML server by this project's settings — fine for made-up data, **not** for real data (§10).
+- Diagrams previewed with the PlantUML extension are drawn **on your machine** (this project's setting; it needs Java and Graphviz — `brew install plantuml`). Never switch it to the public PlantUML server for real data.
 
 ## 7. Operations — every command
 
@@ -295,6 +295,7 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem load <candidates> --estate <dir> --person <you> --exclude <ids>` | J9 | **loads** the candidate entities you keep into an estate — checked first, recorded; `--a2` adds your BIAN layer; `--dry-run` | after reviewing a transform (§8.7) | `sdem link` |
 | `sdem designs --estate <dir> [--entity <id>] [--gaps] [--category …]` | J9 | the pages imported designs came from, and the **gap records** — what did not fit an entity, by category; `sdem trace` also ends with an entity's pages | after a load; to find what still needs a person | — |
 | `sdem diff --git HEAD~1 <registry>` | — | proves approved links were not edited | before a pull request | — |
+| `sdem migrate --estate <dir> --person <you> [--dry-run]` | — | moves an estate to a new rulebook version ([versioning](sdem-rulebook-versioning.md)) | when SDEM says the `metamodel_version` does not match | — |
 | `sdem model check` · `regenerate` · `accept` · `examples` | — | maintainers: generated documents, engine acceptance tests, use-case examples | when changing the rulebook | — |
 
 Add `--json` to most commands for machine-readable output (Copilot can read it more reliably).

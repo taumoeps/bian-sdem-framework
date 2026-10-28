@@ -138,7 +138,7 @@ def main():
           '0. Resolve or explicitly accept every open gap (' + ', '.join(g['id'] for g in gopen) + ') and record the decision in `metamodel/metamodel-spec-gaps.json`.' if gopen else '0. No open gaps.',
           f'1. Record the approval in `metamodel/baseline.json` (baseline name, commit, reviewer, date, accepted findings).',
           '2. Set `metamodel_version` to `0.8.0` in the four level files and the example architecture datasets.',
-          '3. Remove what was kept only for compatibility: the deprecated `accesses` attribute definition and the `sdmm` package and commands (planned for v0.8.0).',
+          '3. Remove what was kept only for compatibility: the deprecated `accesses` attribute definition and the `sdmm_extension` spelling (the `sdmm` package and commands were removed before the baseline, in the 2026-10-29 audit).',
           f'4. Tag the commit `{BASELINE}` and publish release v0.8.0 (with your approval).',
           '5. From then on, model changes go through a change record and a new version.', '']
     OUT.parent.mkdir(parents=True, exist_ok=True); OUT.write_text('\n'.join(o) + '\n', encoding='utf-8'); print('wrote', OUT.relative_to(ROOT))
