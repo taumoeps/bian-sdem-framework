@@ -9,11 +9,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
+FOLDER = {'.github': 'copilot'}   # package sdem.data.copilot is installed from .github/
+
+
 def package_data():
     """The package-data globs of pyproject.toml: {'schema': [...], 'metamodel': [...]}."""
     text = (ROOT / 'pyproject.toml').read_text()
     out = {}
-    for pkg, src in (('sdem.data.schema', 'schema'), ('sdem.data.metamodel', 'metamodel'), ('sdem.data.bian', 'bian')):
+    for pkg, src in (('sdem.data.schema', 'schema'), ('sdem.data.metamodel', 'metamodel'), ('sdem.data.bian', 'bian'), ('sdem.data.copilot', '.github')):
         m = re.search(r'"' + re.escape(pkg) + r'"\s*=\s*\[([^\]]*)\]', text.split('[tool.setuptools.package-data]')[1])
         out[src] = re.findall(r'"([^"]+)"', m.group(1))
     return out
@@ -28,7 +31,7 @@ class InstalledLayoutTests(unittest.TestCase):
         for src, globs in package_data().items():
             for g in globs:
                 for f in glob.glob(str(ROOT / src / g)):
-                    dest = site / 'sdem' / 'data' / src / Path(f).relative_to(ROOT / src)
+                    dest = site / 'sdem' / 'data' / FOLDER.get(src, src) / Path(f).relative_to(ROOT / src)
                     dest.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(f, dest)
         cls.work = cls.tmp / 'work'; cls.work.mkdir()
         shutil.copytree(ROOT / 'examples' / 'payment-initiation', cls.work / 'est', ignore=shutil.ignore_patterns('graph'))
@@ -55,7 +58,7 @@ class InstalledLayoutTests(unittest.TestCase):
                      ['events', '--estate', 'est'], ['transform', 'run', 'export', '-o', 'history', '--ocr', 'off'],
                      ['load', 'history', '--estate', 'hist', '--person', 'jane.architect', '--exclude', 'HIS-A3-PAYMENT-ORDER'],
                      ['bian', 'list', 'bian'], ['bian', 'list', '--base'], ['bian', 'import', '--base', '--only', 'Payment Order Initiation', '-o', 'base-a2.json'], ['bian', 'import', 'bian', '--only', 'Sample Order Initiation', '-o', 'bian-a2.json'],
-                     ['designs', '--estate', 'hist', '--gaps'], ['explain', 'P-RUN-001', '--proposals', 'links/proposals.json']):
+                     ['copilot', 'install', '--to', '.'], ['designs', '--estate', 'hist', '--gaps'], ['explain', 'P-RUN-001', '--proposals', 'links/proposals.json']):
             code, out = self.sdem(*args)
             self.assertIn(code, (0, 1), f'sdem {" ".join(args)} → {code}\n{out[-800:]}')
             self.assertNotIn('Traceback', out, f'sdem {" ".join(args)}')

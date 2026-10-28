@@ -8,7 +8,8 @@ from pathlib import Path
 _PKG = Path(__file__).resolve().parent
 _REPO = _PKG.parent
 DATA_ROOT = _REPO if (_REPO / 'schema').is_dir() and (_REPO / 'metamodel').is_dir() else _PKG / 'data'
-CHECKOUT = DATA_ROOT == _REPO   # running from a clone of the repository (examples/, docs/, scripts/ present)
+CHECKOUT = DATA_ROOT == _REPO
+REPO_URL = 'https://github.com/taumoeps/bian-sdem-framework'   # also [project.urls] in pyproject.toml   # running from a clone of the repository (examples/, docs/, scripts/ present)
 
 
 def repo_path(*parts):

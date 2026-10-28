@@ -19,7 +19,7 @@ flowchart LR
     A["New release<br/>read its CHANGELOG"] --> B["Branch: change the tag<br/>in requirements.txt"]
     B --> C["pip install -r requirements.txt<br/>bash ci/check-estates.sh"]
     C -->|"metamodel_version<br/>does not match"| D["sdem migrate<br/>(below)"]
-    C -->|"all pass"| E["Copy the Copilot files<br/>from the same release"]
+    C -->|"all pass"| E["sdem copilot install<br/>(if you use Copilot)"]
     D --> E
     E --> F["Pull request → CI → merge"]
 ```

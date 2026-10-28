@@ -17,7 +17,7 @@ flowchart LR
 3. **Name real reviewers** in `.github/CODEOWNERS` — people or teams, never a bot or an agent account.
 4. **Protect `main`** (Settings → Branches, or Rules): require a pull request; require **1 approval** and **review from Code Owners**; dismiss stale approvals; require the **Estate checks / check** status; block force pushes and deletion; include administrators. Why each one matters: SDEM's [repository protection guide](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-repository-protection.md).
 5. **Decide where dashboards are hosted** — authenticated internal hosting only (see *Dashboards* below). Until then, CI keeps them as a downloadable artifact.
-6. **Copilot (optional)**: copy `.github/copilot-instructions.md`, `.github/agents/`, `.github/prompts/` and `.github/skills/` from the **same SDEM release** you pinned, so Copilot's guidance matches the commands. Only if your organisation allows Copilot; SDEM works without it.
+6. **Copilot (optional)** — only if your organisation allows it; SDEM works without it. After step 2, in this repository: `sdem copilot install` — it writes SDEM's Copilot instructions, agents, prompts and skills into `.github/`, matching the SDEM version you pinned. Commit them.
 
 ## Every architect (once)
 
@@ -72,7 +72,7 @@ They show real architecture. Publish them **only** behind your organisation's si
 1. On a branch, change the tag in `requirements.txt` to the new release; read its CHANGELOG.
 2. `pip install -r requirements.txt`, then `bash ci/check-estates.sh`.
 3. If SDEM says an estate's `metamodel_version` does not match, the rulebook changed: `sdem migrate --estate estates/<name> --person <you> --dry-run`, then without `--dry-run`. See SDEM's [rulebook versioning](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/design/sdem-rulebook-versioning.md).
-4. If you use Copilot, copy the `.github/` Copilot files from the new release.
+4. If you use Copilot: `sdem copilot install` — it updates the Copilot files to the new SDEM version and keeps any your team has changed (it lists them).
 5. Pull request; CI green; merge.
 
 ## Rules

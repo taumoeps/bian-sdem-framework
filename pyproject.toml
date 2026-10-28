@@ -11,6 +11,9 @@ requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
 dependencies = []
 
+[project.urls]
+Repository = "https://github.com/taumoeps/bian-sdem-framework"
+
 [project.scripts]
 sdem = "sdem.cli:main"
 sdem-validate = "sdem.validate:main"
@@ -37,14 +40,16 @@ sdem-metamodel-spec = "sdem.metamodel_spec:main"
 sdem-controls = "sdem.controls:main"
 
 [tool.setuptools]
-packages = ["sdem", "sdem.data", "sdem.data.schema", "sdem.data.metamodel", "sdem.data.bian"]
+packages = ["sdem", "sdem.data", "sdem.data.schema", "sdem.data.metamodel", "sdem.data.bian", "sdem.data.copilot"]
 
 [tool.setuptools.package-dir]
 "sdem.data.schema" = "schema"
 "sdem.data.metamodel" = "metamodel"
 "sdem.data.bian" = "bian"
+"sdem.data.copilot" = ".github"
 
 [tool.setuptools.package-data]
 "sdem.data.schema" = ["*.json", "entities/*/*.json"]
 "sdem.data.metamodel" = ["*.json"]
 "sdem.data.bian" = ["*.json", "LICENSE", "*.md"]
+"sdem.data.copilot" = ["copilot-instructions.md", "agents/*.md", "prompts/*.md", "skills/*/*"]

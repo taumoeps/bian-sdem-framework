@@ -113,7 +113,7 @@ If your organisation allows GitHub Copilot, SDEM's Copilot files make it useful 
 | `.github/prompts/` | ten prompts: `/sdem-explain`, `/sdem-fix`, `/sdem-review`, `/sdem-onboarding-review` … |
 | `.github/skills/` | five skills: change sets, records, approving links, trace and impact, onboarding designs |
 
-In an estate repository, copy these from the **same SDEM release** you pinned. Agents work in rounds; the limit is a cap an agent may lower but never raise — the architect decides. Set-up: [Copilot set-up](sdem-copilot-setup.md).
+In an estate repository, put them in place with `sdem copilot install` — they match the SDEM version you installed; run it again after an upgrade (files your team changed are kept and listed). Agents work in rounds; the limit is a cap an agent may lower but never raise — the architect decides. Set-up: [Copilot set-up](sdem-copilot-setup.md).
 
 ## Dashboards
 

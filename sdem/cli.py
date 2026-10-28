@@ -61,6 +61,8 @@ JOURNEYS = {
                  'sdem events --estate work/est --open'),
     'work':     ('AG', 'agent platform: plan, list and claim work items', None, None,
                  'sdem work plan --event CE-001 --estate work/est --agent sdem-orchestrator --person jane.architect'),
+    'copilot':  ('AG', "put SDEM's Copilot instructions, agents, prompts and skills into your estate repository, matching this SDEM version", 'sdem.copilot', [],
+                 'sdem copilot install --dry-run'),
     'migrate':  ('—', 'move an estate to the current rulebook version — recorded migrations applied, checked, written all-or-nothing, recorded', 'sdem.migrate', [],
                  'sdem migrate --estate estates/history --person jane.architect --dry-run'),
     'diff':     ('—', 'compare two versions of a relationship document', 'sdem.diff', [],

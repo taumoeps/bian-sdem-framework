@@ -6,7 +6,14 @@
 
 > How to set up a GitHub account and GitHub Copilot so the SDEM agents, prompt files and skills work in VS Code. Then run the spike ([`sdem-agent-platform-spike.md`](sdem-agent-platform-spike.md)). Written 2026-10-28 — Copilot plans, prices and feature names change; check the linked GitHub pages for the current details.
 
-## What is in the project
+## Where the Copilot files live
+
+Copilot reads them only from **the folder you have open in VS Code**:
+
+- **In your estate repository** (real work): run `sdem copilot install` there once — it writes SDEM's instructions, agents, prompts and skills into `.github/`, matching the SDEM version you installed, with links to SDEM's documents at that version. Commit them. Run it again after upgrading SDEM: it updates the files and keeps any your team has changed (it lists them; `--force` replaces them too). `--dry-run` shows what would change.
+- **In the SDEM project** (learning, the examples): they are already there.
+
+## What the files are
 
 | Folder / file | What it is | How you use it in VS Code |
 |---|---|---|
@@ -49,10 +56,11 @@ Sources disagree on 2026 billing details (premium requests vs. usage-based credi
 In the terminal pane (*View → Terminal*):
 
 ```bash
-python3 -m venv .venv
+python3.13 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -e .
+pip install -e .                   # in an estate repository: pip install -r requirements.txt
 sdem --help
+sdem copilot install               # in an estate repository: put the Copilot files in .github/
 ```
 
 (Details: the user guide [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md) §3.)
