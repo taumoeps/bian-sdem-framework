@@ -1,0 +1,136 @@
+openapi: 3.0.1
+info:
+  title: Sample Order Initiation
+  description: "A made-up service domain in the shape of a BIAN Semantic API file — not BIAN text."
+  contact:
+    name: SDEM test
+  version: 99.0.0
+servers:
+  - url: https://example.invalid/sample
+paths:
+  '/SampleOrderInitiation/Initiate':
+    post:
+      tags:
+        - CR - SampleOrderInitiationTransaction
+      summary: Initiate
+      operationId: Initiate
+      requestBody:
+        $ref: '#/components/requestBodies/SampleOrderInitiationTransaction'
+      responses:
+        '200':
+          $ref: '#/components/responses/SampleOrderInitiationTransaction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/SampleOrderInitiation/{id}/Retrieve':
+    get:
+      tags:
+        - CR - SampleOrderInitiationTransaction
+      summary: Retrieve
+      operationId: Retrieve
+      responses:
+        '200':
+          $ref: '#/components/responses/SampleOrderInitiationTransaction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/SampleOrderInitiation/{id}/Check/Evaluate':
+    post:
+      tags:
+        - BQ - Check
+      summary: EvaluateCheck
+      operationId: EvaluateCheck
+      requestBody:
+        $ref: '#/components/requestBodies/Check'
+      responses:
+        '200':
+          $ref: '#/components/responses/Check'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/SampleOrderInitiation/{id}/Payment/Update':
+    put:
+      tags:
+        - BQ - Payment
+      summary: UpdatePayment
+      operationId: UpdatePayment
+      requestBody:
+        $ref: '#/components/requestBodies/Payment'
+      responses:
+        '200':
+          $ref: '#/components/responses/Payment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+components:
+  schemas:
+    HTTPError:
+      type: object
+      properties:
+        status:
+          type: string
+    SampleOrderInitiationTransaction:
+      type: object
+      properties:
+        OrderReference:
+          type: string
+        Amount:
+          type: string
+        Currency:
+          type: string
+        PayerReference:
+          type: string
+    Check:
+      type: object
+      properties:
+        CheckType:
+          type: string
+        CheckResult:
+          type: string
+    Payment:
+      type: object
+      properties:
+        PaymentReference:
+          type: string
+        Amount:
+          type: string
+  responses:
+    BadRequest:
+      description: BadRequest
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPError'
+    SampleOrderInitiationTransaction:
+      description: SampleOrderInitiationTransaction
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SampleOrderInitiationTransaction'
+    Check:
+      description: Check
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Check'
+    Payment:
+      description: Payment
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Payment'
+  requestBodies:
+    SampleOrderInitiationTransaction:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SampleOrderInitiationTransaction'
+      required: true
+    Check:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Check'
+      required: true
+    Payment:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Payment'
+      required: true

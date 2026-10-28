@@ -16,6 +16,7 @@ python -m sdem model check                     # every generated document and sc
 python -m sdem model accept                    # the rules engine passes its acceptance cases (8 of 8)
 python scripts/engine_perf.py 30 30            # the rules engine on 2,040 records within 30 s
 ```
+When you change `sdem/bian.py`, or BIAN publishes a release, also run `python scripts/bian_import_check.py <BIAN release folder>` against every file of a real downloaded release (not kept here).
 CI (`.github/workflows/validate.yml`) runs these and more on every push, on Python 3.10–3.13, plus a job that builds the wheel, installs it in a clean environment and runs every journey from outside the repository.
 
 ## Generated files — never edit them by hand

@@ -1,12 +1,12 @@
 # BIAN import — design
 
-> **Status: proposed 2026-10-29**, for the owner's approval (decisions BI-D1…D6 below). Requirements: [`sdem-bian-import-spec.md`](sdem-bian-import-spec.md). Nothing is built yet.
+> **Status: approved by the owner and built 2026-10-29** (decisions BI-D1…D6 as recommended). Requirements: [`sdem-bian-import-spec.md`](sdem-bian-import-spec.md). Built in `sdem/bian.py`; tests `tests/test_bian.py`; checked against BIAN releases 10.0–14.0 (*What the real releases showed*, below).
 
 ## The problem
 
 Every connection between business and applications passes through the BIAN layer (A2), and SDEM never builds A2 from design documents. Today an architect must write `a2-service-domain.json` by hand. Two walkthroughs by a newcomer found this the hardest step: what goes in it, in what format, from where.
 
-BIAN publishes its **Semantic APIs** openly — `github.com/bian-official/public`, **Apache-2.0**, releases 9.1 to 14.0.0; release 14.0.0 has 259 files, one per service domain (OpenAPI 3 YAML; 9.1 is Swagger JSON). Checked 2026-10-29.
+BIAN publishes its **Semantic APIs** openly — `github.com/bian-official/public`, **Apache-2.0**, releases 9.1 to 14.0.0; release 14.0.0 has 258 service-domain files (OpenAPI 3 YAML; 9.1 is Swagger JSON in an older shape). Checked 2026-10-29.
 
 ## The idea
 
@@ -45,7 +45,7 @@ The links inside A2 that the rulebook expects (domain → control record, domain
 | **BI-D2** | Asset type and functional pattern (required by the rulebook, not in BIAN's API files) | (a) **derive** them from the control record's name: BIAN names a control record *asset type + generic artefact* (*PaymentOrderInitiation* + *Transaction*), and each generic artefact belongs to one functional pattern; (b) a small table the architect fills in from the BIAN portal; (c) both — derive, and let a table override | **(c)** — derived values marked *medium*, listed in the import report for a person to confirm; a table (`--patterns`) overrides any of them | medium — the artefact → pattern list must be checked against BIAN's published material when building |
 | **BI-D3** | BIAN's descriptions | include always · never · on request | **on request** (`--descriptions`) — off by default. The licence allows them, but the project's rule is not to reproduce BIAN text; a bank's private estate may choose to | high |
 | **BI-D4** | Business objects (the schemas) | always · never · on request | **on request** (`--objects`) — they are many (hundreds per release) and the engine's main rules match operations, not objects | medium |
-| **BI-D5** | Which service domains | all by default · chosen | **chosen** — `--only <names>` or `--from <file of names>`; `--all` must be said explicitly. Release 14 imported whole is about 3,000 records, at the edge of a comfortable estate | high |
+| **BI-D5** | Which service domains | all by default · chosen | **chosen** — `--only <names>` or `--from <file of names>`; `--all` must be said explicitly. Release 14 imported whole is about 7,100 records (measured), beyond a comfortable estate | high |
 | **BI-D6** | Where it fits | a new command `sdem bian` · part of `sdem load` | **a new command** with `list` and `import`; its output is an ordinary A2 dataset that `sdem load --a2` (or a copy into the estate) takes as today | high |
 
 ## What stays true
@@ -56,6 +56,19 @@ The links inside A2 that the rulebook expects (domain → control record, domain
 - **BIAN content stays with the bank.** The output goes wherever you write it — your private estate repository; the public SDEM repository holds the converter and a made-up test file only.
 - **Provenance on every record:** BIAN release, source file, and how each value was obtained (read · derived · from your table).
 - **Re-import is safe.** Importing a newer release reports what was added, renamed or dropped; it does not silently change records already approved links point to (an existing id is kept; a dropped domain is reported, not deleted).
+
+## What the real releases showed (2026-10-29)
+
+Every file of BIAN releases 10.0, 11.0, 12.0, 13.0 and 14.0 — 1,241 files — was read and imported in full (`scripts/bian_import_check.py`, run on the maintainer's machine; BIAN's files are not kept in this repository).
+
+| Finding | What was done |
+|---|---|
+| **The reader is exact.** The facts it extracts are identical to those of a full YAML library (PyYAML) for all 1,241 files. Two YAML forms appeared that the first version refused rather than guess — long paths written as complex keys (`? …` in 10.0) and keys containing a colon (11.0, 12.0) | both read; BI-D1 confirmed (confidence now high) |
+| **Release 9.1 is a different shape** (Swagger 2: no control-record tags, operations named differently) | refused with a message to use 10.0 or later (BI-C04 narrowed) |
+| **Derivation covers 74%** (192 of 258 service domains in 14.0). The rest end in *Facility* (39), *Log* (7) or *Measurement* (1), or have no control record (19). BIAN's release 14 notes show a *Facility* domain changing from FULFILL to AGREE TERMS — so *Facility* does not imply one pattern | not guessed: those domains need a `--patterns` row; the error lists them all at once with the CSV format |
+| **BIAN reuses behaviour-qualifier names across domains** (*Payment* in 15) but the rulebook keys a qualifier by its name | each qualifier is named with its domain, e.g. *Payment (Card Transaction)* |
+| **Two domains share one control-record name** in 14.0 (*Trust Services*, *Corporate Trust Services*) but the rulebook gives each control record one domain | each domain keeps its own control record (id by domain); the report lists the shared name for a person |
+| **Every release imported whole passes the rulebook** — 0 errors; only advice (no business domain named) | — |
 
 ## How the architect uses it
 

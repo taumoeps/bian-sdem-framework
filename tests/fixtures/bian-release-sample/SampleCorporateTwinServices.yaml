@@ -1,0 +1,55 @@
+openapi: 3.0.1
+info:
+  title: Sample Corporate Twin Services
+  description: "A made-up service domain in the shape of a BIAN Semantic API file — not BIAN text."
+  contact:
+    name: SDEM test
+  version: 99.0.0
+servers:
+  - url: https://example.invalid/sample
+paths:
+  '/SampleCorporateTwinServices/Execute':
+    post:
+      tags:
+        - CR - SampleTwinServicesProcedure
+      summary: Execute
+      operationId: Execute
+      requestBody:
+        $ref: '#/components/requestBodies/SampleTwinServicesProcedure'
+      responses:
+        '200':
+          $ref: '#/components/responses/SampleTwinServicesProcedure'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+components:
+  schemas:
+    HTTPError:
+      type: object
+      properties:
+        status:
+          type: string
+    SampleTwinServicesProcedure:
+      type: object
+      properties:
+        TwinReference:
+          type: string
+  responses:
+    BadRequest:
+      description: BadRequest
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPError'
+    SampleTwinServicesProcedure:
+      description: SampleTwinServicesProcedure
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SampleTwinServicesProcedure'
+  requestBodies:
+    SampleTwinServicesProcedure:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SampleTwinServicesProcedure'
+      required: true

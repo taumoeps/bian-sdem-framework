@@ -107,9 +107,24 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 
 | Source | When | How |
 |---|---|---|
+| **BIAN's public Semantic APIs, with `sdem bian`** (recommended) | always — they are free (Apache-2.0) | download one BIAN release folder from [github.com/bian-official/public](https://github.com/bian-official/public) (e.g. `release14.0.0/semantic-apis/oas3/yamls`), then `sdem bian list <folder>` and `sdem bian import <folder> --only "<service domain>" … -o work/bian/a2-service-domain.json` — checked, with a report; see below |
 | **Your organisation's BIAN catalogue** | your organisation is a BIAN member or has a BIAN workbench | export the service domains you use and convert them to SDEM's A2 format (a licensed connection to BIAN is planned) |
 | **A starter file, by hand** | you have no catalogue yet | list the service domains your area uses, from BIAN's public Service Landscape — **names only, described in your own words** (do not copy BIAN text) — as below |
 | **None yet** | you want to start without BIAN | load without `--a2`; applications still connect to technology — but **business does not connect to applications at all**, because every one of SDEM's connections between those layers passes through BIAN. Add the layer before you need business-to-technology traces |
+
+**Importing from BIAN's Semantic APIs.** SDEM reads the release you downloaded — nothing is fetched — and writes each service domain you name with its operations (and their input and output fields, which the engine matches your APIs against), its control record, behaviour qualifiers and service groups, recording BIAN's release on every record. Two things to know:
+
+- **Asset type and functional pattern** are not in BIAN's API files. SDEM works them out from the control record's name where BIAN's published naming allows (about three in four domains) and lists them in the report **to confirm**; for the rest it stops and lists them, and you give them in a small CSV from the BIAN portal: `--patterns patterns.csv` with rows `service domain,asset type,functional pattern`.
+- **BIAN's descriptions are left out** unless you add `--descriptions`; business objects only with `--objects`.
+
+```bash
+sdem bian import ~/bian/release14.0.0 --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json
+```
+```
+wrote work/bian/a2-service-domain.json: 2 service domain(s) from BIAN release 14.0.0 — AssetType 2, BehaviorQualifier 7, ControlRecord 2, FunctionalPattern 2, ServiceDomain 2, ServiceGroup 9, ServiceOperation 43
+checked: no errors (2 advice); report work/bian/a2-service-domain.report.md
+confirm: 2 derived asset type(s) and functional pattern(s) — listed in the report
+```
 
 A starter file with one service domain. Every service domain must name its **asset type** (what it looks after) and its **functional pattern** (what it does with it), each a record of its own — so the smallest valid file has three records. It loads; `sdem check` adds advice (`WARN … LC-10m`) to add its business domain, service group and control record later. A test loads this exact file on every push.
 

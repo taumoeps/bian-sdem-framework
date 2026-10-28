@@ -33,6 +33,7 @@ class InstalledLayoutTests(unittest.TestCase):
         cls.work = cls.tmp / 'work'; cls.work.mkdir()
         shutil.copytree(ROOT / 'examples' / 'payment-initiation', cls.work / 'est', ignore=shutil.ignore_patterns('graph'))
         shutil.copytree(ROOT / 'tests' / 'fixtures' / 'confluence-folder-export', cls.work / 'export')
+        shutil.copytree(ROOT / 'tests' / 'fixtures' / 'bian-release-sample', cls.work / 'bian')
         cls.env = {**os.environ, 'PYTHONPATH': str(site)}
 
     @classmethod
@@ -53,6 +54,7 @@ class InstalledLayoutTests(unittest.TestCase):
                      ['link', '--estate', 'est', '--out', 'links'], ['dashboard', '--estate', 'est', '-o', 'dash.html'], ['home', '--estate', 'est', '-o', 'site'],
                      ['events', '--estate', 'est'], ['transform', 'run', 'export', '-o', 'history', '--ocr', 'off'],
                      ['load', 'history', '--estate', 'hist', '--person', 'jane.architect', '--exclude', 'HIS-A3-PAYMENT-ORDER'],
+                     ['bian', 'list', 'bian'], ['bian', 'import', 'bian', '--only', 'Sample Order Initiation', '-o', 'bian-a2.json'],
                      ['designs', '--estate', 'hist', '--gaps'], ['explain', 'P-RUN-001', '--proposals', 'links/proposals.json']):
             code, out = self.sdem(*args)
             self.assertIn(code, (0, 1), f'sdem {" ".join(args)} → {code}\n{out[-800:]}')

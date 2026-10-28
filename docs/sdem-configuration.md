@@ -58,6 +58,18 @@ sdem transform run work/<export> -o work/history --rules rules/transform-rules.j
 
 You **cannot** change how sure SDEM is allowed to be: onboarded records are never above *medium*, and nothing is loaded without a person. Optional flags: `--known <dataset>` (match names to records you already have), `--model-id` (name the candidate datasets).
 
+## Your BIAN layer (`sdem bian`)
+
+| Option | Means |
+|---|---|
+| `--only <names>` · `--from <file>` · `--all` | which service domains to import (you must choose; a whole release is about 7,000 records) |
+| `--patterns <csv>` | asset type and functional pattern per service domain (`service domain,asset type,functional pattern`) — for domains SDEM cannot work them out for, or to correct a derived one |
+| `--descriptions` | include BIAN's descriptions (left out by default) |
+| `--objects` | also import BIAN's business objects |
+| `--previous <file>` | report what changed against your previous BIAN layer (nothing is removed from your estate) |
+
+Keep the BIAN files you downloaded and the A2 file in your private estate repository's working area; the A2 file is part of your estate. How: [onboarding — your BIAN (A2) layer](sdem-onboarding-workflow.md#your-bian-a2-layer).
+
 ## Text in pictures (OCR)
 
 When onboarding, SDEM reads text in pictures with the computer's own text recognition (macOS) or Tesseract if installed — nothing leaves the machine.

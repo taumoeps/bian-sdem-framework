@@ -1,6 +1,6 @@
 # BIAN import — specification
 
-> **Status: proposed 2026-10-29**, for the owner's approval, with the design [`sdem-bian-import-design.md`](sdem-bian-import-design.md). Each requirement has an id (BI-*), what it requires, and how it is accepted. Requirements marked *(BI-Dn)* follow the recommended option of that decision and change if the owner chooses another.
+> **Status: approved by the owner and built 2026-10-29**, with the design [`sdem-bian-import-design.md`](sdem-bian-import-design.md). Every requirement is tested in `tests/test_bian.py`. Each requirement has an id (BI-*), what it requires, and how it is accepted. Requirements marked *(BI-Dn)* follow the recommended option of that decision and change if the owner chooses another.
 
 ## Inputs and command
 
@@ -9,7 +9,7 @@
 | BI-C01 | `sdem bian list <folder>` lists the service domains in a BIAN release folder — name, operations, control record — and the release; it writes nothing. | test on the made-up release |
 | BI-C02 | `sdem bian import <folder> -o <file>` writes one A2 dataset for the chosen service domains, and a report beside it (`<file>.report.md`). | test |
 | BI-C03 | The folder is read from disk only; SDEM makes no network call. | `test_no_mcp_no_ai_client` extended to `sdem/bian.py` |
-| BI-C04 | Accepted inputs: OpenAPI 3 YAML (releases 10–14) and Swagger 2 JSON (release 9.1). Anything else is refused with a message naming the file. *(BI-D1)* | tests, good and bad files |
+| BI-C04 | Accepted inputs: OpenAPI 3 files (BIAN releases 10.0 and later). Swagger 2 (release 9.1 and earlier — a different shape, without control-record tags) is refused with a message to use 10.0 or later; anything else is refused naming the file. *(BI-D1; narrowed 2026-10-29 after reading 9.1)* | tests, good and bad files |
 | BI-C05 | The YAML reader reads only: `info.title`, `info.version`, `info.description`, each operation's path, method, `operationId` and tags, and the names under `components.schemas`. A file whose structure it does not recognise is refused, not guessed. *(BI-D1)* | test with a malformed file |
 | BI-C06 | Selection: `--only <names…>`, `--from <file>` (one name per line), or `--all`; with none of these the command refuses and points to `sdem bian list`. A name not in the release is an error listing the closest names. *(BI-D5)* | tests |
 
@@ -39,7 +39,7 @@
 | BI-U01 | The onboarding workflow's *Your BIAN (A2) layer* shows `sdem bian list` / `import` as the first way to get the layer; the command reference (user guide §7) lists both. | doc tests (links, drift) |
 | BI-U02 | A made-up BIAN-shaped release (no BIAN text) is in `tests/fixtures/`; the public repository holds no BIAN content. | review |
 
-## Open before building
+## Checked before building (done 2026-10-29)
 
-- Check the generic-artefact → functional-pattern list (BI-W02) against BIAN's published material, and record its source.
-- Run the reader against a real downloaded release (all 259 files of 14.0.0, and 9.1 JSON) on the maintainer's machine; every file must be read or refused with a reason. Not committed.
+- The generic-artifact → functional-pattern list (BI-W02) is BIAN's: Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9 — cited in `sdem/bian.py`.
+- The reader was run against every file of releases 10.0–14.0 (1,241 files): all read, extracted facts identical to PyYAML's, every release imported whole with 0 rulebook errors. Re-run with `python scripts/bian_import_check.py <release folder>` when `sdem/bian.py` changes or BIAN publishes a release.
