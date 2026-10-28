@@ -26,7 +26,7 @@ flowchart LR
 | Design exports (Confluence) | `work/` on the machine allowed to hold them | any repository |
 | Dashboards | authenticated internal hosting | public Pages, public buckets, links without sign-in |
 
-**One estate per domain.** Every domain works the same way — same rulebook, same commands, same checks; a domain joins by adding a folder in `estates/` with its owner and code owners. The only per-domain setting is the transform's word list ([pilot plan — tuning](sdem-pilot-plan.md#tuning-for-the-domain)).
+**One estate per domain.** Every domain works the same way — same rulebook, same commands, same checks; a domain joins by adding a folder in `estates/` with its owner and code owners. There are no per-domain settings; the one optional setting — the table headings your organisation's designs use — is shared by every domain ([pilot plan](sdem-pilot-plan.md#no-per-domain-settings)).
 
 **Why:** the employer owns its designs; this repository is public. One private estate repository per organisation (or per division) keeps the boundary simple and auditable. **Confidence: high** — follows from the IP constraint and the 2026-10-29 audit finding.
 

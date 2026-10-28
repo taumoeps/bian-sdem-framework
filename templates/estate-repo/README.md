@@ -47,7 +47,7 @@ Open a pull request; CI runs the **Estate checks**; a code owner reviews and mer
 
 Any domain works the same way: create `estates/<domain>/` (by onboarding its designs, or with its datasets and an empty `mappings.json`), add its reviewers to `.github/CODEOWNERS`, and name its estate owner. CI picks it up automatically.
 
-**Tune the transform for the domain (optional):** copy SDEM's `metamodel/transform-rules.json` to `rules/transform-rules.json`, add the domain's general words to `narrative.ignore_names` (for lending: `loan`, `lending`), and run `sdem transform run … --rules rules/transform-rules.json`. Otherwise the transform suggests a few extra candidates named after those words, which reviewers reject.
+**No per-domain settings are needed.** If your organisation's designs use table headings SDEM does not recognise (they show up as *column not mapped* or *no entity type* gaps), copy SDEM's `metamodel/transform-rules.json` to `rules/transform-rules.json`, add the headings under `tables`, and run `sdem transform run … --rules rules/transform-rules.json` — once, for every domain.
 
 ## What CI checks (`ci/check-estates.sh`)
 

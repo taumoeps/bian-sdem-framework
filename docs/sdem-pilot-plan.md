@@ -29,9 +29,11 @@
 
 A smaller domain with willing architects beats an important one with busy architects.
 
-## Tuning for the domain
+## No per-domain settings
 
-SDEM's rules are the same for every domain — the example estates already span seven (payments, cards and fraud, customer onboarding, lending, a core ledger, trade finance, an acquired fintech) with the same rulebook and checks. The design-onboarding test fixtures, though, are payments designs only, so the first pilot in another domain is also the transform's first test on that domain's documents. One thing is worth tuning per domain: the transform's list of words too general to be names (`narrative.ignore_names` in `transform-rules.json` — *system*, *platform*, *customer* …). Add the domain's own general words (for lending: *loan*, *lending*; for cards: *card*, *cards*) in the estate repository's copy and pass it with `sdem transform run … --rules rules/transform-rules.json`. Without it, the transform suggests a few extra candidates named after those words, which reviewers then reject.
+SDEM needs **no settings per domain**. The rulebook and checks are the same everywhere — the example estates span seven domains (payments, cards and fraud, customer onboarding, lending, a core ledger, trade finance, an acquired fintech) — and design onboarding has been tested on two (payments and lending: `tests/test_lending_onboarding.py`, run with no lending-specific rules: 18 of 18 records found, nothing lost, no records made from general words like *loan* or *credit*).
+
+What may need tuning depends on **how your organisation writes designs**, not on the domain: if your designs use table headings or column names SDEM does not recognise (e.g. *Platform* for an application, or a column like *Data classification*), those items become gap records. Add the headings to the estate repository's copy of `transform-rules.json` (`tables`) and run `sdem transform run … --rules rules/transform-rules.json`. Do this once, on the first design, and keep the copy for every domain.
 
 ## Timeline
 
@@ -54,7 +56,7 @@ gantt
 | Weeks | What happens | Done when |
 |---|---|---|
 | 0 | **Preconditions** ([operating model §6](sdem-operating-model.md#6-before-starting--what-must-be-true)): legal and IP clearance, Python 3.10+, private repository with protection, hosting decided | all six met — **the pilot does not start without legal clearance** |
-| 1 | Estate repository from [`templates/estate-repo`](../templates/estate-repo/README.md); one estate folder for the domain; code owners named; transform tuned for the domain; 2-hour hands-on session with use-case example 4 | each architect has run the checks and an example onboarding |
+| 1 | Estate repository from [`templates/estate-repo`](../templates/estate-repo/README.md); one estate folder for the domain; code owners named; a first design transformed to see which of your table headings SDEM does not yet recognise; 2-hour hands-on session with use-case example 4 | each architect has run the checks and an example onboarding |
 | 2–5 | Onboard 3–5 designs ([onboarding workflow](sdem-onboarding-workflow.md)); review candidates; load; work the gaps | designs loaded through pull requests; coverage recorded |
 | 6–8 | Use SDEM in real change: propose and approve links, trace, impact before a change, keep data current | at least one real change carried through SDEM end to end |
 | 9 | Measure, retrospective, decision | decision recorded |
@@ -85,7 +87,7 @@ gantt
 |---|---|---|
 | Legal clearance takes longer than planned | medium | start week 0 only when it is granted; prepare everything else meanwhile |
 | Designs are less structured than expected (low coverage) | medium | gap records keep everything; tune the domain's copy of `transform-rules.json` on the first design |
-| The domain's vocabulary is not yet covered by the transform's word list | medium | the rulebook is domain-neutral; tune the transform's general words (above); review candidates as usual |
+| Your designs use table headings SDEM does not recognise | medium | those items become gap records, so nothing is lost; add the headings to your copy of the rules (above) |
 | Architects lack time | high | half a day a week, agreed with their manager before starting |
 | BIAN ids (A2) unavailable without a licence | high | pilot A1, A3, A4; A2 only from public sources |
 | Old Python on work machines | medium | precondition 3 |

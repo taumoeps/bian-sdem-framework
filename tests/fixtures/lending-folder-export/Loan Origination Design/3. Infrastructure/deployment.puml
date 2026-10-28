@@ -1,0 +1,6 @@
+@startuml
+archimate #Technology "Lending OpenShift Cluster" as ocp <<technology-node>>
+archimate #Technology "Oracle 19c" as ora <<technology-system-software>>
+archimate #Technology "Branch Firewall" as fw <<technology-device>>
+fw --> ocp
+@enduml

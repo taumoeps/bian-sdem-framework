@@ -1,0 +1,20 @@
+<html><head><title>Loan Origination Design</title></head><body>
+<h1>Loan Origination Design</h1>
+<p>Last updated by the lending architecture team.</p>
+<h2>Solution overview</h2>
+<p>Every Loan starts in the Loan Origination Platform. The Loan Origination Platform sends each application to the Credit Decisioning Engine for a decision.</p>
+<p>Lending to small businesses grows every year, so Credit decisions must take minutes, not days. The Credit Decisioning Engine reads the credit report from the Credit Bureau Gateway.</p>
+<p>Once approved, the Loan is booked in the Loan Book and the Collateral Register records any security.</p>
+<p><img src="diagrams/lending-context.png" alt="lending context"></p>
+<p><img src="diagrams/lending-components.png" alt="lending components"></p>
+<p><img src="diagrams/credit-sequence.svg" alt="credit sequence"></p>
+<table><tr><th>Owner</th><td>Lending architecture team</td></tr><tr><th>Review date</th><td>2023-03-14</td></tr><tr><th>Approval</th><td>Design authority, approved with conditions</td></tr></table>
+<h2>Risks</h2>
+<table><tr><th>Risk</th><th>Impact</th><th>Mitigation</th></tr>
+<tr><td>Credit bureau unavailable</td><td>Applications wait for a decision</td><td>Queue and retry; manual referral after 2 hours</td></tr></table>
+<h2>Applications</h2>
+<table><tr><th>Application</th><th>Purpose</th><th>Status</th><th>Data classification</th></tr>
+<tr><td>Loan Origination Platform</td><td>Captures loan applications from branches and brokers</td><td>Live</td><td>Confidential</td></tr>
+<tr><td>Credit Decisioning Engine</td><td>Scores applications and returns a decision</td><td>Live</td><td>Confidential</td></tr>
+<tr><td>Collateral Register</td><td>Records security held against loans</td><td>Live</td><td>Internal</td></tr></table>
+</body></html>

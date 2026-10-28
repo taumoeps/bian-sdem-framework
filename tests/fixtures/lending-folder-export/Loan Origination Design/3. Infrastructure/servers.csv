@@ -1,0 +1,3 @@
+Server,Environment,Status
+LENDAPP01,Production,Live
+LENDAPP02,Disaster recovery,Live

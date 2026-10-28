@@ -1,0 +1,5 @@
+Design notes
+
+The Credit Decisioning Engine is hosted on LENDAPP01.
+
+The loan servicing system is out of scope for this release.
