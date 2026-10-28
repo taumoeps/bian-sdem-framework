@@ -1,5 +1,7 @@
 # SDEM Agent Platform — Spike checklist
 
+> **Status: current checklist — not yet run in real Copilot (the next step for the agents).**
+
 > **Run this first, in your own VS Code** (build step 1, [`sdem-agent-platform-spec.md`](sdem-agent-platform-spec.md) §10). It confirms that your organisation's VS Code and GitHub Copilot support what the agent files in `.github/agents/` rely on. Record each result in the table at the end and tell the SDEM owner. Uses made-up data only.
 
 **Before you start:** set up GitHub Copilot and SDEM ([`sdem-copilot-setup.md`](sdem-copilot-setup.md)) — the project open and trusted in VS Code, SDEM installed, Copilot Chat signed in. Make a scratch copy of an example estate:

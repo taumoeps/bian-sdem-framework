@@ -1,5 +1,7 @@
 # SDEM Overview — read this first
 
+> **Status: current — the concepts; what is built is in the ROADMAP.**
+
 **Service Domain Enterprise Metamodel (SDEM)** is an open-source, model-driven enterprise architecture metamodel designed to define, validate and govern architecture entities and relationships across Business, Service Domain, Application and Technology architectures.
 
 SDEM provides a structured foundation for four local architecture knowledge graphs and a federated architecture knowledge graph, enabling end-to-end architecture traceability, relationship governance and change-impact analysis. Its architecture relationship rules and inference components support evidence-based discovery and validation of relationships between architecture entities.

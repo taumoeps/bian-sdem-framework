@@ -1,5 +1,7 @@
 # Glossary
 
+> **Status: current — kept up to date with every release; a term used in a current document belongs here.**
+
 Plain-language meanings of the terms used across the SDEM documents. Grouped by topic; alphabetical within each group.
 
 ## The model

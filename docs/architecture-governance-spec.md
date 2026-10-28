@@ -1,5 +1,7 @@
 # SDEM Architecture Governance Specification
 
+> **Status: approved methodology (v0.2); current detail is generated into the registry and knowledge-graph specs linked below.**
+
 > Approval, versioning, provenance and change impact for the **Architecture Relationship Registry**. Current, generated detail: record lifecycle and immutability in [`relationship-registry-spec.md`](relationship-registry-spec.md); impact classification in `schema/impact-rules.json` and [`knowledge-graph-design.md`](knowledge-graph-design.md) path F4; who may do what in [`knowledge-graph-spec.md`](knowledge-graph-spec.md) §10; the review queue in §11 (SVC-06). The text below is the original governance and impact methodology (formerly `04-governance-and-impact.md`), with SDEM terms.
 
 ## Governance, history and impact — original methodology

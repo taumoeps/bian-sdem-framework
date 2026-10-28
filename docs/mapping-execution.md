@@ -1,5 +1,7 @@
 # Mapping execution guide — for the executor
 
+> **Status: a record — the procedure as first run by hand (v0.5); the engine now runs it (`sdem link`). Cited by the governing spec as the rules' procedure.**
+
 **Who this is for.** A model session (or an analyst) acting as the inference engine for one use case in `docs/use-case-testing.md`. You are executing a **plan**, not designing one. The plan is `metamodel/relationship-rules.json`; the data is the use case's architecture datasets. Your job is to produce the connections the plan says can be produced, show the working for each, and report precisely where the plan did not work.
 
 **Objective.** Test whether the connections in `relationship-rules.json` are correct and producible from the data. Every miss, false proposal or forced guess is a finding that improves the plan. A clean run with no findings is less useful than an honest one.

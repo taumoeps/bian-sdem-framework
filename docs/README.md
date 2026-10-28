@@ -1,5 +1,7 @@
 # SDEM documentation — where to read what
 
+> **Status: current — the index of every document; update it when a document is added, moved or retired.**
+
 Find your role, start at the top of its list. **Generated** documents are rebuilt from the rulebook (`sdem model regenerate`) — never edit them by hand; **history** documents are records of how SDEM got here and are kept as written.
 
 ```mermaid

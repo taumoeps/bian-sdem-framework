@@ -1,5 +1,7 @@
 # SDEM inference audit
 
+> **Status: a record — the 2026-10-23 snapshot; regenerate with `python scripts/inference_audit.py`.**
+
 A snapshot taken 2026-10-23 by `python scripts/inference_audit.py` from the records (`metamodel/`, `schema/`). It answers one question: **without access to the login-gated standards or a standards MCP server, how much of SDEM is inferred rather than taken from a verifiable public source?** Counts are computed by script from the records; attribute sources are read from `metamodel/entity-attributes.json` (see `architecture-attribute-design.md`).
 
 **Definitions used.** *Grounded*: stated in a public source anyone can check (BIAN public portal and Semantic API guide; ArchiMate concept names; OpenAPI). *Oracle-confirmed*: inferred by SDEM, then confirmed against the open-source Archi implementation of the ArchiMate relationship tables. *Inferred*: SDEM's own reading or design, with reasoning recorded, tested by the use cases but not by a standard. *Gated*: cited to TOGAF or the ArchiMate text and not checkable without an Open Group login.

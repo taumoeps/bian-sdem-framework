@@ -1,5 +1,7 @@
 # Roadmap
 
+> **Status: current** — updated with every release; v0.8.0 released 2026-10-29.
+
 Realigned 2026-10-25 after a full review of `docs/` against the code. Release numbers before v0.8 are history; earlier plans for v0.6–v0.8 (engine, BIAN reference integration, generated views) were renumbered below because v0.6.0 and v0.7.0 shipped the rules specification and the rename instead.
 
 ## Delivered

@@ -1,5 +1,7 @@
 # What makes a good agent platform — and how SDEM measures up
 
+> **Status: approved assessment (2026-10-28); its improvements were built.**
+
 > Assessment 2026-10-28, against the agent platform as built ([`sdem-agent-platform-design.md`](sdem-agent-platform-design.md), [`sdem-agent-platform-spec.md`](sdem-agent-platform-spec.md)). The improvements it leads to are recorded in the spec as AG-S08, AG-K06, AG-E01 and AG-O01.
 
 ## The principle
