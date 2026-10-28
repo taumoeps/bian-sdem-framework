@@ -2,7 +2,7 @@
 
 > **Status: approved 2026-10-28 ("go ahead"); built 2026-10-28.** `sdem load`. Requirements: [`sdem-load-spec.md`](sdem-load-spec.md). The **L** of the ETL for past designs; the **T** is [`sdem transform`](sdem-transform-design.md).
 
-**Objective:** move the entities an architect has **reviewed and kept** from the transform's output into an SDEM estate — **checked and recorded**. The whole journey, export to knowledge graph, is in [`sdem-past-designs-workflow.md`](sdem-past-designs-workflow.md).
+**Objective:** move the entities an architect has **reviewed and kept** from the transform's output into an SDEM estate — **checked and recorded**. The whole journey, export to knowledge graph, is in [`sdem-designs-import-workflow.md`](sdem-designs-import-workflow.md).
 
 **The load does not change the data.** The transform creates the architecture data; the load copies the entities you keep, **unchanged**, into the estate. It:
 - leaves out the ones you reject (and any link or `deployed_on` that would point to them)
