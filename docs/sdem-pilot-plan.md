@@ -14,7 +14,7 @@
 | People | 2–3 architects (A1, A3, A4 between them), 1 reviewer, the estate owner (one of the architects), the SDEM owner as maintainer |
 | Time | 10 weeks, about half a day a week per architect after set-up |
 | Data | 3–5 existing designs onboarded; the domain's changes during the pilot kept in SDEM |
-| SDEM | v0.9.0 (or later), pinned |
+| SDEM | v0.9.1 (or later), pinned |
 
 ## Choosing the domain
 

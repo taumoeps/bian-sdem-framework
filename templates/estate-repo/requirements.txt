@@ -1,2 +1,2 @@
 # The SDEM release this estate repository uses. Upgrade by changing the tag in a pull request (see README → Upgrading SDEM).
-sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.9.0
+sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.9.1

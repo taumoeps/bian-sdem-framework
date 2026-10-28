@@ -1,6 +1,6 @@
 # Roadmap
 
-> **Status: current** — updated with every release; v0.9.0 released 2026-10-29.
+> **Status: current** — updated with every release; v0.9.1 released 2026-10-29.
 
 Realigned 2026-10-25 after a full review of `docs/` against the code. Release numbers before v0.8 are history; earlier plans for v0.6–v0.8 (engine, BIAN reference integration, generated views) were renumbered below because v0.6.0 and v0.7.0 shipped the rules specification and the rename instead.
 
@@ -18,6 +18,7 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | v0.6.0 | Relationship Rules Model specification (`relationship-rules-spec.md`); knowledge-graph design and specification with service specifications | Generated from the records; current in CI | done |
 | v0.7.0 | Renamed SDEM; model-driven terminology; registry specification; compatibility aliases for the old names | Behaviour byte-identical to v0.6.2 | done |
 | v0.8.0 | The tool release — see below | the full suite; acceptance 8 of 8; use-case examples 1–4; installed-package job | done |
+| v0.9.1 | Team set-up fixes from the third new-architect walkthrough: estate-first protection, local check compares with main, shared BIAN layer, `sdem transform rules`, adoption checklist; nine rule source references closed | the full suite | done |
 | v0.9.0 | Base BIAN and operational readiness — see below | the full suite; BIAN import checked on releases 10.0–14.0; two new-architect walkthroughs | done |
 
 ## v0.9.0 — base BIAN and operational readiness (2026-10-29)
