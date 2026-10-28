@@ -5,7 +5,7 @@ description: How past designs (a Confluence export) become SDEM architecture ent
 
 # Importing past designs
 
-The whole journey: [`docs/sdem-designs-import-workflow.md`](../../../docs/sdem-designs-import-workflow.md). In short:
+The whole journey (design onboarding): [`docs/sdem-onboarding-workflow.md`](../../../docs/sdem-onboarding-workflow.md). In short:
 
 ```
 export (the architect) → sdem transform run → review (the architect, you help) → sdem load (the architect) → sdem link → sdem approve (a person) → sdem build

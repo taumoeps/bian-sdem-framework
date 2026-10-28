@@ -518,9 +518,9 @@ sdem explain SD-PI --projection work/prj                         # a projected e
 ```
 Every answer shows the **rule** (e.g. S17), its **published source** where one exists (e.g. BIAN's Semantic API Practitioner Guide), the **records it came from**, the **reasoning** and the **confidence**. Low confidence (0.4) means weak evidence — often names only; treat it as a hint.
 
-### 8.7 Transform past designs from Confluence into entities
+### 8.7 Onboard your existing designs (from Confluence)
 
-> The whole journey on one page — export → transform → review → load → link → approve → build, what each step does to the data and when it is ready: [`sdem-designs-import-workflow.md`](sdem-designs-import-workflow.md). **The user guide for existing designs**, step by step: [`sdem-designs-import-user-guide.md`](sdem-designs-import-user-guide.md); the **test script** with the expected result of every step: [`use-case-example-4.md`](use-case-example-4.md).
+> **Design onboarding** — the whole journey, export → transform → review → load → link → approve → build, step by step with the commands and what you will see: [`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md). The **test script** with the expected result of every step: [`use-case-example-4.md`](use-case-example-4.md).
 
 *Goal: turn the organisation's past designs (Confluence pages with tables and draw.io diagrams) into candidate records — on the work machine, without AI, without the content leaving it.*
 

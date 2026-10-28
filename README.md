@@ -175,7 +175,7 @@ flowchart BT
 
 Two applications need a design change; one BIAN domain, one capability and two processes need a review. An architect confirms before anything changes.
 
-### Bringing in past designs
+### Onboarding past designs
 
 Years of designs live in Confluence as pages, diagrams and pictures. SDEM can turn them into architecture data — on your own machine, without AI.
 
@@ -187,7 +187,7 @@ flowchart LR
     L --> G["🕸️ Connected in the<br/>knowledge graph"]
 ```
 
-Every item SDEM finds says **which page it came from, where on the page, and how sure SDEM is** — never more than "medium" until a person checks it. **Nothing is thrown away:** what does not fit an architecture entity — a table of risks, a detail with no field for it, text, pictures, a PDF — is kept as a *gap record* next to the data, linked to its page and entities, for a person to deal with. Full journey: [`docs/sdem-designs-import-workflow.md`](docs/sdem-designs-import-workflow.md).
+Every item SDEM finds says **which page it came from, where on the page, and how sure SDEM is** — never more than "medium" until a person checks it. **Nothing is thrown away:** what does not fit an architecture entity — a table of risks, a detail with no field for it, text, pictures, a PDF — is kept as a *gap record* next to the data, linked to its page and entities, for a person to deal with. How to do it: [*Onboarding your existing designs*](#onboarding-your-existing-designs) below.
 
 ### People stay in charge
 
@@ -250,8 +250,8 @@ flowchart TB
         t1["✅ Check, connect, approve"]
         t2["✅ Trace, impact, dashboards"]
         t3["✅ Plan missing layers (AID)"]
-        t4["✅ Import past designs"]
-        t5["⏭️ Import from other tools<br/>(spreadsheets, CMDB)"]
+        t4["✅ Onboard past designs"]
+        t5["⏭️ Onboard data from tools<br/>(spreadsheets, CMDB)"]
     end
     subgraph B3["3 · AI agents"]
         direction LR
@@ -267,9 +267,29 @@ flowchart TB
 
 ✅ built · ⏭️ next. Details and dates: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
-## Using SDEM with your existing designs
+## Onboarding your existing designs
 
-This is **SDEM's design ingestion**: how an architect brings designs they already have — exported from Confluence — into SDEM (steps 1–4 below), followed by SDEM's **normal processing** (steps 5–9: check, link, approve, build) that makes them ready for queries and changes. Data from other tools (spreadsheets, CMDB) will come in by **tool ingestion**, planned (v0.11). Full guide: **[`docs/sdem-designs-import-user-guide.md`](docs/sdem-designs-import-user-guide.md)**.
+**Onboarding** brings data from a new source into SDEM until it is **governed and ready for use** — reviewed, checked against the rulebook, connected, approved and built into the knowledge graph. It has two parts: **ingestion** (getting the data into an estate) and **normal processing** (making it ready — the same for every estate).
+
+```mermaid
+flowchart LR
+    subgraph ON["Onboarding — from a new source to ready for use"]
+        direction TB
+        D["📄 <b>Design onboarding</b> — built<br/>existing designs (Confluence export)"]
+        T["🗄️ <b>Tool onboarding</b> — planned (v0.11)<br/>spreadsheets, CMDB, application portfolio"]
+    end
+    D -->|"ingestion:<br/>transform → review → load"| E[("Estate<br/>architecture data")]
+    T -->|"ingestion:<br/>adapter → check → load"| E
+    E -->|"normal processing:<br/>check → link → approve → build"| R(["✅ ready for<br/>queries and changes"])
+    classDef built fill:#E8F5E9,stroke:#2E7D32
+    classDef next fill:#ECEFF1,stroke:#607D8B
+    class D built
+    class T next
+```
+
+### Design onboarding at a glance
+
+What an architect does, in their own VS Code terminal — purple is you, blue is SDEM:
 
 ```mermaid
 flowchart LR
@@ -284,6 +304,20 @@ flowchart LR
     class C,K,Q you
     class R,L,P sdem
 ```
+
+How ready the data is at each stage — and what is kept when something does not fit:
+
+```mermaid
+flowchart LR
+    s1(["raw<br/><i>the export</i>"]) --> s2(["candidate<br/><i>suggested items</i>"]) --> s3(["reviewed<br/><i>you chose</i>"]) --> s4(["loaded<br/><i>in the estate</i>"]) --> s5(["connected<br/><i>links approved</i>"]) --> s6(["✅ ready<br/><i>graph built</i>"])
+    s2 -.->|"what does not fit"| G[["⚠️ gap records<br/>kept beside the estate,<br/>closed by a person"]]
+    classDef r fill:#E8F5E9,stroke:#2E7D32
+    classDef g fill:#FFF3E0,stroke:#EF6C00
+    class s6 r
+    class G g
+```
+
+### The commands
 
 | # | Command | In plain words |
 |---|---|---|
@@ -302,7 +336,10 @@ flowchart LR
 | 13 | `sdem designs accept` · `resolve <gap id> … --person <you> --note "<why>"` | **Close a gap** |
 | 14 | `git add estates/history` → commit → pull request | **Save and share** for review |
 
-**In short:** read → you check → keep → connect → picture → use → tidy up → save. Your name is on every decision; keep the export in `work/` (never saved to Git); `estates/history/` is the result you save. To rehearse it with expected results, use [`docs/use-case-example-4.md`](docs/use-case-example-4.md).
+**In short:** read → you check → keep → connect → picture → use → tidy up → save. Commands 1–4 are *ingestion*, 5–9 *normal processing*. Your name is on every decision; keep the export in `work/` (never saved to Git); `estates/history/` is the result you save.
+
+**Full guide:** [`docs/sdem-onboarding-workflow.md`](docs/sdem-onboarding-workflow.md) — every step with what you will see, what each step does to the data, gaps, and what to do when something goes wrong. **Test it** with expected results: [`docs/use-case-example-4.md`](docs/use-case-example-4.md).
+
 
 ## Start here
 
@@ -310,7 +347,7 @@ flowchart LR
 |---|---|
 | **Seeing SDEM for the first time** | the dashboard — run `sdem home -o work/sdem` and open `work/sdem/index.html`: SDEM's architecture, the rulebook, health and the example projects, all clickable |
 | **An architect who will use it** | the [user guide](docs/sdem-workbench-user-guide.md) — set-up, a 15-minute quick start, every task step by step |
-| **Bringing in your existing designs** | [the user guide for existing designs](docs/sdem-designs-import-user-guide.md) (step by step, with the commands) · [the workflow explained](docs/sdem-designs-import-workflow.md) · [the test script](docs/use-case-example-4.md) |
+| **Onboarding your existing designs** | [the onboarding workflow](docs/sdem-onboarding-workflow.md) (step by step, with the commands) · [the test script](docs/use-case-example-4.md) |
 | **Setting up the AI agents** | [Copilot set-up](docs/sdem-copilot-setup.md), then [the spike](docs/sdem-agent-platform-spike.md) |
 | **Wanting the concepts** | [the overview](docs/sdem-overview.md) and the [glossary](docs/glossary.md) |
 | **A maintainer** | [CONTRIBUTING.md](CONTRIBUTING.md) and the technical section below |
@@ -361,7 +398,7 @@ Exit codes: `0` ok, `1` issues found, `2` usage error.
 | **The rulebook (metamodel) and data** | [governing detail spec](docs/architecture-metamodel-detail-level-spec.md) · [high-level spec](docs/architecture-metamodel-high-level-spec.md) (frozen reference) · [entities](docs/architecture-entity-design.md) · [attributes](docs/architecture-attribute-design.md) · [logical data model](docs/logical-data-model.md) · [physical data model](docs/physical-data-model.md) · [provenance](docs/reference-architecture-provenance.md) |
 | **Connections, engine and graph** | [relationship rules](docs/relationship-rules-spec.md) · [registry](docs/relationship-registry-spec.md) · [governance](docs/architecture-governance-spec.md) · [knowledge graph](docs/knowledge-graph-design.md) / [spec](docs/knowledge-graph-spec.md) · [graph store](docs/graph-store-design.md) / [spec](docs/graph-store-spec.md) · [within-level rows](docs/relationships-planning.md) / [testing](docs/relationships-testing.md) · [mapping logic](docs/mapping-logic-planning.md) · [execution](docs/mapping-execution.md) |
 | **Planning missing layers (AID)** | [design](docs/aid-design.md) · [spec](docs/aid-spec.md) |
-| **Importing past designs** | [**user guide**](docs/sdem-designs-import-user-guide.md) · [workflow](docs/sdem-designs-import-workflow.md) · [transform design](docs/sdem-transform-design.md) / [spec](docs/sdem-transform-spec.md) · [load design](docs/sdem-load-design.md) / [spec](docs/sdem-load-spec.md) |
+| **Onboarding existing designs** | [**onboarding workflow**](docs/sdem-onboarding-workflow.md) · [transform design](docs/sdem-transform-design.md) / [spec](docs/sdem-transform-spec.md) · [load design](docs/sdem-load-design.md) / [spec](docs/sdem-load-spec.md) |
 | **AI agents and Copilot** | [principles](docs/sdem-agent-platform-principles.md) · [design](docs/sdem-agent-platform-design.md) / [spec](docs/sdem-agent-platform-spec.md) · [Copilot set-up](docs/sdem-copilot-setup.md) · [spike](docs/sdem-agent-platform-spike.md) · [repository protection](docs/sdem-repository-protection.md) |
 | **Controls** | [controls register](docs/controls-register.md) |
 | **Tests and examples** | [use-case testing](docs/use-case-testing.md) · [example 1](docs/use-case-example-1.md) (mappings and graph) · [example 2](docs/use-case-example-2.md) (AID) · [example 3](docs/use-case-example-3.md) (agents) · [example 4](docs/use-case-example-4.md) (importing past designs, export to build) |

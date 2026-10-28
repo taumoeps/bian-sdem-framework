@@ -4,7 +4,7 @@
 
 > **Status: built 2026-10-28, tested on two synthetic exports only** (Confluence's standard HTML export, and a prepared export with provenance files in the root, raw HTML and diagrams in `archives/`, sections as folders — `tests/fixtures/`). `sdem transform inspect` and `sdem transform run`. Requirements: [`sdem-transform-spec.md`](sdem-transform-spec.md). It is the first part of the historical design repository (original design §9; roadmap v0.11 ingestion and v0.16 history).
 
-The whole journey, export to knowledge graph — what each step does to the data, what it produces and when the data is ready: [`sdem-designs-import-workflow.md`](sdem-designs-import-workflow.md).
+The whole journey, export to knowledge graph — what each step does to the data, what it produces and when the data is ready: [`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md).
 
 ## 1. The problem
 

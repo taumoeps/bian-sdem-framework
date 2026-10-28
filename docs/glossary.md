@@ -42,10 +42,11 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Conformance** | whether an architecture dataset obeys the logical rules; checked by `sdem-graph check` — errors fail the architecture dataset, warnings do not |
 | **Architecture dataset** | one architecture's records and the links between them, in SDEM's format — e.g. the A1 architecture dataset `a1-business.json`. A *dataset* in the W3C DCAT sense (a collection of data from one source); its format is the architecture dataset schema `schema/level-model.schema.json`. Earlier documents call it an *export*, *level export* or *level model* |
 | **Adapter** | the program that converts a tool's own data into an architecture dataset; not built yet |
-| **Ingestion** | getting data into an estate. Two routes: **design ingestion** and **tool ingestion** — both end in architecture datasets in an estate, then the same *normal processing* |
-| **Design ingestion** | existing designs (documents exported from Confluence) into an estate: `sdem transform` → a person reviews → `sdem load`; what does not fit an entity is kept as gap records — **built** ([`sdem-designs-import-user-guide.md`](sdem-designs-import-user-guide.md)) |
-| **Tool ingestion** | data from tools (spreadsheets, CMDB, application portfolio) into an estate: source → adapter → architecture dataset → check → load — **planned (v0.11)** |
-| **Normal processing** | what makes an estate ready for queries and changes, however its data arrived: `sdem check` → `sdem link` → `sdem approve` → `sdem build` |
+| **Onboarding** | bringing data from a new source into SDEM until it is governed and ready for use: **ingestion**, then **normal processing**. Two routes: **design onboarding** and **tool onboarding** ([`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md)) |
+| **Design onboarding** | existing designs (documents exported from Confluence): `sdem transform` → a person reviews → `sdem load`, then normal processing; what does not fit an entity is kept as gap records — **built** |
+| **Tool onboarding** | data from tools (spreadsheets, CMDB, application portfolio): source → adapter → architecture dataset → check → load, then normal processing — **planned (v0.11)** |
+| **Ingestion** | the first part of onboarding: getting the data into an estate (for designs: transform → review → load) |
+| **Normal processing** | the second part of onboarding, the same for every estate however its data arrived: `sdem check` → `sdem link` → `sdem approve` → `sdem build` |
 
 ## Graphs and engine
 
