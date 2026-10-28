@@ -33,6 +33,10 @@ Give these and the engine (`sdem link`) can propose the cross-layer links with h
 | A4 platform | `hosts`: the applications it runs | **DEPLOYED_ON** |
 | A4 deployment | `component_id`, `environment_id`, `platform_id` | **DEPLOYED_AS** |
 
+## Records imported from past designs (`HIS-` ids)
+
+Records loaded from a Confluence export (`sdem transform` → `sdem load`) have ids `HIS-<layer>-<NAME>` and `attributes.source_id` = `confluence:<page ids>`. They are real records once loaded — change them through change sets like any other — but they were **read from a document**: links the engine proposes for them are capped at low (DEC-E-11). The transform's own output folder holds **candidates**, not data: never copy from it into a dataset, and a graph store refuses it (CTL-23). Skill **sdem-import-designs**.
+
 Example records to copy: `examples/payment-initiation/` (the user guide §6.2 explains two of them).
 
 `sdem check --estate <estate>` names any missing field as `$.instances[N]: missing required property '…'` — `N` counts from 0.

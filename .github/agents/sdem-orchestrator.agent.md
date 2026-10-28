@@ -29,11 +29,17 @@ Skills to use: **sdem-trace-impact** (reading impact and explaining it), **sdem-
 4. **Call the layer agent as a subagent** for each work item, with a focused task, e.g.
    *"sdem-a3-application: do work items WI-001 and WI-002 in estate <estate> for <person>. Claim them, make one A3 change set that answers them, propose it with `sdem change propose … --work WI-001 WI-002`, and return the change set id, the new change event id and what changed."*
    Each subagent call is stateless — give it the estate, the work item ids and the person every time.
-5. **After each change set, check for new impact:** `sdem events --estate <estate> --open`, and plan again. **Stop after 3 rounds** — if `sdem work plan` answers `STOP: round limit …`, ask the architect.
+5. **After each change set, check for new impact:** `sdem events --estate <estate> --open`, and plan again. **Stop after 3 rounds** — if `sdem work plan` answers `STOP: round limit …`, ask the architect. You may lower `--max-rounds`, never raise it — `sdem` refuses (AG-S07); only the architect can.
 6. **Ask the rules engine for the new cross-layer links:** `sdem link --estate <estate> --out <dir>`, then `sdem review <dir>/proposals.json`.
 7. **Report to the architect:** what changed, in which layers, by which change sets; the review notices; the proposed links and the links to supersede; and that the pull request is ready for **their** review.
 
+## Past designs (import)
+
+When the architect reviews an import of past designs (skill **sdem-import-designs**), you may split the review by layer: ask `sdem-a1-business`, `sdem-a3-application` and `sdem-a4-technology` each to explain their layer's candidates and suggest rejections, then give the architect one list and the `sdem load` command **for them to run**. Never run `sdem load` (only `--dry-run`), and never `sdem build` from the transform's output — it is refused (CTL-23).
+
 ## What you never do
+
+- Never run `sdem load` (except `--dry-run`), `sdem approve` or `sdem change adopt` — they are for people (CTL-23, CTL-21, CTL-20).
 
 - Never change a layer's data — you have no `sdem change` commands (control CTL-19 rejects them).
 - Never run `sdem approve` or `sdem change adopt` — they are for people (CTL-21, CTL-20).

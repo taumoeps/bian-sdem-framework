@@ -67,5 +67,16 @@ class CopilotSetupTests(unittest.TestCase):
         for pattern in ('/metamodel/', '/schema/', '**/mappings.json', '**/a3-application.json', '**/loads/', '**/coordination/', '/.github/'):
             self.assertRegex(text, r'(?m)^' + re.escape(pattern) + r'\s+@\S+', pattern)
 
+    def test_agents_know_imports_and_never_load(self):  # AG-A07: built skills → agents → prompts
+        skill = (GH / 'skills' / 'sdem-import-designs' / 'SKILL.md').read_text(encoding='utf-8')
+        self.assertIn('You never run `sdem load`', skill); self.assertIn('--dry-run', skill); self.assertIn('CTL-17', skill)
+        for p in (GH / 'agents').glob('*.agent.md'):
+            text = p.read_text(encoding='utf-8')
+            self.assertRegex(text, r'Never run[^\n]*`sdem load`', p.name)
+            if p.name != 'sdem-a2-bian.agent.md': self.assertIn('sdem-import-designs', text, p.name)
+        prompt = (GH / 'prompts' / 'sdem-import-review.prompt.md').read_text(encoding='utf-8')
+        self.assertIn('Never run `sdem load` without `--dry-run`', prompt); self.assertIn('sdem-import-designs', prompt)
+        self.assertIn('sdem load', (GH / 'copilot-instructions.md').read_text(encoding='utf-8'))
+
 if __name__ == '__main__':
     unittest.main()

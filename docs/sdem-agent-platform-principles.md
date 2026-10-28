@@ -21,6 +21,28 @@ flowchart TB
 
 The lower a layer sits in this picture, the more the platform's reliability depends on it.
 
+## Build order — importance is not the order you build in
+
+The sections below go from the most important to the least: data, tools, guardrails, agent definitions, prompts, skills, proof. That is the order of **importance**. The agent layers are **built** in the order they depend on each other:
+
+```
+skills   ← the know-how             (agents load them when needed)
+  ▲
+agents   ← the roles and boundaries (short; point to skills for detail)
+  ▲
+prompts  ← the entry points         (start an agent on a task, with inputs)
+```
+
+| Build | Because |
+|---|---|
+| **1. Skills** | agents and prompts point to them — the know-how is written once, and an agent file stays short ("for imports, use the *sdem-import-designs* skill") |
+| **2. Agent definitions** | the roles and boundaries ("you do X; you never do Y") refer to the skills; the safety-relevant wording lives here |
+| **3. Prompts** | they start an agent on a task — the agent and its skills must exist first |
+
+Two cautions:
+- **Prompts and skills are convenience, not safety.** What stops an agent doing harm is the code (§3) and branch protection — the agent files only describe the boundaries.
+- **Proof before polish.** Until the agents have run in real Copilot (the spike, then AG-E01), more prompt and skill work is guesswork: make the minimum change, run the spike, and improve from what the agents actually did.
+
 ## 1. The data architecture — the foundation (most important)
 
 Agents are only as good as the data they read and write.
@@ -133,5 +155,6 @@ Many agent platforms invest in prompts and skills and neglect the data and the t
 
 | # | Improvement | Requirement | Why first |
 |---|---|---|---|
+| 0 | ~~**Bring the agents up to date** with the import of past designs (transform → load), CTL-23, DEC-E-11 and the round cap — skills, then agents, then prompts~~ | AG-A07 | **done 2026-10-28** — the minimum before the spike |
 | 1 | **Score the agents, not just the tools:** after the spike, run example 3 with the real Copilot agents several times; score how often they draft the right change sets and plan the right work | AG-E01 | the only way to know the agents' accuracy |
 | 2 | **Session record:** keep a short summary of each agent session (who asked what, which commands ran) with its change event | AG-O01 | the *why* behind a change, for audit |

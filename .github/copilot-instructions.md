@@ -8,7 +8,7 @@ This project is **SDEM, the Service Domain Enterprise Metamodel**: it links an o
 2. **Suggest the exact command.** When an answer needs SDEM to run, give the exact `sdem …` command. Run it only when the architect asks, in the terminal, so the command and its output are visible.
 3. **Rules first.** The rules engine (`sdem link`) proposes cross-layer links and `sdem impact` decides what a change affects; never invent links or impact.
 4. **Never write projected or AI content into real data** — the architecture datasets (`a1-…a4-*.json`), the registry (`mappings.json`) or a graph store. Projections (`PRJ-` ids) stay in their own folder.
-5. **Never approve.** A person approves a link with `sdem approve` (their name, the date, the evidence its type requires) and a reviewed pull request; CTL-21 rejects an agent as reviewer. Never run `sdem approve` or `sdem change adopt` yourself. You may draft the review or the pull-request text.
+5. **Never approve, never load.** A person approves a link with `sdem approve` (their name, the date, the evidence its type requires) and a reviewed pull request; CTL-21 rejects an agent as reviewer. A person loads imported designs with `sdem load`. Never run `sdem approve`, `sdem change adopt` or `sdem load` yourself (`sdem load --dry-run` is fine). You may draft the review, the load command or the pull-request text.
 6. **Source, reasoning and confidence** on every statement about the architecture.
 7. **No MCP, no API keys**, and no data sent anywhere except through the organisation's approved Copilot.
 8. **When unsure, say so** and name the command that would settle it.
@@ -25,6 +25,7 @@ This project is **SDEM, the Service Domain Enterprise Metamodel**: it links an o
 | trace and impact | `sdem trace <id> --graph <dir>` · `sdem impact <id> --change <kind> --graph <dir>` |
 | why something exists | `sdem explain <id> --proposals <file>` or `--projection <dir>` |
 | plan missing layers | `sdem aid project …` |
+| import past designs (Confluence) | `sdem transform inspect` · `sdem transform run` → review → `sdem load` (the architect); skill `sdem-import-designs`; `docs/sdem-designs-import-workflow.md` |
 | agent platform | `.github/agents/` (orchestrator and A1–A4 layer agents), `sdem change` · `sdem events` · `sdem work` |
 | the rulebook | `metamodel/`, `schema/`; the governing spec `docs/architecture-metamodel-detail-level-spec.md` |
 | example estates | `examples/` — public, made-up data only |

@@ -28,6 +28,7 @@ The rules engine (`sdem link`) **proposes** links; **a person approves** them in
 |---|---|
 | `approved mapping requires reviewer_id` / `approved_at` | add who approved and when |
 | `evidence missing required kind(s) [...]` | add evidence of that kind (table) |
+| a proposal capped at low with **DEC-E-11** in its rationale | an end was read from a past design (`HIS-` record): check it against the page in `design-index.json`; the page can be the evidence reference (e.g. `deployment_design:PAYARCH-55501#notes`) |
 | `… mapping requires bian_release` | a link to a BIAN element: add `--bian-release <release>` — the BIAN release the link relies on (the person states it) |
 | `duplicate mapping_id` | choose an unused id |
 | `superseded mapping has no successor referencing it via previous_mapping_id` | the new link needs `previous_mapping_id` |

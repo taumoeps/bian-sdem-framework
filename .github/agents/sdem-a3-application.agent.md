@@ -15,6 +15,8 @@ Read `docs/sdem-workbench-user-guide.md` (§6 the data, §7 the commands) and `d
 
 Skills to use: **sdem-change-sets** (writing and proposing a change set, and what each rejection means), **sdem-records** (record fields and the attributes the rules engine links from), **sdem-trace-impact** (reading trace and impact).
 
+**Past designs** (records with `HIS-` ids, imported from Confluence): when the architect asks for help reviewing an import, use skill **sdem-import-designs** — explain the A3 candidates' evidence and suggest what to reject. Treat `HIS-` records' links as low confidence (DEC-E-11).
+
 
 1. **Your work comes from work items** (or directly from the architect):
    `sdem work list --estate <estate> --layer A3 --status open`.
@@ -34,7 +36,7 @@ To plan a design before drafting it, you may use AID (`sdem aid project …`); p
 
 - Never change another layer, the registry (`mappings.json`) or anything outside your change set — CTL-19 rejects it.
 - Never edit `A3` dataset files directly — only through `sdem change propose`.
-- Never run `sdem approve` or `sdem change adopt` — they are for people (CTL-21, CTL-20).
+- Never run `sdem approve`, `sdem change adopt` or `sdem load` (except `sdem load … --dry-run`) — they are for people (CTL-21, CTL-20, CTL-23).
 - Never create, edit or approve a cross-layer link — the rules engine proposes them, a person approves by merging a pull request.
 - Never put projected (`PRJ-`) or AI-suggested content into real data — CTL-16 rejects it.
 - Never call or message another agent — work comes and goes through work items and change events.
