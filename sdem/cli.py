@@ -153,6 +153,27 @@ def _rule_of(m):
     return r.group(1) if r else (m.get('projection') or {}).get('rule', '—')
 
 
+def _rulebook_sources():
+    """The rule records (id → record) and the published-source key (code → address) from the rulebook."""
+    from .paths import DATA_ROOT
+    mm = DATA_ROOT / 'metamodel'
+    rules = {r['id']: r for r in json.loads((mm / 'relationship-rules.json').read_text(encoding='utf-8'))['mappings']}
+    return rules, json.loads((mm / 'official-mappings.json').read_text(encoding='utf-8')).get('sources', {})
+
+
+def _with_sources(x, rules, sources):
+    """Add the rule in words and the published sources behind it (J8: rule, published source, evidence, reasoning)."""
+    r = rules.get(x.get('rule'))
+    if r:
+        x.setdefault('rule_says', f"{r['source']} {r['relation']} {r['target']} — {r['reasoning']}")
+        x.setdefault('source_reference', r.get('source_reference', ''))
+    ref = x.get('source_reference') or ''
+    if ref.count('(') > ref.count(')'): x['source_reference'] = ref + ')'
+    codes = list(dict.fromkeys(re.findall(r'\[([A-Z][A-Z0-9]+)\]', ref)))
+    if codes: x['sources'] = [f"[{c}] {sources[c]}" if c in sources else f"[{c}]" for c in codes]
+    return x
+
+
 def _names(paths, graph):
     """id → name from a graph store or architecture datasets, if given (for readable output)."""
     out = {}
@@ -233,13 +254,15 @@ def explain(argv):
             if a.id in (m['mapping_id'], m['source']['id'], m['target']['id']):
                 found.append({'kind': 'proposed link', 'id': m['mapping_id'], 'name': f"{m['source']['id']} -{m['relationship']}-> {m['target']['id']}",
                               'rule': _rule_of(m), 'confidence': m.get('confidence'), 'reasoning': m.get('rationale', ''), 'evidence': m.get('evidence', [])})
+    rules, sources = _rulebook_sources()
+    found = [_with_sources(x, rules, sources) for x in found]
     if a.json: print(json.dumps(found, indent=2, ensure_ascii=False)); return 0 if found else 1
     if not found: print(f'{a.id}: not found in the given projection or proposals'); return 1
     for x in found:
         print(f"{x['kind'].upper()}  {x['id']}  {x.get('name') or ''}" + (f"  ({x['level']} {x['type']})" if 'level' in x else ''))
-        for k in ('step', 'rule', 'source_reference', 'inferred_from', 'reasoning', 'confidence', 'evidence'):
+        for k in ('step', 'rule', 'rule_says', 'source_reference', 'sources', 'inferred_from', 'reasoning', 'confidence', 'evidence'):
             if k in x and x[k] not in (None, '', []):
-                v = ', '.join(f"{e} '{names[e]}'" if e in names and names[e] != e else e for e in x[k]) if k == 'inferred_from' else '; '.join(x[k]) if k == 'evidence' else x[k]
+                v = ', '.join(f"{e} '{names[e]}'" if e in names and names[e] != e else e for e in x[k]) if k == 'inferred_from' else '; '.join(x[k]) if k in ('evidence', 'sources') else x[k]
                 print(f"  {k.replace('_', ' '):<17} {v}")
         print()
     return 0
@@ -285,9 +308,9 @@ def model(argv):
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     lines = [f"  {n:<9} {j:<3} {w}" for n, (j, w, *_rest) in JOURNEYS.items()]
-    epilog = ('Journeys (J1–J9, docs/design/sdem-workbench-design.md §3):\n' + '\n'.join(lines) +
+    epilog = ('Journeys (J1–J9; every command with examples: docs/sdem-workbench-user-guide.md §7):\n' + '\n'.join(lines) +
               '\n\nEvery subcommand takes --help with a worked example. Exit codes: 0 OK, 1 issues found, 2 usage or input error, 3 internal error.'
-              '\nAG = agent platform (docs/design/sdem-agent-platform-design.md). The sdem-* commands (sdem-graph, sdem-infer, sdem-aid, …) remain as aliases.')
+              '\nAG = agent platform (docs/sdem-copilot-setup.md). The sdem-* commands (sdem-graph, sdem-infer, sdem-aid, …) remain as aliases.')
     ap = argparse.ArgumentParser(prog='sdem', usage='sdem <command> [options]', epilog=epilog, formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description="SDEM — Service Domain Enterprise Metamodel. SDEM's command line: run it in VS Code's terminal pane; "
                                              'ask Copilot Chat to explain any output.')

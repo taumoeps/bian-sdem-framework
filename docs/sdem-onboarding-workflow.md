@@ -77,7 +77,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 | 11 | `sdem dashboard --estate estates/history -o work/dashboard.html` | **See it as a web page** — everything above, clickable, in your browser |
 | 12 | `sdem designs --estate estates/history --gaps` | **See the gaps** — what did not fit, still waiting for you |
 | 13 | `sdem designs accept` · `resolve <gap id> … --person <you> --note "<why>"` | **Close a gap.** *Accept* = leave it as it is; *resolve* = you have dealt with it |
-| 14 | copy `estates/history` to your team's **private** estate repository → commit → pull request | **Save and share** — your accepted work goes for review |
+| 14 | in your **private** estate repository: `git add estates/<domain>` → commit → pull request | **Save and share** — your accepted work goes for review |
 
 **In short:** **read** (1–2) → **you check** (3) → **keep** (4–5) → **connect** (6–8) → **picture** (9) → **use** (10–11) → **tidy up** (12–13) → **save** (14). Commands 1–4 are **ingestion**; 5–9 are **normal processing**.
 
@@ -109,29 +109,37 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 |---|---|---|
 | **Your organisation's BIAN catalogue** | your organisation is a BIAN member or has a BIAN workbench | export the service domains you use and convert them to SDEM's A2 format (a licensed connection to BIAN is planned) |
 | **A starter file, by hand** | you have no catalogue yet | list the service domains your area uses, from BIAN's public Service Landscape — **names only, described in your own words** (do not copy BIAN text) — as below |
-| **None yet** | you want to start without BIAN | load without `--a2`; links between applications and technology still work, but nothing connects to BIAN until you add the layer |
+| **None yet** | you want to start without BIAN | load without `--a2`; applications still connect to technology — but **business does not connect to applications at all**, because every one of SDEM's connections between those layers passes through BIAN. Add the layer before you need business-to-technology traces |
 
-A starter file with one service domain — SDEM accepts it (`sdem check` gives advice to add its control record and other parts later, which you can):
+A starter file with one service domain. Every service domain must name its **asset type** (what it looks after) and its **functional pattern** (what it does with it), each a record of its own — so the smallest valid file has three records. It loads; `sdem check` adds advice (`WARN … LC-10m`) to add its business domain, service group and control record later. A test loads this exact file on every push.
 
 ```json
 {
   "level": "A2", "model_id": "our-bian-layer", "model_version": "2026.11",
   "metamodel_version": "0.4.0", "source_system": "HAND-ENTERED",
   "instances": [
-    {"id": "SD-PAYMENT-INITIATION", "type": "A2.ServiceDomain", "version": "1.0", "name": "Payment Initiation",
-     "lifecycle_status": "active", "description": "Starts payments for customers, in our own words."}
+    {"id": "SD-PAYMENT-ORDER-INITIATION", "type": "A2.ServiceDomain", "version": "1.0", "name": "Payment Order Initiation",
+     "lifecycle_status": "active", "description": "Starts customer payments, in our own words.",
+     "attributes": {"asset_type": "AT-PAYMENT-ORDER", "functional_pattern": "FP-PROCESS"}},
+    {"id": "AT-PAYMENT-ORDER", "type": "A2.AssetType", "version": "1.0", "name": "Payment Order",
+     "lifecycle_status": "active", "description": "What the service domain looks after."},
+    {"id": "FP-PROCESS", "type": "A2.FunctionalPattern", "version": "1.0", "name": "Process",
+     "lifecycle_status": "active", "description": "What the service domain does with it."}
   ],
-  "relationships": []
+  "relationships": [
+    {"source": "SD-PAYMENT-ORDER-INITIATION", "kind": "association", "target": "AT-PAYMENT-ORDER"},
+    {"source": "SD-PAYMENT-ORDER-INITIATION", "kind": "association", "target": "FP-PROCESS"}
+  ]
 }
 ```
 
-The format of every kind of BIAN record: [the rulebook in plain words](sdem-rulebook-guide.md#the-kinds-of-thing-by-layer). A complete example: `examples/payment-initiation/a2-service-domain.json` (made up).
+The kinds of BIAN record and what each is for: [the rulebook in plain words](sdem-rulebook-guide.md#the-kinds-of-thing-by-layer); the fields each needs: the [logical data model](reference/logical-data-model.md) (look up the record kind, e.g. *A2.ServiceDomain*). A complete example: `examples/payment-initiation/a2-service-domain.json` (made up).
 
 ## 5. Step by step
 
 ### 1 · Look before you start
 ```bash
-sdem transform inspect work/imports/payarch
+sdem transform inspect work/imports/payarch --ocr off
 ```
 You see what is in the export and what SDEM will read:
 ```
@@ -237,14 +245,15 @@ sdem designs resolve <gap id> --estate estates/history --person <your name> --no
 You do not have to close every gap at once — the dashboard keeps showing what is open.
 
 ### 11 · Save and share
+**Practising on the sample?** Nothing to save: this SDEM project ignores `estates/` and `work/` on purpose, so made-up and real data can never be committed here.
+
+**Real designs:** do the whole onboarding inside your team's **private estate repository** (made from the [estate template](../templates/estate-repo/README.md), which installs SDEM), loading into `estates/<domain>` instead of `estates/history`. Then:
 ```bash
-cd ../our-estates                       # your team's PRIVATE estate repository — never the public SDEM one
-cp -R ../bian-sdem-framework/estates/history history
-git add history
+git add estates/<domain>                # datasets, mappings.json, designs/, loads/ — never work/
 git commit -m "Onboard <design name> (LOAD-001)"
 git push -u origin onboard/<name>       # then open a pull request; a reviewer merges it
 ```
-The SDEM repository ignores `estates/` and `work/`, so real data cannot be pushed to it by mistake. Never copy `work/` — it holds the export. **Your approvals become final when the pull request is merged.**
+Never copy `work/` — it holds the export. **Your approvals become final when the pull request is merged.**
 
 ## 6. What each step does to the data
 

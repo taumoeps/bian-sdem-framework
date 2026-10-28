@@ -78,7 +78,7 @@ Then:
 3. **Open the terminal pane:** *View → Terminal* (shortcut **Ctrl+`**).
 4. **Find your Python 3.10 or later.** `python3 --version` — if it says 3.10 or later, use `python3` below. If it says 3.9, or `python3.13` gives *command not found* after you installed it, it is in Homebrew's folder:
    ```bash
-   ls /opt/homebrew/bin/python3.1* /usr/local/bin/python3.1* 2>/dev/null
+   for d in /opt/homebrew/bin /usr/local/bin; do ls "$d" 2>/dev/null | grep "^python3\.1[0-9]*$" | sed "s|^|$d/|"; done
    ```
 5. **Install SDEM** into a private Python environment for this project:
    ```bash

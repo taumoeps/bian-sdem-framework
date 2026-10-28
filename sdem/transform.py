@@ -1343,7 +1343,7 @@ def report(x, meta, records, links, issues, idx, cov=None):
     s = meta['summary']; L = []
     L.append('# Confluence extraction — candidate architecture records\n')
     L.append(f"> Generated {meta['generated']} by `sdem transform run` from `{meta['export']}` (rules `{meta['rules']}`). "
-             'Rules only — no AI. **Every record below is a candidate**: check it against the page, then copy what is right into your estate. '
+             'Rules only — no AI. **Every record below is a candidate**: check it against the page, then keep what is right with `sdem load` (it never changes them). '
              'Confidence is never above medium.\n')
     L.append('## Summary\n')
     L.append('| Pages | Tables | Diagrams read | Pictures for a person | Records | Links inside | Links between (candidates) | For review |')

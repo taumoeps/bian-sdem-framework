@@ -190,7 +190,7 @@ You need **Python 3.10 or later** (3.13 recommended). Macs come with 3.9, which 
 
 ```bash
 python3 --version                      # 3.10 or later? then use python3 below
-ls /opt/homebrew/bin/python3.1* /usr/local/bin/python3.1* 2>/dev/null   # installed but "command not found"? it is one of these
+for d in /opt/homebrew/bin /usr/local/bin; do ls "$d" 2>/dev/null | grep "^python3\.1[0-9]*$" | sed "s|^|$d/|"; done   # installed but "command not found"? it is one of these
 ```
 
 ```bash

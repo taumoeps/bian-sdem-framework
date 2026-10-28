@@ -58,7 +58,7 @@ Only these nine are allowed. Each needs **evidence of a named kind** before a pe
 
 ## How sure SDEM is
 
-Every proposed connection says how sure the engine is — **high**, **medium** or **low** — and why: the rule it used, the data that matched, the published source behind the rule. **Nothing is approved automatically.** A suggestion from a design document (onboarding) is never above *medium*; a planned (AID) one never above *medium*, and never real data.
+Every proposed connection says how sure the engine is — **high**, **medium** or **low** — and why: the rule it used, the data that matched, the published source behind the rule. **Nothing is approved automatically.** A record suggested from a design document (onboarding) is never above *medium*, and a connection to one never above *low* until it is confirmed; a planned (AID) one never above *medium*, and never real data.
 
 ## The controls — what SDEM refuses
 
