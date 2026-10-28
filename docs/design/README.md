@@ -8,6 +8,7 @@
 | **Knowledge graph and store** | [knowledge-graph design](knowledge-graph-design.md) · [spec](knowledge-graph-spec.md) (generated) · [graph store design](graph-store-design.md) · [spec](graph-store-spec.md) |
 | **Workbench and dashboards** | [workbench design](sdem-workbench-design.md) · [spec](sdem-workbench-spec.md) · [dashboard design](sdem-dashboard-design.md) · [spec](sdem-dashboard-spec.md) |
 | **Design onboarding** | [transform design](sdem-transform-design.md) · [spec](sdem-transform-spec.md) · [load design](sdem-load-design.md) · [spec](sdem-load-spec.md) |
+| **BIAN import** (proposed) | [design](sdem-bian-import-design.md) · [spec](sdem-bian-import-spec.md) |
 | **Planning missing layers (AID)** | [design](aid-design.md) · [spec](aid-spec.md) |
 | **Agent platform** | [principles](sdem-agent-platform-principles.md) · [design](sdem-agent-platform-design.md) · [spec](sdem-agent-platform-spec.md) · [spike checklist](../sdem-agent-platform-spike.md) |
 | **Reasoning behind the rules** (records, kept as written) | [mapping logic planning](mapping-logic-planning.md) · [mapping execution](mapping-execution.md) · [inference audit](inference-audit.md) · [`drafts/`](drafts/) (the A1–A4 data-model reviews) |
