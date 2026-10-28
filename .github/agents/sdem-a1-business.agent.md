@@ -9,7 +9,7 @@ agents: []
 # SDEM A1 Business agent
 
 You own the **A1 Business** architecture of an SDEM estate: capabilities, value streams, value-stream stages, business processes and activities, business objects, roles.
-Read `docs/sdem-workbench-user-guide.md` (§6 the data, §7 the commands) and `docs/sdem-agent-platform-design.md`.
+Read `docs/sdem-workbench-user-guide.md` (§6 the data, §7 the commands) and `docs/design/sdem-agent-platform-design.md`.
 
 ## How you work
 

@@ -1,4 +1,4 @@
-"""Agent platform coordination — change sets, change events, impact results, work items (docs/sdem-agent-platform-spec.md).
+"""Agent platform coordination — change sets, change events, impact results, work items (docs/design/sdem-agent-platform-spec.md).
 
 The layer agents (A1–A4) and the orchestrator coordinate only through these records, never by messaging each other
 (AG-D02). They are stored with the estate, in `<estate>/coordination/`, append-only (AG-R05):

@@ -1,9 +1,9 @@
-"""Use-case example 2 — test Architecture Inference Design (AID) on the payment-initiation estate (docs/use-case-example-2.md).
+"""Use-case example 2 — test Architecture Inference Design (AID) on the payment-initiation estate (docs/evidence/use-case-example-2.md).
 
 Hide layers of a known estate, let AID (sdem/aid.py) project them, and compare with the hidden real layers (gap analysis).
 Five runs, each checked against the expectations sealed in commit 17dbd33 before any run; the safety controls CTL-16 and
 CTL-17 tested with good and bad data. Writes the evidence pack to docs/evidence/use-case-example-2/ and the results into
-docs/use-case-example-2.md.
+docs/evidence/use-case-example-2.md.
 Usage: python scripts/use_case_example_2.py
 """
 import copy, hashlib, json, re, shutil, subprocess, sys, tempfile
@@ -20,7 +20,7 @@ from sdem.store import GraphReader, build  # noqa: E402
 from sdem.validate import load_registry, load_schema, validate  # noqa: E402
 
 EST = ROOT / 'examples' / 'payment-initiation'
-DOC = ROOT / 'docs' / 'use-case-example-2.md'
+DOC = ROOT / 'docs' / 'evidence' / 'use-case-example-2.md'
 EVID = ROOT / 'docs' / 'evidence' / 'use-case-example-2'
 LEVELS = {'A1': 'a1-business.json', 'A2': 'a2-service-domain.json', 'A3': 'a3-application.json', 'A4': 'a4-technology.json'}
 RUNS = [(1, ('A1', 'A2'), 'A3, A4'), (2, ('A1',), 'A2, A3, A4'), (3, ('A4',), 'A3, A2, A1'), (4, ('A3', 'A4'), 'A2, A1'), (5, ('A1', 'A3'), 'A2')]
@@ -147,7 +147,7 @@ def _confs(pkg, lvl): return [i['projection']['confidence'] for i in pkg['layers
 
 
 def expectations(n, pkg, g, real, reg, results):
-    """The sealed expectations (docs/use-case-example-2.md, commit 17dbd33), as checks on run n."""
+    """The sealed expectations (docs/evidence/use-case-example-2.md, commit 17dbd33), as checks on run n."""
     M = g['metrics']; approved = [m for m in reg['mappings'] if m['status'] == 'approved']
     ops = {i['id']: i for i in real['A2']['instances'] if i['type'] == 'A2.ServiceOperation'}
     run = aid.Run(aid._reader({'A2': real['A2']}, Metamodel.load()), 'UCE2')
@@ -274,7 +274,7 @@ def run():
         {'id': 'AID-B3', 'what': 'from A4 alone an application is known only by its id; domains come from id words (`PAY` → Payment …)', 'action': 'kept low; the weakest evidence R2 accepts — expect "projected only" domains'},
         {'id': 'AID-B5', 'what': 'run 2 projected an extra API, PUT …/control for “Control Payment Instruction”: another estate gives the same Payment Initiation domain a Control operation the real estate does not have, and the catalogue merges both', 'action': 'shown as projected only; a real BIAN catalogue has one fixed operation list per domain, so this comes from the synthetic test data'},
         {'id': 'AID-B6', 'what': 'run 4 projected Current Account from one word, “account”, in API paths and entity names (the engine\'s S17 fallback B) — at medium confidence (0.6), the same as the right domain, which rests on five API matches', 'action': 'closed 2026-10-28 (owner approved) — name-only evidence (engine fallbacks, description matches, verb-and-noun and id-word matches) is capped at low in AID and enforced by CTL-17; run 4 now shows Payment Initiation 0.6, Current Account 0.4. The engine itself still rates fallback B medium in the mapping lane — separate question'},
-        {'id': 'AID-B4', 'what': 'the projection schema (AID-O05) and the view/trace PROJECTED label (AID-O06) were not built', 'action': 'closed 2026-10-28 — `schema/projection.schema.json`, checked by CTL-17; `sdem-graph view` and `trace` take `--projection`'}]
+        {'id': 'AID-B4', 'what': 'the projection schema (AID-O05) and the view/trace PROJECTED label (AID-O06) were not built', 'action': 'closed 2026-10-28 — `schema/projection.schema.json`, checked by CTL-17; `sdem view` and `sdem trace` take `--projection`'}]
     return R
 
 
@@ -351,7 +351,8 @@ def main():
     text = plan.rstrip('\n') + '\n\n' + render(R) + ('\n' + base if base else '')
     text = text.replace('> **Status: baseline run 2026-10-27 — expected results sealed before the run (commit 17dbd33).**',
                         f"> **Status: AID built and run {R['date']} — expected results sealed before any run (commit 17dbd33); the baseline is kept at the end.**")
-    DOC.write_text(text.rstrip('\n') + '\n', encoding='utf-8')
+    from sdem.docmap import relink
+    DOC.write_text(relink(text.rstrip('\n') + '\n', DOC), encoding='utf-8')
     print(render(R).split('\n')[2])
     return 0 if all(ok for r in R['runs'] for _, ok in r['checks']) and all(s['pass'] for s in R['safety']) else 1
 

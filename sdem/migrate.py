@@ -1,4 +1,4 @@
-"""`sdem migrate` — move an estate to the current rulebook (metamodel) version (docs/sdem-rulebook-versioning.md).
+"""`sdem migrate` — move an estate to the current rulebook (metamodel) version (docs/design/sdem-rulebook-versioning.md).
 
 A dataset or registry carries the `metamodel_version` it was written for; SDEM refuses one that differs from the loaded
 rulebook. `metamodel/migrations.json` records, for every rulebook change, the steps that carry data from the old version to

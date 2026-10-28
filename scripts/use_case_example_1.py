@@ -1,4 +1,4 @@
-"""Use-case example 1 — test the rulebook (metamodel) on the payment-initiation datasets (docs/use-case-example-1.md).
+"""Use-case example 1 — test the rulebook (metamodel) on the payment-initiation datasets (docs/evidence/use-case-example-1.md).
 
 Runs the real checks and the real engine (sdem/rules_engine.py; no AI). Run 1: good data, no links between the layers at
 the start. Run 2: one planted mistake per copy of the data, so no mistake hides another. Approval is simulated: a stand-in
@@ -6,7 +6,7 @@ architect adds the evidence each link type requires; it never invents a BIAN ide
 
 Every test names the control that acted (metamodel/controls.json) and the evidence file that records its outcome.
 Writes the evidence pack to docs/evidence/use-case-example-1/ (with a manifest of SHA-256 checksums, the commit and the
-date) and the results into docs/use-case-example-1.md. tests/test_use_case_example_1.py re-runs it on every change.
+date) and the results into docs/evidence/use-case-example-1.md. tests/test_use_case_example_1.py re-runs it on every change.
 Usage: python scripts/use_case_example_1.py
 """
 import copy, hashlib, json, shutil, subprocess, sys, tempfile, unittest
@@ -24,7 +24,7 @@ from sdem.store import GraphReader, build  # noqa: E402
 from sdem.validate import load_registry, load_schema, validate  # noqa: E402
 
 EST = ROOT / 'examples' / 'payment-initiation'
-DOC = ROOT / 'docs' / 'use-case-example-1.md'
+DOC = ROOT / 'docs' / 'evidence' / 'use-case-example-1.md'
 EVID = ROOT / 'docs' / 'evidence' / 'use-case-example-1'
 LEVELS = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')
 REVIEW = 'use-case-example-1 (simulated architect)'
@@ -322,7 +322,8 @@ def main():
     text = DOC.read_text(encoding='utf-8')
     if '## Results' in text: text = text[:text.index('## Results')]
     text = text.replace('> **Status: plan — not yet run.**', f"> **Status: run {R['date']} — results below.**")
-    DOC.write_text(text.rstrip('\n') + '\n\n' + render(R, manifest), encoding='utf-8')
+    from sdem.docmap import relink
+    DOC.write_text(relink(text.rstrip('\n') + '\n\n' + render(R, manifest), DOC), encoding='utf-8')
     print(render(R, manifest).split('\n')[2])
     return 0 if all(x['pass'] for x in R['tests']) else 1
 

@@ -1,4 +1,4 @@
-"""Local JSON graph store (docs/graph-store-spec.md): acceptance tests AT-01 … AT-10."""
+"""Local JSON graph store (docs/design/graph-store-spec.md): acceptance tests AT-01 … AT-10."""
 import glob, json, re, shutil, tempfile, unittest
 from pathlib import Path
 

@@ -1,4 +1,4 @@
-"""Use-case example 3 (docs/use-case-example-3.md): the agent platform's records, commands and controls, re-run on every change.
+"""Use-case example 3 (docs/evidence/use-case-example-3.md): the agent platform's records, commands and controls, re-run on every change.
 The sealed criteria (spec AT-AG-01…08, commit 5cbb0ed) must all pass, and every control test (CTL-19, CTL-20, CTL-16, governance)."""
 import sys, unittest
 from pathlib import Path

@@ -19,7 +19,7 @@ In v0.7.0 the project was renamed from **SDMM (BIAN Service Domain Mapping Model
 | plan, new mappings | Architecture Relationship Rules Model |
 | `sdmm_extension`, `sdmm_definition`, `sdmm_reading`, `sdmm_rule` | `sdem_*` (old values still accepted until the 0.8 baseline) |
 
-**Not renamed:** the registry's record fields `mappings`, `mapping_id`, `previous_mapping_id` and the catalogue's `mapping_type_id`, `registry_version`, because they sit inside immutable approved records (see [`relationship-registry-spec.md`](../relationship-registry-spec.md) §7); file names such as `mappings.json` and `official-mappings.json` (BIAN's own mappings); and historical test logs and results, which record what ran under the old name. The GitHub repository was renamed from `bian-sdmm-framework` to `bian-sdem-framework`; the old URL redirects.
+**Not renamed:** the registry's record fields `mappings`, `mapping_id`, `previous_mapping_id` and the catalogue's `mapping_type_id`, `registry_version`, because they sit inside immutable approved records (see [`relationship-registry-spec.md`](../design/relationship-registry-spec.md) §7); file names such as `mappings.json` and `official-mappings.json` (BIAN's own mappings); and historical test logs and results, which record what ran under the old name. The GitHub repository was renamed from `bian-sdmm-framework` to `bian-sdem-framework`; the old URL redirects.
 
 
 > Moved from the README on 2026-10-28. The project has been SDEM since v0.7.0.

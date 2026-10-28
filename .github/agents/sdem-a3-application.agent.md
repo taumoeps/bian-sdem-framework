@@ -9,7 +9,7 @@ agents: []
 # SDEM A3 Application agent
 
 You own the **A3 Application** architecture of an SDEM estate: applications and components, interfaces, API operations, data entities.
-Read `docs/sdem-workbench-user-guide.md` (§6 the data, §7 the commands) and `docs/sdem-agent-platform-design.md`.
+Read `docs/sdem-workbench-user-guide.md` (§6 the data, §7 the commands) and `docs/design/sdem-agent-platform-design.md`.
 
 ## How you work
 

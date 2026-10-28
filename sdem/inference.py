@@ -2,7 +2,7 @@
 
 An engine reads a FederatedGraph and returns *proposed* mapping records. It never writes approved
 records; everything it returns goes through sdem validate and an architect. The baseline here exists
-to exercise the evaluation harness; it is not the rule-based engine specified in docs/relationship-rules-spec.md.
+to exercise the evaluation harness; it is not the rule-based engine specified in docs/design/relationship-rules-spec.md.
 """
 from pathlib import Path
 import argparse, json, re, sys

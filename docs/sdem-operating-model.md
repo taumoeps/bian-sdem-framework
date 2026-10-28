@@ -59,7 +59,7 @@ flowchart LR
 
 **Everyday change** — always a branch and a pull request: an SDEM command (load, approve, designs resolve) → `sdem check` locally → pull request → CI *Estate checks* → code-owner review → merge → dashboards rebuilt. Approvals become final at merge.
 
-**A gap that needs a new entity type or attribute** — the estate owner raises it with the rulebook owner, **without real data** (describe the kind of thing, not the design). If approved: the maintainer changes the rulebook, bumps `metamodel_version` with a recorded migration ([`sdem-rulebook-versioning.md`](sdem-rulebook-versioning.md)), and releases; estates upgrade (below).
+**A gap that needs a new entity type or attribute** — the estate owner raises it with the rulebook owner, **without real data** (describe the kind of thing, not the design). If approved: the maintainer changes the rulebook, bumps `metamodel_version` with a recorded migration ([`sdem-rulebook-versioning.md`](design/sdem-rulebook-versioning.md)), and releases; estates upgrade (below).
 
 **Upgrading SDEM** — the estate owner changes the pin in a pull request; CI runs; `sdem migrate` if the rulebook version changed; merge. Upgrade within a month of a release; skip none that carry a migration.
 
@@ -91,7 +91,7 @@ SDEM failures say what to do: exit `1` a check refused (read the message), `2` t
 
 | # | Precondition | Owner | Why |
 |---|---|---|---|
-| 1 | **Legal and IP clearance** to run SDEM on the organisation's designs ([`PUBLICATION_CHECKLIST.md`](PUBLICATION_CHECKLIST.md)) | owner | the designs belong to the employer; SDEM is personal open source |
+| 1 | **Legal and IP clearance** to run SDEM on the organisation's designs ([`PUBLICATION_CHECKLIST.md`](design/PUBLICATION_CHECKLIST.md)) | owner | the designs belong to the employer; SDEM is personal open source |
 | 2 | Private estate repository with **branch protection and code owners** | platform | without it a person's approval is not enforced ([`sdem-repository-protection.md`](sdem-repository-protection.md)) |
 | 3 | **Python 3.10 or later** on architects' machines (3.11+ recommended) | platform | SDEM requires 3.10; Python 3.9 reached end of life in October 2025 (PEP 596 — high confidence) |
 | 4 | **Dashboard hosting decided** — decided: local HTML files for now (OM-3) | owner | dashboards show real architecture |

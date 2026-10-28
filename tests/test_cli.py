@@ -1,4 +1,4 @@
-"""The `sdem` command — SDEM's only interface (docs/sdem-workbench-spec.md §3, WB-K01…K06; acceptance AT-WB-09)."""
+"""The `sdem` command — SDEM's only interface (docs/design/sdem-workbench-spec.md §3, WB-K01…K06; acceptance AT-WB-09)."""
 import contextlib, io, json, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 

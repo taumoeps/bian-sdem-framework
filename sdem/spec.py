@@ -1,4 +1,4 @@
-"""Render docs/relationship-rules-spec.md — the SDEM Architecture Relationship Rules Specification (inference engine input).
+"""Render docs/design/relationship-rules-spec.md — the SDEM Architecture Relationship Rules Specification (inference engine input).
 
 The specification is a projection of the records (entity catalogue, level-relationships.json, relationship-types.json,
 relationship-rules.json, export-conventions.json, impact-rules.json) plus a numbered requirements set. Every requirement
@@ -12,7 +12,7 @@ from sdem.metamodel import Metamodel, MM_DIR
 from sdem.terms import apply as _terms
 
 ROOT = MM_DIR.parent
-DOC = ROOT / 'docs' / 'relationship-rules-spec.md'
+DOC = ROOT / 'docs' / 'design' / 'relationship-rules-spec.md'
 LEVEL_NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
 
 
@@ -58,7 +58,7 @@ def render():
 
     out = ['# SDEM Architecture Relationship Rules Specification — inference engine input (v0.7)', '',
            '> New to SDEM? Read `docs/sdem-overview.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.', '', 'Generated from the records by `python -m sdem.spec`; the test suite checks it is current. This specification merges the three records — the entity catalogue, the within-level structure (`metamodel/level-relationships.json`) and the cross-level mapping model (`schema/relationship-types.json`, `metamodel/relationship-rules.json`) — with the architecture dataset conventions, the mapping procedure and the test results, into one statement of **what a mapping engine must consume, do, refuse and produce**. Every requirement names the record rows it derives from and the use-case runs that validated it; nothing here claims more than a record and a run support.', '',
-           '**Terms, as in `docs/sdem-overview.md`.** This document specifies the **Architecture Relationship Rules Model** — the plan rows (§4.2–4.3) and the architecture dataset conventions (§5), the **rules** for establishing relationships, stated over entity **types** — and the **Architecture Relationship Inference Engine** that applies them. It restates from the **Architecture Metamodel** what the rules are stated over: the entity types (§2), the within-level rows (§3) and the relationship type catalogue (§4.1). The **Architecture Relationship Registry** is the inference engine\'s output: **links** between real instances, in the form fixed by `schema/relationship-registry.schema.json` (§7). The companion diagram `docs/architecture-model-diagram.puml` draws the Architecture Metamodel and the rules: every within-level row (`RA…`) and every cross-level rule (`S…`) by ID, between entity types; it does not draw the mapping set.', '', ' Narrative sources: `docs/mapping-logic-planning.md` (why the model is shaped this way), `docs/mapping-execution.md` (the procedure as the executor ran it), `docs/relationships-planning.md` (within-level rows), `docs/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.', '']
+           '**Terms, as in `docs/sdem-overview.md`.** This document specifies the **Architecture Relationship Rules Model** — the plan rows (§4.2–4.3) and the architecture dataset conventions (§5), the **rules** for establishing relationships, stated over entity **types** — and the **Architecture Relationship Inference Engine** that applies them. It restates from the **Architecture Metamodel** what the rules are stated over: the entity types (§2), the within-level rows (§3) and the relationship type catalogue (§4.1). The **Architecture Relationship Registry** is the inference engine\'s output: **links** between real instances, in the form fixed by `schema/relationship-registry.schema.json` (§7). The companion diagram `docs/design/architecture-model-diagram.puml` draws the Architecture Metamodel and the rules: every within-level row (`RA…`) and every cross-level rule (`S…`) by ID, between entity types; it does not draw the mapping set.', '', ' Narrative sources: `docs/design/mapping-logic-planning.md` (why the model is shaped this way), `docs/design/mapping-execution.md` (the procedure as the executor ran it), `docs/reference/relationships-planning.md` (within-level rows), `docs/evidence/use-case-testing.md` (the runs). Those remain the places to read the reasoning; this document is the contract.', '']
 
     # ---- 1 scope
     out += ['## 1. Purpose, scope and non-goals', '',
@@ -84,13 +84,13 @@ def render():
     # ---- 3 within-level
     byl = Counter(c['level'] for c in lr['constraints']); vc = Counter(c['verification'] for c in lr['constraints'])
     out += ['## 3. Within-level structure — what an architecture dataset may contain', '',
-            f"{len(lr['constraints'])} constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/relationships-planning.md`): " + ', '.join(f"{LEVEL_NAMES[l]} {byl[l]}" for l in ('A1', 'A2', 'A3', 'A4')) + f". Verification: " + ', '.join(f"{k} {v}" for k, v in vc.most_common()) + '. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.', '',
+            f"{len(lr['constraints'])} constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/reference/relationships-planning.md`): " + ', '.join(f"{LEVEL_NAMES[l]} {byl[l]}" for l in ('A1', 'A2', 'A3', 'A4')) + f". Verification: " + ', '.join(f"{k} {v}" for k, v in vc.most_common()) + '. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.', '',
             '| Level | Derived from | Rows | The structure in one line |', '|---|---|---|---|',
             '| A1 | ArchiMate 3.2 ch. 6–8 | ' + str(byl['A1']) + ' | capabilities serve value streams; processes (and activities, is-a process) realise capabilities, value streams, services and requirements, access objects, compose activities; actors assigned to roles assigned to processes |',
             '| A2 | BIAN Service Landscape metamodel (B02–B15) | ' + str(byl['A2']) + ' | area ⊃ domain ⊃ Service Domain; a domain has an asset type, a functional pattern, a control record and service groups of operations; operations act on the control record and may be qualified; scenarios sequence operations; objects type the control record |',
             '| A3 | ArchiMate 3.2 ch. 9; TOGAF (SBB) | ' + str(byl['A3']) + ' | a component composes interfaces (which compose API operations) and sub-components, is assigned to functions, realises services; interfaces are assigned to services; behaviour accesses data entities and triggers events; a solution building block aggregates components |',
             '| A4 | ArchiMate 3.2 ch. 10; SDEM deployment extensions | ' + str(byl['A4']) + ' | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |', '',
-            '### 3.1 All within-level rows', '', 'Full description, source, reasoning, inference and confidence per row: `docs/relationships-planning.md`.', '',
+            '### 3.1 All within-level rows', '', 'Full description, source, reasoning, inference and confidence per row: `docs/reference/relationships-planning.md`.', '',
             '| ID | Official | Source | Kind | Target | Verification |', '|---|---|---|---|---|---|']
     for c in lr['constraints']:
         out.append(f"| {c['id']} | {c.get('official_id') or '—'} | {c['source_type']} | {c['kind']} | {c['target_type']} | {c['verification']}{' (not enforceable)' if c.get('enforceable') is False else ''} |")
@@ -110,7 +110,7 @@ def render():
     out += ['', 'Only these nine may appear in the mapping set (form: `schema/relationship-registry.schema.json`); adjacency is A(n) → A(n+1) only; BIAN authorities require `bian_release` and a `canonical_id` on the A2 endpoint before approval. Everything else the model knows is a **candidate report**, never a registry proposal.', '']
     req('M', 'Emit registry proposals only for the nine relationship types, with the record fields the schema requires, at status `proposed`, with `confidence` as the plan\'s band and `evidence` typed against `required_evidence`.', 'schema/relationship-types.json; schema/relationship-registry.schema.json', 'every run: `sdem validate --strict` on each proposal file')
     dec = Counter(m['rule_decision'] for m in nm)
-    out += ['### 4.2 Plan rows — the 69 rules by decision', '', 'Every cross-level pair the mapping model considers (`metamodel/relationship-rules.json`; reasoning per row in `docs/mapping-logic-planning.md` §5.3). The decision says what the engine does with the row: only **registry rules** produce links in the mapping set; the others are reported as candidates or not used.', '',
+    out += ['### 4.2 Plan rows — the 69 rules by decision', '', 'Every cross-level pair the mapping model considers (`metamodel/relationship-rules.json`; reasoning per row in `docs/design/mapping-logic-planning.md` §5.3). The decision says what the engine does with the row: only **registry rules** produce links in the mapping set; the others are reported as candidates or not used.', '',
             '| Decision | Rows | Engine behaviour |', '|---|---|---|',
             f"| registry rule | {dec['registry_rule']} | propose, at the step and band stated |", f"| candidate rule | {dec['candidate_rule']} | report in the candidate file; never propose until adopted into the registry |",
             f"| conditional rule | {dec['conditional_rule']} | report when the institution data it fires on is present |", f"| derived path | {dec['derived_path']} | compute as a closure over other arrows; report; never store |",
@@ -139,7 +139,7 @@ def render():
     req('D', 'Read institution aliases as data, never invent them: asset-type aliases (boundary gate), behaviour-qualifier aliases (check 3), interface and data-entity field aliases (check 4, S30/S20), business-object glossary aliases (S12).', 'A2.AssetType.aliases; A2.BehaviorQualifier.aliases; A3.ApplicationInterface.field_aliases; A3.DataEntity.field_aliases; A1.BusinessObject.field_aliases', 'H1 (token gate), H2 run 1 → run 2 (recall 0.78 → 1.00 with aliases supplied), C1')
 
     # ---- 6 procedure
-    out += ['## 6. The procedure — steps as requirements', '', 'The steps are specified in `docs/mapping-execution.md` §3 exactly as the executor ran them; this section states them as engine requirements. Order: A4 from data, A2 from BIAN, A3 where they meet, A1 last.', '']
+    out += ['## 6. The procedure — steps as requirements', '', 'The steps are specified in `docs/design/mapping-execution.md` §3 exactly as the executor ran them; this section states them as engine requirements. Order: A4 from data, A2 from BIAN, A3 where they meet, A1 last.', '']
     P = [
      ('Step 0 — BIAN architecture dataset', 'Load the A2 architecture dataset as BIAN structure; apply no inference to it.', 'RA2-*; B02–B15', 'every run'),
      ('Step 1 — data join', 'Fill `DEPLOYED_ON` and `DEPLOYED_AS` and the step-1 institution-only rows by exact key join (`deployed_on`, `deployed_as`, `hosts`, `component_id`/`platform_id`, `consumes`, `stored_in`, `built_as`, `network_zone`, `published_to`, `exposed_through`, `carries`); `DEPLOYED_ON` is environment-agnostic and fans out one arrow per host layer, logged under S33 / S34 / S35 by target entity.', 'S32, S33, S34, S35, S37–S39, S41, S43, S45, S49–S51', 'M0, M1 (UAT hosting), H1, H2, C3'),
@@ -161,14 +161,14 @@ def render():
             '| ID | Output | File | Content | Scored by |', '|---|---|---|---|---|',
             '| OUT-01 | Mapping-set records | `<uc>-proposals.json` | links between real instances, from registry rules only; `status: proposed`, plan band, typed evidence, rationale with the working | `sdem-eval` against `<uc>-gold-mappings.json` (approved) — P / R / F1 per relationship |',
             '| OUT-02 | Candidate reports (not part of the mapping set) | `<uc>-candidates.json` | one record per candidate / conditional / institution-only / derived row, `relationship` = plan ID | `sdem-eval` against `<uc>-gold-candidates.json` — per plan ID |',
-            '| OUT-03 | Inference log | `<uc>-inference-log.json` | every attempt: plan ID, data read, rule values, step assigned / used, fallback, confidence predicted / given, outcome; no-proposal register; findings | the coverage table in `docs/use-case-testing.md` is regenerated from it |',
+            '| OUT-03 | Inference log | `<uc>-inference-log.json` | every attempt: plan ID, data read, rule values, step assigned / used, fallback, confidence predicted / given, outcome; no-proposal register; findings | the coverage table in `docs/evidence/use-case-testing.md` is regenerated from it |',
             '| OUT-04 | Design architecture datasets | `<uc>-design-a3.json`, `-a4.json` | planned instances (M2 only) | `sdem check`; trace marks design hops |', '',
             'Governance stays outside the engine: `sdem validate` (structure, registry, evidence, anchoring), `sdem diff` (lifecycle transitions, immutability of approved records; supersession via `previous_mapping_id`), impact classification per `schema/impact-rules.json` (' + ', '.join(imp['kinds']) + ').', '']
     req('O', 'Write the three output files in the shapes above; never write `approved` (except rules an architect has declared auto-approved); never edit an existing mapping set; proposals must pass `sdem validate --strict` with draft warnings only.', 'guide §4, §4b, §4c', 'every run')
     req('O', 'Log every attempt, not only proposals: the inference log is the evidence base for the coverage table and for confidence calibration.', 'guide §4b', f"{_logs()[0]} logs, {_logs()[1]} attempts")
 
     # ---- 8 acceptance
-    out += ['## 8. Acceptance — the runs the engine must reproduce', '', 'The executed runs are the acceptance test (DEC-E-01): the engine, given the current committed inputs of each scored run, must score at least the executor\'s precision and recall against the sealed gold (`docs/use-case-testing.md` › Results and Plan coverage).', '',
+    out += ['## 8. Acceptance — the runs the engine must reproduce', '', 'The executed runs are the acceptance test (DEC-E-01): the engine, given the current committed inputs of each scored run, must score at least the executor\'s precision and recall against the sealed gold (`docs/evidence/use-case-testing.md` › Results and Plan coverage).', '',
             '| ID | Case | Estate | Hidden | Executor result |', '|---|---|---|---|---|',
             '| ACC-01 | E1, E2 | card-fraud-alerts, customer-onboarding | nothing (query and governance) | all checks exact |',
             '| ACC-02 | M0 | card-fraud-alerts | 6 arrows | run 2: 6 of 6, 1 false (rule withdrawn) |', '| ACC-03 | M1 | payment-initiation (68 instances) | 12 → 13 arrows, planted mismatch | 13 of 13 under the restated gold; mismatch caught |',
@@ -176,7 +176,7 @@ def render():
             '| ACC-06 | M2 | digital-lending (greenfield, no A3/A4) | 12 design arrows | 12 of 12; boundary stated |', '| ACC-07 | C1, C2, C3 | trade-finance (85; one estate, three level pairs) | 19 registry + 100 candidate | 19 of 19; 100 of 101 (one fixed by rule) |', '',
             'Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: ' + str(len(lr['constraints'])) + ' rows, ' + str(sum(1 for c in lr['constraints'] if c.get('enforceable') is not False)) + ' enforced (the rest are A2 artefact rows, documentation only), 113 verified against the Archi oracle, 0 contradicted.', '']
     out += ['**Result (2026-10-25, v0.10).** `sdem model accept` runs the rule-based engine (`sdem/rules_engine.py`) on each scored case from a graph store built from the architecture datasets and the case\'s given registry only: **all 8 pass at precision and recall 1.00** (registry proposals, and candidate reports for C1–C3); M0 and C3 score above the hand-executed runs, whose one error each came from rules since fixed. Every proposal validates. `tests/test_acceptance.py` enforces it. Caveat: OPEN-05.', '']
-    req('A', 'Reproduce every executor run from the committed inputs with precision ≥ the executor\'s and recall ≥ the executor\'s on each sealed gold; any difference is a finding on the engine or on the guide.', 'docs/use-case-testing.md', 'baseline established by the eleven runs')
+    req('A', 'Reproduce every executor run from the committed inputs with precision ≥ the executor\'s and recall ≥ the executor\'s on each sealed gold; any difference is a finding on the engine or on the guide.', 'docs/evidence/use-case-testing.md', 'baseline established by the eleven runs')
     req('A', 'Validate every example architecture dataset and `examples/reference-structure` clean, and reject the relationships-test probes (reversed, mistyped, abstract, cross-level, uncatalogued).', '§3 rows; relationships test T4', 'Phase 1 probes; CI')
 
     # ---- 9 open
@@ -201,7 +201,7 @@ def render():
             '| DEC-E-08 | S17 fallback B: is any asset-type token in the component\'s paths evidence? | **Not when the token is shared with the asset type of another domain the component (or a component containing it) already realises.** | Otherwise "payment" ties every payments domain to the Payments Hub; the M1 hand-run counted 0 distinctive matches and its gold agrees. |',
             '| DEC-E-09 | S01 when only some of a capability\'s processes use the domain? | **No proposal** (logged). The rule\'s "low" band for partial coverage is withdrawn. | The C1 hand-run never proposed partial coverage and the gold has none; H1 and M0 do not depend on it. |',
             '| DEC-E-10 | S17 fallback B (an asset-type word in API paths or data entity names): what confidence? | **Low**, never more — the evidence is names only. | Use-case example 2 run 4 showed a one-word match ("account") at medium, the same as a domain backed by five implemented operations. Owner decision 2026-10-28 (T6); AID applies the same cap (AID-B6). |',
-            '| DEC-E-11 | A link touching an entity transformed from a document (`sdem transform`; `source_id` starting `confluence:`): what confidence? | **Low**, never more — capped, with the reason in the rationale. | The entity was read from a past design by rules (table, diagram, text or OCR), not from a system of record; a person must see that before approving. Owner approval 2026-10-28 (Load design, docs/sdem-load-design.md §4). |', '']
+            '| DEC-E-11 | A link touching an entity transformed from a document (`sdem transform`; `source_id` starting `confluence:`): what confidence? | **Low**, never more — capped, with the reason in the rationale. | The entity was read from a past design by rules (table, diagram, text or OCR), not from a system of record; a person must see that before approving. Owner approval 2026-10-28 (Load design, docs/design/sdem-load-design.md §4). |', '']
 
     # ---- 10 index
     out += ['## 10. Requirements index', '', f"{len(REQ)} requirements. Groups: V vocabulary, S structure, M mapping model, D data, P procedure, O outputs, A acceptance.", '',
@@ -212,7 +212,7 @@ def render():
     return _terms('\n'.join(out) + '\n')
 
 
-DIAGRAM = ROOT / 'docs' / 'architecture-model-diagram.puml'
+DIAGRAM = ROOT / 'docs' / 'design' / 'architecture-model-diagram.puml'
 
 
 def render_diagram():
@@ -224,11 +224,11 @@ def render_diagram():
     text = text.replace('within-level links (thin, kind only)', 'within-level rows (thin grey, RA…)').replace('cross-level mappings (plan ID, coloured by decision)', 'cross-level rules (plan rows S…, coloured by decision)')
     text = text.replace('  Light grey thin arrows: within-level constraint rows (ArchiMate kind as label)', '  Thin grey arrows: within-level rows (RA…) of the Architecture Metamodel — the links allowed inside one architecture')
     text = text.replace("  Grey entity: no cross-level mapping by decision", "  Blue (catalogue rules) are the only rules whose output becomes Architecture Relationship Registry records; the other colours are reported as candidates\n  Grey entity: no cross-level rule by decision\n  Every box is an entity TYPE of the Architecture Metamodel; real instances and registry records are not drawn")
-    text = text.replace('  Detail: official-mappings.puml, relationship-rules.puml, level-relationships.puml', '  Read with: docs/sdem-overview.md and docs/relationship-rules-spec.md')
+    text = text.replace('  Detail: official-mappings.puml, relationship-rules.puml, level-relationships.puml', '  Read with: docs/sdem-overview.md and docs/design/relationship-rules-spec.md')
     return _terms(text)
 
 
-REGISTRY_DOC = ROOT / 'docs' / 'relationship-registry-spec.md'
+REGISTRY_DOC = ROOT / 'docs' / 'design' / 'relationship-registry-spec.md'
 
 
 REGISTRY_FIELD_MEANING = {'mapping_id': 'the record\'s permanent ID (legacy name)', 'source': 'the entity the relationship starts from (§3)', 'target': 'the entity it points to (§3)',
@@ -239,7 +239,7 @@ REGISTRY_FIELD_MEANING = {'mapping_id': 'the record\'s permanent ID (legacy name
 
 
 def render_registry():
-    """docs/relationship-registry-spec.md — the Architecture Relationship Registry, from its schema, the lifecycle in sdem/diff.py and the type catalogue."""
+    """docs/design/relationship-registry-spec.md — the Architecture Relationship Registry, from its schema, the lifecycle in sdem/diff.py and the type catalogue."""
     from sdem.diff import ALLOWED_TRANSITIONS, FROZEN_STATUSES, THAWED_ON_SUPERSEDE
     sch = _load(ROOT / 'schema' / 'relationship-registry.schema.json'); reg = _load(ROOT / 'schema' / 'relationship-types.json')
     rec = sch['$defs']['mapping']; ent = sch['$defs']['entity']; req = set(rec.get('required', []))
@@ -269,11 +269,12 @@ def render_registry():
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdem-spec', description='Render docs/relationship-rules-spec.md, docs/architecture-model-diagram.puml and docs/relationship-registry-spec.md from the records.')
+    parser = argparse.ArgumentParser(prog='sdem-spec', description='Render docs/design/relationship-rules-spec.md, docs/design/architecture-model-diagram.puml and docs/design/relationship-registry-spec.md from the records.')
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args(argv)
     rc = 0
-    for path, text in ((DOC, render()), (DIAGRAM, render_diagram()), (REGISTRY_DOC, render_registry())):
+    from .docmap import relink
+    for path, text in ((DOC, relink(render(), DOC)), (DIAGRAM, render_diagram()), (REGISTRY_DOC, relink(render_registry(), REGISTRY_DOC))):
         if args.check:
             ok = path.exists() and path.read_text(encoding='utf-8') == text; rc |= 0 if ok else 1
             print(f"{path.name}: {'up to date' if ok else 'STALE: regenerate with python -m sdem.spec'}")

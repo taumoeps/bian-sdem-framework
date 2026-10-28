@@ -1,4 +1,4 @@
-"""Local JSON graph store (docs/graph-store-spec.md): the four local knowledge graphs and the federated graph of
+"""Local JSON graph store (docs/design/graph-store-spec.md): the four local knowledge graphs and the federated graph of
 approved links, persisted as JSON Graph Format v2 files, plus a load record; and the graph access layer every
 reader uses.
 

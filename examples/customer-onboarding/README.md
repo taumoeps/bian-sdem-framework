@@ -16,7 +16,7 @@ BIAN-grounded records (`bian_alignment_guidance` authority) carry a `bian_releas
 
 The mappings name the abstract `A4.InfrastructureComponent` while the architecture dataset types `INF-001` concretely as `A4.SystemSoftware`; the graph resolves this through the entity hierarchy (is-a), by design.
 
-Architecture datasets `a1–a4-*.json` (24 synthetic instances, written to `metamodel/export-conventions.json`) back every id in the mappings, so the graph tools run on this example — use case **E2** in `docs/use-case-testing.md`.
+Architecture datasets `a1–a4-*.json` (24 synthetic instances, written to `metamodel/export-conventions.json`) back every id in the mappings, so the graph tools run on this example — use case **E2** in `docs/evidence/use-case-testing.md`.
 
 ```bash
 python -m sdem.graph check examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json

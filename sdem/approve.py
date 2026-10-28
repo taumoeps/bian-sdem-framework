@@ -1,4 +1,4 @@
-"""`sdem approve` — a person approves proposed links into the registry (docs/sdem-workbench-spec.md WB-A04; control CTL-21).
+"""`sdem approve` — a person approves proposed links into the registry (docs/design/sdem-workbench-spec.md WB-A04; control CTL-21).
 
 Writes a correct registry record from a proposal: a new unique id, status `approved`, the reviewer (a person — CTL-21) and
 date, the evidence the link type requires, and — when it replaces an old link — `previous_mapping_id` with the old link

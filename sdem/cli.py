@@ -1,4 +1,4 @@
-"""`sdem` — SDEM's command line, its only interface (docs/sdem-workbench-design.md, SDEM-D07; spec WB-K01…K06).
+"""`sdem` — SDEM's command line, its only interface (docs/design/sdem-workbench-design.md, SDEM-D07; spec WB-K01…K06).
 
 One command with a subcommand per journey. Most subcommands hand over to the existing command code unchanged (the
 `sdem-*` commands keep working as aliases); `review` and `explain` are new. Conventions everywhere: inputs as `--graph DIR`
@@ -285,9 +285,9 @@ def model(argv):
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     lines = [f"  {n:<9} {j:<3} {w}" for n, (j, w, *_rest) in JOURNEYS.items()]
-    epilog = ('Journeys (J1–J9, docs/sdem-workbench-design.md §3):\n' + '\n'.join(lines) +
+    epilog = ('Journeys (J1–J9, docs/design/sdem-workbench-design.md §3):\n' + '\n'.join(lines) +
               '\n\nEvery subcommand takes --help with a worked example. Exit codes: 0 OK, 1 issues found, 2 usage or input error, 3 internal error.'
-              '\nAG = agent platform (docs/sdem-agent-platform-design.md). The sdem-* commands (sdem-graph, sdem-infer, sdem-aid, …) remain as aliases.')
+              '\nAG = agent platform (docs/design/sdem-agent-platform-design.md). The sdem-* commands (sdem-graph, sdem-infer, sdem-aid, …) remain as aliases.')
     ap = argparse.ArgumentParser(prog='sdem', usage='sdem <command> [options]', epilog=epilog, formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description="SDEM — Service Domain Enterprise Metamodel. SDEM's command line: run it in VS Code's terminal pane; "
                                              'ask Copilot Chat to explain any output.')

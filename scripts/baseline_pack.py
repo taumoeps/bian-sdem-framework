@@ -16,7 +16,7 @@ from sdem.metamodel import Metamodel  # noqa: E402
 from sdem.validate import check_schema  # noqa: E402
 
 BASELINE = 'SDEM-METAMODEL-0.8'
-OUT = ROOT / 'docs' / 'baseline' / f'{BASELINE}-review-pack.md'
+OUT = ROOT / 'docs' / 'design' / 'baseline' / f'{BASELINE}-review-pack.md'
 
 
 def J(p): return json.loads((ROOT / p).read_text(encoding='utf-8'))
@@ -51,7 +51,7 @@ def main():
     gaps = J('metamodel/metamodel-spec-gaps.json')['gaps']
     gopen = [g for g in gaps if g['status'].startswith('open')]; gdec = [g for g in gaps if g['status'].startswith('decided')]
     import hashlib
-    hsha = hashlib.sha256((ROOT / 'docs' / 'architecture-metamodel-high-level-spec.md').read_bytes()).hexdigest()
+    hsha = hashlib.sha256((ROOT / 'docs' / 'design' / 'architecture-metamodel-high-level-spec.md').read_bytes()).hexdigest()
     cases = J('examples/acceptance-cases.json')['cases']; passing = sum(1 for c in cases if c.get('engine_status') == 'passing')
     ntests, tline = tests(); est, inst, err, warn, nschema, schema_bad = conformance(mm)
     ver = Counter(c['verification'] for c in rows)
@@ -68,15 +68,15 @@ def main():
          '**Who should review.** An architect independent of the author, familiar with at least one of BIAN, ArchiMate or TOGAF. They need no employer data: everything here is public or synthetic. Expected effort: about a day for §5, longer if they re-check sources.', '',
          '## 2. What is being baselined', '',
          '| Part | Records | Count | Rendered as |', '|---|---|---|---|',
-         f"| **Governing specification** | generated from all records below | 19 sections, data model of every part, gap register ({len(gaps)} gaps: {len(gdec)} decided, {len(gopen)} open) | `docs/architecture-metamodel-detail-level-spec.md` (+ `.puml`) |",
-         f"| Reference specification (frozen) | — | the owner\'s v0.4 spec, SHA-256 `{hsha[:16]}…` pinned by test | `docs/architecture-metamodel-high-level-spec.md` |",
-         f"| Entity types | `metamodel/a1…a4-*.json` | {len(ents)} ({sum(1 for e in ents if not e.get('abstract') and not e.get('artefact'))} instance types, {sum(1 for e in ents if e.get('artefact'))} artefacts, {sum(1 for e in ents if e.get('abstract'))} abstract) | `docs/architecture-entity-design.md` |",
-         f"| Within-level relationships | `metamodel/level-relationships.json` | {len(rows)} rows + {len(lr['inheritance'])} inheritance | `docs/relationships-planning.md` |",
-         f"| Cross-level relationship types | `schema/relationship-types.json` | {len(types)} | `docs/relationship-registry-spec.md` |",
-         f"| Relationship rules | `metamodel/relationship-rules.json` | {len(rules)} | `docs/relationship-rules-spec.md` |",
-         f"| Attributes | `metamodel/entity-attributes.json` | {len(at['core_fields'])} core, {len(common)} common, {len(attrs)} entity-specific, {len(derived)} derived ({len(dep)} deprecated kept for compatibility) | `docs/architecture-attribute-design.md` |",
-         '| Logical data model | `sdem/logical.py`, `sdem/conformance.py` | 14 rules, all enforced | `docs/logical-data-model.md` |',
-         f"| Physical data model | `schema/entities/*/*.schema.json` | {nschema} JSON Schemas | `docs/physical-data-model.md` |",
+         f"| **Governing specification** | generated from all records below | 19 sections, data model of every part, gap register ({len(gaps)} gaps: {len(gdec)} decided, {len(gopen)} open) | `docs/design/architecture-metamodel-detail-level-spec.md` (+ `.puml`) |",
+         f"| Reference specification (frozen) | — | the owner\'s v0.4 spec, SHA-256 `{hsha[:16]}…` pinned by test | `docs/design/architecture-metamodel-high-level-spec.md` |",
+         f"| Entity types | `metamodel/a1…a4-*.json` | {len(ents)} ({sum(1 for e in ents if not e.get('abstract') and not e.get('artefact'))} instance types, {sum(1 for e in ents if e.get('artefact'))} artefacts, {sum(1 for e in ents if e.get('abstract'))} abstract) | `docs/reference/architecture-entity-design.md` |",
+         f"| Within-level relationships | `metamodel/level-relationships.json` | {len(rows)} rows + {len(lr['inheritance'])} inheritance | `docs/reference/relationships-planning.md` |",
+         f"| Cross-level relationship types | `schema/relationship-types.json` | {len(types)} | `docs/design/relationship-registry-spec.md` |",
+         f"| Relationship rules | `metamodel/relationship-rules.json` | {len(rules)} | `docs/design/relationship-rules-spec.md` |",
+         f"| Attributes | `metamodel/entity-attributes.json` | {len(at['core_fields'])} core, {len(common)} common, {len(attrs)} entity-specific, {len(derived)} derived ({len(dep)} deprecated kept for compatibility) | `docs/reference/architecture-attribute-design.md` |",
+         '| Logical data model | `sdem/logical.py`, `sdem/conformance.py` | 14 rules, all enforced | `docs/reference/logical-data-model.md` |',
+         f"| Physical data model | `schema/entities/*/*.schema.json` | {nschema} JSON Schemas | `docs/reference/physical-data-model.md` |",
          '| Data-model review records | `metamodel/drafts/a1…a4-descriptive-attributes.json` | 4 (all approved) | `docs/drafts/data-model-a1…a4-draft.md` |', '',
          'Not in scope: the inference engine and the graph store (software built on the metamodel; their test results are evidence in §3, but the baseline freezes the metamodel, not the code), the Relationship Registry contents (institution data), and the example estates (synthetic test data).', '',
          '## 3. Evidence', '',
@@ -85,7 +85,7 @@ def main():
          f"| Example estates against the enforced data model (`sdem-graph check`) | {est} estates, {inst} instances: **{err} errors**, {warn} warnings, all minimum-cardinality completeness gaps (an example, or the generated reference-structure estate, holds part of BIAN's structure) |",
          f"| Example instances against the physical schemas | {inst} instances, **{schema_bad} failing** |",
          f"| Within-level rows checked against a standard | {ver['verified']} against BIAN public material, {ver['verified_against_archi']} against the Archi oracle (open-source ArchiMate relationship tables); {ver['unverified_togaf']} TOGAF-only, {ver['sdem_reading']} SDEM reading |",
-         '| Cross-level rules | all 69 plan rows covered by the use-case runs: 45 validated, 5 validated with findings, 19 not applicable (`docs/relationships-testing.md`, `docs/use-case-testing.md`) |',
+         '| Cross-level rules | all 69 plan rows covered by the use-case runs: 45 validated, 5 validated with findings, 19 not applicable (`docs/evidence/relationships-testing.md`, `docs/evidence/use-case-testing.md`) |',
          '| Detail spec against the high-level spec | catalogue alignment computed from the high-level §5 tables: 41 entity rows read, 1 differs (`A4.Deployment`, decided G-03); every other difference is in the gap register; the high-level spec is unchanged (checksum test) |',
          f"| Inference engine (acceptance) | {passing} of {len(cases)} use-case runs pass at the hand-executed run\'s precision and recall or better (`sdem-accept`); every proposal validates |",
          '| Graph store | every trace and impact answer identical whether read from the stored graph or the architecture datasets, on all example estates (acceptance test AT-04) |',
@@ -141,7 +141,7 @@ def main():
           '3. Remove what was kept only for compatibility: the deprecated `accesses` attribute definition and the `sdmm_extension` spelling (the `sdmm` package and commands were removed before the baseline, in the 2026-10-29 audit).',
           f'4. Tag the commit `{BASELINE}` and publish release v0.8.0 (with your approval).',
           '5. From then on, model changes go through a change record and a new version.', '']
-    OUT.parent.mkdir(parents=True, exist_ok=True); OUT.write_text('\n'.join(o) + '\n', encoding='utf-8'); print('wrote', OUT.relative_to(ROOT))
+    OUT.parent.mkdir(parents=True, exist_ok=True); from sdem.docmap import relink; OUT.write_text(relink('\n'.join(o) + '\n', OUT), encoding='utf-8'); print('wrote', OUT.relative_to(ROOT))
 
 
 if __name__ == '__main__':

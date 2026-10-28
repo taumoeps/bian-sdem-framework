@@ -1,6 +1,6 @@
-"""Generate docs/architecture-metamodel-detail-level-spec.md (and its diagram, .puml) — the governing, detail-level specification of the
+"""Generate docs/design/architecture-metamodel-detail-level-spec.md (and its diagram, .puml) — the governing, detail-level specification of the
 Architecture Metamodel — from the records, the gap register (metamodel/metamodel-spec-gaps.json) and the frozen
-high-level specification (docs/architecture-metamodel-high-level-spec.md).
+high-level specification (docs/design/architecture-metamodel-high-level-spec.md).
 
 The detail spec follows the high-level spec section by section. Every section states either "Aligned to high-level §n"
 or the gap(s) where the implementation differs; sections the high-level spec does not have are marked as additions.
@@ -14,9 +14,9 @@ from pathlib import Path
 from .metamodel import ROOT
 
 DOCS = ROOT / 'docs'
-HIGH = DOCS / 'architecture-metamodel-high-level-spec.md'
-OUT = DOCS / 'architecture-metamodel-detail-level-spec.md'
-PUML = DOCS / 'architecture-metamodel-detail-level-spec.puml'
+HIGH = DOCS / 'design' / 'architecture-metamodel-high-level-spec.md'
+OUT = DOCS / 'design' / 'architecture-metamodel-detail-level-spec.md'
+PUML = DOCS / 'design' / 'architecture-metamodel-detail-level-spec.puml'
 MM = ROOT / 'metamodel'
 LEVELS = (('A1', 'a1-business.json', 'A1 Business'), ('A2', 'a2-service-domain.json', 'A2 Service Domain (BIAN)'),
           ('A3', 'a3-application.json', 'A3 Application'), ('A4', 'a4-technology.json', 'A4 Technology'))
@@ -253,7 +253,7 @@ COLOUR = {'bian_reference': '#BBDEFB', 'bian_aligned': '#E3F2FD', 'archimate_nat
 
 
 def render_diagram():
-    """docs/architecture-metamodel-detail-level-spec.puml: the detail spec's structure for visual review."""
+    """docs/design/architecture-metamodel-detail-level-spec.puml: the detail spec's structure for visual review."""
     gaps = {g['id']: g for g in _j(MM / 'metamodel-spec-gaps.json')['gaps']}
     ents = [(lvl, e) for lvl, f, _ in LEVELS for e in _j(MM / f)['entities']]
     rows = _j(MM / 'level-relationships.json')['constraints']; byl = Counter(c['level'] for c in rows)
@@ -310,7 +310,8 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem-metamodel-spec', description='Generate the detail-level Architecture Metamodel specification.')
     ap.add_argument('--check', action='store_true'); args = ap.parse_args(argv)
     from .terms import apply_commands
-    files = {OUT: apply_commands(render()), PUML: render_diagram()}
+    from .docmap import relink
+    files = {OUT: relink(apply_commands(render()), OUT), PUML: render_diagram()}
     if args.check:
         stale = [p for p, t in files.items() if not p.exists() or p.read_text(encoding='utf-8') != t]
         for p in files: print(f"{p.name}: {'STALE: regenerate with python -m sdem.metamodel_spec' if p in stale else 'up to date'}")

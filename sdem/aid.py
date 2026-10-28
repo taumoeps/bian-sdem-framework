@@ -1,4 +1,4 @@
-"""Architecture Inference Design (AID) — docs/aid-design.md, docs/aid-spec.md.
+"""Architecture Inference Design (AID) — docs/design/aid-design.md, docs/design/aid-spec.md.
 
 Projects the architecture layers an architect does not have from the ones they do, for planning. The output is a
 **projected design** in a projection package, kept apart from real data (CTL-16) and fully marked (CTL-17):

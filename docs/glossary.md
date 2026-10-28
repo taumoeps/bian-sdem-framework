@@ -67,12 +67,12 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Graph loader** | the program that builds the graphs from architecture datasets and the registry (`sdem/graph.py`) |
 | **Inference engine** (formerly *mapping engine*) | the program that reads the graphs, applies the rules and *proposes* cross-level links for an architect to approve. Built (v0.10): `sdem link` |
 | **Fill steps 0–5** | the engine's order of work: load BIAN, exact joins, REST matching, closure, structural matching, bounded text matching |
-| **Architecture Inference Design (AID)** | the planning function that projects missing architecture layers from the ones an architect has — forward (down) or reverse (up) — as a **projected design** with inference confidence, not a validated design ([`aid-design.md`](aid-design.md)) |
+| **Architecture Inference Design (AID)** | the planning function that projects missing architecture layers from the ones an architect has — forward (down) or reverse (up) — as a **projected design** with inference confidence, not a validated design ([`aid-design.md`](design/aid-design.md)) |
 | **Projected design** | records and links inferred, not observed; kept apart from real data, marked `PRJ-`, never approved |
 | **Gap analysis** | comparing a projected design with the real one: matched, projected only, real only, differs |
 | **Proposal** | a link the engine suggests, status `proposed`, with evidence and a confidence |
 | **Trace / impact** | follow links across architectures / find what a change affects |
-| **Graph store** | the local knowledge graphs and the federated graph saved as JSON files on the device (`sdem build`); no server ([`graph-store-design.md`](graph-store-design.md)) |
+| **Graph store** | the local knowledge graphs and the federated graph saved as JSON files on the device (`sdem build`); no server ([`graph-store-design.md`](design/graph-store-design.md)) |
 | **JSON Graph Format (JGF)** | the published file format the graph store uses: `nodes` and `edges`, each with its own data |
 | **Load record** | the store's log of every build: inputs, checks, accepted or rejected, outputs |
 | **Graph access layer** | the one read interface every query, the view and the engine use, whether the graph comes from the store or from architecture datasets |
@@ -88,14 +88,14 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Skill** | a `.github/skills/<name>/SKILL.md` file: know-how Copilot loads when a task needs it (e.g. `sdem-onboard-designs`) |
 | **Agent file** | a `.github/agents/<name>.agent.md` file: one Copilot agent's role, boundaries and tools |
 | **Dashboard** | a read-only HTML page SDEM generates: one per estate (`sdem dashboard`) and the home page for SDEM and every project (`sdem home`) |
-| **SDEM workbench** | how architects use SDEM: the SDEM project open in VS Code, SDEM run from the terminal pane (the CLI), the Copilot Chat window for AI support, Git as history and approval trail ([`sdem-workbench-design.md`](sdem-workbench-design.md)) |
+| **SDEM workbench** | how architects use SDEM: the SDEM project open in VS Code, SDEM run from the terminal pane (the CLI), the Copilot Chat window for AI support, Git as history and approval trail ([`sdem-workbench-design.md`](design/sdem-workbench-design.md)) |
 
 ## Agent platform
 
 | Term | Means |
 |---|---|
 | **Change event** | a record that something changed (a change set applied, or a merge), with its stored impact result |
-| **Change set** | proposed changes to the records of **one** architecture layer, checked before they land; records the agent and the person ([`sdem-agent-platform-design.md`](sdem-agent-platform-design.md)) |
+| **Change set** | proposed changes to the records of **one** architecture layer, checked before they land; records the agent and the person ([`sdem-agent-platform-design.md`](design/sdem-agent-platform-design.md)) |
 | **Orchestration agent (orchestrator)** | the agent that turns impact into work items and tracks them; never changes layer data, never approves |
 | **Layer agent** | the agent for one architecture (A1, A2, A3 or A4); changes only its own layer |
 | **Work item** | one task for one layer, from a change event's impact, with a status and a holder |

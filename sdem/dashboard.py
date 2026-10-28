@@ -1,4 +1,4 @@
-"""`sdem dashboard` — one self-contained, read-only HTML page per estate (docs/sdem-dashboard-design.md, spec DB-*).
+"""`sdem dashboard` — one self-contained, read-only HTML page per estate (docs/design/sdem-dashboard-design.md, spec DB-*).
 
 Everything is computed here, with the same functions the CLI uses (checks, the rules engine, trace, impact, matrices,
 AID gaps, controls); the page only displays the results and shows the exact `sdem` command for every action. No server,

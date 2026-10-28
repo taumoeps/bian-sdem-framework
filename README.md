@@ -10,7 +10,7 @@
 |---|---|
 | **New to SDEM** | read on, then run the dashboard: `sdem home -o work/sdem` and open `work/sdem/index.html` |
 | **An architect who will use it** | [Install](#install), then the [user guide](docs/sdem-workbench-user-guide.md) — a 15-minute quick start and every task step by step |
-| **Bringing in existing designs** | the [onboarding workflow](docs/sdem-onboarding-workflow.md); practise with [use-case example 4](docs/use-case-example-4.md) |
+| **Bringing in existing designs** | the [onboarding workflow](docs/sdem-onboarding-workflow.md); practise with [use-case example 4](docs/evidence/use-case-example-4.md) |
 | **Planning to use it on real data** | the [operating model](docs/sdem-operating-model.md) and the [pilot plan](docs/sdem-pilot-plan.md) |
 | **Setting up the AI agents** | [Copilot set-up](docs/sdem-copilot-setup.md) |
 | **Looking for a document** | the [documentation index](docs/README.md) — every document by reader — and the [glossary](docs/glossary.md) |
@@ -182,7 +182,7 @@ flowchart TB
     class d3,t4,a2,o2 n
 ```
 
-✅ built · ⏭️ next. Details: [ROADMAP](docs/ROADMAP.md) · what changed: [CHANGELOG](CHANGELOG.md).
+✅ built · ⏭️ next. Details: [ROADMAP](docs/design/ROADMAP.md) · what changed: [CHANGELOG](CHANGELOG.md).
 
 ## Install
 
@@ -235,7 +235,7 @@ Before starting: legal and IP clearance, the private repository with branch prot
 
 ## Where the rulebook comes from
 
-Every entity type comes from a **public reference architecture** — BIAN, ArchiMate 3.2 or TOGAF 10 — or is a documented SDEM extension of one; none is copied from any institution's model, and no BIAN or Open Group text is reproduced ([provenance, entity by entity](docs/reference-architecture-provenance.md)). BIAN®, ArchiMate® and TOGAF® are trademarks of their owners; SDEM is independent and not endorsed by them.
+Every entity type comes from a **public reference architecture** — BIAN, ArchiMate 3.2 or TOGAF 10 — or is a documented SDEM extension of one; none is copied from any institution's model, and no BIAN or Open Group text is reproduced ([provenance, entity by entity](docs/reference/reference-architecture-provenance.md)). BIAN®, ArchiMate® and TOGAF® are trademarks of their owners; SDEM is independent and not endorsed by them.
 
 **Rules of use.** Keep historical designs; never overwrite or silently reclassify them. Keep BIAN reference content separate from your own design objects. A connection is a versioned, typed claim with evidence — an AI confidence value is not evidence. *Affected by a change* does not mean *must change*: impact needs an architect's assessment.
 

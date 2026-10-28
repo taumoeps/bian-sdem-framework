@@ -1,6 +1,6 @@
 """`sdem load` — the L of the ETL for past designs: put the candidate entities `sdem transform run` produced, after an
 architect has reviewed them, into an SDEM estate — selected, checked before anything is written, recorded
-(docs/sdem-load-design.md; spec LD-*).
+(docs/design/sdem-load-design.md; spec LD-*).
 
   sdem load work/history --estate estates/history --person jane.architect --exclude HIS-A3-X [--a2 FILE] [--dry-run]
 

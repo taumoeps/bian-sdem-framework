@@ -17,7 +17,7 @@ The rules engine (`sdem link`) **proposes** links; **a person approves** them in
    It writes the record below and validates the whole registry first — nothing is written if a check fails. By hand, the record would be: copy it from `proposals.json` into `mappings.json` and set:
    - `mapping_id` — a new id, unique in the registry;
    - `status: "approved"`, `reviewer_id` (the person), `approved_at` (date);
-   - `evidence` — **add the document that proves it**, as `kind:document-reference`; the kinds each link type needs are in [the evidence table](./evidence-by-link-type.md). The engine's reasoning alone is not enough.
+   - `evidence` — **add the document that proves it**, as `kind:document-reference`; the kinds each link type needs are in [the evidence table](evidence-by-link-type.md). The engine's reasoning alone is not enough.
 3. **Superseding an old link** (e.g. after a rehost): set the old one's `status` to `superseded` and give the new one `previous_mapping_id: "<old id>"`. Never edit an approved link in any other way.
 4. **Check:** `sdem validate --strict --estate <estate>` and `sdem check --estate <estate>`.
 5. **Pull request** on a branch; a reviewer merges — **the merge is the approval**. Then `sdem build … --out <graph>` and `sdem trace …` show the link in use.

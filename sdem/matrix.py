@@ -1,4 +1,4 @@
-"""`sdem matrix` — business → BIAN → application → technology matrices from approved links (docs/sdem-dashboard-spec.md DB-K01).
+"""`sdem matrix` — business → BIAN → application → technology matrices from approved links (docs/design/sdem-dashboard-spec.md DB-K01).
 
 The outputs the original design specification lists (§11): capability → service domain, process → service domain,
 service domain → application, application → technology, and the end-to-end chain. Only approved links are used.

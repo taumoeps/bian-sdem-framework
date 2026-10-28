@@ -25,7 +25,7 @@ class DocDriftTests(unittest.TestCase):
             s = (ROOT / f).read_text(encoding='utf-8'); t = s[s.index(start):]; t = t[:t.index('\n## ', 5)]
             return [l for l in t.splitlines() if re.match(r'^\| \d+ \|', l)]
         a = rows('docs/sdem-onboarding-workflow.md', '## 3. The commands in plain words')
-        self.assertEqual(len(a), 14); self.assertEqual(a, rows('docs/use-case-example-4.md', '## The commands in plain words'))
+        self.assertEqual(len(a), 14); self.assertEqual(a, rows('docs/evidence/use-case-example-4.md', '## The commands in plain words'))
 
 if __name__ == '__main__':
     unittest.main()

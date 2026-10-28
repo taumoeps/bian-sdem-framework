@@ -1,4 +1,4 @@
-"""`sdem load` — the L of the ETL: reviewed candidates from `sdem transform` into an estate (spec docs/sdem-load-spec.md).
+"""`sdem load` — the L of the ETL: reviewed candidates from `sdem transform` into an estate (spec docs/design/sdem-load-spec.md).
 Also CTL-23 (build refuses candidates) and DEC-E-11 (document-derived links capped at low), end to end."""
 import contextlib, io, json, shutil, tempfile, unittest
 from pathlib import Path

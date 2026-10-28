@@ -3,7 +3,7 @@
 > **A record, in its original words.** It uses SDEM's old names (SDMM, *mapping set*, *export*, `sdmm-*` …) — what each means today: [`renamed-from-sdmm.md`](renamed-from-sdmm.md).
 ## Solution Design Specification
 
-> **Current state (2026-10-25).** The original solution design, kept as a record. The relationship type catalogue now has **nine** types (`DEPLOYED_AS` added to the eight listed in §5.1 and §12); `A1.ProcessActivity` is `A1.BusinessActivity`; the *SDEM Mapping Engine* is the Architecture Relationship Inference Engine, specified in [`relationship-rules-spec.md`](../relationship-rules-spec.md) and built (v0.10): `sdem/rules_engine.py`, run with `sdem-infer rules --graph <store>`; passes all 8 acceptance cases (`sdem-accept`). Delivery phases are tracked in [`ROADMAP.md`](../ROADMAP.md).
+> **Current state (2026-10-25).** The original solution design, kept as a record. The relationship type catalogue now has **nine** types (`DEPLOYED_AS` added to the eight listed in §5.1 and §12); `A1.ProcessActivity` is `A1.BusinessActivity`; the *SDEM Mapping Engine* is the Architecture Relationship Inference Engine, specified in [`relationship-rules-spec.md`](../design/relationship-rules-spec.md) and built (v0.10): `sdem/rules_engine.py`, run with `sdem-infer rules --graph <store>`; passes all 8 acceptance cases (`sdem-accept`). Delivery phases are tracked in [`ROADMAP.md`](../design/ROADMAP.md).
 
 **Document status:** Proposed design baseline / draft for architecture review  
 **Version:** 1.0  
@@ -267,7 +267,7 @@ An edge is normally stored once, in its defined direction; **bidirectional queri
 
 1. A new approved model revision or proposed design change emits a `MappingChangeEvent`.
 2. The impact engine traverses directly and indirectly connected mappings, recording paths and versions.
-3. Rules classify impacted objects as `design_change_required`, `review_required`, or `no_impact` based on the actual change type and relationship semantics (see `docs/architecture-governance-spec.md`).
+3. Rules classify impacted objects as `design_change_required`, `review_required`, or `no_impact` based on the actual change type and relationship semantics (see `docs/design/architecture-governance-spec.md`).
 4. AI proposes changes to affected architecture models and documents, referencing original source evidence and patterns.
 5. Level owners validate and approve changes before a new consistent architecture baseline is published.
 6. Historical entity instance versions, prior mappings and old approved baselines remain queryable.

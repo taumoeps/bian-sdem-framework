@@ -1,4 +1,4 @@
-"""Generate docs/controls-register.md from metamodel/controls.json: every control that enforces the rulebook (metamodel),
+"""Generate docs/reference/controls-register.md from metamodel/controls.json: every control that enforces the rulebook (metamodel),
 where it runs, where its outcome is recorded, what monitors it, and the known gaps.
 Usage: python -m sdem.controls [--check]
 """
@@ -8,7 +8,7 @@ from pathlib import Path
 from .metamodel import ROOT
 
 SRC = ROOT / 'metamodel' / 'controls.json'
-OUT = ROOT / 'docs' / 'controls-register.md'
+OUT = ROOT / 'docs' / 'reference' / 'controls-register.md'
 
 
 def render():
@@ -36,7 +36,8 @@ def render():
 
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem-controls'); ap.add_argument('--check', action='store_true'); a = ap.parse_args(argv)
-    t = render()
+    from .docmap import relink
+    t = relink(render(), OUT)
     if a.check:
         ok = OUT.exists() and OUT.read_text(encoding='utf-8') == t
         print(f"{OUT.name}: {'up to date' if ok else 'STALE: regenerate with python -m sdem.controls'}"); return 0 if ok else 1

@@ -1,4 +1,4 @@
-"""The main dashboard, `sdem home` (docs/sdem-dashboard-spec.md DB-H01…H06): SDEM itself and every project in use."""
+"""The main dashboard, `sdem home` (docs/design/sdem-dashboard-spec.md DB-H01…H06): SDEM itself and every project in use."""
 import json, re, shutil, sys, tempfile, unittest
 from pathlib import Path
 

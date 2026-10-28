@@ -1,4 +1,4 @@
-"""§11 Service specifications for docs/knowledge-graph-spec.md (rendered by sdem.kgspec).
+"""§11 Service specifications for docs/design/knowledge-graph-spec.md (rendered by sdem.kgspec).
 
 Each service: purpose, interface, inputs, behaviour, outputs, errors, what it records, status. The graph loader is
 specified from sdem/graph.py as it runs today, with the target behaviour marked; the other services are target design.

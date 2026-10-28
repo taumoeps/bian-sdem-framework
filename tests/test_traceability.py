@@ -1,10 +1,11 @@
 """Traceability gate: the official-mapping file, the planning document and the connector diagram agree."""
+from sdem.docmap import relink
 import json, re, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = json.loads((ROOT / 'metamodel/official-mappings.json').read_text())
-DOC = (ROOT / 'docs/mapping-logic-planning.md').read_text()
+DOC = (ROOT / 'docs/design/mapping-logic-planning.md').read_text()
 PUML = (ROOT / 'metamodel/official-mappings.puml').read_text()
 IDS = {m['id'] for m in DATA['mappings']}
 GAP = json.loads((ROOT / 'metamodel/relationship-rules.json').read_text())
@@ -86,7 +87,7 @@ class NewMappingsDiagramTests(unittest.TestCase):
             self.assertIn(f": {m['id']} ", text)
 
     def test_planning_document_embeds_the_new_diagram(self):
-        doc = (ROOT / 'docs/mapping-logic-planning.md').read_text(encoding='utf-8')
+        doc = (ROOT / 'docs/design/mapping-logic-planning.md').read_text(encoding='utf-8')
         self.assertIn((ROOT / 'metamodel/relationship-rules.puml').read_text(encoding='utf-8'), doc)
 
 
@@ -134,7 +135,7 @@ class OfficialRowsAreConstraintsTests(unittest.TestCase):
 class RelationshipsPlanningTests(unittest.TestCase):
     def test_document_equals_render_from_json(self):
         from sdem.relationships import render
-        self.assertEqual((ROOT / 'docs/relationships-planning.md').read_text(encoding='utf-8'), render())
+        self.assertEqual((ROOT / 'docs/reference/relationships-planning.md').read_text(encoding='utf-8'), relink(render(), ROOT / 'docs/reference/relationships-planning.md'))
 
     def test_every_row_has_id_and_provenance_fields(self):
         lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
@@ -166,7 +167,7 @@ class PlanTableStepAndConfidenceTests(unittest.TestCase):
     def test_step_and_confidence_columns_match_json(self):
         import re
         nm = {m['id']: m for m in json.loads((ROOT / 'metamodel/relationship-rules.json').read_text(encoding='utf-8'))['mappings']}
-        doc = (ROOT / 'docs/mapping-logic-planning.md').read_text(encoding='utf-8')
+        doc = (ROOT / 'docs/design/mapping-logic-planning.md').read_text(encoding='utf-8')
         sec = doc[doc.index('### 5.3 New mappings'):doc.index('### 5.4')]
         seen = 0
         for mo in re.finditer(r"^\| (S\d+|B\d+) \| (?:[^|]*\| ){4}([^|]*?) \| (\*\*\w+\*\*|\w+) \| ", sec, flags=re.M):
@@ -179,11 +180,11 @@ class PlanTableStepAndConfidenceTests(unittest.TestCase):
 class DesignSpecTests(unittest.TestCase):
     def test_spec_equals_render_from_records(self):
         from sdem.spec import render
-        self.assertEqual((ROOT / 'docs/relationship-rules-spec.md').read_text(encoding='utf-8'), render())
+        self.assertEqual((ROOT / 'docs/design/relationship-rules-spec.md').read_text(encoding='utf-8'), relink(render(), ROOT / 'docs/design/relationship-rules-spec.md'))
 
     def test_every_requirement_is_traced(self):
         import re
-        doc = (ROOT / 'docs/relationship-rules-spec.md').read_text(encoding='utf-8')
+        doc = (ROOT / 'docs/design/relationship-rules-spec.md').read_text(encoding='utf-8')
         idx = doc[doc.index('## 10. Requirements index'):]
         rows = [l for l in idx.splitlines() if l.startswith('| REQ-')]
         self.assertGreaterEqual(len(rows), 30)
@@ -202,7 +203,7 @@ class DesignDiagramTests(unittest.TestCase):
     def test_design_diagram_equals_render_and_carries_every_id(self):
         from sdem.spec import render_diagram
         from sdem.diagram import load_new, new_entries
-        text = (ROOT / 'docs/architecture-model-diagram.puml').read_text(encoding='utf-8')
+        text = (ROOT / 'docs/design/architecture-model-diagram.puml').read_text(encoding='utf-8')
         self.assertEqual(text, render_diagram())
         lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
         for c in lr['constraints']:
@@ -212,7 +213,7 @@ class DesignDiagramTests(unittest.TestCase):
 
     def test_every_convention_key_has_an_id_in_the_record_and_the_spec(self):
         conv = json.loads((ROOT / 'metamodel/export-conventions.json').read_text(encoding='utf-8'))
-        doc = (ROOT / 'docs/relationship-rules-spec.md').read_text(encoding='utf-8')
+        doc = (ROOT / 'docs/design/relationship-rules-spec.md').read_text(encoding='utf-8')
         for ent, keys in conv['conventions'].items():
             for k in keys:
                 kid = conv['key_ids'][f'{ent}.{k}']; self.assertIn(f"| {kid} | {ent} | `{k}` |", doc)
@@ -221,10 +222,10 @@ class DesignDiagramTests(unittest.TestCase):
 class KnowledgeGraphSpecTests(unittest.TestCase):
     def test_kg_spec_equals_render(self):
         from sdem.kgspec import render
-        self.assertEqual((ROOT / 'docs/knowledge-graph-spec.md').read_text(encoding='utf-8'), render())
+        self.assertEqual((ROOT / 'docs/design/knowledge-graph-spec.md').read_text(encoding='utf-8'), relink(render(), ROOT / 'docs/design/knowledge-graph-spec.md'))
 
     def test_every_registry_relationship_and_schema_field_is_specified(self):
-        doc = (ROOT / 'docs/knowledge-graph-spec.md').read_text(encoding='utf-8')
+        doc = (ROOT / 'docs/design/knowledge-graph-spec.md').read_text(encoding='utf-8')
         reg = json.loads((ROOT / 'schema/relationship-types.json').read_text(encoding='utf-8'))
         for r in reg['relationships']:
             self.assertIn(r['mapping_type_id'], doc)
@@ -241,14 +242,14 @@ class MappingModelDocsAlignTests(unittest.TestCase):
         from collections import Counter
         from sdem.metamodel import Metamodel
         from sdem.diagram import new_entries, load_new
-        doc = (ROOT / 'docs/sdem-overview.md').read_text(encoding='utf-8')
+        doc = (ROOT / 'docs/sdem-rulebook-guide.md').read_text(encoding='utf-8')
         sec = doc[doc.index('## The architecture model in numbers'):doc.index('## Reading the architecture-model diagram')]
         counts = [int(x) for x in re.findall(r"^\| [^|]+ \| (\d+) \|", sec, flags=re.M)]
         lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
         nm = json.loads((ROOT / 'metamodel/relationship-rules.json').read_text(encoding='utf-8'))['mappings']
         reg = json.loads((ROOT / 'schema/relationship-types.json').read_text(encoding='utf-8'))['relationships']
         conv = json.loads((ROOT / 'metamodel/export-conventions.json').read_text(encoding='utf-8'))
-        spec = (ROOT / 'docs/relationship-rules-spec.md').read_text(encoding='utf-8')
+        spec = (ROOT / 'docs/design/relationship-rules-spec.md').read_text(encoding='utf-8')
         reqs = len([l for l in spec[spec.index('## 10. Requirements index'):].splitlines() if l.startswith('| REQ-')])
         expected = [len(Metamodel.load().entities), len(lr['constraints']), len(reg), len(nm), len(new_entries(load_new())),
                     Counter(m['rule_decision'] for m in nm)['registry_rule'], len(conv['key_ids']), reqs]
@@ -256,26 +257,26 @@ class MappingModelDocsAlignTests(unittest.TestCase):
 
     def test_diagram_title_counts_match(self):
         from sdem.diagram import new_entries, load_new
-        text = (ROOT / 'docs/architecture-model-diagram.puml').read_text(encoding='utf-8')
+        text = (ROOT / 'docs/design/architecture-model-diagram.puml').read_text(encoding='utf-8')
         lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
         self.assertIn(f"{len(lr['constraints'])} within-level rows", text)
         self.assertIn(f"{len(new_entries(load_new()))} cross-level rules", text)
 
     def test_shared_terms_and_no_stale_term(self):
-        for f in ('docs/sdem-overview.md', 'docs/relationship-rules-spec.md'):
+        for f in ('docs/sdem-overview.md', 'docs/sdem-rulebook-guide.md', 'docs/design/relationship-rules-spec.md'):
             t = (ROOT / f).read_text(encoding='utf-8')
             t = '\n'.join(l for l in t.splitlines() if 'Until v0.6.2 it was called SDMM' not in l)  # the one documented historical mention
             for term in ('relationship rules model', 'relationship registry', 'architecture metamodel'):
                 self.assertIn(term, t.lower(), f)
             for stale in ('mapping document', 'mapping set', 'mapping model', 'SDMM'):
                 self.assertNotIn(stale, t, f)
-        puml = (ROOT / 'docs/architecture-model-diagram.puml').read_text(encoding='utf-8')
+        puml = (ROOT / 'docs/design/architecture-model-diagram.puml').read_text(encoding='utf-8')
         self.assertIn('relationship registry', puml.lower()); self.assertNotIn('mapping set', puml.lower())
 
 
 class KnowledgeGraphDesignTests(unittest.TestCase):
     def test_example_counts_match_the_payment_initiation_estate(self):
-        doc = (ROOT / 'docs/knowledge-graph-design.md').read_text(encoding='utf-8')
+        doc = (ROOT / 'docs/design/knowledge-graph-design.md').read_text(encoding='utf-8')
         P = ROOT / 'examples/payment-initiation'
         for lvl, f in (('A1', 'a1-business.json'), ('A2', 'a2-service-domain.json'), ('A3', 'a3-application.json'), ('A4', 'a4-technology.json')):
             d = json.loads((P / f).read_text(encoding='utf-8'))
@@ -284,14 +285,14 @@ class KnowledgeGraphDesignTests(unittest.TestCase):
         self.assertIn(f"| {len(approved)} approved cross-architecture links |", doc)
 
     def test_linked_from_spec_and_overview(self):
-        self.assertIn('knowledge-graph-design.md', (ROOT / 'docs/knowledge-graph-spec.md').read_text(encoding='utf-8'))
+        self.assertIn('knowledge-graph-design.md', (ROOT / 'docs/design/knowledge-graph-spec.md').read_text(encoding='utf-8'))
         self.assertIn('knowledge-graph-design.md', (ROOT / 'docs/sdem-overview.md').read_text(encoding='utf-8'))
 
 
 class ServiceSpecTests(unittest.TestCase):
     def test_every_service_is_fully_specified_and_maps_to_a_component(self):
         from sdem.kgspec_services import SERVICES
-        doc = (ROOT / 'docs/knowledge-graph-spec.md').read_text(encoding='utf-8')
+        doc = (ROOT / 'docs/design/knowledge-graph-spec.md').read_text(encoding='utf-8')
         self.assertEqual([s['id'] for s in SERVICES], [f'SVC-0{i}' for i in range(1, 8)])
         for s in SERVICES:
             for k in ('purpose', 'interface', 'inputs', 'steps', 'valid', 'target', 'records', 'status'):
@@ -311,7 +312,7 @@ class PackagingTests(unittest.TestCase):
 class EntityCatalogueDocTests(unittest.TestCase):
     def test_doc_is_current_and_every_entity_has_reasoning_and_confidence(self):
         from sdem.catalogue import render
-        self.assertEqual((ROOT / 'docs/architecture-entity-design.md').read_text(encoding='utf-8'), render())
+        self.assertEqual((ROOT / 'docs/reference/architecture-entity-design.md').read_text(encoding='utf-8'), relink(render(), ROOT / 'docs/reference/architecture-entity-design.md'))
         import glob
         for f in glob.glob(str(ROOT / 'metamodel/a[1-4]-*.json')):
             for e in json.loads(Path(f).read_text(encoding='utf-8'))['entities']:
@@ -321,7 +322,7 @@ class EntityCatalogueDocTests(unittest.TestCase):
 class AttributeDesignTests(unittest.TestCase):
     def test_doc_is_current_and_records_are_complete(self):
         from sdem.attributes import render, load
-        self.assertEqual((ROOT / 'docs/architecture-attribute-design.md').read_text(encoding='utf-8'), render())
+        self.assertEqual((ROOT / 'docs/reference/architecture-attribute-design.md').read_text(encoding='utf-8'), relink(render(), ROOT / 'docs/reference/architecture-attribute-design.md'))
         rec = load(); ids = [a['id'] for a in rec['attributes']]
         self.assertEqual(len(ids), len(set(ids)))
         from sdem.metamodel import Metamodel
@@ -401,7 +402,7 @@ class ConfidenceRuleTests(unittest.TestCase):
 class LogicalDataModelTests(unittest.TestCase):
     def test_doc_current_and_model_complete(self):
         from sdem.logical import render
-        self.assertEqual((ROOT / 'docs/logical-data-model.md').read_text(encoding='utf-8'), render())
+        self.assertEqual((ROOT / 'docs/reference/logical-data-model.md').read_text(encoding='utf-8'), relink(render(), ROOT / 'docs/reference/logical-data-model.md'))
         from sdem.metamodel import Metamodel
         mm = Metamodel.load()
         lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))

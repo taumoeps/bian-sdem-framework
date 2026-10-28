@@ -1,6 +1,6 @@
 # Protecting the repository — so a person approves what matters
 
-> **Status: CODEOWNERS added 2026-10-28; branch protection is a GitHub setting the owner turns on (steps below).** Why: [`sdem-agent-platform-principles.md`](sdem-agent-platform-principles.md) §3.
+> **Status: CODEOWNERS added 2026-10-28; branch protection is a GitHub setting the owner turns on (steps below).** Why: [`sdem-agent-platform-principles.md`](design/sdem-agent-platform-principles.md) §3.
 
 SDEM's controls refuse bad data and refuse an agent's or tool's name as a reviewer (CTL-21). They **cannot** stop someone, or an agent with a terminal, from typing a person's name. The final safeguard is GitHub: **nothing reaches `main` without a pull request that a person reviews and the checks pass.** That is a repository setting, not code — until it is on, approval by a reviewed pull request is a practice, not a control.
 
@@ -37,7 +37,7 @@ In your organisation's copy, replace `@taumoeps` with the approving architects o
 
 - All changes — yours, Claude Code's, Copilot agents' — go through a branch and a pull request; `git push` to `main` is refused.
 - Claude Code works on a branch and opens a pull request only with your approval; you review and merge.
-- The agent platform's flow is unchanged: agents propose change sets on a branch; a person reviews and merges (docs/sdem-agent-platform-design.md).
+- The agent platform's flow is unchanged: agents propose change sets on a branch; a person reviews and merges (docs/design/sdem-agent-platform-design.md).
 
 ## 4. Check it works
 

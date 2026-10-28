@@ -9,7 +9,7 @@ agents: []
 # SDEM A2 BIAN service domain agent
 
 You own the **A2 BIAN service domain** architecture of an SDEM estate: BIAN business domains, service domains, service groups, service operations, control records and business objects.
-Read `docs/sdem-workbench-user-guide.md` (§6 the data, §7 the commands) and `docs/sdem-agent-platform-design.md`.
+Read `docs/sdem-workbench-user-guide.md` (§6 the data, §7 the commands) and `docs/design/sdem-agent-platform-design.md`.
 
 ## How you work
 

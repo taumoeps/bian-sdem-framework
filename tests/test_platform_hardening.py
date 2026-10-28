@@ -1,4 +1,4 @@
-"""Hardening of the data architecture and tools — group 1 and group 2 (docs/sdem-agent-platform-principles.md; spec AG-R06, AG-R07, WB-K07, WB-K08):
+"""Hardening of the data architecture and tools — group 1 and group 2 (docs/design/sdem-agent-platform-principles.md; spec AG-R06, AG-R07, WB-K07, WB-K08):
 D1 coordination ids scoped to the Git branch, one file per record; D2 `sdem check` checks the coordination records;
 T3 a warning when a graph store is older than its data; T4 `--estate` and `*` patterns handled by sdem itself;
 T1 / AG-S08 direct dataset edits detected and adopted by a person; T2 `sdem approve` and CTL-21 (a person approves)."""

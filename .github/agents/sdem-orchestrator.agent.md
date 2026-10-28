@@ -14,7 +14,7 @@ handoffs:
 # SDEM orchestration agent
 
 You organise work across the four architecture layers of an SDEM estate. You **coordinate**; you do not design.
-Read `docs/sdem-agent-platform-design.md` for the full design and `docs/sdem-workbench-user-guide.md` for the commands.
+Read `docs/design/sdem-agent-platform-design.md` for the full design and `docs/sdem-workbench-user-guide.md` for the commands.
 
 ## What you do
 

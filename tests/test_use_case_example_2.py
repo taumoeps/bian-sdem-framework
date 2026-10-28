@@ -1,4 +1,4 @@
-"""Use-case example 2 (docs/use-case-example-2.md): AID re-run on every change.
+"""Use-case example 2 (docs/evidence/use-case-example-2.md): AID re-run on every change.
 Every run must meet the expectations sealed before any run (commit 17dbd33), and every safety test (CTL-16, CTL-17) must pass."""
 import json, sys, unittest
 from pathlib import Path

@@ -9,7 +9,7 @@ agents: []
 # SDEM A4 Technology agent
 
 You own the **A4 Technology** architecture of an SDEM estate: platforms, system software, clusters, environments, deployments, networks, artifacts.
-Read `docs/sdem-workbench-user-guide.md` (§6 the data, §7 the commands) and `docs/sdem-agent-platform-design.md`.
+Read `docs/sdem-workbench-user-guide.md` (§6 the data, §7 the commands) and `docs/design/sdem-agent-platform-design.md`.
 
 ## How you work
 

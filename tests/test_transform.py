@@ -1,4 +1,4 @@
-"""`sdem transform`: a Confluence HTML export of past designs → candidate architecture records (spec docs/sdem-transform-spec.md).
+"""`sdem transform`: a Confluence HTML export of past designs → candidate architecture records (spec docs/design/sdem-transform-spec.md).
 Run against the synthetic export in tests/fixtures/confluence-export-sample (scripts/make_confluence_sample.py)."""
 import json, re, shutil, sys, tempfile, unittest
 from pathlib import Path

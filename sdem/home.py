@@ -1,5 +1,5 @@
 """`sdem home` — the main dashboard: SDEM itself (the metamodel, its relationships, configuration and health) and every
-project (estate) in use, each with its own dashboard (docs/sdem-dashboard-design.md §8, spec DB-H*).
+project (estate) in use, each with its own dashboard (docs/design/sdem-dashboard-design.md §8, spec DB-H*).
 
 Writes a small offline site: <out>/index.html (home) and <out>/projects/<name>.html (one `sdem dashboard` per estate, with a
 link back home). Everything is computed here with SDEM's own functions — the generated-file checks and the engine's
@@ -164,11 +164,11 @@ def components(m, h, projects):
         [f"{ents['A2']} BIAN entity types in the metamodel", f"{recs['A2']} A2 records across the projects"], 'A licensed BIAN catalogue with real BIAN ids — roadmap v0.15', ['entities'])
     add('history', 'Historical Design Repository', 'past designs · decisions · baselines', 'partial', 40, 20,
         'Earlier designs, diagrams and decisions kept unchanged and referenceable beside new BIAN-aligned designs (original design §9, acceptance criteria 6 and 10). Built: sdem transform turns an export of past designs (Confluence, any folder layout) into candidate architecture entities with rules — tables, draw.io and PlantUML diagrams, known names in the text, text in pictures by on-device OCR — each with its source, plus an index of every design; a person reviews, then sdem load puts the kept entities into an estate (checked, recorded; CTL-23 keeps candidates out of any graph).',
-        ['sdem transform inspect · sdem transform run · sdem load', 'metamodel/transform-rules.json (tune without code)', 'docs/sdem-transform-design.md', 'graph store baselines (sdem baseline)'],
+        ['sdem transform inspect · sdem transform run · sdem load', 'metamodel/transform-rules.json (tune without code)', 'docs/design/sdem-transform-design.md', 'graph store baselines (sdem baseline)'],
         ['tested on a synthetic Confluence export (tests/fixtures/confluence-export-sample)', 'candidates never above medium confidence'], 'Run it on the real export (work machine); past-baseline views — roadmap v0.16')
     add('metamodel', 'SDEM Mapping Metamodel & Rules', 'the rulebook', 'built', 40, 160,
         'What may exist in each architecture, how records may be linked inside and between the architectures, and the rules the engine applies — each with its published source, reasoning and confidence.',
-        ['metamodel/ (entity types, links inside, rules, attributes)', 'schema/relationship-types.json (links between)', 'docs/architecture-metamodel-detail-level-spec.md (governing)'],
+        ['metamodel/ (entity types, links inside, rules, attributes)', 'schema/relationship-types.json (links between)', 'docs/design/architecture-metamodel-detail-level-spec.md (governing)'],
         [f"{len(m['entities'])} entity types", f"{len(m['within'])} links allowed inside", f"{len(m['cross'])} link types between", f"{len(m['rules'])} engine rules",
          f"generated documents {'current' if all(g['current'] for g in h['generators']) else 'STALE'}"], 'Rulebook finding G-A-1 (rule S44 step) — owner decision', ['entities', 'within', 'cross', 'rules', 'entitymap'])
     add('engine', 'SDEM Mapping Engine', 'process · information · architecture', 'built', 517, 160,
@@ -177,7 +177,7 @@ def components(m, h, projects):
         [f"{acc_ok} of {len(acc)} acceptance cases pass (run now)" if acc else 'acceptance cases: run in the repository (sdem model accept)', 'CTL-22: engine checked against the rulebook'], 'A blind test case written by someone else', ['rules', 'health'])
     add('aid', 'Architecture Inference Design (AID)', 'planning lane — projects missing layers', 'built', 994, 160,
         'Projects the architecture layers you do not have from the ones you do — forward (business → technology) or reverse — as a projected design with inference confidence, for planning; then compares it with the real design (gap analysis).',
-        ['sdem aid project · check · gaps', 'sdem view --projection', 'docs/aid-design.md'],
+        ['sdem aid project · check · gaps', 'sdem view --projection', 'docs/design/aid-design.md'],
         ([f"use-case example 2: {e2[0]} of {e2[1]} expectations, safety {e2[2]} of {e2[3]}"] if e2 else []) + ['never above medium confidence; name-only evidence low'],
         'AI suggestions through Copilot (AID-D08) — owner decision', ['health'])
     add('validation', 'SDEM Validation & Approval', 'checks · controls · a person approves', 'built', 40, 300,

@@ -1,4 +1,4 @@
-"""The GitHub Copilot set-up in .github/ (docs/sdem-workbench-spec.md WB-C01…C06; docs/sdem-agent-platform-design.md §7.2):
+"""The GitHub Copilot set-up in .github/ (docs/design/sdem-workbench-spec.md WB-C01…C06; docs/design/sdem-agent-platform-design.md §7.2):
 agents, prompt files and skills load only if their names and frontmatter are right, and they must name only real sdem commands."""
 import re, sys, unittest
 from pathlib import Path

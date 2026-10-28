@@ -27,5 +27,5 @@ This project is **SDEM, the Service Domain Enterprise Metamodel**: it links an o
 | plan missing layers | `sdem aid project …` |
 | onboard past designs (Confluence) | `sdem transform inspect` · `sdem transform run` → review → `sdem load` (the architect); skill `sdem-onboard-designs`; `docs/sdem-onboarding-workflow.md` |
 | agent platform | `.github/agents/` (orchestrator and A1–A4 layer agents), `sdem change` · `sdem events` · `sdem work` |
-| the rulebook | `metamodel/`, `schema/`; the governing spec `docs/architecture-metamodel-detail-level-spec.md` |
+| the rulebook | `metamodel/`, `schema/`; the governing spec `docs/design/architecture-metamodel-detail-level-spec.md` |
 | example estates | `examples/` — public, made-up data only |

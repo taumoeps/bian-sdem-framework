@@ -1,4 +1,4 @@
-"""Render docs/architecture-entity-design.md — the SDEM Architecture Entity Design: every architecture and entity type,
+"""Render docs/reference/architecture-entity-design.md — the SDEM Architecture Entity Design: every architecture and entity type,
 with source reference, verification, reasoning and confidence, and the design decisions behind them.
 
 Generated from the entity catalogue (metamodel/a1…a4-*.json); the test suite checks it is current.
@@ -9,7 +9,7 @@ import argparse, json
 from sdem.metamodel import Metamodel, MM_DIR, LEVEL_FILES
 from sdem.terms import apply as _terms
 
-DOC = MM_DIR.parent / 'docs' / 'architecture-entity-design.md'
+DOC = MM_DIR.parent / 'docs' / 'reference' / 'architecture-entity-design.md'
 NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
 SOURCE = {'bian_reference': 'BIAN reference', 'bian_aligned': 'aligned to BIAN', 'archimate_native': 'ArchiMate native', 'archimate_aligned': 'aligned to ArchiMate',
           'togaf_informed': 'TOGAF-informed', 'sdem_extension': 'SDEM extension', 'sdmm_extension': 'SDEM extension', 'bank_extension': 'institution extension'}
@@ -76,10 +76,11 @@ def render():
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdem-catalogue', description='Render docs/architecture-entity-design.md from the entity catalogue.')
+    parser = argparse.ArgumentParser(prog='sdem-catalogue', description='Render docs/reference/architecture-entity-design.md from the entity catalogue.')
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args(argv)
-    text = render()
+    from .docmap import relink
+    text = relink(render(), DOC)
     if args.check:
         ok = DOC.exists() and DOC.read_text(encoding='utf-8') == text
         print('up to date' if ok else 'STALE: regenerate with python -m sdem.catalogue'); return 0 if ok else 1

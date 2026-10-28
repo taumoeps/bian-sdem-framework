@@ -2,7 +2,7 @@
   "projection": {
     "projection_id": "PRJ-RUN3",
     "mode": "reverse",
-    "created_by": "sdem-aid",
+    "created_by": "sdem aid",
     "created_at": "2026-10-27T00:00:00+00:00",
     "metamodel_version": "0.4.0",
     "have": [
@@ -71,7 +71,7 @@
       "model_id": "PRJ-RUN3-a1-PROJECTION",
       "model_version": "projection",
       "metamodel_version": "0.4.0",
-      "source_system": "AID-PROJECTION (sdem-aid; not a real architecture dataset)",
+      "source_system": "AID-PROJECTION (sdem aid; not a real architecture dataset)",
       "instances": [
         {
           "id": "PRJ-CAP-SD-PE",
@@ -198,7 +198,7 @@
       "model_id": "PRJ-RUN3-a2-PROJECTION",
       "model_version": "projection",
       "metamodel_version": "0.4.0",
-      "source_system": "AID-PROJECTION (sdem-aid; not a real architecture dataset)",
+      "source_system": "AID-PROJECTION (sdem aid; not a real architecture dataset)",
       "instances": [
         {
           "id": "SD-PI",
@@ -1040,7 +1040,7 @@
       "model_id": "PRJ-RUN3-a3-PROJECTION",
       "model_version": "projection",
       "metamodel_version": "0.4.0",
-      "source_system": "AID-PROJECTION (sdem-aid; not a real architecture dataset)",
+      "source_system": "AID-PROJECTION (sdem aid; not a real architecture dataset)",
       "instances": [
         {
           "id": "APP-PAY-HUB",

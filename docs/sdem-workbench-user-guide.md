@@ -4,7 +4,7 @@
 
 > For architects who are new to SDEM. No prior knowledge assumed. Every command and output in this guide was run on the examples in this project (2026-10-28).
 >
-> Related: [`sdem-workbench-design.md`](sdem-workbench-design.md) (how the workbench is designed) · [`glossary.md`](glossary.md) (every term).
+> Related: [read this first](sdem-overview.md) (what SDEM is) · [glossary](glossary.md) (every term) · [configuration](sdem-configuration.md) and [administration](sdem-administration.md) (setting SDEM up for a team).
 
 **Contents:** [1 What SDEM is](#1-what-sdem-is--in-two-minutes) · [2 Key words](#2-key-words) · [3 Set up](#3-set-up--once) · [4 The workbench screen](#4-the-workbench-screen) · [5 Quick start](#5-quick-start--15-minutes) · [6 Your architecture data](#6-your-architecture-data) · [7 Operations](#7-command-reference) · [8 Workflow examples](#8-workflow-examples) · [9 Working with Copilot](#9-working-with-copilot) · [10 Rules you must know](#10-rules-you-must-know) · [11 Troubleshooting](#11-troubleshooting) · [12 Where to go next](#12-where-to-go-next)
 
@@ -144,7 +144,7 @@ Open `work/dashboard.html` in your browser — or in VS Code: *Command Palette �
 | **AID plans** | with `--projection <folder>`: the projected design beside the real one |
 | **Controls** | every control and when it was last tested |
 
-The page is **read-only**: it shows the exact `sdem` command for every action (with a *copy* button). It is a snapshot — run `sdem dashboard` again after a change. Design: [`sdem-dashboard-design.md`](sdem-dashboard-design.md).
+The page is **read-only**: it shows the exact `sdem` command for every action (with a *copy* button). It is a snapshot — run `sdem dashboard` again after a change. Design: [`sdem-dashboard-design.md`](design/sdem-dashboard-design.md).
 
 ## 5. Quick start — 15 minutes
 
@@ -300,7 +300,7 @@ You don't need to memorise the rules: write the data, run `sdem check`, and it t
 | `sdem designs --estate <dir> [--entity <id>] [--gaps] [--category …] [--status open]` | J9 | the pages onboarded designs came from, and the **gap records** — what did not fit an entity, by category; `sdem trace` also ends with an entity's pages | after a load; to find what still needs a person | — |
 | `sdem designs resolve <gap id …> --estate <dir> --person <you> --note "<what you did>"` · `accept` (same options) · `reopen` | J9 | closes a gap — *resolved* (now recorded in an entity) or *accepted* (deliberately not modelled); reopens one; each step kept in the gap's history | working down the gaps | `sdem designs --gaps --status open` |
 | `sdem diff --git HEAD~1 <registry>` | — | proves approved links were not edited | before a pull request | — |
-| `sdem migrate --estate <dir> --person <you> [--dry-run]` | — | moves an estate to a new rulebook version ([versioning](sdem-rulebook-versioning.md)) | when SDEM says the `metamodel_version` does not match | — |
+| `sdem migrate --estate <dir> --person <you> [--dry-run]` | — | moves an estate to a new rulebook version ([versioning](design/sdem-rulebook-versioning.md)) | when SDEM says the `metamodel_version` does not match | — |
 | `sdem model check` · `regenerate` · `accept` · `examples` | — | maintainers: generated documents, engine acceptance tests, use-case examples | when changing the rulebook | — |
 
 Add `--json` to most commands for machine-readable output (Copilot can read it more reliably).
@@ -512,7 +512,7 @@ A4 deployments: {'projected': 1, 'real': 1, 'matched': 0, …}
 ```
 Each line says how close the plan was: here the domain and component were right, 3 of 5 APIs matched the real method and path, and the real application is deployed twice where AID planned once.
 
-AID also works upwards — e.g. from technology only (`--have a4-technology.json`) it suggests the applications, domains and capabilities that technology appears to support, at low confidence. See [`aid-design.md`](aid-design.md).
+AID also works upwards — e.g. from technology only (`--have a4-technology.json`) it suggests the applications, domains and capabilities that technology appears to support, at low confidence. See [`aid-design.md`](design/aid-design.md).
 
 ### 8.6 Question a proposal or projection
 
@@ -526,7 +526,7 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
 
 ### 8.7 Onboard your existing designs (from Confluence)
 
-> **Design onboarding** — the whole journey, export → transform → review → load → link → approve → build, step by step with the commands and what you will see: [`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md). The **test script** with the expected result of every step: [`use-case-example-4.md`](use-case-example-4.md).
+> **Design onboarding** — the whole journey, export → transform → review → load → link → approve → build, step by step with the commands and what you will see: [`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md). The **test script** with the expected result of every step: [`use-case-example-4.md`](evidence/use-case-example-4.md).
 
 *Goal: turn the organisation's past designs (Confluence pages with tables and draw.io diagrams) into candidate records — on the work machine, without AI, without the content leaving it.*
 
@@ -555,9 +555,9 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
    It checks the whole estate first (nothing is written if anything fails), records the load in `estates/history/loads/` with a reconciliation (candidates = loaded + already there + excluded), and lists the BIAN names found as hints. **What did not fit an entity is kept too**, in `estates/history/designs/design-records.json`: a *design record* per page (its facts, coverage, link) and a *gap record* per item that did not fit (a table of risks, an unmapped column, text, pictures, a PDF, each candidate you rejected). Add `--dry-run` to see what would happen.
 7. Then as for any estate: `sdem link --estate estates/history --out work/links` → `sdem review` → `sdem approve` → `sdem build`. Links involving entities read from a document come out at **low** confidence — check them against the page. A graph is never built straight from the transform's output (CTL-23).
 
-The transform writes **candidate A1, A3 and A4 entities** (never A2 — BIAN service domains come from the BIAN catalogue; BIAN names found are listed as mentions) and the links inside each architecture, with evidence. Expected outputs: [`sdem-transform-design.md`](sdem-transform-design.md) §4. It does not change the metamodel, approve links between architectures, or build the knowledge graph — those come after you load the entities (`sdem load`, then `sdem link`, `sdem approve`, `sdem build`). Load: [`sdem-load-design.md`](sdem-load-design.md).
+The transform writes **candidate A1, A3 and A4 entities** (never A2 — BIAN service domains come from the BIAN catalogue; BIAN names found are listed as mentions) and the links inside each architecture, with evidence. Step by step, with what you will see: the [onboarding workflow](sdem-onboarding-workflow.md). It does not change the metamodel, approve links between architectures, or build the knowledge graph — those come after you load the entities (`sdem load`, then `sdem link`, `sdem approve`, `sdem build`). Load: [`sdem-load-design.md`](design/sdem-load-design.md).
 
-Try it on the made-up sample first: `sdem transform run tests/fixtures/confluence-export-sample -o work/history`. Design: [`sdem-transform-design.md`](sdem-transform-design.md).
+Try it on the made-up sample first: `sdem transform run tests/fixtures/confluence-export-sample -o work/history`. If your designs use table headings SDEM does not recognise: [configuration — onboarding](sdem-configuration.md#onboarding--reading-your-designs).
 
 > **Never** put the real export or its outputs in a public repository or paste them into an AI chat outside what your organisation allows.
 
@@ -597,7 +597,7 @@ The project includes five Copilot agents (`.github/agents/`): **sdem-orchestrato
 - Agents never talk to each other directly — they coordinate through the work items and change events SDEM records in the estate's `coordination/` folder.
 - You still approve, by merging the pull request.
 
-Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem-agent-platform-spike.md)): ask **sdem-a4-technology** to rehost the production payments cluster, then ask **sdem-orchestrator** to *"process the open change events"*. The full flow, with real output, is in [`use-case-example-3.md`](use-case-example-3.md); the design in [`sdem-agent-platform-design.md`](sdem-agent-platform-design.md).
+Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem-agent-platform-spike.md)): ask **sdem-a4-technology** to rehost the production payments cluster, then ask **sdem-orchestrator** to *"process the open change events"*. The full flow, with real output, is in [`use-case-example-3.md`](evidence/use-case-example-3.md); the design in [`sdem-agent-platform-design.md`](design/sdem-agent-platform-design.md).
 
 ## 10. Rules you must know
 
@@ -636,9 +636,9 @@ Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem
 | To learn … | Read |
 |---|---|
 | how SDEM fits together | [`sdem-overview.md`](sdem-overview.md) |
-| how the workbench is designed, with diagrams | [`sdem-workbench-design.md`](sdem-workbench-design.md) |
-| the rules in full (the governing spec) | [`architecture-metamodel-detail-level-spec.md`](architecture-metamodel-detail-level-spec.md) |
-| how the engine proposes links | [`relationship-rules-spec.md`](relationship-rules-spec.md) |
-| planning with AID | [`aid-design.md`](aid-design.md) · tested in [`use-case-example-2.md`](use-case-example-2.md) |
-| every control and where it is checked | [`controls-register.md`](controls-register.md) |
+| the rulebook: kinds of thing, connections, what SDEM refuses | [the rulebook in plain words](sdem-rulebook-guide.md) |
+| the parts of SDEM and where every file lives | [SDEM architecture](sdem-architecture.md) |
+| setting SDEM up and running it for a team | [configuration](sdem-configuration.md) · [administration](sdem-administration.md) · [operating model](sdem-operating-model.md) |
+| every control and where it is checked | [controls register](reference/controls-register.md) |
+| how SDEM was designed (for builders and reviewers) | [`design/`](design/README.md) |
 | any term | [`glossary.md`](glossary.md) |

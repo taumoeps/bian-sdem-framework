@@ -1,4 +1,4 @@
-"""Design records and gap records — what did not fit an architecture entity, kept beside the estate (docs/sdem-load-design.md §4a).
+"""Design records and gap records — what did not fit an architecture entity, kept beside the estate (docs/design/sdem-load-design.md §4a).
 
 `sdem load` writes <estate>/designs/design-records.json: a design record (DOC-…) per source page or file of an imported
 design, and a gap record (GAP-…) per item that did not fit. `sdem build` turns them into designs.graph.json, beside the

@@ -1,4 +1,4 @@
-"""The rule-based Architecture Relationship Inference Engine (relationship-rules-spec.md; procedure docs/mapping-execution.md).
+"""The rule-based Architecture Relationship Inference Engine (relationship-rules-spec.md; procedure docs/design/mapping-execution.md).
 
 Reads a graph through the graph access layer (sdem/store.py GraphReader), applies the Relationship Rules Model
 (metamodel/relationship-rules.json) in fill-step order, and returns:

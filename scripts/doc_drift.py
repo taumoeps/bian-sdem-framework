@@ -10,9 +10,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 # records kept as written (docs/README.md: Reasoning and evidence; History) — they keep their words
-RECORDS = {'docs/mapping-logic-planning.md', 'docs/mapping-execution.md', 'docs/use-case-testing.md', 'docs/inference-audit.md',
-           'docs/architecture-metamodel-high-level-spec.md', 'docs/relationships-testing.md', 'CHANGELOG.md', 'docs/PUBLICATION_CHECKLIST.md'}
-RECORD_DIRS = ('docs/history/', 'docs/drafts/', 'docs/baseline/', 'tests/fixtures/', 'docs/evidence/')
+RECORDS = {'docs/design/mapping-logic-planning.md', 'docs/design/mapping-execution.md', 'docs/evidence/use-case-testing.md', 'docs/design/inference-audit.md',
+           'docs/design/architecture-metamodel-high-level-spec.md', 'docs/evidence/relationships-testing.md', 'CHANGELOG.md', 'docs/design/PUBLICATION_CHECKLIST.md'}
+RECORD_DIRS = ('docs/history/', 'docs/design/drafts/', 'docs/design/baseline/', 'tests/fixtures/')
 
 RULES = [
     (r'(?<![\w./-])(sdem-graph|sdem-infer|sdem-aid|sdem-accept|sdem-validate|sdem-diff|sdmm-[a-z]+)\b(?![./-])', 'old command name — use `sdem <verb>`'),

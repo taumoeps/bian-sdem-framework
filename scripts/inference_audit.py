@@ -86,5 +86,8 @@ out += ['', '## 4. What would reduce the inference', '',
         '| Adopt AsyncAPI for events | adds a public source for `A3.Event` fields | nothing (public standard) |',
         '| A blind test case | tests the inferred cross-level rules on data their author has not seen | a second author |',
         '| Ask BIAN for the unpublished capability-to-domain mapping (B01) | the largest unsourced cross-level rule, S01 | engagement with BIAN |', '']
-(R / 'docs' / 'inference-audit.md').write_text('\n'.join(out) + '\n')
+import sys; sys.path.insert(0, str(R))
+from sdem.docmap import relink
+_doc = R / 'docs' / 'design' / 'inference-audit.md'
+_doc.write_text(relink('\n'.join(out) + '\n', _doc))
 print({k: dict(v) for k, v in tot.items()}); print('grounded', grounded, 'oracle', oracle, 'all', allitems)

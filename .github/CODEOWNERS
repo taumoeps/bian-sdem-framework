@@ -20,7 +20,7 @@
 
 # the documentation — the frozen high-level spec on its own line, so its review is never missed
 /docs/                      @taumoeps
-/docs/architecture-metamodel-high-level-spec.md   @taumoeps
+/docs/design/architecture-metamodel-high-level-spec.md   @taumoeps
 /README.md                  @taumoeps
 /CONTRIBUTING.md            @taumoeps
 /SECURITY.md                @taumoeps

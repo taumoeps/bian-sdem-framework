@@ -1,9 +1,9 @@
-"""Use-case example 3 — the agent platform carries a change across the architectures (docs/use-case-example-3.md).
+"""Use-case example 3 — the agent platform carries a change across the architectures (docs/evidence/use-case-example-3.md).
 
 Runs the commands the agent files in .github/agents/ instruct — A4 agent, orchestrator, A3 agent, rules engine, architect —
 on a copy of the payment-initiation estate, and the controls with good and bad data. Pass criteria: spec AT-AG-01…08,
 sealed in commit 5cbb0ed. Copilot itself is not run here (that is the spike, docs/sdem-agent-platform-spike.md).
-Writes the evidence pack to docs/evidence/use-case-example-3/ and the results into docs/use-case-example-3.md.
+Writes the evidence pack to docs/evidence/use-case-example-3/ and the results into docs/evidence/use-case-example-3.md.
 Usage: python scripts/use_case_example_3.py
 """
 import contextlib, copy, hashlib, io, json, shutil, subprocess, sys, tempfile
@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from sdem import agents, cli  # noqa: E402
 
-DOC = ROOT / 'docs' / 'use-case-example-3.md'
+DOC = ROOT / 'docs' / 'evidence' / 'use-case-example-3.md'
 EVID = ROOT / 'docs' / 'evidence' / 'use-case-example-3'
 SRC = ROOT / 'examples' / 'payment-initiation'
 T = '2026-10-28T00:00:00+00:00'                 # fixed, so the evidence is reproducible
@@ -251,7 +251,8 @@ def main():
     text = DOC.read_text(encoding='utf-8')
     if '## Results' in text: text = text[:text.index('## Results')]
     text = text.replace('> **Status: plan.**', f"> **Status: run {R['date']} — criteria sealed before the run (spec commit 5cbb0ed; plan commit 84dc327).**")
-    DOC.write_text(text.rstrip('\n') + '\n\n' + render(R), encoding='utf-8')
+    from sdem.docmap import relink
+    DOC.write_text(relink(text.rstrip('\n') + '\n\n' + render(R), DOC), encoding='utf-8')
     print(render(R).split('\n')[2])
     import sdem.controls as sc; sc.main([])
     return 0 if all(c['pass'] for c in R['criteria']) and all(x['pass'] for x in R['controls_tests']) else 1

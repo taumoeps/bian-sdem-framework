@@ -1,4 +1,4 @@
-"""Render docs/architecture-attribute-design.md — the SDEM Architecture Attribute Design: the fields every instance carries
+"""Render docs/reference/architecture-attribute-design.md — the SDEM Architecture Attribute Design: the fields every instance carries
 and each entity type's own attributes, with source reference, verification, reasoning and confidence.
 
 Generated from metamodel/entity-attributes.json; the test suite checks it is current.
@@ -10,7 +10,7 @@ from sdem.metamodel import MM_DIR
 from sdem.terms import apply as _terms
 
 REC = MM_DIR / 'entity-attributes.json'
-DOC = MM_DIR.parent / 'docs' / 'architecture-attribute-design.md'
+DOC = MM_DIR.parent / 'docs' / 'reference' / 'architecture-attribute-design.md'
 NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
 
 
@@ -84,10 +84,11 @@ def render(rec=None):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdem-attributes', description='Render docs/architecture-attribute-design.md from metamodel/entity-attributes.json.')
+    parser = argparse.ArgumentParser(prog='sdem-attributes', description='Render docs/reference/architecture-attribute-design.md from metamodel/entity-attributes.json.')
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args(argv)
-    text = render()
+    from .docmap import relink
+    text = relink(render(), DOC)
     if args.check:
         ok = DOC.exists() and DOC.read_text(encoding='utf-8') == text
         print('up to date' if ok else 'STALE: regenerate with python -m sdem.attributes'); return 0 if ok else 1

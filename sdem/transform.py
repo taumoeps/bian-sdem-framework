@@ -1,7 +1,7 @@
 """`sdem transform` — read a Confluence HTML export of past designs and turn it into candidate architecture records.
 
 Rules only: no AI, no network, Python standard library only, so it runs on a locked-down machine. What it reads
-(docs/sdem-transform-design.md; spec HI-*):
+(docs/design/sdem-transform-design.md; spec HI-*):
   tables          → records, by their column headings (rules HT-*), and links from source/target tables (HL-*)
   draw.io         → records from shapes (ArchiMate type, else colour, label and shape words) and links from lines;
                     read from .drawio/XML attachments, from PNGs and SVGs that carry the diagram inside them
@@ -15,7 +15,7 @@ real until a person confirms it. The rules are in metamodel/transform-rules.json
 
   sdem transform inspect EXPORT_DIR                      what is in the export and which rules match (structure only)
   sdem transform run EXPORT_DIR -o OUT [--known …]       candidate datasets, extraction.json, design-index.json, report
-  then: review the report, `sdem load` the entities you keep (docs/sdem-load-design.md)
+  then: review the report, `sdem load` the entities you keep (docs/design/sdem-load-design.md)
 """
 import argparse, base64, collections, csv, datetime, hashlib, io, json, os, re, sys, urllib.parse, zlib
 import xml.etree.ElementTree as ET

@@ -1,4 +1,4 @@
-"""Render docs/logical-data-model.md — the SDEM Logical Data Model (the platform-independent model).
+"""Render docs/reference/logical-data-model.md — the SDEM Logical Data Model (the platform-independent model).
 
 Assembled from the Architecture Metamodel records: entity types and their identifiers (metamodel/a1…a4-*.json),
 attributes with kinds, allowed values and references (metamodel/entity-attributes.json), within-level relationships
@@ -12,7 +12,7 @@ from sdem.metamodel import Metamodel, MM_DIR, LEVEL_FILES
 from sdem.terms import apply as _terms
 
 ROOT = MM_DIR.parent
-DOC = ROOT / 'docs' / 'logical-data-model.md'
+DOC = ROOT / 'docs' / 'reference' / 'logical-data-model.md'
 NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
 LEFT = {'1..1': '||', '0..1': '|o', '0..*': '}o', '1..*': '}|'}
 RIGHT = {'1..1': '||', '0..1': 'o|', '0..*': 'o{', '1..*': '|{'}
@@ -150,10 +150,11 @@ def render():
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog='sdem-logical', description='Render docs/logical-data-model.md from the Architecture Metamodel records.')
+    ap = argparse.ArgumentParser(prog='sdem-logical', description='Render docs/reference/logical-data-model.md from the Architecture Metamodel records.')
     ap.add_argument('--check', action='store_true')
     args = ap.parse_args(argv)
-    text = render()
+    from .docmap import relink
+    text = relink(render(), DOC)
     if args.check:
         ok = DOC.exists() and DOC.read_text(encoding='utf-8') == text
         print('up to date' if ok else 'STALE: regenerate with python -m sdem.logical'); return 0 if ok else 1

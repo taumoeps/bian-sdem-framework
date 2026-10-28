@@ -4677,7 +4677,7 @@
     {
       "id": "AID-B4",
       "what": "the projection schema (AID-O05) and the view/trace PROJECTED label (AID-O06) were not built",
-      "action": "closed 2026-10-28 — `schema/projection.schema.json`, checked by CTL-17; `sdem-graph view` and `trace` take `--projection`"
+      "action": "closed 2026-10-28 — `schema/projection.schema.json`, checked by CTL-17; `sdem view` and `sdem trace` take `--projection`"
     }
   ],
   "controls": [

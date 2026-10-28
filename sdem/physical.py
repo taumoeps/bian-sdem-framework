@@ -1,5 +1,5 @@
 """Generate the physical data model: one JSON Schema per concrete entity type, schema/entities/<level>/<Entity>.schema.json,
-and its index docs/physical-data-model.md, from the Architecture Metamodel and the attribute record.
+and its index docs/reference/physical-data-model.md, from the Architecture Metamodel and the attribute record.
 
 Each schema is standard JSON Schema 2020-12 using only keywords the built-in validator also checks (type, enum,
 pattern, required, items, minimum, maximum), so adapters can validate an instance with any JSON Schema tool. Source
@@ -15,7 +15,7 @@ from .conformance import definitions, model
 from .metamodel import Metamodel, MM_DIR, ROOT
 
 OUT = ROOT / 'schema' / 'entities'
-DOC = ROOT / 'docs' / 'physical-data-model.md'
+DOC = ROOT / 'docs' / 'reference' / 'physical-data-model.md'
 REPO = 'https://github.com/taumoeps/bian-sdem-framework'
 DATE_PATTERN = r'^\d{4}-\d{2}-\d{2}$'
 
@@ -111,9 +111,9 @@ def render():
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog='sdem-physical', description='Generate the per-entity JSON Schemas and docs/physical-data-model.md.')
+    ap = argparse.ArgumentParser(prog='sdem-physical', description='Generate the per-entity JSON Schemas and docs/reference/physical-data-model.md.')
     ap.add_argument('--check', action='store_true'); args = ap.parse_args(argv)
-    files, doc = render(); want = {OUT / k: json.dumps(v, indent=2, ensure_ascii=False) + '\n' for k, v in files.items()}; want[DOC] = doc
+    files, doc = render(); want = {OUT / k: json.dumps(v, indent=2, ensure_ascii=False) + '\n' for k, v in files.items()}; from .docmap import relink; want[DOC] = relink(doc, DOC)
     if args.check:
         stale = [p for p, t in want.items() if not p.exists() or p.read_text(encoding='utf-8') != t]
         stale += [p for p in OUT.glob('*/*.schema.json') if p not in want]

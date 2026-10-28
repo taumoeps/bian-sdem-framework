@@ -1,12 +1,12 @@
 {
   "example": "use-case-example-1",
   "run_date": "2026-10-29",
-  "code_commit": "52d3cf5a8270c5e11743a3dc57d8edd6ccf4b9a6",
+  "code_commit": "5a4c939f37da7383cfe5ec5d0c198167de928c55",
   "script": "scripts/use_case_example_1.py",
-  "script_sha256": "d47839cf40884002e21b71219d07bd5b386de7fa7b0900ef4a8dcb6ee19c8088",
+  "script_sha256": "458fd9e2b11fb2116896bbd335925ffefb273a410a9f1113bbb63b4e0820791c",
   "files": {
     "run1-01-check.json": "7e453d8d58a063d59c4135b34f5832082c9f12783d512a132ea4d14e6b7b2496",
-    "run1-02-load-record.json": "656a4118ec0a869fadc344f4732f5fc26ab243c1efa9c725b7c8c977d00a08fe",
+    "run1-02-load-record.json": "ada745b6e077b02cd729069b0dbb39879936874b248dbcf5f8dbe0acd49f3ac8",
     "run1-03-proposals.json": "5081124f795b91b4727d26128784ac8ecd436ae9dbf9aed8f064b259cb294b3e",
     "run1-04-inference-log.json": "b6c2a73002e7e10d44b4c27fa09839c6cc4d52b050f14d611c8fac74f51e288d",
     "run1-05-score.json": "dcc636692aaf706630c14a6a225d28ffa241c36e497cb409aad2e1f8e39dfeca",
@@ -16,7 +16,7 @@
     "run1-09-approved-registry.json": "4b47b184eb4eb3404e163422bd8ee2c02d95f6f8fb105773d3644f4f855576d6",
     "run1-09b-proposed-to-approved.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
     "run1-10-edit-after-approval.json": "16d78263361cf76fe469671c25429e896131609cb0d2b048c2ec5bf3f3d7d7b3",
-    "run1-11-load-record.json": "40e681029109069e96abd7dfb81b39fc0b0cbfe7a2fc3e933ee5e34682faee99",
+    "run1-11-load-record.json": "b6259d86e81ced68e609480a79eba152bed54a6e43f3b13dfa48eaf78b7b4f4a",
     "run1-12-trace-and-impact.json": "848a3065a9d0c858a0bbb62775f9256a922a5a18b54930389c841187a794dcf3",
     "run1-13-schemas.json": "0481e5824230bdfb5fb18448ee2fae73f5f2f478603e1ddb317fadca0b19e2ea",
     "run1-14-approved-links-resolve.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
@@ -30,14 +30,14 @@
     "run2-3-disallowed-link.json": "60a15b236caeac793eed9fd892d287583ac38dabee4e8db8115ce0c889c64d16",
     "run2-4-wrong-link-type.json": "d1bd63d236175a5239308827035e179b6fd6f25740b65e73e9bbe3c94ee255c4",
     "run2-5a-application-silent.json": "0601e9530ded5a284c89860bee1e9c085a78c1704935779fb298338af7471471",
-    "run2-5b-no-server.json": "c127ee849b8f7cf9b55bf42e85281528a8a19296f0a10ae91d326b9f41710cae",
+    "run2-5b-no-server.json": "e021fc0fb1b34c22518adb43ac17e68d368315e82ddeab137fce7f385654d043",
     "run2-7-rule-without-source.json": "64ce441f7f225bc1ab70f402cffc93c8dc61a44f37ab313c2751b017ea74c533",
     "run2-8-schema-bad-value.json": "91d1d1bb8c4096e16d4ef28139248aabe3c9543086323f9e7aa8a3ca1abe0834",
     "run2-9-dangling-link.json": "92ca82636eccc2d91ec381d8973783424ba88c6a2a074e17f5e89ad1cb7c2092",
-    "run2-10-failed-load.json": "9c7afe467aa86b3d0ea25ba664f0178d90a21e76243ab36221ed4ac35d1a0beb",
+    "run2-10-failed-load.json": "fdd378d6c117e26555635c965eebce0b8d4ac3304c0dbefa94a0bdc024eb58ab",
     "run2-11-confidence-overclaim.json": "a4de11e26b7c7249792ac64ef2b4dce927224444a50334634261cee8fddbdd68",
     "run2-12-stale-document.json": "125756fadd508239767cb89149c316bc545623631db323c22039d14ec7dd9830",
-    "run2-13-high-level-spec-edited.json": "dcae7861852b42d2f6cafeb4c022cac9f395e7f30d61b844c7ccae63a11ce28f",
+    "run2-13-high-level-spec-edited.json": "5be66a2decc4859ecef9627697fcca18dff62cc8b4c2151c1550e5ce9fc57d6d",
     "results.json": "2f5d5c8ddcec9718d7e1774f832ac4527791340d4b6336c944fa4a19a01529b2"
   }
 }

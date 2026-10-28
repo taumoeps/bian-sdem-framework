@@ -1,4 +1,4 @@
-"""Render docs/knowledge-graph-spec.md — the SDEM Knowledge Graph Specification (local and federated graphs).
+"""Render docs/design/knowledge-graph-spec.md — the SDEM Knowledge Graph Specification (local and federated graphs).
 
 Generated from schema/level-model.schema.json, schema/relationship-registry.schema.json, schema/relationship-types.json,
 schema/impact-rules.json, metamodel/level-relationships.json and the entity catalogue, plus the identity,
@@ -11,7 +11,7 @@ from sdem.metamodel import Metamodel, MM_DIR
 from sdem.terms import apply as _terms
 
 ROOT = MM_DIR.parent
-DOC = ROOT / 'docs' / 'knowledge-graph-spec.md'
+DOC = ROOT / 'docs' / 'design' / 'knowledge-graph-spec.md'
 LEVEL_NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
 OWNER = {'A1': 'business architecture', 'A2': 'BIAN alignment (enterprise architecture)', 'A3': 'application architecture', 'A4': 'infrastructure / platform engineering'}
 SOURCE = {'A1': 'EA tool — capability, value-stream and process models', 'A2': 'BIAN workbench / the bank\'s BIAN alignment', 'A3': 'application portfolio, API catalogue, data models', 'A4': 'CMDB, deployment manifests'}
@@ -41,7 +41,7 @@ def render():
         rows = [r for r in REQ if r[1] == g]
         return ['', '| ID | Requirement | Status |', '|---|---|---|'] + [f"| {r[0]} | {r[2]} | {r[4]} |" for r in rows] + ['']
     out = ['# SDEM Knowledge Graph Specification — local and federated graphs', '',
-           '> New to SDEM? Read `docs/sdem-overview.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.', '', '> How the graphs are built and queried, in plain terms: `docs/knowledge-graph-design.md`.', '', 'Generated from the schemas and records by `python -m sdem.kgspec`; the test suite checks it is current. Companion to `docs/relationship-rules-spec.md`, which specifies the engine. This document specifies the graphs: what each holds, how its nodes and edges are shaped, how identity and versions work, what queries it must answer, and how it is loaded. Requirements carry `KG-*` IDs; each says whether it is **built** (in `sdem/graph.py` and the validators) or **not built**.', '']
+           '> New to SDEM? Read `docs/sdem-overview.md` first — it explains how the local graphs, mapping model, mapping engine, mapping set and federated graph fit together.', '', '> How the graphs are built and queried, in plain terms: `docs/design/knowledge-graph-design.md`.', '', 'Generated from the schemas and records by `python -m sdem.kgspec`; the test suite checks it is current. Companion to `docs/design/relationship-rules-spec.md`, which specifies the engine. This document specifies the graphs: what each holds, how its nodes and edges are shaped, how identity and versions work, what queries it must answer, and how it is loaded. Requirements carry `KG-*` IDs; each says whether it is **built** (in `sdem/graph.py` and the validators) or **not built**.', '']
 
     # ---- 1 architecture
     out += ['## 1. Architecture', '',
@@ -81,7 +81,7 @@ def render():
         nodes = [t.split('.')[1] for t, e in mm.entities.items() if e['level'] == l and not e.get('abstract') and not e.get('artefact')]
         keys = sorted({f"{ent.split('.')[1]}.{k}" for ent, ks in conv['conventions'].items() if ent.startswith(l) for k in ks})
         out.append(f"| {LEVEL_NAMES[l]} | {len(nodes)}: {', '.join(nodes)} | {byl[l]} (`R{l}-01` …) | {', '.join(keys)} |")
-    out += ['', 'Every allowed edge is a row in `metamodel/level-relationships.json`, listed with ID, source, reasoning and verification in `docs/relationships-planning.md`. `association` is allowed between any two nodes of one level.', '']
+    out += ['', 'Every allowed edge is a row in `metamodel/level-relationships.json`, listed with ID, source, reasoning and verification in `docs/reference/relationships-planning.md`. `association` is allowed between any two nodes of one level.', '']
     req('L', 'Accept a node only if its `type` resolves to a concrete, non-artefact catalogue entity of the graph\'s level.', 'entity catalogue', 'built')
     req('L', 'Accept an edge only if both ends are nodes of this graph and (source type, kind, target type) matches a constraint row of the level through inheritance, or the kind is `association`.', 'level-relationships.json', 'built')
     req('L', 'Reject the whole architecture dataset, and keep the previously loaded local graph, if any node or edge fails; report every failure.', '`sdem check`; `sdem build` (graph store, GS-B-02)', 'built')
@@ -172,14 +172,14 @@ def render():
      ('C-15', 'Refresh trigger', 'decides when C-03 and C-06 run: on demand, scheduled, event, refresh-on-read', 'source events or queries', 'runs', 'C-03, C-06', '—', 'not built (on demand only)'),
      ('C-16', 'Assistant', 'answers design questions from C-14; runs C-08 and C-10 on request', 'C-14 answers', 'proposals via C-08 only', 'C-14, C-08', 'per DEC-04 — GitHub Copilot Chat (SDEM workbench)', 'not built — Copilot instructions and prompt files (WB-C01…C03)'),
      ('C-17', 'Generators and CI', 'regenerate documents, diagrams, per-entity schemas and the reference-structure estate from C-01; fail the build if any is stale; rerun acceptance cases', 'C-01', 'generated files; pass / fail', 'C-01', '`sdem/diagram.py`, `relationships.py`, `structure.py`, `spec.py`, `kgspec.py`, `catalogue.py`, `attributes.py`, `logical.py`, `physical.py`, `confidence.py`; `.github/workflows/validate.yml`', 'built'),
-     ('C-18', 'AID projector', 'Architecture Inference Design: projects missing layers forward or reverse from the datasets an architect has, using C-01b rules and BIAN patterns; writes a projection package kept apart from C-09 and C-13; gap analysis against real data', 'C-04 (one or more levels), BIAN reference catalogue, C-01, C-01b', 'projection package (`PRJ-` records and links, inference confidence)', 'C-01, C-01b', '`sdem/aid.py` (`sdem aid project`, `check`, `gaps`); `docs/aid-spec.md`', 'built — with `schema/projection.schema.json` and the view and trace overlay'),
+     ('C-18', 'AID projector', 'Architecture Inference Design: projects missing layers forward or reverse from the datasets an architect has, using C-01b rules and BIAN patterns; writes a projection package kept apart from C-09 and C-13; gap analysis against real data', 'C-04 (one or more levels), BIAN reference catalogue, C-01, C-01b', 'projection package (`PRJ-` records and links, inference confidence)', 'C-01, C-01b', '`sdem/aid.py` (`sdem aid project`, `check`, `gaps`); `docs/design/aid-spec.md`', 'built — with `schema/projection.schema.json` and the view and trace overlay'),
     ]
     out += ['| ID | Component | Does | Reads | Writes | Depends on | Lives in | Status |', '|---|---|---|---|---|---|---|---|']
     for row in C: out.append('| ' + ' | '.join(row) + ' |')
     out.append('')
     req('C', 'Build an adapter (C-03) per source tool that writes a valid architecture dataset and fails loudly rather than writing a partial one.', 'C-03', 'not built')
     req('C', 'Build the architecture dataset diff (C-07) so the engine re-checks only changed instances and removals are routed to impact and supersession.', 'C-07', 'not built')
-    req('C', 'Build the engine step logic (C-08) to the mapping-model spec (docs/relationship-rules-spec.md), accepted by reproducing the eleven executor runs.', 'C-08; mapping-model-spec §8', 'not built')
+    req('C', 'Build the engine step logic (C-08) to the mapping-model spec (docs/design/relationship-rules-spec.md), accepted by reproducing the eleven executor runs.', 'C-08; mapping-model-spec §8', 'not built')
     req('C', 'Provide a review queue for C-11 that lists proposals and pending supersessions with their evidence and impact.', 'C-11', 'not built')
     out += ['### 8.1 Component requirements'] + inline('C')
 
@@ -229,10 +229,11 @@ def render():
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdem-kgspec', description='Render docs/knowledge-graph-spec.md from the schemas and records.')
+    parser = argparse.ArgumentParser(prog='sdem-kgspec', description='Render docs/design/knowledge-graph-spec.md from the schemas and records.')
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args(argv)
-    text = render()
+    from .docmap import relink
+    text = relink(render(), DOC)
     if args.check:
         ok = DOC.exists() and DOC.read_text(encoding='utf-8') == text
         print('up to date' if ok else 'STALE: regenerate with python -m sdem.kgspec'); return 0 if ok else 1

@@ -9,6 +9,7 @@ from pathlib import Path
 from collections import Counter
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 CT = {'string': 'text', 'list<string>': 'list of text', 'map<string,string>': 'name map', 'object': 'object'}
 FILES = {'a1': 'a1-business.json', 'a2': 'a2-service-domain.json', 'a3': 'a3-application.json', 'a4': 'a4-technology.json'}
 NAMES = {'a1': 'A1 Business Architecture', 'a2': 'A2 Service Domain Architecture', 'a3': 'A3 Application Architecture', 'a4': 'A4 Technology Architecture'}
@@ -111,8 +112,9 @@ def render(level):
         out += ['## Derived attributes (computed, never stored)', '', '| ID | Entity | Attribute | Rule | Source reference | Reasoning | Confidence |', '|---|---|---|---|---|---|---|']
         out += [f"| {x['id']} | `{x['entity']}` | `{x['name']}` | {x['rule']} | {x['source']} | {x['reasoning']} | **{x['confidence']}** |" for x in d['derived']] + ['']
     out += ['## Decisions for you', ''] + [f"{k}. {q}" for k, q in enumerate(d.get('decisions', []), 1)] + ['']
-    path = ROOT / 'docs' / 'drafts' / f'data-model-{level}-draft.md'
-    path.write_text('\n'.join(out) + '\n'); return path
+    path = ROOT / 'docs' / 'design' / 'drafts' / f'data-model-{level}-draft.md'
+    from sdem.docmap import relink
+    path.write_text(relink('\n'.join(out) + '\n', path)); return path
 
 
 if __name__ == '__main__':

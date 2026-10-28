@@ -1,103 +1,54 @@
-# SDEM documentation — where to read what
+# SDEM documentation
 
-> **Status: current — the index of every document; update it when a document is added, moved or retired.**
+> **Status: current (v0.8.0)** — start here. Everything on this page is written for people who will use or run SDEM; nothing assumes you know it already.
 
-Find your role, start at the top of its list. **Generated** documents are rebuilt from the rulebook (`sdem model regenerate`) — never edit them by hand; **history** documents are records of how SDEM got here and are kept as written.
+## New to SDEM? Read these, in order
 
 ```mermaid
 flowchart LR
-    U["🧑‍💼 <b>Use</b><br/>architects"] --- N["💡 <b>Understand</b><br/>everyone"] --- G["⚖️ <b>Govern</b><br/>owner, reviewers"] --- B["🛠️ <b>Build</b><br/>maintainers"] --- R["📚 <b>Reference</b><br/>generated"] --- T["🧪 <b>Test</b><br/>evidence"] --- E["🧾 <b>Reasoning</b><br/>records"] --- H["🗄️ <b>History</b>"]
+    A["1 · What SDEM is<br/><i>10 minutes</i>"] --> B["2 · Install and try it<br/><i>30 minutes</i>"] --> C["3 · Bring in your designs<br/><i>when you are ready</i>"]
 ```
 
-## 🧑‍💼 Use — architects
-
-| Read | For |
-|---|---|
-| [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md) | **start here**: set-up, the workbench screen, a 15-minute quick start, **the command reference** (§7 — the one full list), workflow examples, troubleshooting |
-| [`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md) | **onboarding your existing designs** (Confluence): the commands in plain words, every step with what you will see, gaps |
-| [`sdem-copilot-setup.md`](sdem-copilot-setup.md) | GitHub Copilot, VS Code, the agents, prompts and skills |
-| [`glossary.md`](glossary.md) | every term in plain words |
-
-## 💡 Understand — everyone
-
-| Read | For |
-|---|---|
-| [`../README.md`](../README.md) | what SDEM is, in pictures — the three layers, how it works, what is built |
-| [`sdem-overview.md`](sdem-overview.md) | the concepts: principles, components and boundaries, the four things that look alike, a worked example |
-| [`knowledge-graph-design.md`](knowledge-graph-design.md) | how the local and federated knowledge graphs are built and queried |
-| [`sdem-agent-platform-principles.md`](sdem-agent-platform-principles.md) | what makes a good agent platform, and how SDEM measures up |
-
-## ⚖️ Govern — owner and reviewers
-
-| Read | For |
-|---|---|
-| [`architecture-metamodel-high-level-spec.md`](architecture-metamodel-high-level-spec.md) | the owner's frozen reference specification (pinned) |
-| [`architecture-metamodel-detail-level-spec.md`](architecture-metamodel-detail-level-spec.md) | **the governing specification** (generated): the high-level spec section by section, with the detail and the gap register |
-| [`controls-register.md`](controls-register.md) | every control: what it enforces, where it runs, its last result (generated) |
-| [`architecture-governance-spec.md`](architecture-governance-spec.md) | approval, supersession, impact |
-| [`sdem-operating-model.md`](sdem-operating-model.md) | running SDEM for real: where things live, roles, how changes and upgrades flow, support, preconditions |
-| [`sdem-pilot-plan.md`](sdem-pilot-plan.md) | the ten-week pilot: one domain, measures, the go / adjust / stop decision |
-| [`../templates/estate-repo/`](../templates/estate-repo/README.md) | the private estate repository template: pinned SDEM, CI checks, code owners |
-| [`../SECURITY.md`](../SECURITY.md) | reporting a problem; keeping real data out of this public repository |
-| [`sdem-repository-protection.md`](sdem-repository-protection.md) | branch protection and code owners — so a person's approval is a control |
-| [`reference-architecture-provenance.md`](reference-architecture-provenance.md) | every entity type traced to a public standard |
-| [`baseline/SDEM-METAMODEL-0.8-review-pack.md`](baseline/SDEM-METAMODEL-0.8-review-pack.md) | the 0.8 baseline, awaiting independent review |
-| [`PUBLICATION_CHECKLIST.md`](PUBLICATION_CHECKLIST.md) · [`ROADMAP.md`](ROADMAP.md) | legal and IP before publication · releases and what is next |
-
-## 🛠️ Build — maintainers
-
-Each feature has a **design** (why and how) and a **spec** (numbered, testable requirements). Start with [`../CONTRIBUTING.md`](../CONTRIBUTING.md).
-
-| Feature | Design | Spec |
+| | Read | For |
 |---|---|---|
-| The workbench (VS Code, CLI, Copilot) | [`sdem-workbench-design.md`](sdem-workbench-design.md) | [`sdem-workbench-spec.md`](sdem-workbench-spec.md) |
-| Graph store | [`graph-store-design.md`](graph-store-design.md) | [`graph-store-spec.md`](graph-store-spec.md) |
-| Dashboards (`sdem dashboard`, `sdem home`) | [`sdem-dashboard-design.md`](sdem-dashboard-design.md) | [`sdem-dashboard-spec.md`](sdem-dashboard-spec.md) |
-| Planning missing layers (AID) | [`aid-design.md`](aid-design.md) | [`aid-spec.md`](aid-spec.md) |
-| Design onboarding — transform | [`sdem-transform-design.md`](sdem-transform-design.md) | [`sdem-transform-spec.md`](sdem-transform-spec.md) |
-| Design onboarding — load, gap records | [`sdem-load-design.md`](sdem-load-design.md) | [`sdem-load-spec.md`](sdem-load-spec.md) |
-| Agent platform | [`sdem-agent-platform-design.md`](sdem-agent-platform-design.md) · [spike](sdem-agent-platform-spike.md) | [`sdem-agent-platform-spec.md`](sdem-agent-platform-spec.md) |
-| Relationship registry | — | [`relationship-registry-spec.md`](relationship-registry-spec.md) |
-| Rulebook versions and `sdem migrate` | — | [`sdem-rulebook-versioning.md`](sdem-rulebook-versioning.md) |
+| 1 | [**SDEM — read this first**](sdem-overview.md) | what SDEM is, the five ideas behind it, a worked example |
+| 2 | [**User guide**](sdem-workbench-user-guide.md) | install, a 15-minute quick start, every task step by step, **the command reference** (§7), troubleshooting |
+| 3 | [**Onboarding your existing designs**](sdem-onboarding-workflow.md) | turning a Confluence export into SDEM data, step by step |
+| — | [Glossary](glossary.md) | any word you do not know |
 
-## 📚 Reference — generated from the rulebook
+## Understanding SDEM
 
 | Read | For |
 |---|---|
-| [`relationship-rules-spec.md`](relationship-rules-spec.md) | the engine's rules (69), decisions and requirements |
-| [`knowledge-graph-spec.md`](knowledge-graph-spec.md) | the graphs' requirements, components and services |
-| [`architecture-entity-design.md`](architecture-entity-design.md) · [`architecture-attribute-design.md`](architecture-attribute-design.md) | every entity type (44) and attribute, with source, reasoning and confidence |
-| [`logical-data-model.md`](logical-data-model.md) · [`physical-data-model.md`](physical-data-model.md) | the data model: one card per entity; one JSON Schema per entity |
-| [`relationships-planning.md`](relationships-planning.md) | every link allowed inside an architecture (132) |
-| `architecture-model-diagram.puml` · `architecture-metamodel-detail-level-spec.puml` | the diagrams |
+| [The rulebook in plain words](sdem-rulebook-guide.md) | the kinds of thing, the nine connections between layers, how sure SDEM is, what it refuses |
+| [SDEM architecture](sdem-architecture.md) | the parts, where every file lives, how a change flows, what checks it, limits |
 
-## 🧪 Test — evidence
+## Setting it up and running it
 
 | Read | For |
 |---|---|
-| [`use-case-example-1.md`](use-case-example-1.md) | four datasets to mappings and the knowledge graph — 30 of 30 |
-| [`use-case-example-2.md`](use-case-example-2.md) | planning missing layers (AID) — 12 of 12, safety 16 of 16 |
-| [`use-case-example-3.md`](use-case-example-3.md) | the agents carry a technology change to an approved link — 8 of 8, controls 19 of 19 |
-| [`use-case-example-4.md`](use-case-example-4.md) | onboarding existing designs, export to build — the test script (replayed on every push) |
-| `tests/test_lending_onboarding.py` | design onboarding on a second domain (lending), expectations sealed first — 18 of 18 records |
-| [`relationships-testing.md`](relationships-testing.md) | how the 132 within-level rows were tested |
-| `evidence/` | the recorded inputs and outputs of each example run |
+| [Operating model](sdem-operating-model.md) | where things live, who does what, how changes and upgrades flow, support |
+| [Configuration](sdem-configuration.md) | everything you can set: estates, the SDEM version, how onboarding reads designs, OCR, reviewers, CI, VS Code, Copilot |
+| [Administration](sdem-administration.md) | installing, upgrading, rulebook changes, backups, health, troubleshooting |
+| [Repository protection](sdem-repository-protection.md) | branch protection and code owners, so a person's approval is enforced |
+| [Copilot set-up](sdem-copilot-setup.md) · [agent spike checklist](sdem-agent-platform-spike.md) | GitHub Copilot and the SDEM agents (optional), and the checklist to try them |
+| [Pilot plan](sdem-pilot-plan.md) | the first ten weeks on real designs |
+| [Estate repository template](../templates/estate-repo/README.md) · [Security](../SECURITY.md) | your private repository for real data · keeping data safe |
 
-## 🧾 Reasoning and evidence behind the rulebook
-
-Cited by the rulebook and the governing specification as *why the rules are shaped this way* and *the runs that tested them*. Records, kept as written — they use some old names (SDMM, *mapping*); see [`history/renamed-from-sdmm.md`](history/renamed-from-sdmm.md).
+## Looking something up
 
 | Read | For |
 |---|---|
-| [`mapping-logic-planning.md`](mapping-logic-planning.md) | why the cross-level rules are shaped as they are (cited by `metamodel/relationship-rules.json`) |
-| [`mapping-execution.md`](mapping-execution.md) | the procedure the engine follows, as first run by hand |
-| [`use-case-testing.md`](use-case-testing.md) | the ten use cases and eleven hand-executed runs that validated the rules |
-| [`inference-audit.md`](inference-audit.md) | how much of SDEM is grounded in a standard, confirmed or inferred (`scripts/inference_audit.py`) |
-| `drafts/` | the A1–A4 data-model reviews (approved 2026-10-24/25) |
+| [Reference](reference/README.md) | generated from the rulebook: every kind of thing and attribute, the data models, the controls register, sources |
 
-## 🗄️ History — no longer current
+---
 
-| Read | For |
-|---|---|
-| [`history/BIAN_SDEM_Design_Specification.md`](history/BIAN_SDEM_Design_Specification.md) | the original design |
-| [`history/`](history/) | early notes (v0.4–v0.5): first mapping notes, the reference-model boundary, data architecture, engine readiness; the SDMM rename |
+## For builders and reviewers — you do not need these to use SDEM
+
+| Folder | Holds | Read it if you |
+|---|---|---|
+| [`design/`](design/README.md) | every design and specification, the governing specs, the roadmap, the reasoning behind the rules | change SDEM, review the rulebook, or want to know *why* |
+| [`evidence/`](evidence/README.md) | the use-case examples and test records, with their recorded results | want proof that something was tested |
+| [`history/`](history/README.md) | documents that are no longer current | are tracing how SDEM got here |
+
+Maintaining SDEM: [CONTRIBUTING.md](../CONTRIBUTING.md).

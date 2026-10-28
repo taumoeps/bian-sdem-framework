@@ -1,4 +1,4 @@
-"""The dashboard and its CLI outputs (docs/sdem-dashboard-spec.md AT-DB-01…05): `sdem dashboard`, `sdem matrix`, `sdem impact --report`.
+"""The dashboard and its CLI outputs (docs/design/sdem-dashboard-spec.md AT-DB-01…05): `sdem dashboard`, `sdem matrix`, `sdem impact --report`.
 The page only displays what SDEM's functions computed, so each figure is checked against the CLI's own answer."""
 import contextlib, glob, io, json, re, shutil, sys, tempfile, unittest
 from pathlib import Path

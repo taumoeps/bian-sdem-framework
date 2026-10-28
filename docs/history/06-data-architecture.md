@@ -2,7 +2,7 @@
 
 > **A record, in its original words.** It uses SDEM's old names (SDMM, *mapping set*, *export*, `sdmm-*` …) — what each means today: [`renamed-from-sdmm.md`](renamed-from-sdmm.md).
 
-> **Current state (2026-10-25).** The v0.4 data-architecture note, kept as a record. Since then `sdem-graph check` also enforces the within-level rows of all four architectures and the data model (attribute types, allowed values, references, keys, link counts); see [`logical-data-model.md`](../logical-data-model.md) and [`physical-data-model.md`](../physical-data-model.md).
+> **Current state (2026-10-25).** The v0.4 data-architecture note, kept as a record. Since then `sdem-graph check` also enforces the within-level rows of all four architectures and the data model (attribute types, allowed values, references, keys, link counts); see [`logical-data-model.md`](../reference/logical-data-model.md) and [`physical-data-model.md`](../reference/physical-data-model.md).
 
 Four kinds of data, three owners, one graph.
 

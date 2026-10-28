@@ -27,7 +27,7 @@ A **change set** is a JSON file with the changes to **one** architecture layer. 
 - `relationships`: links **inside** the layer only (composition, aggregation, association, assignment …). Never a cross-layer link — those come from the rules engine (`sdem link`).
 - Keep `version` as it is unless the real version changed: approved links name the version they point to.
 
-Worked examples (the rehost in use-case example 3): [A4 rehost](./example-a4-rehost.json) · [A3 re-point](./example-a3-repoint.json).
+Worked examples (the rehost in use-case example 3): [A4 rehost](example-a4-rehost.json) · [A3 re-point](example-a3-repoint.json).
 
 ## Propose
 

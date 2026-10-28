@@ -1,4 +1,4 @@
-"""Graph store performance check (docs/graph-store-spec.md GS-X-02, AT-11).
+"""Graph store performance check (docs/design/graph-store-spec.md GS-X-02, AT-11).
 
 Generates a synthetic estate by replicating examples/reference-structure (every within-level row exercised) until it
 reaches the target size, then times build, open and a trace. Usage: python scripts/store_perf.py [target_nodes]

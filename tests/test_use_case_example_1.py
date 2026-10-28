@@ -1,4 +1,4 @@
-"""Use-case example 1 (docs/use-case-example-1.md): the rulebook tests re-run on every change."""
+"""Use-case example 1 (docs/evidence/use-case-example-1.md): the rulebook tests re-run on every change."""
 import sys, unittest
 from pathlib import Path
 

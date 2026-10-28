@@ -1,4 +1,4 @@
-"""Self-contained HTML view of a graph store (docs/graph-store-spec.md §10, GS-V-01…03).
+"""Self-contained HTML view of a graph store (docs/design/graph-store-spec.md §10, GS-V-01…03).
 
 One file: data, script and style inline, no network access. Four horizontal bands A1 (top) … A4 (bottom); within-level
 links inside a band, approved cross-level links between bands. Click a record for its details and links; filter by

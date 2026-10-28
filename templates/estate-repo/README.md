@@ -70,7 +70,7 @@ They show real architecture. Publish them **only** behind your organisation's si
 
 1. On a branch, change the tag in `requirements.txt` to the new release; read its CHANGELOG.
 2. `pip install -r requirements.txt`, then `bash ci/check-estates.sh`.
-3. If SDEM says an estate's `metamodel_version` does not match, the rulebook changed: `sdem migrate --estate estates/<name> --person <you> --dry-run`, then without `--dry-run`. See SDEM's [rulebook versioning](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-rulebook-versioning.md).
+3. If SDEM says an estate's `metamodel_version` does not match, the rulebook changed: `sdem migrate --estate estates/<name> --person <you> --dry-run`, then without `--dry-run`. See SDEM's [rulebook versioning](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/design/sdem-rulebook-versioning.md).
 4. If you use Copilot, copy the `.github/` Copilot files from the new release.
 5. Pull request; CI green; merge.
 

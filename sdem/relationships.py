@@ -1,4 +1,4 @@
-"""Render docs/relationships-planning.md from metamodel/level-relationships.json.
+"""Render docs/reference/relationships-planning.md from metamodel/level-relationships.json.
 
 The JSON is the record of every within-level entity connection (constraint rows per level, plus catalogue
 inheritance); the document is a projection of it, checked current by the test suite.
@@ -9,7 +9,7 @@ from sdem.metamodel import MM_DIR
 from sdem.terms import apply as _terms
 
 LEVEL_RELS = MM_DIR / 'level-relationships.json'
-DOC = MM_DIR.parent / 'docs' / 'relationships-planning.md'
+DOC = MM_DIR.parent / 'docs' / 'reference' / 'relationships-planning.md'
 LEVEL_NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
 LEVEL_SOURCE = {'A1': 'ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business)', 'A2': "BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide",
                 'A3': 'ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations', 'A4': 'ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment'}
@@ -26,9 +26,9 @@ def render(lr=None):
     out = ['# Relationships planning — within-level entity connections', '',
            'Generated from `metamodel/level-relationships.json` by `python -m sdem.relationships`; the test suite checks this file is current. '
            'These are the connections **inside** each architecture (A1–A4), held by each architecture dataset\'s `relationships` list and enforced by `sdem check`. '
-           'They are not mappings: the cross-level connections are planned in `docs/mapping-logic-planning.md` and recorded in `metamodel/relationship-rules.json`.', '',
+           'They are not mappings: the cross-level connections are planned in `docs/design/mapping-logic-planning.md` and recorded in `metamodel/relationship-rules.json`.', '',
            '**Rule.** A within-level relationship is accepted when it matches a row for its level (through catalogue inheritance), or when its kind is `association` — ArchiMate\'s generic relationship, permitted between any two entities of one level and therefore not listed. Every row derives from the reference architecture the level\'s entities derive from (README › *Reference architecture provenance*).', '',
-           '**Inference (A1, A3, A4).** ArchiMate 3.2 and TOGAF 10 are login-gated, so every row outside A2 carries an explicit inference: the ArchiMate concept of each end (SDEM extensions through the concept they extend), the generic-metamodel pattern the row instantiates, the reasoning, SDEM\'s inference confidence, and the independent test — a lookup in the open-source Archi tool\'s relationship matrix (`relationships.xml`, github.com/archimatetool/archi), which implements the specification\'s permitted relationships per concept pair with the letters c composition, g aggregation, i assignment, r realization, v serving, a access, f flow, t triggering, s specialization, o association. The test plan for running those lookups is `docs/relationships-testing.md` §6.', '',
+           '**Inference (A1, A3, A4).** ArchiMate 3.2 and TOGAF 10 are login-gated, so every row outside A2 carries an explicit inference: the ArchiMate concept of each end (SDEM extensions through the concept they extend), the generic-metamodel pattern the row instantiates, the reasoning, SDEM\'s inference confidence, and the independent test — a lookup in the open-source Archi tool\'s relationship matrix (`relationships.xml`, github.com/archimatetool/archi), which implements the specification\'s permitted relationships per concept pair with the letters c composition, g aggregation, i assignment, r realization, v serving, a access, f flow, t triggering, s specialization, o association. The test plan for running those lookups is `docs/evidence/relationships-testing.md` §6.', '',
            '**Confidence and verification.** Confidence follows the single rule applied to every layer of the model (`sdem/confidence.py`): **high** — defined by a public standard and checked (BIAN public material, or a relationship confirmed by the Archi oracle); **medium** — follows from an SDEM extension built on a standard concept, or rests on a login-gated source exercised by the coverage cases; **low** — an SDEM reading with no standard relationship, not validated. Verification: `verified` = checked on BIAN\'s public pages; `verified_against_archi` = confirmed by the open-source Archi relationship matrix (cited by commit below); `sdem_definition` follows from an SDEM extension entity; `sdem_reading` is SDEM\'s reading of a public BIAN page that states no explicit relationship; `unverified_togaf` has no public oracle. The A1/A3/A4 tables also show the *inference confidence* recorded before the oracle test.', '']
     tally = Counter((c['level'], c['confidence']) for c in rows)
     out += ['## Summary', '', '| Level | Reference source | Rows | high | medium | low |', '|---|---|---|---|---|---|']
@@ -75,7 +75,7 @@ def render(lr=None):
         verdicts = _C(c['inference'].get('oracle_verdict', 'not tested') for c in sub)
         out.append(f"| {conf} | {len(sub)} | " + ', '.join(f"{v}: {n}" for v, n in sorted(verdicts.items(), key=lambda x: -x[1])) + ' |')
     log = MM_DIR / 'relationships-test-log.json'
-    out += ['', '## Test history', '', 'The test plan is `docs/relationships-testing.md`; its results sections and `metamodel/relationships-test-log.json` hold the per-row evidence.', '',
+    out += ['', '## Test history', '', 'The test plan is `docs/evidence/relationships-testing.md`; its results sections and `metamodel/relationships-test-log.json` hold the per-row evidence.', '',
             '| Phase | What was tested | Result |', '|---|---|---|',
             '| 1 (2026-10-23) | provenance, grounding, consistency, enforcement probes, coverage, rule dependencies — all 131 rows and 12 inheritance links | 0 fail; 3 artefact rows not enforceable; 6 findings applied in v0.5.17 |',
             f"| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | {oc.get('confirmed', 0)} confirmed, {oc.get('confirmed, alternative accepted', 0)} confirmed via stated alternative, 0 contradicted, {sum(1 for c in rows if c.get('inference') and 'TOGAF' in c['inference']['pattern'])} not testable (TOGAF); applied in v0.5.20 |" + ('' if log.exists() else ' (log file absent)'),
@@ -84,10 +84,11 @@ def render(lr=None):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='sdem-relationships', description='Render docs/relationships-planning.md from metamodel/level-relationships.json.')
+    parser = argparse.ArgumentParser(prog='sdem-relationships', description='Render docs/reference/relationships-planning.md from metamodel/level-relationships.json.')
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args(argv)
-    text = render()
+    from .docmap import relink
+    text = relink(render(), DOC)
     if args.check:
         ok = DOC.exists() and DOC.read_text(encoding='utf-8') == text
         print('up to date' if ok else 'STALE: regenerate with python -m sdem.relationships'); return 0 if ok else 1

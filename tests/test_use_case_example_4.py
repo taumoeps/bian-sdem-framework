@@ -1,4 +1,4 @@
-"""Use-case example 4 — importing past designs from a Confluence export to the knowledge graph (docs/use-case-example-4.md).
+"""Use-case example 4 — importing past designs from a Confluence export to the knowledge graph (docs/evidence/use-case-example-4.md).
 Replays Run A on the made-up export and checks every sealed expected result, so the test script and SDEM cannot drift apart."""
 import contextlib, io, json, os, re, shutil, tempfile, unittest
 from pathlib import Path
