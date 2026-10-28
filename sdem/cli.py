@@ -35,6 +35,8 @@ JOURNEYS = {
                  'sdem aid project --have examples/payment-initiation/a1-business.json --catalogue bian.json --out work/prj'),
     'load':     ('J9', 'load reviewed candidate entities from sdem transform into an estate — selected, checked first, recorded (the L of the ETL)', 'sdem.load', [],
                  'sdem load work/history --estate estates/history --person jane.architect --exclude HIS-A3-X'),
+    'designs':  ('J9', 'design records and gap records: the pages imported designs came from, and what did not fit an entity', 'sdem.designs', [],
+                 'sdem designs --estate estates/history --entity HIS-A3-PAYMENTS-HUB'),
     'transform': ('J9', 'transform an export of past designs (Confluence) into candidate architecture entities: inspect it, extract (rules; on-device OCR for pictures)', 'sdem.transform', [],
                  'sdem transform run tests/fixtures/confluence-export-sample -o work/history --known examples/payment-initiation/a3-application.json'),
     'view':     ('J7', 'write the HTML picture of a graph store, optionally with a projection', 'sdem.graph', ['view'],
@@ -68,13 +70,15 @@ ESTATE_FILES = ('a1-business.json', 'a2-service-domain.json', 'a3-application.js
 ESTATE_COMMANDS = ('check', 'validate', 'link', 'build', 'trace', 'impact', 'matrix')
 
 
-def _estate_files(d, registry_only=False):
-    """An estate folder's files: the architecture datasets it has (one to four — a partial estate is normal) and its registry."""
+def _estate_files(d, registry_only=False, designs=False):
+    """An estate folder's files: the architecture datasets it has (one to four — a partial estate is normal), its registry,
+    and — for check, build, trace and impact — its design records (designs/design-records.json) when it has them."""
     d = Path(d); reg = d / 'mappings.json'
     datasets = [] if registry_only else [d / f for f in ESTATE_FILES if (d / f).exists()]
     if not reg.exists() or (not registry_only and not datasets):
         raise SystemExit(f"sdem: --estate {d}: not an estate folder (it needs mappings.json and at least one of {', '.join(ESTATE_FILES)})")
-    return [str(f) for f in datasets + [reg]]
+    extra = [d / 'designs' / 'design-records.json'] if designs and (d / 'designs' / 'design-records.json').exists() else []
+    return [str(f) for f in datasets + [reg] + extra]
 
 
 def _expand(name, rest):
@@ -87,7 +91,7 @@ def _expand(name, rest):
         i = out.index('--estate')
         if i + 1 >= len(out): raise SystemExit('sdem: --estate needs a folder')
         d = out[i + 1]; del out[i:i + 2]
-        files = _estate_files(d, registry_only=(name == 'validate'))
+        files = _estate_files(d, registry_only=(name == 'validate'), designs=name in ('check', 'build', 'trace', 'impact'))
         out = files + out if name == 'link' else out + files   # link's parser wants paths before its options; trace/impact want the id first
     return out
 

@@ -100,18 +100,22 @@ class FederatedGraph:
         self.registry = registry or load_registry()
         self.levels = {g.level: g for g in levels}
         self.mapping_docs = mapping_docs
+        self.design_records = None   # <estate>/designs/design-records.json, when loaded (beside the architectures, never in them)
 
     @classmethod
     def load(cls, paths, metamodel=None, registry=None):
         """Classify each file by content: architecture datasets have 'level' + 'instances'; mapping docs have 'mappings'."""
+        from .designs import is_design_records
         mm = metamodel or Metamodel.load()
-        levels, docs = [], []
+        levels, docs, design = [], [], None
         for p in paths:
             d = json.loads(Path(p).read_text(encoding='utf-8'))
             if 'mappings' in d: docs.append(d)
             elif 'instances' in d and 'level' in d: levels.append(LevelGraph(d, mm))
+            elif is_design_records(d): design = d
             else: raise ValueError(f'{p}: neither an architecture dataset nor a mapping document')
-        return cls(levels, docs, mm, registry)
+        fg = cls(levels, docs, mm, registry); fg.design_records = design
+        return fg
 
     # ---- EntityResolver protocol: an endpoint resolves if an instance with that id/version exists in the
     #      level its entity prefix names, and the instance's concrete entity is-a the referenced entity.
@@ -139,6 +143,12 @@ class FederatedGraph:
             warnings = []
             issues = validate(d, self.registry, load_schema(), entity_resolver=self, warnings=warnings, metamodel=self.mm)
             report[f'mappings #{n}'] = issues
+        if self.design_records is not None:  # GS-D-02: schema and references; an entity no longer in the estate is a warning
+            from .designs import check as _check_designs
+            ids = {i for g in self.levels.values() for i in g.by_id}
+            errs, warns = _check_designs(self.design_records, ids)
+            report['design records'] = errs
+            if warns: self.warnings['design records'] = warns
         return report
 
     def edges(self, statuses=('approved',)):
@@ -376,6 +386,15 @@ def main(argv=None):
             for d, t in trees.items():
                 print('DOWNSTREAM (depends on):' if d == 'down' else 'UPSTREAM (depended on by):')
                 print(render_trace(t, d) if t['children'] else f"{args.entity}  (no {d}stream mappings)"); print()
+            if fg.design_records:  # LD-R04: where the entity is documented, and what did not fit there
+                from .designs import for_entity
+                docs, gaps = for_entity(fg.design_records, args.entity)
+                if docs:
+                    print('DOCUMENTED IN (design records):')
+                    for dd in docs:
+                        n = sum(1 for g in gaps if g['status'] == 'open' and (g['document'] == dd['id'] or args.entity in g['about']))
+                        print(f"  {dd['id']}  {dd['title']}  ({dd.get('modified') or 'no date'})" + (f" — {n} open gap(s)" if n else ''))
+                    print(f"  details: sdem designs --entity {args.entity} …"); print()
         # consistent with sdem-trace: an empty result (no arrows in the chosen statuses) is exit 1
         return EXIT_OK if any(t['children'] for t in trees.values()) else EXIT_ISSUES
     if args.cmd == 'impact':

@@ -76,6 +76,32 @@ The knowledge graph needs links **between** architectures (`mappings.json`), pro
 | **Document-derived links capped at low** (DEC-E-11) | Engine | any link the engine proposes that touches an entity transformed from a document (`source_id` `confluence:…`) is capped at **low** confidence, with the reason in its rationale — a person sees it came from a document, as name-only evidence is capped (DEC-E-10) |
 | **Your A2 dataset** (`--a2`) | Load | with the BIAN layer present, the engine can propose capability → Service Domain and Service Domain → application links; the transform's BIAN mentions are hints for the reviewer |
 
+## 4a. Data that does not fit an entity — design records and gap records
+
+ETL practice: data that does not fit the target is **never thrown away** — it goes to a separate **quarantine** with its **lineage** (where it came from), and a **reconciliation** shows that what came in = what was loaded + what was quarantined + what was rejected. SDEM does exactly that, **beside** the four architectures, never inside them:
+
+```mermaid
+flowchart LR
+    T["transform output"] -->|"sdem load"| A["<b>architecture data</b><br/>a1 · a2 · a3 · a4<br/>(the entities you kept)"]
+    T -->|"sdem load"| D["<b>designs/design-records.json</b><br/>📄 one <i>design record</i> per page<br/>⚠️ one <i>gap record</i> per item that did not fit"]
+    A -->|"sdem build"| G["architecture graphs<br/>+ knowledge graph"]
+    D -->|"sdem build"| DG["designs graph<br/>page —documents→ entity<br/>gap —found in→ page<br/>gap —about→ entity"]
+    G --- DG
+```
+
+| Record | Holds | Example |
+|---|---|---|
+| **Design record** (`DOC-…`) | one per source page or file: title, Confluence id and link, date, the page's **facts** (owner, review date …), its **coverage**, and the entities loaded from it | `DOC-55501` Payments Hub Design, 2022-05-10, owner *Payments architecture team*, 80% captured, documents 10 entities |
+| **Gap record** (`GAP-…`) | one per item that did not fit: **category**, place on the page, **original text**, the reason, the entities it is about, and **status** (`open` until a person deals with it) | *no entity type* — the Risks table, "Clearing file late …"; *column not mapped* — Payments Hub, "Support hours: 24x7"; *rejected at load* — HIS-A3-SANCTIONS-CHECKEL, excluded by jane.architect |
+
+**Gap categories:** everything the transform listed as *not captured* (no entity type, no rule matched, text not read, needs a person, line without both ends, diagram kind not read, file not read), plus **column not mapped** — one gap per loaded entity and column, with its value — and **rejected at load**, one per candidate the person excluded.
+
+- **Consistent:** one file, one schema (`schema/design-records.schema.json`), checked by `sdem check`, kept in Git and covered by CODEOWNERS.
+- **Kept apart:** gap records are information, not architecture — the link engine, impact and the four graphs never see them. The metamodel is unchanged.
+- **Stable ids:** a record's id comes from its page and content, so loading the same transform again adds nothing twice.
+- **Reconciliation** in the load record: candidates = loaded + already in the estate + excluded; transform items = captured + skipped by design + gaps.
+- **Access:** `sdem designs --estate DIR` (or `--graph DIR`) lists design records and gaps — `--entity ID` shows an entity's pages and gaps; `sdem trace` ends with *documented in*: the entity's pages and their open gaps. A recurring *no entity type* is evidence for a metamodel decision by the owner.
+
 ## 5. The control — CTL-23
 
 **Unreviewed candidates never enter a knowledge graph.** `sdem build` refuses a dataset marked `CONFLUENCE-EXTRACT`, as it refuses AID projections (CTL-16); the only way in is `sdem load`, which a person runs and which is recorded. Candidate folders still pass `sdem check`, so they can be reviewed.

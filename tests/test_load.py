@@ -128,6 +128,60 @@ class LoadTests(unittest.TestCase):
         self.assertEqual(code, 0, err)
         self.assertEqual(json.loads((e / 'mappings.json').read_text())['mappings'][-1]['bian_release'], 'BIAN-RELEASE-X')
 
+    # ---- data that did not fit an entity: design and gap records (LD-R02…R04, GS-D-01…03)
+    def test_design_and_gap_records_written(self):  # LD-R02
+        e = self.est('g1'); load.load(self.cand, e, 'jane.architect', exclude=[BAD])
+        rec = json.loads((e / 'designs' / 'design-records.json').read_text())
+        from sdem import designs
+        self.assertEqual(designs.check(rec)[0], [])
+        cats = {g['category'] for g in rec['gaps']}
+        self.assertTrue({'no entity type', 'column not mapped', 'text not read', 'needs a person', 'file not read', 'rejected at load'} <= cats, cats)
+        hub = next(g for g in rec['gaps'] if g['category'] == 'column not mapped' and g['about'] == ['HIS-A3-PAYMENTS-HUB'])
+        self.assertEqual(hub['text'], 'Support hours: 24x7'); self.assertTrue(hub['where'].startswith('table'))   # placed at the table it came from
+        page = next(d for d in rec['documents'] if d['id'] == 'DOC-55501')
+        self.assertEqual(page['facts']['Owner'], 'Payments architecture team'); self.assertIn('HIS-A3-PAYMENTS-HUB', page['entities'])
+        rej = next(g for g in rec['gaps'] if g['category'] == 'rejected at load')
+        self.assertIn(BAD, rej['text']); self.assertIn('jane.architect', rej['reason'])
+        again = load.load(self.cand, e, 'jane.architect', exclude=[BAD])                      # stable ids: nothing added twice
+        self.assertEqual(again['designs']['gaps_added'], 0)
+        self.assertEqual(len(json.loads((e / 'designs' / 'design-records.json').read_text())['gaps']), len(rec['gaps']))
+
+    def test_link_table_columns_kept(self):  # a column of a source/target table belongs to links — kept as a gap too
+        tmp = self.tmp / 'std'; transform.extract(ROOT / 'tests' / 'fixtures' / 'confluence-export-sample', tmp, now='2026-10-28T00:00:00', ocr='off')
+        e = self.est('g2'); load.load(tmp, e, 'jane.architect', all_=True)
+        rec = json.loads((e / 'designs' / 'design-records.json').read_text())
+        self.assertTrue(any(g['category'] == 'column not mapped' and 'Protocol' in g['text'] and 'REST' in g['text'] for g in rec['gaps']))
+
+    def test_reconciliation(self):  # LD-R03
+        e = self.est('g3'); res = load.load(self.cand, e, 'jane.architect', exclude=[BAD])
+        rc = res['reconciliation']
+        self.assertTrue(rc['balances']); self.assertEqual(rc['candidates'], rc['loaded'] + rc['already_in_estate'] + rc['excluded'])
+        self.assertEqual(rc['transform_items'], rc['captured'] + rc['skipped_by_design'] + rc['not_captured'])
+        self.assertEqual(json.loads((e / 'loads' / 'LOAD-001.json').read_text())['reconciliation'], rc)
+
+    def test_designs_command_and_trace(self):  # LD-R04, GS-D-01…03
+        e = self.est('g4'); g = self.tmp / 'g4graph'
+        load.load(self.cand, e, 'jane.architect', exclude=[BAD])
+        self.assertEqual(run('check', '--estate', e)[0], 0)
+        code, out, _ = run('build', '--estate', e, '--out', g); self.assertEqual(code, 0, out)
+        self.assertTrue((g / 'designs.graph.json').exists())
+        from sdem.store import GraphReader
+        r = GraphReader.from_store(g); self.assertTrue(r.designs()['gaps'])
+        fed = json.loads((g / 'federated.graph.json').read_text())['graph']
+        self.assertFalse(any(n['id'].startswith(('DOC-', 'GAP-')) for n in fed['nodes']))   # beside the knowledge graph, not in it
+        code, out, _ = run('trace', 'HIS-A3-PAYMENTS-HUB', '--graph', g)
+        self.assertIn('DOCUMENTED IN', out); self.assertIn('DOC-55501', out)
+        code, out, _ = run('designs', '--estate', e, '--gaps', '--category', 'no entity type')
+        self.assertEqual(code, 0); self.assertIn('Clearing file late', out)
+        code, out, _ = run('designs', '--graph', g, '--entity', 'HIS-A3-PAYMENTS-HUB', '--json')
+        self.assertIn('DOC-55501', out)
+
+    def test_bad_design_records_reject_the_build(self):  # GS-D-02
+        e = self.est('g5'); load.load(self.cand, e, 'jane.architect', exclude=[BAD])
+        p = e / 'designs' / 'design-records.json'; d = json.loads(p.read_text()); d['gaps'][0]['document'] = 'DOC-NOPE'; p.write_text(json.dumps(d))
+        code, out, err = run('build', '--estate', e, '--out', self.tmp / 'g5graph')
+        self.assertNotEqual(code, 0); self.assertIn('DOC-NOPE', out + err)
+
     def test_cli(self):  # LD-G01, LD-B01
         cand = self.tmp / 'cand-bian'; shutil.rmtree(cand, ignore_errors=True); shutil.copytree(self.cand, cand)
         x = json.loads((cand / 'extraction.json').read_text())

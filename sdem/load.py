@@ -7,9 +7,10 @@ architect has reviewed them, into an SDEM estate — selected, checked before an
 Links between architectures are not loaded: `sdem link` proposes them from the loaded data and a person approves them.
 Unreviewed candidates never enter a knowledge graph: `sdem build` refuses them (CTL-23); this is the only way in.
 """
-import argparse, copy, datetime, json, re, sys
+import argparse, collections, copy, datetime, json, re, sys
 from pathlib import Path
 
+from . import designs as _designs
 from .graph import FederatedGraph, LevelGraph
 from .metamodel import Metamodel
 from .transform import DATASETS, SOURCE_SYSTEM
@@ -33,6 +34,7 @@ def read_candidates(src):
     if not (src / 'extraction.json').exists():
         raise LoadError(f'{src}: not a transform output (no extraction.json) — run `sdem transform run` first')
     meta, ds = _j(src / 'extraction.json'), {}
+    meta['_index'] = _j(src / 'design-index.json')['designs'] if (src / 'design-index.json').exists() else []
     for lvl, name in DATASETS.items():
         if (src / name).exists():
             d = _j(src / name)
@@ -125,20 +127,43 @@ def load(src, estate, person, keep=None, exclude=None, all_=False, a2=None, dry_
     after, changed, registry, res = plan(estate, ds, keep_ids, a2, mm, now[:10])
     res.update({'excluded': excluded, 'estate': str(estate), 'dry_run': dry_run,
                 'bian_mentions': meta.get('bian_mentions', []), 'transform': {k: meta.get(k) for k in ('generated', 'export', 'export_sha256', 'rules_sha256')}})
+    # design and gap records — what did not fit an entity, kept beside the estate (LD-R02)
+    loads = Path(estate) / 'loads'
+    n = 1 + max([int(m.group(1)) for p in (loads.glob('LOAD-*.json') if loads.exists() else []) for m in [re.match(r'LOAD-(\d+)\.json$', p.name)] if m] or [0])
+    res['load_id'] = f'LOAD-{n:03d}'
+    in_estate = {i['id'] for d in after.values() for i in d['instances']}
+    docs, gaps = _designs.from_transform(meta, meta['_index'], (meta.get('coverage') or {}).get('items', []), meta.get('records', []),
+                                         keep_ids & in_estate, set(excluded), person, res['load_id'])
+    rec_path = Path(estate) / _designs.RECORDS
+    existing = _j(rec_path) if rec_path.exists() else None
+    records, added = _designs.merge(existing, docs, gaps, res['load_id'])
+    errs, warns = _designs.check(records, in_estate)
+    res['errors'] += [f'design records: {e}' for e in errs]
+    res['designs'] = {'pages': len(docs), 'gaps': len(gaps), **added, 'by_category': dict(collections.Counter(g['category'] for g in gaps).most_common())}
+    cov = (meta.get('coverage') or {}).get('overall') or {}
+    cand = {i['id'] for d in ds.values() for i in d['instances']}
+    loaded_n = sum(len(v) for v in res['loaded'].values())
+    res['reconciliation'] = {'candidates': len(cand), 'loaded': loaded_n, 'already_in_estate': len(res['skipped_same']), 'excluded': len(excluded),
+                             'balances': len(cand) == loaded_n + len(res['skipped_same']) + len(excluded),
+                             'transform_items': cov.get('items'), 'captured': cov.get('captured'), 'skipped_by_design': cov.get('skipped'),
+                             'not_captured': cov.get('not_captured'), 'gap_records': len(gaps)}
+    if not res['reconciliation']['balances']: res['errors'].append(f"reconciliation does not balance: {res['reconciliation']}")
     if res['errors']:
+        res.pop('load_id', None)
         raise LoadError('refused — nothing written:\n  ' + '\n  '.join(res['errors'][:30]))
     if dry_run: return res
     estate = Path(estate); estate.mkdir(parents=True, exist_ok=True)
+    rec_path.parent.mkdir(parents=True, exist_ok=True)
+    rec_path.write_text(json.dumps(records, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     for lvl, d in changed.items():
         (estate / DATASETS[lvl]).write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     if not (estate / 'mappings.json').exists():
         (estate / 'mappings.json').write_text(json.dumps(registry, indent=2) + '\n', encoding='utf-8')
     loads = estate / 'loads'; loads.mkdir(exist_ok=True)
-    n = 1 + max([int(m.group(1)) for p in loads.glob('LOAD-*.json') for m in [re.match(r'LOAD-(\d+)\.json$', p.name)] if m] or [0])
-    res['load_id'] = f'LOAD-{n:03d}'
     record = {'id': res['load_id'], 'at': now, 'person': person, 'from': str(src), 'transform': res['transform'], 'loaded': res['loaded'],
               'links_loaded': res['links'], 'skipped_same_content': res['skipped_same'], 'excluded': excluded, 'dropped': res['dropped'],
-              'a2_added': res['a2_added'], 'check': {'errors': 0, 'warnings': res['warnings']}}
+              'a2_added': res['a2_added'], 'design_records': res['designs'], 'reconciliation': res['reconciliation'],
+              'check': {'errors': 0, 'warnings': res['warnings']}}
     (loads / f"{res['load_id']}.json").write_text(json.dumps(record, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     return res
 
@@ -168,6 +193,11 @@ def main(argv=None):
     print(('would load' if a.dry_run else f"loaded ({res['load_id']})") + f" into {a.estate}: " + ', '.join(f'{l} {v} entities' for l, v in sorted(n.items()))
           + f", {res['links']} links inside architectures" + (f"; A2 dataset added from {res['a2_added']}" if res['a2_added'] else ''))
     if res['excluded']: print(f"excluded ({len(res['excluded'])}): " + ', '.join(res['excluded']))
+    dg = res['designs']; rc = res['reconciliation']
+    print(f"design records: {dg['pages']} page(s); gap records: {dg['gaps']} — what did not fit an entity, kept beside the estate"
+          + (' (' + ', '.join(f'{k} {v}' for k, v in dg['by_category'].items()) + ')' if dg['gaps'] else '') + (f"; {dg['gaps_added']} new" if not a.dry_run else ''))
+    print(f"reconciliation: {rc['candidates']} candidates = {rc['loaded']} loaded + {rc['already_in_estate']} already in the estate + {rc['excluded']} excluded"
+          + (f"; {rc['transform_items']} items read = {rc['captured']} captured + {rc['skipped_by_design']} skipped by design + {rc['not_captured']} not captured (now gap records)" if rc['transform_items'] else ''))
     if res['skipped_same']: print(f"already in the estate, same content ({len(res['skipped_same'])}): " + ', '.join(res['skipped_same']))
     for d in res['dropped']: print(f'dropped: {d}')
     for t in res['notes']: print(f'NOTE: {t}')

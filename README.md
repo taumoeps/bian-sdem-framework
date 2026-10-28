@@ -187,7 +187,7 @@ flowchart LR
     L --> G["🕸️ Connected in the<br/>knowledge graph"]
 ```
 
-Every item SDEM finds says **which page it came from, where on the page, and how sure SDEM is** — never more than "medium" until a person checks it. Pictures it cannot read are listed for you. Full journey: [`docs/sdem-designs-import-workflow.md`](docs/sdem-designs-import-workflow.md).
+Every item SDEM finds says **which page it came from, where on the page, and how sure SDEM is** — never more than "medium" until a person checks it. **Nothing is thrown away:** what does not fit an architecture entity — a table of risks, a detail with no field for it, text, pictures, a PDF — is kept as a *gap record* next to the data, linked to its page and entities, for a person to deal with. Full journey: [`docs/sdem-designs-import-workflow.md`](docs/sdem-designs-import-workflow.md).
 
 ### People stay in charge
 

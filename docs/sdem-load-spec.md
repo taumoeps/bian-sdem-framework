@@ -16,6 +16,9 @@
 | LD-A01 | `--a2 FILE` copies an A2 dataset into an estate that has none (checked; never edited); an estate that has one keeps it | built | `test_a2_dataset_added_once` |
 | LD-B01 | The transform's BIAN mentions are printed as hints for `sdem link` | built | `test_cli` |
 | LD-D01 | `--dry-run` checks and reports, writes nothing | built | `test_dry_run_writes_nothing` |
+| LD-R02 | Each load writes or merges `<estate>/designs/design-records.json` (schema `schema/design-records.schema.json`): a design record per source page or file (facts, coverage, link, entities loaded from it) and a gap record per item not captured, per unmapped column of a loaded entity, and per excluded candidate; ids are stable, so a repeated load adds nothing twice | built | `test_design_and_gap_records_written` |
+| LD-R03 | The load record holds a reconciliation: candidates = loaded + already in the estate + excluded; transform items = captured + skipped + gaps | built | `test_reconciliation` |
+| LD-R04 | `sdem designs --estate DIR \| --graph DIR [--entity ID] [--gaps] [--category C] [--json]` lists design records and gap records; `sdem trace` ends with the entity's pages and open gaps | built | `test_designs_command_and_trace` |
 | LD-X01 | **CTL-23**: `sdem build` refuses a dataset marked `CONFLUENCE-EXTRACT` | built | `test_build_refuses_candidates` |
 | LD-E01 | **DEC-E-11**: the engine caps at low any proposal touching an entity whose `source_id` starts `confluence:`, saying so in the rationale | built | `test_engine_caps_document_derived_links` |
 | HI-R06 | Transform: a candidate "deployed on" (nesting, or "runs on / hosted on") from an A3 component to an A4 node is written as the component's `deployed_on` attribute | built | `tests/test_transform.py::test_deployed_on_written_as_data` |

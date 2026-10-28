@@ -14,7 +14,7 @@
 
 | ID | Requirement | Satisfies | Acceptance |
 |---|---|---|---|
-| GS-F-01 | A store is one directory holding exactly: `a1-business.graph.json`, `a2-service-domain.graph.json`, `a3-application.graph.json`, `a4-technology.graph.json`, `federated.graph.json`, `load-record.json`; optionally `baselines/<name>/` and `view.html`. A level with no architecture dataset has no file. | DEC-03 | AT-01 |
+| GS-F-01 | A store is one directory holding exactly: `a1-business.graph.json`, `a2-service-domain.graph.json`, `a3-application.graph.json`, `a4-technology.graph.json`, `federated.graph.json`, `load-record.json`; optionally `designs.graph.json` (GS-D-01), `baselines/<name>/` and `view.html`. A level with no architecture dataset has no file. | DEC-03 | AT-01 |
 | GS-F-02 | Every `*.graph.json` file is a valid JGF v2 document with a single top-level `graph` object (edge-based variant; no hyperedges), `directed: true`. | DEC-01 | AT-02 |
 | GS-F-03 | Every `*.graph.json` file also conforms to the **SDEM profile** `schema/graph-store.schema.json` (§3–§5), which constrains `metadata` only and never contradicts JGF. | — | AT-02 |
 | GS-F-04 | Output is deterministic: identical inputs produce byte-identical graph files — UTF-8, LF line endings, two-space indent, fields in a fixed order, nodes and edges in the order of the architecture dataset or registry they came from (so every reader sees records in the source's order and answers stay identical). Graph files contain no build timestamps. | KG-V-01 | AT-06 |
@@ -41,6 +41,14 @@
 | GS-E-01 | Every within-level relationship of an architecture dataset becomes one edge in its level's file: `source`/`target` = node keys, `relation` = the relationship `kind`, `id` = `<level>:<source id>-<kind>-<target id>` (suffixed `#2`, `#3` … when repeated), `label` = the relationship `name` if present. `metadata` = `scope: "within-level"` and `row` = the ID of the within-level row that allowed it (or `"association"`). | KG-L-02 | AT-03 |
 | GS-E-02 | Every registry record whose `status` is in the federated graph's `statuses` (default: approved only) becomes one edge in the federated file: `id` = `mapping_id`, `relation` = `relationship`, `source`/`target` = node keys from the record's ends (id and version as recorded), `metadata` = `scope: "cross-level"` plus every other field of the record unchanged. | KG-V-03 | AT-03 |
 | GS-E-03 | An approved record whose end does not resolve to a node fails the build (it would already fail `sdem-graph check`). | LC-11 | AT-05 |
+
+## 5a. Designs graph (added 2026-10-28, owner approval)
+
+| ID | Requirement | Source | Test |
+|---|---|---|---|
+| GS-D-01 | When the estate has `designs/design-records.json`, the build writes `designs.graph.json` (`type` `sdem.designs`): a node per design record (`DOC-…`) and gap record (`GAP-…`); edges `DOCUMENTS` (design → entity node), `FOUND_IN` (gap → design), `ABOUT` (gap → entity node). It sits **beside** the architecture graphs: not part of the federated graph, never read by the rules engine or impact | LD-R02 | `tests/test_load.py` |
+| GS-D-02 | The design records are checked against `schema/design-records.schema.json` before the build (an error rejects the build); an entity a record refers to that is no longer in the estate is a warning | — | `tests/test_load.py` |
+| GS-D-03 | `GraphReader` exposes the design records (`designs()`), from the store or from the estate's files | GS-A-01 | `tests/test_load.py` |
 
 ## 6. Build
 

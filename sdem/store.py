@@ -148,9 +148,12 @@ def render(paths, mm=None):
     """Check the inputs and return (files {name: text}, report). files is None when any check fails."""
     mm = mm or Metamodel.load()
     texts = {str(p): Path(p).read_text(encoding='utf-8') for p in paths}
-    inputs, levels, registries = [], [], []
+    from .designs import is_design_records, graph as _designs_graph, GRAPH as _DESIGNS
+    inputs, levels, registries, design = [], [], [], None
     for p, t in texts.items():
         d = json.loads(t); sha = _sha(t)
+        if is_design_records(d):
+            design = d; inputs.append({'path': p, 'kind': 'design records', 'sha256': sha}); continue
         if 'mappings' in d:
             registries.append((Path(p).name, d, sha)); inputs.append({'path': p, 'kind': 'registry', 'registry_version': d.get('registry_version'), 'sha256': sha})
         elif 'instances' in d and 'level' in d:
@@ -166,6 +169,7 @@ def render(paths, mm=None):
     names = [n for n, _, _ in registries]
     if len(set(names)) != len(names): raise StoreError('two registries share a file name')
     fg = FederatedGraph([LevelGraph(d, mm) for d, _ in levels], [d for _, d, _ in registries], mm)
+    fg.design_records = design
     report = fg.check()
     errors = [f'{k}: {i}' for k, v in report.items() for i in v]
     warnings = [f'{k}: {w}' for k, v in getattr(fg, 'warnings', {}).items() for w in v]
@@ -176,6 +180,9 @@ def render(paths, mm=None):
         files[FEDERATED] = _dump(federated_graph(fg, registries))
     except StoreError as exc:
         result['errors'].append(str(exc)); return None, result
+    if design is not None:  # GS-D-01: beside the architecture graphs, not part of the federated graph
+        latest = {i['id']: key(d['level'], i['id'], i['version']) for d, _ in levels for i in d['instances']}
+        files[_DESIGNS] = _dump(_designs_graph(design, latest.get))
     return files, result
 
 
@@ -195,7 +202,7 @@ def build(paths, out, mm=None, now=None):
         try:
             for name, text in files.items(): (tmp / name).write_text(text, encoding='utf-8')
             out.mkdir(parents=True, exist_ok=True)
-            for name in list(LEVEL_FILES.values()) + [FEDERATED]:
+            for name in list(LEVEL_FILES.values()) + [FEDERATED, 'designs.graph.json']:
                 if name not in files and (out / name).exists(): (out / name).unlink()
             for name in files: os.replace(tmp / name, out / name)
         finally:
@@ -245,11 +252,19 @@ class GraphReader:
             if (store / name).exists():
                 levels.append(LevelGraph(_export_doc(json.loads((store / name).read_text(encoding='utf-8'))['graph']), mm))
         fed = json.loads((store / FEDERATED).read_text(encoding='utf-8'))['graph']
-        return cls(FederatedGraph(levels, _registry_docs(fed), mm), 'store', _load_record(store))
+        fg = FederatedGraph(levels, _registry_docs(fed), mm)
+        if (store / 'designs.graph.json').exists():  # GS-D-03
+            from .designs import from_graph
+            fg.design_records = from_graph(json.loads((store / 'designs.graph.json').read_text(encoding='utf-8')))
+        return cls(fg, 'store', _load_record(store))
 
     @classmethod
     def from_exports(cls, paths, mm=None):
         return cls(FederatedGraph.load(paths, mm or Metamodel.load()), 'architecture datasets')
+
+    def designs(self):
+        """GS-D-03: the design and gap records (dict with documents and gaps), or None."""
+        return self.fg.design_records
 
     def check_store(self, store):
         """GS-F-02/03 and resolution for a stored graph: file shapes, the local graphs, every stored link resolving.
