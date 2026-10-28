@@ -187,7 +187,7 @@ def load(estate=None, graph_dir=None):
         if not p.exists(): raise ValueError(f'{graph_dir}: no {GRAPH} — the estate has no design records, or the store was built before them')
         return from_graph(json.loads(p.read_text(encoding='utf-8')))
     p = Path(estate) / RECORDS
-    if not p.exists(): raise ValueError(f'{estate}: no {RECORDS.as_posix()} — load imported designs with `sdem load` first')
+    if not p.exists(): raise ValueError(f'{estate}: no {RECORDS.as_posix()} — onboard designs with `sdem load` first')
     return json.loads(p.read_text(encoding='utf-8'))
 
 

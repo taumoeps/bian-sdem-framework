@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- **Audit phase 4 — ready to operate.** [`templates/estate-repo/`](templates/estate-repo/README.md): the private estate repository a team copies — SDEM pinned to a release, CI (`ci/check-estates.sh`: every estate checked, built, approved links unchanged since the base branch; open gaps listed), dashboards built as an artifact after merge (internal hosting only), code owners, a pull-request checklist, set-up, daily work and upgrade steps; tested end to end (`tests/test_estate_template.py`). [`docs/sdem-operating-model.md`](docs/sdem-operating-model.md) (proposed): where things live, roles and who does what, how changes, rulebook changes and upgrades flow, support, health measures, preconditions. [`docs/sdem-pilot-plan.md`](docs/sdem-pilot-plan.md) (proposed): one domain, 2–3 architects, ten weeks, measures and the go / adjust / stop decision. *Onboarded* replaces *imported* in the last messages that used it.
+
 ## 0.8.0 — the tool release (2026-10-29)
 
 Everything built since v0.7.0: the data model, the graph store, the inference engine (`sdem link`), design onboarding (transform, load, gap records), AID, change events and the agent platform (Level 1), the SDEM workbench (one `sdem` command, Copilot set-up), dashboards — and the 2026-10-29 audit that made it ready to operate (phases 1–3 below). The rulebook stays at `metamodel_version` 0.4.0: the 0.8 baseline awaits independent review and will be tagged `SDEM-METAMODEL-0.8` with a later release. **Breaking:** the SDMM compatibility layer is removed (`sdmm` package, `sdmm-*` commands, `MappingEngine`, `schema/mapping.schema.json`) — use `sdem <verb>`; old aliases such as `sdem-graph`, `sdem-infer` still work.

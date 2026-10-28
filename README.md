@@ -348,6 +348,7 @@ flowchart LR
 | **Seeing SDEM for the first time** | the dashboard — run `sdem home -o work/sdem` and open `work/sdem/index.html`: SDEM's architecture, the rulebook, health and the example projects, all clickable |
 | **An architect who will use it** | the [user guide](docs/sdem-workbench-user-guide.md) — set-up, a 15-minute quick start, every task step by step |
 | **Onboarding your existing designs** | [the onboarding workflow](docs/sdem-onboarding-workflow.md) (step by step, with the commands) · [the test script](docs/use-case-example-4.md) |
+| **Running SDEM on real data** | [the operating model](docs/sdem-operating-model.md) — real data lives in a **private estate repository**, made from [the template](templates/estate-repo/README.md); then [the pilot plan](docs/sdem-pilot-plan.md) |
 | **Setting up the AI agents** | [Copilot set-up](docs/sdem-copilot-setup.md), then [the spike](docs/sdem-agent-platform-spike.md) |
 | **Wanting the concepts** | [the overview](docs/sdem-overview.md) and the [glossary](docs/glossary.md) |
 | **A maintainer** | [CONTRIBUTING.md](CONTRIBUTING.md) and the technical section below |

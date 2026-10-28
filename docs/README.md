@@ -33,6 +33,9 @@ flowchart LR
 | [`architecture-metamodel-detail-level-spec.md`](architecture-metamodel-detail-level-spec.md) | **the governing specification** (generated): the high-level spec section by section, with the detail and the gap register |
 | [`controls-register.md`](controls-register.md) | every control: what it enforces, where it runs, its last result (generated) |
 | [`architecture-governance-spec.md`](architecture-governance-spec.md) | approval, supersession, impact |
+| [`sdem-operating-model.md`](sdem-operating-model.md) | running SDEM for real: where things live, roles, how changes and upgrades flow, support, preconditions |
+| [`sdem-pilot-plan.md`](sdem-pilot-plan.md) | the ten-week pilot: one domain, measures, the go / adjust / stop decision |
+| [`../templates/estate-repo/`](../templates/estate-repo/README.md) | the private estate repository template: pinned SDEM, CI checks, code owners |
 | [`../SECURITY.md`](../SECURITY.md) | reporting a problem; keeping real data out of this public repository |
 | [`sdem-repository-protection.md`](sdem-repository-protection.md) | branch protection and code owners — so a person's approval is a control |
 | [`reference-architecture-provenance.md`](reference-architecture-provenance.md) | every entity type traced to a public standard |

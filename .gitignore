@@ -15,3 +15,4 @@ work/
 
 # Real estates never go in this public repository — keep them in your team's private estate repository
 estates/
+!templates/estate-repo/estates/

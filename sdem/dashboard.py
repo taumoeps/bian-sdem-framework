@@ -138,7 +138,7 @@ def collect(estate, proposals=None, projection=None, catalogue=None, graph=None,
     if open_work: attention.append({'text': f'{len(open_work)} open work item(s)', 'tab': 'changes', 'cmd': f'sdem work list --estate {estate}', 'level': 'warn'})
     unplanned = [e for e in Estate(estate).status() if not e['planned']] if events else []
     if unplanned: attention.append({'text': f'{len(unplanned)} change event(s) waiting to be planned', 'tab': 'changes', 'cmd': f'sdem work plan --event {unplanned[0]["id"]} --estate {estate} --agent sdem-orchestrator --person <you>', 'level': 'warn'})
-    if designs and designs['open']: attention.append({'text': f"{len(designs['open'])} open gap(s) — what did not fit an entity in imported designs", 'tab': 'designs', 'cmd': f'sdem designs --estate {estate} --gaps --status open', 'level': 'warn'})
+    if designs and designs['open']: attention.append({'text': f"{len(designs['open'])} open gap(s) — what did not fit an entity in onboarded designs", 'tab': 'designs', 'cmd': f'sdem designs --estate {estate} --gaps --status open', 'level': 'warn'})
     if stale and stale['changed']: attention.append({'text': f"the graph store {stale['graph']} is out of date", 'tab': 'overview', 'cmd': f"sdem build --estate {estate} --out {stale['graph']}", 'level': 'warn'})
     if not attention: attention.append({'text': 'nothing needs your attention', 'tab': 'overview', 'cmd': '', 'level': 'good'})
     return {'estate': str(estate), 'name': estate.resolve().name, 'generated': now or datetime.datetime.now().replace(microsecond=0).isoformat(sep=' '),
@@ -321,9 +321,9 @@ R.aid = () => {
 };
 R.designs = () => {
   const G = D.designs;
-  if (!G) return `<h2>Designs & gaps</h2><p class="note">This project has no imported designs. Past designs from Confluence come in with <code>sdem transform run</code> and <code>sdem load</code>; what does not fit an entity is kept here as gap records.</p>`;
+  if (!G) return `<h2>Designs & gaps</h2><p class="note">This project has no onboarded designs. Past designs from Confluence come in with <code>sdem transform run</code> and <code>sdem load</code>; what does not fit an entity is kept here as gap records.</p>`;
   const st = G.by_status, n = G.open.length;
-  let h = `<h2>Designs & gaps</h2><p class="note">What did not fit an architecture entity in imported designs — kept, not lost. <b>${n} open</b> · ${st.resolved||0} resolved · ${st.accepted||0} accepted. Resolve a gap when what it held is now in the data; accept it when it is left as it is, on purpose — your name and note are recorded.</p>`;
+  let h = `<h2>Designs & gaps</h2><p class="note">What did not fit an architecture entity in onboarded designs — kept, not lost. <b>${n} open</b> · ${st.resolved||0} resolved · ${st.accepted||0} accepted. Resolve a gap when what it held is now in the data; accept it when it is left as it is, on purpose — your name and note are recorded.</p>`;
   if (n) {
     h += `<h3>Open gaps by kind</h3>` + table(["Kind","Open"], Object.entries(G.by_category).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v}</td></tr>`));
     h += `<h3>Open gaps</h3>` + table(["Gap","Kind","Page — where","What it holds","About","Deal with it"], G.open.map(g=>`<tr><td><code>${esc(g.id)}</code></td><td>${esc(g.category)}</td><td>${esc(g.page)}<div class="muted">${esc(g.where)}</div></td><td>${esc(g.text||"")}</td><td>${(g.about||[]).map(a=>`<code>${esc(a)}</code>`).join(" ")}</td><td>${cmd(`sdem designs resolve ${g.id} --estate ${D.estate} --person <you> --note "<now in the data: …>"`)}${cmd(`sdem designs accept ${g.id} --estate ${D.estate} --person <you> --note "<why it stays>"`)}</td></tr>`));

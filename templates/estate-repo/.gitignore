@@ -1,0 +1,12 @@
+# Design exports (Confluence) and scratch output stay on the machine that is allowed to hold them
+work/
+# Built by CI or by you — never committed
+site/
+graph/
+*.html
+__pycache__/
+.venv/
+.env
+.env.*
+secrets/
+.DS_Store

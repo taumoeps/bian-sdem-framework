@@ -49,7 +49,7 @@ python -m sdem model check                     # what CI checks
 
 ## Releases
 
-Releases are tagged by the owner. Before a tag: the CHANGELOG's *Unreleased* section moves under the version, `pyproject.toml`'s version is set to match, and the checks above pass. See [`docs/ROADMAP.md`](docs/ROADMAP.md).
+Releases are tagged by the owner. Before a tag: the CHANGELOG's *Unreleased* section moves under the version, `pyproject.toml`'s version and the pin in `templates/estate-repo/requirements.txt` are set to match (a test checks they agree), and the checks above pass. See [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## Where things are
 

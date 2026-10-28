@@ -1,0 +1,17 @@
+# Who must approve a pull request. Replace the placeholders with REAL people or teams in your organisation —
+# then turn on "Require review from Code Owners" in the branch protection for main (README → Set up, step 4).
+# A reviewer is a person: never a bot or an agent account.
+
+# Approved links between architectures — the decisions
+estates/*/mappings.json        @YOUR-ORG/architecture-reviewers
+
+# Each architecture's data — its layer owner
+estates/*/a1-business.json     @YOUR-ORG/business-architects
+estates/*/a2-service-domain.json  @YOUR-ORG/architecture-reviewers
+estates/*/a3-application.json  @YOUR-ORG/application-architects
+estates/*/a4-technology.json   @YOUR-ORG/technology-architects
+
+# The SDEM version, CI and these rules
+requirements.txt               @YOUR-ORG/sdem-maintainers
+ci/                            @YOUR-ORG/sdem-maintainers
+.github/                       @YOUR-ORG/sdem-maintainers

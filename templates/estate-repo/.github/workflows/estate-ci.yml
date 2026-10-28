@@ -1,0 +1,46 @@
+name: Estate checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # sdem diff compares approved links with the base branch
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the pinned SDEM release
+        run: pip install -r requirements.txt
+      - name: Check every estate
+        run: bash ci/check-estates.sh "${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || 'HEAD~1' }}"
+
+  dashboards:
+    # After a merge to main: build the dashboards as a downloadable artifact.
+    # They hold real architecture — publish them only to AUTHENTICATED internal hosting (never public GitHub Pages or a public bucket).
+    if: github.event_name == 'push'
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Build the home page and one dashboard per estate
+        run: sdem home --root estates -o site
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdem-dashboards
+          path: site
+          retention-days: 30
+      # - name: Publish to internal hosting
+      #   run: <your organisation's authenticated upload step>
