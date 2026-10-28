@@ -69,7 +69,7 @@ class CopilotSetupTests(unittest.TestCase):
 
     def test_agents_know_imports_and_never_load(self):  # AG-A07: built skills → agents → prompts
         skill = (GH / 'skills' / 'sdem-onboard-designs' / 'SKILL.md').read_text(encoding='utf-8')
-        self.assertIn('You never run `sdem load`', skill); self.assertIn('--dry-run', skill); self.assertIn('CTL-17', skill)
+        self.assertIn('You never run `sdem load`', skill); self.assertIn('--dry-run', skill); self.assertIn('A2 comes only from the BIAN catalogue', skill)
         for p in (GH / 'agents').glob('*.agent.md'):
             text = p.read_text(encoding='utf-8')
             self.assertRegex(text, r'Never run[^\n]*`sdem load`', p.name)

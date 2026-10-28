@@ -114,3 +114,20 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Precision / recall / F1** | of the links proposed, how many were right / of the right links, how many were found / the balance of both |
 | **Baseline (model)** | a frozen, reviewed version of the model, e.g. `SDEM-METAMODEL-0.8` |
 | **Control** | an automatic check that enforces a rule — e.g. CTL-21 *a reviewer is a person*. Every control, where it runs and its last result: `controls-register.md` |
+
+## Reading the codes in SDEM's output
+
+SDEM's messages name the rule behind them, so a reviewer can look it up. You do not need to learn them — the message always says what is wrong in words; the code says *which rule* said so.
+
+| Code | Means | Example | Look it up |
+|---|---|---|---|
+| **CTL-nn** | a **control** — an automatic check SDEM enforces | `CTL-21` the reviewer must be a person | [the rulebook guide](sdem-rulebook-guide.md#the-controls--what-sdem-refuses), [controls register](reference/controls-register.md) |
+| **LC-nn** | a **data check** on a record | `LC-04` a required attribute is missing · `LC-08` a reference to another layer does not resolve | [logical data model](reference/logical-data-model.md) |
+| **LC-10m** | *advice*: the rulebook expects a link that is not there yet (a `WARN`, not an error) | a service domain with no control record yet | fix when you can |
+| **RAn-nn** | a kind of link **allowed inside a layer** | `RA3-27` an application interface is made up of API operations | [links inside a layer](reference/relationships-planning.md) |
+| **Snn**, **Bnn** | a **rule for finding a connection** between layers | `S24` operation implemented by API · `S17` domain realised by application | `sdem explain <proposal>` says it in words |
+| **HT-**, **HD-**, **HU-**, **HP-**, **HL-**, **HN-** | a **transform rule** — how onboarding read an item: a **t**able, a **d**raw.io diagram, a Plant**U**ML diagram, a **p**hrase, a **l**ink table, a name in the **n**arrative | `HT-07` a table whose *Capability* column names capabilities | your copy of `transform-rules.json` ([configuration](sdem-configuration.md#onboarding--reading-your-designs)) |
+| **J1 … J9**, **AG** | a **journey** (a group of commands) in `sdem --help`; AG = the agent platform | J1 check · J2 link · J3 approve · J4 build · J5 trace and impact | [command reference](sdem-workbench-user-guide.md#7-command-reference) |
+| **AG-xnn**, **WB-xnn**, **DEC-x-nn**, **REQ-nn** | a **requirement or design decision** in a specification | `AG-S07` the agents' round limit | for builders: [`design/`](design/README.md) |
+
+**Ids of records SDEM creates:** `P-RUN-nnn` a proposed connection · `PAY-nnn` (or your estate's prefix) an approved connection · `HIS-…` a candidate from onboarding · `DOC-…` a design record · `GAP-…` a gap record · `LOAD-nnn` a load · `MIG-nnn` a migration · `CS-…` an agent's change set · `PRJ-…` a planned (AID) element.

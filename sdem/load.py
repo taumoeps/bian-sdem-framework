@@ -206,7 +206,7 @@ def main(argv=None):
     for d in res['dropped']: print(f'dropped: {d}')
     for t in res['notes']: print(f'NOTE: {t}')
     if res['bian_mentions']:
-        print('BIAN elements named in the designs — hints for sdem link (never loaded as entities, CTL-17):')
+        print('BIAN elements named in the designs — hints for sdem link (never loaded as entities — BIAN records come from your BIAN layer only):')
         for m in res['bian_mentions'][:20]: print(f"  {m['name']}" + (f" (= {m['existing_id']})" if m.get('existing_id') else '') + f" — {m['page_title']}")
     if not a.dry_run:
         print(f"next: sdem check --estate {a.estate}  ·  sdem link --estate {a.estate} --out work/links  ·  sdem review work/links/proposals.json  ·  "

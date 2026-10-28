@@ -6,7 +6,7 @@
 
 | On | Do |
 |---|---|
-| An architect's machine | Python 3.10 or later (3.13 recommended: `brew install python@3.13` on a Mac); then in the estate repository `python3.13 -m venv .venv`, `source .venv/bin/activate`, `pip install -r requirements.txt`; check with `sdem --version` |
+| An architect's machine | Python 3.10 or later (3.13 recommended: `brew install python@3.13` on a Mac — Macs come with 3.9, which is too old); then in the estate repository `python3.13 -m venv .venv` (or `/opt/homebrew/bin/python3.13 -m venv .venv` if not found), `source .venv/bin/activate`, `pip install -r requirements.txt`; check with `sdem --version` |
 | CI | the estate template's workflow installs the pinned release on every run — nothing to do |
 | Without installing | `python3 -m sdem …` from a checkout of the SDEM repository |
 
@@ -81,7 +81,9 @@ About 1 second to propose connections for 2,000 records, about 17 seconds for 8,
 | Problem | Do |
 |---|---|
 | `sdem: command not found` | activate the environment: `source .venv/bin/activate` |
-| `pip install` fails: *requires a different Python* | Python is older than 3.10 — install 3.13 and recreate `.venv` with it |
+| `python3.13: command not found` (or `brew: command not found`) after installing | Homebrew's folder is not on your path: use the full path, `/opt/homebrew/bin/python3.13` (Apple silicon) or `/usr/local/bin/python3.13` (Intel); to fix it for good, run `eval "$(/opt/homebrew/bin/brew shellenv)"` and add that line to `~/.zprofile` |
+| `pip install -e .` fails: *File "setup.py" or "setup.cfg" not found … editable mode currently requires a setuptools-based build* | the `.venv` was made with Python older than 3.10 (its old `pip` gives this misleading message) — `rm -rf .venv`, then make it again with 3.13 |
+| `pip install` fails: *Package 'sdem' requires a different Python: 3.9.6 not in '>=3.10'* | the same — recreate `.venv` with 3.13 |
 | `metamodel_version … does not match` | the rulebook changed — [migrate](#when-the-rulebook-changes) |
 | CI fails: *an approved link was edited or removed* | someone edited `mappings.json` by hand — revert it; to change a connection, supersede it with `sdem approve --supersedes` |
 | CI fails: *does not pass sdem check* | run `sdem check --estate <dir>` locally and fix what it lists |

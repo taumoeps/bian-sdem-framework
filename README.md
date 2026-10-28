@@ -186,15 +186,22 @@ flowchart TB
 
 ## Install
 
-You need **Python 3.10 or later** (3.13 recommended) — check with `python3 --version`. On a Mac: `brew install python@3.13`, or the installer from [python.org](https://www.python.org/downloads/macos/).
+You need **Python 3.10 or later** (3.13 recommended). Macs come with 3.9, which is too old. Install 3.13 with Homebrew (`brew install python@3.13`) or the installer from [python.org](https://www.python.org/downloads/macos/), then find it:
+
+```bash
+python3 --version                      # 3.10 or later? then use python3 below
+ls /opt/homebrew/bin/python3.1* /usr/local/bin/python3.1* 2>/dev/null   # installed but "command not found"? it is one of these
+```
 
 ```bash
 git clone https://github.com/taumoeps/bian-sdem-framework.git && cd bian-sdem-framework
-python3.13 -m venv .venv               # a private Python just for SDEM
+python3.13 -m venv .venv               # or the full path you found, e.g. /opt/homebrew/bin/python3.13 -m venv .venv
 source .venv/bin/activate              # do this in every new terminal
 pip install -e .                       # installs the sdem command
 sdem --version                         # 0.8.0
 ```
+
+If `pip` says *File "setup.py" … not found* or *requires a different Python*, the `.venv` was made with an old Python: delete it (`rm -rf .venv`) and make it again with 3.13. More: [administration — troubleshooting](docs/sdem-administration.md#troubleshooting).
 
 **Try it** on the made-up examples:
 

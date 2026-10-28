@@ -685,10 +685,10 @@ class Extraction:
     def record(self, etype, name, page, where, rule, how, reasoning, description='', lifecycle=None, attributes=None):
         name = clean(name)
         if not name or not self.mm.known(etype) or self.mm.is_abstract(etype): return None
-        if etype.startswith('A2.'):  # CTL-17: BIAN elements come from the BIAN catalogue only — a document's mention is a hint for a link, never an entity
+        if etype.startswith('A2.'):  # BIAN elements come from the BIAN catalogue only — a document's mention is a hint for a link, never an entity
             k = self.known.get(norm(name))
             m = {'name': name, 'type': etype, 'page_id': page['page_id'], 'page_title': page['title'], 'where': where,
-                 'existing_id': k[0] if k else None, 'why': 'names a BIAN element; A2 entities come from the BIAN catalogue only (CTL-17) — link to it with sdem link after adoption'}
+                 'existing_id': k[0] if k else None, 'why': 'names a BIAN element; A2 entities come from the BIAN catalogue only — link to it with sdem link after adoption'}
             if not any((x['name'], x['page_id'], x['where']) == (name, page['page_id'], where) for x in self.bian_mentions): self.bian_mentions.append(m)
             return None
         key = (etype, norm(name))
@@ -1393,7 +1393,7 @@ def report(x, meta, records, links, issues, idx, cov=None):
     for c in x.cross:
         frm = '<br>'.join(f"{q['page_title']} — {q['where']}" for q in c['sources'])
         L.append(f"| `{c['source']}` | `{c['target']}` | {c['mapping_type_id'] or '—'} | {c['confidence']} | {frm} | {'<br>'.join(q['reasoning'] for q in c['sources'])} |")
-    L.append('\n## BIAN elements named in the designs — not entities (CTL-17)\n')
+    L.append('\n## BIAN elements named in the designs — not entities (BIAN records come from your BIAN layer only)\n')
     L.append('A2 entities come from the BIAN catalogue only. These names are hints for `sdem link` once the entities are adopted.\n')
     L.append('| Name | Type | Existing record | Page | Where |')
     L.append('|---|---|---|---|---|')
@@ -1436,8 +1436,8 @@ def report(x, meta, records, links, issues, idx, cov=None):
     for p in idx:
         L.append(f"| {p['title']} (`{p['file']}`) | {p['modified'] or '—'} | {len(p['records'])} | {len(p['diagrams'])} | {len(p['pictures_for_a_person'])} |")
     L.append('\n## Next\n')
-    L.append('1. Read each record against its page; delete what is wrong, fix names and types.')
-    L.append('2. Fill required attributes the check reports (LC-04).')
+    L.append('1. Read each record against its page and note the ids of any that are wrong — you leave them out at load (`--exclude`); SDEM never changes them.')
+    L.append('2. A record the check reports as missing a required attribute (e.g. a data entity drawn without its columns) cannot be loaded: leave it out — it is kept as a gap record.')
     L.append('3. Load the records you keep: `sdem load <this folder> --estate <estate> --person <you> --exclude <ids you reject>` — then `sdem link`, `sdem approve`, `sdem build`.')
     L.append('4. Tune the rules for the next run: `sdem transform inspect` shows the tables and shapes no rule read.\n')
     return '\n'.join(L)

@@ -90,12 +90,42 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 ## 4. Before you start
 
 1. Open the SDEM project in **VS Code** and open a **terminal** (*Terminal → New Terminal*).
-2. Check SDEM works: `python3 -m sdem --help` (or `sdem --help` if it is installed).
+2. Check SDEM works: `source .venv/bin/activate`, then `sdem --version` (not installed yet? [user guide §3](sdem-workbench-user-guide.md#3-set-up--once)).
 3. Start a branch for this work: `git checkout -b onboard/<name>`.
 4. **Put your export under `work/`**, e.g. `work/imports/payarch/`. Only `work/`, `private/` and `secrets/` are kept out of Git — anywhere else, your designs could be committed and shared.
-5. Have your organisation's **BIAN layer** to hand (an `a2-service-domain.json`) — needed once, so SDEM can connect your designs to BIAN.
+5. Have your **BIAN layer** to hand — one file, `a2-service-domain.json`, needed once so SDEM can connect your designs to BIAN. What it is and where it comes from: [*Your BIAN (A2) layer*](#your-bian-a2-layer) below. **For the made-up sample, use** `examples/payment-initiation/a2-service-domain.json`.
 
 > The examples below show what you will see with the made-up export `tests/fixtures/confluence-folder-export`, with `--ocr off` (the same on every machine). Try it first: `cp -r tests/fixtures/confluence-folder-export work/imports/payarch`.
+
+### Your BIAN (A2) layer
+
+**What it is.** One file, `a2-service-domain.json`, listing the BIAN service domains your organisation uses (and, if you have them, their operations and business objects) in SDEM's format. It is the bridge in the middle of the picture: business capabilities connect *to* it, applications connect *from* it. It is shared — one file for every domain and estate — and owned by whoever looks after BIAN in your organisation.
+
+**Why the designs cannot supply it.** SDEM never builds BIAN records from design documents: BIAN names it finds are only listed as *hints*. The BIAN layer comes from an authoritative source, added once with `--a2` when you first load.
+
+**Where it comes from** — in order of preference:
+
+| Source | When | How |
+|---|---|---|
+| **Your organisation's BIAN catalogue** | your organisation is a BIAN member or has a BIAN workbench | export the service domains you use and convert them to SDEM's A2 format (a licensed connection to BIAN is planned) |
+| **A starter file, by hand** | you have no catalogue yet | list the service domains your area uses, from BIAN's public Service Landscape — **names only, described in your own words** (do not copy BIAN text) — as below |
+| **None yet** | you want to start without BIAN | load without `--a2`; links between applications and technology still work, but nothing connects to BIAN until you add the layer |
+
+A starter file with one service domain — SDEM accepts it (`sdem check` gives advice to add its control record and other parts later, which you can):
+
+```json
+{
+  "level": "A2", "model_id": "our-bian-layer", "model_version": "2026.11",
+  "metamodel_version": "0.4.0", "source_system": "HAND-ENTERED",
+  "instances": [
+    {"id": "SD-PAYMENT-INITIATION", "type": "A2.ServiceDomain", "version": "1.0", "name": "Payment Initiation",
+     "lifecycle_status": "active", "description": "Starts payments for customers, in our own words."}
+  ],
+  "relationships": []
+}
+```
+
+The format of every kind of BIAN record: [the rulebook in plain words](sdem-rulebook-guide.md#the-kinds-of-thing-by-layer). A complete example: `examples/payment-initiation/a2-service-domain.json` (made up).
 
 ## 5. Step by step
 
@@ -121,8 +151,8 @@ sdem transform inspect work/imports/payarch --rules work/my-rules.json
 sdem transform run work/imports/payarch -o work/history          # add --rules work/my-rules.json if you made one
 ```
 ```
-6 pages read: A1 3 records, A3 6 records, A4 8 records, 7 links inside, 6 candidate links between
-coverage: 82% of items captured — tables and diagrams 95%, text 38%, pictures 33%, files 75%; the rest kept for gap records
+6 pages read: A1 3 records, A3 6 records, A4 8 records, 7 links inside, 6 candidate links between, 3 pictures for a person
+coverage: 80% of items captured — tables and diagrams 95%, text 38%, pictures 0%, files 75%; the rest kept for gap records
 check: 1 error(s) — see extraction-report.md
 ```
 **Tables and diagrams** is the number to watch (aim for 90% or more): it is what SDEM's rules read. Plain text and pictures are not read without AI or a person — they are kept as gap records, so nothing is lost.
@@ -146,12 +176,12 @@ Write down the ids of the items you do **not** want, e.g. `HIS-A3-PAYMENT-ORDER`
 Try it first with `--dry-run` (writes nothing), then run it for real:
 ```bash
 sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
-  --a2 <your BIAN layer>/a2-service-domain.json --dry-run
+  --a2 examples/payment-initiation/a2-service-domain.json --dry-run          # your own BIAN layer for real work
 sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
-  --a2 <your BIAN layer>/a2-service-domain.json
+  --a2 examples/payment-initiation/a2-service-domain.json
 ```
 ```
-loaded (LOAD-001) into estates/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures
+loaded (LOAD-001) into estates/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added from examples/payment-initiation/a2-service-domain.json
 gap records: 13 — what did not fit an entity, kept beside the estate
 reconciliation: 17 candidates = 16 loaded + 0 already in the estate + 1 excluded
 ```
@@ -161,7 +191,7 @@ The *reconciliation* proves nothing was lost. `--a2` is needed only the first ti
 ```bash
 sdem check --estate estates/history
 ```
-Every line should say `OK`.
+No `ERROR` lines, and the last line says `OK`. `WARN` lines are advice — the rulebook suggests a link that is still missing; fix them when you can.
 
 ### 6 · Suggest and review connections
 ```bash
@@ -308,5 +338,5 @@ Repeat the steps for the next export, into the **same** `estates/history`. SDEM 
 | Why not just copy the files? | `sdem build` refuses unloaded candidate data (CTL-23); the load checks the estate as a whole, refuses conflicts instead of overwriting, and records who approved what. |
 | Where do links between architectures come from? | `sdem link` proposes them from the loaded data; **you** approve them. The transform's "deployed on" findings are written as data so `sdem link` finds them. |
 | Where does the metamodel come from? | It is the rulebook, written and approved beforehand. Nothing generates it from data. |
-| Is A2 (BIAN) data taken from the designs? | Never (CTL-17). BIAN names found are listed as hints; your A2 dataset (from the BIAN catalogue) is added once with `--a2`. |
+| Is A2 (BIAN) data taken from the designs? | Never — the transform does not create BIAN records. BIAN names found are listed as hints; your A2 dataset (from the BIAN catalogue) is added once with `--a2`. |
 | Is the knowledge graph saved? | No — `work/graph/` is rebuilt from the estate with `sdem build` whenever needed. The estate is what you save. |

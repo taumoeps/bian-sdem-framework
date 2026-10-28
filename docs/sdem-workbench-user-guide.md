@@ -63,7 +63,7 @@ You need four things. Your IT team may install some of them for you.
 | Tool | Why | Get it |
 |---|---|---|
 | **VS Code** | the workbench | code.visualstudio.com |
-| **Python 3.10 or later** (3.13 recommended) | SDEM runs on it | check with `python3 --version`; on a Mac `brew install python@3.13` or the installer from python.org |
+| **Python 3.10 or later** (3.13 recommended) | SDEM runs on it | Macs come with 3.9, which is too old: `brew install python@3.13` or the installer from python.org |
 | **Git** | history, review and approval | git-scm.com (often already installed) |
 | **GitHub Copilot** (optional) | the AI help in the chat window | a Copilot plan on your GitHub account — step by step in [`sdem-copilot-setup.md`](sdem-copilot-setup.md) |
 
@@ -76,19 +76,24 @@ Then:
    Your organisation's **real** data is in its private estate repository, set up from [`templates/estate-repo`](../templates/estate-repo/README.md) — its README installs SDEM the same way, pinned to a release.
 2. **Open it in VS Code:** *File → Open Folder…* → choose the `sdem` folder. When VS Code offers to install the **recommended extensions** (Python, GitHub Copilot Chat, Markdown Preview Mermaid Support), accept.
 3. **Open the terminal pane:** *View → Terminal* (shortcut **Ctrl+`**).
-4. **Install SDEM** into a private Python environment for this project:
+4. **Find your Python 3.10 or later.** `python3 --version` — if it says 3.10 or later, use `python3` below. If it says 3.9, or `python3.13` gives *command not found* after you installed it, it is in Homebrew's folder:
    ```bash
-   python3 -m venv .venv              # or python3.13 -m venv .venv if python3 is older than 3.10
+   ls /opt/homebrew/bin/python3.1* /usr/local/bin/python3.1* 2>/dev/null
+   ```
+5. **Install SDEM** into a private Python environment for this project:
+   ```bash
+   python3.13 -m venv .venv           # or the full path you found, e.g. /opt/homebrew/bin/python3.13 -m venv .venv
    source .venv/bin/activate          # Windows: .venv\Scripts\activate
    pip install -e .
    ```
-5. **Check it works:**
+   If `pip` says *File "setup.py" … not found* or *requires a different Python*, the `.venv` was made with an old Python: `rm -rf .venv` and make it again with 3.13.
+6. **Check it works:**
    ```bash
    sdem --help
    ```
    You should see the list of commands, starting with `check J1 check architecture datasets and registry against the rulebook`.
 
-Each time you open a new terminal later, run the `activate` line from step 4 again. If you cannot install anything, every command also works as `python3 -m sdem …` from the project folder.
+Each time you open a new terminal later, run the `activate` line from step 5 again. If you cannot install anything, every command also works as `python3 -m sdem …` from the project folder.
 
 ## 4. The workbench screen
 
@@ -225,7 +230,7 @@ An estate is a folder with five files:
 | `a4-technology.json` | platforms, clusters, system software, environments, deployments |
 | `mappings.json` | the registry: the links between the architectures |
 
-Seven example estates are in `examples/` (`payment-initiation`, `card-fraud-alerts`, `digital-lending`, `trade-finance`, `legacy-core-ledger`, `acquired-fintech`, `customer-onboarding`). **Start your own estate by copying one** and changing its contents.
+Eight example estates are in `examples/` (`payment-initiation`, `card-fraud-alerts`, `digital-lending`, `trade-finance`, `legacy-core-ledger`, `acquired-fintech`, `customer-onboarding`, and `reference-structure` — a test estate with one example of every kind of thing and link, not a bank). **Start your own estate by copying one** and changing its contents.
 
 ### 6.2 What a record looks like
 
@@ -329,7 +334,7 @@ flowchart LR
    ```
 2. Check it:
    ```bash
-   sdem check work/my-estate/a*.json work/my-estate/mappings.json
+   sdem check --estate work/my-estate
    ```
 3. Read each `ERROR`. Example — a record without a name, and a misspelt type:
    ```
@@ -345,86 +350,98 @@ flowchart LR
 
 *Goal: the engine proposes the links between your architectures; you decide which become real.*
 
-In this example one approved link — *Payment Initiation is realised by the Payments Hub* — was removed from the registry to show the engine finding it again.
+The example estate already has its links approved, so to practise, start from the registry **as it was before** they were approved — the example ships it as `m1-mappings-given.json`. Work in a separate practice copy, so the other examples in this guide keep working:
+
+```bash
+cp -R examples/payment-initiation work/practice-links
+cp work/practice-links/m1-mappings-given.json work/practice-links/mappings.json   # the registry before approval
+```
 
 1. **Propose** (J2):
    ```bash
-   sdem link work/my-estate/a*.json work/my-estate/mappings.json --out work/links
+   sdem link --estate work/practice-links --out work/links
    ```
    ```
-   1 proposed link(s) written to work/links/proposals.json; candidates, inference log and any design datasets in work/links/
+   13 proposed link(s) written to work/links/proposals.json; candidates, inference log and any design datasets in work/links/
    next: sdem review work/links/proposals.json
    ```
 2. **Review** (J3):
    ```bash
-   sdem review work/links/proposals.json --names work/my-estate/a*.json
+   sdem review work/links/proposals.json --names work/practice-links/a*.json
    ```
    ```
-   1 proposed link(s), weakest first:
+   13 proposed link(s), weakest first:
 
-     [0.8] P-RUN-001  SD-PI 'Payment Initiation (synthetic selection)' -REALIZED_BY-> APP-PAY-HUB 'Payments Hub'   rule S17
-           why: implements SO-PI-01 via API-PI-01 (approved); SO-PI-04 via API-PI-04 (approved); …
+     [0.6] P-RUN-011  SO-PI-04 'Retrieve Payment Instruction' -IMPLEMENTED_BY-> API-PI-04 'Get payment instruction'   rule S24
+           why: … method mismatch, proposed one band lower
+     [0.8] P-RUN-001  APP-PAY-HUB 'Payments Hub' -DEPLOYED_AS-> DEP-PAYHUB-PROD 'Payments Hub — production'   rule S32
+     …
+     [0.8] P-RUN-013  SD-PI 'Payment Initiation (synthetic selection)' -REALIZED_BY-> APP-PAY-HUB 'Payments Hub'   rule S17
+           why: implements SO-PI-01 via API-PI-01 (P-RUN-007); SO-PI-02 via API-PI-02 (P-RUN-008); …
    ```
-   The engine proposes it at 0.8 (high) because the hub's APIs implement five of the domain's operations. To see everything behind a proposal: `sdem explain P-RUN-001 --proposals work/links/proposals.json`.
+   The weakest is first: P-RUN-011 is a lower band because the operation *Retrieve* is exposed by a `POST`, not a `GET` — worth a look. *Rule S17* is the rule the engine used; to see everything behind a proposal — the rule in words, its published source, the data, the reasoning: `sdem explain P-RUN-013 --proposals work/links/proposals.json`.
 3. **Decide.** Ask yourself: is this true of our architecture, and do we have the document that shows it? Copilot can help:
    > *Walk me through the proposals in work/links/proposals.json, weakest first. What evidence would I need for each?*
 4. **Approve — you, with `sdem approve`.** It writes the registry record for you — a new id, status `approved`, you as reviewer, today's date and the evidence — and checks the whole registry before writing anything:
    ```bash
-   sdem approve P-RUN-001 --proposals work/links/proposals.json --estate work/my-estate \
+   sdem approve P-RUN-013 --proposals work/links/proposals.json --estate work/practice-links \
         --reviewer your.name --evidence application_architecture_document:AA-PAYHUB-HLD#s3
    ```
    ```
-   approved PAY-114: SD-PI -REALIZED_BY-> APP-PAY-HUB  (reviewer your.name, …, evidence application_architecture_document:AA-PAYHUB-HLD#s3)
+   approved PAY-006: SD-PI -REALIZED_BY-> APP-PAY-HUB  (reviewer your.name, 2026-10-29, evidence application_architecture_document:AA-PAYHUB-HLD#s3)
+   work/practice-links/mappings.json updated and checked. Next: commit on a branch and open a pull request — the reviewed merge makes it final; then rebuild the graph store (sdem build --estate … --out …).
    ```
-   To replace an old link, add `--supersedes <old id>`. The reviewer must be a person — an agent name is refused (control CTL-21). For reference, the record it writes looks like this (you could also write it by hand):
+   The reviewer must be a person — try `--reviewer copilot` and SDEM refuses: `ERROR: CTL-21: the reviewer must be a person, not 'copilot' — give your own name`. To replace an old link, add `--supersedes <old id>`. The record it writes:
    ```json
    {
-     "mapping_id": "PAY-120",                                  ← a new id, unique in the registry
+     "mapping_id": "PAY-006",                                  ← a new id, unique in the registry
      "source": { "id": "SD-PI", … },
      "relationship": "REALIZED_BY",
      "target": { "id": "APP-PAY-HUB", … },
      "status": "approved",                                     ← was "proposed"
      "reviewer_id": "your.name",                               ← who approved
-     "approved_at": "2026-10-28",                              ← when
+     "approved_at": "2026-10-29",                              ← when
      "evidence": ["application_architecture_document:AA-PAYHUB-HLD#s3", "engine_rationale:…"],
-                                                               ← add the document that proves it
      …
    }
    ```
-   **The evidence a link needs depends on its type** — the engine's reasoning alone is not enough to approve:
+   **The evidence a link needs depends on its type** — the engine's reasoning alone is not enough. Where two kinds are listed, **both** are needed; links that rest on BIAN's guidance also need the **BIAN release** you relied on:
 
-   | Link | Required evidence kind |
-   |---|---|
-   | capability **SUPPORTED_BY** service domain | `business_architecture_document`, `domain_scope_assessment` |
-   | value stream **ALIGNED_TO** business scenario | `process_model`, `scenario_suitability_review` |
-   | process **USES_DOMAIN** service domain | `process_model` |
-   | business object **ALIGNED_TO** BIAN business object | `business_glossary`, `object_alignment_review` |
-   | service domain **REALIZED_BY** application | `application_architecture_document` |
-   | service operation **IMPLEMENTED_BY** API | `api_contract` |
-   | BIAN business object **MAPPED_TO** data entity | `data_model` |
-   | application **DEPLOYED_ON** / **DEPLOYED_AS** technology | `deployment_design` |
+   | Link | Evidence — every kind listed | Also needs |
+   |---|---|---|
+   | capability **SUPPORTED_BY** service domain | `business_architecture_document` **and** `domain_scope_assessment` | `--bian-release` |
+   | value stream **ALIGNED_TO** business scenario | `process_model` **and** `scenario_suitability_review` | `--bian-release` |
+   | process **USES_DOMAIN** service domain | `process_model` | — |
+   | business object **ALIGNED_TO** BIAN business object | `business_glossary` **and** `object_alignment_review` | `--bian-release` |
+   | service domain **REALIZED_BY** application | `application_architecture_document` | — |
+   | service operation **IMPLEMENTED_BY** API | `api_contract` | — |
+   | BIAN business object **MAPPED_TO** data entity | `data_model` | — |
+   | application **DEPLOYED_ON** / **DEPLOYED_AS** technology | `deployment_design` | — |
 
-   Write evidence as `kind:document-reference`, e.g. `api_contract:payments-api-v2.yaml`.
+   Write each as `kind:document-reference`, and give each kind its own `--evidence`. For example, a capability supported by a BIAN domain:
+   ```bash
+   sdem approve P-RUN-… --proposals … --estate … --reviewer your.name \
+        --evidence business_architecture_document:BA-PAYMENTS#cap-map --evidence domain_scope_assessment:DSA-2026-04 \
+        --bian-release 13.0
+   ```
+   If something is missing, SDEM says exactly what — e.g. `evidence missing required kind(s) ['domain_scope_assessment']`, or `add --bian-release <release>`.
 5. **Check:**
    ```bash
-   sdem validate --strict work/my-estate/mappings.json
-   sdem check work/my-estate/a*.json work/my-estate/mappings.json
+   sdem validate --strict work/practice-links/mappings.json
+   sdem check --estate work/practice-links
    ```
-   If you forgot the evidence or reused an id, you will see, for example:
-   ```
-   ERROR: …mappings.json: mapping #18 (PAY-120): evidence missing required kind(s) ['application_architecture_document']
-   ERROR: …mappings.json: mapping #11 (PAY-107): duplicate mapping_id
-   ```
+   Both should end with `OK`.
 6. **Pull request.** In *Source Control*, commit the registry change on a branch and open a pull request. A reviewer checks it; CI runs every check. **Merging the pull request is the approval.** Copilot can draft the description:
    > *Draft a pull-request description for the link I approved in mappings.json, citing its evidence.*
 7. **Rebuild the graph** (J4) and see the link in use:
    ```bash
-   sdem build work/my-estate/a*.json work/my-estate/mappings.json --out work/graph
-   sdem trace SD-PI --direction down --graph work/graph
+   sdem build --estate work/practice-links --out work/practice-graph
+   sdem trace SD-PI --direction down --graph work/practice-graph
    ```
    ```
+   DOWNSTREAM (depends on):
    SD-PI 'Payment Initiation (synthetic selection)'  [A2.ServiceDomain]
-   └─ -REALIZED_BY-> APP-PAY-HUB 'Payments Hub'  [A3.ApplicationComponent]  (PAY-120)
+   └─ -REALIZED_BY-> APP-PAY-HUB 'Payments Hub'  [A3.ApplicationComponent]  (PAY-006)
    ```
 
 ### 8.3 Trace a capability to technology — and back
@@ -451,8 +468,8 @@ IMPACT of 'rehost' on INF-K8S-PAY-PROD: hosting changes only; deployment records
 
   design_change_required   A4  INF-K8S-PAY-PROD  Managed Kubernetes — payments (production)  via -
   design_change_required   A3  APP-PAY-HUB       Payments Hub  via PAY-108
-  no_impact                A2  SD-PI             Payment Initiation (synthetic selection)  via PAY-108, PAY-120
-  no_impact                A1  CAP-PAY-010       Initiate Payment  via PAY-108, PAY-120, PAY-001
+  no_impact                A2  SD-PI             Payment Initiation (synthetic selection)  via PAY-108, PAY-106
+  no_impact                A1  CAP-PAY-010       Initiate Payment  via PAY-108, PAY-106, PAY-001
   …
   design_change_required   A3  CMP-PAY-EXEC      Execution Gateway  via PAY-111
 
@@ -526,38 +543,24 @@ Every answer shows the **rule** (e.g. S17), its **published source** where one e
 
 ### 8.7 Onboard your existing designs (from Confluence)
 
-> **Design onboarding** — the whole journey, export → transform → review → load → link → approve → build, step by step with the commands and what you will see: [`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md). The **test script** with the expected result of every step: [`use-case-example-4.md`](evidence/use-case-example-4.md).
+*Goal: turn your organisation's past designs (Confluence pages with tables and diagrams) into SDEM data — on your machine, without AI, without the content leaving it.*
 
-*Goal: turn the organisation's past designs (Confluence pages with tables and draw.io diagrams) into candidate records — on the work machine, without AI, without the content leaving it.*
+**The full walkthrough, every step with what you will see, is the [onboarding workflow](sdem-onboarding-workflow.md)** — follow that. In short:
 
-1. Put the export in a folder outside this repository's tracked files, e.g. `~/designs/payarch`. Any layout works: Confluence's own HTML export, or a prepared one (readme/source/evidence files in the root, raw HTML and diagrams in `archives/`, sections as folders).
-2. See what is there and which rules read it — structure only:
-   ```bash
-   sdem transform inspect ~/designs/payarch
-   ```
-   It shows what each folder holds (add `--anonymous` to hide the folder names), and lists every table's column headings with the rule that reads it (`no rule` if none), every draw.io shape kind with the type it becomes (`unclassified` if none), and the headings.
-3. If your pages use other words, copy the rules and add them — no code:
-   ```bash
-   cp metamodel/transform-rules.json my-rules.json      # e.g. add "system name" to HT-01's "name" list, "switch" to label_words
-   ```
-4. Extract — add your current datasets with `--known` so known names are recognised in the text and flagged when they already exist:
-   ```bash
-   sdem transform run ~/designs/payarch -o work/history --rules my-rules.json --known estate/a3-application.json
-   ```
-   Text in pictures is read on your Mac with its built-in text recognition (no install, no network); add `--ocr off` if your organisation does not allow it, or `--ocr tesseract` where Tesseract is installed. PlantUML diagrams are read from their source.
-5. Open `work/history/extraction-report.md`. Every record says **which page, where on it** (table and row, diagram and shape, paragraph), **which rule**, **how sure** (never above medium) and **why**. Pasted pictures are listed for you to record by hand.
-   **Nothing is silently lost:** the *Coverage* section gives the share of each page captured, and *Not captured* lists everything SDEM read but could not use — with its place and text — grouped as *no entity type* (e.g. a table of risks: a possible gap in the metamodel, for the owner), *column not mapped* (kept with each entity), *text not read*, *needs a person* (pictures), *file not read* (PDF, Word …) and more. Key-value tables (owner, review date) become the page's facts in `design-index.json`.
-6. **Load** what is right (the L of the ETL) — name what to leave out, or what to keep:
-   ```bash
-   sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-SANCTIONS-CHECKEL HIS-A3-PAYMENT-ORDER \
-             --a2 <your estate>/a2-service-domain.json        # once: your BIAN layer, so links to Service Domains can be proposed
-   ```
-   It checks the whole estate first (nothing is written if anything fails), records the load in `estates/history/loads/` with a reconciliation (candidates = loaded + already there + excluded), and lists the BIAN names found as hints. **What did not fit an entity is kept too**, in `estates/history/designs/design-records.json`: a *design record* per page (its facts, coverage, link) and a *gap record* per item that did not fit (a table of risks, an unmapped column, text, pictures, a PDF, each candidate you rejected). Add `--dry-run` to see what would happen.
-7. Then as for any estate: `sdem link --estate estates/history --out work/links` → `sdem review` → `sdem approve` → `sdem build`. Links involving entities read from a document come out at **low** confidence — check them against the page. A graph is never built straight from the transform's output (CTL-23).
+```bash
+cp -r tests/fixtures/confluence-folder-export work/imports/payarch     # the made-up sample; your real export goes in work/imports/<name>/
+sdem transform inspect work/imports/payarch                              # what is in the export, what SDEM can read — changes nothing
+sdem transform run work/imports/payarch -o work/history --ocr off        # suggestions + work/history/extraction-report.md
+# read the report; note the ids you reject
+sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
+     --a2 examples/payment-initiation/a2-service-domain.json             # your own BIAN layer for real work — see the workflow
+sdem link --estate estates/history --out work/links                      # then review, approve, build — as in §8.2
+```
 
-The transform writes **candidate A1, A3 and A4 entities** (never A2 — BIAN service domains come from the BIAN catalogue; BIAN names found are listed as mentions) and the links inside each architecture, with evidence. Step by step, with what you will see: the [onboarding workflow](sdem-onboarding-workflow.md). It does not change the metamodel, approve links between architectures, or build the knowledge graph — those come after you load the entities (`sdem load`, then `sdem link`, `sdem approve`, `sdem build`). Load: [`sdem-load-design.md`](design/sdem-load-design.md).
-
-Try it on the made-up sample first: `sdem transform run tests/fixtures/confluence-export-sample -o work/history`. If your designs use table headings SDEM does not recognise: [configuration — onboarding](sdem-configuration.md#onboarding--reading-your-designs).
+- **Keep exports in `work/`** — it is never saved to Git. The result you keep is `estates/history/` (for real data, in your private estate repository).
+- Every suggestion says **which page, where on it, which rule and how sure** (never above medium); nothing is loaded until you run `sdem load`; anything that did not fit becomes a **gap record** — nothing is lost.
+- **Your BIAN layer** (`--a2`) is needed once — what it is and where it comes from: [the workflow's *Your BIAN (A2) layer*](sdem-onboarding-workflow.md#your-bian-a2-layer).
+- If your designs use table headings SDEM does not recognise: [configuration — onboarding](sdem-configuration.md#onboarding--reading-your-designs).
 
 > **Never** put the real export or its outputs in a public repository or paste them into an AI chat outside what your organisation allows.
 

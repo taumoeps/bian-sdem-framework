@@ -93,7 +93,7 @@ SDEM failures say what to do: exit `1` a check refused (read the message), `2` t
 |---|---|---|---|
 | 1 | **Legal and IP clearance** to run SDEM on the organisation's designs ([`PUBLICATION_CHECKLIST.md`](design/PUBLICATION_CHECKLIST.md)) | owner | the designs belong to the employer; SDEM is personal open source |
 | 2 | Private estate repository with **branch protection and code owners** | platform | without it a person's approval is not enforced ([`sdem-repository-protection.md`](sdem-repository-protection.md)) |
-| 3 | **Python 3.10 or later** on architects' machines (3.11+ recommended) | platform | SDEM requires 3.10; Python 3.9 reached end of life in October 2025 (PEP 596 — high confidence) |
+| 3 | **Python 3.10 or later** on architects' machines (3.13 recommended) | platform | SDEM requires 3.10; Python 3.9 reached end of life in October 2025 (PEP 596 — high confidence) |
 | 4 | **Dashboard hosting decided** — decided: local HTML files for now (OM-3) | owner | dashboards show real architecture |
 | 5 | **Copilot policy** known (allowed or not; no MCP) | platform | SDEM works without Copilot; with it, Copilot files must match the pinned release |
 | 6 | **A2 (BIAN)**: the organisation's BIAN licence position | owner | real BIAN ids need a licensed catalogue (ROADMAP v0.15); without it, A2 holds only what is public |

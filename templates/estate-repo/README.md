@@ -5,7 +5,7 @@ This repository holds **our real architecture data**, checked and built with a p
 ```mermaid
 flowchart LR
     S["SDEM (public)<br/>the tool and the rulebook<br/>tagged releases"] -- "pinned in requirements.txt" --> E["This repository (private)<br/>estates/ — our data<br/>CI checks every change"]
-    E -- "after merge" --> D["Dashboards<br/>internal, sign-in only"]
+    E -- "after merge" --> D["Dashboards<br/>local files for now;<br/>later internal, sign-in only"]
     A["Architects<br/>VS Code + sdem"] -- "pull requests" --> E
     R["Reviewers (code owners)"] -- "approve and merge" --> E
 ```
@@ -23,7 +23,7 @@ flowchart LR
 
 ```bash
 git clone <this repository> && cd <it>
-python3 -m venv .venv && source .venv/bin/activate      # Python 3.10 or later (3.11+ recommended)
+python3.13 -m venv .venv && source .venv/bin/activate   # Python 3.10 or later (3.13 recommended); not found? /opt/homebrew/bin/python3.13
 pip install -r requirements.txt
 sdem --version                                           # the pinned version
 bash ci/check-estates.sh                                 # the same checks CI runs
@@ -33,15 +33,16 @@ bash ci/check-estates.sh                                 # the same checks CI ru
 
 ```bash
 git switch -c onboard/<design>
-sdem transform run work/<design>-export -o work/history       # work/ is never committed
-sdem load work/history --estate estates/<domain> --person <you>   # keep what is right; gaps are recorded
+sdem transform run work/imports/<design> -o work/history       # keep the export in work/ — never committed
+sdem load work/history --estate estates/<domain> --person <you> --exclude <ids you reject> \
+    --a2 <your BIAN layer>/a2-service-domain.json             # first load only; gaps are recorded
 sdem check --estate estates/<domain>
-sdem link --estate estates/<domain> -o work/links                 # proposed links
+sdem link --estate estates/<domain> --out work/links              # proposed links
 sdem approve P-RUN-001 --proposals work/links/proposals.json --estate estates/<domain> \
     --reviewer <you> --evidence application_architecture_document:<doc>#<section>   # a person approves, with evidence
 git add estates/<domain> && git commit -m "Onboard <design> (LOAD-001)" && git push -u origin HEAD
 ```
-Open a pull request; CI runs the **Estate checks**; a code owner reviews and merges. **Approvals become final when the pull request is merged.** The full walk-through: SDEM's [onboarding workflow](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md) and [user guide](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-workbench-user-guide.md).
+Open a pull request; CI runs the **Estate checks**; a code owner reviews and merges. **Approvals become final when the pull request is merged.** Your BIAN layer (`--a2`, needed once): [what it is and where it comes from](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md#your-bian-a2-layer). The full walk-through: SDEM's [onboarding workflow](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md) and [user guide](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-workbench-user-guide.md).
 
 ## Adding a domain
 

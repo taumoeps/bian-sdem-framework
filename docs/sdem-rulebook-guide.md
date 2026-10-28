@@ -66,7 +66,7 @@ Every proposed connection says how sure the engine is — **high**, **medium** o
 |---|---|---|
 | **Records** | CTL-01 … 04 | an unknown kind of thing; a wrong or missing attribute; a link inside a layer that the rulebook does not allow; a record that does not match its format |
 | **Connections** | CTL-05 … 08 | a connection that is not one of the nine; an approval with no reviewer, date or evidence; any edit to an approved connection (it is superseded instead); a connection to a record that does not exist |
-| **People in charge** | CTL-20, 21, 23 | an approval by an agent; a change without the person behind it; an onboarded design that a person has not loaded |
+| **People in charge** | CTL-21, 20, 23 | an approval by an agent; a change without the person behind it; an onboarded design that a person has not loaded |
 | **The engine** | CTL-09, 10, 22 | an engine that finds fewer right connections than the tested runs; output that is not *proposed*; a rule that is not in the rulebook |
 | **The rulebook itself** | CTL-11 … 14 | an item without its source and reasoning; a confidence that breaks the rule; a generated document out of date; any change to the owner's frozen specification |
 | **The knowledge graph** | CTL-15 | building it from data that fails a check (the last good one is kept) |
