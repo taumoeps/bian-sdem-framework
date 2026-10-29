@@ -5,6 +5,7 @@
 ## Unreleased
 
 - **README diagrams readable and simpler.** The tools diagram is now one left-to-right flow — designs → estate data → knowledge graph → answers, with proposals and approval on the side and the metamodel checking — with each command on the step where it acts (in 0.9.7 it scattered across the page). Every coloured box in the README's diagrams now sets its text colour, so they read in GitHub's dark theme.
+- **README: a command table under the tools diagram** — the steps in order from your designs to `sdem build` (inspect, read, keep, BIAN layer, check, propose, review, approve, build; AID for a new design), what each does and who runs it.
 
 ## 0.9.7 — organisation-neutral wording (2026-10-29)
 

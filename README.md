@@ -132,7 +132,22 @@ flowchart LR
     class IN,PL o
 ```
 
-In words: designs come **in** through onboarding (a new design can be planned by AID, apart from real data); SDEM **proposes** connections and **a person approves** them; **build** makes the knowledge graph from the data and the approved connections; **trace, impact** and the dashboards answer questions from it; **check** tests every file against the rulebook, on every change and in CI. Every command: the [user guide](docs/sdem-workbench-user-guide.md#7-command-reference).
+The steps in order, from your designs to the knowledge graph:
+
+| # | Step | Command | What happens | Who |
+|---|---|---|---|---|
+| 1 | Look at an existing design | `sdem transform inspect <export>` | shows what is in the export and what SDEM can read; changes nothing | SDEM |
+| 2 | Read it | `sdem transform run <export> -o work/history` | turns pages, tables and diagrams into *suggested* items, with a report of where each came from | SDEM |
+| 3 | Keep the good ones | `sdem load work/history --estate <estate> --person <you>` | copies the items you accept into the estate; what does not fit is kept as a gap record | **you** |
+| 4 | Add your BIAN layer | `sdem bian import --base --only "<service domain>"` | the A2 layer from BIAN's public Semantic APIs (or your own BIAN) | the SDEM lead |
+| — | *New design instead?* | `sdem aid project` | plans the BIAN, application and technology layers you do not have yet — a planned design, kept apart from real data | SDEM |
+| 5 | Check | `sdem check --estate <estate>` | every file against the rulebook; errors must be fixed, warnings are advice — also run by CI on every change | SDEM |
+| 6 | Propose connections | `sdem link --estate <estate> --out work/links` | proposes connections between layers, each with its reasons | SDEM |
+| 7 | Review them | `sdem review work/links/proposals.json` | lists the proposals, weakest first | **you** |
+| 8 | Approve | `sdem approve <id> --reviewer <you> --evidence <document>` — or `sdem connect` for one SDEM missed | writes the approved connection to `mappings.json`, with you, the date and the evidence; final when its pull request is merged | **you** |
+| 9 | Build | `sdem build --estate <estate> --out work/graph` | makes the four layer graphs and the federated graph from the data and the approved connections | SDEM |
+
+Then ask the graph: `sdem trace` (*what does this depend on?*), `sdem impact` (*what breaks if it goes?*), `sdem matrix`, `sdem view`, `sdem dashboard`. Every command, with examples: the [user guide](docs/sdem-workbench-user-guide.md#7-command-reference).
 
 **Follow one capability down to the technology** — every arrow an approved connection, with who approved it and the document that proves it:
 
