@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "SDEM design records and gap records",
-  "description": "Kept beside an estate's architecture datasets, in <estate>/designs/design-records.json: one design record per source page or file of an imported design, and one gap record per item that did not fit an architecture entity (docs/sdem-load-design.md §4a). Information, not architecture: never read by the rules engine or impact analysis.",
+  "description": "Kept beside a workspace's architecture datasets, in <workspace>/designs/design-records.json: one design record per source page or file of an imported design, and one gap record per item that did not fit an architecture entity (docs/sdem-load-design.md §4a). Information, not architecture: never read by the rules engine or impact analysis.",
   "type": "object",
   "additionalProperties": false,
   "required": ["records_version", "documents", "gaps"],

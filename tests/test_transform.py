@@ -271,7 +271,7 @@ Rel_Serving(M, P, "x")
             if i['status'] == 'not captured': self.assertTrue(i.get('category'), i)
             if i['status'] == 'skipped': self.assertTrue(i['reason'], i)
 
-    def test_rules_command_writes_sdems_rules_and_never_overwrites(self):  # so an estate repository need not find metamodel/
+    def test_rules_command_writes_sdems_rules_and_never_overwrites(self):  # so a workspace repository need not find metamodel/
         import subprocess, sys, tempfile
         d = Path(tempfile.mkdtemp()); out = d / 'rules' / 'transform-rules.json'
         run = lambda: subprocess.run([sys.executable, '-m', 'sdem', 'transform', 'rules', '-o', str(out)], cwd=ROOT, capture_output=True, text=True)

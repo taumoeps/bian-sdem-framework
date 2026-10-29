@@ -59,8 +59,8 @@ python -m sdem model check                     # what CI checks
 
 ## Releases
 
-Releases are tagged by the owner. Before a tag: the CHANGELOG's *Unreleased* section moves under the version, `pyproject.toml`'s version and the pin in `templates/estate-repo/requirements.txt` are set to match (a test checks they agree), and the checks above pass. See [`docs/design/ROADMAP.md`](docs/design/ROADMAP.md).
+Releases are tagged by the owner. Before a tag: the CHANGELOG's *Unreleased* section moves under the version, `pyproject.toml`'s version and the pin in `templates/workspace-repo/requirements.txt` are set to match (a test checks they agree), and the checks above pass. See [`docs/design/ROADMAP.md`](docs/design/ROADMAP.md).
 
 ## Where things are
 
-The documentation is indexed by reader in [`docs/README.md`](docs/README.md); the code in `sdem/` (one module per journey, plus the generators), the metamodel in `metamodel/` and `schema/`, the made-up estates in `examples/`, scripts for examples and checks in `scripts/`, the Copilot agents, prompts and skills in `.github/`.
+The documentation is indexed by reader in [`docs/README.md`](docs/README.md); the code in `sdem/` (one module per journey, plus the generators), the metamodel in `metamodel/` and `schema/`, the made-up workspaces in `examples/`, scripts for examples and checks in `scripts/`, the Copilot agents, prompts and skills in `.github/`.

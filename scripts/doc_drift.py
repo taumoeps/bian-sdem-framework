@@ -21,8 +21,8 @@ RULES = [
     (r'\b\d{3} tests\b', 'a hard-coded test count drifts — say "the full suite" or "about N"'),
     (r'(?i)v0\.7\.0 released|not yet released|nothing (has been )?released since', 'release status out of date'),
     (r'(?i)\bimport(ed|ing)? (past|existing|historical) designs\b|\bimported designs\b', 'say "onboard(ed) designs"'),
-    (r'(?i)organisation\'s (own )?copy of (the|this) (project|repository)', 'real data goes in a private estate repository'),
-    (r'git add estates/history', 'estates/ is ignored here — real estates go in a private estate repository'),
+    (r'(?i)organisation\'s (own )?copy of (the|this) (project|repository)', 'real data goes in a private workspace repository'),
+    (r'git add workspaces/history', 'workspaces/ is ignored here — real workspaces go in a private workspace repository'),
     (r'(?i)python 3\.9\b(?! (is|was|reached|reaches))', 'SDEM needs Python 3.10 or later'),
     (r'(?i)render[^.\n]{0,40}www\.plantuml\.com|plantuml\.render"\s*:\s*"PlantUMLServer', 'PlantUML renders locally'),
 ]

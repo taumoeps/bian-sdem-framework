@@ -28,7 +28,7 @@ The **SDEM workbench** is how an architect uses SDEM day to day. It is not a new
 | **Metamodel** | `metamodel/`, `schema/` | what may exist and link, on what published basis | built |
 | **Repository** | architecture datasets, Relationship Registry, graph store, projection packages — JSON files | the architecture data | built |
 | **History and approval** | Git, with pull requests | who changed what and why; links are approved in reviewed changes | built (Git); approval flow to document |
-| **Views** | the **dashboard** (`sdem dashboard`: the estate on one read-only HTML page), the HTML graph view, matrices and impact reports, PlantUML diagrams | pictures and tables for review — VS Code is not a drawing tool; open HTML in VS Code's Simple Browser | built |
+| **Views** | the **dashboard** (`sdem dashboard`: the workspace on one read-only HTML page), the HTML graph view, matrices and impact reports, PlantUML diagrams | pictures and tables for review — VS Code is not a drawing tool; open HTML in VS Code's Simple Browser | built |
 | **Controls** | CTL-01…17 (CTL-18 proposed), CI on every push | keep people and the AI honest: nothing unchecked becomes real | built |
 
 ### 2.1 How the workbench fits into the SDEM framework

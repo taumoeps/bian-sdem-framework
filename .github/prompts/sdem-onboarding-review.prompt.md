@@ -13,7 +13,7 @@ Help me review the onboarding of past designs in ${input:candidates:work/history
    - **One table per layer** — id, type, name, confidence, the strongest source (page, place, rule), and your note.
    - **Suggest rejecting** — each id with the reason (fails the check, likely OCR misread, typed only by the section default, duplicate name, single weak source).
    - **For me to do by hand** — pictures, diagrams not linked to a page, BIAN names found (hints only — never A2 records).
-3. Run `sdem load ${input:candidates} --estate ${input:estate:estates/history} --person ${input:person} --exclude <your suggestions> --dry-run` and show the result.
+3. Run `sdem load ${input:candidates} --workspace ${input:workspace:workspaces/history} --person ${input:person} --exclude <your suggestions> --dry-run` and show the result.
 4. Give me the same command **without** `--dry-run`, for me to run.
 
 I decide what to keep. Never run `sdem load` without `--dry-run`, never edit the datasets, never approve.

@@ -680,7 +680,7 @@
       "source_reference": "[SAPG] §3.5 pp. 52–55 (REST mapping; [APIP])",
       "rule_decision": "registry_rule",
       "fill_step": 2,
-      "data_needed": "A2.ServiceOperation attributes.action_term / behavior_qualifier / input_attributes / output_attributes; A2.ControlRecord attributes.attributes; A3.APIOperation attributes.method / path / payload_fields (export-conventions.json); A2.ServiceDomain.attributes.asset_type for rule 1 in reverse cases; A2.AssetType.attributes.aliases for the token boundary gate in reverse cases; A2.BehaviorQualifier.attributes.aliases and A3.ApplicationInterface.attributes.field_aliases for product-named estates",
+      "data_needed": "A2.ServiceOperation attributes.action_term / behavior_qualifier / input_attributes / output_attributes; A2.ControlRecord attributes.attributes; A3.APIOperation attributes.method / path / payload_fields (export-conventions.json); A2.ServiceDomain.attributes.asset_type for rule 1 in reverse cases; A2.AssetType.attributes.aliases for the token boundary gate in reverse cases; A2.BehaviorQualifier.attributes.aliases and A3.ApplicationInterface.attributes.field_aliases for product-named workspaces",
       "confidence": "high",
       "reasoning": "Registry rule IMPLEMENTED_BY, verified BIAN rules (SAPG §3.5): operation → REST form is prescribed. Fill by a decision procedure (guide step 2, rewritten after M1): a boundary precondition, then action term ↔ method, qualifier ↔ path and attributes ↔ payload as pass/fail/neutral evidence, with one-to-one disambiguation per operation and API. A 'count of rules passed' is not a rule — on a six-operation domain it admitted nineteen wrong pairs. Mismatches (e.g. Retrieve on POST) are proposed one band lower with a finding. The most mechanical arrow in the model. Contention between operations for one API is decided by overlap count, ratio, then qualifier (proposed, H2 run 2; pending validation on an unseen gold).",
       "basis_confidence": "high",
@@ -869,7 +869,7 @@
       "fill_step": 1,
       "data_needed": "A4.Device.attributes.hosts — logged as S35 when the DEPLOYED_ON target is a Device (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Component→physical device: real in on-prem estates, meaningless in cloud ones; ArchiMate reaches Device only through Node. Institution-only, data-filled where it exists.",
+      "reasoning": "Component→physical device: real in on-prem workspaces, meaningless in cloud ones; ArchiMate reaches Device only through Node. Institution-only, data-filled where it exists.",
       "basis_confidence": "medium",
       "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
@@ -903,7 +903,7 @@
       "fill_step": 1,
       "data_needed": "A3.ApplicationComponent.attributes.network_zone, or A4.CommunicationNetwork.connects naming the component's node (export-conventions.json 0.5.10); when network_zone and connects disagree, the component's network_zone wins and the disagreement is a finding (C3 finding 3)",
       "confidence": "low",
-      "reasoning": "Component→network: reached through node and path in ArchiMate; a direct arrow is rarely how estates are recorded. Institution-only.",
+      "reasoning": "Component→network: reached through node and path in ArchiMate; a direct arrow is rarely how workspaces are recorded. Institution-only.",
       "basis_confidence": "medium",
       "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },
@@ -920,7 +920,7 @@
       "fill_step": 1,
       "data_needed": "A4.Path.attributes.carries (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Component→network path: as S37, ArchiMate reaches a Path only through the nodes it connects, and estates record routes against nodes, not applications. Institution-only; data-filled from network records where they exist.",
+      "reasoning": "Component→network path: as S37, ArchiMate reaches a Path only through the nodes it connects, and workspaces record routes against nodes, not applications. Institution-only; data-filled from network records where they exist.",
       "basis_confidence": "medium",
       "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },

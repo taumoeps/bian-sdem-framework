@@ -103,7 +103,7 @@ def render():
            '| deprecated attribute | `deprecated: true` |',
            '| source reference, reasoning, confidence | `x-sdem-source`, `x-sdem-reasoning`, `x-sdem-confidence` on every property and in `x-sdem-entity` |', '',
            '## What the schemas do not check', '',
-           'A schema sees one record. These rules need the whole architecture dataset or estate and are enforced by `sdem check` ([logical rules](logical-data-model.md)): references resolve (LC-07 error, LC-08 warning), natural keys are unique (LC-09), cardinality (LC-10, LC-10m), within-level and cross-level relationships (LC-03, LC-11). Attributes not in the model are accepted by the schema and reported as warnings.', '',
+           'A schema sees one record. These rules need the whole architecture dataset or workspace and are enforced by `sdem check` ([logical rules](logical-data-model.md)): references resolve (LC-07 error, LC-08 warning), natural keys are unique (LC-09), cardinality (LC-10, LC-10m), within-level and cross-level relationships (LC-03, LC-11). Attributes not in the model are accepted by the schema and reported as warnings.', '',
            f"## Schemas ({len(files)} entity types)", '',
            'Artefact types (BOM model, wireframe, Semantic API) and abstract types are not architecture dataset instance types and have no schema.', '',
            '| Entity | Schema | Core fields (besides the `attributes` container) | Common | Inherited | Specific | Required attributes | Attribute confidence (H / M / L) |', '|---|---|---|---|---|---|---|---|'] + rows + [
@@ -111,7 +111,7 @@ def render():
            '## Using a schema', '', '```bash',
            '# any JSON Schema 2020-12 validator, e.g. check-jsonschema',
            'check-jsonschema --schemafile schema/entities/A1/BusinessProcess.schema.json my-process.json', '',
-           '# then the whole architecture dataset and estate',
+           '# then the whole architecture dataset and workspace',
            'python -m sdem.graph check architecture datasets/a*.json architecture datasets/mappings.json', '```', '']
     return files, '\n'.join(out)
 

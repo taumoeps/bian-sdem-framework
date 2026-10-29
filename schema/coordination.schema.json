@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/coordination.schema.json",
   "title": "SDEM agent platform coordination records",
-  "description": "Change sets, change events (with their stored impact result) and work items — the only channel between the layer agents and the orchestrator (docs/sdem-agent-platform-spec.md AG-R01…R05). Stored in <estate>/coordination/ one file per record (change-sets/, events/, work-items/), ids scoped to the Git branch, append-only.",
+  "description": "Change sets, change events (with their stored impact result) and work items — the only channel between the layer agents and the orchestrator (docs/sdem-agent-platform-spec.md AG-R01…R05). Stored in <workspace>/coordination/ one file per record (change-sets/, events/, work-items/), ids scoped to the Git branch, append-only.",
   "$defs": {
     "record": {
       "type": "object",

@@ -63,13 +63,13 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem approve', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='A person approves proposed links into the registry: a correct record with the reviewer, the date and the required evidence, '
                                              'validated before it is written. The approval becomes final when the change is merged in a reviewed pull request. Agents never run this.',
-                                 epilog='Examples (J3):\n  sdem approve P-RUN-001 --proposals work/links/proposals.json --estate work/est --reviewer jane.architect \\\n'
+                                 epilog='Examples (J3):\n  sdem approve P-RUN-001 --proposals work/links/proposals.json --workspace work/est --reviewer jane.architect \\\n'
                                         '      --evidence application_architecture_document:AA-PAYHUB-HLD#s3\n'
-                                        '  sdem approve P-RUN-001 --proposals … --estate … --reviewer … --evidence deployment_design:PAY-REHOST#cutover --supersedes PAY-108\n\n'
+                                        '  sdem approve P-RUN-001 --proposals … --workspace … --reviewer … --evidence deployment_design:PAY-REHOST#cutover --supersedes PAY-108\n\n'
                                         'Evidence kinds per link type: .github/skills/sdem-approve-links/evidence-by-link-type.md')
     ap.add_argument('ids', nargs='+', metavar='PROPOSAL', help='proposal id(s) from `sdem review`')
-    ap.add_argument('--proposals', required=True, metavar='FILE'); ap.add_argument('--estate', metavar='DIR', help='estate folder (its mappings.json)')
-    ap.add_argument('--registry', metavar='FILE', help='the registry, if not <estate>/mappings.json')
+    ap.add_argument('--proposals', required=True, metavar='FILE'); ap.add_argument('--workspace', dest='estate', metavar='DIR', help='workspace folder (its mappings.json)')
+    ap.add_argument('--registry', metavar='FILE', help='the registry, if not <workspace>/mappings.json')
     ap.add_argument('--reviewer', '--person', dest='reviewer', required=True, help='your name — a person (CTL-21); --person works too, as in the other commands')
     ap.add_argument('--evidence', action='append', default=[], metavar='KIND:REF', help='the document that proves the link (repeatable)')
     ap.add_argument('--supersedes', metavar='MAPPING_ID', help='the approved link this one replaces (it becomes superseded)')
@@ -79,7 +79,7 @@ def main(argv=None):
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     reg_path = Path(a.registry) if a.registry else Path(a.estate or '.') / 'mappings.json'
-    if not a.registry and not a.estate: ap.error('give --estate DIR or --registry FILE')
+    if not a.registry and not a.estate: ap.error('give --workspace DIR or --registry FILE')
     try:
         reg = json.loads(reg_path.read_text(encoding='utf-8')); props = json.loads(Path(a.proposals).read_text(encoding='utf-8'))
         new, recs = approve(reg, props, a.ids, a.reviewer, a.evidence, a.supersedes, a.new_id, a.date, a.bian_release)
@@ -96,7 +96,7 @@ def main(argv=None):
     from .files import write_json
     write_json(reg_path, new)   # in one step: never a half-written registry
     if not a.json:
-        print(f'{reg_path} updated and checked. Next: commit on a branch and open a pull request — the reviewed merge makes it final; then rebuild the graph store (sdem build --estate … --out …).')
+        print(f'{reg_path} updated and checked. Next: commit on a branch and open a pull request — the reviewed merge makes it final; then rebuild the graph store (sdem build --workspace … --out …).')
     return 0
 
 

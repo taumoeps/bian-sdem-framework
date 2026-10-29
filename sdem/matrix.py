@@ -61,8 +61,8 @@ def markdown(m, title='SDEM matrices'):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem matrix', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='Business → BIAN → application → technology matrices from approved links.',
-                                 epilog='Examples:\n  sdem matrix --estate examples/payment-initiation\n  sdem matrix --estate examples/payment-initiation --md work/matrix.md')
-    ap.add_argument('paths', nargs='*', help='architecture datasets and the registry (or --estate / --graph)')
+                                 epilog='Examples:\n  sdem matrix --workspace examples/payment-initiation\n  sdem matrix --workspace examples/payment-initiation --md work/matrix.md')
+    ap.add_argument('paths', nargs='*', help='architecture datasets and the registry (or --workspace / --graph)')
     ap.add_argument('--graph', metavar='DIR'); ap.add_argument('--md', metavar='FILE', help='write Markdown to FILE'); ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     from .store import GraphReader, StoreError

@@ -4,13 +4,13 @@
 
 ## 1. Why
 
-SDEM runs on its own — every function is a `sdem` command, and none needs AI (the engine and AID are rules in code). But without Copilot it is a tool for technical architects: commands to remember, text output to read, JSON to edit, and no single view of an estate. The dashboard gives architects **one page** that shows the estate's health, what needs their attention, the traces, impacts and matrices — and the exact commands to act.
+SDEM runs on its own — every function is a `sdem` command, and none needs AI (the engine and AID are rules in code). But without Copilot it is a tool for technical architects: commands to remember, text output to read, JSON to edit, and no single view of a workspace. The dashboard gives architects **one page** that shows the workspace's health, what needs their attention, the traces, impacts and matrices — and the exact commands to act.
 
 ## 2. The principle — one engine, the dashboard only shows
 
 ```mermaid
 flowchart LR
-    data[("Estate — datasets, registry, coordination records")] --> engine["SDEM functions (Python)<br/>check · link · trace · impact · matrix · AID · controls"]
+    data[("Workspace — datasets, registry, coordination records")] --> engine["SDEM functions (Python)<br/>check · link · trace · impact · matrix · AID · controls"]
     engine --> cli["CLI — sdem …<br/>(the only way to change anything, phase 1)"]
     engine --> dash["sdem dashboard<br/>one self-contained HTML file"]
     dash --> arch(["Architect — browser or VS Code"])
@@ -43,21 +43,21 @@ flowchart LR
 | **Changes & work** | change events with impact, work items with their history, direct edits waiting to be adopted | `sdem work …`, `sdem change …` |
 | **AID plans** | a projection beside the real design: what was projected, from what, how sure; gap results | `sdem aid …` |
 | **Controls** | every control, where it runs, its last tested result | — |
-| **Designs & gaps** (when the estate has onboarded designs) | the pages designs came from (facts, coverage) and the **open gap records** — what did not fit an entity — by category | `sdem designs resolve` / `accept` (copy button) |
+| **Designs & gaps** (when the workspace has onboarded designs) | the pages designs came from (facts, coverage) and the **open gap records** — what did not fit an entity — by category | `sdem designs resolve` / `accept` (copy button) |
 
 ## 4. New CLI outputs the dashboard needs (useful on their own)
 
 | Command | Gives |
 |---|---|
-| `sdem matrix --estate DIR [--md FILE] [--json]` | the matrices from approved links — capability → service domain → application → technology, and each pair — as text, Markdown or JSON |
-| `sdem impact <id> --change <kind> --estate DIR --report FILE.md` | a printable impact report: the change, every affected record with layer, classification, path and reason, links to supersede, and the architect's confirmation line |
+| `sdem matrix --workspace DIR [--md FILE] [--json]` | the matrices from approved links — capability → service domain → application → technology, and each pair — as text, Markdown or JSON |
+| `sdem impact <id> --change <kind> --workspace DIR --report FILE.md` | a printable impact report: the change, every affected record with layer, classification, path and reason, links to supersede, and the architect's confirmation line |
 
 ## 4a. The main dashboard — `sdem home`
 
 One home page for **SDEM itself** and **every project in use**, linking to each project's dashboard (each project page links back).
 
 ```bash
-sdem home -o work/sdem          # the estates in examples/; add --root DIR or --estate DIR for your own
+sdem home -o work/sdem          # the workspaces in examples/; add --root DIR or --workspace DIR for your own
 ```
 
 writes `work/sdem/index.html` and `work/sdem/projects/<project>.html`.
@@ -66,7 +66,7 @@ writes `work/sdem/index.html` and `work/sdem/projects/<project>.html`.
 flowchart LR
     home["Home — work/sdem/index.html<br/>SDEM health · the metamodel · projects"] --> p1["projects/payment-initiation.html"]
     home --> p2["projects/digital-lending.html"]
-    home --> p3["… one per estate"]
+    home --> p3["… one per workspace"]
     p1 -.->|"← SDEM home"| home
 ```
 
@@ -74,7 +74,7 @@ flowchart LR
 |---|---|
 | **SDEM architecture** (the landing view, `index.html#picture`) | the component architecture of SDEM — the original design's logical architecture plus AID, projection packages, change coordination and the workbench: BIAN reference repository, historical design repository, metamodel and rules, mapping engine, validation and approval, federated knowledge graph, the four architecture graphs and schemas — each box marked built, partly built or not built; click one for what it is, where it lives (files, commands), live figures, health and what is next. The diagram fills the window and scales to fit (no scrolling); **⛶ full screen** shows it alone, Esc to leave |
 | **Overview** | SDEM health at a glance (generated documents current, the rules engine's acceptance cases — run when the page is generated, controls, open spec gaps); the metamodel in numbers; every project with what needs attention |
-| **Projects** | each estate: architectures present (records), links by status, coverage per architecture, errors, advice, proposals to review, open work — and a link to its dashboard |
+| **Projects** | each workspace: architectures present (records), links by status, coverage per architecture, errors, advice, proposals to review, open work — and a link to its dashboard |
 | **Architecture entities** | every entity type: architecture, definition, the standard it comes from, evidence status, attributes (own and inherited, required ones named), how many links it may take inside and between architectures — filterable |
 | **Entity map** | the four architectures as bands, every entity type, and the link types between architectures as arrows; click a type for its definition, attributes, allowed links and the engine rules that use it |
 | **Links inside each architecture** | the relationship rows allowed within an architecture, with basis and meaning — filterable |
@@ -95,7 +95,7 @@ A local web app (Python standard library, `localhost` only, no external access) 
 
 | # | Decision | Recommendation | Status |
 |---|---|---|---|
-| DB-D01 | A dashboard for architects | **one self-contained, read-only HTML file per estate** (`sdem dashboard`), generated by SDEM; offline; no server | approved 2026-10-28, built |
+| DB-D01 | A dashboard for architects | **one self-contained, read-only HTML file per workspace** (`sdem dashboard`), generated by SDEM; offline; no server | approved 2026-10-28, built |
 | DB-D02 | Where the logic lives | **in SDEM's Python functions only**; the page displays precomputed results | approved, built |
 | DB-D03 | How architects act from it | **copy the exact `sdem` command** shown beside each item (phase 1) | approved, built |
 | DB-D04 | New outputs | `sdem matrix` and `sdem impact --report`, usable without the dashboard | approved, built |
@@ -108,5 +108,5 @@ A local web app (Python standard library, `localhost` only, no external access) 
 |---|---|
 | a snapshot, not live | regenerate after a change (`sdem dashboard …`); the page shows when it was generated and warns if the graph store is out of date |
 | read-only | actions are copied commands until phase 2 |
-| one estate per page | estates are separate today; an enterprise-wide view comes with tool onboarding (v0.11) and several estates |
-| size | precomputed traces and impacts for every record. Measured 2026-10-29: 2,000 records → 1 s and a 3.8 MB page; 8,000 records → 13 s and a 20 MB page. Comfortable up to a few thousand records per estate; larger estates need on-demand queries (phase 2) or several estates |
+| one workspace per page | workspaces are separate today; an enterprise-wide view comes with tool onboarding (v0.11) and several workspaces |
+| size | precomputed traces and impacts for every record. Measured 2026-10-29: 2,000 records → 1 s and a 3.8 MB page; 8,000 records → 13 s and a 20 MB page. Comfortable up to a few thousand records per workspace; larger workspaces need on-demand queries (phase 2) or several workspaces |

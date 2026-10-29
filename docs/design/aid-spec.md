@@ -76,7 +76,7 @@ CTL-16 and CTL-17 are in the controls register, tested with good and bad data in
 
 ## 9. Acceptance
 
-**Method:** take example estates where all four layers are known, **hide** layers, run AID, and run gap analysis against the hidden real layers.
+**Method:** take example workspaces where all four layers are known, **hide** layers, run AID, and run gap analysis against the hidden real layers.
 
 | ID | Run | Given | Projected | Pass when |
 |---|---|---|---|---|

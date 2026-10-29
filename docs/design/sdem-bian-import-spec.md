@@ -34,7 +34,7 @@
 
 | ID | Requirement | Accepted by |
 |---|---|---|
-| BI-R01 | With `--previous <file>`, the report lists what was added, renamed or dropped against the previous A2 dataset; a dropped record is reported, never deleted from the estate. | test |
+| BI-R01 | With `--previous <file>`, the report lists what was added, renamed or dropped against the previous A2 dataset; a dropped record is reported, never deleted from the workspace. | test |
 | BI-R02 | The report lists: the release; every record and its source file; every derived asset type and functional pattern for a person to confirm; anything in the files that was not read. | test |
 
 ## Documentation

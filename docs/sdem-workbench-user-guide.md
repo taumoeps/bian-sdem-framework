@@ -73,7 +73,7 @@ Then:
    ```bash
    git clone https://github.com/taumoeps/bian-sdem-framework.git && cd bian-sdem-framework
    ```
-   Your organisation's **real** data is in its private estate repository, set up from [`templates/estate-repo`](../templates/estate-repo/README.md) — its README installs SDEM the same way, pinned to a release.
+   Your organisation's **real** data is in its private workspace repository, set up from [`templates/workspace-repo`](../templates/workspace-repo/README.md) — its README installs SDEM the same way, pinned to a release.
 2. **Open it in VS Code:** *File → Open Folder…* → choose the `bian-sdem-framework` folder. When VS Code offers to install the **recommended extensions** (Python, GitHub Copilot Chat, Markdown Preview Mermaid Support), accept.
 3. **Open the terminal pane:** *View → Terminal* (shortcut **Ctrl+`**).
 4. **Find your Python 3.10 or later.** `python3 --version` — if it says 3.10 or later, use `python3` below. If it says 3.9, or `python3.13` gives *command not found* after you installed it, it is in Homebrew's folder:
@@ -102,7 +102,7 @@ Each time you open a new terminal later, run the `activate` line from step 5 aga
 │ EXPLORER               │ EDITOR                               │ COPILOT CHAT                 │
 │ the project's files:   │ the file you opened, e.g. a dataset  │ ask for help in plain words  │
 │ ▸ docs/      guides    │                                      │                              │
-│ ▸ examples/  estates   │                                      │ "explain this output"        │
+│ ▸ examples/  workspaces   │                                      │ "explain this output"        │
 │ ▸ metamodel/ metamodel  │                                      │ "which command shows …?"     │
 │ ▸ schema/              ├──────────────────────────────────────┤ "draft the impact note"     │
 │ ▸ sdem/      the code  │ TERMINAL — where you run sdem        │                              │
@@ -129,12 +129,12 @@ Each time you open a new terminal later, run the `activate` line from step 5 aga
 sdem home -o work/sdem
 ```
 
-and open `work/sdem/index.html` (the command prints the full `file://` address). It opens on **SDEM's architecture** — every component (the BIAN reference, the metamodel, the mapping engine, validation and approval, the knowledge graph, the four architectures, AID and its projections, change coordination, the workbench), marked built or not, each clickable for what it is, where it lives and its live figures. The other tabs show SDEM itself — its health (checked as the page is made), the metamodel (every entity type, the links allowed inside and between the architectures, the engine's rules, a clickable picture), the configuration — and **every project**, each linking to its own dashboard. Add your own estates with `--estate <folder>` or `--root <folder of estates>`.
+and open `work/sdem/index.html` (the command prints the full `file://` address). It opens on **SDEM's architecture** — every component (the BIAN reference, the metamodel, the mapping engine, validation and approval, the knowledge graph, the four architectures, AID and its projections, change coordination, the workbench), marked built or not, each clickable for what it is, where it lives and its live figures. The other tabs show SDEM itself — its health (checked as the page is made), the metamodel (every entity type, the links allowed inside and between the architectures, the engine's rules, a clickable picture), the configuration — and **every project**, each linking to its own dashboard. Add your own workspaces with `--workspace <folder>` or `--root <folder of workspaces>`.
 
 **One project's dashboard** on its own:
 
 ```bash
-sdem dashboard --estate examples/payment-initiation -o work/dashboard.html
+sdem dashboard --workspace examples/payment-initiation -o work/dashboard.html
 ```
 
 Open `work/dashboard.html` in your browser — or in VS Code: *Command Palette → Simple Browser: Show*, then paste the file's path. It works offline and needs no AI.
@@ -153,7 +153,7 @@ The page is **read-only**: it shows the exact `sdem` command for every action (w
 
 ## 5. Quick start — 15 minutes
 
-This uses the example estate `examples/payment-initiation` — a made-up bank's payments architecture, all four layers, already linked. Type each command in the terminal.
+This uses the example workspace `examples/payment-initiation` — a made-up bank's payments architecture, all four layers, already linked. Type each command in the terminal.
 
 **Step 1 — name the example folder, so commands stay short:**
 ```bash
@@ -163,9 +163,9 @@ E=examples/payment-initiation
 
 **Step 2 — check the data against the metamodel (J1):**
 ```bash
-sdem check --estate $E
+sdem check --workspace $E
 ```
-(`--estate` names the estate folder; it is the same as listing its five files, `$E/a*.json $E/mappings.json`.) You see one `OK` line per architecture and for the registry. `WARN` lines are advice (something the metamodel expects but does not require); `ERROR` lines must be fixed.
+(`--workspace` names the workspace folder; it is the same as listing its five files, `$E/a*.json $E/mappings.json`.) You see one `OK` line per architecture and for the registry. `WARN` lines are advice (something the metamodel expects but does not require); `ERROR` lines must be fixed.
 ```
 OK: level A1 (synthetic-bank-payments-a1)
 WARN: level A2 (synthetic-bank-payments-a2): instance BD-PAYMENTS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)
@@ -179,7 +179,7 @@ The six warnings are expected for this example: the made-up BIAN layer leaves ou
 
 **Step 3 — build the knowledge graph (J4):**
 ```bash
-sdem build --estate $E --out work/graph
+sdem build --workspace $E --out work/graph
 ```
 ```
 WARN: … (the same six warnings)
@@ -221,7 +221,7 @@ Copilot reads the terminal output and explains it, naming the links. If it sugge
 
 ### 6.1 The files
 
-An estate is a folder with up to five data files — and, once you use them, the records SDEM keeps beside them (loads, gaps, BIAN updates; [the full list](sdem-architecture.md#inside-an-estate)):
+A workspace is a folder with up to five data files — and, once you use them, the records SDEM keeps beside them (loads, gaps, BIAN updates; [the full list](sdem-architecture.md#inside-a-workspace)):
 
 | File | Holds |
 |---|---|
@@ -231,7 +231,7 @@ An estate is a folder with up to five data files — and, once you use them, the
 | `a4-technology.json` | platforms, clusters, system software, environments, deployments |
 | `mappings.json` | the registry: the links between the architectures |
 
-Eight example estates are in `examples/` (`payment-initiation`, `card-fraud-alerts`, `digital-lending`, `trade-finance`, `legacy-core-ledger`, `acquired-fintech`, `customer-onboarding`, and `reference-structure` — a test estate with one example of every kind of thing and link, not a bank). **Start your own estate by copying one** and changing its contents.
+Eight example workspaces are in `examples/` (`payment-initiation`, `card-fraud-alerts`, `digital-lending`, `trade-finance`, `legacy-core-ledger`, `acquired-fintech`, `customer-onboarding`, and `reference-structure` — a test workspace with one example of every kind of thing and link, not a bank). **Start your own workspace by copying one** and changing its contents.
 
 ### 6.2 What a record looks like
 
@@ -269,11 +269,11 @@ Links **inside** one architecture go in that file's `relationships` list, e.g. `
 
 You don't need to memorise the rules: write the data, run `sdem check`, and it tells you exactly what is missing or not allowed — and Copilot can explain each message.
 
-**Editing by hand is fine for a layer's records** — add an application to `a3-application.json`, correct a name — then run `sdem check --estate <dir>` and open a pull request. Two things are never edited by hand: **approved connections** (`mappings.json` — use `sdem approve`, and `--supersedes` to replace one; CI refuses an edited approved connection) and **SDEM's records** (`loads/`, `designs/`, `coordination/`). Once agents work on a layer through change sets, SDEM asks you to record a hand edit with `sdem change adopt` — it tells you when.
+**Editing by hand is fine for a layer's records** — add an application to `a3-application.json`, correct a name — then run `sdem check --workspace <dir>` and open a pull request. Two things are never edited by hand: **approved connections** (`mappings.json` — use `sdem approve`, and `--supersedes` to replace one; CI refuses an edited approved connection) and **SDEM's records** (`loads/`, `designs/`, `coordination/`). Once agents work on a layer through change sets, SDEM asks you to record a hand edit with `sdem change adopt` — it tells you when.
 
 ### 6.3 Where your real data may go
 
-- **This project holds public and made-up data only.** Your organisation's real architecture data belongs in its **private estate repository** ([template](../templates/estate-repo/README.md); [operating model](sdem-operating-model.md)). `estates/` and `work/` are ignored here, so real data cannot be pushed to this repository by mistake.
+- **This project holds public and made-up data only.** Your organisation's real architecture data belongs in its **private workspace repository** ([template](../templates/workspace-repo/README.md); [operating model](sdem-operating-model.md)). `workspaces/` and `work/` are ignored here, so real data cannot be pushed to this repository by mistake.
 - Diagrams previewed with the PlantUML extension are drawn **on your machine** (this project's setting; it needs Java and Graphviz — `brew install plantuml`). Never switch it to the public PlantUML server for real data.
 
 ## 7. Command reference
@@ -284,39 +284,39 @@ The *Journey* column groups commands by task: **J1** check · **J2** propose lin
 
 | Command | Journey | What it does | When you use it | Typical next step |
 |---|---|---|---|---|
-| `sdem check --estate <dir>` (or the files) | J1 | checks datasets and registry against the metamodel | after any change to the data | fix errors; `sdem build` |
+| `sdem check --workspace <dir>` (or the files) | J1 | checks datasets and registry against the metamodel | after any change to the data | fix errors; `sdem build` |
 | `sdem validate <registry>` | J1 | checks a registry or proposals file on its own (`--strict` treats warnings as errors) | after `sdem approve` or `sdem connect`, or before a pull request | `sdem check` |
 | `sdem link <files> --out <dir>` | J2 | the inference engine proposes the missing links; writes `proposals.json` | when data is new or changed | `sdem review` |
 | `sdem review <proposals.json>` | J3 | lists the proposals, weakest first, with rule, confidence and reasoning | before approving | `sdem approve` (§8.2) |
-| `sdem approve <id> --proposals … --estate … --reviewer <you> --evidence <kind:ref> [--bian-release <release>]` | J3 | **you** approve a proposed link: writes a correct registry record, checks it first | after review | pull request |
+| `sdem approve <id> --proposals … --workspace … --reviewer <you> --evidence <kind:ref> [--bian-release <release>]` | J3 | **you** approve a proposed link: writes a correct registry record, checks it first | after review | pull request |
 | `sdem build <files> --out <dir>` | J4 | checks everything and writes the graph store | after approval, before trace and impact | `sdem trace`, `sdem view` |
 | `sdem query --graph <dir> …` | J4 | finds records: `--type`, `--level`, `--where attr=value`, `--unmapped A2` (records still without a link) | to look things up | — |
 | `sdem baseline <name> --graph <dir>` | J4 | freezes the graph store under a name (e.g. a release) | at milestones | — |
-| `sdem home -o <dir> [--root <folder of estates>] [--estate <dir>]` | J7 | the home page: SDEM's architecture, health, and a dashboard for every project (§4a) | first, and any time | open `<dir>/index.html` |
-| `sdem dashboard --estate <dir> -o <file.html>` | J7 | one estate on one read-only page (§4a) | any time | the commands it shows |
-| `sdem matrix --estate <dir> [--md file.md]` | J5 | capability → domain → application → technology from approved links | for a report or review | — |
+| `sdem home -o <dir> [--root <folder of workspaces>] [--workspace <dir>]` | J7 | the home page: SDEM's architecture, health, and a dashboard for every project (§4a) | first, and any time | open `<dir>/index.html` |
+| `sdem dashboard --workspace <dir> -o <file.html>` | J7 | one workspace on one read-only page (§4a) | any time | the commands it shows |
+| `sdem matrix --workspace <dir> [--md file.md]` | J5 | capability → domain → application → technology from approved links | for a report or review | — |
 | `sdem trace <id> --graph <dir>` | J5 | follows links `--direction down` (to technology), `up` (to business) or both | "what does this depend on / what depends on it?" | `sdem impact` |
 | `sdem impact <id> --change <kind> --graph <dir> [--report file.md]` | J5 | classifies what a change affects; kinds: `modify`, `rehost`, `replace`, `retire`; `--report` writes a printable impact report | before a change | share the report |
 | `sdem aid project --have <files> --catalogue <bian> --out <dir>` | J6 | projects the layers you don't have (planning, not real data) | early design, scoping | `sdem view --projection`, `sdem explain` |
 | `sdem aid check <dir>` · `sdem aid gaps <dir> --actual <files>` | J6 | checks a projection; compares it with a real design | later, when the real design exists | — |
 | `sdem view --graph <dir> [--projection <dir>] [-o file.html]` | J7 | writes the HTML picture | to see and share | open in a browser |
 | `sdem explain <id> --proposals <file>` · `--projection <dir>` | J8 | why one link or projected element exists: rule, published source, evidence, reasoning, confidence | when you question a proposal | approve, reject or fix the data |
-| `sdem change propose <file> --estate <dir> --agent … --person …` | AG | a layer's change set: checked before it lands, then its impact recorded as a change event | agent platform (§9a) | the orchestrator plans the work |
-| `sdem change revert <CS-id> --estate <dir> --agent … --person …` | AG | undo the latest change set of a layer — restores it exactly, on record | a change was wrong | rebuild the graph store |
-| `sdem connect <source> <TYPE> <target> --estate <dir> --reviewer <you> --evidence <kind:ref> --rationale "<why>"` | J3 | **you** state a connection the engine did not propose (e.g. a BIAN service domain *realised by* an application) — the same checks as `sdem approve` | when you know a connection the design does not show in detail | pull request |
-| `sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you>` | J9 | brings every estate's BIAN layer up to date with your shared one — checked; never strands an approved connection; `--dry-run` first shows what would change | after changing the shared BIAN layer | pull request |
-| `sdem copilot install [--to <repo>] [--dry-run] [--force]` | AG | puts SDEM's Copilot instructions, agents, prompts and skills into your estate repository's `.github/`, matching this SDEM version; keeps files your team changed | once after installing SDEM in an estate repository; again after each upgrade | reload VS Code |
-| `sdem change adopt --estate <dir> --layer <A1…A4> --person <you> --reason "<what you changed>"` | AG | records a hand edit to a layer that agents work on through change sets, so their next change set starts from it | when SDEM says a dataset *was changed outside a change set* | `sdem check` |
-| `sdem events --estate <dir> [--open]` | AG | change events, their impact and open work | to see what is waiting | `sdem work plan` |
+| `sdem change propose <file> --workspace <dir> --agent … --person …` | AG | a layer's change set: checked before it lands, then its impact recorded as a change event | agent platform (§9a) | the orchestrator plans the work |
+| `sdem change revert <CS-id> --workspace <dir> --agent … --person …` | AG | undo the latest change set of a layer — restores it exactly, on record | a change was wrong | rebuild the graph store |
+| `sdem connect <source> <TYPE> <target> --workspace <dir> --reviewer <you> --evidence <kind:ref> --rationale "<why>"` | J3 | **you** state a connection the engine did not propose (e.g. a BIAN service domain *realised by* an application) — the same checks as `sdem approve` | when you know a connection the design does not show in detail | pull request |
+| `sdem bian update --root workspaces --a2 bian/a2-service-domain.json --person <you>` | J9 | brings every workspace's BIAN layer up to date with your shared one — checked; never strands an approved connection; `--dry-run` first shows what would change | after changing the shared BIAN layer | pull request |
+| `sdem copilot install [--to <repo>] [--dry-run] [--force]` | AG | puts SDEM's Copilot instructions, agents, prompts and skills into your workspace repository's `.github/`, matching this SDEM version; keeps files your team changed | once after installing SDEM in a workspace repository; again after each upgrade | reload VS Code |
+| `sdem change adopt --workspace <dir> --layer <A1…A4> --person <you> --reason "<what you changed>"` | AG | records a hand edit to a layer that agents work on through change sets, so their next change set starts from it | when SDEM says a dataset *was changed outside a change set* | `sdem check` |
+| `sdem events --workspace <dir> [--open]` | AG | change events, their impact and open work | to see what is waiting | `sdem work plan` |
 | `sdem work plan · list · claim …` | AG | work items: planned by the orchestrator, claimed and answered by the layer agents | agent platform (§9a) | `sdem change propose --work …` |
 | `sdem transform inspect <export>` · `sdem transform run <export> -o <dir>` | J9 | **transforms** an export of past designs (Confluence) into candidate architecture entities, with rules: tables, draw.io and PlantUML diagrams, known names in the text, text in pictures (on-device OCR) → entities and links with their source; pictures listed for you | bringing in past designs (§8.7) | review `extraction-report.md` |
-| `sdem load <candidates> --estate <dir> --person <you> --exclude <ids>` | J9 | **loads** the candidate entities you keep into an estate — checked first, recorded; `--a2` adds your BIAN layer; `--dry-run` | after reviewing a transform (§8.7) | `sdem link` |
-| `sdem designs --estate <dir> [--entity <id>] [--gaps] [--category …] [--status open]` | J9 | the pages onboarded designs came from, and the **gap records** — what did not fit an entity, by category; `sdem trace` also ends with an entity's pages | after a load; to find what still needs a person | — |
+| `sdem load <candidates> --workspace <dir> --person <you> --exclude <ids>` | J9 | **loads** the candidate entities you keep into a workspace — checked first, recorded; `--a2` adds your BIAN layer; `--dry-run` | after reviewing a transform (§8.7) | `sdem link` |
+| `sdem designs --workspace <dir> [--entity <id>] [--gaps] [--category …] [--status open]` | J9 | the pages onboarded designs came from, and the **gap records** — what did not fit an entity, by category; `sdem trace` also ends with an entity's pages | after a load; to find what still needs a person | — |
 | `sdem bian list --base` · `sdem bian import --base --all -o <file>` (or `--only <names…>`, `--from <file>`) · `sdem bian pack <folder> -o <file>` | J9 | your **BIAN (A2) layer**: from the **base BIAN** that ships with SDEM (BIAN's public Semantic APIs 14.0.0), from your own packed BIAN (`--base <file>`), or from a folder of BIAN's files; imports the service domains you name, checked, with a report of what to confirm; `--patterns`, `--previous`; from a folder also `--descriptions`, `--objects` | once, before onboarding; again for a new BIAN release | `sdem load … --a2 <file>` |
 | `sdem bian inference list` · `show <id>` · `accept` · `challenge` · `change` · `reject <id> --person <you> --reason "…"` | J9 | SDEM's **inference record**: the asset types and functional patterns it infers for the 66 BIAN service domains BIAN does not publish them for — each with source, reasoning, confidence, status and history; the import applies **accepted** entries only ([BIAN inferences](reference/bian-inferences.md)) |
-| `sdem designs resolve <gap id …> --estate <dir> --person <you> --note "<what you did>"` · `accept` (same options) · `reopen` | J9 | closes a gap — *resolved* (now recorded in an entity) or *accepted* (deliberately not modelled); reopens one; each step kept in the gap's history | working down the gaps | `sdem designs --gaps --status open` |
+| `sdem designs resolve <gap id …> --workspace <dir> --person <you> --note "<what you did>"` · `accept` (same options) · `reopen` | J9 | closes a gap — *resolved* (now recorded in an entity) or *accepted* (deliberately not modelled); reopens one; each step kept in the gap's history | working down the gaps | `sdem designs --gaps --status open` |
 | `sdem diff --git HEAD~1 <registry>` | — | proves approved links were not edited | before a pull request | — |
-| `sdem migrate --estate <dir> --person <you> [--dry-run]` | — | moves an estate to a new metamodel version ([versioning](design/sdem-metamodel-versioning.md)) | when SDEM says the `metamodel_version` does not match | — |
+| `sdem migrate --workspace <dir> --person <you> [--dry-run]` | — | moves a workspace to a new metamodel version ([versioning](design/sdem-metamodel-versioning.md)) | when SDEM says the `metamodel_version` does not match | — |
 | `sdem model check` · `regenerate` · `accept` · `examples` | — | maintainers: generated documents, engine acceptance tests, use-case examples | when changing the metamodel | — |
 
 Add `--json` to most commands for machine-readable output (Copilot can read it more reliably).
@@ -335,17 +335,17 @@ flowchart LR
     G -.->|"when the real design exists"| H["sdem aid gaps"]
 ```
 
-### 8.1 Onboard an estate and fix its data
+### 8.1 Onboard a workspace and fix its data
 
 *Goal: get your four architecture datasets accepted by SDEM.*
 
-1. Copy an example estate as a starting point and put your records in it:
+1. Copy an example workspace as a starting point and put your records in it:
    ```bash
-   cp -r examples/payment-initiation work/my-estate
+   cp -r examples/payment-initiation work/my-workspace
    ```
 2. Check it:
    ```bash
-   sdem check --estate work/my-estate
+   sdem check --workspace work/my-workspace
    ```
 3. Read each `ERROR`. Example — a record without a name, and a misspelt type:
    ```
@@ -361,7 +361,7 @@ flowchart LR
 
 *Goal: the engine proposes the links between your architectures; you decide which become real.*
 
-The example estate already has its links approved, so to practise, start from the registry **as it was before** they were approved — the example ships it as `m1-mappings-given.json`. Work in a separate practice copy, so the other examples in this guide keep working:
+The example workspace already has its links approved, so to practise, start from the registry **as it was before** they were approved — the example ships it as `m1-mappings-given.json`. Work in a separate practice copy, so the other examples in this guide keep working:
 
 ```bash
 cp -R examples/payment-initiation work/practice-links
@@ -370,7 +370,7 @@ cp work/practice-links/m1-mappings-given.json work/practice-links/mappings.json 
 
 1. **Propose** (J2):
    ```bash
-   sdem link --estate work/practice-links --out work/links
+   sdem link --workspace work/practice-links --out work/links
    ```
    ```
    13 proposed link(s) written to work/links/proposals.json; candidates, inference log and any design datasets in work/links/
@@ -395,12 +395,12 @@ cp work/practice-links/m1-mappings-given.json work/practice-links/mappings.json 
    > *Walk me through the proposals in work/links/proposals.json, weakest first. What evidence would I need for each?*
 4. **Approve — you, with `sdem approve`.** It writes the registry record for you — a new id, status `approved`, you as reviewer, today's date and the evidence — and checks the whole registry before writing anything:
    ```bash
-   sdem approve P-RUN-013 --proposals work/links/proposals.json --estate work/practice-links \
+   sdem approve P-RUN-013 --proposals work/links/proposals.json --workspace work/practice-links \
         --reviewer your.name --evidence application_architecture_document:AA-PAYHUB-HLD#s3
    ```
    ```
    approved PAY-006: SD-PI -REALIZED_BY-> APP-PAY-HUB  (reviewer your.name, 2026-10-29, evidence application_architecture_document:AA-PAYHUB-HLD#s3)
-   work/practice-links/mappings.json updated and checked. Next: commit on a branch and open a pull request — the reviewed merge makes it final; then rebuild the graph store (sdem build --estate … --out …).
+   work/practice-links/mappings.json updated and checked. Next: commit on a branch and open a pull request — the reviewed merge makes it final; then rebuild the graph store (sdem build --workspace … --out …).
    ```
    The reviewer must be a person — try `--reviewer copilot` and SDEM refuses: `ERROR: CTL-21: the reviewer must be a person, not 'copilot' — give your own name`. To replace an old link, add `--supersedes <old id>`. The record it writes:
    ```json
@@ -431,7 +431,7 @@ cp work/practice-links/m1-mappings-given.json work/practice-links/mappings.json 
 
    Write each as `kind:document-reference`, and give each kind its own `--evidence`. For example, a capability supported by a BIAN domain:
    ```bash
-   sdem approve P-RUN-… --proposals … --estate … --reviewer your.name \
+   sdem approve P-RUN-… --proposals … --workspace … --reviewer your.name \
         --evidence business_architecture_document:BA-PAYMENTS#cap-map --evidence domain_scope_assessment:DSA-2026-04 \
         --bian-release 14.0.0
    ```
@@ -439,14 +439,14 @@ cp work/practice-links/m1-mappings-given.json work/practice-links/mappings.json 
 5. **Check:**
    ```bash
    sdem validate --strict work/practice-links/mappings.json
-   sdem check --estate work/practice-links
+   sdem check --workspace work/practice-links
    ```
    Both should end with `OK`.
 6. **Pull request.** In *Source Control*, commit the registry change on a branch and open a pull request. A reviewer checks it; CI runs every check. **Merging the pull request is the approval.** Copilot can draft the description:
    > *Draft a pull-request description for the link I approved in mappings.json, citing its evidence.*
 7. **Rebuild the graph** (J4) and see the link in use:
    ```bash
-   sdem build --estate work/practice-links --out work/practice-graph
+   sdem build --workspace work/practice-links --out work/practice-graph
    sdem trace SD-PI --direction down --graph work/practice-graph
    ```
    ```
@@ -519,12 +519,12 @@ mkdir -p work/imports && cp -r examples/designs/confluence-folder-export work/im
 sdem transform inspect work/imports/payarch --ocr off                    # what is in the export, what SDEM can read — changes nothing
 sdem transform run work/imports/payarch -o work/history --ocr off        # suggestions + work/history/extraction-report.md
 # read the report; note the ids you reject
-sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
+sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
      --a2 work/bian/a2-service-domain.json   # made first with: sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json
-sdem link --estate estates/history --out work/links                      # then review, approve, build — as in §8.2
+sdem link --workspace workspaces/history --out work/links                      # then review, approve, build — as in §8.2
 ```
 
-- **Keep exports in `work/`** — it is never saved to Git. The result you keep is `estates/history/` (for real data, in your private estate repository).
+- **Keep exports in `work/`** — it is never saved to Git. The result you keep is `workspaces/history/` (for real data, in your private workspace repository).
 - Every suggestion says **which page, where on it, which rule and how sure** (never above medium); nothing is loaded until you run `sdem load`; anything that did not fit becomes a **gap record** — nothing is lost.
 - **Your BIAN layer** (`--a2`) is needed once — what it is and where it comes from: [the workflow's *Your BIAN (A2) layer*](sdem-onboarding-workflow.md#your-bian-a2-layer).
 - If your designs use table headings SDEM does not recognise: [configuration — onboarding](sdem-configuration.md#onboarding--reading-your-designs).
@@ -564,7 +564,7 @@ The project includes five Copilot agents (`.github/agents/`): **sdem-orchestrato
 
 - A **layer agent** changes only its own architecture, and only through a checked **change set** (`sdem change propose`). Every change records the agent and **you** as the person.
 - The **orchestrator** turns a change's impact into **work items**, calls the layer agents to do them, and reports to you. It never changes data and never approves.
-- Agents never talk to each other directly — they coordinate through the work items and change events SDEM records in the estate's `coordination/` folder.
+- Agents never talk to each other directly — they coordinate through the work items and change events SDEM records in the workspace's `coordination/` folder.
 - You still approve, by merging the pull request.
 
 Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem-agent-platform-spike.md)): ask **sdem-a4-technology** to rehost the production payments cluster, then ask **sdem-orchestrator** to *"process the open change events"*. The full flow, with real output, is in [`use-case-example-3.md`](evidence/use-case-example-3.md); the design in [`sdem-agent-platform-design.md`](design/sdem-agent-platform-design.md).
@@ -587,7 +587,7 @@ Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem
 | `ERROR: … missing required property 'name'` | a record lacks a required field | add it; `$.instances[0]` is the first record in the list |
 | `ERROR: … duplicate mapping_id` | two links share an id | give the new one an unused id |
 | `ERROR: … evidence missing required kind(s) [...]` | an approved link lacks the evidence its type needs | add `kind:document-reference` (§8.2 table) |
-| `ERROR: … CTL-20 (AG-S08): … was changed outside a change set since CS-…` | **change provenance (CTL-20):** a dataset was edited by hand after agents started changing that layer | if it was you: `sdem change adopt --estate <dir> --layer <A?> --person <you> --reason <why>`; if not, find out who and undo it |
+| `ERROR: … CTL-20 (AG-S08): … was changed outside a change set since CS-…` | **change provenance (CTL-20):** a dataset was edited by hand after agents started changing that layer | if it was you: `sdem change adopt --workspace <dir> --layer <A?> --person <you> --reason <why>`; if not, find out who and undo it |
 | `ERROR: … CTL-21 …` | a link was approved with an agent or tool as reviewer | approve as yourself: `--reviewer your.name` |
 | `ERROR: CTL-19: …` | a change set crosses its layer, or an agent works outside its layer | keep each change set to one layer; let the orchestrator plan the other layers' work |
 | `ERROR: CTL-20: …` (other messages) | **change provenance (CTL-20):** a change set or work-item step without the agent or the person behind it | add `--agent` and `--person` |
@@ -597,8 +597,8 @@ Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem
 | `ERROR: 'CAP-999' is not an instance in any loaded level model` | that id is not in the data | check the spelling; `sdem query --graph work/graph --level A1` lists ids |
 | a trace stops early | a link in the chain is not approved yet | `sdem query --graph … --unmapped A2`; then §8.2 |
 | `no proposed links to review` | everything the engine can find is already approved | nothing to do — or add data that names its links (e.g. `invokes`) |
-| `WARN: the graph store is out of date …` | the data changed after the graph store was built, so trace, impact and the view show the old picture | rebuild: `sdem build --estate <estate> --out <graph>` |
-| Windows PowerShell and `a*.json` | PowerShell does not expand `*` — `sdem` does it itself | nothing to do; or use `--estate <folder>` |
+| `WARN: the graph store is out of date …` | the data changed after the graph store was built, so trace, impact and the view show the old picture | rebuild: `sdem build --workspace <workspace> --out <graph>` |
+| Windows PowerShell and `a*.json` | PowerShell does not expand `*` — `sdem` does it itself | nothing to do; or use `--workspace <folder>` |
 | Mermaid diagrams show as text | the preview extension is missing | install *Markdown Preview Mermaid Support*, or view the file on GitHub |
 
 ## 12. Questions people ask
@@ -609,9 +609,9 @@ Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem
 
 **How do I retire an application or a server?** First see what it affects: `sdem impact <id> --change retire --graph <graph>`. Then, on a branch, set the record's `lifecycle_status` to `retired` in its layer's file (`planned`, `active`, `deprecated` and `retired` are the allowed values), supersede the connections the impact report lists, run `sdem check`, and open a pull request. Keep the record — history is kept, not deleted.
 
-**Does SDEM work on Windows or Linux?** Yes — it needs only Python 3.10 or later (its checks run on Linux on every release). On Windows, activate the environment with `.venv\Scripts\activate`, and PowerShell does not expand `a*.json` (use `--estate`). Reading text in pictures uses the Mac's own text recognition, or Tesseract where it is installed; otherwise add `--ocr off`. PlantUML previews need Java and Graphviz.
+**Does SDEM work on Windows or Linux?** Yes — it needs only Python 3.10 or later (its checks run on Linux on every release). On Windows, activate the environment with `.venv\Scripts\activate`, and PowerShell does not expand `a*.json` (use `--workspace`). Reading text in pictures uses the Mac's own text recognition, or Tesseract where it is installed; otherwise add `--ocr off`. PlantUML previews need Java and Graphviz.
 
-**How does SDEM relate to our EA tool or CMDB?** It does not replace them. Today data comes in from designs (onboarding) or as files in SDEM's format; reading straight from tools — spreadsheets, a CMDB, an application portfolio — is planned (*tool onboarding*, see the ROADMAP). What SDEM builds is open: the knowledge graph is written as JSON Graph Format files (`sdem build`), and the estate itself is plain JSON in documented formats, so other tools can read both.
+**How does SDEM relate to our EA tool or CMDB?** It does not replace them. Today data comes in from designs (onboarding) or as files in SDEM's format; reading straight from tools — spreadsheets, a CMDB, an application portfolio — is planned (*tool onboarding*, see the ROADMAP). What SDEM builds is open: the knowledge graph is written as JSON Graph Format files (`sdem build`), and the workspace itself is plain JSON in documented formats, so other tools can read both.
 
 ## 13. Where to go next
 

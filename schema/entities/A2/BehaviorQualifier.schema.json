@@ -305,7 +305,7 @@
           "items": {
             "type": "string"
           },
-          "description": "tokens the estate's API paths use for the qualifier",
+          "description": "tokens the workspace's API paths use for the qualifier",
           "x-sdem-id": "AT-A2-10",
           "x-sdem-group": "specific",
           "x-sdem-kind": "value",

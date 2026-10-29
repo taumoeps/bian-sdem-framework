@@ -305,7 +305,7 @@
           "items": {
             "type": "string"
           },
-          "description": "tokens the estate uses for the asset",
+          "description": "tokens the workspace uses for the asset",
           "x-sdem-id": "AT-A2-03",
           "x-sdem-group": "specific",
           "x-sdem-kind": "value",

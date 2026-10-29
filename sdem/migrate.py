@@ -1,11 +1,11 @@
-"""`sdem migrate` — move an estate to the current metamodel version (docs/design/sdem-metamodel-versioning.md).
+"""`sdem migrate` — move a workspace to the current metamodel version (docs/design/sdem-metamodel-versioning.md).
 
 A dataset or registry carries the `metamodel_version` it was written for; SDEM refuses one that differs from the loaded
 metamodel. `metamodel/migrations.json` records, for every metamodel change, the steps that carry data from the old version to
-the new. `sdem migrate --estate DIR --person NAME` applies the chain from each file's version to the current one, checks
-the whole estate as it would be, and only then writes it (all-or-nothing) with a record in `<estate>/migrations/`.
+the new. `sdem migrate --workspace DIR --person NAME` applies the chain from each file's version to the current one, checks
+the whole workspace as it would be, and only then writes it (all-or-nothing) with a record in `<workspace>/migrations/`.
 
-  sdem migrate --estate estates/history --person jane.architect [--dry-run] [--json]
+  sdem migrate --workspace workspaces/history --person jane.architect [--dry-run] [--json]
 """
 import argparse, copy, datetime, json, re, sys
 from pathlib import Path
@@ -17,7 +17,7 @@ RECORD = DATA_ROOT / 'metamodel' / 'migrations.json'
 
 
 class MigrateError(Exception):
-    """The estate cannot be migrated (no path, or it would fail its checks) — exit 1."""
+    """The workspace cannot be migrated (no path, or it would fail its checks) — exit 1."""
 
 
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
@@ -67,11 +67,11 @@ def migrate(estate, person, dry_run=False, migrations=None, now=None):
     from .validate import is_person
     from .metamodel import Metamodel
     from .graph import FederatedGraph, LevelGraph
-    if not is_person(person): raise ValueError(f"--person {person!r}: migrating an estate is a person's decision — give your own name")
+    if not is_person(person): raise ValueError(f"--person {person!r}: migrating a workspace is a person's decision — give your own name")
     estate = Path(estate)
     files = [estate / f for f in DATASETS if (estate / f).exists()]
     if not (estate / 'mappings.json').exists() or not files:
-        raise ValueError(f'{estate}: not an estate folder (it needs mappings.json and at least one of {", ".join(DATASETS)})')
+        raise ValueError(f'{estate}: not a workspace folder (it needs mappings.json and at least one of {", ".join(DATASETS)})')
     mm = Metamodel.load(); current = mm.version
     rec = migrations if migrations is not None else _j(RECORD)
     docs = {p: _j(p) for p in files + [estate / 'mappings.json']}
@@ -94,7 +94,7 @@ def migrate(estate, person, dry_run=False, migrations=None, now=None):
     levels = [LevelGraph(d, mm) for p, d in out.items() if p.name != 'mappings.json']
     report = FederatedGraph(levels, [out[estate / 'mappings.json']], mm).check()
     errors = [f'{k}: {i}' for k, v in report.items() for i in v]
-    if errors: raise MigrateError('the estate would not pass its checks after migrating — nothing written:\n  ' + '\n  '.join(errors[:20]))
+    if errors: raise MigrateError('the workspace would not pass its checks after migrating — nothing written:\n  ' + '\n  '.join(errors[:20]))
     if dry_run: return res
     from .files import Batch
     b = Batch()
@@ -109,8 +109,8 @@ def migrate(estate, person, dry_run=False, migrations=None, now=None):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog='sdem migrate', description='Move an estate to the current metamodel version — the recorded migrations applied, the estate checked, then written all-or-nothing and recorded.')
-    ap.add_argument('--estate', required=True, metavar='DIR'); ap.add_argument('--person', required=True, help='your name — a person')
+    ap = argparse.ArgumentParser(prog='sdem migrate', description='Move a workspace to the current metamodel version — the recorded migrations applied, the workspace checked, then written all-or-nothing and recorded.')
+    ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); ap.add_argument('--person', required=True, help='your name — a person')
     ap.add_argument('--dry-run', action='store_true', help='check and show what would change; write nothing'); ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     try: res = migrate(a.estate, a.person, a.dry_run)
@@ -120,7 +120,7 @@ def main(argv=None):
     if res.get('note'): print(res['note']); return 0
     for f in res['files']: print(f"{f['file']}: metamodel {f['from']} → {f['to']} ({', '.join(f['migrations'])})")
     print('changes: ' + (', '.join(f'{k} {v}' for k, v in res['changes'].items()) or 'version only'))
-    print('would migrate (dry run) — the estate passes its checks' if a.dry_run else f"migrated ({res['id']}); the estate passes its checks. Commit it on a branch and open a pull request.")
+    print('would migrate (dry run) — the workspace passes its checks' if a.dry_run else f"migrated ({res['id']}); the workspace passes its checks. Commit it on a branch and open a pull request.")
     return 0
 
 

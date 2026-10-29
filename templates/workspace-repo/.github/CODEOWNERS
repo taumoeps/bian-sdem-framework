@@ -3,20 +3,20 @@
 # A reviewer is a person: never a bot or an agent account.
 
 # Approved links between architectures — the decisions
-estates/*/mappings.json        @YOUR-ORG/architecture-reviewers
+workspaces/*/mappings.json        @YOUR-ORG/architecture-reviewers
 
 # Decisions recorded by SDEM — gaps accepted or resolved, loads, BIAN updates, migrations, agents' change sets
-estates/*/designs/             @YOUR-ORG/architecture-reviewers
-estates/*/loads/               @YOUR-ORG/architecture-reviewers
-estates/*/bian-updates/        @YOUR-ORG/architecture-reviewers
-estates/*/migrations/          @YOUR-ORG/sdem-lead
-estates/*/coordination/        @YOUR-ORG/architecture-reviewers
+workspaces/*/designs/             @YOUR-ORG/architecture-reviewers
+workspaces/*/loads/               @YOUR-ORG/architecture-reviewers
+workspaces/*/bian-updates/        @YOUR-ORG/architecture-reviewers
+workspaces/*/migrations/          @YOUR-ORG/sdem-lead
+workspaces/*/coordination/        @YOUR-ORG/architecture-reviewers
 
 # Each architecture's data — its layer owner
-estates/*/a1-business.json     @YOUR-ORG/business-architects
-estates/*/a2-service-domain.json  @YOUR-ORG/architecture-reviewers
-estates/*/a3-application.json  @YOUR-ORG/application-architects
-estates/*/a4-technology.json   @YOUR-ORG/technology-architects
+workspaces/*/a1-business.json     @YOUR-ORG/business-architects
+workspaces/*/a2-service-domain.json  @YOUR-ORG/architecture-reviewers
+workspaces/*/a3-application.json  @YOUR-ORG/application-architects
+workspaces/*/a4-technology.json   @YOUR-ORG/technology-architects
 
 # The SDEM version, CI and these rules
 requirements.txt               @YOUR-ORG/sdem-lead

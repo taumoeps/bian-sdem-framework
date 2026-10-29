@@ -4,7 +4,7 @@
 
 ## What this tests
 
-An architect has exported Confluence designs and wants them in SDEM: transformed into architecture entities, reviewed, loaded into an estate, linked, approved and built into the knowledge graph — with **nothing lost**: what does not fit an entity is kept as gap records, shown on the dashboard, and closed by a person.
+An architect has exported Confluence designs and wants them in SDEM: transformed into architecture entities, reviewed, loaded into a workspace, linked, approved and built into the knowledge graph — with **nothing lost**: what does not fit an entity is kept as gap records, shown on the dashboard, and closed by a person.
 
 ```mermaid
 flowchart LR
@@ -24,24 +24,24 @@ Each command does one job. The steps below use them in this order.
 | 1 | `sdem transform inspect <export folder>` | **Look before you start.** Shows what is in your export and what SDEM can read. Changes nothing |
 | 2 | `sdem transform run <export folder> -o work/history` | **Read the designs.** Turns the pages into a list of *suggested* architecture items, and writes a report for you to read |
 | 3 | *(you read `work/history/extraction-report.md`)* | **Check the suggestions.** Decide which are wrong |
-| 4 | `sdem load work/history --estate estates/history --person <you> --exclude <wrong ones>` | **Keep the good ones.** Copies the items you accept into your project; whatever did not fit is kept as *gaps*. Add `--dry-run` first to see what would happen |
-| 5 | `sdem check --estate estates/history` | **Health check.** Confirms everything follows the rules |
-| 6 | `sdem link --estate estates/history --out work/links` | **Suggest connections.** SDEM proposes how items connect across layers (e.g. *this app runs on this server*) |
+| 4 | `sdem load work/history --workspace workspaces/history --person <you> --exclude <wrong ones>` | **Keep the good ones.** Copies the items you accept into your project; whatever did not fit is kept as *gaps*. Add `--dry-run` first to see what would happen |
+| 5 | `sdem check --workspace workspaces/history` | **Health check.** Confirms everything follows the rules |
+| 6 | `sdem link --workspace workspaces/history --out work/links` | **Suggest connections.** SDEM proposes how items connect across layers (e.g. *this app runs on this server*) |
 | 7 | `sdem review work/links/proposals.json` | **See the suggested connections**, weakest first |
 | 8 | `sdem approve <id> … --reviewer <you> --evidence <document>` | **Accept a connection.** You confirm it, and name the document that proves it |
-| 9 | `sdem build --estate estates/history --out work/graph` | **Make the picture.** Builds the connected view — the knowledge graph — from what you accepted |
+| 9 | `sdem build --workspace workspaces/history --out work/graph` | **Make the picture.** Builds the connected view — the knowledge graph — from what you accepted |
 | 10 | `sdem trace <item>` · `sdem impact <item> --change retire` | **Ask questions.** *What does this depend on?* · *What breaks if we remove this?* |
-| 11 | `sdem dashboard --estate estates/history -o work/dashboard.html` | **See it as a web page** — everything above, clickable, in your browser |
-| 12 | `sdem designs --estate estates/history --gaps` | **See the gaps** — what did not fit, still waiting for you |
+| 11 | `sdem dashboard --workspace workspaces/history -o work/dashboard.html` | **See it as a web page** — everything above, clickable, in your browser |
+| 12 | `sdem designs --workspace workspaces/history --gaps` | **See the gaps** — what did not fit, still waiting for you |
 | 13 | `sdem designs accept` · `resolve <gap id> … --person <you> --note "<why>"` | **Close a gap.** *Accept* = leave it as it is; *resolve* = you have dealt with it |
-| 14 | in your **private** estate repository: `git add estates/<domain>` → commit → pull request | **Save and share** — your accepted work goes for review |
+| 14 | in your **private** workspace repository: `git add workspaces/<domain>` → commit → pull request | **Save and share** — your accepted work goes for review |
 
 **In short:** **read** (1–2) → **you check** (3) → **keep** (4–5) → **connect** (6–8) → **picture** (9) → **use** (10–11) → **tidy up** (12–13) → **save** (14).
 
 **Remember:**
 - `--person` / `--reviewer` is always **your name** — only a person can accept items, connections and gaps.
 - `work/` is your **scratch area** — never saved to Git; keep the export there.
-- `estates/history/` is **the real result** — that is what you save.
+- `workspaces/history/` is **the real result** — that is what you save.
 - Any command explains itself: add `--help` (e.g. `sdem load --help`).
 
 ## Two runs
@@ -109,22 +109,22 @@ Optional: in Copilot Chat, `/sdem-onboarding-review work/history` explains each 
 
 ### 5 · Load — dry run first
 ```bash
-sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
+sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
   --a2 examples/payment-initiation/a2-service-domain.json --dry-run
 ```
 then the same **without** `--dry-run`.
 
 | Expected (Run A) | A ✓ | B — record |
 |---|---|---|
-| `loaded (LOAD-001) into estates/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added` | | |
+| `loaded (LOAD-001) into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added` | | |
 | `gap records: 13 (text not read 5, needs a person 3, column not mapped 2, no entity type 1, file not read 1, rejected at load 1)` | | gap counts |
-| `reconciliation: 17 candidates = 16 loaded + 0 already in the estate + 1 excluded; 60 items read = 45 captured + 4 skipped by design + 11 not captured` | | **does it balance?** |
-| `estates/history/` holds `a1…a4` datasets, `mappings.json` (empty), `designs/design-records.json`, `loads/LOAD-001.json` | | |
+| `reconciliation: 17 candidates = 16 loaded + 0 already in the workspace + 1 excluded; 60 items read = 45 captured + 4 skipped by design + 11 not captured` | | **does it balance?** |
+| `workspaces/history/` holds `a1…a4` datasets, `mappings.json` (empty), `designs/design-records.json`, `loads/LOAD-001.json` | | |
 | `--dry-run` wrote nothing | | |
 
 ### 6 · Check
 ```bash
-sdem check --estate estates/history
+sdem check --workspace workspaces/history
 ```
 | Expected (Run A) | A ✓ | B |
 |---|---|---|
@@ -132,7 +132,7 @@ sdem check --estate estates/history
 
 ### 7 · Link and review
 ```bash
-sdem link --estate estates/history --out work/links
+sdem link --workspace workspaces/history --out work/links
 sdem review work/links/proposals.json
 ```
 | Expected (Run A) | A ✓ | B — record |
@@ -143,9 +143,9 @@ sdem review work/links/proposals.json
 
 ### 8 · Approve — a person, with evidence
 ```bash
-sdem approve P-RUN-001 --proposals work/links/proposals.json --estate estates/history --reviewer <your name> \
+sdem approve P-RUN-001 --proposals work/links/proposals.json --workspace workspaces/history --reviewer <your name> \
   --evidence deployment_design:PAYARCH-55501#notes
-sdem approve P-RUN-005 --proposals work/links/proposals.json --estate estates/history --reviewer <your name> \
+sdem approve P-RUN-005 --proposals work/links/proposals.json --workspace workspaces/history --reviewer <your name> \
   --evidence business_architecture_document:PAYARCH-55501#context --evidence domain_scope_assessment:DSA-1
 #   → refused: "a link to a BIAN element needs the BIAN release it relies on: add --bian-release <release>"
 sdem approve P-RUN-005 … --bian-release BIAN-RELEASE-X
@@ -159,8 +159,8 @@ sdem approve P-RUN-005 … --bian-release BIAN-RELEASE-X
 
 ### 9 · Build
 ```bash
-sdem build --estate estates/history --out work/graph
-sdem build work/history/a1-business.json work/history/a3-application.json estates/history/mappings.json --out work/refused   # the candidates: must be refused
+sdem build --workspace workspaces/history --out work/graph
+sdem build work/history/a1-business.json work/history/a3-application.json workspaces/history/mappings.json --out work/refused   # the candidates: must be refused
 ```
 | Expected (Run A) | A ✓ | B |
 |---|---|---|
@@ -172,7 +172,7 @@ sdem build work/history/a1-business.json work/history/a3-application.json estate
 sdem trace HIS-A1-PAYMENT-INITIATION --graph work/graph --direction down
 sdem trace HIS-A3-PAYMENTS-HUB --graph work/graph
 sdem impact HIS-A4-PAYAPP01 --change retire --graph work/graph
-sdem dashboard --estate estates/history -o work/history-dashboard.html
+sdem dashboard --workspace workspaces/history -o work/history-dashboard.html
 ```
 | Expected (Run A) | A ✓ | B — record |
 |---|---|---|
@@ -183,10 +183,10 @@ sdem dashboard --estate estates/history -o work/history-dashboard.html
 
 ### 11 · Deal with gaps
 ```bash
-sdem designs --estate estates/history --gaps --status open
-sdem designs accept  <risks gap id> --estate estates/history --person <your name> --note "risks stay in the risk register"
-sdem designs resolve <pdf gap id>   --estate estates/history --person <your name> --note "HLD v1 superseded by this design"
-sdem check --estate estates/history
+sdem designs --workspace workspaces/history --gaps --status open
+sdem designs accept  <risks gap id> --workspace workspaces/history --person <your name> --note "risks stay in the risk register"
+sdem designs resolve <pdf gap id>   --workspace workspaces/history --person <your name> --note "HLD v1 superseded by this design"
+sdem check --workspace workspaces/history
 ```
 | Expected (Run A) | A ✓ | B — record |
 |---|---|---|
@@ -196,9 +196,9 @@ sdem check --estate estates/history
 | `OK: design records` | | |
 
 ### 12 · Commit through a pull request
-In this test you worked in the SDEM project, which ignores `estates/` — so there is nothing to commit. With real designs you work in your private estate repository, loading into `estates/<domain>`, and then:
+In this test you worked in the SDEM project, which ignores `workspaces/` — so there is nothing to commit. With real designs you work in your private workspace repository, loading into `workspaces/<domain>`, and then:
 ```bash
-git add estates/<domain>               # datasets, mappings.json, designs/, loads/ — never work/
+git add workspaces/<domain>               # datasets, mappings.json, designs/, loads/ — never work/
 git commit -m "Onboard Payments Hub Design (LOAD-001), 2 approved links"
 git push -u origin onboard/payarch     # open a pull request; a reviewer merges it
 ```
@@ -208,11 +208,11 @@ git push -u origin onboard/payarch     # open a pull request; a reviewer merges 
 
 ### Repeat load — nothing twice
 ```bash
-sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER
+sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER
 ```
 | Expected (Run A) | A ✓ |
 |---|---|
-| `loaded (LOAD-002): A1 0, A3 0, A4 0 entities`; `reconciliation: 17 candidates = 0 loaded + 16 already in the estate + 1 excluded` | |
+| `loaded (LOAD-002): A1 0, A3 0, A4 0 entities`; `reconciliation: 17 candidates = 0 loaded + 16 already in the workspace + 1 excluded` | |
 | still 13 gap records; the two you closed keep their status | |
 
 ## Acceptance criteria (sealed)
@@ -222,7 +222,7 @@ sdem load work/history --estate estates/history --person <your name> --exclude H
 | C1 | The export is read whatever its layout; nothing is written before the transform | 1 |
 | C2 | Candidates are A1, A3, A4 only — never A2 — each with page, place, rule, confidence ≤ medium, reasoning | 3, 4 |
 | C3 | Every item is accounted for: captured + skipped + not captured = items read | 1, 5 |
-| C4 | Only the entities kept are loaded, unchanged; the estate is checked before anything is written; the load is recorded | 5, 6 |
+| C4 | Only the entities kept are loaded, unchanged; the workspace is checked before anything is written; the load is recorded | 5, 6 |
 | C5 | What did not fit is kept as gap records; the reconciliation balances | 5 |
 | C6 | Links between architectures are proposed, never loaded; links from document-derived entities are capped at low | 7 |
 | C7 | Only a person approves, with the evidence the link type needs (and the BIAN release for BIAN links) | 8 |

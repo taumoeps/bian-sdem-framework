@@ -15,7 +15,7 @@ flowchart LR
         D["📄 <b>Design onboarding</b> — built<br/>existing designs (Confluence export)"]
         T["🗄️ <b>Tool onboarding</b> — planned (v0.11)<br/>spreadsheets, CMDB, application portfolio"]
     end
-    D -->|"ingestion:<br/>transform → review → load"| E[("Estate<br/>architecture data")]
+    D -->|"ingestion:<br/>transform → review → load"| E[("Workspace<br/>architecture data")]
     T -->|"ingestion:<br/>adapter → check → load"| E
     E -->|"normal processing:<br/>check → link → approve → build"| R(["✅ ready for<br/>queries and changes"])
     classDef built fill:#E8F5E9,stroke:#2E7D32
@@ -27,9 +27,9 @@ flowchart LR
 | Term | Means |
 |---|---|
 | **Onboarding** | the whole process: new source → ready for use |
-| **Ingestion** | the first part: getting the data into an estate (for designs: transform → review → load) |
-| **Normal processing** | the second part, the same for every estate however its data arrived: check → link → approve → build |
-| **Estate** | a project's architecture data, in one folder (here `estates/history/`) |
+| **Ingestion** | the first part: getting the data into a workspace (for designs: transform → review → load) |
+| **Normal processing** | the second part, the same for every workspace however its data arrived: check → link → approve → build |
+| **Workspace** | a project's architecture data, in one folder (here `workspaces/history/`) |
 
 ## 2. The process at a glance
 
@@ -51,7 +51,7 @@ How ready the data is after each stage:
 
 ```mermaid
 flowchart LR
-    s1(["raw<br/><i>the export</i>"]) --> s2(["candidate<br/><i>suggested items</i>"]) --> s3(["reviewed<br/><i>you chose</i>"]) --> s4(["loaded<br/><i>in the estate</i>"]) --> s5(["connected<br/><i>links approved</i>"]) --> s6(["✅ ready<br/><i>graph built</i>"])
+    s1(["raw<br/><i>the export</i>"]) --> s2(["candidate<br/><i>suggested items</i>"]) --> s3(["reviewed<br/><i>you chose</i>"]) --> s4(["loaded<br/><i>in the workspace</i>"]) --> s5(["connected<br/><i>links approved</i>"]) --> s6(["✅ ready<br/><i>graph built</i>"])
     classDef r fill:#E8F5E9,stroke:#2E7D32
     class s6 r
 ```
@@ -67,24 +67,24 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 | 1 | `sdem transform inspect <export folder>` | **Look before you start.** Shows what is in your export and what SDEM can read. Changes nothing |
 | 2 | `sdem transform run <export folder> -o work/history` | **Read the designs.** Turns the pages into a list of *suggested* architecture items, and writes a report for you to read |
 | 3 | *(you read `work/history/extraction-report.md`)* | **Check the suggestions.** Decide which are wrong |
-| 4 | `sdem load work/history --estate estates/history --person <you> --exclude <wrong ones>` | **Keep the good ones.** Copies the items you accept into your project; whatever did not fit is kept as *gaps*. Add `--dry-run` first to see what would happen |
-| 5 | `sdem check --estate estates/history` | **Health check.** Confirms everything follows the rules |
-| 6 | `sdem link --estate estates/history --out work/links` | **Suggest connections.** SDEM proposes how items connect across layers (e.g. *this app runs on this server*) |
+| 4 | `sdem load work/history --workspace workspaces/history --person <you> --exclude <wrong ones>` | **Keep the good ones.** Copies the items you accept into your project; whatever did not fit is kept as *gaps*. Add `--dry-run` first to see what would happen |
+| 5 | `sdem check --workspace workspaces/history` | **Health check.** Confirms everything follows the rules |
+| 6 | `sdem link --workspace workspaces/history --out work/links` | **Suggest connections.** SDEM proposes how items connect across layers (e.g. *this app runs on this server*) |
 | 7 | `sdem review work/links/proposals.json` | **See the suggested connections**, weakest first |
 | 8 | `sdem approve <id> … --reviewer <you> --evidence <document>` | **Accept a connection.** You confirm it, and name the document that proves it |
-| 9 | `sdem build --estate estates/history --out work/graph` | **Make the picture.** Builds the connected view — the knowledge graph — from what you accepted |
+| 9 | `sdem build --workspace workspaces/history --out work/graph` | **Make the picture.** Builds the connected view — the knowledge graph — from what you accepted |
 | 10 | `sdem trace <item>` · `sdem impact <item> --change retire` | **Ask questions.** *What does this depend on?* · *What breaks if we remove this?* |
-| 11 | `sdem dashboard --estate estates/history -o work/dashboard.html` | **See it as a web page** — everything above, clickable, in your browser |
-| 12 | `sdem designs --estate estates/history --gaps` | **See the gaps** — what did not fit, still waiting for you |
+| 11 | `sdem dashboard --workspace workspaces/history -o work/dashboard.html` | **See it as a web page** — everything above, clickable, in your browser |
+| 12 | `sdem designs --workspace workspaces/history --gaps` | **See the gaps** — what did not fit, still waiting for you |
 | 13 | `sdem designs accept` · `resolve <gap id> … --person <you> --note "<why>"` | **Close a gap.** *Accept* = leave it as it is; *resolve* = you have dealt with it |
-| 14 | in your **private** estate repository: `git add estates/<domain>` → commit → pull request | **Save and share** — your accepted work goes for review |
+| 14 | in your **private** workspace repository: `git add workspaces/<domain>` → commit → pull request | **Save and share** — your accepted work goes for review |
 
 **In short:** **read** (1–2) → **you check** (3) → **keep** (4–5) → **connect** (6–8) → **picture** (9) → **use** (10–11) → **tidy up** (12–13) → **save** (14). Commands 1–4 are **ingestion**; 5–9 are **normal processing**.
 
 **Remember:**
 - `--person` / `--reviewer` is always **your name** — only a person can accept items, connections and gaps.
 - `work/` is your **scratch area** — never saved to Git; keep the export there.
-- `estates/history/` is **the real result** — that is what you save.
+- `workspaces/history/` is **the real result** — that is what you save.
 - Any command explains itself: add `--help` (e.g. `sdem load --help`).
 
 ## 4. Before you start
@@ -99,7 +99,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 
 ### Your BIAN (A2) layer
 
-**What it is.** One file, `a2-service-domain.json`, listing the BIAN service domains your organisation uses (and, if you have them, their operations and business objects) in SDEM's format. It is the bridge in the middle of the picture: business capabilities connect *to* it, applications connect *from* it. It is shared — one file for every domain and estate — and owned by whoever looks after BIAN in your organisation.
+**What it is.** One file, `a2-service-domain.json`, listing the BIAN service domains your organisation uses (and, if you have them, their operations and business objects) in SDEM's format. It is the bridge in the middle of the picture: business capabilities connect *to* it, applications connect *from* it. It is shared — one file for every domain and workspace — and owned by whoever looks after BIAN in your organisation.
 
 **Why the designs cannot supply it.** SDEM never builds BIAN records from design documents: BIAN names it finds are only listed as *hints*. The BIAN layer comes from an authoritative source, added once with `--a2` when you first load.
 
@@ -108,7 +108,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 | Source | When | How |
 |---|---|---|
 | **The base BIAN that ships with SDEM** (recommended to start) | always — BIAN's public Semantic APIs 14.0.0 are inside SDEM (Apache-2.0, see `bian/README.md`) | `sdem bian import --base --all -o work/bian/a2-service-domain.json` (or `--only` the domains you use) — nothing to download; checked, with a report |
-| **Your organisation's own BIAN** | you have a newer release, your own selection or your own extensions, in BIAN's format | pack it once: `sdem bian pack <folder> -o bian/our-bian.json` (keep it in your estate repository), then `--base bian/our-bian.json` instead of `--base`; or import straight from the folder |
+| **Your organisation's own BIAN** | you have a newer release, your own selection or your own extensions, in BIAN's format | pack it once: `sdem bian pack <folder> -o bian/our-bian.json` (keep it in your workspace repository), then `--base bian/our-bian.json` instead of `--base`; or import straight from the folder |
 | **Your organisation's BIAN catalogue in another format** | e.g. a member's model export | convert it to SDEM's A2 format (the file below); `sdem check` validates it |
 | **A starter file, by hand** | you have no catalogue yet | list the service domains your area uses, from BIAN's public Service Landscape — **names only, described in your own words** (do not copy BIAN text) — as below |
 | **None yet** | you want to start without BIAN | load without `--a2`; applications still connect to technology — but **business does not connect to applications at all**, because every one of SDEM's connections between those layers passes through BIAN. Add the layer before you need business-to-technology traces |
@@ -121,7 +121,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 | `--only "<name>" …` | the domains you name | you know which ones your designs use: search the base for their words — `sdem bian list --base \| grep -i payment` |
 | `--from <file>` | the names in a file, one per line | a longer list, kept in your repository |
 
-The 66 domains whose asset type and functional pattern SDEM cannot work out are **imported marked *not known yet*** (`classification: unknown`) — listed in the report and in a template, `…needs-patterns.csv`. They can be connected through their operations; `sdem check` gives advice on each (two lines: asset type, pattern) until the values are given. For 60 of them SDEM keeps an **inference record** — 48 already accepted by the SDEM owner, so `--all` gives 240 domains with full values and 18 not known yet ([BIAN inferences](reference/bian-inferences.md)): each inferred value with its source, reasoning and confidence, a status and a history. The import applies an entry once a person accepts it — `sdem bian inference accept <id> --person <you> --reason "…"` — and the domain then records `classification: inferred` and the entry's id, so the value can be traced, challenged (`challenge`) or changed (`change`) later; every change names a person and a reason. To keep your own decisions, copy the record into your estate repository (`bian/inferences-14.0.0.json`) and import with `--inferences bian/inferences-14.0.0.json`. Or give values yourself: fill in the template from the BIAN portal and run the import again with `--patterns <template>`; a row left empty is simply skipped. Add more domains later with `--previous`. **Are the derived asset types and patterns good enough?** Yes for a pilot: they are marked *to confirm* in the report, and whoever owns BIAN for you confirms them later (it needs access to the BIAN portal).
+The 66 domains whose asset type and functional pattern SDEM cannot work out are **imported marked *not known yet*** (`classification: unknown`) — listed in the report and in a template, `…needs-patterns.csv`. They can be connected through their operations; `sdem check` gives advice on each (two lines: asset type, pattern) until the values are given. For 60 of them SDEM keeps an **inference record** — 48 already accepted by the SDEM owner, so `--all` gives 240 domains with full values and 18 not known yet ([BIAN inferences](reference/bian-inferences.md)): each inferred value with its source, reasoning and confidence, a status and a history. The import applies an entry once a person accepts it — `sdem bian inference accept <id> --person <you> --reason "…"` — and the domain then records `classification: inferred` and the entry's id, so the value can be traced, challenged (`challenge`) or changed (`change`) later; every change names a person and a reason. To keep your own decisions, copy the record into your workspace repository (`bian/inferences-14.0.0.json`) and import with `--inferences bian/inferences-14.0.0.json`. Or give values yourself: fill in the template from the BIAN portal and run the import again with `--patterns <template>`; a row left empty is simply skipped. Add more domains later with `--previous`. **Are the derived asset types and patterns good enough?** Yes for a pilot: they are marked *to confirm* in the report, and whoever owns BIAN for you confirms them later (it needs access to the BIAN portal).
 
 **Importing your BIAN layer.** SDEM reads the base (or your own pack, or a folder of BIAN's files) — nothing is fetched — and writes each service domain you name with its operations (and their input and output fields, which the engine matches your APIs against), its control record, behaviour qualifiers and service groups, recording BIAN's release on every record. Two things to know:
 
@@ -129,7 +129,7 @@ The 66 domains whose asset type and functional pattern SDEM cannot work out are 
 - **BIAN's descriptions are left out.** The base never has them; to include them, or business objects (`--objects`), import from a folder of BIAN's files with `--descriptions`.
 - **Every record says which BIAN it came from** — release, file — so moving later from the base to your own BIAN is reported, not silent (`--previous <your current file>`).
 
-**Where to write it.** In your **estate repository**: `-o bian/a2-service-domain.json`, then commit it — one BIAN layer shared by every domain, used with `--a2 bian/a2-service-domain.json` when a domain is first loaded. **When you change it later** (more service domains, a new BIAN release), bring every estate up to date: `sdem bian update --root estates --a2 bian/a2-service-domain.json --person <you>` — checked first; it refuses if an approved connection points to a service domain you dropped (supersede that connection first). Practising **in the SDEM project**: `-o work/bian/a2-service-domain.json` (the SDEM project's own `bian/` folder holds the base).
+**Where to write it.** In your **workspace repository**: `-o bian/a2-service-domain.json`, then commit it — one BIAN layer shared by every domain, used with `--a2 bian/a2-service-domain.json` when a domain is first loaded. **When you change it later** (more service domains, a new BIAN release), bring every workspace up to date: `sdem bian update --root workspaces --a2 bian/a2-service-domain.json --person <you>` — checked first; it refuses if an approved connection points to a service domain you dropped (supersede that connection first). Practising **in the SDEM project**: `-o work/bian/a2-service-domain.json` (the SDEM project's own `bian/` folder holds the base).
 
 ```bash
 sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json     # practising in the SDEM project
@@ -179,7 +179,7 @@ Coverage: 80% captured (45 captured, 11 not captured, 4 skipped by design)
 ```
 **If a table or diagram you need shows *no rule* or *unclassified***, SDEM does not know your words yet — copy the rules and add them, then look again:
 ```bash
-sdem transform rules -o rules/transform-rules.json        # a copy of SDEM's rules, committed in your estate repository; e.g. add "system name" as an application column
+sdem transform rules -o rules/transform-rules.json        # a copy of SDEM's rules, committed in your workspace repository; e.g. add "system name" as an application column
 sdem transform inspect work/imports/payarch --rules rules/transform-rules.json --ocr off
 ```
 
@@ -212,27 +212,27 @@ Write down the ids of the items you do **not** want, e.g. `HIS-A3-PAYMENT-ORDER`
 ### 4 · Keep the good ones
 Try it first with `--dry-run` (writes nothing), then run it for real:
 ```bash
-sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
-  --a2 work/bian/a2-service-domain.json --dry-run          # in your estate repository: --a2 bian/a2-service-domain.json
-sdem load work/history --estate estates/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
+sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
+  --a2 work/bian/a2-service-domain.json --dry-run          # in your workspace repository: --a2 bian/a2-service-domain.json
+sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
   --a2 work/bian/a2-service-domain.json
 ```
 ```
-loaded (LOAD-001) into estates/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added from work/bian/a2-service-domain.json
-design records: 11 page(s); gap records: 13 — what did not fit an entity, kept beside the estate (…)
-reconciliation: 17 candidates = 16 loaded + 0 already in the estate + 1 excluded
+loaded (LOAD-001) into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added from work/bian/a2-service-domain.json
+design records: 11 page(s); gap records: 13 — what did not fit an entity, kept beside the workspace (…)
+reconciliation: 17 candidates = 16 loaded + 0 already in the workspace + 1 excluded
 ```
 The *reconciliation* proves nothing was lost. `--a2` is needed only the first time. **Ingestion is now complete**; the rest is normal processing.
 
 ### 5 · Health check
 ```bash
-sdem check --estate estates/history
+sdem check --workspace workspaces/history
 ```
 No `ERROR` lines, and the last line says `OK`. `WARN` lines are advice — the metamodel suggests a link that is still missing; fix them when you can.
 
 ### 6 · Suggest and review connections
 ```bash
-sdem link --estate estates/history --out work/links
+sdem link --workspace workspaces/history --out work/links
 sdem review work/links/proposals.json
 ```
 ```
@@ -242,13 +242,13 @@ sdem review work/links/proposals.json
   [0.4] P-RUN-003  HIS-A3-SANCTIONS-SCREENING -DEPLOYED_ON-> HIS-A4-PAYMENTS-KUBERNETES-CLUSTER   rule S34
   [0.4] P-RUN-004  HIS-A1-PAYMENT-INITIATION -SUPPORTED_BY-> SD-PAYMENT-ORDER-INITIATION   rule S01
 ```
-Every connection from a past design is marked **low** — check each against its Confluence page. `sdem designs --estate estates/history --entity <id>` tells you which page an item came from.
+Every connection from a past design is marked **low** — check each against its Confluence page. `sdem designs --workspace workspaces/history --entity <id>` tells you which page an item came from.
 
 ### 7 · Accept the right connections
 ```bash
-sdem approve P-RUN-002 --proposals work/links/proposals.json --estate estates/history \
+sdem approve P-RUN-002 --proposals work/links/proposals.json --workspace workspaces/history \
   --reviewer <your name> --evidence deployment_design:<page or document id>
-sdem approve P-RUN-004 --proposals work/links/proposals.json --estate estates/history \
+sdem approve P-RUN-004 --proposals work/links/proposals.json --workspace workspaces/history \
   --reviewer <your name> --evidence business_architecture_document:<doc> --evidence domain_scope_assessment:<doc> \
   --bian-release 14.0.0
 ```
@@ -260,7 +260,7 @@ The **evidence** is the document that proves the connection — SDEM tells you w
 
 **Connections SDEM cannot see.** Designs rarely give an application's API operations in enough detail for SDEM to work out which BIAN service domain the application **realises** — and without that connection, a capability never traces through to the applications and technology. When you know it, and have the document that shows it, state it yourself:
 ```bash
-sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --estate estates/history \
+sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --workspace workspaces/history \
   --reviewer <your name> --evidence application_architecture_document:<page or document id> \
   --rationale "The Payments Hub design names it as the payment-order initiation service"
 ```
@@ -271,7 +271,7 @@ It gets the same checks as `sdem approve` — your name, the evidence the connec
 
 ### 8 · Make the picture
 ```bash
-sdem build --estate estates/history --out work/graph
+sdem build --workspace workspaces/history --out work/graph
 ```
 ```
 build 1 accepted: … designs.graph.json (24 nodes, 42 edges), federated.graph.json (4 nodes, 3 edges)
@@ -282,7 +282,7 @@ build 1 accepted: … designs.graph.json (24 nodes, 42 edges), federated.graph.j
 ```bash
 sdem trace HIS-A1-PAYMENT-INITIATION --direction down --graph work/graph   # what does this capability depend on?
 sdem impact HIS-A4-PAYMENTS-KUBERNETES-CLUSTER --change retire --graph work/graph   # what breaks if we retire this cluster?
-sdem dashboard --estate estates/history -o work/dashboard.html     # open it in your browser
+sdem dashboard --workspace workspaces/history -o work/dashboard.html     # open it in your browser
 ```
 ```
 HIS-A1-PAYMENT-INITIATION 'Payment Initiation'  [A1.BusinessCapability]
@@ -301,18 +301,18 @@ Only approved connections count — an item whose connection you did not approve
 
 ### 10 · Tidy up the gaps
 ```bash
-sdem designs --estate estates/history --gaps --status open
-sdem designs accept  <gap id> --estate estates/history --person <your name> --note "risks stay in the risk register"
-sdem designs resolve <gap id> --estate estates/history --person <your name> --note "added by hand as HIS-A3-…"
+sdem designs --workspace workspaces/history --gaps --status open
+sdem designs accept  <gap id> --workspace workspaces/history --person <your name> --note "risks stay in the risk register"
+sdem designs resolve <gap id> --workspace workspaces/history --person <your name> --note "added by hand as HIS-A3-…"
 ```
 You do not have to close every gap at once — the dashboard keeps showing what is open.
 
 ### 11 · Save and share
-**Practising on the sample?** Nothing to save: this SDEM project ignores `estates/` and `work/` on purpose, so made-up and real data can never be committed here.
+**Practising on the sample?** Nothing to save: this SDEM project ignores `workspaces/` and `work/` on purpose, so made-up and real data can never be committed here.
 
-**Real designs:** do the whole onboarding inside your team's **private estate repository** (made from the [estate template](../templates/estate-repo/README.md), which installs SDEM), loading into `estates/<domain>` instead of `estates/history`. Then:
+**Real designs:** do the whole onboarding inside your team's **private workspace repository** (made from the [workspace template](../templates/workspace-repo/README.md), which installs SDEM), loading into `workspaces/<domain>` instead of `workspaces/history`. Then:
 ```bash
-git add estates/<domain>                # datasets, mappings.json, designs/, loads/ — never work/
+git add workspaces/<domain>                # datasets, mappings.json, designs/, loads/ — never work/
 git commit -m "Onboard <design name> (LOAD-001)"
 git push -u origin onboard/<name>       # then open a pull request; a reviewer merges it
 ```
@@ -320,7 +320,7 @@ Never copy `work/` — it holds the export. **Your approvals become final when t
 
 ## 6. What each step does to the data
 
-In short: the **transform** reads and writes *candidates* (nothing in your estate changes); the **load** copies the ones you keep, unchanged, and records what did not fit as gap records; **link** proposes connections and **approve**/**connect** make them real; **build** makes the knowledge graph from approved data only. Step by step, with a diagram of where every file goes, for those who want the detail: [onboarding — what happens to the data](design/sdem-onboarding-internals.md#what-each-step-does-to-the-data).
+In short: the **transform** reads and writes *candidates* (nothing in your workspace changes); the **load** copies the ones you keep, unchanged, and records what did not fit as gap records; **link** proposes connections and **approve**/**connect** make them real; **build** makes the knowledge graph from approved data only. Step by step, with a diagram of where every file goes, for those who want the detail: [onboarding — what happens to the data](design/sdem-onboarding-internals.md#what-each-step-does-to-the-data).
 
 ## 7. Validated and reviewed — both are needed
 
@@ -329,11 +329,11 @@ In short: the **transform** reads and writes *candidates* (nothing in your estat
 | **Validated** | follows the schemas and the metamodel (types, required attributes, allowed links) | SDEM, automatically — reported by the transform, **enforced** by the load and the build | "Payment Order" has no attribute list → fails |
 | **Reviewed** | correct about the real design | **you** | an OCR misread passes validation but is wrong → you reject it |
 
-The transform produces data that may be neither; the load accepts only data that is **both**. That is why the load exists: `link`, `approve` and `build` work on the estate, and the estate must hold only validated, reviewed data.
+The transform produces data that may be neither; the load accepts only data that is **both**. That is why the load exists: `link`, `approve` and `build` work on the workspace, and the workspace must hold only validated, reviewed data.
 
 ## 8. What did not fit — gap records
 
-Nothing is thrown away. What does not fit an architecture entity is kept **beside** the estate — never inside the architectures, never in the knowledge graph — as **gap records** in `estates/history/designs/design-records.json`, with a **design record** for each source page (its facts, coverage and link).
+Nothing is thrown away. What does not fit an architecture entity is kept **beside** the workspace — never inside the architectures, never in the knowledge graph — as **gap records** in `workspaces/history/designs/design-records.json`, with a **design record** for each source page (its facts, coverage and link).
 
 | Kind of gap | Example |
 |---|---|
@@ -352,7 +352,7 @@ Onboarding never changes the metamodel and schemas: your designs are checked **a
 
 ## 10. Next time
 
-Repeat the steps for the next export, into the **same** `estates/history`. SDEM adds what is new, skips what is already there, and **stops** if something already there would change — so nothing is overwritten by accident. Gaps you have closed keep their status.
+Repeat the steps for the next export, into the **same** `workspaces/history`. SDEM adds what is new, skips what is already there, and **stops** if something already there would change — so nothing is overwritten by accident. Gaps you have closed keep their status.
 
 ## 11. If something goes wrong
 
@@ -360,20 +360,20 @@ Repeat the steps for the next export, into the **same** `estates/history`. SDEM 
 |---|---|---|
 | `no pages found` | the folder is not the export | point to the folder that holds the pages |
 | many tables *no rule* | SDEM does not know your column names | step 1: copy the rules and add your words |
-| `load` says `refused — nothing written` | an item breaks the rules, or one already in the estate would change | read the message; `--exclude` the item, or fix it |
+| `load` says `refused — nothing written` | an item breaks the rules, or one already in the workspace would change | read the message; `--exclude` the item, or fix it |
 | `approve` says `add --bian-release` | a connection to BIAN needs the BIAN release | add `--bian-release <release>` |
-| `build` says `CTL-23` | you pointed it at `work/history` (the suggestions) | build from `--estate estates/history` |
+| `build` says `CTL-23` | you pointed it at `work/history` (the suggestions) | build from `--workspace workspaces/history` |
 | OCR errors on pictures | your Mac's text recognition is not available | add `--ocr off`; the pictures are listed for you as gaps |
 
 ## 12. Common questions
 
 | Question | Answer |
 |---|---|
-| Is my design onboarded after step 11? | Yes, once the pull request is merged: it is in the estate, checked, connected and built — ready for queries and changes. |
+| Is my design onboarded after step 11? | Yes, once the pull request is merged: it is in the workspace, checked, connected and built — ready for queries and changes. |
 | Does the transform produce the graph? | No — it produces the **architecture data** (candidates). The graph comes from `sdem build`. |
-| Does the load change the data? | No. It **copies** the entities you keep, unchanged, into the estate, after checking the whole estate, and records your decision. |
-| Why not just copy the files? | `sdem build` refuses unloaded candidate data (CTL-23); the load checks the estate as a whole, refuses conflicts instead of overwriting, and records who approved what. |
+| Does the load change the data? | No. It **copies** the entities you keep, unchanged, into the workspace, after checking the whole workspace, and records your decision. |
+| Why not just copy the files? | `sdem build` refuses unloaded candidate data (CTL-23); the load checks the workspace as a whole, refuses conflicts instead of overwriting, and records who approved what. |
 | Where do links between architectures come from? | `sdem link` proposes them from the loaded data; **you** approve them. The transform's "deployed on" findings are written as data so `sdem link` finds them. |
 | Where does the metamodel come from? | It is written and approved beforehand. Nothing generates it from data. |
 | Is A2 (BIAN) data taken from the designs? | Never — the transform does not create BIAN records (control CTL-24). BIAN names found are listed as hints; your A2 dataset (from the BIAN catalogue) is added once with `--a2`. |
-| Is the knowledge graph saved? | No — `work/graph/` is rebuilt from the estate with `sdem build` whenever needed. The estate is what you save. |
+| Is the knowledge graph saved? | No — `work/graph/` is rebuilt from the workspace with `sdem build` whenever needed. The workspace is what you save. |

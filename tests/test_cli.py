@@ -26,6 +26,12 @@ class CliTests(unittest.TestCase):
     def tearDownClass(cls):
         shutil.rmtree(cls.tmp, ignore_errors=True)
 
+    def test_workspace_option_and_its_old_name(self):   # "estate" was renamed "workspace" (2026-10-30); --estate still works when typed
+        ws = str(ROOT / 'examples' / 'payment-initiation')
+        for opt in ('--workspace', '--estate'):
+            self.assertEqual(run('check', opt, ws)[0], 0, opt)
+            self.assertEqual(run('dashboard', opt, ws, '-o', str(Path(tempfile.mkdtemp()) / 'd.html'))[0], 0, opt)
+
     def test_help_lists_every_journey(self):
         code, out, _ = run('--help')
         self.assertEqual(code, 0)

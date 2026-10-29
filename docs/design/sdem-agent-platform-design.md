@@ -24,7 +24,7 @@ Both sides are now built for Level 1 (2026-10-28). Real designs come in by desig
 | keep projections and AI content out of real data | ✅ | CTL-16, CTL-17 |
 | **write** records into their own layer safely | ✅ | `sdem change propose` — checked before it lands |
 | be **limited to their own layer** | ✅ | CTL-19; layer agents also cannot call each other (`agents: []`) |
-| record **change events** and **work items** | ✅ | `<estate>/coordination/`: change sets, events with stored impact, work items |
+| record **change events** and **work items** | ✅ | `<workspace>/coordination/`: change sets, events with stored impact, work items |
 | show **which agent and which person** changed what | ✅ | CTL-20 on every change set and work-item step |
 | work in parallel without clashing | ◐ | Git branches can; not designed |
 | work on real designs | ◐ | design onboarding built; tool onboarding (v0.11), licensed BIAN catalogue (v0.15) |
@@ -81,7 +81,7 @@ flowchart TB
 
 ## 4. How a change flows
 
-Example (real ids from the `payment-initiation` estate): the technology team will **rehost the production payments cluster** `INF-K8S-PAY-PROD`.
+Example (real ids from the `payment-initiation` workspace): the technology team will **rehost the production payments cluster** `INF-K8S-PAY-PROD`.
 
 ```mermaid
 sequenceDiagram
@@ -121,7 +121,7 @@ sequenceDiagram
 
 ## 5. Coordination records
 
-These records are the agents' only channel to each other. They live in the project (Git), next to the registry, so every step is visible and auditable — one file per record in `<estate>/coordination/change-sets/`, `events/` and `work-items/`, with ids scoped to the Git branch they were made on, so agents on different branches never clash; `sdem check` checks them. They implement the original design's `mapping_change_event` and `mapping_impact` entities ([`BIAN_SDEM_Design_Specification.md`](../history/BIAN_SDEM_Design_Specification.md) §9).
+These records are the agents' only channel to each other. They live in the project (Git), next to the registry, so every step is visible and auditable — one file per record in `<workspace>/coordination/change-sets/`, `events/` and `work-items/`, with ids scoped to the Git branch they were made on, so agents on different branches never clash; `sdem check` checks them. They implement the original design's `mapping_change_event` and `mapping_impact` entities ([`BIAN_SDEM_Design_Specification.md`](../history/BIAN_SDEM_Design_Specification.md) §9).
 
 | Record | Holds | Written by |
 |---|---|---|
@@ -212,7 +212,7 @@ sequenceDiagram
     O-->>Ar: report - changes, review notices, proposed links, PR ready for your review
 ```
 
-- **Orchestrator → layer agent:** a subagent call with the estate, the work item ids and the person — every time, because each call is stateless.
+- **Orchestrator → layer agent:** a subagent call with the workspace, the work item ids and the person — every time, because each call is stateless.
 - **Layer agent → orchestrator:** the subagent's result, and the records it created (change set, change event).
 - **Layer agent → layer agent:** **never** — blocked by `agents: []`. A change in one layer reaches another only as impact, recorded by `sdem`, planned by the orchestrator.
 - The records are **durable**: if a session ends, nothing is lost; `sdem events --open` and `sdem work list` show where things stand.

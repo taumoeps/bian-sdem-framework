@@ -9,7 +9,7 @@ Every record in an architecture dataset (`instances` list) has:
 
 | Field | Required | Notes |
 |---|---|---|
-| `id` | yes | unique across the estate; never `PRJ-` or `DSN-` (those are plans) |
+| `id` | yes | unique across the workspace; never `PRJ-` or `DSN-` (those are plans) |
 | `type` | yes | `A1.…`, `A2.…`, `A3.…` or `A4.…` — the entity types are in `metamodel/a1-business.json` … `a4-technology.json` |
 | `version` | yes | approved links point to a record's version |
 | `name` | yes | plain language |
@@ -39,4 +39,4 @@ Records loaded from a Confluence export (`sdem transform` → `sdem load`) have 
 
 Example records to copy: `examples/payment-initiation/` (the user guide §6.2 explains two of them).
 
-`sdem check --estate <estate>` names any missing field as `$.instances[N]: missing required property '…'` — `N` counts from 0.
+`sdem check --workspace <workspace>` names any missing field as `$.instances[N]: missing required property '…'` — `N` counts from 0.

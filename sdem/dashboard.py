@@ -1,4 +1,4 @@
-"""`sdem dashboard` — one self-contained, read-only HTML page per estate (docs/design/sdem-dashboard-design.md, spec DB-*).
+"""`sdem dashboard` — one self-contained, read-only HTML page per workspace (docs/design/sdem-dashboard-design.md, spec DB-*).
 
 Everything is computed here, with the same functions the CLI uses (checks, the rules engine, trace, impact, matrices,
 AID gaps, controls); the page only displays the results and shows the exact `sdem` command for every action. No server,
@@ -79,7 +79,7 @@ def collect(estate, proposals=None, projection=None, catalogue=None, graph=None,
     if proposals: props = _j(proposals).get('mappings', []); props_src = str(proposals)
     else:
         from .rules_engine import RulesEngine
-        props = RulesEngine().infer(reader, {'id': 'DASH'})['proposals']; props_src = 'the rules engine, run on this estate when the page was generated'
+        props = RulesEngine().infer(reader, {'id': 'DASH'})['proposals']; props_src = 'the rules engine, run on this workspace when the page was generated'
     review = []
     for m in sorted(props, key=lambda m: (m.get('confidence', 0), m['relationship'], m['source']['id'])):
         if m.get('status', 'proposed') != 'proposed': continue
@@ -131,15 +131,15 @@ def collect(estate, proposals=None, projection=None, catalogue=None, graph=None,
                    'by_status': dict(collections.Counter(g['status'] for g in dr['gaps']))}
     attention = []
     errs = sum(len(l['errors']) for l in layers) + len(reg_errors) + len([i for i in coord_issues if 'AG-S08' not in i])
-    if errs: attention.append({'text': f'{errs} error(s) in the data — fix before trusting anything else', 'tab': 'overview', 'cmd': f'sdem check --estate {estate}', 'level': 'bad'})
-    if direct: attention.append({'text': f'{len(direct)} dataset(s) edited outside a change set (AG-S08)', 'tab': 'changes', 'cmd': f'sdem change adopt --estate {estate} --layer <A?> --person <you> --reason <why>', 'level': 'bad'})
-    if review: attention.append({'text': f'{len(review)} proposed link(s) to review', 'tab': 'review', 'cmd': f'sdem review <proposals.json> --estate {estate}', 'level': 'warn'})
+    if errs: attention.append({'text': f'{errs} error(s) in the data — fix before trusting anything else', 'tab': 'overview', 'cmd': f'sdem check --workspace {estate}', 'level': 'bad'})
+    if direct: attention.append({'text': f'{len(direct)} dataset(s) edited outside a change set (AG-S08)', 'tab': 'changes', 'cmd': f'sdem change adopt --workspace {estate} --layer <A?> --person <you> --reason <why>', 'level': 'bad'})
+    if review: attention.append({'text': f'{len(review)} proposed link(s) to review', 'tab': 'review', 'cmd': f'sdem review <proposals.json> --workspace {estate}', 'level': 'warn'})
     open_work = [w for w in work if w['history'][-1]['status'] in ('open', 'in_progress', 'blocked')]
-    if open_work: attention.append({'text': f'{len(open_work)} open work item(s)', 'tab': 'changes', 'cmd': f'sdem work list --estate {estate}', 'level': 'warn'})
+    if open_work: attention.append({'text': f'{len(open_work)} open work item(s)', 'tab': 'changes', 'cmd': f'sdem work list --workspace {estate}', 'level': 'warn'})
     unplanned = [e for e in Estate(estate).status() if not e['planned']] if events else []
-    if unplanned: attention.append({'text': f'{len(unplanned)} change event(s) waiting to be planned', 'tab': 'changes', 'cmd': f'sdem work plan --event {unplanned[0]["id"]} --estate {estate} --agent sdem-orchestrator --person <you>', 'level': 'warn'})
-    if designs and designs['open']: attention.append({'text': f"{len(designs['open'])} open gap(s) — what did not fit an entity in onboarded designs", 'tab': 'designs', 'cmd': f'sdem designs --estate {estate} --gaps --status open', 'level': 'warn'})
-    if stale and stale['changed']: attention.append({'text': f"the graph store {stale['graph']} is out of date", 'tab': 'overview', 'cmd': f"sdem build --estate {estate} --out {stale['graph']}", 'level': 'warn'})
+    if unplanned: attention.append({'text': f'{len(unplanned)} change event(s) waiting to be planned', 'tab': 'changes', 'cmd': f'sdem work plan --event {unplanned[0]["id"]} --workspace {estate} --agent sdem-orchestrator --person <you>', 'level': 'warn'})
+    if designs and designs['open']: attention.append({'text': f"{len(designs['open'])} open gap(s) — what did not fit an entity in onboarded designs", 'tab': 'designs', 'cmd': f'sdem designs --workspace {estate} --gaps --status open', 'level': 'warn'})
+    if stale and stale['changed']: attention.append({'text': f"the graph store {stale['graph']} is out of date", 'tab': 'overview', 'cmd': f"sdem build --workspace {estate} --out {stale['graph']}", 'level': 'warn'})
     if not attention: attention.append({'text': 'nothing needs your attention', 'tab': 'overview', 'cmd': '', 'level': 'good'})
     return {'estate': str(estate), 'name': estate.resolve().name, 'generated': now or datetime.datetime.now().replace(microsecond=0).isoformat(sep=' '),
             'metamodel': mm.version, 'layers': layers, 'missing_layers': [{'level': l, 'title': t} for l, t in LEVEL_NAMES.items() if l not in present], 'registry': {'links': len(reg['mappings']), 'by_status': status, 'errors': reg_errors},
@@ -157,15 +157,15 @@ def render(data, title=None):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem dashboard', formatter_class=argparse.RawDescriptionHelpFormatter,
-                                 description='Write one self-contained, read-only HTML dashboard for an estate: health, what needs attention, review, trace and impact, '
+                                 description='Write one self-contained, read-only HTML dashboard for a workspace: health, what needs attention, review, trace and impact, '
                                              'matrices, changes and work, AID plans, controls. Opens offline; regenerate after a change.',
-                                 epilog='Examples:\n  sdem dashboard --estate examples/payment-initiation -o work/dashboard.html\n'
-                                        '  sdem dashboard --estate work/est --graph work/graph --projection work/prj --catalogue bian.json -o work/dashboard.html')
-    ap.add_argument('--estate', required=True, metavar='DIR'); ap.add_argument('-o', '--out', metavar='FILE', help='default <estate>/dashboard.html')
+                                 epilog='Examples:\n  sdem dashboard --workspace examples/payment-initiation -o work/dashboard.html\n'
+                                        '  sdem dashboard --workspace work/est --graph work/graph --projection work/prj --catalogue bian.json -o work/dashboard.html')
+    ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); ap.add_argument('-o', '--out', metavar='FILE', help='default <workspace>/dashboard.html')
     ap.add_argument('--proposals', metavar='FILE', help='show these proposals (default: run the rules engine now)')
     ap.add_argument('--projection', metavar='DIR', help='an AID projection package to show beside the real design')
     ap.add_argument('--catalogue', metavar='FILE', help='the BIAN catalogue the projection used (for its check)')
-    ap.add_argument('--graph', metavar='DIR', help='a graph store of this estate — warn when it is out of date')
+    ap.add_argument('--graph', metavar='DIR', help='a graph store of this workspace — warn when it is out of date')
     ap.add_argument('--title'); ap.add_argument('--json', action='store_true', help='print the computed data instead of writing the page')
     a = ap.parse_args(argv)
     from .cli import _estate_files
@@ -231,7 +231,7 @@ function cmd(c){if(!c)return "";return `<div class="cmd"><span>${esc(c)}</span><
 function lvl(l){return `<span class="lvl" style="background:${COL[l]||"var(--muted)"}"></span>${esc(l)}`;}
 function rec(id,name){return `${esc(name||id)} <code>${esc(id)}</code>`;}
 function table(head,rows){return `<table><thead><tr>${head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.join("")||`<tr><td colspan="${head.length}" class="muted">none</td></tr>`}</tbody></table>`;}
-document.getElementById("sub").textContent = `estate ${D.estate} · generated ${D.generated} · rules ${D.metamodel} · read-only — act with the sdem commands shown`;
+document.getElementById("sub").textContent = `workspace ${D.workspace} · generated ${D.generated} · rules ${D.metamodel} · read-only — act with the sdem commands shown`;
 if (D.home) { const a = document.createElement("a"); a.href = D.home; a.textContent = "← SDEM home"; a.style.marginRight = "12px"; document.getElementById("sub").prepend(a); }
 
 const R = {};
@@ -242,11 +242,11 @@ R.overview = () => {
     const c = D.coverage[l.level]||{eligible:0,linked:0,unmapped:[]}; const pct = c.eligible?Math.round(100*c.linked/c.eligible):100;
     return `<div class="card"><div>${lvl(l.level)} <b>${esc(l.title)}</b></div><div class="big">${l.records}</div><div class="muted">records · ${l.relationships} links inside</div><div>${st}</div>
       <div class="muted" style="margin-top:6px">linked to other layers: ${c.linked} of ${c.eligible} (${pct}%)</div><div class="bar"><i style="width:${pct}%"></i></div></div>`;}).join("");
-  h += D.missing_layers.map(m=>`<div class="card"><div>${lvl(m.level)} <b>${esc(m.title)}</b></div><div class="big muted">—</div><div class="muted">not in this estate — no dataset. AID can project it.</div></div>`).join("");
+  h += D.missing_layers.map(m=>`<div class="card"><div>${lvl(m.level)} <b>${esc(m.title)}</b></div><div class="big muted">—</div><div class="muted">not in this workspace — no dataset. AID can project it.</div></div>`).join("");
   const rs = D.registry; h += `<div class="card"><div><b>Registry</b> (links between layers)</div><div class="big">${rs.links}</div><div class="muted">${Object.entries(rs.by_status).map(([k,v])=>`${v} ${k}`).join(" · ")}</div><div>${rs.errors.length?`<span class="bad">${rs.errors.length} error(s)</span>`:`<span class="ok">OK</span>`}</div></div>`;
   h += `<div class="card"><div><b>Coordination records</b></div><div class="big">${D.coordination.records}</div><div class="muted">change sets, events, work items</div><div>${D.coordination.issues.length?`<span class="bad">${D.coordination.issues.length} issue(s)</span>`:`<span class="ok">OK</span>`}</div></div></div>`;
   const errs = D.layers.flatMap(l=>l.errors.map(e=>[l.level,e])).concat(D.registry.errors.map(e=>["registry",e])).concat(D.coordination.issues.map(e=>["coordination",e]));
-  h += `<h2>Errors</h2><p class="note">Each breaks a rule of the metamodel; fix the data and run the check again.</p>` + table(["Where","Message"], errs.map(([w,e])=>`<tr><td>${esc(w)}</td><td>${esc(e)}</td></tr>`)) + cmd(`sdem check --estate ${D.estate}`);
+  h += `<h2>Errors</h2><p class="note">Each breaks a rule of the metamodel; fix the data and run the check again.</p>` + table(["Where","Message"], errs.map(([w,e])=>`<tr><td>${esc(w)}</td><td>${esc(e)}</td></tr>`)) + cmd(`sdem check --workspace ${D.workspace}`);
   const adv = D.layers.flatMap(l=>l.advice.map(e=>[l.level,e]));
   h += `<details><summary>Advice (${adv.length}) — things the metamodel recommends but does not require</summary>` + table(["Layer","Advice"], adv.map(([w,e])=>`<tr><td>${esc(w)}</td><td>${esc(e)}</td></tr>`)) + `</details>`;
   const un = Object.entries(D.coverage).flatMap(([l,c])=>c.unmapped.map(u=>[l,u]));
@@ -261,8 +261,8 @@ R.review = () => {
   h += table(["Confidence","Proposed link","Rule","Why","Evidence needed to approve","Approve (you)"], rows.map(r=>`<tr><td><b>${r.confidence}</b>${r.confidence<=0.4?`<div class="warn" style="font-size:12px">names only — a hint</div>`:""}</td>
     <td>${rec(r.source,r.source_name)}<div class="rel">— ${esc(r.rel)} →</div>${rec(r.target,r.target_name)}</td><td>${esc(r.rule)}</td><td>${esc(r.reasoning)}</td>
     <td>${r.evidence_needed.map(e=>`<span class="chip">${esc(e)}</span>`).join("")}</td>
-    <td>${cmd(`sdem approve ${r.id} --proposals <proposals.json> --estate ${D.estate} --reviewer <your name> --evidence ${r.evidence_needed[0]||"<kind>"}:<document>`)}</td></tr>`));
-  h += `<p class="note">To get the proposals file for the commands: </p>` + cmd(`sdem link --estate ${D.estate} --out work/links`);
+    <td>${cmd(`sdem approve ${r.id} --proposals <proposals.json> --workspace ${D.workspace} --reviewer <your name> --evidence ${r.evidence_needed[0]||"<kind>"}:<document>`)}</td></tr>`));
+  h += `<p class="note">To get the proposals file for the commands: </p>` + cmd(`sdem link --workspace ${D.workspace} --out work/links`);
   return h;
 };
 let current = null;
@@ -279,7 +279,7 @@ function showTrace(){
   const out = document.getElementById("tiout"); if(!out) return;
   const v = (document.getElementById("pick").value||"").trim(); const kind = document.getElementById("kind").value;
   let id = D.records[v]?v:Object.keys(D.records).find(i=>D.records[i].name.toLowerCase()===v.toLowerCase());
-  if(!id){out.innerHTML = v?`<p class="muted">No record "${esc(v)}" in this estate.</p>`:""; return;}
+  if(!id){out.innerHTML = v?`<p class="muted">No record "${esc(v)}" in this workspace.</p>`:""; return;}
   const r = D.records[id]; current = id; const im = r.impact[kind];
   const order = {design_change_required:0,review_required:1,no_impact:2};
   const rows = im.rows.slice().sort((a,b)=>(order[a.classification]-order[b.classification])||String(a.level).localeCompare(String(b.level)));
@@ -288,14 +288,14 @@ function showTrace(){
    <h3>Impact of a <b>${esc(kind)}</b></h3><p class="note">${esc(im.reason)}</p>` +
    table(["Layer","Record","Classification","Path (approved links)"], rows.map(x=>`<tr><td>${lvl(x.level)}</td><td>${rec(x.id,x.name)}</td><td class="c-${x.classification}">${esc(CLS[x.classification]||x.classification)}</td><td>${esc(x.via.join(", ")||"—")}</td></tr>`)) +
    `<p class="note">Links to supersede: ${im.supersede.length?im.supersede.map(m=>`<code>${esc(m)}</code>`).join(", "):"none"}. Classification is structural; an architect confirms before any design changes.</p>` +
-   cmd(`sdem impact ${id} --change ${kind} --estate ${D.estate} --report work/impact-${id}-${kind}.md`);
+   cmd(`sdem impact ${id} --change ${kind} --workspace ${D.workspace} --report work/impact-${id}-${kind}.md`);
 }
 R.matrix = () => {
   const m = D.matrix; const c = (id,n,l)=>id?`${esc(n)} <code>${esc(id)}</code>${l?` <span class="rel">(${esc(l)})</span>`:""}`:`<span class="muted">— no approved link</span>`;
   let h = `<h2>Capability → service domain → application → technology</h2><p class="note">From approved links only; each cell gives the approved link it rests on.</p>` +
     table(["Capability (A1)","Service domain (A2)","Application (A3)","Technology (A4)"], m.chain.map(r=>`<tr><td>${c(r.capability,r.capability_name)}</td><td>${c(r.domain,r.domain_name,r.links[0])}</td><td>${c(r.application,r.application_name,r.application?r.links[1]:"")}</td><td>${c(r.technology,r.technology_name,r.technology?r.links[2]:"")}</td></tr>`));
   for (const p of m.pairs) h += `<h3>${esc(p.title)}</h3>` + table([p.source,p.target], p.rows.map(r=>`<tr><td>${c(r.source,r.source_name)}</td><td>${r.targets.map(t=>`<div>${c(t.id,t.name,t.link)}</div>`).join("")}</td></tr>`));
-  return h + cmd(`sdem matrix --estate ${D.estate} --md work/matrix.md`);
+  return h + cmd(`sdem matrix --workspace ${D.workspace} --md work/matrix.md`);
 };
 R.changes = () => {
   const C = D.changes; const last = w=>w.history[w.history.length-1];
@@ -308,11 +308,11 @@ R.changes = () => {
   h += `<h3>Work items</h3>` + table(["Work item","Layer","Records","Action","Status","History"], C.work.map(w=>`<tr><td><code>${esc(w.id)}</code></td><td>${lvl(w.layer)}</td><td>${w.records.map(esc).join(", ")}</td><td>${esc(w.action)}</td><td><b>${esc(last(w).status)}</b></td>
     <td><details><summary>${w.history.length} step(s)</summary>${w.history.map(s=>`<div class="muted">${esc(s.status)} · ${esc(s.agent)} · ${esc(s.person)} · ${esc(s.at)}${s.note?" · "+esc(s.note):""}</div>`).join("")}</details></td></tr>`));
   h += `<h3>Change sets</h3>` + table(["Change set","Layer","Reason","Changes","By"], C.change_sets.map(c=>`<tr><td><code>${esc(c.id)}</code>${c.reverts?`<div class="warn">reverts ${esc(c.reverts)}</div>`:""}${c.adopted?`<div class="warn">adopted hand edit</div>`:""}</td><td>${lvl(c.layer)}</td><td>${esc(c.reason)}</td><td>${c.changes}</td><td>${esc(c.agent)}<div class="muted">${esc(c.person)}</div></td></tr>`));
-  return h + cmd(`sdem events --estate ${D.estate} --open`);
+  return h + cmd(`sdem events --workspace ${D.workspace} --open`);
 };
 R.aid = () => {
   const A = D.aid;
-  if (!A) return `<h2>AID plans</h2><p class="note">No projection was given. Project the layers you do not have, then regenerate this page with it:</p>` + cmd(`sdem aid project --have ${D.estate}/a1-business.json --catalogue <bian-catalogue.json> --out work/prj`) + cmd(`sdem dashboard --estate ${D.estate} --projection work/prj -o work/dashboard.html`);
+  if (!A) return `<h2>AID plans</h2><p class="note">No projection was given. Project the layers you do not have, then regenerate this page with it:</p>` + cmd(`sdem aid project --have ${D.workspace}/a1-business.json --catalogue <bian-catalogue.json> --out work/prj`) + cmd(`sdem dashboard --workspace ${D.workspace} --projection work/prj -o work/dashboard.html`);
   let h = `<h2>AID plan ${esc(A.id)} — ${esc(A.mode)}</h2><p class="note">A projected design is a plan, never real data (ids start PRJ-; confidence at most 0.6). Projected from: ${A.have.map(esc).join(", ")}. Check: ${A.valid?'<span class="ok">valid</span>':`<span class="bad">${A.issues.length} issue(s)</span>`}.</p>`;
   if (A.ends.length) h += `<p class="note">Where AID stopped: ${A.ends.map(esc).join(" · ")}</p>`;
   h += `<h3>Against the real design</h3>` + table(["Measure","Projected","Real","Matched","Precision","Recall"], Object.entries(A.metrics).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.projected??""}</td><td>${v.real??v.compared??""}</td><td>${v.matched??""}</td><td>${v.precision??"—"}</td><td>${v.recall??"—"}</td></tr>`));
@@ -326,7 +326,7 @@ R.designs = () => {
   let h = `<h2>Designs & gaps</h2><p class="note">What did not fit an architecture entity in onboarded designs — kept, not lost. <b>${n} open</b> · ${st.resolved||0} resolved · ${st.accepted||0} accepted. Resolve a gap when what it held is now in the data; accept it when it is left as it is, on purpose — your name and note are recorded.</p>`;
   if (n) {
     h += `<h3>Open gaps by kind</h3>` + table(["Kind","Open"], Object.entries(G.by_category).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v}</td></tr>`));
-    h += `<h3>Open gaps</h3>` + table(["Gap","Kind","Page — where","What it holds","About","Deal with it"], G.open.map(g=>`<tr><td><code>${esc(g.id)}</code></td><td>${esc(g.category)}</td><td>${esc(g.page)}<div class="muted">${esc(g.where)}</div></td><td>${esc(g.text||"")}</td><td>${(g.about||[]).map(a=>`<code>${esc(a)}</code>`).join(" ")}</td><td>${cmd(`sdem designs resolve ${g.id} --estate ${D.estate} --person <you> --note "<now in the data: …>"`)}${cmd(`sdem designs accept ${g.id} --estate ${D.estate} --person <you> --note "<why it stays>"`)}</td></tr>`));
+    h += `<h3>Open gaps</h3>` + table(["Gap","Kind","Page — where","What it holds","About","Deal with it"], G.open.map(g=>`<tr><td><code>${esc(g.id)}</code></td><td>${esc(g.category)}</td><td>${esc(g.page)}<div class="muted">${esc(g.where)}</div></td><td>${esc(g.text||"")}</td><td>${(g.about||[]).map(a=>`<code>${esc(a)}</code>`).join(" ")}</td><td>${cmd(`sdem designs resolve ${g.id} --workspace ${D.workspace} --person <you> --note "<now in the data: …>"`)}${cmd(`sdem designs accept ${g.id} --workspace ${D.workspace} --person <you> --note "<why it stays>"`)}</td></tr>`));
   }
   h += `<h3>Pages the designs came from</h3>` + table(["Page","Date","Captured","Entities","Facts"], G.documents.map(d=>`<tr><td>${d.url?`<a href="${esc(d.url)}">${esc(d.title)}</a>`:esc(d.title)}<div class="muted">${esc(d.id)}</div></td><td>${esc(d.modified||"—")}</td><td>${d.coverage?d.coverage.percent+"%":"—"}</td><td>${(d.entities||[]).length}</td><td>${Object.entries(d.facts||{}).map(([k,v])=>`${esc(k)}: ${esc(v)}`).join("<br>")}</td></tr>`));
   return h;

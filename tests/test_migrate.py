@@ -1,4 +1,4 @@
-"""`sdem migrate` — an estate moves to the current metamodel version only by recorded migrations, checked before writing."""
+"""`sdem migrate` — a workspace moves to the current metamodel version only by recorded migrations, checked before writing."""
 import json, shutil, tempfile, unittest
 from pathlib import Path
 

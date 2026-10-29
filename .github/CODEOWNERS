@@ -6,7 +6,7 @@
 /metamodel/                 @taumoeps
 /schema/                    @taumoeps
 
-# approved links and architecture data, in any estate
+# approved links and architecture data, in any workspace
 **/mappings.json            @taumoeps
 **/a1-business.json         @taumoeps
 **/a2-service-domain.json   @taumoeps

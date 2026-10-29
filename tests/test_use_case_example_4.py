@@ -28,37 +28,37 @@ class UseCaseExample4(unittest.TestCase):
         for name, argv in [
             ('inspect', ['transform', 'inspect', 'work/imports/payarch', '--ocr', 'off']),
             ('transform', ['transform', 'run', 'work/imports/payarch', '-o', 'work/history', '--ocr', 'off']),
-            ('dry', ['load', 'work/history', '--estate', 'estates/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER', '--a2', A2, '--dry-run']),
-            ('load', ['load', 'work/history', '--estate', 'estates/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER', '--a2', A2]),
-            ('check', ['check', '--estate', 'estates/history']),
-            ('link', ['link', '--estate', 'estates/history', '--out', 'work/links']),
+            ('dry', ['load', 'work/history', '--workspace', 'workspaces/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER', '--a2', A2, '--dry-run']),
+            ('load', ['load', 'work/history', '--workspace', 'workspaces/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER', '--a2', A2]),
+            ('check', ['check', '--workspace', 'workspaces/history']),
+            ('link', ['link', '--workspace', 'workspaces/history', '--out', 'work/links']),
             ('review', ['review', 'work/links/proposals.json']),
-            ('approve1', ['approve', 'P-RUN-001', '--proposals', 'work/links/proposals.json', '--estate', 'estates/history', '--reviewer', ME, '--evidence', 'deployment_design:PAYARCH-55501#notes']),
-            ('approve5_no_release', ['approve', 'P-RUN-005', '--proposals', 'work/links/proposals.json', '--estate', 'estates/history', '--reviewer', ME,
+            ('approve1', ['approve', 'P-RUN-001', '--proposals', 'work/links/proposals.json', '--workspace', 'workspaces/history', '--reviewer', ME, '--evidence', 'deployment_design:PAYARCH-55501#notes']),
+            ('approve5_no_release', ['approve', 'P-RUN-005', '--proposals', 'work/links/proposals.json', '--workspace', 'workspaces/history', '--reviewer', ME,
                                      '--evidence', 'business_architecture_document:PAYARCH-55501#context', '--evidence', 'domain_scope_assessment:DSA-1']),
-            ('approve_by_agent', ['approve', 'P-RUN-002', '--proposals', 'work/links/proposals.json', '--estate', 'estates/history', '--reviewer', 'copilot', '--evidence', 'deployment_design:X']),
-            ('approve5', ['approve', 'P-RUN-005', '--proposals', 'work/links/proposals.json', '--estate', 'estates/history', '--reviewer', ME,
+            ('approve_by_agent', ['approve', 'P-RUN-002', '--proposals', 'work/links/proposals.json', '--workspace', 'workspaces/history', '--reviewer', 'copilot', '--evidence', 'deployment_design:X']),
+            ('approve5', ['approve', 'P-RUN-005', '--proposals', 'work/links/proposals.json', '--workspace', 'workspaces/history', '--reviewer', ME,
                           '--evidence', 'business_architecture_document:PAYARCH-55501#context', '--evidence', 'domain_scope_assessment:DSA-1', '--bian-release', 'BIAN-RELEASE-X']),
-            ('build', ['build', '--estate', 'estates/history', '--out', 'work/graph']),
-            ('build_candidates', ['build', 'work/history/a1-business.json', 'work/history/a3-application.json', 'estates/history/mappings.json', '--out', 'work/refused']),
+            ('build', ['build', '--workspace', 'workspaces/history', '--out', 'work/graph']),
+            ('build_candidates', ['build', 'work/history/a1-business.json', 'work/history/a3-application.json', 'workspaces/history/mappings.json', '--out', 'work/refused']),
             ('trace_cap', ['trace', 'HIS-A1-PAYMENT-INITIATION', '--graph', 'work/graph', '--direction', 'down']),
             ('trace_hub', ['trace', 'HIS-A3-PAYMENTS-HUB', '--graph', 'work/graph']),
             ('impact', ['impact', 'HIS-A4-PAYAPP01', '--change', 'retire', '--graph', 'work/graph']),
-            ('dashboard', ['dashboard', '--estate', 'estates/history', '-o', 'work/history-dashboard.html']),
-            ('gaps', ['designs', '--estate', 'estates/history', '--gaps', '--status', 'open']),
+            ('dashboard', ['dashboard', '--workspace', 'workspaces/history', '-o', 'work/history-dashboard.html']),
+            ('gaps', ['designs', '--workspace', 'workspaces/history', '--gaps', '--status', 'open']),
         ]:
             cls.out[name] = sdem(*argv)
             if name == 'inspect': cls.files_after_inspect = sorted(str(f) for f in Path('.').rglob('*') if 'imports' not in f.parts)
-        rec = json.loads(Path('estates/history/designs/design-records.json').read_text())
+        rec = json.loads(Path('workspaces/history/designs/design-records.json').read_text())
         cls.risk = next(g['id'] for g in rec['gaps'] if g['category'] == 'no entity type')
         cls.pdf = next(g['id'] for g in rec['gaps'] if g['category'] == 'file not read')
         for name, argv in [
-            ('accept_no_note', ['designs', 'accept', cls.risk, '--estate', 'estates/history', '--person', ME]),
-            ('accept_by_agent', ['designs', 'accept', cls.risk, '--estate', 'estates/history', '--person', 'copilot', '--note', 'x']),
-            ('accept', ['designs', 'accept', cls.risk, '--estate', 'estates/history', '--person', ME, '--note', 'risks stay in the risk register']),
-            ('resolve', ['designs', 'resolve', cls.pdf, '--estate', 'estates/history', '--person', ME, '--note', 'HLD v1 superseded by this design']),
-            ('check2', ['check', '--estate', 'estates/history']),
-            ('reload', ['load', 'work/history', '--estate', 'estates/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER']),
+            ('accept_no_note', ['designs', 'accept', cls.risk, '--workspace', 'workspaces/history', '--person', ME]),
+            ('accept_by_agent', ['designs', 'accept', cls.risk, '--workspace', 'workspaces/history', '--person', 'copilot', '--note', 'x']),
+            ('accept', ['designs', 'accept', cls.risk, '--workspace', 'workspaces/history', '--person', ME, '--note', 'risks stay in the risk register']),
+            ('resolve', ['designs', 'resolve', cls.pdf, '--workspace', 'workspaces/history', '--person', ME, '--note', 'HLD v1 superseded by this design']),
+            ('check2', ['check', '--workspace', 'workspaces/history']),
+            ('reload', ['load', 'work/history', '--workspace', 'workspaces/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER']),
         ]:
             cls.out[name] = sdem(*argv)
 
@@ -93,14 +93,14 @@ class UseCaseExample4(unittest.TestCase):
 
     def test_5_load(self):
         _, dry = self.out['dry']
-        self.assertIn('would load into estates/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added', dry)
+        self.assertIn('would load into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added', dry)
         code, o = self.out['load']
         self.assertEqual(code, 0, o)
-        self.assertIn('loaded (LOAD-001) into estates/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added', o)
-        self.assertIn('gap records: 13 — what did not fit an entity, kept beside the estate (text not read 5, needs a person 3, column not mapped 2, no entity type 1, file not read 1, rejected at load 1)', o)
-        self.assertIn('reconciliation: 17 candidates = 16 loaded + 0 already in the estate + 1 excluded; 60 items read = 45 captured + 4 skipped by design + 11 not captured', o)
+        self.assertIn('loaded (LOAD-001) into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added', o)
+        self.assertIn('gap records: 13 — what did not fit an entity, kept beside the workspace (text not read 5, needs a person 3, column not mapped 2, no entity type 1, file not read 1, rejected at load 1)', o)
+        self.assertIn('reconciliation: 17 candidates = 16 loaded + 0 already in the workspace + 1 excluded; 60 items read = 45 captured + 4 skipped by design + 11 not captured', o)
         for f in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json', 'designs/design-records.json', 'loads/LOAD-001.json'):
-            self.assertTrue(Path('estates/history', f).exists(), f)
+            self.assertTrue(Path('workspaces/history', f).exists(), f)
 
     def test_6_check(self):
         code, o = self.out['check']
@@ -146,9 +146,9 @@ class UseCaseExample4(unittest.TestCase):
 
     def test_repeat_load(self):
         o = self.out['reload'][1]
-        self.assertIn('loaded (LOAD-002) into estates/history: A1 0 entities, A3 0 entities, A4 0 entities', o)
-        self.assertIn('reconciliation: 17 candidates = 0 loaded + 16 already in the estate + 1 excluded', o)
-        g = {x['id']: x for x in json.loads(Path('estates/history/designs/design-records.json').read_text())['gaps']}
+        self.assertIn('loaded (LOAD-002) into workspaces/history: A1 0 entities, A3 0 entities, A4 0 entities', o)
+        self.assertIn('reconciliation: 17 candidates = 0 loaded + 16 already in the workspace + 1 excluded', o)
+        g = {x['id']: x for x in json.loads(Path('workspaces/history/designs/design-records.json').read_text())['gaps']}
         self.assertEqual(len(g), 13); self.assertEqual((g[self.risk]['status'], g[self.pdf]['status']), ('accepted', 'resolved'))   # C11: kept, not reset
 
 

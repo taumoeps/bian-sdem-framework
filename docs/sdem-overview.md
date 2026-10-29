@@ -22,14 +22,14 @@ flowchart LR
 ```
 
 1. **A metamodel** says what kinds of thing may exist in each layer — capability, BIAN service domain, application, server … — and how layers may connect. It is built from public standards: BIAN, ArchiMate and TOGAF. → [The metamodel in plain words](sdem-metamodel-guide.md)
-2. **Your data** is one file per layer — **A1 Business, A2 BIAN, A3 Applications, A4 Technology** — kept in a folder called an *estate*. SDEM checks every record against the metamodel.
+2. **Your data** is one file per layer — **A1 Business, A2 BIAN, A3 Applications, A4 Technology** — kept in a folder called an *workspace*. SDEM checks every record against the metamodel.
 3. **SDEM suggests connections** between the layers using rules (not AI), and says why and how sure it is.
 4. **A person approves** each connection, naming the document that proves it. Approved connections are never edited — a wrong one is replaced by a new one, so the history stays.
 5. **SDEM builds a knowledge graph** of all four layers joined by the approved connections, and answers questions from it: *trace* (what depends on what), *impact* (what a change affects), *dashboards*.
 
 ## A worked example
 
-From the made-up estate `examples/payment-initiation/`:
+From the made-up workspace `examples/payment-initiation/`:
 
 ```mermaid
 flowchart LR

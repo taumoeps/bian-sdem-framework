@@ -37,12 +37,12 @@ flowchart LR
 | [Privacy and data handling](../PRIVACY.md) | what SDEM reads, writes and stores; what optional tools around it may send |
 | [Adoption checklist](sdem-adoption-checklist.md) | what your organisation clears first: legal and licences, data, security, AI, and depending on an open-source tool |
 | [Operating model](sdem-operating-model.md) | where things live, who does what, how changes and upgrades flow, support |
-| [Configuration](sdem-configuration.md) | everything you can set: estates, the SDEM version, how onboarding reads designs, OCR, reviewers, CI, VS Code, Copilot |
+| [Configuration](sdem-configuration.md) | everything you can set: workspaces, the SDEM version, how onboarding reads designs, OCR, reviewers, CI, VS Code, Copilot |
 | [Administration](sdem-administration.md) | installing, upgrading, metamodel changes, backups, health, troubleshooting |
 | [Repository protection](sdem-repository-protection.md) | branch protection and code owners, so a person's approval is enforced |
 | [Copilot set-up](sdem-copilot-setup.md) · [agent spike checklist](sdem-agent-platform-spike.md) | GitHub Copilot and the SDEM agents (optional), and the checklist to try them |
 | [Pilot plan](sdem-pilot-plan.md) | the first ten weeks on real designs |
-| [Estate repository template](../templates/estate-repo/README.md) · [Security](../SECURITY.md) | your private repository for real data · keeping data safe |
+| [Workspace repository template](../templates/workspace-repo/README.md) · [Security](../SECURITY.md) | your private repository for real data · keeping data safe |
 
 ## Looking something up
 

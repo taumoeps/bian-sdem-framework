@@ -75,7 +75,7 @@
       ],
       "required": false,
       "meaning": "whether the node is physical, a virtual machine or a container",
-      "question": "How much of our estate is virtualised or containerised?",
+      "question": "How much of our workspace is virtualised or containerised?",
       "source": "ArchiMate 3.2 concept",
       "term": "Node (physical or virtual computational resource)",
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",

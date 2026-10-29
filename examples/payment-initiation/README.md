@@ -11,7 +11,7 @@ The business and domain architecture are mapped and approved (`m1-mappings-given
 | `a3-application.json` | 16 | the hub and three components, a service and interface, six API operations with method/path/payload, three data entities, an event |
 | `a4-technology.json` | 12 | two Kubernetes platforms, PostgreSQL, two technology services, two environments, three deployments, a network, an image |
 
-**Planted for the executor:** `API-PI-04` implements a *Retrieve* operation as **POST** (a legacy-channel constraint, recorded in the gold's rationale) — REST rule 2 must fail and be reported as a finding while rules 1, 3, 4 hold. `API-PI-06` (events) implements no operation; `SO-PI-06` (Notify) has no REST form. `CMP-PAY-CAPTURE` and `CMP-PAY-VALIDATE` have no deployment records of their own — no `DEPLOYED_ON` may be proposed for them. `ENT-ACCOUNT-CACHE` matches no BOM object. `SD-PE` and `SD-PA` realise nothing in this estate.
+**Planted for the executor:** `API-PI-04` implements a *Retrieve* operation as **POST** (a legacy-channel constraint, recorded in the gold's rationale) — REST rule 2 must fail and be reported as a finding while rules 1, 3, 4 hold. `API-PI-06` (events) implements no operation; `SO-PI-06` (Notify) has no REST form. `CMP-PAY-CAPTURE` and `CMP-PAY-VALIDATE` have no deployment records of their own — no `DEPLOYED_ON` may be proposed for them. `ENT-ACCOUNT-CACHE` matches no BOM object. `SD-PE` and `SD-PA` realise nothing in this workspace.
 
 ```bash
 python -m sdem.graph check  examples/payment-initiation/a*.json examples/payment-initiation/mappings.json

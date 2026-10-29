@@ -1,7 +1,7 @@
 """Agent platform coordination — change sets, change events, impact results, work items (docs/design/sdem-agent-platform-spec.md).
 
 The layer agents (A1–A4) and the orchestrator coordinate only through these records, never by messaging each other
-(AG-D02). They are stored with the estate, in `<estate>/coordination/`, append-only (AG-R05):
+(AG-D02). They are stored with the workspace, in `<workspace>/coordination/`, append-only (AG-R05):
 
   change-sets/CS-….json     one layer's proposed record changes, with agent and person (AG-R01)
   events/CE-….json          change events, each with its stored impact result (AG-R02, AG-R03)
@@ -12,7 +12,7 @@ outside Git), so agents working on different branches never create the same id o
 
 Controls: CTL-19 layer ownership (a change set changes one declared layer; an agent only its own layer; never the
 registry), CTL-20 change provenance (agent and person on every change set and work-item step). A change set lands only
-if the estate's checks show no new error (the metamodel, CTL-01…17).
+if the workspace's checks show no new error (the metamodel, CTL-01…17).
 """
 import copy, datetime, json, re, subprocess
 from pathlib import Path
@@ -39,7 +39,7 @@ class CoordinationError(Exception):
 
 
 class EstateNotFound(ValueError):
-    """The folder is not an estate — an input error (exit 2), not a refusal."""
+    """The folder is not a workspace — an input error (exit 2), not a refusal."""
 
 
 def _now(): return datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()
@@ -50,12 +50,12 @@ def _w(p, obj):
 
 
 class Estate:
-    """An estate folder: the four architecture datasets, the registry, and the coordination records."""
+    """A workspace folder: the four architecture datasets, the registry, and the coordination records."""
 
     def __init__(self, path, now=None):
         self.path = Path(path); self.coord = self.path / 'coordination'; self.now = now or _now
         if not (self.path / REGISTRY).exists() or not any((self.path / f).exists() for f in FILES.values()):   # one to four layers, as everywhere
-            raise EstateNotFound(f'{self.path}: not an estate folder (it needs {REGISTRY} and at least one of {", ".join(FILES.values())})')
+            raise EstateNotFound(f'{self.path}: not a workspace folder (it needs {REGISTRY} and at least one of {", ".join(FILES.values())})')
 
     # -- records
     def datasets(self): return {lvl: _j(self.path / f) for lvl, f in FILES.items() if (self.path / f).exists()}
@@ -81,7 +81,7 @@ class Estate:
         return f'{head}{n:03d}'
 
     def check(self, datasets=None, registry=None):
-        """The estate's errors under the metamodel (the same checks as `sdem check`)."""
+        """The workspace's errors under the metamodel (the same checks as `sdem check`)."""
         mm = Metamodel.load(); from .graph import LevelGraph
         ds = datasets or self.datasets(); reg = registry or self.registry()
         fg = FederatedGraph([LevelGraph(d, mm) for d in ds.values()], [reg], mm)
@@ -105,7 +105,7 @@ class Estate:
             if wi['layer'] != layer: raise CoordinationError(f"CTL-19: {work_id} is for {wi['layer']}, not {layer}")
             if st['status'] != 'in_progress' or st['agent'] != agent: raise CoordinationError(f'CTL-20: {work_id} is not claimed by {agent} — run sdem work claim first')
             wis.append(wi)
-        if layer not in ds: raise CoordinationError(f'the estate has no {layer} dataset ({FILES[layer]}) — a change set changes an existing layer')
+        if layer not in ds: raise CoordinationError(f'the workspace has no {layer} dataset ({FILES[layer]}) — a change set changes an existing layer')
         before, _ = self.check(ds)
         new = copy.deepcopy(ds); target = new[layer]; by_id = {i['id']: i for i in target['instances']}
         ids_anywhere = {i['id'] for d in ds.values() for i in d['instances']}
@@ -126,7 +126,7 @@ class Estate:
                         raise CoordinationError(f'CTL-19: change {n}: {rid} is not in the BIAN catalogue')
                 target['instances'].append(rec); changed.append((rid, None))
             else:
-                if rid not in by_id: raise CoordinationError(f'change {n}: {rid} is not a {layer} record in this estate')
+                if rid not in by_id: raise CoordinationError(f'change {n}: {rid} is not a {layer} record in this workspace')
                 old = by_id[rid]
                 if op == 'update':
                     if rec.get('type', old['type']) != old['type']: raise CoordinationError(f'change {n}: {rid} cannot change type — retire it and add a new record')
@@ -326,7 +326,7 @@ def _branch(path):
 
 def _common(ap, who=True):
     import argparse  # noqa: F401
-    ap.add_argument('--estate', required=True, metavar='DIR', help='the estate folder (a1…a4 datasets, mappings.json)')
+    ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR', help='the workspace folder (a1…a4 datasets, mappings.json)')
     if who:
         ap.add_argument('--agent', required=True, help=f"the agent: {', '.join(list(AGENT_LAYER) + [ORCHESTRATOR])}, or '{HUMAN}' for a person working without an agent")
         ap.add_argument('--person', required=True, help='the person behind the agent (CTL-20)')
@@ -341,10 +341,10 @@ def _fail(e):
 def change_main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(prog='sdem change', description='Change sets: one layer\'s record changes, checked against the metamodel and controls before they land (AG-K01/K02).',
-                                 epilog='Examples (agent platform):\n  sdem change propose cs-rehost.json --estate work/est --agent sdem-a4-technology --person jane.architect\n'
-                                        '  sdem change propose cs-a3.json --estate work/est --agent sdem-a3-application --person jane.architect --work WI-001 WI-002\n'
-                                        '  sdem change show CS-001 --estate work/est\n'
-                                        '  sdem change revert CS-002 --estate work/est --agent sdem-a3-application --person jane.architect --reason "wrong cluster"', formatter_class=argparse.RawDescriptionHelpFormatter)
+                                 epilog='Examples (agent platform):\n  sdem change propose cs-rehost.json --workspace work/est --agent sdem-a4-technology --person jane.architect\n'
+                                        '  sdem change propose cs-a3.json --workspace work/est --agent sdem-a3-application --person jane.architect --work WI-001 WI-002\n'
+                                        '  sdem change show CS-001 --workspace work/est\n'
+                                        '  sdem change revert CS-002 --workspace work/est --agent sdem-a3-application --person jane.architect --reason "wrong cluster"', formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
     p = sub.add_parser('propose', help='check and apply a change set to its layer; records the change event and its impact')
     p.add_argument('change_set', help='change set file (JSON): layer, reason, changes[, relationships]')
@@ -366,16 +366,16 @@ def change_main(argv=None):
                   + (f"; links to supersede: {', '.join(imp['mappings_to_supersede'])}" if imp['mappings_to_supersede'] else ''))
             for r in design: print(f"  {r['level']}  {r['id']}  {r.get('name') or ''}  — {r['cause']}, via {', '.join(r['via']) or '-'}")
             if cs.get('branch') in ('main', 'master'): print('NOTE: you are on the main branch — agent changes belong on a branch, reviewed in a pull request (AG-W01)')
-            print('NOTE: graph stores built from this estate are now out of date — rebuild them before trace, impact or view: sdem build --estate … --out <graph>')
-            print(f"next: the orchestrator runs  sdem work plan --event {ev['id']} --estate {a.estate} --agent {ORCHESTRATOR} --person <name>"
-                  + f"\n      and the rules engine proposes the new links:  sdem link --estate {a.estate} --out <dir>")
+            print('NOTE: graph stores built from this workspace are now out of date — rebuild them before trace, impact or view: sdem build --workspace … --out <graph>')
+            print(f"next: the orchestrator runs  sdem work plan --event {ev['id']} --workspace {a.estate} --agent {ORCHESTRATOR} --person <name>"
+                  + f"\n      and the rules engine proposes the new links:  sdem link --workspace {a.estate} --out <dir>")
             return 0
         if a.cmd == 'revert':
             cs, ev, cancelled = est.revert(a.id, a.agent, a.person, a.reason)
             if a.json: print(json.dumps({'change_set': cs, 'event': ev, 'cancelled_work_items': cancelled}, indent=2, ensure_ascii=False)); return 0
             print(f"{cs['id']} reverts {a.id}: {cs['layer']} restored as it was before ({len(cs['changes'])} record change(s)); change event {ev['id']} with its impact"
                   + (f"; cancelled open work items {', '.join(cancelled)}" if cancelled else ''))
-            print(f"next: the orchestrator runs  sdem work plan --event {ev['id']} --estate {a.estate} --agent {ORCHESTRATOR} --person <name>; rebuild graph stores")
+            print(f"next: the orchestrator runs  sdem work plan --event {ev['id']} --workspace {a.estate} --agent {ORCHESTRATOR} --person <name>; rebuild graph stores")
             return 0
         if a.cmd == 'adopt':
             cs, ev = est.adopt(a.layer, a.person, a.reason)
@@ -383,7 +383,7 @@ def change_main(argv=None):
             ops = {}
             for c in cs['changes']: ops[c['op']] = ops.get(c['op'], 0) + 1
             print(f"{cs['id']} records {a.person}'s direct edit of {a.layer}: " + ', '.join(f'{n} {k}' for k, n in ops.items()) + f"; change event {ev['id']} with its impact")
-            print(f"next: the orchestrator runs  sdem work plan --event {ev['id']} --estate {a.estate} --agent {ORCHESTRATOR} --person <name>")
+            print(f"next: the orchestrator runs  sdem work plan --event {ev['id']} --workspace {a.estate} --agent {ORCHESTRATOR} --person <name>")
             return 0
         f = est.coord / 'change-sets' / f'{a.id}.json'
         if not f.exists(): return _fail(f'{a.id}: no such change set')
@@ -396,7 +396,7 @@ def change_main(argv=None):
 def events_main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(prog='sdem events', description='Change events with their impact and work status (AG-K03).',
-                                 epilog='Example:\n  sdem events --estate work/est --open', formatter_class=argparse.RawDescriptionHelpFormatter)
+                                 epilog='Example:\n  sdem events --workspace work/est --open', formatter_class=argparse.RawDescriptionHelpFormatter)
     _common(ap, who=False); ap.add_argument('--open', action='store_true', help='only events not yet planned or with open work')
     a = ap.parse_args(argv)
     try: rows = Estate(a.estate).status()
@@ -414,9 +414,9 @@ def events_main(argv=None):
 def work_main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(prog='sdem work', description='Work items — the orchestrator plans them from a change event; layer agents claim and answer them (AG-K04).',
-                                 epilog='Examples:\n  sdem work plan --event CE-001 --estate work/est --agent sdem-orchestrator --person jane.architect\n'
-                                        '  sdem work list --estate work/est --layer A3 --status open\n'
-                                        '  sdem work claim WI-001 --estate work/est --agent sdem-a3-application --person jane.architect',
+                                 epilog='Examples:\n  sdem work plan --event CE-001 --workspace work/est --agent sdem-orchestrator --person jane.architect\n'
+                                        '  sdem work list --workspace work/est --layer A3 --status open\n'
+                                        '  sdem work claim WI-001 --workspace work/est --agent sdem-a3-application --person jane.architect',
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
     p = sub.add_parser('plan', help='orchestrator: turn a change event\'s impact into work items'); p.add_argument('--event', required=True); _common(p)
@@ -456,7 +456,7 @@ TRANSITIONS = {'open': {'in_progress', 'cancelled'}, 'in_progress': {'done', 'bl
 
 
 def check_coordination(estate_dir):
-    """Issues in <estate>/coordination/: schema, file name = id, references resolve, work-item histories follow the allowed
+    """Issues in <workspace>/coordination/: schema, file name = id, references resolve, work-item histories follow the allowed
     steps, every step has agent and person (CTL-20). Empty when there is no coordination folder."""
     coord = Path(estate_dir) / 'coordination'
     if not coord.exists(): return [], 0
@@ -495,5 +495,5 @@ def check_coordination(estate_dir):
         f = Path(estate_dir) / fname
         if chain and f.exists() and _file_sha(f) != chain[-1]['dataset']['after_sha256']:
             issues.append(f"CTL-20 (AG-S08): {fname} was changed outside a change set since {chain[-1]['id']} — propose the change as a change set, or record a person's edit: "
-                          f"sdem change adopt --estate {estate_dir} --layer {layer} --person <name> --reason <why>")
+                          f"sdem change adopt --workspace {estate_dir} --layer {layer} --person <name> --reason <why>")
     return issues, len(sets) + len(events) + len(work)

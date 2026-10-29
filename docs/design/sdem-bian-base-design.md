@@ -13,7 +13,7 @@ flowchart LR
     end
     subgraph CO["Your organisation (private)"]
         C["📦 Your own BIAN<br/>packed with sdem bian pack"]
-        E["🗂️ Estate<br/>a2-service-domain.json"]
+        E["🗂️ Workspace<br/>a2-service-domain.json"]
     end
     B -- "sdem bian import --base" --> E
     C -- "sdem bian import --base &lt;your file&gt;" --> E
@@ -37,7 +37,7 @@ This **changes one earlier rule**: SDEM did not include BIAN content. From now o
 | **BB-D1** | What to ship | a **packed** file: for each service domain its name, release, operations (method, path, name, input and output fields), control record and its fields, behaviour qualifiers — about 3 MB | BIAN's raw files are 24 MB and need reading each time; the packed file holds exactly what the import uses | high |
 | **BB-D2** | BIAN's descriptions and object schemas | **left out** of the base | keeps BIAN prose out of SDEM and the file small; a company wanting them imports from BIAN's files with `--descriptions` / `--objects` | high |
 | **BB-D3** | Which release | **14.0.0** (the latest, 2026-02) | newest public release; the pack records it, and replacing it is one command | high |
-| **BB-D4** | How a company replaces it | `sdem bian pack <BIAN-format folder> -o <file>` makes their own base; `--base <file>` uses it. Their raw folder also still works directly | one form for everyone; a small file is easy to keep in the estate repository and share with the team | high |
+| **BB-D4** | How a company replaces it | `sdem bian pack <BIAN-format folder> -o <file>` makes their own base; `--base <file>` uses it. Their raw folder also still works directly | one form for everyone; a small file is easy to keep in the workspace repository and share with the team | high |
 | **BB-D5** | The 66 service domains (about 1 in 4) whose asset type and functional pattern cannot be derived | the base **marks them**; `sdem bian list --base` shows *needs your pattern* beside them, and the import asks for a `--patterns` row as today | BIAN's public material does not state them (the API files do not; the public landscape page does not show them); guessing would be wrong — BIAN's own release notes show a *Facility* domain changing pattern | high |
 | **BB-D6** | Default when no source is named | **none** — `--base`, `--base <file>` or a folder must be named | the architect always knows which BIAN they are using; the output records it | high |
 
@@ -48,7 +48,7 @@ sdem bian list --base                                             # 258 service 
 sdem bian import --base --only "Payment Order Initiation" -o work/bian/a2-service-domain.json
 
 # a company with its own BIAN, in BIAN's format:
-sdem bian pack ~/acme-bian -o bian/acme-bian.json                 # once; commit it to the estate repository
+sdem bian pack ~/acme-bian -o bian/acme-bian.json                 # once; commit it to the workspace repository
 sdem bian import --base bian/acme-bian.json --only "Payment Order Initiation" -o work/bian/a2-service-domain.json
 ```
 

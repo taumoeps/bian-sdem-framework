@@ -10,7 +10,7 @@ SDEM is published under the **Apache License 2.0** (`LICENSE`). This page says w
 | **SDEM documentation, metamodel and schemas** — `docs/`, `README.md` and the other Markdown files, `metamodel/`, `schema/` | Apache License 2.0, except third-party content identified in `THIRD_PARTY.md` |
 | **BIAN Semantic APIs** — the base BIAN in `bian/` (`base-*.json`) | BIAN e.V.'s Apache License 2.0 (`bian/LICENSE`); what was changed is stated in `bian/README.md` |
 | **SDEM's inference record** — `bian/inferences-*.json` | SDEM's own work (Apache License 2.0, `LICENSE`): values inferred from BIAN's public sources, each citing them |
-| **Your organisation's architecture data** — estates, design exports, outputs | **not part of SDEM** and not licensed by it; controlled by your organisation's own intellectual-property and confidentiality arrangements |
+| **Your organisation's architecture data** — workspaces, design exports, outputs | **not part of SDEM** and not licensed by it; controlled by your organisation's own intellectual-property and confidentiality arrangements |
 | **Your organisation's configurations** — transform rules, BIAN selections, code owners, CI settings | ownership governed by the agreements that apply to the people who make them |
 | **Your organisation's modifications to SDEM** | ownership governed by authorship, employment and contractual arrangements; the Apache License 2.0 lets you make and keep them |
 | **External tools and integrations** — GitHub, Copilot, VS Code, Tesseract, PlantUML, others | their own licences and terms |

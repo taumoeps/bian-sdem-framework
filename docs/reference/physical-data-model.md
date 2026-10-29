@@ -28,7 +28,7 @@ The **physical data model** is the logical data model written as files a tool ca
 
 ## What the schemas do not check
 
-A schema sees one record. These rules need the whole architecture dataset or estate and are enforced by `sdem check` ([logical rules](logical-data-model.md)): references resolve (LC-07 error, LC-08 warning), natural keys are unique (LC-09), cardinality (LC-10, LC-10m), within-level and cross-level relationships (LC-03, LC-11). Attributes not in the model are accepted by the schema and reported as warnings.
+A schema sees one record. These rules need the whole architecture dataset or workspace and are enforced by `sdem check` ([logical rules](logical-data-model.md)): references resolve (LC-07 error, LC-08 warning), natural keys are unique (LC-09), cardinality (LC-10, LC-10m), within-level and cross-level relationships (LC-03, LC-11). Attributes not in the model are accepted by the schema and reported as warnings.
 
 ## Schemas (40 entity types)
 
@@ -85,6 +85,6 @@ Attribute definitions across all schemas: **415 high, 144 medium, 27 low** (the 
 # any JSON Schema 2020-12 validator, e.g. check-jsonschema
 check-jsonschema --schemafile schema/entities/A1/BusinessProcess.schema.json my-process.json
 
-# then the whole architecture dataset and estate
+# then the whole architecture dataset and workspace
 python -m sdem.graph check architecture datasets/a*.json architecture datasets/mappings.json
 ```

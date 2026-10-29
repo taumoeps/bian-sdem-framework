@@ -165,7 +165,7 @@ class BianImportTests(unittest.TestCase):
         code, out, f = self.imp('--previous', prev, '--json', names=('Sample Party Directory',))
         res = json.loads(out)
         self.assertIn('SD-SAMPLE-PARTY-DIRECTORY', res['changes']['added']); self.assertIn('SD-SAMPLE-ORDER-INITIATION', res['changes']['dropped'])
-        self.assertIn('is **not** removed from your estate', (self.tmp / 'a2.report.md').read_text())
+        self.assertIn('is **not** removed from your workspace', (self.tmp / 'a2.report.md').read_text())
 
     def test_the_output_is_a_bian_layer_sdem_load_accepts(self):  # the point: an A2 layer for onboarding
         from sdem import load, transform
@@ -226,9 +226,9 @@ class BaseBianTests(unittest.TestCase):
         a2['instances'] += [i for i in new['instances'] if i['id'] not in {x['id'] for x in a2['instances']}]
         a2['relationships'] = a2.get('relationships', []) + new.get('relationships', [])
         (est / 'a2-service-domain.json').write_text(json.dumps(a2))
-        r = subprocess.run([sys.executable, '-m', 'sdem', 'check', '--estate', est], capture_output=True, text=True, cwd=ROOT)
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'check', '--workspace', est], capture_output=True, text=True, cwd=ROOT)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr); self.assertIn('not known yet', r.stdout + r.stderr)
-        r = subprocess.run([sys.executable, '-m', 'sdem', 'link', '--estate', est, '--out', self.tmp / 'links'], capture_output=True, text=True, cwd=ROOT)
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'link', '--workspace', est, '--out', self.tmp / 'links'], capture_output=True, text=True, cwd=ROOT)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         r = subprocess.run([sys.executable, '-m', 'sdem', 'aid', 'project', '--have', est / 'a1-business.json', '--catalogue', est / 'a2-service-domain.json',
                             '--out', self.tmp / 'prj'], capture_output=True, text=True, cwd=ROOT)

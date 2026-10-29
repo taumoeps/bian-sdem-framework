@@ -405,7 +405,7 @@
       "name": "aliases",
       "type": "list<string>",
       "required": false,
-      "description": "tokens the estate uses for the asset",
+      "description": "tokens the workspace uses for the asset",
       "status": "active",
       "source": "institution",
       "reference": {
@@ -572,7 +572,7 @@
       "name": "aliases",
       "type": "list<string>",
       "required": false,
-      "description": "tokens the estate's API paths use for the qualifier",
+      "description": "tokens the workspace's API paths use for the qualifier",
       "status": "active",
       "source": "institution",
       "reference": {
@@ -2474,7 +2474,7 @@
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; approved by the owner 2026-10-30",
-      "reasoning": "An inferred value must stay traceable: from a record in an estate to the inference entry with its sources, reasoning, confidence, status and history — so an architect can check it, challenge it or change it later (bian/inferences-<release>.json).",
+      "reasoning": "An inferred value must stay traceable: from a record in a workspace to the inference entry with its sources, reasoning, confidence, status and history — so an architect can check it, challenge it or change it later (bian/inferences-<release>.json).",
       "confidence": "low",
       "read_by": "sdem bian import; traceability",
       "question": "Where did this domain's asset type and pattern come from?",
@@ -3486,10 +3486,10 @@
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
       },
       "verification": "concept confirmed by the Archi oracle; field as SDEM chose to model it",
-      "reasoning": "Answers: How much of our estate is virtualised or containerised? ArchiMate defines a node as a physical or virtual computational resource; SDEM splits virtual into VM and container.",
+      "reasoning": "Answers: How much of our workspace is virtualised or containerised? ArchiMate defines a node as a physical or virtual computational resource; SDEM splits virtual into VM and container.",
       "confidence": "medium",
       "read_by": "design and impact queries (descriptive attribute)",
-      "question": "How much of our estate is virtualised or containerised?",
+      "question": "How much of our workspace is virtualised or containerised?",
       "approved": {
         "review": "A4 data-model review",
         "date": "2026-10-25",

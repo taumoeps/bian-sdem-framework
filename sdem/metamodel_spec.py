@@ -177,7 +177,7 @@ def render():
     out += ['', '#### 6.2a Relationship type record', '', 'Every field of a relationship type in `schema/relationship-types.json`. ' + al('§6.2') + ' (fields beyond `authority` and `perspective` came from v0.2.1, high-level R7; provenance fields are ' + st('G-13') + ').', ''] + field_table(rt, TYPE_MEANING)
     out += ['', f"Is-a matching lets `DEPLOYED_ON → A4.InfrastructureComponent` accept any concrete A4 type — aligned. Detail: [`relationship-registry-spec.md`](relationship-registry-spec.md).", '',
             '### 6.3 Derived relationships', '', 'Level-skipping traceability is a query over approved edges with provenance (`sdem trace`) and never a registry record — aligned. The inference engine also writes derived-path rows as **candidate reports** in a separate file, never registry records — ' + st('G-07') + '.']
-    out += ['', '### 6.4 Relationship record — the mapping between architectures', '', al('§4 and §6.2') + ' (the v0.2.1 record, retained; high-level R7). One record per actual link between instances of adjacent architectures, in the **Architecture Relationship Registry** (`examples/<estate>/mappings.json`). Field definitions are shared with [`relationship-registry-spec.md`](relationship-registry-spec.md).', '',
+    out += ['', '### 6.4 Relationship record — the mapping between architectures', '', al('§4 and §6.2') + ' (the v0.2.1 record, retained; high-level R7). One record per actual link between instances of adjacent architectures, in the **Architecture Relationship Registry** (`examples/<workspace>/mappings.json`). Field definitions are shared with [`relationship-registry-spec.md`](relationship-registry-spec.md).', '',
             '| Field | Type / values | Required | Meaning |', '|---|---|---|---|']
     for k, v in reg_map['properties'].items():
         t = ', '.join(f'`{x}`' for x in v['enum']) if v.get('enum') else v.get('type') or 'entity reference (§4)'
@@ -210,7 +210,7 @@ def render():
             '             official-mappings.json, metamodel-spec-gaps.json, drafts/',
             'schema/      level-model, relationship-registry and graph-store schemas, relationship-types.json, impact-rules.json, entities/ (per-entity schemas)',
             'sdem/        metamodel, validate, diff, trace, graph, conformance, store, view, inference, rules_engine, acceptance, reference, generators',
-            'examples/    synthetic estates, each with its graph store (graph/); acceptance-cases.json', '```', '',
+            'examples/    synthetic workspaces, each with its graph store (graph/); acceptance-cases.json', '```', '',
             '## 13. References and licensing boundary', '', al('§13') + ' Nothing from BIAN or The Open Group is reproduced; definitions are SDEM paraphrases; `reference.uri` points to the source.', '',
             '## 14. Decisions', '', '| High-level decision | Status |', '|---|---|',
             f"| 1 Core entity list | 41 core + 3 artefacts, as §5 — the decision's \"31\" is {st('G-16')} |",

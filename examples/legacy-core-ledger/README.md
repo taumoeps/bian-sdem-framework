@@ -6,7 +6,7 @@ A twenty-year-old core banking ledger ("LedgerMaster"). Its A3 — five modules,
 
 | File | Instances | Notes |
 |---|---|---|
-| `a1-business.json` | 6 | draft capabilities only — two of them (Consumer Lending, Treasury) have nothing in this estate |
+| `a1-business.json` | 6 | draft capabilities only — two of them (Consumer Lending, Treasury) have nothing in this workspace |
 | `a2-service-domain.json` | 42 | four domains with asset types, patterns, control records, qualifiers, 14 operations with action terms, four BOM objects |
 | `a3-application.json` | 32 | the ledger, five modules, four interfaces, 14 SOAP operations (**every one is POST**) and 3 batch jobs (`method: BATCH`), five tables |
 | `a4-technology.json` | 7 | LPAR, DB2, MQ, scheduler, environment, deployment, network |

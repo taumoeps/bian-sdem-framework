@@ -15,7 +15,7 @@ flowchart LR
     G["BIAN's GitHub<br/>one release folder,<br/>downloaded by you"] --> L["sdem bian list<br/>which service domains<br/>are in it"]
     L --> I["sdem bian import<br/>the ones you choose"]
     I --> A["a2-service-domain.json<br/>checked before writing"]
-    A --> E["your estate<br/>(sdem load --a2, or copy in)"]
+    A --> E["your workspace<br/>(sdem load --a2, or copy in)"]
 ```
 
 An architect downloads one BIAN release (SDEM never goes online), lists what is in it, and imports the service domains their area uses. SDEM writes an A2 dataset that passes its own checks, with BIAN's names and the BIAN release recorded on every record.
@@ -43,17 +43,17 @@ The links inside A2 that the metamodel expects (domain → control record, domai
 |---|---|---|---|---|
 | **BI-D1** | Reading YAML | (a) a small reader in SDEM for the regular structure of BIAN's OpenAPI files; (b) an optional dependency (PyYAML); (c) ask the architect to convert the files to JSON first | **(a)** — SDEM keeps no dependencies; BIAN's files are machine-generated and regular; the reader reads only the fields above and refuses anything it does not understand; tested on a made-up file in CI and checked against a real release by the maintainer | medium — a real-release check before release decides it |
 | **BI-D2** | Asset type and functional pattern (required by the metamodel, not in BIAN's API files) | (a) **derive** them from the control record's name: BIAN names a control record *asset type + generic artefact* (*PaymentOrderInitiation* + *Transaction*), and each generic artefact belongs to one functional pattern; (b) a small table the architect fills in from the BIAN portal; (c) both — derive, and let a table override | **(c)** — derived values marked *medium*, listed in the import report for a person to confirm; a table (`--patterns`) overrides any of them | medium — the artefact → pattern list must be checked against BIAN's published material when building |
-| **BI-D3** | BIAN's descriptions | include always · never · on request | **on request** (`--descriptions`) — off by default. The licence allows them, but the project's rule is not to reproduce BIAN text; a bank's private estate may choose to | high |
+| **BI-D3** | BIAN's descriptions | include always · never · on request | **on request** (`--descriptions`) — off by default. The licence allows them, but the project's rule is not to reproduce BIAN text; a bank's private workspace may choose to | high |
 | **BI-D4** | Business objects (the schemas) | always · never · on request | **on request** (`--objects`) — they are many (hundreds per release) and the engine's main rules match operations, not objects | medium |
-| **BI-D5** | Which service domains | all by default · chosen | **chosen** — `--only <names>` or `--from <file of names>`; `--all` must be said explicitly. Release 14 imported whole is about 7,100 records (measured), beyond a comfortable estate | high |
-| **BI-D6** | Where it fits | a new command `sdem bian` · part of `sdem load` | **a new command** with `list` and `import`; its output is an ordinary A2 dataset that `sdem load --a2` (or a copy into the estate) takes as today | high |
+| **BI-D5** | Which service domains | all by default · chosen | **chosen** — `--only <names>` or `--from <file of names>`; `--all` must be said explicitly. Release 14 imported whole is about 7,100 records (measured), beyond a comfortable workspace | high |
+| **BI-D6** | Where it fits | a new command `sdem bian` · part of `sdem load` | **a new command** with `list` and `import`; its output is an ordinary A2 dataset that `sdem load --a2` (or a copy into the workspace) takes as today | high |
 
 ## What stays true
 
 - **Offline.** SDEM reads a folder you downloaded; it never fetches anything.
 - **Nothing written unless it passes.** The A2 dataset is checked with the metamodel before it is written (all-or-nothing, like `sdem load`).
 - **The metamodel does not change.** The import produces what the metamodel already defines (A2 record kinds, their attributes, the links inside A2).
-- **BIAN content stays with the bank.** The output goes wherever you write it — your private estate repository. *(Since 2026-10-29 SDEM also ships BIAN's public Semantic APIs as its base BIAN — see [`sdem-bian-base-design.md`](sdem-bian-base-design.md).)*
+- **BIAN content stays with the bank.** The output goes wherever you write it — your private workspace repository. *(Since 2026-10-29 SDEM also ships BIAN's public Semantic APIs as its base BIAN — see [`sdem-bian-base-design.md`](sdem-bian-base-design.md).)*
 - **Provenance on every record:** BIAN release, source file, and how each value was obtained (read · derived · from your table).
 - **Re-import is safe.** Importing a newer release reports what was added, renamed or dropped; it does not silently change records already approved links point to (an existing id is kept; a dropped domain is reported, not deleted).
 
@@ -77,7 +77,7 @@ Every file of BIAN releases 10.0, 11.0, 12.0, 13.0 and 14.0 — 1,241 files — 
 sdem bian list ~/bian/release14.0.0                                    # 259 service domains, with their operations
 sdem bian import ~/bian/release14.0.0 --only "Payment Order Initiation" "Payment Execution" \
      -o work/bian/a2-service-domain.json                               # checked, then written; a report beside it
-sdem load work/history --estate estates/payments --person <you> --a2 work/bian/a2-service-domain.json
+sdem load work/history --workspace workspaces/payments --person <you> --a2 work/bian/a2-service-domain.json
 ```
 
 The report lists every record with its source file, every derived asset type and functional pattern for a person to confirm, and anything in BIAN's files SDEM did not read.

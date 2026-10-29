@@ -1,8 +1,8 @@
 """`sdem load` — the L of the ETL for past designs: put the candidate entities `sdem transform run` produced, after an
-architect has reviewed them, into an SDEM estate — selected, checked before anything is written, recorded
+architect has reviewed them, into an SDEM workspace — selected, checked before anything is written, recorded
 (docs/design/sdem-load-design.md; spec LD-*).
 
-  sdem load work/history --estate estates/history --person jane.architect --exclude HIS-A3-X [--a2 FILE] [--dry-run]
+  sdem load work/history --workspace workspaces/history --person jane.architect --exclude HIS-A3-X [--a2 FILE] [--dry-run]
 
 Links between architectures are not loaded: `sdem link` proposes them from the loaded data and a person approves them.
 Unreviewed candidates never enter a knowledge graph: `sdem build` refuses them (CTL-23); this is the only way in.
@@ -17,7 +17,7 @@ from .transform import DATASETS, SOURCE_SYSTEM
 from .validate import is_person
 
 LOADED_SYSTEM = 'SDEM-LOAD'
-EMPTY_REGISTRY = {'registry_version': '0.4.0', 'mappings': []}   # a new estate's registry; metamodel_version is the loaded metamodel's
+EMPTY_REGISTRY = {'registry_version': '0.4.0', 'mappings': []}   # a new workspace's registry; metamodel_version is the loaded metamodel's
 
 
 class LoadError(Exception):
@@ -71,7 +71,7 @@ def keep_file(path):
 
 
 def plan(estate, ds, keep, a2=None, mm=None, today=None):
-    """The estate as it would be after the load, and what changes — nothing is written here."""
+    """The workspace as it would be after the load, and what changes — nothing is written here."""
     estate = Path(estate); mm = mm or Metamodel.load(); today = today or datetime.date.today().isoformat()
     current = {lvl: _j(estate / f) for lvl, f in DATASETS.items() if (estate / f).exists()}
     existing_ids = {i['id'] for d in current.values() for i in d['instances']}
@@ -110,13 +110,13 @@ def plan(estate, ds, keep, a2=None, mm=None, today=None):
     if a2:
         d = _j(a2)
         if d.get('level') != 'A2': raise LoadError(f'--a2 {a2}: not an A2 dataset')
-        if 'A2' in current: res['notes'].append('the estate already has an A2 dataset — kept, --a2 not used')
+        if 'A2' in current: res['notes'].append('the workspace already has an A2 dataset — kept, --a2 not used')
         else: after['A2'] = changed['A2'] = d; res['a2_added'] = str(a2)
     registry = _j(estate / 'mappings.json') if (estate / 'mappings.json').exists() else {**copy.deepcopy(EMPTY_REGISTRY), 'metamodel_version': mm.version}
     fg = FederatedGraph([LevelGraph(d, mm) for d in after.values()], [registry], mm)
     report = fg.check()
     res['errors'] = [f'{k}: {i}' for k, v in report.items() for i in v]
-    res['errors'] += [f'{c}: already in the estate with different content — exclude it, rename it, or change the estate first' for c in res['conflicts']]
+    res['errors'] += [f'{c}: already in the workspace with different content — exclude it, rename it, or change the workspace first' for c in res['conflicts']]
     res['warnings'] = sum(len(v) for v in getattr(fg, 'warnings', {}).values())
     return after, changed, registry, res
 
@@ -130,7 +130,7 @@ def load(src, estate, person, keep=None, exclude=None, all_=False, a2=None, dry_
     after, changed, registry, res = plan(estate, ds, keep_ids, a2, mm, now[:10])
     res.update({'excluded': excluded, 'estate': str(estate), 'dry_run': dry_run,
                 'bian_mentions': meta.get('bian_mentions', []), 'transform': {k: meta.get(k) for k in ('generated', 'export', 'export_sha256', 'rules_sha256')}})
-    # design and gap records — what did not fit an entity, kept beside the estate (LD-R02)
+    # design and gap records — what did not fit an entity, kept beside the workspace (LD-R02)
     loads = Path(estate) / 'loads'
     n = 1 + max([int(m.group(1)) for p in (loads.glob('LOAD-*.json') if loads.exists() else []) for m in [re.match(r'LOAD-(\d+)\.json$', p.name)] if m] or [0])
     res['load_id'] = f'LOAD-{n:03d}'
@@ -171,16 +171,16 @@ def load(src, estate, person, keep=None, exclude=None, all_=False, a2=None, dry_
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog='sdem load', description='Load reviewed candidate entities from `sdem transform run` into an estate — selected, checked first, recorded (the L of the ETL).')
+    ap = argparse.ArgumentParser(prog='sdem load', description='Load reviewed candidate entities from `sdem transform run` into a workspace — selected, checked first, recorded (the L of the ETL).')
     ap.add_argument('candidates', help='the folder `sdem transform run` wrote')
-    ap.add_argument('--estate', required=True, help='the estate to load into (created if missing); for past designs a separate historical estate is recommended')
+    ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR', help='the workspace to load into (created if missing); for past designs a separate historical workspace is recommended')
     ap.add_argument('--person', required=True, help='who reviewed and loads — a person, never an agent')
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument('--all', action='store_true', help='load every candidate')
     g.add_argument('--only', nargs='+', metavar='ID', help='load only these')
     g.add_argument('--exclude', nargs='+', metavar='ID', help='load all but these')
     g.add_argument('--keep', metavar='FILE', help='load the ids listed in a file (one per line, # comments)')
-    ap.add_argument('--a2', metavar='FILE', help="your organisation's A2 dataset (BIAN catalogue), added if the estate has none")
+    ap.add_argument('--a2', metavar='FILE', help="your organisation's A2 dataset (BIAN catalogue), added if the workspace has none")
     ap.add_argument('--dry-run', action='store_true', help='check and show what would be loaded; write nothing')
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
@@ -198,19 +198,19 @@ def main(argv=None):
           + f", {res['links']} links inside architectures" + (f"; A2 dataset added from {res['a2_added']}" if res['a2_added'] else ''))
     if res['excluded']: print(f"excluded ({len(res['excluded'])}): " + ', '.join(res['excluded']))
     dg = res['designs']; rc = res['reconciliation']
-    print(f"design records: {dg['pages']} page(s); gap records: {dg['gaps']} — what did not fit an entity, kept beside the estate"
+    print(f"design records: {dg['pages']} page(s); gap records: {dg['gaps']} — what did not fit an entity, kept beside the workspace"
           + (' (' + ', '.join(f'{k} {v}' for k, v in dg['by_category'].items()) + ')' if dg['gaps'] else '') + (f"; {dg['gaps_added']} new" if not a.dry_run else ''))
-    print(f"reconciliation: {rc['candidates']} candidates = {rc['loaded']} loaded + {rc['already_in_estate']} already in the estate + {rc['excluded']} excluded"
+    print(f"reconciliation: {rc['candidates']} candidates = {rc['loaded']} loaded + {rc['already_in_estate']} already in the workspace + {rc['excluded']} excluded"
           + (f"; {rc['transform_items']} items read = {rc['captured']} captured + {rc['skipped_by_design']} skipped by design + {rc['not_captured']} not captured (now gap records)" if rc['transform_items'] else ''))
-    if res['skipped_same']: print(f"already in the estate, same content ({len(res['skipped_same'])}): " + ', '.join(res['skipped_same']))
+    if res['skipped_same']: print(f"already in the workspace, same content ({len(res['skipped_same'])}): " + ', '.join(res['skipped_same']))
     for d in res['dropped']: print(f'dropped: {d}')
     for t in res['notes']: print(f'NOTE: {t}')
     if res['bian_mentions']:
         print('BIAN elements named in the designs — hints for sdem link (never loaded as entities — BIAN records come from your BIAN layer only, CTL-24):')
         for m in res['bian_mentions'][:20]: print(f"  {m['name']}" + (f" (= {m['existing_id']})" if m.get('existing_id') else '') + f" — {m['page_title']}")
     if not a.dry_run:
-        print(f"next: sdem check --estate {a.estate}  ·  sdem link --estate {a.estate} --out work/links  ·  sdem review work/links/proposals.json  ·  "
-              f"sdem approve …  ·  sdem build --estate {a.estate} --out work/graph")
+        print(f"next: sdem check --workspace {a.estate}  ·  sdem link --workspace {a.estate} --out work/links  ·  sdem review work/links/proposals.json  ·  "
+              f"sdem approve …  ·  sdem build --workspace {a.estate} --out work/graph")
     return 0
 
 

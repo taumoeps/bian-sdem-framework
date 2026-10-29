@@ -1,11 +1,11 @@
-"""Design records and gap records — what did not fit an architecture entity, kept beside the estate (docs/design/sdem-load-design.md §4a).
+"""Design records and gap records — what did not fit an architecture entity, kept beside the workspace (docs/design/sdem-load-design.md §4a).
 
-`sdem load` writes <estate>/designs/design-records.json: a design record (DOC-…) per source page or file of an imported
+`sdem load` writes <workspace>/designs/design-records.json: a design record (DOC-…) per source page or file of an imported
 design, and a gap record (GAP-…) per item that did not fit. `sdem build` turns them into designs.graph.json, beside the
 architecture graphs. Information, not architecture: the rules engine and impact analysis never read them.
 
-  sdem designs --estate DIR | --graph DIR [--entity ID] [--gaps] [--category C] [--status S] [--json]
-  sdem designs resolve | accept | reopen GAP-… --estate DIR --person NAME --note TEXT     (a person's decision, on record)
+  sdem designs --workspace DIR | --graph DIR [--entity ID] [--gaps] [--category C] [--status S] [--json]
+  sdem designs resolve | accept | reopen GAP-… --workspace DIR --person NAME --note TEXT     (a person's decision, on record)
 """
 import argparse, collections, datetime, hashlib, json, re, sys
 from pathlib import Path
@@ -37,7 +37,7 @@ def gap_id(document, category, where, text, about=()):
 
 def from_transform(meta, index, ledger, records, loaded, excluded, person, load_id):
     """The design and gap records one load adds. `index` = design-index.json's designs, `ledger` = extraction.json's
-    coverage items, `records` = its candidate records, `loaded` = ids now in the estate, `excluded` = ids the person rejected."""
+    coverage items, `records` = its candidate records, `loaded` = ids now in the workspace, `excluded` = ids the person rejected."""
     by_page = {p['page_id']: p for p in index}
     docs, gaps = {}, []
 
@@ -102,7 +102,7 @@ def merge(existing, documents, gaps, load_id):
 
 
 def check(doc, entity_ids=None):
-    """Schema, then references: gap → design record (error); design or gap → an entity no longer in the estate (warning)."""
+    """Schema, then references: gap → design record (error); design or gap → an entity no longer in the workspace (warning)."""
     from .validate import check_schema
     errors = check_schema(doc, json.loads(SCHEMA.read_text(encoding='utf-8')))
     if errors: return errors, []
@@ -120,7 +120,7 @@ def check(doc, entity_ids=None):
     if entity_ids is not None:
         for x in doc['documents'] + doc['gaps']:
             gone = [e for e in x.get('entities', []) + x.get('about', []) if e not in entity_ids]
-            if gone: warnings.append(f"{x['id']}: refers to {', '.join(sorted(set(gone)))} — no longer in the estate")
+            if gone: warnings.append(f"{x['id']}: refers to {', '.join(sorted(set(gone)))} — no longer in the workspace")
     return errors, warnings
 
 
@@ -184,7 +184,7 @@ def for_entity(doc, eid):
 def load(estate=None, graph_dir=None):
     if graph_dir:
         p = Path(graph_dir) / GRAPH
-        if not p.exists(): raise ValueError(f'{graph_dir}: no {GRAPH} — the estate has no design records, or the store was built before them')
+        if not p.exists(): raise ValueError(f'{graph_dir}: no {GRAPH} — the workspace has no design records, or the store was built before them')
         return from_graph(json.loads(p.read_text(encoding='utf-8')))
     p = Path(estate) / RECORDS
     if not p.exists(): raise ValueError(f'{estate}: no {RECORDS.as_posix()} — onboard designs with `sdem load` first')
@@ -195,7 +195,7 @@ def _set_main(argv):
     verb = argv[0]; status = {'resolve': 'resolved', 'accept': 'accepted', 'reopen': 'open'}[verb]
     ap = argparse.ArgumentParser(prog=f'sdem designs {verb}', description={'resolve': 'Mark gaps resolved — what they held is now in the data.',
                                  'accept': 'Mark gaps accepted — left as they are, on purpose.', 'reopen': 'Reopen gaps.'}[verb])
-    ap.add_argument('gaps', nargs='+', metavar='GAP-ID'); ap.add_argument('--estate', required=True, metavar='DIR')
+    ap.add_argument('gaps', nargs='+', metavar='GAP-ID'); ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
     ap.add_argument('--person', required=True, help='your name — a person, never an agent'); ap.add_argument('--note', default='', help='why (required to resolve or accept)')
     a = ap.parse_args(argv[1:])
     p = Path(a.estate) / RECORDS
@@ -219,7 +219,7 @@ def main(argv=None):
     if argv and argv[0] in ('resolve', 'accept', 'reopen'): return _set_main(argv)
     ap = argparse.ArgumentParser(prog='sdem designs', description='List the design records (one per source page of an imported design) and gap records (what did not fit an architecture entity).')
     src = ap.add_mutually_exclusive_group(required=True)
-    src.add_argument('--estate', metavar='DIR'); src.add_argument('--graph', metavar='DIR')
+    src.add_argument('--workspace', dest='estate', metavar='DIR'); src.add_argument('--graph', metavar='DIR')
     ap.add_argument('--entity', metavar='ID', help="an entity's pages and the gaps about it or found in them")
     ap.add_argument('--gaps', action='store_true', help='list gap records, not design records')
     ap.add_argument('--category', help='only gaps of this category, e.g. "no entity type"')

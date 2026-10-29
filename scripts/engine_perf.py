@@ -1,6 +1,6 @@
 """Rules-engine performance check (the 2026-10-29 audit: 8,000 records took 7 minutes).
 
-Builds a synthetic estate by copying examples/payment-initiation — every layer, the links inside them and the attributes
+Builds a synthetic workspace by copying examples/payment-initiation — every layer, the links inside them and the attributes
 the engine joins on — N times with renamed ids (no approved links, so the engine has everything to propose), then times
 `sdem link`'s engine and fails if it is slower than the limit. Usage: python scripts/engine_perf.py [copies] [max_seconds]
 """

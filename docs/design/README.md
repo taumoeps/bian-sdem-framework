@@ -10,7 +10,7 @@
 | **Design onboarding** | [what happens inside](sdem-onboarding-internals.md) · [transform design](sdem-transform-design.md) · [spec](sdem-transform-spec.md) · [load design](sdem-load-design.md) · [spec](sdem-load-spec.md) |
 | **BIAN import and base BIAN** | [import design](sdem-bian-import-design.md) · [spec](sdem-bian-import-spec.md) · [base design](sdem-bian-base-design.md) · [spec](sdem-bian-base-spec.md) |
 | **Planning missing layers (AID)** | [design](aid-design.md) · [spec](aid-spec.md) |
-| **Copilot files in the estate repository** | [design and spec](sdem-copilot-install-design.md) |
+| **Copilot files in the workspace repository** | [design and spec](sdem-copilot-install-design.md) |
 | **Agent platform** | [principles](sdem-agent-platform-principles.md) · [design](sdem-agent-platform-design.md) · [spec](sdem-agent-platform-spec.md) · [spike checklist](../sdem-agent-platform-spike.md) |
 | **Reasoning behind the rules** (records, kept as written) | [mapping logic planning](mapping-logic-planning.md) · [mapping execution](mapping-execution.md) · [inference audit](inference-audit.md) · [`drafts/`](drafts/) (the A1–A4 data-model reviews) |
 | **Plans and governance** | [ROADMAP](ROADMAP.md) · [operating-model decisions](sdem-operating-model-decisions.md) · [publication checklist](PUBLICATION_CHECKLIST.md) · [`baseline/`](baseline/) (the 0.8 baseline review pack) |

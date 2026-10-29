@@ -41,10 +41,10 @@ class PrivacyTests(unittest.TestCase):
     def test_pages_load_nothing_from_the_internet(self):
         tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, tmp, True)
         estate = ROOT / 'examples' / 'payment-initiation'
-        self.assertEqual(sdem('build', '--estate', estate, '--out', tmp / 'g'), 0)
+        self.assertEqual(sdem('build', '--workspace', estate, '--out', tmp / 'g'), 0)
         self.assertEqual(sdem('view', '--graph', tmp / 'g'), 0)
-        self.assertEqual(sdem('dashboard', '--estate', estate, '-o', tmp / 'dash.html'), 0)
-        self.assertEqual(sdem('home', '--estate', estate, '-o', tmp / 'site'), 0)
+        self.assertEqual(sdem('dashboard', '--workspace', estate, '-o', tmp / 'dash.html'), 0)
+        self.assertEqual(sdem('home', '--workspace', estate, '-o', tmp / 'site'), 0)
         pages = list(tmp.rglob('*.html')); self.assertGreaterEqual(len(pages), 4)
         for p in pages:
             html = p.read_text(encoding='utf-8')

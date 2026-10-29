@@ -2,7 +2,7 @@
 
 All identifiers are **synthetic**; `SD-LC`, `BIAN-LETTER-OF-CREDIT` and the rest are stand-ins, not BIAN content.
 
-One estate authored so that **every plan row the first seven cases never exercised has data**: a documentary letter-of-credit capability with a value stream, processes, activities, two business services, three requirements, an actor and a role; a synthetic business area and domain over two Service Domains with operations, qualifiers, control records with lifecycle states, a scenario, BOM objects and attributes; a solution building block over two components with services, interfaces, six APIs, three application functions, three tables and an event; and a technology estate with a node pool, a container runtime, a scanning device, a database, four technology services, two technology interfaces, a network, a path, three artefacts, an environment and two deployments.
+One workspace authored so that **every plan row the first seven cases never exercised has data**: a documentary letter-of-credit capability with a value stream, processes, activities, two business services, three requirements, an actor and a role; a synthetic business area and domain over two Service Domains with operations, qualifiers, control records with lifecycle states, a scenario, BOM objects and attributes; a solution building block over two components with services, interfaces, six APIs, three application functions, three tables and an event; and a technology workspace with a node pool, a container runtime, a scanning device, a database, four technology services, two technology interfaces, a network, a path, three artefacts, an environment and two deployments.
 
 | File | What it holds |
 |---|---|

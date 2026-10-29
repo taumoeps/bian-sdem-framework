@@ -18,11 +18,11 @@ This repository is **public** and holds **made-up data only**.
 
 | Do | Why |
 |---|---|
-| Keep real estates in your team's **private** estate repository | `estates/` and `work/` are ignored here, so they cannot be pushed by mistake |
+| Keep real workspaces in your team's **private** workspace repository | `workspaces/` and `work/` are ignored here, so they cannot be pushed by mistake |
 | Keep design exports (Confluence) in `work/`, on the machine allowed to hold them | the transform reads them where they are; nothing is uploaded |
 | Preview PlantUML diagrams **locally** (this project's setting) or on your organisation's server | the public PlantUML server receives the diagram text |
 | Never commit tokens, passwords or keys — `.env` and `secrets/` are ignored | |
-| Protect `main` in your estate repository (pull requests, code owners) | so a person's approval is a control — [`docs/sdem-repository-protection.md`](docs/sdem-repository-protection.md) |
+| Protect `main` in your workspace repository (pull requests, code owners) | so a person's approval is a control — [`docs/sdem-repository-protection.md`](docs/sdem-repository-protection.md) |
 
 ## Supported versions
 

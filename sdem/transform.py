@@ -1439,7 +1439,7 @@ def report(x, meta, records, links, issues, idx, cov=None):
     L.append('\n## Next\n')
     L.append('1. Read each record against its page and note the ids of any that are wrong — you leave them out at load (`--exclude`); SDEM never changes them.')
     L.append('2. A record the check reports as missing a required attribute (e.g. a data entity drawn without its columns) cannot be loaded: leave it out — it is kept as a gap record.')
-    L.append('3. Load the records you keep: `sdem load <this folder> --estate <estate> --person <you> --exclude <ids you reject>` — then `sdem link`, `sdem approve`, `sdem build`.')
+    L.append('3. Load the records you keep: `sdem load <this folder> --workspace <workspace> --person <you> --exclude <ids you reject>` — then `sdem link`, `sdem approve`, `sdem build`.')
     L.append('4. Tune the rules for the next run: `sdem transform inspect` shows the tables and shapes no rule read.\n')
     return '\n'.join(L)
 
@@ -1482,7 +1482,7 @@ def main(argv=None):
     e.add_argument('--model-id', help='name for the candidate datasets (default: the Confluence space)'); e.add_argument('--json', action='store_true')
     e.add_argument('--ocr', default='auto', choices=['auto', 'vision', 'tesseract', 'off'], help='read text in pictures: macOS Vision (built in), Tesseract (if installed), auto, or off')
     r_ = sub.add_parser('rules', help="write a copy of SDEM's transform rules to tune for your organisation's designs (then pass it with --rules)")
-    r_.add_argument('-o', '--out', required=True, metavar='FILE', help='e.g. rules/transform-rules.json in your estate repository')
+    r_.add_argument('-o', '--out', required=True, metavar='FILE', help='e.g. rules/transform-rules.json in your workspace repository')
     a = ap.parse_args(argv)
     if a.cmd == 'rules':
         out = Path(a.out)

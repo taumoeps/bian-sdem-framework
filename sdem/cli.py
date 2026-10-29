@@ -16,17 +16,17 @@ class UsageError(Exception):
 # name: (journey, what it does, module, fixed leading arguments, worked example)
 JOURNEYS = {
     'check':    ('J1', 'check architecture datasets and registry against the metamodel', 'sdem.graph', ['check'],
-                 'sdem check --estate examples/payment-initiation'),
+                 'sdem check --workspace examples/payment-initiation'),
     'validate': ('J1', 'validate a relationship document (registry or proposals)', 'sdem.validate', [],
-                 'sdem validate --strict --estate examples/payment-initiation'),
+                 'sdem validate --strict --workspace examples/payment-initiation'),
     'link':     ('J2', 'run the inference engine: propose links between the architectures', 'sdem.inference', None,
-                 'sdem link --estate examples/payment-initiation --out work/links'),
+                 'sdem link --workspace examples/payment-initiation --out work/links'),
     'review':   ('J3', 'list proposed links for review, weakest first', None, None,
                  'sdem review work/links/proposals.json'),
     'approve':  ('J3', 'a person approves proposed links into the registry — reviewer, date, required evidence, validated first', None, None,
-                 'sdem approve P-RUN-001 --proposals work/links/proposals.json --estate work/est --reviewer jane.architect --evidence deployment_design:PAY-REHOST#cutover'),
+                 'sdem approve P-RUN-001 --proposals work/links/proposals.json --workspace work/est --reviewer jane.architect --evidence deployment_design:PAY-REHOST#cutover'),
     'build':    ('J4', 'check the inputs and write the graph store (knowledge graph)', 'sdem.graph', ['build'],
-                 'sdem build --estate examples/card-fraud-alerts --out work/graph'),
+                 'sdem build --workspace examples/card-fraud-alerts --out work/graph'),
     'query':    ('J4', 'find records in a graph store', 'sdem.graph', ['query'],
                  'sdem query --graph examples/card-fraud-alerts/graph --level A3'),
     'baseline': ('J4', 'freeze the current graph store under a name', 'sdem.graph', ['baseline'],
@@ -37,10 +37,10 @@ JOURNEYS = {
                  'sdem impact INF-CLOUD-K8S-PROD --change rehost --graph examples/card-fraud-alerts/graph'),
     'aid':      ('J6', 'Architecture Inference Design: project, check, gaps', 'sdem.aid', [],
                  'sdem aid project --have examples/payment-initiation/a1-business.json --catalogue bian.json --out work/prj'),
-    'load':     ('J9', 'load reviewed candidate entities from sdem transform into an estate — selected, checked first, recorded (the L of the ETL)', 'sdem.load', [],
-                 'sdem load work/history --estate estates/history --person jane.architect --exclude HIS-A3-X'),
+    'load':     ('J9', 'load reviewed candidate entities from sdem transform into a workspace — selected, checked first, recorded (the L of the ETL)', 'sdem.load', [],
+                 'sdem load work/history --workspace workspaces/history --person jane.architect --exclude HIS-A3-X'),
     'designs':  ('J9', 'design records and gap records: the pages onboarded designs came from, and what did not fit an entity', 'sdem.designs', [],
-                 'sdem designs --estate estates/history --entity HIS-A3-PAYMENTS-HUB'),
+                 'sdem designs --workspace workspaces/history --entity HIS-A3-PAYMENTS-HUB'),
     'bian':     ('J9', "the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files — list, import the service domains you choose (checked), pack", 'sdem.bian', [],
                  'sdem bian import ~/bian/release14.0.0 --only "Payment Order Initiation" -o work/bian/a2-service-domain.json'),
     'transform': ('J9', 'transform an export of past designs (Confluence) into candidate architecture entities: inspect it, extract (rules; on-device OCR for pictures)', 'sdem.transform', [],
@@ -50,23 +50,23 @@ JOURNEYS = {
     'home':     ('J7', 'the main dashboard: the metamodel (entities, links inside and between architectures, engine rules), its picture, health, configuration — and every project', 'sdem.home', [],
                  'sdem home -o work/sdem'),
     'matrix':   ('J5', 'business → BIAN → application → technology matrices from approved links', 'sdem.matrix', [],
-                 'sdem matrix --estate examples/payment-initiation --md work/matrix.md'),
-    'dashboard': ('J7', 'one read-only HTML dashboard for an estate: health, attention, review, trace & impact, matrices, changes, AID, controls', 'sdem.dashboard', [],
-                 'sdem dashboard --estate examples/payment-initiation -o work/dashboard.html'),
+                 'sdem matrix --workspace examples/payment-initiation --md work/matrix.md'),
+    'dashboard': ('J7', 'one read-only HTML dashboard for a workspace: health, attention, review, trace & impact, matrices, changes, AID, controls', 'sdem.dashboard', [],
+                 'sdem dashboard --workspace examples/payment-initiation -o work/dashboard.html'),
     'explain':  ('J8', 'explain one element or link: why it exists, from what, how sure', None, None,
                  'sdem explain SD-PI --projection work/prj'),
     'change':   ('AG', 'agent platform: propose a change set to one layer — checked, then its impact recorded', None, None,
-                 'sdem change propose cs.json --estate work/est --agent sdem-a4-technology --person jane.architect'),
+                 'sdem change propose cs.json --workspace work/est --agent sdem-a4-technology --person jane.architect'),
     'events':   ('AG', 'agent platform: change events, their impact and open work', None, None,
-                 'sdem events --estate work/est --open'),
+                 'sdem events --workspace work/est --open'),
     'work':     ('AG', 'agent platform: plan, list and claim work items', None, None,
-                 'sdem work plan --event CE-001 --estate work/est --agent sdem-orchestrator --person jane.architect'),
-    'copilot':  ('AG', "put SDEM's Copilot instructions, agents, prompts and skills into your estate repository, matching this SDEM version", 'sdem.copilot', [],
+                 'sdem work plan --event CE-001 --workspace work/est --agent sdem-orchestrator --person jane.architect'),
+    'copilot':  ('AG', "put SDEM's Copilot instructions, agents, prompts and skills into your workspace repository, matching this SDEM version", 'sdem.copilot', [],
                  'sdem copilot install --dry-run'),
-    'connect':  ('J3', 'a person states a connection the engine did not propose — the same checks as approve, both ends in the estate', 'sdem.connect', [],
-                 'sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --estate estates/payments --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 --rationale "…"'),
-    'migrate':  ('—', 'move an estate to the current metamodel version — recorded migrations applied, checked, written all-or-nothing, recorded', 'sdem.migrate', [],
-                 'sdem migrate --estate estates/history --person jane.architect --dry-run'),
+    'connect':  ('J3', 'a person states a connection the engine did not propose — the same checks as approve, both ends in the workspace', 'sdem.connect', [],
+                 'sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --workspace workspaces/payments --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 --rationale "…"'),
+    'migrate':  ('—', 'move a workspace to the current metamodel version — recorded migrations applied, checked, written all-or-nothing, recorded', 'sdem.migrate', [],
+                 'sdem migrate --workspace workspaces/history --person jane.architect --dry-run'),
     'diff':     ('—', 'compare two versions of a relationship document', 'sdem.diff', [],
                  'sdem diff --git HEAD~1 examples/payment-initiation/mappings.json'),
     'model':    ('—', 'maintainers: regenerate and check generated files, acceptance, evaluation, examples', None, None,
@@ -83,25 +83,25 @@ ESTATE_COMMANDS = ('check', 'validate', 'link', 'build', 'trace', 'impact', 'mat
 
 
 def _estate_files(d, registry_only=False, designs=False):
-    """An estate folder's files: the architecture datasets it has (one to four — a partial estate is normal), its registry,
+    """A workspace folder's files: the architecture datasets it has (one to four — a partial workspace is normal), its registry,
     and — for check, build, trace and impact — its design records (designs/design-records.json) when it has them."""
     d = Path(d); reg = d / 'mappings.json'
     datasets = [] if registry_only else [d / f for f in ESTATE_FILES if (d / f).exists()]
     if not reg.exists() or (not registry_only and not datasets):
-        raise UsageError(f"--estate {d}: not an estate folder (it needs mappings.json and at least one of {', '.join(ESTATE_FILES)})")
+        raise UsageError(f"--workspace {d}: not a workspace folder (it needs mappings.json and at least one of {', '.join(ESTATE_FILES)})")
     extra = [d / 'designs' / 'design-records.json'] if designs and (d / 'designs' / 'design-records.json').exists() else []
     return [str(f) for f in datasets + [reg] + extra]
 
 
 def _expand(name, rest):
-    """T4: `--estate DIR` in place of the file list, and `*` patterns expanded by sdem itself (Windows PowerShell does not)."""
+    """T4: `--workspace DIR` in place of the file list, and `*` patterns expanded by sdem itself (Windows PowerShell does not)."""
     out = []
     for a in rest:
         hits = sorted(glob.glob(a)) if not a.startswith('-') and any(c in a for c in '*?[') else []
         out += hits or [a]
-    if '--estate' in out and name in ESTATE_COMMANDS:
-        i = out.index('--estate')
-        if i + 1 >= len(out): raise UsageError('--estate needs a folder')
+    if '--workspace' in out and name in ESTATE_COMMANDS:   # --workspace DIR in place of the workspace's file list
+        i = out.index('--workspace')
+        if i + 1 >= len(out): raise UsageError('--workspace needs a folder')
         d = out[i + 1]; del out[i:i + 2]
         files = _estate_files(d, registry_only=(name == 'validate'), designs=name in ('check', 'build', 'trace', 'impact'))
         out = files + out if name == 'link' else out + files   # link's parser wants paths before its options; trace/impact want the id first
@@ -127,7 +127,7 @@ def _delegate(name, rest):
             text = re.sub(r'\s*\{baseline,rules\}', '', text).replace('positional arguments:', 'positional arguments (the rules engine runs; add --baseline for the name-overlap baseline):', 1)
             text = re.sub(r'\n\s+\{baseline,rules\}\n', '\n', text)
         if name in ESTATE_COMMANDS:
-            text = text.rstrip() + "\n\n--estate DIR    an estate folder instead of the file list" + (" (its mappings.json)" if name == 'validate' else " (a1…a4 datasets and mappings.json)")
+            text = text.rstrip() + "\n\n--workspace DIR    a workspace folder instead of the file list" + (" (its mappings.json)" if name == 'validate' else " (a1…a4 datasets and mappings.json)")
         print(text.rstrip() + f'\n\nExample ({journey}):\n  {example}')
         return 0
     if name == 'link':
@@ -194,12 +194,12 @@ def _names(paths, graph):
 
 def review(argv):
     ap = argparse.ArgumentParser(prog='sdem review', description='List proposed links for review, weakest first — each with its rule, confidence and reasoning. '
-                                 'Approving is done by a person: sdem approve <id> --proposals <file> --estate <dir> --reviewer <your name> --evidence <kind:ref>, then a pull request.',
+                                 'Approving is done by a person: sdem approve <id> --proposals <file> --workspace <dir> --reviewer <your name> --evidence <kind:ref>, then a pull request.',
                                  epilog=f"Example (J3):\n  {JOURNEYS['review'][4]}", formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('proposals', nargs='+', help='proposals file(s), e.g. from `sdem link --out`')
     ap.add_argument('--graph', metavar='DIR', help='graph store to show record names')
     ap.add_argument('--names', nargs='*', default=[], metavar='DATASET', help='architecture datasets to show record names')
-    ap.add_argument('--estate', metavar='DIR', help='estate folder — show record names from its datasets')
+    ap.add_argument('--workspace', dest='estate', metavar='DIR', help='workspace folder — show record names from its datasets')
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     if a.estate: a.names = a.names + _estate_files(a.estate)[:-1]
@@ -222,7 +222,7 @@ def review(argv):
         print(f"  [{m.get('confidence')}] {m['mapping_id']}  {nm(s)} -{m['relationship']}-> {nm(t)}   rule {_rule_of(m)}")
         why = re.sub(r'\s*\((?:P|C)-[A-Z0-9]+-\d+\)', '', m.get('rationale', ''))[:300]
         print(f'        why: {why}')
-    print('\nTo approve (a person — never the engine or Copilot): sdem approve <id> --proposals <file> --estate <dir> --reviewer <your name> --evidence <kind:ref>, '
+    print('\nTo approve (a person — never the engine or Copilot): sdem approve <id> --proposals <file> --workspace <dir> --reviewer <your name> --evidence <kind:ref>, '
           'then open a pull request; the reviewed merge makes it final.')
     return 0
 
@@ -236,7 +236,7 @@ def explain(argv):
     ap.add_argument('--proposals', nargs='*', default=[], metavar='FILE', help='proposals file(s) from `sdem link`')
     ap.add_argument('--graph', metavar='DIR', help='graph store to show record names')
     ap.add_argument('--names', nargs='*', default=[], metavar='DATASET', help='architecture datasets to show record names')
-    ap.add_argument('--estate', metavar='DIR', help='estate folder — show record names from its datasets')
+    ap.add_argument('--workspace', dest='estate', metavar='DIR', help='workspace folder — show record names from its datasets')
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     if a.estate: a.names = a.names + _estate_files(a.estate)[:-1]
@@ -312,7 +312,7 @@ def model(argv):
 
 
 def main(argv=None):
-    argv = list(sys.argv[1:] if argv is None else argv)
+    argv = ['--workspace' if x == '--estate' else x for x in (sys.argv[1:] if argv is None else argv)]   # --estate: the old name, still accepted
     lines = [f"  {n:<9} {j:<3} {w}" for n, (j, w, *_rest) in JOURNEYS.items()]
     epilog = ('Journeys (J1–J9; every command with examples: docs/sdem-workbench-user-guide.md §7):\n' + '\n'.join(lines) +
               '\n\nEvery subcommand takes --help with a worked example. Exit codes: 0 OK, 1 issues found, 2 usage or input error, 3 internal error.'

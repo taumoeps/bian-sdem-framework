@@ -1,14 +1,14 @@
 # Planning missing layers with AID
 
-> **Status: current (v0.9.9)** — for architects: projecting the layers you do not have yet (*Architecture Inference Design*). Moved from the user guide §8.5. It assumes you have done the user guide's quick start (§5) and copied an example estate to `work/my-estate` (§8.1).
+> **Status: current (v0.9.9)** — for architects: projecting the layers you do not have yet (*Architecture Inference Design*). Moved from the user guide §8.5. It assumes you have done the user guide's quick start (§5) and copied an example workspace to `work/my-workspace` (§8.1).
 
 
 *Goal: you have only the business design; see what BIAN domains, applications and deployments it implies — before anything is built.*
 
-AID needs a **BIAN catalogue** — the BIAN service domains your organisation uses, as an A2 dataset. Here the example estate's A2 file stands in for it.
+AID needs a **BIAN catalogue** — the BIAN service domains your organisation uses, as an A2 dataset. Here the example workspace's A2 file stands in for it.
 
 ```bash
-sdem aid project --have work/my-estate/a1-business.json --catalogue work/my-estate/a2-service-domain.json --out work/prj
+sdem aid project --have work/my-workspace/a1-business.json --catalogue work/my-workspace/a2-service-domain.json --out work/prj
 ```
 ```
 projection PRJ-A1 written to work/prj: A2 16 records, A3 6 records, A4 1 records, 11 links
@@ -38,7 +38,7 @@ PROJECTED ELEMENT  SD-PI  Payment Initiation (synthetic selection)  (A2 A2.Servi
 
 **Later, when the real design exists**, compare plan and reality:
 ```bash
-sdem aid gaps work/prj --actual work/my-estate/a2-service-domain.json work/my-estate/a3-application.json work/my-estate/a4-technology.json work/my-estate/mappings.json
+sdem aid gaps work/prj --actual work/my-workspace/a2-service-domain.json work/my-workspace/a3-application.json work/my-workspace/a4-technology.json work/my-workspace/mappings.json
 ```
 ```
 A2 service domains: {'projected': 1, 'real': 1, 'matched': 1, 'precision': 1.0, 'recall': 1.0}

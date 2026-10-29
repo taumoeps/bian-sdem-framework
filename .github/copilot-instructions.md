@@ -2,7 +2,7 @@
 
 Architects here use **SDEM, the Service Domain Enterprise Metamodel**: it links an organisation's four architectures — A1 Business, A2 BIAN service domains, A3 Application, A4 Technology — under a metamodel, and keeps them as a knowledge graph. They run it from the VS Code terminal with the `sdem` command; you **support** them. Start with `docs/sdem-workbench-user-guide.md`.
 
-**Which repository this is.** In an **estate repository** (the usual case), the architecture data is in `estates/<domain>/` — real, private data: never paste it outside the organisation's approved Copilot — and SDEM is installed (`sdem --version`). In the **SDEM project** itself, the data is the made-up examples in `examples/`.
+**Which repository this is.** In an **workspace repository** (the usual case), the architecture data is in `workspaces/<domain>/` — real, private data: never paste it outside the organisation's approved Copilot — and SDEM is installed (`sdem --version`). In the **SDEM project** itself, the data is the made-up examples in `examples/`.
 
 ## Ground rules
 
@@ -20,10 +20,10 @@ Architects here use **SDEM, the Service Domain Enterprise Metamodel**: it links 
 | Need | Where / command |
 |---|---|
 | every command and journey | `sdem --help`; `sdem <command> --help` has a worked example; the full list: `docs/sdem-workbench-user-guide.md` §7 |
-| SDEM and every project on one page | `sdem home -o work/sdem` (main dashboard: metamodel, health, configuration, projects) · `sdem dashboard --estate <estate> -o <file.html>` (one project) — suggest them to architects who prefer a page to the terminal |
-| matrices, impact report | `sdem matrix --estate <estate>` · `sdem impact <id> --change <kind> --estate <estate> --report <file.md>` |
-| the architecture data | `estates/<domain>/` in an estate repository: `a1-…a4-*.json`, `mappings.json` (approved links), `designs/` (design and gap records), `loads/`, `coordination/` |
-| check data | `sdem check --estate <estate>` |
+| SDEM and every project on one page | `sdem home -o work/sdem` (main dashboard: metamodel, health, configuration, projects) · `sdem dashboard --workspace <workspace> -o <file.html>` (one project) — suggest them to architects who prefer a page to the terminal |
+| matrices, impact report | `sdem matrix --workspace <workspace>` · `sdem impact <id> --change <kind> --workspace <workspace> --report <file.md>` |
+| the architecture data | `workspaces/<domain>/` in a workspace repository: `a1-…a4-*.json`, `mappings.json` (approved links), `designs/` (design and gap records), `loads/`, `coordination/` |
+| check data | `sdem check --workspace <workspace>` |
 | propose and review links | `sdem link … --out <dir>` · `sdem review <dir>/proposals.json` |
 | trace and impact | `sdem trace <id> --graph <dir>` · `sdem impact <id> --change <kind> --graph <dir>` |
 | why something exists | `sdem explain <id> --proposals <file>` or `--projection <dir>` |
@@ -32,4 +32,4 @@ Architects here use **SDEM, the Service Domain Enterprise Metamodel**: it links 
 | agent platform | `.github/agents/` (orchestrator and A1–A4 layer agents), `sdem change` · `sdem events` · `sdem work` |
 | the metamodel | `metamodel/`, `schema/`; the governing spec `docs/design/architecture-metamodel-detail-level-spec.md` |
 | your BIAN layer | `sdem bian list --base` · `sdem bian import --base --all -o <file>` or `--only <names>` (the architect); the onboarding workflow's *Your BIAN (A2) layer* |
-| example estates (SDEM project only) | `examples/` — public, made-up data only |
+| example workspaces (SDEM project only) | `examples/` — public, made-up data only |

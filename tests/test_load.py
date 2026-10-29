@@ -1,4 +1,4 @@
-"""`sdem load` — the L of the ETL: reviewed candidates from `sdem transform` into an estate (spec docs/design/sdem-load-spec.md).
+"""`sdem load` — the L of the ETL: reviewed candidates from `sdem transform` into a workspace (spec docs/design/sdem-load-spec.md).
 Also CTL-23 (build refuses candidates) and DEC-E-11 (document-derived links capped at low), end to end."""
 import contextlib, io, json, shutil, tempfile, unittest
 from pathlib import Path
@@ -62,7 +62,7 @@ class LoadTests(unittest.TestCase):
         rec = json.loads((e / 'loads' / 'LOAD-001.json').read_text())
         self.assertEqual(rec['person'], 'jane.architect'); self.assertTrue(rec['transform']['export_sha256'])
         self.assertEqual(sum(len(v) for v in rec['loaded'].values()), sum(len(v) for v in res['loaded'].values()))
-        self.assertEqual(run('check', '--estate', e)[0], 0)
+        self.assertEqual(run('check', '--workspace', e)[0], 0)
 
     def test_links_follow_the_selection(self):  # LD-S02
         res = load.load(self.cand, self.est('e5'), 'jane.architect', exclude=[BAD, 'HIS-A4-PAYAPP01'])
@@ -77,7 +77,7 @@ class LoadTests(unittest.TestCase):
         again = load.load(self.cand, e, 'jane.architect', exclude=[BAD])
         self.assertEqual(again['load_id'], 'LOAD-002'); self.assertIn('HIS-A3-PAYMENTS-HUB', again['skipped_same'])
         p = e / 'a3-application.json'; d = json.loads(p.read_text())
-        next(i for i in d['instances'] if i['id'] == 'HIS-A3-PAYMENTS-HUB')['description'] = 'changed in the estate'
+        next(i for i in d['instances'] if i['id'] == 'HIS-A3-PAYMENTS-HUB')['description'] = 'changed in the workspace'
         p.write_text(json.dumps(d)); before = p.read_text()
         with self.assertRaises(load.LoadError) as c: load.load(self.cand, e, 'jane.architect', exclude=[BAD])
         self.assertIn('different content', str(c.exception)); self.assertEqual(p.read_text(), before)
@@ -104,27 +104,27 @@ class LoadTests(unittest.TestCase):
     def test_end_to_end_transform_load_link_approve_build(self):  # AT-LD-01, LD-E01 (DEC-E-11)
         e = self.est('e9'); links = self.tmp / 'links'; graph = self.tmp / 'graph'
         load.load(self.cand, e, 'jane.architect', exclude=[BAD])
-        self.assertEqual(run('link', '--estate', e, '--out', links)[0], 0)
+        self.assertEqual(run('link', '--workspace', e, '--out', links)[0], 0)
         props = json.loads((links / 'proposals.json').read_text())['mappings']
         p = next(m for m in props if m['source']['id'] == 'HIS-A3-CLEARING-GATEWAY' and m['target']['id'] == 'HIS-A4-PAYAPP01')
         self.assertEqual(p['relationship'], 'DEPLOYED_ON')
         self.assertEqual(p['confidence'], 0.4); self.assertIn('DEC-E-11', p['rationale'])            # capped: read from a document
-        code, out, err = run('approve', p['mapping_id'], '--proposals', links / 'proposals.json', '--estate', e,
+        code, out, err = run('approve', p['mapping_id'], '--proposals', links / 'proposals.json', '--workspace', e,
                              '--reviewer', 'jane.architect', '--evidence', 'deployment_design:PAYARCH-55501#notes')
         self.assertEqual(code, 0, out + err)
-        self.assertEqual(run('build', '--estate', e, '--out', graph)[0], 0)
+        self.assertEqual(run('build', '--workspace', e, '--out', graph)[0], 0)
         code, out, _ = run('trace', 'HIS-A3-CLEARING-GATEWAY', '--graph', graph)
         self.assertIn('HIS-A4-PAYAPP01', out)
 
     def test_bian_link_approved_with_its_release(self):  # with --a2 the engine proposes capability → Service Domain; approval needs the BIAN release
         e = self.est('e12'); links = self.tmp / 'links12'
         load.load(self.cand, e, 'jane.architect', exclude=[BAD], a2=A2)
-        run('link', '--estate', e, '--out', links)
+        run('link', '--workspace', e, '--out', links)
         p = next(m for m in json.loads((links / 'proposals.json').read_text())['mappings'] if m['relationship'] == 'SUPPORTED_BY')
         ev = ['--evidence', 'business_architecture_document:PAYARCH-55501#context', '--evidence', 'domain_scope_assessment:DSA-1']
-        code, out, err = run('approve', p['mapping_id'], '--proposals', links / 'proposals.json', '--estate', e, '--reviewer', 'jane.architect', *ev)
+        code, out, err = run('approve', p['mapping_id'], '--proposals', links / 'proposals.json', '--workspace', e, '--reviewer', 'jane.architect', *ev)
         self.assertEqual(code, 1); self.assertIn('--bian-release', err)
-        code, out, err = run('approve', p['mapping_id'], '--proposals', links / 'proposals.json', '--estate', e, '--reviewer', 'jane.architect', *ev, '--bian-release', 'BIAN-RELEASE-X')
+        code, out, err = run('approve', p['mapping_id'], '--proposals', links / 'proposals.json', '--workspace', e, '--reviewer', 'jane.architect', *ev, '--bian-release', 'BIAN-RELEASE-X')
         self.assertEqual(code, 0, err)
         self.assertEqual(json.loads((e / 'mappings.json').read_text())['mappings'][-1]['bian_release'], 'BIAN-RELEASE-X')
 
@@ -164,8 +164,8 @@ class LoadTests(unittest.TestCase):
     def test_designs_command_and_trace(self):  # LD-R04, GS-D-01…03
         e = self.est('g4'); g = self.tmp / 'g4graph'
         load.load(self.cand, e, 'jane.architect', exclude=[BAD])
-        self.assertEqual(run('check', '--estate', e)[0], 0)
-        code, out, _ = run('build', '--estate', e, '--out', g); self.assertEqual(code, 0, out)
+        self.assertEqual(run('check', '--workspace', e)[0], 0)
+        code, out, _ = run('build', '--workspace', e, '--out', g); self.assertEqual(code, 0, out)
         self.assertTrue((g / 'designs.graph.json').exists())
         from sdem.store import GraphReader
         r = GraphReader.from_store(g); self.assertTrue(r.designs()['gaps'])
@@ -173,7 +173,7 @@ class LoadTests(unittest.TestCase):
         self.assertFalse(any(n['id'].startswith(('DOC-', 'GAP-')) for n in fed['nodes']))   # beside the knowledge graph, not in it
         code, out, _ = run('trace', 'HIS-A3-PAYMENTS-HUB', '--graph', g)
         self.assertIn('DOCUMENTED IN', out); self.assertIn('DOC-55501', out)
-        code, out, _ = run('designs', '--estate', e, '--gaps', '--category', 'no entity type')
+        code, out, _ = run('designs', '--workspace', e, '--gaps', '--category', 'no entity type')
         self.assertEqual(code, 0); self.assertIn('Clearing file late', out)
         code, out, _ = run('designs', '--graph', g, '--entity', 'HIS-A3-PAYMENTS-HUB', '--json')
         self.assertIn('DOC-55501', out)
@@ -181,7 +181,7 @@ class LoadTests(unittest.TestCase):
     def test_bad_design_records_reject_the_build(self):  # GS-D-02
         e = self.est('g5'); load.load(self.cand, e, 'jane.architect', exclude=[BAD])
         p = e / 'designs' / 'design-records.json'; d = json.loads(p.read_text()); d['gaps'][0]['document'] = 'DOC-NOPE'; p.write_text(json.dumps(d))
-        code, out, err = run('build', '--estate', e, '--out', self.tmp / 'g5graph')
+        code, out, err = run('build', '--workspace', e, '--out', self.tmp / 'g5graph')
         self.assertNotEqual(code, 0); self.assertIn('DOC-NOPE', out + err)
 
     def test_gap_resolve_accept_reopen(self):  # LD-R05
@@ -189,20 +189,20 @@ class LoadTests(unittest.TestCase):
         rec = json.loads((e / 'designs' / 'design-records.json').read_text())
         risk = next(g['id'] for g in rec['gaps'] if g['category'] == 'no entity type')
         pdf = next(g['id'] for g in rec['gaps'] if g['category'] == 'file not read')
-        self.assertEqual(run('designs', 'accept', risk, '--estate', e, '--person', 'jane.architect')[0], 1)                       # a note is required
-        self.assertEqual(run('designs', 'resolve', pdf, '--estate', e, '--person', 'copilot', '--note', 'x')[0], 1)              # never an agent
-        code, out, _ = run('designs', 'accept', risk, '--estate', e, '--person', 'jane.architect', '--note', 'risks stay in the risk register')
+        self.assertEqual(run('designs', 'accept', risk, '--workspace', e, '--person', 'jane.architect')[0], 1)                       # a note is required
+        self.assertEqual(run('designs', 'resolve', pdf, '--workspace', e, '--person', 'copilot', '--note', 'x')[0], 1)              # never an agent
+        code, out, _ = run('designs', 'accept', risk, '--workspace', e, '--person', 'jane.architect', '--note', 'risks stay in the risk register')
         self.assertEqual(code, 0); self.assertIn('open gap(s) left', out)
-        code, _, _ = run('designs', 'resolve', pdf, '--estate', e, '--person', 'jane.architect', '--note', 'HLD recorded as HIS-A3-… by hand')
+        code, _, _ = run('designs', 'resolve', pdf, '--workspace', e, '--person', 'jane.architect', '--note', 'HLD recorded as HIS-A3-… by hand')
         rec = json.loads((e / 'designs' / 'design-records.json').read_text()); g = {x['id']: x for x in rec['gaps']}
         self.assertEqual((g[risk]['status'], g[pdf]['status']), ('accepted', 'resolved'))
         self.assertEqual(g[risk]['history'][-1]['person'], 'jane.architect')
-        self.assertEqual(run('check', '--estate', e)[0], 0)
-        run('designs', 'reopen', pdf, '--estate', e, '--person', 'jane.architect', '--note', 'not complete')
+        self.assertEqual(run('check', '--workspace', e)[0], 0)
+        run('designs', 'reopen', pdf, '--workspace', e, '--person', 'jane.architect', '--note', 'not complete')
         self.assertEqual(json.loads((e / 'designs' / 'design-records.json').read_text())['gaps'][[x['id'] for x in rec['gaps']].index(pdf)]['status'], 'open')
         p = e / 'designs' / 'design-records.json'; d = json.loads(p.read_text())                                                      # a status changed by hand, with no person on record
         next(x for x in d['gaps'] if x['status'] == 'open')['status'] = 'resolved'; p.write_text(json.dumps(d))
-        code, out, _ = run('check', '--estate', e); self.assertEqual(code, 1); self.assertIn("without a person's decision", out)
+        code, out, _ = run('check', '--workspace', e); self.assertEqual(code, 1); self.assertIn("without a person's decision", out)
 
     def test_dashboard_shows_open_gaps(self):  # DB-C09, DB-H08
         e = self.est('g7'); load.load(self.cand, e, 'jane.architect', exclude=[BAD])
@@ -219,11 +219,11 @@ class LoadTests(unittest.TestCase):
         x = json.loads((cand / 'extraction.json').read_text())
         x['bian_mentions'] = [{'name': 'Payment Initiation', 'type': 'A2.ServiceDomain', 'existing_id': 'SD-PI', 'page_title': 'Payments Hub Design', 'where': 'text'}]
         (cand / 'extraction.json').write_text(json.dumps(x))
-        code, out, _ = run('load', cand, '--estate', self.est('e10'), '--person', 'jane.architect', '--exclude', BAD)
+        code, out, _ = run('load', cand, '--workspace', self.est('e10'), '--person', 'jane.architect', '--exclude', BAD)
         self.assertEqual(code, 0); self.assertIn('loaded (LOAD-001)', out); self.assertIn('hints for sdem link', out); self.assertIn('SD-PI', out)
-        self.assertEqual(run('load', cand, '--estate', self.est('e11'), '--person', 'jane.architect', '--all')[0], 1)   # refused: check error
+        self.assertEqual(run('load', cand, '--workspace', self.est('e11'), '--person', 'jane.architect', '--all')[0], 1)   # refused: check error
         with contextlib.redirect_stderr(io.StringIO()):
-            with self.assertRaises(SystemExit): main(['load', str(cand), '--estate', 'x', '--person', 'p'])        # no selection: usage error
+            with self.assertRaises(SystemExit): main(['load', str(cand), '--workspace', 'x', '--person', 'p'])        # no selection: usage error
 
 
 if __name__ == '__main__':

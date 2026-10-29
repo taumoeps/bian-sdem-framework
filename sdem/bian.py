@@ -396,7 +396,7 @@ def report_md(dataset, report, refused, warnings, changes=None, descriptions=Fal
         L += [f"- `{n}`: {', '.join(ds)}" for n, ds in report['shared_control_records']]
     if changes:
         L += ['', '## Against the previous A2 dataset', '', f"Added {len(changes['added'])} · dropped {len(changes['dropped'])} · renamed {len(changes['renamed'])}. "
-              'A dropped record is **not** removed from your estate — check whether approved links point to it.', '']
+              'A dropped record is **not** removed from your workspace — check whether approved links point to it.', '']
         L += [f'- dropped: `{i}`' for i in changes['dropped']] + [f'- renamed: `{i}` {a!r} → {b!r}' for i, a, b in changes['renamed']]
     if warnings:
         L += ['', '## Advice from the metamodel', ''] + [f'- {w}' for w in warnings[:50]] + ([f'- … {len(warnings) - 50} more'] if len(warnings) > 50 else [])
@@ -416,18 +416,18 @@ def report_md(dataset, report, refused, warnings, changes=None, descriptions=Fal
     if refused:
         L += ['', '## Files not read', ''] + [f'- {r}' for r in refused]
     L += ['', '## Next', '', '1. Confirm the asset types and functional patterns above.',
-          '2. Use the file as your BIAN layer: `sdem load <candidates> --estate <estate> --person <you> --a2 <this file>`, or copy it into the estate as `a2-service-domain.json`.',
+          '2. Use the file as your BIAN layer: `sdem load <candidates> --workspace <workspace> --person <you> --a2 <this file>`, or copy it into the workspace as `a2-service-domain.json`.',
           '3. Approve connections that rest on BIAN guidance with `--bian-release ' + dataset['model_version'] + '`.', '']
     return '\n'.join(L)
 
 
-# ---------------------------------------------------------------- updating estates (BU-01…BU-05)
+# ---------------------------------------------------------------- updating workspaces (BU-01…BU-05)
 def update_estates(estates, a2_file, person, dry_run=False, now=None):
-    """Replace each estate's BIAN layer with `a2_file` — checked for every estate before any is written."""
+    """Replace each workspace's BIAN layer with `a2_file` — checked for every workspace before any is written."""
     import datetime
     from .connect import estate_docs, estate_errors
     from .validate import is_person
-    if not is_person(person): raise BianError(f"--person {person!r}: updating an estate's BIAN layer is a person's decision — give your own name")
+    if not is_person(person): raise BianError(f"--person {person!r}: updating a workspace's BIAN layer is a person's decision — give your own name")
     new = json.loads(Path(a2_file).read_text(encoding='utf-8'))
     if new.get('level') != 'A2': raise BianError(f'{a2_file}: not an A2 dataset (level {new.get("level")!r})')
     new_by = {i['id']: i for i in new.get('instances', [])}
@@ -496,15 +496,15 @@ def main(argv=None):
     im.add_argument('--previous', metavar='FILE', help='a previous A2 dataset: report what was added, dropped or renamed')
     im.add_argument('--json', action='store_true')
     sub.add_parser('inference', help="SDEM's record of inferred asset types and functional patterns — list, show, accept, challenge, change, reject")
-    up = sub.add_parser('update', help="replace an estate's BIAN layer with your shared one — checked; never strands an approved connection")
+    up = sub.add_parser('update', help="replace a workspace's BIAN layer with your shared one — checked; never strands an approved connection")
     where = up.add_mutually_exclusive_group(required=True)
-    where.add_argument('--estate', metavar='DIR', help='one estate'); where.add_argument('--root', metavar='DIR', help='every estate in a folder, e.g. estates')
+    where.add_argument('--workspace', dest='estate', metavar='DIR', help='one workspace'); where.add_argument('--root', metavar='DIR', help='every workspace in a folder, e.g. workspaces')
     up.add_argument('--a2', required=True, metavar='FILE', help='your shared BIAN layer, e.g. bian/a2-service-domain.json')
     up.add_argument('--person', required=True, help='your name — a person'); up.add_argument('--dry-run', action='store_true'); up.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     if a.cmd == 'update':
         estates = [Path(a.estate)] if a.estate else sorted(p for p in Path(a.root).iterdir() if (p / 'mappings.json').exists())
-        if not estates: raise BianError(f'{a.root}: no estates in it (folders with a mappings.json)')
+        if not estates: raise BianError(f'{a.root}: no workspaces in it (folders with a mappings.json)')
         try: plans = update_estates(estates, a.a2, a.person, a.dry_run)
         except BianRefused as e: print(f'ERROR: {e}', file=sys.stderr); return 1
         if a.json: print(json.dumps(plans, indent=2)); return 0
@@ -512,7 +512,7 @@ def main(argv=None):
             if c['unchanged']: print(f"{c['estate']}: already this BIAN layer — unchanged"); continue
             print(f"{c['estate']}: {'would update' if a.dry_run else 'updated'}" + (f" ({c['id']})" if c.get('id') else '')
                   + f" — added {len(c['added'])}, dropped {len(c['dropped'])}, renamed {len(c['renamed'])}")
-        print('checked: every estate passes with the new BIAN layer' + ('' if a.dry_run else '. Next: commit on a branch and open a pull request.'))
+        print('checked: every workspace passes with the new BIAN layer' + ('' if a.dry_run else '. Next: commit on a branch and open a pull request.'))
         return 0
     if a.cmd == 'pack':
         domains, refused = read_release(a.folder)
@@ -583,8 +583,8 @@ def main(argv=None):
     if rep['derived']: print(f"confirm: {len(rep['derived'])} derived asset type(s) and functional pattern(s) — listed in the report")
     if rep['inferred']: print(f"inferred: {len(rep['inferred'])} service domain(s) from accepted entries in SDEM's inference record — listed in the report (sdem bian inference show <id>)")
     if unknown: print(f"not known yet: {len(unknown)} service domain(s) imported without asset type and functional pattern (classification: unknown) — listed in the report; fill in {template} and run again with --patterns {template}")
-    if a.previous: print(f"next: bring your estates up to date — sdem bian update --root estates --a2 {out} --person <you> --dry-run")
-    else: print(f"next: sdem load <candidates> --estate <estate> --person <you> --a2 {out}   (first load of a domain)")
+    if a.previous: print(f"next: bring your workspaces up to date — sdem bian update --root workspaces --a2 {out} --person <you> --dry-run")
+    else: print(f"next: sdem load <candidates> --workspace <workspace> --person <you> --a2 {out}   (first load of a domain)")
     return 0
 
 

@@ -1,6 +1,6 @@
 # SDEM — Graph Store Specification (local, JSON)
 
-> **Status: approved and built, 2026-10-25.** Requirements for the local JSON graph store described in [`graph-store-design.md`](graph-store-design.md). Each requirement has an ID (GS-*), says what it satisfies in [`knowledge-graph-spec.md`](knowledge-graph-spec.md) (KG-*), and how it is accepted. All requirements are built. Acceptance tests AT-01…AT-10 run in `tests/test_store.py`; AT-11 in `scripts/store_perf.py` (CI) — 10,000 records and 16,125 links built in 0.6 s, opened in 0.04 s (the synthetic estate has no cross-level links, so trace timing is not yet representative). AT-10's interaction was checked in headless Chrome; a second browser is still to be checked by hand.
+> **Status: approved and built, 2026-10-25.** Requirements for the local JSON graph store described in [`graph-store-design.md`](graph-store-design.md). Each requirement has an ID (GS-*), says what it satisfies in [`knowledge-graph-spec.md`](knowledge-graph-spec.md) (KG-*), and how it is accepted. All requirements are built. Acceptance tests AT-01…AT-10 run in `tests/test_store.py`; AT-11 in `scripts/store_perf.py` (CI) — 10,000 records and 16,125 links built in 0.6 s, opened in 0.04 s (the synthetic workspace has no cross-level links, so trace timing is not yet representative). AT-10's interaction was checked in headless Chrome; a second browser is still to be checked by hand.
 
 ## 1. Scope
 
@@ -46,9 +46,9 @@
 
 | ID | Requirement | Source | Test |
 |---|---|---|---|
-| GS-D-01 | When the estate has `designs/design-records.json`, the build writes `designs.graph.json` (`type` `sdem.designs`): a node per design record (`DOC-…`) and gap record (`GAP-…`); edges `DOCUMENTS` (design → entity node), `FOUND_IN` (gap → design), `ABOUT` (gap → entity node). It sits **beside** the architecture graphs: not part of the federated graph, never read by the rules engine or impact | LD-R02 | `tests/test_load.py` |
-| GS-D-02 | The design records are checked against `schema/design-records.schema.json` before the build (an error rejects the build); an entity a record refers to that is no longer in the estate is a warning | — | `tests/test_load.py` |
-| GS-D-03 | `GraphReader` exposes the design records (`designs()`), from the store or from the estate's files | GS-A-01 | `tests/test_load.py` |
+| GS-D-01 | When the workspace has `designs/design-records.json`, the build writes `designs.graph.json` (`type` `sdem.designs`): a node per design record (`DOC-…`) and gap record (`GAP-…`); edges `DOCUMENTS` (design → entity node), `FOUND_IN` (gap → design), `ABOUT` (gap → entity node). It sits **beside** the architecture graphs: not part of the federated graph, never read by the rules engine or impact | LD-R02 | `tests/test_load.py` |
+| GS-D-02 | The design records are checked against `schema/design-records.schema.json` before the build (an error rejects the build); an entity a record refers to that is no longer in the workspace is a warning | — | `tests/test_load.py` |
+| GS-D-03 | `GraphReader` exposes the design records (`designs()`), from the store or from the workspace's files | GS-A-01 | `tests/test_load.py` |
 
 ## 6. Build
 
@@ -74,7 +74,7 @@
 |---|---|---|---|
 | GS-A-01 | One read interface, `sdem/store.py` `GraphReader`, with: `levels()`, `baseline()`, `node(level, id, version=None)` (latest version if omitted), `nodes(level=None, type=None, include_subtypes=True, where=None)`, `edges(scope, source=None, target=None, relation=None)`, `neighbours(node, relation=None, direction='both')`, `links(node, direction)` (approved cross-level edges), `is_a(type, ancestor)`. Return values are plain dicts in the shapes of §4–§5. | KG-L-04 | AT-03 |
 | GS-A-02 | Two implementations: `StoreReader` (reads a store directory) and `ExportReader` (builds the same structures in memory from architecture datasets and registry — today's path). | — | AT-04 |
-| GS-A-03 | `trace`, `impact`, `stats` and `query` use only `GraphReader`; for every example estate their output is identical whichever implementation backs them. | KG-Q-01, 02, 06 | AT-04 |
+| GS-A-03 | `trace`, `impact`, `stats` and `query` use only `GraphReader`; for every example workspace their output is identical whichever implementation backs them. | KG-Q-01, 02, 06 | AT-04 |
 | GS-A-04 | The inference engine (v0.10) reads only through `GraphReader`. | DEC-01 | `tests/test_acceptance.py` |
 
 ## 9. Queries
@@ -107,17 +107,17 @@
 
 | ID | Test |
 |---|---|
-| AT-01 | Build a store for each of the 8 example estates; all succeed; each has the files of GS-F-01 and an `accepted` load-record entry. |
+| AT-01 | Build a store for each of the 8 example workspaces; all succeed; each has the files of GS-F-01 and an `accepted` load-record entry. |
 | AT-02 | Every graph file validates against the JGF v2 schema structure and the SDEM profile `schema/graph-store.schema.json`. |
-| AT-03 | Round trip: for every estate, every architecture dataset instance and relationship and every approved registry record is in the store exactly once with identical content (GS-N-02, GS-E-01, GS-E-02); nothing else is. |
-| AT-04 | For every estate, `trace` (both directions, with and without part–whole), `impact` (every change kind on a sample of nodes) and `stats` give identical output from `StoreReader` and `ExportReader`; answers from the store name their baseline. |
+| AT-03 | Round trip: for every workspace, every architecture dataset instance and relationship and every approved registry record is in the store exactly once with identical content (GS-N-02, GS-E-01, GS-E-02); nothing else is. |
+| AT-04 | For every workspace, `trace` (both directions, with and without part–whole), `impact` (every change kind on a sample of nodes) and `stats` give identical output from `StoreReader` and `ExportReader`; answers from the store name their baseline. |
 | AT-05 | A store with a good build, then a build from a deliberately broken architecture dataset (and separately an unresolvable approved link): graph files unchanged byte for byte, a `rejected` entry listing the errors, exit 1. |
 | AT-06 | Build twice from identical inputs: graph files byte-identical; only the load record grows. |
 | AT-07 | `build --check` passes on a current store and fails after an architecture dataset changes. CI runs it for the committed example stores. |
 | AT-08 | Create a baseline, change an architecture dataset and rebuild; a query against the baseline returns the old answer, against the store the new one. |
-| AT-09 | `query`: type, attribute and neighbour filters return the expected records on payment-initiation; `--unmapped` returns exactly the records a hand count expects on two estates. |
-| AT-10 | `view.html` is generated for every estate, contains every node and edge, makes no network request (no `http` URL in a script or stylesheet reference); interaction checked by hand in two browsers. |
-| AT-11 | Performance against GS-X-02 on a generated synthetic estate of 10,000 nodes. |
+| AT-09 | `query`: type, attribute and neighbour filters return the expected records on payment-initiation; `--unmapped` returns exactly the records a hand count expects on two workspaces. |
+| AT-10 | `view.html` is generated for every workspace, contains every node and edge, makes no network request (no `http` URL in a script or stylesheet reference); interaction checked by hand in two browsers. |
+| AT-11 | Performance against GS-X-02 on a generated synthetic workspace of 10,000 nodes. |
 
 ## 13. Changes made to existing documents
 

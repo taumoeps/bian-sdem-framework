@@ -52,13 +52,13 @@ class InstalledLayoutTests(unittest.TestCase):
         self.assertIn(str(self.tmp / 'site' / 'sdem' / 'data'), r.stdout); self.assertIn('False', r.stdout)
 
     def test_journeys_run_installed(self):
-        for args in (['--version'], ['check', '--estate', 'est'], ['build', '--estate', 'est', '--out', 'graph'], ['trace', 'CAP-PAY-010', '--graph', 'graph'],
-                     ['impact', 'INF-K8S-PAY-PROD', '--change', 'retire', '--graph', 'graph'], ['matrix', '--estate', 'est'],
-                     ['link', '--estate', 'est', '--out', 'links'], ['dashboard', '--estate', 'est', '-o', 'dash.html'], ['home', '--estate', 'est', '-o', 'site'],
-                     ['events', '--estate', 'est'], ['transform', 'run', 'export', '-o', 'history', '--ocr', 'off'],
-                     ['load', 'history', '--estate', 'hist', '--person', 'jane.architect', '--exclude', 'HIS-A3-PAYMENT-ORDER'],
+        for args in (['--version'], ['check', '--workspace', 'est'], ['build', '--workspace', 'est', '--out', 'graph'], ['trace', 'CAP-PAY-010', '--graph', 'graph'],
+                     ['impact', 'INF-K8S-PAY-PROD', '--change', 'retire', '--graph', 'graph'], ['matrix', '--workspace', 'est'],
+                     ['link', '--workspace', 'est', '--out', 'links'], ['dashboard', '--workspace', 'est', '-o', 'dash.html'], ['home', '--workspace', 'est', '-o', 'site'],
+                     ['events', '--workspace', 'est'], ['transform', 'run', 'export', '-o', 'history', '--ocr', 'off'],
+                     ['load', 'history', '--workspace', 'hist', '--person', 'jane.architect', '--exclude', 'HIS-A3-PAYMENT-ORDER'],
                      ['bian', 'list', 'bian'], ['bian', 'list', '--base'], ['bian', 'import', '--base', '--only', 'Payment Order Initiation', '-o', 'base-a2.json'], ['bian', 'import', 'bian', '--only', 'Sample Order Initiation', '-o', 'bian-a2.json'],
-                     ['copilot', 'install', '--to', '.'], ['designs', '--estate', 'hist', '--gaps'], ['explain', 'P-RUN-001', '--proposals', 'links/proposals.json']):
+                     ['copilot', 'install', '--to', '.'], ['designs', '--workspace', 'hist', '--gaps'], ['explain', 'P-RUN-001', '--proposals', 'links/proposals.json']):
             code, out = self.sdem(*args)
             self.assertIn(code, (0, 1), f'sdem {" ".join(args)} → {code}\n{out[-800:]}')
             self.assertNotIn('Traceback', out, f'sdem {" ".join(args)}')

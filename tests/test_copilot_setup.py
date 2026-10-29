@@ -93,7 +93,7 @@ class CopilotSetupTests(unittest.TestCase):
         for f in (ROOT / '.vscode').glob('*.json'):
             self.assertNotIn('plantuml.com', f.read_text(encoding='utf-8'), f.name)
         ignored = (ROOT / '.gitignore').read_text(encoding='utf-8').split('\n')
-        self.assertIn('estates/', ignored); self.assertIn('work/', ignored)
+        self.assertIn('workspaces/', ignored); self.assertIn('work/', ignored)
 
 if __name__ == '__main__':
     unittest.main()

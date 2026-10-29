@@ -312,7 +312,7 @@ Level-skipping traceability is a query over approved edges with provenance (`sde
 
 ### 6.4 Relationship record — the mapping between architectures
 
-*Aligned to high-level §4 and §6.2.* (the v0.2.1 record, retained; high-level R7). One record per actual link between instances of adjacent architectures, in the **Architecture Relationship Registry** (`examples/<estate>/mappings.json`). Field definitions are shared with [`relationship-registry-spec.md`](relationship-registry-spec.md).
+*Aligned to high-level §4 and §6.2.* (the v0.2.1 record, retained; high-level R7). One record per actual link between instances of adjacent architectures, in the **Architecture Relationship Registry** (`examples/<workspace>/mappings.json`). Field definitions are shared with [`relationship-registry-spec.md`](relationship-registry-spec.md).
 
 | Field | Type / values | Required | Meaning |
 |---|---|---|---|
@@ -391,7 +391,7 @@ metamodel/   entity.schema.json, a1-business.json, a2-service-domain.json, a3-ap
              official-mappings.json, metamodel-spec-gaps.json, drafts/
 schema/      level-model, relationship-registry and graph-store schemas, relationship-types.json, impact-rules.json, entities/ (per-entity schemas)
 sdem/        metamodel, validate, diff, trace, graph, conformance, store, view, inference, rules_engine, acceptance, reference, generators
-examples/    synthetic estates, each with its graph store (graph/); acceptance-cases.json
+examples/    synthetic workspaces, each with its graph store (graph/); acceptance-cases.json
 ```
 
 ## 13. References and licensing boundary

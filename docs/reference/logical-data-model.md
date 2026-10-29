@@ -602,7 +602,7 @@ Coarse functional grouping within a Business Area
 
 A discrete functional scope of the bank and its responsibilities
 
-**Identified by:** `canonical_id` — a BIAN Service Domain is identified by its BIAN concept id; one instance per BIAN domain in an estate
+**Identified by:** `canonical_id` — a BIAN Service Domain is identified by its BIAN concept id; one instance per BIAN domain in a workspace
 
 **Fields**
 
@@ -661,7 +661,7 @@ The class of asset a Service Domain manages through its lifecycle
 
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
-| `aliases` | list | no | tokens the estate uses for the asset | — |
+| `aliases` | list | no | tokens the workspace uses for the asset | — |
 
 **Links**
 
@@ -749,7 +749,7 @@ A refinement of a Service Domain's generic behaviour
 
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
-| `aliases` | list | no | tokens the estate's API paths use for the qualifier | — |
+| `aliases` | list | no | tokens the workspace's API paths use for the qualifier | — |
 
 **Links**
 
@@ -1628,7 +1628,7 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-05 | Attribute types | every attribute value has its declared type | **enforced** |
 | LC-06 | Enumerations | every attribute with allowed values, and `lifecycle_status`, takes an allowed value | **enforced** |
 | LC-07 | Same-level references | a reference attribute whose target is in the same level names an instance of the declared type in the same architecture dataset | **enforced** |
-| LC-08 | Cross-level references | a reference attribute whose target is in another level names an instance of the declared type in the estate | **enforced as a warning** |
+| LC-08 | Cross-level references | a reference attribute whose target is in another level names an instance of the declared type in the workspace | **enforced as a warning** |
 | LC-09 | Natural keys | no two instances of a type share their identifier key within an architecture dataset | **enforced** |
 | LC-10 | Cardinality — maximum | no instance exceeds the stated maximum of a BIAN or ArchiMate-composition row (e.g. a service group in two Service Domains) | **enforced** |
 | LC-10m | Cardinality — minimum (completeness) | an instance meets the stated minimum (e.g. a Service Domain has a control record); architecture datasets may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error | **enforced** |
@@ -1638,7 +1638,7 @@ The rules the data must satisfy, and which the checker enforces today.
 
 ## Appendix B. How the example data measures up
 
-The 7 example estates (447 instances) (the generated reference-structure estate excluded) checked by `sdem check` against the enforced rules. No errors; 29 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
+The 7 example workspaces (447 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 29 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
 
 | Rule | Values checked | Failures |
 |---|---|---|

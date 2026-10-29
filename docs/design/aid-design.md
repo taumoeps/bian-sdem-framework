@@ -9,7 +9,7 @@
 | Architect has | AID projects | Used for |
 |---|---|---|
 | A1 Business only | the BIAN service domains, applications and technology it implies | previewing scope and impact before designing |
-| A4 Technology only | the applications, service domains and business it appears to support | understanding what an estate is for, and confirming the upstream design |
+| A4 Technology only | the applications, service domains and business it appears to support | understanding what a workspace is for, and confirming the upstream design |
 | some layers, gaps between | the missing layer in the middle | joining up partial designs |
 
 **The output is a projected design, not a validated design.** It shows how the real design *should* align, each element with an inference confidence. It is for planning — scope, impact, gaps — never a substitute for real architecture data.
@@ -91,7 +91,7 @@ When the real layers exist (or for testing, when they are known but hidden), AID
 | API **POST /payment-instructions** | BIAN REST mapping of *Initiate Payment Instruction* (F2) | low |
 | deployment **PRJ-DEP-Payment-Initiation** | one deployment per component (F3) | low |
 
-**Gap analysis** against the real estate (*checked 2026-10-27 with today's design mode*): the domain ✅ **matched**; the real design has one *Payments Hub* with three sub-components where AID projected one component — ≠ **differs**; APIs by method and path, operation by operation:
+**Gap analysis** against the real workspace (*checked 2026-10-27 with today's design mode*): the domain ✅ **matched**; the real design has one *Payments Hub* with three sub-components where AID projected one component — ≠ **differs**; APIs by method and path, operation by operation:
 
 | Operation | Projected | Real | Result |
 |---|---|---|---|

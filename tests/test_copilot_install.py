@@ -1,4 +1,4 @@
-"""`sdem copilot install` — SDEM's Copilot files in the estate repository (docs/design/sdem-copilot-install-design.md, CI-*)."""
+"""`sdem copilot install` — SDEM's Copilot files in the workspace repository (docs/design/sdem-copilot-install-design.md, CI-*)."""
 import json, re, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
@@ -7,12 +7,12 @@ from sdem.cli import JOURNEYS
 from sdem.paths import REPO_URL, version
 
 ROOT = Path(__file__).resolve().parents[1]
-TEMPLATE = ROOT / 'templates' / 'estate-repo'
+TEMPLATE = ROOT / 'templates' / 'workspace-repo'
 
 
 class CopilotInstallTests(unittest.TestCase):
     def setUp(self):
-        self.tmp = Path(tempfile.mkdtemp()); self.repo = self.tmp / 'estates-repo'
+        self.tmp = Path(tempfile.mkdtemp()); self.repo = self.tmp / 'workspaces-repo'
         shutil.copytree(TEMPLATE, self.repo)
         self.own = {p.relative_to(self.repo).as_posix(): p.read_bytes() for p in (self.repo / '.github').rglob('*') if p.is_file()}
 
@@ -67,7 +67,7 @@ class CopilotInstallTests(unittest.TestCase):
         self.run_sdem()
         code, out = self.run_sdem(); self.assertIn('wrote 0 Copilot file(s)', out)                 # nothing changed, nothing written
         mine = self.repo / '.github' / 'prompts' / 'sdem-explain.prompt.md'
-        mine.write_text(mine.read_text() + '\nOur team: always cite the estate.\n', encoding='utf-8')
+        mine.write_text(mine.read_text() + '\nOur team: always cite the workspace.\n', encoding='utf-8')
         code, out = self.run_sdem()
         self.assertIn('kept 1 file(s) your team changed', out); self.assertIn('Our team', mine.read_text())
         code, out = self.run_sdem('--force')

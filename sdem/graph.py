@@ -54,7 +54,7 @@ class LevelGraph:
         if issues:
             return issues
         if self.doc.get('metamodel_version') and self.doc['metamodel_version'] != self.mm.version:
-            issues.append(f"metamodel_version {self.doc['metamodel_version']!r} does not match loaded metamodel {self.mm.version!r} — move the estate with `sdem migrate --estate <dir> --person <you>`")
+            issues.append(f"metamodel_version {self.doc['metamodel_version']!r} does not match loaded metamodel {self.mm.version!r} — move the workspace with `sdem migrate --workspace <dir> --person <you>`")
         seen = set()
         if not is_projection_dataset(self.doc):  # CTL-16: projected or design records never enter real architecture data
             for i in self.doc.get('instances', []):
@@ -100,7 +100,7 @@ class FederatedGraph:
         self.registry = registry or load_registry()
         self.levels = {g.level: g for g in levels}
         self.mapping_docs = mapping_docs
-        self.design_records = None   # <estate>/designs/design-records.json, when loaded (beside the architectures, never in them)
+        self.design_records = None   # <workspace>/designs/design-records.json, when loaded (beside the architectures, never in them)
 
     @classmethod
     def load(cls, paths, metamodel=None, registry=None):
@@ -143,7 +143,7 @@ class FederatedGraph:
             warnings = []
             issues = validate(d, self.registry, load_schema(), entity_resolver=self, warnings=warnings, metamodel=self.mm)
             report[f'mappings #{n}'] = issues
-        if self.design_records is not None:  # GS-D-02: schema and references; an entity no longer in the estate is a warning
+        if self.design_records is not None:  # GS-D-02: schema and references; an entity no longer in the workspace is a warning
             from .designs import check as _check_designs
             ids = {i for g in self.levels.values() for i in g.by_id}
             errs, warns = _check_designs(self.design_records, ids)
@@ -351,7 +351,7 @@ def main(argv=None):
         print('ERROR: a graph store holds approved links only; use the registry files for other statuses', file=sys.stderr); return EXIT_USAGE
     if args.cmd == 'check':
         report = reader.check_store(args.graph) if reader.origin == 'store' else fg.check()
-        if reader.origin != 'store':  # D2: the estate's coordination records (agent platform), when there are any
+        if reader.origin != 'store':  # D2: the workspace's coordination records (agent platform), when there are any
             from sdem.agents import check_coordination
             for est in sorted({Path(p).resolve().parent for p in args.paths if (Path(p).resolve().parent / 'coordination').exists()}):
                 issues, n = check_coordination(est)

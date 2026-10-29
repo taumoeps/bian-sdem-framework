@@ -102,7 +102,7 @@ A prompt makes a frequent task **one action, done the same way every time**.
 | What good looks like | SDEM |
 |---|---|
 | one prompt per frequent task, naming the exact commands | ✅ 9 prompts (explain, fix, review, impact note, pull request, AID, process events, layer work, example 3) |
-| inputs asked for explicitly | ✅ `${input:estate}`, `${input:person}` |
+| inputs asked for explicitly | ✅ `${input:workspace}`, `${input:person}` |
 | a defined output | ◐ most prompts describe what to report, not a strict format |
 
 Prompts improve **consistency**. They are convenience, not safety.
@@ -146,7 +146,7 @@ Many agent platforms invest in prompts and skills and neglect the data and the t
 | coordination ids scoped to the branch, one file per record — parallel work cannot clash | AG-R06 |
 | `sdem check` checks the coordination records | AG-R07 |
 | warning when a graph store is older than its data | WB-K08 |
-| `--estate DIR` on every command; `*` patterns expanded by `sdem` | WB-K07 |
+| `--workspace DIR` on every command; `*` patterns expanded by `sdem` | WB-K07 |
 | direct dataset edits detected (the change-set chain); `sdem change adopt` for a person's edit | AG-S08, AG-K07, CTL-20 |
 | `sdem approve` — a person approves, the registry is validated before writing; a reviewer that is an agent or tool is rejected | WB-A04, CTL-21 |
 | `sdem change revert` — undo the latest change set of a layer, exactly, on record | AG-K06 |

@@ -17,8 +17,8 @@
 
 | Question | The facts | Who decides | ✓ |
 |---|---|---|---|
-| How is architecture data classified? | Decide the classification of your estates (often *internal* or *confidential*); SDEM supports an `access_classification` on records | data owner | ☐ |
-| Where does it live? | A **private** estate repository in your organisation's GitHub ([template](../templates/estate-repo/README.md)); design exports only in `work/` on machines allowed to hold them — never committed | data owner, platform | ☐ |
+| How is architecture data classified? | Decide the classification of your workspaces (often *internal* or *confidential*); SDEM supports an `access_classification` on records | data owner | ☐ |
+| Where does it live? | A **private** workspace repository in your organisation's GitHub ([template](../templates/workspace-repo/README.md)); design exports only in `work/` on machines allowed to hold them — never committed | data owner, platform | ☐ |
 | Who can see the dashboards? | Local HTML files for now; later only behind your sign-in — never public hosting ([operating model](sdem-operating-model.md) §7) | data owner | ☐ |
 | How are changes controlled? | Pull requests with named code owners and branch protection ([repository protection](sdem-repository-protection.md)) | platform | ☐ |
 
@@ -27,9 +27,9 @@
 | Question | The facts | Who decides | ✓ |
 |---|---|---|---|
 | Does SDEM send data anywhere? | **No network** in use: no server, no AI client, no MCP, no API keys; the pages it writes load nothing from the internet — checked by tests on every push ([PRIVACY.md](../PRIVACY.md), [SECURITY.md](../SECURITY.md)) | security | ☐ |
-| What does it install? | Python 3.10+ and SDEM itself — **no other dependencies**; pinned to a tagged release in your estate repository | security, platform | ☐ |
+| What does it install? | Python 3.10+ and SDEM itself — **no other dependencies**; pinned to a tagged release in your workspace repository | security, platform | ☐ |
 | Reading text in pictures (OCR) during onboarding? | Done **on the machine** (macOS text recognition, or Tesseract if installed); `--ocr off` turns it off | security / data owner | ☐ |
-| Diagram previews? | PlantUML previews render **locally** when VS Code's `plantuml.render` setting is `Local` — set in the estate template's `.vscode/settings.json`; keep it (or use your organisation's own server): the public PlantUML server would receive the diagram text | security | ☐ |
+| Diagram previews? | PlantUML previews render **locally** when VS Code's `plantuml.render` setting is `Local` — set in the workspace template's `.vscode/settings.json`; keep it (or use your organisation's own server): the public PlantUML server would receive the diagram text | security | ☐ |
 | How are problems reported? | Privately, per [SECURITY.md](../SECURITY.md) | — | ☐ |
 
 ## 4. AI
@@ -47,7 +47,7 @@
 | **One maintainer** | SDEM is maintained by one person; support is best effort during the pilot (operating model §7) | name an **in-house SDEM lead** ([operating model](sdem-operating-model.md) §2); pin a release; review support after the pilot; Apache-2.0 lets you fork and maintain your own copy if ever needed | ☐ |
 | **Lock-in** | Your data is plain JSON files in your repository, in documented formats (`schema/`) — readable without SDEM | nothing to do; keep the repository backed up as usual | ☐ |
 | **Quality** | Every release passes the full test suite on Python 3.10–3.13, the installed package is tested, and use-case examples are replayed with sealed expected results | read the release's CHANGELOG before upgrading | ☐ |
-| **Changes to the metamodel** | Recorded with a migration; your estates move with `sdem migrate`, checked, all-or-nothing | upgrade on a branch, CI green, then merge ([administration](sdem-administration.md#upgrading-sdem)) | ☐ |
+| **Changes to the metamodel** | Recorded with a migration; your workspaces move with `sdem migrate`, checked, all-or-nothing | upgrade on a branch, CI green, then merge ([administration](sdem-administration.md#upgrading-sdem)) | ☐ |
 | **Procurement** | Open source at no cost; no contract or vendor | your procurement process for open-source software | ☐ |
 
 When every row is ticked, the pilot can start ([pilot plan](sdem-pilot-plan.md), week 0).

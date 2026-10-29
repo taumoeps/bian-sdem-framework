@@ -4,22 +4,22 @@
 
 | ID | Requirement | Status | Test |
 |---|---|---|---|
-| LD-G01 | `sdem load CANDIDATES --estate DIR --person NAME (--all \| --only ID… \| --exclude ID… \| --keep FILE) [--a2 FILE] [--dry-run] [--json]`; exit 0 loaded, 1 refused, 2 usage | built | `test_cli` |
+| LD-G01 | `sdem load CANDIDATES --workspace DIR --person NAME (--all \| --only ID… \| --exclude ID… \| --keep FILE) [--a2 FILE] [--dry-run] [--json]`; exit 0 loaded, 1 refused, 2 usage | built | `test_cli` |
 | LD-G02 | The source must be a transform output (`extraction.json`, datasets marked `CONFLUENCE-EXTRACT`); otherwise refused | built | `test_refuses_a_folder_that_is_not_a_transform_output` |
 | LD-S01 | One selection option is required; unknown ids are refused | built | `test_selection_is_required_and_checked` |
 | LD-S02 | A link inside an architecture is loaded only when both ends are; `deployed_on` references to entities not loaded are dropped; everything dropped is listed | built | `test_links_follow_the_selection` |
-| LD-M01 | An entity already in the estate with the same content is skipped; with different content the load is refused and nothing is written | built | `test_same_content_skipped_different_refused` |
-| LD-M02 | A dataset the estate lacks is created (`model_id` `<estate>-<A>`, `source_system` `SDEM-LOAD`); an estate folder that does not exist is created with an empty registry | built | `test_loads_into_a_new_estate` |
-| LD-C01 | The whole estate as it would be is checked before writing; any error → nothing written | built | `test_check_failure_writes_nothing` |
+| LD-M01 | An entity already in the workspace with the same content is skipped; with different content the load is refused and nothing is written | built | `test_same_content_skipped_different_refused` |
+| LD-M02 | A dataset the workspace lacks is created (`model_id` `<workspace>-<A>`, `source_system` `SDEM-LOAD`); a workspace folder that does not exist is created with an empty registry | built | `test_loads_into_a_new_estate` |
+| LD-C01 | The whole workspace as it would be is checked before writing; any error → nothing written | built | `test_check_failure_writes_nothing` |
 | LD-C02 | The person is a person — never an agent or tool name (CTL-21 list) | built | `test_person_must_be_a_person` |
-| LD-R01 | Each load writes `<estate>/loads/LOAD-<n>.json`: person, time, transform run (export and rules fingerprints), loaded, excluded, dropped, A2 added, check | built | `test_loads_into_a_new_estate` |
-| LD-A01 | `--a2 FILE` copies an A2 dataset into an estate that has none (checked; never edited); an estate that has one keeps it | built | `test_a2_dataset_added_once` |
+| LD-R01 | Each load writes `<workspace>/loads/LOAD-<n>.json`: person, time, transform run (export and rules fingerprints), loaded, excluded, dropped, A2 added, check | built | `test_loads_into_a_new_estate` |
+| LD-A01 | `--a2 FILE` copies an A2 dataset into a workspace that has none (checked; never edited); a workspace that has one keeps it | built | `test_a2_dataset_added_once` |
 | LD-B01 | The transform's BIAN mentions are printed as hints for `sdem link` | built | `test_cli` |
 | LD-D01 | `--dry-run` checks and reports, writes nothing | built | `test_dry_run_writes_nothing` |
-| LD-R02 | Each load writes or merges `<estate>/designs/design-records.json` (schema `schema/design-records.schema.json`): a design record per source page or file (facts, coverage, link, entities loaded from it) and a gap record per item not captured, per unmapped column of a loaded entity, and per excluded candidate; ids are stable, so a repeated load adds nothing twice | built | `test_design_and_gap_records_written` |
-| LD-R03 | The load record holds a reconciliation: candidates = loaded + already in the estate + excluded; transform items = captured + skipped + gaps | built | `test_reconciliation` |
-| LD-R04 | `sdem designs --estate DIR \| --graph DIR [--entity ID] [--gaps] [--category C] [--json]` lists design records and gap records; `sdem trace` ends with the entity's pages and open gaps | built | `test_designs_command_and_trace` |
-| LD-R05 | `sdem designs resolve\|accept\|reopen GAP-… --estate DIR --person NAME --note TEXT` sets a gap's status and appends `{status, at, person, note}` to its history; the person must be a person; resolve and accept need a note; `sdem check` rejects a non-open gap without a matching history entry by a person | built | `test_gap_resolve_accept_reopen` |
+| LD-R02 | Each load writes or merges `<workspace>/designs/design-records.json` (schema `schema/design-records.schema.json`): a design record per source page or file (facts, coverage, link, entities loaded from it) and a gap record per item not captured, per unmapped column of a loaded entity, and per excluded candidate; ids are stable, so a repeated load adds nothing twice | built | `test_design_and_gap_records_written` |
+| LD-R03 | The load record holds a reconciliation: candidates = loaded + already in the workspace + excluded; transform items = captured + skipped + gaps | built | `test_reconciliation` |
+| LD-R04 | `sdem designs --workspace DIR \| --graph DIR [--entity ID] [--gaps] [--category C] [--json]` lists design records and gap records; `sdem trace` ends with the entity's pages and open gaps | built | `test_designs_command_and_trace` |
+| LD-R05 | `sdem designs resolve\|accept\|reopen GAP-… --workspace DIR --person NAME --note TEXT` sets a gap's status and appends `{status, at, person, note}` to its history; the person must be a person; resolve and accept need a note; `sdem check` rejects a non-open gap without a matching history entry by a person | built | `test_gap_resolve_accept_reopen` |
 | LD-X01 | **CTL-23**: `sdem build` refuses a dataset marked `CONFLUENCE-EXTRACT` | built | `test_build_refuses_candidates` |
 | LD-E01 | **DEC-E-11**: the engine caps at low any proposal touching an entity whose `source_id` starts `confluence:`, saying so in the rationale | built | `test_engine_caps_document_derived_links` |
 | HI-R06 | Transform: a candidate "deployed on" (nesting, or "runs on / hosted on") from an A3 component to an A4 node is written as the component's `deployed_on` attribute | built | `tests/test_transform.py::test_deployed_on_written_as_data` |

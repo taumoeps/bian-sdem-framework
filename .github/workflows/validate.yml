@@ -78,7 +78,7 @@ jobs:
         run: python -m sdem.graph check examples/reference-structure/a*.json examples/reference-structure/mappings.json
       - name: Graph stores are current (sdem-graph build --check)
         run: |
-          for e in examples/*/; do [ -f "$e/mappings.json" ] || continue; python -m sdem.graph build $e/a*.json $e/mappings.json --out $e/graph --check || exit 1; done   # examples/designs/ is not an estate
+          for e in examples/*/; do [ -f "$e/mappings.json" ] || continue; python -m sdem.graph build $e/a*.json $e/mappings.json --out $e/graph --check || exit 1; done   # examples/designs/ is not a workspace
       - name: Acceptance harness proven on the hand-executed runs
         run: python -m sdem.acceptance --engine replay
       - name: Inference engine progress (report only; the test suite enforces cases marked passing)
@@ -93,12 +93,12 @@ jobs:
           python -m sdem check examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
           python -m sdem trace CAP-310 --graph examples/card-fraud-alerts/graph
           python -m sdem model check
-          python -m sdem matrix --estate examples/payment-initiation
-          python -m sdem impact INF-K8S-PAY-PROD --change rehost --estate examples/payment-initiation --report /tmp/impact.md
-          python -m sdem dashboard --estate examples/payment-initiation -o /tmp/dashboard.html
+          python -m sdem matrix --workspace examples/payment-initiation
+          python -m sdem impact INF-K8S-PAY-PROD --change rehost --workspace examples/payment-initiation --report /tmp/impact.md
+          python -m sdem dashboard --workspace examples/payment-initiation -o /tmp/dashboard.html
           python -m sdem home -o /tmp/sdem
           python -m sdem transform run tests/fixtures/confluence-export-sample -o /tmp/history --ocr off
-          python -m sdem load /tmp/history --estate /tmp/history-estate --person ci.check --all --dry-run
+          python -m sdem load /tmp/history --workspace /tmp/history-workspace --person ci.check --all --dry-run
       - run: python -m unittest discover -s tests -v
   package:
     # SDEM as an organisation installs it: build the wheel, install it in a clean environment, run every journey from
@@ -124,15 +124,15 @@ jobs:
           cd /tmp
           S=/tmp/venv/bin/sdem
           $S --version
-          $S check --estate est
-          $S build --estate est -o graph
+          $S check --workspace est
+          $S build --workspace est -o graph
           $S trace CAP-PAY-010 --graph graph
           $S impact INF-K8S-PAY-PROD --change retire --graph graph
-          $S matrix --estate est
-          $S link --estate est -o links
-          $S dashboard --estate est -o dash.html
-          $S home --estate est -o site
-          $S events --estate est
+          $S matrix --workspace est
+          $S link --workspace est -o links
+          $S dashboard --workspace est -o dash.html
+          $S home --workspace est -o site
+          $S events --workspace est
           $S transform run export -o history --ocr off
-          $S load history --estate hist --person ci.check --exclude HIS-A3-PAYMENT-ORDER
-          $S designs --estate hist --gaps
+          $S load history --workspace hist --person ci.check --exclude HIS-A3-PAYMENT-ORDER
+          $S designs --workspace hist --gaps

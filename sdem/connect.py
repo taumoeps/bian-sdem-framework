@@ -2,10 +2,10 @@
 (docs/design/sdem-bian-update-and-connect-design.md, SC-*).
 
 The record goes through the same approval as `sdem approve` (a person, the evidence its type requires, one of the nine
-connection types, the BIAN release where needed); both ends must exist in the estate and the whole estate must pass
+connection types, the BIAN release where needed); both ends must exist in the workspace and the whole workspace must pass
 before anything is written. The record says it was stated by a person (`created_by: sdem connect`).
 
-  sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --estate estates/payments \\
+  sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --workspace workspaces/payments \\
        --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 \\
        --rationale "The Payments Hub design names it as the payment-order initiation service"
 """
@@ -21,12 +21,12 @@ def estate_docs(estate):
     estate = Path(estate)
     docs = {f: json.loads((estate / f).read_text(encoding='utf-8')) for f in DATASETS if (estate / f).exists()}
     if not (estate / 'mappings.json').exists() or not docs:
-        raise ValueError(f'{estate}: not an estate folder (it needs mappings.json and at least one of {", ".join(DATASETS)})')
+        raise ValueError(f'{estate}: not a workspace folder (it needs mappings.json and at least one of {", ".join(DATASETS)})')
     return docs, json.loads((estate / 'mappings.json').read_text(encoding='utf-8'))
 
 
 def estate_errors(docs, registry):
-    """Errors from checking a whole estate as it would be (datasets + registry)."""
+    """Errors from checking a whole workspace as it would be (datasets + registry)."""
     from .graph import FederatedGraph, LevelGraph
     from .metamodel import Metamodel
     mm = Metamodel.load()
@@ -53,23 +53,23 @@ def connect(estate, source, relationship, target, reviewer, evidence, rationale,
     new, recs = approve(registry, {'mappings': [stated]}, ['P-STATED-1'], reviewer, evidence, None, new_id, date, bian_release)
     errors = estate_errors(docs, new)
     if errors:
-        raise ApproveError('the estate would not pass its checks with this connection — nothing was written:\n  ' + '\n  '.join(errors[:10]))
+        raise ApproveError('the workspace would not pass its checks with this connection — nothing was written:\n  ' + '\n  '.join(errors[:10]))
     return new, recs[0]
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem connect', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='A person states a connection between layers that the engine did not propose — with the same checks as '
-                                             '`sdem approve`: a person, the evidence its type requires, one of the nine connection types, both ends in the estate. '
+                                             '`sdem approve`: a person, the evidence its type requires, one of the nine connection types, both ends in the workspace. '
                                              'Final when its pull request is merged. Agents never run this.',
-                                 epilog='Example:\n  sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --estate estates/payments \\\n'
+                                 epilog='Example:\n  sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --workspace workspaces/payments \\\n'
                                         '       --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 \\\n'
                                         '       --rationale "The Payments Hub design names it as the payment-order initiation service"\n\n'
                                         'The nine connection types and the evidence each needs: the metamodel guide (docs/sdem-metamodel-guide.md).')
     ap.add_argument('source', help='the record the connection starts from, e.g. a BIAN service domain id')
     ap.add_argument('relationship', help='one of the nine connection types, e.g. REALIZED_BY, SUPPORTED_BY, DEPLOYED_ON')
     ap.add_argument('target', help='the record it goes to')
-    ap.add_argument('--estate', required=True, metavar='DIR')
+    ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
     ap.add_argument('--reviewer', '--person', dest='reviewer', required=True, help='your name — a person (CTL-21)')
     ap.add_argument('--evidence', action='append', default=[], metavar='KIND:REF', help='the document that proves it (repeatable; every kind the type needs)')
     ap.add_argument('--rationale', required=True, help='one sentence: why this connection is true')
@@ -87,7 +87,7 @@ def main(argv=None):
     if a.dry_run: return 0
     from .files import write_json
     write_json(Path(a.estate) / 'mappings.json', new)
-    if not a.json: print('mappings.json updated and checked. Next: commit on a branch and open a pull request; then rebuild the graph (sdem build --estate … --out …).')
+    if not a.json: print('mappings.json updated and checked. Next: commit on a branch and open a pull request; then rebuild the graph (sdem build --workspace … --out …).')
     return 0
 
 

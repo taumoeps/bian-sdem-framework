@@ -9,9 +9,9 @@ flowchart LR
     C[("Confluence")] -->|"export<br/>(you)"| X[("export folder<br/>pages · diagrams · pictures")]
     X -->|"sdem transform run"| W[("work/history<br/>CANDIDATE data")]
     W -->|"you review<br/>extraction-report.md"| W
-    W -->|"sdem load"| E[("estates/history<br/>LOADED data")]
+    W -->|"sdem load"| E[("workspaces/history<br/>LOADED data")]
     E -->|"sdem link"| P[("work/links/proposals.json<br/>PROPOSED links")]
-    P -->|"sdem approve<br/>(you)"| M[("estates/history/mappings.json<br/>APPROVED links")]
+    P -->|"sdem approve<br/>(you)"| M[("workspaces/history/mappings.json<br/>APPROVED links")]
     E -->|"sdem build"| G[("work/graph<br/>KNOWLEDGE GRAPH")]
     M --> G
     G -->|"use"| U(["trace · impact · matrix · dashboard"])
@@ -25,9 +25,9 @@ flowchart LR
 | **Export** | you / Confluence | pages, diagrams and pictures leave Confluence | an export folder (any layout) | `work/imports/…` — never committed | — | **raw** |
 | **Transform** — `sdem transform run` | SDEM (rules; on-device OCR for pictures) | every item is accounted for — captured, skipped by design, or **not captured** (listed with its place and text); **the architecture data is created**: A1, A3, A4 entities and the links inside each architecture, each with its source | candidate datasets `a1/a3/a4-*.json`, `extraction.json`, `design-index.json`, `extraction-report.md` | `work/history` | nothing is refused — problems are **reported** so you can see them | **candidate**: right format, *not yet* reviewed, *maybe* not valid |
 | **Review** | you | you decide what is right — validation cannot tell an OCR misread from a real name | the ids to reject | — | your judgement | **reviewed** |
-| **Load** — `sdem load` | you run it | **the data is not changed**: the entities you keep are copied, unchanged, into the estate; the ones you reject are left out; your decision is recorded; what did not fit is kept as **gap records** | the estate's datasets (+ A2 with `--a2`), `designs/design-records.json`, `mappings.json` (empty for a new estate), `loads/LOAD-<n>.json` with the reconciliation | `estates/history` | **refused, nothing written**, if the estate would fail validation, an entity there would change, or the person is not a person | **loaded**: validated *and* reviewed |
+| **Load** — `sdem load` | you run it | **the data is not changed**: the entities you keep are copied, unchanged, into the workspace; the ones you reject are left out; your decision is recorded; what did not fit is kept as **gap records** | the workspace's datasets (+ A2 with `--a2`), `designs/design-records.json`, `mappings.json` (empty for a new workspace), `loads/LOAD-<n>.json` with the reconciliation | `workspaces/history` | **refused, nothing written**, if the workspace would fail validation, an entity there would change, or the person is not a person | **loaded**: validated *and* reviewed |
 | **Link** — `sdem link` | SDEM (rules engine) | links **between** architectures are **proposed**; those touching onboarded entities are never above *low* until the entity is confirmed | `proposals.json` | `work/links` | — (proposals only) | **proposed links** |
-| **Approve** — `sdem approve` | you | a proposal becomes an approved record — your name, the date, the evidence, the BIAN release for BIAN links | records in `mappings.json` | `estates/history/mappings.json` | **refused** if evidence or the BIAN release is missing, or the reviewer is not a person | **approved links** |
+| **Approve** — `sdem approve` | you | a proposal becomes an approved record — your name, the date, the evidence, the BIAN release for BIAN links | records in `mappings.json` | `workspaces/history/mappings.json` | **refused** if evidence or the BIAN release is missing, or the reviewer is not a person | **approved links** |
 | **Build** — `sdem build` | SDEM | **the graphs are created** from the loaded data and approved links | a graph per architecture, `federated.graph.json` (the knowledge graph), `designs.graph.json` (pages and gaps) | `work/graph` | **refused** if any data fails validation, or it is unloaded candidate data (CTL-23) | **ready** |
 
 ## The metamodel is not an output

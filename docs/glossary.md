@@ -32,7 +32,7 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Plan row / rule / S-rule** | one way of establishing a cross-level link, e.g. `S24` (a BIAN operation is implemented by an API operation) |
 | **Join key** | an attribute in an architecture dataset that names a record in another architecture, e.g. an application's `deployed_on`; the engine uses it to propose a link exactly |
 | **Relationship Registry** | the store of actual cross-level links, each with a status (proposed, approved, rejected, superseded) and evidence. Older files call these *mappings* |
-| **`mappings.json`** | the file that holds an estate's Relationship Registry — the approved (and superseded) links between architectures |
+| **`mappings.json`** | the file that holds a workspace's Relationship Registry — the approved (and superseded) links between architectures |
 | **Mapping** | the old name for a cross-level link record; kept in file and field names (`mappings.json`, `mapping_id`) so approved records never change |
 
 ## Data model layers
@@ -44,21 +44,21 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Physical model** | the files a tool uses: one JSON Schema per entity type (`schema/entities/`, `physical-data-model.md`) |
 | **Conformance** | whether an architecture dataset obeys the logical rules; checked by `sdem check` — errors fail the architecture dataset, warnings do not |
 | **Architecture dataset** | one architecture's records and the links between them, in SDEM's format — e.g. the A1 architecture dataset `a1-business.json`. A *dataset* in the W3C DCAT sense (a collection of data from one source); its format is the architecture dataset schema `schema/level-model.schema.json`. Earlier documents call it an *export*, *level export* or *level model* |
-| **Estate** | a project's architecture data in one folder: the architecture datasets (one to four), the registry `mappings.json`, and the records SDEM keeps beside them ([the full list](sdem-architecture.md#inside-an-estate)). Dashboards call an estate a *project*. Example: `examples/payment-initiation/` |
+| **Workspace** | a project's architecture data in one folder: the architecture datasets (one to four), the registry `mappings.json`, and the records SDEM keeps beside them ([the full list](sdem-architecture.md#inside-a-workspace)). Dashboards call a workspace a *project*. Example: `examples/payment-initiation/` |
 | **Adapter** | the program that converts a tool's own data into an architecture dataset; not built yet |
 | **Onboarding** | bringing data from a new source into SDEM until it is governed and ready for use: **ingestion**, then **normal processing**. Two routes: **design onboarding** and **tool onboarding** ([`sdem-onboarding-workflow.md`](sdem-onboarding-workflow.md)) |
 | **Design onboarding** | existing designs (documents exported from Confluence): `sdem transform` → a person reviews → `sdem load`, then normal processing; what does not fit an entity is kept as gap records — **built** |
 | **Tool onboarding** | data from tools (spreadsheets, CMDB, application portfolio): source → adapter → architecture dataset → check → load, then normal processing — **planned (v0.11)** |
-| **Ingestion** | the first part of onboarding: getting the data into an estate (for designs: transform → review → load) |
-| **Normal processing** | the second part of onboarding, the same for every estate however its data arrived: `sdem check` → `sdem link` → `sdem approve` → `sdem build` |
+| **Ingestion** | the first part of onboarding: getting the data into a workspace (for designs: transform → review → load) |
+| **Normal processing** | the second part of onboarding, the same for every workspace however its data arrived: `sdem check` → `sdem link` → `sdem approve` → `sdem build` |
 | **Base BIAN** | the BIAN that ships with SDEM — BIAN's public Semantic APIs 14.0.0, packed into `bian/base-14.0.0.json` (Apache-2.0); `sdem bian import --base` builds your BIAN layer from it; your organisation's own BIAN can replace it (`sdem bian pack`, `--base <file>`) |
 | **Inference record** | SDEM's tracked record of the asset types and functional patterns it infers for BIAN service domains BIAN does not publish them for (`bian/inferences-14.0.0.json`): each value with source, reasoning and confidence; a status (proposed, accepted, challenged, rejected, open) and a history of who changed what and why. Applied only when accepted ([BIAN inferences](reference/bian-inferences.md)) |
 | **BIAN Semantic APIs** | BIAN's published API definitions, one file per service domain, free under Apache-2.0 (github.com/bian-official/public); `sdem bian import` turns the ones you choose into your BIAN (A2) layer |
 | **Candidate** | a record the transform suggests from a design; not real data until a person loads it (`sdem load`). Ids `HIS-…`; never above medium confidence |
 | **Transform** | `sdem transform run`: reads an export of designs and writes candidates with their evidence (page, place, rule, confidence, reasoning) |
-| **Load** | `sdem load`: copies the candidates a person keeps, unchanged, into an estate — checked first, recorded in `loads/` |
+| **Load** | `sdem load`: copies the candidates a person keeps, unchanged, into a workspace — checked first, recorded in `loads/` |
 | **Design record** | one per source page or file of an onboarded design (`DOC-…`): title, link, date, the page's facts, coverage, the entities loaded from it |
-| **Gap record** | one per item that did not fit an architecture entity (`GAP-…`): category, place, original text, the entities it is about, status (open, resolved, accepted) — kept beside the estate, never in the knowledge graph |
+| **Gap record** | one per item that did not fit an architecture entity (`GAP-…`): category, place, original text, the entities it is about, status (open, resolved, accepted) — kept beside the workspace, never in the knowledge graph |
 | **Coverage** | the share of an export's items the transform captured: captured ÷ (captured + not captured) |
 
 ## Graphs and engine
@@ -90,7 +90,7 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Prompt file** | a `.github/prompts/*.prompt.md` file that gives Copilot Chat one `/` command for a journey, e.g. `/sdem-explain` — which SDEM command to run and what to report |
 | **Skill** | a `.github/skills/<name>/SKILL.md` file: know-how Copilot loads when a task needs it (e.g. `sdem-onboard-designs`) |
 | **Agent file** | a `.github/agents/<name>.agent.md` file: one Copilot agent's role, boundaries and tools |
-| **Dashboard** | a read-only HTML page SDEM generates: one per estate (`sdem dashboard`) and the home page for SDEM and every project (`sdem home`) |
+| **Dashboard** | a read-only HTML page SDEM generates: one per workspace (`sdem dashboard`) and the home page for SDEM and every project (`sdem home`) |
 | **SDEM workbench** | how architects use SDEM: the SDEM project open in VS Code, SDEM run from the terminal pane (the CLI), the Copilot Chat window for AI support, Git as history and approval trail ([`sdem-workbench-design.md`](design/sdem-workbench-design.md)) |
 
 ## Agent platform
@@ -111,7 +111,7 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 | **Confidence** | **high** — a public standard defines it and it was checked; **medium** — built on a standard concept, or the standard could not be checked; **low** — SDEM-defined with no standard basis |
 | **Archi oracle** | the open-source Archi tool's table of allowed ArchiMate relationships, used to check rows because the ArchiMate specification text needs a login |
 | **Login-gated** | readable only with an Open Group account (TOGAF, ArchiMate text) — not checked |
-| **Use case / run** | a test estate with a sealed answer key, e.g. M1, H2, C3; the rules were executed by hand on each and scored |
+| **Use case / run** | a test workspace with a sealed answer key, e.g. M1, H2, C3; the rules were executed by hand on each and scored |
 | **Sealed answers / gold** | the expected links for a run, written before the run and not shown to the executor |
 | **Validated against sealed answers** | a rule's output matched the answer key in at least one run |
 | **Precision / recall / F1** | of the links proposed, how many were right / of the right links, how many were found / the balance of both |
@@ -137,4 +137,4 @@ SDEM's messages name the rule behind them, so a reviewer can look it up. You do 
 
 **"Need attention"** (in `sdem home` and the dashboards): a project with errors, proposals waiting for review, open agent work or open gaps — the page lists which.
 
-**Ids of records SDEM creates:** `P-RUN-nnn` a proposed connection · `PAY-nnn` (or your estate's prefix) an approved connection · `HIS-…` a candidate from onboarding · `DOC-…` a design record · `GAP-…` a gap record · `LOAD-nnn` a load · `MIG-nnn` a migration · `CS-…` an agent's change set · `PRJ-…` a planned (AID) element.
+**Ids of records SDEM creates:** `P-RUN-nnn` a proposed connection · `PAY-nnn` (or your workspace's prefix) an approved connection · `HIS-…` a candidate from onboarding · `DOC-…` a design record · `GAP-…` a gap record · `LOAD-nnn` a load · `MIG-nnn` a migration · `CS-…` an agent's change set · `PRJ-…` a planned (AID) element.

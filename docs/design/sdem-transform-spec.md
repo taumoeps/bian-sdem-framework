@@ -7,7 +7,7 @@
 | ID | Requirement | Status | Test |
 |---|---|---|---|
 | HI-S01 | Produces **A1, A3 and A4** candidate entities only — never A2 (CTL-17): a BIAN element named in a design is recorded as a BIAN mention, even if a rules file asks for an A2 type | built | `test_never_creates_a2_entities` |
-| HI-S02 | Writes only to the output folder: never the estate, the metamodel, a registry (`mappings.json`) or a graph store | built | `test_cli`, `test_design_index_and_report` |
+| HI-S02 | Writes only to the output folder: never the workspace, the metamodel, a registry (`mappings.json`) or a graph store | built | `test_cli`, `test_design_index_and_report` |
 | HI-S03 | Expected outputs as in the design §4.1–4.3: the A1/A3/A4 datasets (when found), `extraction.json`, `design-index.json`, `extraction-report.md` | built | `test_design_index_and_report`, `FolderLayoutTests` |
 
 ## 1. General

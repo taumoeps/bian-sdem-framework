@@ -83,7 +83,7 @@
           "canonical_id"
         ],
         "basis": "BIAN",
-        "reasoning": "a BIAN Service Domain is identified by its BIAN concept id; one instance per BIAN domain in an estate"
+        "reasoning": "a BIAN Service Domain is identified by its BIAN concept id; one instance per BIAN domain in a workspace"
       }
     },
     {

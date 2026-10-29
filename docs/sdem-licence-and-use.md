@@ -61,12 +61,12 @@ The Apache License 2.0 permits all of the following — for one architect or a w
 |---|---|---|
 | 1 | **One architect, on an employer-managed device** | permitted by the licence, subject to your employer's approval; install as in the [user guide §3](sdem-workbench-user-guide.md#3-set-up--once) and keep work data on approved systems |
 | 2 | **Internal commercial use** by any organisation | permitted — no fee, no notice to the SDEM project |
-| 3 | **Organisation-wide deployment** across architecture teams | one private estate repository, a pinned SDEM version, reviewers and checks — the [estate repository template](../templates/estate-repo/README.md) and [operating model](sdem-operating-model.md) |
+| 3 | **Organisation-wide deployment** across architecture teams | one private workspace repository, a pinned SDEM version, reviewers and checks — the [workspace repository template](../templates/workspace-repo/README.md) and [operating model](sdem-operating-model.md) |
 | 4 | **Private modifications and extensions** | permitted; keep them in your own copy (a fork) of SDEM, under the Apache License 2.0 |
 | 5 | **Your own BIAN service-domain catalogue** | without changing SDEM: choose service domains from the base BIAN, or pack your own BIAN and use it instead (`sdem bian pack`, `--base <your pack>`) — [your BIAN layer](sdem-configuration.md#your-bian-layer-sdem-bian) |
 | 6 | **Your own kinds of thing, attributes and metamodel** | today, in your own copy of SDEM: the metamodel is the files in `metamodel/` and `schema/`, with `sdem model regenerate` and `sdem model check` keeping the generated documents in step ([contributing](../CONTRIBUTING.md#generated-files--never-edit-them-by-hand)) — or propose the change to the SDEM project |
-| 7 | **Your own relationship and governance rules** | how your designs are read: your transform rules, without changing SDEM ([onboarding — reading your designs](sdem-configuration.md#onboarding--reading-your-designs)); who approves and what must pass: code owners, branch protection and CI in your estate repository ([reviewers and protection](sdem-configuration.md#reviewers-and-protection)); the connection rules themselves (`metamodel/relationship-rules.json`): in your own copy |
-| 8 | **Your own architecture repositories** | private estate repositories you own and control |
+| 7 | **Your own relationship and governance rules** | how your designs are read: your transform rules, without changing SDEM ([onboarding — reading your designs](sdem-configuration.md#onboarding--reading-your-designs)); who approves and what must pass: code owners, branch protection and CI in your workspace repository ([reviewers and protection](sdem-configuration.md#reviewers-and-protection)); the connection rules themselves (`metamodel/relationship-rules.json`): in your own copy |
+| 8 | **Your own architecture repositories** | private workspace repositories you own and control |
 | 9 | **Internal knowledge graphs and dashboards** | built on your machines (`sdem build`, `sdem home`); self-contained HTML files you may host internally behind sign-in |
 | 10 | **No obligation to publish** | you never have to publish your architecture information, configurations or modifications |
 
@@ -76,7 +76,7 @@ The Apache License 2.0 permits all of the following — for one architect or a w
 |---|---|
 | **The open-source framework** as published in the SDEM repository | licensed to everyone under the Apache License 2.0 by its contributors; using it does not transfer it to anyone |
 | **Modifications and extensions** your organisation's people make | owned according to applicable law, who wrote them and their employment or contract terms — the open-source licence alone does not decide this |
-| **Your architecture records and design artefacts** — estates, exports, graphs, dashboards | your organisation's, under its own intellectual-property and confidentiality arrangements; never part of SDEM |
+| **Your architecture records and design artefacts** — workspaces, exports, graphs, dashboards | your organisation's, under its own intellectual-property and confidentiality arrangements; never part of SDEM |
 | **Contributions submitted to the public repository** | offered to everyone under the Apache License 2.0 (§5) — only with the right to do so; never with confidential information |
 
 In short: using SDEM gives no one ownership of the framework; working on SDEM at work does not by itself give the person or the employer ownership of every change — the applicable agreements do; and **the Apache License 2.0 does not override employment agreements or confidentiality obligations**. Confidential organisation information may not be published, in a contribution or otherwise, without authorisation. Any organisation may keep and maintain its own fork under the Apache License 2.0.

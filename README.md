@@ -60,7 +60,7 @@ The rules, the data and the connections — kept as files, checked, with a full 
 
 ```mermaid
 flowchart BT
-    subgraph DATA["🗂️ Estate data — files, each layer owned by its team"]
+    subgraph DATA["🗂️ Workspace data — files, each layer owned by its team"]
         E1["<b>A1 entities</b><br/>Business<br/><i>a1-business.json</i>"]
         E2["<b>A2 entities</b><br/>BIAN service domains<br/><i>a2-service-domain.json</i>"]
         E3["<b>A3 entities</b><br/>Applications<br/><i>a3-application.json</i>"]
@@ -93,7 +93,7 @@ flowchart BT
 
 **Reading it from the bottom:**
 
-- **Estate data.** Each layer's records — its *entities* — live in their own file, owned by that layer's team. Connections between layers live in `mappings.json`; only approved ones count.
+- **Workspace data.** Each layer's records — its *entities* — live in their own file, owned by that layer's team. Connections between layers live in `mappings.json`; only approved ones count.
 - **Knowledge graph.** `sdem build` turns each layer file into that layer's graph (its records and the links inside the layer), and the approved connections into the **federated graph**, which joins the four. Trace and impact follow the federated graph across layers.
 - **Metamodel.** Not part of the graph: it is the metamodel every file is checked against before it is accepted — 44 types of thing (capability, BIAN service domain, application, server …), 132 rules for links inside a layer, 9 kinds of connection between layers and 69 rules for proposing them — each traced to a public standard (BIAN, ArchiMate, TOGAF).
 
@@ -104,7 +104,7 @@ One command, `sdem`, and dashboards on top of it. **Every function works without
 ```mermaid
 flowchart LR
     IN["📄 <b>Your designs</b><br/>existing or new"]
-    D["🗂️ <b>Estate data</b><br/>A1 · A2 · A3 · A4 entities"]
+    D["🗂️ <b>Workspace data</b><br/>A1 · A2 · A3 · A4 entities"]
     P["💡 <b>Proposed connections</b><br/>with reasons"]
     C["🔗 <b>Approved connections</b><br/><i>mappings.json</i>"]
     K["🕸️ <b>Knowledge graph</b><br/>four layer graphs +<br/>the federated graph"]
@@ -138,14 +138,14 @@ The steps in order, from your designs to the knowledge graph:
 |---|---|---|---|---|
 | 1 | Look at an existing design | `sdem transform inspect <export>` | shows what is in the export and what SDEM can read; changes nothing | SDEM |
 | 2 | Read it | `sdem transform run <export> -o work/history` | turns pages, tables and diagrams into *suggested* items, with a report of where each came from | SDEM |
-| 3 | Keep the good ones | `sdem load work/history --estate <estate> --person <you>` | copies the items you accept into the estate; what does not fit is kept as a gap record | **you** |
+| 3 | Keep the good ones | `sdem load work/history --workspace <workspace> --person <you>` | copies the items you accept into the workspace; what does not fit is kept as a gap record | **you** |
 | 4 | Add your BIAN layer | `sdem bian import --base --all -o bian/a2-service-domain.json` | the A2 layer from BIAN's public Semantic APIs (or your own BIAN) — [three ways to choose](#choosing-your-bian-service-domains) | the SDEM lead |
 | — | *New design instead?* | `sdem aid project` | plans the BIAN, application and technology layers you do not have yet — a planned design, kept apart from real data | SDEM |
-| 5 | Check | `sdem check --estate <estate>` | every file against the metamodel; errors must be fixed, warnings are advice — also run by CI on every change | SDEM |
-| 6 | Propose connections | `sdem link --estate <estate> --out work/links` | proposes connections between layers, each with its reasons | SDEM |
+| 5 | Check | `sdem check --workspace <workspace>` | every file against the metamodel; errors must be fixed, warnings are advice — also run by CI on every change | SDEM |
+| 6 | Propose connections | `sdem link --workspace <workspace> --out work/links` | proposes connections between layers, each with its reasons | SDEM |
 | 7 | Review them | `sdem review work/links/proposals.json` | lists the proposals, weakest first | **you** |
 | 8 | Approve | `sdem approve <id> --reviewer <you> --evidence <document>` — or `sdem connect` for one SDEM missed | writes the approved connection to `mappings.json`, with you, the date and the evidence; final when its pull request is merged | **you** |
-| 9 | Build | `sdem build --estate <estate> --out work/graph` | makes the four layer graphs and the federated graph from the data and the approved connections | SDEM |
+| 9 | Build | `sdem build --workspace <workspace> --out work/graph` | makes the four layer graphs and the federated graph from the data and the approved connections | SDEM |
 
 #### Choosing your BIAN service domains
 
@@ -155,7 +155,7 @@ The steps in order, from your designs to the knowledge graph:
 | `--only "Payment Order Initiation" "Payment Rail"` | the domains you name | you know which ones your designs use — find them with `sdem bian list --base \| grep -i payment` |
 | `--from my-domains.txt` | the names in a file, one per line | a longer list, kept in your repository and reviewed like code |
 
-**240 come with full values; 18 are marked *not known yet*.** The metamodel gives every service domain an *asset type* and a *functional pattern*. BIAN's public files do not state them; SDEM works them out from the control record's name, following BIAN's own naming rule, for 192 domains. For 48 more, SDEM's **inference record** supplies values a person has accepted. The other 18 have no accepted value yet. SDEM does not guess: those 66 are imported marked `classification: unknown`, can still be connected through their operations, and `sdem check` advises on each until the values are given. The inference record ([BIAN inferences](docs/reference/bian-inferences.md)) holds each inferred value with its source, reasoning and confidence, a status and a history; the import applies an entry once a person has **accepted** it (`sdem bian inference accept <id> --person <you>`), and the domain records `classification: inferred` and the entry's id. Anyone can challenge or change an entry later, with a reason, and every change is kept. Or give values yourself: the import writes a template (`…needs-patterns.csv`) to fill in and use with `--patterns <template>`. A full BIAN layer does not flood you with proposals: on the example estate, `sdem link` took about eight seconds and proposed 13 connections with all 258 domains loaded.
+**240 come with full values; 18 are marked *not known yet*.** The metamodel gives every service domain an *asset type* and a *functional pattern*. BIAN's public files do not state them; SDEM works them out from the control record's name, following BIAN's own naming rule, for 192 domains. For 48 more, SDEM's **inference record** supplies values a person has accepted. The other 18 have no accepted value yet. SDEM does not guess: those 66 are imported marked `classification: unknown`, can still be connected through their operations, and `sdem check` advises on each until the values are given. The inference record ([BIAN inferences](docs/reference/bian-inferences.md)) holds each inferred value with its source, reasoning and confidence, a status and a history; the import applies an entry once a person has **accepted** it (`sdem bian inference accept <id> --person <you>`), and the domain records `classification: inferred` and the entry's id. Anyone can challenge or change an entry later, with a reason, and every change is kept. Or give values yourself: the import writes a template (`…needs-patterns.csv`) to fill in and use with `--patterns <template>`. A full BIAN layer does not flood you with proposals: on the example workspace, `sdem link` took about eight seconds and proposed 13 connections with all 258 domains loaded.
 
 Then ask the graph: `sdem trace` (*what does this depend on?*), `sdem impact` (*what breaks if it goes?*), `sdem matrix`, `sdem view`, `sdem dashboard`. Every command, with examples: the [user guide](docs/sdem-workbench-user-guide.md#7-command-reference).
 
@@ -207,7 +207,7 @@ Five steps, the same for every domain. Each links to where it is written in full
    | **New** — not built yet | you write the business layer (A1) and what is already decided; SDEM projects the missing BIAN, application and technology layers as a *planned* design, kept apart from real data (`sdem aid project`) | [planning with AID](docs/sdem-planning-with-aid.md) |
 
 3. **Connect the layers.** SDEM proposes connections across the layers (`sdem link`). You approve the true ones, naming the document that proves each (`sdem approve`), or state one SDEM missed (`sdem connect`). Agents and Copilot never approve.
-4. **Review.** Commit on a branch in your organisation's private estate repository and open a pull request: a reviewer checks it and CI runs every check. A connection is final when the pull request is merged.
+4. **Review.** Commit on a branch in your organisation's private workspace repository and open a pull request: a reviewer checks it and CI runs every check. A connection is final when the pull request is merged.
 5. **Use it.** Build the knowledge graph (`sdem build`), then ask *what does this depend on?* (`sdem trace`), *what breaks if it goes?* (`sdem impact`), or open the dashboard (`sdem dashboard`). Copilot can explain any result in plain words.
 
 Every task step by step: the user guide's [workflow examples](docs/sdem-workbench-user-guide.md#8-workflow-examples).
@@ -262,7 +262,7 @@ flowchart TB
     end
     subgraph B4["Operating it"]
         direction LR
-        o1["✅ Operating model,<br/>estate template, pilot plan"]
+        o1["✅ Operating model,<br/>workspace template, pilot plan"]
         o2["⏭️ The pilot"]
     end
     B1 ~~~ B2 ~~~ B3 ~~~ B4
@@ -297,8 +297,8 @@ If `pip` says *File "setup.py" … not found* or *requires a different Python*, 
 
 ```bash
 sdem home -o work/sdem && open work/sdem/index.html             # the dashboards, as local files
-sdem check --estate examples/payment-initiation                 # the data against the metamodel
-sdem build --estate examples/payment-initiation -o work/graph   # the knowledge graph
+sdem check --workspace examples/payment-initiation                 # the data against the metamodel
+sdem build --workspace examples/payment-initiation -o work/graph   # the knowledge graph
 sdem impact INF-K8S-PAY-PROD --change retire --graph work/graph # what breaks if it goes
 sdem --help                                                     # every command; sdem <command> --help shows an example
 ```
@@ -307,11 +307,11 @@ Every command, with examples: the [user guide](docs/sdem-workbench-user-guide.md
 
 ## Using SDEM on real designs
 
-This repository is **public and holds made-up data only**. Real architecture data lives in your organisation's **private estate repository**, made from [`templates/estate-repo`](templates/estate-repo/README.md): SDEM pinned to a release, CI checks on every change, reviewers named.
+This repository is **public and holds made-up data only**. Real architecture data lives in your organisation's **private workspace repository**, made from [`templates/workspace-repo`](templates/workspace-repo/README.md): SDEM pinned to a release, CI checks on every change, reviewers named.
 
 ```mermaid
 flowchart LR
-    S["SDEM (public)<br/>tool + metamodel"] -- "pinned release" --> E["Estate repository (private)<br/>your data · CI · reviewers"]
+    S["SDEM (public)<br/>tool + metamodel"] -- "pinned release" --> E["Workspace repository (private)<br/>your data · CI · reviewers"]
     A["👤 Architects"] -- "pull requests" --> E
     E -- "after merge" --> D["📊 Dashboards<br/>local files for now"]
 ```

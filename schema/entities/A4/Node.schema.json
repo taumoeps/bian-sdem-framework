@@ -336,7 +336,7 @@
             "locator": "Node (physical or virtual computational resource)",
             "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
           },
-          "x-sdem-reasoning": "Answers: How much of our estate is virtualised or containerised? ArchiMate defines a node as a physical or virtual computational resource; SDEM splits virtual into VM and container.",
+          "x-sdem-reasoning": "Answers: How much of our workspace is virtualised or containerised? ArchiMate defines a node as a physical or virtual computational resource; SDEM splits virtual into VM and container.",
           "x-sdem-confidence": "medium"
         }
       },

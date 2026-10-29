@@ -30,7 +30,7 @@
         "version": "1.29",
         "name": "Managed Kubernetes — payments (production)",
         "lifecycle_status": "deprecated",
-        "description": "Production container platform for the payments estate.",
+        "description": "Production container platform for the payments workspace.",
         "attributes": {
           "hosts": [],
           "product_version": "1.30",

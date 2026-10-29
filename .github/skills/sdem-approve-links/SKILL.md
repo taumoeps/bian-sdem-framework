@@ -5,22 +5,22 @@ description: How a person approves the cross-layer links the SDEM rules engine p
 
 # Approving SDEM links — done by a person
 
-The rules engine (`sdem link`) **proposes** links; **a person approves** them in the registry (`<estate>/mappings.json`), in a reviewed pull request. An agent may prepare the review and draft the pull-request text — never set a link to `approved` itself.
+The rules engine (`sdem link`) **proposes** links; **a person approves** them in the registry (`<workspace>/mappings.json`), in a reviewed pull request. An agent may prepare the review and draft the pull-request text — never set a link to `approved` itself.
 
 ## Steps
 
-1. **Review:** `sdem review <dir>/proposals.json --estate <estate>` (weakest first) and `sdem explain <P-id> --proposals <dir>/proposals.json` for one link.
+1. **Review:** `sdem review <dir>/proposals.json --workspace <workspace>` (weakest first) and `sdem explain <P-id> --proposals <dir>/proposals.json` for one link.
 2. **The architect approves each accepted link with `sdem approve`** (a person runs it — never an agent; CTL-21 rejects an agent as reviewer):
    ```bash
-   sdem approve <P-id> --proposals <dir>/proposals.json --estate <estate> --reviewer <person> --evidence <kind:ref> [--bian-release <release>] [--supersedes <old id>]
+   sdem approve <P-id> --proposals <dir>/proposals.json --workspace <workspace> --reviewer <person> --evidence <kind:ref> [--bian-release <release>] [--supersedes <old id>]
    ```
    It writes the record and validates the whole registry first — nothing is written if a check fails. The record gets a new id, `status: "approved"`, the reviewer and date, and the **evidence** — the document that proves it, as `kind:document-reference`; the kinds each link type needs are in [the evidence table](evidence-by-link-type.md). The engine's reasoning alone is not enough. **Never write or edit records in `mappings.json` by hand** — CI refuses an edited approved link.
 2a. **A link the engine did not propose** — e.g. the architect knows an application *realises* a BIAN service domain but the designs lack the API detail the rule needs: the architect states it with `sdem connect` (same checks as `sdem approve`, both ends must exist). You may draft the command with its evidence and a one-sentence rationale; the architect runs it:
    ```bash
-   sdem connect <source id> <TYPE> <target id> --estate <estate> --reviewer <person> --evidence <kind:ref> --rationale "<why>" [--bian-release <release>]
+   sdem connect <source id> <TYPE> <target id> --workspace <workspace> --reviewer <person> --evidence <kind:ref> --rationale "<why>" [--bian-release <release>]
    ```
 3. **Superseding an old link** (e.g. after a rehost): approve the new one with `--supersedes <old id>` — SDEM marks the old one `superseded` and links the two. Never edit an approved link.
-4. **Check:** `sdem validate --strict --estate <estate>` and `sdem check --estate <estate>`.
+4. **Check:** `sdem validate --strict --workspace <workspace>` and `sdem check --workspace <workspace>`.
 5. **Pull request** on a branch; a reviewer merges — **the merge is the approval**. Then `sdem build … --out <graph>` and `sdem trace …` show the link in use.
 
 ## Messages

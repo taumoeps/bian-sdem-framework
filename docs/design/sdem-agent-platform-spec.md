@@ -21,7 +21,7 @@ One agent per architecture (A1–A4) generates and maintains designs in its own 
 
 ## 3. Coordination records
 
-Stored with the estate in `<estate>/coordination/` (Git), one file per record: `change-sets/`, `events/`, `work-items/`; change sets validated by `schema/coordination.schema.json`. Built in `sdem/agents.py`.
+Stored with the workspace in `<workspace>/coordination/` (Git), one file per record: `change-sets/`, `events/`, `work-items/`; change sets validated by `schema/coordination.schema.json`. Built in `sdem/agents.py`.
 
 | ID | Requirement | Status |
 |---|---|---|
@@ -31,7 +31,7 @@ Stored with the estate in `<estate>/coordination/` (Git), one file per record: `
 | AG-R04 | **Work item**: id, layer, record(s), action, reason (change event + impact path), status `open` → `in_progress` → `done` / `blocked` / `cancelled`, holder (agent + person), round number. | built — `work-items.json` |
 | AG-R05 | Records are append-only: a status change adds a new state with time and actor; nothing is deleted. | built — every status change appends a state with time, agent and person |
 | AG-R06 | Ids cannot clash between branches, and parallel work never edits the same file: one file per record; ids scoped to the Git branch they were made on (`CS-<branch>-001`; plain `CS-001` on main or outside Git). | built 2026-10-28 (D1) |
-| AG-R07 | `sdem check` also checks an estate's coordination records: schema, file name = id, references resolve, work-item histories follow the allowed steps, agent and person on every step. | built 2026-10-28 (D2) |
+| AG-R07 | `sdem check` also checks a workspace's coordination records: schema, file name = id, references resolve, work-item histories follow the allowed steps, agent and person on every step. | built 2026-10-28 (D2) |
 
 ## 4. Commands (the agents' only interface)
 
@@ -39,13 +39,13 @@ All under the `sdem` CLI, with `--json`, the standard exit codes and `--help` wi
 
 | ID | Command | Does | Status |
 |---|---|---|---|
-| AG-K01 | `sdem change propose <change-set> --estate DIR --agent <name> --person <name>` | checks the change set against the metamodel and controls **before** it lands; on success applies it to the layer's dataset on the current branch, records the change event and stores the impact result | built — `sdem change propose <file> --estate DIR --agent … --person … [--work WI…] [--catalogue …]` |
-| AG-K02 | `sdem change show <id>` | the change set, its checks and its impact | built — `sdem change show <CS-id> --estate DIR` |
-| AG-K03 | `sdem events [--open]` | change events with their impact summary | built — `sdem events --estate DIR [--open]` |
+| AG-K01 | `sdem change propose <change-set> --workspace DIR --agent <name> --person <name>` | checks the change set against the metamodel and controls **before** it lands; on success applies it to the layer's dataset on the current branch, records the change event and stores the impact result | built — `sdem change propose <file> --workspace DIR --agent … --person … [--work WI…] [--catalogue …]` |
+| AG-K02 | `sdem change show <id>` | the change set, its checks and its impact | built — `sdem change show <CS-id> --workspace DIR` |
+| AG-K03 | `sdem events [--open]` | change events with their impact summary | built — `sdem events --workspace DIR [--open]` |
 | AG-K04 | `sdem work plan / list / claim / block / cancel / reopen` | work items — create (orchestrator), list (by layer, status), claim, update, close | built — `sdem work plan / list / claim / block / cancel / reopen`; *done* is set by `sdem change propose --work` |
 | AG-K05 | impact stored with each change event | computes impact for every changed record and stores it as the event's impact result | built — inside `sdem change propose` (impact stored with the event) |
-| AG-K06 | `sdem change revert <CS-id> --estate DIR --agent … --person … [--reason …]` | restores the layer as it was before the change set (from its before-snapshot) and records the reversal as a change set and change event, with its impact | built 2026-10-28 (T5) — only the latest change set of a layer, only when the layer is exactly as it left it; CTL-19/20 apply; open work from the reverted event is cancelled |
-| AG-K07 | `sdem change adopt --estate DIR --layer A? --person … --reason …` | records a person's direct edit of a layer as a change set (the diff against the last snapshot, with its impact), so the chain is whole again; refuses agent names and edits that break the metamodel | built 2026-10-28 (AG-S08) |
+| AG-K06 | `sdem change revert <CS-id> --workspace DIR --agent … --person … [--reason …]` | restores the layer as it was before the change set (from its before-snapshot) and records the reversal as a change set and change event, with its impact | built 2026-10-28 (T5) — only the latest change set of a layer, only when the layer is exactly as it left it; CTL-19/20 apply; open work from the reverted event is cancelled |
+| AG-K07 | `sdem change adopt --workspace DIR --layer A? --person … --reason …` | records a person's direct edit of a layer as a change set (the diff against the last snapshot, with its impact), so the chain is whole again; refuses agent names and edits that break the metamodel | built 2026-10-28 (AG-S08) |
 
 ## 5. Controls
 

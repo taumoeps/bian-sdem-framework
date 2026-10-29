@@ -3,7 +3,7 @@
 Assembled from the Architecture Metamodel records: entity types and their identifiers (metamodel/a1…a4-*.json),
 attributes with kinds, allowed values and references (metamodel/entity-attributes.json), within-level relationships
 with cardinality (metamodel/level-relationships.json) and the relationship type catalogue (schema/relationship-types.json).
-It also measures the example estates against the model. Regenerate with `python -m sdem.logical`; the tests check it.
+It also measures the example workspaces against the model. Regenerate with `python -m sdem.logical`; the tests check it.
 """
 from pathlib import Path
 from collections import Counter
@@ -26,7 +26,7 @@ CONSTRAINTS = [
  ('LC-05', 'Attribute types', 'every attribute value has its declared type', 'enforced', '`sdem check` (error)'),
  ('LC-06', 'Enumerations', 'every attribute with allowed values, and `lifecycle_status`, takes an allowed value', 'enforced', '`sdem check` (error)'),
  ('LC-07', 'Same-level references', 'a reference attribute whose target is in the same level names an instance of the declared type in the same architecture dataset', 'enforced', '`sdem check` (error)'),
- ('LC-08', 'Cross-level references', 'a reference attribute whose target is in another level names an instance of the declared type in the estate', 'enforced as a warning', '`sdem check` (warning when the target level is loaded); resolved by the inference engine; never a federated edge'),
+ ('LC-08', 'Cross-level references', 'a reference attribute whose target is in another level names an instance of the declared type in the workspace', 'enforced as a warning', '`sdem check` (warning when the target level is loaded); resolved by the inference engine; never a federated edge'),
  ('LC-09', 'Natural keys', 'no two instances of a type share their identifier key within an architecture dataset', 'enforced', '`sdem check` (error)'),
  ('LC-10', 'Cardinality — maximum', 'no instance exceeds the stated maximum of a BIAN or ArchiMate-composition row (e.g. a service group in two Service Domains)', 'enforced', '`sdem check` (error)'),
  ('LC-10m', 'Cardinality — minimum (completeness)', 'an instance meets the stated minimum (e.g. a Service Domain has a control record); architecture datasets may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error', 'enforced', '`sdem check` (warning)'),
@@ -40,11 +40,11 @@ def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
 
 
 def conformance(mm, attrs=None, common=None):
-    """Measure the example estates with the enforced conformance checks (sdem/conformance.py)."""
+    """Measure the example workspaces with the enforced conformance checks (sdem/conformance.py)."""
     from .conformance import check_level, estate_index
     res = Counter(); estates = 0; instances = 0
     for est in sorted(glob.glob(str(ROOT / 'examples' / '*') + '/')):
-        if not Path(est, 'mappings.json').exists(): continue   # examples/designs/ holds design exports, not an estate
+        if not Path(est, 'mappings.json').exists(): continue   # examples/designs/ holds design exports, not a workspace
         if 'reference-structure' in est: continue
         estates += 1; docs = [_j(f) for f in sorted(glob.glob(est + 'a[1-4]-*.json'))]; index = estate_index(docs)
         for d in docs:
@@ -130,7 +130,7 @@ def render():
             '| ID | Rule | Detail | Status |', '|---|---|---|---|']
     out += [f"| {c[0]} | {c[1]} | {c[2]} | **{c[3]}** |" for c in CONSTRAINTS]
     out += ['', '## Appendix B. How the example data measures up', '',
-            f"The {est} example estates ({inst} instances) (the generated reference-structure estate excluded) checked by `sdem check` against the enforced rules. " + ('No errors' if all(res[f'{lc} failed'] == 0 for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-09', 'LC-10')) else 'Errors are listed below') + f"; {res['LC-10m failed']} completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record)" + (f"; {res['LC-13 failed']} instance(s) still use a deprecated field" if res['LC-13 failed'] else '') + '.', '',
+            f"The {est} example workspaces ({inst} instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. " + ('No errors' if all(res[f'{lc} failed'] == 0 for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-09', 'LC-10')) else 'Errors are listed below') + f"; {res['LC-10m failed']} completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record)" + (f"; {res['LC-13 failed']} instance(s) still use a deprecated field" if res['LC-13 failed'] else '') + '.', '',
             '| Rule | Values checked | Failures |', '|---|---|---|']
     for lc in ('LC-04', 'LC-05', 'LC-06', 'LC-07', 'LC-08', 'LC-09', 'LC-10', 'LC-10m'):
         out.append(f"| {lc}{' (warning)' if lc in ('LC-08', 'LC-10m') else ''} | {res[lc + ' checked']} | {res[lc + ' failed']} |")

@@ -1,4 +1,4 @@
-name: Estate checks
+name: Workspace checks
 
 on:
   pull_request:
@@ -20,8 +20,8 @@ jobs:
           python-version: '3.12'
       - name: Install the pinned SDEM release
         run: pip install -r requirements.txt
-      - name: Check every estate
-        run: bash ci/check-estates.sh "${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || 'HEAD~1' }}"
+      - name: Check every workspace
+        run: bash ci/check-workspaces.sh "${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || 'HEAD~1' }}"
 
   dashboards:
     # After a merge to main: build the dashboards as a downloadable artifact.
@@ -35,8 +35,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - name: Build the home page and one dashboard per estate
-        run: sdem home --root estates -o site
+      - name: Build the home page and one dashboard per workspace
+        run: sdem home --root workspaces -o site
       - uses: actions/upload-artifact@v4
         with:
           name: sdem-dashboards

@@ -1,6 +1,6 @@
 # SDEM pilot plan — one domain, ten weeks
 
-> **Status: current (v0.9.9)**. The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's metamodel covers the whole enterprise (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own estate. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
+> **Status: current (v0.9.9)**. The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's metamodel covers the whole enterprise (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own workspace. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
 
 ## The question the pilot answers
 
@@ -11,7 +11,7 @@
 | | |
 |---|---|
 | Domain | **any one domain**, chosen by the criteria below — the first pilot proves the way of working; later domains repeat it |
-| People | 2–3 architects (A1, A3, A4 between them), 1 reviewer, the estate owner (one of the architects) who is also the **in-house SDEM lead**, and the upstream SDEM maintainer for questions |
+| People | 2–3 architects (A1, A3, A4 between them), 1 reviewer, the workspace owner (one of the architects) who is also the **in-house SDEM lead**, and the upstream SDEM maintainer for questions |
 | Time | 10 weeks, about half a day a week per architect after set-up |
 | Data | 3–5 existing designs onboarded; the domain's changes during the pilot kept in SDEM |
 | SDEM | v0.9.9 (or later), pinned |
@@ -31,9 +31,9 @@ A smaller domain with willing architects beats an important one with busy archit
 
 ## No per-domain settings
 
-SDEM needs **no settings per domain**. The metamodel and checks are the same everywhere — the example estates span seven domains (payments, cards and fraud, customer onboarding, lending, a core ledger, trade finance, an acquired fintech) — and design onboarding has been tested on two (payments and lending — the lending design run with no lending-specific rules: 18 of 18 records found, nothing lost, no records made from general words like *loan* or *credit*).
+SDEM needs **no settings per domain**. The metamodel and checks are the same everywhere — the example workspaces span seven domains (payments, cards and fraud, customer onboarding, lending, a core ledger, trade finance, an acquired fintech) — and design onboarding has been tested on two (payments and lending — the lending design run with no lending-specific rules: 18 of 18 records found, nothing lost, no records made from general words like *loan* or *credit*).
 
-What may need tuning depends on **how your organisation writes designs**, not on the domain: if your designs use table headings or column names SDEM does not recognise (e.g. *Platform* for an application, or a column like *Data classification*), those items become gap records. Add the headings to the estate repository's copy of `transform-rules.json` (`tables`) and run `sdem transform run … --rules rules/transform-rules.json`. Do this once, on the first design, and keep the copy for every domain.
+What may need tuning depends on **how your organisation writes designs**, not on the domain: if your designs use table headings or column names SDEM does not recognise (e.g. *Platform* for an application, or a column like *Data classification*), those items become gap records. Add the headings to the workspace repository's copy of `transform-rules.json` (`tables`) and run `sdem transform run … --rules rules/transform-rules.json`. Do this once, on the first design, and keep the copy for every domain.
 
 ## Timeline
 
@@ -44,7 +44,7 @@ gantt
     section Before
     Preconditions (legal, Python, repo, hosting)   :p, 0, 1
     section Set up
-    Estate repo from template; training (2 h)      :s, 1, 2
+    Workspace repo from template; training (2 h)      :s, 1, 2
     section Onboard
     3–5 designs: transform, review, load, gaps    :o, 2, 6
     section Use
@@ -56,7 +56,7 @@ gantt
 | Weeks | What happens | Done when |
 |---|---|---|
 | 0 | **Preconditions** ([operating model §6](sdem-operating-model.md#6-before-starting--what-must-be-true)): legal and IP clearance, Python 3.10+, private repository with protection, hosting decided | all six met — **the pilot does not start without legal clearance** |
-| 1 | Estate repository from [`templates/estate-repo`](../templates/estate-repo/README.md); one estate folder for the domain; code owners named; a first design transformed to see which of your table headings SDEM does not yet recognise; 2-hour hands-on session with use-case example 4 | each architect has run the checks and an example onboarding |
+| 1 | Workspace repository from [`templates/workspace-repo`](../templates/workspace-repo/README.md); one workspace folder for the domain; code owners named; a first design transformed to see which of your table headings SDEM does not yet recognise; 2-hour hands-on session with use-case example 4 | each architect has run the checks and an example onboarding |
 | 2–5 | Onboard 3–5 designs ([onboarding workflow](sdem-onboarding-workflow.md)); review candidates; load; work the gaps | designs loaded through pull requests; coverage recorded |
 | 6–8 | Use SDEM in real change: propose and approve links, trace, impact before a change, keep data current | at least one real change carried through SDEM end to end |
 | 9 | Measure, retrospective, decision | decision recorded |

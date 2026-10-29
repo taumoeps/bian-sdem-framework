@@ -29,7 +29,7 @@ The workbench is how architects use SDEM: they open the **SDEM project in VS Cod
 | WB-K04 | The same conventions everywhere: inputs as `--graph DIR` or file paths; `--json` for machine-readable output; exit codes 0 = OK, 1 = issues found, 2 = usage error; non-interactive (no prompts). | built — `--json` added to `aid project`, `aid check` and `view`; `sdem` itself: 0 OK, 1 issues, 2 usage |
 | WB-K05 | `sdem --help` lists every journey; each subcommand's `--help` includes a worked example. | built — tested for every subcommand (AT-WB-09) |
 | WB-K06 | Output a person can read in the terminal: names beside ids, the rule behind each error, and where an output file was written. | built (for the journey commands) |
-| WB-K07 | `--estate DIR` in place of the file list on `check`, `validate`, `link`, `build`, `trace`, `impact`, `review` and `explain`; `*` patterns expanded by `sdem` itself (Windows PowerShell does not). | built 2026-10-28 (T4) |
+| WB-K07 | `--workspace DIR` in place of the file list on `check`, `validate`, `link`, `build`, `trace`, `impact`, `review` and `explain`; `*` patterns expanded by `sdem` itself (Windows PowerShell does not). | built 2026-10-28 (T4) |
 | WB-K08 | A warning when a graph store is older than its data: `trace`, `impact`, `query`, `check --graph` and `view` compare the store's recorded input checksums with the files; `sdem change propose` reminds to rebuild. | built 2026-10-28 (T3) |
 
 ## 4. Copilot — AI support in the chat window (no MCP)
@@ -66,7 +66,7 @@ Each journey is a CLI command the architect runs; Copilot supports in the chat.
 | WB-A01 | Approving a link means a pull request that changes the registry (status `approved`, reviewer, approval time, required evidence), reviewed and merged by a person. Documented in the getting-started page. | built — `sdem approve` (user guide §8.2), then a reviewed pull request |
 | WB-A02 | An approved link must carry `reviewer_id` and `approved_at` — the existing governance check. | built |
 | WB-A03 | Copilot never sets a link to approved (ground rule). A person's merge is the approval. | built — **CTL-21**: the governance check rejects an agent or tool as reviewer; the reviewed merge stays the final approval |
-| WB-A04 | `sdem approve <proposal> --proposals FILE --estate DIR --reviewer <person> --evidence KIND:REF [--supersedes ID]` writes a correct registry record (new id in the registry's style, status, reviewer, date, required evidence, supersession) and validates the whole registry before writing — nothing is written if a check fails. | built 2026-10-28 (T2) |
+| WB-A04 | `sdem approve <proposal> --proposals FILE --workspace DIR --reviewer <person> --evidence KIND:REF [--supersedes ID]` writes a correct registry record (new id in the registry's style, status, reviewer, date, required evidence, supersession) and validates the whole registry before writing — nothing is written if a check fails. | built 2026-10-28 (T2) |
 
 ## 7. Views
 

@@ -10,7 +10,7 @@
 
 Copilot reads them only from **the folder you have open in VS Code**:
 
-- **In your estate repository** (real work): run `sdem copilot install` there once — it writes SDEM's instructions, agents, prompts and skills into `.github/`, matching the SDEM version you installed, with links to SDEM's documents at that version. Commit them. Run it again after upgrading SDEM: it updates the files and keeps any your team has changed (it lists them; `--force` replaces them too). `--dry-run` shows what would change.
+- **In your workspace repository** (real work): run `sdem copilot install` there once — it writes SDEM's instructions, agents, prompts and skills into `.github/`, matching the SDEM version you installed, with links to SDEM's documents at that version. Commit them. Run it again after upgrading SDEM: it updates the files and keeps any your team has changed (it lists them; `--force` replaces them too). `--dry-run` shows what would change.
 - **In the SDEM project** (learning, the examples): they are already there.
 
 ## What the files are
@@ -30,7 +30,7 @@ No MCP servers and no API keys are used — SDEM runs through its `sdem` command
 
 Sign up at **github.com/signup** (or use an existing account). Turn on two-factor authentication (*Settings → Password and authentication*).
 
-**Which account.** *Learning, with the SDEM project's made-up data:* a personal account is fine. *Real work, in your organisation's estate repository:* use **your organisation's** GitHub account and Copilot licence, under its rules (for example, no MCP) — never a personal account with employer data.
+**Which account.** *Learning, with the SDEM project's made-up data:* a personal account is fine. *Real work, in your organisation's workspace repository:* use **your organisation's** GitHub account and Copilot licence, under its rules (for example, no MCP) — never a personal account with employer data.
 
 ### 2. A GitHub Copilot plan
 
@@ -58,9 +58,9 @@ In the terminal pane (*View → Terminal*):
 ```bash
 python3.13 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -e .                   # in an estate repository: pip install -r requirements.txt
+pip install -e .                   # in a workspace repository: pip install -r requirements.txt
 sdem --help
-sdem copilot install               # in an estate repository: put the Copilot files in .github/
+sdem copilot install               # in a workspace repository: put the Copilot files in .github/
 ```
 
 (Details: the user guide [`sdem-workbench-user-guide.md`](sdem-workbench-user-guide.md) §3.)
@@ -74,7 +74,7 @@ Open Copilot Chat (**Ctrl+Alt+I**, Mac **⌃⌘I**). The **model picker** at the
 | Check | Expect |
 |---|---|
 | open the **agent picker** in the chat | the five `sdem-…` agents are listed |
-| type **`/`** in the chat | SDEM's prompts (9 in an estate repository; 10 in the SDEM project, which adds one for its made-up example) and the skills are listed |
+| type **`/`** in the chat | SDEM's prompts (9 in a workspace repository; 10 in the SDEM project, which adds one for its made-up example) and the skills are listed |
 | pick `sdem-a4-technology` and ask *"Run `sdem --help`."* | Copilot runs it in the terminal (approve the command when asked) |
 | *Configure Tools* (tools icon in the chat) | **Run Subagent** is available for the orchestrator |
 

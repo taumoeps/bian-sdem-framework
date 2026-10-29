@@ -48,7 +48,7 @@ graph/
   view.html                       optional generated picture of the graph
 ```
 
-One folder per estate. For the repository's examples that is `examples/<estate>/graph/` (committed, checked current in CI). For real institution data the folder is wherever the institution chooses — **never this public repository**.
+One folder per workspace. For the repository's examples that is `examples/<workspace>/graph/` (committed, checked current in CI). For real institution data the folder is wherever the institution chooses — **never this public repository**.
 
 **One folder, five graph files** — the logical split the knowledge-graph spec asks for (four local graphs and one federated graph) without five databases.
 
@@ -131,9 +131,9 @@ Every existing query must give **identical answers** from either — that is the
 
 | Limit | Why acceptable now | When it bites | Then |
 |---|---|---|---|
-| Held in memory when read | tens of thousands of records load in a second or two | a whole bank's estate | move behind the same interface to a database |
+| Held in memory when read | tens of thousands of records load in a second or two | a whole bank's workspace | move behind the same interface to a database |
 | One writer at a time | builds are run by one person or a pipeline | many architects editing at once | a database, or builds only through a pipeline |
-| Full rebuild per change | small files, fast | very large estates | incremental update (v0.11) |
+| Full rebuild per change | small files, fast | very large workspaces | incremental update (v0.11) |
 | No built-in graph browser | the generated HTML view | heavy exploration | load the JGF into a graph tool, or a database later |
 
 ## 10. Decisions — recommendations for one approval
@@ -146,6 +146,6 @@ Every existing query must give **identical answers** from either — that is the
 | GD-04 | What the federated file holds | **approved links only**; proposals stay in the registry until approved | the graph shows only what an architect accepted |
 | GD-05 | Failed build | **keep the last good graph**, record the rejection | never replace a good graph with a broken one |
 | GD-06 | Determinism | **byte-identical output for identical input; timestamps only in the load record** | clean git history and diffs |
-| GD-07 | Where files live | examples committed under `examples/<estate>/graph/`; **real data never in this repository** | IP and confidentiality |
+| GD-07 | Where files live | examples committed under `examples/<workspace>/graph/`; **real data never in this repository** | IP and confidentiality |
 | GD-08 | Dependencies | **Python standard library only**; the view has no CDN | runs on any locked-down device |
 | GD-09 | Build order | access layer + build + load record → queries → view → then the engine | the engine then reads the stored graph |

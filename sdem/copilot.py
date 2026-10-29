@@ -1,10 +1,10 @@
-"""`sdem copilot install` — put SDEM's Copilot instructions, agents, prompts and skills into an estate repository
+"""`sdem copilot install` — put SDEM's Copilot instructions, agents, prompts and skills into a workspace repository
 (docs/design/sdem-copilot-install-design.md).
 
-Copilot reads them only from the folder open in VS Code — for real work, the private estate repository. They ship with
+Copilot reads them only from the folder open in VS Code — for real work, the private workspace repository. They ship with
 SDEM; references to files of the SDEM project become links to those files at the installed SDEM version on GitHub.
 
-  cd <your estate repository>
+  cd <your workspace repository>
   sdem copilot install [--dry-run] [--force]
 """
 import argparse, hashlib, json, re, sys
@@ -26,7 +26,7 @@ def source():
 
 
 def files():
-    """Relative path → path, for every Copilot file installed into an estate (not CI workflows or code owners)."""
+    """Relative path → path, for every Copilot file installed into a workspace (not CI workflows or code owners)."""
     root = source()
     out = {'copilot-instructions.md': root / 'copilot-instructions.md'}
     for sub in ('agents', 'prompts', 'skills'):
@@ -105,9 +105,9 @@ def install(target='.', dry_run=False, force=False):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog='sdem copilot', description="Put SDEM's Copilot instructions, agents, prompts and skills into your estate repository — "
+    ap = argparse.ArgumentParser(prog='sdem copilot', description="Put SDEM's Copilot instructions, agents, prompts and skills into your workspace repository — "
                                  'the folder you open in VS Code — matching this SDEM version.',
-                                 epilog='Example:\n  cd <your estate repository>\n  sdem copilot install --dry-run\n  sdem copilot install',
+                                 epilog='Example:\n  cd <your workspace repository>\n  sdem copilot install --dry-run\n  sdem copilot install',
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
     i = sub.add_parser('install', help='write .github/copilot-instructions.md, agents/, prompts/, skills/ into a repository')

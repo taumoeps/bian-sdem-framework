@@ -25,20 +25,20 @@ A **baseline** freezes one reviewed version of the SDEM blueprint under a name, 
 | Physical data model | `schema/entities/*/*.schema.json` | 40 JSON Schemas | `docs/reference/physical-data-model.md` |
 | Data-model review records | `metamodel/drafts/a1…a4-descriptive-attributes.json` | 4 (all approved) | `docs/drafts/data-model-a1…a4-draft.md` |
 
-Not in scope: the inference engine and the graph store (software built on the metamodel; their test results are evidence in §3, but the baseline freezes the metamodel, not the code), the Relationship Registry contents (institution data), and the example estates (synthetic test data).
+Not in scope: the inference engine and the graph store (software built on the metamodel; their test results are evidence in §3, but the baseline freezes the metamodel, not the code), the Relationship Registry contents (institution data), and the example workspaces (synthetic test data).
 
 ## 3. Evidence
 
 | Check | Result |
 |---|---|
 | Unit tests | 224 tests — OK |
-| Example estates against the enforced data model (`sdem-graph check`) | 8 estates, 527 instances: **0 errors**, 46 warnings, all minimum-cardinality completeness gaps (an example, or the generated reference-structure estate, holds part of BIAN's structure) |
+| Example workspaces against the enforced data model (`sdem-graph check`) | 8 workspaces, 527 instances: **0 errors**, 46 warnings, all minimum-cardinality completeness gaps (an example, or the generated reference-structure workspace, holds part of BIAN's structure) |
 | Example instances against the physical schemas | 527 instances, **0 failing** |
 | Within-level rows checked against a standard | 16 against BIAN public material, 113 against the Archi oracle (open-source ArchiMate relationship tables); 2 TOGAF-only, 1 SDEM reading |
 | Cross-level rules | all 69 plan rows covered by the use-case runs: 45 validated, 5 validated with findings, 19 not applicable (`docs/evidence/relationships-testing.md`, `docs/evidence/use-case-testing.md`) |
 | Detail spec against the high-level spec | catalogue alignment computed from the high-level §5 tables: 41 entity rows read, 1 differs (`A4.Deployment`, decided G-03); every other difference is in the gap register; the high-level spec is unchanged (checksum test) |
 | Inference engine (acceptance) | 8 of 8 use-case runs pass at the hand-executed run's precision and recall or better (`sdem-accept`); every proposal validates |
-| Graph store | every trace and impact answer identical whether read from the stored graph or the architecture datasets, on all example estates (acceptance test AT-04) |
+| Graph store | every trace and impact answer identical whether read from the stored graph or the architecture datasets, on all example workspaces (acceptance test AT-04) |
 | Source references | every entity, row, type, rule and attribute names its source; enforced by test |
 | Confidence | one rule (`sdem/confidence.py`) assigns every rating; CI fails if any record disagrees |
 | Generated documents | every document and schema is generated from the records; CI fails if any is stale |
@@ -70,7 +70,7 @@ Not in scope: the inference engine and the graph store (software built on the me
 8. **Not built from the high-level spec:** Bank Architecture Profiles (G-08) and the BIAN verification register (G-09); BIAN canonical-id checks stay `unverified` without a licensed resolver (G-10).
 9. **The engine has not met unseen data.** Its decisions DEC-E-07…09 were chosen while the use-case answer keys were known, so passing them shows it follows the procedure, not that it generalises; a blind case (OPEN-05) is the real test.
 10. **Licensed BIAN validation** has not been done (needs BIAN membership).
-11. **No real data yet.** Everything has been exercised on synthetic estates only; the first adapter on real data may find gaps.
+11. **No real data yet.** Everything has been exercised on synthetic workspaces only; the first adapter on real data may find gaps.
 
 ## 5. Review checklist
 

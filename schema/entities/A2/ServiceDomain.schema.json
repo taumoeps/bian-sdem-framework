@@ -406,7 +406,7 @@
             "locator": "SDEM decision DA2-03 (owner, 2026-10-30)",
             "uri": "https://github.com/taumoeps/bian-sdem-framework"
           },
-          "x-sdem-reasoning": "An inferred value must stay traceable: from a record in an estate to the inference entry with its sources, reasoning, confidence, status and history — so an architect can check it, challenge it or change it later (bian/inferences-<release>.json).",
+          "x-sdem-reasoning": "An inferred value must stay traceable: from a record in a workspace to the inference entry with its sources, reasoning, confidence, status and history — so an architect can check it, challenge it or change it later (bian/inferences-<release>.json).",
           "x-sdem-confidence": "low"
         }
       },

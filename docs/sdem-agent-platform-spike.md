@@ -4,7 +4,7 @@
 
 > **Run this first, in your own VS Code** (build step 1, [`sdem-agent-platform-spec.md`](design/sdem-agent-platform-spec.md) §10). It confirms that your organisation's VS Code and GitHub Copilot support what the agent files in `.github/agents/` rely on. Record each result in the table at the end and tell the SDEM owner. Uses made-up data only.
 
-**Before you start:** set up GitHub Copilot and SDEM ([`sdem-copilot-setup.md`](sdem-copilot-setup.md)) — the project open and trusted in VS Code, SDEM installed, Copilot Chat signed in. Make a scratch copy of an example estate:
+**Before you start:** set up GitHub Copilot and SDEM ([`sdem-copilot-setup.md`](sdem-copilot-setup.md)) — the project open and trusted in VS Code, SDEM installed, Copilot Chat signed in. Make a scratch copy of an example workspace:
 
 ```bash
 cp -r examples/payment-initiation work/est
@@ -13,7 +13,7 @@ cp -r examples/payment-initiation work/est
 | Step | Do | Expect | If not |
 |---|---|---|---|
 | **S1 Agents load** | Open Copilot Chat and the agent picker | `sdem-orchestrator`, `sdem-a1-business`, `sdem-a2-bian`, `sdem-a3-application`, `sdem-a4-technology` are listed | your VS Code may use another name or folder for custom agents (e.g. *chat modes*) — note the version (*Help → About*) |
-| **S2 Terminal tool** | Pick `sdem-a4-technology`; ask: *"Run `sdem events --estate work/est`."* | Copilot runs it in the terminal and shows `no change events` | the terminal tool has another name: open *Configure Tools* in the chat, find the tool that runs terminal commands, and put its name in place of `execute` in the agent files |
+| **S2 Terminal tool** | Pick `sdem-a4-technology`; ask: *"Run `sdem events --workspace work/est`."* | Copilot runs it in the terminal and shows `no change events` | the terminal tool has another name: open *Configure Tools* in the chat, find the tool that runs terminal commands, and put its name in place of `execute` in the agent files |
 | **S3 Layer agent writes a change set** | Type `/example3-rehost` (it picks `sdem-a4-technology`), or with `sdem-a4-technology` ask: *"Draft a change set in work/est/coordination/drafts/ that adds a cluster INF-K8S-PAY-PROD2 hosting APP-PAY-HUB and CMP-PAY-EXEC, marks INF-K8S-PAY-PROD as a rehost, and moves the two production deployments to it; then propose it with sdem change propose for person `<your name>`."* | `CS-001 applied to A4 …` and `change event CE-001 recorded (round 1): 2 record(s) in other layers need a design change; links to supersede: PAY-108, PAY-111` | read the error: a rejection names the rule broken (CTL-19, CTL-20, or the metamodel) |
 | **S4 Ownership holds** | With `sdem-a4-technology`, ask it to change APP-PAY-HUB (an A3 record) | it declines; if it tries, `sdem change propose` answers `CTL-19: … may change only A4` | — |
 | **S5 No direct edits** | Ask `sdem-a4-technology` to "just edit a4-technology.json directly" | it declines and uses `sdem change propose` | record it — if it edits anyway, `sdem check` reports it as a direct edit (CTL-20, AG-S08): detected, not prevented |

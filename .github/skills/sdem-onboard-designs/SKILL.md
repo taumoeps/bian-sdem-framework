@@ -19,7 +19,7 @@ export (the architect) → sdem transform run → review (the architect, you hel
 |---|---|---|
 | what is in the export | `sdem transform inspect <export>` | structure only; `--anonymous` hides folder names |
 | transform | `sdem transform run <export> -o <dir> [--known <datasets>] [--rules <file>] [--ocr off]` | writes candidate datasets, `extraction.json`, `design-index.json`, `extraction-report.md` |
-| try a load | `sdem load <dir> --estate <estate> --person <the architect> --exclude <ids> --dry-run` | **only `--dry-run`** — shows what would load and whether the estate would pass its checks; writes nothing |
+| try a load | `sdem load <dir> --workspace <workspace> --person <the architect> --exclude <ids> --dry-run` | **only `--dry-run`** — shows what would load and whether the workspace would pass its checks; writes nothing |
 
 ## Reading the report (`<dir>/extraction-report.md`, detail in `<dir>/extraction.json`)
 
@@ -52,11 +52,11 @@ Also report:
 - **BIAN names** found — they are never entities (A2 comes only from a BIAN source — the transform never creates A2 records, CTL-24); they are hints for `sdem link` once the entities are loaded.
 
 Then give the architect the load command to run themselves, e.g.:
-`sdem load work/history --estate estates/history --person <their name> --exclude HIS-A3-… HIS-A3-…` (add `--a2 <their A2 dataset>` the first time).
+`sdem load work/history --workspace workspaces/history --person <their name> --exclude HIS-A3-… HIS-A3-…` (add `--a2 <their A2 dataset>` the first time).
 
 ## After loading — what to expect
 
-- What did not fit an entity is kept as **gap records** beside the estate (`<estate>/designs/design-records.json`): `sdem designs --estate <estate> --gaps` lists them by category; `sdem designs --entity <id>` shows an entity's pages and gaps. Help the architect work through the open ones — suggest, per gap, whether it is now in the data (`sdem designs resolve`) or stays as it is (`sdem designs accept`), with a note; **the architect runs those commands** (their name is recorded); a recurring *no entity type* is evidence for a metamodel decision by the owner — never change `metamodel/`.
+- What did not fit an entity is kept as **gap records** beside the workspace (`<workspace>/designs/design-records.json`): `sdem designs --workspace <workspace> --gaps` lists them by category; `sdem designs --entity <id>` shows an entity's pages and gaps. Help the architect work through the open ones — suggest, per gap, whether it is now in the data (`sdem designs resolve`) or stays as it is (`sdem designs accept`), with a note; **the architect runs those commands** (their name is recorded); a recurring *no entity type* is evidence for a metamodel decision by the owner — never change `metamodel/`.
 
 - Loaded records keep their `HIS-` ids and `attributes.source_id` = `confluence:<pages>`.
 - `sdem link` proposes links between architectures from them — **capped at low** when an end was read from a document (DEC-E-11); say so when you explain a proposal, and suggest checking it against the page (`design-index.json` gives the page).

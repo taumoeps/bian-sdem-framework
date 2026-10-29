@@ -1,7 +1,7 @@
 """`sdem home` — the main dashboard: SDEM itself (the metamodel, its relationships, configuration and health) and every
-project (estate) in use, each with its own dashboard (docs/design/sdem-dashboard-design.md §8, spec DB-H*).
+project (workspace) in use, each with its own dashboard (docs/design/sdem-dashboard-design.md §8, spec DB-H*).
 
-Writes a small offline site: <out>/index.html (home) and <out>/projects/<name>.html (one `sdem dashboard` per estate, with a
+Writes a small offline site: <out>/index.html (home) and <out>/projects/<name>.html (one `sdem dashboard` per workspace, with a
 link back home). Everything is computed here with SDEM's own functions — the generated-file checks and the engine's
 acceptance cases run live at generation — and the pages only display it. No server, no network, no AI.
 """
@@ -20,7 +20,7 @@ def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
 
 
 def find_estates(roots=(), estates=()):
-    """Estate folders: given ones, plus every sub-folder of a root that has mappings.json and at least one dataset."""
+    """Workspace folders: given ones, plus every sub-folder of a root that has mappings.json and at least one dataset."""
     out = []
     for e in estates:
         out.append(Path(e))
@@ -160,10 +160,10 @@ def components(m, h, projects):
         [f"{len(projects)} project(s) in use", 'no MCP, no AI API inside SDEM'], 'Phase 2 dashboard (sdem serve, actions and forms) — proposed', ['projects', 'config'])
     add('bian', 'BIAN Reference Architecture Repository', 'domains · operations · business objects', 'partial', 517, 20,
         'The BIAN service landscape SDEM anchors to: every A2 element and every BIAN identity comes from here, never invented (CTL-17).',
-        ['each estate\'s a2-service-domain.json (synthetic, made-up BIAN content)', 'the AID test catalogue (merged by BIAN canonical id)'],
+        ['each workspace\'s a2-service-domain.json (synthetic, made-up BIAN content)', 'the AID test catalogue (merged by BIAN canonical id)'],
         [f"{ents['A2']} BIAN entity types in the metamodel", f"{recs['A2']} A2 records across the projects"], 'A licensed BIAN catalogue with real BIAN ids — roadmap v0.15', ['entities'])
     add('history', 'Historical Design Repository', 'past designs · decisions · baselines', 'partial', 40, 20,
-        'Earlier designs, diagrams and decisions kept unchanged and referenceable beside new BIAN-aligned designs (original design §9, acceptance criteria 6 and 10). Built: sdem transform turns an export of past designs (Confluence, any folder layout) into candidate architecture entities with rules — tables, draw.io and PlantUML diagrams, known names in the text, text in pictures by on-device OCR — each with its source, plus an index of every design; a person reviews, then sdem load puts the kept entities into an estate (checked, recorded; CTL-23 keeps candidates out of any graph).',
+        'Earlier designs, diagrams and decisions kept unchanged and referenceable beside new BIAN-aligned designs (original design §9, acceptance criteria 6 and 10). Built: sdem transform turns an export of past designs (Confluence, any folder layout) into candidate architecture entities with rules — tables, draw.io and PlantUML diagrams, known names in the text, text in pictures by on-device OCR — each with its source, plus an index of every design; a person reviews, then sdem load puts the kept entities into a workspace (checked, recorded; CTL-23 keeps candidates out of any graph).',
         ['sdem transform inspect · sdem transform run · sdem load', 'metamodel/transform-rules.json (tune without code)', 'docs/design/sdem-transform-design.md', 'graph store baselines (sdem baseline)'],
         ['tested on a synthetic Confluence export (tests/fixtures/confluence-export-sample)', 'candidates never above medium confidence'], 'Run it on the real export (work machine); past-baseline views — roadmap v0.16')
     add('metamodel', 'SDEM Mapping Metamodel & Rules', 'entity types, rules, controls', 'built', 40, 160,
@@ -190,17 +190,17 @@ def components(m, h, projects):
         ['CTL-16 · CTL-17 tested both ways'], '—', ['health'])
     add('coordination', 'Change coordination & agents', 'change sets · events · work items', 'built', 756, 440,
         'Changes to an architecture as checked, one-layer change sets; their impact recorded as change events; work items for the other layers. Optional Copilot agents — one per architecture and an orchestrator — work through the same records.',
-        ['sdem change propose · adopt · revert', 'sdem events · sdem work', '.github/agents/ (5 agents)', '<estate>/coordination/'],
+        ['sdem change propose · adopt · revert', 'sdem events · sdem work', '.github/agents/ (5 agents)', '<workspace>/coordination/'],
         ([f"use-case example 3: {e3[0]} of {e3[1]} criteria, controls {e3[2]} of {e3[3]}"] if e3 else []) + ['CTL-19 ownership · CTL-20 provenance (incl. direct edits) · CTL-21 a person approves'],
         'Run the spike in VS Code; then score the real agents (AG-E01)', ['health'])
     add('kg', 'Federated Knowledge Graph', 'cross-layer mapping registry & traceability', 'built', 278, 440,
         'The approved links between the architectures (the Relationship Registry) joined with the four architecture graphs: trace any record up or down, classify the impact of a change, build matrices.',
-        ['<estate>/mappings.json (the registry)', 'sdem build → graph store', 'sdem trace · sdem impact · sdem matrix · sdem view'],
+        ['<workspace>/mappings.json (the registry)', 'sdem build → graph store', 'sdem trace · sdem impact · sdem matrix · sdem view'],
         [f"{approved} approved links of {links} across the projects"], 'Ingestion of real designs (v0.11); an enterprise-wide graph across projects', ['projects'])
     for n, (lvl, title) in enumerate(LEVELS.items()):
         add(lvl.lower(), f"{lvl} {title.split(' ', 1)[1]} Graph & Schema", 'independently governed', 'built', 40 + n * 306, 620,
             f"The {title} architecture: its own records and the links inside it, checked against its schema and metamodel rows — owned by its team, never written by another.",
-            [f"<estate>/{DATASETS[n]}", f"metamodel/{DATASETS[n]}", f"sdem check · agent sdem-{lvl.lower()}-…"],
+            [f"<workspace>/{DATASETS[n]}", f"metamodel/{DATASETS[n]}", f"sdem check · agent sdem-{lvl.lower()}-…"],
             [f"{ents[lvl]} entity types", f"{within[lvl]} links allowed inside", f"{recs[lvl]} records across the projects"], 'Ingestion from the organisation\'s tools (v0.11)', ['entities', 'within'], w=272)
     E = []
     def edge(s_, t, label='', style='solid'): E.append({'s': s_, 't': t, 'label': label, 'style': style})
@@ -248,16 +248,16 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem home', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='Write the main dashboard: SDEM itself — the metamodel (entity types, links inside and between architectures, the engine\'s rules), '
                                              'the metamodel picture, configuration and health — and every project in use, each with its own dashboard. Offline; regenerate after a change.',
-                                 epilog='Examples:\n  sdem home -o work/sdem                         # the example estates in examples/\n'
-                                        '  sdem home --root projects --estate work/est -o work/sdem')
+                                 epilog='Examples:\n  sdem home -o work/sdem                         # the example workspaces in examples/\n'
+                                        '  sdem home --root projects --workspace work/est -o work/sdem')
     ap.add_argument('-o', '--out', default='work/sdem', metavar='DIR', help='output folder (default work/sdem)')
-    ap.add_argument('--root', action='append', default=[], metavar='DIR', help='a folder of estates (repeatable; default examples/)')
-    ap.add_argument('--estate', action='append', default=[], metavar='DIR', help='one more estate (repeatable)')
+    ap.add_argument('--root', action='append', default=[], metavar='DIR', help='a folder of workspaces (repeatable; default examples/)')
+    ap.add_argument('--workspace', dest='estate', action='append', default=[], metavar='DIR', help='one more workspace (repeatable)')
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     ex = repo_path('examples')
     if not (a.root or a.estate or ex):
-        print('ERROR: give --root DIR or --estate DIR (the example estates are only in a checkout of the repository)', file=sys.stderr); return 2
+        print('ERROR: give --root DIR or --workspace DIR (the example workspaces are only in a checkout of the repository)', file=sys.stderr); return 2
     roots = a.root or ([] if a.estate else [str(ex)])
     page, data = write(a.out, roots, a.estate)
     if a.json: print(json.dumps(data, indent=2, ensure_ascii=False)); return 0
@@ -339,7 +339,7 @@ function projTable(){return table(["Project","Architectures (records)","Links","
   <td>${Object.entries(p.coverage).map(([l,v])=>`<div>${lvl(l)}${v==null?"—":v+"%"}</div>`).join("")}</td>
   <td class="${p.errors?"bad":"ok"}">${p.errors}</td><td class="${p.advice?"warn":""}">${p.advice}</td><td class="${p.proposals?"warn":""}">${p.proposals}</td><td class="${p.open_work?"warn":""}">${p.open_work}</td><td class="${p.open_gaps?"warn":""}">${p.open_gaps||0}</td>
   <td>${p.attention.map(esc).join("<br>")||'<span class="ok">nothing</span>'}</td></tr>`));}
-R.projects=()=>`<h2>Projects in use</h2><p class="note">Every estate found. Coverage = records linked to another architecture by an approved link, of those the metamodel expects to be linked. Regenerate with <code>sdem home</code>.</p>`+projTable();
+R.projects=()=>`<h2>Projects in use</h2><p class="note">Every workspace found. Coverage = records linked to another architecture by an approved link, of those the metamodel expects to be linked. Regenerate with <code>sdem home</code>.</p>`+projTable();
 R.entities=()=>`<h2>Architecture entities</h2><p class="note">The entity types of each architecture, where each comes from, and its evidence status. Dashed = abstract (groups others, never has records of its own).</p>`+filterBox("fEnt","filter: type, standard, definition …")+
   table(["Architecture","Entity type","Definition","Comes from","Evidence status","Attributes","Links inside · between"],M.entities.map(e=>`<tr data-f="${esc((e.type+" "+e.definition+" "+e.standard+" "+e.concept+" "+e.evidence_status).toLowerCase())}">
   <td>${lvl(e.level)}</td><td><b>${esc(e.type)}</b>${e.abstract?' <span class="chip">abstract</span>':""}${e.artefact?' <span class="chip">artefact</span>':""}${e.extends?`<div class="muted">extends ${esc(e.extends)}</div>`:""}</td>
@@ -359,7 +359,7 @@ R.rules=()=>`<h2>Engine rules</h2><p class="note">The ${M.rules.length} rules of
   table(["Rule","From","Produces","To","Step","Decision","Confidence","Published source"],M.rules.map(r=>`<tr data-f="${esc((r.id+" "+r.source+" "+r.relation+" "+r.target+" "+r.decision+" "+r.source_reference).toLowerCase())}"><td><b>${esc(r.id)}</b></td><td>${lvl(lvlOf(r.source))}${esc(r.source)}</td><td>${esc(r.relation)}</td><td>${lvl(lvlOf(r.target))}${esc(r.target)}</td><td>${esc(r.step)}</td><td><span class="chip" title="${esc(M.decisions[r.decision]||"")}">${esc(r.decision)}</span></td><td>${esc(r.confidence)}</td><td class="muted">${esc(r.source_reference)}</td></tr>`),"scroll");
 R.health=()=>{let h=`<h2>Health</h2><p class="note">Checked when this page was generated.</p><h3>Generated documents and schemas</h3><p class="note">Each must equal a fresh generation from the metamodel (as CI checks).</p>`+
   table(["Generator","Current"],H.generators.map(g=>`<tr><td><code>${esc(g.name)}</code></td><td class="${g.current?"ok":"bad"}">${g.current?"current":"stale — run sdem model regenerate"}</td></tr>`));
-  h+=`<h3>Rules engine — acceptance cases (run now)</h3><p class="note">The engine must score at least the hand-executed runs on every case.</p>`+table(["Case","Estate","Engine precision · recall","Floor (hand-run)","Result"],H.acceptance.map(a=>`<tr><td><b>${esc(a.case)}</b></td><td>${esc(a.estate)}</td><td>${a.precision} · ${a.recall}</td><td class="muted">${a.floor_precision} · ${a.floor_recall}</td><td class="${a.passed?"ok":"bad"}">${a.passed?"pass":"FAIL"}</td></tr>`));
+  h+=`<h3>Rules engine — acceptance cases (run now)</h3><p class="note">The engine must score at least the hand-executed runs on every case.</p>`+table(["Case","Workspace","Engine precision · recall","Floor (hand-run)","Result"],H.acceptance.map(a=>`<tr><td><b>${esc(a.case)}</b></td><td>${esc(a.workspace)}</td><td>${a.precision} · ${a.recall}</td><td class="muted">${a.floor_precision} · ${a.floor_recall}</td><td class="${a.passed?"ok":"bad"}">${a.passed?"pass":"FAIL"}</td></tr>`));
   h+=`<h3>Evidence status of the entity types</h3><div>${Object.entries(H.evidence_status).map(([k,v])=>`<span class="chip">${esc(k)}: ${v}</span>`).join("")}</div>`;
   h+=`<h3>Controls</h3>`+table(["Control","Status","Enforces","Last tested (good · bad)"],H.controls.rows.map(c=>`<tr><td><b>${esc(c.id)}</b></td><td>${esc(c.status)}</td><td>${esc(c.control)}</td><td>${esc(c.tested)}</td></tr>`),"scroll");
   h+=`<h3>Known gaps</h3>`+table(["Gap","Not controlled","Risk"],H.control_gaps.map(g=>`<tr><td><b>${esc(g.id)}</b></td><td>${esc(g.not_controlled)}</td><td>${esc(g.risk)}</td></tr>`));

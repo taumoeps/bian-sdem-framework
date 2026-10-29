@@ -1,7 +1,7 @@
 """Use-case example 3 — the agent platform carries a change across the architectures (docs/evidence/use-case-example-3.md).
 
 Runs the commands the agent files in .github/agents/ instruct — A4 agent, orchestrator, A3 agent, rules engine, architect —
-on a copy of the payment-initiation estate, and the controls with good and bad data. Pass criteria: spec AT-AG-01…08,
+on a copy of the payment-initiation workspace, and the controls with good and bad data. Pass criteria: spec AT-AG-01…08,
 sealed in commit 5cbb0ed. Copilot itself is not run here (that is the spike, docs/sdem-agent-platform-spike.md).
 Writes the evidence pack to docs/evidence/use-case-example-3/ and the results into docs/evidence/use-case-example-3.md.
 Usage: python scripts/use_case_example_3.py
@@ -68,13 +68,13 @@ def run():
         est = tmp / 'est'; shutil.copytree(SRC, est, ignore=shutil.ignore_patterns('graph'))
         drafts = est / 'coordination' / 'drafts'; cs4, cs3 = change_sets(est)
         _w(drafts / 'cs-a4-rehost.json', cs4); _w(drafts / 'cs-a3-repoint.json', cs3)
-        # the independent answer for AT-AG-01: sdem impact on the estate before any change
+        # the independent answer for AT-AG-01: sdem impact on the workspace before any change
         sdem('build', *sorted(map(str, est.glob('a*.json'))), est / 'mappings.json', '--out', tmp / 'graph-before')
         code, out, err = sdem('impact', 'INF-K8S-PAY-PROD', '--change', 'rehost', '--graph', tmp / 'graph-before', '--json')
         ref = json.loads(out); E['reference-impact-rehost.json'] = ref
 
         # ---- bad data first, so it is proven that nothing lands (controls)
-        args = ('--estate', est)
+        args = ('--workspace', est)
         code, out, err = sdem('change', 'propose', drafts / 'cs-a4-rehost.json', *args, '--agent', A3, '--person', PERSON)
         ctl('CTL-19', 'bad', 'the A3 agent proposes an A4 change set', code, err, True, 'CTL-19'); step(A3, ['sdem change propose cs-a4-rehost.json --agent', A3], code, out, err)
         bad = copy.deepcopy(cs4); bad['changes'].append({'op': 'update', 'record': copy.deepcopy(cs3['changes'][0]['record'])}); _w(drafts / 'bad-mixed.json', bad)
@@ -102,7 +102,7 @@ def run():
 
         # ---- round 1: the A4 agent (AT-AG-01)
         code, out, err = sdem('change', 'propose', drafts / 'cs-a4-rehost.json', *args, '--agent', A4, '--person', PERSON)
-        step(A4, ['sdem change propose coordination/drafts/cs-a4-rehost.json --estate <est> --agent', A4, '--person', PERSON], code, out, err)
+        step(A4, ['sdem change propose coordination/drafts/cs-a4-rehost.json --workspace <est> --agent', A4, '--person', PERSON], code, out, err)
         ctl('CTL-19', 'good', 'the A4 agent proposes its own A4 change set', code, out, False, '')
         ctl('CTL-20', 'good', 'a change set with agent and person', code, out, False, '')
         ev1 = agents.Estate(est).events()[0]
@@ -113,12 +113,12 @@ def run():
         crit('AT-AG-01', 'A4 agent drafts the rehost of INF-K8S-PAY-PROD', code == 0 and same and got.get('APP-PAY-HUB') == got.get('CMP-PAY-EXEC') == 'design_change_required'
              and ev1['impact']['mappings_to_supersede'] == ['PAY-108', 'PAY-111'] and set(a12.values()) == {'no_impact'},
              f"CS-001 accepted; CE-001 stored with impact. APP-PAY-HUB and CMP-PAY-EXEC: design change required; supersede {', '.join(ev1['impact']['mappings_to_supersede'])}; "
-             f"A1/A2 ({', '.join(sorted(a12))}): no impact. Matches `sdem impact INF-K8S-PAY-PROD --change rehost` on the estate before the change for every record it lists.",
+             f"A1/A2 ({', '.join(sorted(a12))}): no impact. Matches `sdem impact INF-K8S-PAY-PROD --change rehost` on the workspace before the change for every record it lists.",
              'events/CE-001.json, change-sets/CS-001.json, reference-impact-rehost.json')
 
         # ---- the orchestrator plans (AT-AG-02)
         code, out, err = sdem('work', 'plan', '--event', 'CE-001', *args, '--agent', ORCH, '--person', PERSON)
-        step(ORCH, ['sdem work plan --event CE-001 --estate <est> --agent', ORCH, '--person', PERSON], code, out, err)
+        step(ORCH, ['sdem work plan --event CE-001 --workspace <est> --agent', ORCH, '--person', PERSON], code, out, err)
         work = agents.Estate(est).work()
         layers = sorted({w['layer'] for w in work})
         crit('AT-AG-02', 'Orchestrator plans the work', code == 0 and work and set(layers) <= {'A3', 'A4'},
@@ -133,11 +133,11 @@ def run():
         for w in work:
             code, out, err = sdem('work', 'claim', w['id'], *args, '--agent', A3, '--person', PERSON); step(A3, ['sdem work claim', w['id'], '--agent', A3, '--person', PERSON], code, out, err)
         code, out, err = sdem('change', 'propose', drafts / 'cs-a3-repoint.json', *args, '--agent', A3, '--person', PERSON, '--work', *[w['id'] for w in work])
-        step(A3, ['sdem change propose coordination/drafts/cs-a3-repoint.json --estate <est> --agent', A3, '--person', PERSON, '--work', *[w['id'] for w in work]], code, out, err)
+        step(A3, ['sdem change propose coordination/drafts/cs-a3-repoint.json --workspace <est> --agent', A3, '--person', PERSON, '--work', *[w['id'] for w in work]], code, out, err)
         cs2 = _j(est / 'coordination' / 'change-sets' / 'CS-002.json')
         only_a3 = all(c['record']['type'].startswith('A3.') for c in cs2['changes'])
         code2, out2, err2 = sdem('work', 'plan', '--event', 'CE-002', *args, '--agent', ORCH, '--person', PERSON)
-        step(ORCH, ['sdem work plan --event CE-002 --estate <est> --agent', ORCH, '--person', PERSON], code2, out2, err2)
+        step(ORCH, ['sdem work plan --event CE-002 --workspace <est> --agent', ORCH, '--person', PERSON], code2, out2, err2)
         codel, outl, errl = sdem('link', *sorted(map(str, est.glob('a*.json'))), est / 'mappings.json', '--out', tmp / 'links')
         step('rules engine', ['sdem link <est>/a*.json <est>/mappings.json --out <links>'], codel, outl, errl)
         props = _j(tmp / 'links' / 'proposals.json')['mappings']; E['proposals.json'] = _j(tmp / 'links' / 'proposals.json')
@@ -153,12 +153,12 @@ def run():
         for i in d['instances']:
             if i['id'] == 'INF-K8S-PAY-PROD2': i['name'] = 'Managed Kubernetes — payments (production, region B)'
         a4p.write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-        code, out, err = sdem('check', '--estate', est)
+        code, out, err = sdem('check', '--workspace', est)
         ctl('CTL-20', 'bad', 'a dataset edited directly, outside a change set (AG-S08)', 1 if 'AG-S08' in out else 0, out, True, 'AG-S08')
-        code, out, err = sdem('change', 'adopt', '--estate', est, '--layer', 'A4', '--person', A4, '--reason', 'x')
+        code, out, err = sdem('change', 'adopt', '--workspace', est, '--layer', 'A4', '--person', A4, '--reason', 'x')
         ctl('CTL-20', 'bad', 'an agent adopts a direct edit as if it were a person', code, err, True, 'CTL-20')
         a4p.write_bytes(keep)                                     # undo the edit: the example's data stays as the agents left it
-        code, out, err = sdem('check', '--estate', est)
+        code, out, err = sdem('check', '--workspace', est)
         ctl('CTL-20', 'good', 'datasets exactly as the recorded change sets left them', 0 if code == 0 and 'AG-S08' not in out else 1, out, False, '')
 
         # ---- AT-AG-04/05/06 from the control tests
@@ -179,21 +179,21 @@ def run():
         crit('AT-AG-06', 'A change set without agent or person', found('a change set without the person behind it') and found('a change set without the agent') and found('a work item claimed without the person'),
              'rejected by CTL-20: no person; no agent; a work item claimed without a person', 'controls table')
 
-        # ---- AT-AG-07: the round limit, on a second copy of the estate
+        # ---- AT-AG-07: the round limit, on a second copy of the workspace
         est2 = tmp / 'est2'; shutil.copytree(SRC, est2, ignore=shutil.ignore_patterns('graph')); _w(est2 / 'coordination' / 'drafts' / 'cs.json', cs4)
-        sdem('change', 'propose', est2 / 'coordination' / 'drafts' / 'cs.json', '--estate', est2, '--agent', A4, '--person', PERSON)
-        code, out, err = sdem('work', 'plan', '--event', 'CE-001', '--estate', est2, '--agent', ORCH, '--person', PERSON, '--max-rounds', '1')
+        sdem('change', 'propose', est2 / 'coordination' / 'drafts' / 'cs.json', '--workspace', est2, '--agent', A4, '--person', PERSON)
+        code, out, err = sdem('work', 'plan', '--event', 'CE-001', '--workspace', est2, '--agent', ORCH, '--person', PERSON, '--max-rounds', '1')
         step(ORCH, ['sdem work plan --event CE-001 --max-rounds 1  (round limit test)'], code, out, err)
         crit('AT-AG-07', 'A ripple that keeps producing impact', code == 1 and 'STOP' in out, out.strip() or err.strip(), 'steps')
 
         # ---- AT-AG-08: the architect approves (sdem approve), supersedes and merges; the graph rebuilds
         chosen = sorted((m for m in props if m['relationship'] == 'DEPLOYED_ON' and m['target']['id'] == 'INF-K8S-PAY-PROD2'), key=lambda x: x['source']['id'])
-        code, out, err = sdem('approve', chosen[0]['mapping_id'], '--proposals', tmp / 'links' / 'proposals.json', '--estate', est, '--reviewer', A3, '--evidence', 'deployment_design:PAY-REHOST-2026-10#cutover', '--supersedes', 'PAY-108')
+        code, out, err = sdem('approve', chosen[0]['mapping_id'], '--proposals', tmp / 'links' / 'proposals.json', '--workspace', est, '--reviewer', A3, '--evidence', 'deployment_design:PAY-REHOST-2026-10#cutover', '--supersedes', 'PAY-108')
         ctl('CTL-21', 'bad', 'an agent approves a link (reviewer = an agent name)', code, err, True, 'CTL-21')
         for n, (m, old) in enumerate(zip(chosen, ('PAY-108', 'PAY-111')), 1):
-            code, out, err = sdem('approve', m['mapping_id'], '--proposals', tmp / 'links' / 'proposals.json', '--estate', est, '--reviewer', PERSON,
+            code, out, err = sdem('approve', m['mapping_id'], '--proposals', tmp / 'links' / 'proposals.json', '--workspace', est, '--reviewer', PERSON,
                                   '--evidence', 'deployment_design:PAY-REHOST-2026-10#cutover', '--supersedes', old, '--id', f'PAY-2{n:02d}', '--date', '2026-10-28')
-            step('architect', ['sdem approve', m['mapping_id'], '--proposals <links>/proposals.json --estate <est> --reviewer', PERSON, '--evidence deployment_design:PAY-REHOST-2026-10#cutover --supersedes', old, '--id', f'PAY-2{n:02d}'], code, out, err)
+            step('architect', ['sdem approve', m['mapping_id'], '--proposals <links>/proposals.json --workspace <est> --reviewer', PERSON, '--evidence deployment_design:PAY-REHOST-2026-10#cutover --supersedes', old, '--id', f'PAY-2{n:02d}'], code, out, err)
             if n == 1: ctl('CTL-21', 'good', 'a person approves a link with the required evidence', code, out, False, '')
         reg = _j(est / 'mappings.json'); E['registry-after-approval.json'] = reg
         cv, ov, ev_ = sdem('validate', '--strict', est / 'mappings.json'); step('architect', ['sdem validate --strict <est>/mappings.json'], cv, ov, ev_)

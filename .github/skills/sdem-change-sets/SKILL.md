@@ -5,7 +5,7 @@ description: How to write and propose an SDEM change set — the only way a laye
 
 # SDEM change sets
 
-A **change set** is a JSON file with the changes to **one** architecture layer. `sdem change propose` checks it against the metamodel and the controls **before** anything lands; if it is accepted it is applied to the layer's dataset and a **change event** with its impact is recorded in `<estate>/coordination/`.
+A **change set** is a JSON file with the changes to **one** architecture layer. `sdem change propose` checks it against the metamodel and the controls **before** anything lands; if it is accepted it is applied to the layer's dataset and a **change event** with its impact is recorded in `<workspace>/coordination/`.
 
 ## Format
 
@@ -32,14 +32,14 @@ Worked examples (the rehost in use-case example 3): [A4 rehost](example-a4-rehos
 ## Propose
 
 ```bash
-sdem change propose <estate>/coordination/drafts/<file>.json --estate <estate> --agent <your agent name> --person <the architect's name> [--work WI-001 WI-002] [--catalogue <bian.json>]
+sdem change propose <workspace>/coordination/drafts/<file>.json --workspace <workspace> --agent <your agent name> --person <the architect's name> [--work WI-001 WI-002] [--catalogue <bian.json>]
 ```
 
 Then read the output: the change set id (`CS-…`), the change event (`CE-…`), the records in other layers that need a design change, and the links to supersede. The orchestrator plans the follow-on work.
 
 ## Undo
 
-`sdem change revert <CS-id> --estate <estate> --agent <your agent> --person <name> --reason "…"` restores the layer exactly as it was before that change set, recorded as a new change set and change event; open work from the undone change is cancelled. Only the **latest** change set of a layer can be reverted, and only if nobody edited the file since.
+`sdem change revert <CS-id> --workspace <workspace> --agent <your agent> --person <name> --reason "…"` restores the layer exactly as it was before that change set, recorded as a new change set and change event; open work from the undone change is cancelled. Only the **latest** change set of a layer can be reverted, and only if nobody edited the file since.
 
 ## When it is rejected — what each message means
 
@@ -50,8 +50,8 @@ Then read the output: the change set id (`CS-…`), the change event (`CE-…`),
 | `CTL-19: relationship … leaves layer …` | a cross-layer link — remove it; `sdem link` proposes those |
 | `CTL-19: an A2 change set that adds records needs --catalogue` | A2 elements come only from the BIAN catalogue — pass `--catalogue` |
 | `CTL-20: … needs both the agent and the person` | add `--agent` and `--person` |
-| `CTL-20: WI-… is not claimed by …` | `sdem work claim WI-… --estate … --agent … --person …` first |
+| `CTL-20: WI-… is not claimed by …` | `sdem work claim WI-… --workspace … --agent … --person …` first |
 | `CTL-16: … is a projected or design record` | `PRJ-` / `DSN-` records are plans, never real data |
 | `the change set breaks the metamodel — nothing was changed:` + errors | fix each listed error (missing field, wrong type, a link the metamodel does not allow) — the `sdem-records` skill explains the fields |
 | `change set format: …` | the JSON does not match the format above |
-| `CTL-20 (AG-S08): … was changed outside a change set` (from `sdem check`) | someone edited the dataset file directly — agents never do; a **person** records their own edit with `sdem change adopt --estate … --layer … --person <their name> --reason …` |
+| `CTL-20 (AG-S08): … was changed outside a change set` (from `sdem check`) | someone edited the dataset file directly — agents never do; a **person** records their own edit with `sdem change adopt --workspace … --layer … --person <their name> --reason …` |

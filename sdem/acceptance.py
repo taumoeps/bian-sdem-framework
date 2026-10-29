@@ -1,7 +1,7 @@
 """Acceptance harness for the inference engine (relationship-rules-spec.md §8; DEC-E-01, DEC-E-05).
 
-For each case in examples/acceptance-cases.json: build a graph store from the estate's architecture datasets and the case's GIVEN
-registry only (never the estate's full registry, which would leak the answers), run the engine on it through the graph
+For each case in examples/acceptance-cases.json: build a graph store from the workspace's architecture datasets and the case's GIVEN
+registry only (never the workspace's full registry, which would leak the answers), run the engine on it through the graph
 access layer, validate its proposals, and score them against the sealed gold. The floor is the hand-executed run,
 scored the same way from its committed files. A case passes when the engine's precision and recall are each at least
 the floor's, for registry proposals and, where the case has a candidate gold, for candidate reports in its scope.

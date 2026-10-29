@@ -1,6 +1,6 @@
-"""Use-case example 2 — test Architecture Inference Design (AID) on the payment-initiation estate (docs/evidence/use-case-example-2.md).
+"""Use-case example 2 — test Architecture Inference Design (AID) on the payment-initiation workspace (docs/evidence/use-case-example-2.md).
 
-Hide layers of a known estate, let AID (sdem/aid.py) project them, and compare with the hidden real layers (gap analysis).
+Hide layers of a known workspace, let AID (sdem/aid.py) project them, and compare with the hidden real layers (gap analysis).
 Five runs, each checked against the expectations sealed in commit 17dbd33 before any run; the safety controls CTL-16 and
 CTL-17 tested with good and bad data. Writes the evidence pack to docs/evidence/use-case-example-2/ and the results into
 docs/evidence/use-case-example-2.md.
@@ -32,10 +32,10 @@ def empty_registry(): return {'registry_version': load_registry()['$schema_versi
 
 
 def catalogue(first='payment-initiation'):
-    """The test's BIAN catalogue: the A2 layer of every example estate combined, keyed on BIAN identity (type + name) as a
-    real catalogue is — the estates' ids are local, and 37 of them name different elements in different estates.
-    Same type and name → one record (the first estate's id); a local id already taken by another element → `<id>@<estate>`;
-    a part keeps one whole (the first estate's grouping), so the catalogue passes the dataset check."""
+    """The test's BIAN catalogue: the A2 layer of every example workspace combined, keyed on BIAN identity (type + name) as a
+    real catalogue is — the workspaces' ids are local, and 37 of them name different elements in different workspaces.
+    Same type and name → one record (the first workspace's id); a local id already taken by another element → `<id>@<workspace>`;
+    a part keeps one whole (the first workspace's grouping), so the catalogue passes the dataset check."""
     inst, rels, by_key, used, parent = [], [], {}, set(), {}
     files = sorted((ROOT / 'examples').glob('*/a2-service-domain.json'), key=lambda f: (f.parent.name != first, f.parent.name))
     for f in files:
@@ -53,13 +53,13 @@ def catalogue(first='payment-initiation'):
         inst += added
         for r in d.get('relationships', []):
             r2 = dict(r, source=local[r['source']], target=local[r['target']])
-            if r2['kind'] == 'composition':  # one whole per part, as in BIAN: the first estate's grouping is kept
+            if r2['kind'] == 'composition':  # one whole per part, as in BIAN: the first workspace's grouping is kept
                 if parent.setdefault(r2['target'], r2['source']) != r2['source']: continue
             if r2 not in rels: rels.append(r2)
     ids = {i['id'] for i in inst}
     cat = {'level': 'A2', 'model_id': 'aid-test-bian-catalogue', 'model_version': 'test', 'metamodel_version': Metamodel.load().version, 'source_system': 'combined example A2 layers',
            'instances': inst, 'relationships': [r for r in rels if r['source'] in ids and r['target'] in ids]}
-    # a merged element may now have more links than the metamodel allows (LC-10): keep the earlier estate's, drop the later one
+    # a merged element may now have more links than the metamodel allows (LC-10): keep the earlier workspace's, drop the later one
     mm, typ, dropped = Metamodel.load(), {i['id']: i['type'] for i in inst}, []
     while True:
         bad = [m for m in (re.match(r'instance (\S+): \d+ (\w+) links with (\S+), at most', x) for x in LevelGraph(cat, mm).validate()) if m]
@@ -251,7 +251,7 @@ def run():
     real = {lvl: _j(EST / f) for lvl, f in LEVELS.items()}; reg = _j(EST / 'mappings.json'); cat = catalogue()
     E['catalogue-summary.json'] = {'service_domains': sorted(f"{i['id']}: {i['name']}" for i in cat['instances'] if i['type'] == 'A2.ServiceDomain'),
                                    'records': len(cat['instances']), 'sha256': aid._sha(cat),
-                                   'links_dropped_on_merge (LC-10: kept the earlier estate\'s)': catalogue.dropped}
+                                   'links_dropped_on_merge (LC-10: kept the earlier workspace\'s)': catalogue.dropped}
     packages = {}
     for n, has, proj in RUNS:
         pkg = aid.project({l: real[l] for l in has}, cat, pid=f'PRJ-RUN{n}', created_at=CREATED); packages[n] = pkg
@@ -270,9 +270,9 @@ def run():
                       'bad': mark([s for s in R['safety'] if s['control'] == c and s['data'] == 'bad'])} for c in ('CTL-16', 'CTL-17')]
     R['findings'] = [
         {'id': 'AID-B1', 'what': 'design mode marked projections `DSN-` + `planned` only', 'action': 'closed — AID marks `PRJ-` with a `projection` object on every element (CTL-17)'},
-        {'id': 'AID-B2', 'what': 'the example estates use local ids: 37 A2 ids name different elements in different estates (e.g. `SD-CA` is Current Account in one, Credit Assessment in another)', 'action': 'the test catalogue merges by BIAN type + name and qualifies clashes (`SD-CA@digital-lending`); a real catalogue keys on BIAN canonical identity'},
+        {'id': 'AID-B2', 'what': 'the example workspaces use local ids: 37 A2 ids name different elements in different workspaces (e.g. `SD-CA` is Current Account in one, Credit Assessment in another)', 'action': 'the test catalogue merges by BIAN type + name and qualifies clashes (`SD-CA@digital-lending`); a real catalogue keys on BIAN canonical identity'},
         {'id': 'AID-B3', 'what': 'from A4 alone an application is known only by its id; domains come from id words (`PAY` → Payment …)', 'action': 'kept low; the weakest evidence R2 accepts — expect "projected only" domains'},
-        {'id': 'AID-B5', 'what': 'run 2 projected an extra API, PUT …/control for “Control Payment Instruction”: another estate gives the same Payment Initiation domain a Control operation the real estate does not have, and the catalogue merges both', 'action': 'shown as projected only; a real BIAN catalogue has one fixed operation list per domain, so this comes from the synthetic test data'},
+        {'id': 'AID-B5', 'what': 'run 2 projected an extra API, PUT …/control for “Control Payment Instruction”: another workspace gives the same Payment Initiation domain a Control operation the real workspace does not have, and the catalogue merges both', 'action': 'shown as projected only; a real BIAN catalogue has one fixed operation list per domain, so this comes from the synthetic test data'},
         {'id': 'AID-B6', 'what': 'run 4 projected Current Account from one word, “account”, in API paths and entity names (the engine\'s S17 fallback B) — at medium confidence (0.6), the same as the right domain, which rests on five API matches', 'action': 'closed 2026-10-28 (owner approved) — name-only evidence (engine fallbacks, description matches, verb-and-noun and id-word matches) is capped at low in AID and enforced by CTL-17; run 4 now shows Payment Initiation 0.6, Current Account 0.4. The engine itself still rates fallback B medium in the mapping lane — separate question'},
         {'id': 'AID-B4', 'what': 'the projection schema (AID-O05) and the view/trace PROJECTED label (AID-O06) were not built', 'action': 'closed 2026-10-28 — `schema/projection.schema.json`, checked by CTL-17; `sdem view` and `sdem trace` take `--projection`'}]
     return R

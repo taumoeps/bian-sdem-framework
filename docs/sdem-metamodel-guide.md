@@ -103,7 +103,7 @@ The same numbers appear in the [rules specification](design/relationship-rules-s
 | Green, orange, dashed or dotted arrow, e.g. `S20` | another rule: reported as a hint, never a connection |
 | Grey box | a kind of thing with no rule between layers, by decision |
 
-To see which connections *do* exist, open an estate's `mappings.json`, or run `sdem trace`.
+To see which connections *do* exist, open a workspace's `mappings.json`, or run `sdem trace`.
 
 ## The formal names
 

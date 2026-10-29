@@ -29,7 +29,7 @@ class DocumentedExamplesTests(unittest.TestCase):
             est = tmp / 'est'; shutil.copytree(ROOT / 'examples' / 'payment-initiation', est, ignore=shutil.ignore_patterns('graph'))
             shutil.copyfile(est / 'm1-mappings-given.json', est / 'mappings.json')
             run = lambda *a: subprocess.run([sys.executable, '-m', 'sdem', *a], cwd=ROOT, capture_output=True, text=True)
-            self.assertEqual(run('link', '--estate', str(est), '--out', str(tmp / 'links')).returncode, 0)
+            self.assertEqual(run('link', '--workspace', str(est), '--out', str(tmp / 'links')).returncode, 0)
             out = run('explain', 'P-RUN-013', '--proposals', str(tmp / 'links' / 'proposals.json')).stdout
             self.assertIn('rule says', out); self.assertIn('sources           [SAPG] https://', out)
         finally:
