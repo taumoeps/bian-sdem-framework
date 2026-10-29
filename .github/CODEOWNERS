@@ -2,7 +2,7 @@
 # This file only takes effect when branch protection on `main` requires a review from code owners.
 # In your organisation's copy, replace @taumoeps with the architects or team who approve (e.g. @your-org/architecture).
 
-# the rulebook and the formats
+# the metamodel and the formats
 /metamodel/                 @taumoeps
 /schema/                    @taumoeps
 

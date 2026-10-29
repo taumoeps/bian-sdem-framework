@@ -15,7 +15,7 @@ class UsageError(Exception):
 
 # name: (journey, what it does, module, fixed leading arguments, worked example)
 JOURNEYS = {
-    'check':    ('J1', 'check architecture datasets and registry against the rulebook', 'sdem.graph', ['check'],
+    'check':    ('J1', 'check architecture datasets and registry against the metamodel', 'sdem.graph', ['check'],
                  'sdem check --estate examples/payment-initiation'),
     'validate': ('J1', 'validate a relationship document (registry or proposals)', 'sdem.validate', [],
                  'sdem validate --strict --estate examples/payment-initiation'),
@@ -65,7 +65,7 @@ JOURNEYS = {
                  'sdem copilot install --dry-run'),
     'connect':  ('J3', 'a person states a connection the engine did not propose — the same checks as approve, both ends in the estate', 'sdem.connect', [],
                  'sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --estate estates/payments --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 --rationale "…"'),
-    'migrate':  ('—', 'move an estate to the current rulebook version — recorded migrations applied, checked, written all-or-nothing, recorded', 'sdem.migrate', [],
+    'migrate':  ('—', 'move an estate to the current metamodel version — recorded migrations applied, checked, written all-or-nothing, recorded', 'sdem.migrate', [],
                  'sdem migrate --estate estates/history --person jane.architect --dry-run'),
     'diff':     ('—', 'compare two versions of a relationship document', 'sdem.diff', [],
                  'sdem diff --git HEAD~1 examples/payment-initiation/mappings.json'),
@@ -159,8 +159,8 @@ def _rule_of(m):
     return r.group(1) if r else (m.get('projection') or {}).get('rule', '—')
 
 
-def _rulebook_sources():
-    """The rule records (id → record) and the published-source key (code → address) from the rulebook."""
+def _metamodel_sources():
+    """The rule records (id → record) and the published-source key (code → address) from the metamodel."""
     from .paths import DATA_ROOT
     mm = DATA_ROOT / 'metamodel'
     rules = {r['id']: r for r in json.loads((mm / 'relationship-rules.json').read_text(encoding='utf-8'))['mappings']}
@@ -260,7 +260,7 @@ def explain(argv):
             if a.id in (m['mapping_id'], m['source']['id'], m['target']['id']):
                 found.append({'kind': 'proposed link', 'id': m['mapping_id'], 'name': f"{m['source']['id']} -{m['relationship']}-> {m['target']['id']}",
                               'rule': _rule_of(m), 'confidence': m.get('confidence'), 'reasoning': m.get('rationale', ''), 'evidence': m.get('evidence', [])})
-    rules, sources = _rulebook_sources()
+    rules, sources = _metamodel_sources()
     found = [_with_sources(x, rules, sources) for x in found]
     if a.json: print(json.dumps(found, indent=2, ensure_ascii=False)); return 0 if found else 1
     if not found: print(f'{a.id}: not found in the given projection or proposals'); return 1

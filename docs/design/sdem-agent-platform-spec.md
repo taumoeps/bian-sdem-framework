@@ -39,13 +39,13 @@ All under the `sdem` CLI, with `--json`, the standard exit codes and `--help` wi
 
 | ID | Command | Does | Status |
 |---|---|---|---|
-| AG-K01 | `sdem change propose <change-set> --estate DIR --agent <name> --person <name>` | checks the change set against the rulebook and controls **before** it lands; on success applies it to the layer's dataset on the current branch, records the change event and stores the impact result | built — `sdem change propose <file> --estate DIR --agent … --person … [--work WI…] [--catalogue …]` |
+| AG-K01 | `sdem change propose <change-set> --estate DIR --agent <name> --person <name>` | checks the change set against the metamodel and controls **before** it lands; on success applies it to the layer's dataset on the current branch, records the change event and stores the impact result | built — `sdem change propose <file> --estate DIR --agent … --person … [--work WI…] [--catalogue …]` |
 | AG-K02 | `sdem change show <id>` | the change set, its checks and its impact | built — `sdem change show <CS-id> --estate DIR` |
 | AG-K03 | `sdem events [--open]` | change events with their impact summary | built — `sdem events --estate DIR [--open]` |
 | AG-K04 | `sdem work plan / list / claim / block / cancel / reopen` | work items — create (orchestrator), list (by layer, status), claim, update, close | built — `sdem work plan / list / claim / block / cancel / reopen`; *done* is set by `sdem change propose --work` |
 | AG-K05 | impact stored with each change event | computes impact for every changed record and stores it as the event's impact result | built — inside `sdem change propose` (impact stored with the event) |
 | AG-K06 | `sdem change revert <CS-id> --estate DIR --agent … --person … [--reason …]` | restores the layer as it was before the change set (from its before-snapshot) and records the reversal as a change set and change event, with its impact | built 2026-10-28 (T5) — only the latest change set of a layer, only when the layer is exactly as it left it; CTL-19/20 apply; open work from the reverted event is cancelled |
-| AG-K07 | `sdem change adopt --estate DIR --layer A? --person … --reason …` | records a person's direct edit of a layer as a change set (the diff against the last snapshot, with its impact), so the chain is whole again; refuses agent names and edits that break the rulebook | built 2026-10-28 (AG-S08) |
+| AG-K07 | `sdem change adopt --estate DIR --layer A? --person … --reason …` | records a person's direct edit of a layer as a change set (the diff against the last snapshot, with its impact), so the chain is whole again; refuses agent names and edits that break the metamodel | built 2026-10-28 (AG-S08) |
 
 ## 5. Controls
 

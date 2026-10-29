@@ -4,7 +4,7 @@
 
 | Area | Documents |
 |---|---|
-| **The rulebook — governing** | [high-level spec](architecture-metamodel-high-level-spec.md) (the owner's frozen reference) · [detail-level spec](architecture-metamodel-detail-level-spec.md) (governing, generated) · [rules spec](relationship-rules-spec.md) (generated) · [registry spec](relationship-registry-spec.md) (generated) · [governance](architecture-governance-spec.md) · [model diagram](architecture-model-diagram.puml) · [rulebook versioning](sdem-rulebook-versioning.md) |
+| **The metamodel — governing** | [high-level spec](architecture-metamodel-high-level-spec.md) (the owner's frozen reference) · [detail-level spec](architecture-metamodel-detail-level-spec.md) (governing, generated) · [rules spec](relationship-rules-spec.md) (generated) · [registry spec](relationship-registry-spec.md) (generated) · [governance](architecture-governance-spec.md) · [model diagram](architecture-model-diagram.puml) · [metamodel versioning](sdem-metamodel-versioning.md) |
 | **Knowledge graph and store** | [knowledge-graph design](knowledge-graph-design.md) · [spec](knowledge-graph-spec.md) (generated) · [graph store design](graph-store-design.md) · [spec](graph-store-spec.md) |
 | **Workbench and dashboards** | [workbench design](sdem-workbench-design.md) · [spec](sdem-workbench-spec.md) · [dashboard design](sdem-dashboard-design.md) · [spec](sdem-dashboard-spec.md) |
 | **Design onboarding** | [what happens inside](sdem-onboarding-internals.md) · [transform design](sdem-transform-design.md) · [spec](sdem-transform-spec.md) · [load design](sdem-load-design.md) · [spec](sdem-load-spec.md) |

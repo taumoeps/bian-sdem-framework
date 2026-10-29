@@ -1,4 +1,4 @@
-"""Use-case example 1 — test the rulebook (metamodel) on the payment-initiation datasets (docs/evidence/use-case-example-1.md).
+"""Use-case example 1 — test the metamodel on the payment-initiation datasets (docs/evidence/use-case-example-1.md).
 
 Runs the real checks and the real engine (sdem/rules_engine.py; no AI). Run 1: good data, no links between the layers at
 the start. Run 2: one planted mistake per copy of the data, so no mistake hides another. Approval is simulated: a stand-in
@@ -152,14 +152,14 @@ def run():
         with open(tmp / 't0.out', 'w') as fh:
             o0 = unittest.TextTestRunner(stream=fh).run(unittest.TestSuite([tt0.SourceReferenceCompletenessTests('test_every_layer_has_a_source_reference')]))
         E['run1-19-sources-complete.json'] = {'failures': [str(f[1]).splitlines()[-1] for f in o0.failures]}
-        t('7 Sources', 'every entity, link row, link type, rule and attribute in the rulebook', 'all name their source', 'all complete' if not o0.failures else 'incomplete', 'CTL-11', 'run1-19-sources-complete.json', not o0.failures)
+        t('7 Sources', 'every entity, link row, link type, rule and attribute in the metamodel', 'all name their source', 'all complete' if not o0.failures else 'incomplete', 'CTL-11', 'run1-19-sources-complete.json', not o0.failures)
         import sdem.confidence as conf
         cmis = conf.apply(write=False); E['run1-16-confidence-rule.json'] = cmis
-        t('7 Sources (confidence)', 'every confidence rating in the rulebook', 'all follow the single rule', f'{len(cmis)} disagree', 'CTL-12', 'run1-16-confidence-rule.json', not cmis)
+        t('7 Sources (confidence)', 'every confidence rating in the metamodel', 'all follow the single rule', f'{len(cmis)} disagree', 'CTL-12', 'run1-16-confidence-rule.json', not cmis)
         import contextlib, io, sdem.metamodel_spec as msp
         with contextlib.redirect_stdout(io.StringIO()): cur = msp.main(['--check'])
         E['run1-17-documents-current.json'] = {'detail_level_spec_check_exit_code': cur}
-        t('Platform (documents)', 'the governing specification against the rulebook', 'matches (not stale)', 'up to date' if cur == 0 else 'stale', 'CTL-13', 'run1-17-documents-current.json', cur == 0)
+        t('Platform (documents)', 'the governing specification against the metamodel', 'matches (not stale)', 'up to date' if cur == 0 else 'stale', 'CTL-13', 'run1-17-documents-current.json', cur == 0)
         import tests.test_metamodel_spec as tms
         hs = hashlib.sha256(tms.HIGH.read_bytes()).hexdigest(); E['run1-18-high-level-spec.json'] = {'sha256': hs, 'pinned': tms.HIGH_SHA256}
         t('Platform (frozen spec)', "the owner's high-level specification", 'unchanged', 'unchanged (checksum matches)' if hs == tms.HIGH_SHA256 else 'changed', 'CTL-14', 'run1-18-high-level-spec.json', hs == tms.HIGH_SHA256)
@@ -239,7 +239,7 @@ def run():
         finally:
             msp.OUT = keep
         E['run2-12-stale-document.json'] = {'check_exit_code': sc}
-        t('Platform (documents)', 'a governing specification that no longer matches the rulebook', 'reported stale', 'reported stale' if sc == 1 else 'not reported', 'CTL-13', 'run2-12-stale-document.json', sc == 1)
+        t('Platform (documents)', 'a governing specification that no longer matches the metamodel', 'reported stale', 'reported stale' if sc == 1 else 'not reported', 'CTL-13', 'run2-12-stale-document.json', sc == 1)
         edited_spec = tmp / 'high.md'; edited_spec.write_text(tms.HIGH.read_text(encoding='utf-8') + ' ', encoding='utf-8'); keep = tms.HIGH; tms.HIGH = edited_spec
         try:
             with open(tmp / 't2.out', 'w') as fh:
@@ -249,7 +249,7 @@ def run():
         E['run2-13-high-level-spec-edited.json'] = {'failures': [str(f[1]).splitlines()[-1] for f in o2.failures]}
         t('Platform (frozen spec)', "the owner's specification with one character added", 'the freeze test fails', 'fails' if o2.failures else 'passes', 'CTL-14', 'run2-13-high-level-spec-edited.json', bool(o2.failures))
         # ======== gaps
-        R['gaps'] = [{'id': 'G-A', 'finding': 'partly closed (CTL-22)', 'detail': "the engine reads only each rule's step and confidence from the rulebook; how a rule matches is in the engine's code. Since 2026-10-28 CTL-22 checks that the engine applies only rulebook rules, at their assigned steps, and implements every applicable one; the matching itself is still only in code"},
+        R['gaps'] = [{'id': 'G-A', 'finding': 'partly closed (CTL-22)', 'detail': "the engine reads only each rule's step and confidence from the metamodel; how a rule matches is in the engine's code. Since 2026-10-28 CTL-22 checks that the engine applies only metamodel rules, at their assigned steps, and implements every applicable one; the matching itself is still only in code"},
                      {'id': 'G-B', 'finding': 'confirmed, no risk today', 'detail': 'link-type limits are not checked, but all 9 link types are ' + ', '.join(sorted({x['cardinality'] for x in load_registry()['relationships']})) + ', so there is no limit to break yet'}]
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

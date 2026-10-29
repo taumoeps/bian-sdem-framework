@@ -1,6 +1,6 @@
 # Onboarding — what happens inside
 
-> **Status: current (v0.9.7)** — for builders and reviewers: what each onboarding step does to the data, and why the rulebook is never an output. The architect's guide is the [onboarding workflow](../sdem-onboarding-workflow.md).
+> **Status: current (v0.9.7)** — for builders and reviewers: what each onboarding step does to the data, and why the metamodel is never an output. The architect's guide is the [onboarding workflow](../sdem-onboarding-workflow.md).
 
 ## What each step does to the data
 
@@ -15,7 +15,7 @@ flowchart LR
     E -->|"sdem build"| G[("work/graph<br/>KNOWLEDGE GRAPH")]
     M --> G
     G -->|"use"| U(["trace · impact · matrix · dashboard"])
-    MM[["metamodel + schemas<br/>(the rulebook)"]] -.->|"checks every step"| W & E & P & M & G
+    MM[["metamodel + schemas<br/>(the metamodel)"]] -.->|"checks every step"| W & E & P & M & G
 ```
 
 **Only two steps create anything new:** the **transform** creates the architecture data; **`sdem build`** creates the graphs. Every other step reviews, moves, proposes or approves.
@@ -30,11 +30,11 @@ flowchart LR
 | **Approve** — `sdem approve` | you | a proposal becomes an approved record — your name, the date, the evidence, the BIAN release for BIAN links | records in `mappings.json` | `estates/history/mappings.json` | **refused** if evidence or the BIAN release is missing, or the reviewer is not a person | **approved links** |
 | **Build** — `sdem build` | SDEM | **the graphs are created** from the loaded data and approved links | a graph per architecture, `federated.graph.json` (the knowledge graph), `designs.graph.json` (pages and gaps) | `work/graph` | **refused** if any data fails validation, or it is unloaded candidate data (CTL-23) | **ready** |
 
-## The rulebook is not an output
+## The metamodel is not an output
 
 The metamodel (`metamodel/`) and the schemas (`schema/`) are **written and approved before any data**. Onboarding never generates or changes them; every step checks the data against them.
 
-| Rulebook file | Used by | For |
+| Metamodel file | Used by | For |
 |---|---|---|
 | `metamodel/a1…a4-*.json`, `entity-attributes.json` | transform, load, check, build | which entity types exist, their attributes |
 | `metamodel/level-relationships.json` | transform, load, check, build | which links are allowed **inside** an architecture |

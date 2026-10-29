@@ -4,7 +4,7 @@ This repository holds **our real architecture data**, checked and built with a p
 
 ```mermaid
 flowchart LR
-    S["SDEM (public)<br/>the tool and the rulebook<br/>tagged releases"] -- "pinned in requirements.txt" --> E["This repository (private)<br/>estates/ — our data<br/>CI checks every change"]
+    S["SDEM (public)<br/>the tool and the metamodel<br/>tagged releases"] -- "pinned in requirements.txt" --> E["This repository (private)<br/>estates/ — our data<br/>CI checks every change"]
     E -- "after merge" --> D["Dashboards<br/>local files for now;<br/>later internal, sign-in only"]
     A["Architects<br/>VS Code + sdem"] -- "pull requests" --> E
     R["Reviewers (code owners)"] -- "approve and merge" --> E
@@ -62,7 +62,7 @@ Any domain works the same way: create `estates/<domain>/` (by onboarding its des
 
 | Check | Command | Fails when |
 |---|---|---|
-| Follows the rulebook | `sdem check --estate` | a record or link breaks a rule or control |
+| Follows the metamodel | `sdem check --estate` | a record or link breaks a rule or control |
 | Approved links unchanged | `sdem diff --git <base>` | an approved link was edited or removed (supersede it instead) |
 | Builds | `sdem build --estate` | the knowledge graphs cannot be built |
 | Open gaps | `sdem designs --gaps --status open` | never — listed for information |
@@ -79,7 +79,7 @@ They show real architecture. Publish them **only** behind your organisation's si
 
 1. On a branch, change the tag in `requirements.txt` to the new release; read its CHANGELOG.
 2. `pip install -r requirements.txt`, then `bash ci/check-estates.sh`.
-3. If SDEM says an estate's `metamodel_version` does not match, the rulebook changed: `sdem migrate --estate estates/<name> --person <you> --dry-run`, then without `--dry-run`. See SDEM's [rulebook versioning](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/design/sdem-rulebook-versioning.md).
+3. If SDEM says an estate's `metamodel_version` does not match, the metamodel changed: `sdem migrate --estate estates/<name> --person <you> --dry-run`, then without `--dry-run`. See SDEM's [metamodel versioning](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/design/sdem-metamodel-versioning.md).
 4. If you use Copilot: `sdem copilot install` — it updates the Copilot files to the new SDEM version and keeps any your team has changed (it lists them).
 5. Pull request; CI green; merge.
 

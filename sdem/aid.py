@@ -30,18 +30,18 @@ SCHEMA = _DATA_ROOT / 'schema' / 'projection.schema.json'
 FILES = {'A1': 'projected-a1-business.json', 'A2': 'projected-a2-service-domain.json', 'A3': 'projected-a3-application.json', 'A4': 'projected-a4-technology.json'}
 CATALOGUE_RULE = 'BIAN catalogue reference'
 PROVENANCE = ('step', 'rule', 'source_reference', 'inferred_from', 'reasoning', 'confidence')
-# AID's own rule names → the rulebook rule whose published basis they rest on (relationship-rules.json `source_reference`)
+# AID's own rule names → the metamodel rule whose published basis they rest on (relationship-rules.json `source_reference`)
 RULE_BASIS = {'BIAN container pattern': 'S17', 'BIAN REST mapping': 'S24', 'named by A4': 'S32', 'domain name': 'S01'}
 
 
 def basis(rule, step=None, catalogue=None):
-    """The source reference for a projection rule: the rulebook rule and its published basis."""
+    """The source reference for a projection rule: the metamodel rule and its published basis."""
     if rule == CATALOGUE_RULE: return f"BIAN reference catalogue `{(catalogue or {}).get('model_id', '?')}` — the element is copied, not invented"
     if rule == 'name (id words)': return 'none published — SDEM fallback (AID-R02): words of an application id matched to domain names'
     if rule == 'service group': return 'none published — SDEM pattern (AID-R03): one process candidate per BIAN service group; the grouping itself is BIAN\'s ([SL14])'
     rid = 'S32' if (rule == 'BIAN container pattern' and step == 'F3') else RULE_BASIS.get(rule) or (re.match(r'(S\d\d|B\d\d)', rule or '') or [None])[0]
     r = _rules().get(rid)
-    return f"{rid}: {r['source_reference']}" if r else f'{rule}: no rulebook entry'
+    return f"{rid}: {r['source_reference']}" if r else f'{rule}: no metamodel entry'
 
 
 NAME_ONLY = re.compile(r'fallback|step5|verb and noun match|contains \[.*\], which begin words')

@@ -4,7 +4,7 @@
 
 ## 1. Overview
 
-SDEM is a command-line tool. It reads files you point it at, checks them against its rulebook, and writes files into folders you choose: architecture records for the four layers (A1 business, A2 BIAN service domains, A3 applications, A4 technology), the connections between them, knowledge graphs, reports and HTML pages.
+SDEM is a command-line tool. It reads files you point it at, checks them against its metamodel, and writes files into folders you choose: architecture records for the four layers (A1 business, A2 BIAN service domains, A3 applications, A4 technology), the connections between them, knowledge graphs, reports and HTML pages.
 
 **Where your information goes is decided by where you run SDEM and where you keep its files** — your machine, your organisation's private repository, any optional services you connect. SDEM itself sends nothing anywhere.
 

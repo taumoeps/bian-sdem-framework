@@ -8,7 +8,7 @@ GitHub Copilot reads agents, prompts and skills only from the folder open in VS 
 
 ## The idea
 
-The Copilot files ship **with SDEM** (package data, like the rulebook), and one command puts the ones for real work into the estate repository, matching the installed SDEM version:
+The Copilot files ship **with SDEM** (package data, like the metamodel), and one command puts the ones for real work into the estate repository, matching the installed SDEM version:
 
 ```bash
 cd <your estate repository>

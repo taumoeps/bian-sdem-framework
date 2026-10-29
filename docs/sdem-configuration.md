@@ -2,7 +2,7 @@
 
 > **Status: current (v0.9.7)** — everything you can set, where, and who decides. SDEM works with no configuration at all; this page is for setting it up for a team.
 
-SDEM has **no configuration file and no server settings**. What you can set is: where your data lives, how design onboarding reads your documents, your tools (VS Code, Copilot), and your estate repository. The rulebook itself is **not** configurable — it is the same for everyone, and only the SDEM owner changes it.
+SDEM has **no configuration file and no server settings**. What you can set is: where your data lives, how design onboarding reads your documents, your tools (VS Code, Copilot), and your estate repository. The metamodel itself is **not** configurable — it is the same for everyone, and only the SDEM owner changes it.
 
 ## At a glance
 

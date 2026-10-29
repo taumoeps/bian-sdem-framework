@@ -60,7 +60,7 @@ sdem load work/history --estate estates/history --person jane.architect --exclud
 1. **Checks the source** is a transform output: `extraction.json` present, its datasets marked `CONFLUENCE-EXTRACT`. Anything else is refused.
 2. **Selects** the entities the person chose. A link inside an architecture is kept only when **both** ends are loaded; a `deployed_on` reference to an entity not loaded is dropped. What was dropped is listed.
 3. **Merges** into the estate: an entity already there with the **same content** is skipped; with **different content** the load is refused (a person resolves it — rename, exclude, or edit the estate). A dataset the estate does not have yet is created (`model_id` `<estate>-<A>`, `source_system` `SDEM-LOAD`).
-4. **Checks the whole estate as it would be** — every dataset, the registry, the rulebook — **before writing**. Any error: nothing is written.
+4. **Checks the whole estate as it would be** — every dataset, the registry, the metamodel — **before writing**. Any error: nothing is written.
 5. **Writes** the datasets and a **load record** `<estate>/loads/LOAD-<n>.json`: who, when, from which transform run (export and rules fingerprints), what was loaded, excluded and dropped, the A2 dataset added, the check result.
 6. **Prints next steps** and the **BIAN mentions** from the transform as hints for `sdem link`.
 

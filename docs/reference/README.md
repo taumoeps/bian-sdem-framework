@@ -1,6 +1,6 @@
 # Reference
 
-> **Status: current — generated from the rulebook** by `sdem model regenerate`; CI fails if any of these is out of date. Never edit them by hand. Looked up, not read end to end — start with [the rulebook in plain words](../sdem-rulebook-guide.md).
+> **Status: current — generated from the metamodel** by `sdem model regenerate`; CI fails if any of these is out of date. Never edit them by hand. Looked up, not read end to end — start with [the metamodel in plain words](../sdem-metamodel-guide.md).
 
 | Document | Lists |
 |---|---|

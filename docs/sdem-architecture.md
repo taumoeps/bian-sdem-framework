@@ -24,7 +24,7 @@ flowchart TB
         AID["🗺️ Plan<br/>sdem aid"]
         AGT["🤖 Agent records<br/>change · events · work"]
     end
-    RB[("📘 Rulebook<br/>metamodel/ · schema/")]
+    RB[("📘 Metamodel<br/>metamodel/ · schema/")]
     EST[("🗂️ Estate<br/>your data")]
     GS[("🕸️ Graph store<br/>the knowledge graph")]
     T --> SDEM
@@ -38,7 +38,7 @@ flowchart TB
 
 | Part | Command | What it does |
 |---|---|---|
-| **Check** | `sdem check`, `sdem validate` | every record and connection against the rulebook |
+| **Check** | `sdem check`, `sdem validate` | every record and connection against the metamodel |
 | **Engine** | `sdem link` | proposes connections between layers, by rules, with reasons and confidence |
 | **Approve** | `sdem review`, `sdem approve` | a person reviews proposals and approves them, with evidence |
 | **Build** | `sdem build`, `sdem baseline` | builds the knowledge graph from data that passes every check; freezes a named version |
@@ -47,7 +47,7 @@ flowchart TB
 | **Onboard** | `sdem transform`, `load`, `designs` | brings existing designs in from a Confluence export |
 | **Plan** | `sdem aid` | projects missing layers for planning — kept apart from real data |
 | **Agents** | `sdem change`, `events`, `work` | the records the Copilot agents work through |
-| **Maintain** | `sdem migrate`, `diff`, `model` | move an estate to a new rulebook; prove approved links unchanged; maintainers' checks |
+| **Maintain** | `sdem migrate`, `diff`, `model` | move an estate to a new metamodel; prove approved links unchanged; maintainers' checks |
 
 Every command and its options: the [command reference](sdem-workbench-user-guide.md#7-command-reference).
 
@@ -56,7 +56,7 @@ Every command and its options: the [command reference](sdem-workbench-user-guide
 ```mermaid
 flowchart LR
     subgraph PUB["SDEM repository — public"]
-        P1["the sdem command<br/>the rulebook<br/>made-up examples"]
+        P1["the sdem command<br/>the metamodel<br/>made-up examples"]
     end
     subgraph PRIV["Your estate repository — private"]
         E1["estates/&lt;domain&gt;/<br/>your data"]
@@ -71,7 +71,7 @@ flowchart LR
 | Where | What | Committed? |
 |---|---|---|
 | **The base BIAN** — `bian/` (inside the installed SDEM) | BIAN's public Semantic APIs 14.0.0, packed — where your BIAN layer is imported from unless you use your own | in the SDEM repository; replaced by your own pack if you have one |
-| **The rulebook** — `metamodel/`, `schema/` (inside the installed SDEM) | the kinds of thing, links, rules, controls, file formats | in the SDEM repository; changed only by the SDEM owner |
+| **The metamodel** — `metamodel/`, `schema/` (inside the installed SDEM) | the kinds of thing, links, rules, controls, file formats | in the SDEM repository; changed only by the SDEM owner |
 | **An estate** — a folder, e.g. `estates/payments/` | your data — see below | **yes**, in your private estate repository |
 | **The graph store** — e.g. `work/graph/` | the knowledge graph `sdem build` writes | no — rebuilt from the estate at any time |
 | **Scratch** — `work/` | design exports, proposals, dashboards, reports | **never** (ignored by Git) |
@@ -87,7 +87,7 @@ This is the one full list; other documents link here.
 | `designs/design-records.json` | the pages onboarded designs came from, and the **gap records** | `sdem load`, `sdem designs` | no |
 | `loads/LOAD-nnn.json` | what each load brought in, by whom, and the reconciliation | `sdem load` | no |
 | `bian-updates/BU-nnn.json` | each update of the estate's BIAN layer | `sdem bian update` | no |
-| `migrations/MIG-nnn.json` | each move to a new rulebook version | `sdem migrate` | no |
+| `migrations/MIG-nnn.json` | each move to a new metamodel version | `sdem migrate` | no |
 | `coordination/` | agents' change sets, change events and work items | `sdem change`, `events`, `work` | no |
 
 ### Inside a graph store
@@ -118,13 +118,13 @@ sequenceDiagram
 
 | Moment | Check | If it fails |
 |---|---|---|
-| Every command that writes | the rulebook's controls on the data it would write | nothing is written (writes are all-or-nothing) |
+| Every command that writes | the metamodel's controls on the data it would write | nothing is written (writes are all-or-nothing) |
 | `sdem approve` | reviewer is a person; evidence of the kind the connection needs; the record is valid | refused |
 | `sdem build` | every record and connection; no unreviewed onboarding candidates | the last good graph is kept; the failure is logged |
 | Pull request (estate CI) | `sdem check`, `sdem build`, approved connections unchanged since the base branch | the pull request cannot merge (with branch protection) |
 | Merge | a code owner's review | — |
 
-Every control in plain words: [the rulebook guide](sdem-rulebook-guide.md#the-controls--what-sdem-refuses).
+Every control in plain words: [the metamodel guide](sdem-metamodel-guide.md#the-controls--what-sdem-refuses).
 
 ## What runs where, and what leaves the machine
 

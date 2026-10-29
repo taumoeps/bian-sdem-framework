@@ -20,7 +20,7 @@ flowchart LR
 
 **`sdem connect`** lets a person state a connection the engine did not propose, with the same governance as `sdem approve` — it builds the record and passes it through the same approval: a person as reviewer (CTL-21), the evidence the connection type requires, one of the nine types between the right kinds of record (CTL-05), the BIAN release where needed — and additionally checks that both ends exist in the estate and the whole estate passes. The record says it was **stated by a person** (`created_by: sdem connect`), not proposed by the engine.
 
-Neither changes the rulebook.
+Neither changes the metamodel.
 
 ## Requirements
 

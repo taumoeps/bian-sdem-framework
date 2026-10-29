@@ -31,7 +31,7 @@
 |---|---|---|---|
 | HI-R01 | Tables: the heading row chooses the type (HT-*); description, lifecycle and attribute columns are read; source/target tables (HL-*) give links | built | `test_tables_become_records` |
 | HI-R02 | draw.io: every attachment of a page is tested by content — XML (`<mxfile>`, `<mxGraphModel>`), compressed diagrams, PNG `mxfile` text chunks, SVG `content` — whatever its file name; ArchiMate shapes (HD-*), then fill colour, label words, shape words, known names, the heading's architecture | built | `test_every_kind_of_drawio_file_is_read` |
-| HI-R03 | Lines become relationships of a kind the rulebook allows (else association); a phrase on the line chooses the kind; a shape inside another is part of it, or deployed on it across architectures; lines between architectures become candidates with their SDEM link type, merged by source, target and type | built | `test_lines_and_containment` |
+| HI-R03 | Lines become relationships of a kind the metamodel allows (else association); a phrase on the line chooses the kind; a shape inside another is part of it, or deployed on it across architectures; lines between architectures become candidates with their SDEM link type, merged by source, target and type | built | `test_lines_and_containment` |
 | HI-R04 | Narrative: only known names (found in the export or `--known`); phrases between two names (HP-*) give links; text never creates records; a name equal to an existing record is flagged `same_as_existing` | built | `test_narrative_uses_known_names_only` |
 | HI-R05 | Pasted pictures (not draw.io, not a draw.io preview, not an icon or emoticon) and shapes no rule types are listed for a person | built | `test_pictures_and_unknown_shapes_go_to_a_person` |
 

@@ -34,11 +34,11 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | **Base BIAN**: BIAN's public Semantic APIs 14.0.0 ship with SDEM (Apache-2.0); `sdem bian list / import / pack` builds the BIAN layer from it or from an organisation's own BIAN | done |
 | **Copilot where real work happens**: `sdem copilot install` puts the agents, prompts and skills into the estate repository, matching the SDEM version | done |
 | **Operating it**: approved operating model and pilot plan; private estate-repository template with CI; documentation reorganised for newcomers and checked on every push (status, links, owners, drift); two new-architect walkthroughs and their fixes | done |
-| **Rulebook**: CTL-24 registered; rule S17's source reference closed | done |
+| **Metamodel**: CTL-24 registered; rule S17's source reference closed | done |
 
 ## v0.8.0 — the tool release (2026-10-29)
 
-Everything built since v0.7.0, released as one tool release after the 2026-10-29 audit; the rulebook stays at `metamodel_version` 0.4.0 until the baseline below is approved. Details: [`../CHANGELOG.md`](../../CHANGELOG.md).
+Everything built since v0.7.0, released as one tool release after the 2026-10-29 audit; the metamodel stays at `metamodel_version` 0.4.0 until the baseline below is approved. Details: [`../CHANGELOG.md`](../../CHANGELOG.md).
 
 | Deliverable | Status |
 |---|---|
@@ -46,7 +46,7 @@ Everything built since v0.7.0, released as one tool release after the 2026-10-29
 | **Graph store**: JSON Graph Format files, load record, baselines, queries, offline HTML view ([`graph-store-design.md`](graph-store-design.md)) | done |
 | **Inference engine**: `sdem link` — steps 1–5 and design mode; 8 of 8 acceptance cases; fast and deterministic (2,040 records in about 1 s) | done |
 | **Built ahead of their roadmap releases** (below): design onboarding (v0.11), AID (v0.12), change events (v0.13), the SDEM workbench (v0.14), dashboards (v0.16), agent platform Level 1 (v0.17) | done — see each row |
-| **Operational readiness** (audit phases 1–3): works when installed, clear errors and exit codes, all-or-nothing writes, `sdem migrate` and rulebook versioning, `SECURITY.md`, real data kept out of this repository, the SDMM compatibility layer removed | done |
+| **Operational readiness** (audit phases 1–3): works when installed, clear errors and exit codes, all-or-nothing writes, `sdem migrate` and metamodel versioning, `SECURITY.md`, real data kept out of this repository, the SDMM compatibility layer removed | done |
 
 ## Waiting on review — the 0.8 baseline (tag `SDEM-METAMODEL-0.8`)
 

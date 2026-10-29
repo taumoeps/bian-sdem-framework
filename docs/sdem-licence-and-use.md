@@ -33,10 +33,10 @@ What SDEM reads, writes and stores, and what optional tools around it may send: 
 
 | Part | Whose | Licence |
 |---|---|---|
-| The tool, the rulebook, the schemas, the documentation, the templates, the made-up examples | the SDEM project | **Apache-2.0** (`LICENSE`) |
+| The tool, the metamodel, the schemas, the documentation, the templates, the made-up examples | the SDEM project | **Apache-2.0** (`LICENSE`) |
 | The **base BIAN** (`bian/`) — BIAN's Semantic APIs 14.0.0, packed; descriptions left out | **BIAN e.V.**, published openly on GitHub | BIAN's **Apache-2.0** (`bian/LICENSE`, what was changed: `bian/README.md`) |
 
-**Nothing else from others is included.** SDEM's rulebook *names* concepts from published reference architectures and explains each in its own words; it does not copy their text:
+**Nothing else from others is included.** SDEM's metamodel *names* concepts from published reference architectures and explains each in its own words; it does not copy their text:
 
 | Source | Public? | How SDEM uses it |
 |---|---|---|
@@ -64,7 +64,7 @@ The Apache License 2.0 permits all of the following — for one architect or a w
 | 3 | **Organisation-wide deployment** across architecture teams | one private estate repository, a pinned SDEM version, reviewers and checks — the [estate repository template](../templates/estate-repo/README.md) and [operating model](sdem-operating-model.md) |
 | 4 | **Private modifications and extensions** | permitted; keep them in your own copy (a fork) of SDEM, under the Apache License 2.0 |
 | 5 | **Your own BIAN service-domain catalogue** | without changing SDEM: choose service domains from the base BIAN, or pack your own BIAN and use it instead (`sdem bian pack`, `--base <your pack>`) — [your BIAN layer](sdem-configuration.md#your-bian-layer-sdem-bian) |
-| 6 | **Your own kinds of thing, attributes and metamodel** | today, in your own copy of SDEM: the rulebook is the files in `metamodel/` and `schema/`, with `sdem model regenerate` and `sdem model check` keeping the generated documents in step ([contributing](../CONTRIBUTING.md#generated-files--never-edit-them-by-hand)) — or propose the change to the SDEM project |
+| 6 | **Your own kinds of thing, attributes and metamodel** | today, in your own copy of SDEM: the metamodel is the files in `metamodel/` and `schema/`, with `sdem model regenerate` and `sdem model check` keeping the generated documents in step ([contributing](../CONTRIBUTING.md#generated-files--never-edit-them-by-hand)) — or propose the change to the SDEM project |
 | 7 | **Your own relationship and governance rules** | how your designs are read: your transform rules, without changing SDEM ([onboarding — reading your designs](sdem-configuration.md#onboarding--reading-your-designs)); who approves and what must pass: code owners, branch protection and CI in your estate repository ([reviewers and protection](sdem-configuration.md#reviewers-and-protection)); the connection rules themselves (`metamodel/relationship-rules.json`): in your own copy |
 | 8 | **Your own architecture repositories** | private estate repositories you own and control |
 | 9 | **Internal knowledge graphs and dashboards** | built on your machines (`sdem build`, `sdem home`); self-contained HTML files you may host internally behind sign-in |

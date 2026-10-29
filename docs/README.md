@@ -26,7 +26,7 @@ flowchart LR
 
 | Read | For |
 |---|---|
-| [The rulebook in plain words](sdem-rulebook-guide.md) | the kinds of thing, the nine connections between layers, how sure SDEM is, what it refuses |
+| [The metamodel in plain words](sdem-metamodel-guide.md) | the kinds of thing, the nine connections between layers, how sure SDEM is, what it refuses |
 | [SDEM architecture](sdem-architecture.md) | the parts, where every file lives, how a change flows, what checks it, limits |
 
 ## Setting it up and running it
@@ -38,7 +38,7 @@ flowchart LR
 | [Adoption checklist](sdem-adoption-checklist.md) | what your organisation clears first: legal and licences, data, security, AI, and depending on an open-source tool |
 | [Operating model](sdem-operating-model.md) | where things live, who does what, how changes and upgrades flow, support |
 | [Configuration](sdem-configuration.md) | everything you can set: estates, the SDEM version, how onboarding reads designs, OCR, reviewers, CI, VS Code, Copilot |
-| [Administration](sdem-administration.md) | installing, upgrading, rulebook changes, backups, health, troubleshooting |
+| [Administration](sdem-administration.md) | installing, upgrading, metamodel changes, backups, health, troubleshooting |
 | [Repository protection](sdem-repository-protection.md) | branch protection and code owners, so a person's approval is enforced |
 | [Copilot set-up](sdem-copilot-setup.md) · [agent spike checklist](sdem-agent-platform-spike.md) | GitHub Copilot and the SDEM agents (optional), and the checklist to try them |
 | [Pilot plan](sdem-pilot-plan.md) | the first ten weeks on real designs |
@@ -48,7 +48,7 @@ flowchart LR
 
 | Read | For |
 |---|---|
-| [Reference](reference/README.md) | generated from the rulebook: every kind of thing and attribute, the data models, the controls register, sources |
+| [Reference](reference/README.md) | generated from the metamodel: every kind of thing and attribute, the data models, the controls register, sources |
 
 ---
 
@@ -56,7 +56,7 @@ flowchart LR
 
 | Folder | Holds | Read it if you |
 |---|---|---|
-| [`design/`](design/README.md) | every design and specification, the governing specs, the roadmap, the reasoning behind the rules | change SDEM, review the rulebook, or want to know *why* |
+| [`design/`](design/README.md) | every design and specification, the governing specs, the roadmap, the reasoning behind the rules | change SDEM, review the metamodel, or want to know *why* |
 | [`evidence/`](evidence/README.md) | the use-case examples and test records, with their recorded results | want proof that something was tested |
 | [`history/`](history/README.md) | documents that are no longer current | are tracing how SDEM got here |
 

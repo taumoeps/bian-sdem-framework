@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Estate CI — every estate in estates/ follows the rulebook, builds, and keeps its approved links unchanged.
+# Estate CI — every estate in estates/ follows the metamodel, builds, and keeps its approved links unchanged.
 # Usage: bash ci/check-estates.sh [BASE]
 #   BASE  the git revision to compare approved links against (a pull request's base branch). Omitted: origin/main, else
 #         main — so a local run checks everything CI checks; if neither exists, that one check is skipped and the run says so.
@@ -23,7 +23,7 @@ for dir in estates/*/; do
   n=$((n + 1))
   echo "::group::$e"
 
-  echo "== $e: follows the rulebook (sdem check)"
+  echo "== $e: follows the metamodel (sdem check)"
   sdem check --estate "$e" || { echo "FAIL $e: does not pass sdem check"; fail=1; }
 
   if [ -n "$base" ]; then

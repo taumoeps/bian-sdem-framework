@@ -31,8 +31,8 @@ The hard questions cross all four: *Which applications support this capability? 
 
 SDEM gives you:
 
-- a **rulebook** (the metamodel) — what may exist in each architecture and how things may be linked, each rule with its published source;
-- **checks** — your data is tested against the rulebook before it is trusted;
+- a **metamodel** — what may exist in each architecture and how things may be linked, each rule with its published source;
+- **checks** — your data is tested against the metamodel before it is trusted;
 - an **inference engine** — proposes the links between the architectures, each with its reasoning and confidence, for **you** to approve;
 - a **knowledge graph** — the checked data and approved links, which you can **trace** end to end and use for **impact analysis**;
 - **AID (Architecture Inference Design)** — a planning tool that projects the architecture layers you don't have yet, from the ones you do.
@@ -47,8 +47,8 @@ You run all of it from **VS Code**: commands in the terminal, and GitHub Copilot
 | **Record** | one thing in an architecture: a capability, a service domain, an application, a cluster … each with an `id`, `type`, `name` |
 | **Link** (relationship) | a connection between records of **different** architectures, e.g. *service domain Payment Initiation* is **REALIZED_BY** *application Payments Hub* |
 | **Registry** (`mappings.json`) | the file of links, each with a status: `proposed` (suggested) or `approved` (a person accepted it) |
-| **Rulebook** (metamodel) | the rules: which record types exist, which links are allowed, what evidence a link needs |
-| **Inference engine** | proposes links by applying the rulebook to your data; never approves |
+| **Metamodel** | the rules: which record types exist, which links are allowed, what evidence a link needs |
+| **Inference engine** | proposes links by applying the metamodel to your data; never approves |
 | **Graph store** | a folder holding the checked datasets and approved links as a knowledge graph — what trace, impact and the view read |
 | **Trace** | follow the links from a record down (to technology) or up (to business) |
 | **Impact** | which records a change (replace, rehost, retire …) affects, and how |
@@ -91,7 +91,7 @@ Then:
    ```bash
    sdem --help
    ```
-   You should see the list of commands, starting with `check J1 check architecture datasets and registry against the rulebook`.
+   You should see the list of commands, starting with `check J1 check architecture datasets and registry against the metamodel`.
 
 Each time you open a new terminal later, run the `activate` line from step 5 again. If you cannot install anything, every command also works as `python3 -m sdem …` from the project folder.
 
@@ -103,7 +103,7 @@ Each time you open a new terminal later, run the `activate` line from step 5 aga
 │ the project's files:   │ the file you opened, e.g. a dataset  │ ask for help in plain words  │
 │ ▸ docs/      guides    │                                      │                              │
 │ ▸ examples/  estates   │                                      │ "explain this output"        │
-│ ▸ metamodel/ rulebook  │                                      │ "which command shows …?"     │
+│ ▸ metamodel/ metamodel  │                                      │ "which command shows …?"     │
 │ ▸ schema/              ├──────────────────────────────────────┤ "draft the impact note"     │
 │ ▸ sdem/      the code  │ TERMINAL — where you run sdem        │                              │
 │                        │ $ sdem check …                       │                              │
@@ -129,7 +129,7 @@ Each time you open a new terminal later, run the `activate` line from step 5 aga
 sdem home -o work/sdem
 ```
 
-and open `work/sdem/index.html` (the command prints the full `file://` address). It opens on **SDEM's architecture** — every component (the BIAN reference, the rulebook, the mapping engine, validation and approval, the knowledge graph, the four architectures, AID and its projections, change coordination, the workbench), marked built or not, each clickable for what it is, where it lives and its live figures. The other tabs show SDEM itself — its health (checked as the page is made), the metamodel (every entity type, the links allowed inside and between the architectures, the engine's rules, a clickable picture), the configuration — and **every project**, each linking to its own dashboard. Add your own estates with `--estate <folder>` or `--root <folder of estates>`.
+and open `work/sdem/index.html` (the command prints the full `file://` address). It opens on **SDEM's architecture** — every component (the BIAN reference, the metamodel, the mapping engine, validation and approval, the knowledge graph, the four architectures, AID and its projections, change coordination, the workbench), marked built or not, each clickable for what it is, where it lives and its live figures. The other tabs show SDEM itself — its health (checked as the page is made), the metamodel (every entity type, the links allowed inside and between the architectures, the engine's rules, a clickable picture), the configuration — and **every project**, each linking to its own dashboard. Add your own estates with `--estate <folder>` or `--root <folder of estates>`.
 
 **One project's dashboard** on its own:
 
@@ -161,11 +161,11 @@ E=examples/payment-initiation
 ```
 *(Windows PowerShell: `$E="examples/payment-initiation"` — and see §11 about `a*.json`.)*
 
-**Step 2 — check the data against the rulebook (J1):**
+**Step 2 — check the data against the metamodel (J1):**
 ```bash
 sdem check --estate $E
 ```
-(`--estate` names the estate folder; it is the same as listing its five files, `$E/a*.json $E/mappings.json`.) You see one `OK` line per architecture and for the registry. `WARN` lines are advice (something the rulebook expects but does not require); `ERROR` lines must be fixed.
+(`--estate` names the estate folder; it is the same as listing its five files, `$E/a*.json $E/mappings.json`.) You see one `OK` line per architecture and for the registry. `WARN` lines are advice (something the metamodel expects but does not require); `ERROR` lines must be fixed.
 ```
 OK: level A1 (synthetic-bank-payments-a1)
 WARN: level A2 (synthetic-bank-payments-a2): instance BD-PAYMENTS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)
@@ -175,7 +175,7 @@ OK: level A3 (synthetic-bank-payments-a3)
 OK: level A4 (synthetic-bank-payments-a4)
 OK: mappings #1
 ```
-The six warnings are expected for this example: the made-up BIAN layer leaves out some detail the rulebook recommends — a business area, the service groups and control records of two service domains, and the attributes of one business object. `OK` on every layer means the data is accepted.
+The six warnings are expected for this example: the made-up BIAN layer leaves out some detail the metamodel recommends — a business area, the service groups and control records of two service domains, and the attributes of one business object. `OK` on every layer means the data is accepted.
 
 **Step 3 — build the knowledge graph (J4):**
 ```bash
@@ -284,7 +284,7 @@ The *Journey* column groups commands by task: **J1** check · **J2** propose lin
 
 | Command | Journey | What it does | When you use it | Typical next step |
 |---|---|---|---|---|
-| `sdem check --estate <dir>` (or the files) | J1 | checks datasets and registry against the rulebook | after any change to the data | fix errors; `sdem build` |
+| `sdem check --estate <dir>` (or the files) | J1 | checks datasets and registry against the metamodel | after any change to the data | fix errors; `sdem build` |
 | `sdem validate <registry>` | J1 | checks a registry or proposals file on its own (`--strict` treats warnings as errors) | after `sdem approve` or `sdem connect`, or before a pull request | `sdem check` |
 | `sdem link <files> --out <dir>` | J2 | the inference engine proposes the missing links; writes `proposals.json` | when data is new or changed | `sdem review` |
 | `sdem review <proposals.json>` | J3 | lists the proposals, weakest first, with rule, confidence and reasoning | before approving | `sdem approve` (§8.2) |
@@ -315,8 +315,8 @@ The *Journey* column groups commands by task: **J1** check · **J2** propose lin
 | `sdem bian list --base` · `sdem bian import --base --all -o <file>` (or `--only <names…>`, `--from <file>`) · `sdem bian pack <folder> -o <file>` | J9 | your **BIAN (A2) layer**: from the **base BIAN** that ships with SDEM (BIAN's public Semantic APIs 14.0.0), from your own packed BIAN (`--base <file>`), or from a folder of BIAN's files; imports the service domains you name, checked, with a report of what to confirm; `--patterns`, `--previous`; from a folder also `--descriptions`, `--objects` | once, before onboarding; again for a new BIAN release | `sdem load … --a2 <file>` |
 | `sdem designs resolve <gap id …> --estate <dir> --person <you> --note "<what you did>"` · `accept` (same options) · `reopen` | J9 | closes a gap — *resolved* (now recorded in an entity) or *accepted* (deliberately not modelled); reopens one; each step kept in the gap's history | working down the gaps | `sdem designs --gaps --status open` |
 | `sdem diff --git HEAD~1 <registry>` | — | proves approved links were not edited | before a pull request | — |
-| `sdem migrate --estate <dir> --person <you> [--dry-run]` | — | moves an estate to a new rulebook version ([versioning](design/sdem-rulebook-versioning.md)) | when SDEM says the `metamodel_version` does not match | — |
-| `sdem model check` · `regenerate` · `accept` · `examples` | — | maintainers: generated documents, engine acceptance tests, use-case examples | when changing the rulebook | — |
+| `sdem migrate --estate <dir> --person <you> [--dry-run]` | — | moves an estate to a new metamodel version ([versioning](design/sdem-metamodel-versioning.md)) | when SDEM says the `metamodel_version` does not match | — |
+| `sdem model check` · `regenerate` · `accept` · `examples` | — | maintainers: generated documents, engine acceptance tests, use-case examples | when changing the metamodel | — |
 
 Add `--json` to most commands for machine-readable output (Copilot can read it more reliably).
 
@@ -591,7 +591,7 @@ Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem
 | `ERROR: CTL-19: …` | a change set crosses its layer, or an agent works outside its layer | keep each change set to one layer; let the orchestrator plan the other layers' work |
 | `ERROR: CTL-20: …` (other messages) | **change provenance (CTL-20):** a change set or work-item step without the agent or the person behind it | add `--agent` and `--person` |
 | `ERROR: … cannot enter a real architecture dataset (CTL-16)` | projected content was put into real data | remove it; projections stay in their own folder |
-| `WARN: … expects at least 1 (LC-10m)` | the rulebook recommends a link that is missing | advice — fix when you can |
+| `WARN: … expects at least 1 (LC-10m)` | the metamodel recommends a link that is missing | advice — fix when you can |
 | `build … rejected: N error(s); the previous graph store is unchanged` | the data has errors, so the graph was not rebuilt | run `sdem check` and fix the errors |
 | `ERROR: 'CAP-999' is not an instance in any loaded level model` | that id is not in the data | check the spelling; `sdem query --graph work/graph --level A1` lists ids |
 | a trace stops early | a link in the chain is not approved yet | `sdem query --graph … --unmapped A2`; then §8.2 |
@@ -617,7 +617,7 @@ Try it on a copy of an example (the spike: [`sdem-agent-platform-spike.md`](sdem
 | To learn … | Read |
 |---|---|
 | how SDEM fits together | [`sdem-overview.md`](sdem-overview.md) |
-| the rulebook: kinds of thing, connections, what SDEM refuses | [the rulebook in plain words](sdem-rulebook-guide.md) |
+| the metamodel: kinds of thing, connections, what SDEM refuses | [the metamodel in plain words](sdem-metamodel-guide.md) |
 | the parts of SDEM and where every file lives | [SDEM architecture](sdem-architecture.md) |
 | setting SDEM up and running it for a team | [configuration](sdem-configuration.md) · [administration](sdem-administration.md) · [operating model](sdem-operating-model.md) |
 | every control and where it is checked | [controls register](reference/controls-register.md) |

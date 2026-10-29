@@ -16,7 +16,7 @@ Both sides are now built for Level 1 (2026-10-28). Real designs come in by desig
 
 | Agents need to … | Ready? | What exists / what is missing |
 |---|---|---|
-| read their layer's records and rules | ✅ | layer graphs and schemas, rulebook, `sdem query --json` |
+| read their layer's records and rules | ✅ | layer graphs and schemas, metamodel, `sdem query --json` |
 | see across layers, upstream and downstream | ✅ | federated graph, `sdem trace --json`, `sdem impact --json` |
 | know what a change affects | ✅ | `sdem impact` — deterministic, classified (design change required / no impact), links to supersede |
 | propose cross-layer links | ✅ | the rules engine, `sdem link` — proposals only |
@@ -147,7 +147,7 @@ flowchart LR
 | can loop (A2 asks A3, A3 asks A2 …) or drift into disagreement | `sdem impact` decides what is affected; the orchestrator sequences |
 | each agent must know the others | each agent knows only its layer and the shared graph |
 | no single view of the work in progress | the work queue shows everything open, by layer |
-| AI deciding cross-layer relationships | the rules engine decides links from the rulebook |
+| AI deciding cross-layer relationships | the rules engine decides links from the metamodel |
 
 The federated graph already encodes upstream and downstream. Letting agents re-negotiate it in conversation would discard SDEM's strongest property: **traceable, rule-based links**.
 
@@ -159,7 +159,7 @@ The project holds the agent files; the agents run inside **GitHub Copilot in VS 
 
 | Copilot feature | What it does | SDEM use |
 |---|---|---|
-| **Custom agents** — `.github/agents/*.agent.md` | an agent's instructions plus a `tools` list ("only those tools are available") | the orchestrator and the four layer agents, versioned with the rulebook |
+| **Custom agents** — `.github/agents/*.agent.md` | an agent's instructions plus a `tools` list ("only those tools are available") | the orchestrator and the four layer agents, versioned with the metamodel |
 | **Subagents** — the `agent` tool and the `agents` allowlist | an agent runs another custom agent on a focused task in its own context; the subagent "returns a focused result to the main agent". Each call is stateless. `agents: []` blocks subagent use | **the orchestrator calls the layer agents**; layer agents have `agents: []`, so they **cannot** call each other |
 | **Handoffs** | a button after a response that switches to another agent with a prepared prompt (the person clicks; local only) | the architect moves from the orchestrator to a layer agent |
 | **Copilot CLI agent** (formerly "background agent") | a CLI session that keeps running when VS Code is closed — started by a person | longer runs; not a listener |
@@ -231,7 +231,7 @@ All three levels use the **same agent files and the same `sdem` commands** — m
 
 | Control | Status | What it enforces |
 |---|---|---|
-| CTL-01…15 | built | the rulebook: data, links, evidence, approval fields |
+| CTL-01…15 | built | the metamodel: data, links, evidence, approval fields |
 | CTL-16 | built | projected or AI content never enters real data |
 | CTL-17 | built | projections carry provenance, are capped, invent no BIAN element |
 | **CTL-19** | built | **layer ownership** — a change set touches one declared layer; an agent's change set only its own layer |

@@ -12,7 +12,7 @@ The workbench is how architects use SDEM: they open the **SDEM project in VS Cod
 
 | ID | Requirement | Status |
 |---|---|---|
-| WB-E01 | The architect opens the SDEM project (the repository folder) in VS Code; Explorer and editor show the rulebook, datasets, registry, stores, projections and documents as files. No server is needed. | built |
+| WB-E01 | The architect opens the SDEM project (the repository folder) in VS Code; Explorer and editor show the metamodel, datasets, registry, stores, projections and documents as files. No server is needed. | built |
 | WB-E02 | The terminal pane runs SDEM: Python 3.10 or later, SDEM installed from the project (`pip install -e .`), giving the `sdem` command — or `python -m sdem …` without installing. | built |
 | WB-E03 | The chat window is GitHub Copilot Chat, for AI support (§4). **Optional**: every journey is a CLI command the architect can run without it. | built — CLI and Copilot set-up (`.github/copilot-instructions.md`, agents, prompts, skills) |
 | WB-E04 | Git for history; pull requests on the organisation's Git host for review and approval. | built (Git); approval flow WB-A01 not documented in the project |
@@ -36,7 +36,7 @@ The workbench is how architects use SDEM: they open the **SDEM project in VS Cod
 
 | ID | Requirement | Status |
 |---|---|---|
-| WB-C01 | `.github/copilot-instructions.md` gives Copilot the ground rules (design §4), where the rulebook, datasets, registry and stores are, and which CLI command answers which question. | built — `.github/copilot-instructions.md` |
+| WB-C01 | `.github/copilot-instructions.md` gives Copilot the ground rules (design §4), where the metamodel, datasets, registry and stores are, and which CLI command answers which question. | built — `.github/copilot-instructions.md` |
 | WB-C02 | Copilot's role is **support**: explain command output and errors, suggest the exact CLI command, draft (records, impact notes, pull-request text), review proposals with the architect. | not built (instruction) |
 | WB-C03 | Copilot runs a command **only when the architect asks**, and only the SDEM CLI, in the terminal pane — so the command and its output are visible. | built — an instruction (`.github/copilot-instructions.md` rule 2): a request to Copilot, not a control |
 | WB-C04 | Ground rules, stated in WB-C01: facts from the CLI and files with the source named; suggest the exact command; rules first; never write projected or AI content into real data; never approve; source, reasoning and confidence on every statement; no MCP, no keys, no data outside the approved Copilot; say when unsure. | built — in `.github/copilot-instructions.md` |
@@ -73,7 +73,7 @@ Each journey is a CLI command the architect runs; Copilot supports in the chat.
 | ID | Requirement | Status |
 |---|---|---|
 | WB-V01 | Graph view as one self-contained HTML file (no network), with projections dashed and labelled PROJECTED. | built |
-| WB-V02 | PlantUML diagrams generated from the rulebook and data. | built |
+| WB-V02 | PlantUML diagrams generated from the metamodel and data. | built |
 | WB-V03 | PlantUML preview for **real** data uses a local renderer or the organisation's own server, never `www.plantuml.com`. | built — the project's setting renders locally (`.vscode/settings.json`); a test checks no setting names the public server |
 | WB-V04 | Open the HTML view inside VS Code (preview). | not built (WB-Q02) |
 

@@ -63,4 +63,4 @@ Releases are tagged by the owner. Before a tag: the CHANGELOG's *Unreleased* sec
 
 ## Where things are
 
-The documentation is indexed by reader in [`docs/README.md`](docs/README.md); the code in `sdem/` (one module per journey, plus the generators), the rulebook in `metamodel/` and `schema/`, the made-up estates in `examples/`, scripts for examples and checks in `scripts/`, the Copilot agents, prompts and skills in `.github/`.
+The documentation is indexed by reader in [`docs/README.md`](docs/README.md); the code in `sdem/` (one module per journey, plus the generators), the metamodel in `metamodel/` and `schema/`, the made-up estates in `examples/`, scripts for examples and checks in `scripts/`, the Copilot agents, prompts and skills in `.github/`.

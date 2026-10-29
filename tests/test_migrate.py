@@ -1,4 +1,4 @@
-"""`sdem migrate` — an estate moves to the current rulebook version only by recorded migrations, checked before writing."""
+"""`sdem migrate` — an estate moves to the current metamodel version only by recorded migrations, checked before writing."""
 import json, shutil, tempfile, unittest
 from pathlib import Path
 
@@ -17,7 +17,7 @@ class MigrateTests(unittest.TestCase):
         d['metamodel_version'] = '0.3.0'
         self.inst = next(i for i in d['instances'] if i.get('attributes'))
         self.attr = next(iter(self.inst['attributes']))
-        self.inst['attributes']['old_' + self.attr] = self.inst['attributes'].pop(self.attr)  # what an older rulebook called it
+        self.inst['attributes']['old_' + self.attr] = self.inst['attributes'].pop(self.attr)  # what an older metamodel called it
         p.write_text(json.dumps(d))
         self.rec = {'migrations': [{'from': '0.3.0', 'to': CUR, 'steps': [{'step': 'rename_attribute', 'from': 'old_' + self.attr, 'to': self.attr}]}]}
 
@@ -67,7 +67,7 @@ class MigrateTests(unittest.TestCase):
         issues = LevelGraph(self.a3(), Metamodel.load()).validate()
         self.assertTrue(any('sdem migrate' in i for i in issues), issues[:3])
 
-    def test_the_rulebook_record_is_well_formed(self):
+    def test_the_metamodel_record_is_well_formed(self):
         rec = json.loads((ROOT / 'metamodel' / 'migrations.json').read_text())
         self.assertEqual(rec['metamodel_version'], CUR)
         kinds = {'rename_type', 'rename_attribute', 'drop_attribute', 'set_attribute', 'rename_kind', 'rename_relationship'}

@@ -1,6 +1,6 @@
 # SDEM pilot plan — one domain, ten weeks
 
-> **Status: current (v0.9.7)**. The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's rulebook covers the whole enterprise (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own estate. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
+> **Status: current (v0.9.7)**. The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's metamodel covers the whole enterprise (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own estate. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
 
 ## The question the pilot answers
 
@@ -31,7 +31,7 @@ A smaller domain with willing architects beats an important one with busy archit
 
 ## No per-domain settings
 
-SDEM needs **no settings per domain**. The rulebook and checks are the same everywhere — the example estates span seven domains (payments, cards and fraud, customer onboarding, lending, a core ledger, trade finance, an acquired fintech) — and design onboarding has been tested on two (payments and lending — the lending design run with no lending-specific rules: 18 of 18 records found, nothing lost, no records made from general words like *loan* or *credit*).
+SDEM needs **no settings per domain**. The metamodel and checks are the same everywhere — the example estates span seven domains (payments, cards and fraud, customer onboarding, lending, a core ledger, trade finance, an acquired fintech) — and design onboarding has been tested on two (payments and lending — the lending design run with no lending-specific rules: 18 of 18 records found, nothing lost, no records made from general words like *loan* or *credit*).
 
 What may need tuning depends on **how your organisation writes designs**, not on the domain: if your designs use table headings or column names SDEM does not recognise (e.g. *Platform* for an application, or a column like *Data classification*), those items become gap records. Add the headings to the estate repository's copy of `transform-rules.json` (`tables`) and run `sdem transform run … --rules rules/transform-rules.json`. Do this once, on the first design, and keep the copy for every domain.
 

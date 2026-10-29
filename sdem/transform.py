@@ -709,7 +709,7 @@ class Extraction:
 
     def link(self, a, kind, b, page, where, rule, how, reasoning, label='', unmapped=None):
         """A line between two records. Same architecture → a within-architecture relationship, the kind checked against
-        the rulebook (falls back to association, which ArchiMate allows between any two). Different architectures →
+        the metamodel (falls back to association, which ArchiMate allows between any two). Different architectures →
         a candidate link between architectures, for the engine and a person."""
         if not a or not b or a is b: return False
         if a['type'][:2] == b['type'][:2]:
@@ -717,7 +717,7 @@ class Extraction:
             kinds = [kind] if kind and kind != 'deployed_on' else []
             kinds += [k for k in self.rules['line_kinds']['order'] if k not in kinds]
             chosen = next(k for k in kinds if self.mm.relationship_issue(lvl, a['type'], k, b['type']) is None)
-            if kind and chosen != kind: reasoning += f'; the rulebook does not allow {kind} between these types, so {chosen}'
+            if kind and chosen != kind: reasoning += f'; the metamodel does not allow {kind} between these types, so {chosen}'
             key = (a['id'], chosen, b['id'])
             ex = next((l for l in self.links if (l['source'], l['kind'], l['target']) == key), None)
             src = {'page_id': page['page_id'], 'page_title': page['title'], 'where': where, 'rule': rule, 'confidence': self.cap[how], 'reasoning': reasoning}

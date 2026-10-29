@@ -114,7 +114,7 @@ Skills hold **domain knowledge** the agent loads only when needed, keeping each 
 | What good looks like | SDEM |
 |---|---|
 | a clear *when to use me* in the description | ✅ |
-| worked examples and reference tables | ✅ example change sets; the evidence table generated from the rulebook, so it cannot drift |
+| worked examples and reference tables | ✅ example change sets; the evidence table generated from the metamodel, so it cannot drift |
 | no duplicated rules that can drift from the code | ◐ skills describe rules in words; the code is the truth; tests check the command names only |
 
 ## 7. Proof — knowing it works
@@ -130,7 +130,7 @@ Skills hold **domain knowledge** the agent loads only when needed, keeping each 
 | Layer | How much it matters | SDEM today |
 |---|---|---|
 | Data architecture | highest | strong |
-| Tools / engine | very high | strong — undo built; engine–rulebook agreement checked (CTL-22) |
+| Tools / engine | very high | strong — undo built; engine–metamodel agreement checked (CTL-22) |
 | Guardrails | very high | strong in code (CTL-16…23, round cap); direct edits **detected**, not prevented (AG-S08); human approval **enforced only with branch protection on** |
 | Agent definitions | medium | good |
 | Prompts | low–medium | good |
@@ -150,7 +150,7 @@ Many agent platforms invest in prompts and skills and neglect the data and the t
 | direct dataset edits detected (the change-set chain); `sdem change adopt` for a person's edit | AG-S08, AG-K07, CTL-20 |
 | `sdem approve` — a person approves, the registry is validated before writing; a reviewer that is an agent or tool is rejected | WB-A04, CTL-21 |
 | `sdem change revert` — undo the latest change set of a layer, exactly, on record | AG-K06 |
-| the engine checked against the rulebook (rules, steps, implementation) | CTL-22 (gap G-A partly closed) |
+| the engine checked against the metamodel (rules, steps, implementation) | CTL-22 (gap G-A partly closed) |
 | fallback B capped at low in the engine (DEC-E-10); needs_review allowed while the BIAN id is awaited (F-1); 21 entities downgraded until verified (G-02); scenario BIAN ids added | owner decisions |
 
 ## What to do next

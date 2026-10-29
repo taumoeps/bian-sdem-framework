@@ -465,7 +465,7 @@ Local and federated knowledge graphs saved as JSON Graph Format v2 files with a 
 
 **Gap G-18** (addition; decided 2026-10-27 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-A second lane beside the mapping lane, sharing the same rulebook and engine rules:
+A second lane beside the mapping lane, sharing the same metamodel and engine rules:
 
 | | Mapping lane | Planning lane — AID |
 |---|---|---|

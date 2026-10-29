@@ -1,4 +1,4 @@
-"""Use-case example 1 (docs/evidence/use-case-example-1.md): the rulebook tests re-run on every change."""
+"""Use-case example 1 (docs/evidence/use-case-example-1.md): the metamodel tests re-run on every change."""
 import sys, unittest
 from pathlib import Path
 
@@ -12,7 +12,7 @@ class UseCaseExample1Tests(unittest.TestCase):
         from use_case_example_1 import run
         cls.R = run()
 
-    def test_every_rulebook_test_passes(self):
+    def test_every_metamodel_test_passes(self):
         for x in self.R['tests']: self.assertTrue(x['pass'], f"{x['area']}: {x['data']} — should {x['should']}, did {x['did']}")
 
     def test_all_links_found_and_correct(self):

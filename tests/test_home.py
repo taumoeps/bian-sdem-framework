@@ -26,7 +26,7 @@ class HomeTests(unittest.TestCase):
             page = self.page.parent / p['page']; self.assertTrue(page.exists(), p['page'])
             self.assertIn('"home": "../index.html"', page.read_text(encoding='utf-8'))
 
-    def test_metamodel_equals_the_rulebook(self):
+    def test_metamodel_equals_the_metamodel(self):
         m = self.data['metamodel']
         self.assertEqual(len(m['within']), len(json.loads((ROOT / 'metamodel' / 'level-relationships.json').read_text())['constraints']))
         self.assertEqual(len(m['cross']), len(json.loads((ROOT / 'schema' / 'relationship-types.json').read_text())['relationships']))

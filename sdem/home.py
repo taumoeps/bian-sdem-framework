@@ -166,22 +166,22 @@ def components(m, h, projects):
         'Earlier designs, diagrams and decisions kept unchanged and referenceable beside new BIAN-aligned designs (original design §9, acceptance criteria 6 and 10). Built: sdem transform turns an export of past designs (Confluence, any folder layout) into candidate architecture entities with rules — tables, draw.io and PlantUML diagrams, known names in the text, text in pictures by on-device OCR — each with its source, plus an index of every design; a person reviews, then sdem load puts the kept entities into an estate (checked, recorded; CTL-23 keeps candidates out of any graph).',
         ['sdem transform inspect · sdem transform run · sdem load', 'metamodel/transform-rules.json (tune without code)', 'docs/design/sdem-transform-design.md', 'graph store baselines (sdem baseline)'],
         ['tested on a synthetic Confluence export (tests/fixtures/confluence-export-sample)', 'candidates never above medium confidence'], 'Run it on the real export (work machine); past-baseline views — roadmap v0.16')
-    add('metamodel', 'SDEM Mapping Metamodel & Rules', 'the rulebook', 'built', 40, 160,
+    add('metamodel', 'SDEM Mapping Metamodel & Rules', 'entity types, rules, controls', 'built', 40, 160,
         'What may exist in each architecture, how records may be linked inside and between the architectures, and the rules the engine applies — each with its published source, reasoning and confidence.',
         ['metamodel/ (entity types, links inside, rules, attributes)', 'schema/relationship-types.json (links between)', 'docs/design/architecture-metamodel-detail-level-spec.md (governing)'],
         [f"{len(m['entities'])} entity types", f"{len(m['within'])} links allowed inside", f"{len(m['cross'])} link types between", f"{len(m['rules'])} engine rules",
-         f"generated documents {'current' if all(g['current'] for g in h['generators']) else 'STALE'}"], 'Rulebook finding G-A-1 (rule S44 step) — owner decision', ['entities', 'within', 'cross', 'rules', 'entitymap'])
+         f"generated documents {'current' if all(g['current'] for g in h['generators']) else 'STALE'}"], 'Metamodel finding G-A-1 (rule S44 step) — owner decision', ['entities', 'within', 'cross', 'rules', 'entitymap'])
     add('engine', 'SDEM Mapping Engine', 'process · information · architecture', 'built', 517, 160,
-        'Proposes the links between the architectures by applying the rulebook to the data — rules, not AI — each proposal with rule, reasoning and confidence. Proposals only; a person approves.',
+        'Proposes the links between the architectures by applying the metamodel to the data — rules, not AI — each proposal with rule, reasoning and confidence. Proposals only; a person approves.',
         ['sdem link · sdem review · sdem explain', 'sdem/rules_engine.py', 'acceptance: sdem model accept'],
-        [f"{acc_ok} of {len(acc)} acceptance cases pass (run now)" if acc else 'acceptance cases: run in the repository (sdem model accept)', 'CTL-22: engine checked against the rulebook'], 'A blind test case written by someone else', ['rules', 'health'])
+        [f"{acc_ok} of {len(acc)} acceptance cases pass (run now)" if acc else 'acceptance cases: run in the repository (sdem model accept)', 'CTL-22: engine checked against the metamodel'], 'A blind test case written by someone else', ['rules', 'health'])
     add('aid', 'Architecture Inference Design (AID)', 'planning lane — projects missing layers', 'built', 994, 160,
         'Projects the architecture layers you do not have from the ones you do — forward (business → technology) or reverse — as a projected design with inference confidence, for planning; then compares it with the real design (gap analysis).',
         ['sdem aid project · check · gaps', 'sdem view --projection', 'docs/design/aid-design.md'],
         ([f"use-case example 2: {e2[0]} of {e2[1]} expectations, safety {e2[2]} of {e2[3]}"] if e2 else []) + ['never above medium confidence; name-only evidence low'],
         'AI suggestions through Copilot (AID-D08) — owner decision', ['health'])
     add('validation', 'SDEM Validation & Approval', 'checks · controls · a person approves', 'built', 40, 300,
-        'Every dataset, link and change is checked against the rulebook before it is trusted — including BIAN identity: a BIAN-anchored link needs its BIAN release and canonical id from the reference repository. A person approves each link with the evidence its type needs, in a reviewed pull request.',
+        'Every dataset, link and change is checked against the metamodel before it is trusted — including BIAN identity: a BIAN-anchored link needs its BIAN release and canonical id from the reference repository. A person approves each link with the evidence its type needs, in a reviewed pull request.',
         ['sdem check · sdem validate · sdem approve', 'metamodel/controls.json — the controls register', 'CI on every push'],
         [f"{h['built_controls']} controls built", f"{len(h['control_gaps'])} known gaps (G-A partly closed)"], 'Phase 2: approve from the dashboard (sdem serve) — proposed', ['health'])
     add('projections', 'Projection packages', 'PRJ- · planned, never real data', 'built', 994, 300,
@@ -199,7 +199,7 @@ def components(m, h, projects):
         [f"{approved} approved links of {links} across the projects"], 'Ingestion of real designs (v0.11); an enterprise-wide graph across projects', ['projects'])
     for n, (lvl, title) in enumerate(LEVELS.items()):
         add(lvl.lower(), f"{lvl} {title.split(' ', 1)[1]} Graph & Schema", 'independently governed', 'built', 40 + n * 306, 620,
-            f"The {title} architecture: its own records and the links inside it, checked against its schema and rulebook rows — owned by its team, never written by another.",
+            f"The {title} architecture: its own records and the links inside it, checked against its schema and metamodel rows — owned by its team, never written by another.",
             [f"<estate>/{DATASETS[n]}", f"metamodel/{DATASETS[n]}", f"sdem check · agent sdem-{lvl.lower()}-…"],
             [f"{ents[lvl]} entity types", f"{within[lvl]} links allowed inside", f"{recs[lvl]} records across the projects"], 'Ingestion from the organisation\'s tools (v0.11)', ['entities', 'within'], w=272)
     E = []
@@ -339,7 +339,7 @@ function projTable(){return table(["Project","Architectures (records)","Links","
   <td>${Object.entries(p.coverage).map(([l,v])=>`<div>${lvl(l)}${v==null?"—":v+"%"}</div>`).join("")}</td>
   <td class="${p.errors?"bad":"ok"}">${p.errors}</td><td class="${p.advice?"warn":""}">${p.advice}</td><td class="${p.proposals?"warn":""}">${p.proposals}</td><td class="${p.open_work?"warn":""}">${p.open_work}</td><td class="${p.open_gaps?"warn":""}">${p.open_gaps||0}</td>
   <td>${p.attention.map(esc).join("<br>")||'<span class="ok">nothing</span>'}</td></tr>`));}
-R.projects=()=>`<h2>Projects in use</h2><p class="note">Every estate found. Coverage = records linked to another architecture by an approved link, of those the rulebook expects to be linked. Regenerate with <code>sdem home</code>.</p>`+projTable();
+R.projects=()=>`<h2>Projects in use</h2><p class="note">Every estate found. Coverage = records linked to another architecture by an approved link, of those the metamodel expects to be linked. Regenerate with <code>sdem home</code>.</p>`+projTable();
 R.entities=()=>`<h2>Architecture entities</h2><p class="note">The entity types of each architecture, where each comes from, and its evidence status. Dashed = abstract (groups others, never has records of its own).</p>`+filterBox("fEnt","filter: type, standard, definition …")+
   table(["Architecture","Entity type","Definition","Comes from","Evidence status","Attributes","Links inside · between"],M.entities.map(e=>`<tr data-f="${esc((e.type+" "+e.definition+" "+e.standard+" "+e.concept+" "+e.evidence_status).toLowerCase())}">
   <td>${lvl(e.level)}</td><td><b>${esc(e.type)}</b>${e.abstract?' <span class="chip">abstract</span>':""}${e.artefact?' <span class="chip">artefact</span>':""}${e.extends?`<div class="muted">extends ${esc(e.extends)}</div>`:""}</td>
@@ -357,7 +357,7 @@ R.cross=()=>`<h2>Links between architectures</h2><p class="note">The only ${M.cr
   table(["Link","From","To","Means","Evidence to approve","Source and confidence"],M.cross.map(x=>`<tr><td><b>${esc(x.relationship)}</b><div class="muted">${esc(x.cardinality)}</div></td><td>${lvl(lvlOf(x.source))}${esc(x.source)}</td><td>${lvl(lvlOf(x.target))}${esc(x.target)}</td><td>${esc(x.meaning)}</td><td>${x.evidence.map(e=>`<span class="chip">${esc(e)}</span>`).join("")}</td><td class="muted">${esc(x.source_reference)}<div><b>${esc(x.confidence)}</b> — ${esc(x.verification)}</div></td></tr>`));
 R.rules=()=>`<h2>Engine rules</h2><p class="note">The ${M.rules.length} rules of the rules engine (<code>sdem link</code>), each with its step, decision, confidence and published source. Steps: ${Object.entries(M.steps).map(([k,v])=>`<b>${esc(k)}</b> ${esc(v.split(" — ")[0])}`).join(" · ")}.</p>`+filterBox("fRules","filter: id, type, decision, source …")+
   table(["Rule","From","Produces","To","Step","Decision","Confidence","Published source"],M.rules.map(r=>`<tr data-f="${esc((r.id+" "+r.source+" "+r.relation+" "+r.target+" "+r.decision+" "+r.source_reference).toLowerCase())}"><td><b>${esc(r.id)}</b></td><td>${lvl(lvlOf(r.source))}${esc(r.source)}</td><td>${esc(r.relation)}</td><td>${lvl(lvlOf(r.target))}${esc(r.target)}</td><td>${esc(r.step)}</td><td><span class="chip" title="${esc(M.decisions[r.decision]||"")}">${esc(r.decision)}</span></td><td>${esc(r.confidence)}</td><td class="muted">${esc(r.source_reference)}</td></tr>`),"scroll");
-R.health=()=>{let h=`<h2>Health</h2><p class="note">Checked when this page was generated.</p><h3>Generated documents and schemas</h3><p class="note">Each must equal a fresh generation from the rulebook (as CI checks).</p>`+
+R.health=()=>{let h=`<h2>Health</h2><p class="note">Checked when this page was generated.</p><h3>Generated documents and schemas</h3><p class="note">Each must equal a fresh generation from the metamodel (as CI checks).</p>`+
   table(["Generator","Current"],H.generators.map(g=>`<tr><td><code>${esc(g.name)}</code></td><td class="${g.current?"ok":"bad"}">${g.current?"current":"stale — run sdem model regenerate"}</td></tr>`));
   h+=`<h3>Rules engine — acceptance cases (run now)</h3><p class="note">The engine must score at least the hand-executed runs on every case.</p>`+table(["Case","Estate","Engine precision · recall","Floor (hand-run)","Result"],H.acceptance.map(a=>`<tr><td><b>${esc(a.case)}</b></td><td>${esc(a.estate)}</td><td>${a.precision} · ${a.recall}</td><td class="muted">${a.floor_precision} · ${a.floor_recall}</td><td class="${a.passed?"ok":"bad"}">${a.passed?"pass":"FAIL"}</td></tr>`));
   h+=`<h3>Evidence status of the entity types</h3><div>${Object.entries(H.evidence_status).map(([k,v])=>`<span class="chip">${esc(k)}: ${v}</span>`).join("")}</div>`;
@@ -365,7 +365,7 @@ R.health=()=>{let h=`<h2>Health</h2><p class="note">Checked when this page was g
   h+=`<h3>Known gaps</h3>`+table(["Gap","Not controlled","Risk"],H.control_gaps.map(g=>`<tr><td><b>${esc(g.id)}</b></td><td>${esc(g.not_controlled)}</td><td>${esc(g.risk)}</td></tr>`));
   h+=`<h3>Differences from the high-level spec (gap register)</h3>`+table(["Gap","Kind","What is implemented","Status"],H.spec_gaps.map(g=>`<tr><td><b>${esc(g.id)}</b></td><td>${esc(g.kind)}</td><td>${esc(g.implemented)}</td><td class="${/^open/.test(g.status)?"warn":""}">${esc(g.status)}</td></tr>`),"scroll");
   return h;};
-R.config=()=>{const C=D.config;let h=`<h2>Configuration</h2><p class="note">The settings SDEM runs on, and where they live. Change them only through the rulebook files and their checks.</p>`;
+R.config=()=>{const C=D.config;let h=`<h2>Configuration</h2><p class="note">The settings SDEM runs on, and where they live. Change them only through the metamodel files and their checks.</p>`;
   h+=`<h3>Where the configuration lives</h3>`+table(["File","Holds"],C.files.map(f=>`<tr><td><code>${esc(f.file)}</code></td><td>${esc(f.holds)}</td></tr>`));
   h+=`<h3>Confidence bands</h3><div>${Object.entries(C.bands).map(([k,v])=>`<span class="chip">${esc(k)} = ${v}</span>`).join("")}</div><p class="note">${esc(typeof C.confidence_rule==="string"?C.confidence_rule:JSON.stringify(C.confidence_rule||""))}</p>`;
   h+=`<h3>Link statuses and allowed changes</h3>`+table(["From","May become"],Object.entries(C.transitions).map(([k,v])=>`<tr><td><b>${esc(k)}</b></td><td>${v.map(x=>`<span class="chip">${esc(x)}</span>`).join("")||'<span class="muted">final</span>'}</td></tr>`));

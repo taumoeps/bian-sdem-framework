@@ -65,7 +65,7 @@ def main(argv=None):
                                  epilog='Example:\n  sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --estate estates/payments \\\n'
                                         '       --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 \\\n'
                                         '       --rationale "The Payments Hub design names it as the payment-order initiation service"\n\n'
-                                        'The nine connection types and the evidence each needs: the rulebook guide (docs/sdem-rulebook-guide.md).')
+                                        'The nine connection types and the evidence each needs: the metamodel guide (docs/sdem-metamodel-guide.md).')
     ap.add_argument('source', help='the record the connection starts from, e.g. a BIAN service domain id')
     ap.add_argument('relationship', help='one of the nine connection types, e.g. REALIZED_BY, SUPPORTED_BY, DEPLOYED_ON')
     ap.add_argument('target', help='the record it goes to')

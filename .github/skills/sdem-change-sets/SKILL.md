@@ -5,7 +5,7 @@ description: How to write and propose an SDEM change set — the only way a laye
 
 # SDEM change sets
 
-A **change set** is a JSON file with the changes to **one** architecture layer. `sdem change propose` checks it against the rulebook and the controls **before** anything lands; if it is accepted it is applied to the layer's dataset and a **change event** with its impact is recorded in `<estate>/coordination/`.
+A **change set** is a JSON file with the changes to **one** architecture layer. `sdem change propose` checks it against the metamodel and the controls **before** anything lands; if it is accepted it is applied to the layer's dataset and a **change event** with its impact is recorded in `<estate>/coordination/`.
 
 ## Format
 
@@ -52,6 +52,6 @@ Then read the output: the change set id (`CS-…`), the change event (`CE-…`),
 | `CTL-20: … needs both the agent and the person` | add `--agent` and `--person` |
 | `CTL-20: WI-… is not claimed by …` | `sdem work claim WI-… --estate … --agent … --person …` first |
 | `CTL-16: … is a projected or design record` | `PRJ-` / `DSN-` records are plans, never real data |
-| `the change set breaks the rulebook — nothing was changed:` + errors | fix each listed error (missing field, wrong type, a link the rulebook does not allow) — the `sdem-records` skill explains the fields |
+| `the change set breaks the metamodel — nothing was changed:` + errors | fix each listed error (missing field, wrong type, a link the metamodel does not allow) — the `sdem-records` skill explains the fields |
 | `change set format: …` | the JSON does not match the format above |
 | `CTL-20 (AG-S08): … was changed outside a change set` (from `sdem check`) | someone edited the dataset file directly — agents never do; a **person** records their own edit with `sdem change adopt --estate … --layer … --person <their name> --reason …` |

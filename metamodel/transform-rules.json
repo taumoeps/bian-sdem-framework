@@ -692,7 +692,7 @@
     "A4": "A4.Node"
   },
   "line_kinds": {
-    "note": "For a line between two shapes in one architecture: the first kind the rulebook allows for the pair, in this order. association is always allowed (ArchiMate's generic relationship).",
+    "note": "For a line between two shapes in one architecture: the first kind the metamodel allows for the pair, in this order. association is always allowed (ArchiMate's generic relationship).",
     "order": [
       "flow",
       "serving",

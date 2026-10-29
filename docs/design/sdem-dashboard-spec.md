@@ -32,7 +32,7 @@
 |---|---|---|
 | DB-H01 | `sdem home [-o DIR] [--root DIR …] [--estate DIR …]` writes `DIR/index.html` and one project dashboard per estate in `DIR/projects/`, each linking back home; offline, read-only. Default: the estates in `examples/`. | built |
 | DB-H02 | Home: SDEM health at a glance, the metamodel in numbers, every project with what needs attention. | built |
-| DB-H03 | The metamodel exactly as the rulebook files hold it: entity types (definition, source standard, evidence status, attributes own and inherited), links inside each architecture, link types between architectures (with evidence to approve), the engine's rules (step, decision, confidence, published source); filterable. | built |
+| DB-H03 | The metamodel exactly as the metamodel files hold it: entity types (definition, source standard, evidence status, attributes own and inherited), links inside each architecture, link types between architectures (with evidence to approve), the engine's rules (step, decision, confidence, published source); filterable. | built |
 | DB-H04 | A metamodel picture: entity types in four bands, the link types between architectures as arrows; a clicked type shows its details. | built |
 | DB-H05 | Health computed when the page is generated: every generator's `--check`, the rules engine's acceptance cases (precision and recall against the floor), controls, known gaps, the gap register. | built |
 | DB-H06 | Configuration: where each setting lives, confidence bands, link statuses and allowed changes, impact rules, the agents. | built |
@@ -52,7 +52,7 @@
 |---|---|---|
 | DB-S01 | `sdem serve --estate DIR` — a local web app on `localhost` only (Python standard library), live data | proposed |
 | DB-S02 | Buttons for check, link, build, approve (person + evidence), claim work, revert — each calling the same functions as the CLI, so CTL-16…22 apply | proposed |
-| DB-S03 | A record editor with forms per entity type, validated against the schemas and the rulebook as you type | proposed |
+| DB-S03 | A record editor with forms per entity type, validated against the schemas and the metamodel as you type | proposed |
 | DB-S04 | Approval in the GUI still needs the person's name and evidence (CTL-21) and still becomes final in a reviewed pull request | proposed |
 
 ## 5. Acceptance
@@ -64,5 +64,5 @@
 | AT-DB-03 | The trace and impact shown for a record equal `sdem trace` and `sdem impact` | yes |
 | AT-DB-04 | The matrix for payment-initiation lists Initiate Payment → Payment Initiation → Payments Hub → the production cluster | yes |
 | AT-DB-05 | The Review tab lists the same proposals as `sdem review`, weakest first, each with an `sdem approve` command | yes |
-| AT-DB-07 | `sdem home` links every estate's dashboard; its metamodel figures equal the rulebook files; its health shows every generator current and 8 of 8 acceptance cases | yes — `tests/test_home.py` |
+| AT-DB-07 | `sdem home` links every estate's dashboard; its metamodel figures equal the metamodel files; its health shows every generator current and 8 of 8 acceptance cases | yes — `tests/test_home.py` |
 | AT-DB-06 | An architect new to SDEM finds the estate's open issues and a record's impact without using the terminal | walkthrough |

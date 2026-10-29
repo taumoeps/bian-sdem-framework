@@ -242,7 +242,7 @@ class MappingModelDocsAlignTests(unittest.TestCase):
         from collections import Counter
         from sdem.metamodel import Metamodel
         from sdem.diagram import new_entries, load_new
-        doc = (ROOT / 'docs/sdem-rulebook-guide.md').read_text(encoding='utf-8')
+        doc = (ROOT / 'docs/sdem-metamodel-guide.md').read_text(encoding='utf-8')
         sec = doc[doc.index('## The architecture model in numbers'):doc.index('## Reading the architecture-model diagram')]
         counts = [int(x) for x in re.findall(r"^\| [^|]+ \| (\d+) \|", sec, flags=re.M)]
         lr = json.loads((ROOT / 'metamodel/level-relationships.json').read_text(encoding='utf-8'))
@@ -263,7 +263,7 @@ class MappingModelDocsAlignTests(unittest.TestCase):
         self.assertIn(f"{len(new_entries(load_new()))} cross-level rules", text)
 
     def test_shared_terms_and_no_stale_term(self):
-        for f in ('docs/sdem-overview.md', 'docs/sdem-rulebook-guide.md', 'docs/design/relationship-rules-spec.md'):
+        for f in ('docs/sdem-overview.md', 'docs/sdem-metamodel-guide.md', 'docs/design/relationship-rules-spec.md'):
             t = (ROOT / f).read_text(encoding='utf-8')
             t = '\n'.join(l for l in t.splitlines() if 'Until v0.6.2 it was called SDMM' not in l)  # the one documented historical mention
             for term in ('relationship rules model', 'relationship registry', 'architecture metamodel'):

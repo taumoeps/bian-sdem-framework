@@ -53,7 +53,7 @@ class DocsOperationalTests(unittest.TestCase):
     def test_the_top_level_is_for_people_who_use_sdem(self):  # builders' documents live in design/, evidence/, reference/, history/
         top = sorted(f.name for f in (ROOT / 'docs').glob('*.md'))
         self.assertEqual(top, sorted(['README.md', 'glossary.md', 'sdem-overview.md', 'sdem-workbench-user-guide.md', 'sdem-onboarding-workflow.md',
-                                      'sdem-rulebook-guide.md', 'sdem-architecture.md', 'sdem-configuration.md', 'sdem-administration.md',
+                                      'sdem-metamodel-guide.md', 'sdem-architecture.md', 'sdem-configuration.md', 'sdem-administration.md',
                                       'sdem-operating-model.md', 'sdem-adoption-checklist.md', 'sdem-licence-and-use.md', 'sdem-repository-protection.md', 'sdem-copilot-setup.md', 'sdem-agent-platform-spike.md', 'sdem-pilot-plan.md', 'sdem-planning-with-aid.md']))
         for d in ('design', 'reference', 'evidence', 'history'):
             self.assertTrue((ROOT / 'docs' / d / 'README.md').exists(), d)

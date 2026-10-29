@@ -6,7 +6,7 @@
 
 ## 1. What onboarding is
 
-**Onboarding** is bringing data from a new source into SDEM until it is **governed and ready for use** — reviewed, checked against the rulebook, connected, approved and built into the knowledge graph. There are two routes:
+**Onboarding** is bringing data from a new source into SDEM until it is **governed and ready for use** — reviewed, checked against the metamodel, connected, approved and built into the knowledge graph. There are two routes:
 
 ```mermaid
 flowchart LR
@@ -162,7 +162,7 @@ A starter file with one service domain. Every service domain must name its **ass
 }
 ```
 
-The kinds of BIAN record and what each is for: [the rulebook in plain words](sdem-rulebook-guide.md#the-kinds-of-thing-by-layer); the fields each needs: the [logical data model](reference/logical-data-model.md) (look up the record kind, e.g. *A2.ServiceDomain*). A complete example: `examples/payment-initiation/a2-service-domain.json` (made up).
+The kinds of BIAN record and what each is for: [the metamodel in plain words](sdem-metamodel-guide.md#the-kinds-of-thing-by-layer); the fields each needs: the [logical data model](reference/logical-data-model.md) (look up the record kind, e.g. *A2.ServiceDomain*). A complete example: `examples/payment-initiation/a2-service-domain.json` (made up).
 
 ## 5. Step by step
 
@@ -228,7 +228,7 @@ The *reconciliation* proves nothing was lost. `--a2` is needed only the first ti
 ```bash
 sdem check --estate estates/history
 ```
-No `ERROR` lines, and the last line says `OK`. `WARN` lines are advice — the rulebook suggests a link that is still missing; fix them when you can.
+No `ERROR` lines, and the last line says `OK`. `WARN` lines are advice — the metamodel suggests a link that is still missing; fix them when you can.
 
 ### 6 · Suggest and review connections
 ```bash
@@ -346,9 +346,9 @@ Nothing is thrown away. What does not fit an architecture entity is kept **besid
 
 You are told in the transform report, the load's output, `sdem trace` (*N open gap(s)*), `sdem designs`, and the dashboard (*What needs your attention*, the **Designs & gaps** tab). A gap is closed only by a person — `resolve` or `accept`, with a note, on record.
 
-## 9. The metamodel and schemas — the rulebook, not an output
+## 9. The metamodel and schemas — not an output
 
-Onboarding never changes the rulebook (the metamodel and schemas): your designs are checked **against** it. If something in your designs has no place in it, it is kept as a gap record and your in-house SDEM lead can raise it. More: [onboarding — the rulebook is not an output](design/sdem-onboarding-internals.md#the-rulebook-is-not-an-output).
+Onboarding never changes the metamodel and schemas: your designs are checked **against** it. If something in your designs has no place in it, it is kept as a gap record and your in-house SDEM lead can raise it. More: [onboarding — the metamodel is not an output](design/sdem-onboarding-internals.md#the-metamodel-is-not-an-output).
 
 ## 10. Next time
 
@@ -374,6 +374,6 @@ Repeat the steps for the next export, into the **same** `estates/history`. SDEM 
 | Does the load change the data? | No. It **copies** the entities you keep, unchanged, into the estate, after checking the whole estate, and records your decision. |
 | Why not just copy the files? | `sdem build` refuses unloaded candidate data (CTL-23); the load checks the estate as a whole, refuses conflicts instead of overwriting, and records who approved what. |
 | Where do links between architectures come from? | `sdem link` proposes them from the loaded data; **you** approve them. The transform's "deployed on" findings are written as data so `sdem link` finds them. |
-| Where does the metamodel come from? | It is the rulebook, written and approved beforehand. Nothing generates it from data. |
+| Where does the metamodel come from? | It is written and approved beforehand. Nothing generates it from data. |
 | Is A2 (BIAN) data taken from the designs? | Never — the transform does not create BIAN records (control CTL-24). BIAN names found are listed as hints; your A2 dataset (from the BIAN catalogue) is added once with `--a2`. |
 | Is the knowledge graph saved? | No — `work/graph/` is rebuilt from the estate with `sdem build` whenever needed. The estate is what you save. |

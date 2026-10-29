@@ -15,7 +15,7 @@ AID projects the missing architecture layers from the architecture datasets an a
 | AID-I01 | Accept any non-empty subset of the four architecture datasets (A1–A4), each passing the dataset check (controls CTL-01…03). | built — inputs must pass the dataset check |
 | AID-I02 | Accept a **BIAN reference catalogue**: an A2 architecture dataset of BIAN service domains, operations, business objects, asset types and behaviour qualifiers, used as the only source of A2 elements. | built |
 | AID-I03 | Accept the approved links already known (a Relationship Registry), and use them before inferring anything. | built — used by F1 and R2 (the engine reads it) |
-| AID-I04 | Read the rulebook (entity types, allowed links, relationship types, mapping rules) exactly as the engine does. | built (engine) |
+| AID-I04 | Read the metamodel (entity types, allowed links, relationship types, mapping rules) exactly as the engine does. | built (engine) |
 
 ## 3. Forward projection (downstream)
 
@@ -46,7 +46,7 @@ AID projects the missing architecture layers from the architecture datasets an a
 | ID | Requirement | Status |
 |---|---|---|
 | AID-O01 | A projection is written as a **projection package** — a folder, separate from architecture datasets, the registry and graph stores: `projection.json` (metadata), one projected architecture dataset per projected layer, and `projected-links.json`. | built |
-| AID-O02 | `projection.json`: projection id, mode (forward / reverse / middle), the datasets and catalogue used (with checksums), rulebook version, created by, created at, and per layer a summary (elements projected, by confidence). | built |
+| AID-O02 | `projection.json`: projection id, mode (forward / reverse / middle), the datasets and catalogue used (with checksums), metamodel version, created by, created at, and per layer a summary (elements projected, by confidence). | built |
 | AID-O03 | Every projected record: id `PRJ-<…>`; the normal record fields for its entity type; and a `projection` object — `{step, rule, inferred_from, reasoning, confidence}`. | built |
 | AID-O04 | Every projected link: the relationship-record fields, status `projected`, plus the `projection` object. | built |
 | AID-O05 | The package validates against `schema/projection.schema.json` (new); projected records also pass the per-entity schemas apart from fields AID cannot know, which are omitted. | built — `schema/projection.schema.json`, checked first by CTL-17 |

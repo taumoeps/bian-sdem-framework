@@ -235,7 +235,7 @@ def render():
             '## 19. Graph store', '', st('G-15') + '.', '',
             'Local and federated knowledge graphs saved as JSON Graph Format v2 files with a load record and baselines; one graph access layer (`sdem/store.py`). Design and specification: [`graph-store-design.md`](graph-store-design.md), [`graph-store-spec.md`](graph-store-spec.md).', '',
             '## 20. Architecture Inference Design (AID)', '', st('G-18') + '.', '',
-            'A second lane beside the mapping lane, sharing the same rulebook and engine rules:', '',
+            'A second lane beside the mapping lane, sharing the same metamodel and engine rules:', '',
             '| | Mapping lane | Planning lane — AID |', '|---|---|---|',
             '| Question | how is the real architecture connected? | what should the missing layers look like? |',
             '| Input | all available architecture datasets | one or more layers, plus the BIAN reference catalogue |',

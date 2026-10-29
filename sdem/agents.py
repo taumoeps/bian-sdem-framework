@@ -12,7 +12,7 @@ outside Git), so agents working on different branches never create the same id o
 
 Controls: CTL-19 layer ownership (a change set changes one declared layer; an agent only its own layer; never the
 registry), CTL-20 change provenance (agent and person on every change set and work-item step). A change set lands only
-if the estate's checks show no new error (the rulebook, CTL-01…17).
+if the estate's checks show no new error (the metamodel, CTL-01…17).
 """
 import copy, datetime, json, re, subprocess
 from pathlib import Path
@@ -81,7 +81,7 @@ class Estate:
         return f'{head}{n:03d}'
 
     def check(self, datasets=None, registry=None):
-        """The estate's errors under the rulebook (the same checks as `sdem check`)."""
+        """The estate's errors under the metamodel (the same checks as `sdem check`)."""
         mm = Metamodel.load(); from .graph import LevelGraph
         ds = datasets or self.datasets(); reg = registry or self.registry()
         fg = FederatedGraph([LevelGraph(d, mm) for d in ds.values()], [reg], mm)
@@ -144,7 +144,7 @@ class Estate:
             if r in target['relationships']: target['relationships'].remove(r)
         after, fg = self.check(new)
         added_errors = [e for e in after if e not in before]
-        if added_errors: raise CoordinationError('the change set breaks the rulebook — nothing was changed:\n  ' + '\n  '.join(added_errors[:10]))
+        if added_errors: raise CoordinationError('the change set breaks the metamodel — nothing was changed:\n  ' + '\n  '.join(added_errors[:10]))
         # land it
         cs_id = self._next('CS'); ce_id = self._next('CE')
         round_ = max(w['round'] for w in wis) + 1 if wis else 1
@@ -171,7 +171,7 @@ class Estate:
         old_all = {**cur_all, layer: prev}
         before_errors, old_fg = self.check(old_all); after_errors, fg = self.check(cur_all)
         added = [e for e in after_errors if e not in before_errors]
-        if added: raise CoordinationError('the result would break the rulebook — nothing was changed:\n  ' + '\n  '.join(added[:10]))
+        if added: raise CoordinationError('the result would break the metamodel — nothing was changed:\n  ' + '\n  '.join(added[:10]))
         po = {i['id']: i for i in prev['instances']}; co = {i['id']: i for i in cur['instances']}
         changes, changed = [], []
         for rid, r in co.items():
@@ -200,7 +200,7 @@ class Estate:
 
     def adopt(self, layer, person, reason):
         """AG-S08: record a person's direct edit of a layer's dataset as a change set, so the chain of change sets is whole
-        again. The edit must keep the rulebook (no new errors); its impact is recorded like any change set's."""
+        again. The edit must keep the metamodel (no new errors); its impact is recorded like any change set's."""
         if layer not in FILES: raise CoordinationError(f'unknown layer {layer}')
         if not is_person(person) or person in AGENT_LAYER or person in (ORCHESTRATOR, HUMAN): raise CoordinationError('CTL-20: adopt needs the name of the person who made the edit')
         if not (reason or '').strip(): raise CoordinationError('adopt needs a reason')
@@ -340,7 +340,7 @@ def _fail(e):
 
 def change_main(argv=None):
     import argparse
-    ap = argparse.ArgumentParser(prog='sdem change', description='Change sets: one layer\'s record changes, checked against the rulebook and controls before they land (AG-K01/K02).',
+    ap = argparse.ArgumentParser(prog='sdem change', description='Change sets: one layer\'s record changes, checked against the metamodel and controls before they land (AG-K01/K02).',
                                  epilog='Examples (agent platform):\n  sdem change propose cs-rehost.json --estate work/est --agent sdem-a4-technology --person jane.architect\n'
                                         '  sdem change propose cs-a3.json --estate work/est --agent sdem-a3-application --person jane.architect --work WI-001 WI-002\n'
                                         '  sdem change show CS-001 --estate work/est\n'

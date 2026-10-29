@@ -1,7 +1,7 @@
-"""`sdem migrate` — move an estate to the current rulebook (metamodel) version (docs/design/sdem-rulebook-versioning.md).
+"""`sdem migrate` — move an estate to the current metamodel version (docs/design/sdem-metamodel-versioning.md).
 
 A dataset or registry carries the `metamodel_version` it was written for; SDEM refuses one that differs from the loaded
-rulebook. `metamodel/migrations.json` records, for every rulebook change, the steps that carry data from the old version to
+metamodel. `metamodel/migrations.json` records, for every metamodel change, the steps that carry data from the old version to
 the new. `sdem migrate --estate DIR --person NAME` applies the chain from each file's version to the current one, checks
 the whole estate as it would be, and only then writes it (all-or-nothing) with a record in `<estate>/migrations/`.
 
@@ -82,7 +82,7 @@ def migrate(estate, person, dry_run=False, migrations=None, now=None):
         if v == current: out[p] = d; continue
         steps = chain(v, current, rec['migrations'])
         if steps is None:
-            raise MigrateError(f'{p.name}: no migration path from metamodel {v} to {current} — the rulebook changed without a recorded migration (metamodel/migrations.json)')
+            raise MigrateError(f'{p.name}: no migration path from metamodel {v} to {current} — the metamodel changed without a recorded migration (metamodel/migrations.json)')
         nd = copy.deepcopy(d)
         for m in steps:
             (_apply_registry if p.name == 'mappings.json' else _apply_dataset)(nd, m.get('steps', []), counts)
@@ -109,7 +109,7 @@ def migrate(estate, person, dry_run=False, migrations=None, now=None):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog='sdem migrate', description='Move an estate to the current rulebook (metamodel) version — the recorded migrations applied, the estate checked, then written all-or-nothing and recorded.')
+    ap = argparse.ArgumentParser(prog='sdem migrate', description='Move an estate to the current metamodel version — the recorded migrations applied, the estate checked, then written all-or-nothing and recorded.')
     ap.add_argument('--estate', required=True, metavar='DIR'); ap.add_argument('--person', required=True, help='your name — a person')
     ap.add_argument('--dry-run', action='store_true', help='check and show what would change; write nothing'); ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)

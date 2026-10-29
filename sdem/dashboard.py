@@ -246,11 +246,11 @@ R.overview = () => {
   const rs = D.registry; h += `<div class="card"><div><b>Registry</b> (links between layers)</div><div class="big">${rs.links}</div><div class="muted">${Object.entries(rs.by_status).map(([k,v])=>`${v} ${k}`).join(" · ")}</div><div>${rs.errors.length?`<span class="bad">${rs.errors.length} error(s)</span>`:`<span class="ok">OK</span>`}</div></div>`;
   h += `<div class="card"><div><b>Coordination records</b></div><div class="big">${D.coordination.records}</div><div class="muted">change sets, events, work items</div><div>${D.coordination.issues.length?`<span class="bad">${D.coordination.issues.length} issue(s)</span>`:`<span class="ok">OK</span>`}</div></div></div>`;
   const errs = D.layers.flatMap(l=>l.errors.map(e=>[l.level,e])).concat(D.registry.errors.map(e=>["registry",e])).concat(D.coordination.issues.map(e=>["coordination",e]));
-  h += `<h2>Errors</h2><p class="note">Each breaks a rule of the rulebook; fix the data and run the check again.</p>` + table(["Where","Message"], errs.map(([w,e])=>`<tr><td>${esc(w)}</td><td>${esc(e)}</td></tr>`)) + cmd(`sdem check --estate ${D.estate}`);
+  h += `<h2>Errors</h2><p class="note">Each breaks a rule of the metamodel; fix the data and run the check again.</p>` + table(["Where","Message"], errs.map(([w,e])=>`<tr><td>${esc(w)}</td><td>${esc(e)}</td></tr>`)) + cmd(`sdem check --estate ${D.estate}`);
   const adv = D.layers.flatMap(l=>l.advice.map(e=>[l.level,e]));
-  h += `<details><summary>Advice (${adv.length}) — things the rulebook recommends but does not require</summary>` + table(["Layer","Advice"], adv.map(([w,e])=>`<tr><td>${esc(w)}</td><td>${esc(e)}</td></tr>`)) + `</details>`;
+  h += `<details><summary>Advice (${adv.length}) — things the metamodel recommends but does not require</summary>` + table(["Layer","Advice"], adv.map(([w,e])=>`<tr><td>${esc(w)}</td><td>${esc(e)}</td></tr>`)) + `</details>`;
   const un = Object.entries(D.coverage).flatMap(([l,c])=>c.unmapped.map(u=>[l,u]));
-  h += `<h2>Records not yet linked to another layer</h2><p class="note">They have no approved link of a type the rulebook expects for them. The Review tab shows what the rules engine proposes.</p>` +
+  h += `<h2>Records not yet linked to another layer</h2><p class="note">They have no approved link of a type the metamodel expects for them. The Review tab shows what the rules engine proposes.</p>` +
        table(["Layer","Record","Type","Expected links"], un.map(([l,u])=>`<tr><td>${lvl(l)}</td><td>${rec(u.id,u.name)}</td><td>${esc(u.type)}</td><td>${u.expected.map(x=>`<span class="chip">${esc(x)}</span>`).join("")}</td></tr>`));
   if (D.stale) h += `<p class="note">Graph store ${esc(D.stale.graph)}: ${D.stale.changed.length?`<span class="warn">out of date since build ${D.stale.build}</span>`:"current"}.</p>`;
   return h;
@@ -333,7 +333,7 @@ R.designs = () => {
 };
 R.controls = () => {
   const C = D.controls;
-  let h = `<h2>Controls</h2><p class="note">Automatic checks that enforce the rulebook. Last tested in: ${C.tested_in.map(t=>`${esc(t.example)} (${esc(t.date)})`).join(", ")}; good data must be accepted and bad data rejected.</p>`;
+  let h = `<h2>Controls</h2><p class="note">Automatic checks that enforce the metamodel. Last tested in: ${C.tested_in.map(t=>`${esc(t.example)} (${esc(t.date)})`).join(", ")}; good data must be accepted and bad data rejected.</p>`;
   h += table(["Control","Status","Area","Enforces","Runs","Last tested (good · bad)"], C.rows.map(c=>`<tr><td><b>${esc(c.id)}</b></td><td>${esc(c.status)}</td><td>${esc(c.area)}</td><td>${esc(c.control)}</td><td>${esc(c.runs)}</td><td>${esc(c.tested)}</td></tr>`));
   h += `<h3>Known gaps — rules nothing fully enforces</h3>` + table(["Gap","Not controlled","Risk"], C.gaps.map(g=>`<tr><td><b>${esc(g.id)}</b></td><td>${esc(g.not_controlled)}</td><td>${esc(g.risk)}</td></tr>`));
   return h;

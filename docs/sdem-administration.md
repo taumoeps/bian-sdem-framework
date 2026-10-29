@@ -1,6 +1,6 @@
 # Running SDEM — administration
 
-> **Status: current (v0.9.7)** — for the platform owner and estate owners: installing, upgrading, moving estates to a new rulebook, backups, releases, health checks and troubleshooting. Who does each task: the [operating model](sdem-operating-model.md).
+> **Status: current (v0.9.7)** — for the platform owner and estate owners: installing, upgrading, moving estates to a new metamodel, backups, releases, health checks and troubleshooting. Who does each task: the [operating model](sdem-operating-model.md).
 
 ## Installing
 
@@ -24,18 +24,18 @@ flowchart LR
     E --> F["Pull request → CI → merge"]
 ```
 
-Upgrade within a month of a release, and never skip one that moves the rulebook version. Architects then run `pip install -r requirements.txt` again.
+Upgrade within a month of a release, and never skip one that moves the metamodel version. Architects then run `pip install -r requirements.txt` again.
 
-## When the rulebook changes
+## When the metamodel changes
 
-Every dataset and registry says which rulebook version it was written for (`metamodel_version`). If a release changes the rulebook, SDEM refuses the old files and tells you to migrate:
+Every dataset and registry says which metamodel version it was written for (`metamodel_version`). If a release changes the metamodel, SDEM refuses the old files and tells you to migrate:
 
 ```bash
 sdem migrate --estate estates/<domain> --person <you> --dry-run   # what would change; the estate checked; nothing written
 sdem migrate --estate estates/<domain> --person <you>             # migrate, check, write all-or-nothing, record migrations/MIG-nnn.json
 ```
 
-The release records exactly how data moves from the old version to the new; a migration that would break the estate writes nothing. Approved connections are never changed in meaning. A team that needs a new kind of thing or attribute asks the SDEM owner — **describing the kind of thing, never the real design**. Policy, for builders: [rulebook versioning](design/sdem-rulebook-versioning.md).
+The release records exactly how data moves from the old version to the new; a migration that would break the estate writes nothing. Approved connections are never changed in meaning. A team that needs a new kind of thing or attribute asks the SDEM owner — **describing the kind of thing, never the real design**. Policy, for builders: [metamodel versioning](design/sdem-metamodel-versioning.md).
 
 ## When your BIAN layer changes
 
@@ -62,7 +62,7 @@ Back up the estate repository as you would any important repository; the rest ca
 
 ## Releases of SDEM
 
-SDEM releases are tagged by the SDEM owner after every check passes, and listed in the [CHANGELOG](../CHANGELOG.md). A release that changes the rulebook says so and includes its migration. The roadmap: [ROADMAP](design/ROADMAP.md).
+SDEM releases are tagged by the SDEM owner after every check passes, and listed in the [CHANGELOG](../CHANGELOG.md). A release that changes the metamodel says so and includes its migration. The roadmap: [ROADMAP](design/ROADMAP.md).
 
 ## Health — what to watch
 
@@ -95,7 +95,7 @@ About 1 second to propose connections for 2,000 records, about 17 seconds for 8,
 | `python3.13: command not found` (or `brew: command not found`) after installing | Homebrew's folder is not on your path: use the full path, `/opt/homebrew/bin/python3.13` (Apple silicon) or `/usr/local/bin/python3.13` (Intel); to fix it for good, run `eval "$(/opt/homebrew/bin/brew shellenv)"` and add that line to `~/.zprofile` |
 | `pip install -e .` fails: *File "setup.py" or "setup.cfg" not found … editable mode currently requires a setuptools-based build* | the `.venv` was made with Python older than 3.10 (its old `pip` gives this misleading message) — `rm -rf .venv`, then make it again with 3.13 |
 | `pip install` fails: *Package 'sdem' requires a different Python: 3.9.6 not in '>=3.10'* | the same — recreate `.venv` with 3.13 |
-| `metamodel_version … does not match` | the rulebook changed — [migrate](#when-the-rulebook-changes) |
+| `metamodel_version … does not match` | the metamodel changed — [migrate](#when-the-metamodel-changes) |
 | CI fails: *an approved link was edited or removed* | someone edited `mappings.json` by hand — revert it; to change a connection, supersede it with `sdem approve --supersedes` |
 | CI fails: *does not pass sdem check* | run `sdem check --estate <dir>` locally and fix what it lists |
 | `build … rejected` | the data has errors; the previous graph is kept — run `sdem check` |

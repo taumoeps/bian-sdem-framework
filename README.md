@@ -1,6 +1,6 @@
 # SDEM — Service Domain Enterprise Metamodel
 
-**SDEM connects an organisation's architecture — from what the business does, through BIAN, to the applications and the technology underneath — into one picture you can question.** It checks every connection against a rulebook and keeps a person in charge of every decision.
+**SDEM connects an organisation's architecture — from what the business does, through BIAN, to the applications and the technology underneath — into one picture you can question.** It checks every connection against a metamodel and keeps a person in charge of every decision.
 
 > **Status:** v0.9.7 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). **Open source and free for any organisation** (Apache-2.0 — [using SDEM](docs/sdem-licence-and-use.md)); aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
 
@@ -43,7 +43,7 @@ SDEM is built in three layers, each standing on the one below. **The agents are 
 flowchart TB
     L3["<b>3 · AI agents</b> — optional<br/>helpers in GitHub Copilot that draft and explain,<br/>using only the tools"]
     L2["<b>2 · Tools</b><br/>the sdem command and dashboards: check, connect,<br/>approve, trace, impact, plan, onboard designs"]
-    L1["<b>1 · Data architecture</b> — the foundation<br/>the rulebook, the architecture data,<br/>the approved connections, the knowledge graph"]
+    L1["<b>1 · Data architecture</b> — the foundation<br/>the metamodel, the architecture data,<br/>the approved connections, the knowledge graph"]
     L3 -->|"use"| L2
     L2 -->|"read and write, checked"| L1
     classDef l1 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
@@ -74,7 +74,7 @@ flowchart BT
         G4["<b>A4 knowledge graph</b><br/>records + links inside A4"]
         F["<b>Federated knowledge graph</b><br/>the approved connections<br/>that join the four layers"]
     end
-    MM["📘 <b>Service Domain Enterprise Metamodel</b> — the rulebook<br/>entity types: A1 10 · A2 15 · A3 8 · A4 11<br/>links inside a layer: 132 rules · between layers: 9 kinds"]
+    MM["📘 <b>Service Domain Enterprise Metamodel</b><br/>entity types: A1 10 · A2 15 · A3 8 · A4 11<br/>links inside a layer: 132 rules · between layers: 9 kinds"]
     E1 --> G1
     E2 --> G2
     E3 --> G3
@@ -95,7 +95,7 @@ flowchart BT
 
 - **Estate data.** Each layer's records — its *entities* — live in their own file, owned by that layer's team. Connections between layers live in `mappings.json`; only approved ones count.
 - **Knowledge graph.** `sdem build` turns each layer file into that layer's graph (its records and the links inside the layer), and the approved connections into the **federated graph**, which joins the four. Trace and impact follow the federated graph across layers.
-- **Metamodel.** Not part of the graph: it is the rulebook every file is checked against before it is accepted — 44 types of thing (capability, BIAN service domain, application, server …), 132 rules for links inside a layer, 9 kinds of connection between layers and 69 rules for proposing them — each traced to a public standard (BIAN, ArchiMate, TOGAF).
+- **Metamodel.** Not part of the graph: it is the metamodel every file is checked against before it is accepted — 44 types of thing (capability, BIAN service domain, application, server …), 132 rules for links inside a layer, 9 kinds of connection between layers and 69 rules for proposing them — each traced to a public standard (BIAN, ArchiMate, TOGAF).
 
 ### 2 · Tools
 
@@ -110,7 +110,7 @@ flowchart LR
     K["🕸️ <b>Knowledge graph</b><br/>four layer graphs +<br/>the federated graph"]
     A["📊 <b>Answers</b>"]
     PL["🧭 <b>Planned design</b><br/>kept apart, never approved"]
-    MM["📘 <b>Metamodel</b><br/>the rulebook"]
+    MM["📘 <b>Metamodel</b><br/>what may exist and connect"]
     IN -->|"sdem transform · sdem load<br/>sdem bian import"| D
     IN -.->|"new design:<br/>sdem aid project"| PL
     D -->|"sdem link"| P
@@ -141,7 +141,7 @@ The steps in order, from your designs to the knowledge graph:
 | 3 | Keep the good ones | `sdem load work/history --estate <estate> --person <you>` | copies the items you accept into the estate; what does not fit is kept as a gap record | **you** |
 | 4 | Add your BIAN layer | `sdem bian import --base --all -o bian/a2-service-domain.json` | the A2 layer from BIAN's public Semantic APIs (or your own BIAN) — [three ways to choose](#choosing-your-bian-service-domains) | the SDEM lead |
 | — | *New design instead?* | `sdem aid project` | plans the BIAN, application and technology layers you do not have yet — a planned design, kept apart from real data | SDEM |
-| 5 | Check | `sdem check --estate <estate>` | every file against the rulebook; errors must be fixed, warnings are advice — also run by CI on every change | SDEM |
+| 5 | Check | `sdem check --estate <estate>` | every file against the metamodel; errors must be fixed, warnings are advice — also run by CI on every change | SDEM |
 | 6 | Propose connections | `sdem link --estate <estate> --out work/links` | proposes connections between layers, each with its reasons | SDEM |
 | 7 | Review them | `sdem review work/links/proposals.json` | lists the proposals, weakest first | **you** |
 | 8 | Approve | `sdem approve <id> --reviewer <you> --evidence <document>` — or `sdem connect` for one SDEM missed | writes the approved connection to `mappings.json`, with you, the date and the evidence; final when its pull request is merged | **you** |
@@ -244,7 +244,7 @@ Every suggestion says **which page it came from, where, and how sure SDEM is** �
 flowchart TB
     subgraph B1["1 · Data architecture"]
         direction LR
-        d1["✅ Rulebook and data model"]
+        d1["✅ Metamodel and data model"]
         d2["✅ Connections and<br/>knowledge graph"]
         d3["✅ Base BIAN included<br/>(BIAN Semantic APIs 14.0.0)"]
     end
@@ -297,7 +297,7 @@ If `pip` says *File "setup.py" … not found* or *requires a different Python*, 
 
 ```bash
 sdem home -o work/sdem && open work/sdem/index.html             # the dashboards, as local files
-sdem check --estate examples/payment-initiation                 # the data against the rulebook
+sdem check --estate examples/payment-initiation                 # the data against the metamodel
 sdem build --estate examples/payment-initiation -o work/graph   # the knowledge graph
 sdem impact INF-K8S-PAY-PROD --change retire --graph work/graph # what breaks if it goes
 sdem --help                                                     # every command; sdem <command> --help shows an example
@@ -311,7 +311,7 @@ This repository is **public and holds made-up data only**. Real architecture dat
 
 ```mermaid
 flowchart LR
-    S["SDEM (public)<br/>tool + rulebook"] -- "pinned release" --> E["Estate repository (private)<br/>your data · CI · reviewers"]
+    S["SDEM (public)<br/>tool + metamodel"] -- "pinned release" --> E["Estate repository (private)<br/>your data · CI · reviewers"]
     A["👤 Architects"] -- "pull requests" --> E
     E -- "after merge" --> D["📊 Dashboards<br/>local files for now"]
 ```
@@ -330,7 +330,7 @@ Before starting: legal and IP clearance, the private repository with branch prot
 
 **Caveats.** All data and answer keys were made by this project; a blind test by someone else is still to come. The ArchiMate and TOGAF specifications need a login, so those rows were checked against an implementation. The AI agents have not yet run in real Copilot.
 
-## Where the rulebook comes from
+## Where the metamodel comes from
 
 Every entity type comes from a **published reference architecture** — BIAN (publicly available), ArchiMate 3.2 or TOGAF 10 (published by The Open Group; sign-in required) — or is a documented SDEM extension of one; none is copied from any institution's model, and no BIAN or Open Group text is reproduced ([provenance, entity by entity](docs/reference/reference-architecture-provenance.md)). BIAN®, ArchiMate® and TOGAF® are trademarks of their owners; SDEM is independent and not endorsed by them.
 

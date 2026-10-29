@@ -1,9 +1,9 @@
-"""CTL-22 — the inference engine and the rulebook agree (gap G-A, partly closed 2026-10-28).
+"""CTL-22 — the inference engine and the metamodel agree (gap G-A, partly closed 2026-10-28).
 
-The engine applies only rules that are in the rulebook (metamodel/relationship-rules.json), each at the step the rulebook
-assigns it (fill_step), unless the difference is a documented exception below; and every rule the rulebook says the
+The engine applies only rules that are in the metamodel (metamodel/relationship-rules.json), each at the step the metamodel
+assigns it (fill_step), unless the difference is a documented exception below; and every rule the metamodel says the
 engine applies is implemented. How a rule *matches* is still only in the engine's code — its description in words cannot
-be checked by machine. A change to the engine or the rulebook that breaks the agreement fails this test."""
+be checked by machine. A change to the engine or the metamodel that breaks the agreement fails this test."""
 import glob, json, re, sys, unittest
 from pathlib import Path
 
@@ -14,13 +14,13 @@ from sdem.store import GraphReader  # noqa: E402
 
 RULES = {m['id']: m for m in json.loads((ROOT / 'metamodel' / 'relationship-rules.json').read_text(encoding='utf-8'))['mappings']}
 NOT_APPLIED = {'not_encodable', 'historical_method', 'subsumed', 'not_a_mapping', 'bian_internal'}   # rule decisions the engine never applies
-ENGINE_ONLY = {'DESIGN'}   # the engine's design mode (DEC-E-05) — not a rulebook rule
-# (rule, step the rulebook assigns, step the engine used) → why it is allowed
+ENGINE_ONLY = {'DESIGN'}   # the engine's design mode (DEC-E-05) — not a metamodel rule
+# (rule, step the metamodel assigns, step the engine used) → why it is allowed
 ALLOWED = {
-    ('S01', 3, 5): "the rulebook's own fallback: 'fallback step 5 requires the full A2 landscape …' (data_needed)",
+    ('S01', 3, 5): "the metamodel's own fallback: 'fallback step 5 requires the full A2 landscape …' (data_needed)",
     ('S24', 2, 'design'): 'design mode — test case M2 (DEC-E-05)',
     ('S32', 1, 'design'): 'design mode — test case M2 (DEC-E-05)',
-    ('S44', 1, 3): 'FINDING G-A-1 (open, for the owner): S44 is derived from S43 instances, so the engine applies it in step 3; the rulebook says step 1 — the record or the engine should change',
+    ('S44', 1, 3): 'FINDING G-A-1 (open, for the owner): S44 is derived from S43 instances, so the engine applies it in step 3; the metamodel says step 1 — the record or the engine should change',
 }
 
 
@@ -34,27 +34,27 @@ def engine_log():
     return log
 
 
-class EngineRulebookTests(unittest.TestCase):
+class EngineMetamodelTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.log = engine_log()
 
-    def test_engine_applies_only_rulebook_rules(self):
+    def test_engine_applies_only_metamodel_rules(self):
         unknown = {a['plan_id'] for a in self.log} - set(RULES) - ENGINE_ONLY
-        self.assertFalse(unknown, f'the engine applies rules that are not in the rulebook: {sorted(unknown)}')
+        self.assertFalse(unknown, f'the engine applies rules that are not in the metamodel: {sorted(unknown)}')
 
     def test_each_rule_runs_at_its_assigned_step(self):
         drift = {(a['plan_id'], a['step_assigned'], a['step_used']) for a in self.log
                  if a['plan_id'] in RULES and a['step_used'] != RULES[a['plan_id']]['fill_step'] and not a['fallback']}
-        self.assertFalse(drift - set(ALLOWED), f'engine steps differ from the rulebook, undocumented: {sorted(drift - set(ALLOWED), key=str)}')
-        for a in self.log:   # the step the engine records as assigned is the rulebook's
+        self.assertFalse(drift - set(ALLOWED), f'engine steps differ from the metamodel, undocumented: {sorted(drift - set(ALLOWED), key=str)}')
+        for a in self.log:   # the step the engine records as assigned is the metamodel's
             if a['plan_id'] in RULES: self.assertEqual(a['step_assigned'], RULES[a['plan_id']]['fill_step'], a['plan_id'])
 
     def test_every_applicable_rule_is_implemented(self):
         src = (ROOT / 'sdem' / 'rules_engine.py').read_text(encoding='utf-8')
         named = set(re.findall(r"'([SB]\d\d)'", src))
         applicable = {k for k, r in RULES.items() if r.get('fill_step') not in (0, None) and r['rule_decision'] not in NOT_APPLIED}
-        self.assertFalse(applicable - named, f'rules the rulebook says the engine applies, but the engine never names: {sorted(applicable - named)}')
+        self.assertFalse(applicable - named, f'rules the metamodel says the engine applies, but the engine never names: {sorted(applicable - named)}')
 
     def test_documented_exceptions_still_occur(self):
         """An exception that no longer happens must be removed from ALLOWED, so the list stays true."""

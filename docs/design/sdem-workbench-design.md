@@ -10,7 +10,7 @@ The **SDEM workbench** is how an architect uses SDEM day to day. It is not a new
 
 | VS Code part | Used for | Who drives it |
 |---|---|---|
-| **The SDEM project** (Explorer + editor) | the rulebook, the architecture datasets, the registry, the stores, projections and documents — opened, read, edited and reviewed as files | the architect |
+| **The SDEM project** (Explorer + editor) | the metamodel, the architecture datasets, the registry, the stores, projections and documents — opened, read, edited and reviewed as files | the architect |
 | **Terminal pane — the CLI** | **runs SDEM**: every engine and function is a command — check, link, build, trace, impact, plan (AID), view, regenerate | **the architect** |
 | **Chat window — GitHub Copilot** | **AI support**: explains command output, suggests the right command, drafts records and pull-request text, reviews proposals with the architect | the architect asks; Copilot supports |
 | **Git** (Source Control) | history; a link is approved in a reviewed pull request | the architect and reviewers |
@@ -25,7 +25,7 @@ The **SDEM workbench** is how an architect uses SDEM day to day. It is not a new
 | **Interface** | the **CLI** in the terminal pane — one `sdem` command with a subcommand per journey (SDEM-D07); the older `sdem-*` commands remain as aliases | runs every engine and function | built |
 | **AI support** | GitHub Copilot Chat | explains, suggests commands, drafts, reviews. Runs a command only when asked, visibly. **Never approves** | instructions and prompt files not built |
 | **Engine and functions** | Python package `sdem` | checks, inference engine, AID, trace, impact, gap analysis, views, generators | built |
-| **Rulebook** | `metamodel/`, `schema/` | what may exist and link, on what published basis | built |
+| **Metamodel** | `metamodel/`, `schema/` | what may exist and link, on what published basis | built |
 | **Repository** | architecture datasets, Relationship Registry, graph store, projection packages — JSON files | the architecture data | built |
 | **History and approval** | Git, with pull requests | who changed what and why; links are approved in reviewed changes | built (Git); approval flow to document |
 | **Views** | the **dashboard** (`sdem dashboard`: the estate on one read-only HTML page), the HTML graph view, matrices and impact reports, PlantUML diagrams | pictures and tables for review — VS Code is not a drawing tool; open HTML in VS Code's Simple Browser | built |
@@ -48,7 +48,7 @@ flowchart TB
     end
 
     subgraph FW["SDEM FRAMEWORK — files in the Git repository"]
-        rulebook[("Rulebook<br/>metamodel + schemas")]
+        metamodel[("Metamodel<br/>entity types, rules + schemas")]
         datasets[("Architecture datasets<br/>A1 Business · A2 BIAN<br/>A3 Application · A4 Technology")]
         subgraph ML["Mapping lane — what IS"]
             engine["Inference engine"]
@@ -76,8 +76,8 @@ flowchart TB
     term --> aid
     term --> store
     term --> views
-    rulebook --> engine
-    rulebook --> aid
+    metamodel --> engine
+    metamodel --> aid
     datasets --> engine
     datasets --> aid
     engine --> proposals
@@ -101,7 +101,7 @@ flowchart TB
 ```
 ┌─ VS Code — SDEM project ─────────────────────────────────────────────────────────────────────┐
 │ EXPLORER               │ EDITOR                               │ COPILOT CHAT                 │
-│ ▸ metamodel/  rulebook │ a3-application.json                  │ You: explain this trace and  │
+│ ▸ metamodel/  metamodel │ a3-application.json                  │ You: explain this trace and  │
 │ ▸ schema/              │ {                                    │ what a rehost of the cluster │
 │ ▾ examples/            │   "level": "A3",                     │ would affect                 │
 │   ▾ card-fraud-alerts/ │   "instances": [                     │                              │
@@ -120,7 +120,7 @@ flowchart TB
 └────────────────────────┴──────────────────────────────────────┴──────────────────────────────┘
 ```
 
-The **Explorer** shows the project: the rulebook, the datasets, the documents and the prompt files. The **editor** shows a dataset. In the **terminal** the architect has run the CLI. In the **chat** the architect asks Copilot to explain the output; Copilot answers **with its source** (the approved links) and suggests the **next command** to run. The trace is the real one from the `card-fraud-alerts` example.
+The **Explorer** shows the project: the metamodel, the datasets, the documents and the prompt files. The **editor** shows a dataset. In the **terminal** the architect has run the CLI. In the **chat** the architect asks Copilot to explain the output; Copilot answers **with its source** (the approved links) and suggests the **next command** to run. The trace is the real one from the `card-fraud-alerts` example.
 
 ### 2.3 How the terminal and the chat work together
 
@@ -129,7 +129,7 @@ sequenceDiagram
     actor A as Architect
     participant T as Terminal pane - CLI
     participant S as SDEM engine and functions
-    participant F as Project files - rulebook, datasets, graph store
+    participant F as Project files - metamodel, datasets, graph store
     participant C as Copilot Chat
     A->>T: sdem trace CAP-310
     T->>S: run the command
@@ -233,7 +233,7 @@ Copilot is told these rules through `.github/copilot-instructions.md`, which Cop
 |---|---|---|
 | **The CLI** in the terminal pane | the architect runs every SDEM engine and function as a command; output as text, `--json` where available | one interface for the architect, Copilot and CI; nothing hidden; works with Copilot off |
 | One `sdem` command (SDEM-D07, built) | `sdem <journey>` with the same options, `--json`, exit codes and `--help` everywhere; the `sdem-*` commands stay as aliases | one thing to learn; prompt files name one command |
-| `.github/copilot-instructions.md` | standing instructions: the ground rules, where things are, which command answers which question | read automatically; versioned with the rulebook |
+| `.github/copilot-instructions.md` | standing instructions: the ground rules, where things are, which command answers which question | read automatically; versioned with the metamodel |
 | `.github/prompts/*.prompt.md` | one `/` command per kind of support (e.g. `/sdem-explain`, `/sdem-review`, `/aid-suggest`) | repeatable help; the architect does not need to remember options |
 | **Not** MCP | — | the organisation prohibits MCP on GitHub Copilot |
 | **Not** an AI API in SDEM | — | no keys, no new data flows; Copilot is already approved |
@@ -249,7 +249,7 @@ SDEM must **work without Copilot**: every journey is a CLI command. Copilot make
 | Copilot invents a BIAN domain | CTL-17 rejects any A2 element not in the catalogue |
 | Copilot's answer sounds right but is wrong | answers must cite the command or file (rule 1); the architect re-runs the command |
 | Copilot runs something unseen | it runs only the CLI, only when asked, in the terminal pane (rule 2) |
-| A change breaks the rulebook or a generated document | CI runs every check and test on every push |
+| A change breaks the metamodel or a generated document | CI runs every check and test on every push |
 | AI suggestions taken as fact | marked `PRJ-AI-`, capped at 0.2, labelled UNVERIFIED (AID-D08, CTL-18 proposed) |
 
 ```mermaid
@@ -334,7 +334,7 @@ sequenceDiagram
 |---|---|---|
 | WB-Q01 | Package the set-up as a VS Code extension later? | Not now — the CLI, instructions and prompt files need no extension; revisit if architects need buttons and panels |
 | WB-Q02 | Should the HTML view open inside VS Code? | Yes, as a later step (a simple preview); a browser works today |
-| WB-Q03 | Who reviews the Copilot instructions when the rulebook changes? | The rulebook owner; CI checks the instructions name only commands that exist |
+| WB-Q03 | Who reviews the Copilot instructions when the metamodel changes? | The metamodel owner; CI checks the instructions name only commands that exist |
 | WB-Q06 | A GUI with actions and forms? | Proposed as dashboard phase 2 (`sdem serve`, DB-D05) — would amend SDEM-D07 to "one engine, two front ends; no logic in the GUI" |
 | WB-Q05 | Agents per architecture? | Proposed in [`sdem-agent-platform-design.md`](sdem-agent-platform-design.md): Copilot custom agents per layer and an orchestrator, coordinating through the federated graph |
 | WB-Q04 | Should the use-case and baseline scripts (`scripts/*.py`) become CLI commands? | Done — `sdem model examples` and `sdem model baseline-pack` |

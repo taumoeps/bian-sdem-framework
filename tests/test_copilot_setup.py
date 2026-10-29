@@ -62,7 +62,7 @@ class CopilotSetupTests(unittest.TestCase):
                 self.assertIn(c, cli.JOURNEYS, f'{p.relative_to(ROOT)} names unknown command: sdem {c}')
 
 
-    def test_codeowners_cover_what_matters(self):  # a person reviews the rulebook, approved links, data and the agents' powers
+    def test_codeowners_cover_what_matters(self):  # a person reviews the metamodel, approved links, data and the agents' powers
         text = (ROOT / '.github' / 'CODEOWNERS').read_text()
         for pattern in ('/metamodel/', '/schema/', '**/mappings.json', '**/a3-application.json', '**/loads/', '**/coordination/', '/.github/'):
             self.assertRegex(text, r'(?m)^' + re.escape(pattern) + r'\s+@\S+', pattern)

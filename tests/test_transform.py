@@ -54,7 +54,7 @@ class TransformTests(unittest.TestCase):
         self.assertEqual(len(cross), len(self.doc['links_between_candidates']))                   # merged, not repeated
         gw = next(c for c in self.doc['links_between_candidates'] if c['source'] == 'HIS-A3-EXECUTION-GATEWAY')
         self.assertEqual(len(gw['sources']), 2)                                                     # the diagram and the text
-        for l in self.doc['links_within']:  # every kind is one the rulebook allows
+        for l in self.doc['links_within']:  # every kind is one the metamodel allows
             a = next(r for r in self.doc['records'] if r['id'] == l['source']); b = next(r for r in self.doc['records'] if r['id'] == l['target'])
             self.assertIsNone(Metamodel.load().relationship_issue(a['type'][:2], a['type'], l['kind'], b['type']))
 

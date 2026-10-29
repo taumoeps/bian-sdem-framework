@@ -18,13 +18,13 @@
 
 | ID | Requirement | Accepted by |
 |---|---|---|
-| BI-W01 | Per service domain: one `A2.ServiceDomain` (name; `canonical_id` = BIAN's name; `bian_release`), its `A2.ServiceOperation`s (action term from `operationId`, method, path), its `A2.ControlRecord` (from the `CR -` tag) and `A2.BehaviorQualifier`s (from `BQ -` tags), with the links inside A2 the rulebook defines between them. | test: records and links as expected for the made-up release |
-| BI-W02 | Every service domain names an `A2.AssetType` and an `A2.FunctionalPattern` (required by the rulebook). By default they are derived from the control record's name — asset type + generic artefact; the generic artefact gives the functional pattern — and marked `derived`, confidence *medium*. `--patterns <file>` (CSV: service domain, asset type, functional pattern) overrides. A name that cannot be derived is an error naming the domain and pointing to `--patterns`. *(BI-D2)* | tests: derived, overridden, underivable |
+| BI-W01 | Per service domain: one `A2.ServiceDomain` (name; `canonical_id` = BIAN's name; `bian_release`), its `A2.ServiceOperation`s (action term from `operationId`, method, path), its `A2.ControlRecord` (from the `CR -` tag) and `A2.BehaviorQualifier`s (from `BQ -` tags), with the links inside A2 the metamodel defines between them. | test: records and links as expected for the made-up release |
+| BI-W02 | Every service domain names an `A2.AssetType` and an `A2.FunctionalPattern` (required by the metamodel). By default they are derived from the control record's name — asset type + generic artefact; the generic artefact gives the functional pattern — and marked `derived`, confidence *medium*. `--patterns <file>` (CSV: service domain, asset type, functional pattern) overrides. A name that cannot be derived is an error naming the domain and pointing to `--patterns`. *(BI-D2)* | tests: derived, overridden, underivable |
 | BI-W03 | Descriptions only with `--descriptions`; otherwise records have no BIAN description text. *(BI-D3)* | test |
 | BI-W04 | `A2.BusinessObject` records from the schemas only with `--objects`. *(BI-D4)* | test |
 | BI-W05 | Every record carries its provenance: `source_system` `BIAN-SEMANTIC-API-<release>`, the source file, and how each value was obtained (`read`, `derived`, `table`). | test |
 | BI-W06 | Ids are stable: the same BIAN name always gives the same id (`SD-<NAME>`, `SO-<NAME>-<ACTION>…`), so a re-import never orphans an approved link. | test: import twice, same ids |
-| BI-W07 | The dataset is checked against the rulebook before anything is written; on any error nothing is written (all-or-nothing). Advice (`WARN`) is reported, not fatal. | test: a forced error writes nothing |
+| BI-W07 | The dataset is checked against the metamodel before anything is written; on any error nothing is written (all-or-nothing). Advice (`WARN`) is reported, not fatal. | test: a forced error writes nothing |
 
 ## Re-import and report
 
@@ -43,4 +43,4 @@
 ## Checked before building (done 2026-10-29)
 
 - The generic-artifact → functional-pattern list (BI-W02) is BIAN's: Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9 — cited in `sdem/bian.py`.
-- The reader was run against every file of releases 10.0–14.0 (1,241 files): all read, extracted facts identical to PyYAML's, every release imported whole with 0 rulebook errors. Re-run with `python scripts/bian_import_check.py <release folder>` when `sdem/bian.py` changes or BIAN publishes a release.
+- The reader was run against every file of releases 10.0–14.0 (1,241 files): all read, extracted facts identical to PyYAML's, every release imported whole with 0 metamodel errors. Re-run with `python scripts/bian_import_check.py <release folder>` when `sdem/bian.py` changes or BIAN publishes a release.

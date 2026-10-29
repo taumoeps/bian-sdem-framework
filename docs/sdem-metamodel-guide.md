@@ -1,10 +1,10 @@
-# The rulebook in plain words
+# The metamodel in plain words
 
-> **Status: current (v0.9.7)** — what SDEM's rulebook (the *metamodel*) contains and how to read it. The full, generated detail is in [`reference/`](reference/README.md); you do not need it to use SDEM.
+> **Status: current (v0.9.7)** — what SDEM's metamodel contains and how to read it. The full, generated detail is in [`reference/`](reference/README.md); you do not need it to use SDEM.
 
-The **rulebook** decides what SDEM will accept. Every record and every connection is checked against it, and SDEM refuses anything that breaks it. It lives in the `metamodel/` and `schema/` folders, and only the SDEM owner changes it ([how a change is made](sdem-administration.md#when-the-rulebook-changes)).
+The **metamodel** decides what SDEM will accept. Every record and every connection is checked against it, and SDEM refuses anything that breaks it. It lives in the `metamodel/` and `schema/` folders, and only the SDEM owner changes it ([how a change is made](sdem-administration.md#when-the-metamodel-changes)).
 
-## What the rulebook says
+## What the metamodel says
 
 ```mermaid
 flowchart LR
@@ -47,14 +47,14 @@ Only these nine are allowed. Each needs **evidence of a named kind** before a pe
 
 ## Four things that look alike
 
-| | **Rulebook (metamodel)** | **Rules for finding connections** | **The registry** | **The formats (schemas)** |
+| | **Metamodel** | **Rules for finding connections** | **The registry** | **The formats (schemas)** |
 |---|---|---|---|---|
 | In one word | **types** | **rules** | **real connections** | **form** |
 | Says | an A2 service operation *may be* implemented by an A3 API operation | *how* to find that: match the HTTP method and the payload; high confidence; needs an API contract | *this* operation *is* implemented by *this* API — approved by Jane | which fields a connection record must have |
 | Example | `OPERATION_IMPLEMENTED_BY_API` | `S24` | `PAY-101` | `relationship-registry.schema.json` |
 | Changed by | the SDEM owner | the SDEM owner | the engine proposes; a person approves | the SDEM owner |
 
-**Quick test:** a real thing like `SO-PI-01` → the registry. A rule with a step, a confidence and the data it needs → the rules. An allowed kind of link with no rule → the rulebook. A list of fields → a schema.
+**Quick test:** a real thing like `SO-PI-01` → the registry. A rule with a step, a confidence and the data it needs → the rules. An allowed kind of link with no rule → the metamodel. A list of fields → a schema.
 
 ## How sure SDEM is
 
@@ -64,11 +64,11 @@ Every proposed connection says how sure the engine is — **high**, **medium** o
 
 | What it protects | Controls | SDEM refuses … |
 |---|---|---|
-| **Records** | CTL-01 … 04, 24 | an unknown kind of thing; a wrong or missing attribute; a link inside a layer that the rulebook does not allow; a record that does not match its format; a BIAN record taken from a design document instead of a BIAN source |
+| **Records** | CTL-01 … 04, 24 | an unknown kind of thing; a wrong or missing attribute; a link inside a layer that the metamodel does not allow; a record that does not match its format; a BIAN record taken from a design document instead of a BIAN source |
 | **Connections** | CTL-05 … 08 | a connection that is not one of the nine; an approval with no reviewer, date or evidence; any edit to an approved connection (it is superseded instead); a connection to a record that does not exist |
 | **People in charge** | CTL-21, 20, 23 | an approval by an agent; a change without the person behind it; an onboarded design that a person has not loaded |
-| **The engine** | CTL-09, 10, 22 | an engine that finds fewer right connections than the tested runs; output that is not *proposed*; a rule that is not in the rulebook |
-| **The rulebook itself** | CTL-11 … 14 | an item without its source and reasoning; a confidence that breaks the rule; a generated document out of date; any change to the owner's frozen specification |
+| **The engine** | CTL-09, 10, 22 | an engine that finds fewer right connections than the tested runs; output that is not *proposed*; a rule that is not in the metamodel |
+| **The metamodel itself** | CTL-11 … 14 | an item without its source and reasoning; a confidence that breaks the rule; a generated document out of date; any change to the owner's frozen specification |
 | **The knowledge graph** | CTL-15 | building it from data that fails a check (the last good one is kept) |
 | **Planning (AID)** | CTL-16, 17 | a planned design entering real data; a planned element above medium confidence |
 | **Agents** | CTL-19 | an agent changing a layer that is not its own |
@@ -92,7 +92,7 @@ The same numbers appear in the [rules specification](design/relationship-rules-s
 
 ## Reading the architecture-model diagram
 
-[`architecture-model-diagram.puml`](design/architecture-model-diagram.puml) draws the rulebook (kinds of thing and the links allowed inside a layer) and the rules for finding connections. It does **not** draw any real connection. (Open it with the PlantUML extension in VS Code; it renders on your machine.)
+[`architecture-model-diagram.puml`](design/architecture-model-diagram.puml) draws the metamodel (kinds of thing and the links allowed inside a layer) and the rules for finding connections. It does **not** draw any real connection. (Open it with the PlantUML extension in VS Code; it renders on your machine.)
 
 | On the diagram | Means |
 |---|---|
@@ -111,7 +111,7 @@ The specifications use formal names; in plain words they are:
 
 | Plain words (this guide) | Formal name |
 |---|---|
-| the rulebook | **Architecture Metamodel** |
+| the metamodel | **Architecture Metamodel** |
 | the rules for finding connections | **Architecture Relationship Rules Model** |
 | the engine (`sdem link`) | **Architecture Relationship Inference Engine** |
 | the registry — approved connections (`mappings.json`) | **Architecture Relationship Registry** |

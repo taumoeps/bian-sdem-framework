@@ -13,7 +13,7 @@ The estate template's `.github/CODEOWNERS` names who must review changes to:
 | `estates/*/mappings.json` | the approved connections between layers — the decisions | your architecture reviewers |
 | `estates/*/a1-business.json` … `a4-technology.json` | each layer's data | that layer's architects |
 | `estates/*/designs/`, `loads/`, `bian-updates/`, `coordination/` | decisions SDEM records: gaps accepted or resolved, loads, BIAN updates, agents' change sets | your architecture reviewers |
-| `estates/*/migrations/` | moves to a new rulebook version | your in-house SDEM lead |
+| `estates/*/migrations/` | moves to a new metamodel version | your in-house SDEM lead |
 | `bian/`, `rules/` | your BIAN layer (and any BIAN pack); your tuned transform rules | your **in-house SDEM lead** |
 | `requirements.txt`, `ci/`, `.github/` | the SDEM version, the checks, Copilot's files | your in-house SDEM lead or platform team |
 
@@ -49,4 +49,4 @@ Try `git push` of a small change straight to `main` — it should be refused. Op
 
 ## 5. The SDEM project itself (maintainers only)
 
-The public SDEM repository is protected the same way, with its own names: `.github/CODEOWNERS` covers the rulebook (`metamodel/`, `schema/`), the base BIAN (`bian/`), the documentation and `.github/`; the required status check is the **`validate`** job (tests, `sdem model check`, the CLI commands, the installed package). **One maintainer?** GitHub does not let you approve your own pull request: add a second reviewer, or set Required approvals to **0** and keep the pull request, the code-owner rule and the status checks — your merge is then the person's act, on record.
+The public SDEM repository is protected the same way, with its own names: `.github/CODEOWNERS` covers the metamodel (`metamodel/`, `schema/`), the base BIAN (`bian/`), the documentation and `.github/`; the required status check is the **`validate`** job (tests, `sdem model check`, the CLI commands, the installed package). **One maintainer?** GitHub does not let you approve your own pull request: add a second reviewer, or set Required approvals to **0** and keep the pull request, the code-owner rule and the status checks — your merge is then the person's act, on record.

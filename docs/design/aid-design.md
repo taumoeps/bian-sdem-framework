@@ -4,7 +4,7 @@
 
 ## 1. What AID is
 
-**Architecture Inference Design (AID)** is a planning function. An architect starts with the architecture datasets they have — often only one or two of the four — and AID **projects** what the missing layers should look like, using SDEM's rulebook (the metamodel) and the BIAN reference.
+**Architecture Inference Design (AID)** is a planning function. An architect starts with the architecture datasets they have — often only one or two of the four — and AID **projects** what the missing layers should look like, using SDEM's metamodel (the metamodel) and the BIAN reference.
 
 | Architect has | AID projects | Used for |
 |---|---|---|
@@ -16,7 +16,7 @@
 
 ## Where AID fits in SDEM
 
-AID is SDEM's **planning lane**, beside the **mapping lane** (the engine, approval, the registry and the federated knowledge graph). Both use the same rulebook and engine rules; gap analysis compares their outputs. AID may read real data but never writes into the mapping lane (control CTL-16). It works **with** the standards — TOGAF gives the method (baseline, target and gap analysis in Phases B–D), ArchiMate the relationship language, BIAN the reference — and automates the projection and the gap analysis they leave to people. Recorded in the detail-level metamodel spec §20 (gap G-18), the knowledge-graph spec (component C-18), the controls register (CTL-16, CTL-17 planned) and the ROADMAP (v0.12).
+AID is SDEM's **planning lane**, beside the **mapping lane** (the engine, approval, the registry and the federated knowledge graph). Both use the same metamodel and engine rules; gap analysis compares their outputs. AID may read real data but never writes into the mapping lane (control CTL-16). It works **with** the standards — TOGAF gives the method (baseline, target and gap analysis in Phases B–D), ArchiMate the relationship language, BIAN the reference — and automates the projection and the gap analysis they leave to people. Recorded in the detail-level metamodel spec §20 (gap G-18), the knowledge-graph spec (component C-18), the controls register (CTL-16, CTL-17 planned) and the ROADMAP (v0.12).
 
 ## 2. Key terms
 
@@ -33,7 +33,7 @@ AID is SDEM's **planning lane**, beside the **mapping lane** (the engine, approv
 ```
  architecture datasets you have  ─┐
  BIAN reference (catalogue)      ─┼─► AID ─► projected design ─► view · trace · impact
- the rulebook (metamodel)        ─┘            (separate package)       │
+ the metamodel                    ─┘            (separate package)       │
                                                                          ▼
                                        real datasets, when they exist ─► gap analysis
 ```
@@ -110,7 +110,7 @@ When the real layers exist (or for testing, when they are known but hidden), AID
 
 | Dependency | Status |
 |---|---|
-| The rulebook and the engine's rules | built |
+| The metamodel and the engine's rules | built |
 | BIAN reference catalogue | **partial** — public BIAN material is limited; the examples hold small synthetic A2 datasets. A complete catalogue needs licensed BIAN data |
 | Graph store and view, to show projections | built, with a projection overlay (`--projection`, AID-O06) |
 | A projection package format | built — `sdem aid project`, `schema/projection.schema.json` |

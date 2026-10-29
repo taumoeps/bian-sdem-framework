@@ -3,7 +3,7 @@
 BIAN publishes one OpenAPI file per service domain (github.com/bian-official/public, Apache-2.0). `sdem bian list` shows
 what a downloaded release holds; `sdem bian import` turns the service domains you choose into an A2 dataset — service
 domain, operations with their input and output fields, control record, behaviour qualifiers, the service groups that
-hold the operations, and the asset type and functional pattern the rulebook requires — checked before it is written.
+hold the operations, and the asset type and functional pattern the metamodel requires — checked before it is written.
 
   sdem bian list --base                       # the base BIAN that ships with SDEM (BIAN's Semantic APIs 14.0.0)
   sdem bian import --base --only "Payment Order Initiation" -o work/bian/a2-service-domain.json
@@ -335,7 +335,7 @@ def build(domains, metamodel_version, descriptions=False, objects=False, pattern
 
 
 def check(dataset):
-    """Errors and warnings from the rulebook for one A2 dataset (BI-W07)."""
+    """Errors and warnings from the metamodel for one A2 dataset (BI-W07)."""
     from .graph import LevelGraph, estate_index
     from .metamodel import Metamodel
     g = LevelGraph(dataset, Metamodel.load())
@@ -385,14 +385,14 @@ def report_md(dataset, report, refused, warnings, changes=None, descriptions=Fal
           '| Service domain | Asset type | Functional pattern | From |', '|---|---|---|---|']
     L += [f'| {d} | {a} | {p} | derived — confirm |' for d, a, p in report['derived']] + [f'| {d} | {a} | {p} | your table |' for d, a, p in report['from_table']]
     if report.get('shared_control_records'):
-        L += ['', '## Control records with the same name', '', "BIAN's files give these service domains the same control record name; each domain keeps its own record (the rulebook allows one domain per control record). Check with BIAN which is intended.", '']
+        L += ['', '## Control records with the same name', '', "BIAN's files give these service domains the same control record name; each domain keeps its own record (the metamodel allows one domain per control record). Check with BIAN which is intended.", '']
         L += [f"- `{n}`: {', '.join(ds)}" for n, ds in report['shared_control_records']]
     if changes:
         L += ['', '## Against the previous A2 dataset', '', f"Added {len(changes['added'])} · dropped {len(changes['dropped'])} · renamed {len(changes['renamed'])}. "
               'A dropped record is **not** removed from your estate — check whether approved links point to it.', '']
         L += [f'- dropped: `{i}`' for i in changes['dropped']] + [f'- renamed: `{i}` {a!r} → {b!r}' for i, a, b in changes['renamed']]
     if warnings:
-        L += ['', '## Advice from the rulebook', ''] + [f'- {w}' for w in warnings[:50]] + ([f'- … {len(warnings) - 50} more'] if len(warnings) > 50 else [])
+        L += ['', '## Advice from the metamodel', ''] + [f'- {w}' for w in warnings[:50]] + ([f'- … {len(warnings) - 50} more'] if len(warnings) > 50 else [])
     if report.get('left_out'):
         L += ['', f"## Left out — {len(report['left_out'])} service domain(s) need your pattern", '',
               f"`--all` imported every service domain whose asset type and functional pattern can be derived. These could not be: their control record's name "
@@ -541,7 +541,7 @@ def main(argv=None):
     if left_out: rep.update(left_out=left_out, template=template.name)
     errors, warnings = check(dataset)
     if errors:
-        print('ERROR: refused — the A2 dataset would not pass the rulebook; nothing written:', file=sys.stderr)
+        print('ERROR: refused — the A2 dataset would not pass the metamodel; nothing written:', file=sys.stderr)
         for e in errors[:20]: print(f'  {e}', file=sys.stderr)
         return 1
     changes = compare(json.loads(Path(a.previous).read_text(encoding='utf-8')), dataset) if a.previous else None
