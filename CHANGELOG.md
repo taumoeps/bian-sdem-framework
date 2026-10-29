@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## 0.9.5 — enterprise licensing, usage and privacy (2026-10-29)
+
+Documentation only — no change to SDEM's behaviour, rulebook, schemas or base BIAN. Upgrade: change the pin to `@v0.9.5`, `pip install -r requirements.txt`. Rulebook metamodel version unchanged (0.4.0).
+
+- **Enterprise licensing, usage and privacy.** [`PRIVACY.md`](PRIVACY.md) (new) — what SDEM reads, writes and stores, verified against the code: no telemetry, no network requests, no credentials; the only programs it starts are `git` and on-device text recognition; names you give it are recorded in your files; nothing deleted automatically; what optional tools around it (Copilot, PlantUML, repository hosting) may send. `LICENSES.md` — what is licensed and by whom, including what the licence does *not* cover (your data, your modifications' ownership, employment and confidentiality terms). [Using SDEM](docs/sdem-licence-and-use.md) — new sections *Enterprise internal use and customisation* (ten uses, from one architect on an employer-managed device to a private fork) and *Separation of framework and organisation intellectual property*; the patent-licence and redistribution wording corrected to match the licence (§3, §4). `SECURITY.md` — names `git` as a program SDEM starts. README — enterprise statement and links to every licence, privacy and security document. New test `tests/test_privacy.py` keeps the privacy claims true: no networking library, only the named programs, generated pages load nothing from the internet, no dependencies. `LICENSE` and `THIRD_PARTY.md` unchanged.
+
 ## 0.9.4 — documentation review fixes (2026-10-29)
 
 Upgrade: change the pin to `@v0.9.4`, `pip install -r requirements.txt`; copy the estate template's updated `.github/CODEOWNERS` (owners for `bian/`, `rules/` and SDEM's records); `sdem copilot install` if you use Copilot. Rulebook metamodel version unchanged (0.4.0).

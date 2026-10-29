@@ -1,6 +1,6 @@
 # SDEM documentation
 
-> **Status: current (v0.9.4)** — start here. Everything on this page is written for people who will use or run SDEM; nothing assumes you know it already.
+> **Status: current (v0.9.5)** — start here. Everything on this page is written for people who will use or run SDEM; nothing assumes you know it already.
 
 ## New to SDEM? Read these, in order
 
@@ -33,7 +33,8 @@ flowchart LR
 
 | Read | For |
 |---|---|
-| [Using SDEM — free for any bank](sdem-licence-and-use.md) | the licence in plain words: what anyone may do, what SDEM contains from others, what it does not claim |
+| [Using SDEM — free for any bank](sdem-licence-and-use.md) | the licence in plain words: what anyone may do, what SDEM contains from others, what it does not claim; enterprise use and customisation |
+| [Privacy and data handling](../PRIVACY.md) | what SDEM reads, writes and stores; what optional tools around it may send |
 | [Adoption checklist](sdem-adoption-checklist.md) | what your organisation clears first: legal and licences, data, security, AI, and depending on an open-source tool |
 | [Operating model](sdem-operating-model.md) | where things live, who does what, how changes and upgrades flow, support |
 | [Configuration](sdem-configuration.md) | everything you can set: estates, the SDEM version, how onboarding reads designs, OCR, reviewers, CI, VS Code, Copilot |

@@ -8,7 +8,7 @@ Please **do not open a public issue** for a security problem. Report it privatel
 
 SDEM is an **offline command-line tool** that reads and writes JSON files on your machine.
 
-- **No network.** SDEM makes no network calls: no server, no AI API client, no MCP server, no API key. A test checks this on every push (`tests/test_copilot_setup.py`). The one outside program it may run is the operating system's own text recognition (macOS Vision, or Tesseract if installed) to read text in pictures during `sdem transform` — on your machine; `--ocr off` turns it off.
+- **No network.** SDEM makes no network calls: no server, no AI API client, no MCP server, no API key, and the HTML pages it writes load nothing from the internet. Tests check this on every push (`tests/test_privacy.py`, `tests/test_copilot_setup.py`). The only programs it starts are `git` (to compare with an earlier commit and read the branch name) and the machine's own text recognition (macOS Vision, or Tesseract if installed) to read text in pictures during `sdem transform` — both on your machine; `--ocr off` turns text recognition off. More: [`PRIVACY.md`](PRIVACY.md).
 - **No dependencies** beyond the Python standard library — nothing to pull from a package index at run time.
 - **Copilot is optional and outside SDEM.** If your organisation uses GitHub Copilot, its data handling is your organisation's agreement with GitHub; SDEM's agents only run the SDEM CLI, and only when the architect asks.
 

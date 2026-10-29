@@ -1,6 +1,6 @@
 # SDEM pilot plan — one domain, ten weeks
 
-> **Status: current (v0.9.4)**. The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's rulebook covers the whole bank (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own estate. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
+> **Status: current (v0.9.5)**. The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's rulebook covers the whole bank (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own estate. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
 
 ## The question the pilot answers
 
@@ -14,7 +14,7 @@
 | People | 2–3 architects (A1, A3, A4 between them), 1 reviewer, the estate owner (one of the architects) who is also the **in-house SDEM lead**, and the upstream SDEM maintainer for questions |
 | Time | 10 weeks, about half a day a week per architect after set-up |
 | Data | 3–5 existing designs onboarded; the domain's changes during the pilot kept in SDEM |
-| SDEM | v0.9.4 (or later), pinned |
+| SDEM | v0.9.5 (or later), pinned |
 
 ## Choosing the domain
 
