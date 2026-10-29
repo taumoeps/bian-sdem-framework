@@ -75,7 +75,7 @@ SDEM ships with a **base BIAN** — BIAN's public Semantic APIs 14.0.0 (Apache-2
 
 After changing the shared file, `sdem bian update --root workspaces --a2 bian/a2-service-domain.json --person <you>` brings every workspace up to date — checked, all-or-nothing, recorded in each workspace's `bian-updates/`; it refuses if an approved connection points to a service domain you dropped.
 
-**Where it lives:** in your workspace repository, write it to `bian/a2-service-domain.json` and commit it — one file shared by every workspace (`sdem new` copies it into each new one; `sdem bian custom` narrows one workspace); keep a `--patterns` table beside it (`bian/patterns.csv`) and your own pack if you have one (`bian/our-bian.json`). The workspace template's `bian/README.md` walks through it. How: [onboarding — your BIAN (A2) layer](sdem-onboarding-workflow.md#your-bian-a2-layer).
+**Where it lives:** in your workspace repository, write it to `bian/a2-service-domain.json` and commit it — the catalogue every workspace chooses from (`sdem aid` brings the domains a design needs into its workspace; `sdem bian custom --add` adds one by hand); keep a `--patterns` table beside it (`bian/patterns.csv`) and your own pack if you have one (`bian/our-bian.json`). The workspace template's `bian/README.md` walks through it. How: [onboarding — your BIAN (A2) layer](sdem-onboarding-workflow.md#your-bian-a2-layer).
 
 ## Text in pictures (OCR)
 

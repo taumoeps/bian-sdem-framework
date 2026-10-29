@@ -64,7 +64,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 
 | # | Command | In plain words |
 |---|---|---|
-| 0 | `sdem new --workspace workspaces/history --person <you>` | **Start the workspace** — once. Creates the folder where this area's architecture is kept, with your BIAN layer already in it |
+| 0 | `sdem new --workspace workspaces/history --person <you>` | **Start the workspace** — once. Creates the folder where this area's architecture is kept; BIAN's service domains are read from the catalogue |
 | 1 | `sdem transform inspect <export folder>` | **Look before you start.** Shows what is in your export and what SDEM can read. Changes nothing |
 | 2 | `sdem transform run <export folder> -o work/history` | **Read the designs.** Turns the pages into a list of *suggested* architecture items, and writes a report for you to read |
 | 3 | *(you read `work/history/extraction-report.md`)* | **Check the suggestions.** Decide which are wrong |
@@ -94,7 +94,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 2. Check SDEM works: `source .venv/bin/activate`, then `sdem --version` (not installed yet? [user guide §3](sdem-workbench-user-guide.md#3-set-up--once)).
 3. Start a branch for this work: `git checkout -b onboard/<name>`.
 4. **Put your export under `work/`**, e.g. `work/imports/payarch/`. Only `work/`, `private/` and `secrets/` are kept out of Git — anywhere else, your designs could be committed and shared.
-5. **The BIAN layer comes with the workspace** — `sdem new` puts all of BIAN's service domains in it, so there is nothing to prepare; narrow or share it later ([*Your BIAN (A2) layer*](#your-bian-a2-layer) below). **For the made-up sample** the walkthrough uses a small practice layer of two domains, so its outputs match: `sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json`.
+5. **Nothing to prepare for BIAN** — the catalogue (all of BIAN's service domains) comes with SDEM; after the load, `sdem aid` brings into the workspace only the domains your designs point to, or add one with `sdem bian custom --add` ([*Your BIAN (A2) layer*](#your-bian-a2-layer) below). **For the made-up sample** the walkthrough uses a small practice layer of two domains, so its outputs match: `sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json`.
 
 > The examples below show what you will see with the made-up export `examples/designs/confluence-folder-export`, with `--ocr off` (the same on every machine). Try it first: `mkdir -p work/imports && cp -r examples/designs/confluence-folder-export work/imports/payarch`.
 
@@ -130,7 +130,7 @@ The 66 domains whose asset type and functional pattern SDEM cannot work out are 
 - **BIAN's descriptions are left out.** The base never has them; to include them, or business objects (`--objects`), import from a folder of BIAN's files with `--descriptions`.
 - **Every record says which BIAN it came from** — release, file — so moving later from the base to your own BIAN is reported, not silent (`--previous <your current file>`).
 
-**Where to write it.** In your **workspace repository**: `-o bian/a2-service-domain.json`, then commit it — one BIAN layer shared by every workspace: `sdem new` copies it into each new workspace (with no shared layer yet, it uses all of the base BIAN). An architect can narrow one workspace's layer later — `sdem bian custom --workspace <workspace> --only … --person <you>`. **When you change it later** (more service domains, a new BIAN release), bring every workspace up to date: `sdem bian update --root workspaces --a2 bian/a2-service-domain.json --person <you>` — checked first; it refuses if an approved connection points to a service domain you dropped (supersede that connection first). Practising **in the SDEM project**: `-o work/bian/a2-service-domain.json` (the SDEM project's own `bian/` folder holds the base).
+**Where to write it.** In your **workspace repository**: `-o bian/a2-service-domain.json`, then commit it — the catalogue every workspace chooses from (with no shared layer, workspaces use the base BIAN). A workspace holds only the domains its design needs — `sdem aid` brings them in, `sdem bian custom --add` adds one by hand. `sdem bian update` refreshes in each workspace only the domains it holds. **When you change it later** (more service domains, a new BIAN release), bring every workspace up to date: `sdem bian update --root workspaces --a2 bian/a2-service-domain.json --person <you>` — checked first; it refuses if an approved connection points to a service domain you dropped (supersede that connection first). Practising **in the SDEM project**: `-o work/bian/a2-service-domain.json` (the SDEM project's own `bian/` folder holds the base).
 
 ```bash
 sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json     # practising in the SDEM project

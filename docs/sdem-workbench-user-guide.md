@@ -523,14 +523,14 @@ mkdir -p work/imports && cp -r examples/designs/confluence-folder-export work/im
 sdem transform inspect work/imports/payarch --ocr off                    # what is in the export, what SDEM can read — changes nothing
 sdem transform run work/imports/payarch -o work/history --ocr off        # suggestions + work/history/extraction-report.md
 # read the report; note the ids you reject
-sdem new --workspace workspaces/history --person <your name>               # start the workspace once — with all of BIAN's service domains
+sdem new --workspace workspaces/history --person <your name>               # start the workspace once — BIAN is read from the catalogue, not copiedomains
 sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER
 sdem link --workspace workspaces/history --out work/links                      # then review, approve, build — as in §8.2
 ```
 
 - **Keep exports in `work/`** — it is never saved to Git. The result you keep is `workspaces/history/` (for real data, in your private workspace repository).
 - Every suggestion says **which page, where on it, which rule and how sure** (never above medium); nothing is loaded until you run `sdem load`; anything that did not fit becomes a **gap record** — nothing is lost.
-- **Your BIAN layer** comes with the workspace (`sdem new`); narrow it later with `sdem bian custom` — what it is and where it comes from: [the workflow's *Your BIAN (A2) layer*](sdem-onboarding-workflow.md#your-bian-a2-layer).
+- **Your BIAN layer** holds only the domains your designs need: after the load, `sdem aid` brings them in; add one with `sdem bian custom --add` — what it is and where it comes from: [the workflow's *Your BIAN (A2) layer*](sdem-onboarding-workflow.md#your-bian-a2-layer).
 - If your designs use table headings SDEM does not recognise: [configuration — onboarding](sdem-configuration.md#onboarding--reading-your-designs).
 
 > **Never** put the real export or its outputs in a public repository or paste them into an AI chat outside what your organisation allows.

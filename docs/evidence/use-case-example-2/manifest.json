@@ -1,7 +1,7 @@
 {
   "example": "use-case-example-2",
   "run_date": "2026-10-30",
-  "code_commit": "9184dd6c8ea6f3275da4784f0f660fcf39c9e95b",
+  "code_commit": "cbaa311d7d16a9dc5f3bdd294d99ace56626c070",
   "files": {
     "catalogue-summary.json": "eb02b6c5214aecbc14d081b0a62f71b41d68e00d291c3bf75bde6b7a23cf6d56",
     "run1-projection.json": "182b3b4fd597f907b14e288acbaac65db56b3498f28ca0888742cf5a1855978a",

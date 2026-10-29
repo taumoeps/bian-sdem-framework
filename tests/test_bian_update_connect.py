@@ -19,6 +19,7 @@ class BianUpdateAndConnectTests(unittest.TestCase):
                   ('transform', 'run', 'export', '-o', 'history', '--ocr', 'off'),
                   ('new', '--workspace', 'workspaces/payments', '--person', ME),   # starts from the shared BIAN layer, bian/a2-service-domain.json
                   ('load', 'history', '--workspace', 'workspaces/payments', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER'),
+                  ('bian', 'custom', '--workspace', 'workspaces/payments', '--add', 'Payment Order Initiation', 'Payment Rail', '--person', ME),
                   ('link', '--workspace', 'workspaces/payments', '--out', 'links')):
             r = run(*a); assert r.returncode == 0, (a, r.stdout + r.stderr)
 
@@ -81,27 +82,32 @@ class BianUpdateAndConnectTests(unittest.TestCase):
         self.assertEqual(code, 1); self.assertIn('already approved', out)
 
     # ---- sdem bian update
-    def test_update_adds_service_domains_and_records_it(self):  # BU-01, BU-04
-        self.assertEqual(self.sdem('bian', 'import', '--base', '--only', 'Payment Order Initiation', 'Payment Rail', 'Account Reconciliation',
-                                   '-o', 'bian/a2-service-domain.json')[0], 0)
-        code, out = self.sdem('bian', 'update', '--root', 'workspaces', '--a2', 'bian/a2-service-domain.json', '--person', ME, '--dry-run')
-        self.assertIn('would update', out); self.assertFalse((self.w / 'workspaces' / 'payments' / 'bian-updates').exists())
-        code, out = self.sdem('bian', 'update', '--root', 'workspaces', '--a2', 'bian/a2-service-domain.json', '--person', ME)
-        self.assertEqual(code, 0, out); self.assertIn('updated (BU-001)', out)
+    def test_update_refreshes_the_domains_a_workspace_holds_and_records_it(self):  # BU-01, BU-04, WS-04
+        shared = self.w / 'bian' / 'a2-service-domain.json'
+        self.assertEqual(self.sdem('bian', 'import', '--base', '--only', 'Payment Order Initiation', 'Payment Rail', 'Account Reconciliation', '-o', shared)[0], 0)
+        code, out = self.sdem('bian', 'update', '--root', 'workspaces', '--a2', shared, '--person', ME)
+        self.assertEqual(code, 0, out); self.assertIn('unchanged', out)                  # nothing changed for the domains it holds
         est = self.w / 'workspaces' / 'payments'
-        self.assertEqual(json.loads((est / 'a2-service-domain.json').read_text()), json.loads((self.w / 'bian' / 'a2-service-domain.json').read_text()))
-        rec = json.loads((est / 'bian-updates' / 'BU-001.json').read_text())
-        self.assertEqual(rec['person'], ME); self.assertIn('SD-ACCOUNT-RECONCILIATION', rec['added']); self.assertEqual(rec['dropped'], [])
-        code, out = self.sdem('bian', 'update', '--root', 'workspaces', '--a2', 'bian/a2-service-domain.json', '--person', ME)
-        self.assertIn('unchanged', out); self.assertFalse((est / 'bian-updates' / 'BU-002.json').exists())
+        names = lambda: {i['name'] for i in json.loads((est / 'a2-service-domain.json').read_text())['instances'] if i['type'] == 'A2.ServiceDomain'}
+        self.assertNotIn('Account Reconciliation', names())                               # nothing else is brought in
+        d = json.loads(shared.read_text())                                                # the shared layer changes a held domain
+        op = next(i for i in d['instances'] if i['type'] == 'A2.ServiceOperation' and i['id'].startswith('SO-PAYMENT-RAIL-')); op['name'] = op['name'] + ' (renamed)'
+        shared.write_text(json.dumps(d))
+        code, out = self.sdem('bian', 'update', '--root', 'workspaces', '--a2', shared, '--person', ME, '--dry-run')
+        self.assertIn('would update', out); self.assertFalse((est / 'bian-updates' / 'BU-002.json').exists())
+        code, out = self.sdem('bian', 'update', '--root', 'workspaces', '--a2', shared, '--person', ME)
+        self.assertEqual(code, 0, out); self.assertIn('updated (BU-002)', out)
+        rec = json.loads((est / 'bian-updates' / 'BU-002.json').read_text())
+        self.assertEqual(rec['person'], ME); self.assertEqual(len(rec['renamed']), 1); self.assertEqual(rec['added'], [])
+        self.assertNotIn('Account Reconciliation', names())
 
-    def test_update_never_strands_an_approved_connection(self):  # BU-02
+    def test_update_keeps_a_held_domain_the_shared_layer_no_longer_has(self):  # BU-02, WS-04
         self.assertEqual(self.sdem(*self.CONNECT, '--reviewer', ME)[0], 0)
         self.assertEqual(self.sdem('bian', 'import', '--base', '--only', 'Payment Rail', '-o', 'smaller.json')[0], 0)
-        before = (self.w / 'workspaces' / 'payments' / 'a2-service-domain.json').read_text()
         code, out = self.sdem('bian', 'update', '--workspace', 'workspaces/payments', '--a2', 'smaller.json', '--person', ME)
-        self.assertEqual(code, 1); self.assertIn('supersede them first', out); self.assertIn('SD-PAYMENT-ORDER-INITIATION', out)
-        self.assertEqual((self.w / 'workspaces' / 'payments' / 'a2-service-domain.json').read_text(), before)
+        self.assertEqual(code, 0, out); self.assertIn('not in the shared layer — kept', out); self.assertIn('Payment Order Initiation', out)
+        a2 = json.loads((self.w / 'workspaces' / 'payments' / 'a2-service-domain.json').read_text())
+        self.assertIn('SD-PAYMENT-ORDER-INITIATION', {i['id'] for i in a2['instances']})
 
     def test_update_is_a_persons_decision_and_needs_an_a2_file(self):  # BU-05, BU-01
         code, out = self.sdem('bian', 'update', '--workspace', 'workspaces/payments', '--a2', 'bian/a2-service-domain.json', '--person', 'copilot')

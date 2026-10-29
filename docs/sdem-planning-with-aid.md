@@ -4,13 +4,13 @@
 
 ## What you give it, what it gives you
 
-**You give it whatever you have**, in your workspace: any of the four layers — often just the business design (A1): a few capabilities, a process and its activities, named *verb + thing* (*Initiate payment order*, *Execute payment*). The workspace already holds BIAN's service domains, from `sdem new`.
+**You give it whatever you have**, in your workspace: any of the four layers — often just the business design (A1): a few capabilities, a process and its activities, named *verb + thing* (*Initiate payment order*, *Execute payment*). BIAN's service domains are the catalogue AID chooses from — the workspace will hold only the ones your design needs.
 
 **It gives you the rest**, written into the same layer files:
 
 | From | AID infers | How |
 |---|---|---|
-| your activities and capabilities (A1) | the **BIAN service domains** they need (A2) | an activity's verb and thing match a BIAN operation and cover the domain's subject (*Initiate payment order* → Payment Order Initiation); or a capability's description shares the domain's words |
+| your activities and capabilities (A1) — or your applications and their APIs (A3) | the **BIAN service domains** they need, copied from the catalogue into your A2 layer with their operations and control records | an activity's verb and thing match a BIAN operation and cover the domain's subject (*Initiate payment order* → Payment Order Initiation); or a capability's description shares the domain's words |
 | each service domain | an **application** and one **API per BIAN operation** (A3) | BIAN's container pattern: one component per domain; method and path from BIAN's REST mapping |
 | each application | a **deployment** (A4) | one per application — no servers, platforms or locations are guessed |
 | your technology or applications (A4, A3), if that is what you have | the applications and BIAN domains above them, and *suggested* capabilities | upwards, by the same rules |
@@ -19,7 +19,7 @@
 
 ## Step by step — a real example
 
-**1. Start the workspace** (it comes with all of BIAN):
+**1. Start the workspace** — all four layers empty; BIAN's 258 service domains are read from the catalogue, not copied:
 ```bash
 sdem new --workspace workspaces/payments --person jane.architect
 ```
@@ -31,9 +31,9 @@ sdem new --workspace workspaces/payments --person jane.architect
 sdem aid --workspace workspaces/payments --person jane.architect
 ```
 ```
-added (AID-001) to workspaces/payments: A3 40 inferred record(s), A4 2 inferred record(s); 45 connection(s) proposed in workspaces/payments/aid/AID-001-proposals.json — checked
+added (AID-001) to workspaces/payments: A2 67 inferred record(s), A3 40 inferred record(s), A4 2 inferred record(s); 45 connection(s) proposed in workspaces/payments/aid/AID-001-proposals.json — checked
 ```
-From four business records, AID found the two BIAN service domains a payment needs — **Payment Order Initiation** and **Payment Rail** — and added their applications, APIs and deployments. An inferred record looks like this:
+From four business records, AID found the two BIAN service domains a payment needs — **Payment Order Initiation** and **Payment Rail** — and brought only those into the workspace's BIAN layer (67 records, with their operations and control records — not all 258 domains), then added their applications, APIs and deployments. Confirming a domain confirms its operations with it; rejecting one removes what was built on it. An inferred record looks like this:
 ```json
 { "id": "AID-APP-SD-PAYMENT-ORDER-INITIATION", "name": "Payment Order Initiation service (inferred)", "lifecycle_status": "planned",
   "attributes": { "inferred": { "by": "sdem aid", "run": "AID-001", "rule": "BIAN container pattern",
@@ -62,6 +62,8 @@ Until a connection is approved, `trace` and `impact` do not follow it.
 
 - **Confidence is honest and low.** Inferred records are a starting point (most are 0.4): BIAN's container pattern gives one application per domain, which your organisation may not follow. That is why every record waits for you.
 - **It works better when activities are named verb + thing** (*Initiate payment order*, not *Payments*), or name the BIAN operation they use (`invokes`).
-- **Narrowing BIAN first is optional** — AID picks the best-matching domains from all of them; narrowing (`sdem bian custom`) only makes it faster.
+- **AID chooses from all of BIAN** and brings in only the best-matching domains; add one it missed with `sdem bian custom --add`.
+- **It infers only from what you wrote or confirmed** — never from its own unconfirmed records — so running it again does not pile guesses on guesses.
+- **For existing designs too:** after `sdem load`, run `sdem aid` — the domains your designs point to come in, from the business side or the application side.
 - **File-based planning still works** — `sdem aid project --have <files> --catalogue <A2 file> --out <folder>` (or `--workspace`, into `<workspace>/plans/`) writes a separate plan that never touches your files; `sdem aid gaps` compares a plan with the real design.
 - **Rules and controls:** [AID specification](design/aid-spec.md) — *Filling a workspace* (AID-W01…W07) and control CTL-16.

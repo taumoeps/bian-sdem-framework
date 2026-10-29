@@ -142,7 +142,7 @@ The steps in order, from your designs to the knowledge graph:
 | 3 | *Existing design:* read it | `sdem transform run <export> -o work/history` | turns pages, tables and diagrams into *suggested* items, with a report of where each came from | SDEM |
 | 4 | *Existing design:* keep the good ones | `sdem load work/history --workspace <workspace> --person <you>` | copies the items you accept into the workspace — you are recorded as the person who decided; what does not fit is kept as a gap record | **you** |
 | — | *New design instead:* fill the gaps | `sdem aid --workspace <workspace> --person <you>` | from whatever you wrote (any of A1…A4), adds the records the workspace is missing **into its layer files** — each marked *inferred*, with source, reasoning and confidence — and proposes the connections; you review, then `sdem aid confirm` or `sdem aid reject` each record | SDEM, then **you** |
-| *optional* | Change the BIAN layer | `sdem bian custom --workspace <workspace> --only "<service domain>" … --person <you>` — or share one across workspaces: `sdem bian import --base --all -o bian/a2-service-domain.json` | the workspace already has all of BIAN's service domains (from `sdem new`); narrow it to the ones you use, or keep one shared layer for every workspace — [choosing your BIAN service domains](#choosing-your-bian-service-domains) | **you**, or the SDEM lead for the shared layer |
+| *optional* | Add a BIAN service domain | `sdem bian custom --workspace <workspace> --add "<service domain>" … --person <you>` — or keep one shared catalogue for every workspace: `sdem bian import --base --all -o bian/a2-service-domain.json` | `sdem aid` brings in the domains your design needs; add one it did not pick, or let the SDEM lead keep a shared catalogue — [choosing your BIAN service domains](#choosing-your-bian-service-domains) | **you**, or the SDEM lead for the catalogue |
 | 5 | Check | `sdem check --workspace <workspace>` | every file against the metamodel; errors must be fixed, warnings are advice — also run by CI on every change | SDEM |
 | 6 | Propose connections | `sdem link --workspace <workspace> --out work/links` | proposes connections between layers, each with its reasons | SDEM |
 | 7 | Review them | `sdem review work/links/proposals.json` | lists the proposals, weakest first | **you** |
@@ -151,15 +151,15 @@ The steps in order, from your designs to the knowledge graph:
 
 #### Choosing your BIAN service domains
 
-**Every workspace starts with all of them** — your organisation's shared BIAN layer, or, if there is none yet, all 258 service domains of BIAN 14.0.0 — so nobody needs to know which to pick on day one. Later, an architect can narrow **one workspace** to the domains it uses; the others are not affected:
+**Nobody needs to know which to pick.** All 258 service domains of BIAN 14.0.0 are the **catalogue** — your organisation's shared BIAN layer, or the base BIAN that ships with SDEM — and the catalogue is read, never copied. A workspace holds **only the domains its design needs**: `sdem aid` brings them in from what you wrote, each marked *inferred* with the reason, for you to confirm or reject. To choose by hand instead:
 
-| Option | Keeps | When |
+| Option | Gives the workspace | When |
 |---|---|---|
-| *(nothing — the default)* | **all 258** service domains | **the simplest start**, especially if you are new to service domains |
-| `sdem bian custom --workspace <workspace> --only "Payment Order Initiation" "Payment Rail" --person <you>` | the domains you name | you know which ones the area uses — find them with `sdem bian list --base \| grep -i payment` |
-| `sdem bian custom --workspace <workspace> --from my-domains.txt --person <you>` | the names in a file, one per line | a longer list, kept in your repository and reviewed like code |
+| *(nothing — `sdem aid` chooses)* | the domains your design points to | **the simplest start**, especially if you are new to service domains |
+| `sdem bian custom --workspace <workspace> --add "Payment Order Initiation" … --person <you>` | these domains, beside what it holds | AID did not pick one you need — find names with `sdem bian list --base \| grep -i payment` |
+| `sdem bian custom --workspace <workspace> --only … --person <you>` (or `--from my-domains.txt`) | exactly these domains | you know the area's list — kept in your repository and reviewed like code |
 
-Narrowing is checked and recorded, and refuses to remove a domain an approved connection uses. When the SDEM lead later updates the shared layer (`sdem bian update --root workspaces`), a workspace with its own selection keeps it and is told what is new.
+Every change is checked and recorded, and refuses to remove a domain an approved connection uses. When the SDEM lead updates the shared catalogue (`sdem bian update --root workspaces`), each workspace refreshes only the domains it holds.
 
 **240 come with full values; 18 are marked *not known yet*.** The metamodel gives every service domain an *asset type* and a *functional pattern*. BIAN's public files do not state them; SDEM works them out from the control record's name, following BIAN's own naming rule, for 192 domains. For 48 more, SDEM's **inference record** supplies values a person has accepted. The other 18 have no accepted value yet. SDEM does not guess: those 66 are imported marked `classification: unknown`, can still be connected through their operations, and `sdem check` advises on each until the values are given. The inference record ([BIAN inferences](docs/reference/bian-inferences.md)) holds each inferred value with its source, reasoning and confidence, a status and a history; the import applies an entry once a person has **accepted** it (`sdem bian inference accept <id> --person <you>`), and the domain records `classification: inferred` and the entry's id. Anyone can challenge or change an entry later, with a reason, and every change is kept. Or give values yourself: the import writes a template (`…needs-patterns.csv`) to fill in and use with `--patterns <template>`. A full BIAN layer does not flood you with proposals: on the example workspace, `sdem link` took about eight seconds and proposed 13 connections with all 258 domains loaded.
 
@@ -205,7 +205,7 @@ flowchart LR
 Six steps, the same for every area. Each links to where it is written in full.
 
 1. **Install and practise.** [Install](#install) SDEM, then do the user guide's [15-minute quick start](docs/sdem-workbench-user-guide.md#5-quick-start--15-minutes) on the made-up example: check the data, build the knowledge graph, trace a business process down to its technology.
-2. **Start your workspace** — `sdem new --workspace workspaces/<area> --person <you>`: the folder where your area's architecture is kept, with BIAN's service domains already in it.
+2. **Start your workspace** — `sdem new --workspace workspaces/<area> --person <you>`: the folder where your area's architecture is kept; it reads BIAN's service domains from the catalogue and holds only the ones your design needs.
 3. **Bring in your design** — one of two routes:
 
    | Your design | What happens | In full |

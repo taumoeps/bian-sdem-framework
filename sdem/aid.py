@@ -291,7 +291,7 @@ def reverse_a1(prj, domains):
 
 # ------------------------------------------------------------------ orchestration
 
-def project(have, catalogue=None, registry=None, pid=None, created_at=None):
+def project(have, catalogue=None, registry=None, pid=None, created_at=None, either=False):
     """have: {'A1': dataset, …} — one or more layers. Returns a projection package dict."""
     mm = Metamodel.load(); prj = Projection(have, catalogue, mm); H = set(have)
     if not H: raise ValueError('AID needs at least one architecture dataset (AID-I01)')
@@ -312,6 +312,11 @@ def project(have, catalogue=None, registry=None, pid=None, created_at=None):
         for d in both:
             fr, rr = fwd.records['A2'][d]['projection'], rev.records['A2'][d]['projection']
             prj.take_domain(d, 'M', f"supported from both sides. Business side (F1): {fr['reasoning']}. Application side (R2): {rr['reasoning']}", MEDIUM, fr['inferred_from'] + rr['inferred_from'])
+        if either:   # AID-M02: filling a workspace for a person to review — a domain one side supports is kept too, at that side's confidence
+            for side, d in [(fwd, d) for d in sorted(f - r)] + [(rev, d) for d in sorted(r - f)]:
+                x = side.records['A2'][d]['projection']
+                prj.take_domain(d, 'M', f"supported from the {'business' if side is fwd else 'application'} side only: {x['reasoning']}", x['confidence'], x['inferred_from'])
+            both = sorted(f | r)
         for side in (fwd, rev):
             for k, l in side.links.items():
                 ends = {l['source']['id'], l['target']['id']}
