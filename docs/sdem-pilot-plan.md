@@ -90,5 +90,5 @@ gantt
 | Designs are less structured than expected (low coverage) | medium | gap records keep everything; tune your copy of the transform rules (`sdem transform rules`, shared by every domain) on the first design |
 | Your designs use table headings SDEM does not recognise | medium | those items become gap records, so nothing is lost; add the headings to your copy of the rules (above) |
 | Architects lack time | high | half a day a week, agreed with their manager before starting |
-| No BIAN (A2) layer — then business never connects to applications | medium | build it in week 1 from the base BIAN (`sdem bian import --base --only …`) for the domain's service domains |
+| No BIAN (A2) layer — then business never connects to applications | medium | build it in week 1 from the base BIAN (`sdem bian import --base --all`, or `--only` the domain's service domains) |
 | Old Python on work machines | medium | precondition 3 |

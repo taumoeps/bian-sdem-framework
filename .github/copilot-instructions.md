@@ -31,5 +31,5 @@ Architects here use **SDEM, the Service Domain Enterprise Metamodel**: it links 
 | onboard past designs (Confluence) | `sdem transform inspect` · `sdem transform run` → review → `sdem load` (the architect); skill `sdem-onboard-designs`; `docs/sdem-onboarding-workflow.md` |
 | agent platform | `.github/agents/` (orchestrator and A1–A4 layer agents), `sdem change` · `sdem events` · `sdem work` |
 | the rulebook | `metamodel/`, `schema/`; the governing spec `docs/design/architecture-metamodel-detail-level-spec.md` |
-| your BIAN layer | `sdem bian list --base` · `sdem bian import --base --only <names> -o <file>` (the architect); the onboarding workflow's *Your BIAN (A2) layer* |
+| your BIAN layer | `sdem bian list --base` · `sdem bian import --base --all -o <file>` or `--only <names>` (the architect); the onboarding workflow's *Your BIAN (A2) layer* |
 | example estates (SDEM project only) | `examples/` — public, made-up data only |

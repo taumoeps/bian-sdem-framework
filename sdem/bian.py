@@ -393,6 +393,12 @@ def report_md(dataset, report, refused, warnings, changes=None, descriptions=Fal
         L += [f'- dropped: `{i}`' for i in changes['dropped']] + [f'- renamed: `{i}` {a!r} → {b!r}' for i, a, b in changes['renamed']]
     if warnings:
         L += ['', '## Advice from the rulebook', ''] + [f'- {w}' for w in warnings[:50]] + ([f'- … {len(warnings) - 50} more'] if len(warnings) > 50 else [])
+    if report.get('left_out'):
+        L += ['', f"## Left out — {len(report['left_out'])} service domain(s) need your pattern", '',
+              f"`--all` imported every service domain whose asset type and functional pattern can be derived. These could not be: their control record's name "
+              f"does not end in one of BIAN's generic artifacts ({PATTERN_SOURCE}), or BIAN's files give them none. Whoever owns BIAN for you fills in "
+              f"`{report['template']}` from the BIAN portal and runs the import again with `--patterns {report['template']}`.", '',
+              '| Service domain | Control record |', '|---|---|'] + [f"| {d['name']} | {d['control_record'] or '—'} |" for d in report['left_out']]
     if refused:
         L += ['', '## Files not read', ''] + [f'- {r}' for r in refused]
     L += ['', '## Next', '', '1. Confirm the asset types and functional patterns above.',
@@ -522,8 +528,17 @@ def main(argv=None):
     if a.patterns:
         with open(a.patterns, encoding='utf-8', newline='') as fh:
             patterns = {r[0].strip(): (r[1].strip(), r[2].strip()) for r in csv.reader(fh)
-                        if len(r) >= 3 and r[0].strip() and not r[0].lstrip().startswith('#') and r[0].strip().lower() != 'service domain'}
+                        if len(r) >= 3 and r[0].strip() and r[1].strip() and r[2].strip() and not r[0].lstrip().startswith('#') and r[0].strip().lower() != 'service domain'}
+    left_out, template = [], None
+    if a.all:   # BI-C07: --all imports what it can and lists the rest; a domain you name is still refused (build)
+        known = {k.lower() for k in (patterns or {})}
+        left_out = [d for d in chosen if d['name'].lower() not in known and not derive(d['control_record'])[0]]
+        if left_out:
+            chosen = [d for d in chosen if d not in left_out]
+            template = Path(a.out).with_name(Path(a.out).stem + '.needs-patterns.csv')
+            if not chosen: raise BianError(f'none of the {len(left_out)} service domains has a derivable pattern — give them with --patterns')
     dataset, rep = build(chosen, Metamodel.load().version, a.descriptions, a.objects, patterns)
+    if left_out: rep.update(left_out=left_out, template=template.name)
     errors, warnings = check(dataset)
     if errors:
         print('ERROR: refused — the A2 dataset would not pass the rulebook; nothing written:', file=sys.stderr)
@@ -532,14 +547,22 @@ def main(argv=None):
     changes = compare(json.loads(Path(a.previous).read_text(encoding='utf-8')), dataset) if a.previous else None
     out = Path(a.out); report_path = out.with_name(out.stem + '.report.md')
     from .files import Batch
-    b = Batch(); b.json(out, dataset); b.text(report_path, report_md(dataset, rep, refused, warnings, changes, a.descriptions, described)); b.commit()
+    b = Batch(); b.json(out, dataset); b.text(report_path, report_md(dataset, rep, refused, warnings, changes, a.descriptions, described))
+    if left_out:
+        b.text(template, '# Fill in each service domain\'s asset type and functional pattern from the BIAN portal, then run the import again with --patterns <this file>.\n'
+                         f"# Functional patterns: {', '.join(p.title() for p in PATTERNS)}\n"
+                         'service domain,asset type,functional pattern\n'
+                         + ''.join(f"{d['name']},,\n" for d in sorted(left_out, key=lambda d: d['name'].lower())))
+    b.commit()
     c = Counter(i['type'].split('.')[1] for i in dataset['instances'])
     res = {'out': str(out), 'report': str(report_path), 'release': dataset['model_version'], 'domains': len(chosen), 'records': dict(c),
-           'derived_to_confirm': len(rep['derived']), 'warnings': len(warnings), 'changes': changes}
+           'derived_to_confirm': len(rep['derived']), 'warnings': len(warnings), 'changes': changes,
+           'left_out': [d['name'] for d in left_out], 'patterns_template': str(template) if template else None}
     if a.json: print(json.dumps(res, indent=2)); return 0
     print(f"wrote {out}: {len(chosen)} service domain(s) from BIAN release {dataset['model_version']} — " + ', '.join(f'{k} {v}' for k, v in sorted(c.items())))
     print(f"checked: no errors ({len(warnings)} advice); report {report_path}")
     if rep['derived']: print(f"confirm: {len(rep['derived'])} derived asset type(s) and functional pattern(s) — listed in the report")
+    if left_out: print(f"left out: {len(left_out)} service domain(s) whose pattern cannot be derived — listed in the report; fill in {template} and run again with --patterns {template}")
     if a.previous: print(f"next: bring your estates up to date — sdem bian update --root estates --a2 {out} --person <you> --dry-run")
     else: print(f"next: sdem load <candidates> --estate <estate> --person <you> --a2 {out}   (first load of a domain)")
     return 0

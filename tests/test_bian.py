@@ -200,6 +200,27 @@ class BaseBianTests(unittest.TestCase):
         self.assertIn('SO-PAYMENT-ORDER-INITIATION-INITIATE', {i['id'] for i in d['instances']})
         self.assertEqual(bian.check(d)[0], [])
 
+    def test_all_imports_what_it_can_and_lists_the_rest(self):  # BI-C07
+        out = self.tmp / 'a2.json'; template = self.tmp / 'a2.needs-patterns.csv'
+        code, text = sdem('import', SAMPLE, '--all', '-o', out)
+        self.assertEqual(code, 0, text); self.assertIn('left out: 1 service domain(s)', text)
+        names = {i['name'] for i in json.loads(out.read_text())['instances'] if i['type'] == 'A2.ServiceDomain'}
+        self.assertNotIn('Sample Ledger Tracking', names); self.assertIn('Sample Order Initiation', names)
+        self.assertIn('Sample Ledger Tracking,,', template.read_text())
+        self.assertIn('## Left out — 1 service domain(s) need your pattern', (self.tmp / 'a2.report.md').read_text())
+        code, text = sdem('import', SAMPLE, '--all', '--patterns', template, '-o', out)   # an unfilled row is "not given yet", not an error
+        self.assertEqual(code, 0, text); self.assertIn('left out: 1', text)
+        template.write_text(template.read_text().replace('Sample Ledger Tracking,,', 'Sample Ledger Tracking,Ledger,Track'), encoding='utf-8')
+        code, text = sdem('import', SAMPLE, '--all', '--patterns', template, '-o', out)
+        self.assertEqual(code, 0, text); self.assertNotIn('left out', text)
+        self.assertIn('Sample Ledger Tracking', {i['name'] for i in json.loads(out.read_text())['instances'] if i['type'] == 'A2.ServiceDomain'})
+
+    def test_all_on_the_base_bian(self):  # BI-C07 on the real base: 192 imported, 66 listed for a person to fill in
+        out = self.tmp / 'a2.json'
+        code, text = sdem('import', '--base', '--all', '-o', out)
+        self.assertEqual(code, 0, text); self.assertIn('192 service domain(s)', text); self.assertIn('left out: 66', text)
+        self.assertEqual(sum(1 for l in (self.tmp / 'a2.needs-patterns.csv').read_text().splitlines() if l.endswith(',,')), 66)
+
     def test_list_marks_what_needs_your_pattern(self):  # BB-C02
         code, text = sdem('list', '--base')
         self.assertEqual(code, 0); self.assertIn("66 marked 'needs your pattern'", text)

@@ -20,7 +20,7 @@ flowchart LR
 6. **Copilot (optional)** — only if your organisation allows it; SDEM works without it. After step 2, in this repository: `sdem copilot install` — it writes SDEM's Copilot instructions, agents, prompts and skills into `.github/`, matching the SDEM version you pinned. Commit them.
 7. **Your BIAN layer** — once, by your in-house SDEM lead, shared by every domain:
    ```bash
-   sdem bian import --base --only "<service domain>" … -o bian/a2-service-domain.json
+   sdem bian import --base --all -o bian/a2-service-domain.json     # or --only "<service domain>" … — see bian/README.md
    ```
    Confirm the report, commit `bian/`. Choosing service domains, your own BIAN instead of the base, and keeping every estate up to date (`sdem bian update`): [`bian/README.md`](bian/README.md).
 8. **Policies to confirm** before real designs come in: legal and IP clearance, Copilot (allowed or not), and reading text in pictures (OCR — allowed or `--ocr off`). The checklist: SDEM's [adoption checklist](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-adoption-checklist.md).

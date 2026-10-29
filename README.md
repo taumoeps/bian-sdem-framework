@@ -139,13 +139,23 @@ The steps in order, from your designs to the knowledge graph:
 | 1 | Look at an existing design | `sdem transform inspect <export>` | shows what is in the export and what SDEM can read; changes nothing | SDEM |
 | 2 | Read it | `sdem transform run <export> -o work/history` | turns pages, tables and diagrams into *suggested* items, with a report of where each came from | SDEM |
 | 3 | Keep the good ones | `sdem load work/history --estate <estate> --person <you>` | copies the items you accept into the estate; what does not fit is kept as a gap record | **you** |
-| 4 | Add your BIAN layer | `sdem bian import --base --only "<service domain>"` | the A2 layer from BIAN's public Semantic APIs (or your own BIAN) | the SDEM lead |
+| 4 | Add your BIAN layer | `sdem bian import --base --all -o bian/a2-service-domain.json` | the A2 layer from BIAN's public Semantic APIs (or your own BIAN) — [three ways to choose](#choosing-your-bian-service-domains) | the SDEM lead |
 | — | *New design instead?* | `sdem aid project` | plans the BIAN, application and technology layers you do not have yet — a planned design, kept apart from real data | SDEM |
 | 5 | Check | `sdem check --estate <estate>` | every file against the rulebook; errors must be fixed, warnings are advice — also run by CI on every change | SDEM |
 | 6 | Propose connections | `sdem link --estate <estate> --out work/links` | proposes connections between layers, each with its reasons | SDEM |
 | 7 | Review them | `sdem review work/links/proposals.json` | lists the proposals, weakest first | **you** |
 | 8 | Approve | `sdem approve <id> --reviewer <you> --evidence <document>` — or `sdem connect` for one SDEM missed | writes the approved connection to `mappings.json`, with you, the date and the evidence; final when its pull request is merged | **you** |
 | 9 | Build | `sdem build --estate <estate> --out work/graph` | makes the four layer graphs and the federated graph from the data and the approved connections | SDEM |
+
+#### Choosing your BIAN service domains
+
+| Option | Imports | When |
+|---|---|---|
+| `--all` | every service domain SDEM can import from BIAN 14.0.0 — **192 of 258** | **the simplest start**, especially if you are new to service domains |
+| `--only "Payment Order Initiation" "Payment Rail"` | the domains you name | you know which ones your designs use — find them with `sdem bian list --base \| grep -i payment` |
+| `--from my-domains.txt` | the names in a file, one per line | a longer list, kept in your repository and reviewed like code |
+
+**Why 192, not 258.** Every service domain needs an *asset type* and a *functional pattern*. BIAN's public files do not state them; SDEM works them out from the control record's name, following BIAN's own naming rule — which 66 domains do not follow. SDEM does not guess: `--all` leaves those 66 out, lists them in its report, and writes a template (`…needs-patterns.csv`). Whoever owns BIAN for you fills it in from the BIAN portal and runs the import again with `--patterns <template>` to add them. A larger BIAN layer does not flood you with proposals: on the example estate, `sdem link` took four seconds and proposed 13 connections with all 192 domains loaded.
 
 Then ask the graph: `sdem trace` (*what does this depend on?*), `sdem impact` (*what breaks if it goes?*), `sdem matrix`, `sdem view`, `sdem dashboard`. Every command, with examples: the [user guide](docs/sdem-workbench-user-guide.md#7-command-reference).
 
@@ -222,7 +232,7 @@ flowchart LR
     class G g
 ```
 
-**BIAN is included.** SDEM ships with a **base BIAN** — BIAN's public Semantic APIs (release 14.0.0) — so your BIAN layer is one command (`sdem bian import --base --only "<service domain>"`); your organisation can replace it with its own BIAN.
+**BIAN is included.** SDEM ships with a **base BIAN** — BIAN's public Semantic APIs (release 14.0.0) — so your BIAN layer is one command (`sdem bian import --base --all`, or `--only` the domains you use); your organisation can replace it with its own BIAN.
 
 Every suggestion says **which page it came from, where, and how sure SDEM is** — never above "medium" until a person checks it. **Nothing is thrown away:** what does not fit — a risk table, text, a picture — is kept as a *gap record* beside the data. It works for any domain (tested on payments and lending).
 

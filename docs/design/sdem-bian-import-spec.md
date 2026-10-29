@@ -12,6 +12,7 @@
 | BI-C04 | Accepted inputs: OpenAPI 3 files (BIAN releases 10.0 and later). Swagger 2 (release 9.1 and earlier — a different shape, without control-record tags) is refused with a message to use 10.0 or later; anything else is refused naming the file. *(BI-D1; narrowed 2026-10-29 after reading 9.1)* | tests, good and bad files |
 | BI-C05 | The YAML reader reads only: `info.title`, `info.version`, `info.description`, each operation's path, method, `operationId` and tags, and the names under `components.schemas`. A file whose structure it does not recognise is refused, not guessed. *(BI-D1)* | test with a malformed file |
 | BI-C06 | Selection: `--only <names…>`, `--from <file>` (one name per line), or `--all`; with none of these the command refuses and points to `sdem bian list`. A name not in the release is an error listing the closest names. *(BI-D5)* | tests |
+| BI-C07 | With `--all`, a service domain whose asset type and functional pattern can be neither derived (BI-W02) nor found in `--patterns` is **left out, not refused**: the rest are imported, and the left-out domains are listed in the report and in `<out>.needs-patterns.csv` — a `--patterns` template with one empty row each, for whoever owns BIAN to fill in from the BIAN portal. A row left empty counts as not given. A domain named with `--only` or `--from` is still refused (BI-W02). *(Owner's decision, 2026-10-30: architects new to service domains start with `--all`.)* | tests |
 
 ## What is written
 

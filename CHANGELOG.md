@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- **`sdem bian import --all` works for everyone.** It used to stop with an error, because 66 of BIAN 14.0.0's 258 service domains have no asset type and functional pattern that SDEM can work out (BIAN's files do not state them; SDEM derives them from the control record's name, which those 66 do not follow). Now `--all` imports the **192** it can, lists the 66 in its report, and writes a `--patterns` template (`<out>.needs-patterns.csv`) for whoever owns BIAN to fill in from the BIAN portal; empty rows are skipped. Naming one of the 66 with `--only` is still refused — SDEM does not guess (spec BI-C07). The README and the onboarding workflow explain the three ways to choose, with `--all` as the simplest start for architects new to service domains. On the example estate, `sdem link` with all 192 domains took four seconds and proposed 13 connections.
+
 - **README diagrams readable and simpler.** The tools diagram is now one left-to-right flow — designs → estate data → knowledge graph → answers, with proposals and approval on the side and the metamodel checking — with each command on the step where it acts (in 0.9.7 it scattered across the page). Every coloured box in the README's diagrams now sets its text colour, so they read in GitHub's dark theme.
 - **README: a command table under the tools diagram** — the steps in order from your designs to `sdem build` (inspect, read, keep, BIAN layer, check, propose, review, approve, build; AID for a new design), what each does and who runs it.
 
