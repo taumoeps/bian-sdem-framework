@@ -136,12 +136,12 @@ The steps in order, from your designs to the knowledge graph:
 
 | # | Step | Command | What happens | Who |
 |---|---|---|---|---|
-| 0 | Your organisation's BIAN layer — once, shared by every workspace | `sdem bian import --base --all -o bian/a2-service-domain.json` | all of BIAN's public service domains (or your own BIAN) — every workspace starts from it | the SDEM lead |
 | 1 | **Start the workspace** | `sdem new --workspace <workspace> --person <you>` | creates the workspace: the four layers — A2 your BIAN layer — and an empty set of connections; checked, recorded | **you** |
 | 2 | *Existing design:* look at it | `sdem transform inspect <export>` | shows what is in the export and what SDEM can read; changes nothing | SDEM |
 | 3 | *Existing design:* read it | `sdem transform run <export> -o work/history` | turns pages, tables and diagrams into *suggested* items, with a report of where each came from | SDEM |
 | 4 | *Existing design:* keep the good ones | `sdem load work/history --workspace <workspace> --person <you>` | copies the items you accept into the workspace — you are recorded as the person who decided; what does not fit is kept as a gap record | **you** |
 | — | *New design instead:* plan it | `sdem aid project --workspace <workspace>` | from the workspace's business layer and BIAN layer, plans the BIAN, application and technology records you do not have yet — kept apart in `<workspace>/plans/`, never mixed with real data | SDEM |
+| *optional* | Change the BIAN layer | `sdem bian custom --workspace <workspace> --only "<service domain>" … --person <you>` — or share one across workspaces: `sdem bian import --base --all -o bian/a2-service-domain.json` | the workspace already has all of BIAN's service domains (from `sdem new`); narrow it to the ones you use, or keep one shared layer for every workspace — [choosing your BIAN service domains](#choosing-your-bian-service-domains) | **you**, or the SDEM lead for the shared layer |
 | 5 | Check | `sdem check --workspace <workspace>` | every file against the metamodel; errors must be fixed, warnings are advice — also run by CI on every change | SDEM |
 | 6 | Propose connections | `sdem link --workspace <workspace> --out work/links` | proposes connections between layers, each with its reasons | SDEM |
 | 7 | Review them | `sdem review work/links/proposals.json` | lists the proposals, weakest first | **you** |

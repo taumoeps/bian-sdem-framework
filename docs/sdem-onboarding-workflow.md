@@ -94,7 +94,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 2. Check SDEM works: `source .venv/bin/activate`, then `sdem --version` (not installed yet? [user guide §3](sdem-workbench-user-guide.md#3-set-up--once)).
 3. Start a branch for this work: `git checkout -b onboard/<name>`.
 4. **Put your export under `work/`**, e.g. `work/imports/payarch/`. Only `work/`, `private/` and `secrets/` are kept out of Git — anywhere else, your designs could be committed and shared.
-5. Have your **BIAN layer** to hand — one file, `a2-service-domain.json`, needed once so SDEM can connect your designs to BIAN. What it is and where it comes from: [*Your BIAN (A2) layer*](#your-bian-a2-layer) below. **For the made-up sample, make it from the base BIAN** that ships with SDEM: `sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json`.
+5. **The BIAN layer comes with the workspace** — `sdem new` puts all of BIAN's service domains in it, so there is nothing to prepare; narrow or share it later ([*Your BIAN (A2) layer*](#your-bian-a2-layer) below). **For the made-up sample** the walkthrough uses a small practice layer of two domains, so its outputs match: `sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json`.
 
 > The examples below show what you will see with the made-up export `examples/designs/confluence-folder-export`, with `--ocr off` (the same on every machine). Try it first: `mkdir -p work/imports && cp -r examples/designs/confluence-folder-export work/imports/payarch`.
 

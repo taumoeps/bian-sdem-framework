@@ -18,11 +18,11 @@ flowchart LR
 4. **Protect `main`** — after the checks have run once (open a first pull request): require a pull request; **1 approval** and **review from Code Owners**; dismiss stale approvals; require the status check **`check`** (shown as *Workspace checks / check* — not `validate`, which is SDEM's own); block force pushes and deletion; include administrators. Step by step, and how to test it: SDEM's [repository protection guide](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-repository-protection.md) §1–§4.
 5. **Dashboards** — local HTML files for now; later, authenticated internal hosting only (see *Dashboards* below).
 6. **Copilot (optional)** — only if your organisation allows it; SDEM works without it. After step 2, in this repository: `sdem copilot install` — it writes SDEM's Copilot instructions, agents, prompts and skills into `.github/`, matching the SDEM version you pinned. Commit them.
-7. **Your BIAN layer** — once, by your in-house SDEM lead, shared by every domain:
+7. **Your BIAN layer — optional, later.** Every workspace already gets all of BIAN's service domains from `sdem new`. When you have several workspaces, your in-house SDEM lead can keep **one shared layer** that every new workspace starts from:
    ```bash
    sdem bian import --base --all -o bian/a2-service-domain.json     # or --only "<service domain>" … — see bian/README.md
    ```
-   Confirm the report, commit `bian/`. Choosing service domains, your own BIAN instead of the base, and keeping every workspace up to date (`sdem bian update`): [`bian/README.md`](bian/README.md).
+   Confirm the report, commit `bian/`. To narrow one workspace instead: `sdem bian custom --workspace workspaces/<domain> --only … --person <you>`. Choosing service domains, your own BIAN instead of the base, and keeping every workspace up to date (`sdem bian update`): [`bian/README.md`](bian/README.md).
 8. **Policies to confirm** before real designs come in: legal and IP clearance, Copilot (allowed or not), and reading text in pictures (OCR — allowed or `--ocr off`). The checklist: SDEM's [adoption checklist](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-adoption-checklist.md).
 
 ## Every architect (once)
