@@ -1,6 +1,6 @@
 # Adopting SDEM — the checklist for your organisation
 
-> **Status: current (v0.9.6)** — what an organisation should clear before SDEM holds its real architecture: legal and licences, data, security, AI, and the risk of depending on an open-source tool. It lists the questions and the facts behind them; **it is not legal advice** — your legal, risk and security teams decide. Who does what afterwards: the [operating model](sdem-operating-model.md).
+> **Status: current (v0.9.7)** — what an organisation should clear before SDEM holds its real architecture: legal and licences, data, security, AI, and the risk of depending on an open-source tool. It lists the questions and the facts behind them; **it is not legal advice** — your legal, risk and security teams decide. Who does what afterwards: the [operating model](sdem-operating-model.md).
 
 ## 1. Legal and intellectual property
 

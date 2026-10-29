@@ -19,7 +19,7 @@ Trademarks — BIAN®, ArchiMate®, TOGAF® — belong to their owners and are n
 ## What the Apache License 2.0 permits
 
 - **Commercial use** — permitted.
-- **Internal use in an organisation**, including a bank, across any number of teams — permitted.
+- **Internal use in any organisation**, across any number of teams — permitted.
 - **Private modifications and extensions** — permitted.
 - **Not publishing your modifications** — permitted; there is no obligation to share or contribute them.
 - **Redistribution** — permitted, under the licence's conditions (§4): give recipients a copy of the licence, mark files you changed, and keep the copyright, patent, trademark and attribution notices (for the base BIAN, `bian/LICENSE` and `bian/README.md`).

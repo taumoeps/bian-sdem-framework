@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## 0.9.7 — organisation-neutral wording (2026-10-29)
+
+Documentation only — no change to SDEM's behaviour, rulebook, schemas or base BIAN. Upgrade: change the pin to `@v0.9.7`, `pip install -r requirements.txt`. Rulebook metamodel version unchanged (0.4.0).
+
+- **Any organisation, not any bank.** Where the licence, terms and guides describe who may use SDEM or whose architecture it models, they now say *organisation* (README, `LICENSES.md`, `PRIVACY.md`, `CONTRIBUTING.md`, [Using SDEM — free for any organisation](docs/sdem-licence-and-use.md), the overview, rulebook guide, pilot plan and user guide). The licence page states that SDEM is not limited to any industry or kind of organisation and that no one has exclusive rights to use it; its A2 layer follows BIAN, which any organisation may choose to use. The disclaimer now reads *not affiliated with, endorsed by, or sponsored by BIAN, The Open Group or any other organisation*. *Bank* remains only where factual: BIAN's name and scope, and the made-up example bank.
+
 ## 0.9.6 — fixes from a new architect's review of the terms (2026-10-29)
 
 Documentation only — no change to SDEM's behaviour, rulebook, schemas or base BIAN. Upgrade: change the pin to `@v0.9.6`, `pip install -r requirements.txt`. Rulebook metamodel version unchanged (0.4.0).

@@ -1,8 +1,8 @@
 # SDEM — Service Domain Enterprise Metamodel
 
-**SDEM connects a bank's architecture — from what the business does, through BIAN, to the applications and the technology underneath — into one picture you can question.** It checks every connection against a rulebook and keeps a person in charge of every decision.
+**SDEM connects an organisation's architecture — from what the business does, through BIAN, to the applications and the technology underneath — into one picture you can question.** It checks every connection against a rulebook and keeps a person in charge of every decision.
 
-> **Status:** v0.9.6 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). **Open source and free for any bank** (Apache-2.0 — [using SDEM](docs/sdem-licence-and-use.md)); aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
+> **Status:** v0.9.7 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). **Open source and free for any organisation** (Apache-2.0 — [using SDEM](docs/sdem-licence-and-use.md)); aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
 
 ## Start here
 
@@ -18,11 +18,11 @@
 
 ## The four architectures
 
-SDEM looks at a bank's architecture as four layers. Each has its own owners and its own data; SDEM connects them.
+SDEM looks at an organisation's architecture as four layers. Each has its own owners and its own data; SDEM connects them.
 
 ```mermaid
 flowchart TB
-    A1["<b>A1 · Business</b><br/>what the bank does<br/><i>e.g. Initiate Payment</i>"]
+    A1["<b>A1 · Business</b><br/>what the business does<br/><i>e.g. Initiate Payment</i>"]
     A2["<b>A2 · BIAN Service Domains</b><br/>the industry's standard building blocks<br/><i>e.g. Payment Initiation</i>"]
     A3["<b>A3 · Applications</b><br/>the systems that do the work<br/><i>e.g. Payments Hub</i>"]
     A4["<b>A4 · Technology</b><br/>where the systems run<br/><i>e.g. the Kubernetes platform</i>"]
@@ -200,7 +200,7 @@ git clone https://github.com/taumoeps/bian-sdem-framework.git && cd bian-sdem-fr
 python3.13 -m venv .venv               # or the full path you found, e.g. /opt/homebrew/bin/python3.13 -m venv .venv
 source .venv/bin/activate              # do this in every new terminal
 pip install -e .                       # installs the sdem command
-sdem --version                         # 0.9.6
+sdem --version                         # 0.9.7
 ```
 
 If `pip` says *File "setup.py" … not found* or *requires a different Python*, the `.venv` was made with an old Python: delete it (`rm -rf .venv`) and make it again with 3.13. More: [administration — troubleshooting](docs/sdem-administration.md#troubleshooting).
@@ -250,7 +250,7 @@ Every entity type comes from a **published reference architecture** — BIAN (pu
 
 ## Licences
 
-**Free for any bank: SDEM is open source under the Apache License 2.0** — download it, use it privately, change it, use it commercially; the conditions apply only when you pass SDEM on to others: include the licence, mark the files you changed, and keep the existing notices (including BIAN's in `bian/`). SDEM collects nothing. In plain words: [**Using SDEM**](docs/sdem-licence-and-use.md). Everything here is Apache-2.0 (`LICENSE`, `LICENSES.md`); the **base BIAN** in `bian/` is BIAN's Semantic APIs under BIAN's own Apache-2.0 licence (`bian/LICENSE`, `THIRD_PARTY.md`).
+**Free for any organisation: SDEM is open source under the Apache License 2.0** — download it, use it privately, change it, use it commercially; the conditions apply only when you pass SDEM on to others: include the licence, mark the files you changed, and keep the existing notices (including BIAN's in `bian/`). SDEM collects nothing. In plain words: [**Using SDEM**](docs/sdem-licence-and-use.md). Everything here is Apache-2.0 (`LICENSE`, `LICENSES.md`); the **base BIAN** in `bian/` is BIAN's Semantic APIs under BIAN's own Apache-2.0 licence (`bian/LICENSE`, `THIRD_PARTY.md`).
 
 **For enterprises:** SDEM supports internal commercial use and private customisation — your own BIAN catalogue, design formats, rules and a private fork — subject to the licence, your organisation's policies and your contractual obligations; the licence does not override employment or confidentiality terms.
 
@@ -265,4 +265,4 @@ Every entity type comes from a **published reference architecture** — BIAN (pu
 | [Adoption checklist](docs/sdem-adoption-checklist.md) | what to clear before real data — legal, security, support (SDEM has one maintainer) |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | contributing to the public project |
 
-An independent community proposal — not affiliated with, endorsed by, or sponsored by BIAN or any bank; no guarantees of fitness, correctness or compliance.
+An independent community proposal — not affiliated with, endorsed by, or sponsored by BIAN, The Open Group or any other organisation; no guarantees of fitness, correctness or compliance.

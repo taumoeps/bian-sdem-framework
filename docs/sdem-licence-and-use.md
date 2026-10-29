@@ -1,10 +1,12 @@
-# Using SDEM — free for any bank
+# Using SDEM — free for any organisation
 
-> **Status: current (v0.9.6)** — what anyone may do with SDEM, what it contains from others, and what it does not claim. For an organisation's full checklist before go-live: the [adoption checklist](sdem-adoption-checklist.md). This page explains the licence in plain words; **it is not legal advice**.
+> **Status: current (v0.9.7)** — what anyone may do with SDEM, what it contains from others, and what it does not claim. For an organisation's full checklist before go-live: the [adoption checklist](sdem-adoption-checklist.md). This page explains the licence in plain words; **it is not legal advice**.
 
 ## In one sentence
 
-**SDEM is open source under the Apache License 2.0: any bank, firm or person may download it, use it privately, change it and build on it — free, with no registration and no reporting back.**
+**SDEM is open source under the Apache License 2.0: any organisation or person may download it, use it privately, change it and build on it — free, with no registration and no reporting back.**
+
+SDEM is not limited to any industry or kind of organisation, and no one has exclusive rights to use it. Its A2 layer follows BIAN, the banking industry's published reference architecture, which any organisation may choose to use.
 
 ## What you may do
 
@@ -14,7 +16,7 @@
 | Use it privately, on your own architecture | ✅ | none |
 | Change it — your own BIAN, design formats, rules, code | ✅ | none |
 | Keep your changes to yourself | ✅ | none — there is no obligation to share them |
-| Use it commercially — inside a bank, a consultancy or a product | ✅ | none |
+| Use it commercially — inside your organisation, a consultancy or a product | ✅ | none |
 | **Give SDEM to someone else** — redistribute it, or ship it inside your own product | ✅ | give them a copy of the licence, mark the files you changed, and keep the existing copyright and attribution notices (including BIAN's in `bian/`) — the licence's conditions (§4), which apply only when you pass SDEM on |
 
 The Apache License 2.0 also includes a **patent licence** (§3): each contributor licenses any of their patents that their contribution necessarily uses. It ends for anyone who sues claiming SDEM infringes a patent. It does not cover patents held by people who did not contribute.
@@ -48,7 +50,7 @@ Every kind of thing names its source, reasoning and confidence: [provenance](ref
 ## What SDEM does not claim
 
 - **Not endorsed by BIAN or The Open Group.** BIAN® is a trademark of BIAN e.V.; ArchiMate® and TOGAF® are trademarks of The Open Group. SDEM is independent.
-- **No compliance or certification.** Using SDEM does not make an architecture BIAN-compliant or certified. SDEM itself has not been independently audited or certified, and is not approved for production use by any bank or regulator — each organisation makes its own assessment ([privacy and data handling §9](../PRIVACY.md#9-security-responsibilities)).
+- **No compliance or certification.** Using SDEM does not make an architecture BIAN-compliant or certified. SDEM itself has not been independently audited or certified, and is not approved for production use by any organisation or regulator — each organisation makes its own assessment ([privacy and data handling §9](../PRIVACY.md#9-security-responsibilities)).
 - **No warranty.** SDEM is provided "as is", as the Apache License 2.0 says (§7–§8): you decide whether it fits your purpose.
 
 ## Enterprise internal use and customisation
@@ -58,7 +60,7 @@ The Apache License 2.0 permits all of the following — for one architect or a w
 | # | Use | How |
 |---|---|---|
 | 1 | **One architect, on an employer-managed device** | permitted by the licence, subject to your employer's approval; install as in the [user guide §3](sdem-workbench-user-guide.md#3-set-up--once) and keep work data on approved systems |
-| 2 | **Internal commercial use** by a bank or any organisation | permitted — no fee, no notice to the SDEM project |
+| 2 | **Internal commercial use** by any organisation | permitted — no fee, no notice to the SDEM project |
 | 3 | **Organisation-wide deployment** across architecture teams | one private estate repository, a pinned SDEM version, reviewers and checks — the [estate repository template](../templates/estate-repo/README.md) and [operating model](sdem-operating-model.md) |
 | 4 | **Private modifications and extensions** | permitted; keep them in your own copy (a fork) of SDEM, under the Apache License 2.0 |
 | 5 | **Your own BIAN service-domain catalogue** | without changing SDEM: choose service domains from the base BIAN, or pack your own BIAN and use it instead (`sdem bian pack`, `--base <your pack>`) — [your BIAN layer](sdem-configuration.md#your-bian-layer-sdem-bian) |

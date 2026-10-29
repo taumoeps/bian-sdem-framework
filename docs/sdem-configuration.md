@@ -1,6 +1,6 @@
 # Configuring SDEM
 
-> **Status: current (v0.9.6)** — everything you can set, where, and who decides. SDEM works with no configuration at all; this page is for setting it up for a team.
+> **Status: current (v0.9.7)** — everything you can set, where, and who decides. SDEM works with no configuration at all; this page is for setting it up for a team.
 
 SDEM has **no configuration file and no server settings**. What you can set is: where your data lives, how design onboarding reads your documents, your tools (VS Code, Copilot), and your estate repository. The rulebook itself is **not** configurable — it is the same for everyone, and only the SDEM owner changes it.
 
@@ -30,12 +30,12 @@ To start an estate: onboard designs into a new folder (`sdem load … --estate e
 The estate repository installs one **released** version of SDEM, named in `requirements.txt`:
 
 ```
-sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.9.6
+sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.9.7
 ```
 
 Never point it at `main`. If your network cannot reach GitHub, mirror the SDEM repository internally and point the line at the mirror.
 
-**Stricter pinning.** A Git tag can, in principle, be moved; a commit cannot. If your security policy asks for it, pin the release's commit instead of its tag — `sdem @ git+https://github.com/taumoeps/bian-sdem-framework@<commit hash of the release>` (find it with `git rev-parse v0.9.6^{commit}` in a clone) — or install from your internal mirror. Security fixes are made in new releases only ([SECURITY.md](../SECURITY.md#supported-versions)), so a pinned estate gets them by upgrading. Changing the version: [Administration — upgrading](sdem-administration.md#upgrading-sdem).
+**Stricter pinning.** A Git tag can, in principle, be moved; a commit cannot. If your security policy asks for it, pin the release's commit instead of its tag — `sdem @ git+https://github.com/taumoeps/bian-sdem-framework@<commit hash of the release>` (find it with `git rev-parse v0.9.7^{commit}` in a clone) — or install from your internal mirror. Security fixes are made in new releases only ([SECURITY.md](../SECURITY.md#supported-versions)), so a pinned estate gets them by upgrading. Changing the version: [Administration — upgrading](sdem-administration.md#upgrading-sdem).
 
 ## Onboarding — reading your designs
 

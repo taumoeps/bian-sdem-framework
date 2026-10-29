@@ -1,6 +1,6 @@
 # The rulebook in plain words
 
-> **Status: current (v0.9.6)** — what SDEM's rulebook (the *metamodel*) contains and how to read it. The full, generated detail is in [`reference/`](reference/README.md); you do not need it to use SDEM.
+> **Status: current (v0.9.7)** — what SDEM's rulebook (the *metamodel*) contains and how to read it. The full, generated detail is in [`reference/`](reference/README.md); you do not need it to use SDEM.
 
 The **rulebook** decides what SDEM will accept. Every record and every connection is checked against it, and SDEM refuses anything that breaks it. It lives in the `metamodel/` and `schema/` folders, and only the SDEM owner changes it ([how a change is made](sdem-administration.md#when-the-rulebook-changes)).
 
@@ -22,7 +22,7 @@ Every kind of thing, link and rule names **where it comes from** (BIAN, ArchiMat
 
 | Layer | Kinds of thing | Examples |
 |---|---|---|
-| **A1 · Business** (10) | what the bank does and who does it | capability, value stream and stage, process, activity, business service, business object, actor, role, requirement |
+| **A1 · Business** (10) | what the business does and who does it | capability, value stream and stage, process, activity, business service, business object, actor, role, requirement |
 | **A2 · BIAN Service Domains** (15) | BIAN's standard building blocks | business area and domain, service domain, service operation, control record, business object, business scenario, semantic API … |
 | **A3 · Applications** (8) | the systems that do the work | application component, service, function, interface, API operation, event, data entity, solution building block |
 | **A4 · Technology** (10) | where the systems run | node, device, system software, network, path, technology service and interface, deployment, deployment environment, artifact |

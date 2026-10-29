@@ -1,6 +1,6 @@
 # SDEM Workbench — User Guide
 
-> **Status: current guide (v0.9.6) — the one full command reference is §7.**
+> **Status: current guide (v0.9.7) — the one full command reference is §7.**
 
 > For architects who are new to SDEM. No prior knowledge assumed. Every command and output in this guide was run on the examples in this project (2026-10-28).
 >
@@ -12,7 +12,7 @@
 
 ## 1. What SDEM is — in two minutes
 
-Every bank describes its architecture in four separate places, usually kept by different teams in different tools:
+Every organisation describes its architecture in four separate places, usually kept by different teams in different tools:
 
 | | Architecture | Describes | Example |
 |---|---|---|---|

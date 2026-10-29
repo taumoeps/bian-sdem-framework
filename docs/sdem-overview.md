@@ -1,8 +1,8 @@
 # SDEM — read this first
 
-> **Status: current (v0.9.6)** — what SDEM is and the ideas behind it, in plain words. No prior knowledge assumed.
+> **Status: current (v0.9.7)** — what SDEM is and the ideas behind it, in plain words. No prior knowledge assumed.
 
-**SDEM (Service Domain Enterprise Metamodel)** connects a bank's architecture — what the business does, the BIAN building blocks, the applications and the technology underneath — into **one picture you can ask questions of**. It checks every piece against a rulebook, suggests how the pieces connect, and keeps **a person in charge of every decision**. It is open source, runs on your own machine, and uses no AI inside.
+**SDEM (Service Domain Enterprise Metamodel)** connects an organisation's architecture — what the business does, the BIAN building blocks, the applications and the technology underneath — into **one picture you can ask questions of**. It checks every piece against a rulebook, suggests how the pieces connect, and keeps **a person in charge of every decision**. It is open source, runs on your own machine, and uses no AI inside.
 
 ## The problem it solves
 
