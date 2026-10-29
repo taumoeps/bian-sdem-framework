@@ -1,6 +1,6 @@
 """SDEM's record of inferred BIAN asset types and functional patterns (sdem/inferences.py; owner's decision DA2-03; spec BI-C08…BI-C11):
 one traceable entry per domain BIAN does not publish values for; applied only when accepted; every change by a person, with a reason, in the history."""
-import json, shutil, subprocess, sys, tempfile, unittest
+import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -11,7 +11,8 @@ RECORD = ROOT / 'bian' / 'inferences-14.0.0.json'
 
 
 def sdem(*args, cwd=ROOT):
-    r = subprocess.run([sys.executable, '-m', 'sdem', 'bian', *map(str, args)], cwd=cwd, capture_output=True, text=True)
+    env = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}   # run from any folder, installed or not (CI is not)
+    r = subprocess.run([sys.executable, '-m', 'sdem', 'bian', *map(str, args)], cwd=cwd, capture_output=True, text=True, env=env)
     return r.returncode, r.stdout + r.stderr
 
 
