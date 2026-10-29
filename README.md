@@ -9,7 +9,7 @@
 | You are… | Start with |
 |---|---|
 | **New to SDEM** | read on, then run the dashboard: `sdem home -o work/sdem` and open `work/sdem/index.html` |
-| **An architect who will use it** | [Install](#install), then the [user guide](docs/sdem-workbench-user-guide.md) — a 15-minute quick start and every task step by step |
+| **An architect who will use it** | [how an architect uses it](#how-an-architect-uses-it) (five steps), [install](#install), then the [user guide](docs/sdem-workbench-user-guide.md) — a 15-minute quick start and every task step by step |
 | **Bringing in existing designs** | the [onboarding workflow](docs/sdem-onboarding-workflow.md); practise with [use-case example 4](docs/evidence/use-case-example-4.md) |
 | **Planning to use it on real data** | the [operating model](docs/sdem-operating-model.md) and the [pilot plan](docs/sdem-pilot-plan.md) |
 | **Setting up the AI agents** | [Copilot set-up](docs/sdem-copilot-setup.md) |
@@ -123,6 +123,24 @@ flowchart LR
     classDef g fill:#FFF3E0,stroke:#EF6C00
     class Guard g
 ```
+
+## How an architect uses it
+
+Five steps, the same for every domain. Each links to where it is written in full.
+
+1. **Install and practise.** [Install](#install) SDEM, then do the user guide's [15-minute quick start](docs/sdem-workbench-user-guide.md#5-quick-start--15-minutes) on the made-up example: check the data, build the knowledge graph, trace a business process down to its technology.
+2. **Bring in your design** — one of two routes:
+
+   | Your design | What happens | In full |
+   |---|---|---|
+   | **Existing** — already documented, e.g. in Confluence | you export it; SDEM reads it into *suggested* items with a report (`sdem transform`); you keep the good ones (`sdem load`); what does not fit is kept as a gap record | [below](#onboarding-your-existing-designs) and the [onboarding workflow](docs/sdem-onboarding-workflow.md) |
+   | **New** — not built yet | you write the business layer (A1) and what is already decided; SDEM projects the missing BIAN, application and technology layers as a *planned* design, kept apart from real data (`sdem aid project`) | [planning with AID](docs/sdem-planning-with-aid.md) |
+
+3. **Connect the layers.** SDEM proposes connections across the layers (`sdem link`). You approve the true ones, naming the document that proves each (`sdem approve`), or state one SDEM missed (`sdem connect`). Agents and Copilot never approve.
+4. **Review.** Commit on a branch in your organisation's private estate repository and open a pull request: a reviewer checks it and CI runs every check. A connection is final when the pull request is merged.
+5. **Use it.** Build the knowledge graph (`sdem build`), then ask *what does this depend on?* (`sdem trace`), *what breaks if it goes?* (`sdem impact`), or open the dashboard (`sdem dashboard`). Copilot can explain any result in plain words.
+
+Every task step by step: the user guide's [workflow examples](docs/sdem-workbench-user-guide.md#8-workflow-examples).
 
 ## Onboarding your existing designs
 
