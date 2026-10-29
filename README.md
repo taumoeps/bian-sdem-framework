@@ -2,7 +2,7 @@
 
 **SDEM connects a bank's architecture — from what the business does, through BIAN, to the applications and the technology underneath — into one picture you can question.** It checks every connection against a rulebook and keeps a person in charge of every decision.
 
-> **Status:** v0.9.5 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). **Open source and free for any bank** (Apache-2.0 — [using SDEM](docs/sdem-licence-and-use.md)); aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
+> **Status:** v0.9.6 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). **Open source and free for any bank** (Apache-2.0 — [using SDEM](docs/sdem-licence-and-use.md)); aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
 
 ## Start here
 
@@ -200,7 +200,7 @@ git clone https://github.com/taumoeps/bian-sdem-framework.git && cd bian-sdem-fr
 python3.13 -m venv .venv               # or the full path you found, e.g. /opt/homebrew/bin/python3.13 -m venv .venv
 source .venv/bin/activate              # do this in every new terminal
 pip install -e .                       # installs the sdem command
-sdem --version                         # 0.9.5
+sdem --version                         # 0.9.6
 ```
 
 If `pip` says *File "setup.py" … not found* or *requires a different Python*, the `.venv` was made with an old Python: delete it (`rm -rf .venv`) and make it again with 3.13. More: [administration — troubleshooting](docs/sdem-administration.md#troubleshooting).
@@ -250,7 +250,7 @@ Every entity type comes from a **published reference architecture** — BIAN (pu
 
 ## Licences
 
-**Free for any bank: SDEM is open source under the Apache License 2.0** — download it, use it privately, change it, use it commercially; the only condition, when you pass SDEM on to others, is to keep the licence with it. SDEM collects nothing. In plain words: [**Using SDEM**](docs/sdem-licence-and-use.md). Everything here is Apache-2.0 (`LICENSE`, `LICENSES.md`); the **base BIAN** in `bian/` is BIAN's Semantic APIs under BIAN's own Apache-2.0 licence (`bian/LICENSE`, `THIRD_PARTY.md`).
+**Free for any bank: SDEM is open source under the Apache License 2.0** — download it, use it privately, change it, use it commercially; the conditions apply only when you pass SDEM on to others: include the licence, mark the files you changed, and keep the existing notices (including BIAN's in `bian/`). SDEM collects nothing. In plain words: [**Using SDEM**](docs/sdem-licence-and-use.md). Everything here is Apache-2.0 (`LICENSE`, `LICENSES.md`); the **base BIAN** in `bian/` is BIAN's Semantic APIs under BIAN's own Apache-2.0 licence (`bian/LICENSE`, `THIRD_PARTY.md`).
 
 **For enterprises:** SDEM supports internal commercial use and private customisation — your own BIAN catalogue, design formats, rules and a private fork — subject to the licence, your organisation's policies and your contractual obligations; the licence does not override employment or confidentiality terms.
 
@@ -261,4 +261,8 @@ Every entity type comes from a **published reference architecture** — BIAN (pu
 | [Using SDEM](docs/sdem-licence-and-use.md) | the licence in plain words; enterprise use and customisation; framework vs organisation IP |
 | [`PRIVACY.md`](PRIVACY.md) | what SDEM reads, writes and stores; no telemetry, no network requests |
 | [`THIRD_PARTY.md`](THIRD_PARTY.md) | BIAN's content and licence; ArchiMate and TOGAF, named not copied; trademarks |
-| [`SECURITY.md`](SECURITY.md) | reporting a vulnerability; keeping real data out of public repositories | An independent community proposal — not affiliated with, endorsed by, or sponsored by BIAN or any bank; no guarantees of fitness, correctness or compliance.
+| [`SECURITY.md`](SECURITY.md) | reporting a vulnerability; keeping real data out of public repositories |
+| [Adoption checklist](docs/sdem-adoption-checklist.md) | what to clear before real data — legal, security, support (SDEM has one maintainer) |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | contributing to the public project |
+
+An independent community proposal — not affiliated with, endorsed by, or sponsored by BIAN or any bank; no guarantees of fitness, correctness or compliance.

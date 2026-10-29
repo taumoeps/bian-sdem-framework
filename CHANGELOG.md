@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## 0.9.6 — fixes from a new architect's review of the terms (2026-10-29)
+
+Documentation only — no change to SDEM's behaviour, rulebook, schemas or base BIAN. Upgrade: change the pin to `@v0.9.6`, `pip install -r requirements.txt`. Rulebook metamodel version unchanged (0.4.0).
+
+- **A fresh review, as a bank architect reading the terms before downloading** (verdict: *yes, with conditions* — the licence is plain Apache-2.0 and the privacy claims hold up in the code; the open question is the copyright holder, which follows legal clearance). **Fixed:** the README's disclaimer (*not affiliated … no guarantees*) had been swallowed into the last row of the licence table in 0.9.5 and was invisible — it is its own paragraph again; the README stated keeping the licence as *the only condition* for passing SDEM on — it now states all three (licence, changed files marked, notices kept); the adoption checklist said the no-network test runs on *every release* (it is every push, and names `PRIVACY.md`), said PlantUML *never* uses the public server (it is a VS Code setting the template sets — now said so), and said SDEM adds nothing to your records (except BIAN content you import — now said so); the README's licence table links the adoption checklist and `CONTRIBUTING.md`. **New:** stricter pinning — pin a release's commit instead of its tag, or install from an internal mirror ([configuration](docs/sdem-configuration.md#the-sdem-version)).
+
 ## 0.9.5 — enterprise licensing, usage and privacy (2026-10-29)
 
 Documentation only — no change to SDEM's behaviour, rulebook, schemas or base BIAN. Upgrade: change the pin to `@v0.9.5`, `pip install -r requirements.txt`. Rulebook metamodel version unchanged (0.4.0).

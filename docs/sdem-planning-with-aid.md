@@ -1,6 +1,6 @@
 # Planning missing layers with AID
 
-> **Status: current (v0.9.5)** — for architects: projecting the layers you do not have yet (*Architecture Inference Design*). Moved from the user guide §8.5. It assumes you have done the user guide's quick start (§5) and copied an example estate to `work/my-estate` (§8.1).
+> **Status: current (v0.9.6)** — for architects: projecting the layers you do not have yet (*Architecture Inference Design*). Moved from the user guide §8.5. It assumes you have done the user guide's quick start (§5) and copied an example estate to `work/my-estate` (§8.1).
 
 
 *Goal: you have only the business design; see what BIAN domains, applications and deployments it implies — before anything is built.*

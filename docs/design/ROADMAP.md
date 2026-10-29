@@ -1,6 +1,6 @@
 # Roadmap
 
-> **Status: current** — updated with every release; v0.9.5 released 2026-10-29.
+> **Status: current** — updated with every release; v0.9.6 released 2026-10-29.
 
 Realigned 2026-10-25 after a full review of `docs/` against the code. Release numbers before v0.8 are history; earlier plans for v0.6–v0.8 (engine, BIAN reference integration, generated views) were renumbered below because v0.6.0 and v0.7.0 shipped the rules specification and the rename instead.
 
@@ -18,6 +18,7 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | v0.6.0 | Relationship Rules Model specification (`relationship-rules-spec.md`); knowledge-graph design and specification with service specifications | Generated from the records; current in CI | done |
 | v0.7.0 | Renamed SDEM; model-driven terminology; registry specification; compatibility aliases for the old names | Behaviour byte-identical to v0.6.2 | done |
 | v0.8.0 | The tool release — see below | the full suite; acceptance 8 of 8; use-case examples 1–4; installed-package job | done |
+| v0.9.6 | Fixes from a new architect's review of the terms: README disclaimer visible again, redistribution conditions stated fully, adoption checklist matched to the privacy page, stricter pinning by commit | the full suite; every CI step run locally | done |
 | v0.9.5 | Enterprise licensing, usage and privacy: `PRIVACY.md`, `LICENSES.md` by category, enterprise use and IP separation in *Using SDEM*; a test keeps the privacy claims true | the full suite; every CI step run locally | done |
 | v0.9.4 | Documentation review fixes: one estate-contents list, plain language in user documents, a FAQ, AID planning on its own page, recaptured samples; CI fix | the full suite; every CI step run locally | done |
 | v0.9.3 | Fixes from the fifth walkthrough: one BIAN source in the onboarding workflow, code owners for SDEM's records, the in-house SDEM lead, the sample export in `examples/designs/` | the full suite | done |
