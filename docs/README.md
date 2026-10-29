@@ -33,6 +33,7 @@ flowchart LR
 
 | Read | For |
 |---|---|
+| [Using SDEM — free for any bank](sdem-licence-and-use.md) | the licence in plain words: what anyone may do, what SDEM contains from others, what it does not claim |
 | [Adoption checklist](sdem-adoption-checklist.md) | what your organisation clears first: legal and licences, data, security, AI, and depending on an open-source tool |
 | [Operating model](sdem-operating-model.md) | where things live, who does what, how changes and upgrades flow, support |
 | [Configuration](sdem-configuration.md) | everything you can set: estates, the SDEM version, how onboarding reads designs, OCR, reviewers, CI, VS Code, Copilot |

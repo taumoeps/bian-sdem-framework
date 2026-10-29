@@ -2,7 +2,7 @@
 
 **SDEM connects a bank's architecture — from what the business does, through BIAN, to the applications and the technology underneath — into one picture you can question.** It checks every connection against a rulebook and keeps a person in charge of every decision.
 
-> **Status:** v0.9.4 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). Open source; aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
+> **Status:** v0.9.4 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). **Open source and free for any bank** (Apache-2.0 — [using SDEM](docs/sdem-licence-and-use.md)); aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
 
 ## Start here
 
@@ -244,10 +244,10 @@ Before starting: legal and IP clearance, the private repository with branch prot
 
 ## Where the rulebook comes from
 
-Every entity type comes from a **public reference architecture** — BIAN, ArchiMate 3.2 or TOGAF 10 — or is a documented SDEM extension of one; none is copied from any institution's model, and no BIAN or Open Group text is reproduced ([provenance, entity by entity](docs/reference/reference-architecture-provenance.md)). BIAN®, ArchiMate® and TOGAF® are trademarks of their owners; SDEM is independent and not endorsed by them.
+Every entity type comes from a **published reference architecture** — BIAN (publicly available), ArchiMate 3.2 or TOGAF 10 (published by The Open Group; sign-in required) — or is a documented SDEM extension of one; none is copied from any institution's model, and no BIAN or Open Group text is reproduced ([provenance, entity by entity](docs/reference/reference-architecture-provenance.md)). BIAN®, ArchiMate® and TOGAF® are trademarks of their owners; SDEM is independent and not endorsed by them.
 
 **Rules of use.** Keep historical designs; never overwrite or silently reclassify them. Keep BIAN reference content separate from your own design objects. A connection is a versioned, typed claim with evidence — an AI confidence value is not evidence. *Affected by a change* does not mean *must change*: impact needs an architect's assessment.
 
 ## Licences
 
-Source code, schemas and templates: Apache-2.0 (`LICENSE`). Original prose in `docs/` and this README: CC BY 4.0 (`LICENSES.md`). The **base BIAN** in `bian/` is BIAN's public Semantic APIs 14.0.0, distributed under BIAN's Apache-2.0 licence (`bian/LICENSE`, `THIRD_PARTY.md`). An independent community proposal — not affiliated with, endorsed by, or sponsored by BIAN or any bank; no guarantees of fitness, correctness or compliance.
+**Free for any bank: SDEM is open source under the Apache License 2.0** — download it, use it privately, change it, use it commercially; the only condition, when you pass SDEM on to others, is to keep the licence with it. SDEM collects nothing. In plain words: [**Using SDEM**](docs/sdem-licence-and-use.md). Everything here is Apache-2.0 (`LICENSE`, `LICENSES.md`); the **base BIAN** in `bian/` is BIAN's Semantic APIs under BIAN's own Apache-2.0 licence (`bian/LICENSE`, `THIRD_PARTY.md`). An independent community proposal — not affiliated with, endorsed by, or sponsored by BIAN or any bank; no guarantees of fitness, correctness or compliance.

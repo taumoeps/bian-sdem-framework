@@ -6,6 +6,10 @@ SDEM includes one piece of third-party content: **BIAN's public Semantic APIs, r
 
 SDEM contains no other BIAN material — no BIAN portal or member content, no Service Landscape descriptions, no BIAN text in its documentation. The examples' BIAN layers are made up.
 
+## Published reference architectures — named, not copied
+
+SDEM's rulebook names concepts from **BIAN** (publicly available at bian.org; copyright BIAN e.V.), **ArchiMate 3.2** and **TOGAF 10** (published by The Open Group; sign-in required; copyright The Open Group), and describes each in its own words; no text from them is reproduced. ArchiMate relationship tables were checked against **Archi** (github.com/archimatetool/archi, MIT licence), not copied from it. Entity by entity: `docs/reference/reference-architecture-provenance.md`.
+
 ## Trademarks
 
 BIAN® is a trademark of BIAN e.V.; ArchiMate® and TOGAF® are trademarks of The Open Group. No affiliation with or endorsement by them is claimed. The project title uses BIAN descriptively.

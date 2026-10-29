@@ -7,9 +7,10 @@
 | Question | The facts | Who decides | ✓ |
 |---|---|---|---|
 | May we put our architecture designs into a tool we run ourselves? | SDEM runs on your machines and keeps data as files in **your** private repository; nothing goes to the SDEM project or anyone else | legal / IP | ☐ |
-| May we use SDEM's licence? | Code, schemas and templates: **Apache-2.0**; documentation: **CC BY 4.0** (`LICENSE`, `LICENSES.md`) — permissive open-source licences | legal / open-source review | ☐ |
+| May we use SDEM's licence? | **Apache-2.0** for everything — code, rulebook, documentation, templates (`LICENSE`, `LICENSES.md`); in plain words: [using SDEM](sdem-licence-and-use.md) | legal / open-source review | ☐ |
 | May we use the base BIAN? | BIAN's public **Semantic APIs 14.0.0**, published by BIAN e.V. under **Apache-2.0**, ship with SDEM (`bian/`, with BIAN's licence and a statement of what was changed). If you are a BIAN member, check your membership terms too; BIAN® is BIAN's trademark | legal | ☐ |
 | Does SDEM claim to be BIAN-endorsed? | No — it is independent and says so (`THIRD_PARTY.md`) | — | ☐ |
+| Names from published standards | SDEM's rulebook uses concept names from BIAN, ArchiMate® and TOGAF® (no text copied); ArchiMate and TOGAF are published by The Open Group behind a sign-in. Whether using these names and trademarks needs anything more is a question for your legal team | legal | ☐ |
 | Who owns what we create with it? | Your data and the connections your architects approve are yours; SDEM adds nothing of its own to them | legal | ☐ |
 
 ## 2. Data
