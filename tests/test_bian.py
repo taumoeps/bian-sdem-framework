@@ -234,13 +234,16 @@ class BaseBianTests(unittest.TestCase):
                             '--out', self.tmp / 'prj'], capture_output=True, text=True, cwd=ROOT)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
-    def test_all_on_the_base_bian(self):  # BI-C07 on the real base: all 258, 66 marked unknown for a person to fill in
+    def test_all_on_the_base_bian(self):  # BI-C07, BI-C09 on the real base: 258 = 192 derived + 48 accepted inferences + 18 not known yet
         out = self.tmp / 'a2.json'
         code, text = sdem('import', '--base', '--all', '-o', out)
-        self.assertEqual(code, 0, text); self.assertIn('258 service domain(s)', text); self.assertIn('not known yet: 66', text)
-        self.assertEqual(sum(1 for l in (self.tmp / 'a2.needs-patterns.csv').read_text().splitlines() if l.endswith(',,')), 66)
-        sds = [i for i in json.loads(out.read_text())['instances'] if i['type'] == 'A2.ServiceDomain']
-        self.assertEqual(sum(i['attributes']['classification'] == 'unknown' for i in sds), 66)
+        self.assertEqual(code, 0, text); self.assertIn('258 service domain(s)', text); self.assertIn('inferred: 48', text); self.assertIn('not known yet: 18', text)
+        self.assertEqual(sum(1 for l in (self.tmp / 'a2.needs-patterns.csv').read_text().splitlines() if l.endswith(',,')), 18)
+        sds = [i['attributes'] for i in json.loads(out.read_text())['instances'] if i['type'] == 'A2.ServiceDomain']
+        from collections import Counter
+        self.assertEqual(Counter(a['classification'] for a in sds), Counter(derived=192, inferred=48, unknown=18))
+        code, text = sdem('import', '--base', '--all', '--no-inferences', '-o', out)
+        self.assertIn('not known yet: 66', text)
 
     def test_list_marks_what_needs_your_pattern(self):  # BB-C02
         code, text = sdem('list', '--base')

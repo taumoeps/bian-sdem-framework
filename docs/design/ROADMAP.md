@@ -1,6 +1,6 @@
 # Roadmap
 
-> **Status: current** — updated with every release; v0.9.8 released 2026-10-29.
+> **Status: current** — updated with every release; v0.9.9 released 2026-10-29.
 
 Realigned 2026-10-25 after a full review of `docs/` against the code. Release numbers before v0.8 are history; earlier plans for v0.6–v0.8 (engine, BIAN reference integration, generated views) were renumbered below because v0.6.0 and v0.7.0 shipped the rules specification and the rename instead.
 
@@ -18,6 +18,7 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | v0.6.0 | Relationship Rules Model specification (`relationship-rules-spec.md`); knowledge-graph design and specification with service specifications | Generated from the records; current in CI | done |
 | v0.7.0 | Renamed SDEM; model-driven terminology; registry specification; compatibility aliases for the old names | Behaviour byte-identical to v0.6.2 | done |
 | v0.8.0 | The tool release — see below | the full suite; acceptance 8 of 8; use-case examples 1–4; installed-package job | done |
+| v0.9.9 | The inference record for BIAN's unpublished values (66 entries, source/reasoning/confidence/status/history; 48 accepted by the owner → `--all` gives 240 of 258 with full values); `sdem bian inference` commands; metamodel 0.5.0 → 0.6.0 | the full suite, with and without an install; every CI step run locally | done |
 | v0.9.8 | All of BIAN with `sdem bian import --all` (258 domains; 66 marked *not known yet*); metamodel 0.4.0 → 0.5.0 (DA2-02); one name — *metamodel*; simpler README diagrams with a command table | the full suite; every CI step run locally; use-case examples re-run | done |
 | v0.9.7 | Organisation-neutral wording: *any organisation*, not *any bank*, in the licence, terms and guides; no exclusivity stated | the full suite; every CI step run locally | done |
 | v0.9.6 | Fixes from a new architect's review of the terms: README disclaimer visible again, redistribution conditions stated fully, adoption checklist matched to the privacy page, stricter pinning by commit | the full suite; every CI step run locally | done |

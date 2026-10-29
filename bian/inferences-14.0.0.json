@@ -93,7 +93,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -105,6 +105,23 @@
             "asset_type": "Account Balance Sweeping",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Account Balance Sweeping",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Account Balance Sweeping",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -126,7 +143,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -138,6 +155,23 @@
             "asset_type": "Cash Management And Account Services",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Cash Management And Account Services",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Cash Management And Account Services",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -159,7 +193,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -171,6 +205,23 @@
             "asset_type": "Channel Activity",
             "functional_pattern": "Track",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Channel Activity",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Channel Activity",
+            "functional_pattern": "Track",
+            "status": "accepted"
           }
         }
       ]
@@ -192,7 +243,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -204,6 +255,23 @@
             "asset_type": "Lock Box",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Lock Box",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Lock Box",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -291,7 +359,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -303,6 +371,23 @@
             "asset_type": "Consumer Loan",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Consumer Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Consumer Loan",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -324,7 +409,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -336,6 +421,23 @@
             "asset_type": "Corporate Current Account",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Corporate Current Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Corporate Current Account",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -357,7 +459,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -369,6 +471,23 @@
             "asset_type": "Corporate Lease",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Corporate Lease",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Corporate Lease",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -390,7 +509,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -402,6 +521,23 @@
             "asset_type": "Corporate Loan",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Corporate Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Corporate Loan",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -423,7 +559,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -435,6 +571,23 @@
             "asset_type": "Employee Payment Services",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Employee Payment Services",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Employee Payment Services",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -456,7 +609,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -468,6 +621,23 @@
             "asset_type": "Corporate Trust Services",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Corporate Trust Services",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Corporate Trust Services",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -489,7 +659,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -501,6 +671,23 @@
             "asset_type": "Credit Card",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Credit Card",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Credit Card",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -522,7 +709,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -534,6 +721,23 @@
             "asset_type": "Credit Line",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Credit Line",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Credit Line",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -578,7 +782,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -590,6 +794,23 @@
             "asset_type": "Current Account",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Current Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Current Account",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -611,7 +832,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -623,6 +844,23 @@
             "asset_type": "Custody",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Custody",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Custody",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -644,7 +882,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -656,6 +894,23 @@
             "asset_type": "Customer Event",
             "functional_pattern": "Track",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Customer Event",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Customer Event",
+            "functional_pattern": "Track",
+            "status": "accepted"
           }
         }
       ]
@@ -710,7 +965,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -722,6 +977,23 @@
             "asset_type": "Customer Tax Obligation",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Customer Tax Obligation",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Customer Tax Obligation",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -743,7 +1015,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -755,6 +1027,23 @@
             "asset_type": "Direct Debit",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Direct Debit",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Direct Debit",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -776,7 +1065,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -788,6 +1077,23 @@
             "asset_type": "ECM And DCM",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "ECM And DCM",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "ECM And DCM",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -809,7 +1115,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -821,6 +1127,23 @@
             "asset_type": "Factoring",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Factoring",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Factoring",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -842,7 +1165,7 @@
         "source": "BIAN 14.0.0 Release Notes §5.1 Changed Functional Patterns (https://bian.org/wp-content/uploads/2026/02/BIAN-v14.0-Release-Notes-v1.0_-Final-Version.pdf)",
         "reasoning": "BIAN states the pattern of Fiduciary Agreement changed to Agree Terms in release 14."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -854,6 +1177,23 @@
             "asset_type": "Fiduciary",
             "functional_pattern": "Agree Terms",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: the pattern is stated in BIAN's 14.0.0 release notes; the asset type is low confidence (by analogy) — challenge it if your BIAN source says otherwise",
+          "before": {
+            "asset_type": "Fiduciary",
+            "functional_pattern": "Agree Terms",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Fiduciary",
+            "functional_pattern": "Agree Terms",
+            "status": "accepted"
           }
         }
       ]
@@ -875,7 +1215,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -887,6 +1227,23 @@
             "asset_type": "Financial Booking",
             "functional_pattern": "Track",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Financial Booking",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Financial Booking",
+            "functional_pattern": "Track",
+            "status": "accepted"
           }
         }
       ]
@@ -1020,7 +1377,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1032,6 +1389,23 @@
             "asset_type": "Internal Bank Account",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Internal Bank Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Internal Bank Account",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1053,7 +1427,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1065,6 +1439,23 @@
             "asset_type": "Investment Account",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Investment Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Investment Account",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1086,7 +1477,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1098,6 +1489,23 @@
             "asset_type": "Managed Investment Portfolio",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Managed Investment Portfolio",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Managed Investment Portfolio",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1152,7 +1560,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1164,6 +1572,23 @@
             "asset_type": "Leasing",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Leasing",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Leasing",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1185,7 +1610,7 @@
         "source": "BIAN 14.0.0 Release Notes §5.1 Changed Functional Patterns (https://bian.org/wp-content/uploads/2026/02/BIAN-v14.0-Release-Notes-v1.0_-Final-Version.pdf)",
         "reasoning": "BIAN states the pattern of Legal Advisory changed to Advise in release 14."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1197,6 +1622,23 @@
             "asset_type": "Legal",
             "functional_pattern": "Advise",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: the pattern is stated in BIAN's 14.0.0 release notes; the asset type is low confidence (by analogy) — challenge it if your BIAN source says otherwise",
+          "before": {
+            "asset_type": "Legal",
+            "functional_pattern": "Advise",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Legal",
+            "functional_pattern": "Advise",
+            "status": "accepted"
           }
         }
       ]
@@ -1218,7 +1660,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1230,6 +1672,23 @@
             "asset_type": "Loan",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Loan",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1251,7 +1710,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1263,6 +1722,23 @@
             "asset_type": "Market Making",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Market Making",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Market Making",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1284,7 +1760,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1296,6 +1772,23 @@
             "asset_type": "Merchandising Loan",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Merchandising Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Merchandising Loan",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1317,7 +1810,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1329,6 +1822,23 @@
             "asset_type": "Merchant Acquiring",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Merchant Acquiring",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Merchant Acquiring",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1350,7 +1860,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1362,6 +1872,23 @@
             "asset_type": "Mortgage Loan",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Mortgage Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Mortgage Loan",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1383,7 +1910,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1395,6 +1922,23 @@
             "asset_type": "Notional Pooling",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Notional Pooling",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Notional Pooling",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1548,7 +2092,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1560,6 +2104,23 @@
             "asset_type": "Financial Position",
             "functional_pattern": "Track",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Financial Position",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Financial Position",
+            "functional_pattern": "Track",
+            "status": "accepted"
           }
         }
       ]
@@ -1581,7 +2142,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1593,6 +2154,23 @@
             "asset_type": "Private Placement",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Private Placement",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Private Placement",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1614,7 +2192,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1626,6 +2204,23 @@
             "asset_type": "Product Combination",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Product Combination",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Product Combination",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1647,7 +2242,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1659,6 +2254,23 @@
             "asset_type": "Project Finance",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Project Finance",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Project Finance",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1680,7 +2292,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1692,6 +2304,23 @@
             "asset_type": "Public Offering",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Public Offering",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Public Offering",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1713,7 +2342,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1725,6 +2354,23 @@
             "asset_type": "Reward Points",
             "functional_pattern": "Track",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Reward Points",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Reward Points",
+            "functional_pattern": "Track",
+            "status": "accepted"
           }
         }
       ]
@@ -1815,7 +2461,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1827,6 +2473,23 @@
             "asset_type": "Savings Account",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Savings Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Savings Account",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1848,7 +2511,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record)."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1860,6 +2523,23 @@
             "asset_type": "Securities Position",
             "functional_pattern": "Track",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Securities Position",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Securities Position",
+            "functional_pattern": "Track",
+            "status": "accepted"
           }
         }
       ]
@@ -1881,7 +2561,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1893,6 +2573,23 @@
             "asset_type": "Servicing Event",
             "functional_pattern": "Track",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Servicing Event",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Servicing Event",
+            "functional_pattern": "Track",
+            "status": "accepted"
           }
         }
       ]
@@ -1914,7 +2611,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1926,6 +2623,23 @@
             "asset_type": "Standing Order",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Standing Order",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Standing Order",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1947,7 +2661,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1959,6 +2673,23 @@
             "asset_type": "Syndicated Loan",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Syndicated Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Syndicated Loan",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -1980,7 +2711,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -1992,6 +2723,23 @@
             "asset_type": "Term Deposit",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Term Deposit",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Term Deposit",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -2013,7 +2761,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -2025,6 +2773,23 @@
             "asset_type": "Term Deposit Framework Agreement",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Term Deposit Framework Agreement",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Term Deposit Framework Agreement",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -2046,7 +2811,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -2058,6 +2823,23 @@
             "asset_type": "Transaction Schedule",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Transaction Schedule",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Transaction Schedule",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -2079,7 +2861,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -2091,6 +2873,23 @@
             "asset_type": "Corporate Trust Services",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Corporate Trust Services",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Corporate Trust Services",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]
@@ -2112,7 +2911,7 @@
         "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
         "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
       },
-      "status": "proposed",
+      "status": "accepted",
       "history": [
         {
           "date": "2026-10-30",
@@ -2124,6 +2923,23 @@
             "asset_type": "Virtual Account",
             "functional_pattern": "Fulfill",
             "status": "proposed"
+          }
+        },
+        {
+          "date": "2026-10-30",
+          "by": "taumoeps",
+          "by_kind": "person",
+          "action": "accept",
+          "reason": "Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View",
+          "before": {
+            "asset_type": "Virtual Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          },
+          "after": {
+            "asset_type": "Virtual Account",
+            "functional_pattern": "Fulfill",
+            "status": "accepted"
           }
         }
       ]

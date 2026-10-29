@@ -7,8 +7,8 @@ BIAN does not publish an asset type and functional pattern for every service dom
 | Status | Entries | Meaning |
 |---|---|---|
 | open | 6 | no value inferred yet |
-| proposed | 60 | inferred, not yet accepted by a person |
-| accepted | 0 | accepted by a person — applied by the import |
+| proposed | 12 | inferred, not yet accepted by a person |
+| accepted | 48 | accepted by a person — applied by the import |
 | challenged | 0 | questioned by a person — not applied until accepted again |
 | rejected | 0 | rejected by a person — not applied |
 
@@ -18,70 +18,70 @@ BIAN does not publish an asset type and functional pattern for every service dom
 |---|---|---|---|---|---|---|---|
 | BI-INF-001 | Brokered Product Proxy | Brokered Product | medium | Manage | medium | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
 | BI-INF-002 | Card Transaction Tracking | Card Transaction | low | Track | low | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-003 | Cash Concentration | Account Balance Sweeping | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-004 | Cash Management And Account Services | Cash Management And Account Services | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-005 | Channel Activity History | Channel Activity | high | Track | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-006 | Cheque Lock Box | Lock Box | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
+| BI-INF-003 | Cash Concentration | Account Balance Sweeping | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-004 | Cash Management And Account Services | Cash Management And Account Services | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-005 | Channel Activity History | Channel Activity | high | Track | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-006 | Cheque Lock Box | Lock Box | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
 | BI-INF-007 | Claim Administration | Claim | low | Administer | low | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
 | BI-INF-008 | Claim Assessment | Claim | low | Assess | low | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-009 | Consumer Loan | Consumer Loan | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-010 | Corporate Current Account | Corporate Current Account | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-011 | Corporate Lease | Corporate Lease | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-012 | Corporate Loan | Corporate Loan | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-013 | Corporate Payroll Services | Employee Payment Services | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-014 | Corporate Trust Services | Corporate Trust Services | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-015 | Credit Card | Credit Card | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-016 | Credit Facility | Credit Line | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
+| BI-INF-009 | Consumer Loan | Consumer Loan | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-010 | Corporate Current Account | Corporate Current Account | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-011 | Corporate Lease | Corporate Lease | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-012 | Corporate Loan | Corporate Loan | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-013 | Corporate Payroll Services | Employee Payment Services | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-014 | Corporate Trust Services | Corporate Trust Services | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-015 | Credit Card | Credit Card | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-016 | Credit Facility | Credit Line | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
 | BI-INF-017 | Credit Risk Operations | — | — | — | — | open | 2026-10-30 opened — AI-assisted research (Claude) |
-| BI-INF-018 | Current Account | Current Account | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-019 | Custody Administration | Custody | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-020 | Customer Event History | Customer Event | high | Track | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
+| BI-INF-018 | Current Account | Current Account | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-019 | Custody Administration | Custody | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-020 | Customer Event History | Customer Event | high | Track | high | accepted | 2026-10-30 accept — taumoeps |
 | BI-INF-021 | Customer Surveys | Customer Survey | medium | Process | medium | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-022 | Customer Tax Handling | Customer Tax Obligation | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-023 | Direct Debit | Direct Debit | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-024 | ECM And DCM | ECM And DCM | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-025 | Factoring | Factoring | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-026 | Fiduciary Agreement | Fiduciary | low | Agree Terms | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-027 | Financial Accounting | Financial Booking | high | Track | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
+| BI-INF-022 | Customer Tax Handling | Customer Tax Obligation | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-023 | Direct Debit | Direct Debit | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-024 | ECM And DCM | ECM And DCM | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-025 | Factoring | Factoring | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-026 | Fiduciary Agreement | Fiduciary | low | Agree Terms | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-027 | Financial Accounting | Financial Booking | high | Track | high | accepted | 2026-10-30 accept — taumoeps |
 | BI-INF-028 | Funeral Policy | — | — | — | — | open | 2026-10-30 opened — AI-assisted research (Claude) |
 | BI-INF-029 | Incentive Account | — | — | — | — | open | 2026-10-30 opened — AI-assisted research (Claude) |
 | BI-INF-030 | Incentive Program Directory | Incentive Program | low | Catalog | low | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
 | BI-INF-031 | Interactive Help | Interactive Help Service | medium | Operate | medium | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-032 | Internal Bank Account | Internal Bank Account | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-033 | Investment Account | Investment Account | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-034 | Investment Portfolio Management | Managed Investment Portfolio | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
+| BI-INF-032 | Internal Bank Account | Internal Bank Account | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-033 | Investment Account | Investment Account | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-034 | Investment Portfolio Management | Managed Investment Portfolio | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
 | BI-INF-035 | Issued Certificate Directory | Issued Certificate | low | Catalog | low | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-036 | Leasing | Leasing | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-037 | Legal Advisory | Legal | low | Advise | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-038 | Loan | Loan | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-039 | Market Making | Market Making | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-040 | Merchandising Loan | Merchandising Loan | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-041 | Merchant Acquiring Facility | Merchant Acquiring | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-042 | Mortgage Loan | Mortgage Loan | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-043 | Notional Pooling | Notional Pooling | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
+| BI-INF-036 | Leasing | Leasing | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-037 | Legal Advisory | Legal | low | Advise | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-038 | Loan | Loan | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-039 | Market Making | Market Making | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-040 | Merchandising Loan | Merchandising Loan | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-041 | Merchant Acquiring Facility | Merchant Acquiring | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-042 | Mortgage Loan | Mortgage Loan | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-043 | Notional Pooling | Notional Pooling | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
 | BI-INF-044 | Operations Log | Operations | low | Track | low | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
 | BI-INF-045 | Partner Administration | Partner | low | Administer | low | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
 | BI-INF-046 | Partner Management | Partner | low | Manage | low | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
 | BI-INF-047 | Party Asset Directory | Party Asset | low | Catalog | low | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-048 | Position Keeping | Financial Position | high | Track | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-049 | Private Placement | Private Placement | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-050 | Product Combination | Product Combination | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-051 | Project Finance | Project Finance | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-052 | Public Offering | Public Offering | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-053 | Reward Points Account | Reward Points | medium | Track | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
+| BI-INF-048 | Position Keeping | Financial Position | high | Track | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-049 | Private Placement | Private Placement | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-050 | Product Combination | Product Combination | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-051 | Project Finance | Project Finance | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-052 | Public Offering | Public Offering | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-053 | Reward Points Account | Reward Points | medium | Track | high | accepted | 2026-10-30 accept — taumoeps |
 | BI-INF-054 | Rewards Delivery | — | — | — | — | open | 2026-10-30 opened — AI-assisted research (Claude) |
 | BI-INF-055 | Rewards Inventory | — | — | — | — | open | 2026-10-30 opened — AI-assisted research (Claude) |
 | BI-INF-056 | Rewards Menu | — | — | — | — | open | 2026-10-30 opened — AI-assisted research (Claude) |
-| BI-INF-057 | Savings Account | Savings Account | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-058 | Securities Position Keeping | Securities Position | high | Track | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-059 | Servicing Event History | Servicing Event | high | Track | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-060 | Standing Order | Standing Order | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-061 | Syndicated Loan | Syndicated Loan | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-062 | Term Deposit | Term Deposit | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-063 | Term Deposit Framework Agreement | Term Deposit Framework Agreement | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-064 | Transaction Engine | Transaction Schedule | high | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-065 | Trust Services | Corporate Trust Services | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
-| BI-INF-066 | Virtual Account | Virtual Account | medium | Fulfill | high | proposed | 2026-10-30 proposed — AI-assisted research (Claude) |
+| BI-INF-057 | Savings Account | Savings Account | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-058 | Securities Position Keeping | Securities Position | high | Track | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-059 | Servicing Event History | Servicing Event | high | Track | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-060 | Standing Order | Standing Order | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-061 | Syndicated Loan | Syndicated Loan | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-062 | Term Deposit | Term Deposit | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-063 | Term Deposit Framework Agreement | Term Deposit Framework Agreement | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-064 | Transaction Engine | Transaction Schedule | high | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-065 | Trust Services | Corporate Trust Services | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
+| BI-INF-066 | Virtual Account | Virtual Account | medium | Fulfill | high | accepted | 2026-10-30 accept — taumoeps |
 
 ## Sources and reasoning
 
@@ -109,7 +109,7 @@ Control record: — (none published) · operations published: 0 · status: **pro
 
 ### BI-INF-003 · Cash Concentration
 
-Control record: AccountBalanceSweepingFacility · operations published: 16 · status: **proposed**
+Control record: AccountBalanceSweepingFacility · operations published: 16 · status: **accepted**
 
 - **Asset type:** Account Balance Sweeping (medium) — BIAN names a control record asset type + generic artifact: AccountBalanceSweepingFacility = AccountBalanceSweeping + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -117,10 +117,11 @@ Control record: AccountBalanceSweepingFacility · operations published: 16 · st
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-004 · Cash Management And Account Services
 
-Control record: CashManagementAndAccountServicesFacility · operations published: 34 · status: **proposed**
+Control record: CashManagementAndAccountServicesFacility · operations published: 34 · status: **accepted**
 
 - **Asset type:** Cash Management And Account Services (high) — BIAN names a control record asset type + generic artifact: CashManagementAndAccountServicesFacility = CashManagementAndAccountServices + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -128,10 +129,11 @@ Control record: CashManagementAndAccountServicesFacility · operations published
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-005 · Channel Activity History
 
-Control record: ChannelActivityLog · operations published: 7 · status: **proposed**
+Control record: ChannelActivityLog · operations published: 7 · status: **accepted**
 
 - **Asset type:** Channel Activity (high) — BIAN names a control record asset type + generic artifact: ChannelActivityLog = ChannelActivity + Log. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Track (high) — BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -139,10 +141,11 @@ Control record: ChannelActivityLog · operations published: 7 · status: **propo
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-006 · Cheque Lock Box
 
-Control record: LockBoxFacility · operations published: 25 · status: **proposed**
+Control record: LockBoxFacility · operations published: 25 · status: **accepted**
 
 - **Asset type:** Lock Box (medium) — BIAN names a control record asset type + generic artifact: LockBoxFacility = LockBox + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -150,6 +153,7 @@ Control record: LockBoxFacility · operations published: 25 · status: **propose
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-007 · Claim Administration
 
@@ -175,7 +179,7 @@ Control record: — (none published) · operations published: 0 · status: **pro
 
 ### BI-INF-009 · Consumer Loan
 
-Control record: ConsumerLoanFacility · operations published: 29 · status: **proposed**
+Control record: ConsumerLoanFacility · operations published: 29 · status: **accepted**
 
 - **Asset type:** Consumer Loan (high) — BIAN names a control record asset type + generic artifact: ConsumerLoanFacility = ConsumerLoan + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -183,10 +187,11 @@ Control record: ConsumerLoanFacility · operations published: 29 · status: **pr
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-010 · Corporate Current Account
 
-Control record: CorporateCurrentAccountFacility · operations published: 34 · status: **proposed**
+Control record: CorporateCurrentAccountFacility · operations published: 34 · status: **accepted**
 
 - **Asset type:** Corporate Current Account (high) — BIAN names a control record asset type + generic artifact: CorporateCurrentAccountFacility = CorporateCurrentAccount + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -194,10 +199,11 @@ Control record: CorporateCurrentAccountFacility · operations published: 34 · s
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-011 · Corporate Lease
 
-Control record: CorporateLeaseFacility · operations published: 18 · status: **proposed**
+Control record: CorporateLeaseFacility · operations published: 18 · status: **accepted**
 
 - **Asset type:** Corporate Lease (medium) — BIAN names a control record asset type + generic artifact: CorporateLeaseFacility = CorporateLease + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -205,10 +211,11 @@ Control record: CorporateLeaseFacility · operations published: 18 · status: **
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-012 · Corporate Loan
 
-Control record: CorporateLoanFacility · operations published: 29 · status: **proposed**
+Control record: CorporateLoanFacility · operations published: 29 · status: **accepted**
 
 - **Asset type:** Corporate Loan (high) — BIAN names a control record asset type + generic artifact: CorporateLoanFacility = CorporateLoan + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -216,10 +223,11 @@ Control record: CorporateLoanFacility · operations published: 29 · status: **p
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-013 · Corporate Payroll Services
 
-Control record: EmployeePaymentServicesFacility · operations published: 14 · status: **proposed**
+Control record: EmployeePaymentServicesFacility · operations published: 14 · status: **accepted**
 
 - **Asset type:** Employee Payment Services (medium) — BIAN names a control record asset type + generic artifact: EmployeePaymentServicesFacility = EmployeePaymentServices + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -227,10 +235,11 @@ Control record: EmployeePaymentServicesFacility · operations published: 14 · s
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-014 · Corporate Trust Services
 
-Control record: CorporateTrustServicesFacility · operations published: 43 · status: **proposed**
+Control record: CorporateTrustServicesFacility · operations published: 43 · status: **accepted**
 
 - **Asset type:** Corporate Trust Services (medium) — BIAN names a control record asset type + generic artifact: CorporateTrustServicesFacility = CorporateTrustServices + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -238,10 +247,11 @@ Control record: CorporateTrustServicesFacility · operations published: 43 · st
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-015 · Credit Card
 
-Control record: CreditCardFacility · operations published: 28 · status: **proposed**
+Control record: CreditCardFacility · operations published: 28 · status: **accepted**
 
 - **Asset type:** Credit Card (high) — BIAN names a control record asset type + generic artifact: CreditCardFacility = CreditCard + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -249,10 +259,11 @@ Control record: CreditCardFacility · operations published: 28 · status: **prop
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-016 · Credit Facility
 
-Control record: CreditLineFacility · operations published: 10 · status: **proposed**
+Control record: CreditLineFacility · operations published: 10 · status: **accepted**
 
 - **Asset type:** Credit Line (high) — BIAN names a control record asset type + generic artifact: CreditLineFacility = CreditLine + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -260,6 +271,7 @@ Control record: CreditLineFacility · operations published: 10 · status: **prop
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-017 · Credit Risk Operations
 
@@ -274,7 +286,7 @@ Control record: TradingCreditPositionMeasurement · operations published: 10 · 
 
 ### BI-INF-018 · Current Account
 
-Control record: CurrentAccountFacility · operations published: 34 · status: **proposed**
+Control record: CurrentAccountFacility · operations published: 34 · status: **accepted**
 
 - **Asset type:** Current Account (high) — BIAN names a control record asset type + generic artifact: CurrentAccountFacility = CurrentAccount + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -282,10 +294,11 @@ Control record: CurrentAccountFacility · operations published: 34 · status: **
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-019 · Custody Administration
 
-Control record: CustodyFacility · operations published: 26 · status: **proposed**
+Control record: CustodyFacility · operations published: 26 · status: **accepted**
 
 - **Asset type:** Custody (medium) — BIAN names a control record asset type + generic artifact: CustodyFacility = Custody + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -293,10 +306,11 @@ Control record: CustodyFacility · operations published: 26 · status: **propose
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-020 · Customer Event History
 
-Control record: CustomerEventLog · operations published: 22 · status: **proposed**
+Control record: CustomerEventLog · operations published: 22 · status: **accepted**
 
 - **Asset type:** Customer Event (high) — BIAN names a control record asset type + generic artifact: CustomerEventLog = CustomerEvent + Log. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Track (high) — BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -304,6 +318,7 @@ Control record: CustomerEventLog · operations published: 22 · status: **propos
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-021 · Customer Surveys
 
@@ -318,7 +333,7 @@ Control record: — (none published) · operations published: 0 · status: **pro
 
 ### BI-INF-022 · Customer Tax Handling
 
-Control record: CustomerTaxObligationFacility · operations published: 14 · status: **proposed**
+Control record: CustomerTaxObligationFacility · operations published: 14 · status: **accepted**
 
 - **Asset type:** Customer Tax Obligation (high) — BIAN names a control record asset type + generic artifact: CustomerTaxObligationFacility = CustomerTaxObligation + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -326,10 +341,11 @@ Control record: CustomerTaxObligationFacility · operations published: 14 · sta
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-023 · Direct Debit
 
-Control record: DirectDebitFacility · operations published: 11 · status: **proposed**
+Control record: DirectDebitFacility · operations published: 11 · status: **accepted**
 
 - **Asset type:** Direct Debit (medium) — BIAN names a control record asset type + generic artifact: DirectDebitFacility = DirectDebit + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -337,10 +353,11 @@ Control record: DirectDebitFacility · operations published: 11 · status: **pro
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-024 · ECM And DCM
 
-Control record: ECMAndDCMFacility · operations published: 14 · status: **proposed**
+Control record: ECMAndDCMFacility · operations published: 14 · status: **accepted**
 
 - **Asset type:** ECM And DCM (high) — BIAN names a control record asset type + generic artifact: ECMAndDCMFacility = ECMAndDCM + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -348,10 +365,11 @@ Control record: ECMAndDCMFacility · operations published: 14 · status: **propo
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-025 · Factoring
 
-Control record: FactoringFacility · operations published: 36 · status: **proposed**
+Control record: FactoringFacility · operations published: 36 · status: **accepted**
 
 - **Asset type:** Factoring (medium) — BIAN names a control record asset type + generic artifact: FactoringFacility = Factoring + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -359,10 +377,11 @@ Control record: FactoringFacility · operations published: 36 · status: **propo
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-026 · Fiduciary Agreement
 
-Control record: — (none published) · operations published: 8 · status: **proposed**
+Control record: — (none published) · operations published: 8 · status: **accepted**
 
 - **Asset type:** Fiduciary (low) — Agreement domains name their control record asset type + Agreement (Customer Agreement → CustomerAgreement → Customer). *Source:* analogy with BIAN naming (no control record published)
 - **Functional pattern:** Agree Terms (high) — BIAN states the pattern of Fiduciary Agreement changed to Agree Terms in release 14. *Source:* BIAN 14.0.0 Release Notes §5.1 Changed Functional Patterns (https://bian.org/wp-content/uploads/2026/02/BIAN-v14.0-Release-Notes-v1.0_-Final-Version.pdf)
@@ -370,10 +389,11 @@ Control record: — (none published) · operations published: 8 · status: **pro
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: the pattern is stated in BIAN's 14.0.0 release notes; the asset type is low confidence (by analogy) — challenge it if your BIAN source says otherwise |
 
 ### BI-INF-027 · Financial Accounting
 
-Control record: FinancialBookingLog · operations published: 7 · status: **proposed**
+Control record: FinancialBookingLog · operations published: 7 · status: **accepted**
 
 - **Asset type:** Financial Booking (high) — BIAN names a control record asset type + generic artifact: FinancialBookingLog = FinancialBooking + Log. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Track (high) — BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -381,6 +401,7 @@ Control record: FinancialBookingLog · operations published: 7 · status: **prop
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-028 · Funeral Policy
 
@@ -428,7 +449,7 @@ Control record: — (none published) · operations published: 4 · status: **pro
 
 ### BI-INF-032 · Internal Bank Account
 
-Control record: InternalBankAccountFacility · operations published: 7 · status: **proposed**
+Control record: InternalBankAccountFacility · operations published: 7 · status: **accepted**
 
 - **Asset type:** Internal Bank Account (high) — BIAN names a control record asset type + generic artifact: InternalBankAccountFacility = InternalBankAccount + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -436,10 +457,11 @@ Control record: InternalBankAccountFacility · operations published: 7 · status
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-033 · Investment Account
 
-Control record: InvestmentAccountFacility · operations published: 25 · status: **proposed**
+Control record: InvestmentAccountFacility · operations published: 25 · status: **accepted**
 
 - **Asset type:** Investment Account (high) — BIAN names a control record asset type + generic artifact: InvestmentAccountFacility = InvestmentAccount + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -447,10 +469,11 @@ Control record: InvestmentAccountFacility · operations published: 25 · status:
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-034 · Investment Portfolio Management
 
-Control record: ManagedInvestmentPortfolioFacility · operations published: 14 · status: **proposed**
+Control record: ManagedInvestmentPortfolioFacility · operations published: 14 · status: **accepted**
 
 - **Asset type:** Managed Investment Portfolio (high) — BIAN names a control record asset type + generic artifact: ManagedInvestmentPortfolioFacility = ManagedInvestmentPortfolio + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -458,6 +481,7 @@ Control record: ManagedInvestmentPortfolioFacility · operations published: 14 �
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-035 · Issued Certificate Directory
 
@@ -472,7 +496,7 @@ Control record: — (none published) · operations published: 0 · status: **pro
 
 ### BI-INF-036 · Leasing
 
-Control record: LeasingFacility · operations published: 44 · status: **proposed**
+Control record: LeasingFacility · operations published: 44 · status: **accepted**
 
 - **Asset type:** Leasing (medium) — BIAN names a control record asset type + generic artifact: LeasingFacility = Leasing + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -480,10 +504,11 @@ Control record: LeasingFacility · operations published: 44 · status: **propose
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-037 · Legal Advisory
 
-Control record: — (none published) · operations published: 0 · status: **proposed**
+Control record: — (none published) · operations published: 0 · status: **accepted**
 
 - **Asset type:** Legal (low) — Advisory domains name their control record asset type + Advice (Corporate Tax Advisory → CorporateTaxAdvice → Corporate Tax). *Source:* analogy with BIAN naming (no control record published)
 - **Functional pattern:** Advise (high) — BIAN states the pattern of Legal Advisory changed to Advise in release 14. *Source:* BIAN 14.0.0 Release Notes §5.1 Changed Functional Patterns (https://bian.org/wp-content/uploads/2026/02/BIAN-v14.0-Release-Notes-v1.0_-Final-Version.pdf)
@@ -491,10 +516,11 @@ Control record: — (none published) · operations published: 0 · status: **pro
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: the pattern is stated in BIAN's 14.0.0 release notes; the asset type is low confidence (by analogy) — challenge it if your BIAN source says otherwise |
 
 ### BI-INF-038 · Loan
 
-Control record: LoanFacility · operations published: 24 · status: **proposed**
+Control record: LoanFacility · operations published: 24 · status: **accepted**
 
 - **Asset type:** Loan (high) — BIAN names a control record asset type + generic artifact: LoanFacility = Loan + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -502,10 +528,11 @@ Control record: LoanFacility · operations published: 24 · status: **proposed**
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-039 · Market Making
 
-Control record: MarketMakingFacility · operations published: 29 · status: **proposed**
+Control record: MarketMakingFacility · operations published: 29 · status: **accepted**
 
 - **Asset type:** Market Making (medium) — BIAN names a control record asset type + generic artifact: MarketMakingFacility = MarketMaking + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -513,10 +540,11 @@ Control record: MarketMakingFacility · operations published: 29 · status: **pr
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-040 · Merchandising Loan
 
-Control record: MerchandisingLoanFacility · operations published: 47 · status: **proposed**
+Control record: MerchandisingLoanFacility · operations published: 47 · status: **accepted**
 
 - **Asset type:** Merchandising Loan (medium) — BIAN names a control record asset type + generic artifact: MerchandisingLoanFacility = MerchandisingLoan + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -524,10 +552,11 @@ Control record: MerchandisingLoanFacility · operations published: 47 · status:
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-041 · Merchant Acquiring Facility
 
-Control record: MerchantAcquiringFacility · operations published: 19 · status: **proposed**
+Control record: MerchantAcquiringFacility · operations published: 19 · status: **accepted**
 
 - **Asset type:** Merchant Acquiring (high) — BIAN names a control record asset type + generic artifact: MerchantAcquiringFacility = MerchantAcquiring + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -535,10 +564,11 @@ Control record: MerchantAcquiringFacility · operations published: 19 · status:
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-042 · Mortgage Loan
 
-Control record: MortgageLoanFacility · operations published: 47 · status: **proposed**
+Control record: MortgageLoanFacility · operations published: 47 · status: **accepted**
 
 - **Asset type:** Mortgage Loan (medium) — BIAN names a control record asset type + generic artifact: MortgageLoanFacility = MortgageLoan + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -546,10 +576,11 @@ Control record: MortgageLoanFacility · operations published: 47 · status: **pr
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-043 · Notional Pooling
 
-Control record: NotionalPoolingFacility · operations published: 15 · status: **proposed**
+Control record: NotionalPoolingFacility · operations published: 15 · status: **accepted**
 
 - **Asset type:** Notional Pooling (high) — BIAN names a control record asset type + generic artifact: NotionalPoolingFacility = NotionalPooling + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -557,6 +588,7 @@ Control record: NotionalPoolingFacility · operations published: 15 · status: *
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-044 · Operations Log
 
@@ -604,7 +636,7 @@ Control record: — (none published) · operations published: 12 · status: **pr
 
 ### BI-INF-048 · Position Keeping
 
-Control record: FinancialPositionLog · operations published: 7 · status: **proposed**
+Control record: FinancialPositionLog · operations published: 7 · status: **accepted**
 
 - **Asset type:** Financial Position (high) — BIAN names a control record asset type + generic artifact: FinancialPositionLog = FinancialPosition + Log. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Track (high) — BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -612,10 +644,11 @@ Control record: FinancialPositionLog · operations published: 7 · status: **pro
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-049 · Private Placement
 
-Control record: PrivatePlacementFacility · operations published: 29 · status: **proposed**
+Control record: PrivatePlacementFacility · operations published: 29 · status: **accepted**
 
 - **Asset type:** Private Placement (medium) — BIAN names a control record asset type + generic artifact: PrivatePlacementFacility = PrivatePlacement + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -623,10 +656,11 @@ Control record: PrivatePlacementFacility · operations published: 29 · status: 
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-050 · Product Combination
 
-Control record: ProductCombinationFacility · operations published: 21 · status: **proposed**
+Control record: ProductCombinationFacility · operations published: 21 · status: **accepted**
 
 - **Asset type:** Product Combination (medium) — BIAN names a control record asset type + generic artifact: ProductCombinationFacility = ProductCombination + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -634,10 +668,11 @@ Control record: ProductCombinationFacility · operations published: 21 · status
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-051 · Project Finance
 
-Control record: ProjectFinanceFacility · operations published: 36 · status: **proposed**
+Control record: ProjectFinanceFacility · operations published: 36 · status: **accepted**
 
 - **Asset type:** Project Finance (medium) — BIAN names a control record asset type + generic artifact: ProjectFinanceFacility = ProjectFinance + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -645,10 +680,11 @@ Control record: ProjectFinanceFacility · operations published: 36 · status: **
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-052 · Public Offering
 
-Control record: PublicOfferingFacility · operations published: 50 · status: **proposed**
+Control record: PublicOfferingFacility · operations published: 50 · status: **accepted**
 
 - **Asset type:** Public Offering (medium) — BIAN names a control record asset type + generic artifact: PublicOfferingFacility = PublicOffering + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -656,10 +692,11 @@ Control record: PublicOfferingFacility · operations published: 50 · status: **
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-053 · Reward Points Account
 
-Control record: RewardPointsLog · operations published: 16 · status: **proposed**
+Control record: RewardPointsLog · operations published: 16 · status: **accepted**
 
 - **Asset type:** Reward Points (medium) — BIAN names a control record asset type + generic artifact: RewardPointsLog = RewardPoints + Log. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Track (high) — BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -667,6 +704,7 @@ Control record: RewardPointsLog · operations published: 16 · status: **propose
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-054 · Rewards Delivery
 
@@ -703,7 +741,7 @@ Control record: — (none published) · operations published: 0 · status: **ope
 
 ### BI-INF-057 · Savings Account
 
-Control record: SavingsAccountFacility · operations published: 34 · status: **proposed**
+Control record: SavingsAccountFacility · operations published: 34 · status: **accepted**
 
 - **Asset type:** Savings Account (high) — BIAN names a control record asset type + generic artifact: SavingsAccountFacility = SavingsAccount + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -711,10 +749,11 @@ Control record: SavingsAccountFacility · operations published: 34 · status: **
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-058 · Securities Position Keeping
 
-Control record: SecuritiesPositionLog · operations published: 7 · status: **proposed**
+Control record: SecuritiesPositionLog · operations published: 7 · status: **accepted**
 
 - **Asset type:** Securities Position (high) — BIAN names a control record asset type + generic artifact: SecuritiesPositionLog = SecuritiesPosition + Log. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Track (high) — BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -722,10 +761,11 @@ Control record: SecuritiesPositionLog · operations published: 7 · status: **pr
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-059 · Servicing Event History
 
-Control record: ServicingEventLog · operations published: 16 · status: **proposed**
+Control record: ServicingEventLog · operations published: 16 · status: **accepted**
 
 - **Asset type:** Servicing Event (high) — BIAN names a control record asset type + generic artifact: ServicingEventLog = ServicingEvent + Log. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Track (high) — BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -733,10 +773,11 @@ Control record: ServicingEventLog · operations published: 16 · status: **propo
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-060 · Standing Order
 
-Control record: StandingOrderFacility · operations published: 11 · status: **proposed**
+Control record: StandingOrderFacility · operations published: 11 · status: **accepted**
 
 - **Asset type:** Standing Order (high) — BIAN names a control record asset type + generic artifact: StandingOrderFacility = StandingOrder + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -744,10 +785,11 @@ Control record: StandingOrderFacility · operations published: 11 · status: **p
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-061 · Syndicated Loan
 
-Control record: SyndicatedLoanFacility · operations published: 24 · status: **proposed**
+Control record: SyndicatedLoanFacility · operations published: 24 · status: **accepted**
 
 - **Asset type:** Syndicated Loan (medium) — BIAN names a control record asset type + generic artifact: SyndicatedLoanFacility = SyndicatedLoan + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -755,10 +797,11 @@ Control record: SyndicatedLoanFacility · operations published: 24 · status: **
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-062 · Term Deposit
 
-Control record: TermDepositFacility · operations published: 35 · status: **proposed**
+Control record: TermDepositFacility · operations published: 35 · status: **accepted**
 
 - **Asset type:** Term Deposit (high) — BIAN names a control record asset type + generic artifact: TermDepositFacility = TermDeposit + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -766,10 +809,11 @@ Control record: TermDepositFacility · operations published: 35 · status: **pro
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-063 · Term Deposit Framework Agreement
 
-Control record: TermDepositFrameworkAgreementFacility · operations published: 3 · status: **proposed**
+Control record: TermDepositFrameworkAgreementFacility · operations published: 3 · status: **accepted**
 
 - **Asset type:** Term Deposit Framework Agreement (high) — BIAN names a control record asset type + generic artifact: TermDepositFrameworkAgreementFacility = TermDepositFrameworkAgreement + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -777,10 +821,11 @@ Control record: TermDepositFrameworkAgreementFacility · operations published: 3
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-064 · Transaction Engine
 
-Control record: TransactionScheduleFacility · operations published: 6 · status: **proposed**
+Control record: TransactionScheduleFacility · operations published: 6 · status: **accepted**
 
 - **Asset type:** Transaction Schedule (high) — BIAN names a control record asset type + generic artifact: TransactionScheduleFacility = TransactionSchedule + Facility. The asset type is in BIAN's public asset-type list. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -788,10 +833,11 @@ Control record: TransactionScheduleFacility · operations published: 6 · status
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-065 · Trust Services
 
-Control record: CorporateTrustServicesFacility · operations published: 22 · status: **proposed**
+Control record: CorporateTrustServicesFacility · operations published: 22 · status: **accepted**
 
 - **Asset type:** Corporate Trust Services (medium) — BIAN names a control record asset type + generic artifact: CorporateTrustServicesFacility = CorporateTrustServices + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees. *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -799,10 +845,11 @@ Control record: CorporateTrustServicesFacility · operations published: 22 · st
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |
 
 ### BI-INF-066 · Virtual Account
 
-Control record: VirtualAccountFacility · operations published: 42 · status: **proposed**
+Control record: VirtualAccountFacility · operations published: 42 · status: **accepted**
 
 - **Asset type:** Virtual Account (medium) — BIAN names a control record asset type + generic artifact: VirtualAccountFacility = VirtualAccount + Facility. Not found in BIAN's public asset-type list, hence medium. *Source:* BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)
 - **Functional pattern:** Fulfill (high) — BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). *Source:* BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)
@@ -810,3 +857,4 @@ Control record: VirtualAccountFacility · operations published: 42 · status: **
 | Date | By | Action | Reason |
 |---|---|---|---|
 | 2026-10-30 | AI-assisted research (Claude) | proposed | Inferred from BIAN's public sources; to be accepted, challenged or changed by a person. |
+| 2026-10-30 | taumoeps | accept | Accepted by the SDEM owner: high-confidence pattern from BIAN 14's public Functional Pattern_Generic Artifact Mapping View |

@@ -38,22 +38,24 @@ class InferenceRecordTests(unittest.TestCase):
     def test_only_accepted_entries_are_applied_and_traceable(self):  # BI-C09
         out = self.tmp / 'a2.json'
         code, text = sdem('import', '--base', '--all', '--inferences', self.rec, '-o', out)
-        self.assertEqual(code, 0, text); self.assertNotIn('inferred:', text)          # nothing accepted yet
-        self.assertEqual(sdem('inference', 'accept', 'BI-INF-062', '--person', 'jane.architect', '--reason', 'checked', cwd=self.tmp)[0], 0)
+        self.assertEqual(code, 0, text); self.assertIn('inferred: 48', text); self.assertIn('not known yet: 18', text)   # the owner accepted 48 (2026-10-30)
+        sds = {i['name']: i['attributes'] for i in json.loads(out.read_text())['instances'] if i['type'] == 'A2.ServiceDomain'}
+        self.assertEqual((sds['Term Deposit']['classification'], sds['Term Deposit']['inference_ref']), ('inferred', 'BI-INF-062'))
+        self.assertEqual(sds['Interactive Help'], {k: v for k, v in sds['Interactive Help'].items() if k in ('source_id', 'conforms_to')} | {'classification': 'unknown'})  # proposed: not applied
+        self.assertEqual(sdem('inference', 'accept', 'BI-INF-031', '--person', 'jane.architect', '--reason', 'checked', cwd=self.tmp)[0], 0)
         code, text = sdem('import', '--base', '--all', '--inferences', self.rec, '-o', out)
-        self.assertEqual(code, 0, text); self.assertIn('inferred: 1', text); self.assertIn('not known yet: 65', text)
-        sd = next(i for i in json.loads(out.read_text())['instances'] if i['type'] == 'A2.ServiceDomain' and i['name'] == 'Term Deposit')['attributes']
-        self.assertEqual((sd['classification'], sd['inference_ref']), ('inferred', 'BI-INF-062'))
-        self.assertIn('BI-INF-062', (self.tmp / 'a2.report.md').read_text())
+        self.assertIn('inferred: 49', text); self.assertIn('not known yet: 17', text)
+        self.assertIn('BI-INF-031', (self.tmp / 'a2.report.md').read_text())
         code, text = sdem('import', '--base', '--all', '--inferences', self.rec, '--no-inferences', '-o', out)
         self.assertIn('not known yet: 66', text)
 
     def test_every_change_is_a_persons_with_a_reason_and_in_the_history(self):  # BI-C10, BI-C11
-        code, out = sdem('inference', 'accept', 'BI-INF-062', '--person', 'sdem-agent', cwd=self.tmp)
+        code, out = sdem('inference', 'accept', 'BI-INF-031', '--person', 'sdem-agent', cwd=self.tmp)
         self.assertEqual(code, 2); self.assertIn('not a person', out)
         code, out = sdem('inference', 'challenge', 'BI-INF-062', '--person', 'jane.architect', cwd=self.tmp)
         self.assertEqual(code, 2); self.assertIn('--reason', out)
-        self.assertEqual(sdem('inference', 'accept', 'BI-INF-062', '--person', 'jane.architect', cwd=self.tmp)[0], 0)
+        code, out = sdem('inference', 'accept', 'BI-INF-062', '--person', 'jane.architect', cwd=self.tmp)
+        self.assertEqual(code, 2); self.assertIn('already accepted', out)
         self.assertEqual(sdem('inference', 'challenge', 'BI-INF-062', '--person', 'raj.reviewer', '--reason', 'reads as Process', cwd=self.tmp)[0], 0)
         self.assertEqual(self.entry('BI-INF-062')['status'], 'challenged')     # challenged: no longer applied
         code, out = sdem('inference', 'change', 'BI-INF-062', '--pattern', 'Process', '--confidence', 'medium', '--source', 'BIAN portal',
@@ -62,6 +64,7 @@ class InferenceRecordTests(unittest.TestCase):
         e = self.entry('BI-INF-062')
         self.assertEqual((e['functional_pattern']['value'], e['status']), ('Process', 'proposed'))   # changed values need accepting again
         self.assertEqual([h['action'] for h in e['history']], ['proposed', 'accept', 'challenge', 'change'])
+        self.assertEqual(e['history'][1]['by'], 'taumoeps')
         self.assertEqual(e['history'][-1]['before']['functional_pattern'], 'Fulfill')
         self.assertEqual(inferences.check(json.loads(self.rec.read_text())), [])
         code, out = sdem('inference', 'change', 'BI-INF-062', '--pattern', 'Juggle', '--source', 'x', '--person', 'raj.reviewer', '--reason', 'x', cwd=self.tmp)
