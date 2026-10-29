@@ -84,7 +84,7 @@ def fill(workspace, person, dry_run=False, now=None):
             if nid in present or nid in rejected: continue
             rec = _ids(copy.deepcopy(inst)); pj = rec.pop('projection', {}) or {}
             rec['id'] = nid
-            rec['name'] = re.sub(r'\s*\(projected\)$', ' (inferred)', rec['name'])
+            rec['name'] = re.sub(r'\s*\(projected\)', '', rec['name']).rstrip() + ' (inferred)'   # e.g. 'Payment Rail service — deployment (inferred)'
             if rec.get('description'): rec['description'] = re.sub(r'^Projected:', 'Inferred:', rec['description'])
             rec.setdefault('attributes', {})['inferred'] = {
                 'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': str(pj.get('step', '')), 'rule': str(pj.get('rule', '')),
@@ -100,8 +100,12 @@ def fill(workspace, person, dry_run=False, now=None):
     for f in (runs.glob('AID-*-proposals.json') if runs.exists() else []):   # already proposed by an earlier run, still to review: not again
         approved |= {(m['source']['id'], m['relationship'], m['target']['id']) for m in _j(f).get('mappings', [])}
     proposals = []
+    by_id = {i['id']: i for d in after.values() for i in d['instances']}
+    def end(ref):   # as `sdem link` writes them: id, type, version — and the canonical id a BIAN record carries
+        r = by_id.get(ref['id'], {})
+        return {**ref, **({'canonical_id': r['canonical_id']} if r.get('canonical_id') else {})}
     for link in pkg['links']['links']:
-        s, t = _ids(link['source']), _ids(link['target'])
+        s, t = end(_ids(link['source'])), end(_ids(link['target']))
         if s['id'] not in present or t['id'] not in present or (s['id'], link['relationship'], t['id']) in approved: continue
         pj = link.get('projection', {}) or {}
         proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': s, 'relationship': link['relationship'], 'target': t, 'status': 'proposed',

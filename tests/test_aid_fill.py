@@ -57,6 +57,10 @@ class AidFillTests(unittest.TestCase):
         self.assertEqual((mark['by'], mark['run'], mark['requested_by']), ('sdem aid', 'AID-001', 'jane.architect'))
         for k in ('source', 'reasoning', 'confidence', 'from'): self.assertTrue(mark[k], k)
         self.assertEqual(comp['lifecycle_status'], 'planned'); self.assertTrue(comp['name'].endswith('(inferred)'))
+        names = [i['name'] for i in self.layer('a4-technology.json')['instances']]
+        self.assertTrue(names and all('projected' not in n and n.endswith('(inferred)') for n in names), names)
+        props = json.loads((self.tmp / W / 'aid' / 'AID-001-proposals.json').read_text())['mappings']   # BIAN ends carry their canonical id, as sdem link writes
+        self.assertTrue(all(m['target'].get('canonical_id') for m in props if m['target']['type'].startswith('A2.')))
         self.assertTrue(all(i['attributes'].get('inferred') for i in a3))
         self.assertEqual(self.layer('a1-business.json'), self.a1)                        # what a person wrote is unchanged
         self.assertEqual(json.loads((self.tmp / W / 'mappings.json').read_text())['mappings'], [])   # connections are only proposed
