@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+Upgrade (when released): `sdem migrate --estate <estate> --person <you>` once per estate — metamodel 0.5.0 → 0.6.0, version only.
+
+- **A tracked record of inferred BIAN values (owner's decision DA2-03).** For the 66 BIAN 14.0.0 service domains whose asset type and functional pattern BIAN does not publish and SDEM cannot derive, `bian/inferences-14.0.0.json` holds SDEM's inference — one entry each (`BI-INF-001`…`066`), every value with its **source, reasoning and confidence** (high only where a public BIAN source was checked), a **status** and a **history**. 60 are inferred: 46 from BIAN 14's own *Functional Pattern_Generic Artifact Mapping View* (BIAN 14 pairs *Facility* with Fulfill and *Log* with Track — SDEM's table, from the older Practitioner Guide, says *Arrangement* and *Log Record*), 2 from BIAN's 14.0.0 release notes, 3 from the landscape's analytics names (medium), 9 from the domain's name only (low); 6 stay open. All start **proposed** — recorded as AI-assisted research — and the import applies an entry only once a person **accepts** it. New `sdem bian inference list|show|accept|challenge|change|reject` — every change names a person and a reason and is kept with its before and after; a hand edit is reported. An imported domain records `classification: inferred` and `inference_ref` (metamodel 0.5.0 → 0.6.0, additive; examples migrated). `--inferences FILE` uses an organisation's own copy; `--no-inferences` applies none. Readable: [BIAN inferences](docs/reference/bian-inferences.md), generated and kept current. Spec BI-C08…BI-C11; tests.
+
 ## 0.9.8 — all of BIAN, metamodel 0.5.0, one name (2026-10-30)
 
 Upgrade: change the pin to `@v0.9.8`, `pip install -r requirements.txt`; then **once per estate** `sdem migrate --estate estates/<name> --person <you>` (it moves the metamodel version 0.4.0 → 0.5.0 and changes nothing else; `--dry-run` first shows that), commit the `migrations/` record, and rebuild graph stores; `sdem copilot install` if you use Copilot.

@@ -154,6 +154,83 @@
           "edges": 41
         }
       ]
+    },
+    {
+      "build": 3,
+      "at": "2026-10-29T12:38:07+00:00",
+      "inputs": [
+        {
+          "path": "examples/acquired-fintech//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-fintech-a2",
+          "model_version": "2026.10",
+          "sha256": "e3e9bf4686bec54d6251a39690786843656547771b8a16909e7068b4ab18b481"
+        },
+        {
+          "path": "examples/acquired-fintech//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-fintech-a3",
+          "model_version": "2026.10",
+          "sha256": "005b1b2f85add62280c0d8105d1f34e07c35cf7cde8d7cf1446b2746771b5bd3"
+        },
+        {
+          "path": "examples/acquired-fintech//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-fintech-a4",
+          "model_version": "2026.10",
+          "sha256": "237638062da86cf6f39d183dec55adf460c8f7d94062f1f868b191f907831e76"
+        },
+        {
+          "path": "examples/acquired-fintech//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "2ca2b7f12748a0143b23ed20085c6fe0d525eb1108047ff7a75644e011cc5c87"
+        }
+      ],
+      "metamodel_version": "0.6.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-fintech-a2): instance BD-PAY: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-ACCT: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-REF: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-RISK: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAY-INSTR: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAYMENT-TXN: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-ACCOUNT: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-SAVINGS: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-FRAUD-CASE: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "95cad7cf73bbadef6a519eeb06df2590d876845e312a295bc3a68cb06bc7ef6a",
+          "nodes": 59,
+          "edges": 79
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "61c0c0b9299fb48ae5624024f4dde922f102c5d5bfff0d99d6cd8539bb789c3b",
+          "nodes": 45,
+          "edges": 39
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "08719d14480923c6ee3952d5f13e6439a67013f6f732c137787df578eaf85504",
+          "nodes": 12,
+          "edges": 7
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "3dc4a51bb0d061800a990ac1489ff59bf41354fb66af63b56b4e160a0452f096",
+          "nodes": 64,
+          "edges": 41
+        }
+      ]
     }
   ]
 }

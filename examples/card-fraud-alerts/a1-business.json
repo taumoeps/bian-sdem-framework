@@ -2,7 +2,7 @@
   "level": "A1",
   "model_id": "synthetic-bank-a1",
   "model_version": "2026.10",
-  "metamodel_version": "0.5.0",
+  "metamodel_version": "0.6.0",
   "source_system": "SYNTHETIC-EA-TOOL",
   "instances": [
     {

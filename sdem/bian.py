@@ -250,7 +250,7 @@ def derive(control_record):
     return None, None
 
 
-def build(domains, metamodel_version, descriptions=False, objects=False, patterns=None):
+def build(domains, metamodel_version, descriptions=False, objects=False, patterns=None, inferences=None):
     """The A2 dataset and the facts for the report. `patterns`: {service domain name: (asset type, functional pattern)}."""
     patterns = {k.lower(): v for k, v in (patterns or {}).items()}
     releases = sorted({d['release'] for d in domains})
@@ -270,6 +270,8 @@ def build(domains, metamodel_version, descriptions=False, objects=False, pattern
         if a: r['attributes'] = a
         return r
 
+    inferences = inferences or {}   # {name: accepted entry} from SDEM's inference record (BI-C09)
+    report['inferred'] = []
     report['unknown'] = []   # BI-C07: kept, marked classification 'unknown' (metamodel DA2-02) — never guessed, never refused
     for d in domains:
         ver, sd_key, src = d['release'], _key(d['name']), f"bian-semantic-api:{d['release']}:{d['file']}"
@@ -278,6 +280,9 @@ def build(domains, metamodel_version, descriptions=False, objects=False, pattern
             asset, pattern = table; how = 'given'
         else:
             asset, pattern = derive(d['control_record']); how = 'derived' if asset else 'unknown'
+        inf = inferences.get(d['name'].lower()) if how == 'unknown' else None
+        if inf:
+            asset, pattern, how = inf['asset_type']['value'], inf['functional_pattern']['value'], 'inferred'
         if how == 'unknown':
             report['unknown'].append(d)
             sd = add(rec(f'SD-{sd_key}', 'A2.ServiceDomain', d['name'], ver, d['description'] if descriptions else None,
@@ -285,12 +290,14 @@ def build(domains, metamodel_version, descriptions=False, objects=False, pattern
         else:
             pattern = pattern.upper()
             if pattern not in PATTERNS: raise BianError(f"{d['name']}: {pattern!r} is not a BIAN functional pattern ({', '.join(PATTERNS)})")
-            (report['from_table'] if how == 'given' else report['derived']).append((d['name'], asset, pattern.title()))
-            at = add(rec(f'AT-{_key(asset)}', 'A2.AssetType', asset, ver, f"Asset type of {d['name']} — {how} ({PATTERN_SOURCE if how == 'derived' else 'your table'}); confirm."))
+            if how == 'inferred': report['inferred'].append((d['name'], asset, pattern.title(), inf['id'], inf['asset_type']['confidence'], inf['functional_pattern']['confidence']))
+            else: (report['from_table'] if how == 'given' else report['derived']).append((d['name'], asset, pattern.title()))
+            at = add(rec(f'AT-{_key(asset)}', 'A2.AssetType', asset, ver, f"Asset type of {d['name']} — {how} ({PATTERN_SOURCE if how == 'derived' else inf['id'] + ' in SDEM inference record' if how == 'inferred' else 'your table'}); confirm."))
             fp = add(rec(f"FP-{_key(pattern)}", 'A2.FunctionalPattern', pattern.title(), ver,
                          f'A BIAN functional pattern ({PATTERN_SOURCE}).', {'generic_artefact': PATTERNS[pattern]}))
             sd = add(rec(f'SD-{sd_key}', 'A2.ServiceDomain', d['name'], ver, d['description'] if descriptions else None,
-                         {'asset_type': at, 'functional_pattern': fp, 'classification': how}, canonical=f'BIAN-{sd_key}', source=src))
+                         {'asset_type': at, 'functional_pattern': fp, 'classification': how, **({'inference_ref': inf['id']} if how == 'inferred' else {})},
+                         canonical=f'BIAN-{sd_key}', source=src))
             rels += [{'source': sd, 'kind': 'association', 'target': at}, {'source': sd, 'kind': 'association', 'target': fp}]
         cr = None
         if d['control_record']:
@@ -393,6 +400,12 @@ def report_md(dataset, report, refused, warnings, changes=None, descriptions=Fal
         L += [f'- dropped: `{i}`' for i in changes['dropped']] + [f'- renamed: `{i}` {a!r} → {b!r}' for i, a, b in changes['renamed']]
     if warnings:
         L += ['', '## Advice from the metamodel', ''] + [f'- {w}' for w in warnings[:50]] + ([f'- … {len(warnings) - 50} more'] if len(warnings) > 50 else [])
+    if report.get('inferred'):
+        L += ['', f"## Inferred — {len(report['inferred'])} service domain(s) from SDEM's inference record", '',
+              "BIAN does not publish these values and SDEM cannot derive them; they come from **accepted** entries in SDEM's inference record, each with its source, "
+              "reasoning and confidence (`sdem bian inference show <id>`). The domain records `classification: inferred` and `inference_ref`. Challenge or change an entry "
+              "with `sdem bian inference …`.", '', '| Service domain | Asset type | Functional pattern | Entry | Confidence (asset · pattern) |', '|---|---|---|---|---|']
+        L += [f'| {d} | {a} | {p} | {i} | {ca} · {cp} |' for d, a, p, i, ca, cp in report['inferred']]
     if report.get('unknown'):
         L += ['', f"## Not known yet — {len(report['unknown'])} service domain(s) imported without asset type and functional pattern", '',
               f"BIAN's files do not state them, and they cannot be derived: the control record's name does not end in one of BIAN's generic artifacts "
@@ -453,6 +466,10 @@ def update_estates(estates, a2_file, person, dry_run=False, now=None):
 
 # ---------------------------------------------------------------- command line
 def main(argv=None):
+    argv = sys.argv[1:] if argv is None else list(argv)
+    if argv[:1] == ['inference']:   # SDEM's record of inferred asset types and patterns (DA2-03)
+        from .inferences import commands
+        return commands(argv[1:])
     ap = argparse.ArgumentParser(prog='sdem bian', description="The BIAN (A2) layer from BIAN's public Semantic APIs (github.com/bian-official/public, Apache-2.0): "
                                  'list what a downloaded release holds; import the service domains you choose as a checked A2 dataset.',
                                  epilog='Examples:\n  sdem bian list ~/bian/release14.0.0\n'
@@ -472,10 +489,13 @@ def main(argv=None):
     im.add_argument('--from', dest='from_file', metavar='FILE', help='a file of service-domain names, one per line')
     im.add_argument('--all', action='store_true', help='every service domain in the release (about 3,000 records for release 14)')
     im.add_argument('--patterns', metavar='CSV', help='service domain, asset type, functional pattern — overrides the derived values')
+    im.add_argument('--inferences', metavar='FILE', help="your own copy of the inference record (default: the one that ships with SDEM for the release)")
+    im.add_argument('--no-inferences', action='store_true', help="do not apply SDEM's accepted inferences (bian/inferences-<release>.json)")
     im.add_argument('--descriptions', action='store_true', help="include BIAN's descriptions (left out by default)")
     im.add_argument('--objects', action='store_true', help='also write BIAN business objects (many)')
     im.add_argument('--previous', metavar='FILE', help='a previous A2 dataset: report what was added, dropped or renamed')
     im.add_argument('--json', action='store_true')
+    sub.add_parser('inference', help="SDEM's record of inferred asset types and functional patterns — list, show, accept, challenge, change, reject")
     up = sub.add_parser('update', help="replace an estate's BIAN layer with your shared one — checked; never strands an approved connection")
     where = up.add_mutually_exclusive_group(required=True)
     where.add_argument('--estate', metavar='DIR', help='one estate'); where.add_argument('--root', metavar='DIR', help='every estate in a folder, e.g. estates')
@@ -530,7 +550,12 @@ def main(argv=None):
         with open(a.patterns, encoding='utf-8', newline='') as fh:
             patterns = {r[0].strip(): (r[1].strip(), r[2].strip()) for r in csv.reader(fh)
                         if len(r) >= 3 and r[0].strip() and r[1].strip() and r[2].strip() and not r[0].lstrip().startswith('#') and r[0].strip().lower() != 'service domain'}
-    dataset, rep = build(chosen, Metamodel.load().version, a.descriptions, a.objects, patterns)
+    infer = {}
+    if not a.no_inferences:
+        from .inferences import installed_file, read as read_inferences, accepted
+        f = Path(a.inferences) if a.inferences else installed_file(max((d['release'] for d in chosen), default=''))
+        if f: infer = accepted(read_inferences(f))
+    dataset, rep = build(chosen, Metamodel.load().version, a.descriptions, a.objects, patterns, infer)
     unknown = rep['unknown']; template = Path(a.out).with_name(Path(a.out).stem + '.needs-patterns.csv') if unknown else None
     if unknown: rep['template'] = template.name
     errors, warnings = check(dataset)
@@ -556,6 +581,7 @@ def main(argv=None):
     print(f"wrote {out}: {len(chosen)} service domain(s) from BIAN release {dataset['model_version']} — " + ', '.join(f'{k} {v}' for k, v in sorted(c.items())))
     print(f"checked: no errors ({len(warnings)} advice); report {report_path}")
     if rep['derived']: print(f"confirm: {len(rep['derived'])} derived asset type(s) and functional pattern(s) — listed in the report")
+    if rep['inferred']: print(f"inferred: {len(rep['inferred'])} service domain(s) from accepted entries in SDEM's inference record — listed in the report (sdem bian inference show <id>)")
     if unknown: print(f"not known yet: {len(unknown)} service domain(s) imported without asset type and functional pattern (classification: unknown) — listed in the report; fill in {template} and run again with --patterns {template}")
     if a.previous: print(f"next: bring your estates up to date — sdem bian update --root estates --a2 {out} --person <you> --dry-run")
     else: print(f"next: sdem load <candidates> --estate <estate> --person <you> --a2 {out}   (first load of a domain)")

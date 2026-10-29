@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.5.0",
+  "metamodel_version": "0.6.0",
   "note": "Within-level relationships are held by each level model, never by SDEM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects). 0.5.17: artefact rows flagged enforceable=false; device composition added (relationships test findings 1, 2). 0.5.20: Phase 2 — 113 rows verified_against_archi (112 direct, RA4-31 via its stated alternative); RA3-30/31 (TOGAF) remain unverified_togaf.",
   "kinds": [
     {

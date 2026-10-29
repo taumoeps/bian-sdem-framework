@@ -380,9 +380,10 @@
           "enum": [
             "derived",
             "given",
+            "inferred",
             "unknown"
           ],
-          "description": "how the domain's asset type and functional pattern were set: derived (from the control record's name — to confirm), given (by a person), unknown (not known yet; the two may be absent)",
+          "description": "how the domain's asset type and functional pattern were set: derived (from the control record's name — to confirm), given (by a person), inferred (from SDEM's inference record — see inference_ref), unknown (not known yet; the two may be absent)",
           "x-sdem-id": "AT-A2-26",
           "x-sdem-group": "specific",
           "x-sdem-kind": "enumeration",
@@ -392,6 +393,20 @@
             "uri": "https://github.com/taumoeps/bian-sdem-framework"
           },
           "x-sdem-reasoning": "BIAN's public Semantic API files do not state a service domain's asset type and functional pattern. SDEM derives them from the control record's name (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9) where that works, takes them from a person otherwise, and records which — so a value nobody has confirmed is never mistaken for a confirmed one, and a domain whose values are unknown can still be used.",
+          "x-sdem-confidence": "low"
+        },
+        "inference_ref": {
+          "type": "string",
+          "description": "the entry in SDEM's inference record (e.g. BI-INF-063) the asset type and functional pattern come from — set when classification is inferred",
+          "x-sdem-id": "AT-A2-27",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "SDEM-defined",
+            "locator": "SDEM decision DA2-03 (owner, 2026-10-30)",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "An inferred value must stay traceable: from a record in an estate to the inference entry with its sources, reasoning, confidence, status and history — so an architect can check it, challenge it or change it later (bian/inferences-<release>.json).",
           "x-sdem-confidence": "low"
         }
       },

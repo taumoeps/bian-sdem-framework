@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.5.0",
+  "metamodel_version": "0.6.0",
   "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Enforced by sdem-graph check (sdem/conformance.py, logical rules LC-04…LC-13) and published as per-entity JSON Schemas (sdem/physical.py); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
   "confidence_rule": "high   — defined by a public standard and checked (BIAN public material, OpenAPI, or a standard concept or\n           relationship confirmed by the open-source Archi oracle); or an SDEM data-contract field, which SDEM defines\n           authoritatively.\n  medium — built on a standard concept or relationship as SDEM chose to model it; or BIAN intent / target only;\n           or an SDEM definition, a login-gated source, or a cited-but-unverified source that was validated against\n           sealed answers; or institution data under an SDEM convention.\n  low    — no standard basis and not validated against sealed answers; or deprecated.",
   "core_fields": [
@@ -2424,7 +2424,7 @@
       "name": "classification",
       "type": "string",
       "required": false,
-      "description": "how the domain's asset type and functional pattern were set: derived (from the control record's name — to confirm), given (by a person), unknown (not known yet; the two may be absent)",
+      "description": "how the domain's asset type and functional pattern were set: derived (from the control record's name — to confirm), given (by a person), inferred (from SDEM's inference record — see inference_ref), unknown (not known yet; the two may be absent)",
       "status": "active",
       "source": "SDEM",
       "reference": {
@@ -2446,10 +2446,45 @@
       "values": [
         "derived",
         "given",
+        "inferred",
         "unknown"
       ],
       "values_source": "SDEM",
-      "confidence_basis": "SDEM field with no standard concept; not validated"
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "values_approved": {
+        "inferred": {
+          "review": "Owner's decision — a tracked record of inferred BIAN asset types and functional patterns",
+          "date": "2026-10-30",
+          "draft_id": "DA2-03"
+        }
+      }
+    },
+    {
+      "id": "AT-A2-27",
+      "entity": "A2.ServiceDomain",
+      "name": "inference_ref",
+      "type": "string",
+      "required": false,
+      "description": "the entry in SDEM's inference record (e.g. BI-INF-063) the asset type and functional pattern come from — set when classification is inferred",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision DA2-03 (owner, 2026-10-30)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved by the owner 2026-10-30",
+      "reasoning": "An inferred value must stay traceable: from a record in an estate to the inference entry with its sources, reasoning, confidence, status and history — so an architect can check it, challenge it or change it later (bian/inferences-<release>.json).",
+      "confidence": "low",
+      "read_by": "sdem bian import; traceability",
+      "question": "Where did this domain's asset type and pattern come from?",
+      "approved": {
+        "review": "Owner's decision — a tracked record of inferred BIAN asset types and functional patterns",
+        "date": "2026-10-30",
+        "draft_id": "DA2-03"
+      },
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "kind": "value"
     },
     {
       "id": "AT-A2-14",

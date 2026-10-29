@@ -11,6 +11,8 @@ sdem bian import --base --all -o bian/a2-service-domain.json            # every 
 
 Read `a2-service-domain.report.md`: confirm the asset types and functional patterns SDEM worked out; the domains marked *not known yet* are listed there and in `bian/a2-service-domain.needs-patterns.csv` — fill it in (or keep your own `bian/patterns.csv`) (`service domain,asset type,functional pattern`, from the BIAN portal) and add `--patterns bian/patterns.csv`. Commit this folder.
 
+**Inferred values, tracked.** For the domains BIAN does not publish values for, SDEM keeps an inference record — each value with source, reasoning, confidence, status and history (`sdem bian inference list`). To make your own decisions on it, copy it here once — `cp <SDEM>/bian/inferences-14.0.0.json bian/` — accept, challenge or change entries (`sdem bian inference accept <id> --person <you> --reason "…"`, run in this repository), and import with `--inferences bian/inferences-14.0.0.json`. Every change names a person and a reason and goes through a pull request.
+
 **Add service domains later:** run the import again with all of them and `--previous bian/a2-service-domain.json` — the report shows what changed. Then bring every estate up to date:
 
 ```bash

@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.5.0",
+  "metamodel_version": "0.6.0",
   "note": "How an estate moves from one metamodel (metamodel) version to the next — `sdem migrate --estate DIR`. Every change to the metamodel that affects data bumps metamodel_version in every metamodel file and adds one entry here, from the old version to the new: its steps are applied to the estate's datasets and registry, then the estate is checked; an entry with no steps only moves the version (an additive change — new optional attributes or types). Step kinds: rename_type {from, to}; rename_attribute {type (optional), from, to}; drop_attribute {type (optional), name}; set_attribute {type, name, value} (only where missing); rename_kind {from, to} (a within-architecture link kind); rename_relationship {from, to} (a link type between architectures, in the registry). Policy: docs/sdem-metamodel-versioning.md.",
   "migrations": [
     {
@@ -8,6 +8,14 @@
       "date": "2026-10-30",
       "approved_by": "the SDEM owner",
       "note": "DA2-02: a BIAN service domain's asset_type and functional_pattern are required unless its new classification attribute is 'unknown' (domains BIAN does not publish them for). Additive — no steps; existing data is unchanged.",
+      "steps": []
+    },
+    {
+      "from": "0.5.0",
+      "to": "0.6.0",
+      "date": "2026-10-30",
+      "approved_by": "the SDEM owner",
+      "note": "DA2-03: a BIAN service domain's classification may be 'inferred', with inference_ref naming the entry in SDEM's inference record. Additive — no steps; existing data is unchanged.",
       "steps": []
     }
   ]

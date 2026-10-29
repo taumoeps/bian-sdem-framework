@@ -484,6 +484,7 @@ erDiagram
         string functional_pattern FK
         string adoption_status
         string classification
+        string inference_ref
     }
     A2_FunctionalPattern {
         string id PK
@@ -610,7 +611,8 @@ A discrete functional scope of the bank and its responsibilities
 | `asset_type` | text | yes, unless classification is unknown | id of the domain's asset type | `A2.AssetType` |
 | `functional_pattern` | text | yes, unless classification is unknown | id of the domain's functional pattern | `A2.FunctionalPattern` |
 | `adoption_status` | text | no | how far the bank intends to adopt the Service Domain | one of: adopted, partly adopted, planned, not adopted |
-| `classification` | text | no | how the domain's asset type and functional pattern were set: derived (from the control record's name — to confirm), given (by a person), unknown (not known yet; the two may be absent) | one of: derived, given, unknown |
+| `classification` | text | no | how the domain's asset type and functional pattern were set: derived (from the control record's name — to confirm), given (by a person), inferred (from SDEM's inference record — see inference_ref), unknown (not known yet; the two may be absent) | one of: derived, given, inferred, unknown |
+| `inference_ref` | text | no | the entry in SDEM's inference record (e.g. BI-INF-063) the asset type and functional pattern come from — set when classification is inferred | — |
 
 **Links**
 

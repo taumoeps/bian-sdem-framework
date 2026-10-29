@@ -1,0 +1,2132 @@
+{
+  "format": "sdem-bian-inferences/1",
+  "bian_release": "14.0.0",
+  "note": "SDEM's record of the asset types and functional patterns it infers for the BIAN service domains whose values BIAN does not publish and SDEM cannot derive (66 of release 14.0.0's 258). Written by SDEM, not BIAN (Apache-2.0, like the rest of SDEM). `sdem bian import --base` applies **accepted** entries only, marking each domain classification 'inferred' with inference_ref = the entry's id; proposed, challenged, rejected and open entries stay 'unknown'. Change it only with `sdem bian inference accept|challenge|change|reject` — every change names a person and a reason and is added to the entry's history. Decided by the owner 2026-10-30 (DA2-03). Readable list: docs/reference/bian-inferences.md.",
+  "statuses": {
+    "open": "no value inferred yet",
+    "proposed": "inferred, not yet accepted by a person",
+    "accepted": "accepted by a person — applied by the import",
+    "challenged": "questioned by a person — not applied until accepted again",
+    "rejected": "rejected by a person — not applied"
+  },
+  "entries": [
+    {
+      "id": "BI-INF-001",
+      "service_domain": "Brokered Product Proxy",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": {
+        "value": "Brokered Product",
+        "confidence": "medium",
+        "source": "BIAN Service Landscape 14.0 — the domain's Individual Analytics names (https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "No control record is published; the analytics name brokeredProductManagementPlan = asset type + generic artifact."
+      },
+      "functional_pattern": {
+        "value": "Manage",
+        "confidence": "medium",
+        "source": "BIAN Service Landscape 14.0 — the domain's Individual Analytics names (https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "The analytics name ends in the generic artifact for Manage. Analytics names matched the known pattern for 147 of 167 domains (88%) and can lag pattern changes, hence medium."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Brokered Product",
+            "functional_pattern": "Manage",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-002",
+      "service_domain": "Card Transaction Tracking",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": {
+        "value": "Card Transaction",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "Card Transaction Tracking = Card Transaction + a word BIAN uses for the Track pattern; nothing published confirms it."
+      },
+      "functional_pattern": {
+        "value": "Track",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "The name's last word is the one BIAN uses for Track; no control record, analytics or confirming source is published."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Card Transaction",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-003",
+      "service_domain": "Cash Concentration",
+      "control_record": "AccountBalanceSweepingFacility",
+      "operations": 16,
+      "asset_type": {
+        "value": "Account Balance Sweeping",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: AccountBalanceSweepingFacility = AccountBalanceSweeping + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Account Balance Sweeping",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-004",
+      "service_domain": "Cash Management And Account Services",
+      "control_record": "CashManagementAndAccountServicesFacility",
+      "operations": 34,
+      "asset_type": {
+        "value": "Cash Management And Account Services",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CashManagementAndAccountServicesFacility = CashManagementAndAccountServices + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Cash Management And Account Services",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-005",
+      "service_domain": "Channel Activity History",
+      "control_record": "ChannelActivityLog",
+      "operations": 7,
+      "asset_type": {
+        "value": "Channel Activity",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: ChannelActivityLog = ChannelActivity + Log. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Track",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Channel Activity",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-006",
+      "service_domain": "Cheque Lock Box",
+      "control_record": "LockBoxFacility",
+      "operations": 25,
+      "asset_type": {
+        "value": "Lock Box",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: LockBoxFacility = LockBox + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Lock Box",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-007",
+      "service_domain": "Claim Administration",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": {
+        "value": "Claim",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "Claim Administration = Claim + a word BIAN uses for the Administer pattern; nothing published confirms it."
+      },
+      "functional_pattern": {
+        "value": "Administer",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "The name's last word is the one BIAN uses for Administer; no control record, analytics or confirming source is published."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Claim",
+            "functional_pattern": "Administer",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-008",
+      "service_domain": "Claim Assessment",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": {
+        "value": "Claim",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "Claim Assessment = Claim + a word BIAN uses for the Assess pattern; nothing published confirms it."
+      },
+      "functional_pattern": {
+        "value": "Assess",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "The name's last word is the one BIAN uses for Assess; no control record, analytics or confirming source is published."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Claim",
+            "functional_pattern": "Assess",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-009",
+      "service_domain": "Consumer Loan",
+      "control_record": "ConsumerLoanFacility",
+      "operations": 29,
+      "asset_type": {
+        "value": "Consumer Loan",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: ConsumerLoanFacility = ConsumerLoan + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Consumer Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-010",
+      "service_domain": "Corporate Current Account",
+      "control_record": "CorporateCurrentAccountFacility",
+      "operations": 34,
+      "asset_type": {
+        "value": "Corporate Current Account",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CorporateCurrentAccountFacility = CorporateCurrentAccount + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Corporate Current Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-011",
+      "service_domain": "Corporate Lease",
+      "control_record": "CorporateLeaseFacility",
+      "operations": 18,
+      "asset_type": {
+        "value": "Corporate Lease",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CorporateLeaseFacility = CorporateLease + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Corporate Lease",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-012",
+      "service_domain": "Corporate Loan",
+      "control_record": "CorporateLoanFacility",
+      "operations": 29,
+      "asset_type": {
+        "value": "Corporate Loan",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CorporateLoanFacility = CorporateLoan + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Corporate Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-013",
+      "service_domain": "Corporate Payroll Services",
+      "control_record": "EmployeePaymentServicesFacility",
+      "operations": 14,
+      "asset_type": {
+        "value": "Employee Payment Services",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: EmployeePaymentServicesFacility = EmployeePaymentServices + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Employee Payment Services",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-014",
+      "service_domain": "Corporate Trust Services",
+      "control_record": "CorporateTrustServicesFacility",
+      "operations": 43,
+      "asset_type": {
+        "value": "Corporate Trust Services",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CorporateTrustServicesFacility = CorporateTrustServices + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Corporate Trust Services",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-015",
+      "service_domain": "Credit Card",
+      "control_record": "CreditCardFacility",
+      "operations": 28,
+      "asset_type": {
+        "value": "Credit Card",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CreditCardFacility = CreditCard + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Credit Card",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-016",
+      "service_domain": "Credit Facility",
+      "control_record": "CreditLineFacility",
+      "operations": 10,
+      "asset_type": {
+        "value": "Credit Line",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CreditLineFacility = CreditLine + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Credit Line",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-017",
+      "service_domain": "Credit Risk Operations",
+      "control_record": "TradingCreditPositionMeasurement",
+      "operations": 10,
+      "asset_type": null,
+      "functional_pattern": null,
+      "status": "open",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "opened",
+          "reason": "Not inferred: its control record ends in \"Measurement\", which BIAN 14's mapping view does not list.",
+          "after": {
+            "asset_type": null,
+            "functional_pattern": null,
+            "status": "open"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-018",
+      "service_domain": "Current Account",
+      "control_record": "CurrentAccountFacility",
+      "operations": 34,
+      "asset_type": {
+        "value": "Current Account",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CurrentAccountFacility = CurrentAccount + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Current Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-019",
+      "service_domain": "Custody Administration",
+      "control_record": "CustodyFacility",
+      "operations": 26,
+      "asset_type": {
+        "value": "Custody",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CustodyFacility = Custody + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Custody",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-020",
+      "service_domain": "Customer Event History",
+      "control_record": "CustomerEventLog",
+      "operations": 22,
+      "asset_type": {
+        "value": "Customer Event",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CustomerEventLog = CustomerEvent + Log. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Track",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Customer Event",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-021",
+      "service_domain": "Customer Surveys",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": {
+        "value": "Customer Survey",
+        "confidence": "medium",
+        "source": "BIAN Service Landscape 14.0 — the domain's Individual Analytics names (https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "No control record is published; the analytics name customerSurveyProcedure = asset type + generic artifact."
+      },
+      "functional_pattern": {
+        "value": "Process",
+        "confidence": "medium",
+        "source": "BIAN Service Landscape 14.0 — the domain's Individual Analytics names (https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "The analytics name ends in the generic artifact for Process. Analytics names matched the known pattern for 147 of 167 domains (88%) and can lag pattern changes, hence medium."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Customer Survey",
+            "functional_pattern": "Process",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-022",
+      "service_domain": "Customer Tax Handling",
+      "control_record": "CustomerTaxObligationFacility",
+      "operations": 14,
+      "asset_type": {
+        "value": "Customer Tax Obligation",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CustomerTaxObligationFacility = CustomerTaxObligation + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Customer Tax Obligation",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-023",
+      "service_domain": "Direct Debit",
+      "control_record": "DirectDebitFacility",
+      "operations": 11,
+      "asset_type": {
+        "value": "Direct Debit",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: DirectDebitFacility = DirectDebit + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Direct Debit",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-024",
+      "service_domain": "ECM And DCM",
+      "control_record": "ECMAndDCMFacility",
+      "operations": 14,
+      "asset_type": {
+        "value": "ECM And DCM",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: ECMAndDCMFacility = ECMAndDCM + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "ECM And DCM",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-025",
+      "service_domain": "Factoring",
+      "control_record": "FactoringFacility",
+      "operations": 36,
+      "asset_type": {
+        "value": "Factoring",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: FactoringFacility = Factoring + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Factoring",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-026",
+      "service_domain": "Fiduciary Agreement",
+      "control_record": null,
+      "operations": 8,
+      "asset_type": {
+        "value": "Fiduciary",
+        "confidence": "low",
+        "source": "analogy with BIAN naming (no control record published)",
+        "reasoning": "Agreement domains name their control record asset type + Agreement (Customer Agreement → CustomerAgreement → Customer)."
+      },
+      "functional_pattern": {
+        "value": "Agree Terms",
+        "confidence": "high",
+        "source": "BIAN 14.0.0 Release Notes §5.1 Changed Functional Patterns (https://bian.org/wp-content/uploads/2026/02/BIAN-v14.0-Release-Notes-v1.0_-Final-Version.pdf)",
+        "reasoning": "BIAN states the pattern of Fiduciary Agreement changed to Agree Terms in release 14."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Fiduciary",
+            "functional_pattern": "Agree Terms",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-027",
+      "service_domain": "Financial Accounting",
+      "control_record": "FinancialBookingLog",
+      "operations": 7,
+      "asset_type": {
+        "value": "Financial Booking",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: FinancialBookingLog = FinancialBooking + Log. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Track",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Financial Booking",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-028",
+      "service_domain": "Funeral Policy",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": null,
+      "functional_pattern": null,
+      "status": "open",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "opened",
+          "reason": "Not inferred: no control record, analytics or operations are published and the name does not indicate a pattern.",
+          "after": {
+            "asset_type": null,
+            "functional_pattern": null,
+            "status": "open"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-029",
+      "service_domain": "Incentive Account",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": null,
+      "functional_pattern": null,
+      "status": "open",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "opened",
+          "reason": "Not inferred: no control record, analytics or operations are published and the name does not indicate a pattern.",
+          "after": {
+            "asset_type": null,
+            "functional_pattern": null,
+            "status": "open"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-030",
+      "service_domain": "Incentive Program Directory",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": {
+        "value": "Incentive Program",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "Incentive Program Directory = Incentive Program + a word BIAN uses for the Catalog pattern; nothing published confirms it."
+      },
+      "functional_pattern": {
+        "value": "Catalog",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "The name's last word is the one BIAN uses for Catalog; no control record, analytics or confirming source is published."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Incentive Program",
+            "functional_pattern": "Catalog",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-031",
+      "service_domain": "Interactive Help",
+      "control_record": null,
+      "operations": 4,
+      "asset_type": {
+        "value": "Interactive Help Service",
+        "confidence": "medium",
+        "source": "BIAN Service Landscape 14.0 — the domain's Individual Analytics names (https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "No control record is published; the analytics name interactiveHelpServiceOperatingSession = asset type + generic artifact."
+      },
+      "functional_pattern": {
+        "value": "Operate",
+        "confidence": "medium",
+        "source": "BIAN Service Landscape 14.0 — the domain's Individual Analytics names (https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "The analytics name ends in the generic artifact for Operate. Analytics names matched the known pattern for 147 of 167 domains (88%) and can lag pattern changes, hence medium."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Interactive Help Service",
+            "functional_pattern": "Operate",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-032",
+      "service_domain": "Internal Bank Account",
+      "control_record": "InternalBankAccountFacility",
+      "operations": 7,
+      "asset_type": {
+        "value": "Internal Bank Account",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: InternalBankAccountFacility = InternalBankAccount + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Internal Bank Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-033",
+      "service_domain": "Investment Account",
+      "control_record": "InvestmentAccountFacility",
+      "operations": 25,
+      "asset_type": {
+        "value": "Investment Account",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: InvestmentAccountFacility = InvestmentAccount + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Investment Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-034",
+      "service_domain": "Investment Portfolio Management",
+      "control_record": "ManagedInvestmentPortfolioFacility",
+      "operations": 14,
+      "asset_type": {
+        "value": "Managed Investment Portfolio",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: ManagedInvestmentPortfolioFacility = ManagedInvestmentPortfolio + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Managed Investment Portfolio",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-035",
+      "service_domain": "Issued Certificate Directory",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": {
+        "value": "Issued Certificate",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "Issued Certificate Directory = Issued Certificate + a word BIAN uses for the Catalog pattern; nothing published confirms it."
+      },
+      "functional_pattern": {
+        "value": "Catalog",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "The name's last word is the one BIAN uses for Catalog; no control record, analytics or confirming source is published."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Issued Certificate",
+            "functional_pattern": "Catalog",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-036",
+      "service_domain": "Leasing",
+      "control_record": "LeasingFacility",
+      "operations": 44,
+      "asset_type": {
+        "value": "Leasing",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: LeasingFacility = Leasing + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Leasing",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-037",
+      "service_domain": "Legal Advisory",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": {
+        "value": "Legal",
+        "confidence": "low",
+        "source": "analogy with BIAN naming (no control record published)",
+        "reasoning": "Advisory domains name their control record asset type + Advice (Corporate Tax Advisory → CorporateTaxAdvice → Corporate Tax)."
+      },
+      "functional_pattern": {
+        "value": "Advise",
+        "confidence": "high",
+        "source": "BIAN 14.0.0 Release Notes §5.1 Changed Functional Patterns (https://bian.org/wp-content/uploads/2026/02/BIAN-v14.0-Release-Notes-v1.0_-Final-Version.pdf)",
+        "reasoning": "BIAN states the pattern of Legal Advisory changed to Advise in release 14."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Legal",
+            "functional_pattern": "Advise",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-038",
+      "service_domain": "Loan",
+      "control_record": "LoanFacility",
+      "operations": 24,
+      "asset_type": {
+        "value": "Loan",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: LoanFacility = Loan + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-039",
+      "service_domain": "Market Making",
+      "control_record": "MarketMakingFacility",
+      "operations": 29,
+      "asset_type": {
+        "value": "Market Making",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: MarketMakingFacility = MarketMaking + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Market Making",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-040",
+      "service_domain": "Merchandising Loan",
+      "control_record": "MerchandisingLoanFacility",
+      "operations": 47,
+      "asset_type": {
+        "value": "Merchandising Loan",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: MerchandisingLoanFacility = MerchandisingLoan + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Merchandising Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-041",
+      "service_domain": "Merchant Acquiring Facility",
+      "control_record": "MerchantAcquiringFacility",
+      "operations": 19,
+      "asset_type": {
+        "value": "Merchant Acquiring",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: MerchantAcquiringFacility = MerchantAcquiring + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Merchant Acquiring",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-042",
+      "service_domain": "Mortgage Loan",
+      "control_record": "MortgageLoanFacility",
+      "operations": 47,
+      "asset_type": {
+        "value": "Mortgage Loan",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: MortgageLoanFacility = MortgageLoan + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Mortgage Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-043",
+      "service_domain": "Notional Pooling",
+      "control_record": "NotionalPoolingFacility",
+      "operations": 15,
+      "asset_type": {
+        "value": "Notional Pooling",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: NotionalPoolingFacility = NotionalPooling + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Notional Pooling",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-044",
+      "service_domain": "Operations Log",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": {
+        "value": "Operations",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "Operations Log = Operations + a word BIAN uses for the Track pattern; nothing published confirms it."
+      },
+      "functional_pattern": {
+        "value": "Track",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "The name's last word is the one BIAN uses for Track; no control record, analytics or confirming source is published."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Operations",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-045",
+      "service_domain": "Partner Administration",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": {
+        "value": "Partner",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "Partner Administration = Partner + a word BIAN uses for the Administer pattern; nothing published confirms it."
+      },
+      "functional_pattern": {
+        "value": "Administer",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "The name's last word is the one BIAN uses for Administer; no control record, analytics or confirming source is published."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Partner",
+            "functional_pattern": "Administer",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-046",
+      "service_domain": "Partner Management",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": {
+        "value": "Partner",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "Partner Management = Partner + a word BIAN uses for the Manage pattern; nothing published confirms it."
+      },
+      "functional_pattern": {
+        "value": "Manage",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "The name's last word is the one BIAN uses for Manage; no control record, analytics or confirming source is published."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Partner",
+            "functional_pattern": "Manage",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-047",
+      "service_domain": "Party Asset Directory",
+      "control_record": null,
+      "operations": 12,
+      "asset_type": {
+        "value": "Party Asset",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "Party Asset Directory = Party Asset + a word BIAN uses for the Catalog pattern; nothing published confirms it."
+      },
+      "functional_pattern": {
+        "value": "Catalog",
+        "confidence": "low",
+        "source": "the service domain's name only",
+        "reasoning": "The name's last word is the one BIAN uses for Catalog; no control record, analytics or confirming source is published."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Party Asset",
+            "functional_pattern": "Catalog",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-048",
+      "service_domain": "Position Keeping",
+      "control_record": "FinancialPositionLog",
+      "operations": 7,
+      "asset_type": {
+        "value": "Financial Position",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: FinancialPositionLog = FinancialPosition + Log. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Track",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Financial Position",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-049",
+      "service_domain": "Private Placement",
+      "control_record": "PrivatePlacementFacility",
+      "operations": 29,
+      "asset_type": {
+        "value": "Private Placement",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: PrivatePlacementFacility = PrivatePlacement + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Private Placement",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-050",
+      "service_domain": "Product Combination",
+      "control_record": "ProductCombinationFacility",
+      "operations": 21,
+      "asset_type": {
+        "value": "Product Combination",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: ProductCombinationFacility = ProductCombination + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Product Combination",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-051",
+      "service_domain": "Project Finance",
+      "control_record": "ProjectFinanceFacility",
+      "operations": 36,
+      "asset_type": {
+        "value": "Project Finance",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: ProjectFinanceFacility = ProjectFinance + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Project Finance",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-052",
+      "service_domain": "Public Offering",
+      "control_record": "PublicOfferingFacility",
+      "operations": 50,
+      "asset_type": {
+        "value": "Public Offering",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: PublicOfferingFacility = PublicOffering + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Public Offering",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-053",
+      "service_domain": "Reward Points Account",
+      "control_record": "RewardPointsLog",
+      "operations": 16,
+      "asset_type": {
+        "value": "Reward Points",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: RewardPointsLog = RewardPoints + Log. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Track",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Reward Points",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-054",
+      "service_domain": "Rewards Delivery",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": null,
+      "functional_pattern": null,
+      "status": "open",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "opened",
+          "reason": "Not inferred: no control record, analytics or operations are published and the name does not indicate a pattern.",
+          "after": {
+            "asset_type": null,
+            "functional_pattern": null,
+            "status": "open"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-055",
+      "service_domain": "Rewards Inventory",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": null,
+      "functional_pattern": null,
+      "status": "open",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "opened",
+          "reason": "Not inferred: no control record, analytics or operations are published and the name does not indicate a pattern.",
+          "after": {
+            "asset_type": null,
+            "functional_pattern": null,
+            "status": "open"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-056",
+      "service_domain": "Rewards Menu",
+      "control_record": null,
+      "operations": 0,
+      "asset_type": null,
+      "functional_pattern": null,
+      "status": "open",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "opened",
+          "reason": "Not inferred: no control record, analytics or operations are published and the name does not indicate a pattern.",
+          "after": {
+            "asset_type": null,
+            "functional_pattern": null,
+            "status": "open"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-057",
+      "service_domain": "Savings Account",
+      "control_record": "SavingsAccountFacility",
+      "operations": 34,
+      "asset_type": {
+        "value": "Savings Account",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: SavingsAccountFacility = SavingsAccount + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Savings Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-058",
+      "service_domain": "Securities Position Keeping",
+      "control_record": "SecuritiesPositionLog",
+      "operations": 7,
+      "asset_type": {
+        "value": "Securities Position",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: SecuritiesPositionLog = SecuritiesPosition + Log. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Track",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record)."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Securities Position",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-059",
+      "service_domain": "Servicing Event History",
+      "control_record": "ServicingEventLog",
+      "operations": 16,
+      "asset_type": {
+        "value": "Servicing Event",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: ServicingEventLog = ServicingEvent + Log. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Track",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Log with Track (SDEM's table, from the Practitioner Guide v8.1, still says Log Record). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Servicing Event",
+            "functional_pattern": "Track",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-060",
+      "service_domain": "Standing Order",
+      "control_record": "StandingOrderFacility",
+      "operations": 11,
+      "asset_type": {
+        "value": "Standing Order",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: StandingOrderFacility = StandingOrder + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Standing Order",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-061",
+      "service_domain": "Syndicated Loan",
+      "control_record": "SyndicatedLoanFacility",
+      "operations": 24,
+      "asset_type": {
+        "value": "Syndicated Loan",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: SyndicatedLoanFacility = SyndicatedLoan + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Syndicated Loan",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-062",
+      "service_domain": "Term Deposit",
+      "control_record": "TermDepositFacility",
+      "operations": 35,
+      "asset_type": {
+        "value": "Term Deposit",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: TermDepositFacility = TermDeposit + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Term Deposit",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-063",
+      "service_domain": "Term Deposit Framework Agreement",
+      "control_record": "TermDepositFrameworkAgreementFacility",
+      "operations": 3,
+      "asset_type": {
+        "value": "Term Deposit Framework Agreement",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: TermDepositFrameworkAgreementFacility = TermDepositFrameworkAgreement + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Term Deposit Framework Agreement",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-064",
+      "service_domain": "Transaction Engine",
+      "control_record": "TransactionScheduleFacility",
+      "operations": 6,
+      "asset_type": {
+        "value": "Transaction Schedule",
+        "confidence": "high",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public); BIAN Service Landscape 14.0 — asset types (elements with the AssetType stereotype, https://bian.org/servicelandscape-14-0-0/)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: TransactionScheduleFacility = TransactionSchedule + Facility. The asset type is in BIAN's public asset-type list."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Transaction Schedule",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-065",
+      "service_domain": "Trust Services",
+      "control_record": "CorporateTrustServicesFacility",
+      "operations": 22,
+      "asset_type": {
+        "value": "Corporate Trust Services",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: CorporateTrustServicesFacility = CorporateTrustServices + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement). The landscape's analytics name agrees."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Corporate Trust Services",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "BI-INF-066",
+      "service_domain": "Virtual Account",
+      "control_record": "VirtualAccountFacility",
+      "operations": 42,
+      "asset_type": {
+        "value": "Virtual Account",
+        "confidence": "medium",
+        "source": "BIAN Semantic APIs 14.0.0 — the domain's control record (github.com/bian-official/public)",
+        "reasoning": "BIAN names a control record asset type + generic artifact: VirtualAccountFacility = VirtualAccount + Facility. Not found in BIAN's public asset-type list, hence medium."
+      },
+      "functional_pattern": {
+        "value": "Fulfill",
+        "confidence": "high",
+        "source": "BIAN Service Landscape 14.0 — Functional Pattern_Generic Artifact Mapping View (https://bian.org/servicelandscape-14-0-0/views/view_56911.html)",
+        "reasoning": "BIAN 14 pairs the generic artifact Facility with Fulfill (SDEM's table, from the Practitioner Guide v8.1, still says Arrangement)."
+      },
+      "status": "proposed",
+      "history": [
+        {
+          "date": "2026-10-30",
+          "by": "AI-assisted research (Claude)",
+          "by_kind": "agent",
+          "action": "proposed",
+          "reason": "Inferred from BIAN's public sources; to be accepted, challenged or changed by a person.",
+          "after": {
+            "asset_type": "Virtual Account",
+            "functional_pattern": "Fulfill",
+            "status": "proposed"
+          }
+        }
+      ]
+    }
+  ]
+}

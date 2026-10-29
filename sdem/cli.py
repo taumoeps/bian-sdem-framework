@@ -75,7 +75,7 @@ JOURNEYS = {
 
 # generated documents and schemas, in the order CI checks them
 GENERATORS = ['diagram', 'relationships', 'structure', 'spec', 'kgspec', 'catalogue', 'attributes', 'confidence',
-              'logical', 'physical', 'metamodel_spec', 'controls']
+              'logical', 'physical', 'metamodel_spec', 'controls', 'inferences']
 
 
 ESTATE_FILES = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')

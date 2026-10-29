@@ -1,48 +1,48 @@
 {
   "second_build": {
     "build": 2,
-    "at": "2026-10-29T12:19:35+00:00",
+    "at": "2026-10-29T12:41:51+00:00",
     "inputs": [
       {
-        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmpkjqs__hk/a1-business.json",
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-gqogsbki/tmp8l3lyppn/a1-business.json",
         "kind": "export",
         "level": "A1",
         "model_id": "synthetic-bank-payments-a1",
         "model_version": "2026.10",
-        "sha256": "db0d8258f8063db45981a271a1300334267a99e4e969ffe56af63cb227676e4c"
+        "sha256": "7283027ebd8b251e0b4ec25f6813d837e8fefd81109fec8a28daa9696740e8ab"
       },
       {
-        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmpkjqs__hk/a2-service-domain.json",
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-gqogsbki/tmp8l3lyppn/a2-service-domain.json",
         "kind": "export",
         "level": "A2",
         "model_id": "synthetic-bank-payments-a2",
         "model_version": "2026.10",
-        "sha256": "537b449e64acca217db59096ac5fc728269341b6f5a513aa312dcd9755997381"
+        "sha256": "ed75c2b1cc9158434dd22ad09ce1d91109e776f09fc38bb4dab1260c4456a388"
       },
       {
-        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmpkjqs__hk/a3-application.json",
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-gqogsbki/tmp8l3lyppn/a3-application.json",
         "kind": "export",
         "level": "A3",
         "model_id": "synthetic-bank-payments-a3",
         "model_version": "2026.10",
-        "sha256": "fcba85f3b3d7af828eca8a46f3cd344c6959a725d6a6fce74623b39d65a69869"
+        "sha256": "c4b114d3c8deddc9c616f51c3c7aa6b3e0924e3964c4ede239055fbecb56d9ee"
       },
       {
-        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmpkjqs__hk/a4-technology.json",
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-gqogsbki/tmp8l3lyppn/a4-technology.json",
         "kind": "export",
         "level": "A4",
         "model_id": "synthetic-bank-payments-a4",
         "model_version": "2026.10",
-        "sha256": "288c66a321e685a5dacea0025d6640a9b6cd431386aadf1e9fcdae7b8677bf90"
+        "sha256": "16a8c45fe79aed9faefca998d36bd9136dc4f95fc34d4c8e66fa1943ad4d4295"
       },
       {
-        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmpkjqs__hk/registry.json",
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-gqogsbki/tmp8l3lyppn/registry.json",
         "kind": "registry",
         "registry_version": "0.4.0",
-        "sha256": "a63bc306d03aceadf0028b3759a3ffd98231d7909e7f429c0a9849d7fa29b58f"
+        "sha256": "46f0756644c7725b6ce4b8c8bc727ae21bd55b5aea0d37611411df20dbdc3967"
       }
     ],
-    "metamodel_version": "0.5.0",
+    "metamodel_version": "0.6.0",
     "errors": [
       "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-01: attribute 'criticality' value 'urgent' is not one of ['high', 'medium', 'low'] (LC-06)"
     ],

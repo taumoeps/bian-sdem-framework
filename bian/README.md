@@ -6,6 +6,8 @@
 
 **What was changed.** The files were read and packed by `sdem bian pack` (rebuild: `python scripts/build_bian_base.py <release folder>`). BIAN's descriptions and object schemas were **left out**; nothing was added or reworded. The pack is a derived work of BIAN's files, distributed under the same Apache License 2.0.
 
+**SDEM's inference record (`inferences-14.0.0.json`) is SDEM's, not BIAN's.** For the 66 service domains whose asset type and functional pattern BIAN does not publish and SDEM cannot derive, it holds SDEM's inference — with source, reasoning, confidence, status and history (readable: [`docs/reference/bian-inferences.md`](../docs/reference/bian-inferences.md)). `sdem bian import --base` applies **accepted** entries only. Change it only with `sdem bian inference accept|challenge|change|reject` — every change names a person and a reason. Apache-2.0, like the rest of SDEM.
+
 **Not endorsed by BIAN.** BIAN® is a trademark of BIAN e.V. SDEM is independent and is not affiliated with, endorsed by or sponsored by BIAN.
 
 **Using your own BIAN instead.** The base is a starting point. Pack your organisation's own BIAN (in BIAN's format) with `sdem bian pack <folder> -o <file>` and use `--base <file>`; or import straight from a folder. See [the base BIAN design](../docs/design/sdem-bian-base-design.md) and the [onboarding workflow — your BIAN (A2) layer](../docs/sdem-onboarding-workflow.md#your-bian-a2-layer).

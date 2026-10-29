@@ -3,48 +3,48 @@
   "entries": [
     {
       "build": 1,
-      "at": "2026-10-29T12:19:35+00:00",
+      "at": "2026-10-29T12:41:51+00:00",
       "inputs": [
         {
-          "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmp1usbbo03/a1-business.json",
+          "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-gqogsbki/tmpfkqrdjdx/a1-business.json",
           "kind": "export",
           "level": "A1",
           "model_id": "synthetic-bank-payments-a1",
           "model_version": "2026.10",
-          "sha256": "68ccfe829f37bf4021d075c8338b01f9da8a64f741b3451d0b257cb13b951487"
+          "sha256": "c0d561d62d8ac68e3717f4a1f86238db606a6427d6cf4bc982e1bdb3679dc55c"
         },
         {
-          "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmp1usbbo03/a2-service-domain.json",
+          "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-gqogsbki/tmpfkqrdjdx/a2-service-domain.json",
           "kind": "export",
           "level": "A2",
           "model_id": "synthetic-bank-payments-a2",
           "model_version": "2026.10",
-          "sha256": "537b449e64acca217db59096ac5fc728269341b6f5a513aa312dcd9755997381"
+          "sha256": "ed75c2b1cc9158434dd22ad09ce1d91109e776f09fc38bb4dab1260c4456a388"
         },
         {
-          "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmp1usbbo03/a3-application.json",
+          "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-gqogsbki/tmpfkqrdjdx/a3-application.json",
           "kind": "export",
           "level": "A3",
           "model_id": "synthetic-bank-payments-a3",
           "model_version": "2026.10",
-          "sha256": "fcba85f3b3d7af828eca8a46f3cd344c6959a725d6a6fce74623b39d65a69869"
+          "sha256": "c4b114d3c8deddc9c616f51c3c7aa6b3e0924e3964c4ede239055fbecb56d9ee"
         },
         {
-          "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmp1usbbo03/a4-technology.json",
+          "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-gqogsbki/tmpfkqrdjdx/a4-technology.json",
           "kind": "export",
           "level": "A4",
           "model_id": "synthetic-bank-payments-a4",
           "model_version": "2026.10",
-          "sha256": "288c66a321e685a5dacea0025d6640a9b6cd431386aadf1e9fcdae7b8677bf90"
+          "sha256": "16a8c45fe79aed9faefca998d36bd9136dc4f95fc34d4c8e66fa1943ad4d4295"
         },
         {
-          "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmp1usbbo03/registry.json",
+          "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-gqogsbki/tmpfkqrdjdx/registry.json",
           "kind": "registry",
           "registry_version": "0.4.0",
-          "sha256": "4b1288b817f2d7e53c1c4ae8f0848f49d3759ae9a8c83a660c5fec3a93a1d15c"
+          "sha256": "24bc3a6f3682d23a11c44e7a0ff45d905c20686f685c0a5b24e669951dd69794"
         }
       ],
-      "metamodel_version": "0.5.0",
+      "metamodel_version": "0.6.0",
       "errors": [],
       "warnings": [
         "level A2 (synthetic-bank-payments-a2): instance BD-PAYMENTS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
@@ -58,31 +58,31 @@
       "outputs": [
         {
           "file": "a1-business.graph.json",
-          "sha256": "677b83beab8da056fcbd65eb92c827d276b706984ce5e420dc3d23433851124d",
+          "sha256": "29fa4fbc1c8a85e11cdaf3aabca7bf532a3604547ac69996b94ee057fd79ad68",
           "nodes": 16,
           "edges": 14
         },
         {
           "file": "a2-service-domain.graph.json",
-          "sha256": "cfab4805f074057ed44fc988853711dbeb0718d5ed7c055ab645bbe4e0e2f284",
+          "sha256": "75bc710337f22bf604a466f7c5e2127a4e8636d9249292cf2edb40520ec43618",
           "nodes": 24,
           "edges": 33
         },
         {
           "file": "a3-application.graph.json",
-          "sha256": "768c3dc2fc65cc360b77066cda4d2897d2fc8b595d935ff15dbbffe052609c9e",
+          "sha256": "dc44ee7de1f4ade4b15724af0acb27686d01ebf88691ecb00bf121ccc48ccac5",
           "nodes": 16,
           "edges": 17
         },
         {
           "file": "a4-technology.graph.json",
-          "sha256": "d0ec625acc1d8087ec6b6508f3e81e28adf2ea38466526f7d7ae44d45cbc6051",
+          "sha256": "5e7218d87ffbe53ee98e7dbb7d49b31e49b8b0a5f70eb94014c18808a03b39bc",
           "nodes": 12,
           "edges": 5
         },
         {
           "file": "federated.graph.json",
-          "sha256": "cbb4876fcdec749e359d9b351247d5fcf538b0c9fc97e5079f4a9e85f883faa4",
+          "sha256": "d81fc89a7ee5bd9ae34c964fbd3c8210b3a77d8ac85b818fece9e68aea866c8b",
           "nodes": 0,
           "edges": 0
         }

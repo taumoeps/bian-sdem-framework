@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.5.0",
+  "metamodel_version": "0.6.0",
   "note": "Rules for `sdem transform`: how a Confluence HTML export of past designs becomes candidate architecture records. Rules only — no AI, no network. Copy this file, change the words to match your pages, and pass it with --rules. Matching ignores case, punctuation and extra spaces. Design: docs/sdem-transform-design.md; spec: docs/sdem-transform-spec.md. Any folder layout: pages are found anywhere (HTML, Markdown, text, CSV), folder names act as section headings, diagrams are linked to the page that refers to them, files in the root are kept as provenance.",
   "id_prefix": "HIS-",
   "skip_folders": [

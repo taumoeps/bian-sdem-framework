@@ -7,6 +7,7 @@
 | [Entity design](architecture-entity-design.md) | every kind of thing (44), with its source, reasoning and confidence |
 | [Attribute design](architecture-attribute-design.md) | every attribute of every kind of thing |
 | [Logical data model](logical-data-model.md) | one card per kind of thing: identifiers, fields, allowed values, references, rules |
+| [BIAN inferences](bian-inferences.md) | the asset types and functional patterns SDEM infers for the 66 BIAN service domains BIAN does not publish them for — each with source, reasoning, confidence, status and history |
 | [Physical data model](physical-data-model.md) | the file formats: one JSON Schema per kind of thing |
 | [Links inside a layer](relationships-planning.md) | the 132 links allowed inside a layer |
 | [Controls register](controls-register.md) | every control: what it enforces, where it runs, its last test result |
