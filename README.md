@@ -59,22 +59,43 @@ flowchart TB
 The rules, the data and the connections — kept as files, checked, with a full history.
 
 ```mermaid
-flowchart LR
-    R["📘 <b>The rulebook</b><br/>what may exist in each layer,<br/>how layers may connect"]
-    D["🗂️ <b>Architecture data</b><br/>A1 · A2 · A3 · A4<br/>each layer owned by its team"]
-    M["🔗 <b>Approved connections</b><br/>who approved, when,<br/>the evidence"]
-    K["🕸️ <b>Knowledge graph</b><br/>all four layers<br/>in one picture"]
-    R -.->|"checks"| D
-    R -.->|"checks"| M
-    D --> K
-    M --> K
+flowchart BT
+    subgraph DATA["🗂️ Estate data — files, each layer owned by its team"]
+        E1["<b>A1 entities</b><br/>Business<br/><i>a1-business.json</i>"]
+        E2["<b>A2 entities</b><br/>BIAN service domains<br/><i>a2-service-domain.json</i>"]
+        E3["<b>A3 entities</b><br/>Applications<br/><i>a3-application.json</i>"]
+        E4["<b>A4 entities</b><br/>Technology<br/><i>a4-technology.json</i>"]
+        C["🔗 <b>Approved connections</b><br/>between layers — who, when, evidence<br/><i>mappings.json</i>"]
+    end
+    subgraph KG["🕸️ Knowledge graph — made by sdem build"]
+        G1["<b>A1 knowledge graph</b><br/>records + links inside A1"]
+        G2["<b>A2 knowledge graph</b><br/>records + links inside A2"]
+        G3["<b>A3 knowledge graph</b><br/>records + links inside A3"]
+        G4["<b>A4 knowledge graph</b><br/>records + links inside A4"]
+        F["<b>Federated knowledge graph</b><br/>the approved connections<br/>that join the four layers"]
+    end
+    MM["📘 <b>Service Domain Enterprise Metamodel</b> — the rulebook<br/>entity types: A1 10 · A2 15 · A3 8 · A4 11<br/>links inside a layer: 132 rules · between layers: 9 kinds"]
+    E1 --> G1
+    E2 --> G2
+    E3 --> G3
+    E4 --> G4
+    C --> F
+    G1 & G2 & G3 & G4 --- F
+    F ~~~ MM
+    DATA -.->|"every file checked against"| MM
     classDef r fill:#FFF8E1,stroke:#F9A825
     classDef d fill:#E8F5E9,stroke:#2E7D32
-    class R r
-    class D,M,K d
+    classDef g fill:#E3F2FD,stroke:#1565C0
+    class MM r
+    class E1,E2,E3,E4,C d
+    class G1,G2,G3,G4,F g
 ```
 
-The rulebook holds 44 types of thing (capability, application, server …), which may be linked inside a layer (132 rules) and between layers (9 kinds of connection), and the 69 rules for proposing connections — each traced to a public standard (BIAN, ArchiMate, TOGAF).
+**Reading it from the bottom:**
+
+- **Estate data.** Each layer's records — its *entities* — live in their own file, owned by that layer's team. Connections between layers live in `mappings.json`; only approved ones count.
+- **Knowledge graph.** `sdem build` turns each layer file into that layer's graph (its records and the links inside the layer), and the approved connections into the **federated graph**, which joins the four. Trace and impact follow the federated graph across layers.
+- **Metamodel.** Not part of the graph: it is the rulebook every file is checked against before it is accepted — 44 types of thing (capability, BIAN service domain, application, server …), 132 rules for links inside a layer, 9 kinds of connection between layers and 69 rules for proposing them — each traced to a public standard (BIAN, ArchiMate, TOGAF).
 
 ### 2 · Tools
 
