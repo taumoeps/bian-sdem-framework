@@ -89,6 +89,18 @@ CTL-16 and CTL-17 are in the controls register, tested with good and bad data in
 
 The accuracy reached is **reported, not assumed**: each run states its precision and recall per layer — the "inference accuracy" an architect plans with.
 
+## 9a. Filling a workspace — `sdem aid` (owner's decision DA2-05, 2026-10-30)
+
+| Id | Requirement | Verified by |
+|---|---|---|
+| AID-W01 | `sdem aid --workspace DIR --person P` infers from what the workspace has (any of A1, A3, A4; its A2 as the catalogue; its registry) and writes the records it is missing **into the workspace's layer files**; it refuses an unstarted workspace or one with nothing to start from. | tests |
+| AID-W02 | Every inferred record has an `AID-` id, `lifecycle_status: planned` and the `inferred` mark (metamodel CA-12): by, run, at, requested_by, step, rule, source, reasoning, confidence, from. Records a person wrote are never changed or duplicated. The workspace is checked before anything is written; each run is recorded in `DIR/aid/AID-nnn.json`. | tests |
+| AID-W03 | Inferred connections between layers are written as **proposals** (`DIR/aid/AID-nnn-proposals.json`), never into the registry: a person reviews (`sdem review`) and approves them with evidence (`sdem approve`). Trace and impact follow approved connections only. A connection still waiting from an earlier run is not proposed again. | tests |
+| AID-W04 | `sdem aid confirm <ids>|--all --person P`: the person agrees; the mark stays, with `status: confirmed`, `confirmed_by`, `confirmed_at`. | tests |
+| AID-W05 | `sdem aid reject <ids> --person P --reason R`: the records and their links inside the layer are removed; the rejection is kept (`DIR/aid/rejected.json`) and the record is never inferred again. Only inferred records can be confirmed or rejected. | tests |
+| AID-W06 | `sdem check` reports an `AID-` record without its mark as an error (CTL-16) and summarises unconfirmed inferred records as one advice line per layer; the dashboard lists them under *needs attention*. | tests |
+| AID-W07 | Activity → operation by verb and noun (rule S06) keeps a match only if the activity covers at least half of the domain's asset type, and only the best-covered domains (DA2-04): with the full BIAN layer, *Initiate payment order* and *Execute payment* name Payment Order Initiation and Payment Rail — not the six domains that merely share *order* or *payment*. | tests |
+
 ## 10. Commands
 
 ```

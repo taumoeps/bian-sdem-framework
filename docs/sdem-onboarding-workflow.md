@@ -146,7 +146,7 @@ A starter file with one service domain. Every service domain must name its **ass
 ```json
 {
   "level": "A2", "model_id": "our-bian-layer", "model_version": "2026.11",
-  "metamodel_version": "0.6.0", "source_system": "HAND-ENTERED",
+  "metamodel_version": "0.7.0", "source_system": "HAND-ENTERED",
   "instances": [
     {"id": "SD-PAYMENT-ORDER-INITIATION", "type": "A2.ServiceDomain", "version": "1.0", "name": "Payment Order Initiation",
      "lifecycle_status": "active", "description": "Starts customer payments, in our own words.",

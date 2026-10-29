@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.6.0",
+  "metamodel_version": "0.7.0",
   "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Enforced by sdem-graph check (sdem/conformance.py, logical rules LC-04…LC-13) and published as per-entity JSON Schemas (sdem/physical.py); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
   "confidence_rule": "high   — defined by a public standard and checked (BIAN public material, OpenAPI, or a standard concept or\n           relationship confirmed by the open-source Archi oracle); or an SDEM data-contract field, which SDEM defines\n           authoritatively.\n  medium — built on a standard concept or relationship as SDEM chose to model it; or BIAN intent / target only;\n           or an SDEM definition, a login-gated source, or a cited-but-unverified source that was validated against\n           sealed answers; or institution data under an SDEM convention.\n  low    — no standard basis and not validated against sealed answers; or deprecated.",
   "core_fields": [
@@ -4243,6 +4243,33 @@
       ],
       "values_source": "SDEM",
       "confidence_basis": "Dublin Core defines the attribute; its allowed values are SDEM-defined"
+    },
+    {
+      "id": "CA-12",
+      "entity": "all",
+      "name": "inferred",
+      "type": "map<string,string>",
+      "required": false,
+      "description": "set on a record SDEM inferred rather than a person wrote: by (sdem aid), run, rule, source, reasoning, confidence, from (the records it was inferred from), at; and, once a person agrees, status confirmed, confirmed_by, confirmed_at",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision DA2-05 (owner, 2026-10-30)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved by the owner 2026-10-30",
+      "reasoning": "AID writes the records a workspace is missing into its real layer files, so an architect works in one set of files. A record SDEM inferred must never be mistaken for one a person wrote or confirmed: the mark carries the source, reasoning and confidence, and stays — with who confirmed it — once a person agrees.",
+      "confidence": "low",
+      "read_by": "sdem aid, sdem check (summary), dashboards, CTL-16",
+      "question": "Did a person write this, or did SDEM infer it — and has anyone confirmed it?",
+      "approved": {
+        "review": "Owner's decision — AID fills the workspace (AID redesign)",
+        "date": "2026-10-30",
+        "draft_id": "DA2-05"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
     }
   ],
   "derived_attributes": [

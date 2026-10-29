@@ -1,6 +1,6 @@
 {
   "registry_version": "0.4.0",
-  "metamodel_version": "0.6.0",
+  "metamodel_version": "0.7.0",
   "engine": "fable-executor/2026-10-22",
   "use_case": "M2",
   "mappings": [

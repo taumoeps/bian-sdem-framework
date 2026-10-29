@@ -58,9 +58,15 @@ def check_level(doc, mm, estate_index=None):
     errors, warnings, n = [], [], Counter()
     local = {i['id']: i['type'] for i in doc.get('instances', [])}
     keys = Counter()
+    to_confirm = 0
     for i in doc.get('instances', []):
         if not mm.known(i['type']): continue  # reported by the graph loader (LC-02)
         defs = definitions(mm, i['type']); at = i.get('attributes') or {}; who = f"instance {i['id']}"
+        mark = at.get('inferred')
+        if str(i['id']).startswith('AID-') and not isinstance(mark, dict):   # CTL-16: an inferred record keeps its mark
+            errors.append(f"{who}: inferred by sdem aid but its 'inferred' mark is missing — confirm it with `sdem aid confirm`, never by removing the mark (CTL-16)"); continue
+        unconfirmed = isinstance(mark, dict) and mark.get('status') != 'confirmed'
+        to_confirm += unconfirmed
         for k, a in defs.items():
             if a['required'] and a['status'] == 'active':
                 n['LC-04 checked'] += 1
@@ -70,7 +76,8 @@ def check_level(doc, mm, estate_index=None):
                         n['LC-04 to confirm'] += 1
                         warnings.append(f"{who}: {k!r} not known yet ({', '.join(f'{x} {v}' for x, v in unless.items())}) — give it when known (LC-04)"); continue
                     if i.get('lifecycle_status') == 'planned':  # a planned (target-design) record may not know every fact yet: warn, do not reject
-                        n['LC-04 planned'] += 1; warnings.append(f"{who}: planned instance — required attribute {k!r} not yet known (LC-04)")
+                        n['LC-04 planned'] += 1
+                        if not unconfirmed: warnings.append(f"{who}: planned instance — required attribute {k!r} not yet known (LC-04)")   # inferred: in the summary
                     else:
                         n['LC-04 failed'] += 1; errors.append(f"{who}: required attribute {k!r} missing (LC-04)")
         for k, v in at.items():
@@ -125,6 +132,7 @@ def check_level(doc, mm, estate_index=None):
                     n['LC-10 failed'] += 1; errors.append(f"instance {iid}: {cnt} {c['kind']} links with {other}, at most {hi} allowed by {c['id']} (LC-10)")
                 if cnt < int(lo):
                     n['LC-10m failed'] += 1; warnings.append(f"instance {iid}: {cnt} {c['kind']} links with {other}, {c['id']} expects at least {lo} (LC-10m)")
+    if to_confirm: warnings.append(f"{to_confirm} inferred record(s) to confirm — review them (marked 'inferred', with source, reasoning and confidence), then `sdem aid confirm` or `sdem aid reject` (CTL-16)")
     return errors, warnings, n
 
 

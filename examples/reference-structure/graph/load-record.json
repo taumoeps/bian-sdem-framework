@@ -294,6 +294,104 @@
           "edges": 0
         }
       ]
+    },
+    {
+      "build": 4,
+      "at": "2026-10-29T14:51:56+00:00",
+      "inputs": [
+        {
+          "path": "examples/reference-structure//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "reference-structure-a1",
+          "model_version": "2026.10",
+          "sha256": "ca3eac618deadfbaf0261014b5fd0374e3512d3b34e7e44c36c8f1004f3a1dac"
+        },
+        {
+          "path": "examples/reference-structure//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "reference-structure-a2",
+          "model_version": "2026.10",
+          "sha256": "78937fe2a0ab815090b7b6f88e3292efad936634508371ae0a86c468e429b3e3"
+        },
+        {
+          "path": "examples/reference-structure//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "reference-structure-a3",
+          "model_version": "2026.10",
+          "sha256": "d69bdc52a4248b36742081565415db4e113f2afdeaee7d24e0264b1bb731d038"
+        },
+        {
+          "path": "examples/reference-structure//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "reference-structure-a4",
+          "model_version": "2026.10",
+          "sha256": "0dff4fcf541afb1206e350d1e055daea2ea86452403cfa5f440790aa5a0ce39c"
+        },
+        {
+          "path": "examples/reference-structure//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "75026cfce7793e16e47d9692250c265aecc683ec4d21bc5ef0da713716a8a48d"
+        }
+      ],
+      "metamodel_version": "0.7.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (reference-structure-a2): instance RS-BusinessDomain-2: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessArea-2: 0 composition links with A2.BusinessDomain, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessDomain-2: 0 composition links with A2.ServiceDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceGroup-2: 0 composition links with A2.ServiceDomain, RA2-03 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceOperation-2: 0 composition links with A2.ServiceGroup, RA2-04 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceGroup-2: 0 composition links with A2.ServiceOperation, RA2-04 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ControlRecord-2: 0 aggregation links with A2.ServiceDomain, RA2-05 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 association links with A2.FunctionalPattern, RA2-06 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 association links with A2.AssetType, RA2-07 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessScenario-2: 0 aggregation links with A2.ServiceOperation, RA2-09 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessObjectAttribute-2: 0 composition links with A2.BusinessObject, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessObject-2: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BehaviorQualifier-2: 0 composition links with A2.ControlRecord, RA2-11 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceOperation-2: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "84e5d2b4c678b47489e4c7cf6844259fc547b9d2cfe0806ac61cd527fc6fcfa6",
+          "nodes": 20,
+          "edges": 48
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "c12ffa73acbc5153d3dfa96b03750a2f60647a9624c0745f1f91bc0795c11ac1",
+          "nodes": 24,
+          "edges": 14
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "1822fe60a1672ec4ede740ee25f111bbc5c250f476f52f6b90785c5d0e04b475",
+          "nodes": 16,
+          "edges": 31
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "1ea8b4409ee219f57fad7827c845addad12e6ae23646e544c1f60b9cc907cef5",
+          "nodes": 20,
+          "edges": 36
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "65d32b6e64537add9a4c81d3a82259a61f04ace31fadee350215035c587a6945",
+          "nodes": 0,
+          "edges": 0
+        }
+      ]
     }
   ]
 }

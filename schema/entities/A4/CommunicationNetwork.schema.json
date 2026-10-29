@@ -300,6 +300,20 @@
           "x-sdem-reasoning": "Answers: Who may see this? How sensitive is it? Dublin Core defines the field (access or security status); the four values are SDEM's common banking scale, not a standard.",
           "x-sdem-confidence": "medium"
         },
+        "inferred": {
+          "type": "object",
+          "description": "set on a record SDEM inferred rather than a person wrote: by (sdem aid), run, rule, source, reasoning, confidence, from (the records it was inferred from), at; and, once a person agrees, status confirmed, confirmed_by, confirmed_at",
+          "x-sdem-id": "CA-12",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "SDEM-defined",
+            "locator": "SDEM decision DA2-05 (owner, 2026-10-30)",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "AID writes the records a workspace is missing into its real layer files, so an architect works in one set of files. A record SDEM inferred must never be mistaken for one a person wrote or confirmed: the mark carries the source, reasoning and confidence, and stays — with who confirmed it — once a person agrees.",
+          "x-sdem-confidence": "low"
+        },
         "connects": {
           "type": "array",
           "items": {

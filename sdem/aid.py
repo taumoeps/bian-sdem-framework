@@ -546,6 +546,10 @@ def trace(reader, pkg, start, direction='down'):
 
 
 def main(argv=None):
+    argv = sys.argv[1:] if argv is None else list(argv)
+    if argv and argv[0] not in ('project', 'check', 'gaps', '-h', '--help'):   # DA2-05: `sdem aid` fills the workspace; confirm, reject
+        from .aid_fill import main as fill_main
+        return fill_main(argv)
     ap = argparse.ArgumentParser(prog='sdem aid', description='Architecture Inference Design: project the missing architecture layers for planning.')
     sub = ap.add_subparsers(dest='cmd', required=True)
     p = sub.add_parser('project'); p.add_argument('--workspace', dest='estate', metavar='DIR', help="plan from a workspace: its business layer (and any applications and technology), its BIAN layer and its approved connections"); p.add_argument('--have', nargs='+'); p.add_argument('--catalogue'); p.add_argument('--registry'); p.add_argument('-o', '--out', help='where the planned design goes (default with --workspace: <workspace>/plans/PLAN-nnn)'); p.add_argument('--json', action='store_true')

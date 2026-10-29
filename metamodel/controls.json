@@ -155,13 +155,18 @@
     {
       "id": "CTL-16",
       "rule_area": "platform",
-      "control": "A projected design (AID) never enters an architecture dataset, the Relationship Registry or a real graph store, and a projected link is never approved",
-      "implemented_in": "sdem/graph.py `LevelGraph.validate` (dataset check), sdem/validate.py (registry validator), sdem/store.py `render` (store build): reject `PRJ-`/`DSN-` records in real datasets, approval of links to them, and projection or target-design datasets in a real store",
+      "control": "A projected design from file-based planning (`sdem aid project`, `PRJ-`/`DSN-` records) never enters an architecture dataset, the registry or a real graph store, and a projected link is never approved. Records `sdem aid` infers into a workspace (`AID-` records) are marked `inferred` — with source, reasoning and confidence — and keep the mark: a person confirms or rejects each (`sdem aid confirm|reject`); their connections are only proposals, approved by a person with evidence, so nothing inferred is followed by trace or impact until approved.",
+      "implemented_in": "sdem/graph.py `LevelGraph.validate` (dataset check), sdem/validate.py (registry validator), sdem/store.py `render` (store build): reject `PRJ-`/`DSN-` records in real datasets, approval of links to them, and projection or target-design datasets in a real store; sdem/conformance.py: an `AID-` record without its `inferred` mark is an error, and unconfirmed inferred records are summarised as advice",
       "runs": "sdem-graph check; sdem-validate; sdem-graph build",
       "outcome_recorded_in": "command output; graph store load record",
       "monitored_by": "GitHub Actions `validate.yml` on every push and pull request; tests/test_use_case_example_2.py",
       "status": "built",
-      "tested_by": "use-case-example-2"
+      "tested_by": "use-case-example-2",
+      "changed": {
+        "date": "2026-10-30",
+        "decision": "DA2-05 (owner: the AID redesign)",
+        "was": "every AID output kept apart in a projection package"
+      }
     },
     {
       "id": "CTL-17",

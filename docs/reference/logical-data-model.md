@@ -37,6 +37,7 @@ and these common attributes (approved 2026-10-24; optional):
 | `subject` | list<string> | — | topic tags (e.g. "payments", "fraud") |
 | `owner` | string | refers to A1.BusinessActor, A1.BusinessRole | the actor or role accountable for it |
 | `access_classification` | string | public, internal, confidential, restricted | how sensitive it is and who may see it |
+| `inferred` | map<string,string> | — | set on a record SDEM inferred rather than a person wrote: by (sdem aid), run, rule, source, reasoning, confidence, from (the records it was inferred from), at; and, once a person agrees, status confirmed, confirmed_by, confirmed_at |
 
 ### How to read a card
 

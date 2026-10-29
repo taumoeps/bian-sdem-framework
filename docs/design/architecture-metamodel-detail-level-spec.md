@@ -436,18 +436,19 @@ Every field of a plan row in `metamodel/relationship-rules.json`.
 | `reasoning` | yes | 69 of 69 | text | why the rule is shaped as it is |
 | `basis_confidence` | yes | 69 of 69 | `high`, `medium`, `n/a` | confidence in the rule's basis (the single rule) |
 | `basis_confidence_reason` | yes | 69 of 69 | text | which clause applied |
+| `matching_decision` | no | 1 of 69 | object |  |
 
 ## 16. Data model
 
 **Gap G-12** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-9 core fields, 11 common attributes, 137 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](../reference/architecture-attribute-design.md), [`logical-data-model.md`](../reference/logical-data-model.md), [`physical-data-model.md`](../reference/physical-data-model.md).
+9 core fields, 12 common attributes, 137 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](../reference/architecture-attribute-design.md), [`logical-data-model.md`](../reference/logical-data-model.md), [`physical-data-model.md`](../reference/physical-data-model.md).
 
 ## 17. Provenance and confidence
 
 **Gap G-13** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 237 high, 81 medium, 24 low.
+Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 237 high, 81 medium, 25 low.
 
 ## 18. Inference engine
 

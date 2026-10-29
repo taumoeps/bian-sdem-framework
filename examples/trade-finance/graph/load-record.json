@@ -240,6 +240,86 @@
           "edges": 24
         }
       ]
+    },
+    {
+      "build": 4,
+      "at": "2026-10-29T14:51:56+00:00",
+      "inputs": [
+        {
+          "path": "examples/trade-finance//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-trade-a1",
+          "model_version": "2026.10",
+          "sha256": "0bc035086b492eaa953572368a597b77c66bc0293fd45ac47bea2fc1c9e24d80"
+        },
+        {
+          "path": "examples/trade-finance//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-trade-a2",
+          "model_version": "2026.10",
+          "sha256": "d72f8ffb516969606280db66fd3cd537999318328de30692f9dd81d9581beb9d"
+        },
+        {
+          "path": "examples/trade-finance//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-trade-a3",
+          "model_version": "2026.10",
+          "sha256": "4aabaee8b596bb726ee3062535e9d5dc7280f015f5d3b25b1cbab434e449db80"
+        },
+        {
+          "path": "examples/trade-finance//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-trade-a4",
+          "model_version": "2026.10",
+          "sha256": "0ab0eec5bdaf9924c41439b7a6ada0ca5c31bb6452864b2c5bb51afe6580e1a4"
+        },
+        {
+          "path": "examples/trade-finance//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "155030a0ee3396234b1e79d4af7aec2f4f841ecc44207567a8b8afc6bef59bf8"
+        }
+      ],
+      "metamodel_version": "0.7.0",
+      "errors": [],
+      "warnings": [],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "506e8d921b0e876db30f7aa94b6538f6de1076300e26e52efae2a91635ac359f",
+          "nodes": 20,
+          "edges": 19
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "beeca08f13c1c372bfabe9577a4f05e468d5230916463cbda07d744e63792ee9",
+          "nodes": 27,
+          "edges": 35
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "15f779523dca1a8507bdd412099b4292832b235deb62a31c767e73691b4449a9",
+          "nodes": 20,
+          "edges": 25
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "daa4f821eeea60b7333de579bb6fdaefa8a6a66014f3ed389f1ebd0b477500f8",
+          "nodes": 18,
+          "edges": 11
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "6a04baee6efdd01fda45d513bed386a2ad8d690855149a79470468dd5521e7c9",
+          "nodes": 32,
+          "edges": 24
+        }
+      ]
     }
   ]
 }

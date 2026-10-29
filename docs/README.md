@@ -20,7 +20,7 @@ flowchart LR
 
 | Read | For |
 |---|---|
-| [Planning missing layers with AID](sdem-planning-with-aid.md) | projecting the BIAN, application and technology layers you do not have yet — a planned design, kept apart from real data |
+| [Designing with AID](sdem-planning-with-aid.md) | a new design: write what you know, `sdem aid` fills in the missing layers — each record marked *inferred*, with source, reasoning and confidence, for you to confirm or reject |
 
 ## Understanding SDEM
 

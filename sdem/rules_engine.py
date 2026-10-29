@@ -568,14 +568,21 @@ class Run:
                 else:
                     self.attempt('S02', vs['id'], sc_['id'], 4, data, f'coverage {cov:.0%} < 60 %')
         # S06 (activity -> operation) by verb + noun when the activity names no operation
+        # The noun must cover at least half of the domain's asset type, and only the best-covered domains are kept (DA2-04): one shared
+        # common word ('order', 'payment') is not a match — with a full BIAN layer it named every domain with that word.
         for act in self.of('A1.BusinessActivity'):
             if _list(self.attr(act, 'invokes')): continue
-            at = stems(tokens(act['name']))
+            at = stems(tokens(act['name'])); found = []
             for o in self.of('A2.ServiceOperation'):
                 dom = self.domain_of(o['id']); asset = self.get(self.attr(dom, 'asset_type'), 'A2.AssetType') if dom and self.attr(dom, 'asset_type') else None
                 noun = stems(tokens(asset['name'], *_list(self.attr(asset, 'aliases')))) if asset else set()
                 if self.verbs(self.attr(o, 'action_term')) & at and noun & at:
-                    self.report('S06', act, o, 4, f"verb and noun match: '{act['name']}' ~ '{o['name']}'", [f"{act['id']}.name", f"{o['id']}.action_term", 'asset type'])
+                    cover = len(noun & at) / len(noun)
+                    if cover >= 0.5: found.append((cover, o))
+            best = max((c for c, _ in found), default=0)
+            for cover, o in found:
+                if cover == best:
+                    self.report('S06', act, o, 4, f"verb and noun match: '{act['name']}' ~ '{o['name']}' (covers {cover:.0%} of the asset type)", [f"{act['id']}.name", f"{o['id']}.action_term", 'asset type'])
         # S09 (business service -> operation): inputs/outputs vs operation attributes, >= 50 % and >= 2, unique best per service
         for bs in self.of('A1.BusinessService'):
             have = _list(self.attr(bs, 'inputs')) + _list(self.attr(bs, 'outputs'))

@@ -109,10 +109,11 @@ flowchart LR
     C["🔗 <b>Approved connections</b><br/><i>mappings.json</i>"]
     K["🕸️ <b>Knowledge graph</b><br/>four layer graphs +<br/>the federated graph"]
     A["📊 <b>Answers</b>"]
-    PL["🧭 <b>Planned design</b><br/>kept apart, never approved"]
+    PL["🧭 <b>Inferred records</b><br/>in the layers, marked —<br/>you confirm or reject"]
     MM["📘 <b>Metamodel</b><br/>what may exist and connect"]
     IN -->|"sdem new, then<br/>sdem transform · sdem load"| D
-    IN -.->|"new design:<br/>sdem aid project --workspace"| PL
+    IN -.->|"new design:<br/>sdem aid — fills the gaps,<br/>marked inferred"| PL
+    PL -->|"sdem aid confirm"| D
     D -->|"sdem link"| P
     P -->|"👤 sdem approve<br/>(or sdem connect)"| C
     D -->|"sdem build"| K
@@ -140,7 +141,7 @@ The steps in order, from your designs to the knowledge graph:
 | 2 | *Existing design:* look at it | `sdem transform inspect <export>` | shows what is in the export and what SDEM can read; changes nothing | SDEM |
 | 3 | *Existing design:* read it | `sdem transform run <export> -o work/history` | turns pages, tables and diagrams into *suggested* items, with a report of where each came from | SDEM |
 | 4 | *Existing design:* keep the good ones | `sdem load work/history --workspace <workspace> --person <you>` | copies the items you accept into the workspace — you are recorded as the person who decided; what does not fit is kept as a gap record | **you** |
-| — | *New design instead:* plan it | `sdem aid project --workspace <workspace>` | from the workspace's business layer and BIAN layer, plans the BIAN, application and technology records you do not have yet — kept apart in `<workspace>/plans/`, never mixed with real data | SDEM |
+| — | *New design instead:* fill the gaps | `sdem aid --workspace <workspace> --person <you>` | from whatever you wrote (any of A1…A4), adds the records the workspace is missing **into its layer files** — each marked *inferred*, with source, reasoning and confidence — and proposes the connections; you review, then `sdem aid confirm` or `sdem aid reject` each record | SDEM, then **you** |
 | *optional* | Change the BIAN layer | `sdem bian custom --workspace <workspace> --only "<service domain>" … --person <you>` — or share one across workspaces: `sdem bian import --base --all -o bian/a2-service-domain.json` | the workspace already has all of BIAN's service domains (from `sdem new`); narrow it to the ones you use, or keep one shared layer for every workspace — [choosing your BIAN service domains](#choosing-your-bian-service-domains) | **you**, or the SDEM lead for the shared layer |
 | 5 | Check | `sdem check --workspace <workspace>` | every file against the metamodel; errors must be fixed, warnings are advice — also run by CI on every change | SDEM |
 | 6 | Propose connections | `sdem link --workspace <workspace> --out work/links` | proposes connections between layers, each with its reasons | SDEM |
@@ -210,7 +211,7 @@ Six steps, the same for every area. Each links to where it is written in full.
    | Your design | What happens | In full |
    |---|---|---|
    | **Existing** — already documented, e.g. in Confluence | you export it; SDEM reads it into *suggested* items with a report (`sdem transform`); you keep the good ones (`sdem load`); what does not fit is kept as a gap record | [below](#onboarding-your-existing-designs) and the [onboarding workflow](docs/sdem-onboarding-workflow.md) |
-   | **New** — not built yet | you write the business layer (A1) and what is already decided; SDEM projects the missing BIAN, application and technology layers as a *planned* design, kept apart in the workspace's `plans/` (`sdem aid project --workspace`) | [planning with AID](docs/sdem-planning-with-aid.md) |
+   | **New** — not built yet | you write what you have — any of the four layers, even a few capabilities and activities; `sdem aid` fills in what is missing (the BIAN domains, applications, APIs and deployments), each marked *inferred* with its source, reasoning and confidence; you review, confirm or reject, then validate as usual | [designing with AID](docs/sdem-planning-with-aid.md) |
 
 4. **Connect the layers.** SDEM proposes connections across the layers (`sdem link`). You approve the true ones, naming the document that proves each (`sdem approve`), or state one SDEM missed (`sdem connect`). Agents and Copilot never approve.
 5. **Review.** Commit on a branch in your organisation's private workspace repository and open a pull request: a reviewer checks it and CI runs every check. A connection is final when the pull request is merged.

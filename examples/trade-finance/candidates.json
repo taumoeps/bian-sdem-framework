@@ -1,6 +1,6 @@
 {
   "registry_version": "0.4.0",
-  "metamodel_version": "0.6.0",
+  "metamodel_version": "0.7.0",
   "note": "candidate-rule gold: relationship = plan ID; not registry records, not validated by sdmm-validate; scored by sdmm-eval per plan ID",
   "mappings": [
     {

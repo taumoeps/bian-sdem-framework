@@ -374,11 +374,17 @@
       "source_reference": "[SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review",
       "rule_decision": "institution_only",
       "fill_step": 1,
-      "data_needed": "A1.BusinessActivity.attributes.invokes, or activity name vs operation action term + asset (export-conventions) (export-conventions.json 0.5.10)",
+      "data_needed": "A1.BusinessActivity.attributes.invokes, or activity name vs operation action term + asset type — the activity's words must cover at least half of the asset type, and only the best-covered domains are kept (export-conventions.json 0.5.10; DA2-04)",
       "confidence": "medium",
       "reasoning": "Activity→operation is the finest-grain process link and the most mechanically matchable (one activity, one operation call). No official authority, but it is the natural evidence for S04; an institution adopting it would fill it by name/parameter matching. Step 1 (pure join) when A1.BusinessActivity.attributes.invokes is present; step 4 name match otherwise (C1 finding 3).",
       "basis_confidence": "medium",
-      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
+      "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers",
+      "matching_decision": {
+        "id": "DA2-04",
+        "date": "2026-10-30",
+        "approved_by": "the SDEM owner (AID redesign)",
+        "reasoning": "With the full BIAN layer (258 domains), matching on the verb and any one word of the asset type proposed every domain sharing a common word ('order', 'payment'): for 'Initiate payment order' it named 8 domains, 6 wrong. Requiring the activity to cover at least half of the asset type and keeping only the best-covered domain named the 2 right ones (Payment Order Initiation, Payment Rail); the engine acceptance cases (8 of 8) and the sealed use-case examples are unchanged."
+      }
     },
     {
       "id": "S07",

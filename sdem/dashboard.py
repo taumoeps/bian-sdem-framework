@@ -138,6 +138,10 @@ def collect(estate, proposals=None, projection=None, catalogue=None, graph=None,
     if open_work: attention.append({'text': f'{len(open_work)} open work item(s)', 'tab': 'changes', 'cmd': f'sdem work list --workspace {estate}', 'level': 'warn'})
     unplanned = [e for e in Estate(estate).status() if not e['planned']] if events else []
     if unplanned: attention.append({'text': f'{len(unplanned)} change event(s) waiting to be planned', 'tab': 'changes', 'cmd': f'sdem work plan --event {unplanned[0]["id"]} --workspace {estate} --agent sdem-orchestrator --person <you>', 'level': 'warn'})
+    inferred = sum(1 for f in FILES if (estate / f).exists() for i in _j(estate / f).get('instances', [])
+                   if isinstance((i.get('attributes') or {}).get('inferred'), dict) and i['attributes']['inferred'].get('status') != 'confirmed')
+    if inferred: attention.append({'text': f'{inferred} inferred record(s) to confirm — added by sdem aid, each with its source, reasoning and confidence', 'tab': 'overview',
+                                   'cmd': f'sdem aid confirm|reject <ids> --workspace {estate} --person <you>', 'level': 'warn'})
     if designs and designs['open']: attention.append({'text': f"{len(designs['open'])} open gap(s) — what did not fit an entity in onboarded designs", 'tab': 'designs', 'cmd': f'sdem designs --workspace {estate} --gaps --status open', 'level': 'warn'})
     if stale and stale['changed']: attention.append({'text': f"the graph store {stale['graph']} is out of date", 'tab': 'overview', 'cmd': f"sdem build --workspace {estate} --out {stale['graph']}", 'level': 'warn'})
     if not attention: attention.append({'text': 'nothing needs your attention', 'tab': 'overview', 'cmd': '', 'level': 'good'})

@@ -4656,7 +4656,7 @@
     },
     {
       "id": "AID-B2",
-      "what": "the example estates use local ids: 37 A2 ids name different elements in different estates (e.g. `SD-CA` is Current Account in one, Credit Assessment in another)",
+      "what": "the example workspaces use local ids: 37 A2 ids name different elements in different workspaces (e.g. `SD-CA` is Current Account in one, Credit Assessment in another)",
       "action": "the test catalogue merges by BIAN type + name and qualifies clashes (`SD-CA@digital-lending`); a real catalogue keys on BIAN canonical identity"
     },
     {
@@ -4666,7 +4666,7 @@
     },
     {
       "id": "AID-B5",
-      "what": "run 2 projected an extra API, PUT …/control for “Control Payment Instruction”: another estate gives the same Payment Initiation domain a Control operation the real estate does not have, and the catalogue merges both",
+      "what": "run 2 projected an extra API, PUT …/control for “Control Payment Instruction”: another workspace gives the same Payment Initiation domain a Control operation the real workspace does not have, and the catalogue merges both",
       "action": "shown as projected only; a real BIAN catalogue has one fixed operation list per domain, so this comes from the synthetic test data"
     },
     {
