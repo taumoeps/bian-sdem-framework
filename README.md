@@ -83,9 +83,9 @@ flowchart BT
     G1 & G2 & G3 & G4 --- F
     F ~~~ MM
     DATA -.->|"every file checked against"| MM
-    classDef r fill:#FFF8E1,stroke:#F9A825
-    classDef d fill:#E8F5E9,stroke:#2E7D32
-    classDef g fill:#E3F2FD,stroke:#1565C0
+    classDef r fill:#FFF8E1,stroke:#F9A825,color:#3E2723
+    classDef d fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+    classDef g fill:#E3F2FD,stroke:#1565C0,color:#0D47A1
     class MM r
     class E1,E2,E3,E4,C d
     class G1,G2,G3,G4,F g
@@ -99,54 +99,40 @@ flowchart BT
 
 ### 2 · Tools
 
-One command, `sdem`, and dashboards on top of it. **Every function works without AI.** The same picture as the data architecture above, with each command where it acts — grey: SDEM's commands; purple: a person decides.
+One command, `sdem`, and dashboards on top of it. **Every function works without AI.** The same parts as the data architecture above, with each command on the step where it acts. Purple: a person decides.
 
 ```mermaid
-flowchart BT
-    IN["📄 <b>Your designs</b><br/>existing — e.g. a Confluence export<br/>new — what you have decided"]
-    subgraph DATA["🗂️ Estate data"]
-        E1["<b>A1 entities</b><br/>Business"]
-        E2["<b>A2 entities</b><br/>BIAN service domains"]
-        E3["<b>A3 entities</b><br/>Applications"]
-        E4["<b>A4 entities</b><br/>Technology"]
-        C["🔗 <b>Approved connections</b><br/><i>mappings.json</i>"]
-    end
-    subgraph KG["🕸️ Knowledge graph"]
-        G1["A1 graph"]
-        G2["A2 graph"]
-        G3["A3 graph"]
-        G4["A4 graph"]
-        F["<b>Federated graph</b><br/>joins the four layers"]
-    end
-    MM["📘 <b>Service Domain Enterprise Metamodel</b> — the rulebook<br/>entity types · link rules · 9 kinds of connection · proposal rules"]
-    T1(["📥 <b>sdem transform · sdem load</b><br/>read existing designs; you keep the good ones<br/><b>sdem bian import</b> — your BIAN layer"])
-    TA(["🧭 <b>sdem aid project</b><br/>new designs: plans the missing layers<br/>— kept apart, never approved"])
-    T2(["✔️ <b>sdem check</b><br/>on every change and in CI"])
-    T3(["💡 <b>sdem link</b><br/>proposes connections, with reasons"])
-    T4(["👤 <b>sdem approve · sdem connect</b><br/>a person decides, with evidence"])
-    T5(["⚙️ <b>sdem build</b>"])
-    T6(["📊 <b>sdem trace · impact · matrix<br/>view · dashboard</b> — answers"])
-    IN --> T1 --> DATA
-    IN --> TA
-    DATA --> T3 --> T4 --> C
-    DATA --> T5 --> KG
-    G1 & G2 & G3 & G4 --- F
-    KG --> T6
-    DATA -.-> T2 -.->|"against"| MM
-    F ~~~ MM
-    classDef r fill:#FFF8E1,stroke:#F9A825
-    classDef d fill:#E8F5E9,stroke:#2E7D32
-    classDef g fill:#E3F2FD,stroke:#1565C0
-    classDef t fill:#ECEFF1,stroke:#455A64
-    classDef p fill:#F3E5F5,stroke:#6A1B9A
+flowchart LR
+    IN["📄 <b>Your designs</b><br/>existing or new"]
+    D["🗂️ <b>Estate data</b><br/>A1 · A2 · A3 · A4 entities"]
+    P["💡 <b>Proposed connections</b><br/>with reasons"]
+    C["🔗 <b>Approved connections</b><br/><i>mappings.json</i>"]
+    K["🕸️ <b>Knowledge graph</b><br/>four layer graphs +<br/>the federated graph"]
+    A["📊 <b>Answers</b>"]
+    PL["🧭 <b>Planned design</b><br/>kept apart, never approved"]
+    MM["📘 <b>Metamodel</b><br/>the rulebook"]
+    IN -->|"sdem transform · sdem load<br/>sdem bian import"| D
+    IN -.->|"new design:<br/>sdem aid project"| PL
+    D -->|"sdem link"| P
+    P -->|"👤 sdem approve<br/>(or sdem connect)"| C
+    D -->|"sdem build"| K
+    C -->|"sdem build"| K
+    K -->|"sdem trace · impact<br/>matrix · dashboard"| A
+    D -.->|"sdem check"| MM
+    C -.->|"sdem check"| MM
+    classDef r fill:#FFF8E1,stroke:#F9A825,color:#3E2723
+    classDef d fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+    classDef g fill:#E3F2FD,stroke:#1565C0,color:#0D47A1
+    classDef p fill:#F3E5F5,stroke:#6A1B9A,color:#4A148C
+    classDef o fill:#ECEFF1,stroke:#455A64,color:#263238
     class MM r
-    class E1,E2,E3,E4,C d
-    class G1,G2,G3,G4,F g
-    class T1,TA,T2,T3,T5,T6 t
-    class T4 p
+    class D,C d
+    class K,A g
+    class P p
+    class IN,PL o
 ```
 
-In words: designs come **in** through onboarding (or, for a new design, are planned by AID, apart from real data); every file is **checked** against the rulebook; SDEM **proposes** connections and a **person approves** them into `mappings.json`; **build** makes the knowledge graph; **trace, impact** and the dashboards answer questions from it. Every command: the [user guide](docs/sdem-workbench-user-guide.md#7-command-reference).
+In words: designs come **in** through onboarding (a new design can be planned by AID, apart from real data); SDEM **proposes** connections and **a person approves** them; **build** makes the knowledge graph from the data and the approved connections; **trace, impact** and the dashboards answer questions from it; **check** tests every file against the rulebook, on every change and in CI. Every command: the [user guide](docs/sdem-workbench-user-guide.md#7-command-reference).
 
 **Follow one capability down to the technology** — every arrow an approved connection, with who approved it and the document that proves it:
 
@@ -155,10 +141,10 @@ flowchart LR
     A["<b>Initiate Payment</b><br/>A1 · capability"] -->|"supported by"| B["<b>Payment Initiation</b><br/>A2 · BIAN domain"]
     B -->|"realised by"| C["<b>Payments Hub</b><br/>A3 · application"]
     C -->|"deployed on"| D["<b>Kubernetes — production</b><br/>A4 · platform"]
-    classDef a1 fill:#FFF8E1,stroke:#F9A825
-    classDef a2 fill:#F3E5F5,stroke:#6A1B9A
-    classDef a3 fill:#E3F2FD,stroke:#1565C0
-    classDef a4 fill:#E8F5E9,stroke:#2E7D32
+    classDef a1 fill:#FFF8E1,stroke:#F9A825,color:#212121
+    classDef a2 fill:#F3E5F5,stroke:#6A1B9A,color:#212121
+    classDef a3 fill:#E3F2FD,stroke:#1565C0,color:#212121
+    classDef a4 fill:#E8F5E9,stroke:#2E7D32,color:#212121
     class A a1
     class B a2
     class C a3
@@ -179,7 +165,7 @@ flowchart LR
     O --> G["A1 · A2 · A3 · A4<br/>layer agents"]
     G --> S["⚙️ SDEM commands only"]
     S --> Guard{{"🛡️ own layer only · checked first ·<br/>on record · a person approves"}}
-    classDef g fill:#FFF3E0,stroke:#EF6C00
+    classDef g fill:#FFF3E0,stroke:#EF6C00,color:#212121
     class Guard g
 ```
 
@@ -213,9 +199,9 @@ flowchart LR
     K --> L["4 · SDEM proposes<br/>connections —<br/>you approve"]
     L --> P["5 · SDEM builds<br/>the picture"]
     R -.->|"what does not fit"| G[["⚠️ gap records —<br/>kept, closed by a person"]]
-    classDef you fill:#F3E5F5,stroke:#6A1B9A
-    classDef sdem fill:#E3F2FD,stroke:#1565C0
-    classDef g fill:#FFF3E0,stroke:#EF6C00
+    classDef you fill:#F3E5F5,stroke:#6A1B9A,color:#212121
+    classDef sdem fill:#E3F2FD,stroke:#1565C0,color:#212121
+    classDef g fill:#FFF3E0,stroke:#EF6C00,color:#212121
     class C,K you
     class R,L,P sdem
     class G g
@@ -255,8 +241,8 @@ flowchart TB
         o2["⏭️ The pilot"]
     end
     B1 ~~~ B2 ~~~ B3 ~~~ B4
-    classDef b fill:#E8F5E9,stroke:#2E7D32
-    classDef n fill:#ECEFF1,stroke:#607D8B
+    classDef b fill:#E8F5E9,stroke:#2E7D32,color:#212121
+    classDef n fill:#ECEFF1,stroke:#607D8B,color:#212121
     class d1,d2,d3,t1,t2,t3,a1,o1 b
     class t4,a2,o2 n
 ```

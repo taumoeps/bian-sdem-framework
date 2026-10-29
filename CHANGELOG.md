@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- **README diagrams readable and simpler.** The tools diagram is now one left-to-right flow — designs → estate data → knowledge graph → answers, with proposals and approval on the side and the metamodel checking — with each command on the step where it acts (in 0.9.7 it scattered across the page). Every coloured box in the README's diagrams now sets its text colour, so they read in GitHub's dark theme.
+
 ## 0.9.7 — organisation-neutral wording (2026-10-29)
 
 Documentation only — no change to SDEM's behaviour, rulebook, schemas or base BIAN. Upgrade: change the pin to `@v0.9.7`, `pip install -r requirements.txt`. Rulebook metamodel version unchanged (0.4.0).
