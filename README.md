@@ -99,16 +99,54 @@ flowchart BT
 
 ### 2 · Tools
 
-One command, `sdem`, and dashboards on top of it. **Every function works without AI.**
+One command, `sdem`, and dashboards on top of it. **Every function works without AI.** The same picture as the data architecture above, with each command where it acts — grey: SDEM's commands; purple: a person decides.
 
 ```mermaid
-flowchart LR
-    D["📥 Architecture data<br/>(four layers)"] --> C["✔️ SDEM checks it<br/>against the rulebook"]
-    C --> P["🔗 SDEM proposes<br/>connections, with reasons"]
-    P --> H["👤 A person approves<br/>each one, with evidence"]
-    H --> K["🕸️ Knowledge graph"]
-    K --> U["📊 Answers: trace, impact,<br/>dashboards"]
+flowchart BT
+    IN["📄 <b>Your designs</b><br/>existing — e.g. a Confluence export<br/>new — what you have decided"]
+    subgraph DATA["🗂️ Estate data"]
+        E1["<b>A1 entities</b><br/>Business"]
+        E2["<b>A2 entities</b><br/>BIAN service domains"]
+        E3["<b>A3 entities</b><br/>Applications"]
+        E4["<b>A4 entities</b><br/>Technology"]
+        C["🔗 <b>Approved connections</b><br/><i>mappings.json</i>"]
+    end
+    subgraph KG["🕸️ Knowledge graph"]
+        G1["A1 graph"]
+        G2["A2 graph"]
+        G3["A3 graph"]
+        G4["A4 graph"]
+        F["<b>Federated graph</b><br/>joins the four layers"]
+    end
+    MM["📘 <b>Service Domain Enterprise Metamodel</b> — the rulebook<br/>entity types · link rules · 9 kinds of connection · proposal rules"]
+    T1(["📥 <b>sdem transform · sdem load</b><br/>read existing designs; you keep the good ones<br/><b>sdem bian import</b> — your BIAN layer"])
+    TA(["🧭 <b>sdem aid project</b><br/>new designs: plans the missing layers<br/>— kept apart, never approved"])
+    T2(["✔️ <b>sdem check</b><br/>on every change and in CI"])
+    T3(["💡 <b>sdem link</b><br/>proposes connections, with reasons"])
+    T4(["👤 <b>sdem approve · sdem connect</b><br/>a person decides, with evidence"])
+    T5(["⚙️ <b>sdem build</b>"])
+    T6(["📊 <b>sdem trace · impact · matrix<br/>view · dashboard</b> — answers"])
+    IN --> T1 --> DATA
+    IN --> TA
+    DATA --> T3 --> T4 --> C
+    DATA --> T5 --> KG
+    G1 & G2 & G3 & G4 --- F
+    KG --> T6
+    DATA -.-> T2 -.->|"against"| MM
+    F ~~~ MM
+    classDef r fill:#FFF8E1,stroke:#F9A825
+    classDef d fill:#E8F5E9,stroke:#2E7D32
+    classDef g fill:#E3F2FD,stroke:#1565C0
+    classDef t fill:#ECEFF1,stroke:#455A64
+    classDef p fill:#F3E5F5,stroke:#6A1B9A
+    class MM r
+    class E1,E2,E3,E4,C d
+    class G1,G2,G3,G4,F g
+    class T1,TA,T2,T3,T5,T6 t
+    class T4 p
 ```
+
+In words: designs come **in** through onboarding (or, for a new design, are planned by AID, apart from real data); every file is **checked** against the rulebook; SDEM **proposes** connections and a **person approves** them into `mappings.json`; **build** makes the knowledge graph; **trace, impact** and the dashboards answer questions from it. Every command: the [user guide](docs/sdem-workbench-user-guide.md#7-command-reference).
 
 **Follow one capability down to the technology** — every arrow an approved connection, with who approved it and the document that proves it:
 
