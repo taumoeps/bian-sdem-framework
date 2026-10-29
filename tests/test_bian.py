@@ -99,15 +99,18 @@ class BianImportTests(unittest.TestCase):
         self.assertEqual(by['FP-TRANSACT']['attributes']['generic_artefact'], 'Transaction')
         self.assertIn('derived — confirm', (self.tmp / 'a2.report.md').read_text())
 
-    def test_underivable_domains_are_listed_and_a_table_supplies_them(self):  # BI-W02
+    def test_underivable_domains_are_imported_as_unknown_and_a_table_supplies_them(self):  # BI-W02, BI-C07, metamodel DA2-02
         code, out, f = self.imp(names=('Sample Ledger Tracking', 'Sample Order Initiation'))
-        self.assertEqual(code, 2); self.assertIn('Sample Ledger Tracking,<asset type>,<functional pattern>', out); self.assertFalse(f.exists())
+        self.assertEqual(code, 0, out); self.assertIn('not known yet: 1 service domain(s)', out)
+        sd = {i['id']: i for i in json.loads(f.read_text())['instances']}['SD-SAMPLE-LEDGER-TRACKING']['attributes']
+        self.assertEqual(sd.get('classification'), 'unknown'); self.assertNotIn('asset_type', sd); self.assertNotIn('functional_pattern', sd)
+        self.assertIn('Sample Ledger Tracking,,', (self.tmp / 'a2.needs-patterns.csv').read_text())
         table = self.tmp / 'patterns.csv'
         table.write_text('service domain,asset type,functional pattern\nSample Ledger Tracking,Ledger,track\n', encoding='utf-8')
         code, out, f = self.imp('--patterns', table, names=('Sample Ledger Tracking', 'Sample Order Initiation'))
-        self.assertEqual(code, 0, out)
+        self.assertEqual(code, 0, out); self.assertNotIn('not known yet', out)
         sd = {i['id']: i for i in json.loads(f.read_text())['instances']}['SD-SAMPLE-LEDGER-TRACKING']['attributes']
-        self.assertEqual((sd['asset_type'], sd['functional_pattern']), ('AT-LEDGER', 'FP-TRACK'))
+        self.assertEqual((sd['asset_type'], sd['functional_pattern'], sd['classification']), ('AT-LEDGER', 'FP-TRACK', 'given'))
         self.assertIn('your table', (self.tmp / 'a2.report.md').read_text())
         table.write_text('Sample Ledger Tracking,Ledger,juggle\n', encoding='utf-8')
         code, out, _ = self.imp('--patterns', table, names=('Sample Ledger Tracking',))
@@ -200,26 +203,44 @@ class BaseBianTests(unittest.TestCase):
         self.assertIn('SO-PAYMENT-ORDER-INITIATION-INITIATE', {i['id'] for i in d['instances']})
         self.assertEqual(bian.check(d)[0], [])
 
-    def test_all_imports_what_it_can_and_lists_the_rest(self):  # BI-C07
+    def test_all_imports_every_domain_and_marks_what_is_not_known(self):  # BI-C07
         out = self.tmp / 'a2.json'; template = self.tmp / 'a2.needs-patterns.csv'
         code, text = sdem('import', SAMPLE, '--all', '-o', out)
-        self.assertEqual(code, 0, text); self.assertIn('left out: 1 service domain(s)', text)
-        names = {i['name'] for i in json.loads(out.read_text())['instances'] if i['type'] == 'A2.ServiceDomain'}
-        self.assertNotIn('Sample Ledger Tracking', names); self.assertIn('Sample Order Initiation', names)
+        self.assertEqual(code, 0, text); self.assertIn('not known yet: 1 service domain(s)', text)
+        sds = {i['name']: i['attributes'] for i in json.loads(out.read_text())['instances'] if i['type'] == 'A2.ServiceDomain'}
+        self.assertEqual(sds['Sample Ledger Tracking'], {'classification': 'unknown'} | {k: v for k, v in sds['Sample Ledger Tracking'].items() if k in ('source_id', 'conforms_to')})
+        self.assertEqual(sds['Sample Order Initiation']['classification'], 'derived')
         self.assertIn('Sample Ledger Tracking,,', template.read_text())
-        self.assertIn('## Left out — 1 service domain(s) need your pattern', (self.tmp / 'a2.report.md').read_text())
+        self.assertIn('## Not known yet — 1 service domain(s)', (self.tmp / 'a2.report.md').read_text())
         code, text = sdem('import', SAMPLE, '--all', '--patterns', template, '-o', out)   # an unfilled row is "not given yet", not an error
-        self.assertEqual(code, 0, text); self.assertIn('left out: 1', text)
+        self.assertEqual(code, 0, text); self.assertIn('not known yet: 1', text)
         template.write_text(template.read_text().replace('Sample Ledger Tracking,,', 'Sample Ledger Tracking,Ledger,Track'), encoding='utf-8')
         code, text = sdem('import', SAMPLE, '--all', '--patterns', template, '-o', out)
-        self.assertEqual(code, 0, text); self.assertNotIn('left out', text)
-        self.assertIn('Sample Ledger Tracking', {i['name'] for i in json.loads(out.read_text())['instances'] if i['type'] == 'A2.ServiceDomain'})
+        self.assertEqual(code, 0, text); self.assertNotIn('not known yet', text)
 
-    def test_all_on_the_base_bian(self):  # BI-C07 on the real base: 192 imported, 66 listed for a person to fill in
+    def test_unknown_domains_do_not_stop_proposals_or_planning(self):  # DA2-02: the engine and AID skip the missing hints
+        out = self.tmp / 'a2.json'
+        self.assertEqual(sdem('import', SAMPLE, '--all', '-o', out)[0], 0)
+        est = self.tmp / 'est'; shutil.copytree(ROOT / 'examples' / 'payment-initiation', est, ignore=shutil.ignore_patterns('graph', 'migrations'))
+        a2 = json.loads((est / 'a2-service-domain.json').read_text()); new = json.loads(out.read_text())
+        a2['instances'] += [i for i in new['instances'] if i['id'] not in {x['id'] for x in a2['instances']}]
+        a2['relationships'] = a2.get('relationships', []) + new.get('relationships', [])
+        (est / 'a2-service-domain.json').write_text(json.dumps(a2))
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'check', '--estate', est], capture_output=True, text=True, cwd=ROOT)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr); self.assertIn('not known yet', r.stdout + r.stderr)
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'link', '--estate', est, '--out', self.tmp / 'links'], capture_output=True, text=True, cwd=ROOT)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'aid', 'project', '--have', est / 'a1-business.json', '--catalogue', est / 'a2-service-domain.json',
+                            '--out', self.tmp / 'prj'], capture_output=True, text=True, cwd=ROOT)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+    def test_all_on_the_base_bian(self):  # BI-C07 on the real base: all 258, 66 marked unknown for a person to fill in
         out = self.tmp / 'a2.json'
         code, text = sdem('import', '--base', '--all', '-o', out)
-        self.assertEqual(code, 0, text); self.assertIn('192 service domain(s)', text); self.assertIn('left out: 66', text)
+        self.assertEqual(code, 0, text); self.assertIn('258 service domain(s)', text); self.assertIn('not known yet: 66', text)
         self.assertEqual(sum(1 for l in (self.tmp / 'a2.needs-patterns.csv').read_text().splitlines() if l.endswith(',,')), 66)
+        sds = [i for i in json.loads(out.read_text())['instances'] if i['type'] == 'A2.ServiceDomain']
+        self.assertEqual(sum(i['attributes']['classification'] == 'unknown' for i in sds), 66)
 
     def test_list_marks_what_needs_your_pattern(self):  # BB-C02
         code, text = sdem('list', '--base')

@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-29",
+  "date": "2026-10-30",
   "runs": [
     {
       "run": 1,
@@ -911,7 +911,7 @@
         "",
         "**What AID did, step by step:**",
         "",
-        "1. **F1** (A1 → A2) — chose BIAN service domains for the business layer, by running the rulebook's A1 → A2 rules against the BIAN catalogue.",
+        "1. **F1** (A1 → A2) — chose BIAN service domains for the business layer, by running the metamodel's A1 → A2 rules against the BIAN catalogue.",
         "2. **F2** (A2 → A3) — applied BIAN's container pattern: one application component per service domain, one API per service operation (BIAN REST mapping).",
         "3. **F3** (A3 → A4) — projected one deployment per component — and, by rule, no platform, environment or network.",
         "",
@@ -2012,7 +2012,7 @@
         "**What AID did, step by step:**",
         "",
         "1. **R1** (A4 → A3) — took the applications that the technology records name (what a cluster hosts, what a deployment deploys).",
-        "2. **R2** (A3 → A2) — matched the application layer to the BIAN catalogue with the rulebook's A3 → A2 rules.",
+        "2. **R2** (A3 → A2) — matched the application layer to the BIAN catalogue with the metamodel's A3 → A2 rules.",
         "3. **R3** (A2 → A1) — suggested one business capability candidate per domain (from its name) and one process candidate per BIAN service group (from the group's operations) — BIAN publishes no capability or process mapping.",
         "",
         "**What it projected:** 5 records in the business layer (A1), 25 records in the BIAN layer (A2), 2 records in the application layer (A3), and 15 links. Of these, 9 are the main design elements (domains, components, APIs, deployments, capabilities) shown below; the rest are BIAN catalogue elements brought in with a domain.",
@@ -3196,7 +3196,7 @@
         "",
         "**What AID did, step by step:**",
         "",
-        "1. **R2** (A3 → A2) — matched the application layer to the BIAN catalogue with the rulebook's A3 → A2 rules.",
+        "1. **R2** (A3 → A2) — matched the application layer to the BIAN catalogue with the metamodel's A3 → A2 rules.",
         "2. **R3** (A2 → A1) — suggested one business capability candidate per domain (from its name) and one process candidate per BIAN service group (from the group's operations) — BIAN publishes no capability or process mapping.",
         "",
         "**What it projected:** 5 records in the business layer (A1), 28 records in the BIAN layer (A2), and 14 links. Of these, 7 are the main design elements (domains, components, APIs, deployments, capabilities) shown below; the rest are BIAN catalogue elements brought in with a domain.",

@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from sdem.metamodel import Metamodel  # noqa: E402
 from sdem.store import GraphReader, build  # noqa: E402
 
 target = int(sys.argv[1]) if len(sys.argv) > 1 else 10000
@@ -26,7 +27,7 @@ for name, d in src.items():
             out['instances'].append(j)
         out['relationships'] += [dict(r, source=r['source'] + sfx, target=r['target'] + sfx) for r in d['relationships']]
     (tmp / name).write_text(json.dumps(out), encoding='utf-8'); paths.append(str(tmp / name))
-(tmp / 'mappings.json').write_text(json.dumps({'registry_version': '0.4.0', 'metamodel_version': '0.4.0', 'mappings': []}), encoding='utf-8'); paths.append(str(tmp / 'mappings.json'))
+(tmp / 'mappings.json').write_text(json.dumps({'registry_version': '0.4.0', 'metamodel_version': Metamodel.load().version, 'mappings': []}), encoding='utf-8'); paths.append(str(tmp / 'mappings.json'))
 nodes = copies * per; edges = copies * sum(len(d['relationships']) for d in src.values())
 t = time.perf_counter(); e = build(paths, tmp / 'graph'); tb = time.perf_counter() - t
 assert e['result'] == 'accepted', e['errors'][:3]

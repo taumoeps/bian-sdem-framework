@@ -41,7 +41,7 @@ def render(metamodel=None, level_rels=None):
                  **({"attributes": req} if (req := required_values(mm, t, short, n)) else {})} for t in ents for n in (1, 2)]
         rels = [{"source": f"RS-{short(c['source_type'])}-1", "kind": c['kind'], "target": f"RS-{short(c['target_type'])}-{2 if c['source_type'] == c['target_type'] else 1}", "name": c['id']}
                 for c in lr['constraints'] if c['level'] == lvl and c.get('enforceable') is not False]
-        docs[lvl] = {"level": lvl, "model_id": f"reference-structure-{lvl.lower()}", "model_version": "2026.10", "metamodel_version": "0.4.0", "source_system": "SDEM-GENERATED-FROM-RECORD", "instances": inst, "relationships": rels}
+        docs[lvl] = {"level": lvl, "model_id": f"reference-structure-{lvl.lower()}", "model_version": "2026.10", "metamodel_version": "0.5.0", "source_system": "SDEM-GENERATED-FROM-RECORD", "instances": inst, "relationships": rels}
     return docs
 
 

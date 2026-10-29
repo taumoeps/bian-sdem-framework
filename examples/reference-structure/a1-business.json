@@ -2,7 +2,7 @@
   "level": "A1",
   "model_id": "reference-structure-a1",
   "model_version": "2026.10",
-  "metamodel_version": "0.4.0",
+  "metamodel_version": "0.5.0",
   "source_system": "SDEM-GENERATED-FROM-RECORD",
   "instances": [
     {

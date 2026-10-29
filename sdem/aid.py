@@ -73,7 +73,7 @@ def plain(text):
     return re.sub(r'\s*\((?:P|C)-AID-\d+\)|(?:P|C)-AID-\d+:\s*', '', text or '').strip()
 
 
-def _registry(maps=()): return {'registry_version': load_registry()['$schema_version'], 'metamodel_version': '0.4.0', 'mappings': list(maps)}
+def _registry(maps=()): return {'registry_version': load_registry()['$schema_version'], 'metamodel_version': Metamodel.load().version, 'mappings': list(maps)}
 def _sha(doc): return hashlib.sha256(json.dumps(doc, sort_keys=True).encode('utf-8')).hexdigest()
 def _ref(i): return {'id': i['id'], 'type': i['type'], 'version': i['version']}
 def _clean(name): return re.sub(r'\s*\(.*?\)\s*', ' ', name).strip()

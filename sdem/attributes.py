@@ -65,7 +65,7 @@ def render(rec=None):
         for a in [a for a in A if a['entity'].startswith(l)]:
             r = a['reference']; ref = f"{a['source']}: {r['standard']}" + (f", {r['locator']}" if r['locator'] not in ('—', '') else '') + f" ([link]({r['uri']}))"
             name = f"`{a['name']}`" + (' *(deprecated)*' if a['status'] == 'deprecated' else '')
-            out.append(f"| {a['id']} | `{a['entity']}` | {name} | {a['type']} | {'yes' if a['required'] else 'no'} | {ref} | {a['read_by']} | {a['verification']} | {a['reasoning']} | **{a['confidence']}** | {a.get('confidence_basis', '')} |")
+            out.append(f"| {a['id']} | `{a['entity']}` | {name} | {a['type']} | {('yes, unless ' + ', '.join(f'{k} is {v}' for k, v in a['required_unless'].items()) if a.get('required_unless') else 'yes') if a['required'] else 'no'} | {ref} | {a['read_by']} | {a['verification']} | {a['reasoning']} | **{a['confidence']}** | {a.get('confidence_basis', '')} |")
         out.append('')
     low = [a for a in A if a['confidence'] == 'low' and a['status'] == 'active']
     sdem = [a for a in act if a['source'] == 'SDEM']

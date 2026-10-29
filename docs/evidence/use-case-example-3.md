@@ -49,7 +49,7 @@ Controls CTL-19 and CTL-20 are also tested with good data (must be accepted) and
 
 A results table per criterion with what happened and the evidence; a controls table (good · bad); an evidence pack in `docs/evidence/use-case-example-3/` with checksums.
 
-## Results — run 2026-10-29
+## Results — run 2026-10-30
 
 **Verdict:** 8 of 8 sealed criteria met; controls 19 of 19 tests pass (good data accepted, bad data rejected).
 

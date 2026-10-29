@@ -1,6 +1,6 @@
 {
   "registry_version": "0.4.0",
-  "metamodel_version": "0.4.0",
+  "metamodel_version": "0.5.0",
   "mappings": [
     {
       "mapping_id": "LM-101",
@@ -20,7 +20,7 @@
       "evidence": [
         "api_contract:ledger-wsdl-12.4#OpenAccount"
       ],
-      "rationale": "Initiate \u2194 POST; 6/6",
+      "rationale": "Initiate ↔ POST; 6/6",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -44,7 +44,7 @@
         "api_contract:ledger-wsdl-12.4#GetAccount",
         "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
       ],
-      "rationale": "Retrieve implemented as POST (SOAP convention) \u2014 deviation recorded",
+      "rationale": "Retrieve implemented as POST (SOAP convention) — deviation recorded",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -68,7 +68,7 @@
         "api_contract:ledger-wsdl-12.4#BlockAccount",
         "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
       ],
-      "rationale": "Control implemented as POST \u2014 deviation recorded",
+      "rationale": "Control implemented as POST — deviation recorded",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -92,7 +92,7 @@
         "api_contract:ledger-wsdl-12.4#AmendOverdraft",
         "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
       ],
-      "rationale": "Update implemented as POST \u2014 deviation recorded",
+      "rationale": "Update implemented as POST — deviation recorded",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -116,7 +116,7 @@
         "api_contract:ledger-wsdl-12.4#CloseAccount",
         "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
       ],
-      "rationale": "Execute/Closure implemented as POST \u2014 deviation recorded",
+      "rationale": "Execute/Closure implemented as POST — deviation recorded",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -140,7 +140,7 @@
         "api_contract:ledger-wsdl-12.4#PostEntry",
         "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
       ],
-      "rationale": "Update/Posting implemented as POST \u2014 deviation recorded",
+      "rationale": "Update/Posting implemented as POST — deviation recorded",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -164,7 +164,7 @@
         "api_contract:ledger-wsdl-12.4#GetBalance",
         "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
       ],
-      "rationale": "Retrieve as POST \u2014 deviation recorded",
+      "rationale": "Retrieve as POST — deviation recorded",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -188,7 +188,7 @@
         "api_contract:ledger-wsdl-12.4#ReverseEntry",
         "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
       ],
-      "rationale": "Execute/Reversal as POST \u2014 deviation recorded",
+      "rationale": "Execute/Reversal as POST — deviation recorded",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -211,7 +211,7 @@
       "evidence": [
         "api_contract:ledger-wsdl-12.4#SubmitPayment"
       ],
-      "rationale": "Initiate \u2194 POST; 6/6",
+      "rationale": "Initiate ↔ POST; 6/6",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -235,7 +235,7 @@
         "api_contract:ledger-wsdl-12.4#PaymentStatus",
         "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
       ],
-      "rationale": "Retrieve as POST \u2014 deviation recorded",
+      "rationale": "Retrieve as POST — deviation recorded",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -259,7 +259,7 @@
         "api_contract:ledger-wsdl-12.4#CancelPayment",
         "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
       ],
-      "rationale": "Control as POST \u2014 deviation recorded",
+      "rationale": "Control as POST — deviation recorded",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -282,7 +282,7 @@
       "evidence": [
         "api_contract:ledger-wsdl-12.4#CreateCustomer"
       ],
-      "rationale": "Register \u2194 POST; 4/4",
+      "rationale": "Register ↔ POST; 4/4",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -306,7 +306,7 @@
         "api_contract:ledger-wsdl-12.4#GetCustomer",
         "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
       ],
-      "rationale": "Retrieve as POST \u2014 deviation recorded",
+      "rationale": "Retrieve as POST — deviation recorded",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -330,7 +330,7 @@
         "api_contract:ledger-wsdl-12.4#UpdateCustomer",
         "application_architecture_document:ADR-LM-003 (SOAP: all operations POST)"
       ],
-      "rationale": "Update as POST \u2014 deviation recorded",
+      "rationale": "Update as POST — deviation recorded",
       "baseline_id": "LM-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"

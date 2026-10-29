@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "synthetic-bank-onboarding-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.4.0",
+  "metamodel_version": "0.5.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {

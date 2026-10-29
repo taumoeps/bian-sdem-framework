@@ -28,7 +28,7 @@ CREATED = '2026-10-27T00:00:00+00:00'  # fixed so the evidence is reproducible
 
 
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
-def empty_registry(): return {'registry_version': load_registry()['$schema_version'], 'metamodel_version': '0.4.0', 'mappings': []}
+def empty_registry(): return {'registry_version': load_registry()['$schema_version'], 'metamodel_version': Metamodel.load().version, 'mappings': []}
 
 
 def catalogue(first='payment-initiation'):
@@ -57,7 +57,7 @@ def catalogue(first='payment-initiation'):
                 if parent.setdefault(r2['target'], r2['source']) != r2['source']: continue
             if r2 not in rels: rels.append(r2)
     ids = {i['id'] for i in inst}
-    cat = {'level': 'A2', 'model_id': 'aid-test-bian-catalogue', 'model_version': 'test', 'metamodel_version': '0.4.0', 'source_system': 'combined example A2 layers',
+    cat = {'level': 'A2', 'model_id': 'aid-test-bian-catalogue', 'model_version': 'test', 'metamodel_version': Metamodel.load().version, 'source_system': 'combined example A2 layers',
            'instances': inst, 'relationships': [r for r in rels if r['source'] in ids and r['target'] in ids]}
     # a merged element may now have more links than the metamodel allows (LC-10): keep the earlier estate's, drop the later one
     mm, typ, dropped = Metamodel.load(), {i['id']: i['type'] for i in inst}, []

@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.4.0",
+  "metamodel_version": "0.5.0",
   "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Enforced by sdem-graph check (sdem/conformance.py, logical rules LC-04…LC-13) and published as per-entity JSON Schemas (sdem/physical.py); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
   "confidence_rule": "high   — defined by a public standard and checked (BIAN public material, OpenAPI, or a standard concept or\n           relationship confirmed by the open-source Archi oracle); or an SDEM data-contract field, which SDEM defines\n           authoritatively.\n  medium — built on a standard concept or relationship as SDEM chose to model it; or BIAN intent / target only;\n           or an SDEM definition, a login-gated source, or a cited-but-unverified source that was validated against\n           sealed answers; or institution data under an SDEM convention.\n  low    — no standard basis and not validated against sealed answers; or deprecated.",
   "core_fields": [
@@ -354,7 +354,16 @@
       "references": [
         "A2.AssetType"
       ],
-      "reference_scope": "same level — resolved by the local knowledge graph"
+      "reference_scope": "same level — resolved by the local knowledge graph",
+      "required_unless": {
+        "classification": "unknown"
+      },
+      "required_unless_reasoning": "BIAN's public files do not state every service domain's asset type and functional pattern; SDEM derives them from the control record's name, which 66 of BIAN 14.0.0's 258 domains do not follow. Such a domain is kept, marked classification 'unknown', instead of being refused or guessed; `sdem check` advises on it until the value is given.",
+      "required_unless_approved": {
+        "review": "Owner's decision — BIAN service domains without a published asset type and functional pattern",
+        "date": "2026-10-30",
+        "draft_id": "DA2-02"
+      }
     },
     {
       "id": "AT-A2-02",
@@ -379,7 +388,16 @@
       "references": [
         "A2.FunctionalPattern"
       ],
-      "reference_scope": "same level — resolved by the local knowledge graph"
+      "reference_scope": "same level — resolved by the local knowledge graph",
+      "required_unless": {
+        "classification": "unknown"
+      },
+      "required_unless_reasoning": "BIAN's public files do not state every service domain's asset type and functional pattern; SDEM derives them from the control record's name, which 66 of BIAN 14.0.0's 258 domains do not follow. Such a domain is kept, marked classification 'unknown', instead of being refused or guessed; `sdem check` advises on it until the value is given.",
+      "required_unless_approved": {
+        "review": "Owner's decision — BIAN service domains without a published asset type and functional pattern",
+        "date": "2026-10-30",
+        "draft_id": "DA2-02"
+      }
     },
     {
       "id": "AT-A2-03",
@@ -2396,6 +2414,39 @@
         "partly adopted",
         "planned",
         "not adopted"
+      ],
+      "values_source": "SDEM",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A2-26",
+      "entity": "A2.ServiceDomain",
+      "name": "classification",
+      "type": "string",
+      "required": false,
+      "description": "how the domain's asset type and functional pattern were set: derived (from the control record's name — to confirm), given (by a person), unknown (not known yet; the two may be absent)",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision DA2-02 (owner, 2026-10-30)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved by the owner 2026-10-30",
+      "reasoning": "BIAN's public Semantic API files do not state a service domain's asset type and functional pattern. SDEM derives them from the control record's name (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9) where that works, takes them from a person otherwise, and records which — so a value nobody has confirmed is never mistaken for a confirmed one, and a domain whose values are unknown can still be used.",
+      "confidence": "low",
+      "read_by": "LC-04 (required unless unknown), sdem bian import, sdem check advice",
+      "question": "Can we trust this domain's asset type and functional pattern?",
+      "approved": {
+        "review": "Owner's decision — BIAN service domains without a published asset type and functional pattern",
+        "date": "2026-10-30",
+        "draft_id": "DA2-02"
+      },
+      "kind": "enumeration",
+      "values": [
+        "derived",
+        "given",
+        "unknown"
       ],
       "values_source": "SDEM",
       "confidence_basis": "SDEM field with no standard concept; not validated"

@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "a149c359fbdcd09e1927e9b4cb2ccac836f19296a2c5cf62929080981f90fa69",
+      "export_sha256": "0be34dadeca9b25adeb71718f790b8e0c235d97e1f1b2e5c7656b9caa88ddce9",
       "level": "A3",
       "model_id": "synthetic-bank-ledger-a3",
       "model_version": "2026.10",
-      "metamodel_version": "0.4.0",
+      "metamodel_version": "0.5.0",
       "source_system": "SYNTHETIC-CMDB-APM"
     },
     "nodes": {

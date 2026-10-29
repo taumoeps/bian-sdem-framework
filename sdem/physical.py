@@ -53,13 +53,19 @@ def schema_for(mm, etype, core):
         p['description'] = c['description']; p['x-sdem-source'] = c['reference']; p['x-sdem-reasoning'] = c['reasoning']; p['x-sdem-confidence'] = c['confidence']
         props[c['name']] = p
     attrs = {k: _prop(a, group(k)) for k, a in defs.items()}
-    req = [k for k, a in defs.items() if a['required'] and a['status'] == 'active']
+    active = {k: a for k, a in defs.items() if a['required'] and a['status'] == 'active'}
+    req = [k for k, a in active.items() if not a.get('required_unless')]
+    unless = {}   # required unless another attribute has a value, e.g. asset_type unless classification is 'unknown'
+    for k, a in active.items():
+        if a.get('required_unless'): unless.setdefault(tuple(sorted(a['required_unless'].items())), []).append(k)
+    cond = [{'if': {'properties': {x: {'const': v} for x, v in when}, 'required': [x for x, _ in when]}, 'else': {'required': ks}} for when, ks in unless.items()]
     props['attributes'] = {'type': 'object', 'description': 'common, inherited and entity-specific attributes', **({'required': req} if req else {}),
+                           **({'allOf': cond} if cond else {}),
                            'properties': attrs, 'additionalProperties': True, 'x-sdem-note': 'undefined attributes are allowed here but reported as warnings by sdem check'}
     r = e['reference']
     return {'$schema': 'https://json-schema.org/draft/2020-12/schema', '$id': f"{REPO}/schema/entities/{e['level']}/{etype.split('.')[1]}.schema.json",
             'title': etype, 'description': e['definition'], 'type': 'object', 'additionalProperties': False,
-            'required': ['id', 'type', 'version', 'name'] + (['attributes'] if req else []), 'properties': props,
+            'required': ['id', 'type', 'version', 'name'] + (['attributes'] if req or cond else []), 'properties': props,
             'x-sdem-entity': {'level': e['level'], 'extends': e.get('extends'), 'identifier': (e.get('identifier') or {}).get('key'),
                               'source': {k: r.get(k) for k in ('standard', 'release', 'concept', 'locator', 'uri') if r.get(k)}, 'reasoning': e['reasoning'], 'confidence': e['confidence']},
             'x-sdem-generated-from': 'metamodel/a1…a4-*.json, metamodel/entity-attributes.json (python -m sdem.physical)'}

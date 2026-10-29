@@ -2,7 +2,7 @@
 
 **SDEM connects an organisation's architecture — from what the business does, through BIAN, to the applications and the technology underneath — into one picture you can question.** It checks every connection against a metamodel and keeps a person in charge of every decision.
 
-> **Status:** v0.9.7 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). **Open source and free for any organisation** (Apache-2.0 — [using SDEM](docs/sdem-licence-and-use.md)); aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
+> **Status:** v0.9.8 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). **Open source and free for any organisation** (Apache-2.0 — [using SDEM](docs/sdem-licence-and-use.md)); aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
 
 ## Start here
 
@@ -151,11 +151,11 @@ The steps in order, from your designs to the knowledge graph:
 
 | Option | Imports | When |
 |---|---|---|
-| `--all` | every service domain SDEM can import from BIAN 14.0.0 — **192 of 258** | **the simplest start**, especially if you are new to service domains |
+| `--all` | **all 258** service domains in BIAN 14.0.0 | **the simplest start**, especially if you are new to service domains |
 | `--only "Payment Order Initiation" "Payment Rail"` | the domains you name | you know which ones your designs use — find them with `sdem bian list --base \| grep -i payment` |
 | `--from my-domains.txt` | the names in a file, one per line | a longer list, kept in your repository and reviewed like code |
 
-**Why 192, not 258.** Every service domain needs an *asset type* and a *functional pattern*. BIAN's public files do not state them; SDEM works them out from the control record's name, following BIAN's own naming rule — which 66 domains do not follow. SDEM does not guess: `--all` leaves those 66 out, lists them in its report, and writes a template (`…needs-patterns.csv`). Whoever owns BIAN for you fills it in from the BIAN portal and runs the import again with `--patterns <template>` to add them. A larger BIAN layer does not flood you with proposals: on the example estate, `sdem link` took four seconds and proposed 13 connections with all 192 domains loaded.
+**66 of them are marked *not known yet*.** The metamodel gives every service domain an *asset type* and a *functional pattern*. BIAN's public files do not state them; SDEM works them out from the control record's name, following BIAN's own naming rule — which 66 domains do not follow. SDEM does not guess: those 66 are imported marked `classification: unknown`, can still be connected through their operations, and `sdem check` advises on each until the values are given. The import also writes a template (`…needs-patterns.csv`); whoever owns BIAN for you fills it in from the BIAN portal and runs the import again with `--patterns <template>`. A full BIAN layer does not flood you with proposals: on the example estate, `sdem link` took about eight seconds and proposed 13 connections with all 258 domains loaded.
 
 Then ask the graph: `sdem trace` (*what does this depend on?*), `sdem impact` (*what breaks if it goes?*), `sdem matrix`, `sdem view`, `sdem dashboard`. Every command, with examples: the [user guide](docs/sdem-workbench-user-guide.md#7-command-reference).
 
@@ -288,7 +288,7 @@ git clone https://github.com/taumoeps/bian-sdem-framework.git && cd bian-sdem-fr
 python3.13 -m venv .venv               # or the full path you found, e.g. /opt/homebrew/bin/python3.13 -m venv .venv
 source .venv/bin/activate              # do this in every new terminal
 pip install -e .                       # installs the sdem command
-sdem --version                         # 0.9.7
+sdem --version                         # 0.9.8
 ```
 
 If `pip` says *File "setup.py" … not found* or *requires a different Python*, the `.venv` was made with an old Python: delete it (`rm -rf .venv`) and make it again with 3.13. More: [administration — troubleshooting](docs/sdem-administration.md#troubleshooting).

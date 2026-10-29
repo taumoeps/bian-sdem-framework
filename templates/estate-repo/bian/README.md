@@ -9,7 +9,7 @@ sdem bian import --base --all -o bian/a2-service-domain.json            # every 
 # or only the ones you use:  sdem bian list --base | grep -i <word>,  then  --only "<service domain>" …
 ```
 
-Read `a2-service-domain.report.md`: confirm the asset types and functional patterns SDEM worked out; the domains `--all` left out are listed there and in `bian/a2-service-domain.needs-patterns.csv` — fill it in (or keep your own `bian/patterns.csv`) (`service domain,asset type,functional pattern`, from the BIAN portal) and add `--patterns bian/patterns.csv`. Commit this folder.
+Read `a2-service-domain.report.md`: confirm the asset types and functional patterns SDEM worked out; the domains marked *not known yet* are listed there and in `bian/a2-service-domain.needs-patterns.csv` — fill it in (or keep your own `bian/patterns.csv`) (`service domain,asset type,functional pattern`, from the BIAN portal) and add `--patterns bian/patterns.csv`. Commit this folder.
 
 **Add service domains later:** run the import again with all of them and `--previous bian/a2-service-domain.json` — the report shows what changed. Then bring every estate up to date:
 

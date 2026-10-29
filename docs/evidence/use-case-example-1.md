@@ -80,7 +80,7 @@ Plus: the 18 links found, the trace, and any gaps.
 
 Made-up data · rules tuned on this example · approval by hand for now.
 
-## Results — run 2026-10-29
+## Results — run 2026-10-30
 
 **Verdict: 30 of 30 tests pass · 18 of 18 links correct · trace complete · gaps: G-A partly closed (CTL-22), G-B confirmed, no risk today.**
 
@@ -136,9 +136,9 @@ Every control in the [controls register](../reference/controls-register.md), tes
 | 11 | 2 Record information (format) | every one of the 68 records against its per-entity schema | all match | 68 match, 0 fail | CTL-04 | [run1-13-schemas.json](use-case-example-1/run1-13-schemas.json) | ✅ |
 | 12 | 4 Links between layers (resolution) | the 17 approved links against the datasets | every end exists | all resolve | CTL-08 | [run1-14-approved-links-resolve.json](use-case-example-1/run1-14-approved-links-resolve.json) | ✅ |
 | 13 | 5 Finding links (engine discipline) | run the engine again after the 17 links are approved | never re-proposes an approved link; only ever outputs "proposed" | 1 proposals (ALIGNED_TO); 0 re-proposed approved links; 0 not "proposed" | CTL-10 | [run1-15-engine-second-run.json](use-case-example-1/run1-15-engine-second-run.json) | ✅ |
-| 14 | 7 Sources | every entity, link row, link type, rule and attribute in the rulebook | all name their source | all complete | CTL-11 | [run1-19-sources-complete.json](use-case-example-1/run1-19-sources-complete.json) | ✅ |
-| 15 | 7 Sources (confidence) | every confidence rating in the rulebook | all follow the single rule | 0 disagree | CTL-12 | [run1-16-confidence-rule.json](use-case-example-1/run1-16-confidence-rule.json) | ✅ |
-| 16 | Platform (documents) | the governing specification against the rulebook | matches (not stale) | up to date | CTL-13 | [run1-17-documents-current.json](use-case-example-1/run1-17-documents-current.json) | ✅ |
+| 14 | 7 Sources | every entity, link row, link type, rule and attribute in the metamodel | all name their source | all complete | CTL-11 | [run1-19-sources-complete.json](use-case-example-1/run1-19-sources-complete.json) | ✅ |
+| 15 | 7 Sources (confidence) | every confidence rating in the metamodel | all follow the single rule | 0 disagree | CTL-12 | [run1-16-confidence-rule.json](use-case-example-1/run1-16-confidence-rule.json) | ✅ |
+| 16 | Platform (documents) | the governing specification against the metamodel | matches (not stale) | up to date | CTL-13 | [run1-17-documents-current.json](use-case-example-1/run1-17-documents-current.json) | ✅ |
 | 17 | Platform (frozen spec) | the owner's high-level specification | unchanged | unchanged (checksum matches) | CTL-14 | [run1-18-high-level-spec.json](use-case-example-1/run1-18-high-level-spec.json) | ✅ |
 | 18 | 1 Record types | a record of an unknown kind (A1.BusinessWidget) | rejected | rejected — "instance PRC-PAY-01: entity 'A1.BusinessWidget' is not in the metamodel" | CTL-01 | [run2-1-unknown-type.json](use-case-example-1/run2-1-unknown-type.json) | ✅ |
 | 19 | 2 Record information | a process with criticality "urgent" | rejected | rejected — "attribute 'criticality' value 'urgent' is not one of ['high', 'medium', 'low'] (LC-06)" | CTL-02 | [run2-2-bad-value.json](use-case-example-1/run2-2-bad-value.json) | ✅ |
@@ -151,7 +151,7 @@ Every control in the [controls register](../reference/controls-register.md), tes
 | 26 | 4 Links between layers (resolution) | an approved link to a server that does not exist | rejected | rejected — "target A4.Deployment INF-DOES-NOT-EXIST@1.0 not found in level model" | CTL-08 | [run2-9-dangling-link.json](use-case-example-1/run2-9-dangling-link.json) | ✅ |
 | 27 | Platform (graph store) | load bad data over a good knowledge graph | load rejected; the last good graph kept; the rejection logged | load rejected; graph files unchanged; load record: accepted, rejected | CTL-15 | [run2-10-failed-load.json](use-case-example-1/run2-10-failed-load.json) | ✅ |
 | 28 | 7 Sources (confidence) | attribute A1.BusinessCapability.strategic_importance (SDEM-defined) rated high | the rule disagrees | the rule says low, not high | CTL-12 | [run2-11-confidence-overclaim.json](use-case-example-1/run2-11-confidence-overclaim.json) | ✅ |
-| 29 | Platform (documents) | a governing specification that no longer matches the rulebook | reported stale | reported stale | CTL-13 | [run2-12-stale-document.json](use-case-example-1/run2-12-stale-document.json) | ✅ |
+| 29 | Platform (documents) | a governing specification that no longer matches the metamodel | reported stale | reported stale | CTL-13 | [run2-12-stale-document.json](use-case-example-1/run2-12-stale-document.json) | ✅ |
 | 30 | Platform (frozen spec) | the owner's specification with one character added | the freeze test fails | fails | CTL-14 | [run2-13-high-level-spec-edited.json](use-case-example-1/run2-13-high-level-spec-edited.json) | ✅ |
 
 ### 2. Links found (run 1) — 18
@@ -212,7 +212,7 @@ Links between layers after approval: 17 (one link blocked at approval — test 6
 
 | Gap | Finding | Detail |
 |---|---|---|
-| G-A | partly closed (CTL-22) | the engine reads only each rule's step and confidence from the rulebook; how a rule matches is in the engine's code. Since 2026-10-28 CTL-22 checks that the engine applies only rulebook rules, at their assigned steps, and implements every applicable one; the matching itself is still only in code |
+| G-A | partly closed (CTL-22) | the engine reads only each rule's step and confidence from the metamodel; how a rule matches is in the engine's code. Since 2026-10-28 CTL-22 checks that the engine applies only metamodel rules, at their assigned steps, and implements every applicable one; the matching itself is still only in code |
 | G-B | confirmed, no risk today | link-type limits are not checked, but all 9 link types are many_to_many, so there is no limit to break yet |
 
 ### 5. Findings for the owner

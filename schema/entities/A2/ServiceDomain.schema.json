@@ -116,9 +116,25 @@
     "attributes": {
       "type": "object",
       "description": "common, inherited and entity-specific attributes",
-      "required": [
-        "asset_type",
-        "functional_pattern"
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "unknown"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "else": {
+            "required": [
+              "asset_type",
+              "functional_pattern"
+            ]
+          }
+        }
       ],
       "properties": {
         "source_id": {
@@ -357,6 +373,25 @@
             "uri": "https://github.com/taumoeps/bian-sdem-framework"
           },
           "x-sdem-reasoning": "Answers: Which BIAN Service Domains are we adopting, and how far? Realisation links show whether an application implements a Service Domain today, not the intended adoption. No standard defines the values. Approved: the only record of intended (not current) adoption.",
+          "x-sdem-confidence": "low"
+        },
+        "classification": {
+          "type": "string",
+          "enum": [
+            "derived",
+            "given",
+            "unknown"
+          ],
+          "description": "how the domain's asset type and functional pattern were set: derived (from the control record's name — to confirm), given (by a person), unknown (not known yet; the two may be absent)",
+          "x-sdem-id": "AT-A2-26",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "enumeration",
+          "x-sdem-source": {
+            "standard": "SDEM-defined",
+            "locator": "SDEM decision DA2-02 (owner, 2026-10-30)",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "BIAN's public Semantic API files do not state a service domain's asset type and functional pattern. SDEM derives them from the control record's name (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9) where that works, takes them from a person otherwise, and records which — so a value nobody has confirmed is never mistaken for a confirmed one, and a domain whose values are unknown can still be used.",
           "x-sdem-confidence": "low"
         }
       },

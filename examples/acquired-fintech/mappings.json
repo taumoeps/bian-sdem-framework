@@ -1,6 +1,6 @@
 {
   "registry_version": "0.4.0",
-  "metamodel_version": "0.4.0",
+  "metamodel_version": "0.5.0",
   "mappings": [
     {
       "mapping_id": "ZP-101",
@@ -20,7 +20,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-01"
       ],
-      "rationale": "Initiate \u2194 POST /v2/moneyflows; 6/8 fields",
+      "rationale": "Initiate ↔ POST /v2/moneyflows; 6/8 fields",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -43,7 +43,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-03"
       ],
-      "rationale": "Update \u2194 PATCH; 4/5",
+      "rationale": "Update ↔ PATCH; 4/5",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -66,7 +66,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-02"
       ],
-      "rationale": "Retrieve \u2194 GET; 5/6",
+      "rationale": "Retrieve ↔ GET; 5/6",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -90,7 +90,7 @@
         "api_contract:zippa-openapi.yaml#EP-04",
         "application_architecture_document:ZIPPA-INTEGRATION-NOTES#interviews"
       ],
-      "rationale": "Control implemented as DELETE (cancel) \u2014 deviation recorded (interview: 'delete = cancel')",
+      "rationale": "Control implemented as DELETE (cancel) — deviation recorded (interview: 'delete = cancel')",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -114,7 +114,7 @@
         "api_contract:zippa-openapi.yaml#EP-05",
         "application_architecture_document:ZIPPA-INTEGRATION-NOTES#interviews"
       ],
-      "rationale": "Execute/Execution implemented as POST .../release \u2014 deviation recorded (interview: 'release hands the flow to the rails')",
+      "rationale": "Execute/Execution implemented as POST .../release — deviation recorded (interview: 'release hands the flow to the rails')",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -138,7 +138,7 @@
         "api_contract:zippa-openapi.yaml#EP-06",
         "application_architecture_document:ZIPPA-INTEGRATION-NOTES#interviews"
       ],
-      "rationale": "Initiate Payment Execution \u2194 POST /zap (interview: a zap is an instant execution; sender/recipient are account references, outcome is execution_status)",
+      "rationale": "Initiate Payment Execution ↔ POST /zap (interview: a zap is an instant execution; sender/recipient are account references, outcome is execution_status)",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -161,7 +161,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-07"
       ],
-      "rationale": "Retrieve \u2194 GET /zap/{id} (rail_ref = scheme_reference, settled_at = execution_date)",
+      "rationale": "Retrieve ↔ GET /zap/{id} (rail_ref = scheme_reference, settled_at = execution_date)",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -184,7 +184,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-08"
       ],
-      "rationale": "Initiate \u2194 POST /v2/pots; 3/6",
+      "rationale": "Initiate ↔ POST /v2/pots; 3/6",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -207,7 +207,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-09"
       ],
-      "rationale": "Retrieve \u2194 GET; 4/6",
+      "rationale": "Retrieve ↔ GET; 4/6",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -230,7 +230,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-10"
       ],
-      "rationale": "Control \u2194 PUT .../freeze; 2/2",
+      "rationale": "Control ↔ PUT .../freeze; 2/2",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -254,7 +254,7 @@
         "api_contract:zippa-openapi.yaml#EP-11",
         "application_architecture_document:ZIPPA-INTEGRATION-NOTES#interviews"
       ],
-      "rationale": "Execute/Closure implemented as POST .../close \u2014 deviation recorded",
+      "rationale": "Execute/Closure implemented as POST .../close — deviation recorded",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -277,7 +277,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-13"
       ],
-      "rationale": "Register \u2194 POST /v2/members; display_name = party_name",
+      "rationale": "Register ↔ POST /v2/members; display_name = party_name",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -300,7 +300,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-14"
       ],
-      "rationale": "Retrieve \u2194 GET; 4/5",
+      "rationale": "Retrieve ↔ GET; 4/5",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -323,7 +323,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-15"
       ],
-      "rationale": "Update \u2194 PUT; 3/3",
+      "rationale": "Update ↔ PUT; 3/3",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -347,7 +347,7 @@
         "api_contract:zippa-openapi.yaml#EP-18",
         "application_architecture_document:ZIPPA-INTEGRATION-NOTES#interviews"
       ],
-      "rationale": "Initiate \u2194 POST /v2/vaults (interview: a vault is a goal savings account); 5/6",
+      "rationale": "Initiate ↔ POST /v2/vaults (interview: a vault is a goal savings account); 5/6",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -370,7 +370,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-19"
       ],
-      "rationale": "Retrieve \u2194 GET; 5/6",
+      "rationale": "Retrieve ↔ GET; 5/6",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -393,7 +393,7 @@
       "evidence": [
         "api_contract:zippa-openapi.yaml#EP-20"
       ],
-      "rationale": "Update \u2194 PATCH .../target; 3/4",
+      "rationale": "Update ↔ PATCH .../target; 3/4",
       "baseline_id": "ZIPPA-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"

@@ -1,6 +1,6 @@
 # Onboarding — what happens inside
 
-> **Status: current (v0.9.7)** — for builders and reviewers: what each onboarding step does to the data, and why the metamodel is never an output. The architect's guide is the [onboarding workflow](../sdem-onboarding-workflow.md).
+> **Status: current (v0.9.8)** — for builders and reviewers: what each onboarding step does to the data, and why the metamodel is never an output. The architect's guide is the [onboarding workflow](../sdem-onboarding-workflow.md).
 
 ## What each step does to the data
 

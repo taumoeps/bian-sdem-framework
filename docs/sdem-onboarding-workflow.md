@@ -1,6 +1,6 @@
 # SDEM onboarding — bringing your existing designs into SDEM
 
-> **Status: current guide — design onboarding is built (v0.9.7); every command shown was run on the test exports.**
+> **Status: current guide — design onboarding is built (v0.9.8); every command shown was run on the test exports.**
 
 > **One document for design onboarding** (built 2026-10-28): what onboarding is, how to do it — the commands and each step with what you will see — what each step does to the data, and when the data is ready. To **test** it step by step with sealed expected results: [`use-case-example-4.md`](evidence/use-case-example-4.md). Technical detail: [`sdem-transform-design.md`](design/sdem-transform-design.md) (reading the designs), [`sdem-load-design.md`](design/sdem-load-design.md) (loading, gap records). For architects; no AI needed.
 
@@ -117,15 +117,15 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 
 | Option | Imports | When |
 |---|---|---|
-| `--all` | every service domain SDEM can import from BIAN 14.0.0 — 192 of 258 | **the simplest start**, especially if you are new to service domains |
+| `--all` | all 258 service domains in BIAN 14.0.0 | **the simplest start**, especially if you are new to service domains |
 | `--only "<name>" …` | the domains you name | you know which ones your designs use: search the base for their words — `sdem bian list --base \| grep -i payment` |
 | `--from <file>` | the names in a file, one per line | a longer list, kept in your repository |
 
-With `--all`, the 66 domains whose asset type and functional pattern SDEM cannot work out are **left out and listed** — in the report and in a template, `…needs-patterns.csv`. Whoever owns BIAN for you fills it in from the BIAN portal and runs the import again with `--patterns <template>`; a row left empty is simply skipped. Naming one of those 66 with `--only` stops with the same list. Add more domains later with `--previous`. **Are the derived asset types and patterns good enough?** Yes for a pilot: they are marked *to confirm* in the report, and whoever owns BIAN for you confirms them later (it needs access to the BIAN portal).
+The 66 domains whose asset type and functional pattern SDEM cannot work out are **imported marked *not known yet*** (`classification: unknown`) — listed in the report and in a template, `…needs-patterns.csv`. They can be connected through their operations; `sdem check` gives advice on each (two lines: asset type, pattern) until the values are given. Whoever owns BIAN for you fills in the template from the BIAN portal and runs the import again with `--patterns <template>`; a row left empty is simply skipped. Add more domains later with `--previous`. **Are the derived asset types and patterns good enough?** Yes for a pilot: they are marked *to confirm* in the report, and whoever owns BIAN for you confirms them later (it needs access to the BIAN portal).
 
 **Importing your BIAN layer.** SDEM reads the base (or your own pack, or a folder of BIAN's files) — nothing is fetched — and writes each service domain you name with its operations (and their input and output fields, which the engine matches your APIs against), its control record, behaviour qualifiers and service groups, recording BIAN's release on every record. Two things to know:
 
-- **Asset type and functional pattern** are not in BIAN's API files. SDEM works them out from the control record's name where BIAN's published naming allows (about three in four domains) and lists them in the report **to confirm**; for the rest, `--all` leaves them out and writes a template to fill in, and naming one stops and lists it — either way you give them in a small CSV from the BIAN portal: `--patterns patterns.csv` with rows `service domain,asset type,functional pattern`.
+- **Asset type and functional pattern** are not in BIAN's API files. SDEM works them out from the control record's name where BIAN's published naming allows (about three in four domains) and lists them in the report **to confirm**; the rest are imported marked *not known yet* and listed in a template to fill in — you give them in a small CSV from the BIAN portal: `--patterns patterns.csv` with rows `service domain,asset type,functional pattern`.
 - **BIAN's descriptions are left out.** The base never has them; to include them, or business objects (`--objects`), import from a folder of BIAN's files with `--descriptions`.
 - **Every record says which BIAN it came from** — release, file — so moving later from the base to your own BIAN is reported, not silent (`--previous <your current file>`).
 
@@ -145,7 +145,7 @@ A starter file with one service domain. Every service domain must name its **ass
 ```json
 {
   "level": "A2", "model_id": "our-bian-layer", "model_version": "2026.11",
-  "metamodel_version": "0.4.0", "source_system": "HAND-ENTERED",
+  "metamodel_version": "0.5.0", "source_system": "HAND-ENTERED",
   "instances": [
     {"id": "SD-PAYMENT-ORDER-INITIATION", "type": "A2.ServiceDomain", "version": "1.0", "name": "Payment Order Initiation",
      "lifecycle_status": "active", "description": "Starts customer payments, in our own words.",

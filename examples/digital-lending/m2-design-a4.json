@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "synthetic-bank-lending-a4-TARGET-DESIGN",
   "model_version": "2026.10-design",
-  "metamodel_version": "0.4.0",
+  "metamodel_version": "0.5.0",
   "source_system": "DESIGN-PROPOSAL (bian-container-pattern; not a CMDB export)",
   "instances": [
     {

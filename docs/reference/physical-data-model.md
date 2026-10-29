@@ -48,7 +48,7 @@ Artefact types (BOM model, wireframe, Semantic API) and abstract types are not a
 | `A1.BusinessRequirement` | [`A1/BusinessRequirement.schema.json`](../../schema/entities/A1/BusinessRequirement.schema.json) | 8 | 11 | 0 | 4 | 0 | 10 / 4 / 1 |
 | `A2.BusinessArea` | [`A2/BusinessArea.schema.json`](../../schema/entities/A2/BusinessArea.schema.json) | 8 | 11 | 0 | 0 | 0 | 9 / 2 / 0 |
 | `A2.BusinessDomain` | [`A2/BusinessDomain.schema.json`](../../schema/entities/A2/BusinessDomain.schema.json) | 8 | 11 | 0 | 0 | 0 | 9 / 2 / 0 |
-| `A2.ServiceDomain` | [`A2/ServiceDomain.schema.json`](../../schema/entities/A2/ServiceDomain.schema.json) | 8 | 11 | 0 | 3 | 2 | 11 / 2 / 1 |
+| `A2.ServiceDomain` | [`A2/ServiceDomain.schema.json`](../../schema/entities/A2/ServiceDomain.schema.json) | 8 | 11 | 0 | 4 | 0 | 11 / 2 / 2 |
 | `A2.FunctionalPattern` | [`A2/FunctionalPattern.schema.json`](../../schema/entities/A2/FunctionalPattern.schema.json) | 8 | 11 | 0 | 3 | 0 | 12 / 2 / 0 |
 | `A2.AssetType` | [`A2/AssetType.schema.json`](../../schema/entities/A2/AssetType.schema.json) | 8 | 11 | 0 | 1 | 0 | 9 / 3 / 0 |
 | `A2.ControlRecord` | [`A2/ControlRecord.schema.json`](../../schema/entities/A2/ControlRecord.schema.json) | 8 | 11 | 0 | 2 | 1 | 10 / 3 / 0 |
@@ -77,7 +77,7 @@ Artefact types (BOM model, wireframe, Semantic API) and abstract types are not a
 | `A4.Path` | [`A4/Path.schema.json`](../../schema/entities/A4/Path.schema.json) | 8 | 11 | 0 | 6 | 0 | 10 / 6 / 1 |
 | `A4.Artifact` | [`A4/Artifact.schema.json`](../../schema/entities/A4/Artifact.schema.json) | 8 | 11 | 0 | 4 | 0 | 11 / 4 / 0 |
 
-Attribute definitions across all schemas: **415 high, 144 medium, 25 low** (the 11 common attributes are counted in every schema).
+Attribute definitions across all schemas: **415 high, 144 medium, 26 low** (the 11 common attributes are counted in every schema).
 
 ## Using a schema
 

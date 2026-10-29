@@ -83,6 +83,89 @@
           "edges": 8
         }
       ]
+    },
+    {
+      "build": 2,
+      "at": "2026-10-29T12:16:24+00:00",
+      "inputs": [
+        {
+          "path": "examples/customer-onboarding//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-onboarding-a1",
+          "model_version": "2026.10",
+          "sha256": "debbcfa8bad1168706bd2592699b297f07e0bbfd66485642e408e51702080bf3"
+        },
+        {
+          "path": "examples/customer-onboarding//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-onboarding-a2",
+          "model_version": "2026.10",
+          "sha256": "ce62d1c1c5dd5d9daf4d86b844f177970900bde8d0c46df02bb654ffcae9ca1b"
+        },
+        {
+          "path": "examples/customer-onboarding//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-onboarding-a3",
+          "model_version": "2026.10",
+          "sha256": "3518cb7b8b41c1b09e177fc2c7c1422006d74502fe28be78ccf2b33070b19c22"
+        },
+        {
+          "path": "examples/customer-onboarding//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-onboarding-a4",
+          "model_version": "2026.10",
+          "sha256": "fab4e1627ac286ff0dedb53a5b7488b11e49363aed86c3cb7631802d8fdc8036"
+        },
+        {
+          "path": "examples/customer-onboarding//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "01b63e6b35c674e5f57edaabc4f46b5b0557bd1afc72b71d24433a9f59ab1c7d"
+        }
+      ],
+      "metamodel_version": "0.5.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-onboarding-a2): instance SD-001: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-onboarding-a2): instance BBO-001: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "7d92e7d3b6b05074d4d91e2f0190fb63dd4682d4388a587fb9fab1e04fb552ae",
+          "nodes": 7,
+          "edges": 6
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "110b8cb6f7772417cdab9ddb84a9e01bface044791315ffaa9d866b20c48b85b",
+          "nodes": 9,
+          "edges": 11
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "106d9ceea0a5feb667e6e97ca77b58ba874515281001f52fef51ac304e8692a8",
+          "nodes": 5,
+          "edges": 4
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "e7203323567711035672913cb4f322c9badf0c2fcfda8546e57e9ec1e85771fa",
+          "nodes": 5,
+          "edges": 1
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "d75c8ba7efb4d43de9016550c6806e5ce2cb758cd2b90ff6746f778263bd9d1c",
+          "nodes": 11,
+          "edges": 8
+        }
+      ]
     }
   ]
 }

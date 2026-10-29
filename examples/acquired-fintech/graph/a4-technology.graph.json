@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "a758c0e055dd847478af97938a2043c03b4f1e3b3aa5731388847f34714b365f",
+      "export_sha256": "9eaeecf1e6795a5936b918ebf8321fda18927ccd680f8c671ac5e1a718ea68b0",
       "level": "A4",
       "model_id": "synthetic-fintech-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.4.0",
+      "metamodel_version": "0.5.0",
       "source_system": "SYNTHETIC-K8S-MANIFEST"
     },
     "nodes": {

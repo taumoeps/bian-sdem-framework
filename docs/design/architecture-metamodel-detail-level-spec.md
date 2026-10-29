@@ -441,13 +441,13 @@ Every field of a plan row in `metamodel/relationship-rules.json`.
 
 **Gap G-12** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-9 core fields, 11 common attributes, 135 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](../reference/architecture-attribute-design.md), [`logical-data-model.md`](../reference/logical-data-model.md), [`physical-data-model.md`](../reference/physical-data-model.md).
+9 core fields, 11 common attributes, 136 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](../reference/architecture-attribute-design.md), [`logical-data-model.md`](../reference/logical-data-model.md), [`physical-data-model.md`](../reference/physical-data-model.md).
 
 ## 17. Provenance and confidence
 
 **Gap G-13** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 237 high, 81 medium, 22 low.
+Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 237 high, 81 medium, 23 low.
 
 ## 18. Inference engine
 

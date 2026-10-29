@@ -104,7 +104,7 @@ package "Not built yet — in the high-level spec" as PNB {
 
 package "Beyond the high-level spec — detail §15–19" as PADD {
   rectangle "Relationship Rules Model\n69 plan rows · fill steps · join keys\n§15 — G-11 (decided)" as rules #E1F5FE
-  rectangle "Data model\n9 core · 11 common · 135 specific · 3 derived attributes\n14 logical rules · per-entity JSON Schemas\n§16 — G-12 (decided)" as dm #E1F5FE
+  rectangle "Data model\n9 core · 11 common · 136 specific · 3 derived attributes\n14 logical rules · per-entity JSON Schemas\n§16 — G-12 (decided)" as dm #E1F5FE
   rectangle "Provenance and confidence\nsource · reasoning · confidence on every record\n§17 — G-13 (decided)" as prov #E1F5FE
   rectangle "Inference engine\nsteps 1–5 + design mode\nacceptance 8/8 cases\n§18 — G-14 (decided)" as eng #E1F5FE
   rectangle "Graph store\nJSON Graph Format v2 · load record · baselines\n§19 — G-15 (decided)" as gstore #E1F5FE

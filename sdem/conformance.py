@@ -65,6 +65,10 @@ def check_level(doc, mm, estate_index=None):
             if a['required'] and a['status'] == 'active':
                 n['LC-04 checked'] += 1
                 if k not in at:
+                    unless = a.get('required_unless') or {}
+                    if unless and all(at.get(x) == v for x, v in unless.items()):   # e.g. a BIAN domain whose pattern is not known yet: advise, do not reject
+                        n['LC-04 to confirm'] += 1
+                        warnings.append(f"{who}: {k!r} not known yet ({', '.join(f'{x} {v}' for x, v in unless.items())}) — give it when known (LC-04)"); continue
                     if i.get('lifecycle_status') == 'planned':  # a planned (target-design) record may not know every fact yet: warn, do not reject
                         n['LC-04 planned'] += 1; warnings.append(f"{who}: planned instance — required attribute {k!r} not yet known (LC-04)")
                     else:

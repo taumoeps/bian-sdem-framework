@@ -5,48 +5,48 @@
   ],
   "load_record_entry": {
     "build": 1,
-    "at": "2026-10-28T18:43:23+00:00",
+    "at": "2026-10-29T12:19:35+00:00",
     "inputs": [
       {
-        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-m4mmnxhc/tmprxg9oev9/a1-business.json",
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmpddp4634n/a1-business.json",
         "kind": "export",
         "level": "A1",
         "model_id": "synthetic-bank-payments-a1",
         "model_version": "2026.10",
-        "sha256": "2035350a490fcc9247557893b5934b2384847dda07a83e32f5d7fd4214b989d7"
+        "sha256": "68ccfe829f37bf4021d075c8338b01f9da8a64f741b3451d0b257cb13b951487"
       },
       {
-        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-m4mmnxhc/tmprxg9oev9/a2-service-domain.json",
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmpddp4634n/a2-service-domain.json",
         "kind": "export",
         "level": "A2",
         "model_id": "synthetic-bank-payments-a2",
         "model_version": "2026.10",
-        "sha256": "f06724c51a536233bd25707ef0476c26cf54440e37a17fc9e5668fb1d855456a"
+        "sha256": "537b449e64acca217db59096ac5fc728269341b6f5a513aa312dcd9755997381"
       },
       {
-        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-m4mmnxhc/tmprxg9oev9/a3-application.json",
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmpddp4634n/a3-application.json",
         "kind": "export",
         "level": "A3",
         "model_id": "synthetic-bank-payments-a3",
         "model_version": "2026.10",
-        "sha256": "31d8b039166891f0f1b38c3c5cac4221162f09346781896e38a9c4515d2de7f6"
+        "sha256": "55708aeeab9bc1729c7bf5e1828be79912370214aaeb69ec4371930f5446f3c7"
       },
       {
-        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-m4mmnxhc/tmprxg9oev9/a4-technology.json",
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmpddp4634n/a4-technology.json",
         "kind": "export",
         "level": "A4",
         "model_id": "synthetic-bank-payments-a4",
         "model_version": "2026.10",
-        "sha256": "655221bb2bfc2ee699bbcd5f5a4c1aec08737745d44e20c44cd7a1a9dd6d20fd"
+        "sha256": "7a3cee8a632ed1d547f9c6182c909647b2010c4ecfbbff7aeadcacb9005ae58a"
       },
       {
-        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-m4mmnxhc/tmprxg9oev9/registry.json",
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-o5b6d7nb/tmpddp4634n/registry.json",
         "kind": "registry",
         "registry_version": "0.4.0",
-        "sha256": "b8aff6e2c2d2c148bcb7fdd354375966926e392d54e7ad7b7a57c748dfed15e3"
+        "sha256": "4b1288b817f2d7e53c1c4ae8f0848f49d3759ae9a8c83a660c5fec3a93a1d15c"
       }
     ],
-    "metamodel_version": "0.4.0",
+    "metamodel_version": "0.5.0",
     "errors": [
       "level A4 (synthetic-bank-payments-a4): instance DEP-PAYHUB-PROD: required attribute 'platform_id' missing (LC-04)",
       "level A4 (synthetic-bank-payments-a4): instance DEP-PAYHUB-UAT: required attribute 'platform_id' missing (LC-04)"

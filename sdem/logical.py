@@ -103,7 +103,7 @@ def render():
                 out += ['**Fields**', '', '| Field | Type | Required | Meaning | Refers to |', '|---|---|---|---|---|']
                 for x in fl:
                     ref = ', '.join(f'`{t}`' for t in x.get('references', [])) + (' *(join key)*' if x.get('kind') == 'reference' and x['reference_scope'].startswith('cross') else '') if x.get('kind') == 'reference' else ('one of: ' + ', '.join(x['values']) if x.get('values') else '—')
-                    out.append(f"| `{x['name']}`{' *(deprecated)*' if x['status'] == 'deprecated' else ''} | {TYPE.get(x['type'], x['type'])} | {'yes' if x['required'] else 'no'} | {x['description']} | {ref} |")
+                    out.append(f"| `{x['name']}`{' *(deprecated)*' if x['status'] == 'deprecated' else ''} | {TYPE.get(x['type'], x['type'])} | {('yes, unless ' + ', '.join(f'{k} is {v}' for k, v in x['required_unless'].items()) if x.get('required_unless') else 'yes') if x['required'] else 'no'} | {x['description']} | {ref} |")
                 out.append('')
             else:
                 out += ['**Fields:** core fields only.', '']

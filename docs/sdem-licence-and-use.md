@@ -1,6 +1,6 @@
 # Using SDEM — free for any organisation
 
-> **Status: current (v0.9.7)** — what anyone may do with SDEM, what it contains from others, and what it does not claim. For an organisation's full checklist before go-live: the [adoption checklist](sdem-adoption-checklist.md). This page explains the licence in plain words; **it is not legal advice**.
+> **Status: current (v0.9.8)** — what anyone may do with SDEM, what it contains from others, and what it does not claim. For an organisation's full checklist before go-live: the [adoption checklist](sdem-adoption-checklist.md). This page explains the licence in plain words; **it is not legal advice**.
 
 ## In one sentence
 

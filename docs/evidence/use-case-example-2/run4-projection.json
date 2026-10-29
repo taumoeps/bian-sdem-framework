@@ -4,23 +4,23 @@
     "mode": "reverse",
     "created_by": "sdem aid",
     "created_at": "2026-10-27T00:00:00+00:00",
-    "metamodel_version": "0.4.0",
+    "metamodel_version": "0.5.0",
     "have": [
       "A3",
       "A4"
     ],
     "catalogue": {
       "model_id": "aid-test-bian-catalogue",
-      "sha256": "b698a3ac6bb15e7c792d7c091b1dd6ed5d14b056855445a34cfb9f0056e5b208"
+      "sha256": "cacd8e4daccc5cc7472fac28e031474b30e57a46edc0a6ae1354499afacec9a3"
     },
     "inputs": {
       "A3": {
         "model_id": "synthetic-bank-payments-a3",
-        "sha256": "671a578137446e6ca7c418cdc07a5b9f167a84bc3c807c7f1e76cb8f8b6e2b8f"
+        "sha256": "537f5c1f6baf4144efe6a0fb326d6e4bbc7f722ffceb4b60ebb5bcdbc0f55f9f"
       },
       "A4": {
         "model_id": "synthetic-bank-payments-a4",
-        "sha256": "30b652f3f81425af3984793f41ed130227eb6859ad956d284ac88287a473ca11"
+        "sha256": "b74d21edc562c3be01a6f96e2c38b0baebb8fb95cdd5868e52d27846d85a636e"
       }
     },
     "steps": [
@@ -61,7 +61,7 @@
       "level": "A1",
       "model_id": "PRJ-RUN4-a1-PROJECTION",
       "model_version": "projection",
-      "metamodel_version": "0.4.0",
+      "metamodel_version": "0.5.0",
       "source_system": "AID-PROJECTION (sdem aid; not a real architecture dataset)",
       "instances": [
         {
@@ -192,7 +192,7 @@
       "level": "A2",
       "model_id": "PRJ-RUN4-a2-PROJECTION",
       "model_version": "projection",
-      "metamodel_version": "0.4.0",
+      "metamodel_version": "0.5.0",
       "source_system": "AID-PROJECTION (sdem aid; not a real architecture dataset)",
       "instances": [
         {

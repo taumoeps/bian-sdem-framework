@@ -17,7 +17,7 @@ flowchart LR
 ```
 
 1. **A change to the metamodel that affects data bumps `metamodel_version`** (in every `metamodel/*.json` file that carries it — SDEM refuses files that disagree) **and adds one migration** from the old version to the new. A change that only *adds* (a new optional attribute, a new type) is a migration with no steps — it moves the version only.
-2. **Versions** follow the baselines: `0.4.0` today; `0.8.0` when the owner approves the 0.8 baseline. Patch numbers are not used for the metamodel.
+2. **Versions** follow the baselines: `0.5.0` today (0.4.0 → 0.5.0 on 2026-10-30: BIAN domains whose pattern is not known yet, DA2-02); `0.8.0` when the owner approves the 0.8 baseline. Patch numbers are not used for the metamodel.
 3. **Approved links are never rewritten in meaning.** A migration may rename a relationship type in the registry; it never changes which records a link joins or its approval. If a change would, it is a supersession (a new link replacing the old), not a migration.
 4. **Estates move on purpose.** `sdem migrate` is run by a person, checks the whole estate as it would be, writes all-or-nothing, records `migrations/MIG-nnn.json`, and goes through a pull request like any change.
 

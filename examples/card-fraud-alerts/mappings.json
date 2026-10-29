@@ -214,12 +214,12 @@
       "status": "proposed",
       "confidence": 0.55,
       "evidence": [
-        "engine_rationale:S17 step 4 \u2014 asset noun 'alert' absent; 'scoring' matches the domain description's evaluation concept only"
+        "engine_rationale:S17 step 4 — asset noun 'alert' absent; 'scoring' matches the domain description's evaluation concept only"
       ],
       "rationale": "Engine candidate: the scoring component may realise part of the domain on its own; review needed",
       "baseline_id": "BASE-2026-Q4",
       "created_by": "baseline-name-overlap/0.5"
     }
   ],
-  "metamodel_version": "0.4.0"
+  "metamodel_version": "0.5.0"
 }

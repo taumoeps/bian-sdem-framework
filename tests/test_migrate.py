@@ -12,7 +12,7 @@ CUR = Metamodel.load().version
 class MigrateTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.est = self.tmp / 'est'
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.est, ignore=shutil.ignore_patterns('graph'))
+        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.est, ignore=shutil.ignore_patterns('graph', 'migrations'))
         p = self.est / 'a3-application.json'; d = json.loads(p.read_text())
         d['metamodel_version'] = '0.3.0'
         self.inst = next(i for i in d['instances'] if i.get('attributes'))

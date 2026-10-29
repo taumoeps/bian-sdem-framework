@@ -36,7 +36,7 @@ def datasets():
     for i in ds.get('a2-service-domain.json', {}).get('instances', []):
         if i['id'] == 'BS-CREDIT-TRANSFER': i.pop('canonical_id', None)   # planted on purpose: a BIAN identifier missing from the data must never be invented
     return ds
-def empty_registry(): return {'registry_version': load_registry()['$schema_version'], 'metamodel_version': '0.4.0', 'mappings': []}
+def empty_registry(): return {'registry_version': load_registry()['$schema_version'], 'metamodel_version': Metamodel.load().version, 'mappings': []}
 
 
 def check(ds, registry=None):

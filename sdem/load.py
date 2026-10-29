@@ -17,7 +17,7 @@ from .transform import DATASETS, SOURCE_SYSTEM
 from .validate import is_person
 
 LOADED_SYSTEM = 'SDEM-LOAD'
-EMPTY_REGISTRY = {'registry_version': '0.4.0', 'metamodel_version': '0.4.0', 'mappings': []}
+EMPTY_REGISTRY = {'registry_version': '0.4.0', 'mappings': []}   # a new estate's registry; metamodel_version is the loaded metamodel's
 
 
 class LoadError(Exception):
@@ -112,7 +112,7 @@ def plan(estate, ds, keep, a2=None, mm=None, today=None):
         if d.get('level') != 'A2': raise LoadError(f'--a2 {a2}: not an A2 dataset')
         if 'A2' in current: res['notes'].append('the estate already has an A2 dataset — kept, --a2 not used')
         else: after['A2'] = changed['A2'] = d; res['a2_added'] = str(a2)
-    registry = _j(estate / 'mappings.json') if (estate / 'mappings.json').exists() else copy.deepcopy(EMPTY_REGISTRY)
+    registry = _j(estate / 'mappings.json') if (estate / 'mappings.json').exists() else {**copy.deepcopy(EMPTY_REGISTRY), 'metamodel_version': mm.version}
     fg = FederatedGraph([LevelGraph(d, mm) for d in after.values()], [registry], mm)
     report = fg.check()
     res['errors'] = [f'{k}: {i}' for k, v in report.items() for i in v]

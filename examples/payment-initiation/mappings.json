@@ -1,6 +1,6 @@
 {
   "registry_version": "0.4.0",
-  "metamodel_version": "0.4.0",
+  "metamodel_version": "0.5.0",
   "mappings": [
     {
       "mapping_id": "PAY-001",
@@ -144,7 +144,7 @@
       "evidence": [
         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions/post"
       ],
-      "rationale": "Initiate \u2194 POST; no qualifier; 8/8 attributes in payload",
+      "rationale": "Initiate ↔ POST; no qualifier; 8/8 attributes in payload",
       "baseline_id": "PAY-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -167,7 +167,7 @@
       "evidence": [
         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1validation/post"
       ],
-      "rationale": "Evaluate \u2194 POST; Validation qualifier in path; 3/3 attributes",
+      "rationale": "Evaluate ↔ POST; Validation qualifier in path; 3/3 attributes",
       "baseline_id": "PAY-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -190,7 +190,7 @@
       "evidence": [
         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1execution/put"
       ],
-      "rationale": "Execute \u2194 PUT; Execution qualifier in path; 3/3 attributes",
+      "rationale": "Execute ↔ PUT; Execution qualifier in path; 3/3 attributes",
       "baseline_id": "PAY-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -214,7 +214,7 @@
         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/post",
         "application_architecture_document:ADR-PAY-017"
       ],
-      "rationale": "Retrieve implemented as POST (legacy channel constraint, ADR-PAY-017) \u2014 approved with a recorded deviation from the REST mapping",
+      "rationale": "Retrieve implemented as POST (legacy channel constraint, ADR-PAY-017) — approved with a recorded deviation from the REST mapping",
       "baseline_id": "PAY-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"
@@ -237,7 +237,7 @@
       "evidence": [
         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/patch"
       ],
-      "rationale": "Update \u2194 PATCH; 4/4 attributes",
+      "rationale": "Update ↔ PATCH; 4/4 attributes",
       "baseline_id": "PAY-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-10-22"

@@ -1,6 +1,6 @@
 # SDEM — Privacy and Data Handling
 
-> **Status: current (v0.9.7)** — how the SDEM software handles the information you give it, as verified against the v0.9.7 code. It describes the software's behaviour; it is not a privacy policy of any organisation or platform, and it makes no claim of compliance with any privacy law or industry regulation. Plain-words licence page: [`docs/sdem-licence-and-use.md`](docs/sdem-licence-and-use.md).
+> **Status: current (v0.9.8)** — how the SDEM software handles the information you give it, as verified against the v0.9.8 code. It describes the software's behaviour; it is not a privacy policy of any organisation or platform, and it makes no claim of compliance with any privacy law or industry regulation. Plain-words licence page: [`docs/sdem-licence-and-use.md`](docs/sdem-licence-and-use.md).
 
 ## 1. Overview
 
@@ -30,7 +30,7 @@ Every SDEM command runs on the machine where you type it.
 
 ## 3. Data collection and telemetry
 
-Verified in the v0.9.7 code:
+Verified in the v0.9.8 code:
 
 | Does SDEM collect … | Answer |
 |---|---|
@@ -72,7 +72,7 @@ Optional tools and services around SDEM are **not** covered by this — each has
 | **Diagram previews** | Mermaid previews render in VS Code. PlantUML previews render locally in this project's setting; a public PlantUML server would receive the diagram text |
 | **Repository hosting and CI** (GitHub or your own) | whatever you commit and push, to the host you choose — keep real estates in a **private** repository |
 | **VS Code and its extensions** | under their own terms; this project only recommends three (Python, Copilot Chat, Mermaid preview) |
-| **Future integrations** (planned: reading from EA tools and CMDBs) | not in v0.9.7; each will state its own behaviour when built |
+| **Future integrations** (planned: reading from EA tools and CMDBs) | not in v0.9.8; each will state its own behaviour when built |
 
 ## 6. Organisation data ownership
 
@@ -95,4 +95,4 @@ SDEM is provided as is (Apache License 2.0, §7–§8). It has not been independ
 
 ## 10. Policy scope
 
-This document describes **the SDEM software's behaviour** in v0.9.7. It does not describe, and cannot vouch for, the practices of GitHub, Microsoft, Apple, the Tesseract project, PlantUML or any other platform you use with SDEM; their own terms apply. It is not legal advice and makes no claim of compliance with any law or regulation.
+This document describes **the SDEM software's behaviour** in v0.9.8. It does not describe, and cannot vouch for, the practices of GitHub, Microsoft, Apple, the Tesseract project, PlantUML or any other platform you use with SDEM; their own terms apply. It is not legal advice and makes no claim of compliance with any law or regulation.

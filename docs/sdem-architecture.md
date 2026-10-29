@@ -1,6 +1,6 @@
 # SDEM architecture — how it is built and where data lives
 
-> **Status: current (v0.9.7)** — for architects and platform owners who run SDEM: its parts, where every file lives, how a change flows, what checks it, and its limits. How each part was designed, for builders: [`design/`](design/README.md).
+> **Status: current (v0.9.8)** — for architects and platform owners who run SDEM: its parts, where every file lives, how a change flows, what checks it, and its limits. How each part was designed, for builders: [`design/`](design/README.md).
 
 ## The parts
 
