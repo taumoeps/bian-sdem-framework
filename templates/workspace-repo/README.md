@@ -39,9 +39,9 @@ bash ci/check-workspaces.sh                                 # the same checks CI
 
 ```bash
 git switch -c onboard/<design>
+sdem new --workspace workspaces/<domain> --person <you>         # once per area — starts it with the shared BIAN layer (bian/a2-service-domain.json)
 sdem transform run work/imports/<design> -o work/history       # keep the export in work/ — never committed; add --ocr off if your policy says so
-sdem load work/history --workspace workspaces/<domain> --person <you> --exclude <ids you reject> \
-    --a2 bian/a2-service-domain.json                          # the shared BIAN layer (first load of a domain); gaps are recorded
+sdem load work/history --workspace workspaces/<domain> --person <you> --exclude <ids you reject>   # gaps are recorded
 sdem check --workspace workspaces/<domain>
 sdem link --workspace workspaces/<domain> --out work/links              # proposed links
 sdem approve P-RUN-001 --proposals work/links/proposals.json --workspace workspaces/<domain> \

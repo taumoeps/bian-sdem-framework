@@ -242,7 +242,7 @@ R.overview = () => {
     const c = D.coverage[l.level]||{eligible:0,linked:0,unmapped:[]}; const pct = c.eligible?Math.round(100*c.linked/c.eligible):100;
     return `<div class="card"><div>${lvl(l.level)} <b>${esc(l.title)}</b></div><div class="big">${l.records}</div><div class="muted">records · ${l.relationships} links inside</div><div>${st}</div>
       <div class="muted" style="margin-top:6px">linked to other layers: ${c.linked} of ${c.eligible} (${pct}%)</div><div class="bar"><i style="width:${pct}%"></i></div></div>`;}).join("");
-  h += D.missing_layers.map(m=>`<div class="card"><div>${lvl(m.level)} <b>${esc(m.title)}</b></div><div class="big muted">—</div><div class="muted">not in this workspace — no dataset. AID can project it.</div></div>`).join("");
+  h += D.missing_layers.map(m=>`<div class="card"><div>${lvl(m.level)} <b>${esc(m.title)}</b></div><div class="big muted">—</div><div class="muted">not in this workspace — no dataset. AID can workspace it.</div></div>`).join("");
   const rs = D.registry; h += `<div class="card"><div><b>Registry</b> (links between layers)</div><div class="big">${rs.links}</div><div class="muted">${Object.entries(rs.by_status).map(([k,v])=>`${v} ${k}`).join(" · ")}</div><div>${rs.errors.length?`<span class="bad">${rs.errors.length} error(s)</span>`:`<span class="ok">OK</span>`}</div></div>`;
   h += `<div class="card"><div><b>Coordination records</b></div><div class="big">${D.coordination.records}</div><div class="muted">change sets, events, work items</div><div>${D.coordination.issues.length?`<span class="bad">${D.coordination.issues.length} issue(s)</span>`:`<span class="ok">OK</span>`}</div></div></div>`;
   const errs = D.layers.flatMap(l=>l.errors.map(e=>[l.level,e])).concat(D.registry.errors.map(e=>["registry",e])).concat(D.coordination.issues.map(e=>["coordination",e]));
@@ -312,7 +312,7 @@ R.changes = () => {
 };
 R.aid = () => {
   const A = D.aid;
-  if (!A) return `<h2>AID plans</h2><p class="note">No projection was given. Project the layers you do not have, then regenerate this page with it:</p>` + cmd(`sdem aid project --have ${D.workspace}/a1-business.json --catalogue <bian-catalogue.json> --out work/prj`) + cmd(`sdem dashboard --workspace ${D.workspace} --projection work/prj -o work/dashboard.html`);
+  if (!A) return `<h2>AID plans</h2><p class="note">No projection was given. Workspace the layers you do not have, then regenerate this page with it:</p>` + cmd(`sdem aid workspace --have ${D.workspace}/a1-business.json --catalogue <bian-catalogue.json> --out work/prj`) + cmd(`sdem dashboard --workspace ${D.workspace} --projection work/prj -o work/dashboard.html`);
   let h = `<h2>AID plan ${esc(A.id)} — ${esc(A.mode)}</h2><p class="note">A projected design is a plan, never real data (ids start PRJ-; confidence at most 0.6). Projected from: ${A.have.map(esc).join(", ")}. Check: ${A.valid?'<span class="ok">valid</span>':`<span class="bad">${A.issues.length} issue(s)</span>`}.</p>`;
   if (A.ends.length) h += `<p class="note">Where AID stopped: ${A.ends.map(esc).join(" · ")}</p>`;
   h += `<h3>Against the real design</h3>` + table(["Measure","Projected","Real","Matched","Precision","Recall"], Object.entries(A.metrics).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.projected??""}</td><td>${v.real??v.compared??""}</td><td>${v.matched??""}</td><td>${v.precision??"—"}</td><td>${v.recall??"—"}</td></tr>`));
@@ -321,7 +321,7 @@ R.aid = () => {
 };
 R.designs = () => {
   const G = D.designs;
-  if (!G) return `<h2>Designs & gaps</h2><p class="note">This project has no onboarded designs. Past designs from Confluence come in with <code>sdem transform run</code> and <code>sdem load</code>; what does not fit an entity is kept here as gap records.</p>`;
+  if (!G) return `<h2>Designs & gaps</h2><p class="note">This workspace has no onboarded designs. Past designs from Confluence come in with <code>sdem transform run</code> and <code>sdem load</code>; what does not fit an entity is kept here as gap records.</p>`;
   const st = G.by_status, n = G.open.length;
   let h = `<h2>Designs & gaps</h2><p class="note">What did not fit an architecture entity in onboarded designs — kept, not lost. <b>${n} open</b> · ${st.resolved||0} resolved · ${st.accepted||0} accepted. Resolve a gap when what it held is now in the data; accept it when it is left as it is, on purpose — your name and note are recorded.</p>`;
   if (n) {

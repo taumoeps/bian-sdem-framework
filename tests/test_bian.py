@@ -18,6 +18,15 @@ def sdem(*args, cwd=ROOT):
     return r.returncode, r.stdout + r.stderr
 
 
+
+def start(ws, **kw):
+    """A workspace to load into — `sdem new` (WS-01); without a BIAN layer unless one is given."""
+    import contextlib, io
+    from sdem import new
+    args = ['--workspace', str(ws), '--person', 'jane.architect'] + (['--bian', str(kw['bian'])] if kw.get('bian') else ['--no-bian'])
+    with contextlib.redirect_stdout(io.StringIO()): assert new.main(args) == 0
+    return ws
+
 class BianImportTests(unittest.TestCase):
     def setUp(self): self.tmp = Path(tempfile.mkdtemp())
     def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
@@ -171,7 +180,7 @@ class BianImportTests(unittest.TestCase):
         from sdem import load, transform
         code, out, f = self.imp(names=('Sample Order Initiation', 'Sample Party Directory'))
         transform.extract(ROOT / 'examples' / 'designs' / 'confluence-folder-export', self.tmp / 'history', ocr='off')
-        res = load.load(self.tmp / 'history', self.tmp / 'estate', 'jane.architect', exclude=['HIS-A3-PAYMENT-ORDER'], a2=f)
+        res = load.load(self.tmp / 'history', start(self.tmp / 'estate'), 'jane.architect', exclude=['HIS-A3-PAYMENT-ORDER'], a2=f)
         self.assertGreater(res['reconciliation']['loaded'], 0)
         self.assertEqual(json.loads((self.tmp / 'estate' / 'a2-service-domain.json').read_text())['source_system'], 'BIAN-SEMANTIC-API-99.0.0')
 

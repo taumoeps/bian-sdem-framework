@@ -30,13 +30,13 @@
 
 | ID | Requirement | Status |
 |---|---|---|
-| DB-H01 | `sdem home [-o DIR] [--root DIR …] [--workspace DIR …]` writes `DIR/index.html` and one project dashboard per workspace in `DIR/projects/`, each linking back home; offline, read-only. Default: the workspaces in `examples/`. | built |
+| DB-H01 | `sdem home [-o DIR] [--root DIR …] [--workspace DIR …]` writes `DIR/index.html` and one workspace dashboard per workspace in `DIR/projects/`, each linking back home; offline, read-only. Default: the workspaces in `examples/`. | built |
 | DB-H02 | Home: SDEM health at a glance, the metamodel in numbers, every project with what needs attention. | built |
 | DB-H03 | The metamodel exactly as the metamodel files hold it: entity types (definition, source standard, evidence status, attributes own and inherited), links inside each architecture, link types between architectures (with evidence to approve), the engine's rules (step, decision, confidence, published source); filterable. | built |
 | DB-H04 | A metamodel picture: entity types in four bands, the link types between architectures as arrows; a clicked type shows its details. | built |
 | DB-H05 | Health computed when the page is generated: every generator's `--check`, the rules engine's acceptance cases (precision and recall against the floor), controls, known gaps, the gap register. | built |
 | DB-H06 | Configuration: where each setting lives, confidence bands, link statuses and allowed changes, impact rules, the agents. | built |
-| DB-H08 | The projects table has an **Open gaps** column; a project with open gaps counts as needing attention | built |
+| DB-H08 | The workspaces table has an **Open gaps** column; a workspace with open gaps counts as needing attention | built |
 | DB-H07 | The landing view is SDEM's component architecture (`index.html#picture`): every key component of the design — BIAN reference repository, historical design repository, metamodel and rules, mapping engine, validation and approval, federated knowledge graph, A1–A4 graphs and schemas — plus AID, projection packages, change coordination and agents, and the workbench; the flows between them; each marked built / partly built / not built; a clicked component shows what it is, where it lives, live figures, health and what is next. The entity-type picture moves to its own tab (Entity map). Both diagrams use the full window width, scale to fit beside their details panel without scrolling, and have a full-screen button. | built |
 
 ## 3. New CLI outputs

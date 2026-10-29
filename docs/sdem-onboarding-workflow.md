@@ -29,7 +29,7 @@ flowchart LR
 | **Onboarding** | the whole process: new source → ready for use |
 | **Ingestion** | the first part: getting the data into a workspace (for designs: transform → review → load) |
 | **Normal processing** | the second part, the same for every workspace however its data arrived: check → link → approve → build |
-| **Workspace** | a project's architecture data, in one folder (here `workspaces/history/`) |
+| **Workspace** | one area's architecture, in one folder (here `workspaces/history/`) — started once with `sdem new`, and every design of the area is loaded into it |
 
 ## 2. The process at a glance
 
@@ -64,6 +64,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 
 | # | Command | In plain words |
 |---|---|---|
+| 0 | `sdem new --workspace workspaces/history --person <you>` | **Start the workspace** — once. Creates the folder where this area's architecture is kept, with your BIAN layer already in it |
 | 1 | `sdem transform inspect <export folder>` | **Look before you start.** Shows what is in your export and what SDEM can read. Changes nothing |
 | 2 | `sdem transform run <export folder> -o work/history` | **Read the designs.** Turns the pages into a list of *suggested* architecture items, and writes a report for you to read |
 | 3 | *(you read `work/history/extraction-report.md`)* | **Check the suggestions.** Decide which are wrong |
@@ -111,7 +112,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 | **Your organisation's own BIAN** | you have a newer release, your own selection or your own extensions, in BIAN's format | pack it once: `sdem bian pack <folder> -o bian/our-bian.json` (keep it in your workspace repository), then `--base bian/our-bian.json` instead of `--base`; or import straight from the folder |
 | **Your organisation's BIAN catalogue in another format** | e.g. a member's model export | convert it to SDEM's A2 format (the file below); `sdem check` validates it |
 | **A starter file, by hand** | you have no catalogue yet | list the service domains your area uses, from BIAN's public Service Landscape — **names only, described in your own words** (do not copy BIAN text) — as below |
-| **None yet** | you want to start without BIAN | load without `--a2`; applications still connect to technology — but **business does not connect to applications at all**, because every one of SDEM's connections between those layers passes through BIAN. Add the layer before you need business-to-technology traces |
+| **None yet** | you want to start without BIAN | `sdem new --no-bian`; applications still connect to technology — but **business does not connect to applications at all**, because every one of SDEM's connections between those layers passes through BIAN. Add the layer before you need business-to-technology traces |
 
 **Which service domains to import.** Three ways:
 
@@ -129,7 +130,7 @@ The 66 domains whose asset type and functional pattern SDEM cannot work out are 
 - **BIAN's descriptions are left out.** The base never has them; to include them, or business objects (`--objects`), import from a folder of BIAN's files with `--descriptions`.
 - **Every record says which BIAN it came from** — release, file — so moving later from the base to your own BIAN is reported, not silent (`--previous <your current file>`).
 
-**Where to write it.** In your **workspace repository**: `-o bian/a2-service-domain.json`, then commit it — one BIAN layer shared by every domain, used with `--a2 bian/a2-service-domain.json` when a domain is first loaded. **When you change it later** (more service domains, a new BIAN release), bring every workspace up to date: `sdem bian update --root workspaces --a2 bian/a2-service-domain.json --person <you>` — checked first; it refuses if an approved connection points to a service domain you dropped (supersede that connection first). Practising **in the SDEM project**: `-o work/bian/a2-service-domain.json` (the SDEM project's own `bian/` folder holds the base).
+**Where to write it.** In your **workspace repository**: `-o bian/a2-service-domain.json`, then commit it — one BIAN layer shared by every workspace: `sdem new` copies it into each new workspace (with no shared layer yet, it uses all of the base BIAN). An architect can narrow one workspace's layer later — `sdem bian custom --workspace <workspace> --only … --person <you>`. **When you change it later** (more service domains, a new BIAN release), bring every workspace up to date: `sdem bian update --root workspaces --a2 bian/a2-service-domain.json --person <you>` — checked first; it refuses if an approved connection points to a service domain you dropped (supersede that connection first). Practising **in the SDEM project**: `-o work/bian/a2-service-domain.json` (the SDEM project's own `bian/` folder holds the base).
 
 ```bash
 sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json     # practising in the SDEM project
@@ -210,19 +211,18 @@ Write down the ids of the items you do **not** want, e.g. `HIS-A3-PAYMENT-ORDER`
 *Tip:* in Copilot Chat, `/sdem-onboarding-review work/history` explains each item and suggests what to reject — you decide.
 
 ### 4 · Keep the good ones
-Try it first with `--dry-run` (writes nothing), then run it for real:
+Start the workspace once (step 0), then try the load first with `--dry-run` (writes nothing), then run it for real. `--person` is required: loading is your decision about which suggestions become architecture data, and SDEM records who made it.
 ```bash
-sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
-  --a2 work/bian/a2-service-domain.json --dry-run          # in your workspace repository: --a2 bian/a2-service-domain.json
-sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
-  --a2 work/bian/a2-service-domain.json
+sdem new --workspace workspaces/history --person <your name> --bian work/bian/a2-service-domain.json   # in your workspace repository: no --bian — it uses bian/a2-service-domain.json
+sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER --dry-run
+sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER
 ```
 ```
-loaded (LOAD-001) into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added from work/bian/a2-service-domain.json
+loaded (LOAD-001) into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures
 design records: 11 page(s); gap records: 13 — what did not fit an entity, kept beside the workspace (…)
 reconciliation: 17 candidates = 16 loaded + 0 already in the workspace + 1 excluded
 ```
-The *reconciliation* proves nothing was lost. `--a2` is needed only the first time. **Ingestion is now complete**; the rest is normal processing.
+The *reconciliation* proves nothing was lost. **Ingestion is now complete**; the rest is normal processing.
 
 ### 5 · Health check
 ```bash

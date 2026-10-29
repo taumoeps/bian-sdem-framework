@@ -28,8 +28,9 @@ class UseCaseExample4(unittest.TestCase):
         for name, argv in [
             ('inspect', ['transform', 'inspect', 'work/imports/payarch', '--ocr', 'off']),
             ('transform', ['transform', 'run', 'work/imports/payarch', '-o', 'work/history', '--ocr', 'off']),
-            ('dry', ['load', 'work/history', '--workspace', 'workspaces/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER', '--a2', A2, '--dry-run']),
-            ('load', ['load', 'work/history', '--workspace', 'workspaces/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER', '--a2', A2]),
+            ('new', ['new', '--workspace', 'workspaces/history', '--person', ME, '--bian', A2]),
+            ('dry', ['load', 'work/history', '--workspace', 'workspaces/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER', '--dry-run']),
+            ('load', ['load', 'work/history', '--workspace', 'workspaces/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER']),
             ('check', ['check', '--workspace', 'workspaces/history']),
             ('link', ['link', '--workspace', 'workspaces/history', '--out', 'work/links']),
             ('review', ['review', 'work/links/proposals.json']),
@@ -93,10 +94,10 @@ class UseCaseExample4(unittest.TestCase):
 
     def test_5_load(self):
         _, dry = self.out['dry']
-        self.assertIn('would load into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added', dry)
+        self.assertIn('would load into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures', dry)
         code, o = self.out['load']
         self.assertEqual(code, 0, o)
-        self.assertIn('loaded (LOAD-001) into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added', o)
+        self.assertIn('loaded (LOAD-001) into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures', o)
         self.assertIn('gap records: 13 — what did not fit an entity, kept beside the workspace (text not read 5, needs a person 3, column not mapped 2, no entity type 1, file not read 1, rejected at load 1)', o)
         self.assertIn('reconciliation: 17 candidates = 16 loaded + 0 already in the workspace + 1 excluded; 60 items read = 45 captured + 4 skipped by design + 11 not captured', o)
         for f in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json', 'designs/design-records.json', 'loads/LOAD-001.json'):

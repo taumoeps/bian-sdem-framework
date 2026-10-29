@@ -111,8 +111,8 @@ flowchart LR
     A["📊 <b>Answers</b>"]
     PL["🧭 <b>Planned design</b><br/>kept apart, never approved"]
     MM["📘 <b>Metamodel</b><br/>what may exist and connect"]
-    IN -->|"sdem transform · sdem load<br/>sdem bian import"| D
-    IN -.->|"new design:<br/>sdem aid project"| PL
+    IN -->|"sdem new, then<br/>sdem transform · sdem load"| D
+    IN -.->|"new design:<br/>sdem aid project --workspace"| PL
     D -->|"sdem link"| P
     P -->|"👤 sdem approve<br/>(or sdem connect)"| C
     D -->|"sdem build"| K
@@ -136,11 +136,12 @@ The steps in order, from your designs to the knowledge graph:
 
 | # | Step | Command | What happens | Who |
 |---|---|---|---|---|
-| 1 | Look at an existing design | `sdem transform inspect <export>` | shows what is in the export and what SDEM can read; changes nothing | SDEM |
-| 2 | Read it | `sdem transform run <export> -o work/history` | turns pages, tables and diagrams into *suggested* items, with a report of where each came from | SDEM |
-| 3 | Keep the good ones | `sdem load work/history --workspace <workspace> --person <you>` | copies the items you accept into the workspace; what does not fit is kept as a gap record | **you** |
-| 4 | Add your BIAN layer | `sdem bian import --base --all -o bian/a2-service-domain.json` | the A2 layer from BIAN's public Semantic APIs (or your own BIAN) — [three ways to choose](#choosing-your-bian-service-domains) | the SDEM lead |
-| — | *New design instead?* | `sdem aid project` | plans the BIAN, application and technology layers you do not have yet — a planned design, kept apart from real data | SDEM |
+| 0 | Your organisation's BIAN layer — once, shared by every workspace | `sdem bian import --base --all -o bian/a2-service-domain.json` | all of BIAN's public service domains (or your own BIAN) — every workspace starts from it | the SDEM lead |
+| 1 | **Start the workspace** | `sdem new --workspace <workspace> --person <you>` | creates the workspace: the four layers — A2 your BIAN layer — and an empty set of connections; checked, recorded | **you** |
+| 2 | *Existing design:* look at it | `sdem transform inspect <export>` | shows what is in the export and what SDEM can read; changes nothing | SDEM |
+| 3 | *Existing design:* read it | `sdem transform run <export> -o work/history` | turns pages, tables and diagrams into *suggested* items, with a report of where each came from | SDEM |
+| 4 | *Existing design:* keep the good ones | `sdem load work/history --workspace <workspace> --person <you>` | copies the items you accept into the workspace — you are recorded as the person who decided; what does not fit is kept as a gap record | **you** |
+| — | *New design instead:* plan it | `sdem aid project --workspace <workspace>` | from the workspace's business layer and BIAN layer, plans the BIAN, application and technology records you do not have yet — kept apart in `<workspace>/plans/`, never mixed with real data | SDEM |
 | 5 | Check | `sdem check --workspace <workspace>` | every file against the metamodel; errors must be fixed, warnings are advice — also run by CI on every change | SDEM |
 | 6 | Propose connections | `sdem link --workspace <workspace> --out work/links` | proposes connections between layers, each with its reasons | SDEM |
 | 7 | Review them | `sdem review work/links/proposals.json` | lists the proposals, weakest first | **you** |
@@ -149,11 +150,15 @@ The steps in order, from your designs to the knowledge graph:
 
 #### Choosing your BIAN service domains
 
-| Option | Imports | When |
+**Every workspace starts with all of them** — your organisation's shared BIAN layer, or, if there is none yet, all 258 service domains of BIAN 14.0.0 — so nobody needs to know which to pick on day one. Later, an architect can narrow **one workspace** to the domains it uses; the others are not affected:
+
+| Option | Keeps | When |
 |---|---|---|
-| `--all` | **all 258** service domains in BIAN 14.0.0 | **the simplest start**, especially if you are new to service domains |
-| `--only "Payment Order Initiation" "Payment Rail"` | the domains you name | you know which ones your designs use — find them with `sdem bian list --base \| grep -i payment` |
-| `--from my-domains.txt` | the names in a file, one per line | a longer list, kept in your repository and reviewed like code |
+| *(nothing — the default)* | **all 258** service domains | **the simplest start**, especially if you are new to service domains |
+| `sdem bian custom --workspace <workspace> --only "Payment Order Initiation" "Payment Rail" --person <you>` | the domains you name | you know which ones the area uses — find them with `sdem bian list --base \| grep -i payment` |
+| `sdem bian custom --workspace <workspace> --from my-domains.txt --person <you>` | the names in a file, one per line | a longer list, kept in your repository and reviewed like code |
+
+Narrowing is checked and recorded, and refuses to remove a domain an approved connection uses. When the SDEM lead later updates the shared layer (`sdem bian update --root workspaces`), a workspace with its own selection keeps it and is told what is new.
 
 **240 come with full values; 18 are marked *not known yet*.** The metamodel gives every service domain an *asset type* and a *functional pattern*. BIAN's public files do not state them; SDEM works them out from the control record's name, following BIAN's own naming rule, for 192 domains. For 48 more, SDEM's **inference record** supplies values a person has accepted. The other 18 have no accepted value yet. SDEM does not guess: those 66 are imported marked `classification: unknown`, can still be connected through their operations, and `sdem check` advises on each until the values are given. The inference record ([BIAN inferences](docs/reference/bian-inferences.md)) holds each inferred value with its source, reasoning and confidence, a status and a history; the import applies an entry once a person has **accepted** it (`sdem bian inference accept <id> --person <you>`), and the domain records `classification: inferred` and the entry's id. Anyone can challenge or change an entry later, with a reason, and every change is kept. Or give values yourself: the import writes a template (`…needs-patterns.csv`) to fill in and use with `--patterns <template>`. A full BIAN layer does not flood you with proposals: on the example workspace, `sdem link` took about eight seconds and proposed 13 connections with all 258 domains loaded.
 
@@ -196,19 +201,20 @@ flowchart LR
 
 ## How an architect uses it
 
-Five steps, the same for every domain. Each links to where it is written in full.
+Six steps, the same for every area. Each links to where it is written in full.
 
 1. **Install and practise.** [Install](#install) SDEM, then do the user guide's [15-minute quick start](docs/sdem-workbench-user-guide.md#5-quick-start--15-minutes) on the made-up example: check the data, build the knowledge graph, trace a business process down to its technology.
-2. **Bring in your design** — one of two routes:
+2. **Start your workspace** — `sdem new --workspace workspaces/<area> --person <you>`: the folder where your area's architecture is kept, with BIAN's service domains already in it.
+3. **Bring in your design** — one of two routes:
 
    | Your design | What happens | In full |
    |---|---|---|
    | **Existing** — already documented, e.g. in Confluence | you export it; SDEM reads it into *suggested* items with a report (`sdem transform`); you keep the good ones (`sdem load`); what does not fit is kept as a gap record | [below](#onboarding-your-existing-designs) and the [onboarding workflow](docs/sdem-onboarding-workflow.md) |
-   | **New** — not built yet | you write the business layer (A1) and what is already decided; SDEM projects the missing BIAN, application and technology layers as a *planned* design, kept apart from real data (`sdem aid project`) | [planning with AID](docs/sdem-planning-with-aid.md) |
+   | **New** — not built yet | you write the business layer (A1) and what is already decided; SDEM projects the missing BIAN, application and technology layers as a *planned* design, kept apart in the workspace's `plans/` (`sdem aid project --workspace`) | [planning with AID](docs/sdem-planning-with-aid.md) |
 
-3. **Connect the layers.** SDEM proposes connections across the layers (`sdem link`). You approve the true ones, naming the document that proves each (`sdem approve`), or state one SDEM missed (`sdem connect`). Agents and Copilot never approve.
-4. **Review.** Commit on a branch in your organisation's private workspace repository and open a pull request: a reviewer checks it and CI runs every check. A connection is final when the pull request is merged.
-5. **Use it.** Build the knowledge graph (`sdem build`), then ask *what does this depend on?* (`sdem trace`), *what breaks if it goes?* (`sdem impact`), or open the dashboard (`sdem dashboard`). Copilot can explain any result in plain words.
+4. **Connect the layers.** SDEM proposes connections across the layers (`sdem link`). You approve the true ones, naming the document that proves each (`sdem approve`), or state one SDEM missed (`sdem connect`). Agents and Copilot never approve.
+5. **Review.** Commit on a branch in your organisation's private workspace repository and open a pull request: a reviewer checks it and CI runs every check. A connection is final when the pull request is merged.
+6. **Use it.** Build the knowledge graph (`sdem build`), then ask *what does this depend on?* (`sdem trace`), *what breaks if it goes?* (`sdem impact`), or open the dashboard (`sdem dashboard`). Copilot can explain any result in plain words.
 
 Every task step by step: the user guide's [workflow examples](docs/sdem-workbench-user-guide.md#8-workflow-examples).
 

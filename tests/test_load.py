@@ -19,6 +19,15 @@ def run(*argv):
     return code, out.getvalue(), err.getvalue()
 
 
+
+def start(ws, **kw):
+    """A workspace to load into — `sdem new` (WS-01); without a BIAN layer unless one is given."""
+    import contextlib, io
+    from sdem import new
+    args = ['--workspace', str(ws), '--person', 'jane.architect'] + (['--bian', str(kw['bian'])] if kw.get('bian') else ['--no-bian'])
+    with contextlib.redirect_stdout(io.StringIO()): assert new.main(args) == 0
+    return ws
+
 class LoadTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -33,7 +42,7 @@ class LoadTests(unittest.TestCase):
     def est(self, name):
         p = self.tmp / name
         shutil.rmtree(p, ignore_errors=True)
-        return p
+        return start(p)
 
     def test_refuses_a_folder_that_is_not_a_transform_output(self):  # LD-G02
         with self.assertRaises(load.LoadError): load.load(ROOT / 'examples' / 'payment-initiation', self.est('e0'), 'jane.architect', all_=True)
@@ -49,14 +58,15 @@ class LoadTests(unittest.TestCase):
     def test_check_failure_writes_nothing(self):  # LD-C01
         e = self.est('e3')
         with self.assertRaises(load.LoadError) as c: load.load(self.cand, e, 'jane.architect', all_=True)
-        self.assertIn('LC-04', str(c.exception)); self.assertFalse(e.exists())
+        self.assertIn('LC-04', str(c.exception)); self.assertFalse((e / 'loads').exists())
+        self.assertEqual(json.loads((e / 'a3-application.json').read_text())['instances'], [])   # the workspace is as `sdem new` left it
 
     def test_loads_into_a_new_estate(self):  # LD-M02, LD-R01
         e = self.est('e4')
         res = load.load(self.cand, e, 'jane.architect', exclude=[BAD], now='2026-10-28T10:00:00')
         self.assertEqual(res['load_id'], 'LOAD-001'); self.assertEqual(res['excluded'], [BAD])
         a3 = json.loads((e / 'a3-application.json').read_text())
-        self.assertEqual(a3['source_system'], 'SDEM-LOAD'); self.assertEqual(a3['model_id'], 'E4-A3')
+        self.assertEqual(a3['source_system'], 'SDEM-NEW'); self.assertEqual(a3['model_id'], 'E4-A3')   # started by `sdem new`, filled by the load
         self.assertNotIn(BAD, {i['id'] for i in a3['instances']})
         self.assertTrue((e / 'mappings.json').exists())
         rec = json.loads((e / 'loads' / 'LOAD-001.json').read_text())
@@ -93,7 +103,8 @@ class LoadTests(unittest.TestCase):
     def test_dry_run_writes_nothing(self):  # LD-D01
         e = self.est('e8')
         res = load.load(self.cand, e, 'jane.architect', exclude=[BAD], dry_run=True)
-        self.assertTrue(res['loaded']['A3']); self.assertFalse(e.exists())
+        self.assertTrue(res['loaded']['A3']); self.assertFalse((e / 'loads').exists())
+        self.assertEqual(json.loads((e / 'a3-application.json').read_text())['instances'], [])
 
     def test_build_refuses_candidates(self):  # LD-X01, CTL-23
         files = [self.cand / f for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json')]

@@ -37,6 +37,8 @@ JOURNEYS = {
                  'sdem impact INF-CLOUD-K8S-PROD --change rehost --graph examples/card-fraud-alerts/graph'),
     'aid':      ('J6', 'Architecture Inference Design: project, check, gaps', 'sdem.aid', [],
                  'sdem aid project --have examples/payment-initiation/a1-business.json --catalogue bian.json --out work/prj'),
+    'new':      ('J9', 'start a workspace: the four layers (A2 your BIAN layer) and an empty registry of connections — checked, recorded', 'sdem.new', [],
+                 'sdem new --workspace workspaces/payments --person jane.architect'),
     'load':     ('J9', 'load reviewed candidate entities from sdem transform into a workspace — selected, checked first, recorded (the L of the ETL)', 'sdem.load', [],
                  'sdem load work/history --workspace workspaces/history --person jane.architect --exclude HIS-A3-X'),
     'designs':  ('J9', 'design records and gap records: the pages onboarded designs came from, and what did not fit an entity', 'sdem.designs', [],

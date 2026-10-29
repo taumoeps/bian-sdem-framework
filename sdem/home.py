@@ -1,7 +1,7 @@
 """`sdem home` — the main dashboard: SDEM itself (the metamodel, its relationships, configuration and health) and every
-project (workspace) in use, each with its own dashboard (docs/design/sdem-dashboard-design.md §8, spec DB-H*).
+workspace in use, each with its own dashboard (docs/design/sdem-dashboard-design.md §8, spec DB-H*).
 
-Writes a small offline site: <out>/index.html (home) and <out>/projects/<name>.html (one `sdem dashboard` per workspace, with a
+Writes a small offline site: <out>/index.html (home) and <out>/workspaces/<name>.html (one `sdem dashboard` per workspace, with a
 link back home). Everything is computed here with SDEM's own functions — the generated-file checks and the engine's
 acceptance cases run live at generation — and the pages only display it. No server, no network, no AI.
 """
@@ -139,13 +139,13 @@ def _ex(n):
     return _j(p) if p.exists() else None
 
 
-def components(m, h, projects):
+def components(m, h, workspaces):
     """The SDEM component architecture (the original design's logical architecture, docs/history/BIAN_SDEM_Design_Specification.md §2.1,
     plus the planning lane AID, change coordination and the workbench): boxes, status, live figures, details; and the flows."""
-    recs = {l: sum(p['layers'].get(l, 0) for p in projects) for l in LEVELS}
+    recs = {l: sum(p['layers'].get(l, 0) for p in workspaces) for l in LEVELS}
     ents = {l: sum(1 for e in m['entities'] if e['level'] == l and not e['artefact']) for l in LEVELS}
     within = {l: sum(1 for w in m['within'] if w['level'] == l) for l in LEVELS}
-    links = sum(p['links'] for p in projects); approved = sum(p['by_status'].get('approved', 0) for p in projects)
+    links = sum(p['links'] for p in workspaces); approved = sum(p['by_status'].get('approved', 0) for p in workspaces)
     acc = h['acceptance']; acc_ok = sum(a['passed'] for a in acc)
     ex2, ex3 = _ex(2), _ex(3)
     e2 = (sum(ok for x in ex2['runs'] for _, ok in x['checks']), sum(len(x['checks']) for x in ex2['runs']), sum(s_['pass'] for s_ in ex2['safety']), len(ex2['safety'])) if ex2 else None
@@ -155,13 +155,13 @@ def components(m, h, projects):
     def add(cid, title, sub, status, x, y, what, where, figures, nxt, tabs=(), w=W, hh=H):
         C.append({'id': cid, 'title': title, 'lines': _wrap(title, 26), 'sub': sub, 'status': status, 'x': x, 'y': y, 'w': w, 'h': hh, 'what': what, 'where': where, 'figures': figures, 'next': nxt, 'tabs': list(tabs)})
     add('workbench', 'SDEM Workbench', 'VS Code · CLI · dashboards · Copilot', 'built', 994, 20,
-        'How architects use SDEM: the project open in VS Code, SDEM run from the terminal (the CLI is its only interface), the dashboards for an overview, GitHub Copilot Chat for optional AI support. Every function works without AI.',
+        'How architects use SDEM: the workspace open in VS Code, SDEM run from the terminal (the CLI is its only interface), the dashboards for an overview, GitHub Copilot Chat for optional AI support. Every function works without AI.',
         ['sdem --help (every journey)', 'sdem home · sdem dashboard', 'docs/sdem-workbench-user-guide.md', '.github/ — Copilot instructions, agents, prompts, skills'],
-        [f"{len(projects)} project(s) in use", 'no MCP, no AI API inside SDEM'], 'Phase 2 dashboard (sdem serve, actions and forms) — proposed', ['projects', 'config'])
+        [f"{len(workspaces)} workspace(s) in use", 'no MCP, no AI API inside SDEM'], 'Phase 2 dashboard (sdem serve, actions and forms) — proposed', ['projects', 'config'])
     add('bian', 'BIAN Reference Architecture Repository', 'domains · operations · business objects', 'partial', 517, 20,
         'The BIAN service landscape SDEM anchors to: every A2 element and every BIAN identity comes from here, never invented (CTL-17).',
         ['each workspace\'s a2-service-domain.json (synthetic, made-up BIAN content)', 'the AID test catalogue (merged by BIAN canonical id)'],
-        [f"{ents['A2']} BIAN entity types in the metamodel", f"{recs['A2']} A2 records across the projects"], 'A licensed BIAN catalogue with real BIAN ids — roadmap v0.15', ['entities'])
+        [f"{ents['A2']} BIAN entity types in the metamodel", f"{recs['A2']} A2 records across the workspaces"], 'A licensed BIAN catalogue with real BIAN ids — roadmap v0.15', ['entities'])
     add('history', 'Historical Design Repository', 'past designs · decisions · baselines', 'partial', 40, 20,
         'Earlier designs, diagrams and decisions kept unchanged and referenceable beside new BIAN-aligned designs (original design §9, acceptance criteria 6 and 10). Built: sdem transform turns an export of past designs (Confluence, any folder layout) into candidate architecture entities with rules — tables, draw.io and PlantUML diagrams, known names in the text, text in pictures by on-device OCR — each with its source, plus an index of every design; a person reviews, then sdem load puts the kept entities into a workspace (checked, recorded; CTL-23 keeps candidates out of any graph).',
         ['sdem transform inspect · sdem transform run · sdem load', 'metamodel/transform-rules.json (tune without code)', 'docs/design/sdem-transform-design.md', 'graph store baselines (sdem baseline)'],
@@ -175,9 +175,9 @@ def components(m, h, projects):
         'Proposes the links between the architectures by applying the metamodel to the data — rules, not AI — each proposal with rule, reasoning and confidence. Proposals only; a person approves.',
         ['sdem link · sdem review · sdem explain', 'sdem/rules_engine.py', 'acceptance: sdem model accept'],
         [f"{acc_ok} of {len(acc)} acceptance cases pass (run now)" if acc else 'acceptance cases: run in the repository (sdem model accept)', 'CTL-22: engine checked against the metamodel'], 'A blind test case written by someone else', ['rules', 'health'])
-    add('aid', 'Architecture Inference Design (AID)', 'planning lane — projects missing layers', 'built', 994, 160,
+    add('aid', 'Architecture Inference Design (AID)', 'planning lane — workspaces missing layers', 'built', 994, 160,
         'Projects the architecture layers you do not have from the ones you do — forward (business → technology) or reverse — as a projected design with inference confidence, for planning; then compares it with the real design (gap analysis).',
-        ['sdem aid project · check · gaps', 'sdem view --projection', 'docs/design/aid-design.md'],
+        ['sdem aid workspace · check · gaps', 'sdem view --projection', 'docs/design/aid-design.md'],
         ([f"use-case example 2: {e2[0]} of {e2[1]} expectations, safety {e2[2]} of {e2[3]}"] if e2 else []) + ['never above medium confidence; name-only evidence low'],
         'AI suggestions through Copilot (AID-D08) — owner decision', ['health'])
     add('validation', 'SDEM Validation & Approval', 'checks · controls · a person approves', 'built', 40, 300,
@@ -196,12 +196,12 @@ def components(m, h, projects):
     add('kg', 'Federated Knowledge Graph', 'cross-layer mapping registry & traceability', 'built', 278, 440,
         'The approved links between the architectures (the Relationship Registry) joined with the four architecture graphs: trace any record up or down, classify the impact of a change, build matrices.',
         ['<workspace>/mappings.json (the registry)', 'sdem build → graph store', 'sdem trace · sdem impact · sdem matrix · sdem view'],
-        [f"{approved} approved links of {links} across the projects"], 'Ingestion of real designs (v0.11); an enterprise-wide graph across projects', ['projects'])
+        [f"{approved} approved links of {links} across the workspaces"], 'Ingestion of real designs (v0.11); an enterprise-wide graph across workspaces', ['projects'])
     for n, (lvl, title) in enumerate(LEVELS.items()):
         add(lvl.lower(), f"{lvl} {title.split(' ', 1)[1]} Graph & Schema", 'independently governed', 'built', 40 + n * 306, 620,
             f"The {title} architecture: its own records and the links inside it, checked against its schema and metamodel rows — owned by its team, never written by another.",
             [f"<workspace>/{DATASETS[n]}", f"metamodel/{DATASETS[n]}", f"sdem check · agent sdem-{lvl.lower()}-…"],
-            [f"{ents[lvl]} entity types", f"{within[lvl]} links allowed inside", f"{recs[lvl]} records across the projects"], 'Ingestion from the organisation\'s tools (v0.11)', ['entities', 'within'], w=272)
+            [f"{ents[lvl]} entity types", f"{within[lvl]} links allowed inside", f"{recs[lvl]} records across the workspaces"], 'Ingestion from the organisation\'s tools (v0.11)', ['entities', 'within'], w=272)
     E = []
     def edge(s_, t, label='', style='solid'): E.append({'s': s_, 't': t, 'label': label, 'style': style})
     edge('bian', 'engine', 'BIAN reference'); edge('bian', 'aid', 'catalogue'); edge('history', 'engine', 'past designs', 'dashed')
@@ -215,11 +215,11 @@ def components(m, h, projects):
 
 def collect_home(estates, project_pages, now=None):
     m = metamodel()
-    projects = []
+    workspaces = []
     for e, (page, d) in zip(estates, project_pages):
         open_work = [w for w in d['changes']['work'] if w['history'][-1]['status'] in ('open', 'in_progress', 'blocked')]
         cov = {l: (round(100 * c['linked'] / c['eligible']) if c['eligible'] else None) for l, c in d['coverage'].items()}
-        projects.append({'name': d['name'], 'path': str(e), 'page': page, 'layers': {l['level']: l['records'] for l in d['layers']},
+        workspaces.append({'name': d['name'], 'path': str(e), 'page': page, 'layers': {l['level']: l['records'] for l in d['layers']},
                          'missing': [x['level'] for x in d['missing_layers']], 'errors': sum(len(l['errors']) for l in d['layers']) + len(d['registry']['errors']) + len(d['coordination']['issues']),
                          'advice': sum(len(l['advice']) for l in d['layers']), 'links': d['registry']['links'], 'by_status': d['registry']['by_status'], 'coverage': cov,
                          'proposals': len(d['review']['rows']), 'open_work': len(open_work), 'events': len(d['changes']['events']),
@@ -227,18 +227,18 @@ def collect_home(estates, project_pages, now=None):
                          'attention': [a['text'] for a in d['attention'] if a['level'] != 'good']})
     hl = health(m)
     return {'generated': now or datetime.datetime.now().replace(microsecond=0).isoformat(sep=' '), 'metamodel': m, 'entity_picture': layout(m['entities'], m['cross']),
-            'architecture': components(m, hl, projects), 'health': hl, 'config': config(), 'projects': projects,
+            'architecture': components(m, hl, workspaces), 'health': hl, 'config': config(), 'projects': workspaces,
             'package_version': _version()}
 
 
 def write(out, roots=(), estates=(), now=None):
     from . import dashboard
-    out = Path(out); (out / 'projects').mkdir(parents=True, exist_ok=True)
+    out = Path(out); (out / 'workspaces').mkdir(parents=True, exist_ok=True)
     ests = find_estates(roots, estates); pages = []
     for e in ests:
         d = dashboard.collect(e, now=now); d['home'] = '../index.html'
         name = re.sub(r'[^A-Za-z0-9_.-]+', '-', e.resolve().name)
-        (out / 'projects' / f'{name}.html').write_text(dashboard.render(d), encoding='utf-8'); pages.append((f'projects/{name}.html', d))
+        (out / 'workspaces' / f'{name}.html').write_text(dashboard.render(d), encoding='utf-8'); pages.append((f'workspaces/{name}.html', d))
     data = collect_home(ests, pages, now)
     (out / 'index.html').write_text(PAGE.replace('__DATA__', json.dumps(data, ensure_ascii=False).replace('</', '<\\/')), encoding='utf-8')
     return out / 'index.html', data
@@ -247,9 +247,9 @@ def write(out, roots=(), estates=(), now=None):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem home', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='Write the main dashboard: SDEM itself — the metamodel (entity types, links inside and between architectures, the engine\'s rules), '
-                                             'the metamodel picture, configuration and health — and every project in use, each with its own dashboard. Offline; regenerate after a change.',
+                                             'the metamodel picture, configuration and health — and every workspace in use, each with its own dashboard. Offline; regenerate after a change.',
                                  epilog='Examples:\n  sdem home -o work/sdem                         # the example workspaces in examples/\n'
-                                        '  sdem home --root projects --workspace work/est -o work/sdem')
+                                        '  sdem home --root workspaces --workspace work/est -o work/sdem')
     ap.add_argument('-o', '--out', default='work/sdem', metavar='DIR', help='output folder (default work/sdem)')
     ap.add_argument('--root', action='append', default=[], metavar='DIR', help='a folder of workspaces (repeatable; default examples/)')
     ap.add_argument('--workspace', dest='estate', action='append', default=[], metavar='DIR', help='one more workspace (repeatable)')
@@ -262,8 +262,8 @@ def main(argv=None):
     page, data = write(a.out, roots, a.estate)
     if a.json: print(json.dumps(data, indent=2, ensure_ascii=False)); return 0
     h = data['health']; ok = all(g['current'] for g in h['generators']) and all(x['passed'] for x in h['acceptance'])
-    print(f"wrote {page} and {len(data['projects'])} project dashboard(s) in {Path(a.out) / 'projects'} — SDEM health: {'OK' if ok else 'ATTENTION'}; "
-          f"{sum(1 for p in data['projects'] if p['errors'] or p['proposals'] or p['open_work'] or p.get('open_gaps'))} project(s) need attention "
+    print(f"wrote {page} and {len(data['projects'])} workspace dashboard(s) in {Path(a.out) / 'workspaces'} — SDEM health: {'OK' if ok else 'ATTENTION'}; "
+          f"{sum(1 for p in data['projects'] if p['errors'] or p['proposals'] or p['open_work'] or p.get('open_gaps'))} workspace(s) need attention "
           "(errors, proposals waiting for review, open work or open gaps — the page lists them)")
     print(f"open: file://{page.resolve()}")
     return 0
@@ -310,7 +310,7 @@ main.wide{max-width:none;padding:12px 16px}
 <main id="main"></main>
 <script>
 const D = __DATA__;
-const TABS=[["picture","SDEM architecture"],["home","Overview"],["projects","Projects"],["entities","Architecture entities"],["entitymap","Entity map"],["within","Links inside each architecture"],["cross","Links between architectures"],["rules","Engine rules"],["health","Health"],["config","Configuration"]];
+const TABS=[["picture","SDEM architecture"],["home","Overview"],["projects","Workspaces"],["entities","Architecture entities"],["entitymap","Entity map"],["within","Links inside each architecture"],["cross","Links between architectures"],["rules","Engine rules"],["health","Health"],["config","Configuration"]];
 const COL={A1:"var(--a1)",A2:"var(--a2)",A3:"var(--a3)",A4:"var(--a4)"};const M=D.metamodel,H=D.health;
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function lvl(l){return `<span class="lvl" style="background:${COL[l]||"var(--muted)"}"></span>${esc(l)}`;}
@@ -330,7 +330,7 @@ R.home=()=>{
   h+=`<h2>The metamodel</h2><div class="cards">${["A1","A2","A3","A4"].map(l=>`<div class="card">${lvl(l)} <b>${esc(l)}</b><div class="big">${n(l)}</div><div class="muted">entity types · ${M.within.filter(w=>w.level===l).length} links allowed inside</div></div>`).join("")}
    <div class="card"><b>Between architectures</b><div class="big">${M.cross.length}</div><div class="muted">link types · ${M.rules.length} engine rules</div></div></div>`;
   const att=D.projects.filter(p=>p.errors||p.proposals||p.open_work||p.open_gaps);
-  h+=`<h2>Projects (${D.projects.length})</h2><p class="note">${att.length?`${att.length} need attention.`:"None needs attention."} Open a project for its own dashboard.</p>`+projTable();
+  h+=`<h2>Workspaces (${D.projects.length})</h2><p class="note">${att.length?`${att.length} need attention.`:"None needs attention."} Open a workspace for its own dashboard.</p>`+projTable();
   return h;};
 function projTable(){return table(["Project","Architectures (records)","Links","Coverage","Errors","Advice","To review","Open work","Open gaps","Needs attention"],D.projects.map(p=>`<tr>
   <td><a href="${esc(p.page)}"><b>${esc(p.name)}</b></a><div class="muted">${esc(p.path)}</div></td>
@@ -339,7 +339,7 @@ function projTable(){return table(["Project","Architectures (records)","Links","
   <td>${Object.entries(p.coverage).map(([l,v])=>`<div>${lvl(l)}${v==null?"—":v+"%"}</div>`).join("")}</td>
   <td class="${p.errors?"bad":"ok"}">${p.errors}</td><td class="${p.advice?"warn":""}">${p.advice}</td><td class="${p.proposals?"warn":""}">${p.proposals}</td><td class="${p.open_work?"warn":""}">${p.open_work}</td><td class="${p.open_gaps?"warn":""}">${p.open_gaps||0}</td>
   <td>${p.attention.map(esc).join("<br>")||'<span class="ok">nothing</span>'}</td></tr>`));}
-R.projects=()=>`<h2>Projects in use</h2><p class="note">Every workspace found. Coverage = records linked to another architecture by an approved link, of those the metamodel expects to be linked. Regenerate with <code>sdem home</code>.</p>`+projTable();
+R.projects=()=>`<h2>Workspaces in use</h2><p class="note">Every workspace found. Coverage = records linked to another architecture by an approved link, of those the metamodel expects to be linked. Regenerate with <code>sdem home</code>.</p>`+projTable();
 R.entities=()=>`<h2>Architecture entities</h2><p class="note">The entity types of each architecture, where each comes from, and its evidence status. Dashed = abstract (groups others, never has records of its own).</p>`+filterBox("fEnt","filter: type, standard, definition …")+
   table(["Architecture","Entity type","Definition","Comes from","Evidence status","Attributes","Links inside · between"],M.entities.map(e=>`<tr data-f="${esc((e.type+" "+e.definition+" "+e.standard+" "+e.concept+" "+e.evidence_status).toLowerCase())}">
   <td>${lvl(e.level)}</td><td><b>${esc(e.type)}</b>${e.abstract?' <span class="chip">abstract</span>':""}${e.artefact?' <span class="chip">artefact</span>':""}${e.extends?`<div class="muted">extends ${esc(e.extends)}</div>`:""}</td>
@@ -348,7 +348,7 @@ R.entities=()=>`<h2>Architecture entities</h2><p class="note">The entity types o
   <td>${e.within.length} · ${e.cross.length}</td></tr>`),"scroll");
 R.picture=()=>{const A=D.architecture;const st={"built":0,"partial":0,"not built":0};A.boxes.forEach(b=>st[b.status]=(st[b.status]||0)+1);
   return `<h2>SDEM architecture</h2><p class="note">The components of SDEM and how they work together — the mapping lane (left and centre) and the planning lane, AID (right), over the four independently governed architectures. Click a component for what it is, where it lives, its live figures and what is next. <span class="chip ok">■ built ${st["built"]}</span><span class="chip warn">■ partly built ${st["partial"]}</span><span class="chip muted">▢ not built ${st["not built"]}</span></p>
-  <div class="split"><div class="pic fit" id="arch"></div><div class="side fit" id="aside"><p><button class="fsbtn" data-fs="arch" aria-label="Show the diagram full screen">⛶ full screen</button></p><p class="muted">Click a component.</p><h3>Health now</h3><p>${genOK?'<span class="ok">generated documents current</span>':'<span class="bad">generated documents stale</span>'} · ${!H.checkout?'<span class="muted">maintainer checks run in the repository</span>':accOK?'<span class="ok">engine acceptance '+H.acceptance.length+' of '+H.acceptance.length+'</span>':'<span class="bad">engine acceptance failing</span>'}</p><p>${D.projects.length} project(s); ${D.projects.filter(p=>p.errors||p.proposals||p.open_work||p.open_gaps).length} need attention — see <a href="#projects" data-tab="projects">Projects</a>.</p></div></div>`;};
+  <div class="split"><div class="pic fit" id="arch"></div><div class="side fit" id="aside"><p><button class="fsbtn" data-fs="arch" aria-label="Show the diagram full screen">⛶ full screen</button></p><p class="muted">Click a component.</p><h3>Health now</h3><p>${genOK?'<span class="ok">generated documents current</span>':'<span class="bad">generated documents stale</span>'} · ${!H.checkout?'<span class="muted">maintainer checks run in the repository</span>':accOK?'<span class="ok">engine acceptance '+H.acceptance.length+' of '+H.acceptance.length+'</span>':'<span class="bad">engine acceptance failing</span>'}</p><p>${D.projects.length} workspace(s); ${D.projects.filter(p=>p.errors||p.proposals||p.open_work||p.open_gaps).length} need attention — see <a href="#projects" data-tab="projects">Workspaces</a>.</p></div></div>`;};
 R.entitymap=()=>`<h2>Entity map</h2><p class="note">The entity types of the four architectures and the ${M.cross.length} link types between them. Click a type for its definition, attributes, the links allowed for it, and the engine rules that use it.</p>
   <div class="split"><div class="pic fit" id="pic"></div><div class="side fit" id="side"><p><button class="fsbtn" data-fs="pic" aria-label="Show the map full screen">⛶ full screen</button></p><p class="muted">Click an entity type.</p></div></div>`;
 R.within=()=>`<h2>Links inside each architecture</h2><p class="note">The ${M.within.length} relationship rows allowed within an architecture, each from its reference architecture (BIAN for A2; ArchiMate 3.2 and TOGAF for A1, A3, A4). <code>sdem check</code> rejects any other.</p>`+filterBox("fWithin","filter: type, kind, id …")+

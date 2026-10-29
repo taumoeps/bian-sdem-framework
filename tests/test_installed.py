@@ -56,6 +56,7 @@ class InstalledLayoutTests(unittest.TestCase):
                      ['impact', 'INF-K8S-PAY-PROD', '--change', 'retire', '--graph', 'graph'], ['matrix', '--workspace', 'est'],
                      ['link', '--workspace', 'est', '--out', 'links'], ['dashboard', '--workspace', 'est', '-o', 'dash.html'], ['home', '--workspace', 'est', '-o', 'site'],
                      ['events', '--workspace', 'est'], ['transform', 'run', 'export', '-o', 'history', '--ocr', 'off'],
+                     ['new', '--workspace', 'hist', '--person', 'jane.architect', '--no-bian'],
                      ['load', 'history', '--workspace', 'hist', '--person', 'jane.architect', '--exclude', 'HIS-A3-PAYMENT-ORDER'],
                      ['bian', 'list', 'bian'], ['bian', 'list', '--base'], ['bian', 'import', '--base', '--only', 'Payment Order Initiation', '-o', 'base-a2.json'], ['bian', 'import', 'bian', '--only', 'Sample Order Initiation', '-o', 'bian-a2.json'],
                      ['copilot', 'install', '--to', '.'], ['designs', '--workspace', 'hist', '--gaps'], ['explain', 'P-RUN-001', '--proposals', 'links/proposals.json']):

@@ -80,7 +80,7 @@ class EstateTemplateTests(unittest.TestCase):
         self.assertIn('bian/', (T / '.github' / 'CODEOWNERS').read_text())
         self.assertIn('-o bian/a2-service-domain.json', (T / 'bian' / 'README.md').read_text())
         readme = (T / 'README.md').read_text()
-        self.assertIn('status check **`check`**', readme); self.assertIn('--a2 bian/a2-service-domain.json', readme)
+        self.assertIn('status check **`check`**', readme); self.assertIn('sdem new --workspace workspaces/<domain> --person <you>', readme)
         self.assertIn('sdem transform rules -o rules/transform-rules.json', readme)
         self.assertIn('select **`check`**', (ROOT / 'docs' / 'sdem-repository-protection.md').read_text())
 

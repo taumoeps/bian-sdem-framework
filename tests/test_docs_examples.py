@@ -7,6 +7,15 @@ from sdem import load, transform
 ROOT = Path(__file__).resolve().parents[1]
 
 
+
+def start(ws, **kw):
+    """A workspace to load into — `sdem new` (WS-01); without a BIAN layer unless one is given."""
+    import contextlib, io
+    from sdem import new
+    args = ['--workspace', str(ws), '--person', 'jane.architect'] + (['--bian', str(kw['bian'])] if kw.get('bian') else ['--no-bian'])
+    with contextlib.redirect_stdout(io.StringIO()): assert new.main(args) == 0
+    return ws
+
 class DocumentedExamplesTests(unittest.TestCase):
     def test_the_starter_bian_layer_loads(self):  # docs/sdem-onboarding-workflow.md — "Your BIAN (A2) layer"
         doc = (ROOT / 'docs' / 'sdem-onboarding-workflow.md').read_text(encoding='utf-8')
@@ -16,7 +25,7 @@ class DocumentedExamplesTests(unittest.TestCase):
         try:
             (tmp / 'a2-service-domain.json').write_text(json.dumps(starter), encoding='utf-8')
             transform.extract(ROOT / 'examples' / 'designs' / 'confluence-folder-export', tmp / 'history', ocr='off')
-            res = load.load(tmp / 'history', tmp / 'estate', 'jane.architect', exclude=['HIS-A3-PAYMENT-ORDER'], a2=tmp / 'a2-service-domain.json')
+            res = load.load(tmp / 'history', start(tmp / 'estate'), 'jane.architect', exclude=['HIS-A3-PAYMENT-ORDER'], a2=tmp / 'a2-service-domain.json')
             self.assertGreater(res['reconciliation']['loaded'], 0)
             self.assertTrue((tmp / 'estate' / 'a2-service-domain.json').exists())
         finally:

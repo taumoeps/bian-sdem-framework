@@ -24,6 +24,15 @@ MUST_FIND = {
 NEVER = ['loan', 'lending', 'credit', 'every loan', 'once']   # the domain's general words are not records
 
 
+
+def start(ws, **kw):
+    """A workspace to load into — `sdem new` (WS-01); without a BIAN layer unless one is given."""
+    import contextlib, io
+    from sdem import new
+    args = ['--workspace', str(ws), '--person', 'jane.architect'] + (['--bian', str(kw['bian'])] if kw.get('bian') else ['--no-bian'])
+    with contextlib.redirect_stdout(io.StringIO()): assert new.main(args) == 0
+    return ws
+
 class LendingOnboardingTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -56,7 +65,7 @@ class LendingOnboardingTests(unittest.TestCase):
 
     def test_loads_into_an_estate_and_keeps_the_rest_as_gaps(self):
         est = self.tmp / 'lending'
-        res = load.load(self.out, est, 'jane.architect', exclude=['HIS-A3-LOAN-APPLICATION'])  # a data entity drawn without its columns fails LC-04, as in payments
+        res = load.load(self.out, start(est), 'jane.architect', exclude=['HIS-A3-LOAN-APPLICATION'])  # a data entity drawn without its columns fails LC-04, as in payments
         self.assertEqual(res['reconciliation']['loaded'], len(self.recs) - 1)
         gaps = json.loads((est / 'designs' / 'design-records.json').read_text())['gaps']
         cats = {g['category'] for g in gaps}

@@ -83,10 +83,12 @@ This is the one full list; other documents link here.
 | File or folder | Holds | Written by | By hand? |
 |---|---|---|---|
 | `a1-business.json` … `a4-technology.json` | one layer's records and the links inside it (one to four files) | your source tools, `sdem load`, `sdem change` (agents) | **yes**, then `sdem check` |
+| `workspace.json` | who started the workspace and when, and where its BIAN layer came from (all of it, or the domains chosen) | `sdem new`, `sdem bian custom` | no |
 | `mappings.json` | **the registry**: every connection between layers, with status, evidence, reviewer and date | `sdem approve`, `sdem connect` | no — CI refuses an edited approved connection |
 | `designs/design-records.json` | the pages onboarded designs came from, and the **gap records** | `sdem load`, `sdem designs` | no |
 | `loads/LOAD-nnn.json` | what each load brought in, by whom, and the reconciliation | `sdem load` | no |
 | `bian-updates/BU-nnn.json` | each update of the workspace's BIAN layer | `sdem bian update` | no |
+| `plans/PLAN-nnn/` | planned designs from AID — kept apart from the real layers, never approved | `sdem aid project --workspace` | no |
 | `migrations/MIG-nnn.json` | each move to a new metamodel version | `sdem migrate` | no |
 | `coordination/` | agents' change sets, change events and work items | `sdem change`, `events`, `work` | no |
 

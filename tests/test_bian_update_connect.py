@@ -17,7 +17,8 @@ class BianUpdateAndConnectTests(unittest.TestCase):
         shutil.copytree(ROOT / 'examples' / 'designs' / 'confluence-folder-export', cls.base / 'export')
         for a in (('bian', 'import', '--base', '--only', 'Payment Order Initiation', 'Payment Rail', '-o', 'bian/a2-service-domain.json'),
                   ('transform', 'run', 'export', '-o', 'history', '--ocr', 'off'),
-                  ('load', 'history', '--workspace', 'workspaces/payments', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER', '--a2', 'bian/a2-service-domain.json'),
+                  ('new', '--workspace', 'workspaces/payments', '--person', ME),   # starts from the shared BIAN layer, bian/a2-service-domain.json
+                  ('load', 'history', '--workspace', 'workspaces/payments', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER'),
                   ('link', '--workspace', 'workspaces/payments', '--out', 'links')):
             r = run(*a); assert r.returncode == 0, (a, r.stdout + r.stderr)
 

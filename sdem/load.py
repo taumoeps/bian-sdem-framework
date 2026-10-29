@@ -124,6 +124,8 @@ def plan(estate, ds, keep, a2=None, mm=None, today=None):
 def load(src, estate, person, keep=None, exclude=None, all_=False, a2=None, dry_run=False, now=None):
     """Select, check, write, record. Returns the result; raises LoadError when refused (nothing written)."""
     check_person(person)
+    if not (Path(estate) / 'mappings.json').exists():   # WS-03: a workspace is started with `sdem new`, never created by a load
+        raise LoadError(f'{estate}: no workspace here — start it first: sdem new --workspace {estate} --person {person}')
     meta, ds = read_candidates(src)
     keep_ids, excluded = select(ds, all_, keep, exclude)
     mm = Metamodel.load(); now = now or datetime.datetime.now().replace(microsecond=0).isoformat()
@@ -173,7 +175,7 @@ def load(src, estate, person, keep=None, exclude=None, all_=False, a2=None, dry_
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem load', description='Load reviewed candidate entities from `sdem transform run` into a workspace — selected, checked first, recorded (the L of the ETL).')
     ap.add_argument('candidates', help='the folder `sdem transform run` wrote')
-    ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR', help='the workspace to load into (created if missing); for past designs a separate historical workspace is recommended')
+    ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR', help='the workspace to load into — started with `sdem new`; for past designs a separate historical workspace is recommended')
     ap.add_argument('--person', required=True, help='who reviewed and loads — a person, never an agent')
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument('--all', action='store_true', help='load every candidate')

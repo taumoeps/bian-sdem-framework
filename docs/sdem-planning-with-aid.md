@@ -5,11 +5,12 @@
 
 *Goal: you have only the business design; see what BIAN domains, applications and deployments it implies — before anything is built.*
 
-AID needs a **BIAN catalogue** — the BIAN service domains your organisation uses, as an A2 dataset. Here the example workspace's A2 file stands in for it.
+Plan from your **workspace**: AID reads its business layer (A1 — what the business does), any applications and technology it already has, its BIAN layer and its approved connections, and writes the plan to the workspace's `plans/` folder — kept apart from the real layers, never approved. (Practising here: copy an example first — `cp -R examples/payment-initiation work/my-workspace`.)
 
 ```bash
-sdem aid project --have work/my-workspace/a1-business.json --catalogue work/my-workspace/a2-service-domain.json --out work/prj
+sdem aid project --workspace work/my-workspace               # → work/my-workspace/plans/PLAN-001
 ```
+How it works, in short: for each capability and process, AID finds the BIAN service domains that support it (the operations a process names, or a close match with a domain); then the applications those domains would need (one per domain, one API per operation); then a deployment for each. Every planned record is marked as planned. Files instead of a workspace still work: `--have <files> --catalogue <A2 file> --out <folder>`.
 ```
 projection PRJ-A1 written to work/prj: A2 16 records, A3 6 records, A4 1 records, 11 links
 NOTE: SO-PI-06: Notify has no REST form — no API projected
@@ -38,7 +39,7 @@ PROJECTED ELEMENT  SD-PI  Payment Initiation (synthetic selection)  (A2 A2.Servi
 
 **Later, when the real design exists**, compare plan and reality:
 ```bash
-sdem aid gaps work/prj --actual work/my-workspace/a2-service-domain.json work/my-workspace/a3-application.json work/my-workspace/a4-technology.json work/my-workspace/mappings.json
+sdem aid gaps work/my-workspace/plans/PLAN-001 --workspace work/my-workspace
 ```
 ```
 A2 service domains: {'projected': 1, 'real': 1, 'matched': 1, 'precision': 1.0, 'recall': 1.0}

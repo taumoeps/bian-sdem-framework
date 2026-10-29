@@ -54,18 +54,18 @@ flowchart LR
 
 ## 4a. The main dashboard — `sdem home`
 
-One home page for **SDEM itself** and **every project in use**, linking to each project's dashboard (each project page links back).
+One home page for **SDEM itself** and **every workspace in use**, linking to each workspace's dashboard (each workspace page links back).
 
 ```bash
 sdem home -o work/sdem          # the workspaces in examples/; add --root DIR or --workspace DIR for your own
 ```
 
-writes `work/sdem/index.html` and `work/sdem/projects/<project>.html`.
+writes `work/sdem/index.html` and `work/sdem/workspaces/<workspace>.html`.
 
 ```mermaid
 flowchart LR
-    home["Home — work/sdem/index.html<br/>SDEM health · the metamodel · projects"] --> p1["projects/payment-initiation.html"]
-    home --> p2["projects/digital-lending.html"]
+    home["Home — work/sdem/index.html<br/>SDEM health · the metamodel · workspaces"] --> p1["workspaces/payment-initiation.html"]
+    home --> p2["workspaces/digital-lending.html"]
     home --> p3["… one per workspace"]
     p1 -.->|"← SDEM home"| home
 ```
@@ -99,7 +99,7 @@ A local web app (Python standard library, `localhost` only, no external access) 
 | DB-D02 | Where the logic lives | **in SDEM's Python functions only**; the page displays precomputed results | approved, built |
 | DB-D03 | How architects act from it | **copy the exact `sdem` command** shown beside each item (phase 1) | approved, built |
 | DB-D04 | New outputs | `sdem matrix` and `sdem impact --report`, usable without the dashboard | approved, built |
-| DB-D06 | A main dashboard | **`sdem home`**: SDEM itself (metamodel, picture, health live, configuration) and every project, linking to the project dashboards | approved 2026-10-28, built |
+| DB-D06 | A main dashboard | **`sdem home`**: SDEM itself (metamodel, picture, health live, configuration) and every workspace, linking to the project dashboards | approved 2026-10-28, built |
 | DB-D05 | Phase 2 — `sdem serve` with actions and forms | **after phase 1 has been used**; amend SDEM-D07 to "one engine, two front ends" | proposed — owner to decide |
 
 ## 7. Limits

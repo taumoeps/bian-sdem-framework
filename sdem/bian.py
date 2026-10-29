@@ -496,15 +496,69 @@ def main(argv=None):
     im.add_argument('--previous', metavar='FILE', help='a previous A2 dataset: report what was added, dropped or renamed')
     im.add_argument('--json', action='store_true')
     sub.add_parser('inference', help="SDEM's record of inferred asset types and functional patterns — list, show, accept, challenge, change, reject")
+    cu = sub.add_parser('custom', parents=[src], help="narrow one workspace's BIAN layer to the service domains it uses — checked; never strands an approved connection")
+    cu.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
+    cu.add_argument('--only', nargs='+', metavar='NAME', help='service domains by name'); cu.add_argument('--from', dest='from_file', metavar='FILE', help='a file of names, one per line')
+    cu.add_argument('--all', action='store_true', help='back to every service domain')
+    cu.add_argument('--patterns', metavar='CSV'); cu.add_argument('--inferences', metavar='FILE'); cu.add_argument('--no-inferences', action='store_true')
+    cu.add_argument('--person', required=True, help='your name — a person'); cu.add_argument('--dry-run', action='store_true'); cu.add_argument('--json', action='store_true')
     up = sub.add_parser('update', help="replace a workspace's BIAN layer with your shared one — checked; never strands an approved connection")
     where = up.add_mutually_exclusive_group(required=True)
     where.add_argument('--workspace', dest='estate', metavar='DIR', help='one workspace'); where.add_argument('--root', metavar='DIR', help='every workspace in a folder, e.g. workspaces')
     up.add_argument('--a2', required=True, metavar='FILE', help='your shared BIAN layer, e.g. bian/a2-service-domain.json')
     up.add_argument('--person', required=True, help='your name — a person'); up.add_argument('--dry-run', action='store_true'); up.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
+    if a.cmd == 'custom':   # WS-04: one workspace's own selection
+        ws = Path(a.estate)
+        if not (ws / 'mappings.json').exists(): raise BianError(f'{ws}: no workspace here — start one with sdem new')
+        if a.base is None and not a.folder: a.base = ''
+        source = Path(a.base) if a.base else base_file()
+        domains = read_pack(source) if a.base is not None else read_release(a.folder)[0]
+        from .metamodel import Metamodel
+        chosen = select(domains, a.only, a.from_file, a.all)
+        patterns = None
+        if a.patterns:
+            with open(a.patterns, encoding='utf-8', newline='') as fh:
+                patterns = {r[0].strip(): (r[1].strip(), r[2].strip()) for r in csv.reader(fh)
+                            if len(r) >= 3 and r[0].strip() and r[1].strip() and r[2].strip() and not r[0].lstrip().startswith('#') and r[0].strip().lower() != 'service domain'}
+        infer = {}
+        if not a.no_inferences:
+            from .inferences import installed_file, read as read_inferences, accepted
+            f = Path(a.inferences) if a.inferences else installed_file(max((d['release'] for d in chosen), default=''))
+            if f: infer = accepted(read_inferences(f))
+        dataset, _ = build(chosen, Metamodel.load().version, False, False, patterns, infer)
+        import tempfile
+        tmp = Path(tempfile.mkdtemp()) / 'a2-service-domain.json'; tmp.write_text(json.dumps(dataset), encoding='utf-8')
+        try: plans = update_estates([ws], tmp, a.person, a.dry_run)
+        except BianRefused as e: print(f'ERROR: {e}', file=sys.stderr); return 1
+        c = plans[0]
+        if not a.dry_run:
+            rec_path = ws / 'workspace.json'
+            rec = json.loads(rec_path.read_text(encoding='utf-8')) if rec_path.exists() else {'format': 'sdem-workspace/1', 'name': ws.name}
+            rec['bian'] = {'source': f'{source.name if a.base is not None else a.folder}', 'release': dataset['model_version'],
+                           'selection': 'all' if a.all else 'custom', 'service_domains': len(chosen),
+                           **({} if a.all else {'chosen': sorted(d['name'] for d in chosen)}), 'changed_by': a.person, 'update': c.get('id')}
+            from .files import write_json
+            write_json(rec_path, rec)
+        if a.json: print(json.dumps(c, indent=2)); return 0
+        print(f"{ws}: {'would narrow' if a.dry_run else 'narrowed'} the BIAN layer to {len(chosen)} service domain(s)" + (f" ({c['id']})" if c.get('id') else '')
+              + f" — added {len(c['added'])}, dropped {len(c['dropped'])} records; checked" + ('' if a.dry_run else '. Next: commit on a branch and open a pull request.'))
+        return 0
     if a.cmd == 'update':
         estates = [Path(a.estate)] if a.estate else sorted(p for p in Path(a.root).iterdir() if (p / 'mappings.json').exists())
         if not estates: raise BianError(f'{a.root}: no workspaces in it (folders with a mappings.json)')
+        kept = []
+        if not a.estate:   # WS-04: a workspace with its own selection keeps it — reported, not overwritten
+            for e in list(estates):
+                rec = e / 'workspace.json'
+                if rec.exists() and json.loads(rec.read_text(encoding='utf-8')).get('bian', {}).get('selection') == 'custom':
+                    estates.remove(e); kept.append(e)
+            new_names = {i['name'] for i in json.loads(Path(a.a2).read_text(encoding='utf-8')).get('instances', []) if i['type'] == 'A2.ServiceDomain'}
+            for e in kept:
+                have = {i['name'] for i in json.loads((e / 'a2-service-domain.json').read_text(encoding='utf-8')).get('instances', []) if i['type'] == 'A2.ServiceDomain'}
+                print(f"{e}: has its own BIAN selection ({len(have)} service domains) — kept; the shared layer has {len(new_names - have)} it does not "
+                      f"(add them with: sdem bian custom --workspace {e} --only …)")
+            if not estates: return 0
         try: plans = update_estates(estates, a.a2, a.person, a.dry_run)
         except BianRefused as e: print(f'ERROR: {e}', file=sys.stderr); return 1
         if a.json: print(json.dumps(plans, indent=2)); return 0

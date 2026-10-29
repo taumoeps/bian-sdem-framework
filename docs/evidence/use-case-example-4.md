@@ -21,6 +21,7 @@ Each command does one job. The steps below use them in this order.
 
 | # | Command | In plain words |
 |---|---|---|
+| 0 | `sdem new --workspace workspaces/history --person <you>` | **Start the workspace** — once. Creates the folder where this area's architecture is kept, with your BIAN layer already in it |
 | 1 | `sdem transform inspect <export folder>` | **Look before you start.** Shows what is in your export and what SDEM can read. Changes nothing |
 | 2 | `sdem transform run <export folder> -o work/history` | **Read the designs.** Turns the pages into a list of *suggested* architecture items, and writes a report for you to read |
 | 3 | *(you read `work/history/extraction-report.md`)* | **Check the suggestions.** Decide which are wrong |
@@ -109,14 +110,14 @@ Optional: in Copilot Chat, `/sdem-onboarding-review work/history` explains each 
 
 ### 5 · Load — dry run first
 ```bash
-sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
-  --a2 examples/payment-initiation/a2-service-domain.json --dry-run
+sdem new --workspace workspaces/history --person <your name> --bian examples/payment-initiation/a2-service-domain.json
+sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER --dry-run
 ```
 then the same **without** `--dry-run`.
 
 | Expected (Run A) | A ✓ | B — record |
 |---|---|---|
-| `loaded (LOAD-001) into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures; A2 dataset added` | | |
+| `loaded (LOAD-001) into workspaces/history: A1 3 entities, A3 5 entities, A4 8 entities, 7 links inside architectures` | | |
 | `gap records: 13 (text not read 5, needs a person 3, column not mapped 2, no entity type 1, file not read 1, rejected at load 1)` | | gap counts |
 | `reconciliation: 17 candidates = 16 loaded + 0 already in the workspace + 1 excluded; 60 items read = 45 captured + 4 skipped by design + 11 not captured` | | **does it balance?** |
 | `workspaces/history/` holds `a1…a4` datasets, `mappings.json` (empty), `designs/design-records.json`, `loads/LOAD-001.json` | | |

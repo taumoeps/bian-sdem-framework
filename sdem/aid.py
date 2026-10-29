@@ -548,13 +548,25 @@ def trace(reader, pkg, start, direction='down'):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem aid', description='Architecture Inference Design: project the missing architecture layers for planning.')
     sub = ap.add_subparsers(dest='cmd', required=True)
-    p = sub.add_parser('project'); p.add_argument('--have', nargs='+', required=True); p.add_argument('--catalogue'); p.add_argument('--registry'); p.add_argument('-o', '--out', required=True); p.add_argument('--json', action='store_true')
+    p = sub.add_parser('project'); p.add_argument('--workspace', dest='estate', metavar='DIR', help="plan from a workspace: its business layer (and any applications and technology), its BIAN layer and its approved connections"); p.add_argument('--have', nargs='+'); p.add_argument('--catalogue'); p.add_argument('--registry'); p.add_argument('-o', '--out', help='where the planned design goes (default with --workspace: <workspace>/plans/PLAN-nnn)'); p.add_argument('--json', action='store_true')
     c = sub.add_parser('check'); c.add_argument('projection'); c.add_argument('--catalogue'); c.add_argument('--json', action='store_true')
-    g = sub.add_parser('gaps'); g.add_argument('projection'); g.add_argument('--actual', nargs='+', required=True); g.add_argument('--json', action='store_true')
+    g = sub.add_parser('gaps'); g.add_argument('projection'); g.add_argument('--workspace', dest='estate', metavar='DIR', help="compare with a workspace's real layers and approved connections"); g.add_argument('--actual', nargs='+'); g.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     j = lambda f: json.loads(Path(f).read_text(encoding='utf-8'))
-    if a.cmd == 'project':
+    if a.cmd == 'project' and a.estate:   # WS-05: plan from a workspace; the plan is kept apart in <workspace>/plans/
+        ws = Path(a.estate)
+        if not (ws / 'mappings.json').exists(): print(f'ERROR: {ws}: no workspace here — start one with sdem new', file=sys.stderr); return 2
+        have = {d['level']: d for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json') if (ws / f).exists() for d in [j(ws / f)] if d.get('instances')}
+        if 'A1' not in have: print(f'ERROR: {ws}: no business layer (A1) yet — AID plans from what the business does; add it first', file=sys.stderr); return 2
+        a.catalogue = a.catalogue or (str(ws / 'a2-service-domain.json') if (ws / 'a2-service-domain.json').exists() else None)
+        a.registry = a.registry or str(ws / 'mappings.json')
+        if not a.out:
+            plans = ws / 'plans'; n = 1 + max([int(x.name.split('-')[1]) for x in plans.glob('PLAN-*') if x.name.split('-')[1].isdigit()] or [0]) if plans.exists() else 1
+            a.out = str(plans / f'PLAN-{n:03d}')
+    elif a.cmd == 'project':
+        if not a.have or not a.out: ap.error('project needs --workspace, or --have and --out')
         have = {j(f)['level']: j(f) for f in a.have}
+    if a.cmd == 'project':
         try: pkg = project(have, j(a.catalogue) if a.catalogue else None, j(a.registry) if a.registry else None)
         except ValueError as e: print(f'ERROR: {e}', file=sys.stderr); return 1
         issues = check(pkg, j(a.catalogue) if a.catalogue else None)
@@ -571,6 +583,10 @@ def main(argv=None):
         for i in issues: print(f'ERROR: {i}')
         print('projection valid' if not issues else f'{len(issues)} issue(s)'); return 1 if issues else 0
     real, reg = {}, _registry()
+    if a.estate:
+        ws = Path(a.estate)
+        a.actual = [str(ws / f) for f in ('a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json') if (ws / f).exists()]
+    if not a.actual: ap.error('gaps needs --workspace or --actual')
     for f in a.actual:
         d = j(f)
         if 'mappings' in d: reg = d

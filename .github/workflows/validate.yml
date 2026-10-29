@@ -98,6 +98,7 @@ jobs:
           python -m sdem dashboard --workspace examples/payment-initiation -o /tmp/dashboard.html
           python -m sdem home -o /tmp/sdem
           python -m sdem transform run tests/fixtures/confluence-export-sample -o /tmp/history --ocr off
+          python -m sdem new --workspace /tmp/history-workspace --person ci.check --no-bian
           python -m sdem load /tmp/history --workspace /tmp/history-workspace --person ci.check --all --dry-run
       - run: python -m unittest discover -s tests -v
   package:
@@ -134,5 +135,6 @@ jobs:
           $S home --workspace est -o site
           $S events --workspace est
           $S transform run export -o history --ocr off
+          $S new --workspace hist --person ci.check --no-bian
           $S load history --workspace hist --person ci.check --exclude HIS-A3-PAYMENT-ORDER
           $S designs --workspace hist --gaps

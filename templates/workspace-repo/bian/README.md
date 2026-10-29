@@ -1,6 +1,6 @@
 # Your BIAN layer
 
-`a2-service-domain.json` here is **your BIAN layer** — the BIAN service domains your organisation uses, shared by every workspace (`sdem load … --a2 bian/a2-service-domain.json`). Every connection between business and applications passes through it.
+`a2-service-domain.json` here is **your BIAN layer** — the BIAN service domains your organisation uses, shared by every workspace: `sdem new` copies it into each new workspace; an architect can narrow one workspace with `sdem bian custom --workspace <workspace> --only … --person <you>`. Every connection between business and applications passes through it.
 
 **Make it** (once — whoever owns BIAN for you):
 

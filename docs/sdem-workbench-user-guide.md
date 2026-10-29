@@ -121,7 +121,7 @@ Each time you open a new terminal later, run the `activate` line from step 5 aga
 
 **The one idea to remember:** you run SDEM in the **terminal**; Copilot **helps** in the chat. Copilot never approves anything and never changes real data on its own.
 
-## 4a. The dashboards — SDEM and each project on one page
+## 4a. The dashboards — SDEM and each workspace on one page
 
 **Start here:**
 
@@ -129,9 +129,9 @@ Each time you open a new terminal later, run the `activate` line from step 5 aga
 sdem home -o work/sdem
 ```
 
-and open `work/sdem/index.html` (the command prints the full `file://` address). It opens on **SDEM's architecture** — every component (the BIAN reference, the metamodel, the mapping engine, validation and approval, the knowledge graph, the four architectures, AID and its projections, change coordination, the workbench), marked built or not, each clickable for what it is, where it lives and its live figures. The other tabs show SDEM itself — its health (checked as the page is made), the metamodel (every entity type, the links allowed inside and between the architectures, the engine's rules, a clickable picture), the configuration — and **every project**, each linking to its own dashboard. Add your own workspaces with `--workspace <folder>` or `--root <folder of workspaces>`.
+and open `work/sdem/index.html` (the command prints the full `file://` address). It opens on **SDEM's architecture** — every component (the BIAN reference, the metamodel, the mapping engine, validation and approval, the knowledge graph, the four architectures, AID and its projections, change coordination, the workbench), marked built or not, each clickable for what it is, where it lives and its live figures. The other tabs show SDEM itself — its health (checked as the page is made), the metamodel (every entity type, the links allowed inside and between the architectures, the engine's rules, a clickable picture), the configuration — and **every workspace**, each linking to its own dashboard. Add your own workspaces with `--workspace <folder>` or `--root <folder of workspaces>`.
 
-**One project's dashboard** on its own:
+**One workspace's dashboard** on its own:
 
 ```bash
 sdem dashboard --workspace examples/payment-initiation -o work/dashboard.html
@@ -297,8 +297,8 @@ The *Journey* column groups commands by task: **J1** check · **J2** propose lin
 | `sdem matrix --workspace <dir> [--md file.md]` | J5 | capability → domain → application → technology from approved links | for a report or review | — |
 | `sdem trace <id> --graph <dir>` | J5 | follows links `--direction down` (to technology), `up` (to business) or both | "what does this depend on / what depends on it?" | `sdem impact` |
 | `sdem impact <id> --change <kind> --graph <dir> [--report file.md]` | J5 | classifies what a change affects; kinds: `modify`, `rehost`, `replace`, `retire`; `--report` writes a printable impact report | before a change | share the report |
-| `sdem aid project --have <files> --catalogue <bian> --out <dir>` | J6 | projects the layers you don't have (planning, not real data) | early design, scoping | `sdem view --projection`, `sdem explain` |
-| `sdem aid check <dir>` · `sdem aid gaps <dir> --actual <files>` | J6 | checks a projection; compares it with a real design | later, when the real design exists | — |
+| `sdem aid project --workspace <dir>` (or `--have <files> --catalogue <bian> --out <dir>`) | J6 | plans the layers you don't have, from the workspace's business and BIAN layers — kept apart in `<workspace>/plans/` (planning, not real data) | early design, scoping | `sdem view --projection`, `sdem explain` |
+| `sdem aid check <dir>` · `sdem aid gaps <dir> --workspace <dir>` (or `--actual <files>`) | J6 | checks a projection; compares it with a real design | later, when the real design exists | — |
 | `sdem view --graph <dir> [--projection <dir>] [-o file.html]` | J7 | writes the HTML picture | to see and share | open in a browser |
 | `sdem explain <id> --proposals <file>` · `--projection <dir>` | J8 | why one link or projected element exists: rule, published source, evidence, reasoning, confidence | when you question a proposal | approve, reject or fix the data |
 | `sdem change propose <file> --workspace <dir> --agent … --person …` | AG | a layer's change set: checked before it lands, then its impact recorded as a change event | agent platform (§9a) | the orchestrator plans the work |
@@ -310,6 +310,8 @@ The *Journey* column groups commands by task: **J1** check · **J2** propose lin
 | `sdem events --workspace <dir> [--open]` | AG | change events, their impact and open work | to see what is waiting | `sdem work plan` |
 | `sdem work plan · list · claim …` | AG | work items: planned by the orchestrator, claimed and answered by the layer agents | agent platform (§9a) | `sdem change propose --work …` |
 | `sdem transform inspect <export>` · `sdem transform run <export> -o <dir>` | J9 | **transforms** an export of past designs (Confluence) into candidate architecture entities, with rules: tables, draw.io and PlantUML diagrams, known names in the text, text in pictures (on-device OCR) → entities and links with their source; pictures listed for you | bringing in past designs (§8.7) | review `extraction-report.md` |
+| `sdem new --workspace <dir> --person <you>` | J9 | **starts a workspace**: the four layers — A2 your BIAN layer (the shared one, or all of the base BIAN; `--no-bian` for none) — and an empty set of connections; checked, recorded in `workspace.json` |
+| `sdem bian custom --workspace <dir> --only <names…> --person <you>` (or `--from <file>`, `--all`) | J9 | **narrows one workspace's BIAN layer** to the service domains it uses — checked, recorded; refuses to remove a domain an approved connection uses |
 | `sdem load <candidates> --workspace <dir> --person <you> --exclude <ids>` | J9 | **loads** the candidate entities you keep into a workspace — checked first, recorded; `--a2` adds your BIAN layer; `--dry-run` | after reviewing a transform (§8.7) | `sdem link` |
 | `sdem designs --workspace <dir> [--entity <id>] [--gaps] [--category …] [--status open]` | J9 | the pages onboarded designs came from, and the **gap records** — what did not fit an entity, by category; `sdem trace` also ends with an entity's pages | after a load; to find what still needs a person | — |
 | `sdem bian list --base` · `sdem bian import --base --all -o <file>` (or `--only <names…>`, `--from <file>`) · `sdem bian pack <folder> -o <file>` | J9 | your **BIAN (A2) layer**: from the **base BIAN** that ships with SDEM (BIAN's public Semantic APIs 14.0.0), from your own packed BIAN (`--base <file>`), or from a folder of BIAN's files; imports the service domains you name, checked, with a report of what to confirm; `--patterns`, `--previous`; from a folder also `--descriptions`, `--objects` | once, before onboarding; again for a new BIAN release | `sdem load … --a2 <file>` |
@@ -519,14 +521,14 @@ mkdir -p work/imports && cp -r examples/designs/confluence-folder-export work/im
 sdem transform inspect work/imports/payarch --ocr off                    # what is in the export, what SDEM can read — changes nothing
 sdem transform run work/imports/payarch -o work/history --ocr off        # suggestions + work/history/extraction-report.md
 # read the report; note the ids you reject
-sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER \
-     --a2 work/bian/a2-service-domain.json   # made first with: sdem bian import --base --only "Payment Order Initiation" "Payment Rail" -o work/bian/a2-service-domain.json
+sdem new --workspace workspaces/history --person <your name>               # start the workspace once — with all of BIAN's service domains
+sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER
 sdem link --workspace workspaces/history --out work/links                      # then review, approve, build — as in §8.2
 ```
 
 - **Keep exports in `work/`** — it is never saved to Git. The result you keep is `workspaces/history/` (for real data, in your private workspace repository).
 - Every suggestion says **which page, where on it, which rule and how sure** (never above medium); nothing is loaded until you run `sdem load`; anything that did not fit becomes a **gap record** — nothing is lost.
-- **Your BIAN layer** (`--a2`) is needed once — what it is and where it comes from: [the workflow's *Your BIAN (A2) layer*](sdem-onboarding-workflow.md#your-bian-a2-layer).
+- **Your BIAN layer** comes with the workspace (`sdem new`); narrow it later with `sdem bian custom` — what it is and where it comes from: [the workflow's *Your BIAN (A2) layer*](sdem-onboarding-workflow.md#your-bian-a2-layer).
 - If your designs use table headings SDEM does not recognise: [configuration — onboarding](sdem-configuration.md#onboarding--reading-your-designs).
 
 > **Never** put the real export or its outputs in a public repository or paste them into an AI chat outside what your organisation allows.
