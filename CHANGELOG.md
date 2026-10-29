@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## 0.9.10 — workspaces, and AID that fills them (2026-10-30)
+
+Upgrade: change the pin to `@v0.9.10`, `pip install -r requirements.txt`; then **once per workspace** `sdem migrate --workspace <workspace> --person <you>` (metamodel 0.5.0/0.6.0 → 0.7.0, version only); rename a workspace repository's `estates/` folder to `workspaces/` and take the template's new `ci/`, `.github/` and `CODEOWNERS`; scripts that relied on `sdem load` creating a workspace run `sdem new` first; `sdem copilot install` if you use Copilot.
+
 - **A workspace holds only the BIAN service domains its design needs (owner's decision, 2026-10-30).** BIAN's 258 service domains are now the **catalogue** — your shared layer, or the base BIAN — read, never copied: `sdem new` starts the BIAN layer empty, and **`sdem aid` brings in only the domains the design points to**, with their operations and control records, each marked *inferred*. In the walkthrough the BIAN layer holds 2 domains (67 records, 125 KB) instead of 258 (7,077 records, 10 MB), and `sdem check` prints 5 advice lines instead of about 400. For existing designs, `sdem aid` after `sdem load` keeps a domain the business side **or** the application side points to (AID-M02). **Confirming a domain confirms its parts; rejecting one removes what was inferred from it** (its operations, the application, APIs and deployment built on it), never a record something kept still uses; both are checked first. **AID infers only from what a person wrote or confirmed** (AID-W08) — a second run no longer built guesses on guesses. `sdem bian custom --add` adds a domain by hand; `sdem bian update` refreshes in each workspace only the domains it holds, keeps a domain the shared layer dropped (reported), and brings in nothing else. `sdem new --bian FILE` still starts with a given layer.
 
 Upgrade (when released): `sdem migrate --workspace <workspace> --person <you>` once per workspace — metamodel 0.6.0 → 0.7.0, version only.

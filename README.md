@@ -2,7 +2,7 @@
 
 **SDEM connects an organisation's architecture — from what the business does, through BIAN, to the applications and the technology underneath — into one picture you can question.** It checks every connection against a metamodel and keeps a person in charge of every decision.
 
-> **Status:** v0.9.9 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). **Open source and free for any organisation** (Apache-2.0 — [using SDEM](docs/sdem-licence-and-use.md)); aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
+> **Status:** v0.9.10 (2026-10-29). Ready to try on made-up data; use on real designs follows a pilot ([what that needs](#using-sdem-on-real-designs)). **Open source and free for any organisation** (Apache-2.0 — [using SDEM](docs/sdem-licence-and-use.md)); aligned with BIAN, but **not** an official BIAN standard or endorsed by BIAN. Made-up example data only.
 
 ## Start here
 
@@ -295,7 +295,7 @@ git clone https://github.com/taumoeps/bian-sdem-framework.git && cd bian-sdem-fr
 python3.13 -m venv .venv               # or the full path you found, e.g. /opt/homebrew/bin/python3.13 -m venv .venv
 source .venv/bin/activate              # do this in every new terminal
 pip install -e .                       # installs the sdem command
-sdem --version                         # 0.9.9
+sdem --version                         # 0.9.10
 ```
 
 If `pip` says *File "setup.py" … not found* or *requires a different Python*, the `.venv` was made with an old Python: delete it (`rm -rf .venv`) and make it again with 3.13. More: [administration — troubleshooting](docs/sdem-administration.md#troubleshooting).
