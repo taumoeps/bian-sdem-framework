@@ -50,7 +50,7 @@ What already worked (E): command discovery (`sdem commands --json`), validation,
 | P1 | Error codes where errors happen; a hint on every error | `sdem/errors.py` (`SdemError`); typed codes for unknown commands, missing files and workspaces, malformed JSON; a hint for every code | AF-05 | tests; E 7c–7e |
 | P1 | Consistent JSON | every result is an object; lists become `{"count", "items"}`; `mapping_id` everywhere (**changes existing JSON output**) | AF-08 | tests; E 3a, 3c, 5b |
 | P1 | Real-agent evaluation | [`scripts/agent_eval.py`](../../scripts/agent_eval.py): `prepare` (made-up workspace, agent files, seven tasks) and `grade` (checks the files, the same for every platform); a careless agent's work fails it ([test](../../tests/test_agent_eval.py)) | AF-11 | tests; Claude Code run below |
-| P2 | Windows | UTF-8 output on every console; a Windows job in CI | AF-10 | CI |
+| P2 | Windows | UTF-8 output on every console; LF line endings everywhere; a Windows job in CI — which found four real defects (below) | AF-10 | CI: green on Windows |
 | P2 | Skills in each platform's folder | part of `sdem agents install` | AF-09 | tests |
 | — | MCP | **not added**: every platform runs shell commands and `sdem commands --json` already serves discovery; MCP would be a second interface to secure, and the organisation prohibits it in Copilot | — | — |
 
@@ -77,6 +77,19 @@ Identical results from a checkout and from a clean install run outside the repos
 | 8g–8i | direct edit of a layer | `check`; `check --require-recorded`; `change adopt --person sdem-a3-application` | 0 / 1 / 1 | listed in `unrecorded_edits`; CI fails; agent refused |
 | 9b | instructions for all four platforms | `sdem agents install --to <repo>` | 0 | 19 files + 23 Copilot files |
 | 10a / 10b | clean output, no prompts | stdout only JSON; stdin closed | 0 / 2 | notes on stderr; never waits for input |
+
+## What the Windows CI found
+
+The suite had never run on Windows. Making it pass found and fixed:
+
+| Defect | Effect | Fix |
+|---|---|---|
+| `sdem transform` sorted the export's files as path objects, which Windows compares ignoring case | **the same export gave a different result on Windows** (Edge Firewall extracted twice — 9 technology records instead of 8) | files read in the order of their path text, the same everywhere |
+| documentation links were made relative across drives (`C:` → `D:`) | a crash on Windows when the repository and the temporary folder are on different drives | such a link is left as written |
+| `workspace.json` recorded the BIAN layer's path with `\` on Windows | a workspace shared between Windows and other machines | paths recorded with `/` |
+| Git turned line endings to CRLF on checkout; SDEM wrote CRLF | checksums and generated files differed on Windows | `.gitattributes` keeps LF; SDEM writes LF |
+
+Plus test-only fixes (a test that built graph stores into `examples/` on Windows; POSIX permissions; Windows short paths) and a CI step that publishes each failing test as an annotation.
 
 ## The real-agent evaluation
 
@@ -127,7 +140,7 @@ SDEM's core contains no provider code and no AI; the metamodel and the records s
 | Machine-readable output | PASS | E: every result an object with the marker |
 | Error handling | PASS | E: typed codes; a hint on every error |
 | Security and governance | PARTIAL | E: preventive and detective controls pass; the final control is repository review — not verified here |
-| Package portability | PASS (macOS, Python 3.13; Linux 3.10–3.13 in CI) · Windows: in CI | E, T |
+| Package portability | PASS — macOS (Python 3.13, executed), Linux (3.10–3.13) and Windows (3.12) in CI | E, T |
 | Platform independence | PASS | S, E |
 | GitHub Copilot integration | NOT TESTED | — |
 | Claude Code integration | PARTIAL | E: one run, not blind |

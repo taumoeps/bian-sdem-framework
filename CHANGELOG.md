@@ -10,7 +10,7 @@
   - **Every result is an object** (AF-08): list results are `{"count", "items"}` — `query`, whole-layer `trace`, `review`, `approve`, `explain`. **This changes existing JSON**: read `items`.
   - **Error codes come from where the error happened** (AF-05): malformed JSON is `invalid_input` everywhere, a missing file or workspace `not_found`, an unknown command `usage`; every error has a hint.
   - **`sdem agents install`** (AF-09): one `AGENTS.md` for every agent, `CLAUDE.md` pointing to it, SDEM's skills in `.claude/skills/` and `.agents/skills/`, Gemini CLI's settings, and Copilot's files — from one source, pinned to the version.
-  - **Windows** (AF-10): UTF-8 output on every console; CI runs the suite on Windows.
+  - **Windows** (AF-10): CI now runs the suite on Windows — and found real defects, fixed: `sdem transform` gave a different result for the same export on Windows (files sorted as paths, which Windows compares ignoring case — now by their text); a crash on documentation links across drives; `workspace.json` recorded paths with `\`; CRLF line endings (now LF everywhere, `.gitattributes`). UTF-8 output on every console.
   - **The real-agent evaluation** (AF-11): `scripts/agent_eval.py prepare|grade` — the same seven tasks and the same file-based grade for every platform; run here by Claude Code (5 of 5, not blind); Copilot, Codex and Gemini CLI still to run.
   - No MCP: the CLI already serves every platform (reasons in the spec).
 
