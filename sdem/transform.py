@@ -136,7 +136,7 @@ def scan(root, rules):
     root = Path(root); skip_files = set(rules.get('skip_files', [])); skip = [s.strip('/') for s in rules.get('skip_folders', [])]
     att = {a.strip('/').lower() for a in rules.get('attachment_folders', [])}; limit = rules.get('max_diagram_bytes', 50_000_000)
     out = {'provenance': [], 'pages': [], 'diagrams': {}, 'pictures': [], 'other': [], 'skipped': [], 'layout': collections.defaultdict(collections.Counter)}
-    for p in sorted(root.rglob('*')):
+    for p in sorted(root.rglob('*'), key=lambda x: x.relative_to(root).as_posix()):   # the same order on every platform (Windows compares paths ignoring case)
         if not p.is_file(): continue
         rel = p.relative_to(root).as_posix(); parts = rel.split('/'); folder = '/'.join(parts[:-1]) or '.'
         if any(x.startswith('.') or x == '__MACOSX' for x in parts) or p.name in skip_files or any(('/' + rel).startswith('/' + s + '/') or f'/{s}/' in '/' + rel for s in skip):
@@ -1295,7 +1295,7 @@ def _cross_types():
 
 def _digest(root):
     h = hashlib.sha256()
-    for p in sorted(Path(root).rglob('*')):
+    for p in sorted(Path(root).rglob('*'), key=lambda x: x.relative_to(root).as_posix()):   # one order on every platform
         if p.is_file(): h.update(p.relative_to(root).as_posix().encode()); h.update(p.read_bytes())
     return h.hexdigest()
 
