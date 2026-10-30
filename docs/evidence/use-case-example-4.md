@@ -26,6 +26,7 @@ Each command does one job. The steps below use them in this order.
 | 2 | `sdem transform run <export folder> -o work/history` | **Read the designs.** Turns the pages into a list of *suggested* architecture items, and writes a report for you to read |
 | 3 | *(you read `work/history/extraction-report.md`)* | **Check the suggestions.** Decide which are wrong |
 | 4 | `sdem load work/history --workspace workspaces/history --person <you> --exclude <wrong ones>` | **Keep the good ones.** Copies the items you accept into your project; whatever did not fit is kept as *gaps*. Add `--dry-run` first to see what would happen |
+| 4a | `sdem aid --workspace workspaces/history --person <you>` | **Bring in BIAN.** Adds the BIAN service domains your designs point to, from the catalogue — marked *inferred*, with the reason; you confirm or reject them (`sdem aid confirm`, `sdem aid reject`) |
 | 5 | `sdem check --workspace workspaces/history` | **Health check.** Confirms everything follows the rules |
 | 6 | `sdem link --workspace workspaces/history --out work/links` | **Suggest connections.** SDEM proposes how items connect across layers (e.g. *this app runs on this server*) |
 | 7 | `sdem review work/links/proposals.json` | **See the suggestions again**, weakest first — `sdem link` already shows them; also for AID's proposals (`<workspace>/aid/AID-nnn-proposals.json`) |

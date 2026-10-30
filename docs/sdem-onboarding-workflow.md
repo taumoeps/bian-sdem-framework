@@ -69,6 +69,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 | 2 | `sdem transform run <export folder> -o work/history` | **Read the designs.** Turns the pages into a list of *suggested* architecture items, and writes a report for you to read |
 | 3 | *(you read `work/history/extraction-report.md`)* | **Check the suggestions.** Decide which are wrong |
 | 4 | `sdem load work/history --workspace workspaces/history --person <you> --exclude <wrong ones>` | **Keep the good ones.** Copies the items you accept into your project; whatever did not fit is kept as *gaps*. Add `--dry-run` first to see what would happen |
+| 4a | `sdem aid --workspace workspaces/history --person <you>` | **Bring in BIAN.** Adds the BIAN service domains your designs point to, from the catalogue — marked *inferred*, with the reason; you confirm or reject them (`sdem aid confirm`, `sdem aid reject`) |
 | 5 | `sdem check --workspace workspaces/history` | **Health check.** Confirms everything follows the rules |
 | 6 | `sdem link --workspace workspaces/history --out work/links` | **Suggest connections.** SDEM proposes how items connect across layers (e.g. *this app runs on this server*) |
 | 7 | `sdem review work/links/proposals.json` | **See the suggestions again**, weakest first — `sdem link` already shows them; also for AID's proposals (`<workspace>/aid/AID-nnn-proposals.json`) |
@@ -222,7 +223,7 @@ loaded (LOAD-001) into workspaces/history: A1 3 entities, A3 5 entities, A4 8 en
 design records: 11 page(s); gap records: 13 — what did not fit an entity, kept beside the workspace (…)
 reconciliation: 17 candidates = 16 loaded + 0 already in the workspace + 1 excluded
 ```
-The *reconciliation* proves nothing was lost. **Ingestion is now complete**; the rest is normal processing.
+The *reconciliation* proves nothing was lost. **Then bring in BIAN:** `sdem aid --workspace workspaces/history --person <your name>` adds the BIAN service domains your designs point to (here *Payment Order Initiation*, from the capability *Payment Initiation*), each marked *inferred* with the reason — confirm it with `sdem aid confirm SD-PAYMENT-ORDER-INITIATION …` once you agree. **Ingestion is now complete**; the rest is normal processing.
 
 ### 5 · Health check
 ```bash

@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- **Docs: `sdem aid` is a step for existing designs too.** The README table and the onboarding workflow showed it only for new designs, and still said a new workspace holds the BIAN layer; after `sdem load`, `sdem aid` brings in the BIAN service domains the loaded designs point to (onboarding step 4a).
+
 ## 0.9.10 — workspaces, and AID that fills them (2026-10-30)
 
 Upgrade: change the pin to `@v0.9.10`, `pip install -r requirements.txt`; then **once per workspace** `sdem migrate --workspace <workspace> --person <you>` (metamodel 0.5.0/0.6.0 → 0.7.0, version only); rename a workspace repository's `estates/` folder to `workspaces/` and take the template's new `ci/`, `.github/` and `CODEOWNERS`; scripts that relied on `sdem load` creating a workspace run `sdem new` first; `sdem copilot install` if you use Copilot.
