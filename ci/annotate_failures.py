@@ -9,7 +9,7 @@ for b in blocks:
     m = re.match(r'(FAIL|ERROR): (\S+) \(([^)]+)\)', b)
     if not m: continue
     tail = [l for l in b.split('-' * 70)[-1 if b.count('-' * 70) == 1 else 1].splitlines() if l.strip()][-6:]
-    msg = f"{m.group(1)} {m.group(3)}: " + ' | '.join(l.strip()[:300] for l in tail)
+    msg = f"{m.group(1)} {m.group(3)}: " + ' | '.join(l.strip()[:1500] for l in tail)
     print(f"::error title={m.group(2)}::{msg.replace('%', '%25').replace(chr(10), ' ')}")
     n += 1
     if n >= 10: break
