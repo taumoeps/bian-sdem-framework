@@ -322,6 +322,11 @@ def main(argv=None):
     parser.add_argument('--strict', action='store_true', help='treat warnings as errors (except draft warnings on proposed records)')
     parser.add_argument('--json', action='store_true', help='emit a JSON report instead of text')
     args = parser.parse_args(argv)
+    from .errors import SdemError, report as _report
+    for p in args.paths:   # AF-05: a file that cannot be read is an input error (exit 2), not a failed validation
+        try: json.loads(Path(p).read_text(encoding='utf-8'))
+        except FileNotFoundError: return _report(SdemError('not_found', f'{p}: no such file', 'check the path'))
+        except ValueError as e: return _report(SdemError('invalid_input', f'{p}: not valid JSON — {e}', 'fix the file (often a missing comma or quote), then run again'))
     try:
         registry = load_registry(args.registry)
         entity_resolver = None

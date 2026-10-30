@@ -38,6 +38,7 @@
 |---|---|---|---|
 | Is AI required? | **No** — every SDEM function works without AI; rules, not AI, propose connections | — | ☐ |
 | May architects use GitHub Copilot with it? | Optional. If allowed, `sdem copilot install` adds SDEM's agents, prompts and skills; Copilot never approves (an agent's name is refused as reviewer, CTL-21). Data seen by Copilot is governed by your organisation's Copilot agreement | AI / security policy | ☐ |
+| May AI agents (Copilot, Claude Code, Codex, Gemini CLI) write files in the workspace repository? | If yes, **all three are required**: branch protection with code-owner review ([repository protection](sdem-repository-protection.md)); `SDEM_REQUIRE_RECORDED: '1'` in the workspace CI, so an edit made outside `sdem` fails until a person accepts it (`sdem change adopt`); and the agent's file access limited to the repository. SDEM refuses an agent's name for a decision, but it cannot tell who typed a person's name — the reviewed pull request is the final control | platform, with the SDEM owner | ☐ |
 | Have the agents been tested in real Copilot? | Not yet — the [spike checklist](sdem-agent-platform-spike.md) is the first step | the SDEM owner, with you | ☐ |
 
 ## 5. Depending on an open-source tool

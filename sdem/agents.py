@@ -204,11 +204,21 @@ class Estate:
         if layer not in FILES: raise CoordinationError(f'unknown layer {layer}')
         if not is_person(person) or person in AGENT_LAYER or person in (ORCHESTRATOR, HUMAN): raise CoordinationError('CTL-20: adopt needs the name of the person who made the edit')
         if not (reason or '').strip(): raise CoordinationError('adopt needs a reason')
+        from .files import record, unrecorded
         last = self._last_change_set(layer)
-        if not last: raise CoordinationError(f'{layer} has no change sets yet — its current content is the starting point; nothing to adopt')
+        if not last:   # AF-07: no change sets yet — the edit is accepted in the workspace's ledger, with who and why
+            if not any(u['file'] == FILES[layer] for u in (unrecorded(self.path) or [])):
+                raise CoordinationError(f'{FILES[layer]} has not changed since SDEM last wrote it — nothing to adopt')
+            from .graph import FederatedGraph as _FG
+            errors = _FG.load([str(self.path / f) for f in (*FILES.values(), REGISTRY) if (self.path / f).exists()]).check()
+            if any(errors.values()): raise CoordinationError('the edit does not pass the workspace checks — fix it first (sdem check --workspace …)')
+            record([self.path / FILES[layer]], by=f'{person} (sdem change adopt)', note=reason)
+            return None, None
         if _file_sha(self.path / FILES[layer]) == last['dataset']['after_sha256']: raise CoordinationError(f"{FILES[layer]} has not changed since {last['id']} — nothing to adopt")
         prev = _j(self.coord / 'snapshots' / f"{last['id']}.json")
-        return self._record(layer, prev, self.datasets()[layer], HUMAN, person, reason, {'adopted': True, '_before_sha': last['dataset']['after_sha256']})
+        out = self._record(layer, prev, self.datasets()[layer], HUMAN, person, reason, {'adopted': True, '_before_sha': last['dataset']['after_sha256']})
+        record([self.path / FILES[layer]], by=f'{person} (sdem change adopt)', note=reason)
+        return out
 
     def revert(self, cs_id, agent, person, reason=''):
         """T5 / AG-K06: undo a change set — restore its layer as it was before — recorded as a new change set and change event.
@@ -379,6 +389,9 @@ def change_main(argv=None):
             return 0
         if a.cmd == 'adopt':
             cs, ev = est.adopt(a.layer, a.person, a.reason)
+            if cs is None:   # AF-07: no change sets yet — accepted in the ledger
+                if a.json: print(json.dumps({'accepted': FILES[a.layer], 'by': a.person, 'reason': a.reason, 'change_set': None}, indent=2)); return 0
+                print(f"{a.person}'s edit of {FILES[a.layer]} accepted (recorded in sdem-ledger.json with the reason); the layer has no change sets yet"); return 0
             if a.json: print(json.dumps({'change_set': cs, 'event': ev}, indent=2, ensure_ascii=False)); return 0
             ops = {}
             for c in cs['changes']: ops[c['op']] = ops.get(c['op'], 0) + 1

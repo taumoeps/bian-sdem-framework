@@ -1,6 +1,7 @@
 """Built for agents too (docs/design/sdem-agent-cli-spec.md, AF-01…AF-06) — what every command gets from `sdem` itself:
 
-  --json      the result as JSON on stdout. An object carries "sdem": {"version", "command"}; a failure is JSON too —
+  --json      the result as JSON on stdout, always an object (a list result is {"count", "items"}, AF-08), carrying
+              "sdem": {"version", "command"}; a failure is JSON too —
               {"sdem": …, "error": {"code", "exit", "message", "hint", "details"}} — never only prose on stderr (AG-01, AG-05).
               A command with no JSON of its own gives {"sdem": …, "ok", "exit", "output": [its lines], "wrote": [files]} (AG-03).
   --limit N   with --json: every list in the result cut to N items; what was cut is listed under "truncated" (AG-02).
@@ -133,7 +134,7 @@ def limit(obj, n, path='', cut=None):
 
 CODES = [  # (pattern in the message, code) — first match wins
     (r'^usage:|unrecognized arguments|the following arguments are required|invalid choice|expected one argument|needs a whole number', 'usage'),
-    (r'a person|\(CTL-21\)|person\'s decision', 'needs_person'),
+    (r'a person|the person|\(CTL-21\)|CTL-20|person\'s decision|your own name', 'needs_person'),
     (r'not valid JSON|fails the dataset check|not an A\d dataset|is not valid', 'invalid_input'),
     (r'not found|No such file|does not exist|is not an instance|not a workspace|no workspace here|unknown', 'not_found'),
     (r'already exists', 'exists'),
@@ -149,16 +150,22 @@ def fallback_hint(kind, command, msg):
     if kind == 'not_found' and command in ('trace', 'impact', 'explain', 'query'): return 'sdem query --graph <dir> --json lists the record ids'
     if kind == 'invalid_input': return 'sdem check --workspace <dir> --json lists every problem'
     if kind == 'internal': return 'set SDEM_DEBUG=1 and run again for the details; please report it'
-    return None
+    if kind == 'not_found': return 'check the path or id; sdem commands --json shows what each command expects'
+    if kind == 'exists': return 'choose another name or folder'
+    if kind == 'refused': return 'the message names the rule (CTL-…) that refused it; see docs/reference/controls-register.md'
+    return f'sdem {command} --help'
 
 
-def error_json(code, err_text, command):
+def error_json(code, err_text, command, typed=None):
     lines = [l for l in err_text.splitlines() if l.strip() and not re.match(r'(baseline:|WARN:|NOTE:)', l)]
     errs = [l for l in lines if l.startswith('ERROR') or re.search(r'error:', l)] or lines
     msg = re.sub(r'^(ERROR:\s*|sdem[\w -]*: error:\s*)', '', errs[0]).strip() if errs else f'exit {code}, no message'
-    kind = 'internal' if code == 3 else next((c for p, c in CODES if re.search(p, err_text, re.I | re.M)), 'refused' if code == 1 else 'input')
-    hint = re.search(r'(sdem [a-z][^;)\n`]*)', ' '.join(errs[1:] + [msg]))
-    hint = hint.group(1).strip() if hint else fallback_hint(kind, command, msg)
+    if typed:   # AF-05: the code given where the error happened
+        kind, hint = typed[0], typed[1] or fallback_hint(typed[0], command, msg)
+    else:       # older ERROR lines: the code from the words
+        kind = 'internal' if code == 3 else next((c for p, c in CODES if re.search(p, err_text, re.I | re.M)), 'refused' if code == 1 else 'input')
+        hint = re.search(r'(sdem [a-z][^;)\n`]*)', ' '.join(errs[1:] + [msg]))
+        hint = hint.group(1).strip() if hint else fallback_hint(kind, command, msg)
     return {'sdem': {'version': version(), 'command': command},
             'error': {'code': kind, 'exit': code, 'message': msg, 'hint': hint,
                       'details': [re.sub(r'^ERROR:\s*', '', l) for l in errs[1:6]]}}
@@ -179,6 +186,8 @@ def run(fn, argv):
     call = [a for a in argv if (a != '--json' or native_json) and (a != '--dry-run' or native_dry)]
     out, err = io.StringIO(), Tee(sys.stderr)
     caught = []
+    from . import errors
+    errors.LAST = None
     with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
         try:
             if want_dry and not native_dry:
@@ -192,7 +201,7 @@ def run(fn, argv):
         if dry: print(f"DRY RUN — nothing written; it would have written {len(caught)} item(s)" + ''.join(f'\n  {x}' for x in dry['would_write']))
         return code
     if code != 0 and not text.strip():
-        print(json.dumps(error_json(code, err.getvalue(), command), indent=2, ensure_ascii=False)); return code
+        print(json.dumps(error_json(code, err.getvalue(), command, errors.LAST), indent=2, ensure_ascii=False)); return code
     try: data = json.loads(text) if native_json else None
     except ValueError: data = None
     if data is None:   # AG-03: a command with no JSON of its own — its lines, and the files it says it wrote
@@ -200,6 +209,8 @@ def run(fn, argv):
         data = {'ok': code == 0, 'exit': code, 'output': lines,
                 'wrote': [re.sub(r'^(wrote|written to)\s+', '', l).strip() for l in lines if re.match(r'(wrote|written to)\s', l)]}
         if code != 0: data['error'] = error_json(code, err.getvalue() + '\n' + text, command)['error']
+    if isinstance(data, list):   # AF-08: every result is an object — a list becomes items, so it can carry the marker
+        data = {'count': len(data), 'items': data}
     cut = {}
     if n is not None: data, cut = limit(data, n)
     if isinstance(data, dict):

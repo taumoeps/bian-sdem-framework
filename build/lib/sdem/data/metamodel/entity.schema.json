@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SDEM Entity Catalogue (one level)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "metamodel_version",
+    "level",
+    "entities"
+  ],
+  "properties": {
+    "metamodel_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "level": {
+      "enum": [
+        "A1",
+        "A2",
+        "A3",
+        "A4"
+      ]
+    },
+    "entities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/entity"
+      }
+    }
+  },
+  "$defs": {
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "level",
+        "abstract",
+        "extends",
+        "artefact",
+        "definition",
+        "definition_source",
+        "alignment_kind",
+        "reference",
+        "evidence_status"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^A[1-4]\\.[A-Za-z]+$"
+        },
+        "level": {
+          "enum": [
+            "A1",
+            "A2",
+            "A3",
+            "A4"
+          ]
+        },
+        "abstract": {
+          "type": "boolean"
+        },
+        "artefact": {
+          "type": "boolean"
+        },
+        "extends": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^A[1-4]\\.[A-Za-z]+$"
+            }
+          ]
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition_source": {
+          "enum": [
+            "bian_reference",
+            "bian_aligned",
+            "archimate_native",
+            "archimate_aligned",
+            "togaf_informed",
+            "sdem_extension",
+            "sdmm_extension",
+            "bank_extension"
+          ]
+        },
+        "alignment_kind": {
+          "enum": [
+            "exact",
+            "specialization",
+            "related",
+            "conceptual",
+            "none"
+          ]
+        },
+        "reference": {
+          "type": "object",
+          "required": [
+            "standard",
+            "release",
+            "concept",
+            "uri"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "standard": {
+              "type": "string"
+            },
+            "release": {
+              "type": "string"
+            },
+            "concept": {
+              "type": "string"
+            },
+            "uri": {
+              "type": "string"
+            },
+            "locator": {
+              "type": "string"
+            }
+          }
+        },
+        "evidence_status": {
+          "enum": [
+            "confirmed_in_official_source",
+            "interpreted_from_official_source",
+            "proposed_extension",
+            "pending_release_validation"
+          ]
+        },
+        "reasoning": {
+          "type": "string",
+          "minLength": 1,
+          "description": "why the entity is defined this way and how its source supports it"
+        },
+        "confidence": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ],
+          "description": "strength of the source basis: high = the concept exists one-to-one in a public standard; medium = interpreted from, or an SDEM extension of, a standard concept; low = SDEM design with no standard concept"
+        },
+        "identifier": {
+          "type": "object",
+          "description": "logical data model: the natural key that makes an instance unique beyond its id, with its basis",
+          "properties": {
+            "key": {
+              "type": "array"
+            },
+            "basis": {
+              "type": "string"
+            },
+            "reasoning": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

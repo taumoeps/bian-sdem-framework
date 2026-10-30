@@ -70,7 +70,7 @@ class DashboardTests(unittest.TestCase):
         (est / 'mappings.json').write_text(json.dumps(reg))
         data = dashboard.collect(est)
         sdem('link', '--workspace', est, '--out', self.tmp / 'l')
-        rev = json.loads(sdem('review', self.tmp / 'l' / 'proposals.json', '--json')[1])
+        rev = json.loads(sdem('review', self.tmp / 'l' / 'proposals.json', '--json')[1])['items']
         self.assertEqual([(r['source'], r['rel'], r['target']) for r in data['review']['rows']], [(r['source'], r['relationship'], r['target']) for r in rev])
         self.assertTrue(all(r['evidence_needed'] for r in data['review']['rows']))
         self.assertIn('proposed link(s) to review', ' '.join(a['text'] for a in data['attention']))

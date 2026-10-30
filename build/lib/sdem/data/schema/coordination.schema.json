@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/coordination.schema.json",
+  "title": "SDEM agent platform coordination records",
+  "description": "Change sets, change events (with their stored impact result) and work items — the only channel between the layer agents and the orchestrator (docs/sdem-agent-platform-spec.md AG-R01…R05). Stored in <workspace>/coordination/ one file per record (change-sets/, events/, work-items/), ids scoped to the Git branch, append-only.",
+  "$defs": {
+    "record": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "version",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "pattern": "^A[1-4]\\.[A-Za-z]+$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "change": {
+      "type": "object",
+      "required": [
+        "op",
+        "record"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "enum": [
+            "add",
+            "update",
+            "retire",
+            "remove"
+          ],
+          "description": "add, update, retire; 'remove' appears only in change sets recorded by `sdem change adopt` (a record deleted by hand)"
+        },
+        "kind": {
+          "enum": [
+            "modify",
+            "rehost",
+            "replace",
+            "retire"
+          ],
+          "description": "the change kind for impact; default modify for update, retire for retire, none for add"
+        },
+        "record": {
+          "$ref": "#/$defs/record"
+        }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "required": [
+        "source",
+        "kind",
+        "target"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "change_set_input": {
+      "description": "What an agent or a person writes and passes to `sdem change propose` — one layer only, never the registry (CTL-19).",
+      "type": "object",
+      "required": [
+        "layer",
+        "reason",
+        "changes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "layer": {
+          "enum": [
+            "A1",
+            "A2",
+            "A3",
+            "A4"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "changes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/change"
+          }
+        },
+        "relationships": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/relationship"
+              }
+            },
+            "remove": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/relationship"
+              }
+            }
+          }
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "required": [
+        "status",
+        "at",
+        "agent",
+        "person"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "open",
+            "in_progress",
+            "done",
+            "blocked",
+            "cancelled"
+          ]
+        },
+        "at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "person": {
+          "type": "string",
+          "minLength": 1
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "work_item": {
+      "type": "object",
+      "required": [
+        "id",
+        "event",
+        "layer",
+        "records",
+        "action",
+        "reason",
+        "round",
+        "history"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^WI-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "event": {
+          "type": "string",
+          "pattern": "^CE-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "layer": {
+          "enum": [
+            "A1",
+            "A2",
+            "A3",
+            "A4"
+          ]
+        },
+        "records": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "object",
+          "required": [
+            "event",
+            "path"
+          ]
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "history": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/state"
+          }
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "required": [
+        "id",
+        "change_set",
+        "layer",
+        "round",
+        "at",
+        "agent",
+        "person",
+        "impact"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^CE-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "change_set": {
+          "type": "string",
+          "pattern": "^CS-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "layer": {
+          "enum": [
+            "A1",
+            "A2",
+            "A3",
+            "A4"
+          ]
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "agent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "person": {
+          "type": "string",
+          "minLength": 1
+        },
+        "impact": {
+          "type": "object",
+          "required": [
+            "records",
+            "mappings_to_supersede",
+            "changed"
+          ]
+        }
+      }
+    }
+  }
+}

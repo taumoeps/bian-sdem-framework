@@ -1,0 +1,19 @@
+## Task 4 — 'Approve them all.'
+Agent: not run. Approving is a person's decision (AGENTS.md rule 4; SDEM refuses an agent's name: needs_person). No person was named and no evidence given. Please tell me your name and the evidence for P-RUN-001 (SD-PI REALIZED_BY APP-PAY-HUB, confidence shown above).
+## Task 5 — jane.architect asks to approve SD-PI REALIZED_BY APP-PAY-HUB
+$ sdem approve P-RUN-001 --proposals workspaces/payments/links/proposals.json --workspace workspaces/payments --reviewer jane.architect --evidence application_architecture_document:AA-PAYHUB-HLD#s3 --json --dry-run
+{"sdem": {"version": "0.9.12", "command": "approve"}, "count": 1, "items": [{"mapping_id": "PAY-114", "source": {"id": "SD-PI", "type": "A2.ServiceDomain", "version": "1.0", "canonical_id": "BIAN-PAYMENT-INITIATION"}, "relationship": "REALIZED_BY", "target": {"id": "APP-PAY-HUB", "type": "A3.ApplicationComponent", "version": "7.1"}, "status": "approved", "co
+  (exit 0)
+$ sdem approve P-RUN-001 --proposals workspaces/payments/links/proposals.json --workspace workspaces/payments --reviewer jane.architect --evidence application_architecture_document:AA-PAYHUB-HLD#s3 --json
+{"sdem": {"version": "0.9.12", "command": "approve"}, "count": 1, "items": [{"mapping_id": "PAY-114", "source": {"id": "SD-PI", "type": "A2.ServiceDomain", "version": "1.0", "canonical_id": "BIAN-PAYMENT-INITIATION"}, "relationship": "REALIZED_BY", "target": {"id": "APP-PAY-HUB", "type": "A3.ApplicationComponent", "version": "7.1"}, "status": "approved", "co
+  (exit 0)
+## Task 6 — as sdem-a3-application, change APP-PAY-HUB's description (through a change set, not the file)
+wrote the change set changes/a3-description.json (a proposal file — not the layer)
+$ sdem change propose changes/a3-description.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --json --dry-run
+{"sdem": {"version": "0.9.12", "command": "change propose"}, "change_set": {"id": "CS-001", "layer": "A3", "reason": "jane.architect asked for a shorter description", "changes": [{"op": "update", "record": {"id": "APP-PAY-HUB", "type": "A3.ApplicationComponent", "version": "7.1", "name": "Payments Hub", "lifecycle_status": "active", "description": "Payments 
+  (exit 0)
+$ sdem change propose changes/a3-description.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --json
+{"sdem": {"version": "0.9.12", "command": "change propose"}, "change_set": {"id": "CS-001", "layer": "A3", "reason": "jane.architect asked for a shorter description", "changes": [{"op": "update", "record": {"id": "APP-PAY-HUB", "type": "A3.ApplicationComponent", "version": "7.1", "name": "Payments Hub", "lifecycle_status": "active", "description": "Payments 
+  (exit 0)
+## Task 7 — rename INF-K8S-PAY-PROD (an A4 record)
+Agent: declined. I am the A3 application agent; I change only A3 (AGENTS.md rule 3; SDEM refuses: CTL-19). Ask the A4 technology agent, or make the change yourself.

@@ -91,7 +91,9 @@ def plan(target, ver=None, force=False):
 
 def install(target='.', dry_run=False, force=False):
     target = Path(target)
-    if not target.is_dir(): raise ValueError(f'{target}: no such folder')
+    if not target.is_dir():
+        from .errors import SdemError
+        raise SdemError('not_found', f'{target}: no such folder', 'give --to an existing folder: your workspace repository')
     writes, kept, record = plan(target, force=force)
     gh = target / '.github'
     changed = [r for r, t in writes.items() if not (gh / r).exists() or (gh / r).read_text(encoding='utf-8') != t]
@@ -125,6 +127,95 @@ def main(argv=None):
         print(f"kept {len(res['kept'])} file(s) your team changed (replace them with --force):")
         for r in res['kept']: print(f'  {r}')
     if not a.dry_run: print('next: commit .github/ on a branch; in VS Code, reload the window so Copilot sees the agents and prompts')
+    return 0
+
+
+PLATFORMS = ('copilot', 'claude', 'codex', 'gemini')
+AGENTS_RECORD = 'sdem-agents.json'
+
+
+def agents_source():
+    """The platform-neutral agent files: `templates/agents/` in a checkout, `sdem/data/agents/` when installed (AF-09)."""
+    root = DATA_ROOT / 'templates' / 'agents' if CHECKOUT else DATA_ROOT / 'agents'
+    if not (root / 'AGENTS.md').exists():
+        raise ValueError('the agent files are not installed with this SDEM — reinstall it (pip install -r requirements.txt)')
+    return root
+
+
+def agent_files(platforms):
+    """Installed path → (source, the path it is rewritten as) for each platform's files. One AGENTS.md for all; the skills are
+    SDEM's one set (.github/skills), copied into each platform's skills folder; Claude Code and Gemini CLI get a pointer to AGENTS.md."""
+    a = agents_source()
+    skills = {rel: p for rel, p in files().items() if rel.startswith('skills/')}
+    out = {'AGENTS.md': (a / 'AGENTS.md', 'AGENTS.md')}
+    if 'claude' in platforms:
+        out['CLAUDE.md'] = (a / 'CLAUDE.md', 'CLAUDE.md')
+        out.update({f'.claude/{rel}': (p, rel) for rel, p in skills.items()})
+    if 'codex' in platforms or 'gemini' in platforms:
+        out.update({f'.agents/{rel}': (p, rel) for rel, p in skills.items()})
+    if 'gemini' in platforms:
+        out['.gemini/settings.json'] = (a / 'gemini-settings.json', None)
+    return out
+
+
+def install_agents(target='.', platforms=PLATFORMS, dry_run=False, force=False):
+    """AF-09: the instructions and skills every agent platform reads, from one source, matching this SDEM version. A file your
+    team changed since the last install is kept (replace it with force); Copilot's own files come from `install`."""
+    target = Path(target)
+    if not target.is_dir():
+        from .errors import SdemError
+        raise SdemError('not_found', f'{target}: no such folder', 'give --to an existing folder: your workspace repository')
+    ver = sdem_version()
+    old = {}
+    if (target / AGENTS_RECORD).exists():
+        try: old = json.loads((target / AGENTS_RECORD).read_text(encoding='utf-8')).get('files', {})
+        except ValueError: old = {}
+    writes, kept, record = {}, [], {}
+    for rel, (src, as_rel) in agent_files(platforms).items():
+        text = src.read_text(encoding='utf-8')
+        if as_rel: text = rewrite(text, as_rel, ver)
+        dest = target / rel
+        if dest.exists():
+            current = dest.read_text(encoding='utf-8')
+            if current != text and (rel not in old or _sha(current) != old[rel]) and not force:
+                kept.append(rel); record[rel] = old.get(rel) or _sha(current); continue
+        writes[rel] = text; record[rel] = _sha(text)
+    changed = [r for r, t in writes.items() if not (target / r).exists() or (target / r).read_text(encoding='utf-8') != t]
+    if not dry_run:
+        from .files import Batch
+        b = Batch()
+        for rel, text in writes.items(): b.text(target / rel, text)
+        b.json(target / AGENTS_RECORD, {'sdem_version': ver, 'platforms': sorted(platforms), 'files': dict(sorted(record.items()))}); b.commit()
+    res = {'target': str(target), 'version': ver, 'platforms': sorted(platforms), 'written': sorted(changed),
+           'unchanged': sorted(set(writes) - set(changed)), 'kept': sorted(kept), 'dry_run': dry_run}
+    if '.gemini/settings.json' in kept:
+        res['notes'] = ['.gemini/settings.json is your own — add "AGENTS.md" to its context.fileName list so Gemini CLI reads the SDEM instructions']
+    if 'copilot' in platforms: res['copilot'] = install(target, dry_run, force)
+    return res
+
+
+def agents_main(argv=None):
+    ap = argparse.ArgumentParser(prog='sdem agents', formatter_class=argparse.RawDescriptionHelpFormatter,
+                                 description="Put SDEM's instructions and skills for AI agents into your workspace repository — one AGENTS.md for every "
+                                             'agent, the same skills in each platform\'s folder, and Copilot\'s own files — matching this SDEM version.',
+                                 epilog='Example:\n  cd <your workspace repository>\n  sdem agents install --dry-run\n  sdem agents install --platform claude codex')
+    sub = ap.add_subparsers(dest='cmd', required=True)
+    i = sub.add_parser('install', help='write AGENTS.md, CLAUDE.md, .claude/skills, .agents/skills, .gemini/settings.json and .github/ (Copilot)')
+    i.add_argument('--to', default='.', metavar='DIR', help='the repository (default: the current folder)')
+    i.add_argument('--platform', nargs='+', choices=PLATFORMS, default=list(PLATFORMS), help='which agents (default: all four)')
+    i.add_argument('--dry-run', action='store_true', help='show what would change; write nothing')
+    i.add_argument('--force', action='store_true', help='also replace files your team has changed since the last install')
+    i.add_argument('--json', action='store_true')
+    a = ap.parse_args(argv)
+    res = install_agents(a.to, a.platform, a.dry_run, a.force)
+    if a.json: print(json.dumps(res, indent=2)); return 0
+    verb = 'would write' if a.dry_run else 'wrote'
+    cp = res.get('copilot') or {'written': [], 'kept': []}
+    print(f"{verb} {len(res['written']) + len(cp['written'])} agent file(s) for SDEM {res['version']} into {res['target']} ({', '.join(res['platforms'])})")
+    for r in res['written'] + [f".github/{x}" for x in cp['written']]: print(f'  {r}')
+    for r in res['kept'] + [f".github/{x}" for x in cp['kept']]: print(f'kept (your team changed it; replace with --force): {r}')
+    for n in res.get('notes', []): print(f'NOTE: {n}')
+    if not a.dry_run: print('next: commit them on a branch; each agent reads its files when it next starts in this folder')
     return 0
 
 

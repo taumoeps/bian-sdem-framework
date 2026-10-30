@@ -3,6 +3,24 @@ on:
   push:
   pull_request:
 jobs:
+  windows:   # AF-10: the same suite on Windows — agents run SDEM there too
+    runs-on: windows-latest
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Tests (no install)
+        run: python -m unittest discover -s tests
+      - name: The CLI for agents
+        run: |
+          python -m sdem commands --json
+          python -m sdem check --workspace examples/payment-initiation --json
+          python -m sdem trace A4 --direction up --graph examples/payment-initiation/graph --json
   tests:
     runs-on: ubuntu-latest
     strategy:

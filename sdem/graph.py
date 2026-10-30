@@ -353,6 +353,9 @@ def main(argv=None):
         sp.add_argument('--graph', metavar='DIR', help='read a graph store (sdem build) instead of architecture datasets')
         sp.add_argument('--status', default='approved', help='mapping statuses to treat as arrows')
         sp.add_argument('--json', action='store_true')
+        if name == 'check':
+            sp.add_argument('--require-recorded', action='store_true',
+                            help='fail if a layer file or the registry changed since SDEM last wrote it (an edit not made through sdem, not accepted with sdem change adopt) — for CI where agents edit (AF-07)')
         if name == 'trace':
             sp.add_argument('--direction', choices=['down', 'up', 'both', 'downstream', 'upstream', 'all'], default='both',
                             help='down: what it depends on; up: what depends on it; both (also: downstream, upstream, all)')
@@ -415,6 +418,12 @@ def main(argv=None):
             if not args.paths: print('ERROR: give architecture dataset paths or --graph', file=sys.stderr); return EXIT_USAGE
             reader = _store.GraphReader.from_exports(args.paths)
         fg = reader.fg
+    except json.JSONDecodeError as exc:   # AF-05: a file that is not valid JSON
+        from sdem.errors import SdemError, report
+        return report(SdemError('invalid_input', f'a file is not valid JSON — {exc.msg} at line {exc.lineno}, column {exc.colno}', 'fix the file (often a missing comma or quote), then run again'))
+    except FileNotFoundError as exc:
+        from sdem.errors import SdemError, report
+        return report(SdemError('not_found', f'{exc.strerror}: {exc.filename}', 'check the path'))
     except (OSError, ValueError, _store.StoreError) as exc:
         print(f'ERROR: {exc}', file=sys.stderr); return EXIT_USAGE
     if reader.origin == 'store':
@@ -436,9 +445,23 @@ def main(argv=None):
             for est in sorted({Path(p).resolve().parent for p in args.paths if (Path(p).resolve().parent / 'coordination').exists()}):
                 issues, n = check_coordination(est)
                 if n: report[f'coordination ({n} records)'] = issues
+        edits = {}
+        if reader.origin != 'store':   # AF-07: files changed since SDEM last wrote them
+            from sdem.files import unrecorded
+            for est in sorted({Path(p).resolve().parent for p in args.paths}):
+                u = unrecorded(est)
+                if u: edits[str(est)] = u
+        if args.require_recorded and edits:
+            report['unrecorded edits (AF-07)'] = [f"{e['file']} in {d} changed since {e['last_written_by'] or 'SDEM'} wrote it — if a person made the edit, "
+                                                   f"accept it: sdem change adopt --workspace {d} --layer <A1…A4> --person <name> --reason <why>" for d, es in edits.items() for e in es]
         failed = any(report.values())
-        if args.json: print(json.dumps({'ok': not failed, 'report': report, 'warnings': fg.warnings}, indent=2))
+        if args.json: print(json.dumps({'ok': not failed, 'report': report, 'warnings': fg.warnings,
+                                        'unrecorded_edits': [{'workspace': d, **e} for d, es in edits.items() for e in es]}, indent=2))
         else:
+            for d, es in edits.items():
+                for e in es:
+                    if not args.require_recorded:
+                        print(f"NOTE: {e['file']} changed since {e['last_written_by'] or 'SDEM'} wrote it ({e['at']}) — if a person made the edit, accept it with sdem change adopt (AF-07)")
             for k, issues in report.items():
                 for i in issues: print(f'ERROR: {k}: {i}')
                 for w in fg.warnings.get(k, []): print(f'WARN: {k}: {w}')

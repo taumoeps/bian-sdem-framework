@@ -1,0 +1,314 @@
+{
+  "metamodel_version": "0.7.0",
+  "level": "A4",
+  "entities": [
+    {
+      "type": "A4.InfrastructureComponent",
+      "level": "A4",
+      "abstract": true,
+      "extends": null,
+      "artefact": false,
+      "definition": "Abstract supertype of every Technology Architecture entity; retained for compatibility with earlier mapping documents",
+      "definition_source": "sdem_extension",
+      "alignment_kind": "none",
+      "reference": {
+        "standard": "SDEM",
+        "release": "0.4",
+        "concept": "Infrastructure Component",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework",
+        "locator": "extension of none"
+      },
+      "evidence_status": "proposed_extension",
+      "reasoning": "SDEM's abstract supertype of every A4 entity, never instantiated. No standard defines it; it exists so the DEPLOYED_ON relationship type can target 'any infrastructure' without listing each kind.",
+      "confidence": "medium",
+      "confidence_basis": "SDEM definition with no standard concept; validated against sealed answers",
+      "identifier": {
+        "key": [],
+        "basis": "n/a",
+        "reasoning": "never instantiated in an architecture dataset, so it has no identifier"
+      }
+    },
+    {
+      "type": "A4.Deployment",
+      "level": "A4",
+      "abstract": false,
+      "extends": "A4.InfrastructureComponent",
+      "artefact": false,
+      "definition": "An application as deployed into a specific environment",
+      "definition_source": "sdem_extension",
+      "alignment_kind": "related",
+      "reference": {
+        "standard": "SDEM",
+        "release": "0.4",
+        "concept": "Deployment",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework",
+        "locator": "extension of A4.Artifact assigned to A4.Node"
+      },
+      "evidence_status": "proposed_extension",
+      "reasoning": "SDEM extension: in ArchiMate a deployment is an Artifact assigned to a Node (ch. 10). SDEM makes the deployment a first-class record so it can carry component, environment and platform and be traced.",
+      "confidence": "medium",
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "component_id",
+          "environment_id",
+          "platform_id"
+        ],
+        "basis": "SDEM",
+        "reasoning": "one deployment per component, environment and platform"
+      }
+    },
+    {
+      "type": "A4.DeploymentEnvironment",
+      "level": "A4",
+      "abstract": false,
+      "extends": "A4.InfrastructureComponent",
+      "artefact": false,
+      "definition": "A governed runtime boundary such as production or test",
+      "definition_source": "sdem_extension",
+      "alignment_kind": "related",
+      "reference": {
+        "standard": "SDEM",
+        "release": "0.4",
+        "concept": "Deployment Environment",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework",
+        "locator": "extension of A4.Node grouping"
+      },
+      "evidence_status": "proposed_extension",
+      "reasoning": "SDEM extension: ArchiMate has no environment element; environments are usually modelled as a grouping of Nodes. SDEM names it so production, UAT and similar can be traced and aggregated.",
+      "confidence": "medium",
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A4.Node",
+      "level": "A4",
+      "abstract": false,
+      "extends": "A4.InfrastructureComponent",
+      "artefact": false,
+      "definition": "A computational host, physical or virtual",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Node",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 10"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Node, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A4.Device",
+      "level": "A4",
+      "abstract": false,
+      "extends": "A4.InfrastructureComponent",
+      "artefact": false,
+      "definition": "Physical computing hardware",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Device",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 10"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Device, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A4.SystemSoftware",
+      "level": "A4",
+      "abstract": false,
+      "extends": "A4.InfrastructureComponent",
+      "artefact": false,
+      "definition": "Platform or runtime software",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "System Software",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 10"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 System Software, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A4.TechnologyService",
+      "level": "A4",
+      "abstract": false,
+      "extends": "A4.InfrastructureComponent",
+      "artefact": false,
+      "definition": "Technical behaviour delivered to consumers",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Technology Service",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 10"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Technology Service, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A4.TechnologyInterface",
+      "level": "A4",
+      "abstract": false,
+      "extends": "A4.InfrastructureComponent",
+      "artefact": false,
+      "definition": "An access point for a technology service",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Technology Interface",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 10"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Technology Interface, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A4.CommunicationNetwork",
+      "level": "A4",
+      "abstract": false,
+      "extends": "A4.InfrastructureComponent",
+      "artefact": false,
+      "definition": "Communication infrastructure",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Communication Network",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 10"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Communication Network, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A4.Path",
+      "level": "A4",
+      "abstract": false,
+      "extends": "A4.InfrastructureComponent",
+      "artefact": false,
+      "definition": "A route between nodes",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Path",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 10"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Path, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A4.Artifact",
+      "level": "A4",
+      "abstract": false,
+      "extends": "A4.InfrastructureComponent",
+      "artefact": false,
+      "definition": "A deployable technology-level artefact",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Artifact",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 10"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Artifact, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    }
+  ]
+}

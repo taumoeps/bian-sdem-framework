@@ -89,14 +89,14 @@ class CliTests(unittest.TestCase):
         self.assertEqual(code, 0); self.assertTrue((out / 'proposals.json').exists())
         n = len(json.loads((out / 'proposals.json').read_text())['mappings'])
         code, text, _ = run('review', str(out / 'proposals.json'), '--json')
-        rows = json.loads(text)
+        rows = json.loads(text)['items']   # AF-08: a list result is {"count", "items"}
         self.assertEqual(len(rows), n)
         self.assertEqual([r['confidence'] for r in rows], sorted(r['confidence'] for r in rows))  # weakest first
         self.assertTrue(all(r['rule'] != '—' and r['reasoning'] for r in rows))
         code, text, _ = run('review', str(out / 'proposals.json'))
         self.assertIn('To approve (a person', text); self.assertIn('sdem approve', text)
         code, text, _ = run('explain', rows[0]['mapping_id'], '--proposals', str(out / 'proposals.json'), '--json')
-        self.assertEqual(code, 0); self.assertEqual(json.loads(text)[0]['id'], rows[0]['mapping_id'])
+        self.assertEqual(code, 0); self.assertEqual(json.loads(text)['items'][0]['id'], rows[0]['mapping_id'])
         self.assertEqual(run('explain', 'NOT-THERE', '--proposals', str(out / 'proposals.json'))[0], 1)
 
     def test_python_dash_m_sdem_works_without_installing(self):

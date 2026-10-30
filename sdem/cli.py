@@ -71,6 +71,8 @@ JOURNEYS = {
                  'sdem migrate --workspace workspaces/history --person jane.architect --dry-run'),
     'commands': ('AG', 'every command, its options and what it supports, as data for an agent (with --json); --json, --limit and --dry-run work on every command', None, None,
                  'sdem commands --json'),
+    'agents':   ('AG', "put SDEM's instructions and skills for AI agents into your workspace repository — one AGENTS.md for Codex, Claude Code, Gemini CLI and Copilot, the same skills in each one's folder", None, None,
+                 'sdem agents install --dry-run'),
     'diff':     ('—', 'compare two versions of a relationship document', 'sdem.diff', [],
                  'sdem diff --git HEAD~1 examples/payment-initiation/mappings.json'),
     'model':    ('—', 'maintainers: regenerate and check generated files, acceptance, evaluation, examples', None, None,
@@ -92,7 +94,9 @@ def _estate_files(d, registry_only=False, designs=False):
     d = Path(d); reg = d / 'mappings.json'
     datasets = [] if registry_only else [d / f for f in ESTATE_FILES if (d / f).exists()]
     if not reg.exists() or (not registry_only and not datasets):
-        raise UsageError(f"--workspace {d}: not a workspace folder (it needs mappings.json and at least one of {', '.join(ESTATE_FILES)})")
+        from .errors import SdemError
+        raise SdemError('not_found', f"--workspace {d}: not a workspace folder (it needs mappings.json and at least one of {', '.join(ESTATE_FILES)})",
+                        hint=f'sdem new --workspace {d} --person <name> starts one')
     extra = [d / 'designs' / 'design-records.json'] if designs and (d / 'designs' / 'design-records.json').exists() else []
     return [str(f) for f in datasets + [reg] + extra]
 
@@ -156,7 +160,7 @@ def _link(argv):
         if as_json:   # AG-03: the proposals, weakest first, and where they are
             rows = sorted(doc.get('mappings', []), key=lambda m: (m.get('confidence', 0), m.get('id', '')))
             print(json.dumps({'proposals_file': str(Path(out) / 'proposals.json'), 'count': n, 'folder': out,
-                              'proposals': [{'id': m.get('id'), 'relationship': m.get('relationship'), 'source': (m.get('source') or {}).get('id'),
+                              'proposals': [{'mapping_id': m.get('mapping_id'), 'relationship': m.get('relationship'), 'source': (m.get('source') or {}).get('id'),
                                              'target': (m.get('target') or {}).get('id'), 'confidence': m.get('confidence'), 'rule': _rule_of(m),
                                              'rationale': m.get('rationale')} for m in rows],
                               'next': f"a person reviews and approves: sdem approve <id> --proposals {Path(out) / 'proposals.json'} --workspace <dir> --reviewer <name> --evidence <kind:ref>" if n else None},
@@ -348,6 +352,10 @@ def model(argv):
 
 
 def main(argv=None):
+    for stream in (sys.stdout, sys.stderr):   # AF-10: UTF-8 everywhere (Windows consoles default to a code page that cannot print — or →)
+        if (getattr(stream, 'encoding', '') or '').lower().replace('-', '') != 'utf8' and hasattr(stream, 'reconfigure'):
+            try: stream.reconfigure(encoding='utf-8', errors='replace')
+            except (ValueError, OSError): pass
     argv = ['--workspace' if x == '--estate' else x for x in (sys.argv[1:] if argv is None else argv)]   # --estate: the old name, still accepted
     lines = [f"  {n:<9} {j:<3} {w}" for n, (j, w, *_rest) in JOURNEYS.items()]
     epilog = ('Journeys (J1–J9; every command with examples: docs/sdem-workbench-user-guide.md §7):\n' + '\n'.join(lines) +
@@ -369,19 +377,27 @@ def main(argv=None):
 
 
 def _guarded(argv):
+    from . import errors
     try:
         return _run(argv)
     except KeyboardInterrupt:
         print('sdem: stopped', file=sys.stderr); return 130
+    except errors.SdemError as e:   # AF-05: the code and hint come from where the error happened
+        return errors.report(e)
     except UsageError as e:
-        print(f'ERROR: {e}', file=sys.stderr); return 2
+        errors.note('usage', f'sdem {argv[0]} --help'); print(f'ERROR: {e}', file=sys.stderr); return 2
     except json.JSONDecodeError as e:   # a data file that is not valid JSON — the user's input, not SDEM
+        errors.note('invalid_input', 'fix the file (often a missing comma or quote), then run again')
         print(f'ERROR: a file is not valid JSON — {e.msg} at line {e.lineno}, column {e.colno}', file=sys.stderr); return 2
+    except FileNotFoundError as e:
+        errors.note('not_found', 'check the path; sdem commands --json shows what each command expects')
+        print(f"ERROR: {e.strerror or e}" + (f': {e.filename}' if getattr(e, 'filename', None) else ''), file=sys.stderr); return 2
     except OSError as e:
         print(f"ERROR: {e.strerror or e}" + (f': {e.filename}' if getattr(e, 'filename', None) else ''), file=sys.stderr); return 2
     except (ValueError, KeyError) as e:
         print(f'ERROR: {e}', file=sys.stderr); return 2
     except Exception as e:   # a fault in SDEM itself: one line, and the traceback only when asked for
+        errors.note('internal', 'set SDEM_DEBUG=1 and run again for the details; please report it')
         import os, traceback
         if os.environ.get('SDEM_DEBUG'): traceback.print_exc()
         print(f'ERROR: internal error ({e.__class__.__name__}: {e}) — please report it; set SDEM_DEBUG=1 for the details', file=sys.stderr); return 3
@@ -390,10 +406,14 @@ def _guarded(argv):
 def _run(argv):
     name, rest = argv[0], argv[1:]
     if name not in JOURNEYS:
-        print(f"sdem: unknown command '{name}' — run 'sdem --help' for the list", file=sys.stderr); return 2
+        from .errors import SdemError
+        raise SdemError('usage', f"unknown command '{name}' — run 'sdem --help' for the list", hint='sdem commands --json lists every command')
     rest = _expand(name, rest)
     if name == 'review': return review(rest)
     if name == 'commands': return commands(rest)
+    if name == 'agents':
+        from .copilot import agents_main
+        return agents_main(rest)
     if name == 'explain': return explain(rest)
     if name == 'model': return model(rest)
     if name == 'approve':

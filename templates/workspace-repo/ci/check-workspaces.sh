@@ -26,6 +26,11 @@ for dir in workspaces/*/; do
   echo "== $e: follows the metamodel (sdem check)"
   sdem check --workspace "$e" || { echo "FAIL $e: does not pass sdem check"; fail=1; }
 
+  if [ "${SDEM_REQUIRE_RECORDED:-0}" = "1" ]; then   # AF-07: on where AI agents may write files in this repository
+    echo "== $e: every edit made through sdem or accepted by a person (sdem check --require-recorded)"
+    sdem check --workspace "$e" --require-recorded > /dev/null || { echo "FAIL $e: a layer file or the registry was edited outside sdem — if a person made the edit, accept it: sdem change adopt --workspace $e --layer <A1…A4> --person <name> --reason <why>"; fail=1; }
+  fi
+
   if [ -n "$base" ]; then
     echo "== $e: approved links unchanged since $base (sdem diff)"
     if git cat-file -e "$base:$e/mappings.json" 2>/dev/null; then

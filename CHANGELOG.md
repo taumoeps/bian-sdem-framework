@@ -4,6 +4,16 @@
 
 ## Unreleased
 
+- **A universal CLI for AI agents** — every recommendation of the [readiness assessment](docs/evidence/agent-cli-readiness.md) built:
+  - **Fixed: `sdem link --json` gave every proposal `"id": null`**, so an agent could not approve what it proposed; proposals now carry their `mapping_id`. The agent test now approves with the id `link` returned and checks the registry changed (it accepted any answer before, which is how the defect got through).
+  - **Edits made outside `sdem` are noticed** (AF-07): SDEM notes what it writes in `sdem-ledger.json`; `sdem check` lists changed files under `unrecorded_edits`; `sdem check --require-recorded` fails on them (CI, where agents write files — `SDEM_REQUIRE_RECORDED` in the workspace template); a person accepts an edit with `sdem change adopt`, now also in a workspace with no change sets yet.
+  - **Every result is an object** (AF-08): list results are `{"count", "items"}` — `query`, whole-layer `trace`, `review`, `approve`, `explain`. **This changes existing JSON**: read `items`.
+  - **Error codes come from where the error happened** (AF-05): malformed JSON is `invalid_input` everywhere, a missing file or workspace `not_found`, an unknown command `usage`; every error has a hint.
+  - **`sdem agents install`** (AF-09): one `AGENTS.md` for every agent, `CLAUDE.md` pointing to it, SDEM's skills in `.claude/skills/` and `.agents/skills/`, Gemini CLI's settings, and Copilot's files — from one source, pinned to the version.
+  - **Windows** (AF-10): UTF-8 output on every console; CI runs the suite on Windows.
+  - **The real-agent evaluation** (AF-11): `scripts/agent_eval.py prepare|grade` — the same seven tasks and the same file-based grade for every platform; run here by Claude Code (5 of 5, not blind); Copilot, Codex and Gemini CLI still to run.
+  - No MCP: the CLI already serves every platform (reasons in the spec).
+
 ## 0.9.12 — built for agents (2026-10-31)
 
 Upgrade: change the pin to `@v0.9.12`, `pip install -r requirements.txt`. No metamodel change, no migration. Without `--json`, `--dry-run` or `--limit` every command behaves as before; with `--json`, results that are objects now start with an `"sdem"` marker, and `sdem dashboard --json` / `sdem home --json` give a summary — add `--full` for the previous output.

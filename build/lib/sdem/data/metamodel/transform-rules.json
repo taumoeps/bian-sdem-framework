@@ -1,0 +1,876 @@
+{
+  "metamodel_version": "0.7.0",
+  "note": "Rules for `sdem transform`: how a Confluence HTML export of past designs becomes candidate architecture records. Rules only — no AI, no network. Copy this file, change the words to match your pages, and pass it with --rules. Matching ignores case, punctuation and extra spaces. Design: docs/sdem-transform-design.md; spec: docs/sdem-transform-spec.md. Any folder layout: pages are found anywhere (HTML, Markdown, text, CSV), folder names act as section headings, diagrams are linked to the page that refers to them, files in the root are kept as provenance.",
+  "id_prefix": "HIS-",
+  "skip_folders": [
+    "styles",
+    "images/icons",
+    "images/emoticons",
+    "__MACOSX"
+  ],
+  "attachment_folders": [
+    "attachments"
+  ],
+  "container_folders": [
+    "archives",
+    "archive",
+    "attachments",
+    "export",
+    "pages",
+    "html",
+    "raw",
+    "content",
+    "diagrams",
+    "images"
+  ],
+  "manifest_keys": {
+    "note": "Column or field names in a JSON or CSV file in the export root that say which page a row is about, and what to take from it. A row is matched to a page when one of its values equals the page file path, file name or title.",
+    "page_id": [
+      "id",
+      "page id",
+      "pageid",
+      "page_id",
+      "content id",
+      "confluence id"
+    ],
+    "url": [
+      "url",
+      "link",
+      "page url",
+      "source url",
+      "source",
+      "web url"
+    ],
+    "title": [
+      "title",
+      "page title",
+      "page name"
+    ],
+    "modified": [
+      "modified",
+      "last modified",
+      "last_modified",
+      "updated",
+      "last updated",
+      "date"
+    ],
+    "space": [
+      "space",
+      "space key",
+      "space name"
+    ]
+  },
+  "max_diagram_bytes": 50000000,
+  "confidence": {
+    "table": "medium",
+    "diagram_shape": "medium",
+    "diagram_colour": "low",
+    "diagram_label": "low",
+    "diagram_line": "low",
+    "narrative": "low",
+    "table_endpoint": "low",
+    "note": "Never high: every record is a candidate until a person confirms it (as AID-B6 caps name-only evidence).",
+    "plantuml_typed": "medium",
+    "plantuml_untyped": "low",
+    "ocr": "low",
+    "svg_text": "low"
+  },
+  "tables": [
+    {
+      "id": "HT-01",
+      "type": "A3.ApplicationComponent",
+      "name": [
+        "application",
+        "application name",
+        "system",
+        "system name",
+        "app",
+        "app name",
+        "component",
+        "solution component"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "summary",
+        "role",
+        "function"
+      ],
+      "lifecycle": [
+        "status",
+        "lifecycle",
+        "lifecycle status",
+        "state"
+      ],
+      "attributes": {
+        "vendor": [
+          "vendor",
+          "supplier",
+          "product vendor"
+        ],
+        "release_version": [
+          "version",
+          "release",
+          "release version"
+        ],
+        "hosting_model": [
+          "hosting",
+          "hosting model"
+        ]
+      }
+    },
+    {
+      "id": "HT-02",
+      "type": "A3.ApplicationService",
+      "name": [
+        "application service",
+        "service name",
+        "service"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "summary"
+      ],
+      "lifecycle": [
+        "status",
+        "lifecycle"
+      ]
+    },
+    {
+      "id": "HT-03",
+      "type": "A3.ApplicationInterface",
+      "name": [
+        "interface",
+        "interface name",
+        "api",
+        "api name"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "summary"
+      ],
+      "lifecycle": [
+        "status",
+        "lifecycle"
+      ]
+    },
+    {
+      "id": "HT-04",
+      "type": "A4.Node",
+      "name": [
+        "server",
+        "server name",
+        "host",
+        "hostname",
+        "node",
+        "cluster",
+        "platform",
+        "infrastructure",
+        "vm"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "role",
+        "type",
+        "environment"
+      ],
+      "lifecycle": [
+        "status",
+        "lifecycle"
+      ]
+    },
+    {
+      "id": "HT-05",
+      "type": "A4.SystemSoftware",
+      "name": [
+        "database",
+        "database name",
+        "middleware",
+        "software",
+        "system software",
+        "product"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "version",
+        "type"
+      ],
+      "lifecycle": [
+        "status",
+        "lifecycle"
+      ]
+    },
+    {
+      "id": "HT-06",
+      "type": "A4.TechnologyService",
+      "name": [
+        "technology service",
+        "platform service",
+        "infrastructure service"
+      ],
+      "description": [
+        "description",
+        "purpose"
+      ],
+      "lifecycle": [
+        "status",
+        "lifecycle"
+      ]
+    },
+    {
+      "id": "HT-07",
+      "type": "A1.BusinessCapability",
+      "name": [
+        "capability",
+        "business capability",
+        "capability name"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "summary",
+        "outcome"
+      ]
+    },
+    {
+      "id": "HT-08",
+      "type": "A1.BusinessProcess",
+      "name": [
+        "process",
+        "business process",
+        "process name",
+        "process step"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "summary"
+      ]
+    },
+    {
+      "id": "HT-09",
+      "type": "A1.BusinessActor",
+      "name": [
+        "actor",
+        "stakeholder",
+        "business unit",
+        "team"
+      ],
+      "description": [
+        "description",
+        "role",
+        "responsibility"
+      ]
+    },
+    {
+      "id": "HT-10",
+      "type": "A1.BusinessRequirement",
+      "name": [
+        "requirement",
+        "business requirement",
+        "nfr",
+        "non functional requirement"
+      ],
+      "description": [
+        "description",
+        "detail",
+        "acceptance criteria"
+      ]
+    }
+  ],
+  "no_entity_type_words": [
+    "risk",
+    "issue",
+    "assumption",
+    "decision",
+    "dependency",
+    "constraint",
+    "cost",
+    "budget",
+    "sla",
+    "kpi",
+    "principle",
+    "mitigation",
+    "action item",
+    "open question"
+  ],
+  "link_tables": [
+    {
+      "id": "HL-01",
+      "source": [
+        "source",
+        "source system",
+        "from",
+        "from system",
+        "consumer",
+        "sender",
+        "upstream"
+      ],
+      "target": [
+        "target",
+        "target system",
+        "to",
+        "to system",
+        "provider",
+        "receiver",
+        "downstream"
+      ],
+      "label": [
+        "interface",
+        "integration",
+        "data",
+        "description",
+        "payload",
+        "message",
+        "protocol"
+      ],
+      "endpoint_type": "A3.ApplicationComponent",
+      "kind": "flow"
+    }
+  ],
+  "lifecycle_values": {
+    "active": [
+      "active",
+      "live",
+      "production",
+      "in production",
+      "in use",
+      "current",
+      "operational"
+    ],
+    "planned": [
+      "planned",
+      "proposed",
+      "future",
+      "new",
+      "to be built",
+      "in build",
+      "target"
+    ],
+    "deprecated": [
+      "deprecated",
+      "sunset",
+      "sunsetting",
+      "legacy",
+      "to be retired",
+      "contain"
+    ],
+    "retired": [
+      "retired",
+      "decommissioned",
+      "removed",
+      "replaced"
+    ]
+  },
+  "diagram_shapes": [
+    {
+      "id": "HD-01",
+      "match": {
+        "shape": "mxgraph.archimate3.application",
+        "appType": "comp"
+      },
+      "type": "A3.ApplicationComponent"
+    },
+    {
+      "id": "HD-02",
+      "match": {
+        "shape": "mxgraph.archimate3.application",
+        "appType": "serv"
+      },
+      "type": "A3.ApplicationService"
+    },
+    {
+      "id": "HD-03",
+      "match": {
+        "shape": "mxgraph.archimate3.application",
+        "appType": "interface"
+      },
+      "type": "A3.ApplicationInterface"
+    },
+    {
+      "id": "HD-04",
+      "match": {
+        "shape": "mxgraph.archimate3.application",
+        "appType": "func"
+      },
+      "type": "A3.ApplicationFunction"
+    },
+    {
+      "id": "HD-05",
+      "match": {
+        "shape": "mxgraph.archimate3.application",
+        "appType": "event"
+      },
+      "type": "A3.Event"
+    },
+    {
+      "id": "HD-06",
+      "match": {
+        "shape": "mxgraph.archimate3.application",
+        "appType": "passive"
+      },
+      "type": "A3.DataEntity"
+    },
+    {
+      "id": "HD-07",
+      "match": {
+        "shape": "mxgraph.archimate3.application",
+        "appType": "actor"
+      },
+      "type": "A1.BusinessActor"
+    },
+    {
+      "id": "HD-08",
+      "match": {
+        "shape": "mxgraph.archimate3.application",
+        "appType": "role"
+      },
+      "type": "A1.BusinessRole"
+    },
+    {
+      "id": "HD-09",
+      "match": {
+        "shape": "mxgraph.archimate3.application",
+        "appType": "capability"
+      },
+      "type": "A1.BusinessCapability"
+    },
+    {
+      "id": "HD-10",
+      "match": {
+        "shape": "mxgraph.archimate3.business",
+        "busType": "actor"
+      },
+      "type": "A1.BusinessActor"
+    },
+    {
+      "id": "HD-11",
+      "match": {
+        "shape": "mxgraph.archimate3.business",
+        "busType": "role"
+      },
+      "type": "A1.BusinessRole"
+    },
+    {
+      "id": "HD-12",
+      "match": {
+        "shape": "mxgraph.archimate3.business",
+        "busType": "process"
+      },
+      "type": "A1.BusinessProcess"
+    },
+    {
+      "id": "HD-13",
+      "match": {
+        "shape": "mxgraph.archimate3.business",
+        "busType": "service"
+      },
+      "type": "A1.BusinessService"
+    },
+    {
+      "id": "HD-14",
+      "match": {
+        "shape": "mxgraph.archimate3.business",
+        "busType": "object"
+      },
+      "type": "A1.BusinessObject"
+    },
+    {
+      "id": "HD-15",
+      "match": {
+        "shape": "mxgraph.archimate3.tech",
+        "techType": "node"
+      },
+      "type": "A4.Node"
+    },
+    {
+      "id": "HD-16",
+      "match": {
+        "shape": "mxgraph.archimate3.tech",
+        "techType": "device"
+      },
+      "type": "A4.Device"
+    },
+    {
+      "id": "HD-17",
+      "match": {
+        "shape": "mxgraph.archimate3.tech",
+        "techType": "sysSw"
+      },
+      "type": "A4.SystemSoftware"
+    },
+    {
+      "id": "HD-18",
+      "match": {
+        "shape": "mxgraph.archimate3.tech",
+        "techType": "serv"
+      },
+      "type": "A4.TechnologyService"
+    },
+    {
+      "id": "HD-19",
+      "match": {
+        "shape": "mxgraph.archimate3.tech",
+        "techType": "interface"
+      },
+      "type": "A4.TechnologyInterface"
+    },
+    {
+      "id": "HD-20",
+      "match": {
+        "shape": "mxgraph.archimate3.tech",
+        "techType": "artifact"
+      },
+      "type": "A4.Artifact"
+    },
+    {
+      "id": "HD-21",
+      "match": {
+        "shape": "mxgraph.archimate3.tech",
+        "techType": "commNetw"
+      },
+      "type": "A4.CommunicationNetwork"
+    },
+    {
+      "id": "HD-22",
+      "match": {
+        "shape": "mxgraph.archimate3.capability"
+      },
+      "type": "A1.BusinessCapability"
+    },
+    {
+      "id": "HD-23",
+      "match": {
+        "shape": "mxgraph.archimate3.actor"
+      },
+      "type": "A1.BusinessActor"
+    }
+  ],
+  "diagram_colours": {
+    "note": "ArchiMate's usual layer colours. A shape with no ArchiMate type is placed in a layer by its fill colour; the type then comes from its label words or the layer default (low confidence).",
+    "A1": [
+      "#ffff99",
+      "#ffffb5",
+      "#fff2cc"
+    ],
+    "A3": [
+      "#99ffff",
+      "#b5ffff",
+      "#dae8fc"
+    ],
+    "A4": [
+      "#afffaf",
+      "#c9ffc9",
+      "#d5e8d4"
+    ]
+  },
+  "label_words": {
+    "note": "Words in a shape's label (or a container's) that suggest a type, used when the shape itself has no ArchiMate type. First match wins, in this order.",
+    "A4.SystemSoftware": [
+      "database",
+      " db",
+      "oracle",
+      "postgres",
+      "sql server",
+      "mongodb",
+      "kafka",
+      "mq",
+      "message queue",
+      "redis",
+      "middleware"
+    ],
+    "A4.Node": [
+      "server",
+      "cluster",
+      "kubernetes",
+      "k8s",
+      "eks",
+      "aks",
+      "openshift",
+      "vm",
+      "virtual machine",
+      "host",
+      "mainframe",
+      "data centre",
+      "data center"
+    ],
+    "A4.CommunicationNetwork": [
+      "network",
+      "lan",
+      "wan",
+      "vpn",
+      "dmz"
+    ],
+    "A3.ApplicationInterface": [
+      " api",
+      "api gateway",
+      "interface",
+      "endpoint"
+    ],
+    "A3.ApplicationComponent": [
+      "application",
+      "app",
+      "system",
+      "service",
+      "engine",
+      "hub",
+      "gateway",
+      "portal",
+      "platform",
+      "module",
+      "component"
+    ],
+    "A1.BusinessActor": [
+      "customer",
+      "client",
+      "merchant",
+      "staff",
+      "teller",
+      "operator"
+    ],
+    "A1.BusinessCapability": [
+      "capability"
+    ]
+  },
+  "shape_words": {
+    "note": "draw.io shape names that suggest a type when the label does not.",
+    "A4.SystemSoftware": [
+      "cylinder",
+      "datastore",
+      "mxgraph.flowchart.database",
+      "mxgraph.aws4.database",
+      "mxgraph.azure.database"
+    ],
+    "A4.Node": [
+      "mxgraph.aws4",
+      "mxgraph.azure",
+      "mxgraph.kubernetes",
+      "mxgraph.gcp2",
+      "mxgraph.cisco"
+    ],
+    "A1.BusinessActor": [
+      "umlactor",
+      "mxgraph.basic.person"
+    ]
+  },
+  "section_layers": {
+    "note": "Words in a page heading (or a diagram's name) that place what follows in an architecture. Used only to decide the layer of a shape that has nothing else to go by.",
+    "A1": [
+      "business",
+      "capabilit",
+      "process",
+      "value stream",
+      "operating model",
+      "customer journey"
+    ],
+    "A3": [
+      "application",
+      "solution",
+      "integration",
+      "interface",
+      "software",
+      "logical"
+    ],
+    "A4": [
+      "infrastructure",
+      "technology",
+      "deployment",
+      "hosting",
+      "network",
+      "environment",
+      "physical",
+      "platform"
+    ]
+  },
+  "layer_default_type": {
+    "A1": "A1.BusinessCapability",
+    "A3": "A3.ApplicationComponent",
+    "A4": "A4.Node"
+  },
+  "line_kinds": {
+    "note": "For a line between two shapes in one architecture: the first kind the metamodel allows for the pair, in this order. association is always allowed (ArchiMate's generic relationship).",
+    "order": [
+      "flow",
+      "serving",
+      "triggering",
+      "access",
+      "realization",
+      "assignment",
+      "composition",
+      "aggregation",
+      "association"
+    ]
+  },
+  "phrases": [
+    {
+      "id": "HP-01",
+      "words": [
+        "sends",
+        "send",
+        "publishes",
+        "publish",
+        "forwards",
+        "passes",
+        "pushes",
+        "transfers",
+        "streams"
+      ],
+      "kind": "flow"
+    },
+    {
+      "id": "HP-02",
+      "words": [
+        "calls",
+        "invokes",
+        "uses",
+        "consumes",
+        "queries",
+        "reads from",
+        "depends on"
+      ],
+      "kind": "serving",
+      "reverse": true
+    },
+    {
+      "id": "HP-03",
+      "words": [
+        "triggers",
+        "starts",
+        "notifies"
+      ],
+      "kind": "triggering"
+    },
+    {
+      "id": "HP-04",
+      "words": [
+        "contains",
+        "comprises",
+        "consists of",
+        "is made up of",
+        "includes"
+      ],
+      "kind": "composition"
+    },
+    {
+      "id": "HP-05",
+      "words": [
+        "is hosted on",
+        "hosted on",
+        "is deployed on",
+        "deployed on",
+        "deployed to",
+        "runs on",
+        "running on",
+        "is installed on"
+      ],
+      "kind": "deployed_on"
+    }
+  ],
+  "narrative": {
+    "max_gap_chars": 60,
+    "min_name_chars": 4,
+    "ignore_names": [
+      "core",
+      "data",
+      "system",
+      "service",
+      "platform",
+      "application",
+      "customer",
+      "payment",
+      "payments",
+      "the bank"
+    ]
+  },
+  "skip_files": [
+    "index.html"
+  ],
+  "skip_images": [
+    "images/icons/",
+    "images/emoticons/",
+    "/thumbnails/"
+  ],
+  "plantuml_types": {
+    "note": "PlantUML element keywords, C4 macros and ArchiMate stereotypes or macros (written without '-', '_' or spaces, any case) → entity type. Anything else (rectangle, package, frame …) is typed by its name, like a plain draw.io box. Boundaries and packages are groups, not records.",
+    "component": "A3.ApplicationComponent",
+    "interface": "A3.ApplicationInterface",
+    "database": "A4.SystemSoftware",
+    "queue": "A4.SystemSoftware",
+    "node": "A4.Node",
+    "cloud": "A4.Node",
+    "artifact": "A4.Artifact",
+    "actor": "A1.BusinessActor",
+    "person": "A1.BusinessActor",
+    "participant": "A3.ApplicationComponent",
+    "collections": "A3.ApplicationComponent",
+    "personext": "A1.BusinessActor",
+    "system": "A3.ApplicationComponent",
+    "systemext": "A3.ApplicationComponent",
+    "container": "A3.ApplicationComponent",
+    "containerext": "A3.ApplicationComponent",
+    "systemdb": "A4.SystemSoftware",
+    "containerdb": "A4.SystemSoftware",
+    "containerqueue": "A4.SystemSoftware",
+    "componentdb": "A4.SystemSoftware",
+    "deploymentnode": "A4.Node",
+    "nodel": "A4.Node",
+    "noder": "A4.Node",
+    "businessactor": "A1.BusinessActor",
+    "businessrole": "A1.BusinessRole",
+    "businessprocess": "A1.BusinessProcess",
+    "businessfunction": "A1.BusinessActivity",
+    "businessservice": "A1.BusinessService",
+    "businessobject": "A1.BusinessObject",
+    "strategycapability": "A1.BusinessCapability",
+    "capability": "A1.BusinessCapability",
+    "strategyvaluestream": "A1.ValueStream",
+    "motivationrequirement": "A1.BusinessRequirement",
+    "applicationcomponent": "A3.ApplicationComponent",
+    "applicationservice": "A3.ApplicationService",
+    "applicationinterface": "A3.ApplicationInterface",
+    "applicationfunction": "A3.ApplicationFunction",
+    "applicationevent": "A3.Event",
+    "applicationdataobject": "A3.DataEntity",
+    "dataobject": "A3.DataEntity",
+    "technologynode": "A4.Node",
+    "technologydevice": "A4.Device",
+    "technologysystemsoftware": "A4.SystemSoftware",
+    "technologyservice": "A4.TechnologyService",
+    "technologyinterface": "A4.TechnologyInterface",
+    "technologyartifact": "A4.Artifact",
+    "technologycommunicationnetwork": "A4.CommunicationNetwork"
+  },
+  "plantuml_groups": [
+    "package",
+    "frame",
+    "folder",
+    "rectangle",
+    "boundary",
+    "systemboundary",
+    "containerboundary",
+    "enterpriseboundary",
+    "together",
+    "box"
+  ],
+  "ocr": {
+    "note": "Text read from pictures (macOS Vision or Tesseract, on the machine — no network). Each label becomes a candidate only when a name already found, a label word or the section decides its type; never above low; lines (arrows) are not read from pictures. Labels starting with a small letter are skipped: they are almost always captions on lines (\"clearing file\").",
+    "min_confidence": 0.5,
+    "min_chars": 3,
+    "max_chars": 60,
+    "max_words": 6,
+    "ignore": [
+      "legend",
+      "key",
+      "title",
+      "version",
+      "draft",
+      "confidential",
+      "page"
+    ],
+    "skip_lowercase": true
+  }
+}

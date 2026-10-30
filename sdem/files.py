@@ -1,8 +1,11 @@
 """Safe file writes: a file is written to a temporary copy beside it and moved into place in one step (os.replace), so a
 crash or a full disk never leaves a half-written file. `Batch` writes several files all-or-nothing as far as the file
 system allows: every file is written to its temporary copy first, and only then are they moved into place."""
-import json, os, tempfile
+import datetime, hashlib, json, os, sys, tempfile
 from pathlib import Path
+
+LEDGER = 'sdem-ledger.json'   # in a workspace: each layer file and the registry as SDEM last wrote it (AF-07)
+TRACKED = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json')
 
 
 def dumps(obj):
@@ -38,10 +41,56 @@ def write_text(path, text):
     except BaseException:
         if os.path.exists(tmp): os.unlink(tmp)
         raise
+    if path.name in TRACKED: record([path])
 
 
 def write_json(path, obj):
     write_text(path, dumps(obj))
+
+
+def _sha(p):
+    return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+
+
+def _command():
+    args = [a for a in sys.argv[1:3] if not a.startswith('-')]
+    return 'sdem ' + ' '.join(args) if args else 'sdem'
+
+
+def record(paths, by=None, note=None):
+    """AF-07: note in each workspace's ledger the files just written — by SDEM, or a person's edit accepted with `sdem change adopt`."""
+    groups = {}
+    for p in map(Path, paths):
+        if p.name in TRACKED and p.exists(): groups.setdefault(p.parent, []).append(p)
+    now = datetime.datetime.now().isoformat(timespec='seconds')
+    for d, ps in groups.items():
+        if not ((d / 'mappings.json').exists() and ((d / 'workspace.json').exists() or (d / LEDGER).exists())): continue   # workspaces only
+        f = d / LEDGER
+        try: led = json.loads(f.read_text(encoding='utf-8')) if f.exists() else {}
+        except ValueError: led = {}
+        led['format'] = 'sdem-ledger/1'
+        files = led.setdefault('files', {})
+        for p in ps:
+            files[p.name] = {'sha256': _sha(p), 'by': by or _command(), 'at': now, **({'note': note} if note else {})}
+        led['files'] = dict(sorted(files.items()))
+        write_text(f, dumps(led))
+
+
+def unrecorded(workspace):
+    """AF-07: the tracked files changed since SDEM last wrote them (by hand, or by an agent editing files directly) — or None
+    when the workspace has no ledger yet (started before v0.9.13)."""
+    f = Path(workspace) / LEDGER
+    if not f.exists(): return None
+    try: files = json.loads(f.read_text(encoding='utf-8')).get('files', {})
+    except ValueError: return None
+    out = []
+    for name in TRACKED:
+        p = Path(workspace) / name
+        if not p.exists(): continue
+        last = files.get(name)
+        if not last or last.get('sha256') != _sha(p):
+            out.append({'file': name, 'last_written_by': (last or {}).get('by'), 'at': (last or {}).get('at')})
+    return out
 
 
 class Batch:
@@ -60,3 +109,4 @@ class Batch:
                 if os.path.exists(tmp): os.unlink(tmp)
             raise
         for tmp, path in staged: os.replace(tmp, path)
+        record([p for p, _ in self.items])

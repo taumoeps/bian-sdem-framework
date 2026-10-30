@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/graph-store.schema.json",
+  "title": "SDEM graph store file (SDEM profile of JSON Graph Format v2)",
+  "description": "One file of a local JSON graph store (docs/graph-store-spec.md). A valid file is also a valid JGF v2 document (single graph, edge variant); this profile only constrains what SDEM puts in metadata. Uses only keywords SDEM's built-in validator checks.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["graph"],
+  "properties": {
+    "graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "label", "directed", "metadata", "nodes", "edges"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^sdem:"},
+        "type": {"enum": ["sdem.local", "sdem.federated"]},
+        "label": {"type": "string", "minLength": 1},
+        "directed": {"type": "boolean"},
+        "metadata": {
+          "type": "object",
+          "required": ["sdem_store_version", "metamodel_version"],
+          "properties": {
+            "sdem_store_version": {"enum": ["1.0"]},
+            "metamodel_version": {"type": "string"},
+            "level": {"enum": ["A1", "A2", "A3", "A4"]},
+            "model_id": {"type": "string"},
+            "model_version": {"type": "string"},
+            "source_system": {"type": "string"},
+            "export_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "levels": {"type": "object"},
+            "registries": {"type": "array", "items": {"type": "object", "required": ["file", "sha256"], "properties": {"file": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}},
+            "statuses": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "nodes": {"type": "object"},
+        "edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}}
+      }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "metadata"],
+      "properties": {
+        "label": {"type": "string"},
+        "metadata": {
+          "type": "object",
+          "required": ["level", "type", "id", "version"],
+          "properties": {
+            "level": {"enum": ["A1", "A2", "A3", "A4"]},
+            "type": {"type": "string", "pattern": "^A[1-4]\\.[A-Za-z]+$"},
+            "id": {"type": "string", "minLength": 1},
+            "version": {"type": "string", "minLength": 1},
+            "attributes": {"type": "object"},
+            "stub": {"type": "boolean"},
+            "graph": {"type": "string"}
+          }
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source", "target", "relation", "metadata"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "pattern": "^A[1-4]:.+@.+$"},
+        "target": {"type": "string", "pattern": "^A[1-4]:.+@.+$"},
+        "relation": {"type": "string", "minLength": 1},
+        "label": {"type": "string"},
+        "directed": {"type": "boolean"},
+        "metadata": {
+          "type": "object",
+          "required": ["scope"],
+          "properties": {
+            "scope": {"enum": ["within-level", "cross-level"]},
+            "row": {"type": "string"},
+            "registry": {"type": "string"},
+            "status": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}

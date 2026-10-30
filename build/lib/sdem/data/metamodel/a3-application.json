@@ -1,0 +1,233 @@
+{
+  "metamodel_version": "0.7.0",
+  "level": "A3",
+  "entities": [
+    {
+      "type": "A3.ApplicationComponent",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A modular, deployable part of an application",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Application Component",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Application Component, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A3.ApplicationService",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "Externally exposed application behaviour",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Application Service",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Application Service, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A3.ApplicationInterface",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "An access point to an application service",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Application Interface",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Application Interface, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A3.ApplicationFunction",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "Internal application behaviour",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Application Function",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Application Function, ch. 9 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A3.APIOperation",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A callable operation of an API contract",
+      "definition_source": "sdem_extension",
+      "alignment_kind": "related",
+      "reference": {
+        "standard": "BIAN Semantic API",
+        "release": "8.1",
+        "concept": "Service Operation (API)",
+        "uri": "https://bian.org/wp-content/uploads/2024/12/BIAN-Semantic-API-Pactitioner-Guide-V8.1-FINAL.pdf",
+        "locator": "Practitioner Guide"
+      },
+      "evidence_status": "proposed_extension",
+      "reasoning": "SDEM extension: ArchiMate has no element for a single API operation (it stops at the interface). SDEM adds it because BIAN's Semantic API maps each service operation to one REST operation (Practitioner Guide §3.5), and its attributes follow the public OpenAPI standard (method, path, payload).",
+      "confidence": "medium",
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "owning interface",
+          "method",
+          "path"
+        ],
+        "basis": "OpenAPI",
+        "reasoning": "OpenAPI makes an operation unique by path and method within one API"
+      }
+    },
+    {
+      "type": "A3.DataEntity",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A logical data entity held by an application",
+      "definition_source": "archimate_aligned",
+      "alignment_kind": "related",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Data Object",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "Aligned to ArchiMate 3.2 Data Object, ch. 9 (concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated). SDEM narrows it to a logical data entity with a column list, so it can be matched to BIAN business-object attributes; ArchiMate's Data Object is broader.",
+      "confidence": "medium",
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "stored_in",
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "a table or entity name is unique within the store that holds it"
+      }
+    },
+    {
+      "type": "A3.Event",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "An event an application produces or consumes",
+      "definition_source": "archimate_aligned",
+      "alignment_kind": "related",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Application Event",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 9"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "Aligned to ArchiMate 3.2 Application Event, ch. 9 (concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated). SDEM uses it for published business events; its fields follow CloudEvents 1.0 (type, source, dataschema; approved in the A3 data-model review 2026-10-25).",
+      "confidence": "medium",
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A3.SolutionBuildingBlock",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "An organisation-defined reusable solution grouping",
+      "definition_source": "togaf_informed",
+      "alignment_kind": "conceptual",
+      "reference": {
+        "standard": "TOGAF",
+        "release": "10",
+        "concept": "Solution Building Block",
+        "uri": "https://pubs.opengroup.org/togaf-standard/",
+        "locator": "Architecture Content"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "TOGAF 10 Solution Building Block (Architecture Content Framework) — a real TOGAF concept, but the TOGAF specification is login-gated, so the definition is SDEM's paraphrase and unverified.",
+      "confidence": "medium",
+      "confidence_basis": "login-gated TOGAF source, unverified; validated against sealed answers",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    }
+  ]
+}

@@ -27,7 +27,7 @@ class WorkspaceTests(unittest.TestCase):
         self.assertEqual(code, 0, out)
         ws = self.tmp / 'workspaces' / 'payments'
         self.assertEqual(sorted(p.name for p in ws.iterdir()),
-                         ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json', 'workspace.json'])
+                         ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json', 'sdem-ledger.json', 'workspace.json'])
         self.assertEqual(self.sds('workspaces/payments'), [])                       # the catalogue is read, never copied
         self.assertLess((ws / 'a2-service-domain.json').stat().st_size, 1000)
         rec = json.loads((ws / 'workspace.json').read_text())
