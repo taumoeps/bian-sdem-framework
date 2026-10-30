@@ -1,6 +1,6 @@
 # Roadmap
 
-> **Status: current** — updated with every release; v0.9.11 released 2026-10-31.
+> **Status: current** — updated with every release; v0.9.12 released 2026-10-31.
 
 Realigned 2026-10-25 after a full review of `docs/` against the code. Release numbers before v0.8 are history; earlier plans for v0.6–v0.8 (engine, BIAN reference integration, generated views) were renumbered below because v0.6.0 and v0.7.0 shipped the rules specification and the rename instead.
 
@@ -18,6 +18,7 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | v0.6.0 | Relationship Rules Model specification (`relationship-rules-spec.md`); knowledge-graph design and specification with service specifications | Generated from the records; current in CI | done |
 | v0.7.0 | Renamed SDEM; model-driven terminology; registry specification; compatibility aliases for the old names | Behaviour byte-identical to v0.6.2 | done |
 | v0.8.0 | The tool release — see below | the full suite; acceptance 8 of 8; use-case examples 1–4; installed-package job | done |
+| v0.9.12 | Built for agents: `--json`, `--dry-run`, `--limit` on every command; failures as JSON with a code and a hint; results marked with version and command; dashboard/home JSON summaries; native JSON for link, build, baseline, aid confirm/reject, bian inference; `sdem commands --json` (AF-01…AF-06) | the full suite, with and without an install; every CI step run locally; the whole workflow driven with JSON only | done |
 | v0.9.11 | Trace a whole layer (`sdem trace A1…A4`, with gaps, `--only-gaps`, `--to`, `--tree`, `--csv`); readable layer labels and *connections followed* in trace; AID upward without guessing (AID-R05…R07) and S06 reaching domains with no published subject; `scripts/aid_eval.py` across all 258 domains — 0 wrong either way | the full suite, with and without an install; every CI step run locally; full-BIAN evaluation | done |
 | v0.9.10 | Workspaces (`sdem new`; *estate* renamed); AID fills a workspace — only the relevant BIAN domains, every record marked inferred, confirm and reject; matching fix (DA2-04); `sdem bian custom`; metamodel 0.7.0 | the full suite, with and without an install; every CI step run locally; walkthrough | done |
 | v0.9.9 | The inference record for BIAN's unpublished values (66 entries, source/reasoning/confidence/status/history; 48 accepted by the owner → `--all` gives 240 of 258 with full values); `sdem bian inference` commands; metamodel 0.5.0 → 0.6.0 | the full suite, with and without an install; every CI step run locally | done |

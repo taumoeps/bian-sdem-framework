@@ -1,6 +1,6 @@
 # SDEM's command line, built for agents
 
-> **Status: built (v0.9.12, unreleased)** — what every `sdem` command gives an AI agent (Copilot, Claude Code, any agent that runs commands), so it can drive SDEM reliably without reading prose. Owner's decision, 2026-10-31. Code: `sdem/agent.py`; test: `tests/test_agent.py`.
+> **Status: built (v0.9.12)** — what every `sdem` command gives an AI agent (Copilot, Claude Code, any agent that runs commands), so it can drive SDEM reliably without reading prose. Owner's decision, 2026-10-31. Code: `sdem/agent.py`; test: `tests/test_agent.py`.
 
 SDEM is an **agent-friendly command line**: it contains no AI itself — the same input always gives the same output — and an agent can run every step. Decisions on record (approve, load, start a workspace, confirm or reject an inferred record) still take a person's own name (CTL-21); an agent can propose, check, preview and explain, never decide.
 
