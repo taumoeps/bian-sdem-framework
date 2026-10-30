@@ -34,16 +34,16 @@
       {
         "step": "R3",
         "capability_candidates": 2,
-        "process_candidates": 3
+        "process_candidates": 2
       }
     ],
     "projection_ends": [],
     "summary": {
       "A1": {
-        "records": 5,
+        "records": 4,
         "by_confidence": {
           "0.6": 0,
-          "0.4": 5
+          "0.4": 4
         }
       },
       "A2": {
@@ -54,7 +54,7 @@
         }
       }
     },
-    "links": 14
+    "links": 13
   },
   "layers": {
     "A1": {
@@ -78,37 +78,6 @@
               "SD-CA"
             ],
             "reasoning": "a business capability is likely to be supported by Current Account; BIAN publishes no capability mapping, so this is a candidate only",
-            "confidence": 0.4
-          }
-        },
-        {
-          "id": "PRJ-PRC-SG-CA",
-          "type": "A1.BusinessProcess",
-          "version": "1.0",
-          "name": "Account — Current Account (process candidate)",
-          "lifecycle_status": "planned",
-          "attributes": {
-            "invokes": [
-              "SO-CA-01",
-              "SO-CA-02",
-              "SO-CA-03",
-              "SO-CA-04",
-              "SO-CA-05"
-            ]
-          },
-          "projection": {
-            "step": "R3",
-            "rule": "service group",
-            "source_reference": "none published — SDEM pattern (AID-R03): one process candidate per BIAN service group; the grouping itself is BIAN's ([SL14])",
-            "inferred_from": [
-              "SG-CA",
-              "SO-CA-01",
-              "SO-CA-02",
-              "SO-CA-03",
-              "SO-CA-04",
-              "SO-CA-05"
-            ],
-            "reasoning": "BIAN groups the operations Initiate Current Account, Retrieve Current Account, Update Current Account, Control Current Account, Execute Current Account Closure as “Account”; a business process typically covers one such group — a candidate only",
             "confidence": 0.4
           }
         },
@@ -1415,33 +1384,6 @@
       {
         "mapping_id": "PRJ-L-011",
         "source": {
-          "id": "PRJ-PRC-SG-CA",
-          "type": "A1.BusinessProcess",
-          "version": "1.0"
-        },
-        "relationship": "USES_DOMAIN",
-        "target": {
-          "id": "SD-CA",
-          "type": "A2.ServiceDomain",
-          "version": "1.0"
-        },
-        "status": "projected",
-        "confidence": 0.4,
-        "rationale": "PROJECTED DESIGN, not a mapping: process candidate",
-        "projection": {
-          "step": "R3",
-          "rule": "service group",
-          "source_reference": "none published — SDEM pattern (AID-R03): one process candidate per BIAN service group; the grouping itself is BIAN's ([SL14])",
-          "inferred_from": [
-            "SG-CA"
-          ],
-          "reasoning": "process candidate",
-          "confidence": 0.4
-        }
-      },
-      {
-        "mapping_id": "PRJ-L-012",
-        "source": {
           "id": "PRJ-CAP-SD-PI",
           "type": "A1.BusinessCapability",
           "version": "1.0"
@@ -1467,7 +1409,7 @@
         }
       },
       {
-        "mapping_id": "PRJ-L-013",
+        "mapping_id": "PRJ-L-012",
         "source": {
           "id": "PRJ-PRC-SG-PI-1",
           "type": "A1.BusinessProcess",
@@ -1494,7 +1436,7 @@
         }
       },
       {
-        "mapping_id": "PRJ-L-014",
+        "mapping_id": "PRJ-L-013",
         "source": {
           "id": "PRJ-PRC-SG-PI-2",
           "type": "A1.BusinessProcess",

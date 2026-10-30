@@ -13,7 +13,7 @@
 | your activities and capabilities (A1) — or your applications and their APIs (A3) | the **BIAN service domains** they need, copied from the catalogue into your A2 layer with their operations and control records | an activity's verb and thing match a BIAN operation and cover the domain's subject (*Initiate payment order* → Payment Order Initiation); or a capability's description shares the domain's words |
 | each service domain | an **application** and one **API per BIAN operation** (A3) | BIAN's container pattern: one component per domain; method and path from BIAN's REST mapping |
 | each application | a **deployment** (A4) | one per application — no servers, platforms or locations are guessed |
-| your technology or applications (A4, A3), if that is what you have | the applications and BIAN domains above them, and *suggested* capabilities | upwards, by the same rules |
+| your technology or applications (A4, A3), if that is what you have | the applications (named from their deployments), the BIAN domains above them, and *suggested* capabilities | upwards, by the same rules: an application's APIs, data or a name that says what it does (*Term Deposit Engine* → Term Deposit). A name that doesn't say (*Payments Hub*) gets no guessed domain — AID stops and tells you what to add |
 
 **Every record it adds is marked `inferred`**, with its **source, reasoning and confidence** and the rule used — so you can always tell what a person wrote from what SDEM inferred. The connections between layers are only **proposed**: you approve them, with evidence, as always.
 
@@ -63,6 +63,7 @@ Until a connection is approved, `trace` and `impact` do not follow it.
 - **Confidence is honest and low.** Inferred records are a starting point (most are 0.4): BIAN's container pattern gives one application per domain, which your organisation may not follow. That is why every record waits for you.
 - **It works better when activities are named verb + thing** (*Initiate payment order*, not *Payments*), or name the BIAN operation they use (`invokes`).
 - **AID chooses from all of BIAN** and brings in only the best-matching domains; add one it missed with `sdem bian custom --add`.
+- **It never guesses from fragments** of ids or names: a domain needs a name that covers what the domain is about, or matching APIs or data. No AI is used — written rules, the same result every time.
 - **It infers only from what you wrote or confirmed** — never from its own unconfirmed records — so running it again does not pile guesses on guesses.
 - **For existing designs too:** after `sdem load`, run `sdem aid` — the domains your designs point to come in, from the business side or the application side.
 - **File-based planning still works** — `sdem aid project --have <files> --catalogue <A2 file> --out <folder>` (or `--workspace`, into `<workspace>/plans/`) writes a separate plan that never touches your files; `sdem aid gaps` compares a plan with the real design.

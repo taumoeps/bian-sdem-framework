@@ -20,7 +20,7 @@ from pathlib import Path
 
 from .graph import FederatedGraph, LevelGraph
 from .metamodel import Metamodel
-from .rules_engine import Run, RulesEngine, _list, _rules, stem, tokens
+from .rules_engine import Run, RulesEngine, _list, _rules, stem, stems, tokens
 from .store import GraphReader
 from .validate import load_registry
 
@@ -205,8 +205,12 @@ def reverse_a3(prj, a4):
             for x in _list(at.get(key)): named.setdefault(x, []).append((i, key))
     stubs = []
     for cid, via in sorted(named.items()):
-        st = prj.record('A3', {'id': cid, 'type': 'A3.ApplicationComponent', 'version': '1.0', 'name': cid},
-                        'R1', 'named by A4', [f"{i['id']}.{k}" for i, k in via], 'an A4 record names this application; nothing else about it is known from A4', MEDIUM)
+        # AID-R05: a deployment or artifact of one application is usually named after it ("Payments Hub — production")
+        names = [re.split(r'\s+[—–-]\s+|\s*\(|:', i['name'])[0].strip() for i, k in via if k in ('component_id', 'of_component') and i.get('name')]
+        name = max(set(names), key=names.count) if names else cid
+        st = prj.record('A3', {'id': cid, 'type': 'A3.ApplicationComponent', 'version': '1.0', 'name': name},
+                        'R1', 'named by A4', [f"{i['id']}.{k}" for i, k in via],
+                        'an A4 record names this application' + (f'; its name comes from {", ".join(sorted({i["id"] for i, k in via if k in ("component_id", "of_component")}))}' if names else '; nothing else about it is known from A4'), MEDIUM)
         stubs.append(st)
         for i, key in via:
             if key == 'hosts': prj.link('DEPLOYED_ON', st, i, 'R1', 'S33 (A4 hosts)', [f"{i['id']}.hosts"], f"{i['id']} hosts {cid}", MEDIUM)
@@ -248,22 +252,38 @@ def reverse_a2(prj, a3, a4=None, registry=None):
     return chosen
 
 
-STUB_WORDS = {'APP', 'CMP', 'SVC', 'SYS', 'HUB', 'API', 'CORE', 'GW'}
+GENERIC = {'app', 'application', 'service', 'services', 'system', 'platform', 'hub', 'gateway', 'engine', 'core', 'api', 'portal', 'cmp', 'svc', 'sys', 'gw', 'module', 'manager', 'management'}
+
+
+def subject_words(prj, d):
+    """The words of what a BIAN service domain is about: its asset type, or — when BIAN publishes none — its own name."""
+    at = prj.cat_by_id.get((d.get('attributes') or {}).get('asset_type')) or {}
+    return stems(tokens(at.get('name') or _clean(d['name']))) - stems(set(GENERIC))
 
 
 def name_fallback(prj, stubs):
-    """R2 for applications known only by the id an A4 record gives them: an id word (3+ letters) that begins a word of a
-    catalogue domain's name or asset type suggests that domain — low confidence, the weakest evidence R2 accepts."""
+    """R2 for applications known only by a name (or id) from A4 (AID-R06): a domain is suggested only when the name covers what
+    the domain is about — its whole subject, or at least two of its words and two thirds of it — and only the best-covered
+    domains; one shared common word ('payment', 'order') is not enough. Otherwise AID stops here and says what it needs."""
+    doms = [i for i in prj.cat['instances'] if i['type'] == 'A2.ServiceDomain']
+    subj = {d['id']: subject_words(prj, d) for d in doms}
     for st in stubs:
-        words = [w.lower() for w in re.split(r'[-_]', st['id']) if len(w) >= 3 and w.upper() not in STUB_WORDS]
-        for d in (i for i in prj.cat['instances'] if i['type'] == 'A2.ServiceDomain'):
-            at = prj.cat_by_id.get((d.get('attributes') or {}).get('asset_type')) or {}
-            names = re.findall(r'[a-z]+', (_clean(d['name']) + ' ' + at.get('name', '')).lower())
-            hit = sorted({w for w in words for n in names if n.startswith(w)})
-            if not hit: continue
-            why = f"application id {st['id']} contains {hit}, which begin words of {_clean(d['name'])}; nothing else is known from A4"
+        words = stems(tokens(st['name'] if st['name'] != st['id'] else ' '.join(re.split(r'[-_]', st['id'])))) - stems(set(GENERIC))
+        found = []
+        for d in doms:
+            sw = subj[d['id']]
+            if not sw: continue
+            shared = sw & words; cover = len(shared) / len(sw)
+            if cover == 1 or (len(shared) >= 2 and cover >= 2 / 3): found.append((cover, len(shared), d, sorted(shared)))
+        if not found:
+            prj.ends.append(f"{st['id']} {st['name']!r}: its name does not say which BIAN service domain it realises — describe its APIs or data "
+                            f"(A3), or connect it yourself (sdem connect <service domain> REALIZED_BY {st['id']} …)"); continue
+        best = max((c, n) for c, n, _, _ in found)
+        for c, n, d, shared in found:
+            if (c, n) != best: continue
+            why = f"its name {st['name']!r} covers {_clean(d['name'])}'s subject ({', '.join(shared)}) — name only"
             prj.take_domain(d['id'], 'R2', why, LOW, [st['id']])
-            prj.link('REALIZED_BY', d, st, 'R2', 'name (id words)', [st['id']], why, LOW)
+            prj.link('REALIZED_BY', d, st, 'R2', 'name', [st['id']], why, LOW)
 
 
 def reverse_a1(prj, domains):
@@ -279,9 +299,10 @@ def reverse_a1(prj, domains):
         groups = [prj.cat_by_id[r['target']] for r in rels if r['source'] == d and r['kind'] == 'composition' and (prj.cat_by_id.get(r['target']) or {}).get('type') == 'A2.ServiceGroup']
         if not groups: prj.ends.append(f'{d}: no BIAN service groups in the catalogue — no process candidates'); continue
         at = prj.cat_by_id.get((dom.get('attributes') or {}).get('asset_type')) or {}
+        used = {l['source']['id'] for l in prj.links.values() if l['relationship'] == 'IMPLEMENTED_BY'}   # operations the design's APIs implement
         for g in groups:
             ops = [prj.cat_by_id[r['target']] for r in rels if r['source'] == g['id'] and r['kind'] == 'composition' and (prj.cat_by_id.get(r['target']) or {}).get('type') == 'A2.ServiceOperation']
-            if not ops: continue
+            if not ops or not any(o['id'] in used for o in ops): continue   # AID-R07: only for service groups the design uses
             why = f"BIAN groups the operations {', '.join(o['name'] for o in ops)} as “{g['name']}”; a business process typically covers one such group — a candidate only"
             prc = prj.record('A1', {'id': f"PRJ-PRC-{g['id']}", 'type': 'A1.BusinessProcess', 'version': '1.0', 'name': f"{g['name']} — {at.get('name') or _clean(dom['name'])} (process candidate)",
                                     'lifecycle_status': 'planned', 'attributes': {'invokes': [o['id'] for o in ops]}}, 'R3', 'service group', [g['id']] + [o['id'] for o in ops], why, LOW)

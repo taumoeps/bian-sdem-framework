@@ -167,9 +167,15 @@ def expectations(n, pkg, g, real, reg, results):
                 (f"few wrong — precision {m.get('precision')}", (m.get('precision') or 0) >= 0.5)]
     if n == 3:
         m = M.get('A3 components', {})
+        names = {i['name'] for i in pkg['layers'].get('A3', {}).get('instances', []) if i['type'] == 'A3.ApplicationComponent'}
+        ends = pkg['projection'].get('projection_ends', [])
+        # Revised by the owner, 2026-10-31 (AID-R06): sealed as 'BIAN domains suggested at low confidence' (from id fragments). Against the
+        # full BIAN catalogue that guessing named 4 wrong domains of 6, so a domain now needs a name that covers its subject; these
+        # applications' names do not, and AID stops at A3 and says what it needs. Kept: every application named by A4 is projected.
         return [(f"every application the technology names is projected — recall {m.get('recall')}", m.get('recall') == 1.0),
-                ('BIAN domains suggested at low confidence', bool(_confs(pkg, 'A2')) and max(_confs(pkg, 'A2')) <= aid.LOW),
-                ('the business layer marked the weakest (low)', bool(_confs(pkg, 'A1')) and max(_confs(pkg, 'A1')) <= aid.LOW)]
+                (f"applications named from their deployments, not their ids — {sorted(names)}", bool(names) and not any(n.startswith(('APP-', 'CMP-')) for n in names)),
+                ('no BIAN domain guessed from a name that does not cover its subject — AID stops at A3 and says what it needs (revised 2026-10-31, AID-R06)',
+                 not _ids(pkg, 'A2', 'A2.ServiceDomain') and any('does not say which BIAN service domain' in e for e in ends))]
     if n == 4:
         impl = {m['source']['id'] for m in approved if m['relationship'] == 'IMPLEMENTED_BY'}
         want = {dom_of[o] for o in impl if o in dom_of}

@@ -321,17 +321,6 @@
     },
     {
       "layer": "A1",
-      "element": "PRJ-PRC-SG-CA",
-      "name": "Account — Current Account (process candidate)",
-      "type": "BusinessProcess",
-      "result": "projected only",
-      "real": "—",
-      "reason": "no real process covers these operations or uses the domain",
-      "matched_by": "—",
-      "confidence": 0.4
-    },
-    {
-      "layer": "A1",
       "element": "PRJ-CAP-SD-PI",
       "name": "Payment Initiation (capability candidate)",
       "type": "BusinessCapability",
@@ -454,10 +443,10 @@
       "recall": 1.0
     },
     "A1 process candidates": {
-      "projected": 3,
+      "projected": 2,
       "real": 2,
       "matched": 2,
-      "precision": 0.67,
+      "precision": 1.0,
       "recall": 1.0
     },
     "links between real elements": {

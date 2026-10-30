@@ -575,7 +575,7 @@ class Run:
             at = stems(tokens(act['name'])); found = []
             for o in self.of('A2.ServiceOperation'):
                 dom = self.domain_of(o['id']); asset = self.get(self.attr(dom, 'asset_type'), 'A2.AssetType') if dom and self.attr(dom, 'asset_type') else None
-                noun = stems(tokens(asset['name'], *_list(self.attr(asset, 'aliases')))) if asset else set()
+                noun = stems(tokens(asset['name'], *_list(self.attr(asset, 'aliases')))) if asset else stems(tokens(re.sub(r'\s*\(.*?\)', '', dom['name']))) if dom else set()   # no asset type published: the domain's name
                 if self.verbs(self.attr(o, 'action_term')) & at and noun & at:
                     cover = len(noun & at) / len(noun)
                     if cover >= 0.5: found.append((cover, o))
