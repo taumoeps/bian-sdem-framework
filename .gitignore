@@ -20,3 +20,7 @@ estates/
 
 # pip install -e . writes this
 *.egg-info/
+
+# build output (pip install of a checkout)
+build/
+*.egg-info/
