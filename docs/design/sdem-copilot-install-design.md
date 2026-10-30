@@ -17,7 +17,7 @@ sdem copilot install                 # writes .github/copilot-instructions.md, a
 
 ```mermaid
 flowchart LR
-    S["SDEM (installed)<br/>its Copilot files, version 0.9.10"] -- "sdem copilot install" --> E[".github/ in your workspace repository<br/>links point to SDEM 0.9.10 on GitHub"]
+    S["SDEM (installed)<br/>its Copilot files, version 0.9.11"] -- "sdem copilot install" --> E[".github/ in your workspace repository<br/>links point to SDEM 0.9.11 on GitHub"]
     E --> V["VS Code + Copilot<br/>/sdem-explain, agents, skills"]
 ```
 

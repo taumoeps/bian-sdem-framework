@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## 0.9.11 — trace a whole layer; AID without guessing (2026-10-31)
+
+Upgrade: change the pin to `@v0.9.11`, `pip install -r requirements.txt`. No metamodel change, no migration.
+
+Measured across all 258 BIAN service domains (`scripts/aid_eval.py`): downward, the right domain in 241 of 242 testable (157 alone, 84 with a twin domain of the same subject); upward, the right domain and a capability candidate in 257 of 258 (210 alone, 47 with a twin); **0 wrong in either direction**. Names in the evaluation follow BIAN's own wording; real designs are messier.
+
 - **AID upward inference no longer guesses.** From a technology design, inferred applications take their names from their deployments (*Payments Hub*), and a BIAN domain is inferred only when a name covers what the domain is about (*Term Deposit Engine* → Term Deposit → capability candidate) — never from id fragments like `pay` or `exec`, which against the full BIAN named 4 wrong domains of 6 and about 20 wrong business suggestions. When it can't tell, AID stops at A3 and says what to add. Process candidates come only for service groups the design uses. Downstream, rule S06 now reaches the 18 domains BIAN publishes no subject for, via the domain's name. `scripts/aid_eval.py` measures both directions across all BIAN domains. Use-case 2 run 3's sealed expectation revised by the owner (recorded in the script and evidence). Spec AID-R05…R07, E01.
 
 - **Trace a whole layer: `sdem trace A1|A2|A3|A4 --direction down|up|both`** (also `downstream|upstream|all`). It shows how many of the layer's records are connected and which layers they reach, the **gaps** — records connected to nothing in that direction, counting only kinds an official connection type lets connect that way — then every chain, one line each with its connection ids. `--only-gaps`, `--to <layer>`, `--tree` (one tree per record), `--csv <file>`, `--json`. On the payments example, `sdem trace A4 --direction up` finds 7 technology records that support nothing above them; `sdem trace A2 --direction up` finds the 2 BIAN domains no business record uses. Spec TR-L01…L04.

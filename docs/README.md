@@ -1,6 +1,6 @@
 # SDEM documentation
 
-> **Status: current (v0.9.10)** — start here. Everything on this page is written for people who will use or run SDEM; nothing assumes you know it already.
+> **Status: current (v0.9.11)** — start here. Everything on this page is written for people who will use or run SDEM; nothing assumes you know it already.
 
 ## New to SDEM? Read these, in order
 
