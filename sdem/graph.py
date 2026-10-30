@@ -369,6 +369,7 @@ def main(argv=None):
     sp.add_argument('paths', nargs='+', help='architecture datasets and relationship registries')
     sp.add_argument('-o', '--out', required=True, metavar='DIR', help='graph store directory')
     sp.add_argument('--check', action='store_true', help='fail if the stored graph files differ from a fresh build (CI)')
+    sp.add_argument('--json', action='store_true')
     sp = sub.add_parser('query', help='find records in a graph store')
     sp.add_argument('--graph', required=True, metavar='DIR')
     sp.add_argument('--level', choices=['A1', 'A2', 'A3', 'A4'])
@@ -384,7 +385,7 @@ def main(argv=None):
     sp.add_argument('--projection', metavar='DIR', help='overlay an AID projection package, drawn dashed and labelled PROJECTED (AID-O06)')
     sp.add_argument('--json', action='store_true')
     sp = sub.add_parser('baseline', help='freeze the current graph store under baselines/<name>')
-    sp.add_argument('name'); sp.add_argument('--graph', required=True, metavar='DIR')
+    sp.add_argument('name'); sp.add_argument('--graph', required=True, metavar='DIR'); sp.add_argument('--json', action='store_true')
     # paths are optional (--graph replaces them), so argparse cannot place paths written after an option; collect them here
     args, extra = parser.parse_known_args(argv)
     if extra:
@@ -402,7 +403,9 @@ def main(argv=None):
             print(json.dumps({'wrote': str(out)}) if args.json else f'wrote {out}'); return EXIT_OK
         except (OSError, _store.StoreError) as exc: print(f'ERROR: {exc}', file=sys.stderr); return EXIT_USAGE
     if args.cmd == 'baseline':
-        try: print(f'baseline written: {_store.baseline(args.graph, args.name)}'); return EXIT_OK
+        try:
+            dest = _store.baseline(args.graph, args.name)
+            print(json.dumps({'baseline': args.name, 'written': str(dest)}) if args.json else f'baseline written: {dest}'); return EXIT_OK
         except _store.StoreError as exc: print(f'ERROR: {exc}', file=sys.stderr); return EXIT_ISSUES
     try:
         if getattr(args, 'graph', None):
@@ -524,9 +527,13 @@ def main(argv=None):
 def _build(args, _store):
     if args.check:
         ok, detail = _store.check_current(args.paths, args.out)
+        if args.json: print(json.dumps({'graph': args.out, 'current': ok, 'detail': detail}, indent=2)); return EXIT_OK if ok else EXIT_ISSUES
         print(f"graph store {args.out}: {'up to date' if ok else 'STALE or failing: ' + ', '.join(detail[:5])}")
         return EXIT_OK if ok else EXIT_ISSUES
     e = _store.build(args.paths, args.out)
+    if args.json:   # errors in the result, not as lines (AG-01)
+        print(json.dumps({'graph': args.out, **e, 'next': f'sdem trace <id> --graph {args.out}' if e['result'] == 'accepted' else 'fix the errors and build again'}, indent=2, ensure_ascii=False))
+        return EXIT_OK if e['result'] == 'accepted' else EXIT_ISSUES
     for err in e['errors']: print(f'ERROR: {err}')
     for w in e['warnings']: print(f'WARN: {w}')
     if e['result'] == 'accepted':

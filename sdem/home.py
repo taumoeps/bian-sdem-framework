@@ -253,14 +253,24 @@ def main(argv=None):
     ap.add_argument('-o', '--out', default='work/sdem', metavar='DIR', help='output folder (default work/sdem)')
     ap.add_argument('--root', action='append', default=[], metavar='DIR', help='a folder of workspaces (repeatable; default examples/)')
     ap.add_argument('--workspace', dest='estate', action='append', default=[], metavar='DIR', help='one more workspace (repeatable)')
-    ap.add_argument('--json', action='store_true')
+    ap.add_argument('--json', action='store_true', help='print a summary: health, configuration, every workspace (the page is written too)')
+    ap.add_argument('--full', action='store_true', help='with --json: everything, including the whole metamodel and the drawings (large)')
     a = ap.parse_args(argv)
     ex = repo_path('examples')
     if not (a.root or a.estate or ex):
         print('ERROR: give --root DIR or --workspace DIR (the example workspaces are only in a checkout of the repository)', file=sys.stderr); return 2
     roots = a.root or ([] if a.estate else [str(ex)])
     page, data = write(a.out, roots, a.estate)
-    if a.json: print(json.dumps(data, indent=2, ensure_ascii=False)); return 0
+    if a.json:
+        if not a.full:   # AG-02: the metamodel's size and version, not all of it; no drawings
+            m = data['metamodel']
+            data = {**{k: v for k, v in data.items() if k not in ('metamodel', 'entity_picture', 'architecture')},
+                    'metamodel': {'version': m.get('version'), **{k: len(v) for k, v in m.items() if isinstance(v, (list, dict))}},
+                    'health': {**{k: v for k, v in data['health'].items() if k not in ('controls', 'spec_gaps')},
+                               'controls': {'rows': len((data['health'].get('controls') or {}).get('rows') or [])},
+                               'spec_gaps': len(data['health'].get('spec_gaps') or [])},
+                    'page': str(page), 'more': 'the whole metamodel and the drawings: add --full (or sdem commands --json for the commands)'}
+        print(json.dumps(data, indent=2, ensure_ascii=False)); return 0
     h = data['health']; ok = all(g['current'] for g in h['generators']) and all(x['passed'] for x in h['acceptance'])
     print(f"wrote {page} and {len(data['projects'])} workspace dashboard(s) in {Path(a.out) / 'workspaces'} — SDEM health: {'OK' if ok else 'ATTENTION'}; "
           f"{sum(1 for p in data['projects'] if p['errors'] or p['proposals'] or p['open_work'] or p.get('open_gaps'))} workspace(s) need attention "

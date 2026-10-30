@@ -193,9 +193,13 @@ def main(argv):
         ap.add_argument('ids', nargs='*', metavar='ID'); ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
         ap.add_argument('--person', required=True, help='your name — a person'); ap.add_argument('--all', action='store_true', help='every inferred record not yet confirmed')
         ap.add_argument('--reason', required=(action == 'reject'), help='why — kept')
+        ap.add_argument('--json', action='store_true')
         a = ap.parse_args(argv)
         try: done = decide(a.estate, a.ids, a.person, action, a.reason or '', a.all)
         except AidError as e: print(f'ERROR: {e}', file=sys.stderr); return 2
+        if a.json:
+            print(json.dumps({'action': action, 'workspace': a.estate, 'by': a.person, 'records': done, 'count': len(done),
+                              'next': 'commit on a branch and open a pull request'}, indent=2)); return 0
         print(f"{'confirmed' if action == 'confirm' else 'rejected'} {len(done)} inferred record(s) in {a.estate}: {', '.join(done[:8])}{' …' if len(done) > 8 else ''}")
         print('Next: commit on a branch and open a pull request.'); return 0
     ap = argparse.ArgumentParser(prog='sdem aid', formatter_class=argparse.RawDescriptionHelpFormatter,

@@ -91,6 +91,7 @@ def main(argv=None):
     parser.add_argument('--graph', metavar='DIR', help='read a graph store (sdem build) — the normal path')
     parser.add_argument('-o', '--out', metavar='DIR', help='also write candidates, the inference log and any target-design architecture datasets here')
     parser.add_argument('--threshold', type=float, default=0.2, help='baseline only')
+    parser.add_argument('--json', action='store_true', help='with --out (sdem link): the proposals, weakest first, as JSON — without --out the output is JSON already')
     args = parser.parse_args(argv)
     from sdem.store import GraphReader, StoreError
     try:

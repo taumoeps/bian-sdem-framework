@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- **Built for agents.** Every command now gives an AI agent what it needs: `--json` everywhere (results marked `"sdem": {"version", "command"}`; failures as JSON with a code, a message and a hint — e.g. `not_found` → *`sdem query --graph <dir> --json` lists the record ids*); `--dry-run` everywhere (a command without its own runs with every write caught and listed under `would_write`); `--limit N` to cut long lists; `sdem dashboard --json` and `sdem home --json` give a summary by default (9 KB and 13 KB, from 313 KB and 254 KB; `--full` for everything); native JSON for `link`, `build`, `baseline`, `aid confirm/reject` and `bian inference`; and **`sdem commands --json`** lists every command and option as data. Without these options nothing changes. SDEM itself still contains no AI, and decisions still need a person. Spec AF-01…AF-06 (`docs/design/sdem-agent-cli-spec.md`); test `tests/test_agent.py` drives the whole workflow with JSON only.
+
 ## 0.9.11 — trace a whole layer; AID without guessing (2026-10-31)
 
 Upgrade: change the pin to `@v0.9.11`, `pip install -r requirements.txt`. No metamodel change, no migration.

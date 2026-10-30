@@ -69,6 +69,8 @@ JOURNEYS = {
                  'sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --workspace workspaces/payments --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 --rationale "…"'),
     'migrate':  ('—', 'move a workspace to the current metamodel version — recorded migrations applied, checked, written all-or-nothing, recorded', 'sdem.migrate', [],
                  'sdem migrate --workspace workspaces/history --person jane.architect --dry-run'),
+    'commands': ('AG', 'every command, its options and what it supports, as data for an agent (with --json); --json, --limit and --dry-run work on every command', None, None,
+                 'sdem commands --json'),
     'diff':     ('—', 'compare two versions of a relationship document', 'sdem.diff', [],
                  'sdem diff --git HEAD~1 examples/payment-initiation/mappings.json'),
     'model':    ('—', 'maintainers: regenerate and check generated files, acceptance, evaluation, examples', None, None,
@@ -139,8 +141,9 @@ def _delegate(name, rest):
 
 def _link(argv):
     """The engine (sdem-infer) — and, with --out, also keep the proposals as proposals.json for `sdem review`."""
-    show = '--no-review' not in argv and '--json' not in argv   # the review follows straight away (an architect wants it); --no-review for scripts
-    argv = [x for x in argv if x != '--no-review']
+    as_json = '--json' in argv
+    show = '--no-review' not in argv and not as_json   # the review follows straight away (an architect wants it); --no-review for scripts
+    argv = [x for x in argv if x not in ('--no-review', '--json')]
     flag = next((f for f in ('--out', '-o') if f in argv), None)
     out = argv[argv.index(flag) + 1] if flag and argv.index(flag) + 1 < len(argv) else None
     buf = io.StringIO()
@@ -149,7 +152,16 @@ def _link(argv):
     text = buf.getvalue()
     if code == 0 and out:
         (Path(out) / 'proposals.json').write_text(text, encoding='utf-8')
-        n = len(json.loads(text).get('mappings', []))
+        doc = json.loads(text); n = len(doc.get('mappings', []))
+        if as_json:   # AG-03: the proposals, weakest first, and where they are
+            rows = sorted(doc.get('mappings', []), key=lambda m: (m.get('confidence', 0), m.get('id', '')))
+            print(json.dumps({'proposals_file': str(Path(out) / 'proposals.json'), 'count': n, 'folder': out,
+                              'proposals': [{'id': m.get('id'), 'relationship': m.get('relationship'), 'source': (m.get('source') or {}).get('id'),
+                                             'target': (m.get('target') or {}).get('id'), 'confidence': m.get('confidence'), 'rule': _rule_of(m),
+                                             'rationale': m.get('rationale')} for m in rows],
+                              'next': f"a person reviews and approves: sdem approve <id> --proposals {Path(out) / 'proposals.json'} --workspace <dir> --reviewer <name> --evidence <kind:ref>" if n else None},
+                             indent=2, ensure_ascii=False))
+            return code
         print(f"{n} proposed link(s) written to {Path(out) / 'proposals.json'}; candidates, inference log and any design datasets in {out}/")
         if show and n:
             names = [x for x in argv if x.endswith('.json') and Path(x).name[:3] in ('a1-', 'a2-', 'a3-', 'a4-') and Path(x).exists()]
@@ -232,6 +244,22 @@ def review(argv):
         print(f'        why: {why}')
     print('\nTo approve (a person — never the engine or Copilot): sdem approve <id> --proposals <file> --workspace <dir> --reviewer <your name> --evidence <kind:ref>, '
           'then open a pull request; the reviewed merge makes it final.')
+    return 0
+
+
+def commands(argv):
+    ap = argparse.ArgumentParser(prog='sdem commands', description='Every sdem command, its options and what it supports — for an agent, as data with --json (AG-06).',
+                                 epilog=f"Example:\n  {JOURNEYS['commands'][4]}", formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument('--json', action='store_true', help='as data: options, choices, required, JSON and dry-run support, exit and error codes')
+    a = ap.parse_args(argv)
+    from . import agent
+    cat = agent.catalogue({k: v for k, v in JOURNEYS.items() if k != 'commands'}, _run)
+    if a.json: print(json.dumps(cat, indent=2, ensure_ascii=False)); return 0
+    print(f"{'command':<24} {'json':<8} {'dry-run':<8} what it does")
+    for n, c in cat['commands'].items():
+        if 'group' in c: continue
+        print(f"{n:<24} {c['json']:<8} {c['dry_run']:<8} {(c['description'] or '').split(' — ')[0][:90]}")
+    print('\njson/dry-run: native = the command\'s own; wrapped/sandbox = given by sdem (results as JSON; nothing written, what would be is listed)')
     return 0
 
 
@@ -334,6 +362,13 @@ def main(argv=None):
     if argv[0] in ('--version', '-V'):
         from .paths import version
         print(f'sdem {version()}'); return 0
+    if any(f in argv for f in ('--json', '--dry-run', '--limit')) and not any(h in argv for h in ('-h', '--help')):
+        from . import agent   # AF-01…AF-05: JSON results and errors, --limit, --dry-run for every command
+        return agent.run(_guarded, argv)
+    return _guarded(argv)
+
+
+def _guarded(argv):
     try:
         return _run(argv)
     except KeyboardInterrupt:
@@ -358,6 +393,7 @@ def _run(argv):
         print(f"sdem: unknown command '{name}' — run 'sdem --help' for the list", file=sys.stderr); return 2
     rest = _expand(name, rest)
     if name == 'review': return review(rest)
+    if name == 'commands': return commands(rest)
     if name == 'explain': return explain(rest)
     if name == 'model': return model(rest)
     if name == 'approve':

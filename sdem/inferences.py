@@ -181,7 +181,9 @@ def commands(argv=None):
             p.add_argument('--asset-type'); p.add_argument('--pattern'); p.add_argument('--confidence', choices=CONFIDENCE, default='low')
             p.add_argument('--source'); p.add_argument('--reasoning')
         p.add_argument('--dry-run', action='store_true')
-    for p in sub.choices.values(): p.add_argument('--file', metavar='FILE', help=f'the record (default: bian/{REPO_FILE.name} in this folder, or the installed one to read)')
+    for p in sub.choices.values():
+        p.add_argument('--file', metavar='FILE', help=f'the record (default: bian/{REPO_FILE.name} in this folder, or the installed one to read)')
+        p.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     try:
         if a.cmd in ('list', 'show'):
@@ -190,6 +192,7 @@ def commands(argv=None):
             rec = read(path)
             if a.cmd == 'list':
                 rows = [e for e in rec['entries'] if not a.status or e['status'] == a.status]
+                if a.json: print(json.dumps({'file': str(path), 'entries': [snapshot(e) | {'id': e['id'], 'service_domain': e['service_domain']} for e in rows]}, indent=2)); return 0
                 for e in rows:
                     at, fp = e.get('asset_type') or {}, e.get('functional_pattern') or {}
                     print(f"{e['id']}  {e['service_domain']:<34} {at.get('value', '—'):<32} {fp.get('value', '—'):<12} {fp.get('confidence', '—'):<7} {e['status']}")
@@ -197,6 +200,7 @@ def commands(argv=None):
             else:
                 e = next((x for x in rec['entries'] if x['id'] == a.id), None)
                 if not e: raise InferenceError(f'{a.id}: no such entry')
+                if a.json: print(json.dumps(e, indent=2, ensure_ascii=False)); return 0
                 print(f"{e['id']} {e['service_domain']} — {e['status']} (control record {e['control_record'] or 'none'}, {e['operations']} operations)")
                 for f in FIELDS:
                     v = e.get(f)
@@ -210,6 +214,12 @@ def commands(argv=None):
         errs = check(rec, {d['name'].lower() for d in read_pack(base_file())})
         if errs: raise InferenceError('the record would not pass its checks — nothing written:\n  ' + '\n  '.join(errs[:10]))
         snap = snapshot(e)
+        if a.json:
+            print(json.dumps({'id': e['id'], 'service_domain': e['service_domain'], 'action': a.cmd, 'dry_run': a.dry_run, **snap,
+                              'next': None if a.dry_run else 'commit the record on a branch and open a pull request'}, indent=2))
+            if a.dry_run: return 0
+            from .files import write_json
+            write_json(path, rec); return 0
         print(f"{'would change' if a.dry_run else 'changed'} {e['id']} {e['service_domain']}: {snap['asset_type'] or '—'} · {snap['functional_pattern'] or '—'} · {snap['status']}")
         if a.dry_run: return 0
         from .files import write_json

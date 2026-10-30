@@ -189,6 +189,8 @@ flowchart LR
 
 Helpers in **GitHub Copilot** — one per layer and a coordinator — draft changes and explain results. They work only through SDEM's checked commands, stay in their own layer, and never approve. No MCP, no AI inside SDEM.
 
+**Any agent can drive SDEM** (Copilot, Claude Code or others that run commands): every command takes `--json` (results *and* failures as JSON, with a code and a next step), `--dry-run` (nothing written; what would be is listed) and `--limit`; `sdem commands --json` lists every command and option. See [built for agents](docs/design/sdem-agent-cli-spec.md).
+
 ```mermaid
 flowchart LR
     Arch(["👤 Architect"]) <--> O["🧭 Coordinator"]

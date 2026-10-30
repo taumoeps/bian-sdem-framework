@@ -159,6 +159,17 @@ def render(data, title=None):
     return PAGE.replace('__TITLE__', html.escape(title)).replace('__DATA__', blob)
 
 
+def summary(data):
+    """AG-02: what an agent needs to decide its next step — health, attention, review, coverage gaps, counts — without every
+    record's trace and impact (--full gives everything)."""
+    c = data.get('controls') or {}
+    return {**{k: v for k, v in data.items() if k not in ('records', 'controls', 'matrix')},
+            'records': len(data.get('records') or {}),
+            'controls': {'rows': len(c.get('rows') or []), 'gaps': c.get('gaps'), 'tested_in': len(c.get('tested_in') or [])},
+            'matrix': {k: len(v) if hasattr(v, '__len__') else v for k, v in (data.get('matrix') or {}).items()},
+            'more': 'every record\'s trace and impact, the matrices and the controls in full: add --full'}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem dashboard', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='Write one self-contained, read-only HTML dashboard for a workspace: health, what needs attention, review, trace and impact, '
@@ -170,13 +181,14 @@ def main(argv=None):
     ap.add_argument('--projection', metavar='DIR', help='an AID projection package to show beside the real design')
     ap.add_argument('--catalogue', metavar='FILE', help='the BIAN catalogue the projection used (for its check)')
     ap.add_argument('--graph', metavar='DIR', help='a graph store of this workspace — warn when it is out of date')
-    ap.add_argument('--title'); ap.add_argument('--json', action='store_true', help='print the computed data instead of writing the page')
+    ap.add_argument('--title'); ap.add_argument('--json', action='store_true', help='print a summary of the computed data instead of writing the page')
+    ap.add_argument('--full', action='store_true', help='with --json: everything the page shows, every record\'s trace and impact (large)')
     a = ap.parse_args(argv)
     from .cli import _estate_files
     try: _estate_files(a.estate)
     except SystemExit as e: print(f'ERROR: {e}', file=sys.stderr); return 2
     data = collect(a.estate, a.proposals, a.projection, a.catalogue, a.graph)
-    if a.json: print(json.dumps(data, indent=2, ensure_ascii=False)); return 0
+    if a.json: print(json.dumps(data if a.full else summary(data), indent=2, ensure_ascii=False)); return 0
     out = Path(a.out or Path(a.estate) / 'dashboard.html'); out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(render(data, a.title), encoding='utf-8')
     att = '; '.join(x['text'] for x in data['attention'])
