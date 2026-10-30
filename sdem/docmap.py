@@ -37,7 +37,8 @@ def relink(text, out):
         if not path or (here / path).exists(): return m.group(0)
         cand = find(path)
         if cand is None: return m.group(0)
-        rel = os.path.relpath(cand, here) + ('/' if path.endswith('/') else '')
+        try: rel = Path(os.path.relpath(cand, here)).as_posix() + ('/' if path.endswith('/') else '')
+        except ValueError: return m.group(0)   # on another drive (Windows): no relative link exists — leave it as written
         return f'{label}({rel}{sep}{frag})'
 
     def mention(m):

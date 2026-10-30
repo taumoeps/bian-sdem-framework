@@ -10,6 +10,7 @@ class SafeWriteTests(unittest.TestCase):
     def setUp(self): self.d = Path(tempfile.mkdtemp())
     def tearDown(self): shutil.rmtree(self.d, ignore_errors=True)
 
+    @unittest.skipIf(os.name == 'nt', 'POSIX file permissions')
     def test_new_files_get_normal_permissions(self):
         umask = os.umask(0o022); 
         try:
@@ -18,6 +19,7 @@ class SafeWriteTests(unittest.TestCase):
         for f in ('a.json', 'b.md'):
             self.assertEqual(os.stat(self.d / f).st_mode & 0o777, 0o644, f)
 
+    @unittest.skipIf(os.name == 'nt', 'POSIX file permissions')
     def test_a_rewritten_file_keeps_its_permissions(self):
         write_text(self.d / 'a.json', '{}'); os.chmod(self.d / 'a.json', 0o600)
         write_text(self.d / 'a.json', '{"x": 1}')

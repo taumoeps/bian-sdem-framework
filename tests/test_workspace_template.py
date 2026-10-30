@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 T = ROOT / 'templates' / 'workspace-repo'
 
 
+@unittest.skipIf(os.name == 'nt', 'the workspace template runs its CI on Linux (bash scripts, a POSIX sdem shim)')
 class EstateTemplateTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.repo = self.tmp / 'workspaces-repo'

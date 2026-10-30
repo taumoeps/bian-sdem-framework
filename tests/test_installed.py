@@ -49,7 +49,8 @@ class InstalledLayoutTests(unittest.TestCase):
 
     def test_data_is_the_bundled_copy(self):
         r = subprocess.run([sys.executable, '-c', 'from sdem import paths; print(paths.DATA_ROOT, paths.CHECKOUT)'], cwd=self.work, env=self.env, capture_output=True, text=True)
-        self.assertIn(str(self.tmp / 'site' / 'sdem' / 'data'), r.stdout); self.assertIn('False', r.stdout)
+        root, checkout = r.stdout.rsplit(' ', 1)
+        self.assertEqual(Path(root).resolve(), (self.tmp / 'site' / 'sdem' / 'data').resolve()); self.assertEqual(checkout.strip(), 'False')   # resolve: Windows short names
 
     def test_journeys_run_installed(self):
         for args in (['--version'], ['check', '--workspace', 'est'], ['build', '--workspace', 'est', '--out', 'graph'], ['trace', 'CAP-PAY-010', '--graph', 'graph'],

@@ -25,7 +25,7 @@ def _stage(path, text):
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(prefix=f'.{path.name}.', suffix='.tmp', dir=path.parent)
     try:
-        with os.fdopen(fd, 'w', encoding='utf-8') as f: f.write(text)
+        with os.fdopen(fd, 'w', encoding='utf-8', newline='\n') as f: f.write(text)   # LF on every platform (AF-10)
         os.chmod(tmp, _mode(path))
     except BaseException:
         if os.path.exists(tmp): os.unlink(tmp)
