@@ -32,6 +32,16 @@ class CliTests(unittest.TestCase):
             self.assertEqual(run('check', opt, ws)[0], 0, opt)
             self.assertEqual(run('dashboard', opt, ws, '-o', str(Path(tempfile.mkdtemp()) / 'd.html'))[0], 0, opt)
 
+    def test_link_shows_its_proposals_for_review(self):   # sdem link then sdem review in one step; --no-review just writes them
+        out = Path(tempfile.mkdtemp()); ws = out / 'ws'   # the example as it was before its links were approved
+        shutil.copytree(ROOT / 'examples' / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph', 'migrations'))
+        shutil.copy(ws / 'm1-mappings-given.json', ws / 'mappings.json')
+        code, text, _ = run('link', '--workspace', str(ws), '--out', str(out / 'a'))
+        self.assertEqual(code, 0); self.assertIn('weakest first', text); self.assertIn('Review again any time: sdem review', text)
+        code, text, _ = run('link', '--workspace', str(ws), '--out', str(out / 'b'), '--no-review')
+        self.assertEqual(code, 0); self.assertNotIn('weakest first', text); self.assertIn('next: sdem review', text)
+        self.assertEqual(json.loads((out / 'a' / 'proposals.json').read_text()), json.loads((out / 'b' / 'proposals.json').read_text()))
+
     def test_help_lists_every_journey(self):
         code, out, _ = run('--help')
         self.assertEqual(code, 0)

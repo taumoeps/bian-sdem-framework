@@ -286,8 +286,8 @@ The *Journey* column groups commands by task: **J1** check · **J2** propose lin
 |---|---|---|---|---|
 | `sdem check --workspace <dir>` (or the files) | J1 | checks datasets and registry against the metamodel | after any change to the data | fix errors; `sdem build` |
 | `sdem validate <registry>` | J1 | checks a registry or proposals file on its own (`--strict` treats warnings as errors) | after `sdem approve` or `sdem connect`, or before a pull request | `sdem check` |
-| `sdem link <files> --out <dir>` | J2 | the inference engine proposes the missing links; writes `proposals.json` | when data is new or changed | `sdem review` |
-| `sdem review <proposals.json>` | J3 | lists the proposals, weakest first, with rule, confidence and reasoning | before approving | `sdem approve` (§8.2) |
+| `sdem link --workspace <dir> --out <dir>` | J2 | the inference engine proposes the missing links, writes `proposals.json` and **shows them straight away**, weakest first (`--no-review` just writes them) | when data is new or changed | `sdem approve` (§8.2) |
+| `sdem review <proposals.json>` | J3 | lists any proposals file again, weakest first, with rule, confidence and reasoning — `sdem link`'s, AID's (`<workspace>/aid/AID-nnn-proposals.json`), or a colleague's in a pull request | before approving | `sdem approve` (§8.2) |
 | `sdem approve <id> --proposals … --workspace … --reviewer <you> --evidence <kind:ref> [--bian-release <release>]` | J3 | **you** approve a proposed link: writes a correct registry record, checks it first | after review | pull request |
 | `sdem build <files> --out <dir>` | J4 | checks everything and writes the graph store | after approval, before trace and impact | `sdem trace`, `sdem view` |
 | `sdem query --graph <dir> …` | J4 | finds records: `--type`, `--level`, `--where attr=value`, `--unmapped A2` (records still without a link) | to look things up | — |

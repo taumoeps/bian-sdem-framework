@@ -19,7 +19,7 @@ JOURNEYS = {
                  'sdem check --workspace examples/payment-initiation'),
     'validate': ('J1', 'validate a relationship document (registry or proposals)', 'sdem.validate', [],
                  'sdem validate --strict --workspace examples/payment-initiation'),
-    'link':     ('J2', 'run the inference engine: propose links between the architectures', 'sdem.inference', None,
+    'link':     ('J2', 'run the inference engine: propose links between the architectures, and show them weakest first for review (--no-review: just write them)', 'sdem.inference', None,
                  'sdem link --workspace examples/payment-initiation --out work/links'),
     'review':   ('J3', 'list proposed links for review, weakest first', None, None,
                  'sdem review work/links/proposals.json'),
@@ -139,6 +139,8 @@ def _delegate(name, rest):
 
 def _link(argv):
     """The engine (sdem-infer) — and, with --out, also keep the proposals as proposals.json for `sdem review`."""
+    show = '--no-review' not in argv and '--json' not in argv   # the review follows straight away (an architect wants it); --no-review for scripts
+    argv = [x for x in argv if x != '--no-review']
     flag = next((f for f in ('--out', '-o') if f in argv), None)
     out = argv[argv.index(flag) + 1] if flag and argv.index(flag) + 1 < len(argv) else None
     buf = io.StringIO()
@@ -149,7 +151,11 @@ def _link(argv):
         (Path(out) / 'proposals.json').write_text(text, encoding='utf-8')
         n = len(json.loads(text).get('mappings', []))
         print(f"{n} proposed link(s) written to {Path(out) / 'proposals.json'}; candidates, inference log and any design datasets in {out}/")
-        print(f"next: sdem review {Path(out) / 'proposals.json'}")
+        if show and n:
+            names = [x for x in argv if x.endswith('.json') and Path(x).name[:3] in ('a1-', 'a2-', 'a3-', 'a4-') and Path(x).exists()]
+            print(); review([str(Path(out) / 'proposals.json')] + (['--names', *names] if names else []))
+            print(f"\nReview again any time: sdem review {Path(out) / 'proposals.json'}")
+        elif n: print(f"next: sdem review {Path(out) / 'proposals.json'}")
     else:
         sys.stdout.write(text)
     return code

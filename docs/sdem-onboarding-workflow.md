@@ -71,7 +71,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 | 4 | `sdem load work/history --workspace workspaces/history --person <you> --exclude <wrong ones>` | **Keep the good ones.** Copies the items you accept into your project; whatever did not fit is kept as *gaps*. Add `--dry-run` first to see what would happen |
 | 5 | `sdem check --workspace workspaces/history` | **Health check.** Confirms everything follows the rules |
 | 6 | `sdem link --workspace workspaces/history --out work/links` | **Suggest connections.** SDEM proposes how items connect across layers (e.g. *this app runs on this server*) |
-| 7 | `sdem review work/links/proposals.json` | **See the suggested connections**, weakest first |
+| 7 | `sdem review work/links/proposals.json` | **See the suggestions again**, weakest first — `sdem link` already shows them; also for AID's proposals (`<workspace>/aid/AID-nnn-proposals.json`) |
 | 8 | `sdem approve <id> … --reviewer <you> --evidence <document>` | **Accept a connection.** You confirm it, and name the document that proves it |
 | 9 | `sdem build --workspace workspaces/history --out work/graph` | **Make the picture.** Builds the connected view — the knowledge graph — from what you accepted |
 | 10 | `sdem trace <item>` · `sdem impact <item> --change retire` | **Ask questions.** *What does this depend on?* · *What breaks if we remove this?* |

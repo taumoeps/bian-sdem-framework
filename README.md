@@ -144,10 +144,9 @@ The steps in order, from your designs to the knowledge graph:
 | — | *New design instead:* fill the gaps | `sdem aid --workspace <workspace> --person <you>` | from whatever you wrote (any of A1…A4), adds the records the workspace is missing **into its layer files** — each marked *inferred*, with source, reasoning and confidence — and proposes the connections; you review, then `sdem aid confirm` or `sdem aid reject` each record | SDEM, then **you** |
 | *optional* | Add a BIAN service domain | `sdem bian custom --workspace <workspace> --add "<service domain>" … --person <you>` — or keep one shared catalogue for every workspace: `sdem bian import --base --all -o bian/a2-service-domain.json` | `sdem aid` brings in the domains your design needs; add one it did not pick, or let the SDEM lead keep a shared catalogue — [choosing your BIAN service domains](#choosing-your-bian-service-domains) | **you**, or the SDEM lead for the catalogue |
 | 5 | Check | `sdem check --workspace <workspace>` | every file against the metamodel; errors must be fixed, warnings are advice — also run by CI on every change | SDEM |
-| 6 | Propose connections | `sdem link --workspace <workspace> --out work/links` | proposes connections between layers, each with its reasons | SDEM |
-| 7 | Review them | `sdem review work/links/proposals.json` | lists the proposals, weakest first | **you** |
-| 8 | Approve | `sdem approve <id> --reviewer <you> --evidence <document>` — or `sdem connect` for one SDEM missed | writes the approved connection to `mappings.json`, with you, the date and the evidence; final when its pull request is merged | **you** |
-| 9 | Build | `sdem build --workspace <workspace> --out work/graph` | makes the four layer graphs and the federated graph from the data and the approved connections | SDEM |
+| 6 | Propose and review connections | `sdem link --workspace <workspace> --out work/links` | proposes connections between layers and shows them straight away, weakest first, each with its reasons — you judge which are true (`sdem review <file>` shows any proposals file again, such as AID's) | SDEM, then **you** |
+| 7 | Approve | `sdem approve <id> --reviewer <you> --evidence <document>` — or `sdem connect` for one SDEM missed | writes the approved connection to `mappings.json`, with you, the date and the evidence; final when its pull request is merged | **you** |
+| 8 | Build | `sdem build --workspace <workspace> --out work/graph` | makes the four layer graphs and the federated graph from the data and the approved connections | SDEM |
 
 #### Choosing your BIAN service domains
 
