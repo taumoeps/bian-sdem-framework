@@ -49,6 +49,21 @@ class CliTests(unittest.TestCase):
         self.assertIn('[A2 BIAN · Service Domain]', out); self.assertIn('[A4 Technology ·', out)
         self.assertIn('CONNECTIONS FOLLOWED', out); self.assertRegex(out, r'PAY-003 .*: approved by [a-z.]+ on \d{4}-\d{2}-\d{2}; evidence ')
 
+    def test_trace_a_whole_layer(self):   # TR-L01…L04
+        G = str(ROOT / 'examples' / 'payment-initiation' / 'graph')
+        code, out, _ = run('trace', 'A4', '--direction', 'upstream', '--graph', G)
+        self.assertEqual(code, 0); self.assertIn('A4 Technology — 12 record(s), traced up', out); self.assertIn('connected from above: 5 of 12', out)
+        self.assertIn("INF-PG-PAY-PROD 'Managed PostgreSQL — payments'", out)                       # a gap: supports nothing above
+        self.assertIn('Payments Hub ← Payment Initiation (synthetic selection) ← Initiate Payment', out)
+        code, out, _ = run('trace', 'a2', '--direction', 'up', '--only-gaps', '--graph', G)            # only kinds that can connect up count as gaps
+        self.assertIn('(gaps): 3', out); self.assertIn("SD-PE 'Payment Execution (synthetic selection)'", out); self.assertNotIn('AT-AUTH', out); self.assertNotIn('CHAINS', out)
+        code, out, _ = run('trace', 'A2', '--direction', 'all', '--to', 'A3', '--graph', G)            # --to applies only in its own direction
+        self.assertIn('traced down to A3 Application', out); self.assertIn('A2 BIAN — 24 record(s), traced up\n', out)
+        f = Path(tempfile.mkdtemp()) / 'chains.csv'
+        code, out, _ = run('trace', 'A1', '--direction', 'downstream', '--csv', str(f), '--graph', G)
+        self.assertEqual(code, 0); rows = f.read_text().splitlines()
+        self.assertEqual(rows[0].split(',')[:3], ['direction', 'start_layer', 'start_id']); self.assertTrue(any('gap: connected to nothing' in r for r in rows))
+
     def test_help_lists_every_journey(self):
         code, out, _ = run('--help')
         self.assertEqual(code, 0)

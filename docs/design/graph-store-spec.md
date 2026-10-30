@@ -132,3 +132,13 @@
 | GS-O-01 | Should proposed links be viewable before approval? | Not in the federated file. `view --include-proposed` can overlay the registry's proposals, marked as such, for review sessions. |
 | GS-O-02 | Should the federated file embed full nodes instead of stubs? | No — duplication drifts; stubs point to the local file. |
 | GS-O-03 | JSON-LD architecture dataset for W3C interoperability? | Later (with DEC-05), as an architecture dataset, not the store format. |
+
+## Tracing a whole layer (owner's decision, 2026-10-31)
+
+| Id | Requirement | Verified by |
+|---|---|---|
+| TR-L01 | `sdem trace A1|A2|A3|A4` (any case) traces every record of that layer; `--direction down|up|both`, also `downstream|upstream|all`. A record id is traced as before. | tests |
+| TR-L02 | The default output is a **summary** — records connected onward, records reaching each other layer — and the **gaps**: records connected to nothing in that direction, counting only kinds an official connection type (schema/relationship-types.json) lets connect that way; the others are reported as *not counted*. | tests |
+| TR-L03 | Then the **chains**, one line per complete chain from a record of the layer, with the ids of the approved connections it follows; `--tree` gives one tree per record instead; `--only-gaps` gives only the summary of gaps. | tests |
+| TR-L04 | `--to LAYER` stops the chains at that layer, in the direction where it lies (the other direction is not limited); `--csv FILE` writes the chains and the gaps; `--json` gives the result as data. Only approved connections are followed. | tests |
+

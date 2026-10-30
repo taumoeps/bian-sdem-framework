@@ -6,7 +6,7 @@ impact by rule. Nothing here decides whether a mapping is right.
 """
 from pathlib import Path
 import argparse, json, re, sys
-from sdem.metamodel import Metamodel, PROJECTED_PREFIXES, is_projection_dataset
+from sdem.metamodel import Metamodel, MM_DIR, PROJECTED_PREFIXES, is_projection_dataset
 from sdem.conformance import check_level, estate_index
 from sdem.validate import check_schema, load_registry, load_schema, normalize_type, validate, ROOT
 from sdem.trace import load_edges, walk, paths as tree_paths
@@ -250,6 +250,69 @@ def impact_report(result, generated=None):
     return '\n'.join(out)
 
 
+def level_trace(fg, level, direction, statuses=('approved',), follow_composition=False, to=None):
+    """Every record of a layer traced one way (TR-L01…L04): per record its chains to the other layers; who is connected, who reaches
+    which layer, and who is connected to nothing (the gaps)."""
+    g = fg.levels.get(level)
+    recs = sorted({i['id']: i for i in g.instances.values()}.values(), key=lambda i: i['id']) if g else []
+    order = ['A1', 'A2', 'A3', 'A4'] if direction == 'down' else ['A4', 'A3', 'A2', 'A1']
+    if to in order and order.index(to) <= order.index(level): to = None   # --to lies the other way: no limit this way
+    stop = order.index(to) if to in order else len(order) - 1
+    from .paths import DATA_ROOT
+    types = json.loads((DATA_ROOT / 'schema' / 'relationship-types.json').read_text(encoding='utf-8'))['relationships']   # the official connection types
+    ends = {r['source_type' if direction == 'down' else 'target_type'] for r in types}
+    def can_connect(t):   # TR-L02: only kinds the metamodel lets connect this way can be a gap
+        return any(t == e or fg.mm.is_a(t, e) for e in ends)
+    chains, reach, orphans, not_applicable = [], {}, [], 0
+    for r in recs:
+        tree = fg.trace(r['id'], direction, statuses, follow_composition)
+        mine = []
+        def walk(n, path):
+            kids = [c for c in n['children'] if (c['node'].get('level') or level) in order and order.index(c['node'].get('level') or level) <= stop]
+            if not kids and path: mine.append(path)
+            for c in kids: walk(c['node'], path + [{'id': c['node']['id'], 'name': c['node'].get('name'), 'level': c['node'].get('level'), 'via': c['via']['mapping_id']}])
+        walk(tree, [])
+        if not mine:
+            if can_connect(r.get('type', '')): orphans.append({'id': r['id'], 'name': r.get('name'), 'type': r.get('type')})
+            else: not_applicable += 1
+            continue
+        for path in mine:
+            chains.append({'start': {'id': r['id'], 'name': r.get('name'), 'level': level}, 'steps': path})
+            for st in path: reach.setdefault(st['level'], set()).add(r['id'])
+    return {'level': level, 'direction': direction, 'records': len(recs), 'connected': len(recs) - len(orphans) - not_applicable, 'not_applicable': not_applicable,
+            'reach': {l: len(v) for l, v in sorted(reach.items(), key=lambda x: order.index(x[0]) if x[0] in order else 9) if l != level},
+            'orphans': orphans, 'chains': chains, 'to': to}
+
+
+def render_level_trace(res, only_gaps=False):
+    lvl, d = res['level'], res['direction']
+    arrow = ' → ' if d == 'down' else ' ← '
+    out = [f"{LAYER.get(lvl, lvl)} — {res['records']} record(s), traced {d}" + (f" to {LAYER.get(res['to'], res['to'])}" if res['to'] else '')]
+    if not only_gaps:
+        out.append(f"  connected {'onward' if d == 'down' else 'from above'}: {res['connected']} of {res['records']}"
+                   + (f"  ({res['not_applicable']} not counted: kinds that never connect {'down' if d == 'down' else 'up'}, e.g. parts and attributes)" if res.get('not_applicable') else ''))
+        for l, n in res['reach'].items(): out.append(f"  reaching {LAYER.get(l, l)}: {n} of {res['records']}")
+    gaps = res['orphans']
+    out.append(f"  connected to nothing {'below' if d == 'down' else 'above'} (gaps): {len(gaps)}" + (' — ' + ', '.join(f"{o['id']} {o['name']!r}" for o in gaps[:12]) + (' …' if len(gaps) > 12 else '') if gaps else ''))
+    if only_gaps or not res['chains']: return '\n'.join(out)
+    out += ['', f"  CHAINS ({len(res['chains'])}){'' if d == 'down' else ' — each record depends on the one to its left'}:"]
+    for c in res['chains']:
+        names = [c['start']['name'] or c['start']['id']] + [s['name'] or s['id'] for s in c['steps']]
+        out.append('  ' + arrow.join(names) + '   (' + ', '.join(s['via'] for s in c['steps']) + ')')
+    return '\n'.join(out)
+
+
+def write_level_csv(results, path):
+    import csv
+    with open(path, 'w', newline='', encoding='utf-8') as fh:
+        w = csv.writer(fh); w.writerow(['direction', 'start_layer', 'start_id', 'start_name', 'chain_ids', 'chain_names', 'chain_layers', 'connections'])
+        for res in results:
+            for c in res['chains']:
+                w.writerow([res['direction'], res['level'], c['start']['id'], c['start']['name'], ' > '.join(s['id'] for s in c['steps']),
+                            ' > '.join(s['name'] or '' for s in c['steps']), ' > '.join(s['level'] or '' for s in c['steps']), ' '.join(s['via'] for s in c['steps'])])
+            for o in res['orphans']: w.writerow([res['direction'], res['level'], o['id'], o['name'], '', '', '', 'gap: connected to nothing'])
+
+
 LAYER = {'A1': 'A1 Business', 'A2': 'A2 BIAN', 'A3': 'A3 Application', 'A4': 'A4 Technology'}
 
 
@@ -285,13 +348,18 @@ def main(argv=None):
     for name in ('check', 'trace', 'impact', 'stats'):
         sp = sub.add_parser(name)
         if name in ('trace', 'impact'):
-            sp.add_argument('entity', help='instance id to start from')
+            sp.add_argument('entity', help='instance id to start from' + (' — or a whole layer: A1, A2, A3 or A4' if name == 'trace' else ''))
         sp.add_argument('paths', nargs='*', help='architecture datasets and mapping documents, any order (or use --graph)')
         sp.add_argument('--graph', metavar='DIR', help='read a graph store (sdem build) instead of architecture datasets')
         sp.add_argument('--status', default='approved', help='mapping statuses to treat as arrows')
         sp.add_argument('--json', action='store_true')
         if name == 'trace':
-            sp.add_argument('--direction', choices=['down', 'up', 'both'], default='both')
+            sp.add_argument('--direction', choices=['down', 'up', 'both', 'downstream', 'upstream', 'all'], default='both',
+                            help='down: what it depends on; up: what depends on it; both (also: downstream, upstream, all)')
+            sp.add_argument('--tree', action='store_true', help='a whole layer: one tree per record (default: summary, gaps and a table of chains)')
+            sp.add_argument('--only-gaps', action='store_true', help='a whole layer: only the records with no connection in that direction')
+            sp.add_argument('--to', metavar='LAYER', choices=['A1', 'A2', 'A3', 'A4', 'a1', 'a2', 'a3', 'a4'], help='a whole layer: stop the chains at this layer')
+            sp.add_argument('--csv', metavar='FILE', help='a whole layer: also write the chains as CSV')
             sp.add_argument('--follow-composition', action='store_true', help='continue a chain through within-level part-whole links — composition and aggregation (part -> whole downstream, whole -> parts upstream)')
             sp.add_argument('--projection', metavar='DIR', help='also follow the links of an AID projection package, labelled PROJECTED (AID-O06)')
         if name == 'impact':
@@ -384,6 +452,21 @@ def main(argv=None):
             print('DOWNSTREAM (depends on):' if d == 'down' else 'UPSTREAM (depended on by):')
             print('\n'.join(_aid.trace(reader, pkg, args.entity, d))); print()
         print('PROJECTED = made by AID for planning, not real data.')
+        return EXIT_OK
+    if args.cmd == 'trace':
+        args.direction = {'downstream': 'down', 'upstream': 'up', 'all': 'both'}.get(args.direction, args.direction)
+    if args.cmd == 'trace' and re.fullmatch(r'[Aa][1-4]', args.entity) and fg.instance(args.entity) is None:   # TR-L01: a whole layer
+        lvl = args.entity.upper(); to = args.to.upper() if args.to else None
+        results = [level_trace(fg, lvl, d, statuses, getattr(args, 'follow_composition', False), to) for d in (['down', 'up'] if args.direction == 'both' else [args.direction])]
+        if args.csv: write_level_csv(results, args.csv)
+        if args.json: print(json.dumps(results, indent=2)); return EXIT_OK
+        for res in results:
+            if args.tree:
+                print('DOWNSTREAM (depends on):' if res['direction'] == 'down' else 'UPSTREAM (depended on by):')
+                for rid in sorted({c['start']['id'] for c in res['chains']}):
+                    print(render_trace(fg.trace(rid, res['direction'], statuses, getattr(args, 'follow_composition', False)), res['direction'])); print()
+            print(render_level_trace(res, args.only_gaps)); print()
+        if args.csv: print(f'chains written to {args.csv}')
         return EXIT_OK
     if fg.instance(args.entity) is None and not any(args.entity in (e['source']['id'], e['target']['id']) for e in fg.edges(statuses)):
         print(f'ERROR: {args.entity!r} is not an instance in any loaded level model or mapping', file=sys.stderr); return EXIT_ISSUES

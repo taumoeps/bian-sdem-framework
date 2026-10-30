@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- **Trace a whole layer: `sdem trace A1|A2|A3|A4 --direction down|up|both`** (also `downstream|upstream|all`). It shows how many of the layer's records are connected and which layers they reach, the **gaps** — records connected to nothing in that direction, counting only kinds an official connection type lets connect that way — then every chain, one line each with its connection ids. `--only-gaps`, `--to <layer>`, `--tree` (one tree per record), `--csv <file>`, `--json`. On the payments example, `sdem trace A4 --direction up` finds 7 technology records that support nothing above them; `sdem trace A2 --direction up` finds the 2 BIAN domains no business record uses. Spec TR-L01…L04.
+
 - **`sdem trace` is easier to read.** Every record shows its layer in words — `[A1 Business · Business Capability]`, `[A2 BIAN · Service Domain]`, `[A3 Application · Application Component]`, `[A4 Technology · Node]` (was `[A4.Node]`) — and under the tree, *CONNECTIONS FOLLOWED* lists each approved connection the chain used (`MAP-…`, its id in `mappings.json`) with who approved it, when, and the evidence.
 
 - **Docs: `sdem aid` is a step for existing designs too.** The README table and the onboarding workflow showed it only for new designs, and still said a new workspace holds the BIAN layer; after `sdem load`, `sdem aid` brings in the BIAN service domains the loaded designs point to (onboarding step 4a).
