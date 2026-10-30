@@ -23,7 +23,7 @@ class DocDriftTests(unittest.TestCase):
         import re
         def rows(f, start):
             s = (ROOT / f).read_text(encoding='utf-8'); t = s[s.index(start):]; t = t[:t.index('\n## ', 5)]
-            return [l for l in t.splitlines() if re.match(r'^\| \d+ \|', l)]
+            return [l for l in t.splitlines() if re.match(r'^\| \d+[a-z]? \|', l)]
         a = rows('docs/sdem-onboarding-workflow.md', '## 3. The commands in plain words')
         self.assertEqual(len(a), 16); self.assertEqual(a, rows('docs/evidence/use-case-example-4.md', '## The commands in plain words'))
 
