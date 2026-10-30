@@ -42,6 +42,13 @@ class CliTests(unittest.TestCase):
         self.assertEqual(code, 0); self.assertNotIn('weakest first', text); self.assertIn('next: sdem review', text)
         self.assertEqual(json.loads((out / 'a' / 'proposals.json').read_text()), json.loads((out / 'b' / 'proposals.json').read_text()))
 
+    def test_trace_names_the_layer_and_the_connections_it_followed(self):
+        code, out, _ = run('trace', 'PRC-PAY-01', '--direction', 'down', '--graph', str(ROOT / 'examples' / 'payment-initiation' / 'graph'))
+        self.assertEqual(code, 0)
+        self.assertIn("'Capture and validate payment instruction'  [A1 Business · Business Process]", out)
+        self.assertIn('[A2 BIAN · Service Domain]', out); self.assertIn('[A4 Technology ·', out)
+        self.assertIn('CONNECTIONS FOLLOWED', out); self.assertRegex(out, r'PAY-003 .*: approved by [a-z.]+ on \d{4}-\d{2}-\d{2}; evidence ')
+
     def test_help_lists_every_journey(self):
         code, out, _ = run('--help')
         self.assertEqual(code, 0)

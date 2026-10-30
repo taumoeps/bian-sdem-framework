@@ -1,7 +1,7 @@
 {
   "example": "use-case-example-2",
-  "run_date": "2026-10-30",
-  "code_commit": "cbaa311d7d16a9dc5f3bdd294d99ace56626c070",
+  "run_date": "2026-10-31",
+  "code_commit": "7681f9e89411236b0151a8db7e151d8c64a4f424",
   "files": {
     "catalogue-summary.json": "eb02b6c5214aecbc14d081b0a62f71b41d68e00d291c3bf75bde6b7a23cf6d56",
     "run1-projection.json": "182b3b4fd597f907b14e288acbaac65db56b3498f28ca0888742cf5a1855978a",
@@ -14,7 +14,7 @@
     "run4-gaps.json": "1cc4b205d354101d7271d00db384c08dba47c7ca613f560de61cae5e61573fb3",
     "run5-projection.json": "6e75245d856c539ac77ad4d1bb082dbdb678247938cca61696af8a7c193d84cc",
     "run5-gaps.json": "8c5fc5742b31c1df4606276d2c3cbfa958d9211c7fe99e061595246532c45c73",
-    "results.json": "cb921bbbd24a4a72c54ddbb520b6f7a1a45758b92a26345b00b4bd66bc66a1a1",
+    "results.json": "be087a9a3c259f62dbcc13f52a9ddd36ca86de158db9ce827ed4396291fb8834",
     "run1-view.html": "638787b0e4cd8542dbb9a9ea14efa9f308d3e30c6b93009c834198ed54a2fbe8",
     "run2-view.html": "426c9f9d7710247eb92cfdc40f7efcad59e9b23b069f07a5f82bebb6eb2c08d1",
     "run3-view.html": "22e35f46b82b0cf656ffcf302f3efef0160de9049bfbd23fb5055eacd99170de",

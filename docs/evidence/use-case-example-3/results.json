@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-30",
+  "date": "2026-10-31",
   "criteria": [
     {
       "id": "AT-AG-01",
@@ -278,7 +278,7 @@
       "who": "rules engine",
       "command": "sdem link <est>/a*.json <est>/mappings.json --out <links>",
       "exit": 0,
-      "output": "2 proposed link(s) written to <work>/links/proposals.json; candidates, inference log and any design datasets in <work>/links/\nnext: sdem review <work>/links/proposals.json"
+      "output": "2 proposed link(s) written to <work>/links/proposals.json; candidates, inference log and any design datasets in <work>/links/\n\n2 proposed link(s), weakest first:\n\n  [0.8] P-RUN-001  APP-PAY-HUB 'Payments Hub' -DEPLOYED_ON-> INF-K8S-PAY-PROD2 'Managed Kubernetes — payments (production, new cluster)'   rule S33\n        why: data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-PROD2; a4 INF-K8S-PAY-PROD2.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-PROD (component APP-PAY-HUB) names platform INF-K8S-PAY-PROD2\n  [0.8] P-RUN-002  CMP-PAY-EXEC 'Execution Gateway' -DEPLOYED_ON-> INF-K8S-PAY-PROD2 'Managed Kubernetes — payments (production, new cluster)'   rule S33\n        why: data join (S36 subsumed in S33); a3 CMP-PAY-EXEC.deployed_on lists INF-K8S-PAY-PROD2; a4 INF-K8S-PAY-PROD2.hosts lists CMP-PAY-EXEC; a4 deployment DEP-PAYEXEC-PROD (component CMP-PAY-EXEC) names platform INF-K8S-PAY-PROD2\n\nTo approve (a person — never the engine or Copilot): sdem approve <id> --proposals <file> --workspace <dir> --reviewer <your name> --evidence <kind:ref>, then open a pull request; the reviewed merge makes it final.\n\nReview again any time: sdem review <work>/links/proposals.json"
     },
     {
       "who": "sdem-orchestrator",
@@ -320,7 +320,7 @@
       "who": "architect",
       "command": "sdem trace APP-PAY-HUB --direction down --graph <graph>",
       "exit": 0,
-      "output": "DOWNSTREAM (depends on):\nAPP-PAY-HUB 'Payments Hub'  [A3.ApplicationComponent]\n├─ -DEPLOYED_AS-> DEP-PAYHUB-PROD 'Payments Hub — production'  [A4.Deployment]  (PAY-109)\n├─ -DEPLOYED_AS-> DEP-PAYHUB-UAT 'Payments Hub — UAT'  [A4.Deployment]  (PAY-110)\n├─ -DEPLOYED_ON-> INF-K8S-PAY-UAT 'Managed Kubernetes — payments (UAT)'  [A4.SystemSoftware]  (PAY-113)\n└─ -DEPLOYED_ON-> INF-K8S-PAY-PROD2 'Managed Kubernetes — payments (production, new cluster)'  [A4.SystemSoftware]  (PAY-201)"
+      "output": "DOWNSTREAM (depends on):\nAPP-PAY-HUB 'Payments Hub'  [A3 Application · Application Component]\n├─ -DEPLOYED_AS-> DEP-PAYHUB-PROD 'Payments Hub — production'  [A4 Technology · Deployment]  (PAY-109)\n├─ -DEPLOYED_AS-> DEP-PAYHUB-UAT 'Payments Hub — UAT'  [A4 Technology · Deployment]  (PAY-110)\n├─ -DEPLOYED_ON-> INF-K8S-PAY-UAT 'Managed Kubernetes — payments (UAT)'  [A4 Technology · System Software]  (PAY-113)\n└─ -DEPLOYED_ON-> INF-K8S-PAY-PROD2 'Managed Kubernetes — payments (production, new cluster)'  [A4 Technology · System Software]  (PAY-201)\n\nCONNECTIONS FOLLOWED (approved, recorded in mappings.json — `MAP-…` is the approval's id):\n  PAY-109  APP-PAY-HUB -DEPLOYED_AS-> DEP-PAYHUB-PROD: approved by sam.infra on 2026-10-22; evidence deployment_design:DD-PAY-2026#prod\n  PAY-110  APP-PAY-HUB -DEPLOYED_AS-> DEP-PAYHUB-UAT: approved by sam.infra on 2026-10-22; evidence deployment_design:DD-PAY-2026#uat\n  PAY-113  APP-PAY-HUB -DEPLOYED_ON-> INF-K8S-PAY-UAT: approved by sam.infra on 2026-10-22; evidence deployment_design:DD-PAY-2026#uat\n  PAY-201  APP-PAY-HUB -DEPLOYED_ON-> INF-K8S-PAY-PROD2: approved by jane.architect on 2026-10-28; evidence deployment_design:PAY-REHOST-2026-10#cutover"
     }
   ],
   "controls": [

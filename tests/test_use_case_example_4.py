@@ -132,7 +132,7 @@ class UseCaseExample4(unittest.TestCase):
         code, o = self.out['build_candidates']; self.assertNotEqual(code, 0); self.assertIn('CTL-23', o)
 
     def test_10_use(self):
-        self.assertIn("-SUPPORTED_BY-> SD-PI 'Payment Initiation (synthetic selection)'  [A2.ServiceDomain]  (MAP-002)", self.out['trace_cap'][1])
+        self.assertIn("-SUPPORTED_BY-> SD-PI 'Payment Initiation (synthetic selection)'  [A2 BIAN · Service Domain]  (MAP-002)", self.out['trace_cap'][1])
         self.assertIn('DOC-55501  Payments Hub Design  (2022-05-10) — 7 open gap(s)', self.out['trace_hub'][1])
         o = self.out['impact'][1]
         self.assertRegex(o, r'design_change_required\s+A3\s+HIS-A3-CLEARING-GATEWAY.*via MAP-001'); self.assertIn('mappings to supersede: MAP-001', o)

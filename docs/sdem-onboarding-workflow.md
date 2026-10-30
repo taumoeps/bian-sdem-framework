@@ -286,10 +286,10 @@ sdem impact HIS-A4-PAYMENTS-KUBERNETES-CLUSTER --change retire --graph work/grap
 sdem dashboard --workspace workspaces/history -o work/dashboard.html     # open it in your browser
 ```
 ```
-HIS-A1-PAYMENT-INITIATION 'Payment Initiation'  [A1.BusinessCapability]
-└─ -SUPPORTED_BY-> SD-PAYMENT-ORDER-INITIATION 'Payment Order Initiation'  [A2.ServiceDomain]  (MAP-002)
-   └─ -REALIZED_BY-> HIS-A3-PAYMENTS-HUB 'Payments Hub'  [A3.ApplicationComponent]  (MAP-003)
-      └─ -DEPLOYED_ON-> HIS-A4-PAYMENTS-KUBERNETES-CLUSTER 'Payments Kubernetes Cluster'  [A4.Node]  (MAP-001)
+HIS-A1-PAYMENT-INITIATION 'Payment Initiation'  [A1 Business · Business Capability]
+└─ -SUPPORTED_BY-> SD-PAYMENT-ORDER-INITIATION 'Payment Order Initiation'  [A2 BIAN · Service Domain]  (MAP-002)
+   └─ -REALIZED_BY-> HIS-A3-PAYMENTS-HUB 'Payments Hub'  [A3 Application · Application Component]  (MAP-003)
+      └─ -DEPLOYED_ON-> HIS-A4-PAYMENTS-KUBERNETES-CLUSTER 'Payments Kubernetes Cluster'  [A4 Technology · Node]  (MAP-001)
 ```
 Capability → BIAN → application → technology, every step an approved connection. The impact of retiring the cluster follows the same approved connections back up:
 ```

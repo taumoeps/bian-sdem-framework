@@ -5,7 +5,7 @@ the federated graph resolves mapping endpoints against them, traces chains with 
 impact by rule. Nothing here decides whether a mapping is right.
 """
 from pathlib import Path
-import argparse, json, sys
+import argparse, json, re, sys
 from sdem.metamodel import Metamodel, PROJECTED_PREFIXES, is_projection_dataset
 from sdem.conformance import check_level, estate_index
 from sdem.validate import check_schema, load_registry, load_schema, normalize_type, validate, ROOT
@@ -250,6 +250,15 @@ def impact_report(result, generated=None):
     return '\n'.join(out)
 
 
+LAYER = {'A1': 'A1 Business', 'A2': 'A2 BIAN', 'A3': 'A3 Application', 'A4': 'A4 Technology'}
+
+
+def kind_label(t):
+    """'A4.Node' → 'A4 Technology · Node'; 'A3.ApplicationComponent' → 'A3 Application · Application Component'."""
+    lvl, _, kind = (t or '?').partition('.')
+    return f"{LAYER.get(lvl, lvl)} · {re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', kind)}" if kind else t
+
+
 def render_trace(tree, direction):
     arrow = '-' if direction == 'down' else '<-'
     def label(n):
@@ -257,7 +266,7 @@ def render_trace(tree, direction):
         t = n.get('concrete_type') or n.get('type') or '?'
         mark = '' if n.get('resolved') else '  (unresolved)'
         if n.get('lifecycle_status') == 'planned': mark += '  [DESIGN — planned, not observed]'
-        return f"{n['id']}{name}  [{t}]" + mark
+        return f"{n['id']}{name}  [{kind_label(t)}]" + mark
     lines = [label(tree)]
     def rec(n, prefix):
         for i, c in enumerate(n['children']):
@@ -386,6 +395,22 @@ def main(argv=None):
             for d, t in trees.items():
                 print('DOWNSTREAM (depends on):' if d == 'down' else 'UPSTREAM (depended on by):')
                 print(render_trace(t, d) if t['children'] else f"{args.entity}  (no {d}stream mappings)"); print()
+            used = []   # the approved connections the trace followed (MAP-…), as recorded in mappings.json
+            def walk(n):
+                for c in n['children']:
+                    for mid in [c['via']['mapping_id']] + c['via'].get('also', []):
+                        if mid not in used and mid != 'composition': used.append(mid)
+                    walk(c['node'])
+            for t in trees.values(): walk(t)
+            if used:
+                recs = {m.get('mapping_id'): m for doc in fg.mapping_docs for m in doc.get('mappings', [])}
+                print('CONNECTIONS FOLLOWED (approved, recorded in mappings.json — `MAP-…` is the approval\'s id):')
+                for mid in used:
+                    m = recs.get(mid, {})
+                    ev = '; '.join(e for e in m.get('evidence', []) if not str(e).startswith('engine_rationale:')) or '—'
+                    print(f"  {mid}  {m.get('source', {}).get('id', '?')} -{m.get('relationship', '?')}-> {m.get('target', {}).get('id', '?')}: "
+                          f"approved by {m.get('reviewer_id', '?')} on {m.get('approved_at', '?')}; evidence {ev}")
+                print()
             if fg.design_records:  # LD-R04: where the entity is documented, and what did not fit there
                 from .designs import for_entity
                 docs, gaps = for_entity(fg.design_records, args.entity)

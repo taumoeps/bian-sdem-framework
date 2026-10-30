@@ -80,7 +80,7 @@ Plus: the 18 links found, the trace, and any gaps.
 
 Made-up data · rules tuned on this example · approval by hand for now.
 
-## Results — run 2026-10-30
+## Results — run 2026-10-31
 
 **Verdict: 30 of 30 tests pass · 18 of 18 links correct · trace complete · gaps: G-A partly closed (CTL-22), G-B confirmed, no risk today.**
 

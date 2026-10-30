@@ -194,15 +194,15 @@ sdem trace PRC-PAY-01 --direction down --graph work/graph
 ```
 baseline: graph store work/graph, build 1 (A1 2026.10, A2 2026.10, A3 2026.10, A4 2026.10)
 DOWNSTREAM (depends on):
-PRC-PAY-01 'Capture and validate payment instruction'  [A1.BusinessProcess]
-└─ -USES_DOMAIN-> SD-PI 'Payment Initiation (synthetic selection)'  [A2.ServiceDomain]  (PAY-003)
-   └─ -REALIZED_BY-> APP-PAY-HUB 'Payments Hub'  [A3.ApplicationComponent]  (PAY-106)
-      ├─ -DEPLOYED_ON-> INF-K8S-PAY-PROD 'Managed Kubernetes — payments (production)'  [A4.SystemSoftware]  (PAY-108)
-      ├─ -DEPLOYED_AS-> DEP-PAYHUB-PROD 'Payments Hub — production'  [A4.Deployment]  (PAY-109)
-      ├─ -DEPLOYED_AS-> DEP-PAYHUB-UAT 'Payments Hub — UAT'  [A4.Deployment]  (PAY-110)
-      └─ -DEPLOYED_ON-> INF-K8S-PAY-UAT 'Managed Kubernetes — payments (UAT)'  [A4.SystemSoftware]  (PAY-113)
+PRC-PAY-01 'Capture and validate payment instruction'  [A1 Business · Business Process]
+└─ -USES_DOMAIN-> SD-PI 'Payment Initiation (synthetic selection)'  [A2 BIAN · Service Domain]  (PAY-003)
+   └─ -REALIZED_BY-> APP-PAY-HUB 'Payments Hub'  [A3 Application · Application Component]  (PAY-106)
+      ├─ -DEPLOYED_ON-> INF-K8S-PAY-PROD 'Managed Kubernetes — payments (production)'  [A4 Technology · System Software]  (PAY-108)
+      ├─ -DEPLOYED_AS-> DEP-PAYHUB-PROD 'Payments Hub — production'  [A4 Technology · Deployment]  (PAY-109)
+      ├─ -DEPLOYED_AS-> DEP-PAYHUB-UAT 'Payments Hub — UAT'  [A4 Technology · Deployment]  (PAY-110)
+      └─ -DEPLOYED_ON-> INF-K8S-PAY-UAT 'Managed Kubernetes — payments (UAT)'  [A4 Technology · System Software]  (PAY-113)
 ```
-Read it as: *the process uses the Payment Initiation domain, which the Payments Hub realises, which runs on the production Kubernetes cluster.* The codes in brackets (`PAY-003`) are the approved links the chain follows.
+Read it as: *the process uses the Payment Initiation domain, which the Payments Hub realises, which runs on the production Kubernetes cluster.* Each record shows its layer (`[A2 BIAN · Service Domain]`). The codes in brackets (`PAY-003`) are the **approved connections** the chain follows — each one's id in `mappings.json`; under the tree, *CONNECTIONS FOLLOWED* lists who approved each, when, and the evidence.
 
 **Step 5 — see it as a picture (J7):**
 ```bash
@@ -455,8 +455,8 @@ cp work/practice-links/m1-mappings-given.json work/practice-links/mappings.json 
    ```
    ```
    DOWNSTREAM (depends on):
-   SD-PI 'Payment Initiation (synthetic selection)'  [A2.ServiceDomain]
-   └─ -REALIZED_BY-> APP-PAY-HUB 'Payments Hub'  [A3.ApplicationComponent]  (PAY-006)
+   SD-PI 'Payment Initiation (synthetic selection)'  [A2 BIAN · Service Domain]
+   └─ -REALIZED_BY-> APP-PAY-HUB 'Payments Hub'  [A3 Application · Application Component]  (PAY-006)
    ```
 
 ### 8.3 Trace a capability to technology — and back

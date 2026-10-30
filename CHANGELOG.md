@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- **`sdem trace` is easier to read.** Every record shows its layer in words — `[A1 Business · Business Capability]`, `[A2 BIAN · Service Domain]`, `[A3 Application · Application Component]`, `[A4 Technology · Node]` (was `[A4.Node]`) — and under the tree, *CONNECTIONS FOLLOWED* lists each approved connection the chain used (`MAP-…`, its id in `mappings.json`) with who approved it, when, and the evidence.
+
 - **Docs: `sdem aid` is a step for existing designs too.** The README table and the onboarding workflow showed it only for new designs, and still said a new workspace holds the BIAN layer; after `sdem load`, `sdem aid` brings in the BIAN service domains the loaded designs point to (onboarding step 4a).
 
 ## 0.9.10 — workspaces, and AID that fills them (2026-10-30)

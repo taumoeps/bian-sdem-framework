@@ -67,7 +67,7 @@ Per run: a gap-analysis table (element, projected, real, result, confidence), pr
 
 Made-up data · a small BIAN catalogue (7 estates), not the full licensed BIAN · AID's rules are tuned on SDEM's own examples, so a test written by someone else is still needed.
 
-## Results — run 2026-10-30 (AID built)
+## Results — run 2026-10-31 (AID built)
 
 **Verdict:** 12 of 12 sealed expectations met across the five runs; safety controls 16 of 16 tests pass — every projection stayed apart, marked and capped.
 
