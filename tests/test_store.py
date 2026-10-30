@@ -7,7 +7,7 @@ from sdem.store import GraphReader, build, check_current
 from sdem.validate import check_schema
 
 ROOT = Path(__file__).resolve().parents[1]
-ESTATES = sorted(p.rstrip('/').split('/')[-1] for p in glob.glob(str(ROOT / 'examples' / '*') + '/') if (Path(p) / 'mappings.json').exists())
+ESTATES = sorted(p.name for p in (ROOT / 'examples').iterdir() if (p / 'mappings.json').exists())   # p.name: works with \ paths (Windows)
 GRAPH_FILES = list(store.LEVEL_FILES.values()) + [store.FEDERATED]
 
 

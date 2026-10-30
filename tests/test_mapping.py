@@ -184,8 +184,9 @@ class MultiFileTests(unittest.TestCase):
             self.assertTrue(any('also defined in' in x for x in report[str(b)]))
 
     def test_unreadable_file_reported_not_raised(self):
-        report = validate_files(['/nonexistent/mappings.json'])
-        self.assertTrue(report['/nonexistent/mappings.json'][0].startswith('cannot read'))
+        missing = str(Path('/nonexistent/mappings.json'))   # as the platform writes it (\ on Windows)
+        report = validate_files([missing])
+        self.assertTrue(report[missing][0].startswith('cannot read'))
 
 
 if __name__ == '__main__':
