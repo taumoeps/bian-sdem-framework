@@ -404,7 +404,7 @@ def main(argv=None):
             for t in trees.values(): walk(t)
             if used:
                 recs = {m.get('mapping_id'): m for doc in fg.mapping_docs for m in doc.get('mappings', [])}
-                print('CONNECTIONS FOLLOWED (approved, recorded in mappings.json — `MAP-…` is the approval\'s id):')
+                print('CONNECTIONS FOLLOWED (each approved connection, by its id in mappings.json — the code in brackets above):')
                 for mid in used:
                     m = recs.get(mid, {})
                     ev = '; '.join(e for e in m.get('evidence', []) if not str(e).startswith('engine_rationale:')) or '—'
