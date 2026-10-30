@@ -17,7 +17,7 @@ jobs:
       - name: Tests (no install)
         shell: bash
         run: |
-          python -m unittest discover -s tests > unittest.log 2>&1; code=$?
+          code=0; python -m unittest discover -s tests > unittest.log 2>&1 || code=$?   # bash -e: keep going to annotate
           tail -3 unittest.log
           # each failure as a public annotation (job logs need admin rights to download)
           python ci/annotate_failures.py unittest.log
