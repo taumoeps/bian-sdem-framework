@@ -86,7 +86,7 @@ class UseCaseExample4(unittest.TestCase):
     def test_4_review(self):
         rep = Path('work/history/extraction-report.md').read_text(); x = json.loads(Path('work/history/extraction.json').read_text())
         self.assertIn("HIS-A3-PAYMENT-ORDER: required attribute 'attributes' missing (LC-04)", rep)
-        self.assertEqual(len(x['records']), 17)
+        self.assertEqual(len(x['records']), 17, sorted((r.get('level'), r.get('id'), r.get('name')) for r in x['records']))
         for r in x['records']:
             self.assertIn(r['confidence'], ('low', 'medium'))
             for s in r['sources']: self.assertTrue(s['page_id'] and s['where'] and s['rule'] and s['reasoning'])

@@ -12,7 +12,7 @@ EX = ROOT / 'examples' / 'payment-initiation'
 def sdem(*args, cwd):
     env = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}   # installed or not (CI is not)
     r = subprocess.run([sys.executable, '-m', 'sdem', *map(str, args)], cwd=cwd, capture_output=True, text=True, env=env)
-    return r.returncode, r.stdout + r.stderr
+    return r.returncode, (r.stdout + r.stderr).replace('\\', '/')   # paths as printed on any platform
 
 
 class WorkspaceTests(unittest.TestCase):

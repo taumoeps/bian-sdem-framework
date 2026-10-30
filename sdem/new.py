@@ -52,11 +52,11 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False):
     elif bian_file:   # started with exactly this BIAN layer
         a2 = json.loads(shared.read_text(encoding='utf-8'))
         if a2.get('level') != 'A2': raise NewError(f'{shared}: not an A2 dataset (level {a2.get("level")!r})')
-        source, catalogue = f'the BIAN layer {shared}', str(shared)
+        source, catalogue = f'the BIAN layer {shared.as_posix()}', shared.as_posix()   # recorded with / on every platform
     else:             # WS-01: the catalogue is read, not copied; A2 holds only the domains the design needs
         a2 = {'level': 'A2', 'model_id': f'{stem}-A2', 'model_version': today, 'metamodel_version': mm.version, 'source_system': SYSTEM,
               'instances': [], 'relationships': []}
-        catalogue = str(SHARED) if SHARED.exists() else 'base'
+        catalogue = SHARED.as_posix() if SHARED.exists() else 'base'
         source = 'sdem aid brings in the service domains your design needs, from ' + (f'your shared BIAN layer {SHARED}' if SHARED.exists() else 'the base BIAN that ships with SDEM')
     docs = {f: ({'level': lvl, 'model_id': f'{stem}-{lvl}', 'model_version': today, 'metamodel_version': mm.version, 'source_system': SYSTEM,
                  'instances': [], 'relationships': []} if lvl != 'A2' else a2) for lvl, f in DATASETS.items() if lvl != 'A2' or a2}
