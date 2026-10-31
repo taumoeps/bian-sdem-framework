@@ -78,7 +78,7 @@ def record(paths, by=None, note=None):
 
 def unrecorded(workspace):
     """AF-07: the tracked files changed since SDEM last wrote them (by hand, or by an agent editing files directly) — or None
-    when the workspace has no ledger yet (started before v0.9.13)."""
+    when the workspace has no ledger yet (started before v0.9.14)."""
     f = Path(workspace) / LEDGER
     if not f.exists(): return None
     try: files = json.loads(f.read_text(encoding='utf-8')).get('files', {})

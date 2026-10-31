@@ -1,6 +1,6 @@
 # How the knowledge graphs work — local and federated
 
-> **Status: current — explains the built knowledge graphs (v0.9.13); the requirements are in the generated spec.**
+> **Status: current — explains the built knowledge graphs (v0.9.14); the requirements are in the generated spec.**
 
 Read this before [`knowledge-graph-spec.md`](knowledge-graph-spec.md). That spec lists every requirement and component; this page explains how the graphs are built and how you query them. It uses the same terms as [`sdem-overview.md`](../sdem-overview.md).
 

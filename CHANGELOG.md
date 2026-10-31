@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## 0.9.14 — one setup guide for AI agents (2026-11-01)
+
+Upgrade: change the pin to `@v0.9.14`, `pip install -r requirements.txt`. Documentation only — no code, metamodel or data change; nothing to migrate.
+
 - **One setup guide for AI agents:** the Copilot set-up guide is now the [AI agent setup guide](docs/sdem-agent-setup.md) — your own agent (GitHub Copilot, Claude Code, OpenAI Codex, Gemini CLI) with SDEM's skills, or SDEM's Copilot orchestrator and layer agents; install, practise, everyday use, cross-layer changes through change events and work items, governance, and a checklist. The README's AI-agents section gives the set-up in three commands.
 
 ## 0.9.13 — a universal CLI for AI agents (2026-11-01)

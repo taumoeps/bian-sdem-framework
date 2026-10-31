@@ -1,6 +1,6 @@
 # Roadmap
 
-> **Status: current** — updated with every release; v0.9.13 released 2026-11-01.
+> **Status: current** — updated with every release; v0.9.14 released 2026-11-01.
 
 Realigned 2026-10-25 after a full review of `docs/` against the code. Release numbers before v0.8 are history; earlier plans for v0.6–v0.8 (engine, BIAN reference integration, generated views) were renumbered below because v0.6.0 and v0.7.0 shipped the rules specification and the rename instead.
 
@@ -18,6 +18,7 @@ Realigned 2026-10-25 after a full review of `docs/` against the code. Release nu
 | v0.6.0 | Relationship Rules Model specification (`relationship-rules-spec.md`); knowledge-graph design and specification with service specifications | Generated from the records; current in CI | done |
 | v0.7.0 | Renamed SDEM; model-driven terminology; registry specification; compatibility aliases for the old names | Behaviour byte-identical to v0.6.2 | done |
 | v0.8.0 | The tool release — see below | the full suite; acceptance 8 of 8; use-case examples 1–4; installed-package job | done |
+| v0.9.14 | One AI agent setup guide (`docs/sdem-agent-setup.md`): your own agent — GitHub Copilot, Claude Code, Codex, Gemini CLI — with SDEM's skills, or SDEM's Copilot orchestrator and layer agents; the README's AI-agents section with the set-up in three commands. Documentation only | the full suite with and without an install; every CI step run locally; every documentation link resolves | done |
 | v0.9.13 | A universal CLI for AI agents — every recommendation of the readiness assessment: `link --json` ids fixed; edits made outside `sdem` noticed (ledger, `check --require-recorded`, `change adopt`); every JSON result an object; typed error codes with hints; `sdem agents install` (one AGENTS.md for Copilot, Claude Code, Codex, Gemini CLI); Windows in CI (four defects fixed); the real-agent evaluation (AF-07…AF-11) | the full suite on Linux, macOS and Windows, with and without an install; every CI step run locally; 33 of 33 executed tests from a checkout and from a clean install; Claude Code evaluation 5 of 5 (not blind) | done |
 | v0.9.12 | Built for agents: `--json`, `--dry-run`, `--limit` on every command; failures as JSON with a code and a hint; results marked with version and command; dashboard/home JSON summaries; native JSON for link, build, baseline, aid confirm/reject, bian inference; `sdem commands --json` (AF-01…AF-06) | the full suite, with and without an install; every CI step run locally; the whole workflow driven with JSON only | done |
 | v0.9.11 | Trace a whole layer (`sdem trace A1…A4`, with gaps, `--only-gaps`, `--to`, `--tree`, `--csv`); readable layer labels and *connections followed* in trace; AID upward without guessing (AID-R05…R07) and S06 reaching domains with no published subject; `scripts/aid_eval.py` across all 258 domains — 0 wrong either way | the full suite, with and without an install; every CI step run locally; full-BIAN evaluation | done |
