@@ -1,6 +1,6 @@
 # Workspace specification
 
-> **Status: built (v0.9.12)** — how a workspace is started, filled, planned from and how its BIAN layer is chosen. Owner's decisions, 2026-10-30: one name, *workspace*; every workspace starts with the BIAN layer; architects narrow it per workspace. User view: [README — the commands in order](../../README.md#2--tools), the [onboarding workflow](../sdem-onboarding-workflow.md), [planning with AID](../sdem-planning-with-aid.md).
+> **Status: built (v0.9.13)** — how a workspace is started, filled, planned from and how its BIAN layer is chosen. Owner's decisions, 2026-10-30: one name, *workspace*; every workspace starts with the BIAN layer; architects narrow it per workspace. User view: [README — the commands in order](../../README.md#2--tools), the [onboarding workflow](../sdem-onboarding-workflow.md), [planning with AID](../sdem-planning-with-aid.md).
 
 | Id | Requirement | Verified by |
 |---|---|---|

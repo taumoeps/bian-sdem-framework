@@ -1,6 +1,6 @@
 # SDEM's command line, built for agents
 
-> **Status: built (AF-01…AF-06 in v0.9.12; AF-07…AF-11 unreleased, for v0.9.13)** — what every `sdem` command gives an AI agent (GitHub Copilot, Claude Code, OpenAI Codex, Gemini CLI — any agent that runs commands), so it can drive SDEM reliably without reading prose. Owner's decisions, 2026-10-31; AF-07…AF-11 follow the [readiness assessment](../evidence/agent-cli-readiness.md). Code: `sdem/agent.py`, `sdem/errors.py`, `sdem/files.py` (the ledger), `sdem/copilot.py` (the installer); tests: `tests/test_agent.py`, `tests/test_agent_eval.py`.
+> **Status: built (AF-01…AF-06 in v0.9.12; AF-07…AF-11 in v0.9.13)** — what every `sdem` command gives an AI agent (GitHub Copilot, Claude Code, OpenAI Codex, Gemini CLI — any agent that runs commands), so it can drive SDEM reliably without reading prose. Owner's decisions, 2026-10-31; AF-07…AF-11 follow the [readiness assessment](../evidence/agent-cli-readiness.md). Code: `sdem/agent.py`, `sdem/errors.py`, `sdem/files.py` (the ledger), `sdem/copilot.py` (the installer); tests: `tests/test_agent.py`, `tests/test_agent_eval.py`.
 
 SDEM is an **agent-friendly command line**: it contains no AI itself — the same input always gives the same output — and an agent can run every step. Decisions on record (approve, load, start a workspace, confirm or reject an inferred record) still take a person's own name (CTL-21); an agent can propose, check, preview and explain, never decide.
 

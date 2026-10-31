@@ -1,6 +1,6 @@
 # SDEM as a universal CLI for AI agents — readiness assessment and what was done
 
-> **Status: assessment of v0.9.12 (2026-10-31); every recommendation built on `main` for v0.9.13 and re-tested the same day.** Made-up data only. Written to be read on its own — for a reviewer, or another AI assistant, with no other context.
+> **Status: assessment of v0.9.12 (2026-10-31); every recommendation built and re-tested the same day, released in v0.9.13 (2026-11-01).** Made-up data only. Written to be read on its own — for a reviewer, or another AI assistant, with no other context.
 
 ## The question
 

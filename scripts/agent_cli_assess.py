@@ -38,7 +38,7 @@ def marker(d, cmd): return isinstance(d, dict) and d.get('sdem', {}).get('comman
 
 # 1 discovery
 case('1a', 'command discovery', ['commands', '--json'], lambda c, d, o, e: (c == 0 and len(d['commands']) > 50 and 'trace' in d['commands'], f"{len(d['commands'])} entries; exit/error codes {sorted(d['exit_codes'])}"))
-case('1b', 'version', ['--version'], lambda c, d, o, e: (c == 0 and '0.9.12' in o, o.strip()))
+case('1b', 'version', ['--version'], lambda c, d, o, e: (c == 0 and '0.9.13' in o, o.strip()))
 # 2 validation
 case('2a', 'check a valid workspace', ['check', '--workspace', EX, '--json'], lambda c, d, o, e: (c == 0 and d['ok'] is True and marker(d, 'check'), 'ok true'))
 bad = WORK / 'bad'; shutil.copytree(EX, bad, ignore=shutil.ignore_patterns('graph'))

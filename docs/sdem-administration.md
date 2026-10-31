@@ -1,6 +1,6 @@
 # Running SDEM — administration
 
-> **Status: current (v0.9.12)** — for the platform owner and workspace owners: installing, upgrading, moving workspaces to a new metamodel, backups, releases, health checks and troubleshooting. Who does each task: the [operating model](sdem-operating-model.md).
+> **Status: current (v0.9.13)** — for the platform owner and workspace owners: installing, upgrading, moving workspaces to a new metamodel, backups, releases, health checks and troubleshooting. Who does each task: the [operating model](sdem-operating-model.md).
 
 ## Installing
 

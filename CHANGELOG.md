@@ -4,6 +4,14 @@
 
 ## Unreleased
 
+## 0.9.13 — a universal CLI for AI agents (2026-11-01)
+
+Upgrade: change the pin to `@v0.9.13`, `pip install -r requirements.txt`. No metamodel change, no migration. **Two things to check:**
+- **Scripts that read SDEM's JSON:** a result that was a list is now an object — read its `items` (`query`, a whole-layer `trace`, `review`, `approve`, `explain`); proposals from `link --json` carry `mapping_id`.
+- **New files in each workspace:** `sdem-ledger.json` appears the next time SDEM writes there — commit it. To let AI agents work in the repository, run `sdem agents install` and follow the [adoption checklist](docs/sdem-adoption-checklist.md) (branch protection, `SDEM_REQUIRE_RECORDED: '1'` in the workspace CI).
+
+What it rests on: [readiness assessment](docs/evidence/agent-cli-readiness.md) — still to run in GitHub Copilot, OpenAI Codex and Gemini CLI (`scripts/agent_eval.py`).
+
 - **A universal CLI for AI agents** — every recommendation of the [readiness assessment](docs/evidence/agent-cli-readiness.md) built:
   - **Fixed: `sdem link --json` gave every proposal `"id": null`**, so an agent could not approve what it proposed; proposals now carry their `mapping_id`. The agent test now approves with the id `link` returned and checks the registry changed (it accepted any answer before, which is how the defect got through).
   - **Edits made outside `sdem` are noticed** (AF-07): SDEM notes what it writes in `sdem-ledger.json`; `sdem check` lists changed files under `unrecorded_edits`; `sdem check --require-recorded` fails on them (CI, where agents write files — `SDEM_REQUIRE_RECORDED` in the workspace template); a person accepts an edit with `sdem change adopt`, now also in a workspace with no change sets yet.

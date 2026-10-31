@@ -1,6 +1,6 @@
 # SDEM onboarding — bringing your existing designs into SDEM
 
-> **Status: current guide — design onboarding is built (v0.9.12); every command shown was run on the test exports.**
+> **Status: current guide — design onboarding is built (v0.9.13); every command shown was run on the test exports.**
 
 > **One document for design onboarding** (built 2026-10-28): what onboarding is, how to do it — the commands and each step with what you will see — what each step does to the data, and when the data is ready. To **test** it step by step with sealed expected results: [`use-case-example-4.md`](evidence/use-case-example-4.md). Technical detail: [`sdem-transform-design.md`](design/sdem-transform-design.md) (reading the designs), [`sdem-load-design.md`](design/sdem-load-design.md) (loading, gap records). For architects; no AI needed.
 
