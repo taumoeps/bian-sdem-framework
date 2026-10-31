@@ -4,7 +4,7 @@
 
 > **Run this first, in your own VS Code** (build step 1, [`sdem-agent-platform-spec.md`](design/sdem-agent-platform-spec.md) §10). It confirms that your organisation's VS Code and GitHub Copilot support what the agent files in `.github/agents/` rely on. Record each result in the table at the end and tell the SDEM owner. Uses made-up data only.
 
-**Before you start:** set up GitHub Copilot and SDEM ([`sdem-copilot-setup.md`](sdem-copilot-setup.md)) — the project open and trusted in VS Code, SDEM installed, Copilot Chat signed in. Make a scratch copy of an example workspace:
+**Before you start:** set up GitHub Copilot and SDEM ([`sdem-agent-setup.md`](sdem-agent-setup.md)) — the project open and trusted in VS Code, SDEM installed, Copilot Chat signed in. Make a scratch copy of an example workspace:
 
 ```bash
 cp -r examples/payment-initiation work/est

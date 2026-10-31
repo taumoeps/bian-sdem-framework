@@ -360,7 +360,7 @@ def main(argv=None):
     lines = [f"  {n:<9} {j:<3} {w}" for n, (j, w, *_rest) in JOURNEYS.items()]
     epilog = ('Journeys (J1–J9; every command with examples: docs/sdem-workbench-user-guide.md §7):\n' + '\n'.join(lines) +
               '\n\nEvery subcommand takes --help with a worked example. Exit codes: 0 OK, 1 issues found, 2 usage or input error, 3 internal error.'
-              '\nAG = agent platform (docs/sdem-copilot-setup.md). The sdem-* commands (sdem-graph, sdem-infer, sdem-aid, …) remain as aliases.')
+              '\nAG = agent platform (docs/sdem-agent-setup.md). The sdem-* commands (sdem-graph, sdem-infer, sdem-aid, …) remain as aliases.')
     ap = argparse.ArgumentParser(prog='sdem', usage='sdem <command> [options]', epilog=epilog, formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description="SDEM — Service Domain Enterprise Metamodel. SDEM's command line: run it in VS Code's terminal pane; "
                                              'ask Copilot Chat to explain any output.')

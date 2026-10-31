@@ -40,7 +40,7 @@ flowchart LR
 | [Configuration](sdem-configuration.md) | everything you can set: workspaces, the SDEM version, how onboarding reads designs, OCR, reviewers, CI, VS Code, Copilot |
 | [Administration](sdem-administration.md) | installing, upgrading, metamodel changes, backups, health, troubleshooting |
 | [Repository protection](sdem-repository-protection.md) | branch protection and code owners, so a person's approval is enforced |
-| [Copilot set-up](sdem-copilot-setup.md) · [agent spike checklist](sdem-agent-platform-spike.md) | GitHub Copilot and the SDEM agents (optional), and the checklist to try them |
+| [AI agent setup](sdem-agent-setup.md) · [agent spike checklist](sdem-agent-platform-spike.md) · [readiness assessment](evidence/agent-cli-readiness.md) | using SDEM with an AI agent — GitHub Copilot, Claude Code, OpenAI Codex, Gemini CLI — or with SDEM's own Copilot agents (optional); the checklist to try them; how far each platform is proven |
 | [Pilot plan](sdem-pilot-plan.md) | the first ten weeks on real designs |
 | [Workspace repository template](../templates/workspace-repo/README.md) · [Security](../SECURITY.md) | your private repository for real data · keeping data safe |
 

@@ -185,7 +185,7 @@ Feature names and file formats change between versions (subagents were experimen
                                        sdem-approve-links (with the evidence table), sdem-trace-impact
 ```
 
-Set-up for a GitHub account, a Copilot plan and VS Code: [`sdem-copilot-setup.md`](../sdem-copilot-setup.md).
+Set-up for a GitHub account, a Copilot plan and VS Code: [`sdem-agent-setup.md`](../sdem-agent-setup.md).
 
 `execute` is the terminal tool's name (VS Code's tool set for terminal commands) — the spike confirms it (step S2). Layer agents need `edit` only to write their change-set drafts; their data reaches the datasets **only** through `sdem change propose` — a direct edit is detected by `sdem check` (AG-S08).
 

@@ -12,7 +12,7 @@
 | **An architect who will use it** | [how an architect uses it](#how-an-architect-uses-it) (five steps), [install](#install), then the [user guide](docs/sdem-workbench-user-guide.md) — a 15-minute quick start and every task step by step |
 | **Bringing in existing designs** | the [onboarding workflow](docs/sdem-onboarding-workflow.md); practise with [use-case example 4](docs/evidence/use-case-example-4.md) |
 | **Planning to use it on real data** | the [operating model](docs/sdem-operating-model.md) and the [pilot plan](docs/sdem-pilot-plan.md) |
-| **Setting up the AI agents** | [Copilot set-up](docs/sdem-copilot-setup.md) |
+| **Setting up the AI agents** | the [AI agent setup guide](docs/sdem-agent-setup.md) — your own agent (GitHub Copilot, Claude Code, Codex, Gemini CLI) or SDEM's Copilot agents |
 | **Looking for a document** | the [documentation index](docs/README.md) — every document by reader — and the [glossary](docs/glossary.md) |
 | **A maintainer** | [CONTRIBUTING.md](CONTRIBUTING.md) |
 
@@ -187,9 +187,22 @@ flowchart LR
 
 ### 3 · AI agents (optional)
 
-Helpers in **GitHub Copilot** — one per layer and a coordinator — draft changes and explain results. They work only through SDEM's checked commands, stay in their own layer, and never approve. No MCP, no AI inside SDEM.
+AI agents use SDEM through the same `sdem` command — SDEM itself contains no AI, so every answer is the same each time. There are two ways to work:
 
-**Any agent can drive SDEM** — GitHub Copilot, Claude Code, OpenAI Codex, Gemini CLI: every command takes `--json` (results *and* failures as JSON, with a code and a next step), `--dry-run` (nothing written; what would be is listed) and `--limit`; `sdem commands --json` lists every command and option; `sdem agents install` puts one `AGENTS.md` and the same skills in place for each of them; an edit made outside `sdem` is noticed. See [built for agents](docs/design/sdem-agent-cli-spec.md) and the [readiness assessment](docs/evidence/agent-cli-readiness.md).
+| | Your own agent + SDEM skills | SDEM's Copilot agents |
+|---|---|---|
+| **What** | GitHub Copilot, Claude Code, OpenAI Codex or Gemini CLI reads SDEM's instructions (`AGENTS.md`) and skills, and runs `sdem` | an orchestrator and one agent per layer (A1–A4), in GitHub Copilot |
+| **For** | everyday work: query, check, trace, impact, explain | one layer's specialist work; changes across layers |
+
+**Set-up, in three commands** (in your workspace repository, or any folder to try it):
+
+```bash
+pip install -r requirements.txt     # SDEM, pinned to a release (or: pip install "sdem @ git+https://github.com/taumoeps/bian-sdem-framework@vX.Y.Z")
+sdem agents install                 # AGENTS.md, CLAUDE.md, the skills for every platform, and Copilot's agents and prompts
+sdem commands --json                # what an agent can run — every command answers in JSON with --json
+```
+
+Then open the folder in your agent and ask it, *"using SDEM"*, what you need. Agents propose, check and explain; they work only through `sdem`, stay in their own layer, and **never approve** — a person does, and SDEM refuses an agent's name for a decision. An edit made outside `sdem` is noticed. No MCP. Step by step, with examples for both ways: the [AI agent setup guide](docs/sdem-agent-setup.md); what each platform has been proven to do: the [readiness assessment](docs/evidence/agent-cli-readiness.md).
 
 ```mermaid
 flowchart LR

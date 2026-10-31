@@ -65,7 +65,7 @@ You need four things. Your IT team may install some of them for you.
 | **VS Code** | the workbench | code.visualstudio.com |
 | **Python 3.10 or later** (3.13 recommended) | SDEM runs on it | Macs come with 3.9, which is too old: `brew install python@3.13` or the installer from python.org |
 | **Git** | history, review and approval | git-scm.com (often already installed) |
-| **GitHub Copilot** (optional) | the AI help in the chat window | a Copilot plan on your GitHub account — step by step in [`sdem-copilot-setup.md`](sdem-copilot-setup.md) |
+| **An AI agent** (optional) — GitHub Copilot, Claude Code, Codex or Gemini CLI | AI help that runs `sdem` for you | step by step in [`sdem-agent-setup.md`](sdem-agent-setup.md) |
 
 Then:
 

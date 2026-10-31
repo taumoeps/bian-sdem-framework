@@ -117,7 +117,7 @@ If your organisation allows GitHub Copilot, SDEM's Copilot files make it useful 
 | `.github/prompts/` | prompts (9 installed into a workspace repository; the SDEM project also has one for its made-up example): `/sdem-explain`, `/sdem-fix`, `/sdem-review`, `/sdem-onboarding-review` … |
 | `.github/skills/` | five skills: change sets, records, approving links, trace and impact, onboarding designs |
 
-In a workspace repository, put them in place with `sdem copilot install` — they match the SDEM version you installed; run it again after an upgrade (files your team changed are kept and listed). Agents work in rounds; the limit is a cap an agent may lower but never raise — the architect decides. Set-up: [Copilot set-up](sdem-copilot-setup.md).
+In a workspace repository, put them in place with `sdem agents install` — Copilot's files above, plus `AGENTS.md`, `CLAUDE.md`, Gemini CLI's settings and the same skills for Claude Code, Codex and Gemini CLI (`sdem copilot install` writes Copilot's alone). They match the SDEM version you installed; run it again after an upgrade (files your team changed are kept and listed). Agents work in rounds; the limit is a cap an agent may lower but never raise — the architect decides. Set-up: [AI agent setup guide](sdem-agent-setup.md).
 
 ## Dashboards
 
