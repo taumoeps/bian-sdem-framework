@@ -328,12 +328,26 @@ If the production Kubernetes platform is rehosted, `sdem impact` traces the conn
 
 ## Quick start
 
-**Two ways to work.** Use the CLI directly — you write designs as JSON change sets and run the commands below; no AI needed. Or let an AI agent drive it — it reads your Markdown or Word designs, prepares the change sets and runs the same commands, and you review and approve. Either way the workspace is the source of truth and every connection needs your approval. Designs exported from Confluence can be onboarded with `sdem transform` ([onboarding](docs/sdem-onboarding-workflow.md)). More: [ways of working](docs/sdem-ways-of-working.md).
+**Two ways to work.** Use the CLI directly, or let an AI agent drive it. Either way the workspace is the source of truth, and every connection needs your approval.
 
-Two ways in:
+### A. Use the SDEM CLI directly (no AI)
+
+You write designs as JSON change sets and run the commands below yourself:
 
 - **Create a new architecture** — start from a business design, find the BIAN Service Domains it needs, let AID infer the missing layers, approve, then build and explore the knowledge graph (steps 1–7).
 - **Explore the bundled example** — the synthetic Payments architecture, ready-made, in one command (steps 1 and 8).
+
+Designs exported from Confluence can be onboarded without AI using `sdem transform` and `sdem load` ([onboarding](docs/sdem-onboarding-workflow.md)).
+
+### B. Use an AI agent
+
+An AI agent (GitHub Copilot, Claude Code, OpenAI Codex or Gemini CLI) drives the same CLI for you:
+
+- It reads your Markdown or Word designs and prepares the change sets.
+- It runs the same commands and answers with the command each fact came from.
+- You review and approve: it prepares every decision as an exact command **for you to run**.
+
+To set it up, install SDEM (step 1), then run `sdem agents install` in your workspace repository. See [AI agent setup](docs/sdem-agent-setup.md) and [ways of working](docs/sdem-ways-of-working.md).
 
 **Requirements:** Python 3.10 or later and Git (macOS: `brew install python@3.13`; Windows: `winget install Python.Python.3.13`). Every command below was run as written on SDEM v0.18.0; the ledger is made-up data.
 
