@@ -1,21 +1,59 @@
 # SDEM — Service Domain Enterprise Metamodel
 
-**SDEM is an open-source, customisable Enterprise Architecture-as-Code framework built around BIAN Service Domains.** It connects business capabilities, BIAN Service Domains, applications and infrastructure into one governed architecture model, for dependency tracing, change-impact analysis and architecture governance. It runs locally from the command line; AI is optional.
+## Overview
+**SDEM is an open-source, customisable Enterprise Architecture Metamodel and Architecture-as-Code framework for designing, aligning and governing banking solution architectures using BIAN Service Domains.**
 
-For example, an architect can trace a banking capability through its BIAN Service Domains and applications to the infrastructure beneath them, then assess what changing that infrastructure would affect.
+SDEM provides a structured approach to solution architecture through four interconnected design models:
 
-> **v0.18.0** · Apache-2.0 · ready to evaluate on synthetic data; real designs follow a pilot ([what that needs](#using-sdem-on-real-designs)). Uses BIAN's published Semantic APIs under BIAN's licence; **not** an official BIAN standard or endorsed by BIAN.
+- **A1 — Business Architecture:** Business capabilities, value streams, processes, activities and requirements.
+- **A2 — BIAN Service Domain Architecture:** BIAN Service Domains, service operations, control records, behaviour qualifiers and business objects.
+- **A3 — Application Architecture:** Application components, services, APIs, interfaces and data.
+- **A4 — Technology Architecture:** Infrastructure components, nodes, system software, deployments, deployment environments and technology services.
 
-## What kind of architecture tool is SDEM?
+Its primary purpose is to support the **BIAN-aligned solution architecture design lifecycle**. Architects use a predefined, customisable metamodel to develop the four designs within a governed **workspace**, connect the layers and validate alignment. SDEM focuses on developing, aligning, validating and governing individual solution designs.
 
-SDEM combines two approaches to architecture tooling:
+The framework operates locally through a command-line interface (CLI), maintaining architecture designs as structured, version-controlled data. It also supports AI agents to assist with architecture modelling, analysis and governance, while architects retain responsibility for design decisions and approvals. This includes:
 
-| Tool classification | Existing examples | What SDEM provides |
-|---|---|---|
-| **Architecture-as-Code (AaC) CLI** | [Architecture-as-Code](https://arch-as-code.org/), [Structurizr](https://structurizr.com/), [LikeC4](https://likec4.dev/) | Architecture kept as structured, version-controlled data, validated against modelling rules, with generated views and reports |
-| **Enterprise Architecture modelling and automation** | [Archi](https://www.archimatetool.com/), [pyArchimate](https://github.com/pyArchimate/pyArchimate) | Enterprise architecture modelled and connected across business, BIAN Service Domains, applications and technology |
+- **Model-driven design:** Consistent architecture definitions and relationships governed by the enterprise metamodel.
+- **BIAN alignment:** Mapping business requirements and processes to established BIAN Service Domains and operations.
+- **Architecture inference:** Deterministically identifying candidate architecture elements and relationships across design layers.
+- **Design governance:** Validating architecture consistency and requiring appropriate evidence and human approval for governed relationships.
+- **Architecture traceability:** Understanding how business capabilities, BIAN Service Domains, applications and technology components relate.
+- **Change-impact analysis:** Identifying affected architecture elements and dependencies when a solution changes.
+- **Architecture-as-Code:** Managing solution designs as version-controlled, machine-readable architecture data, with optional AI-agent assistance.
 
-**SDEM combines Architecture-as-Code with Enterprise Architecture modelling in a CLI-driven framework built around BIAN Service Domains.** General-purpose tools like these can be extended to do comparable things; what SDEM adds is a predefined, customisable banking architecture framework, ready to use — with relationship inference, knowledge graphs and governance. That is its positioning, not a claim to be first, only or best.
+### Example: a payment solution
+
+An architect designing a payment solution can use SDEM to:
+
+1. **Model business requirements (A1):** Define the business capabilities, processes and requirements the payment solution must support.
+2. **Align with BIAN (A2):** Identify relevant BIAN Service Domains and operations, using deterministic inference where applicable.
+3. **Design applications (A3):** Define the application components, APIs, services and data structures that implement the Service Domains.
+4. **Design technology (A4):** Model the infrastructure, deployment environments and technology components supporting the applications.
+5. **Validate and govern:** Verify cross-layer relationships, identify architecture gaps, review inferred relationships and assess the impact of proposed changes.
+
+> **v0.18.0** · Apache-2.0 · Ready for evaluation using synthetic data; adoption for real solution designs requires a pilot ([pilot requirements](#using-sdem-on-real-designs)).
+>
+> SDEM uses BIAN's published Semantic APIs under BIAN's applicable licence. SDEM is **not an official BIAN standard and is not endorsed by BIAN**.
+
+### What kind of architecture tool is SDEM?
+
+SDEM brings together four complementary approaches to architecture tooling:
+
+| Tool classification                      | Existing examples                                                                                                                    | What SDEM provides                                                                                                                                                                                                                       |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Enterprise Architecture Metamodel**    | [SAP LeanIX](https://www.leanix.net/), [Bizzdesign](https://bizzdesign.com/), [Avolution ABACUS](https://www.avolutionsoftware.com/) | A predefined, customisable architecture metamodel covering Business (A1), BIAN Service Domain (A2), Application (A3) and Technology (A4), including entity types, attributes, permitted relationships, constraints and validation rules. |
+| **Solution Architecture Modelling**      | [Sparx Enterprise Architect](https://sparxsystems.com/), [Archi](https://www.archimatetool.com/)                                     | Workspaces that instantiate four interconnected design models, enabling architects to develop, relate and validate solution architectures across business, BIAN Service Domains, applications and infrastructure.               |
+| **Architecture-as-Code (AaC)**           | [Architecture-as-Code](https://arch-as-code.org/), [Structurizr](https://structurizr.com/), [LikeC4](https://likec4.dev/)            | Architecture maintained as structured, version-controlled data, supported by CLI automation, deterministic validation, generated views, reports and integration with development workflows.                                              |
+| **BIAN-centred Architecture Governance** | [BIAN](https://bian.org/) reference architecture and BIAN-enabled architecture platforms                                             | BIAN Service Domain and operation modelling, deterministic architecture inference, evidence-based relationship governance, federated knowledge graphs, architecture traceability and change-impact analysis.                             |
+
+### Relationship to existing architecture platforms
+
+General-purpose Enterprise Architecture platforms such as SAP LeanIX, Bizzdesign and Avolution ABACUS provide overlapping capabilities in metamodel management, architecture modelling, dependency analysis and governance.
+
+Detailed modelling tools such as Sparx Enterprise Architect also support solution architecture design, extensible metamodels and custom validation or automation.
+
+SDEM can complement established architecture repositories and modelling platforms by providing a structured methodology and automation engine for developing and governing solution designs.
 
 ## BIAN Service Domain Catalogue
 
