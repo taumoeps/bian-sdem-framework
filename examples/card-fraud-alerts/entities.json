@@ -1,0 +1,130 @@
+{
+  "entities": [
+    {
+      "id": "APP-FRAUD-ENGINE",
+      "type": "A3.ApplicationComponent",
+      "versions": [
+        "4.2"
+      ]
+    },
+    {
+      "id": "CAP-310",
+      "type": "A1.BusinessCapability",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "INF-CLOUD-K8S-PROD",
+      "type": "A4.SystemSoftware",
+      "versions": [
+        "1.3"
+      ]
+    },
+    {
+      "id": "INF-ONPREM-VM-CLUSTER-B",
+      "type": "A4.Node",
+      "versions": [
+        "2.0"
+      ]
+    },
+    {
+      "id": "POST /fraud/alerts",
+      "type": "A3.APIOperation",
+      "versions": [
+        "3.1"
+      ]
+    },
+    {
+      "id": "SD-044",
+      "type": "A2.ServiceDomain",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "SO-044-07",
+      "type": "A2.ServiceOperation",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "DEP-FRAUD-PROD",
+      "type": "A4.Deployment",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "BS-FRAUD-ALERT",
+      "type": "A2.BusinessScenario",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "VS-CARD-USE",
+      "type": "A1.ValueStream",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "AT-FRAUD-ALERT",
+      "type": "A2.AssetType",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "FP-ANALYSE",
+      "type": "A2.FunctionalPattern",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "VSS-01",
+      "type": "A1.ValueStreamStage",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "VSS-02",
+      "type": "A1.ValueStreamStage",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "VSS-03",
+      "type": "A1.ValueStreamStage",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "VSS-04",
+      "type": "A1.ValueStreamStage",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "PRC-310-01",
+      "type": "A1.BusinessProcess",
+      "versions": [
+        "1.0"
+      ]
+    },
+    {
+      "id": "CMP-SCORING",
+      "type": "A3.ApplicationComponent",
+      "versions": [
+        "4.2"
+      ]
+    }
+  ]
+}

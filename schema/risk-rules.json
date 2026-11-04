@@ -1,0 +1,117 @@
+{
+  "$schema_version": "1.0.0",
+  "description": "Risk scenario rules (docs/design/sdem-requirements-risk-spec.md, RR-K05): which kind of change, to which kind of requirement in scope, raises which potential risk scenario. Governed data, not code. A rule names a scenario, the decision it needs and mitigations to consider — never a likelihood, a loss, an obligation or a target: those come only from confirmed requirements and their evidence. A confirmed breach takes the rule's breach_decision (the end state does not meet the requirement); a potential risk takes its decision.",
+  "categories": [
+    "availability",
+    "performance",
+    "data_residency",
+    "real_time",
+    "recovery",
+    "security",
+    "compliance",
+    "capacity",
+    "other"
+  ],
+  "rules": [
+    {
+      "id": "RR-AV-01",
+      "category": "availability",
+      "changes": [
+        "rehost",
+        "replace",
+        "retire",
+        "modify"
+      ],
+      "scenario": "Service interruption while {changed} is migrated or changed: {requirement} may not hold during the transition, even if the end state meets it.",
+      "decision": "Agree a planned outage window with the requirement's owner, or require a migration without downtime.",
+      "mitigations": [
+        "a cutover window agreed with the requirement's owner",
+        "parallel run or blue-green cutover",
+        "a rollback plan tested before the cutover"
+      ],
+      "breach_decision": "Choose a platform that meets the requirement, change the requirement with its owner, or accept the residual risk."
+    },
+    {
+      "id": "RR-PF-01",
+      "category": "performance",
+      "changes": [
+        "rehost",
+        "replace",
+        "modify"
+      ],
+      "scenario": "Performance may change when {changed} changes: {requirement} has no evidence for the proposed architecture.",
+      "decision": "Require a performance test on the proposed architecture before the change goes live, or accept the risk.",
+      "mitigations": [
+        "a load test on the proposed platform against the requirement's condition",
+        "monitoring of the requirement's metric through the cutover"
+      ],
+      "breach_decision": "Meet the requirement on the proposed architecture, change it with its owner, or accept the residual risk."
+    },
+    {
+      "id": "RR-DR-01",
+      "category": "data_residency",
+      "changes": [
+        "rehost",
+        "replace",
+        "modify"
+      ],
+      "scenario": "Where data is held or processed may change when {changed} changes: {requirement} must hold for the proposed location.",
+      "decision": "Confirm the proposed location meets the requirement before the change, or stop the change.",
+      "mitigations": [
+        "evidence of the proposed platform's region and its replicas",
+        "a review by the requirement's owner (compliance)"
+      ],
+      "breach_decision": "Stop the change, or choose a location that meets the requirement — a residency requirement is changed only by its owner."
+    },
+    {
+      "id": "RR-RT-01",
+      "category": "real_time",
+      "changes": [
+        "rehost",
+        "replace",
+        "modify",
+        "retire"
+      ],
+      "scenario": "A capability real-time processing depends on may be missing or different on the proposed architecture: {requirement}.",
+      "decision": "Confirm the proposed platform provides the capability, or redesign the real-time path.",
+      "mitigations": [
+        "evidence of the capability on the proposed platform",
+        "a test of the real-time path end to end"
+      ],
+      "breach_decision": "Meet the requirement on the proposed architecture, change it with its owner, or accept the residual risk."
+    },
+    {
+      "id": "RR-RC-01",
+      "category": "recovery",
+      "changes": [
+        "rehost",
+        "replace",
+        "modify",
+        "retire"
+      ],
+      "scenario": "Recovery may degrade when {changed} changes: {requirement} must hold for the proposed architecture, including its disaster-recovery set-up.",
+      "decision": "Require the proposed architecture's recovery set-up to meet the requirement, tested, or accept the residual risk.",
+      "mitigations": [
+        "a disaster-recovery test on the proposed architecture",
+        "replication to a second region confirmed before the cutover"
+      ],
+      "breach_decision": "Meet the requirement on the proposed architecture, change it with its owner, or accept the residual risk."
+    },
+    {
+      "id": "RR-GEN-01",
+      "category": "*",
+      "changes": [
+        "rehost",
+        "replace",
+        "modify",
+        "retire"
+      ],
+      "scenario": "{requirement} applies to records this change affects; whether it still holds after the change is not established.",
+      "decision": "Establish whether the requirement still holds, with evidence.",
+      "mitigations": [
+        "evidence for the proposed architecture against the requirement's condition"
+      ],
+      "breach_decision": "Meet the requirement on the proposed architecture, change it with its owner, or accept the residual risk."
+    }
+  ]
+}

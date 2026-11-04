@@ -1,0 +1,6 @@
+@startuml
+archimate #Technology "Payments Kubernetes Cluster" as k8s <<technology-node>>
+archimate #Technology "Edge Firewall" as fw <<technology-device>>
+archimate #Technology "PostgreSQL 15" as pg <<technology-system-software>>
+fw --> k8s
+@enduml

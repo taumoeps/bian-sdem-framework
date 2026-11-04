@@ -1,0 +1,611 @@
+{
+  "format": "sdem-requirements/1",
+  "metamodel_version": "0.8.0",
+  "note": "Made-up requirements and measurements for the synthetic payments example — not a real organisation's obligations, targets or figures.",
+  "requirements": [
+    {
+      "id": "REQ-AV-01",
+      "version": 1,
+      "status": "confirmed",
+      "name": "Payment capture availability",
+      "statement": "Customers can submit and have validated a payment instruction 99.95% of each month.",
+      "owner_layer": "A1",
+      "owner": "ROLE-PAY-OFFICER",
+      "category": "availability",
+      "scope": "end_to_end",
+      "subject": "PRC-PAY-01",
+      "allocated_to": [
+        "APP-PAY-HUB",
+        "INF-K8S-PAY-PROD"
+      ],
+      "derived_from": [],
+      "condition": {
+        "metric": "availability_pct",
+        "operator": ">=",
+        "value": 99.95,
+        "unit": "%",
+        "period": "month"
+      },
+      "evidence": [
+        "service_level_agreement:SLA-PAY-001#s2"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example — not a real organisation's requirement"
+      },
+      "history": [
+        {
+          "version": 1,
+          "status": "proposed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        },
+        {
+          "version": 1,
+          "status": "confirmed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        }
+      ]
+    },
+    {
+      "id": "REQ-AV-02",
+      "version": 1,
+      "status": "confirmed",
+      "name": "Production platform availability",
+      "statement": "The production platform the payment services run on is available 99.95% of each month — its share of REQ-AV-01.",
+      "owner_layer": "A4",
+      "owner": "",
+      "category": "availability",
+      "scope": "component",
+      "subject": "INF-K8S-PAY-PROD",
+      "allocated_to": [],
+      "derived_from": [
+        "REQ-AV-01"
+      ],
+      "condition": {
+        "metric": "availability_pct",
+        "operator": ">=",
+        "value": 99.95,
+        "unit": "%",
+        "period": "month"
+      },
+      "evidence": [
+        "technology_standard:TS-PLATFORM-AVAIL#2"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example — not a real organisation's requirement"
+      },
+      "history": [
+        {
+          "version": 1,
+          "status": "proposed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        },
+        {
+          "version": 1,
+          "status": "confirmed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        }
+      ]
+    },
+    {
+      "id": "REQ-PF-01",
+      "version": 1,
+      "status": "confirmed",
+      "name": "Payment initiation response time",
+      "statement": "The Payments Hub answers a payment initiation request within 300 ms at the 95th percentile.",
+      "owner_layer": "A3",
+      "owner": "",
+      "category": "performance",
+      "scope": "component",
+      "subject": "APP-PAY-HUB",
+      "allocated_to": [],
+      "derived_from": [],
+      "condition": {
+        "metric": "p95_latency",
+        "operator": "<=",
+        "value": 300,
+        "unit": "ms"
+      },
+      "evidence": [
+        "non_functional_requirements:NFR-PAYHUB-007"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example — not a real organisation's requirement"
+      },
+      "history": [
+        {
+          "version": 1,
+          "status": "proposed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        },
+        {
+          "version": 1,
+          "status": "confirmed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        }
+      ]
+    },
+    {
+      "id": "REQ-RES-01",
+      "version": 1,
+      "status": "confirmed",
+      "name": "Payment data stays in New Zealand",
+      "statement": "Payment instructions and their records are processed and stored in New Zealand only.",
+      "owner_layer": "A1",
+      "owner": "ROLE-PAY-OFFICER",
+      "category": "data_residency",
+      "scope": "end_to_end",
+      "subject": "PRC-PAY-02",
+      "allocated_to": [
+        "INF-K8S-PAY-PROD",
+        "INF-PG-PAY-PROD"
+      ],
+      "derived_from": [],
+      "condition": {
+        "metric": "region",
+        "operator": "in",
+        "value": [
+          "NZ"
+        ]
+      },
+      "evidence": [
+        "policy:DATA-RESIDENCY-POL#4"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example — not a real organisation's requirement"
+      },
+      "history": [
+        {
+          "version": 1,
+          "status": "proposed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        },
+        {
+          "version": 1,
+          "status": "confirmed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        }
+      ]
+    },
+    {
+      "id": "REQ-RES-02",
+      "version": 1,
+      "status": "confirmed",
+      "name": "Payment processing platform in New Zealand",
+      "statement": "The platform that processes payments runs in a New Zealand region — its share of REQ-RES-01.",
+      "owner_layer": "A4",
+      "owner": "",
+      "category": "data_residency",
+      "scope": "component",
+      "subject": "INF-K8S-PAY-PROD",
+      "allocated_to": [],
+      "derived_from": [
+        "REQ-RES-01"
+      ],
+      "condition": {
+        "metric": "region",
+        "operator": "in",
+        "value": [
+          "NZ"
+        ]
+      },
+      "evidence": [
+        "technology_standard:TS-HOSTING-REGION#1"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example — not a real organisation's requirement"
+      },
+      "history": [
+        {
+          "version": 1,
+          "status": "proposed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        },
+        {
+          "version": 1,
+          "status": "confirmed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        }
+      ]
+    },
+    {
+      "id": "REQ-RT-01",
+      "version": 1,
+      "status": "confirmed",
+      "name": "Real-time payment execution",
+      "statement": "Payment execution completes within 2 s of an authorised instruction.",
+      "owner_layer": "A2",
+      "owner": "",
+      "category": "real_time",
+      "scope": "end_to_end",
+      "subject": "SD-PE",
+      "allocated_to": [
+        "CMP-PAY-EXEC"
+      ],
+      "derived_from": [],
+      "condition": {
+        "metric": "execution_time",
+        "operator": "<=",
+        "value": 2,
+        "unit": "s"
+      },
+      "evidence": [
+        "service_level_agreement:SLA-PAY-001#s4"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example — not a real organisation's requirement"
+      },
+      "history": [
+        {
+          "version": 1,
+          "status": "proposed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        },
+        {
+          "version": 1,
+          "status": "confirmed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        }
+      ]
+    },
+    {
+      "id": "REQ-RT-02",
+      "version": 1,
+      "status": "confirmed",
+      "name": "Event streaming on the payment platform",
+      "statement": "The platform offers the managed event streaming the execution gateway uses for real-time execution — its share of REQ-RT-01.",
+      "owner_layer": "A4",
+      "owner": "",
+      "category": "real_time",
+      "scope": "component",
+      "subject": "INF-K8S-PAY-PROD",
+      "allocated_to": [],
+      "derived_from": [
+        "REQ-RT-01"
+      ],
+      "condition": {
+        "metric": "event_streaming",
+        "operator": "==",
+        "value": true
+      },
+      "evidence": [
+        "architecture_decision:ADR-PAY-014"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example — not a real organisation's requirement"
+      },
+      "history": [
+        {
+          "version": 1,
+          "status": "proposed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        },
+        {
+          "version": 1,
+          "status": "confirmed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        }
+      ]
+    },
+    {
+      "id": "REQ-RC-01",
+      "version": 1,
+      "status": "confirmed",
+      "name": "Payments Hub recovery time",
+      "statement": "The Payments Hub is back in service within 2 hours of a site failure (RTO).",
+      "owner_layer": "A3",
+      "owner": "",
+      "category": "recovery",
+      "scope": "component",
+      "subject": "APP-PAY-HUB",
+      "allocated_to": [],
+      "derived_from": [],
+      "condition": {
+        "metric": "recovery_time",
+        "operator": "<=",
+        "value": "2h"
+      },
+      "evidence": [
+        "business_continuity_plan:BCP-PAY#3.1"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example — not a real organisation's requirement"
+      },
+      "history": [
+        {
+          "version": 1,
+          "status": "proposed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        },
+        {
+          "version": 1,
+          "status": "confirmed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        }
+      ]
+    },
+    {
+      "id": "REQ-RC-02",
+      "version": 1,
+      "status": "confirmed",
+      "name": "Second-region replica",
+      "statement": "The production platform keeps a replica in a second region, so REQ-RC-01 can be met after a site failure.",
+      "owner_layer": "A4",
+      "owner": "",
+      "category": "recovery",
+      "scope": "component",
+      "subject": "INF-K8S-PAY-PROD",
+      "allocated_to": [],
+      "derived_from": [
+        "REQ-RC-01"
+      ],
+      "condition": {
+        "metric": "second_region_replica",
+        "operator": "==",
+        "value": true
+      },
+      "evidence": [
+        "technology_standard:TS-DR#2"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example — not a real organisation's requirement"
+      },
+      "history": [
+        {
+          "version": 1,
+          "status": "proposed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        },
+        {
+          "version": 1,
+          "status": "confirmed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        }
+      ]
+    },
+    {
+      "id": "REQ-CAP-01",
+      "version": 1,
+      "status": "proposed",
+      "name": "Peak-day capacity",
+      "statement": "The platform handles three times the average daily payment volume.",
+      "owner_layer": "A4",
+      "owner": "",
+      "category": "capacity",
+      "scope": "component",
+      "subject": "INF-K8S-PAY-PROD",
+      "allocated_to": [],
+      "derived_from": [],
+      "condition": {
+        "metric": "peak_factor",
+        "operator": ">=",
+        "value": 3
+      },
+      "evidence": [
+        "workshop:CAP-2026-10"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example — not a real organisation's requirement"
+      },
+      "history": [
+        {
+          "version": 1,
+          "status": "proposed",
+          "by": "jane.architect",
+          "at": "2026-11-01T00:00:00+00:00",
+          "note": "made-up example"
+        }
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "id": "MEAS-001",
+      "record": "INF-K8S-PAY-PROD",
+      "metric": "availability_pct",
+      "value": 99.97,
+      "state": "current",
+      "evidence": [
+        "monitoring_report:MON-2026-09"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example"
+      },
+      "unit": "%"
+    },
+    {
+      "id": "MEAS-002",
+      "record": "INF-K8S-PAY-PROD2",
+      "metric": "availability_pct",
+      "value": 99.9,
+      "state": "proposed",
+      "evidence": [
+        "provider_sla:CLOUD-K8S-SLA#3"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example"
+      },
+      "unit": "%"
+    },
+    {
+      "id": "MEAS-003",
+      "record": "APP-PAY-HUB",
+      "metric": "p95_latency",
+      "value": 220,
+      "state": "current",
+      "evidence": [
+        "performance_test:PT-PAYHUB-2026-08"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example"
+      },
+      "unit": "ms"
+    },
+    {
+      "id": "MEAS-004",
+      "record": "INF-K8S-PAY-PROD",
+      "metric": "region",
+      "value": "NZ",
+      "state": "current",
+      "evidence": [
+        "deployment_design:ENV-PAY-PROD#country"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example"
+      }
+    },
+    {
+      "id": "MEAS-005",
+      "record": "INF-K8S-PAY-PROD2",
+      "metric": "region",
+      "value": "AU",
+      "state": "proposed",
+      "evidence": [
+        "provider_offer:CLOUD-K8S-REGIONS#2"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example"
+      }
+    },
+    {
+      "id": "MEAS-006",
+      "record": "INF-K8S-PAY-PROD",
+      "metric": "event_streaming",
+      "value": true,
+      "state": "current",
+      "evidence": [
+        "architecture_decision:ADR-PAY-014"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example"
+      }
+    },
+    {
+      "id": "MEAS-007",
+      "record": "INF-K8S-PAY-PROD2",
+      "metric": "event_streaming",
+      "value": false,
+      "state": "proposed",
+      "evidence": [
+        "provider_offer:CLOUD-K8S-SERVICES#5"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example"
+      }
+    },
+    {
+      "id": "MEAS-008",
+      "record": "APP-PAY-HUB",
+      "metric": "recovery_time",
+      "value": "1h",
+      "state": "current",
+      "evidence": [
+        "dr_test:DR-PAYHUB-2026-06"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example"
+      }
+    },
+    {
+      "id": "MEAS-009",
+      "record": "INF-K8S-PAY-PROD",
+      "metric": "second_region_replica",
+      "value": true,
+      "state": "current",
+      "evidence": [
+        "deployment_design:PAY-DR#2"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example"
+      }
+    },
+    {
+      "id": "MEAS-010",
+      "record": "INF-K8S-PAY-PROD2",
+      "metric": "second_region_replica",
+      "value": false,
+      "state": "proposed",
+      "evidence": [
+        "provider_offer:CLOUD-K8S-DR#1"
+      ],
+      "provenance": {
+        "by": "jane.architect",
+        "at": "2026-11-01T00:00:00+00:00",
+        "source": "synthetic example"
+      }
+    }
+  ]
+}

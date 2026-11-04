@@ -1,0 +1,520 @@
+{
+  "use_case": "M2",
+  "executor": "fable-executor/2026-10-22",
+  "mode": "DESIGN PROPOSAL, not mapping: no A3/A4 export exists, so no step of the plan applies; the executor generated a target A3/A4 from BIAN's container pattern under the case's DSN-* convention and labelled every record as design",
+  "given": "m2-mappings-given.json (LN-001..008, A1->A2) and the a1/a2 exports; no A3, no A4",
+  "gold_opened_at_phase": 5,
+  "design_files": {
+    "m2-design-a3.json": "2 A3.ApplicationComponent + 8 A3.APIOperation, lifecycle_status planned, method/path/payload_fields on each API, composition component -> API",
+    "m2-design-a4.json": "2 A4.Deployment, planned, component_id only"
+  },
+  "executor_conventions": {
+    "M2-C1 paths": "resource = kebab-case plural of the asset-type name (/consumer-loans, /credit-assessments); Initiate/Evaluate -> POST /resource; Retrieve -> GET /resource/{id}; Update -> PATCH /resource/{id}; Execute+qualifier -> POST /resource/{id}/<qualifier alias> (guide check 2, v0.5.7); Control -> PUT /resource/{id}/control. Payload = input ∪ output attributes",
+    "M2-C2 composition": "the DSN-* convention has no interface id, so APIs are composed directly under the component (A3 composition is a catalogued kind)",
+    "M2-C3 deployment": "DSN-DEP-* carries component_id only; environment_id and platform_id are deliberately absent because no environment or platform instance exists; hence no DEPLOYED_ON (M2.4)"
+  },
+  "where_mapping_ends": "A1->A2 (the eight given arrows) is the last mapping. Everything below SD-LO / SD-CA in this case is design: the components, APIs and deployments are instances the executor created from a pattern, not instances found in an export.",
+  "self_check_M2.2": "the step-2 decision procedure run over the design: every DSN-API is decision 1 for its own operation (check 2 pass, check 3 pass or neutral, check 4 100%); two cross candidates (SO-LO-02 Update vs the control API at 2/4; SO-LO-06 Control vs the PATCH API at 2/2) lose on overlap/ratio under the v0.5.7 contention rule",
+  "commands": {
+    "graph_check": {
+      "command": "python3 -m sdmm.graph check examples/digital-lending/a1-business.json examples/digital-lending/a2-service-domain.json examples/digital-lending/m2-design-a3.json examples/digital-lending/m2-design-a4.json examples/digital-lending/m2-mappings-given.json examples/digital-lending/m2-proposals.json",
+      "stdout": "OK: level A1 (synthetic-bank-lending-a1)\nOK: level A2 (synthetic-bank-lending-a2)\nOK: level A3 (synthetic-bank-lending-a3-TARGET-DESIGN)\nOK: level A4 (synthetic-bank-lending-a4-TARGET-DESIGN)\nOK: mappings #1\nOK: mappings #2\n",
+      "stderr": "",
+      "exit": 0
+    },
+    "validate_strict": {
+      "command": "python3 -m sdmm.validate --strict examples/digital-lending/m2-proposals.json",
+      "stdout": "WARNING: examples/digital-lending/m2-proposals.json: mapping #1 (P-M2-001): proposal lacks required evidence kind(s) ['api_contract']; must be supplied before approval\nWARNING: examples/digital-lending/m2-proposals.json: mapping #2 (P-M2-002): proposal lacks required evidence kind(s) ['api_contract']; must be supplied before approval\nWARNING: examples/digital-lending/m2-proposals.json: mapping #3 (P-M2-003): proposal lacks required evidence kind(s) ['api_contract']; must be supplied before approval\nWARNING: examples/digital-lending/m2-proposals.json: mapping #4 (P-M2-004): proposal lacks required evidence kind(s) ['api_contract']; must be supplied before approval\nWARNING: examples/digital-lending/m2-proposals.json: mapping #5 (P-M2-005): proposal lacks required evidence kind(s) ['api_contract']; must be supplied before approval\nWARNING: examples/digital-lending/m2-proposals.json: mapping #6 (P-M2-006): proposal lacks required evidence kind(s) ['api_contract']; must be supplied before approval\nWARNING: examples/digital-lending/m2-proposals.json: mapping #7 (P-M2-007): proposal lacks required evidence kind(s) ['application_architecture_document']; must be supplied before approval\nWARNING: examples/digital-lending/m2-proposals.json: mapping #8 (P-M2-008): proposal lacks required evidence kind(s) ['deployment_design']; must be supplied before approval\nWARNING: examples/digital-lending/m2-proposals.json: mapping #9 (P-M2-009): proposal lacks required evidence kind(s) ['api_contract']; must be supplied before approval\nWARNING: examples/digital-lending/m2-proposals.json: mapping #10 (P-M2-010): proposal lacks required evidence kind(s) ['api_contract']; must be supplied before approval\nWARNING: examples/digital-lending/m2-proposals.json: mapping #11 (P-M2-011): proposal lacks required evidence kind(s) ['application_architecture_document']; must be supplied before approval\nWARNING: examples/digital-lending/m2-proposals.json: mapping #12 (P-M2-012): proposal lacks required evidence kind(s) ['deployment_design']; must be supplied before approval\nOK: examples/digital-lending/m2-proposals.json (with warnings)\n",
+      "stderr": "",
+      "exit": 0
+    },
+    "M2.3a_trace_approved_only": {
+      "command": "python3 -m sdmm.graph trace CAP-LEND --direction down examples/digital-lending/a1-business.json examples/digital-lending/a2-service-domain.json examples/digital-lending/m2-mappings-given.json",
+      "stdout": "DOWNSTREAM (depends on):\nCAP-LEND 'Originate Consumer Loan'  [A1.BusinessCapability]\n└─ -SUPPORTED_BY-> SD-LO 'Consumer Loan Origination (synthetic selection)'  [A2.ServiceDomain]  (LN-001)\n\n",
+      "stderr": "",
+      "exit": 0
+    },
+    "M2.3b_trace_with_design": {
+      "command": "python3 -m sdmm.graph trace CAP-LEND --direction down --status approved,proposed examples/digital-lending/a1-business.json examples/digital-lending/a2-service-domain.json examples/digital-lending/m2-design-a3.json examples/digital-lending/m2-design-a4.json examples/digital-lending/m2-mappings-given.json examples/digital-lending/m2-proposals.json",
+      "stdout": "DOWNSTREAM (depends on):\nCAP-LEND 'Originate Consumer Loan'  [A1.BusinessCapability]\n└─ -SUPPORTED_BY-> SD-LO 'Consumer Loan Origination (synthetic selection)'  [A2.ServiceDomain]  (LN-001)\n   └─ -REALIZED_BY-> DSN-APP-SD-LO 'Consumer Loan service (target)'  [A3.ApplicationComponent]  (P-M2-007)\n      └─ -DEPLOYED_AS-> DSN-DEP-SD-LO 'Consumer Loan service — target deployment'  [A4.Deployment]  (P-M2-008)\n\n",
+      "stderr": "",
+      "exit": 0
+    },
+    "M2.3c_trace_CAP-CREDIT_with_design": {
+      "command": "python3 -m sdmm.graph trace CAP-CREDIT --direction down --status approved,proposed examples/digital-lending/a1-business.json examples/digital-lending/a2-service-domain.json examples/digital-lending/m2-design-a3.json examples/digital-lending/m2-design-a4.json examples/digital-lending/m2-mappings-given.json examples/digital-lending/m2-proposals.json",
+      "stdout": "DOWNSTREAM (depends on):\nCAP-CREDIT 'Assess Credit Risk'  [A1.BusinessCapability]\n└─ -SUPPORTED_BY-> SD-CA 'Credit Assessment (synthetic selection)'  [A2.ServiceDomain]  (LN-002)\n   └─ -REALIZED_BY-> DSN-APP-SD-CA 'Credit Assessment service (target)'  [A3.ApplicationComponent]  (P-M2-011)\n      └─ -DEPLOYED_AS-> DSN-DEP-SD-CA 'Credit Assessment service — target deployment'  [A4.Deployment]  (P-M2-012)\n\n",
+      "stderr": "",
+      "exit": 0
+    },
+    "M2.5_eval": {
+      "command": "python3 -m sdmm.evaluate examples/digital-lending/m2-gold-design.json --proposals examples/digital-lending/m2-proposals.json",
+      "stdout": "relationship     gold prop  tp  fp  fn   prec   rec    f1\nDEPLOYED_AS         2    2   2   0   0   1.00  1.00  1.00\nIMPLEMENTED_BY      8    8   8   0   0   1.00  1.00  1.00\nREALIZED_BY         2    2   2   0   0   1.00  1.00  1.00\nOVERALL            12   12  12   0   0   1.00  1.00  1.00\n",
+      "stderr": "",
+      "exit": 0
+    }
+  },
+  "attempts": [
+    {
+      "plan_id": "S24",
+      "connection": "SO-LO-01 IMPLEMENTED_BY DSN-API-SO-LO-01",
+      "step_assigned": 2,
+      "step_used": "design (no step applies)",
+      "fallback": false,
+      "data_read": [
+        "a2 SO-LO-01: action_term=Initiate, behavior_qualifier=None, I/O ['application_status', 'currency', 'customer_reference', 'loan_application_reference', 'purpose', 'requested_amount', 'term_months']"
+      ],
+      "reasoning": "no A3 instance to map to; REST form generated from the operation (create-instance term ⇔ POST on the collection (executor convention, guide check 2))",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-001",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-101",
+      "gold_rationale_method": "TARGET DESIGN, not a mapping: reference API POST /consumer-loans from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the referenc"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LO-02 IMPLEMENTED_BY DSN-API-SO-LO-02",
+      "step_assigned": 2,
+      "step_used": "design (no step applies)",
+      "fallback": false,
+      "data_read": [
+        "a2 SO-LO-02: action_term=Update, behavior_qualifier=None, I/O ['application_status', 'loan_application_reference', 'requested_amount', 'term_months']"
+      ],
+      "reasoning": "no A3 instance to map to; REST form generated from the operation (Update ⇔ PATCH on the instance (executor convention))",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-002",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-102",
+      "gold_rationale_method": "TARGET DESIGN, not a mapping: reference API PUT or PATCH /consumer-loans/{id} from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LO-03 IMPLEMENTED_BY DSN-API-SO-LO-03",
+      "step_assigned": 2,
+      "step_used": "design (no step applies)",
+      "fallback": false,
+      "data_read": [
+        "a2 SO-LO-03: action_term=Retrieve, behavior_qualifier=None, I/O ['agreement_reference', 'application_status', 'currency', 'loan_application_reference', 'offer_reference', 'requested_amount', 'term_months']"
+      ],
+      "reasoning": "no A3 instance to map to; REST form generated from the operation (Retrieve ⇔ GET (SAPG §3.5, verified))",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-003",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-103",
+      "gold_rationale_method": "TARGET DESIGN, not a mapping: reference API GET /consumer-loans/{id} from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the refe"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LO-04 IMPLEMENTED_BY DSN-API-SO-LO-04",
+      "step_assigned": 2,
+      "step_used": "design (no step applies)",
+      "fallback": false,
+      "data_read": [
+        "a2 SO-LO-04: action_term=Execute, behavior_qualifier=Offer, I/O ['application_status', 'loan_application_reference', 'offer_reference']"
+      ],
+      "reasoning": "no A3 instance to map to; REST form generated from the operation (Execute ⇔ POST on the qualifier sub-resource (guide check 2, v0.5.7); qualifier segment carries the behavior qualifier (check 3))",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-004",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-104",
+      "gold_rationale_method": "TARGET DESIGN, not a mapping: reference API PUT /consumer-loans/{id}/offer (or POST on the sub-resource) from the action term and qualifier per the REST mapping"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LO-05 IMPLEMENTED_BY DSN-API-SO-LO-05",
+      "step_assigned": 2,
+      "step_used": "design (no step applies)",
+      "fallback": false,
+      "data_read": [
+        "a2 SO-LO-05: action_term=Execute, behavior_qualifier=Agreement, I/O ['agreement_reference', 'application_status', 'loan_application_reference', 'offer_reference']"
+      ],
+      "reasoning": "no A3 instance to map to; REST form generated from the operation (Execute ⇔ POST on the qualifier sub-resource (guide check 2, v0.5.7); qualifier segment carries the behavior qualifier (check 3))",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-005",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-105",
+      "gold_rationale_method": "TARGET DESIGN, not a mapping: reference API PUT /consumer-loans/{id}/agreement (or POST on the sub-resource) from the action term and qualifier per the REST map"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LO-06 IMPLEMENTED_BY DSN-API-SO-LO-06",
+      "step_assigned": 2,
+      "step_used": "design (no step applies)",
+      "fallback": false,
+      "data_read": [
+        "a2 SO-LO-06: action_term=Control, behavior_qualifier=None, I/O ['application_status', 'loan_application_reference']"
+      ],
+      "reasoning": "no A3 instance to map to; REST form generated from the operation (Control ⇔ PUT on the instance's control action (executor convention; \"control\" is not a qualifier of this control record, so check 3 stays neutral for the other operations))",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-006",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-106",
+      "gold_rationale_method": "TARGET DESIGN, not a mapping: reference API PUT or PATCH /consumer-loans/{id} with the control action, or DELETE for withdrawal from the action term and qualifi"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-LO REALIZED_BY DSN-APP-SD-LO",
+      "step_assigned": 3,
+      "step_used": "design",
+      "fallback": false,
+      "data_read": [
+        "a2 SD-LO and its 6 operations"
+      ],
+      "reasoning": "one component per domain (container pattern)",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-007",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-121"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "DSN-APP-SD-LO DEPLOYED_AS DSN-DEP-SD-LO",
+      "step_assigned": 1,
+      "step_used": "design",
+      "fallback": false,
+      "data_read": [
+        "no a4 export"
+      ],
+      "reasoning": "one deployment per component; no environment/platform to name",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-008",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-131"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "DSN-APP-SD-LO DEPLOYED_ON <platform>",
+      "step_assigned": 1,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "no a4 export; no platform instance"
+      ],
+      "reasoning": "NO PROPOSAL — there is no platform to name; inventing one would be an instance with no source (guide: never invent instances). The design stops at the deployment",
+      "confidence_predicted": "none (M2.4)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "by design: nothing to name"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-LOAN-APP MAPPED_TO <data entity>",
+      "step_assigned": 4,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "no A3.DataEntity"
+      ],
+      "reasoning": "NO PROPOSAL — no data entity exists; the control record could seed a target entity but that is a further design step the convention does not define",
+      "confidence_predicted": "none (M2.4)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "by design: nothing to name"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY DSN-API-SO-CA-01",
+      "step_assigned": 2,
+      "step_used": "design (no step applies)",
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: action_term=Evaluate, behavior_qualifier=None, I/O ['approved_amount', 'assessment_outcome', 'conditions', 'credit_assessment_reference', 'credit_score', 'loan_application_reference']"
+      ],
+      "reasoning": "no A3 instance to map to; REST form generated from the operation (create-instance term ⇔ POST on the collection (executor convention, guide check 2))",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-009",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-107",
+      "gold_rationale_method": "TARGET DESIGN, not a mapping: reference API POST /credit-assessments from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the refe"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY DSN-API-SO-CA-02",
+      "step_assigned": 2,
+      "step_used": "design (no step applies)",
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: action_term=Retrieve, behavior_qualifier=None, I/O ['approved_amount', 'assessment_outcome', 'conditions', 'credit_assessment_reference', 'credit_score']"
+      ],
+      "reasoning": "no A3 instance to map to; REST form generated from the operation (Retrieve ⇔ GET (SAPG §3.5, verified))",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-010",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-108",
+      "gold_rationale_method": "TARGET DESIGN, not a mapping: reference API GET /credit-assessments/{id} from the action term and qualifier per the REST mapping ([SAPG] s3.5); accepted as the "
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-CA REALIZED_BY DSN-APP-SD-CA",
+      "step_assigned": 3,
+      "step_used": "design",
+      "fallback": false,
+      "data_read": [
+        "a2 SD-CA and its 2 operations"
+      ],
+      "reasoning": "one component per domain (container pattern)",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-011",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-122"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "DSN-APP-SD-CA DEPLOYED_AS DSN-DEP-SD-CA",
+      "step_assigned": 1,
+      "step_used": "design",
+      "fallback": false,
+      "data_read": [
+        "no a4 export"
+      ],
+      "reasoning": "one deployment per component; no environment/platform to name",
+      "confidence_predicted": "low (design)",
+      "confidence_given": 0.4,
+      "proposal_id": "P-M2-012",
+      "outcome": "hit",
+      "outcome_note": "design gold LN-132"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "DSN-APP-SD-CA DEPLOYED_ON <platform>",
+      "step_assigned": 1,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "no a4 export; no platform instance"
+      ],
+      "reasoning": "NO PROPOSAL — there is no platform to name; inventing one would be an instance with no source (guide: never invent instances). The design stops at the deployment",
+      "confidence_predicted": "none (M2.4)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "by design: nothing to name"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-CREDIT-ASSESS MAPPED_TO <data entity>",
+      "step_assigned": 4,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "no A3.DataEntity"
+      ],
+      "reasoning": "NO PROPOSAL — no data entity exists; the control record could seed a target entity but that is a further design step the convention does not define",
+      "confidence_predicted": "none (M2.4)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "by design: nothing to name"
+    },
+    {
+      "plan_id": "S36",
+      "connection": "—",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "NO PROPOSAL — subsumed, and no platform exists",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "by design: nothing to name"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "—",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "NO PROPOSAL — no data entity, no DBMS",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "by design: nothing to name"
+    },
+    {
+      "plan_id": "S25",
+      "connection": "—",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "NO PROPOSAL — no A3.ApplicationService in the convention",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "by design: nothing to name"
+    },
+    {
+      "plan_id": "S41",
+      "connection": "—",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "NO PROPOSAL — no technology service",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "by design: nothing to name"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "—",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "NO PROPOSAL — no data entity; candidate rule — a target entity from CR attributes would be design, not mapping; not generated (convention defines no DSN-ENT id)",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "by design: nothing to name"
+    },
+    {
+      "plan_id": "S01",
+      "connection": "CAP-LEND SUPPORTED_BY SD-LO",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "m2-mappings-given.json LN-001 approved"
+      ],
+      "reasoning": "given; A1→A2 is where mapping ends in this case",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S01",
+      "connection": "CAP-CREDIT SUPPORTED_BY SD-CA",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "m2-mappings-given.json LN-002 approved"
+      ],
+      "reasoning": "given; A1→A2 is where mapping ends in this case",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S02/S12",
+      "connection": "VS-GET-LOAN ALIGNED_TO BS-LOAN",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "m2-mappings-given.json LN-003 approved"
+      ],
+      "reasoning": "given; A1→A2 is where mapping ends in this case",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S04",
+      "connection": "PRC-APPLY USES_DOMAIN SD-LO",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "m2-mappings-given.json LN-004 approved"
+      ],
+      "reasoning": "given; A1→A2 is where mapping ends in this case",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S04",
+      "connection": "PRC-ASSESS USES_DOMAIN SD-CA",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "m2-mappings-given.json LN-005 approved"
+      ],
+      "reasoning": "given; A1→A2 is where mapping ends in this case",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S04",
+      "connection": "PRC-OFFER USES_DOMAIN SD-LO",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "m2-mappings-given.json LN-006 approved"
+      ],
+      "reasoning": "given; A1→A2 is where mapping ends in this case",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S02/S12",
+      "connection": "BO-LOAN-APP ALIGNED_TO BBO-LOAN-APP",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "m2-mappings-given.json LN-007 approved"
+      ],
+      "reasoning": "given; A1→A2 is where mapping ends in this case",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S02/S12",
+      "connection": "BO-CREDIT-DEC ALIGNED_TO BBO-CREDIT-ASSESS",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "m2-mappings-given.json LN-008 approved"
+      ],
+      "reasoning": "given; A1→A2 is where mapping ends in this case",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    }
+  ]
+}

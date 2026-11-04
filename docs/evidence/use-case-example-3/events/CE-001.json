@@ -1,0 +1,335 @@
+{
+  "id": "CE-001",
+  "change_set": "CS-001",
+  "layer": "A4",
+  "round": 1,
+  "at": "2026-10-28T00:00:00+00:00",
+  "agent": "sdem-a4-technology",
+  "person": "jane.architect",
+  "impact": {
+    "records": [
+      {
+        "id": "CAP-PAY-010",
+        "name": "Initiate Payment",
+        "level": "A1",
+        "classification": "no_impact",
+        "via": [
+          "PAY-108",
+          "PAY-106",
+          "PAY-001"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD",
+        "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "PRC-PAY-01",
+        "name": "Capture and validate payment instruction",
+        "level": "A1",
+        "classification": "no_impact",
+        "via": [
+          "PAY-108",
+          "PAY-106",
+          "PAY-003"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD",
+        "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "PRC-PAY-02",
+        "name": "Execute and confirm payment",
+        "level": "A1",
+        "classification": "no_impact",
+        "via": [
+          "PAY-108",
+          "PAY-106",
+          "PAY-004"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD",
+        "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "SD-PI",
+        "name": "Payment Initiation (synthetic selection)",
+        "level": "A2",
+        "classification": "no_impact",
+        "via": [
+          "PAY-108",
+          "PAY-106"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD",
+        "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "APP-PAY-HUB",
+        "name": "Payments Hub",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [
+          "PAY-108"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD",
+        "rule": "rehost/up1 → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "CMP-PAY-EXEC",
+        "name": "Execution Gateway",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [
+          "PAY-111"
+        ],
+        "cause": "rehost of INF-K8S-PAY-PROD",
+        "rule": "rehost/up1 → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "DEP-PAYEXEC-PROD",
+        "name": "Execution Gateway — production",
+        "level": "A4",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of DEP-PAYEXEC-PROD",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "DEP-PAYHUB-PROD",
+        "name": "Payments Hub — production",
+        "level": "A4",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of DEP-PAYHUB-PROD",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "INF-K8S-PAY-PROD",
+        "name": "Managed Kubernetes — payments (production)",
+        "level": "A4",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "rehost of INF-K8S-PAY-PROD",
+        "rule": "rehost/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "INF-K8S-PAY-PROD2",
+        "level": "A4",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "INF-K8S-PAY-PROD2 added",
+        "rule": "add → design_change_required"
+      }
+    ],
+    "mappings_to_supersede": [
+      "PAY-108",
+      "PAY-111"
+    ],
+    "changed": [
+      "INF-K8S-PAY-PROD2",
+      "INF-K8S-PAY-PROD",
+      "DEP-PAYHUB-PROD",
+      "DEP-PAYEXEC-PROD"
+    ],
+    "coverage": {
+      "A1": {
+        "present": true,
+        "reached": true,
+        "result": "no_impact_by_rule",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "CAP-PAY-010",
+            "classification": "no_impact",
+            "via": [
+              "PAY-108",
+              "PAY-106",
+              "PAY-001"
+            ],
+            "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "PRC-PAY-01",
+            "classification": "no_impact",
+            "via": [
+              "PAY-108",
+              "PAY-106",
+              "PAY-003"
+            ],
+            "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "PRC-PAY-02",
+            "classification": "no_impact",
+            "via": [
+              "PAY-108",
+              "PAY-106",
+              "PAY-004"
+            ],
+            "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-001",
+          "PAY-003",
+          "PAY-004",
+          "PAY-106",
+          "PAY-108"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ACT-PAY-01a",
+          "ACT-PAY-01b",
+          "ACT-PAY-02a",
+          "ACT-PAY-02b",
+          "BO-PAYEE",
+          "CAP-PAY-000",
+          "VSS-P1",
+          "VSS-P2",
+          "VSS-P3",
+          "VSS-P4"
+        ],
+        "unmapped_count": 10,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "3 record(s) reached through approved links; the impact rules give no_impact for this kind of change; evidence incomplete: 0 link(s) not approved, 10 record(s) with no approved link where one is expected"
+      },
+      "A2": {
+        "present": true,
+        "reached": true,
+        "result": "no_impact_by_rule",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "SD-PI",
+            "classification": "no_impact",
+            "via": [
+              "PAY-108",
+              "PAY-106"
+            ],
+            "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-106",
+          "PAY-108"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "BBO-PARTY",
+          "SD-PA",
+          "SD-PE",
+          "SO-PI-06"
+        ],
+        "unmapped_count": 4,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "1 record(s) reached through approved links; the impact rules give no_impact for this kind of change; evidence incomplete: 0 link(s) not approved, 4 record(s) with no approved link where one is expected"
+      },
+      "A3": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "APP-PAY-HUB",
+            "classification": "design_change_required",
+            "via": [
+              "PAY-108"
+            ],
+            "rule": "rehost/up1 → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "CMP-PAY-EXEC",
+            "classification": "design_change_required",
+            "via": [
+              "PAY-111"
+            ],
+            "rule": "rehost/up1 → design_change_required (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-108",
+          "PAY-111"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "API-PI-06",
+          "CMP-PAY-CAPTURE",
+          "CMP-PAY-VALIDATE",
+          "ENT-ACCOUNT-CACHE",
+          "ENT-PAY-EVENT"
+        ],
+        "unmapped_count": 5,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "2 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 5 record(s) with no approved link where one is expected"
+      },
+      "A4": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [
+          "ART-PAYHUB-IMG",
+          "ENV-PAY-PROD",
+          "NET-PAY-PRIVATE"
+        ],
+        "records": [
+          {
+            "id": "DEP-PAYEXEC-PROD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "DEP-PAYHUB-PROD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "INF-K8S-PAY-PROD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "rehost/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "INF-K8S-PAY-PROD2",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          }
+        ],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ART-PAYHUB-IMG",
+          "ENV-PAY-PROD",
+          "ENV-PAY-UAT",
+          "INF-K8S-PAY-PROD2",
+          "INF-PG-PAY-PROD",
+          "NET-PAY-PRIVATE",
+          "TS-MQ",
+          "TS-SECRETS"
+        ],
+        "unmapped_count": 8,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "4 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 8 record(s) with no approved link where one is expected; 3 record(s) linked inside the layer to the changed record(s) are not followed by the impact rules: ART-PAYHUB-IMG, ENV-PAY-PROD, NET-PAY-PRIVATE"
+      }
+    },
+    "basis": {
+      "rules_version": "0.5.0",
+      "files": {
+        "a1-business.json": "ba19d4ef4a50284aea1fea5f7908071a8dee18566caa420264210949422116fe",
+        "a2-service-domain.json": "33b8e639e226dbdf4d66d95d58d86b27e82d3287dbd9a0ee75da2f24cf533e11",
+        "a3-application.json": "869e4d083a4b700bf659926b4e013ca9cd7a45707db05fe69cab9fb7e669a686",
+        "a4-technology.json": "d24b22ebf3448aa4cd42b737216b31efec35c9d8d302d6d15f7243cdd6676f94",
+        "mappings.json": "9b060a6b712d440e5aab758ce5b3d01e942fc8bef4072edfe581021805ed4121"
+      },
+      "approved_links": 18,
+      "approved_links_sha256": "165e78451800efaf37b90d71777880c692ff19a8b33f7ac1b8498c895ef42452"
+    }
+  }
+}

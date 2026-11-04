@@ -1,0 +1,293 @@
+{
+  "$schema_version": "0.4.0",
+  "levels": [
+    {
+      "code": "A1",
+      "name": "Business Architecture"
+    },
+    {
+      "code": "A2",
+      "name": "Service Domain Architecture"
+    },
+    {
+      "code": "A3",
+      "name": "Application Architecture"
+    },
+    {
+      "code": "A4",
+      "name": "Technology Architecture"
+    }
+  ],
+  "bian_level": "A2",
+  "type_aliases": {
+    "L0.": "A1.",
+    "L1.": "A2.",
+    "L2.": "A3.",
+    "L3.": "A4."
+  },
+  "perspectives": [
+    "process",
+    "information",
+    "architecture"
+  ],
+  "authorities": [
+    "bian_reference",
+    "bian_alignment_guidance",
+    "enterprise_rule"
+  ],
+  "relationships": [
+    {
+      "mapping_type_id": "CAPABILITY_SUPPORTED_BY_DOMAIN",
+      "source_type": "A1.BusinessCapability",
+      "relationship": "SUPPORTED_BY",
+      "target_type": "A2.ServiceDomain",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "bian_alignment_guidance",
+      "direction_semantics": "The capability's responsibilities are (partly) fulfilled by the functional scope of the selected Service Domain.",
+      "required_evidence": [
+        "business_architecture_document",
+        "domain_scope_assessment"
+      ],
+      "rule_version": "1.0",
+      "owner": "enterprise-architecture",
+      "source_reference": "plan row S01 — BIAN states the intent only. BIAN v14.0.0 Release Notes v1.0 (read 2026-11-02) §3: the structure 'fit for purpose for carrying both the Service Domains and the Business Capabilities' is 'not yet documented in the BIAN BiZZdesign repository because still work in progress'. B1 review 2026-11-02: unchanged, re-cited.",
+      "verification": "verified_intent_or_target_only",
+      "confidence": "medium",
+      "confidence_basis": "BIAN states the intent or the target only",
+      "reasoning": "BIAN intends a capability-to-Service-Domain mapping but has not published it — still work in progress in Release 14.0 (§3); SDEM encodes the intent so capabilities can be traced, and derives it from process arrows (S01). Many-to-many: a capability may need several domains, and a domain serves several capabilities."
+    },
+    {
+      "mapping_type_id": "VALUE_STREAM_ALIGNED_TO_SCENARIO",
+      "source_type": "A1.ValueStream",
+      "relationship": "ALIGNED_TO",
+      "target_type": "A2.BusinessScenario",
+      "cardinality": "many_to_many",
+      "perspective": "process",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The value stream's stages are realised by the interactions described in the Business Scenario.",
+      "required_evidence": [
+        "process_model",
+        "scenario_suitability_review"
+      ],
+      "rule_version": "1.0",
+      "owner": "business-architecture",
+      "source_reference": "plan row S02 — SDEM mapping only; no official equivalent. BIAN v14.0.0 Release Notes v1.0 (read 2026-11-02) §3: BIAN's work on value streams is 'not yet modelled'. B1 review, owner's decision 2026-11-02: authority corrected from bian_alignment_guidance to enterprise_rule.",
+      "verification": "sdem_definition",
+      "confidence": "medium",
+      "confidence_basis": "SDEM definition; validated against sealed answers",
+      "reasoning": "No standard aligns a value stream to a BIAN Business Scenario, and BIAN states its value-stream work is not yet modelled (Release Notes 14.0 §3); SDEM defines the link so a business journey can be checked against BIAN's operation sequence (S02). It is SDEM's own rule, not BIAN guidance."
+    },
+    {
+      "mapping_type_id": "PROCESS_USES_DOMAIN",
+      "source_type": "A1.BusinessProcess",
+      "relationship": "USES_DOMAIN",
+      "target_type": "A2.ServiceDomain",
+      "cardinality": "many_to_many",
+      "perspective": "process",
+      "authority": "enterprise_rule",
+      "direction_semantics": "A process activity invokes one or more Service Operations of the Service Domain.",
+      "required_evidence": [
+        "process_model"
+      ],
+      "rule_version": "1.0",
+      "owner": "business-architecture",
+      "source_reference": "plan row S04 — Official guidance only; no exact cross-standard entity pair; Unverified — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed",
+      "verification": "unverified_w135",
+      "confidence": "medium",
+      "confidence_basis": "cited source login-gated and unverified; validated against sealed answers",
+      "reasoning": "The citation for process-to-domain usage rests on an Open Group document behind a login (W135); SDEM keeps the relationship because the process's invoked operations make it derivable by join (S04)."
+    },
+    {
+      "mapping_type_id": "BUSINESS_OBJECT_ALIGNED_TO_BIAN_OBJECT",
+      "source_type": "A1.BusinessObject",
+      "relationship": "ALIGNED_TO",
+      "target_type": "A2.BusinessObject",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "bian_alignment_guidance",
+      "direction_semantics": "The bank business concept carries the same meaning as (or specialises) the BIAN business object.",
+      "required_evidence": [
+        "business_glossary",
+        "object_alignment_review"
+      ],
+      "rule_version": "1.0",
+      "owner": "data-architecture",
+      "source_reference": "plan row S12 — BIAN publishes the target only: BIAN v14.0.0 Release Notes v1.0 (read 2026-11-02) §1.2 and §8 — the Business Object Model is documented in UML class diagrams; no method for aligning an organisation's own objects. B1 review 2026-11-02: unchanged, re-cited.",
+      "verification": "verified_intent_or_target_only",
+      "confidence": "medium",
+      "confidence_basis": "BIAN states the intent or the target only",
+      "reasoning": "BIAN publishes the Business Object Model (UML, Release Notes 14.0 §1.2, §8) as the target to align to, but no rule for aligning an organisation's own business objects; SDEM aligns by attribute match (S12)."
+    },
+    {
+      "mapping_type_id": "DOMAIN_REALIZED_BY_COMPONENT",
+      "source_type": "A2.ServiceDomain",
+      "relationship": "REALIZED_BY",
+      "target_type": "A3.ApplicationComponent",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application component implements some or all of the Service Domain's functional responsibilities.",
+      "required_evidence": [
+        "application_architecture_document"
+      ],
+      "rule_version": "1.0",
+      "owner": "application-architecture",
+      "source_reference": "plan row S17 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.4 p. 52 (functional partition), §4.3.1 p. 91",
+      "verification": "verified",
+      "confidence": "high",
+      "confidence_basis": "BIAN public guidance names this alignment and it was checked",
+      "reasoning": "BIAN's Semantic API guide treats a Service Domain as realized by the application component that implements its operations (§3.4); SDEM derives it from implemented operations (S17)."
+    },
+    {
+      "mapping_type_id": "OPERATION_IMPLEMENTED_BY_API",
+      "source_type": "A2.ServiceOperation",
+      "relationship": "IMPLEMENTED_BY",
+      "target_type": "A3.APIOperation",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The API operation exposes the behaviour of the Service Operation; semantic gaps must be documented.",
+      "required_evidence": [
+        "api_contract"
+      ],
+      "rule_version": "1.0",
+      "owner": "application-architecture",
+      "source_reference": "plan row S24 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.5 pp. 52–55 (REST mapping); [APIP]",
+      "verification": "verified",
+      "confidence": "high",
+      "confidence_basis": "BIAN public guidance names this alignment and it was checked",
+      "reasoning": "BIAN's Semantic API guide maps each service operation to a REST operation (§3.5, pp. 52–55); SDEM applies that mapping as a decision procedure (S24)."
+    },
+    {
+      "mapping_type_id": "BIAN_OBJECT_MAPPED_TO_DATA_ENTITY",
+      "source_type": "A2.BusinessObject",
+      "relationship": "MAPPED_TO",
+      "target_type": "A3.DataEntity",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application data entity stores (part of) the BIAN business object; transformations and partial coverage are recorded.",
+      "required_evidence": [
+        "data_model"
+      ],
+      "rule_version": "1.0",
+      "owner": "data-architecture",
+      "source_reference": "plan row S30 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.2.7; [SL14] BOM",
+      "verification": "verified",
+      "confidence": "high",
+      "confidence_basis": "BIAN public guidance names this alignment and it was checked",
+      "reasoning": "BIAN's guide and BOM relate business objects to implementation data (§3.2.7); SDEM maps a BIAN object to a table by attribute match (S30)."
+    },
+    {
+      "mapping_type_id": "COMPONENT_DEPLOYED_ON_NODE",
+      "source_type": "A3.ApplicationComponent",
+      "relationship": "DEPLOYED_ON",
+      "target_type": "A4.Node",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application component runs on the node (it is deployed there, in a named environment).",
+      "required_evidence": [
+        "deployment_design"
+      ],
+      "rule_version": "2.0",
+      "owner": "infrastructure-architecture",
+      "source_reference": "plan row S33 — ArchiMate 3.2 application–technology relationship: Node realization Application Component; the deployment pattern Artifact realization Application Component, Node assignment Artifact — Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-02). B1 review, owner's decision 2026-11-02.",
+      "verification": "verified_against_archi",
+      "confidence": "high",
+      "confidence_basis": "standard relationship checked against the ArchiMate 3.2 relationship tables as implemented by Archi",
+      "reasoning": "ArchiMate 3.2 lets a Node realise an Application Component — the component runs on it — through the Artifact deployed to it (Artifact realises the component; the Node is assigned the Artifact). DEPLOYED_ON names that hosting. It is limited to the ArchiMate types that host software (Node, Device, System Software): a Technology Service or Interface only serves an application, and a network or path carries traffic, so neither is 'deployed on' (B1 review, 2026-11-02)."
+    },
+    {
+      "mapping_type_id": "COMPONENT_DEPLOYED_ON_DEVICE",
+      "source_type": "A3.ApplicationComponent",
+      "relationship": "DEPLOYED_ON",
+      "target_type": "A4.Device",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application component runs on the device (it is deployed there, in a named environment).",
+      "required_evidence": [
+        "deployment_design"
+      ],
+      "rule_version": "2.0",
+      "owner": "infrastructure-architecture",
+      "source_reference": "plan row S33 — ArchiMate 3.2 application–technology relationship: Device realization Application Component; the deployment pattern Artifact realization Application Component, Device assignment Artifact — Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-02). B1 review, owner's decision 2026-11-02.",
+      "verification": "verified_against_archi",
+      "confidence": "high",
+      "confidence_basis": "standard relationship checked against the ArchiMate 3.2 relationship tables as implemented by Archi",
+      "reasoning": "ArchiMate 3.2 lets a Device realise an Application Component — the component runs on it — through the Artifact deployed to it (Artifact realises the component; the Device is assigned the Artifact). DEPLOYED_ON names that hosting. It is limited to the ArchiMate types that host software (Node, Device, System Software): a Technology Service or Interface only serves an application, and a network or path carries traffic, so neither is 'deployed on' (B1 review, 2026-11-02)."
+    },
+    {
+      "mapping_type_id": "COMPONENT_DEPLOYED_ON_SYSTEM_SOFTWARE",
+      "source_type": "A3.ApplicationComponent",
+      "relationship": "DEPLOYED_ON",
+      "target_type": "A4.SystemSoftware",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application component runs on the system software (it is deployed there, in a named environment).",
+      "required_evidence": [
+        "deployment_design"
+      ],
+      "rule_version": "2.0",
+      "owner": "infrastructure-architecture",
+      "source_reference": "plan row S33 — ArchiMate 3.2 application–technology relationship: System Software realization Application Component; the deployment pattern Artifact realization Application Component, System Software assignment Artifact — Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-02). B1 review, owner's decision 2026-11-02.",
+      "verification": "verified_against_archi",
+      "confidence": "high",
+      "confidence_basis": "standard relationship checked against the ArchiMate 3.2 relationship tables as implemented by Archi",
+      "reasoning": "ArchiMate 3.2 lets a System Software realise an Application Component — the component runs on it — through the Artifact deployed to it (Artifact realises the component; the System Software is assigned the Artifact). DEPLOYED_ON names that hosting. It is limited to the ArchiMate types that host software (Node, Device, System Software): a Technology Service or Interface only serves an application, and a network or path carries traffic, so neither is 'deployed on' (B1 review, 2026-11-02)."
+    },
+    {
+      "mapping_type_id": "COMPONENT_DEPLOYED_AS_DEPLOYMENT",
+      "source_type": "A3.ApplicationComponent",
+      "relationship": "DEPLOYED_AS",
+      "target_type": "A4.Deployment",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application component is instantiated as this deployment in a named environment.",
+      "required_evidence": [
+        "deployment_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "infrastructure-architecture",
+      "source_reference": "plan row S32 — SDEM mapping to SDEM's Deployment record; grounded in ArchiMate 3.2: Artifact realization Application Component, Node / System Software assignment Artifact — Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-02). B1 review, owner's decision 2026-11-02.",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "A4.Deployment is SDEM's record of ArchiMate's deployment pattern — an Artifact that realises the Application Component, assigned to the Node or System Software it runs on — made a first-class record so it can carry component, environment and platform and be traced. The pattern is ArchiMate's; the record, and so this link type, are SDEM's own (B1 review, 2026-11-02)."
+    }
+  ],
+  "deprecated_relationships": [
+    {
+      "mapping_type_id": "COMPONENT_DEPLOYED_ON_INFRASTRUCTURE",
+      "source_type": "A3.ApplicationComponent",
+      "relationship": "DEPLOYED_ON",
+      "target_type": "A4.InfrastructureComponent",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application component runs on the infrastructure component in a named environment.",
+      "required_evidence": [
+        "deployment_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "infrastructure-architecture",
+      "status": "deprecated",
+      "deprecated_in": "0.8.0",
+      "removed_in": "0.9.0",
+      "replaced_by": [
+        "COMPONENT_DEPLOYED_ON_NODE",
+        "COMPONENT_DEPLOYED_ON_DEVICE",
+        "COMPONENT_DEPLOYED_ON_SYSTEM_SOFTWARE"
+      ],
+      "source_reference": "plan row S33 — SDEM definition (to metamodel 0.7.0); deprecated by the B1 review (owner's decision 2026-11-02)",
+      "verification": "sdem_definition",
+      "confidence": "medium",
+      "confidence_basis": "SDEM definition; validated against sealed answers",
+      "reasoning": "Deprecated in metamodel 0.8.0: DEPLOYED_ON now targets only what hosts software (Node, Device, System Software), verified against ArchiMate 3.2. A connection that only this row allows — to a technology service, interface, network, path, artifact or environment — passes with a warning until metamodel 0.9.0 removes the row: re-point it or supersede it."
+    }
+  ]
+}

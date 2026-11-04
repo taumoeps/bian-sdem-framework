@@ -1,0 +1,105 @@
+{
+  "format": "sdem-profile/1",
+  "name": "strategy-and-sites-team",
+  "version": 1,
+  "extends": "bank-base.json",
+  "description": "A design team that also models strategy above the business layer and physical sites below technology (synthetic).",
+  "layers": [
+    {
+      "code": "A0",
+      "name": "A0 Strategy",
+      "position": "above",
+      "file": "a0-strategy.json",
+      "description": "goals and outcomes the business pursues",
+      "source": "ArchiMate 3.2 ch. 6 Motivation and ch. 7 Strategy"
+    },
+    {
+      "code": "A5",
+      "name": "A5 Physical",
+      "position": "below",
+      "file": "a5-physical.json",
+      "description": "sites and equipment technology runs in",
+      "source": "ArchiMate 3.2 ch. 11 Physical"
+    }
+  ],
+  "types": [
+    {
+      "type": "BANK.A0.Goal",
+      "name": "Goal",
+      "definition": "An end state the organisation intends to achieve",
+      "source": "ArchiMate 3.2 ch. 6 Goal"
+    },
+    {
+      "type": "BANK.A0.Outcome",
+      "name": "Outcome",
+      "definition": "An end result a goal is measured by",
+      "source": "ArchiMate 3.2 ch. 6 Outcome"
+    },
+    {
+      "type": "BANK.A5.Facility",
+      "name": "Facility",
+      "definition": "A physical site — a data centre or office — that houses equipment",
+      "source": "ArchiMate 3.2 ch. 11 Facility"
+    },
+    {
+      "type": "BANK.A5.Equipment",
+      "name": "Equipment",
+      "definition": "Physical machinery or devices",
+      "source": "ArchiMate 3.2 ch. 11 Equipment"
+    }
+  ],
+  "attributes": [
+    {
+      "entity": "BANK.A5.Facility",
+      "name": "region",
+      "type": "string",
+      "required": true,
+      "description": "the region the site is in"
+    },
+    {
+      "entity": "BANK.A0.Outcome",
+      "name": "target_date",
+      "type": "date",
+      "required": false,
+      "description": "when the outcome is due"
+    }
+  ],
+  "link_kinds": [
+    {
+      "kind": "realization",
+      "maps_to": "realization",
+      "source_type": "BANK.A0.Outcome",
+      "target_type": "BANK.A0.Goal",
+      "description": "an outcome realises a goal"
+    },
+    {
+      "kind": "composition",
+      "maps_to": "composition",
+      "source_type": "BANK.A5.Facility",
+      "target_type": "BANK.A5.Equipment",
+      "description": "a facility contains equipment"
+    }
+  ],
+  "link_types": [
+    {
+      "source_type": "BANK.A0.Outcome",
+      "relationship": "REALIZED_BY",
+      "target_type": "A1.BusinessCapability",
+      "required_evidence": [
+        "strategy_document"
+      ],
+      "description": "the capability realises the outcome",
+      "source": "ArchiMate 3.2 ch. 7 (a capability realises an outcome)"
+    },
+    {
+      "source_type": "A4.InfrastructureComponent",
+      "relationship": "HOUSED_IN",
+      "target_type": "BANK.A5.Facility",
+      "required_evidence": [
+        "site_register"
+      ],
+      "description": "the platform runs in the facility",
+      "source": "ArchiMate 3.2 ch. 11 (a node is assigned to a facility)"
+    }
+  ]
+}

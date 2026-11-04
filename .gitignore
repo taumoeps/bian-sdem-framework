@@ -1,0 +1,26 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.sqlite
+secrets/
+private/
+
+# SDEM workbench scratch output (README quick start writes here)
+work/
+
+# Real workspaces never go in this public repository — keep them in your team's private workspace repository (estates/ was the old name)
+workspaces/
+estates/
+!templates/workspace-repo/workspaces/
+
+# pip install -e . writes this
+*.egg-info/
+
+# build output (pip install of a checkout)
+build/
+*.egg-info/

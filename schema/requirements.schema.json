@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/requirements.schema.json",
+  "title": "SDEM requirements registry (requirements.json)",
+  "description": "A workspace's governed requirements and constraints, and the measurements that evaluate them (docs/design/sdem-requirements-risk-spec.md, RR-D01…D06). A requirement has a subject — the record it is about — and may be allocated to records that contribute to it; it is evaluated only on its subject.",
+  "type": "object",
+  "required": [
+    "format",
+    "requirements"
+  ],
+  "properties": {
+    "format": {
+      "const": "sdem-requirements/1"
+    },
+    "metamodel_version": {
+      "type": "string"
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/requirement"
+      }
+    },
+    "measurements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/measurement"
+      }
+    },
+    "note": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "condition": {
+      "type": "object",
+      "required": [
+        "metric",
+        "operator",
+        "value"
+      ],
+      "properties": {
+        "metric": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operator": {
+          "enum": [
+            ">=",
+            "<=",
+            ">",
+            "<",
+            "==",
+            "!=",
+            "in",
+            "not_in"
+          ]
+        },
+        "value": {},
+        "unit": {
+          "type": "string"
+        },
+        "period": {
+          "type": "string"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "by",
+        "at"
+      ],
+      "properties": {
+        "by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "at": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    },
+    "requirement": {
+      "type": "object",
+      "required": [
+        "id",
+        "version",
+        "status",
+        "name",
+        "statement",
+        "owner_layer",
+        "category",
+        "scope",
+        "subject",
+        "condition",
+        "evidence",
+        "provenance",
+        "history"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^REQ-[A-Z0-9]+(-[A-Z0-9]+)*$"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "status": {
+          "enum": [
+            "proposed",
+            "confirmed",
+            "retired",
+            "superseded"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner_layer": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]{0,5}$",
+          "description": "a layer code: A1–A4, or a layer the workspace's profile adds (docs/design/sdem-layers-spec.md)"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "availability",
+            "performance",
+            "data_residency",
+            "real_time",
+            "recovery",
+            "security",
+            "compliance",
+            "capacity",
+            "other"
+          ]
+        },
+        "scope": {
+          "enum": [
+            "end_to_end",
+            "component"
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "allocated_to": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "derived_from": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "condition": {
+          "$ref": "#/$defs/condition"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "history": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "version",
+              "status",
+              "by",
+              "at"
+            ],
+            "properties": {
+              "version": {
+                "type": "integer"
+              },
+              "status": {
+                "type": "string"
+              },
+              "by": {
+                "type": "string",
+                "minLength": 1
+              },
+              "at": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "measurement": {
+      "type": "object",
+      "required": [
+        "id",
+        "record",
+        "metric",
+        "value",
+        "state",
+        "evidence",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^MEAS-[A-Z0-9]+(-[A-Z0-9]+)*$"
+        },
+        "record": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metric": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {},
+        "unit": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "current",
+            "proposed"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    }
+  }
+}

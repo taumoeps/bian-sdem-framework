@@ -1,0 +1,84 @@
+{
+  "layer": "A4",
+  "reason": "Rehost production payments from INF-K8S-PAY-PROD onto the new managed cluster INF-K8S-PAY-PROD2",
+  "changes": [
+    {
+      "op": "add",
+      "record": {
+        "id": "INF-K8S-PAY-PROD2",
+        "type": "A4.SystemSoftware",
+        "version": "1.31",
+        "name": "Managed Kubernetes — payments (production, new cluster)",
+        "lifecycle_status": "active",
+        "attributes": {
+          "hosts": [
+            "APP-PAY-HUB",
+            "CMP-PAY-EXEC"
+          ],
+          "product_version": "1.31",
+          "license": "Apache-2.0",
+          "end_of_support": "2028-06-30"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "kind": "rehost",
+      "record": {
+        "id": "INF-K8S-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.29",
+        "name": "Managed Kubernetes — payments (production)",
+        "lifecycle_status": "deprecated",
+        "description": "Production container platform for the payments workspace.",
+        "attributes": {
+          "hosts": [],
+          "product_version": "1.30",
+          "license": "Apache-2.0",
+          "end_of_support": "2027-06-30"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "DEP-PAYHUB-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0",
+        "name": "Payments Hub — production",
+        "lifecycle_status": "active",
+        "description": "Hub 7.1 on the production cluster.",
+        "attributes": {
+          "component_id": "APP-PAY-HUB",
+          "environment_id": "ENV-PAY-PROD",
+          "platform_id": "INF-K8S-PAY-PROD2"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "DEP-PAYEXEC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0",
+        "name": "Execution Gateway — production",
+        "lifecycle_status": "active",
+        "description": "Gateway 3.4 on the production cluster.",
+        "attributes": {
+          "component_id": "CMP-PAY-EXEC",
+          "environment_id": "ENV-PAY-PROD",
+          "platform_id": "INF-K8S-PAY-PROD2"
+        }
+      }
+    }
+  ],
+  "relationships": {
+    "add": [
+      {
+        "source": "INF-K8S-PAY-PROD2",
+        "kind": "association",
+        "target": "NET-PAY-PRIVATE"
+      }
+    ]
+  }
+}

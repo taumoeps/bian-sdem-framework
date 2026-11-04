@@ -1,0 +1,259 @@
+# Requirements and risk analysis — the payments rehost, end to end (made-up data)
+## Before any change: what would rehosting the production platform do?
+
+$ sdem requirements evaluate --workspace ws --record INF-K8S-PAY-PROD --change rehost --proposed INF-K8S-PAY-PROD2
+STRUCTURAL IMPACT of rehost on INF-K8S-PAY-PROD:
+  A1  no_impact_by_rule    evidence incomplete records CAP-PAY-010, PRC-PAY-01, PRC-PAY-02
+  A2  no_impact_by_rule    evidence incomplete records SD-PI
+  A3  impact_detected      evidence incomplete records APP-PAY-HUB, CMP-PAY-EXEC
+  A4  impact_detected      evidence incomplete records INF-K8S-PAY-PROD
+PROPOSED: INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+
+REQUIREMENTS (registry present):
+  REQ-AV-01    A1 availability    missing_evidence  now not_evaluable  proposed not_evaluable  Payment capture availability
+      note: measurements of allocated records (MEAS-001) do not establish this end-to-end requirement
+  REQ-AV-02    A4 availability    breached          now satisfied      proposed breached       Production platform availability
+      note: in the proposed architecture INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+  REQ-CAP-01   A4 capacity        not_confirmed     now not_evaluable  proposed not_evaluable  Peak-day capacity
+      note: in the proposed architecture INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+  REQ-PF-01    A3 performance     missing_evidence  now satisfied      proposed not_evaluable  Payment initiation response time
+  REQ-RC-01    A3 recovery        missing_evidence  now satisfied      proposed not_evaluable  Payments Hub recovery time
+  REQ-RC-02    A4 recovery        breached          now satisfied      proposed breached       Second-region replica
+      note: in the proposed architecture INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+  REQ-RES-01   A1 data_residency  missing_evidence  now not_evaluable  proposed not_evaluable  Payment data stays in New Zealand
+      note: measurements of allocated records (MEAS-004) do not establish this end-to-end requirement
+  REQ-RES-02   A4 data_residency  breached          now satisfied      proposed breached       Payment processing platform in New Zealand
+      note: in the proposed architecture INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+  REQ-RT-01    A2 real_time       missing_evidence  now not_evaluable  proposed not_evaluable  Real-time payment execution
+  REQ-RT-02    A4 real_time       breached          now satisfied      proposed breached       Event streaming on the payment platform
+      note: in the proposed architecture INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+
+BY LAYER (structural impact and requirements are separate — no structural change is not no risk):
+  A1  missing_evidence               
+  A2  missing_evidence               
+  A3  missing_evidence               
+  A4  breached                       
+
+A1 OBLIGATIONS EXPOSED: REQ-AV-01, REQ-RES-01
+
+RISK FINDINGS (no likelihoods or losses — only what the requirements and their evidence say):
+  RF-EVIDENCE-REQ-AV-01 missing_evidence  REQ-AV-01 (Payment capture availability): no proposed measurement of availability_pct for PRC-PAY-01; measurements of allocated records (MEAS-001) do not establish this end-to-end requirement
+         decision: provide the evidence, or accept that the requirement is not shown to hold
+  RF-RISK-REQ-AV-01 potential_risk    Service interruption while Managed Kubernetes — payments (production) is migrated or changed: REQ-AV-01 (Payment capture availability) may not hold during the transition, even if the end state meets it.
+         decision: Agree a planned outage window with the requirement's owner, or require a migration without downtime.
+  RF-BREACH-REQ-AV-02 confirmed_breach  REQ-AV-02 (Production platform availability) is breached in the proposed architecture: 99.9 %, against >= 99.95 %
+         decision: Choose a platform that meets the requirement, change the requirement with its owner, or accept the residual risk.
+  RF-EVIDENCE-REQ-PF-01 missing_evidence  REQ-PF-01 (Payment initiation response time): no proposed measurement of p95_latency for APP-PAY-HUB
+         decision: provide the evidence, or accept that the requirement is not shown to hold
+  RF-RISK-REQ-PF-01 potential_risk    Performance may change when Managed Kubernetes — payments (production) changes: REQ-PF-01 (Payment initiation response time) has no evidence for the proposed architecture.
+         decision: Require a performance test on the proposed architecture before the change goes live, or accept the risk.
+  RF-EVIDENCE-REQ-RC-01 missing_evidence  REQ-RC-01 (Payments Hub recovery time): no proposed measurement of recovery_time for APP-PAY-HUB
+         decision: provide the evidence, or accept that the requirement is not shown to hold
+  RF-RISK-REQ-RC-01 potential_risk    Recovery may degrade when Managed Kubernetes — payments (production) changes: REQ-RC-01 (Payments Hub recovery time) must hold for the proposed architecture, including its disaster-recovery set-up.
+         decision: Require the proposed architecture's recovery set-up to meet the requirement, tested, or accept the residual risk.
+  RF-BREACH-REQ-RC-02 confirmed_breach  REQ-RC-02 (Second-region replica) is breached in the proposed architecture: False, against == True
+         decision: Meet the requirement on the proposed architecture, change it with its owner, or accept the residual risk.
+  RF-EVIDENCE-REQ-RES-01 missing_evidence  REQ-RES-01 (Payment data stays in New Zealand): no proposed measurement of region for PRC-PAY-02; measurements of allocated records (MEAS-004) do not establish this end-to-end requirement
+         decision: provide the evidence, or accept that the requirement is not shown to hold
+  RF-RISK-REQ-RES-01 potential_risk    Where data is held or processed may change when Managed Kubernetes — payments (production) changes: REQ-RES-01 (Payment data stays in New Zealand) must hold for the proposed location.
+         decision: Confirm the proposed location meets the requirement before the change, or stop the change.
+  RF-BREACH-REQ-RES-02 confirmed_breach  REQ-RES-02 (Payment processing platform in New Zealand) is breached in the proposed architecture: AU, against in ['NZ']
+         decision: Stop the change, or choose a location that meets the requirement — a residency requirement is changed only by its owner.
+  RF-EVIDENCE-REQ-RT-01 missing_evidence  REQ-RT-01 (Real-time payment execution): no proposed measurement of execution_time for SD-PE
+         decision: provide the evidence, or accept that the requirement is not shown to hold
+  RF-RISK-REQ-RT-01 potential_risk    A capability real-time processing depends on may be missing or different on the proposed architecture: REQ-RT-01 (Real-time payment execution).
+         decision: Confirm the proposed platform provides the capability, or redesign the real-time path.
+  RF-BREACH-REQ-RT-02 confirmed_breach  REQ-RT-02 (Event streaming on the payment platform) is breached in the proposed architecture: False, against == True
+         decision: Meet the requirement on the proposed architecture, change it with its owner, or accept the residual risk.
+  RF-ASSUME-A1 assumption        A1: 10 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects
+         decision: confirm the assumption, or add and approve the missing links
+  RF-ASSUME-A2 assumption        A2: 4 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects
+         decision: confirm the assumption, or add and approve the missing links
+  RF-ASSUME-A3 assumption        A3: 5 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects
+         decision: confirm the assumption, or add and approve the missing links
+  RF-ASSUME-A4 assumption        A4: 7 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects
+         decision: confirm the assumption, or add and approve the missing links
+(exit 0)
+## The A4 agent's change set, and the validation (structural impact + requirements + risks)
+
+$ sdem change propose cs-a4-rehost.json --workspace ws --agent sdem-a4-technology --person jane.architect
+CS-001 applied to A4 (4 change(s)) by sdem-a4-technology for jane.architect
+change event CE-001 recorded (round 1): 2 record(s) in other layers need a design change; links to supersede: PAY-108, PAY-111
+  A3  APP-PAY-HUB  Payments Hub  — rehost of INF-K8S-PAY-PROD, via PAY-108
+  A3  CMP-PAY-EXEC  Execution Gateway  — rehost of INF-K8S-PAY-PROD, via PAY-111
+NOTE: graph stores built from this workspace are now out of date — rebuild them before trace, impact or view: sdem build --workspace … --out <graph>
+next: the orchestrator runs  sdem work plan --event CE-001 --workspace ws --agent sdem-orchestrator --person <name>
+      and the rules engine proposes the new links:  sdem link --workspace ws --out <dir>
+(exit 0)
+
+$ sdem events validate CE-001 --workspace ws --agent sdem-orchestrator --person jane.architect
+IV-001: impact validation of CE-001 opened — validation_pending
+  A1  calculated no_impact               no_impact_by_rule    evidence incomplete
+  A2  calculated no_impact               no_impact_by_rule    evidence incomplete
+  A3  calculated design_change_required  impact_detected      evidence incomplete
+  A4  calculated design_change_required  impact_detected      evidence incomplete
+next: each layer agent assesses its layer — sdem events assess CE-001 --layer <A1…A4> --status … --workspace ws --agent <layer agent> --person <name>
+(exit 0)
+## A downstream change before authorisation is refused
+
+$ sdem change propose $REPO/.github/skills/sdem-change-sets/example-a3-repoint.json --workspace ws --agent sdem-a3-application --person jane.architect
+ERROR: AG-V08: APP-PAY-HUB, CMP-PAY-EXEC are affected by CE-001, whose impact is not yet accepted and authorised — a downstream change waits for its work item (sdem events show CE-001)
+(exit 1)
+## Every layer assesses — A4 names the artifact the calculation missed; A2 reports the missing link
+
+$ sdem events assess CE-001 --layer A4 --status impact_confirmed --record INF-K8S-PAY-PROD ART-PAYHUB-IMG --evidence change_set:CS-001 --reasoning platform-and-image-registry-assignment --workspace ws --agent sdem-a4-technology --person jane.architect
+CE-001 A4: impact_confirmed (recommends design_change_required; calculated design_change_required) — validation now validation_in_progress
+(exit 0)
+
+$ sdem events assess CE-001 --layer A3 --status impact_confirmed --record APP-PAY-HUB CMP-PAY-EXEC --evidence deployment_design:PAY-REHOST --reasoning both deploy on the platform; REQ-PF-01 and REQ-RC-01 need proposed evidence --workspace ws --agent sdem-a3-application --person jane.architect
+CE-001 A3: impact_confirmed (recommends design_change_required; calculated design_change_required) — validation now validation_in_progress
+(exit 0)
+
+$ sdem events assess CE-001 --layer A2 --status no_impact_confirmed --evidence bian:SD-PI --missing SD-PE_REALIZED_BY_CMP-PAY-EXEC --uncertainty SD-PE-has-no-approved-link;REQ-RT-01-depends-on-it --reasoning no-structural-change;REQ-RT-01-at-risk-via-REQ-RT-02 --workspace ws --agent sdem-a2-bian --person jane.architect
+CE-001 A2: no_impact_confirmed (recommends no_impact; calculated no_impact) — validation now validation_in_progress
+(exit 0)
+
+$ sdem events assess CE-001 --layer A1 --status no_impact_confirmed --evidence process_model:PM-PAY --uncertainty 10-A1-records-without-links --reasoning no-structural-change;obligations-REQ-AV-01-and-REQ-RES-01-exposed --workspace ws --agent sdem-a1-business --person jane.architect
+CE-001 A1: no_impact_confirmed (recommends no_impact; calculated no_impact) — validation now validation_complete
+(exit 0)
+
+$ sdem events show CE-001 --workspace ws
+CE-001 (A4, CS-001, round 1) — impact validation: validation_complete
+layer structural              evidence    requirements                   assessment                      by                    recommends              final
+A1    no_impact               incomplete  missing_evidence               no_impact_confirmed             sdem-a1-business      no_impact               —
+A2    no_impact               incomplete  missing_evidence               no_impact_confirmed             sdem-a2-bian          no_impact               —
+      missing links reported: SD-PE_REALIZED_BY_CMP-PAY-EXEC
+A3    design_change_required  incomplete  missing_evidence               impact_confirmed                sdem-a3-application   design_change_required  —
+A4    design_change_required  incomplete  breached                       impact_confirmed                sdem-a4-technology    design_change_required  —
+      additional records named by the A4 agent: ART-PAYHUB-IMG
+      linked inside A4, not followed by the impact rules: ART-PAYHUB-IMG, ENV-PAY-PROD, NET-PAY-PRIVATE
+  risk findings: missing_evidence 5, potential_risk 5, confirmed_breach 4, assumption 4; A1 obligations exposed: REQ-AV-01, REQ-RES-01
+  (no structural change is not no risk — the requirements column and the findings are separate from it)
+  open: RF-BREACH-REQ-AV-02: confirmed breach — REQ-AV-02 — decide it on acceptance (--accept-risk or change the design)
+  open: RF-BREACH-REQ-RC-02: confirmed breach — REQ-RC-02 — decide it on acceptance (--accept-risk or change the design)
+  open: RF-BREACH-REQ-RES-02: confirmed breach — REQ-RES-02 — decide it on acceptance (--accept-risk or change the design)
+  open: RF-BREACH-REQ-RT-02: confirmed breach — REQ-RT-02 — decide it on acceptance (--accept-risk or change the design)
+(exit 0)
+## New evidence arrives — the analysis and the assessments become stale
+
+$ sdem requirements measure --record APP-PAY-HUB --metric p95_latency --value 240 --unit ms --state proposed --evidence performance_test:PT-PAYHUB-PROD2 --workspace ws --person jane.architect --agent sdem-a3-application
+measure: done — requirements.json checked and written
+(exit 0)
+
+$ sdem events accept CE-001 --reason ok --authorise --workspace ws --person jane.architect
+ERROR: RR-G02: the workspace changed since the analysis (2026-11-01T00:35:47+00:00) — run sdem events analyse CE-001, then have the layers re-assess
+(exit 1)
+
+$ sdem events analyse CE-001 --workspace ws --agent sdem-orchestrator --person jane.architect
+PROPOSED: INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+
+REQUIREMENTS (registry present):
+  REQ-AV-01    A1 availability    missing_evidence  now not_evaluable  proposed not_evaluable  Payment capture availability
+      note: measurements of allocated records (MEAS-001) do not establish this end-to-end requirement
+  REQ-AV-02    A4 availability    breached          now satisfied      proposed breached       Production platform availability
+      note: in the proposed architecture INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+  REQ-CAP-01   A4 capacity        not_confirmed     now not_evaluable  proposed not_evaluable  Peak-day capacity
+      note: in the proposed architecture INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+  REQ-PF-01    A3 performance     satisfied         now satisfied      proposed satisfied      Payment initiation response time
+  REQ-RC-01    A3 recovery        missing_evidence  now satisfied      proposed not_evaluable  Payments Hub recovery time
+  REQ-RC-02    A4 recovery        breached          now satisfied      proposed breached       Second-region replica
+      note: in the proposed architecture INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+  REQ-RES-01   A1 data_residency  missing_evidence  now not_evaluable  proposed not_evaluable  Payment data stays in New Zealand
+      note: measurements of allocated records (MEAS-004) do not establish this end-to-end requirement
+  REQ-RES-02   A4 data_residency  breached          now satisfied      proposed breached       Payment processing platform in New Zealand
+      note: in the proposed architecture INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+  REQ-RT-01    A2 real_time       missing_evidence  now not_evaluable  proposed not_evaluable  Real-time payment execution
+  REQ-RT-02    A4 real_time       breached          now satisfied      proposed breached       Event streaming on the payment platform
+      note: in the proposed architecture INF-K8S-PAY-PROD2 replaces INF-K8S-PAY-PROD
+
+BY LAYER (structural impact and requirements are separate — no structural change is not no risk):
+  A1  missing_evidence               
+  A2  missing_evidence               
+  A3  missing_evidence               
+  A4  breached                       
+
+A1 OBLIGATIONS EXPOSED: REQ-AV-01, REQ-RES-01
+
+RISK FINDINGS (no likelihoods or losses — only what the requirements and their evidence say):
+  RF-EVIDENCE-REQ-AV-01 missing_evidence  REQ-AV-01 (Payment capture availability): no proposed measurement of availability_pct for PRC-PAY-01; measurements of allocated records (MEAS-001) do not establish this end-to-end requirement
+         decision: provide the evidence, or accept that the requirement is not shown to hold
+  RF-RISK-REQ-AV-01 potential_risk    Service interruption while Managed Kubernetes — payments (production, new cluster), Managed Kubernetes — payments (production), Payments Hub — production is migrated or changed: REQ-AV-01 (Payment capture availability) may not hold during the transition, even if the end state meets it.
+         decision: Agree a planned outage window with the requirement's owner, or require a migration without downtime.
+  RF-BREACH-REQ-AV-02 confirmed_breach  REQ-AV-02 (Production platform availability) is breached in the proposed architecture: 99.9 %, against >= 99.95 %
+         decision: Choose a platform that meets the requirement, change the requirement with its owner, or accept the residual risk.
+  RF-EVIDENCE-REQ-RC-01 missing_evidence  REQ-RC-01 (Payments Hub recovery time): no proposed measurement of recovery_time for APP-PAY-HUB
+         decision: provide the evidence, or accept that the requirement is not shown to hold
+  RF-RISK-REQ-RC-01 potential_risk    Recovery may degrade when Managed Kubernetes — payments (production, new cluster), Managed Kubernetes — payments (production), Payments Hub — production changes: REQ-RC-01 (Payments Hub recovery time) must hold for the proposed architecture, including its disaster-recovery set-up.
+         decision: Require the proposed architecture's recovery set-up to meet the requirement, tested, or accept the residual risk.
+  RF-BREACH-REQ-RC-02 confirmed_breach  REQ-RC-02 (Second-region replica) is breached in the proposed architecture: False, against == True
+         decision: Meet the requirement on the proposed architecture, change it with its owner, or accept the residual risk.
+  RF-EVIDENCE-REQ-RES-01 missing_evidence  REQ-RES-01 (Payment data stays in New Zealand): no proposed measurement of region for PRC-PAY-02; measurements of allocated records (MEAS-004) do not establish this end-to-end requirement
+         decision: provide the evidence, or accept that the requirement is not shown to hold
+  RF-RISK-REQ-RES-01 potential_risk    Where data is held or processed may change when Managed Kubernetes — payments (production, new cluster), Managed Kubernetes — payments (production), Payments Hub — production changes: REQ-RES-01 (Payment data stays in New Zealand) must hold for the proposed location.
+         decision: Confirm the proposed location meets the requirement before the change, or stop the change.
+  RF-BREACH-REQ-RES-02 confirmed_breach  REQ-RES-02 (Payment processing platform in New Zealand) is breached in the proposed architecture: AU, against in ['NZ']
+         decision: Stop the change, or choose a location that meets the requirement — a residency requirement is changed only by its owner.
+  RF-EVIDENCE-REQ-RT-01 missing_evidence  REQ-RT-01 (Real-time payment execution): no proposed measurement of execution_time for SD-PE
+         decision: provide the evidence, or accept that the requirement is not shown to hold
+  RF-RISK-REQ-RT-01 potential_risk    A capability real-time processing depends on may be missing or different on the proposed architecture: REQ-RT-01 (Real-time payment execution).
+         decision: Confirm the proposed platform provides the capability, or redesign the real-time path.
+  RF-BREACH-REQ-RT-02 confirmed_breach  REQ-RT-02 (Event streaming on the payment platform) is breached in the proposed architecture: False, against == True
+         decision: Meet the requirement on the proposed architecture, change it with its owner, or accept the residual risk.
+  RF-ASSUME-A1 assumption        A1: 10 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects
+         decision: confirm the assumption, or add and approve the missing links
+  RF-ASSUME-A2 assumption        A2: 4 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects
+         decision: confirm the assumption, or add and approve the missing links
+  RF-ASSUME-A3 assumption        A3: 5 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects
+         decision: confirm the assumption, or add and approve the missing links
+  RF-ASSUME-A4 assumption        A4: 8 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects
+         decision: confirm the assumption, or add and approve the missing links
+(exit 0)
+
+$ sdem events assess CE-001 --layer A3 --status impact_confirmed --record APP-PAY-HUB CMP-PAY-EXEC --evidence performance_test:PT-PAYHUB-PROD2 --reasoning REQ-PF-01 now shown; REQ-RC-01 still needs evidence --workspace ws --agent sdem-a3-application --person jane.architect
+CE-001 A3: impact_confirmed (recommends design_change_required; calculated design_change_required) — validation now validation_complete
+(exit 0)
+
+$ sdem events assess CE-001 --layer A4 --status impact_confirmed --record INF-K8S-PAY-PROD ART-PAYHUB-IMG --evidence change_set:CS-001 --reasoning platform-and-image-registry-assignment --workspace ws --agent sdem-a4-technology --person jane.architect
+CE-001 A4: impact_confirmed (recommends design_change_required; calculated design_change_required) — validation now validation_complete
+(exit 0)
+
+$ sdem events assess CE-001 --layer A2 --status no_impact_confirmed --evidence bian:SD-PI --missing SD-PE_REALIZED_BY_CMP-PAY-EXEC --uncertainty SD-PE-has-no-approved-link;REQ-RT-01-depends-on-it --reasoning no-structural-change;REQ-RT-01-at-risk-via-REQ-RT-02 --workspace ws --agent sdem-a2-bian --person jane.architect
+CE-001 A2: no_impact_confirmed (recommends no_impact; calculated no_impact) — validation now validation_complete
+(exit 0)
+
+$ sdem events assess CE-001 --layer A1 --status no_impact_confirmed --evidence process_model:PM-PAY --uncertainty 10-A1-records-without-links --reasoning no-structural-change;obligations-REQ-AV-01-and-REQ-RES-01-exposed --workspace ws --agent sdem-a1-business --person jane.architect
+CE-001 A1: no_impact_confirmed (recommends no_impact; calculated no_impact) — validation now validation_complete
+(exit 0)
+## The architect decides — every confirmed breach first
+
+$ sdem events accept CE-001 --reason rehost --authorise --workspace ws --person jane.architect
+ERROR: RR-K04: confirmed requirement breaches need your decision — change the design and re-analyse, or accept each as a residual risk: --accept-risk RF-BREACH-REQ-AV-02="<why>" --accept-risk RF-BREACH-REQ-RC-02="<why>" --accept-risk RF-BREACH-REQ-RES-02="<why>" --accept-risk RF-BREACH-REQ-RT-02="<why>"
+(exit 1)
+
+$ sdem events accept CE-001 --reason rehost with named residual risks --accept-risk RF-BREACH-REQ-AV-02=99.9% accepted for six months; owner agreed RF-BREACH-REQ-RC-02=second-region replica added before go-live RF-BREACH-REQ-RES-02=go-live blocked until an NZ region is confirmed RF-BREACH-REQ-RT-02=streaming re-platformed before go-live --authorise --workspace ws --person jane.architect
+CE-001: impact assessment accepted by jane.architect — A1 no_impact, A2 no_impact, A3 design_change_required, A4 design_change_required; now implementation_authorised
+next: the orchestrator plans the work — sdem work plan --event CE-001 --workspace ws --agent sdem-orchestrator --person jane.architect
+(exit 0)
+
+$ sdem work plan --event CE-001 --workspace ws --agent sdem-orchestrator --person jane.architect
+CE-001: 3 work item(s)
+  WI-001  A3  APP-PAY-HUB  — rehost of INF-K8S-PAY-PROD: change APP-PAY-HUB (Payments Hub) in A3 accordingly; the links PAY-108 will be superseded
+  WI-002  A3  CMP-PAY-EXEC  — rehost of INF-K8S-PAY-PROD: change CMP-PAY-EXEC (Execution Gateway) in A3 accordingly; the links PAY-111 will be superseded
+  WI-003  A4  ART-PAYHUB-IMG  — accepted impact assessment (jane.architect): platform-and-image-registry-assignment: change ART-PAYHUB-IMG (ART-PAYHUB-IMG) in A4 accordingly
+(exit 0)
+
+$ sdem check --workspace ws
+OK: level A1 (synthetic-bank-payments-a1)
+WARN: level A2 (synthetic-bank-payments-a2): instance BD-PAYMENTS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)
+WARN: level A2 (synthetic-bank-payments-a2): instance SD-PE: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)
+WARN: level A2 (synthetic-bank-payments-a2): instance SD-PA: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)
+WARN: level A2 (synthetic-bank-payments-a2): instance SD-PE: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)
+WARN: level A2 (synthetic-bank-payments-a2): instance SD-PA: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)
+WARN: level A2 (synthetic-bank-payments-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)
+OK: level A2 (synthetic-bank-payments-a2)
+OK: level A3 (synthetic-bank-payments-a3)
+OK: level A4 (synthetic-bank-payments-a4)
+OK: mappings #1
+OK: coordination (6 records)
+OK: requirements (10 requirement(s))
+(exit 0)

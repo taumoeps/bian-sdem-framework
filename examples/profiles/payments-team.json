@@ -1,0 +1,30 @@
+{
+  "format": "sdem-profile/1",
+  "name": "payments-team",
+  "version": 1,
+  "extends": "bank-base.json",
+  "description": "The payments design team's additions to the bank base (synthetic).",
+  "types": [
+    {
+      "type": "BANK.A3.PaymentsGateway",
+      "extends": "BANK.A3.PaymentsMicroservice",
+      "name": "Payments gateway",
+      "definition": "A payments microservice that fronts an external rail",
+      "source": "payments design standard §1"
+    }
+  ],
+  "attributes": [
+    {
+      "entity": "BANK.A3.PaymentsGateway",
+      "name": "rail",
+      "type": "enum",
+      "values": [
+        "SWIFT",
+        "NZ-ESAS",
+        "Visa"
+      ],
+      "required": true,
+      "description": "the external rail it connects to"
+    }
+  ]
+}

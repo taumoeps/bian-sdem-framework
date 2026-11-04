@@ -1,0 +1,264 @@
+{
+  "projection": {
+    "projection_id": "PRJ-RUN3",
+    "mode": "reverse",
+    "created_by": "sdem aid",
+    "created_at": "2026-10-27T00:00:00+00:00",
+    "metamodel_version": "0.7.0",
+    "have": [
+      "A4"
+    ],
+    "catalogue": {
+      "model_id": "aid-test-bian-catalogue",
+      "sha256": "e7dde849a6e2dd006669af109f7ae86e3712fb4b8cceb7176f108c4b622c57ec"
+    },
+    "inputs": {
+      "A4": {
+        "model_id": "synthetic-bank-payments-a4",
+        "sha256": "8f186b06e4bb1eb267612ce777d513b4beeeebbd25c5f03f0f7f351eaaaf736c"
+      }
+    },
+    "steps": [
+      {
+        "step": "R1",
+        "applications": [
+          "APP-PAY-HUB",
+          "CMP-PAY-EXEC"
+        ]
+      },
+      {
+        "step": "R2",
+        "domains": []
+      }
+    ],
+    "projection_ends": [
+      "APP-PAY-HUB 'Payments Hub': its name does not say which BIAN service domain it realises — describe its APIs or data (A3), or connect it yourself (sdem connect <service domain> REALIZED_BY APP-PAY-HUB …)",
+      "CMP-PAY-EXEC 'Execution Gateway': its name does not say which BIAN service domain it realises — describe its APIs or data (A3), or connect it yourself (sdem connect <service domain> REALIZED_BY CMP-PAY-EXEC …)",
+      "projection ends at A3: the application data (names, APIs, data entities) does not match any domain in the BIAN catalogue"
+    ],
+    "summary": {
+      "A3": {
+        "records": 2,
+        "by_confidence": {
+          "0.6": 2,
+          "0.4": 0
+        }
+      }
+    },
+    "links": 6
+  },
+  "layers": {
+    "A3": {
+      "level": "A3",
+      "model_id": "PRJ-RUN3-a3-PROJECTION",
+      "model_version": "projection",
+      "metamodel_version": "0.7.0",
+      "source_system": "AID-PROJECTION (sdem aid; not a real architecture dataset)",
+      "instances": [
+        {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0",
+          "name": "Payments Hub",
+          "projection": {
+            "step": "R1",
+            "rule": "named by A4",
+            "source_reference": "S32: SDEM definition — no official equivalent. Targets the SDEM Deployment entity (ArchiMate artifact assigned to node, ch. 10); registry type DEPLOYED_AS.",
+            "inferred_from": [
+              "INF-K8S-PAY-PROD.hosts",
+              "INF-K8S-PAY-UAT.hosts",
+              "DEP-PAYHUB-PROD.component_id",
+              "DEP-PAYHUB-UAT.component_id"
+            ],
+            "reasoning": "an A4 record names this application; its name comes from DEP-PAYHUB-PROD, DEP-PAYHUB-UAT",
+            "confidence": 0.6
+          }
+        },
+        {
+          "id": "CMP-PAY-EXEC",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0",
+          "name": "Execution Gateway",
+          "projection": {
+            "step": "R1",
+            "rule": "named by A4",
+            "source_reference": "S32: SDEM definition — no official equivalent. Targets the SDEM Deployment entity (ArchiMate artifact assigned to node, ch. 10); registry type DEPLOYED_AS.",
+            "inferred_from": [
+              "INF-K8S-PAY-PROD.hosts",
+              "DEP-PAYEXEC-PROD.component_id"
+            ],
+            "reasoning": "an A4 record names this application; its name comes from DEP-PAYEXEC-PROD",
+            "confidence": 0.6
+          }
+        }
+      ],
+      "relationships": []
+    }
+  },
+  "links": {
+    "links": [
+      {
+        "mapping_id": "PRJ-L-001",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_ON",
+        "target": {
+          "id": "INF-K8S-PAY-PROD",
+          "type": "A4.SystemSoftware",
+          "version": "1.29"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: INF-K8S-PAY-PROD hosts APP-PAY-HUB",
+        "projection": {
+          "step": "R1",
+          "rule": "S33 (A4 hosts)",
+          "source_reference": "S33: SDEM definition — no official equivalent. Encodes ArchiMate assignment of a node to the deployed artifact (ch. 10; confirmed by the Archi oracle for the within-level rows); registry type DEPLOYED_ON.",
+          "inferred_from": [
+            "INF-K8S-PAY-PROD.hosts"
+          ],
+          "reasoning": "INF-K8S-PAY-PROD hosts APP-PAY-HUB",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-002",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_ON",
+        "target": {
+          "id": "INF-K8S-PAY-UAT",
+          "type": "A4.SystemSoftware",
+          "version": "1.29"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: INF-K8S-PAY-UAT hosts APP-PAY-HUB",
+        "projection": {
+          "step": "R1",
+          "rule": "S33 (A4 hosts)",
+          "source_reference": "S33: SDEM definition — no official equivalent. Encodes ArchiMate assignment of a node to the deployed artifact (ch. 10; confirmed by the Archi oracle for the within-level rows); registry type DEPLOYED_ON.",
+          "inferred_from": [
+            "INF-K8S-PAY-UAT.hosts"
+          ],
+          "reasoning": "INF-K8S-PAY-UAT hosts APP-PAY-HUB",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-003",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_AS",
+        "target": {
+          "id": "DEP-PAYHUB-PROD",
+          "type": "A4.Deployment",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: DEP-PAYHUB-PROD deploys APP-PAY-HUB",
+        "projection": {
+          "step": "R1",
+          "rule": "S32 (deployment component_id)",
+          "source_reference": "S32: SDEM definition — no official equivalent. Targets the SDEM Deployment entity (ArchiMate artifact assigned to node, ch. 10); registry type DEPLOYED_AS.",
+          "inferred_from": [
+            "DEP-PAYHUB-PROD.component_id"
+          ],
+          "reasoning": "DEP-PAYHUB-PROD deploys APP-PAY-HUB",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-004",
+        "source": {
+          "id": "APP-PAY-HUB",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_AS",
+        "target": {
+          "id": "DEP-PAYHUB-UAT",
+          "type": "A4.Deployment",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: DEP-PAYHUB-UAT deploys APP-PAY-HUB",
+        "projection": {
+          "step": "R1",
+          "rule": "S32 (deployment component_id)",
+          "source_reference": "S32: SDEM definition — no official equivalent. Targets the SDEM Deployment entity (ArchiMate artifact assigned to node, ch. 10); registry type DEPLOYED_AS.",
+          "inferred_from": [
+            "DEP-PAYHUB-UAT.component_id"
+          ],
+          "reasoning": "DEP-PAYHUB-UAT deploys APP-PAY-HUB",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-005",
+        "source": {
+          "id": "CMP-PAY-EXEC",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_ON",
+        "target": {
+          "id": "INF-K8S-PAY-PROD",
+          "type": "A4.SystemSoftware",
+          "version": "1.29"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: INF-K8S-PAY-PROD hosts CMP-PAY-EXEC",
+        "projection": {
+          "step": "R1",
+          "rule": "S33 (A4 hosts)",
+          "source_reference": "S33: SDEM definition — no official equivalent. Encodes ArchiMate assignment of a node to the deployed artifact (ch. 10; confirmed by the Archi oracle for the within-level rows); registry type DEPLOYED_ON.",
+          "inferred_from": [
+            "INF-K8S-PAY-PROD.hosts"
+          ],
+          "reasoning": "INF-K8S-PAY-PROD hosts CMP-PAY-EXEC",
+          "confidence": 0.6
+        }
+      },
+      {
+        "mapping_id": "PRJ-L-006",
+        "source": {
+          "id": "CMP-PAY-EXEC",
+          "type": "A3.ApplicationComponent",
+          "version": "1.0"
+        },
+        "relationship": "DEPLOYED_AS",
+        "target": {
+          "id": "DEP-PAYEXEC-PROD",
+          "type": "A4.Deployment",
+          "version": "1.0"
+        },
+        "status": "projected",
+        "confidence": 0.6,
+        "rationale": "PROJECTED DESIGN, not a mapping: DEP-PAYEXEC-PROD deploys CMP-PAY-EXEC",
+        "projection": {
+          "step": "R1",
+          "rule": "S32 (deployment component_id)",
+          "source_reference": "S32: SDEM definition — no official equivalent. Targets the SDEM Deployment entity (ArchiMate artifact assigned to node, ch. 10); registry type DEPLOYED_AS.",
+          "inferred_from": [
+            "DEP-PAYEXEC-PROD.component_id"
+          ],
+          "reasoning": "DEP-PAYEXEC-PROD deploys CMP-PAY-EXEC",
+          "confidence": 0.6
+        }
+      }
+    ]
+  }
+}

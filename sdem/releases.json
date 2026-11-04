@@ -1,0 +1,251 @@
+{
+  "format": "sdem-releases/1",
+  "note": "Machine-readable release notes (docs/design/sdem-update-framework.md, UF-03). Earlier releases: CHANGELOG.md.",
+  "first": "0.10.0",
+  "releases": [
+    {
+      "version": "0.10.0",
+      "date": "2026-11-01",
+      "kind": "minor",
+      "metamodel": "0.7.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "always",
+          "do": "sdem agents install — the layer agents learn the impact validation"
+        }
+      ],
+      "summary": "Four-layer impact validation: every layer assesses a change event's calculated impact before work is planned."
+    },
+    {
+      "version": "0.11.0",
+      "date": "2026-11-01",
+      "kind": "minor",
+      "metamodel": "0.7.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "always",
+          "do": "sdem agents install"
+        },
+        {
+          "when": "you keep requirements",
+          "do": "add them to <workspace>/requirements.json with sdem requirements propose"
+        }
+      ],
+      "summary": "Requirements and risk analysis: a governed requirements registry, evaluation against changes, risk findings."
+    },
+    {
+      "version": "0.11.1",
+      "date": "2026-11-01",
+      "kind": "patch",
+      "metamodel": "0.7.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "you have open validations",
+          "do": "re-run sdem events analyse for validations not yet accepted"
+        }
+      ],
+      "summary": "Assessments made before an analysis are re-done."
+    },
+    {
+      "version": "0.11.2",
+      "date": "2026-11-01",
+      "kind": "patch",
+      "metamodel": "0.7.0",
+      "migration": null,
+      "breaking": [
+        "analysis contract 2: validations not yet accepted must be re-analysed (sdem events analyse) and re-assessed"
+      ],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "you have validations not yet accepted",
+          "do": "sdem events analyse <CE-id> … then each layer re-assesses"
+        },
+        {
+          "when": "a workspace was filled by copying files after sdem new",
+          "do": "sdem change adopt --layer … --person <you> --reason …, per layer"
+        },
+        {
+          "when": "always",
+          "do": "sdem agents install"
+        }
+      ],
+      "summary": "Governance hardening: decisions recorded and verifiable by signed commits; current and proposed compliance kept apart."
+    },
+    {
+      "version": "0.11.3",
+      "date": "2026-11-02",
+      "kind": "patch",
+      "metamodel": "0.7.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [],
+      "summary": "Release readiness: install and run without a clone; the synthetic example ships in the package."
+    },
+    {
+      "version": "0.11.4",
+      "date": "2026-11-02",
+      "kind": "patch",
+      "metamodel": "0.7.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [],
+      "summary": "Published evidence carries no machine identity."
+    },
+    {
+      "version": "0.12.0",
+      "date": "2026-11-02",
+      "kind": "minor",
+      "metamodel": "0.7.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "always",
+          "do": "sdem agents install"
+        }
+      ],
+      "summary": "Organisation profiles: your types, attributes, rules, link kinds and names on top of SDEM's metamodel (sdem-profile.json)."
+    },
+    {
+      "version": "0.13.0",
+      "date": "2026-11-02",
+      "kind": "minor",
+      "metamodel": "0.7.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "always",
+          "do": "sdem agents install"
+        },
+        {
+          "when": "you put records of a profile type into a workspace on 0.12.0",
+          "do": "upgrade — 0.13.0 fixes change sets and mappings for them"
+        }
+      ],
+      "summary": "Layers a team adds above A1 or below A4, declared in its profile."
+    },
+    {
+      "version": "0.14.0",
+      "date": "2026-11-02",
+      "kind": "minor",
+      "metamodel": "0.7.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [],
+      "summary": "Metamodel health and stability: sdem model status | usage | stability, sdem bian impact."
+    },
+    {
+      "version": "0.15.0",
+      "date": "2026-11-02",
+      "kind": "minor",
+      "metamodel": "0.8.0",
+      "migration": {
+        "from": "0.7.0",
+        "to": "0.8.0",
+        "automatic": true,
+        "note": "a DEPLOYED_ON connection that named A4.InfrastructureComponent gets its record's own type"
+      },
+      "breaking": [
+        "DEPLOYED_ON targets only a Node, Device or System Software; a connection to anything else passes with a warning until metamodel 0.9.0"
+      ],
+      "deprecations": [
+        {
+          "item": "link type COMPONENT_DEPLOYED_ON_INFRASTRUCTURE",
+          "removed_in_metamodel": "0.9.0",
+          "do": "re-point or supersede DEPLOYED_ON connections to a technology service, interface, network, path, artifact or environment"
+        }
+      ],
+      "actions": [
+        {
+          "when": "always",
+          "do": "sdem migrate --workspace <dir> --person <you> --dry-run, then without --dry-run, for every workspace"
+        }
+      ],
+      "summary": "Metamodel 0.8.0: the cross-layer link types reviewed (B1)."
+    },
+    {
+      "version": "0.16.0",
+      "date": "2026-11-02",
+      "kind": "minor",
+      "metamodel": "0.8.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "always",
+          "do": "sdem agents install — the instructions point to sdem types and sdem bian search"
+        }
+      ],
+      "summary": "sdem types and sdem bian search: know what to write."
+    },
+    {
+      "version": "0.16.1",
+      "date": "2026-11-02",
+      "kind": "patch",
+      "metamodel": "0.8.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "always",
+          "do": "sdem agents install — adds the sdem-new-design skill and the /sdem-new-design prompt"
+        }
+      ],
+      "summary": "Create a new design: the guide, the skill and the prompt."
+    },
+    {
+      "version": "0.17.0",
+      "date": "2026-11-03",
+      "kind": "minor",
+      "metamodel": "0.8.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "always",
+          "do": "before every later upgrade: install the new version side by side and run its sdem upgrade check"
+        }
+      ],
+      "summary": "The update framework: sdem upgrade check, sdem releases, profiles that state the SDEM they need, the version promise."
+    },
+    {
+      "version": "0.18.0",
+      "date": "2026-11-03",
+      "kind": "minor",
+      "metamodel": "0.8.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "always",
+          "do": "sdem agents install"
+        },
+        {
+          "when": "you open SDEM's pages",
+          "do": "regenerate them (sdem build, view, dashboard, home) — they now link to each other"
+        }
+      ],
+      "summary": "Architect experience: Home, dashboard and graph linked; graph status shown; architect tasks; sdem new --explore; the README and the Payments walkthrough rewritten."
+    }
+  ]
+}

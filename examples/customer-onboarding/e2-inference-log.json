@@ -1,0 +1,162 @@
+{
+  "use_case": "E2",
+  "executor": "fable-executor/2026-10-22",
+  "mode": "graph and governance tests only; phase 2 (proposals) skipped by the case — every arrow is approved or in lifecycle already",
+  "given": "examples/customer-onboarding/mappings.json (11 records) and a1-a4 exports (v0.5.7)",
+  "governance_fixtures": {
+    "e2_edited.json": "copy of mappings.json with MAP-002.rationale changed in place",
+    "e2_superseded.json": "copy with MAP-002 status=superseded, valid_to=2026-10-22, and a new MAP-012 (approved, same endpoints, new rationale, previous_mapping_id=MAP-002, valid_from=2026-10-23)"
+  },
+  "attempts": [
+    {
+      "command": "python3 -m sdmm.graph check examples/customer-onboarding/a1-business.json examples/customer-onboarding/a2-service-domain.json examples/customer-onboarding/a3-application.json examples/customer-onboarding/a4-technology.json examples/customer-onboarding/mappings.json",
+      "stdout": "OK: level A1 (synthetic-bank-onboarding-a1)\nOK: level A2 (synthetic-bank-onboarding-a2)\nOK: level A3 (synthetic-bank-onboarding-a3)\nOK: level A4 (synthetic-bank-onboarding-a4)\nOK: mappings #1\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "E2.0",
+      "question": "Inputs valid",
+      "expected": "all levels and the mapping document OK",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.validate --strict examples/customer-onboarding/mappings.json",
+      "stdout": "OK: examples/customer-onboarding/mappings.json\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "E2.0",
+      "question": "Mapping document validates strictly",
+      "expected": "OK",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.graph trace CAP-001 --direction down examples/customer-onboarding/a1-business.json examples/customer-onboarding/a2-service-domain.json examples/customer-onboarding/a3-application.json examples/customer-onboarding/a4-technology.json examples/customer-onboarding/mappings.json",
+      "stdout": "DOWNSTREAM (depends on):\nCAP-001 'Onboard Customer'  [A1.BusinessCapability]\n└─ -SUPPORTED_BY-> SD-001 'Customer Onboarding (synthetic selection)'  [A2.ServiceDomain]  (MAP-001)\n   └─ -REALIZED_BY-> APP-001 'Onboarding Portal'  [A3.ApplicationComponent]  (MAP-002)\n      ├─ -DEPLOYED_ON-> INF-001 'Managed Kubernetes — channels (production)'  [A4.SystemSoftware]  (MAP-003)\n      └─ -DEPLOYED_AS-> DEP-001 'Onboarding Portal — production'  [A4.Deployment]  (MAP-011)\n\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "E2.1",
+      "question": "Downstream from CAP-001",
+      "expected": "SD-001 -> APP-001 -> INF-001 and DEP-001 (two A4 arrows from the same component)",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.graph trace BO-001 --direction down examples/customer-onboarding/a1-business.json examples/customer-onboarding/a2-service-domain.json examples/customer-onboarding/a3-application.json examples/customer-onboarding/a4-technology.json examples/customer-onboarding/mappings.json",
+      "stdout": "DOWNSTREAM (depends on):\nBO-001 'Customer Identity'  [A1.BusinessObject]\n└─ -ALIGNED_TO-> BBO-001 'Customer Identity'  [A2.BusinessObject]  (MAP-006)\n   └─ -MAPPED_TO-> ENT-001 'customer_identity'  [A3.DataEntity]  (MAP-007)\n\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "E2.2",
+      "question": "Information chain from BO-001",
+      "expected": "BO-001 -> BBO-001 -> ENT-001 (ALIGNED_TO, MAPPED_TO)",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.graph trace VS-001 --direction down examples/customer-onboarding/a1-business.json examples/customer-onboarding/a2-service-domain.json examples/customer-onboarding/a3-application.json examples/customer-onboarding/a4-technology.json examples/customer-onboarding/mappings.json",
+      "stdout": "DOWNSTREAM (depends on):\nVS-001 'Become a Customer'  [A1.ValueStream]\n└─ -ALIGNED_TO-> BS-001 'Retail customer onboarding'  [A2.BusinessScenario]  (MAP-004)\n\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "E2.3a",
+      "question": "Process chain from VS-001",
+      "expected": "VS-001 -> BS-001",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.graph trace PRC-001 --direction down examples/customer-onboarding/a1-business.json examples/customer-onboarding/a2-service-domain.json examples/customer-onboarding/a3-application.json examples/customer-onboarding/a4-technology.json examples/customer-onboarding/mappings.json",
+      "stdout": "DOWNSTREAM (depends on):\nPRC-001 'Onboard retail customer'  [A1.BusinessProcess]\n└─ -USES_DOMAIN-> SD-001 'Customer Onboarding (synthetic selection)'  [A2.ServiceDomain]  (MAP-005)\n   └─ -REALIZED_BY-> APP-001 'Onboarding Portal'  [A3.ApplicationComponent]  (MAP-002)\n      ├─ -DEPLOYED_ON-> INF-001 'Managed Kubernetes — channels (production)'  [A4.SystemSoftware]  (MAP-003)\n      └─ -DEPLOYED_AS-> DEP-001 'Onboarding Portal — production'  [A4.Deployment]  (MAP-011)\n\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "E2.3b",
+      "question": "Process chain from PRC-001",
+      "expected": "PRC-001 -> SD-001",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.graph trace ENT-001 --direction up examples/customer-onboarding/a1-business.json examples/customer-onboarding/a2-service-domain.json examples/customer-onboarding/a3-application.json examples/customer-onboarding/a4-technology.json examples/customer-onboarding/mappings.json",
+      "stdout": "UPSTREAM (depended on by):\nENT-001 'customer_identity'  [A3.DataEntity]\n└─ <-MAPPED_TO- BBO-001 'Customer Identity'  [A2.BusinessObject]  (MAP-007)\n   └─ <-ALIGNED_TO- BO-001 'Customer Identity'  [A1.BusinessObject]  (MAP-006)\n\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "E2.4",
+      "question": "Upstream from ENT-001",
+      "expected": "ENT-001 -> BBO-001 -> BO-001, information arrows only; architecture chain must not appear",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.graph impact APP-001 --change replace examples/customer-onboarding/a1-business.json examples/customer-onboarding/a2-service-domain.json examples/customer-onboarding/a3-application.json examples/customer-onboarding/a4-technology.json examples/customer-onboarding/mappings.json",
+      "stdout": "IMPACT of 'replace' on APP-001: instance replaced; direct dependents must re-point their mappings, indirect ones review\n\n  design_change_required   A3  APP-001  Onboarding Portal  via -\n  design_change_required   A2  SD-001   Customer Onboarding (synthetic selection)  via MAP-002\n  review_required          A1  CAP-001  Onboard Customer  via MAP-002, MAP-001\n  review_required          A1  PRC-001  Onboard retail customer  via MAP-002, MAP-005\n  review_required          A4  INF-001  Managed Kubernetes — channels (production)  via MAP-003\n  review_required          A4  DEP-001  Onboarding Portal — production  via MAP-011\n\n  mappings to supersede: MAP-002, MAP-003, MAP-011\n\n  Classification is structural; an architect confirms before any design changes.\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "E2.5",
+      "question": "Replace APP-001",
+      "expected": "SD-001 design_change_required; INF-001 / DEP-001 review_required; BBO / ENT untouched",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.diff --old examples/customer-onboarding/mappings.json <scratch>/e2_edited.json",
+      "stdout": "ERROR: /private/tmp/claude-501/-Users-taumoeps-Documents-Projects-bian-sdmm-framework/603d8ae9-9572-4772-9af4-8b17f1ce08f1/scratchpad/e2_edited.json: MAP-002: approved record is immutable but field(s) changed: ['rationale']\n",
+      "stderr": "",
+      "exit": 1,
+      "test": "E2.6a",
+      "question": "Edit an approved record (MAP-002 rationale) then sdmm-diff against the original",
+      "expected": "rejected",
+      "expected_exit": "exit 1"
+    },
+    {
+      "command": "python3 -m sdmm.diff --old examples/customer-onboarding/mappings.json <scratch>/e2_superseded.json",
+      "stdout": "OK: /private/tmp/claude-501/-Users-taumoeps-Documents-Projects-bian-sdmm-framework/603d8ae9-9572-4772-9af4-8b17f1ce08f1/scratchpad/e2_superseded.json\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "E2.6b",
+      "question": "Supersede MAP-002 by MAP-012 (previous_mapping_id, valid_from/valid_to) then sdmm-diff",
+      "expected": "accepted",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.validate --strict <scratch>/e2_superseded.json",
+      "stdout": "OK: /private/tmp/claude-501/-Users-taumoeps-Documents-Projects-bian-sdmm-framework/603d8ae9-9572-4772-9af4-8b17f1ce08f1/scratchpad/e2_superseded.json\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "E2.6c",
+      "question": "The superseded document still validates strictly",
+      "expected": "OK (not in the Expected column; corroboration)",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.validate --strict <scratch>/e2_edited.json",
+      "stdout": "OK: /private/tmp/claude-501/-Users-taumoeps-Documents-Projects-bian-sdmm-framework/603d8ae9-9572-4772-9af4-8b17f1ce08f1/scratchpad/e2_edited.json\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "E2.6d",
+      "question": "The edited document also validates — immutability is diff's job, not validate's",
+      "expected": "OK (not in the Expected column; informational)",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.graph trace INF-000 --direction up examples/customer-onboarding/a1-business.json examples/customer-onboarding/a2-service-domain.json examples/customer-onboarding/a3-application.json examples/customer-onboarding/a4-technology.json examples/customer-onboarding/mappings.json",
+      "stdout": "UPSTREAM (depended on by):\nINF-000  (no upstream mappings)\n\n",
+      "stderr": "",
+      "exit": 1,
+      "test": "extra-1",
+      "question": "Upstream from the retired host INF-000, approved only",
+      "expected": "(no upstream mappings), exit 1 — MAP-008 is superseded",
+      "expected_exit": "exit 1"
+    },
+    {
+      "command": "python3 -m sdmm.graph trace INF-000 --direction up --status approved,superseded examples/customer-onboarding/a1-business.json examples/customer-onboarding/a2-service-domain.json examples/customer-onboarding/a3-application.json examples/customer-onboarding/a4-technology.json examples/customer-onboarding/mappings.json",
+      "stdout": "UPSTREAM (depended on by):\nINF-000 'Legacy VM cluster — channels'  [A4.Node]\n└─ <-DEPLOYED_ON- APP-001 'Onboarding Portal'  [A3.ApplicationComponent]  (MAP-008)\n   └─ <-REALIZED_BY- SD-001 'Customer Onboarding (synthetic selection)'  [A2.ServiceDomain]  (MAP-002)\n      ├─ <-SUPPORTED_BY- CAP-001 'Onboard Customer'  [A1.BusinessCapability]  (MAP-001)\n      └─ <-USES_DOMAIN- PRC-001 'Onboard retail customer'  [A1.BusinessProcess]  (MAP-005)\n\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "extra-2",
+      "question": "Upstream from INF-000 with superseded arrows",
+      "expected": "the old chain via MAP-008 appears",
+      "expected_exit": "exit 0"
+    },
+    {
+      "command": "python3 -m sdmm.graph trace SO-001 --direction down --status approved,proposed,needs_review examples/customer-onboarding/a1-business.json examples/customer-onboarding/a2-service-domain.json examples/customer-onboarding/a3-application.json examples/customer-onboarding/a4-technology.json examples/customer-onboarding/mappings.json",
+      "stdout": "DOWNSTREAM (depends on):\nSO-001 'Initiate Customer Onboarding'  [A2.ServiceOperation]\n└─ -IMPLEMENTED_BY-> API-001 'Create onboarding'  [A3.APIOperation]  (MAP-009)\n\n",
+      "stderr": "",
+      "exit": 0,
+      "test": "extra-3",
+      "question": "Downstream from SO-001 including proposed and needs_review",
+      "expected": "MAP-009 (proposed) appears; approved-only would be empty",
+      "expected_exit": "exit 0"
+    }
+  ]
+}

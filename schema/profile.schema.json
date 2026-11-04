@@ -1,0 +1,374 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/profile.schema.json",
+  "title": "SDEM organisation profile (sdem-profile.json)",
+  "description": "An organisation's own design specification on top of SDEM's metamodel (docs/design/sdem-profile-spec.md): types extending SDEM's, attributes, rules, within-layer link kinds and names. A profile adds; it never removes or redefines SDEM's own types, link types or rules.",
+  "type": "object",
+  "required": [
+    "format",
+    "name",
+    "version"
+  ],
+  "properties": {
+    "format": {
+      "const": "sdem-profile/1"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "extends": {
+      "type": "string",
+      "description": "a base profile, as a path relative to this file"
+    },
+    "chain": {
+      "type": "array"
+    },
+    "names": {
+      "type": "object",
+      "properties": {
+        "layers": {
+          "type": "object"
+        },
+        "types": {
+          "type": "object"
+        }
+      }
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "extends": {
+            "type": "string",
+            "description": "the SDEM or profile type it extends; omitted for a root type of the profile's own layer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "reasoning": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "attributes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "entity",
+          "name",
+          "type"
+        ],
+        "properties": {
+          "entity": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "string",
+              "integer",
+              "number",
+              "boolean",
+              "date",
+              "enum",
+              "list<string>",
+              "map<string,string>"
+            ]
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "entity"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "entity": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "when": {
+            "type": "object",
+            "description": "the rule applies only to records whose attributes (or lifecycle_status) have these values — a value or a list of allowed values",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "string",
+                      "number",
+                      "boolean"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "require": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "attributes the record must carry"
+          },
+          "link": {
+            "type": "object",
+            "required": [
+              "kind"
+            ],
+            "description": "the record must have within-layer links of this kind",
+            "properties": {
+              "kind": {
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "out",
+                  "in"
+                ]
+              },
+              "to": {
+                "type": "string"
+              },
+              "min": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          },
+          "compare": {
+            "type": "object",
+            "required": [
+              "kind",
+              "attribute",
+              "must"
+            ],
+            "description": "every record linked by this kind must have a different (or the same) value of the attribute",
+            "properties": {
+              "kind": {
+                "type": "string"
+              },
+              "attribute": {
+                "type": "string"
+              },
+              "must": {
+                "enum": [
+                  "differ",
+                  "equal"
+                ]
+              }
+            }
+          }
+        },
+        "anyOf": [
+          {
+            "required": [
+              "require"
+            ]
+          },
+          {
+            "required": [
+              "link"
+            ]
+          },
+          {
+            "required": [
+              "compare"
+            ]
+          }
+        ]
+      }
+    },
+    "link_kinds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "maps_to",
+          "source_type",
+          "target_type"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "maps_to": {
+            "type": "string"
+          },
+          "source_type": {
+            "type": "string"
+          },
+          "target_type": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "requirement_categories": {
+      "type": "array",
+      "description": "requirement categories the organisation adds to SDEM's (requirements.json)",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "layers": {
+      "type": "array",
+      "description": "layers the profile adds above A1 or below A4 (docs/design/sdem-layers-spec.md)",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "position",
+          "file"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]{0,5}$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "position": {
+            "enum": [
+              "above",
+              "below"
+            ],
+            "description": "above A1 or below A4; layers on one side are listed nearest the core first"
+          },
+          "file": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*\\.json$"
+          },
+          "description": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "link_types": {
+      "type": "array",
+      "description": "link types between a profile layer and its neighbour (from the upper layer's type to the lower's)",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_type",
+          "relationship",
+          "target_type",
+          "required_evidence"
+        ],
+        "properties": {
+          "source_type": {
+            "type": "string"
+          },
+          "relationship": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          },
+          "target_type": {
+            "type": "string"
+          },
+          "required_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            }
+          },
+          "cardinality": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "reasoning": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "requires_sdem": {
+      "type": "string",
+      "description": "the SDEM versions this profile is written for, e.g. '>=0.13' or '>=0.13,<1.0' (UF-04); a version outside it refuses the profile",
+      "pattern": "^\\s*(>=|<=|==|!=|>|<)?\\s*v?\\d+(\\.\\d+){0,2}(\\s*,\\s*(>=|<=|==|!=|>|<)?\\s*v?\\d+(\\.\\d+){0,2})*\\s*$"
+    }
+  }
+}

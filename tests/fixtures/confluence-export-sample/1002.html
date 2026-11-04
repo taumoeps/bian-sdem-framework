@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Payments Architecture : Card Fraud Alerts Design</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body class="theme-default aui-theme-default">
+        <div id="page">
+            <div id="main" class="aui-page-panel">
+                <div id="main-header">
+                    <div id="breadcrumb-section">
+                        <ol id="breadcrumbs">
+                            <li class="first"><span><a href="index.html">Payments Architecture</a></span></li>
+                            <li><span><a href="Solution-Designs_900.html">Solution Designs</a></span></li>
+                        </ol>
+                    </div>
+                    <h1 id="title-heading" class="pagetitle"><span id="title-text"> Payments Architecture : Card Fraud Alerts Design </span></h1>
+                </div>
+                <div id="content" class="view">
+                    <div class="page-metadata">Created by <span class='author'> Sample Author</span>, last modified on Jun 03, 2019</div>
+                    <div id="main-content" class="wiki-content group">
+<h2 id="CardFraudAlerts-Overview">Overview</h2>
+<p>Card Authorisation Switch calls the Fraud Scoring Engine for each card transaction. The Fraud Scoring Engine triggers the Case Management System when a score is high.</p>
+<p><span class="confluence-embedded-file-wrapper"><img class="confluence-embedded-image" src="attachments/1002/3010.png" data-linked-resource-default-alias="fraud-flow.png" alt="fraud-flow"></span></p>
+<h2 id="CardFraudAlerts-Deployment">Deployment view</h2>
+<p><span class="confluence-embedded-file-wrapper"><img class="confluence-embedded-image" src="attachments/1002/3002.png" data-linked-resource-default-alias="deployment.png" alt="deployment"></span></p>
+<p>The Payments Hub is not changed by this design.</p>
+                    </div>
+                    <div class="pageSection group">
+                        <div class="pageSectionHeader"><h2 id="attachments" class="pageSectionTitle">Attachments:</h2></div>
+                        <div class="greybox" align="left">
+<img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/> <a href="attachments/1002/3001.drawio">fraud-flow</a> (application/vnd.jgraph.mxfile)<br/>
+<img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/> <a href="attachments/1002/3010.png">fraud-flow.png</a> (image/png)<br/>
+<img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/> <a href="attachments/1002/3002.png">deployment.png</a> (image/png)<br/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

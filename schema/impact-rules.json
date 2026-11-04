@@ -1,0 +1,51 @@
+{
+  "$schema_version": "0.5.0",
+  "owner": "enterprise-architecture",
+  "rule_version": "1.0",
+  "note": "Structural impact classification. 'up' = instances that depend on the changed one (toward A1); 'down' = instances it depends on (toward A4). Relations not listed are no_impact. An architect confirms every classification before design changes.",
+  "classes": [
+    "design_change_required",
+    "review_required",
+    "no_impact"
+  ],
+  "kinds": {
+    "modify": {
+      "reason": "internal change; direct neighbours re-check their assumptions, nothing further",
+      "rules": {
+        "self": "design_change_required",
+        "up1": "review_required",
+        "down1": "review_required"
+      }
+    },
+    "replace": {
+      "reason": "instance replaced; direct dependents must re-point their mappings, indirect ones review",
+      "rules": {
+        "self": "design_change_required",
+        "up1": "design_change_required",
+        "up2+": "review_required",
+        "down1": "review_required"
+      }
+    },
+    "retire": {
+      "reason": "instance removed; direct dependents lose a dependency, indirect ones review",
+      "rules": {
+        "self": "design_change_required",
+        "up1": "design_change_required",
+        "up2+": "review_required",
+        "down1": "review_required"
+      }
+    },
+    "rehost": {
+      "reason": "hosting changes only; deployment records must be superseded, functional layers unaffected",
+      "rules": {
+        "self": "design_change_required",
+        "up1": "design_change_required"
+      }
+    }
+  },
+  "supersede_mappings_touching_changed_instance_for": [
+    "replace",
+    "retire",
+    "rehost"
+  ]
+}

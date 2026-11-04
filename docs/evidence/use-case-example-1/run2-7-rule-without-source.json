@@ -1,0 +1,6 @@
+{
+  "rule": "B01",
+  "failures": [
+    "AssertionError: True is not false : rule B01"
+  ]
+}

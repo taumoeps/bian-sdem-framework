@@ -1,0 +1,32 @@
+# Who must approve a pull request. Replace the placeholders with REAL people or teams in your organisation —
+# then turn on "Require review from Code Owners" in the branch protection for main (README → Set up, step 4).
+# A reviewer is a person: never a bot or an agent account.
+
+# Approved links between architectures — the decisions
+workspaces/*/mappings.json        @YOUR-ORG/architecture-reviewers
+
+# Decisions recorded by SDEM — gaps accepted or resolved, loads, BIAN updates, migrations, agents' change sets
+workspaces/*/designs/             @YOUR-ORG/architecture-reviewers
+workspaces/*/loads/               @YOUR-ORG/architecture-reviewers
+workspaces/*/bian-updates/        @YOUR-ORG/architecture-reviewers
+workspaces/*/migrations/          @YOUR-ORG/sdem-lead
+workspaces/*/coordination/        @YOUR-ORG/architecture-reviewers
+workspaces/*/requirements.json  @YOUR-ORG/architecture-reviewers   # requirements, measurements — and, in coordination/validations/, accepted residual risks
+workspaces/*/decisions/          @YOUR-ORG/architecture-reviewers   # governed decisions (GV-01)
+workspaces/*/governance.json     @YOUR-ORG/sdem-lead                # who may approve, and how it is verified
+.github/allowed_signers          @YOUR-ORG/sdem-lead                # approvers' signing keys
+
+# Each architecture's data — its layer owner
+workspaces/*/a1-business.json     @YOUR-ORG/business-architects
+workspaces/*/a2-service-domain.json  @YOUR-ORG/architecture-reviewers
+workspaces/*/a3-application.json  @YOUR-ORG/application-architects
+workspaces/*/a4-technology.json   @YOUR-ORG/technology-architects
+
+# The SDEM version, CI and these rules
+requirements.txt               @YOUR-ORG/sdem-lead
+ci/                            @YOUR-ORG/sdem-lead
+.github/                       @YOUR-ORG/sdem-lead
+
+# Your BIAN layer (and any BIAN pack) and your tuned transform rules — the in-house SDEM lead
+bian/                          @YOUR-ORG/sdem-lead
+rules/                         @YOUR-ORG/sdem-lead

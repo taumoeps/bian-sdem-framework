@@ -1,0 +1,19 @@
+## Task 1
+$ sdem commands --json → 68 commands; e.g. agents, agents install, aid, aid check, aid confirm, aid gaps
+$ sdem check --workspace workspaces/payments --json
+{"sdem": {"version": "0.9.12", "command": "check"}, "ok": true, "report": {"level A1 (synthetic-bank-payments-a1)": [], "level A2 (synthetic-bank-payments-a2)": [], "level A3 (synthetic-bank-payments-a3)": [], "level A4 (synthetic-bank-payments-a4)": [], "mappings #1": []}, "warnings": {"level A2 (synthetic-bank-payments-a2)": ["instance BD-PAYMENTS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1
+  (exit 0)
+## Task 2
+$ sdem trace INF-K8S-PAY-PROD --direction up --graph workspaces/payments/graph --json --limit 3
+{"sdem": {"version": "0.9.12", "command": "trace"}, "up": {"id": "INF-K8S-PAY-PROD", "type": "A4.SystemSoftware", "children": [[{"via": {"mapping_id": "PAY-108", "relationship": "DEPLOYED_ON", "status": "approved", "baseline_id": "PAY-BASE-2026-Q4", "source": {"id": "APP-PAY-HUB", "type": "A3.ApplicationComponent", "version": "7.1"}, "target": {"id": "INF-K8S-PAY-PROD", "type": "A4.SystemSoftware", "version": "1.29"}
+  (exit 0)
+$ sdem impact INF-K8S-PAY-PROD --change rehost --graph workspaces/payments/graph --json --limit 5
+{"sdem": {"version": "0.9.12", "command": "impact"}, "changed": "INF-K8S-PAY-PROD", "change": "rehost", "reason": "hosting changes only; deployment records must be superseded, functional layers unaffected", "rules_version": "0.5.0", "instances": [[{"id": "INF-K8S-PAY-PROD", "name": "Managed Kubernetes — payments (production)", "type": "A4.SystemSoftware", "level": "A4", "relation": "self", "classification": "design_c
+  (exit 0)
+## Task 3
+$ sdem link --workspace workspaces/payments --out workspaces/payments/links --json --dry-run
+{"sdem": {"version": "0.9.12", "command": "link"}, "proposals_file": "workspaces/payments/links/proposals.json", "count": 1, "folder": "workspaces/payments/links", "proposals": [{"mapping_id": "P-RUN-001", "relationship": "REALIZED_BY", "source": "SD-PI", "target": "APP-PAY-HUB", "confidence": 0.8, "rule": "S17", "rationale": "implements SO-PI-01 via API-PI-01 (approved); SO-PI-02 via API-PI-02 (approved); SO-PI-03 v
+  (exit 0)
+$ sdem link --workspace workspaces/payments --out workspaces/payments/links --json
+{"sdem": {"version": "0.9.12", "command": "link"}, "proposals_file": "workspaces/payments/links/proposals.json", "count": 1, "folder": "workspaces/payments/links", "proposals": [{"mapping_id": "P-RUN-001", "relationship": "REALIZED_BY", "source": "SD-PI", "target": "APP-PAY-HUB", "confidence": 0.8, "rule": "S17", "rationale": "implements SO-PI-01 via API-PI-01 (approved); SO-PI-02 via API-PI-02 (approved); SO-PI-03 v
+  (exit 0)

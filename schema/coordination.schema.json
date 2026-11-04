@@ -1,0 +1,542 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/coordination.schema.json",
+  "title": "SDEM agent platform coordination records",
+  "description": "Change sets, change events (with their stored impact result) and work items — the only channel between the layer agents and the orchestrator (docs/sdem-agent-platform-spec.md AG-R01…R05). Stored in <workspace>/coordination/ one file per record (change-sets/, events/, work-items/), ids scoped to the Git branch, append-only.",
+  "$defs": {
+    "record": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "version",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "pattern": "^([A-Z][A-Z0-9]*\\.)?[A-Z][A-Z0-9]{0,5}\\.[A-Za-z0-9]+$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "change": {
+      "type": "object",
+      "required": [
+        "op",
+        "record"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "enum": [
+            "add",
+            "update",
+            "retire",
+            "remove"
+          ],
+          "description": "add, update, retire; 'remove' appears only in change sets recorded by `sdem change adopt` (a record deleted by hand)"
+        },
+        "kind": {
+          "enum": [
+            "modify",
+            "rehost",
+            "replace",
+            "retire"
+          ],
+          "description": "the change kind for impact; default modify for update, retire for retire, none for add"
+        },
+        "record": {
+          "$ref": "#/$defs/record"
+        }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "required": [
+        "source",
+        "kind",
+        "target"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "change_set_input": {
+      "description": "What an agent or a person writes and passes to `sdem change propose` — one layer only, never the registry (CTL-19).",
+      "type": "object",
+      "required": [
+        "layer",
+        "reason",
+        "changes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "layer": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]{0,5}$",
+          "description": "a layer code: A1–A4, or a layer the workspace's profile adds (docs/design/sdem-layers-spec.md)"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "changes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/change"
+          }
+        },
+        "relationships": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "add": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/relationship"
+              }
+            },
+            "remove": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/relationship"
+              }
+            }
+          }
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "required": [
+        "status",
+        "at",
+        "agent",
+        "person"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "open",
+            "in_progress",
+            "done",
+            "blocked",
+            "cancelled"
+          ]
+        },
+        "at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "person": {
+          "type": "string",
+          "minLength": 1
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "work_item": {
+      "type": "object",
+      "required": [
+        "id",
+        "event",
+        "layer",
+        "records",
+        "action",
+        "reason",
+        "round",
+        "history"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^WI-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "event": {
+          "type": "string",
+          "pattern": "^CE-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "layer": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]{0,5}$",
+          "description": "a layer code: A1–A4, or a layer the workspace's profile adds (docs/design/sdem-layers-spec.md)"
+        },
+        "records": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "object",
+          "required": [
+            "event",
+            "path"
+          ]
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "history": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/state"
+          }
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "required": [
+        "id",
+        "change_set",
+        "layer",
+        "round",
+        "at",
+        "agent",
+        "person",
+        "impact"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^CE-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "change_set": {
+          "type": "string",
+          "pattern": "^CS-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "layer": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]{0,5}$",
+          "description": "a layer code: A1–A4, or a layer the workspace's profile adds (docs/design/sdem-layers-spec.md)"
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "agent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "person": {
+          "type": "string",
+          "minLength": 1
+        },
+        "impact": {
+          "type": "object",
+          "required": [
+            "records",
+            "mappings_to_supersede",
+            "changed"
+          ]
+        }
+      }
+    },
+    "assessment": {
+      "type": "object",
+      "description": "One layer's specialist impact assessment (AG-V04).",
+      "required": [
+        "event",
+        "layer",
+        "calculated",
+        "status",
+        "recommended",
+        "evidence",
+        "reasoning",
+        "confidence",
+        "agent",
+        "person",
+        "at"
+      ],
+      "properties": {
+        "event": {
+          "type": "string",
+          "pattern": "^CE-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "layer": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]{0,5}$",
+          "description": "a layer code: A1–A4, or a layer the workspace's profile adds (docs/design/sdem-layers-spec.md)"
+        },
+        "calculated": {
+          "enum": [
+            "design_change_required",
+            "review_required",
+            "no_impact"
+          ]
+        },
+        "status": {
+          "enum": [
+            "impact_confirmed",
+            "no_impact_confirmed",
+            "further_investigation_required",
+            "impact_disputed"
+          ]
+        },
+        "recommended": {
+          "enum": [
+            "design_change_required",
+            "review_required",
+            "no_impact"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mappings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing_relationships": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "uncertainty": {
+          "type": "string"
+        },
+        "confidence": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "reasoning": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "person": {
+          "type": "string",
+          "minLength": 1
+        },
+        "at": {
+          "type": "string"
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "description": "The four-layer impact validation of one change event (AG-V01…V10): the calculated impact's coverage, each layer's assessments, a person's acceptance.",
+      "required": [
+        "id",
+        "event",
+        "change_set",
+        "changed_layer",
+        "calculated",
+        "layers",
+        "history"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^IV-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "event": {
+          "type": "string",
+          "pattern": "^CE-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "change_set": {
+          "type": "string",
+          "pattern": "^CS-([a-z0-9]+(-[a-z0-9]+)*-)?\\d{3,}$"
+        },
+        "changed_layer": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]{0,5}$",
+          "description": "a layer code: A1–A4, or a layer the workspace's profile adds (docs/design/sdem-layers-spec.md)"
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "legacy": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string"
+        },
+        "calculated": {
+          "type": "object",
+          "required": [
+            "impact",
+            "coverage_source"
+          ]
+        },
+        "layers": {
+          "type": "object",
+          "required": [
+            "A1",
+            "A2",
+            "A3",
+            "A4"
+          ],
+          "additionalProperties": {
+            "$ref": "#/$defs/layer_validation"
+          },
+          "properties": {
+            "A1": {
+              "$ref": "#/$defs/layer_validation"
+            },
+            "A2": {
+              "$ref": "#/$defs/layer_validation"
+            },
+            "A3": {
+              "$ref": "#/$defs/layer_validation"
+            },
+            "A4": {
+              "$ref": "#/$defs/layer_validation"
+            }
+          },
+          "propertyNames": {
+            "pattern": "^[A-Z][A-Z0-9]{0,5}$"
+          }
+        },
+        "acceptance": {
+          "type": "object",
+          "required": [
+            "by",
+            "at",
+            "reason",
+            "final"
+          ],
+          "properties": {
+            "by": {
+              "type": "string",
+              "minLength": 1
+            },
+            "at": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "final": {
+              "type": "object"
+            },
+            "resolutions": {
+              "type": "object"
+            }
+          }
+        },
+        "history": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "phase",
+              "at",
+              "agent",
+              "person"
+            ],
+            "properties": {
+              "phase": {
+                "enum": [
+                  "validation_pending",
+                  "validation_in_progress",
+                  "validation_complete",
+                  "architect_review_required",
+                  "architect_accepted",
+                  "implementation_authorised"
+                ]
+              },
+              "at": {
+                "type": "string"
+              },
+              "agent": {
+                "type": "string",
+                "minLength": 1
+              },
+              "person": {
+                "type": "string",
+                "minLength": 1
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "layer_validation": {
+      "type": "object",
+      "required": [
+        "calculated",
+        "assessments"
+      ],
+      "properties": {
+        "calculated": {
+          "type": "object",
+          "required": [
+            "result",
+            "classification",
+            "evidence",
+            "reason"
+          ]
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assessment"
+          }
+        }
+      }
+    }
+  }
+}

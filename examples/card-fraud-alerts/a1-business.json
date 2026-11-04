@@ -1,0 +1,138 @@
+{
+  "level": "A1",
+  "model_id": "synthetic-bank-a1",
+  "model_version": "2026.10",
+  "metamodel_version": "0.8.0",
+  "source_system": "SYNTHETIC-EA-TOOL",
+  "instances": [
+    {
+      "id": "CAP-310",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Card Fraud Alerts",
+      "lifecycle_status": "active",
+      "attributes": {
+        "owner": "ACT-RETAIL-RISK"
+      },
+      "description": "Detect suspicious card transactions in real time and alert the cardholder through their preferred channel before the transaction settles."
+    },
+    {
+      "id": "CAP-300",
+      "type": "A1.BusinessCapability",
+      "version": "1.0",
+      "name": "Card Risk Management",
+      "lifecycle_status": "active",
+      "description": "Manage the risk exposure of the card portfolio, including fraud, credit and operational risk."
+    },
+    {
+      "id": "VS-CARD-USE",
+      "type": "A1.ValueStream",
+      "version": "1.0",
+      "name": "Use Card Safely",
+      "lifecycle_status": "active",
+      "description": "The cardholder's journey from presenting a card to confirming a transaction was legitimate.",
+      "attributes": {
+        "stages": [
+          "VSS-01",
+          "VSS-02",
+          "VSS-03",
+          "VSS-04"
+        ]
+      }
+    },
+    {
+      "id": "PRC-310-01",
+      "type": "A1.BusinessProcess",
+      "version": "1.0",
+      "name": "Alert Cardholder of Suspicious Transaction",
+      "lifecycle_status": "active",
+      "description": "On a high-risk score, notify the cardholder, capture their response and release or block the transaction.",
+      "attributes": {
+        "invokes": [
+          "SO-044-07"
+        ]
+      }
+    },
+    {
+      "id": "VSS-01",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Present card",
+      "lifecycle_status": "active",
+      "description": "Stage of Use Card Safely: present card."
+    },
+    {
+      "id": "VSS-02",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Score the transaction",
+      "lifecycle_status": "active",
+      "description": "Stage of Use Card Safely: score the transaction."
+    },
+    {
+      "id": "VSS-03",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Alert the cardholder",
+      "lifecycle_status": "active",
+      "description": "Stage of Use Card Safely: alert the cardholder."
+    },
+    {
+      "id": "VSS-04",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0",
+      "name": "Confirm or block",
+      "lifecycle_status": "active",
+      "description": "Stage of Use Card Safely: confirm or block."
+    },
+    {
+      "id": "ACT-RETAIL-RISK",
+      "type": "A1.BusinessActor",
+      "version": "1.0",
+      "name": "Retail Risk",
+      "lifecycle_status": "active",
+      "description": "Retail risk organisational unit (synthetic).",
+      "attributes": {
+        "actor_kind": "organisational unit",
+        "external": false
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "CAP-300",
+      "kind": "composition",
+      "target": "CAP-310"
+    },
+    {
+      "source": "CAP-310",
+      "kind": "serving",
+      "target": "VS-CARD-USE"
+    },
+    {
+      "source": "PRC-310-01",
+      "kind": "realization",
+      "target": "CAP-310"
+    },
+    {
+      "source": "VS-CARD-USE",
+      "kind": "composition",
+      "target": "VSS-01"
+    },
+    {
+      "source": "VS-CARD-USE",
+      "kind": "composition",
+      "target": "VSS-02"
+    },
+    {
+      "source": "VS-CARD-USE",
+      "kind": "composition",
+      "target": "VSS-03"
+    },
+    {
+      "source": "VS-CARD-USE",
+      "kind": "composition",
+      "target": "VSS-04"
+    }
+  ]
+}

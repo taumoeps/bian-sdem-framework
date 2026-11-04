@@ -1,0 +1,27 @@
+{
+  "link": {
+    "mapping_id": "P-UCE1-001",
+    "source": {
+      "id": "CAP-PAY-010",
+      "type": "A1.BusinessCapability",
+      "version": "1.0"
+    },
+    "relationship": "USES_DOMAIN",
+    "target": {
+      "id": "SD-PI",
+      "type": "A2.ServiceDomain",
+      "version": "1.0"
+    },
+    "status": "proposed",
+    "confidence": 0.8,
+    "evidence": [
+      "engine_rationale:S32 step1 data join; a4 DEP-PAYHUB-PROD.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-PROD"
+    ],
+    "rationale": "data join; a4 DEP-PAYHUB-PROD.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-PROD",
+    "baseline_id": "ENGINE-RUN-UCE1",
+    "created_by": "sdem-rules/0.10"
+  },
+  "issues": [
+    "mapping #1 (P-UCE1-001): relationship (A1.BusinessCapability, USES_DOMAIN, A2.ServiceDomain) is not in the registry"
+  ]
+}

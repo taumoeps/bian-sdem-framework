@@ -1,0 +1,166 @@
+name: Validate SDEM
+on:
+  push:
+  pull_request:
+jobs:
+  windows:   # AF-10: the same suite on Windows — agents run SDEM there too
+    runs-on: windows-latest
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Tests (no install)
+        shell: bash
+        run: |
+          code=0; python -m unittest discover -s tests > unittest.log 2>&1 || code=$?   # bash -e: keep going to annotate
+          tail -3 unittest.log
+          # each failure as a public annotation (job logs need admin rights to download)
+          python ci/annotate_failures.py unittest.log
+          exit $code
+      - name: The CLI for agents
+        run: |
+          python -m sdem commands --json
+          python -m sdem check --workspace examples/payment-initiation --json
+          python -m sdem trace A4 --direction up --graph examples/payment-initiation/graph --json
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Validate (warnings are errors)
+        run: python -m sdem.validate --strict examples/*/mappings.json
+      - name: Validate against entity catalogue
+        run: python -m sdem.validate --strict --catalogue examples/card-fraud-alerts/entities.json examples/card-fraud-alerts/mappings.json
+      - name: Lifecycle and immutability against previous commit
+        run: python -m sdem.diff --git HEAD~1 examples/*/mappings.json
+      - name: Federated graph — check, trace and impact on the fraud example
+        run: |
+          python -m sdem.graph check  examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+          python -m sdem.graph trace  CAP-310 examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+          python -m sdem.graph impact INF-CLOUD-K8S-PROD --change rehost examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+      - name: Engine harness — baseline proposals validate and score above the floor
+        run: |
+          python -m sdem.inference baseline examples/card-fraud-alerts/a*.json > /tmp/proposals.json
+          python -m sdem.validate /tmp/proposals.json
+          python -m sdem.evaluate examples/card-fraud-alerts/mappings.json --proposals /tmp/proposals.json --min-f1 0.5
+      - name: Payment Initiation (M1) architecture datasets and mappings
+        run: |
+          python -m sdem.graph check examples/payment-initiation/a*.json examples/payment-initiation/mappings.json
+          python -m sdem.validate --strict examples/payment-initiation/mappings.json
+      - name: Legacy Core Ledger (H1) architecture datasets and mappings
+        run: |
+          python -m sdem.graph check examples/legacy-core-ledger/a*.json examples/legacy-core-ledger/mappings.json
+          python -m sdem.validate --strict examples/legacy-core-ledger/mappings.json
+      - name: Acquired Fintech (H2) architecture datasets and mappings
+        run: |
+          python -m sdem.graph check examples/acquired-fintech/a*.json examples/acquired-fintech/mappings.json
+          python -m sdem.validate --strict examples/acquired-fintech/mappings.json
+      - name: Customer Onboarding (E2) architecture datasets and mappings
+        run: |
+          python -m sdem.graph check examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
+          python -m sdem.graph impact APP-001 --change replace examples/customer-onboarding/a*.json examples/customer-onboarding/mappings.json
+      - name: Digital Lending (M2) architecture datasets and mappings
+        run: |
+          python -m sdem.graph check examples/digital-lending/a*.json examples/digital-lending/mappings.json
+          python -m sdem.validate --strict examples/digital-lending/mappings.json
+      - name: Trade Finance (C1–C3) architecture datasets and mappings
+        run: |
+          python -m sdem.graph check examples/trade-finance/a*.json examples/trade-finance/mappings.json
+          python -m sdem.validate --strict examples/trade-finance/mappings.json
+      - name: Trace the fraud example both ways
+        run: |
+          python -m sdem.trace CAP-310 examples/card-fraud-alerts/mappings.json
+          python -m sdem.trace INF-CLOUD-K8S-PROD --direction up --json examples/card-fraud-alerts/mappings.json > /dev/null
+      - run: python -m sdem.validate --json examples/*/mappings.json
+      - name: Diagrams and the relationships document are generated from the JSON
+        run: |
+          python -m sdem.diagram --check
+          python -m sdem.relationships --check
+          python -m sdem.structure --check
+          python -m sdem.spec --check
+          python -m sdem.kgspec --check
+          python -m sdem.catalogue --check
+          python -m sdem.attributes --check
+          python -m sdem.confidence --check
+          python -m sdem.logical --check
+          python -m sdem.physical --check
+          python -m sdem.metamodel_spec --check
+          python -m sdem.controls --check
+      - name: Reference structure — every enforceable within-level row on committed data
+        run: python -m sdem.graph check examples/reference-structure/a*.json examples/reference-structure/mappings.json
+      - name: Graph stores are current (sdem-graph build --check)
+        run: |
+          for e in examples/*/; do [ -f "$e/mappings.json" ] || continue; python -m sdem.graph build $e/a*.json $e/mappings.json --out $e/graph --check || exit 1; done   # examples/designs/ is not a workspace
+      - name: Acceptance harness proven on the hand-executed runs
+        run: python -m sdem.acceptance --engine replay
+      - name: Inference engine progress (report only; the test suite enforces cases marked passing)
+        run: python -m sdem.acceptance --engine rules || true
+      - name: Store performance (GS-X-02)
+        run: python scripts/store_perf.py 10000
+      - name: Rules-engine performance (2,040 records within 30 s; the audit measured minutes before the fix)
+        run: python scripts/engine_perf.py 30 30
+      - name: sdem command (SDEM's only interface)
+        run: |
+          python -m sdem --help
+          python -m sdem check examples/card-fraud-alerts/a*.json examples/card-fraud-alerts/mappings.json
+          python -m sdem trace CAP-310 --graph examples/card-fraud-alerts/graph
+          python -m sdem model check
+          python -m sdem matrix --workspace examples/payment-initiation
+          python -m sdem impact INF-K8S-PAY-PROD --change rehost --workspace examples/payment-initiation --report /tmp/impact.md
+          python -m sdem dashboard --workspace examples/payment-initiation -o /tmp/dashboard.html
+          python -m sdem home -o /tmp/sdem
+          python -m sdem transform run tests/fixtures/confluence-export-sample -o /tmp/history --ocr off
+          python -m sdem new --workspace /tmp/history-workspace --person ci.check --no-bian
+          python -m sdem load /tmp/history --workspace /tmp/history-workspace --person ci.check --all --dry-run
+      - run: python -m unittest discover -s tests -v
+  package:
+    # SDEM as an organisation installs it: build the wheel, install it in a clean environment, run every journey from
+    # outside the repository — catches anything that needs the repository's folders (docs/, examples/, scripts/).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build the wheel and the source distribution
+        run: |
+          python -m pip install --upgrade build
+          python -m build --wheel --sdist --outdir /tmp/dist
+      - name: Release smoke tests (clean install, no clone, agents, the bundled example, governance safeguards)
+        run: python -m unittest tests.test_release_smoke -v
+      - name: Install in a clean environment
+        run: |
+          python -m venv /tmp/venv
+          /tmp/venv/bin/pip install /tmp/dist/*.whl
+      - name: Run the journeys from outside the repository
+        run: |
+          cp -r examples/designs/confluence-folder-export /tmp/export
+          cd /tmp
+          S=/tmp/venv/bin/sdem
+          $S --version
+          $S new --workspace est --person ci.check --example payment-initiation   # the example from the package — no clone
+          $S check --workspace est
+          $S build --workspace est -o graph
+          $S trace CAP-PAY-010 --graph graph
+          $S impact INF-K8S-PAY-PROD --change retire --graph graph
+          $S matrix --workspace est
+          $S link --workspace est -o links
+          $S dashboard --workspace est -o dash.html
+          $S home --workspace est -o site
+          $S events --workspace est
+          $S transform run export -o history --ocr off
+          $S new --workspace hist --person ci.check --no-bian
+          $S load history --workspace hist --person ci.check --exclude HIS-A3-PAYMENT-ORDER
+          $S designs --workspace hist --gaps

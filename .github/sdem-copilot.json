@@ -1,0 +1,30 @@
+{
+  "sdem_version": "0.11.1",
+  "files": {
+    "agents/sdem-a1-business.agent.md": "c9f24d777f51a414ac7ba0ba23f187d0ed9d579d03e006feae381a45d3e9accb",
+    "agents/sdem-a2-bian.agent.md": "4231c92ebb5f57bd8f19ffc9f19a6fc09ae0549e52cdd7322f57c72d22cb34f4",
+    "agents/sdem-a3-application.agent.md": "802f9401aa1eea9dc08f35f086be2a89ee7269501884d049aca909a6e0ab6896",
+    "agents/sdem-a4-technology.agent.md": "f2df4b3923943fee48aad1ce238ab12d225ef491d329effe6d4a9b744d1e0187",
+    "agents/sdem-orchestrator.agent.md": "0a5cef807a050624df9d58f5efd5b6ca195df1e64c432e3e10029f743f4f294e",
+    "copilot-instructions.md": "f7d9306a3179704d035c9fc90a47f7695e3ebc0ca2e965a3336ff7ed6d742696",
+    "prompts/aid-explain.prompt.md": "a474b386392f5f33c214781525ac821db7fa9149dd53ed2838e788dcd1f9e4d9",
+    "prompts/sdem-explain.prompt.md": "02f6977fbb65ff4ae0468a9f44efff44eccbf80d7fe62f6363d0bad292bc0e0b",
+    "prompts/sdem-fix.prompt.md": "3ae7a2ab423c60480e8732d4e81d645f8c6db8fd1355e888b017aba72552555e",
+    "prompts/sdem-impact-note.prompt.md": "ec672d34bdf5b093762e66384fe52f2ebabed6682a1983d71f1e31fdb1f87747",
+    "prompts/sdem-layer-work.prompt.md": "8f2c1ac90f3d1ca893518ae0ca623f82c52a1fbe6f546d475d0c3df98e780dc1",
+    "prompts/sdem-onboarding-review.prompt.md": "6c0ec18a8c7ee900d2b88445ab38f8f5fe839a04deaceacdbca3f16ff4b12e2c",
+    "prompts/sdem-pr.prompt.md": "6641c196a9b107b9fd3d09cb0429fae6f0ccf51a3f57e6f781487899056b7e69",
+    "prompts/sdem-process-events.prompt.md": "429ded7dfccba7fc323ad984ec16beba90da7cd8e488fbf34d2f1dea1296f60b",
+    "prompts/sdem-review.prompt.md": "2c8df617f22017b66efef0db9fe4dbdedd257759867ffb536a07967560f31d07",
+    "skills/sdem-approve-links/SKILL.md": "5a7f881630b6e0153a7a67d988ff243f09f54b802b4e87424c79e72f35a07d29",
+    "skills/sdem-approve-links/evidence-by-link-type.md": "292d064f60fc845c5cb3d0f350fdd861faad7ecfa977f33ad693618fb9b43ac5",
+    "skills/sdem-change-sets/SKILL.md": "417fe308eb70a3848ae50a4dcd5e82fe2375d3861400331d81e04c6a5c5a2778",
+    "skills/sdem-change-sets/example-a3-repoint.json": "6d1d1790887757510e3c46301f95526c6a684774e49bfde571c48a8471dea994",
+    "skills/sdem-change-sets/example-a4-rehost.json": "3331d2ab6e14264674d4ce0e7bad53d1fa180255804207458ea5b409723c223d",
+    "skills/sdem-impact-validation/SKILL.md": "fadd754bd56ee181644ff09a13e0ff01c605a26ca5e67b67886f7a6393313491",
+    "skills/sdem-onboard-designs/SKILL.md": "71c987b94b5679455968b395587a3c344ab0679b60f6a42693e7c770a21f43ff",
+    "skills/sdem-records/SKILL.md": "753951f9d61a3f02884df288e71fbc287582fa18210a2855d796dcaa8ac8600f",
+    "skills/sdem-requirements-risk/SKILL.md": "46204a2140f4c645044ea1fda4761a512f60ff87dffb0b9a6d656c140f2e8ce5",
+    "skills/sdem-trace-impact/SKILL.md": "97e74decbeea04da8fb1ccc258458a300e38627f3feb0a144e606137e3951116"
+  }
+}

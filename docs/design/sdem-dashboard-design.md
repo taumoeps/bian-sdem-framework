@@ -1,0 +1,136 @@
+# SDEM Dashboard — Design
+
+> **Status: phase 1 approved and built 2026-10-28** (`sdem home`, `sdem dashboard`, `sdem matrix`, `sdem impact --report`); **phase 2 proposed, not approved** (`sdem serve`, a local web app with actions). Requirements: [`sdem-dashboard-spec.md`](sdem-dashboard-spec.md).
+
+## 1. Why
+
+SDEM runs on its own — every function is a `sdem` command, and none needs AI (the engine and AID are rules in code). But without Copilot it is a tool for technical architects: commands to remember, text output to read, JSON to edit, and no single view of a workspace. The dashboard gives architects **one page** that shows the workspace's health, what needs their attention, the traces, impacts and matrices — and the exact commands to act.
+
+## 2. The principle — one engine, the dashboard only shows
+
+```mermaid
+flowchart LR
+    data[("Workspace — datasets, registry, coordination records")] --> engine["SDEM functions (Python)<br/>check · link · trace · impact · matrix · AID · controls"]
+    engine --> cli["CLI — sdem …<br/>(the only way to change anything, phase 1)"]
+    engine --> dash["sdem dashboard<br/>one self-contained HTML file"]
+    dash --> arch(["Architect — browser or VS Code"])
+    arch -->|"copies the command shown"| cli
+```
+
+- **All logic stays in SDEM's Python functions.** The dashboard computes everything with the same functions the CLI uses — checks, traces, impacts, matrices — and the page only **displays** the results. No architecture logic in the browser.
+- **Phase 1 is read-only.** The page cannot change data; where an action is needed, it shows the exact `sdem` command to copy. Every control stays exactly where it is.
+- **No server, no network.** One HTML file with its data inside; it opens offline in a browser or in VS Code's built-in browser (*Simple Browser*). Regenerate it after a change.
+- **Not AI.** The dashboard works with Copilot switched off.
+
+## 3. What the architect sees
+
+```
+┌─ SDEM — payment-initiation ───────────────────────────── generated 2026-10-28 · rules 0.4.0 ┐
+│ [Overview] [Review] [Trace & impact] [Matrices] [Changes & work] [AID plans] [Controls]      │
+├──────────────────────────────────────────────────────────────────────────────────────────────┤
+│ HEALTH     A1 ✅ 16 records   A2 ⚠ 24 (6 advice)   A3 ✅ 16   A4 ✅ 12   Registry ✅ 18 links │
+│ ATTENTION  3 proposals to review · 2 open work items · 0 direct edits · graph store current  │
+│ COVERAGE   A1 100% linked · A2 67% · A3 81% · A4 92%   (records with an approved link)       │
+└──────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+| Tab | Shows | Act with |
+|---|---|---|
+| **Overview** | health per layer (errors and advice, in plain words), record counts, coverage, what needs attention | the command shown for each item |
+| **Review** | links the rules engine proposes, weakest first: rule, reasoning, confidence, the evidence needed for approval | `sdem approve …` (copy button) |
+| **Trace & impact** | pick a record: its chain down to technology and up to business; pick a change kind: the classified impact — printable as a report | `sdem impact … --report` |
+| **Matrices** | business → BIAN → application → technology, from approved links: capability→domain, domain→application, application→technology | `sdem matrix` |
+| **Changes & work** | change events with impact, work items with their history, direct edits waiting to be adopted | `sdem work …`, `sdem change …` |
+| **AID plans** | a projection beside the real design: what was projected, from what, how sure; gap results | `sdem aid …` |
+| **Controls** | every control, where it runs, its last tested result | — |
+| **Designs & gaps** (when the workspace has onboarded designs) | the pages designs came from (facts, coverage) and the **open gap records** — what did not fit an entity — by category | `sdem designs resolve` / `accept` (copy button) |
+
+## 4. New CLI outputs the dashboard needs (useful on their own)
+
+| Command | Gives |
+|---|---|
+| `sdem matrix --workspace DIR [--md FILE] [--json]` | the matrices from approved links — capability → service domain → application → technology, and each pair — as text, Markdown or JSON |
+| `sdem impact <id> --change <kind> --workspace DIR --report FILE.md` | a printable impact report: the change, every affected record with layer, classification, path and reason, links to supersede, and the architect's confirmation line |
+
+## 4a. The main dashboard — `sdem home`
+
+One home page for **SDEM itself** and **every workspace in use**, linking to each workspace's dashboard (each workspace page links back).
+
+```bash
+sdem home -o work/sdem          # the workspaces in examples/; add --root DIR or --workspace DIR for your own
+```
+
+writes `work/sdem/index.html` and `work/sdem/workspaces/<workspace>.html`.
+
+```mermaid
+flowchart LR
+    home["Home — work/sdem/index.html<br/>SDEM health · the metamodel · workspaces"] --> p1["workspaces/payment-initiation.html"]
+    home --> p2["workspaces/digital-lending.html"]
+    home --> p3["… one per workspace"]
+    p1 -.->|"← SDEM home"| home
+```
+
+| Tab | Shows |
+|---|---|
+| **SDEM architecture** (the landing view, `index.html#picture`) | the component architecture of SDEM — the original design's logical architecture plus AID, projection packages, change coordination and the workbench: BIAN reference repository, historical design repository, metamodel and rules, mapping engine, validation and approval, federated knowledge graph, the four architecture graphs and schemas — each box marked built, partly built or not built; click one for what it is, where it lives (files, commands), live figures, health and what is next. The diagram fills the window and scales to fit (no scrolling); **⛶ full screen** shows it alone, Esc to leave |
+| **Overview** | SDEM health at a glance (generated documents current, the rules engine's acceptance cases — run when the page is generated, controls, open spec gaps); the metamodel in numbers; every project with what needs attention |
+| **Projects** | each workspace: architectures present (records), links by status, coverage per architecture, errors, advice, proposals to review, open work — and a link to its dashboard |
+| **Architecture entities** | every entity type: architecture, definition, the standard it comes from, evidence status, attributes (own and inherited, required ones named), how many links it may take inside and between architectures — filterable |
+| **Entity map** | the four architectures as bands, every entity type, and the link types between architectures as arrows; click a type for its definition, attributes, allowed links and the engine rules that use it |
+| **Links inside each architecture** | the relationship rows allowed within an architecture, with basis and meaning — filterable |
+| **Links between architectures** | the link types of the federated knowledge graph: from, to, meaning, the evidence each needs to approve, published source and confidence |
+| **Engine rules** | every rule of the rules engine: from, produces, to, step, decision, confidence, published source — filterable |
+| **Health** | generated documents and schemas (current or stale), the acceptance cases with precision and recall against the hand-run floor, evidence status of the entity types, controls, known gaps, the gap register |
+| **Configuration** | where each setting lives; confidence bands; link statuses and allowed changes; impact rules; the agents |
+
+## 4b. Navigation — Home, dashboard and graph
+
+> Built 2026-11-03, owner's request ("Unified Architecture Navigation"): an architect moves **Home → Workspace Dashboard → Architecture Graph → Dashboard → Home** with ordinary links, offline. No server, no new command, no new dependency; the pages stay read-only and only show what the Python engines computed. Code: `sdem/nav.py`, `sdem/home.py`, `sdem/dashboard.py`, `sdem/view.py`; tests `tests/test_navigation.py`.
+
+| Id | Requirement |
+|---|---|
+| NV-01 | `sdem home` gives each workspace **Open Workspace Dashboard** and — when its graph is current — **Open Architecture Graph**; it writes each workspace's dashboard and graph page into its own output folder (`workspaces/<name>.html`, `workspaces/<name>-graph.html`) and nowhere else. |
+| NV-02 | The dashboard shows **Architecture Graph →** in its header and Overview when the graph is current and its viewer shows the current build; otherwise it says which state the graph is in and gives the command(s). `--graph` defaults to `<workspace>/graph`, `--view` to `<graph>/view.html`. |
+| NV-03 | A graph's state is one of **cannot be built yet** (the workspace needs migrating, fails its checks, or its profile does not pass), **not built**, **out of date** (an input changed since the build, or a new dataset file — inputs are also found in the store's own workspace when the recorded path does not resolve), **current**. A graph that is not current is never linked; Home removes an earlier graph page rather than leave it looking current. |
+| NV-04 | The graph page records the build it shows (`<meta name="sdem-graph-build">`) and when it was generated; a dashboard links only a viewer showing the current build (else *viewer not generated / out of date*, with `sdem view --graph …`). |
+| NV-05 | The graph page links back to the workspace dashboard (`--dashboard`, or `<workspace>/dashboard.html` when it is the workspace's own graph) and to SDEM Home (`--home`; set by `sdem home`). |
+| NV-06 | Every workspace has its own pages: two workspaces with the same folder name get distinct pages, and no page links to another workspace's graph. |
+| NV-07 | Links are relative and URL-encoded — they work under `file://`, in nested folders, with spaces and special characters; workspace paths shown or put in commands are relative to the folder the command ran in — no machine-specific path is written into a page. |
+| NV-08 | Generating pages never changes a workspace: datasets, the registry, requirements, change events and decisions are read, never written. |
+
+**Architect experience (v0.18.0)** — owner's brief "Architect Experience and Pilot Readiness" (2026-11-03): understand SDEM in two minutes, explore Payments in five, without Python or JSON.
+
+| Id | Requirement |
+|---|---|
+| TK-01 | SDEM's capabilities are grouped by the architect's goal — **Explore, Design, Connect, Analyse, Govern, Operate** — one list (`TASKS` in `sdem/home.py`) shown as SDEM Home's *Architect tasks* tab and in the user guide §4b; each task gives its command, what it needs, what it gives, how to inspect it, its **effect** (reads only · writes generated outputs only · proposes · changes the architecture · a person's decision) and whether a person must approve. No new engine or command. |
+| TK-02 | Every command and option a task names exists (checked against `sdem commands --json`), and the guide lists the same tasks. |
+| EX-01 | `sdem new … --example payment-initiation --explore` (or `--from`) also builds the knowledge graph and writes the graph page, the dashboard and SDEM Home (`work/sdem/index.html`) — the documented commands, in order; derived outputs only; with `--json`, one document. No new command. |
+| EX-02 | The walkthrough in the user guide §4a is executed as written — on the checkout and on the installed wheel — by the test suite (`tests/test_navigation.py`, `tests/test_release_smoke.py`). |
+
+## 5. Phase 2 (proposed) — `sdem serve`
+
+A local web app (Python standard library, `localhost` only, no external access) with buttons for the common actions — check, link, build, approve (with your name and evidence), claim work, revert — and a **record editor with forms** that validates as you type, replacing JSON editing.
+
+- Every button calls **the same functions as the CLI**, so CTL-16…22 apply unchanged.
+- It changes decision SDEM-D07 from "the CLI is the only interface" to **"one engine, two front ends (CLI and local GUI); no logic in the GUI"**.
+- It opens a local port on the architect's machine — the organisation may need to approve that.
+
+## 6. Decisions
+
+| # | Decision | Recommendation | Status |
+|---|---|---|---|
+| DB-D01 | A dashboard for architects | **one self-contained, read-only HTML file per workspace** (`sdem dashboard`), generated by SDEM; offline; no server | approved 2026-10-28, built |
+| DB-D02 | Where the logic lives | **in SDEM's Python functions only**; the page displays precomputed results | approved, built |
+| DB-D03 | How architects act from it | **copy the exact `sdem` command** shown beside each item (phase 1) | approved, built |
+| DB-D04 | New outputs | `sdem matrix` and `sdem impact --report`, usable without the dashboard | approved, built |
+| DB-D06 | A main dashboard | **`sdem home`**: SDEM itself (metamodel, picture, health live, configuration) and every workspace, linking to the project dashboards | approved 2026-10-28, built |
+| DB-D05 | Phase 2 — `sdem serve` with actions and forms | **after phase 1 has been used**; amend SDEM-D07 to "one engine, two front ends" | proposed — owner to decide |
+
+## 7. Limits
+
+| Limit | Consequence |
+|---|---|
+| a snapshot, not live | regenerate after a change (`sdem dashboard …`); the page shows when it was generated and warns if the graph store is out of date |
+| read-only | actions are copied commands until phase 2 |
+| one workspace per page | workspaces are separate today; an enterprise-wide view comes with tool onboarding (v0.11) and several workspaces |
+| size | precomputed traces and impacts for every record. Measured 2026-10-29: 2,000 records → 1 s and a 3.8 MB page; 8,000 records → 13 s and a 20 MB page. Comfortable up to a few thousand records per workspace; larger workspaces need on-demand queries (phase 2) or several workspaces |

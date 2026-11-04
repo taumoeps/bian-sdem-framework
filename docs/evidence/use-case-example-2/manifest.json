@@ -1,0 +1,24 @@
+{
+  "example": "use-case-example-2",
+  "run_date": "2026-11-01",
+  "code_commit": "d2a341ff4695ca36e6993ac80b8352f7bb70335b",
+  "files": {
+    "catalogue-summary.json": "eb02b6c5214aecbc14d081b0a62f71b41d68e00d291c3bf75bde6b7a23cf6d56",
+    "run1-projection.json": "182b3b4fd597f907b14e288acbaac65db56b3498f28ca0888742cf5a1855978a",
+    "run1-gaps.json": "441760df6b96ea74ac4c934913918959862728d4e0fcb3e33bceba6ca2a88053",
+    "run2-projection.json": "3f18251d33e2b3ec3d32cfce9eb72a708fa97e0f844cf8db7960cbe804f64db9",
+    "run2-gaps.json": "881e0e3835f818c021f96191438b13bfbce095bc492bf782c38372975ccd5745",
+    "run3-projection.json": "6c632edd9d6da94c4f032ae846e2b807cdba6fc803c6fe2d0db0748c749a30f6",
+    "run3-gaps.json": "d9064c4547c2ab624d51e8b5e5d910c0102b5e796d7beb9998f727bb169736df",
+    "run4-projection.json": "e47d62047c30e4034adf1c145b7d201322b953acd54683009535e262afcf3a7b",
+    "run4-gaps.json": "eaed7a18426b0fca810bf1088bdad37714282c8745984d5f7ec47175167d04f0",
+    "run5-projection.json": "6e75245d856c539ac77ad4d1bb082dbdb678247938cca61696af8a7c193d84cc",
+    "run5-gaps.json": "8c5fc5742b31c1df4606276d2c3cbfa958d9211c7fe99e061595246532c45c73",
+    "results.json": "874eccc95740c43108f5bebaa3fff8680b9de75b7c48b6d147a9a0c4ed7870ab",
+    "run1-view.html": "638787b0e4cd8542dbb9a9ea14efa9f308d3e30c6b93009c834198ed54a2fbe8",
+    "run2-view.html": "426c9f9d7710247eb92cfdc40f7efcad59e9b23b069f07a5f82bebb6eb2c08d1",
+    "run3-view.html": "209d4ecae47be02d885bcbd5436058c9d2ba048fc3d55a2cdf791a6213af0cf6",
+    "run4-view.html": "40452b3c01feb0d237154c1fde760b8cbbddf432573a5b255c5b602b5d5088ef",
+    "run5-view.html": "aaaa00228cdc336f0ebdc29ffbf020bc0e9fff4c39a0cad31e02f04b6e1e255a"
+  }
+}

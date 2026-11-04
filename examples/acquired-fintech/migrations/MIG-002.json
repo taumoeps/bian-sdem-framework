@@ -1,0 +1,41 @@
+{
+  "id": "MIG-002",
+  "at": "2026-10-30T01:38:06",
+  "person": "sdem.maintainer",
+  "current": "0.6.0",
+  "files": [
+    {
+      "file": "a2-service-domain.json",
+      "from": "0.5.0",
+      "to": "0.6.0",
+      "migrations": [
+        "0.5.0 → 0.6.0"
+      ]
+    },
+    {
+      "file": "a3-application.json",
+      "from": "0.5.0",
+      "to": "0.6.0",
+      "migrations": [
+        "0.5.0 → 0.6.0"
+      ]
+    },
+    {
+      "file": "a4-technology.json",
+      "from": "0.5.0",
+      "to": "0.6.0",
+      "migrations": [
+        "0.5.0 → 0.6.0"
+      ]
+    },
+    {
+      "file": "mappings.json",
+      "from": "0.5.0",
+      "to": "0.6.0",
+      "migrations": [
+        "0.5.0 → 0.6.0"
+      ]
+    }
+  ],
+  "changes": {}
+}

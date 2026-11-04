@@ -1,0 +1,5 @@
+{
+  "plantuml.render": "Local",
+  "plantuml.exportFormat": "svg",
+  "plantuml.exportOutDir": "metamodel"
+}

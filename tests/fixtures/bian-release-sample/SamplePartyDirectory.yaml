@@ -1,0 +1,100 @@
+openapi: 3.0.1
+info:
+  title: Sample Party Directory
+  description: "A made-up service domain in the shape of a BIAN Semantic API file — not BIAN text."
+  contact:
+    name: SDEM test
+  version: 99.0.0
+servers:
+  - url: https://example.invalid/sample
+paths:
+  ? /SamplePartyDirectory/{id}/Retrieve/With/A/Long/Path/Written/As/A/Complex/Key
+  : get:
+      tags:
+        - CR - SamplePartyDirectoryEntry
+      summary: Retrieve
+      operationId: Retrieve
+      responses:
+        200:
+          $ref: '#/components/responses/SamplePartyDirectoryEntry'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/SamplePartyDirectory/Register':
+    post:
+      tags:
+        - CR - SamplePartyDirectoryEntry
+      summary: Register
+      operationId: Register
+      requestBody:
+        $ref: '#/components/requestBodies/SamplePartyDirectoryEntry'
+      responses:
+        200:
+          $ref: '#/components/responses/SamplePartyDirectoryEntry'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/SamplePartyDirectory/{id}/Payment/Update':
+    put:
+      tags:
+        - BQ - Payment
+      summary: UpdatePayment
+      operationId: UpdatePayment
+      requestBody:
+        $ref: '#/components/requestBodies/Payment'
+      responses:
+        200:
+          $ref: '#/components/responses/Payment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+components:
+  schemas:
+    HTTPError:
+      type: object
+      properties:
+        status:
+          type: string
+    SamplePartyDirectoryEntry:
+      type: object
+      properties:
+        PartyReference:
+          type: string
+        PartyName:
+          type: string
+        rwc:0000-made-up-key:
+          type: string
+    Payment:
+      type: object
+      properties:
+        PaymentReference:
+          type: string
+  responses:
+    BadRequest:
+      description: BadRequest
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPError'
+    SamplePartyDirectoryEntry:
+      description: SamplePartyDirectoryEntry
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SamplePartyDirectoryEntry'
+    Payment:
+      description: Payment
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Payment'
+  requestBodies:
+    SamplePartyDirectoryEntry:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SamplePartyDirectoryEntry'
+      required: true
+    Payment:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Payment'
+      required: true

@@ -1,0 +1,200 @@
+{
+  "$schema_version": "0.6.1",
+  "note": "Conventional attribute keys on level-architecture dataset instances. 'attributes' stays free-form in schema/level-model.schema.json; these are the keys the mapping steps (docs/mapping-execution.md §3) join on. Cross-level references are allowed ONLY as attributes (relationships stay within-level).",
+  "conventions": {
+    "A2.ServiceOperation": {
+      "action_term": "one of BIAN's 17 action terms",
+      "behavior_qualifier": "qualifier name or null",
+      "input_attributes": "list of control-record attribute names consumed",
+      "output_attributes": "list produced"
+    },
+    "A2.ControlRecord": {
+      "attributes": "list of attribute names (BIAN control-record make-up)",
+      "lifecycle_states": "ordered list of the record's lifecycle states (S21 reasoning; informational)"
+    },
+    "A2.BusinessObject": {
+      "attributes": "list of BOM attribute names"
+    },
+    "A2.BusinessScenario": {
+      "operation_sequence": "ordered list of A2.ServiceOperation ids"
+    },
+    "A1.BusinessCapability": {
+      "description": "scope statement (schema field, not attribute)"
+    },
+    "A1.BusinessProcess": {
+      "invokes": "list of A2.ServiceOperation ids the process steps call (optional; enables step 3 for USES_DOMAIN)"
+    },
+    "A1.BusinessActivity": {
+      "invokes": "list of A2.ServiceOperation ids"
+    },
+    "A1.ValueStream": {
+      "stages": "ordered list of A1.ValueStreamStage ids"
+    },
+    "A1.BusinessObject": {
+      "attributes": "list of attribute names from the business glossary",
+      "field_aliases": "map of the bank's glossary attribute names to canonical attribute names (S12 step 4), e.g. lc_number → letter_of_credit_reference; institution data"
+    },
+    "A3.APIOperation": {
+      "method": "HTTP method",
+      "path": "resource path",
+      "payload_fields": "list of request/response field names"
+    },
+    "A3.ApplicationComponent": {
+      "deployed_on": "list of A4 platform/node ids (join key for DEPLOYED_ON, S36)",
+      "deployed_as": "list of A4.Deployment ids (join key for DEPLOYED_AS)",
+      "built_as": "list of A4.Artifact ids (S39)",
+      "network_zone": "A4.CommunicationNetwork id (S37)"
+    },
+    "A3.ApplicationService": {
+      "consumes": "list of A4.TechnologyService ids (join key for S41)"
+    },
+    "A3.DataEntity": {
+      "attributes": "list of attribute names",
+      "stored_in": "list of A4 ids: A4.SystemSoftware (S50) or A4.Artifact such as an object store (S49)",
+      "field_aliases": "optional map of column names to canonical attribute names; overrides the field_aliases inherited from the interfaces of components that access the entity"
+    },
+    "A4.Deployment": {
+      "component_id": "the A3.ApplicationComponent deployed",
+      "environment_id": "A4.DeploymentEnvironment id",
+      "platform_id": "A4 platform/node id"
+    },
+    "A4.SystemSoftware": {
+      "hosts": "list of A3.ApplicationComponent ids (alternative join key)"
+    },
+    "A4.Node": {
+      "hosts": "list of A3.ApplicationComponent ids"
+    },
+    "A2.ServiceDomain": {
+      "asset_type": "id of the A2.AssetType the domain manages (join key for step 2 rule 1 reverse and S17 step-4 fallback)",
+      "functional_pattern": "id of the A2.FunctionalPattern"
+    },
+    "A2.AssetType": {
+      "aliases": "list of tokens the institution's workspace uses for this asset (join key for the step-2 boundary gate and the S17 fallback); e.g. Financial Position → balance, position, posting, ledger"
+    },
+    "A2.BehaviorQualifier": {
+      "aliases": "list of tokens the institution's APIs use for this qualifier (step-2 check 3); e.g. Closure → close"
+    },
+    "A3.ApplicationInterface": {
+      "field_aliases": "map of the interface's product field names to canonical attribute names (step-2 check 4, S30/S20 step 4); e.g. sender → debtor_account_reference. Institution data from interviews or contract review, never inferred",
+      "exposed_through": "list of A4.TechnologyInterface ids — gateway ingress, listener (S43; S44, S48 derived)"
+    },
+    "A1.BusinessService": {
+      "inputs": "attribute names the service takes (S09: matched against operation input_attributes)",
+      "outputs": "attribute names the service returns (S09: matched against output_attributes)"
+    },
+    "A1.BusinessRequirement": {
+      "applies_to": "list of A1.BusinessProcess / A1.BusinessActivity ids the requirement constrains (S13 via S04, S14 via S06)"
+    },
+    "A3.ApplicationFunction": {
+      "exposed_through": "list of A3.APIOperation ids the function is reached through (S18, S21 via S24)",
+      "consumes": "list of A4.TechnologyService ids (S45; S46 derived)"
+    },
+    "A3.Event": {
+      "published_to": "list of A4.TechnologyService ids — broker (S51)"
+    },
+    "A3.SolutionBuildingBlock": {
+      "components": "list of A3.ApplicationComponent ids the block aggregates (S52–S54 derived)"
+    },
+    "A4.Device": {
+      "hosts": "list of A3.ApplicationComponent ids (S35; DEPLOYED_ON with a Device target)"
+    },
+    "A4.CommunicationNetwork": {
+      "connects": "list of A4.Node / A4.Device ids on the network (S37 with the component's network_zone)"
+    },
+    "A4.Path": {
+      "from": "A4 endpoint id",
+      "to": "A4 endpoint id",
+      "network": "A4.CommunicationNetwork id",
+      "carries": "list of A3.ApplicationComponent ids whose traffic uses the path (S38)"
+    },
+    "A4.TechnologyInterface": {
+      "of_service": "A4.TechnologyService id the interface belongs to (S42, S44 derived)",
+      "exposes": "list of A3.ApplicationInterface ids reachable through it (S43)"
+    },
+    "A4.Artifact": {
+      "of_component": "A3.ApplicationComponent id the artefact is a build of (S39)"
+    }
+  },
+  "bian_action_terms": {
+    "source": "[SAPG] §3.2.5 Figure 14 — 17 action terms in four categories; §3.5: Retrieve maps to HTTP GET; Notify is not used in the BIAN REST mapping",
+    "service_center": [
+      "Activate",
+      "Configure",
+      "Feedback"
+    ],
+    "create_instance": [
+      "Create",
+      "Initiate",
+      "Register",
+      "Evaluate",
+      "Provide"
+    ],
+    "act_on_instance": [
+      "Update",
+      "Control",
+      "Exchange",
+      "Capture",
+      "Execute",
+      "Request",
+      "Grant"
+    ],
+    "obtain_information": [
+      "Retrieve",
+      "Notify"
+    ]
+  },
+  "key_ids": {
+    "A2.ServiceOperation.action_term": "KA2-01",
+    "A2.ServiceOperation.behavior_qualifier": "KA2-02",
+    "A2.ServiceOperation.input_attributes": "KA2-03",
+    "A2.ServiceOperation.output_attributes": "KA2-04",
+    "A2.ControlRecord.attributes": "KA2-05",
+    "A2.ControlRecord.lifecycle_states": "KA2-06",
+    "A2.BusinessObject.attributes": "KA2-07",
+    "A2.BusinessScenario.operation_sequence": "KA2-08",
+    "A1.BusinessCapability.description": "KA1-01",
+    "A1.BusinessProcess.invokes": "KA1-02",
+    "A1.BusinessActivity.invokes": "KA1-03",
+    "A1.ValueStream.stages": "KA1-04",
+    "A1.BusinessObject.attributes": "KA1-05",
+    "A1.BusinessObject.field_aliases": "KA1-06",
+    "A3.APIOperation.method": "KA3-01",
+    "A3.APIOperation.path": "KA3-02",
+    "A3.APIOperation.payload_fields": "KA3-03",
+    "A3.ApplicationComponent.deployed_on": "KA3-04",
+    "A3.ApplicationComponent.deployed_as": "KA3-05",
+    "A3.ApplicationComponent.built_as": "KA3-06",
+    "A3.ApplicationComponent.network_zone": "KA3-07",
+    "A3.ApplicationService.consumes": "KA3-08",
+    "A3.DataEntity.attributes": "KA3-09",
+    "A3.DataEntity.stored_in": "KA3-10",
+    "A3.DataEntity.field_aliases": "KA3-11",
+    "A4.Deployment.component_id": "KA4-01",
+    "A4.Deployment.environment_id": "KA4-02",
+    "A4.Deployment.platform_id": "KA4-03",
+    "A4.SystemSoftware.hosts": "KA4-04",
+    "A4.Node.hosts": "KA4-05",
+    "A2.ServiceDomain.asset_type": "KA2-09",
+    "A2.ServiceDomain.functional_pattern": "KA2-10",
+    "A2.AssetType.aliases": "KA2-11",
+    "A2.BehaviorQualifier.aliases": "KA2-12",
+    "A3.ApplicationInterface.field_aliases": "KA3-12",
+    "A3.ApplicationInterface.exposed_through": "KA3-13",
+    "A1.BusinessService.inputs": "KA1-07",
+    "A1.BusinessService.outputs": "KA1-08",
+    "A1.BusinessRequirement.applies_to": "KA1-09",
+    "A3.ApplicationFunction.exposed_through": "KA3-14",
+    "A3.ApplicationFunction.consumes": "KA3-15",
+    "A3.Event.published_to": "KA3-16",
+    "A3.SolutionBuildingBlock.components": "KA3-17",
+    "A4.Device.hosts": "KA4-06",
+    "A4.CommunicationNetwork.connects": "KA4-07",
+    "A4.Path.from": "KA4-08",
+    "A4.Path.to": "KA4-09",
+    "A4.Path.network": "KA4-10",
+    "A4.Path.carries": "KA4-11",
+    "A4.TechnologyInterface.of_service": "KA4-12",
+    "A4.TechnologyInterface.exposes": "KA4-13",
+    "A4.Artifact.of_component": "KA4-14"
+  }
+}

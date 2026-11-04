@@ -1,0 +1,590 @@
+{
+  "id": "IV-001",
+  "event": "CE-001",
+  "change_set": "CS-001",
+  "changed_layer": "A4",
+  "round": 1,
+  "calculated": {
+    "impact": "events/CE-001.json#impact",
+    "coverage_source": "stored with the change event",
+    "basis": {
+      "rules_version": "0.5.0",
+      "files": {
+        "a1-business.json": "ba19d4ef4a50284aea1fea5f7908071a8dee18566caa420264210949422116fe",
+        "a2-service-domain.json": "33b8e639e226dbdf4d66d95d58d86b27e82d3287dbd9a0ee75da2f24cf533e11",
+        "a3-application.json": "869e4d083a4b700bf659926b4e013ca9cd7a45707db05fe69cab9fb7e669a686",
+        "a4-technology.json": "d24b22ebf3448aa4cd42b737216b31efec35c9d8d302d6d15f7243cdd6676f94",
+        "mappings.json": "9b060a6b712d440e5aab758ce5b3d01e942fc8bef4072edfe581021805ed4121"
+      },
+      "approved_links": 18,
+      "approved_links_sha256": "165e78451800efaf37b90d71777880c692ff19a8b33f7ac1b8498c895ef42452"
+    }
+  },
+  "layers": {
+    "A1": {
+      "calculated": {
+        "present": true,
+        "reached": true,
+        "result": "no_impact_by_rule",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "CAP-PAY-010",
+            "classification": "no_impact",
+            "via": [
+              "PAY-108",
+              "PAY-106",
+              "PAY-001"
+            ],
+            "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "PRC-PAY-01",
+            "classification": "no_impact",
+            "via": [
+              "PAY-108",
+              "PAY-106",
+              "PAY-003"
+            ],
+            "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "PRC-PAY-02",
+            "classification": "no_impact",
+            "via": [
+              "PAY-108",
+              "PAY-106",
+              "PAY-004"
+            ],
+            "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-001",
+          "PAY-003",
+          "PAY-004",
+          "PAY-106",
+          "PAY-108"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ACT-PAY-01a",
+          "ACT-PAY-01b",
+          "ACT-PAY-02a",
+          "ACT-PAY-02b",
+          "BO-PAYEE",
+          "CAP-PAY-000",
+          "VSS-P1",
+          "VSS-P2",
+          "VSS-P3",
+          "VSS-P4"
+        ],
+        "unmapped_count": 10,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "3 record(s) reached through approved links; the impact rules give no_impact for this kind of change; evidence incomplete: 0 link(s) not approved, 10 record(s) with no approved link where one is expected"
+      },
+      "assessments": [
+        {
+          "event": "CE-001",
+          "layer": "A1",
+          "calculated": "no_impact",
+          "status": "no_impact_confirmed",
+          "recommended": "no_impact",
+          "evidence": [
+            "design_review:CE-001-A1"
+          ],
+          "additional_records": [],
+          "inputs_sha256": "37da61e46760c52807d747e7c8b579303ae5e2db9c5108d903d037286d310367",
+          "analysis_contract": 2,
+          "mappings": [],
+          "records": [],
+          "missing_relationships": [],
+          "uncertainty": "the made-up example has records without links; none is on the changed path",
+          "confidence": "medium",
+          "reasoning": "A1: 3 record(s) reached through approved links; the impact rules give no_impact for ",
+          "agent": "sdem-a1-business",
+          "person": "jane.architect",
+          "at": "2026-10-28T00:00:00+00:00"
+        }
+      ]
+    },
+    "A2": {
+      "calculated": {
+        "present": true,
+        "reached": true,
+        "result": "no_impact_by_rule",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "SD-PI",
+            "classification": "no_impact",
+            "via": [
+              "PAY-108",
+              "PAY-106"
+            ],
+            "rule": "rehost/up2+ → no_impact (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-106",
+          "PAY-108"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "BBO-PARTY",
+          "SD-PA",
+          "SD-PE",
+          "SO-PI-06"
+        ],
+        "unmapped_count": 4,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "1 record(s) reached through approved links; the impact rules give no_impact for this kind of change; evidence incomplete: 0 link(s) not approved, 4 record(s) with no approved link where one is expected"
+      },
+      "assessments": [
+        {
+          "event": "CE-001",
+          "layer": "A2",
+          "calculated": "no_impact",
+          "status": "no_impact_confirmed",
+          "recommended": "no_impact",
+          "evidence": [
+            "design_review:CE-001-A2"
+          ],
+          "additional_records": [],
+          "inputs_sha256": "37da61e46760c52807d747e7c8b579303ae5e2db9c5108d903d037286d310367",
+          "analysis_contract": 2,
+          "mappings": [],
+          "records": [],
+          "missing_relationships": [],
+          "uncertainty": "the made-up example has records without links; none is on the changed path",
+          "confidence": "medium",
+          "reasoning": "A2: 1 record(s) reached through approved links; the impact rules give no_impact for ",
+          "agent": "sdem-a2-bian",
+          "person": "jane.architect",
+          "at": "2026-10-28T00:00:00+00:00"
+        }
+      ]
+    },
+    "A3": {
+      "calculated": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "APP-PAY-HUB",
+            "classification": "design_change_required",
+            "via": [
+              "PAY-108"
+            ],
+            "rule": "rehost/up1 → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "CMP-PAY-EXEC",
+            "classification": "design_change_required",
+            "via": [
+              "PAY-111"
+            ],
+            "rule": "rehost/up1 → design_change_required (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-108",
+          "PAY-111"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "API-PI-06",
+          "CMP-PAY-CAPTURE",
+          "CMP-PAY-VALIDATE",
+          "ENT-ACCOUNT-CACHE",
+          "ENT-PAY-EVENT"
+        ],
+        "unmapped_count": 5,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "2 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 5 record(s) with no approved link where one is expected"
+      },
+      "assessments": [
+        {
+          "event": "CE-001",
+          "layer": "A3",
+          "calculated": "design_change_required",
+          "status": "impact_confirmed",
+          "recommended": "design_change_required",
+          "evidence": [
+            "design_review:CE-001-A3"
+          ],
+          "additional_records": [],
+          "inputs_sha256": "37da61e46760c52807d747e7c8b579303ae5e2db9c5108d903d037286d310367",
+          "analysis_contract": 2,
+          "mappings": [],
+          "records": [],
+          "missing_relationships": [],
+          "uncertainty": "",
+          "confidence": "medium",
+          "reasoning": "A3: 2 record(s) reached through approved links; the strongest rule gives design_chan",
+          "agent": "sdem-a3-application",
+          "person": "jane.architect",
+          "at": "2026-10-28T00:00:00+00:00"
+        }
+      ]
+    },
+    "A4": {
+      "calculated": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [
+          "ART-PAYHUB-IMG",
+          "ENV-PAY-PROD",
+          "NET-PAY-PRIVATE"
+        ],
+        "records": [
+          {
+            "id": "DEP-PAYEXEC-PROD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "DEP-PAYHUB-PROD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "INF-K8S-PAY-PROD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "rehost/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "INF-K8S-PAY-PROD2",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          }
+        ],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ART-PAYHUB-IMG",
+          "ENV-PAY-PROD",
+          "ENV-PAY-UAT",
+          "INF-K8S-PAY-PROD2",
+          "INF-PG-PAY-PROD",
+          "NET-PAY-PRIVATE",
+          "TS-MQ",
+          "TS-SECRETS"
+        ],
+        "unmapped_count": 8,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "4 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 8 record(s) with no approved link where one is expected; 3 record(s) linked inside the layer to the changed record(s) are not followed by the impact rules: ART-PAYHUB-IMG, ENV-PAY-PROD, NET-PAY-PRIVATE"
+      },
+      "assessments": [
+        {
+          "event": "CE-001",
+          "layer": "A4",
+          "calculated": "design_change_required",
+          "status": "impact_confirmed",
+          "recommended": "design_change_required",
+          "evidence": [
+            "design_review:CE-001-A4"
+          ],
+          "additional_records": [],
+          "inputs_sha256": "37da61e46760c52807d747e7c8b579303ae5e2db9c5108d903d037286d310367",
+          "analysis_contract": 2,
+          "mappings": [],
+          "records": [],
+          "missing_relationships": [],
+          "uncertainty": "",
+          "confidence": "medium",
+          "reasoning": "A4: 4 record(s) reached through approved links; the strongest rule gives design_chan",
+          "agent": "sdem-a4-technology",
+          "person": "jane.architect",
+          "at": "2026-10-28T00:00:00+00:00"
+        }
+      ]
+    }
+  },
+  "history": [
+    {
+      "phase": "validation_pending",
+      "at": "2026-10-28T00:00:00+00:00",
+      "agent": "sdem-orchestrator",
+      "person": "jane.architect"
+    },
+    {
+      "phase": "validation_in_progress",
+      "at": "2026-10-28T00:00:00+00:00",
+      "agent": "sdem-a1-business",
+      "person": "jane.architect",
+      "note": "A1: no_impact_confirmed"
+    },
+    {
+      "phase": "validation_in_progress",
+      "at": "2026-10-28T00:00:00+00:00",
+      "agent": "sdem-a2-bian",
+      "person": "jane.architect",
+      "note": "A2: no_impact_confirmed"
+    },
+    {
+      "phase": "validation_in_progress",
+      "at": "2026-10-28T00:00:00+00:00",
+      "agent": "sdem-a3-application",
+      "person": "jane.architect",
+      "note": "A3: impact_confirmed"
+    },
+    {
+      "phase": "validation_complete",
+      "at": "2026-10-28T00:00:00+00:00",
+      "agent": "sdem-a4-technology",
+      "person": "jane.architect",
+      "note": "A4: impact_confirmed"
+    },
+    {
+      "phase": "architect_accepted",
+      "at": "2026-10-28T00:00:00+00:00",
+      "agent": "architect",
+      "person": "jane.architect"
+    },
+    {
+      "phase": "implementation_authorised",
+      "at": "2026-10-28T00:00:00+00:00",
+      "agent": "architect",
+      "person": "jane.architect"
+    }
+  ],
+  "analysis": {
+    "contract": 2,
+    "registry": "missing",
+    "computed_at": "2026-11-01T21:14:39+00:00",
+    "inputs_sha256": "37da61e46760c52807d747e7c8b579303ae5e2db9c5108d903d037286d310367",
+    "change_kind": "modify",
+    "changed": [
+      "INF-K8S-PAY-PROD2",
+      "INF-K8S-PAY-PROD",
+      "DEP-PAYHUB-PROD",
+      "DEP-PAYEXEC-PROD"
+    ],
+    "substitution": {
+      "INF-K8S-PAY-PROD": "INF-K8S-PAY-PROD2"
+    },
+    "requirements": [],
+    "layers": {
+      "A1": {
+        "status": "requirements_registry_missing",
+        "requirements": [],
+        "breached": 0,
+        "missing_evidence": 0,
+        "remediated": 0,
+        "satisfied": 0,
+        "not_confirmed": 0,
+        "structurally_reached": true,
+        "note": "the workspace has no requirements registry — not evidence that requirements are met"
+      },
+      "A2": {
+        "status": "requirements_registry_missing",
+        "requirements": [],
+        "breached": 0,
+        "missing_evidence": 0,
+        "remediated": 0,
+        "satisfied": 0,
+        "not_confirmed": 0,
+        "structurally_reached": true,
+        "note": "the workspace has no requirements registry — not evidence that requirements are met"
+      },
+      "A3": {
+        "status": "requirements_registry_missing",
+        "requirements": [],
+        "breached": 0,
+        "missing_evidence": 0,
+        "remediated": 0,
+        "satisfied": 0,
+        "not_confirmed": 0,
+        "structurally_reached": true,
+        "note": "the workspace has no requirements registry — not evidence that requirements are met"
+      },
+      "A4": {
+        "status": "requirements_registry_missing",
+        "requirements": [],
+        "breached": 0,
+        "missing_evidence": 0,
+        "remediated": 0,
+        "satisfied": 0,
+        "not_confirmed": 0,
+        "structurally_reached": true,
+        "note": "the workspace has no requirements registry — not evidence that requirements are met"
+      }
+    },
+    "obligations": [],
+    "risks": [
+      {
+        "id": "RF-EVIDENCE-A1",
+        "type": "missing_evidence",
+        "text": "A1: the change reaches this layer, but the workspace has no requirements registry — not evidence that requirements are met",
+        "layer": "A1",
+        "requirement": null,
+        "records": [],
+        "evidence": [],
+        "decision": "record the A1 requirements the affected records must meet, or confirm that none applies"
+      },
+      {
+        "id": "RF-ASSUME-A1",
+        "type": "assumption",
+        "text": "A1: 10 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects",
+        "layer": "A1",
+        "requirement": null,
+        "records": [
+          "ACT-PAY-01a",
+          "ACT-PAY-01b",
+          "ACT-PAY-02a",
+          "ACT-PAY-02b",
+          "BO-PAYEE",
+          "CAP-PAY-000",
+          "VSS-P1",
+          "VSS-P2",
+          "VSS-P3",
+          "VSS-P4"
+        ],
+        "evidence": [],
+        "decision": "confirm the assumption, or add and approve the missing links"
+      },
+      {
+        "id": "RF-EVIDENCE-A2",
+        "type": "missing_evidence",
+        "text": "A2: the change reaches this layer, but the workspace has no requirements registry — not evidence that requirements are met",
+        "layer": "A2",
+        "requirement": null,
+        "records": [],
+        "evidence": [],
+        "decision": "record the A2 requirements the affected records must meet, or confirm that none applies"
+      },
+      {
+        "id": "RF-ASSUME-A2",
+        "type": "assumption",
+        "text": "A2: 4 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects",
+        "layer": "A2",
+        "requirement": null,
+        "records": [
+          "BBO-PARTY",
+          "SD-PA",
+          "SD-PE",
+          "SO-PI-06"
+        ],
+        "evidence": [],
+        "decision": "confirm the assumption, or add and approve the missing links"
+      },
+      {
+        "id": "RF-EVIDENCE-A3",
+        "type": "missing_evidence",
+        "text": "A3: the change reaches this layer, but the workspace has no requirements registry — not evidence that requirements are met",
+        "layer": "A3",
+        "requirement": null,
+        "records": [],
+        "evidence": [],
+        "decision": "record the A3 requirements the affected records must meet, or confirm that none applies"
+      },
+      {
+        "id": "RF-ASSUME-A3",
+        "type": "assumption",
+        "text": "A3: 5 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects",
+        "layer": "A3",
+        "requirement": null,
+        "records": [
+          "API-PI-06",
+          "CMP-PAY-CAPTURE",
+          "CMP-PAY-VALIDATE",
+          "ENT-ACCOUNT-CACHE",
+          "ENT-PAY-EVENT"
+        ],
+        "evidence": [],
+        "decision": "confirm the assumption, or add and approve the missing links"
+      },
+      {
+        "id": "RF-EVIDENCE-A4",
+        "type": "missing_evidence",
+        "text": "A4: the change reaches this layer, but the workspace has no requirements registry — not evidence that requirements are met",
+        "layer": "A4",
+        "requirement": null,
+        "records": [],
+        "evidence": [],
+        "decision": "record the A4 requirements the affected records must meet, or confirm that none applies"
+      },
+      {
+        "id": "RF-ASSUME-A4",
+        "type": "assumption",
+        "text": "A4: 8 record(s) without approved links and 0 link(s) not approved — the analysis assumes none of them carries a requirement or a dependency this change affects",
+        "layer": "A4",
+        "requirement": null,
+        "records": [
+          "ART-PAYHUB-IMG",
+          "ENV-PAY-PROD",
+          "ENV-PAY-UAT",
+          "INF-K8S-PAY-PROD2",
+          "INF-PG-PAY-PROD",
+          "NET-PAY-PRIVATE",
+          "TS-MQ",
+          "TS-SECRETS"
+        ],
+        "evidence": [],
+        "decision": "confirm the assumption, or add and approve the missing links"
+      }
+    ]
+  },
+  "acceptance": {
+    "by": "jane.architect",
+    "at": "2026-10-28T00:00:00+00:00",
+    "reason": "every layer assessed; accepted as assessed",
+    "final": {
+      "A1": "no_impact",
+      "A2": "no_impact",
+      "A3": "design_change_required",
+      "A4": "design_change_required"
+    },
+    "resolutions": {},
+    "assessments": {
+      "A1": 1,
+      "A2": 1,
+      "A3": 1,
+      "A4": 1
+    },
+    "inputs_sha256": "37da61e46760c52807d747e7c8b579303ae5e2db9c5108d903d037286d310367",
+    "accepted_residual_risks": [],
+    "findings_acknowledged": {
+      "missing_evidence": [
+        "RF-EVIDENCE-A1",
+        "RF-EVIDENCE-A2",
+        "RF-EVIDENCE-A3",
+        "RF-EVIDENCE-A4"
+      ],
+      "assumption": [
+        "RF-ASSUME-A1",
+        "RF-ASSUME-A2",
+        "RF-ASSUME-A3",
+        "RF-ASSUME-A4"
+      ]
+    },
+    "identity": {
+      "named_person": "jane.architect",
+      "os_user": "<redacted: the evidence pack never carries a machine identity>",
+      "git_user": "<redacted: the evidence pack never carries a machine identity>",
+      "git_email": "<redacted: the evidence pack never carries a machine identity>",
+      "note": "the name given is a claim, not authenticated by SDEM; the reviewed pull request is the control"
+    },
+    "decisions": [
+      "GD-20261101T211439-d32830",
+      "GD-20261101T211439-315980"
+    ],
+    "attestation": "attributed"
+  }
+}

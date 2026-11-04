@@ -1,0 +1,4912 @@
+{
+  "use_case": "H2 run 2",
+  "executor": "fable-executor/2026-10-22",
+  "given": "h2-mappings-given.json (empty); no A1 export; v0.5.6 export with asset, qualifier and field aliases",
+  "gold_opened_at_phase": 5,
+  "disclosure": "The executor saw h2-gold-mappings.json (unchanged since run 1) in run 1's phase 5. Execution was by script on the exports; the contention tie-break in H2R2-C2 was chosen with that knowledge and the alternatives are recorded.",
+  "executor_conventions": {
+    "H2R2-C1": "field_aliases are defined on A3.ApplicationInterface; for a data entity, the aliases of the interfaces of the component that accesses it (a3 `access`) were applied in S30/S20.",
+    "H2R2-C2": "Two operations claiming one API at decision 1 (clause 4 is silent): the API goes to the operation with the larger absolute check-4 overlap, then the higher ratio, then the qualifier in the path; a remaining tie is no proposal with both named. Alternatives measured: ratio only -> EP-03 tie (SO-PI-02 vs SO-PI-04), gold SO-PI-02 lost (40/41); absolute only -> EP-10 tie (SO-CA-03 vs SO-CA-04), gold SO-CA-04 lost (40/41); first-come order -> SO-CA-03 filed falsely and SO-CA-04 missed (P 0.98, R 0.98)."
+  },
+  "delta_vs_run1": {
+    "proposals": "32 -> 41",
+    "hits": "32 -> 41",
+    "false": "0 -> 0",
+    "missed": "9 -> 0",
+    "precision": "1.00 -> 1.00",
+    "recall": "0.78 -> 1.00",
+    "f1": "0.88 -> 1.00",
+    "recovered": {
+      "asset alias (vault, goal)": [
+        "SO-SA-01",
+        "SO-SA-02",
+        "SO-SA-03"
+      ],
+      "field aliases (zap, pots, flow, buddies)": [
+        "SO-PE-01",
+        "SO-PE-02",
+        "BBO-PAYMENT-TXN -> ENT-ZAPS"
+      ],
+      "qualifier aliases + field aliases, decision 2": [
+        "SO-PI-05 (release)",
+        "SO-CA-05 (close)"
+      ],
+      "field alias + exclusion, decision 2": [
+        "SO-PI-04 (DELETE cancel)"
+      ]
+    }
+  },
+  "note": "One record per connection attempted; every gated operation x endpoint pair appears; failed gates per domain and service. Outcomes set after sdmm-eval.",
+  "attempts": [
+    {
+      "plan_id": "S33",
+      "connection": "svc-flow DEPLOYED_ON INF-EKS-ZIPPA-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-flow.deployed_on lists INF-EKS-ZIPPA-PROD",
+        "a4 INF-EKS-ZIPPA-PROD.hosts lists svc-flow",
+        "a4 DEP-FLOW-PROD.platform_id = INF-EKS-ZIPPA-PROD"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-001",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-141"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "svc-flow DEPLOYED_AS DEP-FLOW-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-flow.deployed_as lists DEP-FLOW-PROD",
+        "a4 DEP-FLOW-PROD.component_id = svc-flow"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-002",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-142"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "svc-zap DEPLOYED_ON INF-EKS-ZIPPA-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-zap.deployed_on lists INF-EKS-ZIPPA-PROD",
+        "a4 INF-EKS-ZIPPA-PROD.hosts lists svc-zap",
+        "a4 DEP-ZAP-PROD.platform_id = INF-EKS-ZIPPA-PROD"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-003",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-143"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "svc-zap DEPLOYED_AS DEP-ZAP-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-zap.deployed_as lists DEP-ZAP-PROD",
+        "a4 DEP-ZAP-PROD.component_id = svc-zap"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-004",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-144"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "svc-pots DEPLOYED_ON INF-EKS-ZIPPA-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-pots.deployed_on lists INF-EKS-ZIPPA-PROD",
+        "a4 INF-EKS-ZIPPA-PROD.hosts lists svc-pots",
+        "a4 DEP-POTS-PROD.platform_id = INF-EKS-ZIPPA-PROD"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-005",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-145"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "svc-pots DEPLOYED_AS DEP-POTS-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-pots.deployed_as lists DEP-POTS-PROD",
+        "a4 DEP-POTS-PROD.component_id = svc-pots"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-006",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-146"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "svc-buddies DEPLOYED_ON INF-EKS-ZIPPA-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-buddies.deployed_on lists INF-EKS-ZIPPA-PROD",
+        "a4 INF-EKS-ZIPPA-PROD.hosts lists svc-buddies",
+        "a4 DEP-BUDDIES-PROD.platform_id = INF-EKS-ZIPPA-PROD"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-007",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-147"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "svc-buddies DEPLOYED_AS DEP-BUDDIES-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-buddies.deployed_as lists DEP-BUDDIES-PROD",
+        "a4 DEP-BUDDIES-PROD.component_id = svc-buddies"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-008",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-148"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "svc-vaults DEPLOYED_ON INF-EKS-ZIPPA-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-vaults.deployed_on lists INF-EKS-ZIPPA-PROD",
+        "a4 INF-EKS-ZIPPA-PROD.hosts lists svc-vaults",
+        "a4 DEP-VAULTS-PROD.platform_id = INF-EKS-ZIPPA-PROD"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-009",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-149"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "svc-vaults DEPLOYED_AS DEP-VAULTS-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-vaults.deployed_as lists DEP-VAULTS-PROD",
+        "a4 DEP-VAULTS-PROD.component_id = svc-vaults"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-010",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-150"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "svc-perks DEPLOYED_ON INF-EKS-ZIPPA-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-perks.deployed_on lists INF-EKS-ZIPPA-PROD",
+        "a4 INF-EKS-ZIPPA-PROD.hosts lists svc-perks",
+        "a4 DEP-PERKS-PROD.platform_id = INF-EKS-ZIPPA-PROD"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-011",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-151"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "svc-perks DEPLOYED_AS DEP-PERKS-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-perks.deployed_as lists DEP-PERKS-PROD",
+        "a4 DEP-PERKS-PROD.component_id = svc-perks"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-012",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-152"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "svc-shield DEPLOYED_ON INF-EKS-ZIPPA-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-shield.deployed_on lists INF-EKS-ZIPPA-PROD",
+        "a4 INF-EKS-ZIPPA-PROD.hosts lists svc-shield",
+        "a4 DEP-SHIELD-PROD.platform_id = INF-EKS-ZIPPA-PROD"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-013",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-153"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "svc-shield DEPLOYED_AS DEP-SHIELD-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 svc-shield.deployed_as lists DEP-SHIELD-PROD",
+        "a4 DEP-SHIELD-PROD.component_id = svc-shield"
+      ],
+      "reasoning": "direct join (unchanged from run 1)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-014",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-154"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-01 IMPLEMENTED_BY EP-01",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Payment Instruction' passes for svc-flow via ['flow', 'moneyflow']. Check 2 PASS: Initiate <-> POST. Check 3 NEUTRAL: qualifier None, path '/v2/moneyflows'. Check 4 PASS: 8/8 attributes ['amount', 'creditor_account_reference', 'currency', 'debtor_account_reference', 'payment_instruction_reference', 'payment_status', 'remittance_information', 'value_date'], of which via field_aliases ['flow_id']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "POST /v2/moneyflows carries 8 of Initiate Payment Instruction's 8 attributes, 1 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-015",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-101",
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 8/8 ['amount', 'creditor_account_reference', 'currency', 'debtor_account_reference', 'payment_instruction_reference', 'payment_status', 'remittance_information', 'value_date'] (via field_aliases: ['flow_id'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-02 IMPLEMENTED_BY EP-03",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Payment Instruction' passes for svc-flow via ['flow', 'moneyflow']. Check 2 PASS: Update <-> PATCH. Check 3 NEUTRAL: qualifier None, path '/v2/moneyflows/{id}'. Check 4 PASS: 5/5 attributes ['amount', 'creditor_account_reference', 'payment_instruction_reference', 'payment_status', 'value_date'], of which via field_aliases ['flow_id']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1 (won the API over a lower-ratio claimant, H2R2-C2)"
+      ],
+      "reasoning": "PATCH /v2/moneyflows/{id} carries 5 of Update Payment Instruction's 5 attributes, 1 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-016",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-102",
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 5/5 ['amount', 'creditor_account_reference', 'payment_instruction_reference', 'payment_status', 'value_date'] (via field_aliases: ['flow_id'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1 (won the API over a lower-ratio claimant, H2R2-C2)",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-03 IMPLEMENTED_BY EP-02",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Payment Instruction' passes for svc-flow via ['flow', 'moneyflow']. Check 2 PASS: Retrieve <-> GET. Check 3 NEUTRAL: qualifier None, path '/v2/moneyflows/{id}'. Check 4 PASS: 6/6 attributes ['amount', 'creditor_account_reference', 'currency', 'payment_instruction_reference', 'payment_status', 'value_date'], of which via field_aliases ['flow_id']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "GET /v2/moneyflows/{id} carries 6 of Retrieve Payment Instruction's 6 attributes, 1 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-017",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-103",
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 6/6 ['amount', 'creditor_account_reference', 'currency', 'payment_instruction_reference', 'payment_status', 'value_date'] (via field_aliases: ['flow_id'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-04 IMPLEMENTED_BY EP-04",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 2 (one band lower, method mismatch). Token gate: asset 'Payment Instruction' passes for svc-flow via ['flow', 'moneyflow']. Check 2 FAIL: Control <-> DELETE — finding: method deviation. Check 3 NEUTRAL: qualifier None, path '/v2/moneyflows/{id}'. Check 4 PASS: 2/2 attributes ['payment_instruction_reference', 'payment_status'], of which via field_aliases ['flow_id']; best match, >= 2 matched. Disambiguation: decision 2, unique best after exclusions, filed in round 2"
+      ],
+      "reasoning": "DELETE /v2/moneyflows/{id} carries 2 of Control Payment Instruction's 2 attributes, 1 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H2R2-018",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-104",
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail (method deviation, decision 2)",
+        "check3": "neutral",
+        "check4": "pass 2/2 ['payment_instruction_reference', 'payment_status'] (via field_aliases: ['flow_id'])"
+      },
+      "decision": 2,
+      "disambiguation": "decision 2, unique best after exclusions, filed in round 2",
+      "run1": "RECOVERED in run 2"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-05 IMPLEMENTED_BY EP-05",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 2 (one band lower, method mismatch). Token gate: asset 'Payment Instruction' passes for svc-flow via ['flow', 'moneyflow']. Check 2 FAIL: Execute <-> POST — finding: method deviation. Check 3 PASS: qualifier Execution, path '/v2/moneyflows/{id}/release' (qualifier alias). Check 4 PASS: 3/3 attributes ['execution_reference', 'payment_instruction_reference', 'payment_status'], of which via field_aliases ['flow_id']; best match, >= 2 matched. Disambiguation: decision 2, unique best after exclusions, filed in round 2"
+      ],
+      "reasoning": "POST /v2/moneyflows/{id}/release carries 3 of Execute Payment Instruction Execution's 3 attributes, 1 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H2R2-019",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-105",
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail (method deviation, decision 2)",
+        "check3": "pass",
+        "check4": "pass 3/3 ['execution_reference', 'payment_instruction_reference', 'payment_status'] (via field_aliases: ['flow_id'])"
+      },
+      "decision": 2,
+      "disambiguation": "decision 2, unique best after exclusions, filed in round 2",
+      "run1": "RECOVERED in run 2"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-01 IMPLEMENTED_BY EP-06",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Payment Transaction' passes for svc-zap via ['send', 'zap']. Check 2 PASS: Initiate <-> POST. Check 3 NEUTRAL: qualifier None, path '/zap'. Check 4 PASS: 6/6 attributes ['amount', 'creditor_account_reference', 'currency', 'debtor_account_reference', 'execution_status', 'payment_reference'], of which via field_aliases ['sender', 'recipient', 'zap_id', 'outcome']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "POST /zap carries 6 of Initiate Payment Execution's 6 attributes, 4 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-020",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-106",
+      "checks": {
+        "gate": "pass via ['send', 'zap']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 6/6 ['amount', 'creditor_account_reference', 'currency', 'debtor_account_reference', 'execution_status', 'payment_reference'] (via field_aliases: ['sender', 'recipient', 'zap_id', 'outcome'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "RECOVERED in run 2"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-02 IMPLEMENTED_BY EP-07",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Payment Transaction' passes for svc-zap via ['send', 'zap']. Check 2 PASS: Retrieve <-> GET. Check 3 NEUTRAL: qualifier None, path '/zap/{id}'. Check 4 PASS: 4/4 attributes ['execution_date', 'execution_status', 'payment_reference', 'scheme_reference'], of which via field_aliases ['zap_id', 'outcome', 'rail_ref', 'settled_at']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "GET /zap/{id} carries 4 of Retrieve Payment Execution's 4 attributes, 4 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-021",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-107",
+      "checks": {
+        "gate": "pass via ['send', 'zap']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 4/4 ['execution_date', 'execution_status', 'payment_reference', 'scheme_reference'] (via field_aliases: ['zap_id', 'outcome', 'rail_ref', 'settled_at'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "RECOVERED in run 2"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY EP-08",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Current Account' passes for svc-pots via ['pot']. Check 2 PASS: Initiate <-> POST. Check 3 NEUTRAL: qualifier None, path '/v2/pots'. Check 4 PASS: 5/6 attributes ['account_reference', 'account_status', 'currency', 'customer_reference', 'open_date'], of which via field_aliases ['pot_id', 'opened_at']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "POST /v2/pots carries 5 of Initiate Current Account's 6 attributes, 2 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-022",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-108",
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 5/6 ['account_reference', 'account_status', 'currency', 'customer_reference', 'open_date'] (via field_aliases: ['pot_id', 'opened_at'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY EP-09",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Current Account' passes for svc-pots via ['pot']. Check 2 PASS: Retrieve <-> GET. Check 3 NEUTRAL: qualifier None, path '/v2/pots/{id}'. Check 4 PASS: 5/6 attributes ['account_reference', 'account_status', 'balance', 'currency', 'customer_reference'], of which via field_aliases ['pot_id']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "GET /v2/pots/{id} carries 5 of Retrieve Current Account's 6 attributes, 1 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-023",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-109",
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 5/6 ['account_reference', 'account_status', 'balance', 'currency', 'customer_reference'] (via field_aliases: ['pot_id'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY EP-10",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Current Account' passes for svc-pots via ['pot']. Check 2 PASS: Control <-> PUT. Check 3 NEUTRAL: qualifier None, path '/v2/pots/{id}/freeze'. Check 4 PASS: 2/2 attributes ['account_reference', 'account_status'], of which via field_aliases ['pot_id']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1 (won the API over a lower-ratio claimant, H2R2-C2)"
+      ],
+      "reasoning": "PUT /v2/pots/{id}/freeze carries 2 of Control Current Account's 2 attributes, 1 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-024",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-110",
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 2/2 ['account_reference', 'account_status'] (via field_aliases: ['pot_id'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1 (won the API over a lower-ratio claimant, H2R2-C2)",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY EP-11",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 2 (one band lower, method mismatch). Token gate: asset 'Current Account' passes for svc-pots via ['pot']. Check 2 FAIL: Execute <-> POST — finding: method deviation. Check 3 PASS: qualifier Closure, path '/v2/pots/{id}/close' (qualifier alias). Check 4 PASS: 3/3 attributes ['account_reference', 'account_status', 'close_date'], of which via field_aliases ['pot_id', 'closed_at']; best match, >= 2 matched. Disambiguation: decision 2, unique best after exclusions, filed in round 2"
+      ],
+      "reasoning": "POST /v2/pots/{id}/close carries 3 of Execute Current Account Closure's 3 attributes, 2 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.6,
+      "proposal_id": "P-H2R2-025",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-111",
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail (method deviation, decision 2)",
+        "check3": "pass",
+        "check4": "pass 3/3 ['account_reference', 'account_status', 'close_date'] (via field_aliases: ['pot_id', 'closed_at'])"
+      },
+      "decision": 2,
+      "disambiguation": "decision 2, unique best after exclusions, filed in round 2",
+      "run1": "RECOVERED in run 2"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-13",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Party Reference' passes for svc-buddies via ['buddy', 'member', 'profile']. Check 2 PASS: Register <-> POST. Check 3 NEUTRAL: qualifier None, path '/v2/members'. Check 4 PASS: 4/4 attributes ['address', 'party_name', 'party_reference', 'party_type'], of which via field_aliases ['display_name', 'member_id']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "POST /v2/members carries 4 of Register Party Reference's 4 attributes, 2 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-026",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-112",
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 4/4 ['address', 'party_name', 'party_reference', 'party_type'] (via field_aliases: ['display_name', 'member_id'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-14",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Party Reference' passes for svc-buddies via ['buddy', 'member', 'profile']. Check 2 PASS: Retrieve <-> GET. Check 3 NEUTRAL: qualifier None, path '/v2/members/{id}'. Check 4 PASS: 5/5 attributes ['address', 'kyc_status', 'party_name', 'party_reference', 'party_type'], of which via field_aliases ['member_id', 'display_name']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "GET /v2/members/{id} carries 5 of Retrieve Party Reference's 5 attributes, 2 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-027",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-113",
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 5/5 ['address', 'kyc_status', 'party_name', 'party_reference', 'party_type'] (via field_aliases: ['member_id', 'display_name'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-15",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Party Reference' passes for svc-buddies via ['buddy', 'member', 'profile']. Check 2 PASS: Update <-> PUT. Check 3 NEUTRAL: qualifier None, path '/v2/members/{id}'. Check 4 PASS: 3/3 attributes ['address', 'contact_details', 'party_reference'], of which via field_aliases ['member_id']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "PUT /v2/members/{id} carries 3 of Update Party Reference's 3 attributes, 1 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-028",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-114",
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 3/3 ['address', 'contact_details', 'party_reference'] (via field_aliases: ['member_id'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-SA-01 IMPLEMENTED_BY EP-18",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Savings Account' passes for svc-vaults via ['goal', 'vault']. Check 2 PASS: Initiate <-> POST. Check 3 NEUTRAL: qualifier None, path '/v2/vaults'. Check 4 PASS: 5/6 attributes ['account_reference', 'account_status', 'currency', 'customer_reference', 'target_amount'], of which via field_aliases ['vault_id']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "POST /v2/vaults carries 5 of Initiate Savings Account's 6 attributes, 1 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-029",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-115",
+      "checks": {
+        "gate": "pass via ['goal', 'vault']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 5/6 ['account_reference', 'account_status', 'currency', 'customer_reference', 'target_amount'] (via field_aliases: ['vault_id'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "RECOVERED in run 2"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-SA-02 IMPLEMENTED_BY EP-19",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Savings Account' passes for svc-vaults via ['goal', 'vault']. Check 2 PASS: Retrieve <-> GET. Check 3 NEUTRAL: qualifier None, path '/v2/vaults/{id}'. Check 4 PASS: 6/6 attributes ['account_reference', 'account_status', 'balance', 'currency', 'interest_rate', 'target_amount'], of which via field_aliases ['vault_id']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "GET /v2/vaults/{id} carries 6 of Retrieve Savings Account's 6 attributes, 1 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-030",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-116",
+      "checks": {
+        "gate": "pass via ['goal', 'vault']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 6/6 ['account_reference', 'account_status', 'balance', 'currency', 'interest_rate', 'target_amount'] (via field_aliases: ['vault_id'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "RECOVERED in run 2"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-SA-03 IMPLEMENTED_BY EP-20",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "engine_rationale:S24 step2 decision 1. Token gate: asset 'Savings Account' passes for svc-vaults via ['goal', 'vault']. Check 2 PASS: Update <-> PATCH. Check 3 NEUTRAL: qualifier None, path '/v2/vaults/{id}/target'. Check 4 PASS: 3/3 attributes ['account_reference', 'account_status', 'target_amount'], of which via field_aliases ['vault_id']; best match, >= 2 matched. Disambiguation: decision 1, filed in round 1"
+      ],
+      "reasoning": "PATCH /v2/vaults/{id}/target carries 3 of Update Savings Account's 3 attributes, 1 through the interface's field aliases",
+      "confidence_predicted": "high (decision 1) / medium (decision 2)",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-031",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-117",
+      "checks": {
+        "gate": "pass via ['goal', 'vault']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 3/3 ['account_reference', 'account_status', 'target_amount'] (via field_aliases: ['vault_id'])"
+      },
+      "decision": 1,
+      "disambiguation": "decision 1, filed in round 1",
+      "run1": "RECOVERED in run 2"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAY-INSTR MAPPED_TO ENT-FLOWS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAY-INSTR",
+        "a3 ENT-FLOWS + field_aliases of ['svc-flow']"
+      ],
+      "reasoning": "8/8 via ['flow_id']; round 1",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-032",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-131",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAYMENT-TXN MAPPED_TO ENT-ZAPS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAYMENT-TXN",
+        "a3 ENT-ZAPS + field_aliases of ['svc-zap']"
+      ],
+      "reasoning": "8/8 via ['zap_id', 'sender', 'recipient', 'outcome', 'rail_ref', 'settled_at']; round 2",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-033",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-132",
+      "run1": "RECOVERED in run 2"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-ACCOUNT MAPPED_TO ENT-POTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-ACCOUNT",
+        "a3 ENT-POTS + field_aliases of ['svc-pots']"
+      ],
+      "reasoning": "7/8 via ['pot_id', 'opened_at', 'closed_at']; round 4",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-034",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-133",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PARTY MAPPED_TO ENT-MEMBERS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PARTY",
+        "a3 ENT-MEMBERS + field_aliases of ['svc-buddies']"
+      ],
+      "reasoning": "6/6 via ['member_id', 'display_name']; round 3",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-035",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-134",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-SAVINGS MAPPED_TO ENT-VAULTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-SAVINGS",
+        "a3 ENT-VAULTS + field_aliases of ['svc-vaults']"
+      ],
+      "reasoning": "7/8 via ['vault_id']; round 5",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-036",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-135",
+      "run1": "also filed in run 1"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PI REALIZED_BY svc-flow",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals ['P-H2R2-015', 'P-H2R2-016', 'P-H2R2-017', 'P-H2R2-018', 'P-H2R2-019']"
+      ],
+      "reasoning": "closure; cap at strongest input 0.8; corroborated by fallback A: svc-flow accesses ENT-FLOWS which is MAPPED_TO BBO-PAY-INSTR (P-H2R2-032)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-037",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-121",
+      "run1": "also filed in run 1 at 0.8"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PE REALIZED_BY svc-zap",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals ['P-H2R2-020', 'P-H2R2-021']"
+      ],
+      "reasoning": "closure; cap at strongest input 0.8; corroborated by fallback A: svc-zap accesses ENT-ZAPS which is MAPPED_TO BBO-PAYMENT-TXN (P-H2R2-033)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-038",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-122",
+      "run1": "run 1: 0.6 via alias fallback B; run 2: 0.8 via step 3"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-CA REALIZED_BY svc-pots",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals ['P-H2R2-022', 'P-H2R2-023', 'P-H2R2-024', 'P-H2R2-025']"
+      ],
+      "reasoning": "closure; cap at strongest input 0.8; corroborated by fallback A: svc-pots accesses ENT-POTS which is MAPPED_TO BBO-ACCOUNT (P-H2R2-034)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-039",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-123",
+      "run1": "also filed in run 1 at 0.8"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-PRD REALIZED_BY svc-buddies",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals ['P-H2R2-026', 'P-H2R2-027', 'P-H2R2-028']"
+      ],
+      "reasoning": "closure; cap at strongest input 0.8; corroborated by fallback A: svc-buddies accesses ENT-MEMBERS which is MAPPED_TO BBO-PARTY (P-H2R2-035)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-040",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-124",
+      "run1": "also filed in run 1 at 0.8"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-SA REALIZED_BY svc-vaults",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals ['P-H2R2-029', 'P-H2R2-030', 'P-H2R2-031']"
+      ],
+      "reasoning": "closure; cap at strongest input 0.8; corroborated by fallback A: svc-vaults accesses ENT-VAULTS which is MAPPED_TO BBO-SAVINGS (P-H2R2-036)",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-H2R2-041",
+      "outcome": "hit",
+      "outcome_note": "gold ZP-125",
+      "run1": "run 1: 0.4 via description fallback; run 2: 0.8 via step 3"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-01 IMPLEMENTED_BY EP-02",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-01: Initiate/None",
+        "a3 EP-02: GET /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 7/8 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (7/8, not the operation's best match; matched ['amount', 'creditor_account_reference', 'currency', 'debtor_account_reference', 'payment_instruction_reference', 'payment_status', 'value_date'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-01 IMPLEMENTED_BY EP-03",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-01: Initiate/None",
+        "a3 EP-03: PATCH /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 5/8 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (5/8, not the operation's best match; matched ['amount', 'creditor_account_reference', 'payment_instruction_reference', 'payment_status', 'value_date'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-01 IMPLEMENTED_BY EP-04",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-01: Initiate/None",
+        "a3 EP-04: DELETE /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 2/8 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/8, below 50%; matched ['payment_instruction_reference', 'payment_status'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-01 IMPLEMENTED_BY EP-05",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-01: Initiate/None",
+        "a3 EP-05: POST /v2/moneyflows/{id}/release"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "pass",
+        "check3": "fail",
+        "check4": "fail 2/8 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/8, below 50%; matched ['payment_instruction_reference', 'payment_status']); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-02 IMPLEMENTED_BY EP-01",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-02: Update/None",
+        "a3 EP-01: POST /v2/moneyflows"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 5/5 via ['flow_id']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: operation resolved to EP-03 (decision 1, filed in round 1 (won the API over a lower-ratio claimant, H2R2-C2))",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-02 IMPLEMENTED_BY EP-02",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-02: Update/None",
+        "a3 EP-02: GET /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 5/5 via ['flow_id']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: operation resolved to EP-03 (decision 1, filed in round 1 (won the API over a lower-ratio claimant, H2R2-C2))",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-02 IMPLEMENTED_BY EP-04",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-02: Update/None",
+        "a3 EP-04: DELETE /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 2/5 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/5, below 50%; matched ['payment_instruction_reference', 'payment_status'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-02 IMPLEMENTED_BY EP-05",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-02: Update/None",
+        "a3 EP-05: POST /v2/moneyflows/{id}/release"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 2/5 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/5, below 50%; matched ['payment_instruction_reference', 'payment_status']); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-03 IMPLEMENTED_BY EP-01",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-03: Retrieve/None",
+        "a3 EP-01: POST /v2/moneyflows"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 6/6 via ['flow_id']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: operation resolved to EP-02 (decision 1, filed in round 1)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-03 IMPLEMENTED_BY EP-03",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-03: Retrieve/None",
+        "a3 EP-03: PATCH /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 5/6 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (5/6, not the operation's best match; matched ['amount', 'creditor_account_reference', 'payment_instruction_reference', 'payment_status', 'value_date'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-03 IMPLEMENTED_BY EP-04",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-03: Retrieve/None",
+        "a3 EP-04: DELETE /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 2/6 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%; matched ['payment_instruction_reference', 'payment_status'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-03 IMPLEMENTED_BY EP-05",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-03: Retrieve/None",
+        "a3 EP-05: POST /v2/moneyflows/{id}/release"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 2/6 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%; matched ['payment_instruction_reference', 'payment_status']); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-04 IMPLEMENTED_BY EP-01",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-04: Control/None",
+        "a3 EP-01: POST /v2/moneyflows"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 2/2 via ['flow_id']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: operation resolved to EP-04 (decision 2, unique best after exclusions, filed in round 2)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-04 IMPLEMENTED_BY EP-02",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-04: Control/None",
+        "a3 EP-02: GET /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 2/2 via ['flow_id']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: operation resolved to EP-04 (decision 2, unique best after exclusions, filed in round 2)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-04 IMPLEMENTED_BY EP-03",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-04: Control/None",
+        "a3 EP-03: PATCH /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 2/2 via ['flow_id']"
+      },
+      "decision": 1,
+      "reasoning": "decision 1 candidate excluded: operation resolved to EP-04 (decision 2, unique best after exclusions, filed in round 2)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-04 IMPLEMENTED_BY EP-05",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-04: Control/None",
+        "a3 EP-05: POST /v2/moneyflows/{id}/release"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "pass 2/2 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-05 IMPLEMENTED_BY EP-01",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-05: Execute/Execution",
+        "a3 EP-01: POST /v2/moneyflows"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 2/3 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best match; matched ['payment_instruction_reference', 'payment_status']); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-05 IMPLEMENTED_BY EP-02",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-05: Execute/Execution",
+        "a3 EP-02: GET /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 2/3 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best match; matched ['payment_instruction_reference', 'payment_status']); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-05 IMPLEMENTED_BY EP-03",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-05: Execute/Execution",
+        "a3 EP-03: PATCH /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "pass",
+        "check3": "fail",
+        "check4": "fail 2/3 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best match; matched ['payment_instruction_reference', 'payment_status']); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PI-05 IMPLEMENTED_BY EP-04",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PI-05: Execute/Execution",
+        "a3 EP-04: DELETE /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['flow', 'moneyflow']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 2/3 via ['flow_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best match; matched ['payment_instruction_reference', 'payment_status']); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-01 IMPLEMENTED_BY EP-07",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PE-01: Initiate/None",
+        "a3 EP-07: GET /zap/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['send', 'zap']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 2/6 via ['zap_id', 'outcome']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%; matched ['execution_status', 'payment_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PE-02 IMPLEMENTED_BY EP-06",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PE-02: Retrieve/None",
+        "a3 EP-06: POST /zap"
+      ],
+      "checks": {
+        "gate": "pass via ['send', 'zap']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 2/4 via ['zap_id', 'outcome']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/4, not the operation's best match; matched ['execution_status', 'payment_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY EP-01",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: Initiate/None",
+        "a3 EP-01: POST /v2/moneyflows"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 1/6 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/6, below 50%; matched ['currency'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY EP-02",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: Initiate/None",
+        "a3 EP-02: GET /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 1/6 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/6, below 50%; matched ['currency'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY EP-03",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: Initiate/None",
+        "a3 EP-03: PATCH /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/6 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/6, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY EP-04",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: Initiate/None",
+        "a3 EP-04: DELETE /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/6 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/6, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY EP-05",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: Initiate/None",
+        "a3 EP-05: POST /v2/moneyflows/{id}/release"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "fail",
+        "check4": "fail 0/6 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/6, below 50%; matched []); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY EP-09",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: Initiate/None",
+        "a3 EP-09: GET /v2/pots/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 4/6 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (4/6, not the operation's best match; matched ['account_reference', 'account_status', 'currency', 'customer_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY EP-10",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: Initiate/None",
+        "a3 EP-10: PUT /v2/pots/{id}/freeze"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 2/6 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%; matched ['account_reference', 'account_status'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY EP-11",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: Initiate/None",
+        "a3 EP-11: POST /v2/pots/{id}/close"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "fail",
+        "check4": "fail 2/6 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%; matched ['account_reference', 'account_status']); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-01 IMPLEMENTED_BY EP-12",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-01: Initiate/None",
+        "a3 EP-12: GET /v2/pots/{id}/ledger"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 1/6 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/6, below 50%; matched ['account_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY EP-01",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: Retrieve/None",
+        "a3 EP-01: POST /v2/moneyflows"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 1/6 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/6, below 50%; matched ['currency'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY EP-02",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: Retrieve/None",
+        "a3 EP-02: GET /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 1/6 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/6, below 50%; matched ['currency'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY EP-03",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: Retrieve/None",
+        "a3 EP-03: PATCH /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/6 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/6, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY EP-04",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: Retrieve/None",
+        "a3 EP-04: DELETE /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/6 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/6, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY EP-05",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: Retrieve/None",
+        "a3 EP-05: POST /v2/moneyflows/{id}/release"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 0/6 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/6, below 50%; matched []); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY EP-08",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: Retrieve/None",
+        "a3 EP-08: POST /v2/pots"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 4/6 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (4/6, not the operation's best match; matched ['account_reference', 'account_status', 'currency', 'customer_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY EP-10",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: Retrieve/None",
+        "a3 EP-10: PUT /v2/pots/{id}/freeze"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 2/6 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%; matched ['account_reference', 'account_status'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY EP-11",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: Retrieve/None",
+        "a3 EP-11: POST /v2/pots/{id}/close"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 2/6 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%; matched ['account_reference', 'account_status']); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-02 IMPLEMENTED_BY EP-12",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-02: Retrieve/None",
+        "a3 EP-12: GET /v2/pots/{id}/ledger"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 2/6 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/6, below 50%; matched ['account_reference', 'balance'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY EP-01",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: Update/None",
+        "a3 EP-01: POST /v2/moneyflows"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY EP-02",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: Update/None",
+        "a3 EP-02: GET /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY EP-03",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: Update/None",
+        "a3 EP-03: PATCH /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY EP-04",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: Update/None",
+        "a3 EP-04: DELETE /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY EP-05",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: Update/None",
+        "a3 EP-05: POST /v2/moneyflows/{id}/release"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched []); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY EP-08",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: Update/None",
+        "a3 EP-08: POST /v2/pots"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 2/3 via ['pot_id']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: endpoint already resolved to SO-CA-01 — decision-1 claim on EP-10 lost to ['SO-CA-04'] (larger absolute overlap, then ratio; convention H2R2-C2)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY EP-09",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: Update/None",
+        "a3 EP-09: GET /v2/pots/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 2/3 via ['pot_id']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: endpoint already resolved to SO-CA-02 — decision-1 claim on EP-10 lost to ['SO-CA-04'] (larger absolute overlap, then ratio; convention H2R2-C2)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY EP-10",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: Update/None",
+        "a3 EP-10: PUT /v2/pots/{id}/freeze"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "pass 2/3 via ['pot_id']"
+      },
+      "decision": 1,
+      "reasoning": "decision 1 candidate excluded: endpoint already resolved to SO-CA-04 — decision-1 claim on EP-10 lost to ['SO-CA-04'] (larger absolute overlap, then ratio; convention H2R2-C2)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY EP-11",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: Update/None",
+        "a3 EP-11: POST /v2/pots/{id}/close"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "pass 2/3 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-03 IMPLEMENTED_BY EP-12",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-03: Update/None",
+        "a3 EP-12: GET /v2/pots/{id}/ledger"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 1/3 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/3, below 50%; matched ['account_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY EP-01",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: Control/None",
+        "a3 EP-01: POST /v2/moneyflows"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/2 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/2, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY EP-02",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: Control/None",
+        "a3 EP-02: GET /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/2 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/2, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY EP-03",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: Control/None",
+        "a3 EP-03: PATCH /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 0/2 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/2, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY EP-04",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: Control/None",
+        "a3 EP-04: DELETE /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/2 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/2, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY EP-05",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: Control/None",
+        "a3 EP-05: POST /v2/moneyflows/{id}/release"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 0/2 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/2, below 50%; matched []); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY EP-08",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: Control/None",
+        "a3 EP-08: POST /v2/pots"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 2/2 via ['pot_id']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: operation resolved to EP-10 (decision 1, filed in round 1 (won the API over a lower-ratio claimant, H2R2-C2))",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY EP-09",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: Control/None",
+        "a3 EP-09: GET /v2/pots/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 2/2 via ['pot_id']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: operation resolved to EP-10 (decision 1, filed in round 1 (won the API over a lower-ratio claimant, H2R2-C2))",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY EP-11",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: Control/None",
+        "a3 EP-11: POST /v2/pots/{id}/close"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "pass 2/2 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-04 IMPLEMENTED_BY EP-12",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-04: Control/None",
+        "a3 EP-12: GET /v2/pots/{id}/ledger"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 1/2 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/2, fewer than two matched; matched ['account_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY EP-01",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: Execute/Closure",
+        "a3 EP-01: POST /v2/moneyflows"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched []); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY EP-02",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: Execute/Closure",
+        "a3 EP-02: GET /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched []); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY EP-03",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: Execute/Closure",
+        "a3 EP-03: PATCH /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "fail",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched []); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY EP-04",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: Execute/Closure",
+        "a3 EP-04: DELETE /v2/moneyflows/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched []); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY EP-05",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: Execute/Closure",
+        "a3 EP-05: POST /v2/moneyflows/{id}/release"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched []); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY EP-08",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: Execute/Closure",
+        "a3 EP-08: POST /v2/pots"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 2/3 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best match; matched ['account_reference', 'account_status']); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY EP-09",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: Execute/Closure",
+        "a3 EP-09: GET /v2/pots/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 2/3 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best match; matched ['account_reference', 'account_status']); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY EP-10",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: Execute/Closure",
+        "a3 EP-10: PUT /v2/pots/{id}/freeze"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "pass",
+        "check3": "fail",
+        "check4": "fail 2/3 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best match; matched ['account_reference', 'account_status']); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-CA-05 IMPLEMENTED_BY EP-12",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-CA-05: Execute/Closure",
+        "a3 EP-12: GET /v2/pots/{id}/ledger"
+      ],
+      "checks": {
+        "gate": "pass via ['pot']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 1/3 via ['pot_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/3, below 50%; matched ['account_reference']); check 3 fail (qualifier absent from path)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-06",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: Register/None",
+        "a3 EP-06: POST /zap"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 0/4 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/4, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-07",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: Register/None",
+        "a3 EP-07: GET /zap/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/4 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/4, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-08",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: Register/None",
+        "a3 EP-08: POST /v2/pots"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 0/4 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/4, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-09",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: Register/None",
+        "a3 EP-09: GET /v2/pots/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/4 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/4, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-10",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: Register/None",
+        "a3 EP-10: PUT /v2/pots/{id}/freeze"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/4 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/4, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-11",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: Register/None",
+        "a3 EP-11: POST /v2/pots/{id}/close"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "pass",
+        "check3": "fail",
+        "check4": "fail 0/4 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/4, below 50%; matched []); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-12",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: Register/None",
+        "a3 EP-12: GET /v2/pots/{id}/ledger"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/4 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/4, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-14",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: Register/None",
+        "a3 EP-14: GET /v2/members/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 4/4 via ['member_id', 'display_name']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: operation resolved to EP-13 (decision 1, filed in round 1)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-15",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: Register/None",
+        "a3 EP-15: PUT /v2/members/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 2/4 via ['member_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/4, not the operation's best match; matched ['address', 'party_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-16",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: Register/None",
+        "a3 EP-16: GET /v2/members/{id}/buddies"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 1/4 via ['member_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/4, below 50%; matched ['party_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-01 IMPLEMENTED_BY EP-17",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-01: Register/None",
+        "a3 EP-17: POST /v2/members/{id}/buddies"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 1/4 via ['member_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/4, below 50%; matched ['party_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-06",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: Retrieve/None",
+        "a3 EP-06: POST /zap"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/5 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/5, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-07",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: Retrieve/None",
+        "a3 EP-07: GET /zap/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 0/5 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/5, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-08",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: Retrieve/None",
+        "a3 EP-08: POST /v2/pots"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/5 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/5, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-09",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: Retrieve/None",
+        "a3 EP-09: GET /v2/pots/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 0/5 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/5, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-10",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: Retrieve/None",
+        "a3 EP-10: PUT /v2/pots/{id}/freeze"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/5 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/5, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-11",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: Retrieve/None",
+        "a3 EP-11: POST /v2/pots/{id}/close"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 0/5 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/5, below 50%; matched []); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-12",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: Retrieve/None",
+        "a3 EP-12: GET /v2/pots/{id}/ledger"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 0/5 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/5, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-13",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: Retrieve/None",
+        "a3 EP-13: POST /v2/members"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 4/5 via ['display_name', 'member_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (4/5, not the operation's best match; matched ['address', 'party_name', 'party_reference', 'party_type'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-15",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: Retrieve/None",
+        "a3 EP-15: PUT /v2/members/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 2/5 via ['member_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/5, below 50%; matched ['address', 'party_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-16",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: Retrieve/None",
+        "a3 EP-16: GET /v2/members/{id}/buddies"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 1/5 via ['member_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/5, below 50%; matched ['party_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-02 IMPLEMENTED_BY EP-17",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-02: Retrieve/None",
+        "a3 EP-17: POST /v2/members/{id}/buddies"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 1/5 via ['member_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/5, below 50%; matched ['party_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-06",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: Update/None",
+        "a3 EP-06: POST /zap"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-07",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: Update/None",
+        "a3 EP-07: GET /zap/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-08",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: Update/None",
+        "a3 EP-08: POST /v2/pots"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-09",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: Update/None",
+        "a3 EP-09: GET /v2/pots/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-10",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: Update/None",
+        "a3 EP-10: PUT /v2/pots/{id}/freeze"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "pass",
+        "check3": "neutral",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-11",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: Update/None",
+        "a3 EP-11: POST /v2/pots/{id}/close"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "fail",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched []); check 3 fail (path carries another operation's qualifier or its alias)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-12",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: Update/None",
+        "a3 EP-12: GET /v2/pots/{id}/ledger"
+      ],
+      "checks": {
+        "gate": "pass via ['member']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 0/3 via []"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (0/3, below 50%; matched [])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-13",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: Update/None",
+        "a3 EP-13: POST /v2/members"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 2/3 via ['member_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best match; matched ['address', 'party_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-14",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: Update/None",
+        "a3 EP-14: GET /v2/members/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 2/3 via ['member_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (2/3, not the operation's best match; matched ['address', 'party_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-16",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: Update/None",
+        "a3 EP-16: GET /v2/members/{id}/buddies"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 1/3 via ['member_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/3, below 50%; matched ['party_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-PRD-03 IMPLEMENTED_BY EP-17",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-PRD-03: Update/None",
+        "a3 EP-17: POST /v2/members/{id}/buddies"
+      ],
+      "checks": {
+        "gate": "pass via ['buddy', 'member', 'profile']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 1/3 via ['member_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (1/3, below 50%; matched ['party_reference'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-SA-01 IMPLEMENTED_BY EP-19",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-SA-01: Initiate/None",
+        "a3 EP-19: GET /v2/vaults/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['goal', 'vault']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 4/6 via ['vault_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (4/6, not the operation's best match; matched ['account_reference', 'account_status', 'currency', 'target_amount'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-SA-01 IMPLEMENTED_BY EP-20",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-SA-01: Initiate/None",
+        "a3 EP-20: PATCH /v2/vaults/{id}/target"
+      ],
+      "checks": {
+        "gate": "pass via ['goal', 'vault']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 3/6 via ['vault_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (3/6, not the operation's best match; matched ['account_reference', 'account_status', 'target_amount'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-SA-02 IMPLEMENTED_BY EP-18",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-SA-02: Retrieve/None",
+        "a3 EP-18: POST /v2/vaults"
+      ],
+      "checks": {
+        "gate": "pass via ['goal', 'vault']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 4/6 via ['vault_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (4/6, not the operation's best match; matched ['account_reference', 'account_status', 'currency', 'target_amount'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-SA-02 IMPLEMENTED_BY EP-20",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-SA-02: Retrieve/None",
+        "a3 EP-20: PATCH /v2/vaults/{id}/target"
+      ],
+      "checks": {
+        "gate": "pass via ['goal', 'vault']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "fail 3/6 via ['vault_id']"
+      },
+      "decision": 3,
+      "reasoning": "decision 3 — check 4 fail (3/6, not the operation's best match; matched ['account_reference', 'account_status', 'target_amount'])",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-SA-03 IMPLEMENTED_BY EP-18",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-SA-03: Update/None",
+        "a3 EP-18: POST /v2/vaults"
+      ],
+      "checks": {
+        "gate": "pass via ['goal', 'vault']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 3/3 via ['vault_id']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: operation resolved to EP-20 (decision 1, filed in round 1)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-SA-03 IMPLEMENTED_BY EP-19",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "a2 SO-SA-03: Update/None",
+        "a3 EP-19: GET /v2/vaults/{id}"
+      ],
+      "checks": {
+        "gate": "pass via ['goal', 'vault']",
+        "check2": "fail",
+        "check3": "neutral",
+        "check4": "pass 3/3 via ['vault_id']"
+      },
+      "decision": 2,
+      "reasoning": "decision 2 candidate excluded: operation resolved to EP-20 (decision 1, filed in round 1)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PI x endpoints of svc-zap",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Instruction' aliases ['moneyflow', 'flow', 'transfer'] vs svc-zap tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PI x endpoints of svc-pots",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Instruction' aliases ['moneyflow', 'flow', 'transfer'] vs svc-pots tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PI x endpoints of svc-buddies",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Instruction' aliases ['moneyflow', 'flow', 'transfer'] vs svc-buddies tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PI x endpoints of svc-vaults",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Instruction' aliases ['moneyflow', 'flow', 'transfer'] vs svc-vaults tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PI x endpoints of svc-perks",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Instruction' aliases ['moneyflow', 'flow', 'transfer'] vs svc-perks tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PI x endpoints of svc-shield",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Instruction' aliases ['moneyflow', 'flow', 'transfer'] vs svc-shield tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PE x endpoints of svc-flow",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Transaction' aliases ['zap', 'send', 'p2p'] vs svc-flow tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PE x endpoints of svc-pots",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Transaction' aliases ['zap', 'send', 'p2p'] vs svc-pots tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PE x endpoints of svc-buddies",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Transaction' aliases ['zap', 'send', 'p2p'] vs svc-buddies tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PE x endpoints of svc-vaults",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Transaction' aliases ['zap', 'send', 'p2p'] vs svc-vaults tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PE x endpoints of svc-perks",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Transaction' aliases ['zap', 'send', 'p2p'] vs svc-perks tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PE x endpoints of svc-shield",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Payment Transaction' aliases ['zap', 'send', 'p2p'] vs svc-shield tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-CA x endpoints of svc-zap",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Current Account' aliases ['pot', 'wallet'] vs svc-zap tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-CA x endpoints of svc-buddies",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Current Account' aliases ['pot', 'wallet'] vs svc-buddies tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-CA x endpoints of svc-vaults",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Current Account' aliases ['pot', 'wallet'] vs svc-vaults tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-CA x endpoints of svc-perks",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Current Account' aliases ['pot', 'wallet'] vs svc-perks tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-CA x endpoints of svc-shield",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Current Account' aliases ['pot', 'wallet'] vs svc-shield tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PRD x endpoints of svc-flow",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Party Reference' aliases ['member', 'buddy', 'profile'] vs svc-flow tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PRD x endpoints of svc-vaults",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Party Reference' aliases ['member', 'buddy', 'profile'] vs svc-vaults tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PRD x endpoints of svc-perks",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Party Reference' aliases ['member', 'buddy', 'profile'] vs svc-perks tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-PRD x endpoints of svc-shield",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Party Reference' aliases ['member', 'buddy', 'profile'] vs svc-shield tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-SA x endpoints of svc-flow",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Savings Account' aliases ['vault', 'goal'] vs svc-flow tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-SA x endpoints of svc-zap",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Savings Account' aliases ['vault', 'goal'] vs svc-zap tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-SA x endpoints of svc-pots",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Savings Account' aliases ['vault', 'goal'] vs svc-pots tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-SA x endpoints of svc-buddies",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Savings Account' aliases ['vault', 'goal'] vs svc-buddies tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-SA x endpoints of svc-perks",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Savings Account' aliases ['vault', 'goal'] vs svc-perks tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-SA x endpoints of svc-shield",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Savings Account' aliases ['vault', 'goal'] vs svc-shield tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-FD x endpoints of svc-flow",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Fraud Case' aliases [] vs svc-flow tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-FD x endpoints of svc-zap",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Fraud Case' aliases [] vs svc-zap tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-FD x endpoints of svc-pots",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Fraud Case' aliases [] vs svc-pots tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-FD x endpoints of svc-buddies",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Fraud Case' aliases [] vs svc-buddies tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-FD x endpoints of svc-vaults",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Fraud Case' aliases [] vs svc-vaults tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-FD x endpoints of svc-perks",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Fraud Case' aliases [] vs svc-perks tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S24 (gate)",
+      "connection": "operations of SD-FD x endpoints of svc-shield",
+      "step_assigned": 2,
+      "step_used": 2,
+      "fallback": false,
+      "data_read": [
+        "asset 'Fraud Case' aliases [] vs svc-shield tokens"
+      ],
+      "reasoning": "token gate fails; pairs not considered",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: no gold arrow crosses this boundary"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-FLOWS -> INF-PG-ZIPPA-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-FLOWS.stored_in"
+      ],
+      "reasoning": "direct join; reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H2R2-001 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-ZAPS -> INF-PG-ZIPPA-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-ZAPS.stored_in"
+      ],
+      "reasoning": "direct join; reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H2R2-002 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-POTS -> INF-PG-ZIPPA-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-POTS.stored_in"
+      ],
+      "reasoning": "direct join; reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H2R2-003 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-MEMBERS -> INF-PG-ZIPPA-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-MEMBERS.stored_in"
+      ],
+      "reasoning": "direct join; reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H2R2-004 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-BUDDIES -> INF-PG-ZIPPA-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-BUDDIES.stored_in"
+      ],
+      "reasoning": "direct join; reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H2R2-005 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-VAULTS -> INF-PG-ZIPPA-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-VAULTS.stored_in"
+      ],
+      "reasoning": "direct join; reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H2R2-006 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-PERKS -> INF-PG-ZIPPA-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-PERKS.stored_in"
+      ],
+      "reasoning": "direct join; reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H2R2-007 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-SCORES -> INF-REDIS-ZIPPA-PROD (institution-only)",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-SCORES.stored_in"
+      ],
+      "reasoning": "direct join; reported not filed",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-H2R2-008 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S41",
+      "connection": "<A3.ApplicationService> -> TS-QUEUE",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "no A3.ApplicationService; no consumes"
+      ],
+      "reasoning": "no instance / no record",
+      "confidence_predicted": "medium",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S36",
+      "connection": "services -> INF-EKS-ZIPPA-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "S36 subsumed"
+      ],
+      "reasoning": "the S33 proposals are the instances",
+      "confidence_predicted": "— (subsumed)",
+      "confidence_given": null,
+      "proposal_id": "P-H2R2-001.. (as S33)",
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAY-INSTR -> ENT-ZAPS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAY-INSTR",
+        "a3 ENT-ZAPS"
+      ],
+      "reasoning": "4/8 = 0.50 >= 0.5 but not filed: one-to-one fixpoint assigned a higher-scoring pair on one end (cross pair avoided)",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold — cross pair avoided by the one-to-one fixpoint"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAY-INSTR -> ENT-POTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAY-INSTR",
+        "a3 ENT-POTS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAY-INSTR -> ENT-VAULTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAY-INSTR",
+        "a3 ENT-VAULTS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAYMENT-TXN -> ENT-FLOWS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAYMENT-TXN",
+        "a3 ENT-FLOWS"
+      ],
+      "reasoning": "4/8 = 0.50 >= 0.5 but not filed: one-to-one fixpoint assigned a higher-scoring pair on one end (cross pair avoided)",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold — cross pair avoided by the one-to-one fixpoint"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAYMENT-TXN -> ENT-POTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAYMENT-TXN",
+        "a3 ENT-POTS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PAYMENT-TXN -> ENT-VAULTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PAYMENT-TXN",
+        "a3 ENT-VAULTS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-ACCOUNT -> ENT-FLOWS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-ACCOUNT",
+        "a3 ENT-FLOWS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-ACCOUNT -> ENT-ZAPS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-ACCOUNT",
+        "a3 ENT-ZAPS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-ACCOUNT -> ENT-VAULTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-ACCOUNT",
+        "a3 ENT-VAULTS"
+      ],
+      "reasoning": "5/8 = 0.62 >= 0.5 but not filed: one-to-one fixpoint assigned a higher-scoring pair on one end (cross pair avoided)",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold — cross pair avoided by the one-to-one fixpoint"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-PARTY -> ENT-BUDDIES",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-PARTY",
+        "a3 ENT-BUDDIES"
+      ],
+      "reasoning": "1/6 = 0.17 < 0.5 (['party_reference'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-SAVINGS -> ENT-FLOWS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-SAVINGS",
+        "a3 ENT-FLOWS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-SAVINGS -> ENT-ZAPS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-SAVINGS",
+        "a3 ENT-ZAPS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-SAVINGS -> ENT-POTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-SAVINGS",
+        "a3 ENT-POTS"
+      ],
+      "reasoning": "6/8 = 0.75 >= 0.5 but not filed: one-to-one fixpoint assigned a higher-scoring pair on one end (cross pair avoided)",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold — cross pair avoided by the one-to-one fixpoint"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-FRAUD-CASE -> ENT-SCORES",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-FRAUD-CASE",
+        "a3 ENT-SCORES"
+      ],
+      "reasoning": "1/5 = 0.20 < 0.5 (['risk_score'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-FRAUD-CASE -> <any entity>",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 BBO-FRAUD-CASE"
+      ],
+      "reasoning": "no entity reaches 50% / 2 attributes",
+      "confidence_predicted": "high (case: none)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PI -> ENT-FLOWS (candidate rule)",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PI",
+        "a3 ENT-FLOWS"
+      ],
+      "reasoning": "8/8; reported not filed",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-H2R2-009 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PI -> ENT-ZAPS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PI",
+        "a3 ENT-ZAPS"
+      ],
+      "reasoning": "4/8 = 0.50 >= 0.5 but not filed: one-to-one fixpoint assigned a higher-scoring pair on one end (cross pair avoided)",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold — cross pair avoided by the one-to-one fixpoint"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PI -> ENT-POTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PI",
+        "a3 ENT-POTS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PI -> ENT-VAULTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PI",
+        "a3 ENT-VAULTS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PE -> ENT-FLOWS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PE",
+        "a3 ENT-FLOWS"
+      ],
+      "reasoning": "4/8 = 0.50 >= 0.5 but not filed: one-to-one fixpoint assigned a higher-scoring pair on one end (cross pair avoided)",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold — cross pair avoided by the one-to-one fixpoint"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PE -> ENT-ZAPS (candidate rule)",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PE",
+        "a3 ENT-ZAPS"
+      ],
+      "reasoning": "8/8; reported not filed",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-H2R2-010 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PE -> ENT-POTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PE",
+        "a3 ENT-POTS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PE -> ENT-VAULTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PE",
+        "a3 ENT-VAULTS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-CA -> ENT-FLOWS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-CA",
+        "a3 ENT-FLOWS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-CA -> ENT-ZAPS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-CA",
+        "a3 ENT-ZAPS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-CA -> ENT-POTS (candidate rule)",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-CA",
+        "a3 ENT-POTS"
+      ],
+      "reasoning": "7/8; reported not filed",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-H2R2-011 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-CA -> ENT-VAULTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-CA",
+        "a3 ENT-VAULTS"
+      ],
+      "reasoning": "5/8 = 0.62 >= 0.5 but not filed: one-to-one fixpoint assigned a higher-scoring pair on one end (cross pair avoided)",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold — cross pair avoided by the one-to-one fixpoint"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PRD -> ENT-MEMBERS (candidate rule)",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PRD",
+        "a3 ENT-MEMBERS"
+      ],
+      "reasoning": "6/6; reported not filed",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-H2R2-012 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-PRD -> ENT-BUDDIES",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-PRD",
+        "a3 ENT-BUDDIES"
+      ],
+      "reasoning": "1/6 = 0.17 < 0.5 (['party_reference'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-SA -> ENT-FLOWS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-SA",
+        "a3 ENT-FLOWS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-SA -> ENT-ZAPS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-SA",
+        "a3 ENT-ZAPS"
+      ],
+      "reasoning": "1/8 = 0.12 < 0.5 (['currency'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-SA -> ENT-POTS",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-SA",
+        "a3 ENT-POTS"
+      ],
+      "reasoning": "6/8 = 0.75 >= 0.5 but not filed: one-to-one fixpoint assigned a higher-scoring pair on one end (cross pair avoided)",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct: not in gold — cross pair avoided by the one-to-one fixpoint"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-SA -> ENT-VAULTS (candidate rule)",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-SA",
+        "a3 ENT-VAULTS"
+      ],
+      "reasoning": "7/8; reported not filed",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-H2R2-013 (report only)",
+      "outcome": "no_proposal",
+      "outcome_note": "candidate/institution-only: reported, not scorable"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-FD -> ENT-SCORES",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-FD",
+        "a3 ENT-SCORES"
+      ],
+      "reasoning": "1/5 = 0.20 < 0.5 (['risk_score'])",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S20",
+      "connection": "CR-FD -> <any entity>",
+      "step_assigned": 4,
+      "step_used": 4,
+      "fallback": false,
+      "data_read": [
+        "a2 CR-FD"
+      ],
+      "reasoning": "no entity reaches 50% / 2 attributes",
+      "confidence_predicted": "high (case: none)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-FD REALIZED_BY <component>",
+      "step_assigned": 3,
+      "step_used": 4,
+      "fallback": true,
+      "data_read": [
+        "SD-FD: no step-2 proposal; BBO-FRAUD-CASE has no MAPPED_TO; asset 'Fraud Case' aliases []"
+      ],
+      "reasoning": "step 3 nothing; fallback A nothing (no MAPPED_TO for the domain's object); fallback B 0 for every component; no description fallback in v0.5.6 -> no proposal",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S25",
+      "connection": "<operation> -> <A3.ApplicationService>",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "no A3.ApplicationService"
+      ],
+      "reasoning": "no instance",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S23",
+      "connection": "service groups -> interfaces (derived path, query)",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "step-2 proposals"
+      ],
+      "reasoning": "query",
+      "confidence_predicted": "medium",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S40",
+      "connection": "7 services -> ENV-ZIPPA-PROD (query)",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "S32"
+      ],
+      "reasoning": "query",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S47",
+      "connection": "23 endpoints -> deployments (query)",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "composition; S32"
+      ],
+      "reasoning": "query",
+      "confidence_predicted": "high",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S01",
+      "connection": "— (no A1 export)",
+      "step_assigned": 3,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "no a1 export"
+      ],
+      "reasoning": "requires authoring",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S02",
+      "connection": "— (no A1 export)",
+      "step_assigned": 4,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "no a1 export"
+      ],
+      "reasoning": "requires authoring",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S04",
+      "connection": "— (no A1 export)",
+      "step_assigned": 3,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "no a1 export"
+      ],
+      "reasoning": "requires authoring",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S06",
+      "connection": "— (no A1 export)",
+      "step_assigned": 4,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "no a1 export"
+      ],
+      "reasoning": "requires authoring",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S12",
+      "connection": "— (no A1 export)",
+      "step_assigned": 4,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "no a1 export"
+      ],
+      "reasoning": "requires authoring",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    }
+  ]
+}

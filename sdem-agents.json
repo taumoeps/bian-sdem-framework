@@ -1,0 +1,34 @@
+{
+  "sdem_version": "0.11.1",
+  "platforms": [
+    "claude",
+    "codex",
+    "copilot",
+    "gemini"
+  ],
+  "files": {
+    ".agents/skills/sdem-approve-links/SKILL.md": "5a7f881630b6e0153a7a67d988ff243f09f54b802b4e87424c79e72f35a07d29",
+    ".agents/skills/sdem-approve-links/evidence-by-link-type.md": "78fc9d655ce58131ed78da46f4e1dd7e1833bf80815adbe0579b9875458b89ec",
+    ".agents/skills/sdem-change-sets/SKILL.md": "417fe308eb70a3848ae50a4dcd5e82fe2375d3861400331d81e04c6a5c5a2778",
+    ".agents/skills/sdem-change-sets/example-a3-repoint.json": "6d1d1790887757510e3c46301f95526c6a684774e49bfde571c48a8471dea994",
+    ".agents/skills/sdem-change-sets/example-a4-rehost.json": "3331d2ab6e14264674d4ce0e7bad53d1fa180255804207458ea5b409723c223d",
+    ".agents/skills/sdem-impact-validation/SKILL.md": "fadd754bd56ee181644ff09a13e0ff01c605a26ca5e67b67886f7a6393313491",
+    ".agents/skills/sdem-onboard-designs/SKILL.md": "28cdd227ee3bc789c3e5881bc37f6541b4d21705a3e563e12f587ff8d5824697",
+    ".agents/skills/sdem-records/SKILL.md": "9038b85828977b6188a3cef888602911e62b794398b54e277fd67d9b0a34d37b",
+    ".agents/skills/sdem-requirements-risk/SKILL.md": "46204a2140f4c645044ea1fda4761a512f60ff87dffb0b9a6d656c140f2e8ce5",
+    ".agents/skills/sdem-trace-impact/SKILL.md": "94bba2ddd52c541a27361ac87b6e42e8ba12e02b12881dde2654d1c89d51ff9f",
+    ".claude/skills/sdem-approve-links/SKILL.md": "5a7f881630b6e0153a7a67d988ff243f09f54b802b4e87424c79e72f35a07d29",
+    ".claude/skills/sdem-approve-links/evidence-by-link-type.md": "78fc9d655ce58131ed78da46f4e1dd7e1833bf80815adbe0579b9875458b89ec",
+    ".claude/skills/sdem-change-sets/SKILL.md": "417fe308eb70a3848ae50a4dcd5e82fe2375d3861400331d81e04c6a5c5a2778",
+    ".claude/skills/sdem-change-sets/example-a3-repoint.json": "6d1d1790887757510e3c46301f95526c6a684774e49bfde571c48a8471dea994",
+    ".claude/skills/sdem-change-sets/example-a4-rehost.json": "3331d2ab6e14264674d4ce0e7bad53d1fa180255804207458ea5b409723c223d",
+    ".claude/skills/sdem-impact-validation/SKILL.md": "fadd754bd56ee181644ff09a13e0ff01c605a26ca5e67b67886f7a6393313491",
+    ".claude/skills/sdem-onboard-designs/SKILL.md": "28cdd227ee3bc789c3e5881bc37f6541b4d21705a3e563e12f587ff8d5824697",
+    ".claude/skills/sdem-records/SKILL.md": "9038b85828977b6188a3cef888602911e62b794398b54e277fd67d9b0a34d37b",
+    ".claude/skills/sdem-requirements-risk/SKILL.md": "46204a2140f4c645044ea1fda4761a512f60ff87dffb0b9a6d656c140f2e8ce5",
+    ".claude/skills/sdem-trace-impact/SKILL.md": "94bba2ddd52c541a27361ac87b6e42e8ba12e02b12881dde2654d1c89d51ff9f",
+    ".gemini/settings.json": "1ca39c6410263e736da58b50379ed53a38b1ef0b409dcf8f884035b85afc10cc",
+    "AGENTS.md": "76a7d9469dd47868b88cf5b5744e6f6abb4df639047f411b9ad3657135032b62",
+    "CLAUDE.md": "336cc4fbf19beaada7ccf9986414fa91851a8d7a07dfb3ccbe800a69eed0ab49"
+  }
+}

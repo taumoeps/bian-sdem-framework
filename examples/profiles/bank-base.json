@@ -1,0 +1,201 @@
+{
+  "format": "sdem-profile/1",
+  "name": "bank-base",
+  "version": 1,
+  "description": "A made-up bank's standard specification on top of SDEM — the base every team's profile extends (synthetic; not a real organisation's).",
+  "names": {
+    "layers": {
+      "A1": "L1 Business",
+      "A2": "L2 Service Domains",
+      "A3": "L3 Applications",
+      "A4": "L4 Technology"
+    },
+    "types": {
+      "A3.ApplicationComponent": "Application",
+      "A4.SystemSoftware": "Platform"
+    }
+  },
+  "types": [
+    {
+      "type": "BANK.A3.PaymentsMicroservice",
+      "extends": "A3.ApplicationComponent",
+      "name": "Payments microservice",
+      "definition": "An independently deployable payments service owned by one team",
+      "source": "bank application standard §4.2"
+    },
+    {
+      "type": "BANK.A1.ControlFunction",
+      "extends": "A1.BusinessCapability",
+      "name": "Control function",
+      "definition": "A capability whose purpose is a regulatory or risk control",
+      "source": "bank capability model §2"
+    }
+  ],
+  "attributes": [
+    {
+      "entity": "A3.ApplicationComponent",
+      "name": "risk_tier",
+      "type": "enum",
+      "values": [
+        "1",
+        "2",
+        "3"
+      ],
+      "required": true,
+      "description": "the application risk tier (1 highest)"
+    },
+    {
+      "entity": "A3.ApplicationComponent",
+      "name": "cost_centre",
+      "type": "string",
+      "required": false,
+      "description": "the cost centre that pays for it"
+    },
+    {
+      "entity": "BANK.A3.PaymentsMicroservice",
+      "name": "owning_team",
+      "type": "string",
+      "required": true,
+      "description": "the team that owns the service"
+    },
+    {
+      "entity": "A1.BusinessRequirement",
+      "name": "requirement_class",
+      "type": "enum",
+      "values": [
+        "functional",
+        "non_functional"
+      ],
+      "required": true,
+      "description": "functional (what the business must be able to do) or non-functional (how well — measured in requirements.json); SDEM's own requirement_kind stays ArchiMate's requirement / constraint / principle"
+    },
+    {
+      "entity": "A1.BusinessRequirement",
+      "name": "regulatory_reference",
+      "type": "string",
+      "required": false,
+      "description": "the regulation or policy clause it comes from"
+    },
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "environment",
+      "type": "enum",
+      "values": [
+        "production",
+        "non_production"
+      ],
+      "required": false,
+      "description": "production or not"
+    },
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "dr_tier",
+      "type": "enum",
+      "values": [
+        "1",
+        "2",
+        "3"
+      ],
+      "required": false,
+      "description": "the disaster recovery tier (1: hot standby)"
+    },
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "dr_region",
+      "type": "string",
+      "required": false,
+      "description": "the region it runs in, for DR separation"
+    },
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "replication_mode",
+      "type": "enum",
+      "values": [
+        "sync",
+        "async",
+        "none"
+      ],
+      "required": false,
+      "description": "how its data reaches the DR pair"
+    },
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "failover_tested_on",
+      "type": "date",
+      "required": false,
+      "description": "the last successful failover test"
+    }
+  ],
+  "rules": [
+    {
+      "id": "BANK-R01",
+      "entity": "A3.ApplicationComponent",
+      "require": [
+        "owner",
+        "risk_tier"
+      ],
+      "message": "every application names its owner and risk tier (bank application standard §3)"
+    },
+    {
+      "id": "BANK-DR01",
+      "entity": "A4.InfrastructureComponent",
+      "when": {
+        "environment": "production"
+      },
+      "require": [
+        "dr_tier",
+        "dr_region",
+        "replication_mode"
+      ],
+      "message": "every production platform states its DR tier, region and replication (bank resilience standard §5)"
+    },
+    {
+      "id": "BANK-DR02",
+      "entity": "A4.InfrastructureComponent",
+      "when": {
+        "environment": "production",
+        "dr_tier": [
+          "1",
+          "2"
+        ]
+      },
+      "link": {
+        "kind": "dr_pair_of",
+        "min": 1
+      },
+      "message": "a tier 1 or 2 production platform has a DR pair (bank resilience standard §5.2)"
+    },
+    {
+      "id": "BANK-DR03",
+      "entity": "A4.InfrastructureComponent",
+      "compare": {
+        "kind": "dr_pair_of",
+        "attribute": "dr_region",
+        "must": "differ"
+      },
+      "message": "a platform and its DR pair run in different regions (bank resilience standard §5.3)"
+    }
+  ],
+  "requirement_categories": [
+    {
+      "id": "operational_resilience",
+      "description": "tolerance for disruption of a critical operation (synthetic)"
+    }
+  ],
+  "link_kinds": [
+    {
+      "kind": "dr_pair_of",
+      "maps_to": "association",
+      "source_type": "A4.InfrastructureComponent",
+      "target_type": "A4.InfrastructureComponent",
+      "description": "a platform and the platform it fails over to"
+    },
+    {
+      "kind": "operated_by",
+      "maps_to": "assignment",
+      "source_type": "A4.InfrastructureComponent",
+      "target_type": "A4.InfrastructureComponent",
+      "description": "an infrastructure component is operated by a management platform"
+    }
+  ]
+}

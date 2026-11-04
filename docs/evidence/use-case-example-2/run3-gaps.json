@@ -1,0 +1,113 @@
+{
+  "rows": [
+    {
+      "layer": "A3",
+      "element": "APP-PAY-HUB",
+      "name": "Payments Hub",
+      "type": "ApplicationComponent",
+      "result": "matched",
+      "real": "APP-PAY-HUB Payments Hub",
+      "reason": "the application exists in the real design — its real name is “Payments Hub”, which A4 does not give",
+      "matched_by": "same id",
+      "confidence": 0.6
+    },
+    {
+      "layer": "A3",
+      "element": "CMP-PAY-EXEC",
+      "name": "Execution Gateway",
+      "type": "ApplicationComponent",
+      "result": "matched",
+      "real": "CMP-PAY-EXEC Execution Gateway",
+      "reason": "the application exists in the real design — its real name is “Execution Gateway”, which A4 does not give",
+      "matched_by": "same id",
+      "confidence": 0.6
+    }
+  ],
+  "links": [
+    {
+      "source": "APP-PAY-HUB",
+      "relationship": "DEPLOYED_ON",
+      "target": "INF-K8S-PAY-PROD",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "relationship": "DEPLOYED_ON",
+      "target": "INF-K8S-PAY-UAT",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "relationship": "DEPLOYED_AS",
+      "target": "DEP-PAYHUB-PROD",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "relationship": "DEPLOYED_AS",
+      "target": "DEP-PAYHUB-UAT",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    },
+    {
+      "source": "CMP-PAY-EXEC",
+      "relationship": "DEPLOYED_ON",
+      "target": "INF-K8S-PAY-PROD",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    },
+    {
+      "source": "CMP-PAY-EXEC",
+      "relationship": "DEPLOYED_AS",
+      "target": "DEP-PAYEXEC-PROD",
+      "result": "matched",
+      "reason": "the same link is approved in the real registry",
+      "confidence": 0.6
+    }
+  ],
+  "metrics": {
+    "A3 components": {
+      "projected": 2,
+      "real": 2,
+      "matched": 2,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "links between real elements": {
+      "projected": 6,
+      "real": 6,
+      "matched": 6,
+      "precision": 1.0,
+      "recall": 1.0
+    }
+  },
+  "by_relationship": {
+    "DEPLOYED_AS": {
+      "projected": 3,
+      "real": 3,
+      "matched": 3,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "DEPLOYED_ON": {
+      "projected": 3,
+      "real": 3,
+      "matched": 3,
+      "precision": 1.0,
+      "recall": 1.0
+    }
+  },
+  "projection_ends": [
+    "APP-PAY-HUB 'Payments Hub': its name does not say which BIAN service domain it realises — describe its APIs or data (A3), or connect it yourself (sdem connect <service domain> REALIZED_BY APP-PAY-HUB …)",
+    "CMP-PAY-EXEC 'Execution Gateway': its name does not say which BIAN service domain it realises — describe its APIs or data (A3), or connect it yourself (sdem connect <service domain> REALIZED_BY CMP-PAY-EXEC …)",
+    "projection ends at A3: the application data (names, APIs, data entities) does not match any domain in the BIAN catalogue"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "errors": [
+    "level A4 (synthetic-bank-payments-a4): instance DEP-PAYHUB-PROD: required attribute 'platform_id' missing (LC-04)",
+    "level A4 (synthetic-bank-payments-a4): instance DEP-PAYHUB-UAT: required attribute 'platform_id' missing (LC-04)"
+  ],
+  "load_record_entry": {
+    "build": 1,
+    "at": "2026-11-01T00:36:21+00:00",
+    "inputs": [
+      {
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-eura_l3v/tmpn0zaf3rb/a1-business.json",
+        "kind": "export",
+        "level": "A1",
+        "model_id": "synthetic-bank-payments-a1",
+        "model_version": "2026.10",
+        "sha256": "d172b3f4147706dcd903b3202d4d23329ddd8a1781b5011931944280877c6132"
+      },
+      {
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-eura_l3v/tmpn0zaf3rb/a2-service-domain.json",
+        "kind": "export",
+        "level": "A2",
+        "model_id": "synthetic-bank-payments-a2",
+        "model_version": "2026.10",
+        "sha256": "25b2a39993c6f178b1a03cb00d3990ba1198ed46aaee3b3e38f2163dd46c3f9b"
+      },
+      {
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-eura_l3v/tmpn0zaf3rb/a3-application.json",
+        "kind": "export",
+        "level": "A3",
+        "model_id": "synthetic-bank-payments-a3",
+        "model_version": "2026.10",
+        "sha256": "606aa5818b5991a20a67f231d7a2af4f9b32d79132bd284f300b114602b6bc2e"
+      },
+      {
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-eura_l3v/tmpn0zaf3rb/a4-technology.json",
+        "kind": "export",
+        "level": "A4",
+        "model_id": "synthetic-bank-payments-a4",
+        "model_version": "2026.10",
+        "sha256": "57bd78605f8be6c443f90bd38f2169f281e233f652e1c6301926cc2fca79cc61"
+      },
+      {
+        "path": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/uce1-eura_l3v/tmpn0zaf3rb/registry.json",
+        "kind": "registry",
+        "registry_version": "0.4.0",
+        "sha256": "d3664e2c1f5c8a1c4ffbd498b538986e40b7354025fab8189117b32969c2c757"
+      }
+    ],
+    "metamodel_version": "0.7.0",
+    "errors": [
+      "level A4 (synthetic-bank-payments-a4): instance DEP-PAYHUB-PROD: required attribute 'platform_id' missing (LC-04)",
+      "level A4 (synthetic-bank-payments-a4): instance DEP-PAYHUB-UAT: required attribute 'platform_id' missing (LC-04)"
+    ],
+    "warnings": [
+      "level A2 (synthetic-bank-payments-a2): instance BD-PAYMENTS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+      "level A2 (synthetic-bank-payments-a2): instance SD-PE: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+      "level A2 (synthetic-bank-payments-a2): instance SD-PA: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+      "level A2 (synthetic-bank-payments-a2): instance SD-PE: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+      "level A2 (synthetic-bank-payments-a2): instance SD-PA: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+      "level A2 (synthetic-bank-payments-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)"
+    ],
+    "result": "rejected"
+  }
+}
