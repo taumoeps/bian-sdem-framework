@@ -30,14 +30,14 @@ def phase_b(reg):
         if r['status'] == 'proposed': r['status'] = 'confirmed'; r['history'].append({'version': 1, 'status': 'confirmed', 'by': P, 'at': '2026-11-01T00:00:00+00:00'})
     M = [('INF-K8S-PAY-PROD', 'availability_pct', 99.97, '%', 'current'), ('INF-K8S-PAY-PROD2', 'availability_pct', 99.995, '%', 'proposed'),
          ('APP-PAY-HUB', 'p95_latency', 220, 'ms', 'current'), ('APP-PAY-HUB', 'p95_latency', 230, 'ms', 'proposed'),
-         ('INF-K8S-PAY-PROD', 'region', 'NZ', '', 'current'), ('INF-K8S-PAY-PROD2', 'region', 'NZ', '', 'proposed'),
+         ('INF-K8S-PAY-PROD', 'region', 'XA', '', 'current'), ('INF-K8S-PAY-PROD2', 'region', 'XA', '', 'proposed'),
          ('INF-K8S-PAY-PROD', 'event_streaming', True, '', 'current'), ('INF-K8S-PAY-PROD2', 'event_streaming', True, '', 'proposed'),
          ('APP-PAY-HUB', 'recovery_time', '1h', '', 'current'), ('APP-PAY-HUB', 'recovery_time', '1.5h', '', 'proposed'),
          ('INF-K8S-PAY-PROD', 'second_region_replica', True, '', 'current'), ('INF-K8S-PAY-PROD2', 'second_region_replica', True, '', 'proposed'),
          ('INF-K8S-PAY-PROD', 'peak_factor', 3.2, '', 'current'), ('INF-K8S-PAY-PROD2', 'peak_factor', 3.5, '', 'proposed'),
          ('SD-PE', 'execution_time', 1.8, 's', 'current'), ('SD-PE', 'execution_time', 1.5, 's', 'proposed'),
          ('PRC-PAY-01', 'availability_pct', 99.96, '%', 'current'), ('PRC-PAY-01', 'availability_pct', 99.99, '%', 'proposed'),
-         ('PRC-PAY-02', 'region', 'NZ', '', 'current'), ('PRC-PAY-02', 'region', 'NZ', '', 'proposed')]
+         ('PRC-PAY-02', 'region', 'XA', '', 'current'), ('PRC-PAY-02', 'region', 'XA', '', 'proposed')]
     reg['measurements'] = [{'id': f'MEAS-{n:03d}', 'record': r, 'metric': m, 'value': v, **({'unit': u} if u else {}), 'state': s, 'evidence': [f'synthetic:{n}'],
                             'provenance': {'by': P, 'at': '2026-11-01T00:00:00+00:00'}} for n, (r, m, v, u, s) in enumerate(M, 1)]
     return reg

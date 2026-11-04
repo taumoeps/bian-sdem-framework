@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "8805562aec9810c3ca35e08ef3e3ba7d741ba9622e0bf2a51980a6b79a9d62ea",
+      "export_sha256": "fcd7399ffb8295b89591922749ee5090c910d9aa74c5e9f4617c613c6dd2f36b",
       "level": "A4",
       "model_id": "synthetic-bank-payments-a4",
       "model_version": "2026.10",
@@ -104,7 +104,7 @@
           "description": "Production runtime environment.",
           "attributes": {
             "environment_kind": "production",
-            "country": "NZ",
+            "country": "XA",
             "cloud_deployment_model": "public"
           }
         }
@@ -120,7 +120,7 @@
           "description": "User-acceptance environment.",
           "attributes": {
             "environment_kind": "test",
-            "country": "NZ",
+            "country": "XA",
             "cloud_deployment_model": "public"
           }
         }

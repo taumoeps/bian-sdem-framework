@@ -51,7 +51,7 @@ The A4 rehost of `INF-K8S-PAY-PROD` to `INF-K8S-PAY-PROD2`:
 |---|---|---|---|
 | S1 | Availability and migration downtime | REQ-AV-01 (A1, end to end, PRC-PAY-01, ≥ 99.95 %) → REQ-AV-02 (A4, the platform) | REQ-AV-02 **breached** (99.9 % proposed); REQ-AV-01 **not shown** (no end-to-end evidence; the platform's figure does not establish it); potential risk: interruption during the cutover |
 | S2 | Performance degradation | REQ-PF-01 (A3, Payments Hub p95 ≤ 300 ms) | satisfied today (220 ms), **no evidence** for the proposed platform; potential risk |
-| S3 | Data residency and compliance | REQ-RES-01 (A1 obligation: New Zealand only) → REQ-RES-02 (A4 platform region) | REQ-RES-02 **breached** (AU); the A1 obligation exposed; decision: only its owner changes it |
+| S3 | Data residency and compliance | REQ-RES-01 (A1 obligation: Region A only) → REQ-RES-02 (A4 platform region) | REQ-RES-02 **breached** (XB); the A1 obligation exposed; decision: only its owner changes it |
 | S4 | Real-time processing | REQ-RT-01 (A2, SD-PE ≤ 2 s) → REQ-RT-02 (A4 event streaming) | REQ-RT-02 **breached** (no streaming); REQ-RT-01 not shown; **assumption**: SD-PE has no approved link |
 | S5 | Disaster recovery degradation | REQ-RC-01 (A3 RTO ≤ 2 h) → REQ-RC-02 (A4 second-region replica) | REQ-RC-02 **breached**; REQ-RC-01 satisfied today (1 h), not shown for the proposed platform |
 

@@ -18,7 +18,7 @@ One answer, all deterministic: the dependent A3 applications and A2 service doma
 
 | Step | What happened |
 |---|---|
-| Before the change | 4 **confirmed breaches** on the proposed platform — availability 99.9 % against 99.95 % (REQ-AV-02), region AU against NZ (REQ-RES-02), no event streaming (REQ-RT-02), no second-region replica (REQ-RC-02); **missing evidence** for performance (REQ-PF-01), recovery time (REQ-RC-01) and the end-to-end business objectives (REQ-AV-01, REQ-RES-01, REQ-RT-01 — the platform's figures do not establish them); **potential risks** per category, including interruption during the cutover; **assumptions** in every layer with unlinked records; A1 obligations REQ-AV-01 and REQ-RES-01 exposed. A1 and A2: *no structural impact* — and still *missing evidence*, never *satisfied*. |
+| Before the change | 4 **confirmed breaches** on the proposed platform — availability 99.9 % against 99.95 % (REQ-AV-02), region XB against XA (REQ-RES-02), no event streaming (REQ-RT-02), no second-region replica (REQ-RC-02); **missing evidence** for performance (REQ-PF-01), recovery time (REQ-RC-01) and the end-to-end business objectives (REQ-AV-01, REQ-RES-01, REQ-RT-01 — the platform's figures do not establish them); **potential risks** per category, including interruption during the cutover; **assumptions** in every layer with unlinked records; A1 obligations REQ-AV-01 and REQ-RES-01 exposed. A1 and A2: *no structural impact* — and still *missing evidence*, never *satisfied*. |
 | The A4 change set | CS-001 → CE-001; `sdem events validate` stores the analysis with the validation |
 | A downstream change too early | the A3 agent's change set **refused** (AG-V08): its records are affected by CE-001, not yet authorised |
 | Assessments | A4 confirms and names **ART-PAYHUB-IMG** (linked inside A4; also listed by the coverage) — kept as an *additional record*; A2 confirms no structural impact and reports the **missing link** SD-PE REALIZED_BY CMP-PAY-EXEC |
@@ -35,7 +35,7 @@ One answer, all deterministic: the dependent A3 applications and A2 service doma
 |---|---|---|
 | S1 | availability and migration downtime | REQ-AV-02 breached on the proposed platform; REQ-AV-01 not shown; the cutover scenario |
 | S2 | performance degradation | satisfied now, not shown on the proposed platform; potential risk |
-| S3 | data residency and compliance | REQ-RES-02 breached (AU); the A1 obligation exposed; only its owner changes it |
+| S3 | data residency and compliance | REQ-RES-02 breached (XB); the A1 obligation exposed; only its owner changes it |
 | S4 | real-time processing | REQ-RT-02 breached; REQ-RT-01 in scope by allocation; the SD-PE gap as an assumption |
 | S5 | disaster recovery degradation | REQ-RC-02 breached; RTO compared as durations |
 | — | the whole flow | A4 change → impact → requirements → risks → A1–A4 → acceptance with residual risks → work items including ART-PAYHUB-IMG |

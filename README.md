@@ -1,16 +1,18 @@
 # SDEM — Service Domain Enterprise Metamodel
 
 ## Overview
-**SDEM is an open-source, customisable Enterprise Architecture Metamodel and Architecture-as-Code framework for designing, aligning and governing banking solution architectures using BIAN Service Domains.**
+**SDEM is a BIAN-aligned solution architecture design and modelling tool that enables architects to design and align four interconnected solution architecture models: Business, BIAN Service Domains, Applications and Infrastructure.**
 
-SDEM provides a structured approach to solution architecture through four interconnected design models:
+It uses a predefined, customisable metamodel to define the architecture elements, their attributes and relationships, ensuring consistency, traceability and governance throughout the solution design lifecycle.
+
+The four models:
 
 - **A1 — Business Architecture:** Business capabilities, value streams, processes, activities and requirements.
 - **A2 — BIAN Service Domain Architecture:** BIAN Service Domains, service operations, control records, behaviour qualifiers and business objects.
 - **A3 — Application Architecture:** Application components, services, APIs, interfaces and data.
 - **A4 — Technology Architecture:** Infrastructure components, nodes, system software, deployments, deployment environments and technology services.
 
-Its primary purpose is to support the **BIAN-aligned solution architecture design lifecycle**. Architects use a predefined, customisable metamodel to develop the four designs within a governed **workspace**, connect the layers and validate alignment. SDEM focuses on developing, aligning, validating and governing individual solution designs.
+Architects develop the four designs within a governed **workspace**, connect the layers and validate alignment. SDEM focuses on developing, aligning, validating and governing individual solution designs.
 
 The framework operates locally through a command-line interface (CLI), maintaining architecture designs as structured, version-controlled data. It also supports AI agents to assist with architecture modelling, analysis and governance, while architects retain responsibility for design decisions and approvals. This includes:
 

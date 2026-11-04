@@ -146,8 +146,8 @@
       "id": "REQ-RES-01",
       "version": 1,
       "status": "confirmed",
-      "name": "Payment data stays in New Zealand",
-      "statement": "Payment instructions and their records are processed and stored in New Zealand only.",
+      "name": "Payment data stays in Region A",
+      "statement": "Payment instructions and their records are processed and stored in Region A only.",
       "owner_layer": "A1",
       "owner": "ROLE-PAY-OFFICER",
       "category": "data_residency",
@@ -162,7 +162,7 @@
         "metric": "region",
         "operator": "in",
         "value": [
-          "NZ"
+          "XA"
         ]
       },
       "evidence": [
@@ -194,8 +194,8 @@
       "id": "REQ-RES-02",
       "version": 1,
       "status": "confirmed",
-      "name": "Payment processing platform in New Zealand",
-      "statement": "The platform that processes payments runs in a New Zealand region — its share of REQ-RES-01.",
+      "name": "Payment processing platform in Region A",
+      "statement": "The platform that processes payments runs in Region A — its share of REQ-RES-01.",
       "owner_layer": "A4",
       "owner": "",
       "category": "data_residency",
@@ -209,7 +209,7 @@
         "metric": "region",
         "operator": "in",
         "value": [
-          "NZ"
+          "XA"
         ]
       },
       "evidence": [
@@ -506,7 +506,7 @@
       "id": "MEAS-004",
       "record": "INF-K8S-PAY-PROD",
       "metric": "region",
-      "value": "NZ",
+      "value": "XA",
       "state": "current",
       "evidence": [
         "deployment_design:ENV-PAY-PROD#country"
@@ -521,7 +521,7 @@
       "id": "MEAS-005",
       "record": "INF-K8S-PAY-PROD2",
       "metric": "region",
-      "value": "AU",
+      "value": "XB",
       "state": "proposed",
       "evidence": [
         "provider_offer:CLOUD-K8S-REGIONS#2"

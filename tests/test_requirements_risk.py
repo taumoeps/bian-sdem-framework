@@ -73,7 +73,7 @@ class Scenarios(Base):
 
     def test_s3_data_residency_and_compliance(self):
         res = self.plan_change()
-        self.assertEqual(self.req(res, 'REQ-RES-02')['proposed']['value'], 'AU'); self.assertEqual(self.req(res, 'REQ-RES-02')['overall'], 'breached')
+        self.assertEqual(self.req(res, 'REQ-RES-02')['proposed']['value'], 'XB'); self.assertEqual(self.req(res, 'REQ-RES-02')['overall'], 'breached')
         self.assertIn('REQ-RES-01', res['obligations'])                                              # the A1 obligation it derives from is exposed
         f = self.findings(res, 'confirmed_breach', 'REQ-RES-02')[0]
         self.assertIn('owner', f['decision'])                                                        # only its owner changes a residency requirement
@@ -188,7 +188,7 @@ class Acceptance(Base):
         m = lambda v, u=None: {'value': v, **({'unit': u} if u else {})}
         self.assertTrue(R.compare({'operator': '<=', 'value': '2h'}, m('1h')))
         self.assertFalse(R.compare({'operator': '<=', 'value': 300, 'unit': 'ms'}, m(0.5, 's')))      # 500 ms
-        self.assertTrue(R.compare({'operator': 'in', 'value': ['NZ']}, m('NZ'))); self.assertFalse(R.compare({'operator': 'in', 'value': ['NZ']}, m('AU')))
+        self.assertTrue(R.compare({'operator': 'in', 'value': ['XA']}, m('XA'))); self.assertFalse(R.compare({'operator': 'in', 'value': ['XA']}, m('XB')))
         self.assertIsNone(R.compare({'operator': '>=', 'value': 99.95, 'unit': '%'}, m(3, 'ms')))     # different units: no guess
         self.assertFalse(R.compare({'operator': '==', 'value': True}, m(False)))
 

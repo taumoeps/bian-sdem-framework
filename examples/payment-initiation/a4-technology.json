@@ -78,7 +78,7 @@
       "description": "Production runtime environment.",
       "attributes": {
         "environment_kind": "production",
-        "country": "NZ",
+        "country": "XA",
         "cloud_deployment_model": "public"
       }
     },
@@ -91,7 +91,7 @@
       "description": "User-acceptance environment.",
       "attributes": {
         "environment_kind": "test",
-        "country": "NZ",
+        "country": "XA",
         "cloud_deployment_model": "public"
       }
     },
