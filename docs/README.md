@@ -23,6 +23,7 @@ flowchart LR
 
 | Read | For |
 |---|---|
+| [Ways of working](sdem-ways-of-working.md) | using SDEM directly with the CLI, or through an AI agent that reads and writes your documents — and what is planned |
 | [Designing with AID](sdem-planning-with-aid.md) | a new design: write what you know, `sdem aid` fills in the missing layers — each record marked *inferred*, with source, reasoning and confidence, for you to confirm or reject |
 
 ## Understanding SDEM

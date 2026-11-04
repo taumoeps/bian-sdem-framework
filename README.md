@@ -304,7 +304,7 @@ flowchart BT
 | **State outside the conversation** | the architecture lives in the workspace, not the chat: any new session — or person — reads the same model |
 | **Say what isn't known** | inferred records stay marked until confirmed; `sdem impact` reports what it could not see; a missing path is not proof of no impact |
 
-Agent instructions constrain intended behaviour; SDEM's validation and governance controls enforce the architecture rules. Instructions alone do not stop an agent with file access from editing workspace files directly — SDEM then flags the edit as unrecorded, and nothing is accepted until a person adopts it. So these are safeguards, not a security boundary: a `--person` name is attribution. Where decisions must be verifiable, use the [governed mode](docs/design/sdem-governance.md) — signed approvals checked by `sdem governance verify`. Set-up: the [AI agent setup guide](docs/sdem-agent-setup.md).
+Agent instructions constrain intended behaviour; SDEM's validation and governance controls enforce the architecture rules. Instructions alone do not stop an agent with file access from editing workspace files directly — SDEM then flags the edit as unrecorded, and nothing is accepted until a person adopts it. So these are safeguards, not a security boundary: a `--person` name is attribution. Where decisions must be verifiable, use the [governed mode](docs/design/sdem-governance.md) — signed approvals checked by `sdem governance verify`. Set-up: the [AI agent setup guide](docs/sdem-agent-setup.md). How the CLI, an agent and documents fit together: [ways of working](docs/sdem-ways-of-working.md).
 
 ## Example — Payments architecture
 
@@ -327,6 +327,8 @@ If the production Kubernetes platform is rehosted, `sdem impact` traces the conn
 **Change is analysed across the whole architecture, not within one isolated diagram.**
 
 ## Quick start
+
+**Two ways to work.** Use the CLI directly — you write designs as JSON change sets and run the commands below; no AI needed. Or let an AI agent drive it — it reads your Markdown or Word designs, prepares the change sets and runs the same commands, and you review and approve. Either way the workspace is the source of truth and every connection needs your approval. Designs exported from Confluence can be onboarded with `sdem transform` ([onboarding](docs/sdem-onboarding-workflow.md)). More: [ways of working](docs/sdem-ways-of-working.md).
 
 Two ways in:
 
@@ -481,6 +483,7 @@ The public SDEM repository holds synthetic data only. Real architecture belongs 
 | [Architecture](docs/sdem-architecture.md) | SDEM's data architecture, components and knowledge graph |
 | [Create a new design](docs/sdem-new-design.md) | Authoring and inference |
 | [Onboarding workflow](docs/sdem-onboarding-workflow.md) | Onboarding existing designs |
+| [Ways of working](docs/sdem-ways-of-working.md) | CLI only, with an AI agent, and planned document input and output |
 | [AI agent setup](docs/sdem-agent-setup.md) | Configuring AI-agent support |
 | [Configuration](docs/sdem-configuration.md) | Configuring and customising SDEM |
 | [Administration](docs/sdem-administration.md) | Installation, upgrades and maintenance |
