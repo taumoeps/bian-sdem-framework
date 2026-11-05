@@ -29,6 +29,7 @@ REGISTRY = 'mappings.json'
 ORCHESTRATOR = 'sdem-orchestrator'
 HUMAN = 'architect'                       # a person working without an agent may change any one layer
 KIND_OF = {'update': 'modify', 'retire': 'retire', 'add': None}
+TEXT_FIELDS = {'name', 'description'}   # AG-V11: an update that changes only these is documentation — no structural impact
 STRENGTH = {'design_change_required': 3, 'review_required': 2, 'no_impact': 1}
 MAX_ROUNDS = 3                            # AG-S07 / AG-Q02
 
@@ -139,13 +140,16 @@ class Estate:
             else:
                 if rid not in by_id: raise CoordinationError(f'change {n}: {rid} is not a {layer} record in this workspace')
                 old = by_id[rid]
+                kind = c.get('kind') or KIND_OF[op]
                 if op == 'update':
                     if rec.get('type', old['type']) != old['type']: raise CoordinationError(f'change {n}: {rid} cannot change type — retire it and add a new record')
                     replacement = {**rec, 'type': old['type']}
+                    differs = {k for k in set(old) | set(replacement) if old.get(k) != replacement.get(k)}
+                    if not c.get('kind') and differs and differs <= TEXT_FIELDS: kind = 'document'   # AG-V11
                     old.clear(); old.update(replacement)
                 else:
                     old['lifecycle_status'] = 'retired'
-                changed.append((rid, c.get('kind') or KIND_OF[op]))
+                changed.append((rid, kind))
         rels = change_set.get('relationships', {})
         lay_ids = {i['id'] for i in target['instances']}
         for r in rels.get('add', []):
@@ -167,6 +171,7 @@ class Estate:
               'dataset': {'file': FILES[layer], 'before_sha256': before, 'after_sha256': _content_sha(new[layer])}}   # what was written (also in a dry run)
         _w(self.coord / 'change-sets' / f'{cs_id}.json', cs)
         _w(self.coord / 'snapshots' / f'{cs_id}.json', new[layer])   # the layer as this change set left it (AG-S08, and undo later)
+        if rels.get('add') or rels.get('remove'): changed = [(r, 'modify' if k == 'document' else k) for r, k in changed]   # links changed: not text only
         impact = self._impact(fg, changed, layer)
         event = {'id': ce_id, 'change_set': cs_id, 'layer': layer, 'round': round_, 'at': self.now(), 'agent': agent, 'person': person, 'impact': impact}
         self._save_event(event)
@@ -279,6 +284,7 @@ class Estate:
         """Stored impact result (AG-R03): every affected record with its strongest classification and paths."""
         rows, supersede = {}, set()
         for rid, kind in changed:
+            if kind == 'document': continue   # AG-V11: name or description only — nothing depends on the words
             if not kind:
                 rows.setdefault(rid, {'id': rid, 'level': layer, 'classification': 'design_change_required', 'via': [], 'cause': f'{rid} added', 'rule': 'add → design_change_required'}); continue
             r = fg.impact(rid, kind)
@@ -290,7 +296,9 @@ class Estate:
         from .graph import impact_coverage
         from .validation import basis
         recs = sorted(rows.values(), key=lambda x: (x['level'] or '', x['id']))
+        doc_only = bool(changed) and all(k == 'document' for _, k in changed)
         return {'records': recs, 'mappings_to_supersede': sorted(supersede), 'changed': [rid for rid, _ in changed],
+                **({'documentation_only': True} if doc_only else {}),
                 'coverage': impact_coverage(fg, recs, [rid for rid, _ in changed]), 'basis': basis(self.path, fg)}   # AG-V01, AG-V02
 
     # -- four-layer impact validation (AG-V01…V10; sdem/validation.py)
@@ -534,8 +542,9 @@ class Estate:
             from .validation import phase as _phase
             v = self.validation(e['id'])
             out.append({**e, 'work_items': [w['id'] for w in items], 'open_work_items': open_items,
-                        'validation': _phase(v) if v else ('not needed — planned before impact validation existed' if items and 'coverage' not in e['impact'] else 'not requested'),
-                        'planned': bool(items) or bool(v and _phase(v) == 'implementation_authorised' and not any(
+                        'validation': _phase(v) if v else ('not needed — documentation only (AG-V11)' if e['impact'].get('documentation_only') else
+                                                           'not needed — planned before impact validation existed' if items and 'coverage' not in e['impact'] else 'not requested'),
+                        'planned': bool(items) or bool(e['impact'].get('documentation_only')) or bool(v and _phase(v) == 'implementation_authorised' and not any(
                             r['classification'] == 'design_change_required' and r['level'] != e['layer'] and r['id'] not in e['impact']['changed']
                             and v['acceptance']['final'].get(r['level']) == 'design_change_required' for r in e['impact']['records']))})
         return out
@@ -629,6 +638,10 @@ def change_main(argv=None):
             if a.json: print(json.dumps({'change_set': cs, 'event': ev}, indent=2, ensure_ascii=False)); return 0
             imp = ev['impact']; design = [r for r in imp['records'] if r['classification'] == 'design_change_required' and r['level'] != ev['layer'] and r['id'] not in imp['changed']]
             print(f"{cs['id']} applied to {cs['layer']} ({len(cs['changes'])} change(s)) by {a.agent} for {a.person}" + (f"; answers {', '.join(cs['work_items'])}" if cs['work_items'] else ''))
+            if imp.get('documentation_only'):   # AG-V11
+                print(f"change event {ev['id']} recorded: documentation only (name or description) — no structural impact, no impact validation needed (AG-V11)")
+                print('NOTE: graph stores show the old words until rebuilt: sdem build --workspace … --out <graph>')
+                return 0
             print(f"change event {ev['id']} recorded (round {ev['round']}): {len(design)} record(s) in other layers need a design change"
                   + (f"; links to supersede: {', '.join(imp['mappings_to_supersede'])}" if imp['mappings_to_supersede'] else ''))
             for r in design: print(f"  {r['level']}  {r['id']}  {r.get('name') or ''}  — {r['cause']}, via {', '.join(r['via']) or '-'}")

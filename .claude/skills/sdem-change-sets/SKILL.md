@@ -40,6 +40,8 @@ sdem change propose <workspace>/coordination/drafts/<file>.json --workspace <wor
 
 Then read the output: the change set id (`CS-…`), the change event (`CE-…`), the records in other layers that need a design change, and the links to supersede. The orchestrator plans the follow-on work.
 
+**Documentation only (AG-V11):** a change set that only updates `name` and/or `description` is recorded as usual but has no structural impact — its event needs no impact validation and blocks nothing. Keep such edits in their own change set; mixing in any other field, a retire or a link makes the whole set an ordinary change.
+
 ## Undo
 
 `sdem change revert <CS-id> --workspace <workspace> --agent <your agent> --person <name> --reason "…"` restores the layer exactly as it was before that change set, recorded as a new change set and change event; open work from the undone change is cancelled. Only the **latest** change set of a layer can be reverted, and only if nobody edited the file since.
