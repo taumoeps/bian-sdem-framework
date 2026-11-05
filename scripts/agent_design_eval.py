@@ -218,7 +218,7 @@ LENDING_REFERENCE = [
 LENDING_REQUIRED = {'LOAN': {'SD-CORPORATE-LOAN', 'SD-LOAN', 'SD-CONSUMER-LOAN'},          # the loan itself: any of BIAN's loan domains
                     'CREDIT': {'SD-CUSTOMER-CREDIT-RATING', 'SD-CREDIT-MANAGEMENT', 'SD-UNDERWRITING'}}   # the credit check and decision
 LENDING_ACCEPTABLE = {'SD-CORPORATE-LOAN', 'SD-LOAN', 'SD-CONSUMER-LOAN', 'SD-CUSTOMER-CREDIT-RATING', 'SD-CREDIT-MANAGEMENT',
-                      'SD-UNDERWRITING', 'SD-CREDIT-FACILITY', 'SD-PARTY-AUTHENTICATION', 'SD-CUSTOMER-OFFER', 'SD-LOAN-SYNDICATION'}
+                      'SD-UNDERWRITING', 'SD-CREDIT-FACILITY', 'SD-DISBURSEMENT', 'SD-PARTY-AUTHENTICATION', 'SD-CUSTOMER-OFFER', 'SD-LOAN-SYNDICATION'}
 LENDING_CONNECTIONS = [
     ('Capture and assess loan application', 'USES_DOMAIN', 'CREDIT'),
     ('Decide and fund loan', 'USES_DOMAIN', 'LOAN'),
@@ -248,6 +248,7 @@ def words(s):
 
 
 def similar(a, b):
+    if re.sub(r'[^a-z0-9]', '', str(a).lower()) == re.sub(r'[^a-z0-9]', '', str(b).lower()): return 1.0   # loan_application = loanapplication
     x, y = words(a), words(b)
     return 2 * len(x & y) / (len(x) + len(y)) if x and y else 0.0
 
@@ -271,7 +272,7 @@ def write_docx(path, markdown):
     for line in blocks:
         if not line.strip(): continue
         level = len(line) - len(line.lstrip('#')) if line.startswith('#') else 0
-        text = re.sub(r'[*_`]', '', line.lstrip('#').strip())
+        text = re.sub(r'\*\*|`', '', line.lstrip('#').strip()).replace('*', '')   # emphasis only — names keep their underscores
         text = re.sub(r'^\s*-\s+', '• ', text) if not level else text
         style = f'<w:pPr><w:pStyle w:val="Heading{level}"/></w:pPr>' if level else ''
         paras.append(f'<w:p>{style}<w:r><w:t xml:space="preserve">{escape(text)}</w:t></w:r></w:p>')

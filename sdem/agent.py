@@ -126,7 +126,7 @@ def limit(obj, n, path='', cut=None):
     cut = {} if cut is None else cut
     if isinstance(obj, list):
         if len(obj) > n: cut[path or '$'] = len(obj)
-        return [limit(x, n, f'{path}[{i}]', cut) for i, x in enumerate(obj[:n])], cut
+        return [limit(x, n, f'{path}[{i}]', cut)[0] for i, x in enumerate(obj[:n])], cut
     if isinstance(obj, dict):
         return {k: limit(v, n, f'{path}.{k}' if path else k, cut)[0] for k, v in obj.items()}, cut
     return obj, cut
@@ -166,9 +166,14 @@ def error_json(code, err_text, command, typed=None):
         kind = 'internal' if code == 3 else next((c for p, c in CODES if re.search(p, err_text, re.I | re.M)), 'refused' if code == 1 else 'input')
         hint = re.search(r'(sdem [a-z][^;)\n`]*)', ' '.join(errs[1:] + [msg]))
         hint = hint.group(1).strip() if hint else fallback_hint(kind, command, msg)
+    details = [re.sub(r'^ERROR:\s*', '', l) for l in errs[1:6]]
+    if not details and errs:   # the reasons on the lines under the error (e.g. "  mappings #1: … requires bian_release")
+        after = lines[lines.index(errs[0]) + 1:] if errs[0] in lines else []
+        details = [l.strip() for l in after if not l.strip().startswith('→')][:6]
+    arrow = next((l.strip().lstrip('→').strip() for l in lines if l.strip().startswith('→')), None)
+    if arrow and not typed: hint = arrow   # the command's own next step, when it gives one
     return {'sdem': {'version': version(), 'command': command},
-            'error': {'code': kind, 'exit': code, 'message': msg, 'hint': hint,
-                      'details': [re.sub(r'^ERROR:\s*', '', l) for l in errs[1:6]]}}
+            'error': {'code': kind, 'exit': code, 'message': msg, 'hint': hint, 'details': details}}
 
 
 def run(fn, argv):

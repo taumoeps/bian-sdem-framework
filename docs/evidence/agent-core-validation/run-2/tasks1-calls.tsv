@@ -1,0 +1,41 @@
+0	--version
+0	commands --json
+0	commands --json
+0	commands --json
+0	home --json
+0	check --workspace workspaces/payments --json
+0	home --help
+0	dashboard --workspace workspaces/payments --json
+0	dashboard --workspace workspaces/payments --json
+0	requirements check --workspace workspaces/payments --json
+0	events --workspace workspaces/payments --open --json
+0	trace INF-K8S-PAY-PROD --direction up --graph workspaces/payments/graph --json
+1	trace INF-K8S-PAY-PROD --direction down --graph workspaces/payments/graph --json
+0	impact INF-K8S-PAY-PROD --change rehost --graph workspaces/payments/graph --json
+0	requirements evaluate --workspace workspaces/payments --record INF-K8S-PAY-PROD --change rehost --json
+0	requirements evaluate --workspace workspaces/payments --record INF-K8S-PAY-PROD --change rehost --json
+0	requirements evaluate --workspace workspaces/payments --record INF-K8S-PAY-PROD --change rehost --json
+0	link --help
+0	link --workspace workspaces/payments --out workspaces/payments/links --dry-run --json
+0	link --workspace workspaces/payments --out workspaces/payments/links --json
+0	review workspaces/payments/links/proposals.json --workspace workspaces/payments --json
+0	explain P-RUN-001 --proposals workspaces/payments/links/proposals.json --json
+0	approve P-RUN-001 --proposals workspaces/payments/links/proposals.json --workspace workspaces/payments --reviewer jane.architect --evidence application_architecture_document:AA-PAYHUB-HLD#s3 --dry-run --json
+0	check --workspace workspaces/payments --json
+0	types change-set --workspace workspaces/payments --json
+0	change propose --help
+0	change propose workspaces/payments/coordination/drafts/a3-app-pay-hub-description.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --dry-run --json
+0	change propose workspaces/payments/coordination/drafts/a3-app-pay-hub-description.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --dry-run --json
+0	change propose workspaces/payments/coordination/drafts/a3-app-pay-hub-description.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --json
+0	check --workspace workspaces/payments --json
+0	events --workspace workspaces/payments --open --json
+1	change propose workspaces/payments/coordination/drafts/a4-inf-k8s-pay-prod-rename.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --dry-run --json
+0	events list --workspace workspaces/payments --json
+0	events pending --workspace workspaces/payments --json
+0	events show CE-001 --workspace workspaces/payments --json
+0	work list --workspace workspaces/payments --json
+0	events validate CE-001 --workspace workspaces/payments --agent sdem-orchestrator --person jane.architect --dry-run --json
+0	change propose workspaces/payments/coordination/drafts/a3-app-pay-hub-retire.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --dry-run --json
+0	connect PRC-PAY-01 USES_DOMAIN SD-PE --workspace workspaces/payments --reviewer jane.architect --evidence process_model:PM-PAY-01 --rationale test --dry-run --json
+0	check --workspace workspaces/payments --json
+0	dashboard --workspace workspaces/payments --json

@@ -145,7 +145,7 @@ class Estate:
                     if rec.get('type', old['type']) != old['type']: raise CoordinationError(f'change {n}: {rid} cannot change type — retire it and add a new record')
                     replacement = {**rec, 'type': old['type']}
                     differs = {k for k in set(old) | set(replacement) if old.get(k) != replacement.get(k)}
-                    if not c.get('kind') and differs and differs <= TEXT_FIELDS: kind = 'document'   # AG-V11
+                    if c.get('kind') in (None, 'modify') and differs and differs <= TEXT_FIELDS: kind = 'document'   # AG-V11: an explicit default is no different
                     old.clear(); old.update(replacement)
                 else:
                     old['lifecycle_status'] = 'retired'
@@ -318,6 +318,8 @@ class Estate:
         if not is_person(person): raise CoordinationError('CTL-20: requesting validation needs the person behind it (a person, never an agent or tool)')
         ev = next((e for e in self.events() if e['id'] == event_id), None)
         if not ev: raise CoordinationError(f'{event_id}: no such change event')
+        if ev['impact'].get('documentation_only'):
+            raise CoordinationError(f'AG-V11: {event_id} is documentation only (name or description) — it has no structural impact and needs no impact validation')
         old = self.validation(event_id)
         if old: return old, False
         cov, note = ev['impact'].get('coverage'), 'stored with the change event'

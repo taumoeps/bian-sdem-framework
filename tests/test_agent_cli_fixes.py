@@ -61,6 +61,16 @@ class AgentCliFixesTests(unittest.TestCase):
                 self.assertEqual(len(items), len(set(i.strip() for i in items)), line)
         self.assertIn('DEPRECATED', sdem('types', 'A3.ApplicationComponent', cwd=self.d).stdout)
 
+    def test_limit_keeps_the_shape(self):                                                # found by the agents, run 2
+        r = sdem('bian', 'search', 'payment', '--json', '--limit', '2', cwd=self.d)
+        d = json.loads(r.stdout)
+        self.assertIsInstance(d['results'][0], dict); self.assertLessEqual(len(d['results']), 2); self.assertIn('truncated', d)
+
+    def test_a_refusal_says_why_in_json(self):                                           # found by the agents, run 2
+        from sdem.agent import error_json
+        e = error_json(1, 'ERROR: the registry would not pass its checks — nothing was written:\n  mapping #1: requires bian_release\n  → add --bian-release <release>', 'approve')['error']
+        self.assertEqual(e['details'], ['mapping #1: requires bian_release']); self.assertEqual(e['hint'], 'add --bian-release <release>')
+
     def test_aid_help_shows_the_main_form(self):                                        # finding 12
         self.assertIn('sdem aid --workspace', sdem('aid', '--help', cwd=self.d).stdout)
 

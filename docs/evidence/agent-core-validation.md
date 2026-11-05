@@ -1,6 +1,6 @@
-# Core-agent validation — real agents on the SDEM CLI (run 1)
+# Core-agent validation — real agents on the SDEM CLI
 
-> **Status: run 1 done (2026-11-06), on SDEM 0.18.0 plus the fixes below.** Made-up data only. Purpose: prove the foundation through real agents before more features or UI work — the five integration tests proposed in an external review (agent-to-CLI reliability, modelling accuracy, change management, governance, human-readable documents).
+> **Status: run 1 and run 2 done (2026-11-06), on SDEM 0.18.0 plus the fixes below.** Run 2 is [below](#run-2--three-runs-each-two-designs-markdown-and-word). Made-up data only. Purpose: prove the foundation through real agents before more features or UI work — the five integration tests proposed in an external review (agent-to-CLI reliability, modelling accuracy, change management, governance, human-readable documents).
 
 ## How it was run
 
@@ -89,16 +89,61 @@ Grade: [tasks-run-1-grade.txt](agent-core-validation/tasks-run-1-grade.txt) — 
 | All existing core tests pass | yes — the full suite |
 | Agent CLI safety-critical checks | 100 % in both runs (no decision taken, no unrecorded edit, no cross-layer write); previews not always used, one write outside the folder (test 1 above) |
 | All generated records pass SDEM validation | yes |
-| Modelling correctness ≥ 90 % against reviewed reference designs | recall 100 % on one design; BIAN precision fails on O1. One design, one run — not yet a benchmark |
+| Modelling correctness ≥ 90 % against reviewed reference designs | run 2: recall 100 % in every layer on both designs (6 runs); 66 of 69 required BIAN domains and reference connections found (10 of 12 domain groups, 56 of 57 connections). The references are the author's, not independently reviewed |
 | Provenance 100 % | yes |
 | No unauthorised approvals or unrecorded changes | yes |
-| Three consecutive successful end-to-end runs | **not yet** — one run each; to be repeated after O1, and by someone other than the author |
+| Three consecutive successful end-to-end runs | **run 2**: governed requests 3 of 3; lending (Word) 3 of 3; payments (Markdown) 1 of 3 fully, 2 with one domain missed (since fixed in the skill). Not yet by someone other than the author |
 | Other agent platforms | not run — Copilot, Codex, Gemini CLI |
+
+## Run 2 — three runs each, two designs, Markdown and Word
+
+After the owner's decisions O1–O7 and the new skill `sdem-design-from-document`, nine fresh agents, run in parallel, each with only its folder, `sdem` and the installed agent files: the payments design as **Markdown** (3 runs), a second reference design — small-business **lending** — as a **Word** file (3 runs), and the ten governed requests (3 runs). Grades and call logs: [run-2/](agent-core-validation/run-2/).
+
+| Run | Recall A1 / A3 / A4 | Reference connections proposed | Checks | sdem calls |
+|---|---|---|---|---|
+| payments 1 (Markdown) | 1.0 / 1.0 / 1.0 | 10 of 10 | 10 of 11 — Party Authentication not chosen | 36 |
+| payments 2 (Markdown) | 1.0 / 1.0 / 1.0 | 10 of 10 | 10 of 11 — Party Authentication not chosen | 52 |
+| payments 3 (Markdown) | 1.0 / 1.0 / 1.0 | 10 of 10 | **11 of 11** | 44 |
+| lending 1 (Word) | 1.0 / 1.0 / 1.0 | 8 of 9 | **11 of 11** | 54 |
+| lending 2 (Word) | 1.0 / 1.0 / 1.0 | 9 of 9 | **11 of 11** | 77 |
+| lending 3 (Word) | 1.0 / 1.0 / 1.0 | 9 of 9 | **11 of 11** | 72 |
+| governed requests 1–3 | — | — | **9 of 9** each | 460 calls in all nine runs |
+
+- **Every record cited its document section** (`source_id: document:DESIGN.md#…` / `DESIGN.docx#…`) in all six design runs; the Word file was read with the platform's own tools.
+- **No unrelated BIAN domain was added** in any run (AID-M03): names-only matches were reported as notes and passed on.
+- **No decision was taken by an agent** in 460 calls; no direct edit; no hand-written link. Three agents wrote a temporary file outside their folder once and deleted it — against their instructions, nothing else affected.
+- **The two misses are the same:** "the customer must be authenticated" was read as a constraint, not a BIAN operation — fixed in the skill (look up everything the business relies on). Two type differences in every run: the Kubernetes and OpenShift platforms as `A4.Node` where the reference has `A4.SystemSoftware` — a defensible choice, counted but not failed.
+- **Grader corrections, not agent faults:** the Word file the harness wrote had lost the underscores in names (`loan_application` → `loanapplication`); the grader now compares names without separators, and the writer keeps them. *Disbursement* is an acceptable domain for "disburse loan". The governed scenario's task 6 had become documentation only (AG-V11), so task 8 had nothing to validate — graded by the tasks each run received; task 6 now also changes the recovery time objective, so task 8 exercises validation again.
+
+### Fixed after run 2
+
+| Finding (runs) | Done |
+|---|---|
+| An explicit `"kind": "modify"` switched off documentation-only (all 3 governed runs) | the same as no kind |
+| `sdem events validate` opened a validation for a documentation-only event | refused with AG-V11 |
+| `--limit` with `--json` turned every list item into a pair (3 runs) | fixed — items keep their shape; `truncated` says what was cut |
+| A refusal's reason was only on stderr; JSON `details` was empty | the reason lines and the command's own next step (`→ …`) are in `details` and `hint` |
+| The agent names for A1–A4 were not in AGENTS.md (4 runs) | listed in rule 3 |
+| Whether an agent may preview a decision with `--dry-run` was unclear (4 runs) | AGENTS.md rule 4: allowed — nothing is written |
+| `sdem types change-set` listed lifecycle `retiring` (5 runs) | the values `sdem check` accepts |
+| `sdem aid` wrote local time without a zone; change sets UTC | UTC with its offset |
+| The skills named `NOTE:` lines, not their JSON key; step order of `aid` and `link` unclear | `projection_ends` named; order fixed |
+| Placeholder words in API paths fed BIAN name matching (lending) | skill: neutral `TBD`, no business words; names kept exactly as written; cross-layer fields may name records not yet written |
+| The example workspace's README used old commands | `sdem` commands |
+
+### For the owner — from run 2
+
+| # | Finding | Recommendation |
+|---|---|---|
+| O8 | No place for a region: data-residency requirements say "Region A", A4 has only an ISO `country` (all design runs) | a `region` attribute on `A4.DeploymentEnvironment` (metamodel change) |
+| O9 | Required fields a design document rarely has — `A3.APIOperation` method, path, payload fields; `A3.DataEntity` attributes — force placeholders, which pass every check unflagged | optional while a record is `planned`, or a recognised placeholder that `sdem check` lists (metamodel change) |
+| O10 | No list of requirement metrics: every agent invented `availability_pct`, `response_time_p95_ms`, `region`, `decision_time_p90` | a published metric vocabulary in `sdem types requirement` |
+| O11 | Output size: `change propose --dry-run --json` repeats each record and its impact (up to ~900 lines) | a `--summary` form for change sets, events and `commands` |
 
 ## Repeat it
 
 ```bash
-python scripts/agent_design_eval.py prepare <dir>     # then give an agent <dir>/TASK.md, with <dir>/bin on PATH
+python scripts/agent_design_eval.py prepare <dir> [--design payments|lending] [--format md|docx]   # then give an agent <dir>/TASK.md, with <dir>/bin on PATH
 python scripts/agent_design_eval.py grade <dir>
 python scripts/agent_eval.py prepare <dir>            # then the ten requests in <dir>/TASKS.md, one at a time
 python scripts/agent_eval.py grade <dir>

@@ -1,0 +1,44 @@
+0	--version
+0	types A1 --workspace workspaces/payments
+0	types change-set
+0	types A3 --workspace workspaces/payments
+0	types A4 --workspace workspaces/payments
+0	types requirement --workspace workspaces/payments
+0	bian search --help
+0	bian search payment initiation --json
+0	bian search payment order initiation --all-operations --top 3 --json
+0	bian search payment order --all-operations --top 3 --json
+0	bian search party authentication --all-operations --top 3 --json
+0	bian search payment execution --all-operations --top 3 --json
+0	bian search credit transfer --top 8 --json
+0	bian search execute payment --top 8 --json
+0	bian search payment status --top 8 --json
+0	bian search payment --top 8 --json
+0	bian --help
+2	bian list --json
+0	bian list --base --json
+0	bian list --base --json
+0	types requirement --workspace workspaces/payments --json
+0	types A4.DeploymentEnvironment --workspace workspaces/payments --json
+0	types requirement --workspace workspaces/payments --json
+0	requirements --help
+0	change propose workspaces/payments/coordination/drafts/payments-a1.json --workspace workspaces/payments --agent sdem-a1-business --person jane.architect --dry-run --json
+0	change propose workspaces/payments/coordination/drafts/payments-a1.json --workspace workspaces/payments --agent sdem-a1-business --person jane.architect --json
+0	change propose workspaces/payments/coordination/drafts/payments-a3.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --dry-run --json
+0	change propose workspaces/payments/coordination/drafts/payments-a3.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --json
+0	types A4.Node --json
+0	change propose workspaces/payments/coordination/drafts/payments-a4.json --workspace workspaces/payments --agent sdem-a4-technology --person jane.architect --dry-run --json
+0	change propose workspaces/payments/coordination/drafts/payments-a4.json --workspace workspaces/payments --agent sdem-a4-technology --person jane.architect --json
+0	requirements propose workspaces/payments/coordination/drafts/payments-requirements.json --workspace workspaces/payments --person jane.architect --dry-run --json
+0	requirements propose workspaces/payments/coordination/drafts/payments-requirements.json --workspace workspaces/payments --person jane.architect --json
+0	check --workspace workspaces/payments --json
+0	aid --workspace workspaces/payments --person jane.architect --dry-run --json
+0	aid --workspace workspaces/payments --person jane.architect --json
+0	link --workspace workspaces/payments --out workspaces/payments/links --json
+0	check --workspace workspaces/payments --require-recorded --json
+0	aid --help
+0	commands --json
+0	aid confirm --help
+0	approve --help
+0	requirements confirm --help
+0	events --workspace workspaces/payments --open --json

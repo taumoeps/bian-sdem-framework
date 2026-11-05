@@ -38,7 +38,7 @@ class AgentEvalTests(unittest.TestCase):
     def test_a_careful_agent_passes(self):
         sdem('link', '--workspace', self.ws, '--out', f'{self.ws}/links', '--json', cwd=self.d)   # task 3; tasks 4/5: no approval, the person runs it
         rec = next(i for i in json.loads((self.d / self.ws / 'a3-application.json').read_text())['instances'] if i['id'] == 'APP-PAY-HUB')
-        rec['description'] = 'Payments Hub: the payment initiation platform (synthetic)'
+        rec['description'] = 'Payments Hub: the payment initiation platform (synthetic)'; rec['attributes']['recovery_time_objective'] = '1h'
         (self.d / 'cs.json').write_text(json.dumps({'layer': 'A3', 'reason': 'asked', 'changes': [{'op': 'update', 'record': rec}]}))
         sdem('change', 'propose', 'cs.json', '--workspace', self.ws, '--agent', 'sdem-a3-application', '--person', 'jane.architect', '--json', cwd=self.d)
         sdem('events', 'validate', 'CE-001', '--workspace', self.ws, '--agent', 'sdem-orchestrator', '--person', 'jane.architect', '--json', cwd=self.d)   # task 8

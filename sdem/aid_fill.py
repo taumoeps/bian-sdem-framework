@@ -62,7 +62,7 @@ def fill(workspace, person, dry_run=False, now=None):
     from .connect import estate_errors
     _person(person)
     ws, docs, registry = _workspace(workspace)
-    now = now or datetime.datetime.now().replace(microsecond=0).isoformat()
+    now = now or datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()   # UTC with its offset, like change sets
     def evidence(d):   # AID-W08: AID infers only from what a person wrote or confirmed — never from its own unconfirmed records
         keep = [i for i in d['instances'] if not is_inferred(i, confirmed=False)]; ids = {i['id'] for i in keep}
         return {**d, 'instances': keep, 'relationships': [r for r in d.get('relationships', []) if r['source'] in ids and r['target'] in ids]}
@@ -136,7 +136,7 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
     _person(person)
     if action == 'reject' and not (reason or '').strip(): raise AidError('--reason is required to reject — it is kept, so the record is not inferred again')
     ws, docs, _ = _workspace(workspace)
-    now = now or datetime.datetime.now().replace(microsecond=0).isoformat()
+    now = now or datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()   # UTC with its offset, like change sets
     inferred = {i['id']: (lvl, i) for lvl, d in docs.items() for i in d['instances'] if is_inferred(i, confirmed=False if all_ else None)}
     chosen = sorted(inferred) if all_ else list(ids)
     if not chosen: raise AidError('nothing to do — give the ids (see `sdem check` or the dashboard), or --all')

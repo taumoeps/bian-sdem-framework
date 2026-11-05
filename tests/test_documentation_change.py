@@ -40,6 +40,15 @@ class DocumentationChangeTests(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertEqual(sdem('check', '--workspace', 'ws', '--require-recorded', cwd=self.d)[0], 0)
 
+    def test_an_explicit_modify_kind_is_no_different(self):                             # found by the agents, run 2
+        rec = dict(next(i for i in json.loads((self.d / 'ws' / 'a3-application.json').read_text(encoding='utf-8'))['instances'] if i['id'] == 'APP-PAY-HUB'))
+        rec['description'] = 'new words'
+        (self.d / 'k.json').write_text(json.dumps({'layer': 'A3', 'reason': 't', 'changes': [{'op': 'update', 'kind': 'modify', 'record': rec}]}), encoding='utf-8')
+        code, out = sdem('change', 'propose', 'k.json', '--workspace', 'ws', '--agent', 'sdem-a3-application', *P, cwd=self.d)
+        self.assertEqual(code, 0, out); self.assertIn('documentation only', out)
+        code, out = sdem('events', 'validate', 'CE-001', '--workspace', 'ws', '--agent', 'sdem-orchestrator', *P, cwd=self.d)
+        self.assertNotEqual(code, 0); self.assertIn('AG-V11', out)                         # nothing to validate
+
     def test_any_other_field_is_an_ordinary_change(self):
         code, out = self.change('c.json', 'A3', 'APP-PAY-HUB', description='new words', lifecycle_status='planned')
         self.assertEqual(code, 0, out); self.assertNotIn('documentation only', out)

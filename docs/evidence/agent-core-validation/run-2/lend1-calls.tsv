@@ -1,0 +1,54 @@
+0	--version
+0	types A1 --workspace workspaces/lending --json
+0	types A1 --workspace workspaces/lending
+0	types change-set
+0	bian search loan application --json --limit 6
+0	bian search credit report business --json --limit 6
+0	bian search affordability --json --limit 6
+0	bian search credit decision --json --limit 6
+0	bian search loan disbursement --json --limit 6
+0	bian search loan fulfillment --json --limit 6
+0	bian search loan application --json --limit 3
+0	bian search loan application --json
+0	bian search credit report --json
+0	bian search credit rating --json
+0	bian search affordability --json
+0	bian search credit decision --json
+0	bian search underwriting --json
+0	bian search loan disbursement --json
+0	bian search consumer loan --json
+0	bian search credit management --json
+0	bian search customer offer --all-operations --json
+0	bian search loan --all-operations --json
+0	bian search underwriting --all-operations --json
+0	bian search customer credit rating --all-operations --json
+0	types A3 --workspace workspaces/lending
+0	types A4 --workspace workspaces/lending
+0	types A3.APIOperation --workspace workspaces/lending
+0	types A3.DataEntity --workspace workspaces/lending
+0	types requirement --workspace workspaces/lending
+0	aid --help
+0	types A4.Node --workspace workspaces/lending
+0	types A4.SystemSoftware --workspace workspaces/lending
+0	types A3.ApplicationComponent --workspace workspaces/lending
+0	bian search disbursement --all-operations --json
+0	change propose workspaces/lending/coordination/drafts/lending-a1.json --workspace workspaces/lending --agent sdem-a1-business --person jane.architect --dry-run --json
+0	change propose workspaces/lending/coordination/drafts/lending-a1.json --workspace workspaces/lending --agent sdem-a1-business --person jane.architect --dry-run --json
+0	change propose workspaces/lending/coordination/drafts/lending-a1.json --workspace workspaces/lending --agent sdem-a1-business --person jane.architect --dry-run --json
+2	change propose workspaces/lending/coordination/drafts/lending-a3 sdem-a3-application.json --workspace workspaces/lending --agent --person jane.architect --dry-run --json
+2	change propose workspaces/lending/coordination/drafts/lending-a4 sdem-a4-technology.json --workspace workspaces/lending --agent --person jane.architect --dry-run --json
+0	change propose workspaces/lending/coordination/drafts/lending-a3.json --workspace workspaces/lending --agent sdem-a3-application --person jane.architect --dry-run --json
+0	change propose workspaces/lending/coordination/drafts/lending-a4.json --workspace workspaces/lending --agent sdem-a4-technology --person jane.architect --dry-run --json
+0	change propose workspaces/lending/coordination/drafts/lending-a1.json --workspace workspaces/lending --agent sdem-a1-business --person jane.architect --json
+0	change propose workspaces/lending/coordination/drafts/lending-a3.json --workspace workspaces/lending --agent sdem-a3-application --person jane.architect --json
+0	change propose workspaces/lending/coordination/drafts/lending-a4.json --workspace workspaces/lending --agent sdem-a4-technology --person jane.architect --json
+0	requirements propose workspaces/lending/coordination/drafts/lending-requirements.json --workspace workspaces/lending --person jane.architect --dry-run --json
+0	requirements propose workspaces/lending/coordination/drafts/lending-requirements.json --workspace workspaces/lending --person jane.architect --json
+0	aid --workspace workspaces/lending --person jane.architect --dry-run --json
+0	aid --workspace workspaces/lending --person jane.architect --json
+0	link --workspace workspaces/lending --out workspaces/lending/links --json
+0	check --workspace workspaces/lending --require-recorded --json
+0	review workspaces/lending/links/proposals.json --workspace workspaces/lending
+0	commands --json
+0	requirements check --workspace workspaces/lending --json
+0	events --workspace workspaces/lending --open --json

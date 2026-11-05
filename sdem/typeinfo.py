@@ -88,7 +88,7 @@ def change_set_format():
             'shape': {'layer': f"one of {', '.join(codes())} — a change set changes one layer", 'reason': 'one sentence',
                       'changes': [{'op': 'add | update | retire', 'kind': 'for update: modify | rehost | replace | retire (impact); optional',
                                    'record': {'id': '…', 'type': 'e.g. A1.BusinessProcess (sdem types <layer>)', 'version': '1', 'name': '…',
-                                              'lifecycle_status': 'planned | active | retiring | retired', 'description': 'optional', 'attributes': {'…': 'sdem types <type>'}}}],
+                                              'lifecycle_status': ' | '.join(_lifecycle()), 'description': 'optional', 'attributes': {'…': 'sdem types <type>'}}}],
                       'relationships': {'add': [{'source': 'id', 'kind': 'an allowed kind (sdem types <type>: links_out)', 'target': 'id'}], 'remove': ['…']}},
             'notes': ['update and retire give the full record', 'links between layers are not in a change set — the rules engine proposes them (sdem link) and a person approves (sdem approve)']}
 
