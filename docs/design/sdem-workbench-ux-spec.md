@@ -1,6 +1,6 @@
 # SDEM workbench UX — the HTML upgrade (spec)
 
-> **Status: proposed (2026-11-06), for the owner's approval** — except **UX-D01…UX-D08, built** (`sdem document`). Builds on the [dashboard design](sdem-dashboard-design.md) (one engine, the pages only show) and the external UX proposal reviewed on 2026-11-06. Nothing here changes the metamodel, the CLI's JSON contracts, the rules engine or who decides what.
+> **Status: proposed (2026-11-06), for the owner's approval** — except **UX-D01…UX-D08, built** (`sdem document`). Builds on the [dashboard design](sdem-dashboard-design.md) (one engine, the pages only show) and the owner's UX proposal and v2 mockup (2026-11-06); a mockup generated from the Payments example by SDEM's own functions shows every view below with real data. Nothing here changes the metamodel, the CLI's JSON contracts, the rules engine or who decides what.
 
 ## 1. Purpose
 
@@ -20,20 +20,39 @@ A solution architect opens the generated pages and, without knowing SDEM's comma
 | UX-P04 | **Read-only.** No control that changes data. Decisions are shown as the exact command for the person to run (copy button). |
 | UX-P05 | **Snapshot honesty.** Every page shows the workspace, the input fingerprint and whether the graph store is current (NV-* rules of the dashboard design). |
 
-## 3. Navigation — five workspace sections
+## 3. Navigation — the owner's structure: Solution Workspace and SDEM Framework
 
-The framework stays in **SDEM Home** (`sdem home`), which already lists the workspaces and holds the metamodel tabs. A workspace's pages have five sections, in one shared shell:
+One shell with a **Solution Workspace / SDEM Framework** switch in the header (the owner's v2 mockup, `docs/ui/`). SDEM Home stays the entry that lists every workspace.
 
-| Id | Section | Shows | Today |
+**Solution Workspace**
+
+| Id | View | Shows | Today |
 |---|---|---|---|
-| UX-N01 | **Overview** | layer health; **everything waiting on a person**: proposals to review, inferred records to confirm, open change events, confirmed requirement breaches, unrecorded edits | dashboard Overview — extend with inferred records and breaches |
-| UX-N02 | **Designs** — A1…A4, each **Document · Records · Diagram** | Document: `sdem document` (UX-D*). Records: searchable list; the selected record's fields, links, source and its **exact JSON**. Diagram: the layer's own stored links (UX-N07) | new; Records partly in the graph view's panel |
-| UX-N03 | **Connections** | proposals weakest first (rule, reasoning, confidence, evidence needed); approved links; the matrices | dashboard Review + Matrices |
-| UX-N04 | **Trace, impact & risk** | pick a record: trace down and up; pick a change kind: classified impact and its coverage; the requirements evaluation (breaches, missing evidence, risk findings) | dashboard Trace & impact — add requirements and risk |
-| UX-N05 | **Changes** | change events with their validation phase (documentation-only events marked), work items, unrecorded edits; AID runs and their notes | dashboard Changes & work + AID plans |
-| UX-N06 | **Deep links and selection.** A record selected anywhere is kept across sections; the address carries it (`#A3/APP-PAY-HUB/document`), so the browser's back button and a copied link restore it. | new |
-| UX-N07 | **Diagrams draw stored links only** — the layer's relationships and approved registry links from the graph store, laid out by `sdem view`'s code; never a link the workspace does not hold. | `sdem view` |
-| UX-N08 | Any record, section of a document or diagram node is **at most three interactions** from the Overview. | — |
+| UX-N01 | **Overview** | the four layers (records, checks, share connected to another layer); **everything waiting on a person**: proposals, inferred records to confirm, open change events, requirement breaches, unrecorded edits | dashboard Overview — extend |
+| UX-N02 | **Architecture Designs** — A1…A4, each **Document · Catalog · Diagram** | Document: `sdem document` (UX-D*). Catalog: searchable records; the selected record's fields, links, source, status, and links to its graph node, trace, JSON and type definition. Diagram: the layer's own stored links | new |
+| UX-N03 | **Data Architecture** — the four datasets and `mappings.json`, each **Table · JSON · Schema** | Table: the records; JSON: a record exactly as stored; Schema: its types from the metamodel | new |
+| UX-N04 | **Knowledge Graphs** | the federated graph (four bands, approved connections between layers, links inside layers) or one layer; focus a record to highlight its neighbours; proposals are not drawn | `sdem view` |
+| UX-N05 | **Traceability & Impact** | pick a record: trace down and up; pick a change kind: the classified impact, links to supersede; the requirements in scope and the command for their evaluation | dashboard Trace & impact — add requirements |
+| UX-N06 | **Reviews & Changes** | proposals weakest first with the evidence each needs; change events with their validation phase (documentation-only marked); work items; unrecorded edits | dashboard Review + Changes & work |
+| UX-N07 | **Documents & Evidence** | the four design documents; the source documents records cite (`source_id`); the evidence behind each approved connection | new |
+
+**SDEM Framework**
+
+| Id | View | Shows | Today |
+|---|---|---|---|
+| UX-N08 | **Overview** | entity types per layer; counts of links allowed inside layers and between them; controls | `sdem home` |
+| UX-N09 | **Metamodel Explorer** | every entity type by layer: definition, source, inheritance, attributes (type, required, allowed values, what an id refers to, deprecated), allowed links inside the layer and to other layers with the evidence each needs | `sdem types`, `sdem home` |
+| UX-N10 | **Schemas & Configuration** | metamodel version and freeze, BIAN release, the organisation profile (if any), the generated entity schemas | `sdem home` |
+| UX-N11 | **Relationship Rules** | inside a layer (the 132 rules, with id and basis) · between layers (the governed relationships: cardinality, authority, evidence a person must give) | `sdem home` |
+| UX-N12 | **Engine Health** | `sdem model check`; every control, where it runs, when it was last tested | dashboard Controls |
+
+**Across both**
+
+| Id | Requirement |
+|---|---|
+| UX-N13 | **Deep links and selection.** The address carries the view and the selected record or type (`#ws/designs/A3/catalog/APP-PAY-HUB`, `#fw/metamodel/A3.ApplicationComponent`); the browser's back button and a copied link restore it. A record links to its type definition, and a type to its records. |
+| UX-N14 | **Diagrams and graphs draw stored links only** — never a link the workspace does not hold; the layout comes from `sdem view`'s code. |
+| UX-N15 | Any record, document section, graph node or type is **at most three interactions** from either Overview. |
 
 ## 4. The design document — `sdem document` (built)
 
@@ -71,8 +90,9 @@ The framework stays in **SDEM Home** (`sdem home`), which already lists the work
 
 1. **UX-D (built)** — `sdem document`.
 2. **The shared shell** — one header, navigation, badge and fingerprint component used by `home`, `dashboard` and `view` (UX-P*, UX-S*, UX-N06).
-3. **Designs section** (UX-N02, UX-N07) — Document from UX-D, Records with exact JSON, Diagram from `sdem view`.
-4. **Overview, Connections, Trace/impact/risk, Changes** — reorganise the existing dashboard tabs into the five sections; add inferred records, requirement breaches and documentation-only events.
-5. **Quality** (UX-Q*) throughout; the usability test before step 2 and after step 4.
+3. **Architecture Designs, Data Architecture, Documents & Evidence** (UX-N02, N03, N07) — new, from UX-D and the datasets.
+4. **Knowledge Graphs, Traceability & Impact, Reviews & Changes, Overview** (UX-N01, N04–N06) — from `sdem view` and the existing dashboard tabs; add inferred records, requirement breaches and documentation-only events.
+5. **The SDEM Framework console** (UX-N08–N12) — from `sdem home`'s tabs, in the same shell.
+6. **Quality** (UX-Q*) throughout; the usability test before step 2 and after step 5.
 
 **Deferred:** `sdem serve`, approvals in the browser, chat, a JavaScript framework rewrite.
