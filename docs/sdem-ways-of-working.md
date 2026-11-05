@@ -98,7 +98,7 @@ flowchart TB
 | Changes asked in plain words | no | the agent drafts the change set | — |
 | JSON output | yes (`--json`) | the agent queries the CLI | — |
 | Human-readable output | dashboards, graph views, reports | the agent writes explanations | — |
-| Word / Markdown template output | no | the agent fills the template | native output |
+| Word / Markdown template output | `sdem document` writes each layer as Markdown or HTML, with sources and gaps | the agent pours `sdem document` into the template | native template filling |
 | Approval of connections and decisions | a person | a person — the agent only prepares the command | a person |
 
 SDEM works the same with or without AI: the metamodel, the CLI and the workspace keep the architecture consistent, traceable and governed however you interact with it.

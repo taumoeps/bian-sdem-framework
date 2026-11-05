@@ -39,6 +39,7 @@ This repository holds architecture kept with **SDEM, the Service Domain Enterpri
 | the change events, and which are still open | `sdem events --workspace <dir> --open` (also `sdem events list …`) |
 | a change event's impact, validated by every layer | `sdem events validate <CE-id>` → each layer: `sdem events assess <CE-id> --layer <A1…A4> …` → `sdem events show <CE-id>` → a person accepts: `sdem events accept <CE-id> …` → a person authorises: `sdem events authorise <CE-id> …` → `sdem work plan --event <CE-id>` |
 | why something exists | `sdem explain <id> --proposals <file>` |
+| a layer's design as a readable document (Markdown for a Word template, or HTML) | `sdem document --workspace <dir> --layer <A1…A4> [--format html] [-o <file>]` — generated from the workspace; sources and gaps shown |
 
 ## More
 

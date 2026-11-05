@@ -53,6 +53,8 @@ JOURNEYS = {
                  'sdem home -o work/sdem'),
     'matrix':   ('J5', 'business → BIAN → application → technology matrices from approved links', 'sdem.matrix', [],
                  'sdem matrix --workspace examples/payment-initiation --md work/matrix.md'),
+    'document': ('J7', "a layer's design as a readable document (Markdown or HTML), generated from the workspace — nothing invented, sources and gaps shown", 'sdem.document', [],
+                 'sdem document --workspace examples/payment-initiation --layer A3'),
     'dashboard': ('J7', 'one read-only HTML dashboard for a workspace: health, attention, review, trace & impact, matrices, changes, AID, controls', 'sdem.dashboard', [],
                  'sdem dashboard --workspace examples/payment-initiation -o work/dashboard.html'),
     'explain':  ('J8', 'explain one element or link: why it exists, from what, how sure', None, None,
@@ -448,6 +450,7 @@ def _guarded(argv):
     except FileNotFoundError as e:
         errors.note('not_found', 'check the path; sdem commands --json shows what each command expects')
         print(f"ERROR: {e.strerror or e}" + (f': {e.filename}' if getattr(e, 'filename', None) else ''), file=sys.stderr); return 2
+    except BrokenPipeError: raise   # the reader stopped early — main() exits quietly
     except OSError as e:
         print(f"ERROR: {e.strerror or e}" + (f': {e.filename}' if getattr(e, 'filename', None) else ''), file=sys.stderr); return 2
     except (ValueError, KeyError) as e:
