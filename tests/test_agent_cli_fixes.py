@@ -65,5 +65,30 @@ class AgentCliFixesTests(unittest.TestCase):
         self.assertIn('sdem aid --workspace', sdem('aid', '--help', cwd=self.d).stdout)
 
 
+class OwnerDecisionTests(unittest.TestCase):   # O6, O7 (owner's decisions 2026-11-06)
+    def setUp(self):
+        self.d = Path(tempfile.mkdtemp())
+        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.d / 'ws', ignore=shutil.ignore_patterns('graph', 'migrations'))
+        reg = self.d / 'ws' / 'mappings.json'; data = json.loads(reg.read_text(encoding='utf-8'))
+        data['mappings'] = [m for m in data['mappings'] if m['mapping_id'] != 'PAY-106']
+        reg.write_text(json.dumps(data, indent=2), encoding='utf-8')
+
+    def tearDown(self): shutil.rmtree(self.d, ignore_errors=True)
+
+    def test_the_dashboard_and_link_give_a_proposal_the_same_id(self):                 # O6
+        sys.path.insert(0, str(ROOT))
+        from sdem.dashboard import collect
+        dash = {(r['source'], r['rel'], r['target']): r['id'] for r in collect(self.d / 'ws')['review']['rows']}
+        links = json.loads(sdem('link', '--workspace', 'ws', '--out', 'ws/links', '--json', cwd=self.d).stdout)['proposals']
+        self.assertTrue(links)
+        for p in links: self.assertEqual(dash.get((p['source'], p['relationship'], p['target'])), p['mapping_id'])
+
+    def test_search_says_when_no_domain_has_that_name(self):                            # O7
+        named = json.loads(sdem('bian', 'search', 'payment', 'execution', '--json', cwd=self.d).stdout)
+        self.assertIn('no_domain_named', named)
+        exact = json.loads(sdem('bian', 'search', 'party', 'authentication', '--json', cwd=self.d).stdout)
+        self.assertNotIn('no_domain_named', exact)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -370,7 +370,7 @@
           "x-sdem-group": "specific",
           "x-sdem-kind": "value",
           "x-sdem-source": {
-            "standard": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7",
+            "standard": "EU GDPR Art. 4(1) and ISO/IEC 29100:2011 §2.9",
             "locator": "personal information / personal data",
             "uri": "https://www.legislation.govt.nz/act/public/2020/0031/latest/LMS23223.html"
           },

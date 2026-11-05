@@ -2273,7 +2273,7 @@
       "status": "active",
       "source": "public legislation",
       "reference": {
-        "standard": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7 (public legislation)",
+        "standard": "EU GDPR Art. 4(1) and ISO/IEC 29100:2011 §2.9 (public legislation)",
         "locator": "personal data / personal information",
         "uri": "https://eur-lex.europa.eu/eli/reg/2016/679/oj"
       },
@@ -2699,7 +2699,7 @@
       "status": "active",
       "source": "public legislation",
       "reference": {
-        "standard": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7",
+        "standard": "EU GDPR Art. 4(1) and ISO/IEC 29100:2011 §2.9",
         "locator": "personal information / personal data",
         "uri": "https://www.legislation.govt.nz/act/public/2020/0031/latest/LMS23223.html"
       },
@@ -2780,7 +2780,7 @@
       "status": "active",
       "source": "public legislation",
       "reference": {
-        "standard": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7",
+        "standard": "EU GDPR Art. 4(1) and ISO/IEC 29100:2011 §2.9",
         "locator": "personal information / personal data",
         "uri": "https://www.legislation.govt.nz/act/public/2020/0031/latest/LMS23223.html"
       },
@@ -3196,7 +3196,7 @@
       "status": "active",
       "source": "public legislation",
       "reference": {
-        "standard": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7",
+        "standard": "EU GDPR Art. 4(1) and ISO/IEC 29100:2011 §2.9",
         "locator": "personal information / personal data",
         "uri": "https://www.legislation.govt.nz/act/public/2020/0031/latest/LMS23223.html"
       },

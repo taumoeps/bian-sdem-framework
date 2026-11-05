@@ -686,7 +686,7 @@
       "values": null,
       "required": false,
       "question": "Which objects hold personal information? What does a privacy change affect?",
-      "source": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7 (public legislation)",
+      "source": "EU GDPR Art. 4(1) and ISO/IEC 29100:2011 §2.9 (public legislation)",
       "term": "personal data / personal information",
       "uri": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
       "reasoning": "Whether the object holds information about an identifiable person, as defined in public privacy law.",

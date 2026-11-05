@@ -78,9 +78,9 @@ Grade: [tasks-run-1-grade.txt](agent-core-validation/tasks-run-1-grade.txt) — 
 | O2 | `sdem aid` and `sdem link` give different proposals in two files; nothing says which to approve from | — | **done** (AID-W09): after O1 the two agree (AID's 5 are all in `link`'s 15, same confidence); `sdem link` now says how many of AID's proposals it reproduces, and `sdem aid` points to it as the list to approve from |
 | O3 | A description-only change is classified as a design change and blocks unrelated downstream changes until accepted (AG-V08) | — | **done** (owner's decision, AG-V11): a change of name or description only is documentation — recorded and checked, no impact validation, blocks nothing; the rename of task 7 is no longer blocked |
 | O4 | AG-V08 refuses a change to a record *affected by* an open event, but not a second change to the record the event *changed* | — | **no change — intended** (checked 2026-11-06): the second change gets its own event and validation, and the open event cannot be accepted until re-analysed (RR-G02); written into AG-V08, with a test |
-| O5 | The orchestrator skill says to call each layer agent as a subagent; a single agent can only record each layer's assessment under that layer agent's name | CTL-19 interpretation | state whether one agent may assess layer by layer, or require separate agents |
-| O6 | The same proposal has different ids in the dashboard (`P-DASH-…`) and from `sdem link` (`P-RUN-…`) | id scheme | one id per proposal |
-| O7 | The BIAN 14 catalogue has no Payment Execution domain; `bian search` does not say so | catalogue content | a note in search results when a common domain name is not in the catalogue |
+| O5 | The orchestrator skill says to call each layer agent as a subagent; a single agent can only record each layer's assessment under that layer agent's name | — | **done** (owner's decision, AG-V12): one agent may assess the layers in turn, under each layer agent's name, with that layer's own evidence and reasoning; the controls are in the CLI |
+| O6 | The same proposal has different ids in the dashboard (`P-DASH-…`) and from `sdem link` (`P-RUN-…`) | — | **done**: the dashboard runs the engine as `sdem link` does — the same ids for the same workspace |
+| O7 | The BIAN 14 catalogue has no Payment Execution domain; `bian search` does not say so | — | **done**: `bian search` notes when no domain in the release is called what was searched (`no_domain_named` in JSON) |
 
 ## Against the review's exit criteria
 

@@ -222,7 +222,7 @@
       "required": false,
       "meaning": "whether it holds information about an identifiable person",
       "question": "Which applications hold personal information?",
-      "source": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7",
+      "source": "EU GDPR Art. 4(1) and ISO/IEC 29100:2011 §2.9",
       "term": "personal information / personal data",
       "uri": "https://www.legislation.govt.nz/act/public/2020/0031/latest/LMS23223.html",
       "reasoning": "Same definition as the A1 and A2 business objects; public law.",

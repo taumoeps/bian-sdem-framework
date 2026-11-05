@@ -690,8 +690,15 @@ def main(argv=None):
         res = search(domains, ' '.join(a.words), a.top, all_operations=a.all_operations)
         seen = set().union(*(set(r['matched']) for r in search(domains, ' '.join(a.words), len(domains))) or [set()])
         unknown = [w for w in a.words if _stems(w) and not (_stems(w) & seen)]
-        if a.json: print(json.dumps({'query': ' '.join(a.words), 'results': res, 'words_bian_does_not_use': unknown}, indent=2, ensure_ascii=False)); return 0
+        # O7: words that read like a domain name ("payment execution") but name no domain in this release — say so, not only show neighbours
+        qs = _stems(' '.join(a.words))
+        named = len(a.words) >= 2 and not any(qs <= _stems(d['name']) for d in domains)
+        no_domain = (f"no service domain in this BIAN release is called {' '.join(a.words)!r}; the matches below come from words in domain "
+                     f"and operation names — if you were looking for a domain by that name, choose the one whose operations fit") if named else None
+        if a.json: print(json.dumps({'query': ' '.join(a.words), 'results': res, 'words_bian_does_not_use': unknown,
+                                     **({'no_domain_named': no_domain} if no_domain else {})}, indent=2, ensure_ascii=False)); return 0
         if unknown: print(f"note: BIAN does not use {', '.join(repr(w) for w in unknown)} — try other words for it")
+        if no_domain: print(f"note: {no_domain}")
         if not res: print(f"no BIAN service domain or operation matches {' '.join(a.words)!r} — try BIAN's words (e.g. 'posting', 'reconciliation', 'position')"); return 0
         for r in res:
             print(f"{r['service_domain']}  ({r['id']}, {r['operations_total']} operations; control record {r['control_record'] or '—'})  matched: {', '.join(r['matched'])}")

@@ -366,7 +366,7 @@
           "x-sdem-group": "specific",
           "x-sdem-kind": "value",
           "x-sdem-source": {
-            "standard": "EU GDPR Art. 4(1) and NZ Privacy Act 2020 s 7 (public legislation)",
+            "standard": "EU GDPR Art. 4(1) and ISO/IEC 29100:2011 §2.9 (public legislation)",
             "locator": "personal data / personal information",
             "uri": "https://eur-lex.europa.eu/eli/reg/2016/679/oj"
           },
