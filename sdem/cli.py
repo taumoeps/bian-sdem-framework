@@ -53,6 +53,8 @@ JOURNEYS = {
                  'sdem home -o work/sdem'),
     'matrix':   ('J5', 'business → BIAN → application → technology matrices from approved links', 'sdem.matrix', [],
                  'sdem matrix --workspace examples/payment-initiation --md work/matrix.md'),
+    'workbench': ('J7', 'the workbench for one workspace: one offline page — the solution workspace (designs, data, knowledge graph, trace and impact, reviews and changes, documents and evidence) and the SDEM framework (metamodel, configuration, rules, health)', 'sdem.workbench', [],
+                 'sdem workbench --workspace examples/payment-initiation -o work/workbench.html'),
     'document': ('J7', "a layer's design as a readable document (Markdown or HTML), generated from the workspace — nothing invented, sources and gaps shown", 'sdem.document', [],
                  'sdem document --workspace examples/payment-initiation --layer A3'),
     'dashboard': ('J7', 'one read-only HTML dashboard for a workspace: health, attention, review, trace & impact, matrices, changes, AID, controls', 'sdem.dashboard', [],

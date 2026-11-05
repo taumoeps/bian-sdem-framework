@@ -276,8 +276,9 @@ def collect_home(estates, project_pages, now=None):
 def write(out, roots=(), estates=(), now=None):
     """SDEM Home, and for each workspace its dashboard and — when its graph is current — its architecture graph, all in `out`, linked
     to each other by relative links (NV-01…NV-06). Reads the workspaces; writes only into `out`."""
-    from . import dashboard, view
+    from . import dashboard, view, workbench
     from .nav import default_store, graph_state, graph_link
+    fw = workbench.framework()   # the framework side is the same for every workspace
     out = Path(out); (out / 'workspaces').mkdir(parents=True, exist_ok=True)
     from .nav import shown
     ests = [Path(shown(e)) for e in find_estates(roots, estates)]; pages = []; used = set()   # NV-07: no machine paths in the pages
@@ -294,6 +295,8 @@ def write(out, roots=(), estates=(), now=None):
         elif gview.exists(): gview.unlink()   # never leave an earlier graph page that would look current
         d['graph_nav'] = graph_link(state, dash, gview)
         dash.write_text(dashboard.render(d), encoding='utf-8'); pages.append((f'workspaces/{name}.html', d))
+        wb = out / 'workspaces' / f'{name}-workbench.html'   # UX-N*: the workbench, beside the dashboard
+        wb.write_text(workbench.render(workbench.collect(e, d=d, home='../index.html', fw=fw)), encoding='utf-8')
     data = collect_home(ests, pages, now)
     (out / 'index.html').write_text(PAGE.replace('__DATA__', json.dumps(data, ensure_ascii=False).replace('</', '<\\/')), encoding='utf-8')
     return out / 'index.html', data
@@ -399,7 +402,7 @@ R.home=()=>{
   h+=`<h2>Workspaces (${D.projects.length})</h2><p class="note">${att.length?`${att.length} need attention.`:"None needs attention."} Open a workspace for its own dashboard.</p>`+projTable();
   return h;};
 function projTable(){return table(["Project","Architectures (records)","Links","Coverage","Errors","Advice","To review","Open work","Open gaps","Needs attention"],D.projects.map(p=>`<tr>
-  <td><b>${esc(p.name)}</b><div class="muted">${esc(p.path)}</div><div><a href="${esc(p.page)}" class="ws-dash">Open Workspace Dashboard</a></div><div>${p.graph&&p.graph.href?`<a href="${esc(p.graph.href)}" class="ws-graph">Open Architecture Graph</a>`:`<span class="muted" title="${esc((p.graph&&p.graph.commands||[]).join('  ·  '))}">Architecture Graph: ${esc(p.graph&&p.graph.reason||'not built')}${(p.graph&&p.graph.commands||[]).length?` — run ${esc(p.graph.commands[0])}`:''}</span>`}</div></td>
+  <td><b>${esc(p.name)}</b><div class="muted">${esc(p.path)}</div><div><a href="${esc(p.page.replace(/\.html$/,'-workbench.html'))}" class="ws-workbench">Open Workbench</a> · <a href="${esc(p.page)}" class="ws-dash">Open Workspace Dashboard</a></div><div>${p.graph&&p.graph.href?`<a href="${esc(p.graph.href)}" class="ws-graph">Open Architecture Graph</a>`:`<span class="muted" title="${esc((p.graph&&p.graph.commands||[]).join('  ·  '))}">Architecture Graph: ${esc(p.graph&&p.graph.reason||'not built')}${(p.graph&&p.graph.commands||[]).length?` — run ${esc(p.graph.commands[0])}`:''}</span>`}</div></td>
   <td>${["A1","A2","A3","A4"].map(l=>p.layers[l]!=null?`<span class="chip">${lvl(l)}${p.layers[l]}</span>`:`<span class="chip muted">${esc(l)} —</span>`).join("")}</td>
   <td>${p.links}<div class="muted">${Object.entries(p.by_status).map(([k,v])=>`${v} ${esc(k)}`).join(", ")}</div></td>
   <td>${Object.entries(p.coverage).map(([l,v])=>`<div>${lvl(l)}${v==null?"—":v+"%"}</div>`).join("")}</td>

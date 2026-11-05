@@ -1,6 +1,6 @@
 # SDEM workbench UX — the HTML upgrade (spec)
 
-> **Status: proposed (2026-11-06), for the owner's approval** — except **UX-D01…UX-D08, built** (`sdem document`). Builds on the [dashboard design](sdem-dashboard-design.md) (one engine, the pages only show) and the owner's UX proposal and v2 mockup (2026-11-06); a mockup generated from the Payments example by SDEM's own functions shows every view below with real data. Nothing here changes the metamodel, the CLI's JSON contracts, the rules engine or who decides what.
+> **Status: approved by the owner (2026-11-06); built** — UX-D01…D08 (`sdem document`) and UX-N01…N15 (`sdem workbench`, also written by `sdem home` beside each workspace's dashboard). **Not yet:** the existing dashboard and graph pages moved into the same shell (step 2), the large-workspace test (UX-Q04) and the usability test before and after (UX-Q06). Builds on the [dashboard design](sdem-dashboard-design.md) (one engine, the pages only show) and the owner's UX proposal and v2 mockup (2026-11-06); a mockup generated from the Payments example by SDEM's own functions shows every view below with real data. Nothing here changes the metamodel, the CLI's JSON contracts, the rules engine or who decides what.
 
 ## 1. Purpose
 

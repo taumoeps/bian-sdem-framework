@@ -51,7 +51,7 @@ packages = ["sdem", "sdem.data", "sdem.data.schema", "sdem.data.metamodel", "sde
 "sdem.data.examples.payment_initiation" = "examples/payment-initiation"
 
 [tool.setuptools.package-data]
-"sdem" = ["releases.json"]
+"sdem" = ["releases.json", "workbench.html"]
 "sdem.data.schema" = ["*.json", "entities/*/*.json"]
 "sdem.data.metamodel" = ["*.json"]
 "sdem.data.bian" = ["*.json", "LICENSE", "*.md"]

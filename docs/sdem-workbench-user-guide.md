@@ -127,7 +127,9 @@ Three generated pages let you explore an architecture without reading JSON. They
 
 | Command | Page | For |
 |---|---|---|
-| `sdem home` | **SDEM Home** — `work/sdem/index.html` | SDEM itself (its architecture, metamodel, health) and every workspace, each with **Open Workspace Dashboard** and **Open Architecture Graph** |
+| `sdem home` | **SDEM Home** — `work/sdem/index.html` | SDEM itself (its architecture, metamodel, health) and every workspace, each with **Open Workbench**, **Open Workspace Dashboard** and **Open Architecture Graph** |
+| `sdem workbench` | **Workbench** — one page per workspace (also written by `sdem home`) | the Solution Workspace — designs as documents, catalogs and diagrams; the datasets and their exact JSON; the knowledge graph; trace and impact; reviews and changes; documents and evidence — and the SDEM Framework: metamodel, schemas and configuration, relationship rules, engine health ([spec](design/sdem-workbench-ux-spec.md)) |
+| `sdem document` | **A design document** — Markdown or HTML per layer | one layer's design in reading order: every record with where it came from, its links and approved connections, the layer's requirements and its gaps |
 | `sdem dashboard` | **Workspace Dashboard** — `<workspace>/dashboard.html` | one workspace: what needs attention, review, trace and impact, matrices, changes, controls |
 | `sdem view` | **Architecture Graph** — `<workspace>/graph/view.html` | the workspace's knowledge graph: A1–A4 records and their links, filter, trace up and down |
 

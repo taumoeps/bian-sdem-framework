@@ -457,7 +457,7 @@ sdem home --root workspaces -o work/sdem
 open work/sdem/index.html                                     # Linux: xdg-open · Windows: start
 ```
 
-`build` writes the four layer graphs and the federated graph; `trace` follows the approved connections down from the process — after the one approval above, to Financial Accounting. **How far a trace reaches depends on which cross-layer connections you have approved**; unapproved proposals are not in the knowledge graph, so approve the A2 → A3 and A3 → A4 proposals to see the full A1 → A4 chain. Go **SDEM Home → workspace dashboard → architecture graph**. Rebuild after every approved change. More: [create a new design](docs/sdem-new-design.md).
+`build` writes the four layer graphs and the federated graph; `trace` follows the approved connections down from the process — after the one approval above, to Financial Accounting. **How far a trace reaches depends on which cross-layer connections you have approved**; unapproved proposals are not in the knowledge graph, so approve the A2 → A3 and A3 → A4 proposals to see the full A1 → A4 chain. Go **SDEM Home → Open Workbench** — the designs as documents, the datasets, the knowledge graph, trace and impact, reviews, and the metamodel, on one page (`sdem workbench --workspace workspaces/ledger` writes it on its own). Rebuild after every approved change. More: [create a new design](docs/sdem-new-design.md).
 
 ### 8. Or explore the Payments example
 
