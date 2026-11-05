@@ -42,6 +42,8 @@ class WorkbenchTests(unittest.TestCase):
         self.assertTrue(d['framework']['cross'] and all(c['required_evidence'] for c in d['framework']['cross']))
         self.assertEqual(len(d['registry']), len(json.loads((self.d / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']))
         self.assertTrue(all(d['docs'][l]['html'] for l in ('A1', 'A2', 'A3', 'A4')))      # the documents (UX-D)
+        self.assertTrue(all(r['source_text'] for r in d['records']))                       # the Catalog says where each came from
+        self.assertTrue(any(q.get('allocated_to') for q in d['reqs']))                     # and the requirements allocated to a record
 
     def test_the_page_loads_nothing(self):                                               # UX-P02
         html, _ = self.build()
@@ -65,6 +67,17 @@ class WorkbenchTests(unittest.TestCase):
         _, d = self.build('empty')
         self.assertEqual(d['records'], []); self.assertEqual(d['graph_state']['state'], 'missing')
         self.assertTrue(d['graph_state']['command'].startswith('sdem build'))
+
+    def test_check_errors_are_said_once_with_the_fix(self):                             # an old workspace: one error, where, and the command
+        for f in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json'):
+            p = self.d / 'ws' / f; ds = json.loads(p.read_text(encoding='utf-8')); ds['metamodel_version'] = '0.0.1'
+            p.write_text(json.dumps(ds), encoding='utf-8')
+        _, d = self.build()
+        errors = [c for c in d['checks'] if c['level'] == 'error']
+        self.assertEqual(len(errors), 1, errors)
+        self.assertEqual(errors[0]['where'], ['A1', 'A2', 'A3', 'A4', 'mappings.json'])
+        self.assertEqual(d['graph_state']['state'], 'blocked')
+        self.assertTrue(d['graph_state']['command'].startswith('sdem migrate'))
 
     def test_json_summary_and_not_a_workspace(self):
         code, out, err = sdem('workbench', '--workspace', 'ws', '-o', 'wb.html', '--json', cwd=self.d)

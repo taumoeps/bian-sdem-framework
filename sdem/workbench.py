@@ -47,7 +47,7 @@ def collect(ws, d=None, graph=None, now=None, home=None, fw=None):
     """Everything the page shows for one workspace. `d` (the dashboard's collect) and `fw` (framework()) may be passed in to avoid
     computing them twice (sdem home)."""
     from .dashboard import collect as dash_collect
-    from .document import document, to_html
+    from .document import document, to_html, provenance
     from .layers import FILES
     from .agents import Estate, CoordinationError
     ws = Path(ws)
@@ -62,7 +62,7 @@ def collect(ws, d=None, graph=None, now=None, home=None, fw=None):
         docs[l] = {'html': body, 'fingerprint': doc['fingerprint'], 'summary': doc['summary'],
                    'gaps': {'no_connection': len(doc['gaps']['no_connection']), 'unconfirmed': len(doc['gaps']['unconfirmed'])}}
         ds = _j(ws / FILES[l], {}) or {}
-        records += [{**r, 'layer': l} for r in ds.get('instances', [])]
+        records += [{**r, 'layer': l, 'source_text': provenance(r)} for r in ds.get('instances', [])]   # UX-D04's words, for the Catalog
         rels[l] = ds.get('relationships', [])
     try: status = {r['id']: r for r in Estate(ws).status()}
     except (CoordinationError, OSError, ValueError): status = {}
@@ -73,8 +73,23 @@ def collect(ws, d=None, graph=None, now=None, home=None, fw=None):
             'layers': d['layers'], 'coverage': d['coverage'], 'review': d['review']['rows'], 'trace': d['records'], 'kinds': d['kinds'],
             'matrix': d['matrix'], 'changes': {**d['changes'], 'events': events}, 'docs': docs, 'records': records, 'rels': rels,
             'registry': (_j(ws / 'mappings.json', {}) or {}).get('mappings', []),
-            'reqs': [{k: q.get(k) for k in ('id', 'name', 'status', 'category', 'subject', 'condition')} for q in reqs],
-            'stale': d['stale'], 'graph_state': _graph_state(ws, graph), 'profile': (ws / 'sdem-profile.json').exists(), 'framework': fw or framework()}
+            'reqs': [{k: q.get(k) for k in ('id', 'name', 'status', 'category', 'subject', 'allocated_to', 'condition')} for q in reqs],
+            'stale': d['stale'], 'checks': _checks(d), 'graph_state': _graph_state(ws, graph), 'profile': (ws / 'sdem-profile.json').exists(), 'framework': fw or framework()}
+
+
+def _checks(d):
+    """`sdem check`'s errors and advice as the dashboard collected them, each message once with the datasets it is reported for
+    (a metamodel mismatch is reported by every dataset; the page shows it once)."""
+    out = []
+    for level, key in (('error', 'errors'), ('advice', 'advice')):
+        seen = {}
+        for where, msgs in [(l['level'], l.get(key, [])) for l in d['layers']] + [('mappings.json', d.get('registry', {}).get(key, []) or [])]:
+            for m in msgs:
+                norm = m.replace('document metamodel_version', 'metamodel_version')
+                norm = norm.split(' — move the workspace with')[0]
+                seen.setdefault(norm, []).append(where)
+        out += [{'level': level, 'text': t, 'where': w} for t, w in seen.items()]
+    return out
 
 
 def _graph_state(ws, graph=None):
