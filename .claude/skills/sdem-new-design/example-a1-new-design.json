@@ -1,0 +1,29 @@
+{
+  "layer": "A1",
+  "reason": "new general ledger — business design (synthetic example)",
+  "changes": [
+    {"op": "add", "record": {"id": "CAP-GL", "type": "A1.BusinessCapability", "version": "1", "name": "General Ledger Management", "lifecycle_status": "planned", "attributes": {"level": 1, "strategic_importance": "core"}}},
+    {"op": "add", "record": {"id": "VS-R2R", "type": "A1.ValueStream", "version": "1", "name": "Record to Report", "lifecycle_status": "planned", "attributes": {"stakeholder": "Chief Financial Officer"}}},
+    {"op": "add", "record": {"id": "VSS-R2R-1", "type": "A1.ValueStreamStage", "version": "1", "name": "Capture transactions", "lifecycle_status": "planned"}},
+    {"op": "add", "record": {"id": "VSS-R2R-2", "type": "A1.ValueStreamStage", "version": "1", "name": "Post to ledger", "lifecycle_status": "planned"}},
+    {"op": "add", "record": {"id": "PRC-GL-POST", "type": "A1.BusinessProcess", "version": "1", "name": "Post financial transactions", "lifecycle_status": "planned",
+      "attributes": {"criticality": "high", "frequency": "continuous", "automation_level": "automated", "invokes": ["SO-FINANCIAL-ACCOUNTING-CAPTURE-LEDGER-POSTING"]}}},
+    {"op": "add", "record": {"id": "ROLE-GL-ACCT", "type": "A1.BusinessRole", "version": "1", "name": "General Ledger Accountant", "lifecycle_status": "planned", "attributes": {"role_kind": "role"}}},
+    {"op": "add", "record": {"id": "BO-JOURNAL", "type": "A1.BusinessObject", "version": "1", "name": "Journal Entry", "lifecycle_status": "planned"}},
+    {"op": "add", "record": {"id": "SVC-GL-POSTING", "type": "A1.BusinessService", "version": "1", "name": "Ledger posting service", "lifecycle_status": "planned", "attributes": {"channels": ["API"]}}},
+    {"op": "add", "record": {"id": "BREQ-GL-01", "type": "A1.BusinessRequirement", "version": "1", "name": "Every journal entry balances before posting", "lifecycle_status": "planned",
+      "description": "Functional requirement.", "attributes": {"requirement_kind": "requirement", "priority": "must"}}}
+  ],
+  "relationships": {"add": [
+    {"source": "VS-R2R", "kind": "composition", "target": "VSS-R2R-1"},
+    {"source": "VS-R2R", "kind": "composition", "target": "VSS-R2R-2"},
+    {"source": "VSS-R2R-1", "kind": "flow", "target": "VSS-R2R-2"},
+    {"source": "CAP-GL", "kind": "serving", "target": "VSS-R2R-2"},
+    {"source": "PRC-GL-POST", "kind": "realization", "target": "CAP-GL"},
+    {"source": "PRC-GL-POST", "kind": "realization", "target": "VSS-R2R-2"},
+    {"source": "PRC-GL-POST", "kind": "realization", "target": "SVC-GL-POSTING"},
+    {"source": "PRC-GL-POST", "kind": "realization", "target": "BREQ-GL-01"},
+    {"source": "PRC-GL-POST", "kind": "access", "target": "BO-JOURNAL"},
+    {"source": "ROLE-GL-ACCT", "kind": "assignment", "target": "PRC-GL-POST"}
+  ]}
+}

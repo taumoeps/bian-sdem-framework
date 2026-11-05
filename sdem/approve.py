@@ -66,7 +66,7 @@ def main(argv=None):
                                  epilog='Examples (J3):\n  sdem approve P-RUN-001 --proposals work/links/proposals.json --workspace work/est --reviewer jane.architect \\\n'
                                         '      --evidence application_architecture_document:AA-PAYHUB-HLD#s3\n'
                                         '  sdem approve P-RUN-001 --proposals … --workspace … --reviewer … --evidence deployment_design:PAY-REHOST#cutover --supersedes PAY-108\n\n'
-                                        'Evidence kinds per link type: .github/skills/sdem-approve-links/evidence-by-link-type.md')
+                                        'Evidence kinds per link type: sdem types <source type> ("to other layers … evidence"), or the sdem-approve-links skill (evidence-by-link-type.md) in your skills folder')
     ap.add_argument('ids', nargs='+', metavar='PROPOSAL', help='proposal id(s) from `sdem review`')
     ap.add_argument('--proposals', required=True, metavar='FILE'); ap.add_argument('--workspace', dest='estate', metavar='DIR', help='workspace folder (its mappings.json)')
     ap.add_argument('--registry', metavar='FILE', help='the registry, if not <workspace>/mappings.json')

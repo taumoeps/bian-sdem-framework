@@ -36,6 +36,7 @@ This repository holds architecture kept with **SDEM, the Service Domain Enterpri
 | what depends on what | `sdem trace <id or A1…A4> --direction down|up|both --graph <dir>/graph` |
 | what a change affects | `sdem impact <id> --change modify|rehost|replace|retire --graph <dir>/graph` (its `coverage` says what the engine could and could not see) |
 | what a planned change does to the requirements | `sdem requirements evaluate --workspace <dir> --record <id> --change <kind> --proposed <new id>` |
+| the change events, and which are still open | `sdem events --workspace <dir> --open` (also `sdem events list …`) |
 | a change event's impact, validated by every layer | `sdem events validate <CE-id>` → each layer: `sdem events assess <CE-id> --layer <A1…A4> …` → `sdem events show <CE-id>` → a person accepts: `sdem events accept <CE-id> …` → a person authorises: `sdem events authorise <CE-id> …` → `sdem work plan --event <CE-id>` |
 | why something exists | `sdem explain <id> --proposals <file>` |
 

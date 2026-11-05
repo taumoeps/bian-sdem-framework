@@ -295,7 +295,7 @@ def explain(argv):
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     if a.estate: a.names = a.names + _estate_files(a.estate)[:-1]
-    if not a.projection and not a.proposals: ap.error('give --projection DIR and/or --proposals FILE')
+    if not a.projection and not a.proposals: ap.error('explain says why a proposal or an inferred record exists: give --proposals FILE (from sdem link or sdem aid, e.g. <ws>/links/proposals.json) and/or --projection DIR')
     found, names = [], _names(a.names, a.graph)
     if a.projection:
         from .aid import read
@@ -377,6 +377,15 @@ def model(argv):
 
 
 def main(argv=None):
+    try: return _main(argv)
+    except BrokenPipeError:   # the reader stopped early (sdem … | head): no traceback, the usual exit
+        import os
+        try: os.dup2(os.open(os.devnull, os.O_WRONLY), sys.stdout.fileno())
+        except (OSError, ValueError): pass
+        return 141
+
+
+def _main(argv=None):
     for stream in (sys.stdout, sys.stderr):   # AF-10: UTF-8 everywhere (Windows consoles default to a code page that cannot print — or →)
         if (getattr(stream, 'encoding', '') or '').lower().replace('-', '') != 'utf8' and hasattr(stream, 'reconfigure'):
             try: stream.reconfigure(encoding='utf-8', errors='replace')
@@ -395,6 +404,9 @@ def main(argv=None):
     if argv[0] in ('--version', '-V'):
         from .paths import version
         print(f'sdem {version()}'); return 0
+    if len(argv) > 1 and any(h in argv for h in ('-h', '--help')):   # AF-01…AF-05: say what every command also takes
+        try: return _guarded(argv)
+        finally: print('\nEvery sdem command also takes: --json (one JSON object), --dry-run (a preview — nothing written) and --limit N (with --json).')
     if any(f in argv for f in ('--json', '--dry-run', '--limit')) and not any(h in argv for h in ('-h', '--help')):
         from . import agent   # AF-01…AF-05: JSON results and errors, --limit, --dry-run for every command
         return agent.run(_guarded, argv)

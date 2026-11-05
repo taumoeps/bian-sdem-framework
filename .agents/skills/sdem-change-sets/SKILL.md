@@ -9,6 +9,9 @@ A **change set** is a JSON file with the changes to **one** architecture layer. 
 
 ## Format
 
+Ask SDEM rather than guess: `sdem types change-set` (this format), `sdem types <type> --json` (fields, allowed values, links), `sdem bian search <words>` (BIAN operation ids).
+
+
 ```json
 {
   "layer": "A4",

@@ -46,8 +46,10 @@ sdem events assess <CE-id> --layer <A1…A4> --status <status> [--recommend <cla
 ```
 
 - **A missing path is not proof of no impact.** Before confirming none, look for the links that *should* exist (`unmapped_records`, `unapproved_links`, and your design documents). If you find a gap, say so — `further_investigation_required`, or `impact_disputed` with evidence.
+- **Repeat an option or give several values** — both are kept: `--missing "SD-PE REALIZED_BY CMP-PAY-EXEC" --missing "SO-PI-06 IMPLEMENTED_BY"`, `--evidence a:1 b:2`, `--record ART-PAYHUB-IMG --record DEP-PAYHUB-PROD`.
 - **Name every affected record you find** with `--record`, even when you agree with the classification — those the calculation did not name are kept as *additional records* and get work items once accepted. Report a link that should exist with `--missing`.
-- Your assessment is tied to the evidence at the time: if requirements, measurements, links or layers change, it becomes **stale** and you re-assess after `sdem events analyse`.
+- Your assessment is tied to the evidence at the time: if requirements, measurements, links or layers change — or the event is re-analysed after an SDEM upgrade — it becomes **stale** and you re-assess after `sdem events analyse`.
+- **Structural impact is not exposure**: a layer with no structural change can still own a requirement the change breaks — read the requirements column, not only the impact.
 - Assess **only your own layer** (CTL-19). Never accept an assessment, never authorise — those are the architect's (CTL-21).
 - A later assessment of the same layer replaces yours in the summary; both stay on record.
 
@@ -56,6 +58,8 @@ sdem events assess <CE-id> --layer <A1…A4> --status <status> [--recommend <cla
 1. `sdem events validate <CE-id> --workspace <workspace> --agent sdem-orchestrator --person <architect>` — opens all four layers.
 2. Call **each** layer agent as a subagent: *"sdem-a2-bian: assess the impact of CE-001 on A2 in <workspace> for <person> (skill sdem-impact-validation); return your status, recommendation, evidence and reasoning."* All four, even the no-impact layers.
 3. `sdem events show <CE-id> --workspace <workspace>` — report to the architect: calculated against assessed, per layer; the requirements column and the risk findings (confirmed breaches first); additional records and missing links; disagreements; gaps; stale assessments.
-4. **Ask the architect to decide** — they run `sdem events accept <CE-id> --reason "…" [--final <layer>=<class> --resolve <layer>="…"] [--accept-risk RF-…="…"] --authorise --workspace <workspace> --person <their name>`. Every confirmed breach needs their decision. Only then `sdem work plan`.
+4. **Ask the architect to decide** — two decisions, both theirs: `sdem events accept <CE-id> --workspace <workspace> --person <their name> --reason "…" [--final <layer>=<class> --resolve <layer>="…"] [--accept-risk RF-…="…"]`, then `sdem events authorise <CE-id> --workspace <workspace> --person <their name>`. Every confirmed breach needs their decision. Only then `sdem work plan` (in the governed enterprise mode, once both are verified by their signed commit).
+
+**Working efficiently as a specialist**: start from the orchestrator's brief (your layer's coverage, requirements and findings); read the full event only when the brief does not answer a question; use `sdem commands --json` rather than exploring `--help`. Efficiency never replaces evidence: cite what you checked.
 
 Validating impact is not approving links — cross-layer links are still approved separately, by a person (`sdem approve`).

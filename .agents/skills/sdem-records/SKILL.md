@@ -5,6 +5,8 @@ description: How SDEM architecture records are written — the fields every reco
 
 # SDEM records
 
+If the workspace has `sdem-profile.json`, the organisation's own types (`BANK.A3.…`), attributes, required fields and names apply on top of SDEM's — `sdem profile show --workspace <dir>` lists them, and `sdem check` enforces them. A profile may add layers above A1 or below A4 (e.g. `a0-strategy.json`, `a5-physical.json`) with their own types; their records follow the same fields.
+
 Every record in an architecture dataset (`instances` list) has:
 
 | Field | Required | Notes |
@@ -18,6 +20,12 @@ Every record in an architecture dataset (`instances` list) has:
 | `attributes` | depends on type | required attributes per type are checked by `sdem check` (rule LC-04) |
 
 Links **inside** a layer go in the dataset's `relationships` list: `{"source": "…", "kind": "composition", "target": "…"}`; which kinds are allowed between which types is in [`metamodel/level-relationships.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.18.0/metamodel/level-relationships.json).
+
+## Before you write
+
+- `sdem types <layer or type> --workspace <dir> --json` lists every kind of record, its fields (type, required, allowed values) and the links it may have — your organisation's profile included. Use only what it lists; a value outside `allowed_values` is refused (LC-06), an unlisted field is warned about.
+- `sdem bian search <words> --json` finds the BIAN service domains and operations for plain words, with the `SO-…` ids to put in a process's or activity's `invokes`.
+- `sdem types requirement` gives the requirements registry's format; `sdem types change-set` the change-set format.
 
 ## Attributes the rules engine links from
 

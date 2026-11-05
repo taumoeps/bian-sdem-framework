@@ -54,7 +54,7 @@ sdem requirements propose <draft> --workspace <ws> --person <architect> --dry-ru
 
 ## 4. Let SDEM infer A2–A4 — only if asked
 
-If the request says to infer the other layers (that is the architect's agreement), first `sdem aid --workspace <ws> --person <architect> --dry-run --json`. **Check its `added.A2`: the `SD-…` service domains must be the ones you chose with `sdem bian search`.** If any other domain appears, a process or activity is missing `invokes` — fix it with an A1 change set (`op: update`) and dry-run again. Only then run it without `--dry-run`. If the request does not ask for inference, stop here and offer it. Then `sdem link --workspace <ws> --out <ws>/links --json` and `sdem check --workspace <ws> --json`.
+If the request says to infer the other layers (that is the architect's agreement), first `sdem aid --workspace <ws> --person <architect> --dry-run --json`. **Check its `added.A2`: the `SD-…` service domains must be the ones you chose with `sdem bian search`.** If any other domain appears, find where it came from: if a process or activity is missing `invokes`, fix it with an A1 change set (`op: update`) and dry-run again. If every A1 record has `invokes`, the extra domain was matched on a shared word in an A3 or A4 name (confidence 0.4) — do not rename records to avoid it: list it as a weak inference in your review list and recommend `sdem aid reject <SD-id>` to the architect. Only then run it without `--dry-run`. If the request does not ask for inference, stop here and offer it. Then `sdem link --workspace <ws> --out <ws>/links --json` and `sdem check --workspace <ws> --json`.
 
 ## 5. Hand back — always this review list
 

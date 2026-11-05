@@ -164,7 +164,7 @@ class Estate:
         _w(self.path / FILES[layer], new[layer])
         cs = {'id': cs_id, **change_set, 'agent': agent, 'person': person, 'created_at': self.now(), 'work_items': [w['id'] for w in wis], 'event': ce_id, 'branch': _branch(self.path),
               'trigger': 'downstream' if wis else 'initial',   # RR-G04: an authorised downstream change answers work items; an initial change starts a new event
-              'dataset': {'file': FILES[layer], 'before_sha256': before, 'after_sha256': _file_sha(self.path / FILES[layer])}}
+              'dataset': {'file': FILES[layer], 'before_sha256': before, 'after_sha256': _content_sha(new[layer])}}   # what was written (also in a dry run)
         _w(self.coord / 'change-sets' / f'{cs_id}.json', cs)
         _w(self.coord / 'snapshots' / f'{cs_id}.json', new[layer])   # the layer as this change set left it (AG-S08, and undo later)
         impact = self._impact(fg, changed, layer)
@@ -555,6 +555,13 @@ def _identity(person):
             'note': 'the name given is a claim, not authenticated by SDEM; the reviewed pull request is the control'}
 
 
+def _content_sha(obj):
+    """The fingerprint of a dataset as _w writes it — the same as _file_sha of the written file."""
+    import hashlib
+    from .files import dumps
+    return hashlib.sha256(dumps(obj).encode('utf-8')).hexdigest()
+
+
 def _file_sha(path):
     import hashlib
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -673,6 +680,7 @@ def _pairs(items, what):
 def events_main(argv=None):
     import argparse
     argv = list(argv or [])
+    if argv[:1] == ['list']: argv = argv[1:]   # `sdem events list` is the list too
     if not argv or argv[0] not in EVENT_COMMANDS:   # the list, as before
         ap = argparse.ArgumentParser(prog='sdem events', description='Change events with their impact, their impact validation and work status (AG-K03, AG-V07). '
                                      f"Subcommands for four-layer impact validation: {', '.join(EVENT_COMMANDS)} (sdem events <subcommand> --help).",

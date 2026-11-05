@@ -15,11 +15,20 @@ import argparse, json, sys
 from .paths import DATA_ROOT
 
 
+def _lifecycle():
+    from .conformance import LIFECYCLE   # the values sdem check accepts — one list
+    return LIFECYCLE
+
+
 def _attr(a):
     out = {'name': a['name'], 'type': a['type'], 'required': bool(a.get('required'))}
     if a.get('values'): out['allowed_values'] = a['values']
     if a.get('references'): out['refers_to'] = a['references']
     if a.get('description'): out['description'] = a['description']
+    if a.get('status') == 'deprecated':   # LC-13: still accepted, warned — say what replaces it
+        out['deprecated'] = True
+        loc = (a.get('reference') or {}).get('locator')
+        if loc: out['instead'] = loc
     return out
 
 
@@ -35,7 +44,7 @@ def describe_type(mm, t, full=True):
            'source': ' · '.join(x for x in ((e.get('reference') or {}).get('standard'), (e.get('reference') or {}).get('concept')) if x),
            'identifier': (e.get('identifier') or {}).get('key', ['id']),
            'record_fields': {'required': ['id', 'type', 'version', 'name', 'lifecycle_status'], 'optional': ['description', 'attributes'],
-                             'lifecycle_status': ['planned', 'active', 'retiring', 'retired']},
+                             'lifecycle_status': list(_lifecycle())},
            'attributes': [_attr(defs[n]) for n in own]}
     cons = mm.relationships['constraints']
     out['links_out'] = sorted({(c['kind'], c['target_type'], c.get('id', '')) for c in cons if c['level'] == e['level'] and mm.is_a(t, c['source_type'])})
@@ -121,7 +130,7 @@ def _print(res, w):
         print('\nmore: ' + ' · '.join(res['also'])); return
     if 'types' in res:
         for t in res['types']: _print_type(t, brief=True)
-        print(f"\nfields every record carries: id, type, version, name, lifecycle_status (planned | active | retiring | retired); optional description. Full detail: sdem types <type>"); return
+        print(f"\nfields every record carries: id, type, version, name, lifecycle_status ({' | '.join(_lifecycle())}); optional description. Full detail: sdem types <type>"); return
     if 'attributes' in res: _print_type(res); return
     if 'condition' in res:   # the requirement format
         print(res['file']); print(f"set by SDEM, never give them: {', '.join(res['set_by_sdem'])}")
@@ -141,8 +150,9 @@ def _print_type(t, brief=False):
     if not brief and t['definition']: print(f"  {t['definition']}")
     for x in t['attributes']:
         print(f"  {x['name']:<26} {x['type']:<18} {'REQUIRED' if x['required'] else '':<9}" + (f"one of: {', '.join(map(str, x['allowed_values']))}" if x.get('allowed_values') else '')
-              + (f"refers to: {', '.join(x['refers_to'])}" if x.get('refers_to') else ''))
-    if t['links_out']: print('  links:     ' + '; '.join(f"{l['kind']} → {l['to'].split('.', 1)[1] if l['to'].count('.') == 1 else l['to']}" for l in t['links_out']))
+              + (f"refers to: {', '.join(x['refers_to'])}" if x.get('refers_to') else '')
+              + (f"  DEPRECATED — do not use ({x['instead']})" if x.get('deprecated') and x.get('instead') else '  DEPRECATED — do not use' if x.get('deprecated') else ''))
+    if t['links_out']: print('  links:     ' + '; '.join(dict.fromkeys(f"{l['kind']} → {l['to'].split('.', 1)[1] if l['to'].count('.') == 1 else l['to']}" for l in t['links_out'])))
     if not brief:
         if t['links_in']: print('  linked by: ' + '; '.join(f"{l['from'].split('.', 1)[1]} {l['kind']}" for l in t['links_in']))
         for r in t['link_types_to_other_layers']: print(f"  to other layers: {r['relationship']} ({r['direction']}) {r['other_end']} — evidence: {', '.join(r['evidence_needed'])}")

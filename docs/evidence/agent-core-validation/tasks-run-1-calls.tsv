@@ -1,0 +1,44 @@
+0	--version
+0	commands --json
+0	commands --json
+1	commands --json
+0	--help
+0	check --workspace workspaces/payments --json
+0	dashboard --workspace workspaces/payments --json --dry-run
+0	dashboard --workspace workspaces/payments --json --dry-run
+0	trace INF-K8S-PAY-PROD --direction both --graph workspaces/payments/graph --json
+0	impact INF-K8S-PAY-PROD --change rehost --graph workspaces/payments/graph --json
+1	trace CMP-PAY-EXEC --direction up --graph workspaces/payments/graph --json
+0	requirements evaluate --workspace workspaces/payments --record INF-K8S-PAY-PROD --change rehost --json
+0	link --workspace workspaces/payments --out workspaces/payments/links --dry-run --json
+0	link --workspace workspaces/payments --out workspaces/payments/links --json
+0	review workspaces/payments/links/proposals.json --workspace workspaces/payments --json
+0	explain P-RUN-001 --proposals workspaces/payments/links/proposals.json --json
+0	approve P-RUN-001 --proposals workspaces/payments/links/proposals.json --workspace workspaces/payments --reviewer jane.architect --evidence application_architecture_document:AA-PAYHUB-HLD#s3 --dry-run --json
+0	types change-set --json
+0	change propose --help
+0	change propose workspaces/payments/coordination/drafts/cs-a3-payhub-description.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --dry-run --json
+0	change propose workspaces/payments/coordination/drafts/cs-a3-payhub-description.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --json
+0	check --workspace workspaces/payments --json
+1	change propose workspaces/payments/coordination/drafts/cs-a4-k8s-rename.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --dry-run --json
+1	change propose workspaces/payments/coordination/drafts/cs-a4-k8s-rename.json --workspace workspaces/payments --agent sdem-a4-technology --person jane.architect --dry-run --json
+0	events --help
+2	events list --workspace workspaces/payments --json
+0	events --workspace workspaces/payments --open --json
+0	events validate --help
+0	events validate CE-001 --workspace workspaces/payments --agent sdem-orchestrator --person jane.architect --dry-run --json
+0	events validate CE-001 --workspace workspaces/payments --agent sdem-orchestrator --person jane.architect --json
+0	events assess --help
+0	events pending --workspace workspaces/payments --layer A1 --json
+0	events assess CE-001 --layer A1 --status no_impact_confirmed --evidence change_set:CS-001 record:APP-PAY-HUB --confidence medium --uncertainty A1 links are incomplete (10 unmapped records; SD-PI REALIZED_BY APP-PAY-HUB is still only proposed as P-RUN-001); the only change in CS-001 is the description text of APP-PAY-HUB (id, type, version 7.1, name, lifecycle_status and all attributes unchanged), so a missing link could not carry a functional or hosting effect --reasoning A description-only edit of an application changes no business capability, process, activity or object; requirements REQ-AV-01 and REQ-RES-01 were missing_evidence before the change and the edit does not alter them. --workspace workspaces/payments --agent sdem-a1-business --person jane.architect --json
+0	events assess CE-001 --layer A2 --status no_impact_confirmed --evidence change_set:CS-001 record:APP-PAY-HUB proposal:P-RUN-001 --confidence medium --uncertainty A2 links are incomplete (SD-PE, SD-PA, SO-PI-06, BBO-PARTY unmapped; SD-PI REALIZED_BY APP-PAY-HUB not yet approved); the only change in CS-001 is the description text of APP-PAY-HUB (id, type, version 7.1, name, lifecycle_status and all attributes unchanged), so a missing link could not carry a functional or hosting effect --missing SD-PI REALIZED_BY APP-PAY-HUB (proposed P-RUN-001, awaiting a person's approval) --reasoning No service domain, operation or BIAN object changes; even once SD-PI REALIZED_BY APP-PAY-HUB is approved, a description edit does not change what the application realises. REQ-RT-01 (SD-PE) is unaffected. --workspace workspaces/payments --agent sdem-a2-bian --person jane.architect --json
+0	events assess CE-001 --layer A3 --status impact_disputed --recommend no_impact --record APP-PAY-HUB --evidence change_set:CS-001 record:APP-PAY-HUB --confidence high --reasoning The calculated design_change_required on APP-PAY-HUB comes from the generic modify/self rule; the change set already is the whole change (description text only), so no further A3 design work follows. The six related components, service, interface and event are untouched; REQ-PF-01 and REQ-RC-01 are not affected by documentation text. --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --json
+0	events assess CE-001 --layer A4 --status impact_disputed --recommend no_impact --evidence change_set:CS-001 record:DEP-PAYHUB-PROD record:DEP-PAYHUB-UAT record:INF-K8S-PAY-PROD record:INF-K8S-PAY-UAT --mapping PAY-108 PAY-109 PAY-110 PAY-113 --confidence high --reasoning The review_required on the two deployments and two Kubernetes platforms comes from modify/down1; APP-PAY-HUB keeps version 7.1 and its deployed_on/deployed_as attributes, so links PAY-108/109/110/113 remain valid and hosting is unchanged. A4 requirements (REQ-AV-02, REQ-RC-02, REQ-RES-02, REQ-RT-02, REQ-CAP-01) are not affected by a description edit. --workspace workspaces/payments --agent sdem-a4-technology --person jane.architect --json
+0	events show CE-001 --workspace workspaces/payments --json
+0	events accept --help
+0	change propose workspaces/payments/coordination/drafts/cs-a3-payhub-retire.json --workspace workspaces/payments --agent sdem-a3-application --person jane.architect --dry-run --json
+0	impact APP-PAY-HUB --change retire --graph workspaces/payments/graph --json
+2	explain PRC-PAY-01 --workspace workspaces/payments --json
+0	connect --help
+0	check --workspace workspaces/payments --json
+0	events --workspace workspaces/payments --open --json

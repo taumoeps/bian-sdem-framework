@@ -218,6 +218,7 @@ def run(fn, argv):
         data = {'sdem': {'version': version(), 'command': command}, **{k: v for k, v in data.items() if k != 'sdem'}}
         if cut: data['truncated'] = cut
         if dry: data.update(dry)
+        elif want_dry: data.setdefault('dry_run', True)   # a command's own preview: marked too (AF-04), so it is never read as done
         warns = [l for l in err.getvalue().splitlines() if l.startswith('WARN')]
         if warns: data.setdefault('warnings', warns)
     elif cut or dry:

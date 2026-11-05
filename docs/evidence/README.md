@@ -8,6 +8,7 @@
 | [Use-case example 2](use-case-example-2.md) | planning missing layers (AID) | 12 of 12; safety 16 of 16 |
 | [Use-case example 3](use-case-example-3.md) | the agents carry a technology change through to an approved connection | 8 of 8; controls 19 of 19 |
 | [Use-case example 4](use-case-example-4.md) | onboarding existing designs, export to build — also a hands-on walkthrough | replayed on every push |
+| [Core-agent validation](agent-core-validation.md) | real agents on the CLI: a written design to four layers, and ten governed requests | design 9 of 10 (recall 1.0); governed requests 9 of 9 |
 | [Use-case testing](use-case-testing.md) | the ten use cases and eleven hand-executed runs that validated the rules (a record) | every proposable rule reached its sealed answers |
 | [Relationships testing](relationships-testing.md) | the 132 links allowed inside a layer (a record) | 0 contradicted |
 

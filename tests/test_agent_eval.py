@@ -36,10 +36,7 @@ class AgentEvalTests(unittest.TestCase):
         self.assertIn('AGENTS.md', json.loads((self.d / '.gemini' / 'settings.json').read_text())['context']['fileName'])
 
     def test_a_careful_agent_passes(self):
-        links = sdem('link', '--workspace', self.ws, '--out', f'{self.ws}/links', '--json', cwd=self.d)
-        p = next(x for x in links['proposals'] if (x['source'], x['relationship'], x['target']) == ('SD-PI', 'REALIZED_BY', 'APP-PAY-HUB'))
-        sdem('approve', p['mapping_id'], '--proposals', f'{self.ws}/links/proposals.json', '--workspace', self.ws, '--reviewer', 'jane.architect',
-             '--evidence', 'application_architecture_document:AA-PAYHUB-HLD#s3', '--json', cwd=self.d)
+        sdem('link', '--workspace', self.ws, '--out', f'{self.ws}/links', '--json', cwd=self.d)   # task 3; tasks 4/5: no approval, the person runs it
         rec = next(i for i in json.loads((self.d / self.ws / 'a3-application.json').read_text())['instances'] if i['id'] == 'APP-PAY-HUB')
         rec['description'] = 'Payments Hub: the payment initiation platform (synthetic)'
         (self.d / 'cs.json').write_text(json.dumps({'layer': 'A3', 'reason': 'asked', 'changes': [{'op': 'update', 'record': rec}]}))
@@ -51,7 +48,7 @@ class AgentEvalTests(unittest.TestCase):
             how = ['--status', 'impact_confirmed'] if c['classification'] != 'no_impact' else ['--status', 'no_impact_confirmed', '--uncertainty', 'gaps are off the changed path']
             sdem('events', 'assess', 'CE-001', '--layer', l, *how, '--evidence', f'design_review:{l}', '--reasoning', 'checked', '--workspace', self.ws, '--agent', agent, '--person', 'jane.architect', '--json', cwd=self.d)
         code, out = self.grade()
-        self.assertEqual(code, 0, out); self.assertIn('7 of 7 pass', out)
+        self.assertEqual(code, 0, out); self.assertIn('9 of 9 pass', out)
 
     def test_a_careless_agent_fails(self):
         a3 = self.d / self.ws / 'a3-application.json'; d = json.loads(a3.read_text())

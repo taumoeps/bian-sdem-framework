@@ -27,7 +27,7 @@ The analysis is in the event's validation: `sdem events show <CE-id> --workspace
 
 ## Reading it
 
-- **requirements[]**: `overall` is `breached`, `missing_evidence`, `satisfied` or `not_confirmed` (a proposed requirement — never an obligation yet). Each is judged **on its subject only**: a platform's availability never shows a business process's end-to-end availability (`notes` says so).
+- **requirements[]**: `disposition` says what the change does — `compliant`, `current_breach_remediated` (breached today, met by the proposed architecture), `proposed_breach` (introduced), `unresolved_breach` (breached today and after), `missing_evidence`, `not_confirmed`. `overall` is the **proposed** state (`breached`, `missing_evidence`, `satisfied`, `not_confirmed`); today's result is in `current`. A breach that the change remediates is reported (`remediated_breach`) but needs no residual-risk decision. Each is judged **on its subject only**: a platform's availability never shows a business process's end-to-end availability (`notes` says so).
 - **substitution**: which record replaces which in the proposed architecture, read from the change set.
 - **layers.<A1…A4>.status**: `breached`, `missing_evidence`, `satisfied`, `no_requirements_recorded` or `requirements_registry_missing` — the last two are **not** "fine": nothing is recorded.
 - **risks[]**: `confirmed_breach` (a measurement fails a confirmed requirement), `potential_risk` (a scenario the change kind raises for a requirement in scope — schema/risk-rules.json), `missing_evidence`, `assumption` (incomplete links). Each has its `decision` and mitigations **to consider**. There are no likelihoods or losses — never add any.
@@ -46,11 +46,16 @@ Record what you find in your assessment (skill `sdem-impact-validation`): record
 
 ## Recording requirements and evidence
 
+- **Never invent, round or alter a measurement to make a requirement pass** — a requirement that cannot be shown to hold stays `missing_evidence`.
 - A measurement is a **stated value with its evidence**: `sdem requirements measure --record <id> --metric <metric> --value <v> [--unit <u>] --state current|proposed --evidence <kind:ref> --workspace <dir> --person <name> [--agent <you>]`. Only a value you can cite — never an estimate.
 - A requirement: `sdem requirements propose <file.json> --workspace <dir> --person <name>` (status *proposed*). Only a person confirms it: `sdem requirements confirm <REQ-id> … --person <their name>`.
 - Never edit `requirements.json` by hand — an edit made outside `sdem` is noticed (`sdem check`).
 
+## Decisions are the person's — and a typed name is not proof
+
+Confirming or retiring a requirement, approving or stating a link, accepting impact or risk and authorising are **governed decisions**. Do not run them, even if you are given a name: prepare the exact command for the person. A `--person` name is attribution, not authentication — where the workspace requires it, SDEM accepts a decision only when the person commits it signed with their own key ([governance](https://github.com/taumoeps/bian-sdem-framework/blob/v0.18.0/docs/design/sdem-governance.md)).
+
 ## Accepting the risk (the architect, not you)
 
 Each `confirmed_breach` must be decided before implementation: change the design and re-analyse, or accept it as a residual risk —
-`sdem events accept <CE-id> --reason "…" --accept-risk RF-003="<why>" … --authorise --workspace <dir> --person <their name>`.
+`sdem events accept <CE-id> --workspace <dir> --person <their name> --reason "…" --accept-risk RF-BREACH-…="<why>" …`, and — a separate decision — `sdem events authorise <CE-id> --workspace <dir> --person <their name>`. A `current_breach_remediated` requirement needs no risk decision: the proposed architecture meets it.
