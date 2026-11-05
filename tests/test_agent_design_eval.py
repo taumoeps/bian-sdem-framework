@@ -62,5 +62,24 @@ class AgentDesignEvalTests(unittest.TestCase):
         self.assertTrue(any(c.startswith("no person's decision") for c in failed), failed)
 
 
+class SecondDesignAndWordTests(unittest.TestCase):
+    def setUp(self): self.d = Path(tempfile.mkdtemp()) / 'eval'
+    def tearDown(self): shutil.rmtree(self.d.parent, ignore_errors=True)
+
+    def test_the_lending_design_as_a_word_file(self):
+        import zipfile
+        r = run('scripts/agent_design_eval.py', 'prepare', self.d, '--design', 'lending', '--format', 'docx')
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn('DESIGN.docx', (self.d / 'TASK.md').read_text(encoding='utf-8'))
+        self.assertIn('workspaces/lending', (self.d / 'TASK.md').read_text(encoding='utf-8'))
+        xml = zipfile.ZipFile(self.d / 'DESIGN.docx').read('word/document.xml').decode('utf-8')
+        self.assertIn('Heading2', xml); self.assertIn('Credit Decisioning Engine', xml)
+        self.assertIn('in four stages, in order: apply, assess credit, decide, fund loan.', xml)   # wrapped lines joined
+        g = json.loads(run('scripts/agent_design_eval.py', 'grade', self.d, '--json').stdout)
+        self.assertEqual(g['design'], 'lending')
+        self.assertEqual(sorted(g['bian']['required_missing']), ['CREDIT', 'LOAN'])
+        self.assertEqual(g['records']['A3']['reference'], 14)
+
+
 if __name__ == '__main__':
     unittest.main()

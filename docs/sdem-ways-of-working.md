@@ -24,8 +24,8 @@ An agent — for example GitHub Copilot Chat in VS Code — is a natural-languag
 
 **Design input**
 
-1. You give the agent a new or existing design — Markdown, or Word if your agent can read Word files.
-2. The agent reads it against the SDEM metamodel and drafts JSON change sets.
+1. You give the agent a new or existing design — Markdown, or Word (the agent converts it to text with its platform's tools).
+2. The agent reads it against the SDEM metamodel and drafts JSON change sets — one per layer, every record citing the section it came from (`source_id: document:<file>#<section>`). The skill: `sdem-design-from-document`.
 3. The agent previews and proposes them through the CLI (`--json`, `--dry-run` first); SDEM checks every change.
 4. The agent can run AID and the rules engine; you review the inferred records and proposed connections.
 5. **You** confirm, approve and accept — the agent prepares the exact command for you to run, never runs it for you.
