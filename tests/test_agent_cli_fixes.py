@@ -27,7 +27,7 @@ class AgentCliFixesTests(unittest.TestCase):
         for opt in ('--json', '--dry-run', '--limit'): self.assertIn(opt, out.split('usage:')[-1].split('\n\n')[-1])
 
     def test_a_native_dry_run_is_marked(self):                                          # finding 5
-        reg = self.d / 'ws' / 'mappings.json'; data = json.loads(reg.read_text())
+        reg = self.d / 'ws' / 'mappings.json'; data = json.loads(reg.read_text(encoding='utf-8'))
         data['mappings'] = [m for m in data['mappings'] if m['mapping_id'] != 'PAY-106']   # SD-PI REALIZED_BY APP-PAY-HUB: proposed again
         reg.write_text(json.dumps(data, indent=2))
         links = json.loads(sdem('link', '--workspace', 'ws', '--out', 'ws/links', '--json', cwd=self.d).stdout)
@@ -36,10 +36,10 @@ class AgentCliFixesTests(unittest.TestCase):
                  '--evidence', 'application_architecture_document:X', '--dry-run', '--json', cwd=self.d)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertTrue(json.loads(r.stdout).get('dry_run'), r.stdout[:300])
-        self.assertFalse(any(m['source']['id'] == 'SD-PI' and m['target']['id'] == 'APP-PAY-HUB' for m in json.loads(reg.read_text())['mappings']))
+        self.assertFalse(any(m['source']['id'] == 'SD-PI' and m['target']['id'] == 'APP-PAY-HUB' for m in json.loads(reg.read_text(encoding='utf-8'))['mappings']))
 
     def test_a_change_set_preview_reports_the_changed_fingerprint(self):                 # finding 6
-        rec = next(i for i in json.loads((self.d / 'ws' / 'a3-application.json').read_text())['instances'] if i['id'] == 'APP-PAY-HUB')
+        rec = next(i for i in json.loads((self.d / 'ws' / 'a3-application.json').read_text(encoding='utf-8'))['instances'] if i['id'] == 'APP-PAY-HUB')
         rec['description'] = 'changed'
         (self.d / 'cs.json').write_text(json.dumps({'layer': 'A3', 'reason': 'test', 'changes': [{'op': 'update', 'record': rec}]}))
         r = sdem('change', 'propose', 'cs.json', '--workspace', 'ws', '--agent', 'sdem-a3-application', '--person', 'jane.architect', '--dry-run', '--json', cwd=self.d)

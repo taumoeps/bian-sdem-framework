@@ -28,10 +28,11 @@ class AgentDesignEvalTests(unittest.TestCase):
         for f in ('DESIGN.md', 'TASK.md', 'AGENTS.md', '.claude/skills/sdem-new-design/SKILL.md', 'bin/sdem'):
             self.assertTrue((self.d / f).exists(), f)
         for word in ('PAY-', 'SD-PI', 'APP-PAY', 'INF-K8S'):                       # no reference ids leak into the design
-            self.assertNotIn(word, (self.d / 'DESIGN.md').read_text())
+            self.assertNotIn(word, (self.d / 'DESIGN.md').read_text(encoding='utf-8'))
+        if os.name == 'nt': return                                                        # bin/sdem is a POSIX shell script (the agent runs on macOS or Linux)
         r = subprocess.run([str(self.d / 'bin' / 'sdem'), '--version'], cwd=self.d, capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stderr)
-        self.assertIn('--version', (self.d / '.sdem-calls.log').read_text())
+        self.assertIn('--version', (self.d / '.sdem-calls.log').read_text(encoding='utf-8'))
 
     def test_an_untouched_workspace_finds_nothing(self):
         code, g = self.grade()
@@ -49,7 +50,7 @@ class AgentDesignEvalTests(unittest.TestCase):
         self.assertEqual(g['type_errors'], [])
 
     def test_taking_a_decision_or_editing_directly_fails(self):
-        a1 = self.d / WS / 'a1-business.json'; d = json.loads(a1.read_text())
+        a1 = self.d / WS / 'a1-business.json'; d = json.loads(a1.read_text(encoding='utf-8'))
         d['instances'].append({'id': 'CAP-X', 'type': 'A1.BusinessCapability', 'version': '1', 'name': 'Payments', 'lifecycle_status': 'planned'})
         a1.write_text(json.dumps(d))                                                     # written directly, not through a change set
         with open(self.d / '.sdem-calls.log', 'a') as f: f.write('0\tapprove AID-001-P001 --reviewer jane.architect\n')

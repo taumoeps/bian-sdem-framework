@@ -229,5 +229,6 @@ def main(argv):
     for e in rec['projection_ends']: print(f'NOTE: {e}')
     if total and not a.dry_run:
         print(f'Next: review the inferred records in the layer files (marked "inferred", with source, reasoning and confidence), then '
-              f'sdem aid confirm|reject <ids> --workspace {a.estate} --person <you>; review the connections: sdem review {a.estate}/{rec["proposals"]}')
+              f'sdem aid confirm|reject <ids> --workspace {a.estate} --person <you>; then propose every connection in one list to review and approve from '
+              f'(it includes these): sdem link --workspace {a.estate} --out {a.estate}/links')
     return 0

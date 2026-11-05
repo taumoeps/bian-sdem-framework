@@ -70,12 +70,12 @@ Grade: [tasks-run-1-grade.txt](agent-core-validation/tasks-run-1-grade.txt) — 
 | 15 | The approve-links skill read as if every BIAN link needs `--bian-release` | tasks run | **fixed** — only when SDEM asks |
 | 16 | This repository's own `.claude/skills` and `.agents/skills` were stale and lacked `sdem-new-design` | setup | **fixed** — reinstalled from the source |
 
-### For the owner — not changed, a decision is needed
+### For the owner — decisions
 
-| # | Finding | Why not changed | Recommendation |
+| # | Finding | Why not changed | Recommendation / status |
 |---|---|---|---|
-| O1 | **AID infers whole BIAN domains from one word in A3 names** (S17 fallback B) — 3 unrelated domains and their operations, when every A1 process already named its domains through `invokes` | inference behaviour set by owner decisions DEC-E-08 / DEC-E-10 | when A1 `invokes` already pins the domains, do not bring in new domains from name-only matches — propose them as a note instead; re-measure with use-case example 2 |
-| O2 | `sdem aid` and `sdem link` give different proposals (different REALIZED_BY targets and confidence) in two proposals files; nothing says which to approve from | rules engine behaviour | one proposals source per workspace, or say which supersedes |
+| O1 | **AID infers whole BIAN domains from one word in A3 names** (S17 fallback B) — 3 unrelated domains, when every A1 process already named its domains through `invokes` | — | **done** (owner's decision, AID-M03): such a domain is a note, not a record. Replaying the design run's own drafts: **10 of 10 checks**, no unrelated domain, A2 records 194 → 103, recall and connections unchanged; use-case example 2 still passes |
+| O2 | `sdem aid` and `sdem link` give different proposals in two files; nothing says which to approve from | — | **done** (AID-W09): after O1 the two agree (AID's 5 are all in `link`'s 15, same confidence); `sdem link` now says how many of AID's proposals it reproduces, and `sdem aid` points to it as the list to approve from |
 | O3 | A description-only change is classified as a design change and blocks unrelated downstream changes until accepted (AG-V08) | impact rules | a documentation-only change kind, or no event for text-only edits |
 | O4 | AG-V08 refuses a change to a record *affected by* an open event, but not a second change to the record the event *changed* | governance rule | decide which is intended; make both the same |
 | O5 | The orchestrator skill says to call each layer agent as a subagent; a single agent can only record each layer's assessment under that layer agent's name | CTL-19 interpretation | state whether one agent may assess layer by layer, or require separate agents |

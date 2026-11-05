@@ -334,10 +334,17 @@ def project(have, catalogue=None, registry=None, pid=None, created_at=None, eith
             fr, rr = fwd.records['A2'][d]['projection'], rev.records['A2'][d]['projection']
             prj.take_domain(d, 'M', f"supported from both sides. Business side (F1): {fr['reasoning']}. Application side (R2): {rr['reasoning']}", MEDIUM, fr['inferred_from'] + rr['inferred_from'])
         if either:   # AID-M02: filling a workspace for a person to review — a domain one side supports is kept too, at that side's confidence
+            kept_r = set()
             for side, d in [(fwd, d) for d in sorted(f - r)] + [(rev, d) for d in sorted(r - f)]:
                 x = side.records['A2'][d]['projection']
+                if side is rev and f and x['confidence'] <= LOW:
+                    # AID-M03: the business layer already names its domains; a domain only an application's name points to is a note, not a record
+                    prj.ends.append(f"not added — {d} ({_clean(prj.cat_by_id[d]['name'])}): only application names point to it ({x['reasoning']}). "
+                                    f"If it belongs to this design, name its operations in a process's invokes, or add it: sdem bian custom --workspace <ws> --add \"{_clean(prj.cat_by_id[d]['name'])}\" --person <you>")
+                    continue
+                if side is rev: kept_r.add(d)
                 prj.take_domain(d, 'M', f"supported from the {'business' if side is fwd else 'application'} side only: {x['reasoning']}", x['confidence'], x['inferred_from'])
-            both = sorted(f | r)
+            both = sorted(f | (r & f) | kept_r)
         for side in (fwd, rev):
             for k, l in side.links.items():
                 ends = {l['source']['id'], l['target']['id']}

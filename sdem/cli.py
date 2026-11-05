@@ -172,16 +172,20 @@ def _link(argv):
     if code == 0 and out:
         (Path(out) / 'proposals.json').write_text(text, encoding='utf-8')
         doc = json.loads(text); n = len(doc.get('mappings', []))
+        aid = _aid_coverage(argv, doc.get('mappings', []))
         if as_json:   # AG-03: the proposals, weakest first, and where they are
             rows = sorted(doc.get('mappings', []), key=lambda m: (m.get('confidence', 0), m.get('id', '')))
             print(json.dumps({'proposals_file': str(Path(out) / 'proposals.json'), 'count': n, 'folder': out,
                               'proposals': [{'mapping_id': m.get('mapping_id'), 'relationship': m.get('relationship'), 'source': (m.get('source') or {}).get('id'),
                                              'target': (m.get('target') or {}).get('id'), 'confidence': m.get('confidence'), 'rule': _rule_of(m),
                                              'rationale': m.get('rationale')} for m in rows],
-                              'next': f"a person reviews and approves: sdem approve <id> --proposals {Path(out) / 'proposals.json'} --workspace <dir> --reviewer <name> --evidence <kind:ref>" if n else None},
+                              'next': f"a person reviews and approves: sdem approve <id> --proposals {Path(out) / 'proposals.json'} --workspace <dir> --reviewer <name> --evidence <kind:ref>" if n else None,
+                              **({'aid_proposals': aid} if aid else {})},
                              indent=2, ensure_ascii=False))
             return code
         print(f"{n} proposed link(s) written to {Path(out) / 'proposals.json'}; candidates, inference log and any design datasets in {out}/")
+        if aid: print(f"AID's proposals ({', '.join(aid['files'])}): {aid['included']} of {aid['total']} are in this list — review and approve from this list"
+                      + (f"; not reproduced here, still in AID's file: {', '.join(aid['not_included'])}" if aid['not_included'] else ''))
         if show and n:
             names = [x for x in argv if x.endswith('.json') and Path(x).name[:3] in ('a1-', 'a2-', 'a3-', 'a4-') and Path(x).exists()]
             print(); review([str(Path(out) / 'proposals.json')] + (['--names', *names] if names else []))
@@ -190,6 +194,19 @@ def _link(argv):
     else:
         sys.stdout.write(text)
     return code
+
+
+def _aid_coverage(argv, mappings):
+    """O2: one list to approve from — say how many of AID's proposals in the workspace `sdem link` reproduces, and which it does not."""
+    ws = next((Path(x).parent for x in argv if Path(x).name in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')), None)
+    if ws is None: return None   # --workspace is expanded to the layer files before this runs
+    files = sorted((ws / 'aid').glob('*-proposals.json'))
+    if not files: return None
+    key = lambda m: ((m.get('source') or {}).get('id'), m.get('relationship'), (m.get('target') or {}).get('id'))
+    have = {key(m) for m in mappings}
+    aid = [m for f in files for m in (json.loads(f.read_text(encoding='utf-8')).get('mappings') or [])]
+    missing = [m.get('mapping_id') for m in aid if key(m) not in have]
+    return {'files': [str(f) for f in files], 'total': len(aid), 'included': len(aid) - len(missing), 'not_included': missing}
 
 
 def _rule_of(m):
@@ -377,8 +394,10 @@ def model(argv):
 
 
 def main(argv=None):
+    import errno
     try: return _main(argv)
-    except BrokenPipeError:   # the reader stopped early (sdem … | head): no traceback, the usual exit
+    except OSError as e:   # the reader stopped early (sdem … | head): no traceback — EPIPE, or EINVAL on Windows
+        if not isinstance(e, BrokenPipeError) and e.errno not in (errno.EPIPE, errno.EINVAL): raise
         import os
         try: os.dup2(os.open(os.devnull, os.O_WRONLY), sys.stdout.fileno())
         except (OSError, ValueError): pass

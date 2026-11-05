@@ -45,6 +45,7 @@ AID projects the missing architecture layers from the architecture datasets an a
 |---|---|---|
 | AID-M01 | With layers above and below a missing layer, project the missing layer from both sides (forward and reverse) and keep elements both sides support; an element supported by both is one band higher than either alone (still capped by AID-S04). | built |
 | AID-M02 | When `sdem aid` fills a workspace (for a person to confirm or reject), a domain that only one side supports is kept too, at that side's confidence; one both sides support stays a band higher. File-based planning (`sdem aid project`) keeps AID-M01. *(Owner's decision, 2026-10-30: AID brings in the domains relevant to the design — an existing design whose applications describe no APIs still gets the domain its business layer names.)* | built |
+| AID-M03 | When `sdem aid` fills a workspace and the business layer already names its domains (forward side, through `invokes` or the engine's A1 rules), a domain that **only** application names point to — name-only evidence, low confidence (AID-S07) — is **not added**: it is reported as a note with how to add it (`invokes`, or `sdem bian custom`). *(Owner's decision, 2026-11-06, from the core-agent validation: three unrelated domains and 91 records inferred from one shared word each; [evidence](../evidence/agent-core-validation.md).)* | tests |
 
 ## 6. Output — the projection package
 
@@ -106,6 +107,7 @@ The accuracy reached is **reported, not assumed**: each run states its precision
 | AID-W06 | `sdem check` reports an `AID-` record without its mark as an error (CTL-16) and summarises unconfirmed inferred records as one advice line per layer; the dashboard lists them under *needs attention*. | tests |
 | AID-W07 | Activity → operation by verb and noun (rule S06) keeps a match only if the activity covers at least half of the domain's asset type, and only the best-covered domains (DA2-04): with the full BIAN layer, *Initiate payment order* and *Execute payment* name Payment Order Initiation and Payment Rail — not the six domains that merely share *order* or *payment*. | tests |
 | AID-W08 | AID infers only from records a person wrote or confirmed — never from its own unconfirmed inferred records — so running it again cannot build guesses on guesses. | tests |
+| AID-W09 | One list to approve from: `sdem link --workspace DIR --out DIR/links` proposes every connection, and says how many of AID's proposals (`DIR/aid/*-proposals.json`) it reproduces and which it does not; `sdem aid` points the person to it. *(Owner's decision, 2026-11-06.)* | tests |
 
 ## 10. Commands
 
