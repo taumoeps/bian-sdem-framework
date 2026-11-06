@@ -55,6 +55,8 @@ JOURNEYS = {
                  'sdem matrix --workspace examples/payment-initiation --md work/matrix.md'),
     'workbench': ('J7', 'the workbench for one workspace: one offline page — the solution workspace (designs, data, knowledge graph, trace and impact, reviews and changes, documents and evidence) and the SDEM framework (metamodel, configuration, rules, health)', 'sdem.workbench', [],
                  'sdem workbench --workspace examples/payment-initiation -o work/workbench.html'),
+    'diagram':  ('J7', 'ArchiMate diagrams of a workspace from SDEM\'s templates — capabilities and value stream, business process, BIAN service domains, application cooperation, technology and deployment, layered — only stored, approved links drawn', 'sdem.viewpoints', [],
+                 'sdem diagram --workspace examples/payment-initiation --template layered -o work/layered.svg'),
     'document': ('J7', "a layer's design as a readable document (Markdown or HTML), generated from the workspace — nothing invented, sources and gaps shown", 'sdem.document', [],
                  'sdem document --workspace examples/payment-initiation --layer A3'),
     'dashboard': ('J7', 'one read-only HTML dashboard for a workspace: health, attention, review, trace & impact, matrices, changes, AID, controls', 'sdem.dashboard', [],
@@ -97,7 +99,7 @@ JOURNEYS = {
 
 # generated documents and schemas, in the order CI checks them
 GENERATORS = ['diagram', 'relationships', 'structure', 'spec', 'kgspec', 'catalogue', 'attributes', 'confidence',
-              'logical', 'physical', 'metamodel_spec', 'controls', 'inferences']
+              'logical', 'physical', 'metamodel_spec', 'controls', 'inferences', 'viewpoints']
 
 
 from .layers import DATASET_FILES as ESTATE_FILES   # LR-02: the core four and the profile's layers

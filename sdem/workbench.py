@@ -25,12 +25,13 @@ def framework():
     from .typeinfo import describe_type
     from .validate import load_registry
     from .dashboard import _controls
+    from .document import _label
     from .paths import DATA_ROOT
     mm = Metamodel.load()
     types = []
     for t in mm.entities:
         x = describe_type(mm, t)
-        types.append({'type': t, 'layer': x['layer'], 'abstract': x['abstract'], 'extends': x['extends'], 'definition': x['definition'], 'source': x['source'],
+        types.append({'type': t, 'label': _label(t), 'layer': x['layer'], 'abstract': x['abstract'], 'extends': x['extends'], 'definition': x['definition'], 'source': x['source'],
                       'attributes': [{k: a.get(k) for k in ('name', 'type', 'required', 'deprecated', 'instead', 'allowed_values', 'refers_to', 'description')} for a in x['attributes']],
                       'links_out': x['links_out'], 'cross': x['link_types_to_other_layers']})
     within = [{k: c.get(k) for k in ('id', 'level', 'source_type', 'kind', 'target_type', 'description', 'basis')} for c in mm.relationships['constraints']]
@@ -62,7 +63,7 @@ def collect(ws, d=None, graph=None, now=None, home=None, fw=None):
         docs[l] = {'html': body, 'fingerprint': doc['fingerprint'], 'summary': doc['summary'],
                    'gaps': {'no_connection': len(doc['gaps']['no_connection']), 'unconfirmed': len(doc['gaps']['unconfirmed'])}}
         ds = _j(ws / FILES[l], {}) or {}
-        records += [{**r, 'layer': l, 'source_text': provenance(r)} for r in ds.get('instances', [])]   # UX-D04's words, for the Catalog
+        records += [{**r, 'layer': l, 'source_text': provenance(r)} for r in ds.get('instances', [])]   # UX-D04's words, for the record panel
         rels[l] = ds.get('relationships', [])
     try: status = {r['id']: r for r in Estate(ws).status()}
     except (CoordinationError, OSError, ValueError): status = {}
@@ -74,7 +75,20 @@ def collect(ws, d=None, graph=None, now=None, home=None, fw=None):
             'matrix': d['matrix'], 'changes': {**d['changes'], 'events': events}, 'docs': docs, 'records': records, 'rels': rels,
             'registry': (_j(ws / 'mappings.json', {}) or {}).get('mappings', []),
             'reqs': [{k: q.get(k) for k in ('id', 'name', 'status', 'category', 'subject', 'allocated_to', 'condition')} for q in reqs],
-            'stale': d['stale'], 'checks': _checks(d), 'graph_state': _graph_state(ws, graph), 'profile': (ws / 'sdem-profile.json').exists(), 'framework': fw or framework()}
+            'stale': d['stale'], 'checks': _checks(d), 'diagrams': _diagrams(ws), 'graph_state': _graph_state(ws, graph), 'profile': (ws / 'sdem-profile.json').exists(), 'framework': fw or framework()}
+
+
+def _diagrams(ws):
+    """DG-13: every template's drawing for this workspace (the page only shows them)."""
+    from . import viewpoints
+    D = viewpoints.Data(ws); out = {}
+    if not D.present: return out
+    for t in viewpoints.templates()['templates']:
+        if t['layer'] != 'all' and t['layer'] not in D.present: continue
+        x = viewpoints.build(D, t['id'])
+        out[t['id']] = {'template': t['id'], 'code': x['code'], 'name': x['name'], 'viewpoint': x['viewpoint'], 'layer': x['layer'], 'svg': x['svg'],
+                        'notes': x['notes'], 'elements': len(x['elements']), 'lines': len(x['lines'])}
+    return out
 
 
 def _checks(d):
@@ -103,7 +117,8 @@ def _graph_state(ws, graph=None):
 
 
 def render(data):
-    return TEMPLATE.read_text(encoding='utf-8').replace('/*DATA*/null', json.dumps(data, ensure_ascii=False).replace('</', '<\\/'))
+    from .viewpoints import SCRIPT
+    return TEMPLATE.read_text(encoding='utf-8').replace('/*DIAGRAM_SCRIPT*/', SCRIPT).replace('/*DATA*/null', json.dumps(data, ensure_ascii=False).replace('</', '<\\/'))
 
 
 def write(ws, out, **kw):
@@ -116,7 +131,7 @@ def write(ws, out, **kw):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem workbench', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='Write the workbench for one workspace: one offline page with the Solution Workspace (designs as documents, '
-                                             'catalogs and diagrams; datasets; the knowledge graph; trace and impact; reviews and changes; documents and evidence) '
+                                             'tables by type and diagrams; datasets; the knowledge graph; trace and impact; reviews and changes; documents and evidence) '
                                              'and the SDEM Framework (metamodel, schemas and configuration, relationship rules, engine health). Read-only.',
                                  epilog='Examples:\n  sdem workbench --workspace examples/payment-initiation -o work/workbench.html\n'
                                         '  sdem home -o work/sdem     # every workspace, each with its workbench')

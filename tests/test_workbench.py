@@ -42,7 +42,9 @@ class WorkbenchTests(unittest.TestCase):
         self.assertTrue(d['framework']['cross'] and all(c['required_evidence'] for c in d['framework']['cross']))
         self.assertEqual(len(d['registry']), len(json.loads((self.d / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']))
         self.assertTrue(all(d['docs'][l]['html'] for l in ('A1', 'A2', 'A3', 'A4')))      # the documents (UX-D)
-        self.assertTrue(all(r['source_text'] for r in d['records']))                       # the Catalog says where each came from
+        self.assertTrue(all(r['source_text'] for r in d['records']))                       # the record panel says where each came from
+        labels = {t['type']: t['label'] for t in d['framework']['types']}                  # a tab per type, named for people
+        self.assertEqual(labels['A1.BusinessCapability'], 'Business capabilities'); self.assertEqual(labels['A3.APIOperation'], 'API operations')
         self.assertTrue(any(q.get('allocated_to') for q in d['reqs']))                     # and the requirements allocated to a record
 
     def test_the_page_loads_nothing(self):                                               # UX-P02

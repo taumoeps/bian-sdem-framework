@@ -1,0 +1,71 @@
+{
+  "about": "SDEM's diagram templates (docs/design/sdem-diagram-spec.md, DG-01): ArchiMate viewpoints as data. Each template names metamodel types, the rows they sit in, what is drawn inside what, and which stored links are drawn. Checked against the metamodel by `sdem diagram --check` (DG-02).",
+  "version": 1,
+  "notation": {
+    "kinds": {
+      "realization": {"line": "realization", "arrow": "target", "words": "realizes"},
+      "serving": {"line": "serving", "arrow": "target", "words": "serves"},
+      "access": {"line": "access", "arrow": "target", "words": "accesses"},
+      "assignment": {"line": "assignment", "arrow": "target", "words": "assigned to"},
+      "triggering": {"line": "triggering", "arrow": "target", "words": "triggers"},
+      "flow": {"line": "flow", "arrow": "target", "words": "flows to"},
+      "association": {"line": "association", "arrow": null, "words": "associated with"},
+      "composition": {"line": "composition", "arrow": null, "words": "composed of"},
+      "aggregation": {"line": "aggregation", "arrow": null, "words": "aggregates"},
+      "specialization": {"line": "specialization", "arrow": "target", "words": "specializes"}
+    },
+    "relationships": {
+      "SUPPORTED_BY": {"line": "serving", "arrow": "source", "words": "supported by"},
+      "USES_DOMAIN": {"line": "serving", "arrow": "source", "words": "uses"},
+      "REALIZED_BY": {"line": "realization", "arrow": "source", "words": "realized by"},
+      "IMPLEMENTED_BY": {"line": "realization", "arrow": "source", "words": "implemented by"},
+      "DEPLOYED_ON": {"line": "realization", "arrow": "source", "words": "deployed on"},
+      "DEPLOYED_AS": {"line": "realization", "arrow": "source", "words": "deployed as"},
+      "ALIGNED_TO": {"line": "association", "arrow": null, "words": "aligned to"},
+      "MAPPED_TO": {"line": "association", "arrow": null, "words": "mapped to"}
+    }
+  },
+  "templates": [
+    {"id": "capabilities", "code": "T1/T2", "layer": "A1", "name": "Capabilities and value stream", "viewpoint": "ArchiMate Strategy and Value Stream viewpoints",
+     "rows": [
+       {"layer": "A1", "groups": [{"type": "A1.ValueStream", "contains": ["A1.ValueStreamStage"]}]},
+       {"layer": "A1", "groups": [{"type": "A1.BusinessCapability", "contains": ["A1.BusinessCapability"]}]}],
+     "links": {"inside_layers": true, "relationships": []}, "keep_order": true},
+    {"id": "process", "code": "T3", "layer": "A1", "name": "Business process", "viewpoint": "ArchiMate Business Process Cooperation viewpoint",
+     "rows": [
+       {"layer": "A1", "groups": [{"type": "A1.BusinessCapability", "contains": ["A1.BusinessCapability"]}, {"type": "A1.BusinessActor"}, {"type": "A1.BusinessRole"}, {"type": "A1.BusinessObject"}]},
+       {"layer": "A1", "groups": [{"type": "A1.BusinessProcess", "contains": ["A1.BusinessActivity"]}, {"type": "A1.BusinessService"}]},
+       {"layer": "A2", "label": "Uses BIAN", "connected_to": "A1", "groups": [{"type": "A2.ServiceDomain"}]}],
+     "links": {"inside_layers": true, "relationships": ["USES_DOMAIN"]}, "keep_order": true, "note_no_sequence": "A1.BusinessActivity"},
+    {"id": "bian", "code": "T4", "layer": "A2", "name": "BIAN service domains", "viewpoint": "BIAN service landscape and service domain views",
+     "rows": [
+       {"layer": "A2", "groups": [{"type": "A2.BusinessScenario"}, {"type": "A2.BusinessObject", "contains": ["A2.BusinessObjectAttribute"]}, {"type": "A2.SemanticAPI"}]},
+       {"layer": "A2", "groups": [{"type": "A2.BusinessArea", "contains": ["A2.BusinessDomain", "A2.ServiceDomain", "A2.ServiceGroup", "A2.ServiceOperation"]},
+                                  {"type": "A2.BusinessDomain", "contains": ["A2.ServiceDomain", "A2.ServiceGroup", "A2.ServiceOperation"]},
+                                  {"type": "A2.ServiceDomain", "contains": ["A2.ServiceGroup", "A2.ServiceOperation"]}]},
+       {"layer": "A2", "groups": [{"type": "A2.ControlRecord", "contains": ["A2.BehaviorQualifier"]}, {"type": "A2.AssetType"}, {"type": "A2.FunctionalPattern"}]}],
+     "links": {"inside_layers": true, "relationships": []}, "keep_order": true,
+     "lines_at": {"A2.ServiceOperation": "A2.ServiceDomain", "A2.ServiceGroup": "A2.ServiceDomain"}},
+    {"id": "application", "code": "T5", "layer": "A3", "name": "Application cooperation", "viewpoint": "ArchiMate Application Cooperation viewpoint",
+     "rows": [
+       {"layer": "A3", "groups": [{"type": "A3.ApplicationService"}, {"type": "A3.Event"}, {"type": "A3.SolutionBuildingBlock"}]},
+       {"layer": "A3", "groups": [{"type": "A3.ApplicationComponent", "contains": ["A3.ApplicationComponent", "A3.ApplicationInterface", "A3.APIOperation", "A3.ApplicationFunction"]},
+                                  {"type": "A3.ApplicationInterface", "contains": ["A3.APIOperation"]}, {"type": "A3.ApplicationFunction"}]},
+       {"layer": "A3", "groups": [{"type": "A3.DataEntity"}]}],
+     "links": {"inside_layers": true, "relationships": []}, "keep_order": true},
+    {"id": "technology", "code": "T6", "layer": "A4", "name": "Technology and deployment", "viewpoint": "ArchiMate Technology and Physical viewpoints",
+     "rows": [
+       {"layer": "A3", "label": "Applications", "connected_to": "A4", "groups": [{"type": "A3.ApplicationComponent"}]},
+       {"layer": "A4", "groups": [{"type": "A4.DeploymentEnvironment", "contains": ["A4.Deployment"]}, {"type": "A4.Node", "contains": ["A4.SystemSoftware", "A4.Device"]},
+                                  {"type": "A4.Device"}, {"type": "A4.SystemSoftware"}, {"type": "A4.Artifact"}]},
+       {"layer": "A4", "groups": [{"type": "A4.CommunicationNetwork"}, {"type": "A4.Path"}, {"type": "A4.TechnologyService"}, {"type": "A4.TechnologyInterface"}]}],
+     "links": {"inside_layers": true, "relationships": ["DEPLOYED_ON", "DEPLOYED_AS"]}},
+    {"id": "layered", "code": "T7", "layer": "all", "name": "Layered — business to technology", "viewpoint": "ArchiMate Layered viewpoint",
+     "rows": [
+       {"layer": "A1", "label": "Business", "groups": [{"type": "A1.BusinessCapability", "contains": ["A1.BusinessCapability"]}, {"type": "A1.ValueStream"}, {"type": "A1.BusinessProcess", "contains": ["A1.BusinessActivity"]}, {"type": "A1.BusinessObject"}]},
+       {"layer": "A2", "label": "BIAN", "groups": [{"type": "A2.BusinessDomain", "contains": ["A2.ServiceDomain"]}, {"type": "A2.ServiceDomain"}, {"type": "A2.BusinessScenario"}, {"type": "A2.BusinessObject"}]},
+       {"layer": "A3", "label": "Application", "groups": [{"type": "A3.ApplicationComponent", "contains": ["A3.ApplicationComponent", "A3.ApplicationInterface"]}, {"type": "A3.ApplicationService"}, {"type": "A3.DataEntity"}]},
+       {"layer": "A4", "label": "Technology", "groups": [{"type": "A4.DeploymentEnvironment", "contains": ["A4.Deployment"]}, {"type": "A4.Node", "contains": ["A4.SystemSoftware"]}, {"type": "A4.SystemSoftware"}]}],
+     "links": {"inside_layers": false, "relationships": null}}
+  ]
+}

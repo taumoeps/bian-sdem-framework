@@ -41,6 +41,9 @@ svg .node rect{fill:var(--panel);stroke:var(--line)}svg .node:hover rect,svg .no
 footer{border-top:1px solid var(--line);padding:8px 18px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 @media(max-width:820px){.layout{grid-template-columns:1fr}nav{display:flex;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}nav .lbl{display:none}nav a{white-space:nowrap}.split{grid-template-columns:1fr}main{padding:14px}}
 .kv{border-collapse:collapse;width:100%;margin-bottom:14px}.kv th{text-align:left;font-weight:600;color:var(--muted);padding:3px 12px 3px 0;vertical-align:top;white-space:nowrap;width:1%}.kv td{padding:3px 0}
+tr.sel td{background:var(--accent-soft)}.typetabs [role=tablist]{flex-wrap:wrap}
+.dv-frame{padding:0;border:0}.dv-frame svg{display:block;max-width:none}.dv-frame.fit{overflow-x:hidden}.dv-frame.fit svg{width:100%;height:auto}
+.dv-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}.dv-bar button{font:inherit;font-size:12px;padding:3px 10px;border:1px solid var(--line);border-radius:6px;background:transparent;color:inherit;cursor:pointer}.dv-bar button[aria-pressed=true]{background:var(--accent-soft)}
 </style>
 </head>
 <body><div class="shell">
@@ -53,6 +56,7 @@ footer{border-top:1px solid var(--line);padding:8px 18px;color:var(--muted);font
 'use strict';
 const D=/*DATA*/null, F=D.framework;
 const $=s=>document.querySelector(s), esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let FIT=true; try{FIT=localStorage.getItem('sdem.dvfit')!=='0'}catch(e){}
 const LAYERS=['A1','A2','A3','A4'], TITLES={A1:'A1 Business',A2:'A2 BIAN service domains',A3:'A3 Application',A4:'A4 Technology'};
 const FILES={A1:'a1-business.json',A2:'a2-service-domain.json',A3:'a3-application.json',A4:'a4-technology.json'};
 const NAV={ws:[['overview','Overview'],['designs','Architecture Designs'],['data','Data Architecture'],['graph','Knowledge Graphs'],['trace','Traceability & Impact'],['reviews','Reviews & Changes'],['documents','Documents & Evidence']],
@@ -61,7 +65,8 @@ const REC=Object.fromEntries(D.records.map(r=>[r.id,r])), TYPE=Object.fromEntrie
 const badge=(w,k)=>`<span class="badge b-${k}">${esc(w)}</span>`;
 const SK={approved:'good',confirmed:'good',active:'good',proposed:'info',planned:'info',needs_review:'warn',superseded:'muted',retired:'muted',deprecated:'warn'};
 const status=s=>badge(String(s).replaceAll('_',' '),SK[s]||'muted');
-const recLink=id=>REC[id]?`<a class="rec" href="#ws/designs/${REC[id].layer}/catalog/${encodeURIComponent(id)}">${esc(REC[id].name)}</a> <span class="muted small">${esc(id)}</span>`:esc(id);
+const recLink=id=>REC[id]?`<a class="rec" href="${recHref(id)}">${esc(REC[id].name)}</a> <span class="muted small">${esc(id)}</span>`:esc(id);
+const recHref=id=>`#ws/designs/${REC[id].layer}/${encodeURIComponent(REC[id].type)}/${encodeURIComponent(id)}`;
 const typeLink=t=>TYPE[t]?`<a class="rec" href="#fw/metamodel/${encodeURIComponent(t)}">${esc(t)}</a>`:esc(t);
 const plural=(n,w)=>`${n} ${w}${n===1?'':'s'}`;
 const cmd=c=>`<div class="cmd"><code>${esc(c)}</code><button type="button" data-copy="${esc(c)}">Copy</button></div>`;
@@ -82,12 +87,15 @@ function render(){const r=route();
   document.querySelectorAll('select[data-go]').forEach(s=>s.onchange=()=>go(s.dataset.go.replace('{v}',encodeURIComponent(s.value))));
   document.querySelectorAll('[role=tablist]').forEach(tl=>tl.onkeydown=e=>{const t=[...tl.querySelectorAll('[role=tab]')],i=t.indexOf(document.activeElement);if(i<0)return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const n=t[(i+(e.key==='ArrowRight'?1:t.length-1))%t.length];n.focus();n.click()}});
   document.querySelectorAll('[role=tab]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+  document.querySelectorAll('[data-fit]').forEach(b=>b.onclick=()=>{FIT=b.dataset.fit==='1';try{localStorage.setItem('sdem.dvfit',FIT?'1':'0')}catch(e){}render()});
+  sdemDiagrams($('#main'),id=>{if(REC[id])go(recHref(id))});
   document.querySelectorAll('svg .node').forEach(n=>{n.onclick=()=>go(n.dataset.href);n.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go(n.dataset.href)}}});
 }
+/*DIAGRAM_SCRIPT*/
 /* ---------- Solution workspace ---------- */
 function waiting(){const unconf=LAYERS.reduce((n,l)=>n+(D.docs[l]?D.docs[l].summary.unconfirmed:0),0),open=D.changes.events.filter(e=>!e.planned).length;
   return [[D.review.length,'proposed connections to review','reviews'],[unconf,'inferred records to confirm','designs'],[open,'change events waiting for validation or your acceptance','reviews'],[D.changes.direct_edits.length,'edits made outside SDEM','reviews'],[D.reqs.filter(q=>q.status!=='confirmed').length,'requirements not confirmed','trace']]}
-function overview(){
+function overview(){const L=(D.diagrams||{}).layered;
   const missing=D.missing.map(l=>`<div class="card lay ${l}"><div class="small muted">${l} DESIGN</div><h3>${esc(TITLES[l])}</h3><p class="small">${badge('no dataset','warn')} the workspace has no <code>${FILES[l]}</code></p></div>`).join('');
   const gs=D.graph_state||{},gnote=gs.state&&gs.state!=='current'&&!(gs.state==='blocked'&&(D.checks||[]).some(c=>c.level==='error'))?`<div class="card" style="margin-top:10px"><strong>Knowledge graph ${esc({stale:'out of date',missing:'not built',blocked:'cannot be built'}[gs.state]||gs.state)}</strong><p class="small muted">${esc(gs.reason||'')}</p>${gs.command?cmd(gs.command):''}</div>`:'';
   const ce=(D.checks||[]).filter(c=>c.level==='error'),ca=(D.checks||[]).filter(c=>c.level==='advice'),item=c=>`<li>${esc(c.text)} <span class="small muted">— ${esc(c.where.join(', '))}</span></li>`;
@@ -95,36 +103,61 @@ function overview(){
   const cards=D.layers.map(l=>{const c=D.coverage[l.level]||{},pct=c.eligible?Math.round(100*c.linked/c.eligible):100,h=l.errors.length?badge(plural(l.errors.length,'error'),'bad'):l.advice.length?badge(plural(l.advice.length,'advice note'),'warn'):badge('passes checks','good');
     return `<a class="card lay ${l.level}" href="#ws/designs/${l.level}/document"><div class="small muted">${l.level} DESIGN</div><h3>${esc(TITLES[l.level])}</h3><div class="big">${l.records}</div><div class="small muted">records · ${pct}% connected to another layer</div><div style="margin-top:6px">${h}</div></a>`}).join('');
   const w=waiting().map(([n,t,s])=>`<a class="card" href="#ws/${s}"><div class="big">${n}</div><div class="small">${esc(t)}</div></a>`).join('');
-  return head(D.name,'Solution-design workspace — A1 Business, A2 BIAN, A3 Application and A4 Technology')+`<h2>Architecture designs</h2><div class="grid">${cards}${missing}</div>${checks}${gnote}<h2>Waiting on a person</h2><div class="grid">${w}</div>
+  return head(D.name,'Solution-design workspace — A1 Business, A2 BIAN, A3 Application and A4 Technology')+`<h2>Architecture designs</h2>${L?`<p class="small muted">The four layers in one ArchiMate Layered view, joined by their approved connections; each layer's own diagrams are under <a class="rec" href="#ws/designs/A1/diagram">Architecture Designs</a>, and the records and links as a network under <a class="rec" href="#ws/graph/all">Knowledge Graphs</a>.</p>`+diagramBody(L):''}<div class="grid" style="margin-top:12px">${cards}${missing}</div>${checks}${gnote}<h2>Waiting on a person</h2><div class="grid">${w}</div>
   <div class="grid" style="margin-top:12px"><a class="card" href="#ws/graph/all"><h3>Knowledge graph</h3><p class="small muted">The four layers and their approved connections.</p></a><a class="card" href="#ws/data/A1/table"><h3>Data architecture</h3><p class="small muted">The datasets, exact JSON and their schema.</p></a><a class="card" href="#fw/overview"><h3>SDEM Framework</h3><p class="small muted">What the metamodel allows — types, links, rules.</p></a></div>`}
-function designs(r){const l=LAYERS.includes(r.a)?r.a:'A1',v=['document','catalog','diagram'].includes(r.b)?r.b:'document';
-  if(!D.docs[l]) return head('Architecture Designs','')+tabs(LAYERS.map(x=>[`#ws/designs/${x}/${v}`,TITLES[x],x]),l)+`<p class="muted">This workspace has no ${l} dataset (${FILES[l]}).</p>`;
-  let body=v==='document'?`<div class="doc">${D.docs[l].html}</div>`:v==='catalog'?catalog(l,r.c):`<p class="small muted">The links stored in the ${l} dataset; select a box for its record. The full graph is under <a class="rec" href="#ws/graph/${l}">Knowledge Graphs</a>.</p>`+graphSvg([l],false);
-  return head('Architecture Designs','Human-readable designs, record catalogs and layer diagrams — generated from the workspace.')+tabs(LAYERS.map(x=>[`#ws/designs/${x}/${v}`,TITLES[x],x]),l)+tabs([['document','Document'],['catalog','Catalog'],['diagram','Diagram']].map(([k,t])=>[`#ws/designs/${l}/${k}`,t,k]),v)+body}
-function catalog(l,cid){const recs=D.records.filter(x=>x.layer===l),sel=REC[cid]&&REC[cid].layer===l?REC[cid]:recs[0];if(!sel)return `<p class="muted">No ${l} records yet.</p>`;
-  const out=D.rels[l].filter(x=>x.source===sel.id),inn=D.rels[l].filter(x=>x.target===sel.id),conn=D.registry.filter(m=>m.source.id===sel.id||m.target.id===sel.id);
+function layerTypes(l){const n={};D.records.filter(x=>x.layer===l).forEach(x=>n[x.type]=(n[x.type]||0)+1);
+  const known=F.types.filter(t=>t.layer===l&&n[t.type]).map(t=>({type:t.type,label:t.label,n:n[t.type]}));
+  const extra=Object.keys(n).filter(t=>!TYPE[t]).map(t=>({type:t,label:t,n:n[t]}));   // a type the metamodel no longer has: shown, not hidden
+  return known.concat(extra)}
+function designs(r){
+  if(r.a==='all'){location.replace('#ws/overview');return ''}                              // old link: the layered view is on the Overview
+  const l=LAYERS.includes(r.a)?r.a:'A1';
+  let v=r.b||'document';
+  if(v==='catalog') v=REC[r.c]?REC[r.c].type:'document';                                 // old links
+  const ts=D.docs[l]?layerTypes(l):[];
+  if(!['document','diagram'].includes(v)&&!ts.some(t=>t.type===v)) v='document';
+  const sub=[['document','Document']].concat(ts.map(t=>[t.type,`${t.label} (${t.n})`]),[['diagram','Diagram']]);
+  const top=head('Architecture Designs','Each layer as a document, a table per type, and a diagram — generated from the workspace.')+tabs(LAYERS.map(x=>[`#ws/designs/${x}/${x===l&&(v==='document'||v==='diagram')?v:'document'}`,TITLES[x],x]),l);
+  if(!D.docs[l]) return top+`<p class="muted">This workspace has no ${l} dataset (${FILES[l]}).</p>`;
+  const body=v==='document'?`<div class="doc">${D.docs[l].html}</div>`:v==='diagram'?diagramView(l,r.c):typeView(l,v,r.c);
+  return top+`<div class="typetabs">${tabs(sub.map(([k,t])=>[`#ws/designs/${l}/${encodeURIComponent(k)}`,t,k]),v)}</div>`+body}
+function diagramBody(d){return `<div class="meta-line small muted">${esc(d.code)} · ${esc(d.viewpoint)} · ${plural(d.elements,'element')} · ${plural(d.lines,'line')} · only stored links and approved connections are drawn; select a shape to open its record</div>`+
+  d.notes.map(n=>`<div class="card small" style="border-left:3px solid var(--warn,#d9a400);margin:8px 0;padding:8px 12px">${esc(n)}</div>`).join('')+`<div class="dv-bar small muted" role="group" aria-label="Diagram size"><button data-fit="1" aria-pressed="${FIT}">Fit to width</button><button data-fit="0" aria-pressed="${!FIT}">Actual size</button><span>${FIT?'':'scroll sideways to see the whole diagram'}</span></div><div class="tw dv-frame${FIT?' fit':''}">${d.svg}</div>
+  <p class="small muted">The same drawing as a file: <code>sdem diagram --workspace … --template ${esc(d.template)} -o ${esc(d.template)}.svg</code> (also <code>--format html</code>, <code>--focus &lt;id&gt;</code>).</p>`}
+function diagramView(l,tid){const ds=Object.values(D.diagrams||{}).filter(d=>d.layer===l);
+  if(!ds.length) return `<p class="muted">No diagram template for ${l}.</p>`;
+  const d=ds.find(x=>x.template===tid)||ds[0];
+  return (ds.length>1?tabs(ds.map(x=>[`#ws/designs/${l}/diagram/${x.template}`,x.name,x.template]),d.template):'')+diagramBody(d)}
+function typeView(l,t,cid){const recs=D.records.filter(x=>x.layer===l&&x.type===t),T=TYPE[t],sel=REC[cid]&&REC[cid].type===t?REC[cid]:null;
+  const skip=['inferred','source_id'],cols=(T?T.attributes.map(a=>a.name):[]).filter(k=>!skip.includes(k));
+  recs.forEach(x=>Object.keys(x.attributes||{}).forEach(k=>{if(!skip.includes(k)&&!cols.includes(k))cols.push(k)}));
+  const used=cols.filter(k=>recs.some(x=>(x.attributes||{})[k]!==undefined));      // a column no record fills is left out
+  const nconn=id=>D.registry.filter(m=>m.source.id===id||m.target.id===id).length;
+  const row=x=>`<tr${sel&&x.id===sel.id?' class="sel"':''}><td><a class="rec" href="${recHref(x.id)}">${esc(x.name)}</a><div class="small muted">${esc(x.id)}</div></td><td>${status(x.lifecycle_status)}</td>${used.map(k=>`<td>${val((x.attributes||{})[k])}</td>`).join('')}<td>${nconn(x.id)}</td></tr>`;
+  return `<p><em>${esc(T?T.definition:'')}</em> <span class="small">· ${typeLink(t)}</span></p>
+  <div class="tw"><table><thead><tr><th>Name</th><th>Status</th>${used.map(k=>`<th>${esc(k.replaceAll('_',' '))}</th>`).join('')}<th>Connections</th></tr></thead><tbody>${recs.map(row).join('')}</tbody></table></div>
+  ${sel?recordPanel(sel):`<p class="small muted">Select a name for everything recorded about it — its source, links inside the layer and connections to other layers.</p>`}`}
+const val=v=>v===undefined||v===null?'<span class="muted">—</span>':Array.isArray(v)?v.map(val).join(', '):typeof v==='object'?`<code class="small">${esc(JSON.stringify(v))}</code>`:typeof v==='string'&&REC[v]?recLink(v):esc(v);
+function recordPanel(sel){const l=sel.layer,out=D.rels[l].filter(x=>x.source===sel.id),inn=D.rels[l].filter(x=>x.target===sel.id),conn=D.registry.filter(m=>m.source.id===sel.id||m.target.id===sel.id);
   const a=sel.attributes||{},inf=a.inferred,reqs=D.reqs.filter(q=>[].concat(q.subject||[],q.allocated_to||[]).includes(sel.id)),cond=c=>!c?'':typeof c==='string'?c:[c.metric,c.operator,c.value].join(' ')+(c.unit?' '+c.unit:'')+(c.period?' per '+c.period:'');
-  const val=v=>Array.isArray(v)?v.map(val).join(', '):v&&typeof v==='object'?`<code class="small">${esc(JSON.stringify(v))}</code>`:typeof v==='string'&&REC[v]?recLink(v):esc(v);
   const attrs=Object.entries(a).filter(([k])=>!['inferred','source_id'].includes(k));
-  const list=`<p class="small muted">Find a design element, see everything recorded about it, and follow its links — select a linked name to go to that record, in any layer.</p><input type="search" id="filter" placeholder="Find a design element by name, id or type" aria-label="Find a record"><div class="list">${recs.map(x=>`<button type="button" data-find="${esc(x.name+' '+x.id+' '+x.type)}" aria-pressed="${x.id===sel.id}" onclick="go('#ws/designs/${l}/catalog/${encodeURIComponent(x.id)}')"><strong>${esc(x.name)}</strong><div class="small muted">${esc(x.type)} · ${esc(x.id)}</div></button>`).join('')}</div>`;
   const conns=conn.map(m=>{const mine=m.source.id===sel.id,other=mine?m.target.id:m.source.id,ol=REC[other]?REC[other].layer:'';
     return `<li>${status(m.status)} ${mine?`${esc(m.relationship)} → ${recLink(other)}`:`${recLink(other)} ${esc(m.relationship)} → this`} <span class="small muted">${esc(ol)} · ${esc(m.mapping_id)}</span>
     ${(m.evidence||[]).length?`<div class="small">Evidence: ${esc(m.evidence.join(', '))}</div>`:''}${m.rationale?`<div class="small muted">${esc(m.rationale)}</div>`:''}${m.reviewer_id?`<div class="small muted">Approved by ${esc(m.reviewer_id)}${m.approved_at?' on '+esc(m.approved_at):''}</div>`:''}</li>`}).join('');
-  return `<div class="split"><div>${list}</div>
-  <div class="card"><div class="small muted">SELECTED · ${typeLink(sel.type)} · ${esc(sel.id)}</div><h2 style="margin-top:2px">${esc(sel.name)}</h2><p>${esc(sel.description||'')}</p>
+  return `<div class="card" id="record" style="margin-top:12px"><div class="small muted">SELECTED · ${typeLink(sel.type)} · ${esc(sel.id)}</div><h2 style="margin-top:2px">${esc(sel.name)}</h2><p>${esc(sel.description||'')}</p>
   <p>${status(sel.lifecycle_status)} ${sel.version?badge('version '+sel.version,'muted'):''} ${inf?(inf.status==='confirmed'?badge('inferred — confirmed','good'):badge('inferred — not confirmed','warn')):''}</p>
   <p class="small"><strong>Source:</strong> ${esc(sel.source_text||'')}</p>
   <h3>Details</h3>${attrs.length?`<table class="kv"><tbody>${attrs.map(([k,v])=>`<tr><th>${esc(k.replaceAll('_',' '))}</th><td>${val(v)}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">no attributes recorded</p>'}
   <h3>Within ${l}</h3>${out.concat(inn).length?'<ul>'+out.map(x=>`<li>${esc(x.kind)} → ${recLink(x.target)}</li>`).join('')+inn.map(x=>`<li>${recLink(x.source)} ${esc(x.kind)} → this</li>`).join('')+'</ul>':'<p class="muted">no links inside the layer</p>'}
   <h3>To other layers</h3>${conn.length?'<ul>'+conns+'</ul>':'<p class="muted">no connection to another layer</p>'}
   ${reqs.length?`<h3>Requirements</h3><ul>${reqs.map(q=>`<li>${status(q.status)} ${esc(q.name||q.id)} <span class="small muted">${esc(q.id)}${q.condition?' · '+esc(cond(q.condition)):''}${[].concat(q.subject||[]).includes(sel.id)?'':' · allocated to this'}</span></li>`).join('')}</ul>`:''}
-  <p><a class="rec" href="#ws/graph/all/${encodeURIComponent(sel.id)}">In the graph →</a> · <a class="rec" href="#ws/trace/${encodeURIComponent(sel.id)}/rehost">Trace & impact →</a> · <a class="rec" href="#ws/data/${l}/json/${encodeURIComponent(sel.id)}">JSON →</a> · <a class="rec" href="#fw/metamodel/${encodeURIComponent(sel.type)}">Type definition →</a> · <a class="rec" href="#ws/designs/${l}/document">In the document →</a></p></div></div>`}
+  <p><a class="rec" href="#ws/graph/all/${encodeURIComponent(sel.id)}">In the graph →</a> · <a class="rec" href="#ws/trace/${encodeURIComponent(sel.id)}/rehost">Trace & impact →</a> · <a class="rec" href="#ws/data/${l}/json/${encodeURIComponent(sel.id)}">JSON →</a> · <a class="rec" href="#fw/metamodel/${encodeURIComponent(sel.type)}">Type definition →</a> · <a class="rec" href="#ws/designs/${l}/document">In the document →</a></p></div>`}
 function data(r){const ds=[...LAYERS,'registry'].includes(r.a)?r.a:'A1',v=['table','json','schema'].includes(r.b)?r.b:'table';
   let body='';
   if(ds==='registry'){body=v==='json'?`<pre>${esc(JSON.stringify(D.registry,null,2))}</pre>`:v==='schema'?`<p>The registry follows the relationship rules: <a class="rec" href="#fw/rules/cross">Relationship Rules → between layers</a>.</p>`:
     `<div class="tw"><table><thead><tr><th>Link</th><th>Source</th><th>Relationship</th><th>Target</th><th>Status</th><th>Evidence</th></tr></thead><tbody>${D.registry.map(m=>`<tr><td>${esc(m.mapping_id)}</td><td>${recLink(m.source.id)}</td><td>${esc(m.relationship)}</td><td>${recLink(m.target.id)}</td><td>${status(m.status)}</td><td class="small">${esc((m.evidence||[]).join(', '))}</td></tr>`).join('')}</tbody></table></div>`}
   else{const recs=D.records.filter(x=>x.layer===ds),sel=REC[r.c]&&REC[r.c].layer===ds?REC[r.c]:recs[0];
-    if(sel&&v==='table') body=`<p class="small muted">Select a name to open it in the Catalog — all its details, links and connections.</p><div class="tw"><table><thead><tr><th>Name</th><th>Type</th><th>Status</th><th>Links in layer</th><th>Connections</th></tr></thead><tbody>${recs.map(x=>`<tr><td>${recLink(x.id)}</td><td>${typeLink(x.type)}</td><td>${status(x.lifecycle_status)}</td><td>${D.rels[ds].filter(e=>e.source===x.id||e.target===x.id).length}</td><td>${D.registry.filter(m=>m.source.id===x.id||m.target.id===x.id).length}</td></tr>`).join('')}</tbody></table></div>`;
+    if(sel&&v==='table') body=`<p class="small muted">Select a name to open it under Architecture Designs — all its details, links and connections.</p><div class="tw"><table><thead><tr><th>Type</th><th>Name</th><th>Status</th><th>Links in layer</th><th>Connections</th></tr></thead><tbody>${recs.map(x=>`<tr><td>${typeLink(x.type)}</td><td>${recLink(x.id)}</td><td>${status(x.lifecycle_status)}</td><td>${D.rels[ds].filter(e=>e.source===x.id||e.target===x.id).length}</td><td>${D.registry.filter(m=>m.source.id===x.id||m.target.id===x.id).length}</td></tr>`).join('')}</tbody></table></div>`;
     if(!sel) body=`<p class="muted">No ${ds} records${D.missing.includes(ds)?' — the workspace has no '+FILES[ds]:''}.</p>`;
     else if(v==='json') body=`<label>Record <select data-go="#ws/data/${ds}/json/{v}">${recs.map(x=>`<option value="${esc(x.id)}" ${x.id===sel.id?'selected':''}>${esc(x.name)} (${esc(x.id)})</option>`).join('')}</select></label><pre>${esc(JSON.stringify(Object.fromEntries(Object.entries(sel).filter(([k])=>k!=='layer')),null,2))}</pre><p class="small muted">Exactly as stored in <code>${FILES[ds]}</code>.</p>`;
     if(sel&&v==='schema'){const used=[...new Set(recs.map(x=>x.type))];body=`<p class="small muted">The ${ds} types this dataset uses, from the metamodel (all ${F.types.filter(t=>t.layer===ds).length} ${ds} types: <a class="rec" href="#fw/metamodel">Metamodel Explorer</a>).</p>`+used.map(t=>typeCard(TYPE[t])).join('')}}
@@ -139,13 +172,15 @@ function graphSvg(layers,cross,focus){const recs=D.records.filter(x=>layers.incl
   const x=cross?D.registry.filter(m=>m.status==='approved').map(m=>line(m.source.id,m.target.id,'x',`${m.mapping_id}: ${m.source.id} ${m.relationship} ${m.target.id}`)).join(''):'';
   const bandsSvg=bands.map(b=>`<rect class="band" x="0" y="${b.top}" width="${width}" height="${b.h}" rx="8"/><text x="10" y="${b.top+22}" font-weight="700">${esc(TITLES[b.l])}</text>`).join('');
   const nodes=recs.map(r=>{const p=pos[r.id],dim=near&&!near.has(r.id)?' style="opacity:.25"':'',sel=r.id===focus?' stroke-width="3" style="stroke:var(--accent)"':'';
-    return `<g class="node" tabindex="0" role="link" aria-label="${esc(r.name)}" data-href="#ws/designs/${r.layer}/catalog/${encodeURIComponent(r.id)}"${dim}><rect x="${p.x}" y="${p.y}" width="${W}" height="${H}" rx="6"${sel}/><text x="${p.x+7}" y="${p.y+19}">${esc(r.name.length>22?r.name.slice(0,21)+'…':r.name)}</text><title>${esc(r.type)} · ${esc(r.id)}</title></g>`}).join('');
+    return `<g class="node" tabindex="0" role="link" aria-label="${esc(r.name)}" data-href="${recHref(r.id)}"${dim}><rect x="${p.x}" y="${p.y}" width="${W}" height="${H}" rx="6"${sel}/><text x="${p.x+7}" y="${p.y+19}">${esc(r.name.length>22?r.name.slice(0,21)+'…':r.name)}</text><title>${esc(r.type)} · ${esc(r.id)}</title></g>`}).join('');
   return `<div class="tw"><svg width="${width}" height="${y}" role="img" aria-label="Knowledge graph">${bandsSvg}${inner}${x}${nodes}</svg></div>`}
-function graph(r){const scope=LAYERS.includes(r.a)?r.a:'all',focus=REC[r.b]?r.b:'';
+function graph(r){
+  if(r.a==='layered'){location.replace('#ws/overview');return ''}                           // old link: the layered view is an ArchiMate diagram, on the Overview
+  const scope=LAYERS.includes(r.a)?r.a:'all',focus=REC[r.b]?r.b:'';
   return head('Knowledge Graphs','The federated graph — the four layers joined by approved connections — or one layer at a time.')+
-  `<label>Scope <select data-go="#ws/graph/{v}${focus?'/'+encodeURIComponent(focus):''}"><option value="all">All four layers (federated)</option>${LAYERS.map(l=>`<option value="${l}" ${scope===l?'selected':''}>${esc(TITLES[l])}</option>`).join('')}</select></label>
+  `<label>Scope <select data-go="#ws/graph/{v}${focus?'/'+encodeURIComponent(focus):''}"><option value="all" ${scope==='all'?'selected':''}>All four layers (graph)</option>${LAYERS.map(l=>`<option value="${l}" ${scope===l?'selected':''}>${esc(TITLES[l])}</option>`).join('')}</select></label>
    <label style="margin-left:10px">Focus <select data-go="#ws/graph/${scope}/{v}"><option value="">— none —</option>${D.records.filter(x=>scope==='all'||x.layer===scope).map(x=>`<option value="${esc(x.id)}" ${x.id===focus?'selected':''}>${esc(x.layer)} · ${esc(x.name)}</option>`).join('')}</select></label>
-   <div class="legend"><span><svg width="28" height="8"><path class="edge x" d="M0,4 H28"/></svg> approved connection between layers</span><span><svg width="28" height="8"><path class="edge in" d="M0,4 H28"/></svg> link inside a layer</span><span>Proposals are not drawn — they are in <a class="rec" href="#ws/reviews">Reviews & Changes</a>.</span></div>`+
+   <div class="legend"><span><svg width="28" height="8"><path class="edge x" d="M0,4 H28"/></svg> approved connection between layers</span><span><svg width="28" height="8"><path class="edge in" d="M0,4 H28"/></svg> link inside a layer</span><span>Proposals are not drawn — they are in <a class="rec" href="#ws/reviews">Reviews & Changes</a>.</span><span>The same layers as an ArchiMate diagram: <a class="rec" href="#ws/overview">Overview → Architecture designs</a>.</span></div>`+
    graphSvg(scope==='all'?LAYERS:[scope],scope==='all',focus)+`<p class="small muted">Built from the workspace's stored links and its approved registry — the same data <code>sdem build</code> writes to the graph store. A real build would use <code>sdem view</code>'s layout.</p>`}
 function treeHtml(n,d=0){if(!n||d>6)return'';const ch=(n.children||[]).map(c=>`<li><span class="rel">${esc(c.rel)} · ${esc(c.link||'')}</span><br>${treeHtml(c.node,d+1)}</li>`).join('');return `${recLink(n.id)} ${badge(n.level,'muted')}${ch?`<ul>${ch}</ul>`:''}`}
 function trace(r){if(!Object.keys(D.trace).length)return head('Traceability & Impact','')+'<p class="muted">No records yet — nothing to trace.</p>';const id=D.trace[r.a]?r.a:(Object.keys(D.trace)[0]||''),kind=D.kinds.includes(r.b)?r.b:'rehost',t=D.trace[id],imp=(t.impact||{})[kind]||{rows:[]};const CL={design_change_required:'bad',review_required:'warn',no_impact:'good',evidence_incomplete:'muted'};
@@ -176,7 +211,7 @@ function fwOverview(){const n=l=>F.types.filter(t=>t.layer===l).length;
   <div class="grid" style="margin-top:10px"><a class="card" href="#fw/rules/within"><div class="big">${F.within.length}</div><div class="small">links allowed inside a layer</div></a><a class="card" href="#fw/rules/cross"><div class="big">${F.cross.length}</div><div class="small">relationships between layers, each with its evidence</div></a><a class="card" href="#fw/health"><div class="big">${F.controls.length}</div><div class="small">controls, where they run, last tested</div></a><a class="card" href="#fw/schemas"><div class="big">${F.schemas.length}</div><div class="small">generated entity schemas</div></a></div>`}
 function metamodel(r){const l=LAYERS.includes(r.a)?r.a:'',sel=TYPE[r.a]?TYPE[r.a]:null,layer=sel?sel.layer:(l||'A1');const ts=F.types.filter(t=>t.layer===layer);const cur=sel||ts[0];
   return head('Metamodel Explorer',`Metamodel ${F.version}: every entity type, its attributes, inheritance and allowed links.`)+tabs(LAYERS.map(x=>[`#fw/metamodel/${x}`,`${TITLES[x]} (${F.types.filter(t=>t.layer===x).length})`,x]),layer)+
-  `<div class="split"><div><input type="search" id="filter" placeholder="Find a type" aria-label="Find a type"><div class="list">${ts.map(t=>`<button type="button" data-find="${esc(t.type+' '+t.definition)}" aria-pressed="${t.type===cur.type}" onclick="go('#fw/metamodel/${encodeURIComponent(t.type)}')"><strong>${esc(t.type.split('.')[1])}</strong>${t.abstract?' '+badge('abstract','muted'):''}<div class="small muted">${esc(t.definition.slice(0,90))}</div></button>`).join('')}</div></div><div>${typeCard(cur)}<p class="small"><a class="rec" href="#ws/designs/${cur.layer}/catalog">Records of this layer in the workspace →</a></p></div></div>`}
+  `<div class="split"><div><input type="search" id="filter" placeholder="Find a type" aria-label="Find a type"><div class="list">${ts.map(t=>`<button type="button" data-find="${esc(t.type+' '+t.definition)}" aria-pressed="${t.type===cur.type}" onclick="go('#fw/metamodel/${encodeURIComponent(t.type)}')"><strong>${esc(t.type.split('.')[1])}</strong>${t.abstract?' '+badge('abstract','muted'):''}<div class="small muted">${esc(t.definition.slice(0,90))}</div></button>`).join('')}</div></div><div>${typeCard(cur)}<p class="small">${(()=>{const n=D.records.filter(x=>x.type===cur.type).length;return n?`<a class="rec" href="#ws/designs/${cur.layer}/${encodeURIComponent(cur.type)}">${plural(n,"record")} of this type in the workspace →</a>`:`<span class="muted">No record of this type in the workspace.</span>`})()}</p></div></div>`}
 function schemas(){return head('Schemas & Configuration','The installed configuration: metamodel version and freeze, BIAN release, the organisation profile and the generated schemas.')+
   `<div class="grid"><div class="card"><h3>Metamodel</h3><p>${esc(F.version)} · frozen ${esc(F.frozen_at)} by ${esc(F.frozen_by)}</p></div><div class="card"><h3>BIAN</h3><p class="small">${F.bian.length?F.bian.map(esc).join(', '):'no BIAN base installed'} — <code>sdem bian list --base</code></p></div><div class="card"><h3>Organisation profile</h3><p class="small">${D.profile?'this workspace has <code>sdem-profile.json</code> — <code>sdem profile show</code>':'none in this workspace — SDEM\'s core only'}</p></div></div>
   <h2>Generated entity schemas (${F.schemas.length})</h2><div class="tw"><table><thead><tr><th>File</th></tr></thead><tbody>${F.schemas.map(s=>`<tr><td><code>${esc(s)}</code></td></tr>`).join('')}</tbody></table></div>`}

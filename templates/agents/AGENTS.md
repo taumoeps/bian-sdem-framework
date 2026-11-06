@@ -40,6 +40,7 @@ This repository holds architecture kept with **SDEM, the Service Domain Enterpri
 | a change event's impact, validated by every layer | `sdem events validate <CE-id>` → each layer: `sdem events assess <CE-id> --layer <A1…A4> …` → `sdem events show <CE-id>` → a person accepts: `sdem events accept <CE-id> …` → a person authorises: `sdem events authorise <CE-id> …` → `sdem work plan --event <CE-id>` |
 | why something exists | `sdem explain <id> --proposals <file>` |
 | one page for the architect to explore the workspace and the metamodel | `sdem workbench --workspace <dir> -o <file>` (read-only) |
+| an ArchiMate diagram of the design (a layer, a process, or the four layers together) | `sdem diagram --workspace <dir> --template <id> [--focus <id>] -o <file.svg|.html>` — `sdem diagram --list` names the templates; read-only |
 | a layer's design as a readable document (Markdown for a Word template, or HTML) | `sdem document --workspace <dir> --layer <A1…A4> [--format html] [-o <file>]` — generated from the workspace; sources and gaps shown |
 
 ## More
