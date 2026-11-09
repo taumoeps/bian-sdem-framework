@@ -1,0 +1,28 @@
+{
+  "format": "sdem-standard/1",
+  "description": "A made-up bank's technology lifecycle standard (synthetic).",
+  "standard": {
+    "id": "TECH-LC",
+    "title": "Technology lifecycle standard",
+    "version": "1.4",
+    "owner": "technology architecture",
+    "source": "synthetic example",
+    "effective_from": "2026-01-01"
+  },
+  "rules": [
+    {
+      "id": "TECH-LC-01",
+      "entity": "A4.SystemSoftware",
+      "when": {
+        "lifecycle_status": "active"
+      },
+      "check": {
+        "attribute": "end_of_support",
+        "op": "after",
+        "value": "today+180d"
+      },
+      "severity": "warning",
+      "message": "software in use has at least six months of vendor support left (technology lifecycle standard §3)"
+    }
+  ]
+}

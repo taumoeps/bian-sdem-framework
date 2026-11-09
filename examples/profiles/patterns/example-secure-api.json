@@ -1,0 +1,61 @@
+{
+  "format": "sdem-pattern/1",
+  "description": "A made-up bank's reference architecture: secure API integration (synthetic).",
+  "pattern": {
+    "id": "PAT-SECURE-API",
+    "title": "Secure API integration",
+    "version": "2.0",
+    "owner": "enterprise architecture",
+    "source": "synthetic example",
+    "applies_when": {
+      "entity": "A3.ApplicationComponent",
+      "when": {
+        "exposure": "external"
+      }
+    }
+  },
+  "requires": [
+    {
+      "id": "PAT-SECURE-API-1",
+      "rule": "SEC-API-01"
+    },
+    {
+      "id": "PAT-SECURE-API-2",
+      "rule": "SEC-API-02"
+    },
+    {
+      "id": "PAT-SECURE-API-3",
+      "within": {
+        "kind": "composition",
+        "direction": "in",
+        "to": "BANK.A3.APIGateway",
+        "min": 1
+      },
+      "message": "an externally exposed application sits behind the bank's API gateway"
+    },
+    {
+      "id": "PAT-SECURE-API-4",
+      "across": {
+        "relationship": "DEPLOYED_ON"
+      },
+      "check": {
+        "attribute": "monitoring",
+        "op": "==",
+        "value": true
+      },
+      "message": "its platform is monitored by security operations"
+    },
+    {
+      "id": "PAT-SECURE-API-5",
+      "across": {
+        "relationship": "DEPLOYED_ON"
+      },
+      "check": {
+        "attribute": "encryption_in_transit",
+        "op": "==",
+        "value": "tls1.3"
+      },
+      "message": "its platform encrypts traffic with TLS 1.3"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "format": "sdem-standard/1",
+  "description": "A made-up bank's API security standard (synthetic; not a real organisation's).",
+  "standard": {
+    "id": "SEC-API",
+    "title": "API security standard",
+    "version": "3.1",
+    "owner": "security architecture",
+    "source": "synthetic example",
+    "effective_from": "2026-01-01"
+  },
+  "attributes": [
+    {
+      "entity": "A3.ApplicationComponent",
+      "name": "exposure",
+      "type": "enum",
+      "values": [
+        "internal",
+        "partner",
+        "external"
+      ],
+      "description": "who may call it"
+    },
+    {
+      "entity": "A3.ApplicationComponent",
+      "name": "authentication",
+      "type": "enum",
+      "values": [
+        "none",
+        "api-key",
+        "oauth2-mtls",
+        "oauth2-pkjwt"
+      ],
+      "description": "how callers are authenticated"
+    }
+  ],
+  "rules": [
+    {
+      "id": "SEC-API-01",
+      "entity": "A3.ApplicationComponent",
+      "when": {
+        "exposure": [
+          "partner",
+          "external"
+        ]
+      },
+      "require": [
+        "authentication"
+      ],
+      "message": "an application called from outside the bank authenticates its callers (API security standard §2)"
+    },
+    {
+      "id": "SEC-API-02",
+      "entity": "A3.ApplicationComponent",
+      "when": {
+        "exposure": "external"
+      },
+      "check": {
+        "attribute": "authentication",
+        "op": "in",
+        "value": [
+          "oauth2-mtls",
+          "oauth2-pkjwt"
+        ]
+      },
+      "message": "an externally exposed application uses OAuth 2 with mTLS or private-key JWT (API security standard §2.3)"
+    }
+  ]
+}

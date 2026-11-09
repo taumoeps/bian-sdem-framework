@@ -1,0 +1,22 @@
+{
+  "format": "sdem-profile/1",
+  "name": "bank-with-standards",
+  "version": 1,
+  "extends": "bank-base.json",
+  "description": "A team profile that takes the made-up bank's standards and its secure API pattern (synthetic).",
+  "includes": [
+    "standards/example-security.json",
+    "standards/example-network.json",
+    "standards/example-technology.json",
+    "patterns/example-secure-api.json"
+  ],
+  "types": [
+    {
+      "type": "BANK.A3.APIGateway",
+      "extends": "A3.ApplicationComponent",
+      "name": "API gateway",
+      "definition": "The bank's API gateway, which fronts external APIs",
+      "source": "synthetic example"
+    }
+  ]
+}

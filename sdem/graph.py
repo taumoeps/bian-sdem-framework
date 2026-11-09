@@ -145,6 +145,21 @@ class FederatedGraph:
             warnings = []
             issues = validate(d, self.registry, load_schema(), entity_resolver=self, warnings=warnings, metamodel=self.mm)
             report[f'mappings #{n}'] = issues
+        from . import profile as _p
+        across = [r for r in _p.rules() if r.get('across')]
+        if across:   # PR-16: the organisation's rules across layers, over APPROVED links only (sdem/comply.py evaluates; check enforces)
+            from .comply import evaluate
+            maps = [(m['source']['id'], m['relationship'], m['target']['id']) for d in self.mapping_docs for m in d.get('mappings', []) if m.get('status') == 'approved']
+            errs, warns = [], []
+            for f in evaluate({l: g.doc for l, g in self.levels.items()}, maps, self.mm, across, _p.exceptions()):
+                if f['outcome'] != 'non_compliant': continue
+                rule = next(r for r in across if r['id'] == f['rule'])
+                lvl = self.levels.get(f['layer'])
+                if lvl and ((lvl.by_id.get(f['record']) or [{}])[-1]).get('lifecycle_status') == 'planned': continue
+                for part in f.get('parts') or [f['detail']]:
+                    (warns if f['severity'] == 'warning' else errs).append(f"instance {f['record']}: {rule['id']} — {rule.get('message') or 'required by the organisation profile'}: {part}")
+            report['profile rules across layers'] = errs
+            if warns: self.warnings['profile rules across layers'] = warns
         if self.design_records is not None:  # GS-D-02: schema and references; an entity no longer in the workspace is a warning
             from .designs import check as _check_designs
             ids = {i for g in self.levels.values() for i in g.by_id}

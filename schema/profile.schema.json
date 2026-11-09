@@ -111,6 +111,10 @@
           },
           "description": {
             "type": "string"
+          },
+          "narrows": {
+            "type": "boolean",
+            "description": "true: this declaration narrows the base profile's list of values for the same attribute (a subset); without it, redeclaring a base attribute is refused (PR-14)"
           }
         }
       }
@@ -212,6 +216,78 @@
                 ]
               }
             }
+          },
+          "check": {
+            "type": "object",
+            "required": [
+              "attribute",
+              "op"
+            ],
+            "properties": {
+              "attribute": {
+                "type": "string"
+              },
+              "op": {
+                "enum": [
+                  "==",
+                  "!=",
+                  "<",
+                  "<=",
+                  ">",
+                  ">=",
+                  "in",
+                  "not_in",
+                  "before",
+                  "after"
+                ]
+              },
+              "value": {
+                "description": "a value, a list (in / not_in), a number, or a date: an ISO date, today, today+90d, today-365d"
+              }
+            },
+            "description": "the attribute compares with a value — on the record, or with across on each record linked across layers (PR-15)"
+          },
+          "across": {
+            "type": "object",
+            "required": [
+              "relationship"
+            ],
+            "description": "follow the record's APPROVED cross-layer links of this relationship (e.g. DEPLOYED_ON); at least min of them, and check holds on each linked record (PR-16)",
+            "properties": {
+              "relationship": {
+                "type": "string"
+              },
+              "direction": {
+                "enum": [
+                  "out",
+                  "in"
+                ]
+              },
+              "min": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "severity": {
+            "enum": [
+              "error",
+              "warning"
+            ],
+            "description": "error (default) fails sdem check; warning is reported only (PR-15)"
+          },
+          "effective_from": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "before this date the rule is reported as a warning (PR-15)"
+          },
+          "standard": {
+            "type": "object",
+            "description": "the standard the rule comes from (set from the included standard file)"
+          },
+          "pattern": {
+            "type": "object",
+            "description": "the pattern the rule comes from (set from the included pattern file)"
           }
         },
         "anyOf": [
@@ -369,6 +445,14 @@
       "type": "string",
       "description": "the SDEM versions this profile is written for, e.g. '>=0.13' or '>=0.13,<1.0' (UF-04); a version outside it refuses the profile",
       "pattern": "^\\s*(>=|<=|==|!=|>|<)?\\s*v?\\d+(\\.\\d+){0,2}(\\s*,\\s*(>=|<=|==|!=|>|<)?\\s*v?\\d+(\\.\\d+){0,2})*\\s*$"
+    },
+    "includes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "standards files (format sdem-standard/1) and pattern files (format sdem-pattern/1), paths relative to this profile — merged after the base and before this profile's own additions; standards first, then patterns (PR-13, PR-17)"
     }
   }
 }

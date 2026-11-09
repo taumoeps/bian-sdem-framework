@@ -1,0 +1,79 @@
+{
+  "format": "sdem-standard/1",
+  "description": "A made-up bank's network standard (synthetic).",
+  "standard": {
+    "id": "NET",
+    "title": "Network zoning and transport standard",
+    "version": "2.0",
+    "owner": "network architecture",
+    "source": "synthetic example",
+    "effective_from": "2026-01-01"
+  },
+  "attributes": [
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "network_zone",
+      "type": "enum",
+      "values": [
+        "restricted",
+        "internal",
+        "dmz"
+      ],
+      "description": "the network zone it sits in"
+    },
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "monitoring",
+      "type": "boolean",
+      "description": "monitored by the bank's security operations"
+    },
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "encryption_in_transit",
+      "type": "enum",
+      "values": [
+        "none",
+        "tls1.2",
+        "tls1.3"
+      ],
+      "description": "transport encryption"
+    }
+  ],
+  "rules": [
+    {
+      "id": "NET-07",
+      "entity": "A3.ApplicationComponent",
+      "when": {
+        "risk_tier": "1"
+      },
+      "across": {
+        "relationship": "DEPLOYED_ON"
+      },
+      "check": {
+        "attribute": "network_zone",
+        "op": "in",
+        "value": [
+          "restricted"
+        ]
+      },
+      "message": "a tier 1 application runs only in the restricted zone (network standard §7)"
+    },
+    {
+      "id": "NET-09",
+      "entity": "A4.InfrastructureComponent",
+      "when": {
+        "environment": "production"
+      },
+      "check": {
+        "attribute": "encryption_in_transit",
+        "op": "in",
+        "value": [
+          "tls1.2",
+          "tls1.3"
+        ]
+      },
+      "severity": "warning",
+      "message": "production platforms encrypt traffic in transit (network standard §9)"
+    }
+  ]
+}

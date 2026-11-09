@@ -1,12 +1,15 @@
 """Organisation profiles — an organisation's own design specifications on top of SDEM's metamodel (docs/design/sdem-profile-spec.md,
-PR-01…PR-12).
+PR-01…PR-20).
 
 A workspace may carry `sdem-profile.json`; it may extend one base profile (`"extends": "<path>"`, e.g. the organisation's standard
 profile shared by every team). A profile **adds** to SDEM's metamodel — never removes or redefines it:
 
   types        its own kinds of thing, each extending an SDEM type (so linking, impact and requirements apply to them unchanged);
   attributes   its own fields on a type and its subtypes — type, allowed values, required or not — enforced by `sdem check`;
-  rules        attributes a type must carry (`require`), with the organisation's own message;
+  rules        what a type must carry or meet (`require`, `check`, `link`, `compare`, `across` approved cross-layer links), with the
+               organisation's own message, severity and effective date;
+  includes     the organisation's standards (security, network, technology …) and reference-architecture patterns, each its own
+               versioned file with an owner (PR-13, PR-17) — evaluated by `sdem comply`, with exceptions a person grants (PR-18);
   link_kinds   its own within-layer link kinds, each mapped onto an ArchiMate kind SDEM already knows;
   names        its words for the layers and the types, used in every output.
 
@@ -21,12 +24,16 @@ from .paths import DATA_ROOT
 
 FILE = 'sdem-profile.json'
 FORMAT = 'sdem-profile/1'
+STANDARD_FORMAT, PATTERN_FORMAT = 'sdem-standard/1', 'sdem-pattern/1'   # files a profile includes (PR-13, PR-17)
+EXCEPTIONS_FILE = 'exceptions.json'                                     # a workspace's granted exceptions (PR-18)
+PRIVATE = ('chain', 'included', '_issues', '_origin')                   # kept with the merged profile, not part of its content
 SCHEMA = DATA_ROOT / 'schema' / 'profile.schema.json'
 LEVELS = ('A1', 'A2', 'A3', 'A4')
 ATTR_TYPES = ('string', 'integer', 'number', 'boolean', 'date', 'enum', 'list<string>', 'map<string,string>')
 LISTS = ('layers', 'types', 'attributes', 'rules', 'link_kinds', 'link_types', 'requirement_categories')   # what a profile adds to its base
 ACTIVE = None          # the resolved, merged profile the current command works under (None: SDEM's metamodel alone)
 _ACTIVE_KEY = None     # its content hash — the metamodel cache key
+ACTIVE_EXCEPTIONS = []  # the active workspace's granted exceptions (PR-18)
 
 
 class ProfileError(ValueError):
@@ -44,20 +51,91 @@ def read(path):
     return doc
 
 
+def _fragment(path):
+    """A standards or pattern file a profile includes (PR-13, PR-17)."""
+    try: doc = json.loads(Path(path).read_text(encoding='utf-8'))
+    except FileNotFoundError: raise ProfileError(f'{path}: no such standards or pattern file')
+    except ValueError as e: raise ProfileError(f'{path}: not valid JSON — {e}')
+    kind = {STANDARD_FORMAT: 'standard', PATTERN_FORMAT: 'pattern'}.get(doc.get('format'))
+    if not kind: raise ProfileError(f"{path}: not a standards or pattern file (format {doc.get('format')!r}; expected {STANDARD_FORMAT!r} or {PATTERN_FORMAT!r})")
+    meta = doc.get(kind) or {}
+    missing = [k for k in ('id', 'title', 'version', 'owner') if not meta.get(k)]
+    if kind == 'pattern' and not (meta.get('applies_when') or {}).get('entity'): missing.append('applies_when.entity')
+    if missing: raise ProfileError(f"{path}: the {kind} needs {', '.join(missing)}")
+    return kind, doc
+
+
+def _add(merged, doc, origin):
+    """PR-14: add a profile's (or an included file's) attributes and rules to what its base declared — never change the base: a
+    redeclared attribute is refused unless it says `narrows` and its values are a subset; a rule id already used is refused."""
+    issues, own = merged['_issues'], merged['_origin']
+    for a in doc.get('attributes', []):
+        k = f"attribute {a['entity']}.{a['name']}"
+        if k not in own:
+            if a.get('narrows'): issues.append(f"{k}: narrows, but no base declares it ({origin})")
+            own[k] = origin; merged['attributes'].append(dict(a)); continue
+        prev = next(x for x in merged['attributes'] if (x['entity'], x['name']) == (a['entity'], a['name']))
+        if not a.get('narrows'):
+            issues.append(f"{k}: already declared by {own[k]} — {origin} may not change it (to narrow its list of values, give \"narrows\": true)"); continue
+        if not (a['type'] == prev['type'] and prev.get('values') and a.get('values') and set(a['values']) <= set(prev['values'])):
+            issues.append(f"{k}: {origin} may only narrow it — the same type, and values {sorted(set(a.get('values') or []) - set(prev.get('values') or [])) or a.get('values')} are not among {own[k]}'s {prev.get('values')}"); continue
+        prev['values'] = list(a['values']); prev['narrowed_by'] = origin
+        if a.get('required'): prev['required'] = True
+    for r in doc.get('rules', []):
+        k = f"rule {r['id']}"
+        if k in own: issues.append(f"{k}: the id is already used by {own[k]} — {origin} gives its rule an id of its own"); continue
+        own[k] = origin; merged['rules'].append(r)
+
+
+def _pattern_rules(doc, merged, origin):
+    """PR-17: a pattern's required parts as rules on the records it applies to."""
+    pat = doc['pattern']; aw = pat['applies_when']; ent, when = aw['entity'], dict(aw.get('when') or {})
+    meta = {k: v for k, v in pat.items() if k != 'applies_when'}
+    out = []
+    for it in doc.get('requires', []):
+        r = {'id': it['id'], 'entity': ent, 'pattern': meta, 'message': it.get('message') or f"{pat['title']} ({pat['id']})"}
+        if when: r['when'] = dict(when)
+        if it.get('severity'): r['severity'] = it['severity']
+        if it.get('rule'):
+            ref = next((x for x in merged['rules'] if x['id'] == it['rule']), None)
+            if not ref: merged['_issues'].append(f"pattern {pat['id']} item {it['id']}: rule {it['rule']} is not declared — include its standard before the pattern ({origin})"); continue
+            if ref['entity'] != ent: merged['_issues'].append(f"pattern {pat['id']} item {it['id']}: rule {it['rule']} is on {ref['entity']}, the pattern applies to {ent}"); continue
+            r.update({k: v for k, v in ref.items() if k in ('require', 'check', 'link', 'compare', 'across', 'standard')})
+            if ref.get('when'): r['when'] = {**ref['when'], **when}
+            if ref.get('message') and not it.get('message'): r['message'] = ref['message']
+        for part, key in (('within', 'link'), ('require', 'require'), ('check', 'check'), ('across', 'across'), ('compare', 'compare')):
+            if it.get(part) is not None: r[key] = it[part]
+        out.append(r)
+    return out
+
+
 def resolve(path, _seen=()):
-    """The profile at `path` with its base profiles folded in (base first), as one merged profile; `chain` names every file."""
+    """The profile at `path` with its base profiles folded in (base first), then the standards and patterns it includes, then its
+    own additions — as one merged profile; `chain` names every profile file, `included` every standards and pattern file."""
     path = Path(path).resolve()
     if path in _seen: raise ProfileError(f'{path}: profiles extend each other in a circle')
     doc = read(path)
-    merged = {'format': FORMAT, 'name': doc.get('name', path.stem), 'version': doc.get('version', 1), 'chain': [], **{k: [] for k in LISTS},
-              'names': {'layers': {}, 'types': {}}}
+    merged = {'format': FORMAT, 'name': doc.get('name', path.stem), 'version': doc.get('version', 1), 'chain': [], 'included': [], '_issues': [], '_origin': {},
+              **{k: [] for k in LISTS}, 'names': {'layers': {}, 'types': {}}}
     if doc.get('extends'):
         base = resolve((path.parent / doc['extends']).resolve(), _seen + (path,))
-        for k in LISTS: merged[k] = list(base[k])
+        for k in LISTS: merged[k] = [dict(x) for x in base[k]]
         merged['names'] = {'layers': dict(base['names']['layers']), 'types': dict(base['names']['types'])}
-        merged['chain'] = list(base['chain'])
+        merged['chain'] = list(base['chain']); merged['included'] = list(base['included'])
+        merged['_issues'] = list(base['_issues']); merged['_origin'] = dict(base['_origin'])
         if base.get('requires_sdem'): merged['requires_sdem'] = base['requires_sdem']
-    for k in LISTS: merged[k] += list(doc.get(k, []))
+    for inc in doc.get('includes', []):   # PR-13, PR-17: standards and patterns, after the base and before the profile's own additions
+        ip = (path.parent / inc).resolve()
+        if any(x['file'] == ip.as_posix() for x in merged['included']): continue   # included by a base already
+        kind, fd = _fragment(ip)
+        meta = fd[kind]
+        if kind == 'standard': rules = [{**r, 'standard': meta} for r in fd.get('rules', [])]
+        else: rules = _pattern_rules(fd, merged, ip.name)
+        _add(merged, {'attributes': fd.get('attributes', []), 'rules': rules}, ip.name)
+        merged['included'].append({'file': ip.as_posix(), 'kind': kind, 'id': meta['id'], 'version': meta['version'], 'title': meta['title'], 'owner': meta['owner']})
+    _add(merged, doc, path.name)
+    for k in LISTS:
+        if k not in ('attributes', 'rules'): merged[k] += list(doc.get(k, []))
     for k in ('layers', 'types'): merged['names'][k].update((doc.get('names') or {}).get(k, {}))
     merged['chain'].append({'file': path.as_posix(), 'name': doc.get('name', path.stem), 'version': doc.get('version', 1)})
     reqs = [r for r in (merged.get('requires_sdem'), doc.get('requires_sdem')) if r]   # UF-04: every profile in the chain must accept this SDEM
@@ -66,7 +144,7 @@ def resolve(path, _seen=()):
 
 
 def digest(merged):
-    body = {k: v for k, v in merged.items() if k != 'chain'}
+    body = {k: v for k, v in merged.items() if k not in PRIVATE}
     return hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()
 
 
@@ -78,8 +156,9 @@ def check(merged, base_mm):
     ArchiMate kinds between types of one layer."""
     from .validate import check_schema
     schema = json.loads(SCHEMA.read_text(encoding='utf-8'))
-    issues = check_schema({k: v for k, v in merged.items() if k != 'chain'}, schema)
+    issues = check_schema({k: v for k, v in merged.items() if k not in PRIVATE}, schema)
     if issues: return [f'profile: {i}' for i in issues]
+    issues += merged.get('_issues', [])   # PR-14, PR-17
     if merged.get('requires_sdem'):   # UF-04
         from .paths import version
         from .upgrade import satisfies
@@ -115,6 +194,9 @@ def check(merged, base_mm):
         if a['entity'] not in all_types: issues.append(f"attribute {a['name']}: {a['entity']} is not a type")
         if a['type'] == 'enum' and not a.get('values'): issues.append(f"attribute {a['entity']}.{a['name']}: an enum needs values")
         if not re.fullmatch(r'[a-z][a-z0-9_]*', a['name']): issues.append(f"attribute {a['entity']}.{a['name']}: a name is lower_snake_case")
+        if a['entity'] in all_types and a['name'] in _sdem_attribute_names(a['entity'], all_types, base_mm):   # PR-02, PR-14: SDEM's own attributes are not redefined
+            issues.append(f"attribute {a['entity']}.{a['name']}: SDEM already defines {a['name']!r} for {a['entity']} — a profile adds attributes, never redefines SDEM's; "
+                          f"use SDEM's (sdem types {a['entity']}) or give yours another name (e.g. {(merged['name'].split('-')[0] or 'org').lower()}_{a['name']})")
         attrs.add((a['entity'], a['name']))
     kinds = {k['kind'] for k in base_mm.relationships['kinds']}
     own_kinds = {k['kind'] for k in merged['link_kinds']}
@@ -133,6 +215,14 @@ def check(merged, base_mm):
         elif to and all_types[to]['level'] != all_types[r['entity']]['level']: issues.append(f"rule {r['id']}: link to {to} — a rule follows within-layer links, so both types are in one layer")
         att = (r.get('compare') or {}).get('attribute')
         if att and not known_attr(att): issues.append(f"rule {r['id']}: compares {att!r}, which is not an attribute of {r['entity']}")
+        c = r.get('check')
+        if c and not r.get('across') and not known_attr(c['attribute']): issues.append(f"rule {r['id']}: checks {c['attribute']!r}, which is not an attribute of {r['entity']}")
+        if c and c['op'] in ('before', 'after') and _date_expr(c.get('value')) is None: issues.append(f"rule {r['id']}: {c['op']} needs a date — an ISO date, today, or today±Nd")
+        if c and c['op'] in ('<', '<=', '>', '>=') and not isinstance(c.get('value'), (int, float)): issues.append(f"rule {r['id']}: {c['op']} needs a number")
+        if r.get('across'):
+            rel = r['across']['relationship']
+            known_rels = {x['relationship'] for x in load_registry_rows()} | {x['relationship'] for x in merged['link_types']}
+            if rel not in known_rels: issues.append(f"rule {r['id']}: across {rel!r}, which is not a link type between layers ({', '.join(sorted(known_rels))})")
     from .requirements import SCHEMA as REQ_SCHEMA
     sdem_categories = json.loads(REQ_SCHEMA.read_text(encoding='utf-8'))['$defs']['requirement']['properties']['category']['enum']
     seen = set()
@@ -168,6 +258,16 @@ def check(merged, base_mm):
     for t in merged['names']['types']:
         if t not in all_types: issues.append(f"names.types: {t} is not a type")
     return issues
+
+
+def _date_expr(v):
+    from .comply import date_of
+    return date_of(v) if isinstance(v, str) else None
+
+
+def load_registry_rows():
+    from .validate import load_registry
+    return load_registry(core=True)['relationships']
 
 
 def _ancestors(all_types, t):
@@ -248,17 +348,31 @@ def rules():
     return (ACTIVE or {}).get('rules', [])
 
 
+def exceptions():
+    """The active workspace's granted exceptions (PR-18)."""
+    return ACTIVE_EXCEPTIONS
+
+
+def _load_exceptions(folder):
+    global ACTIVE_EXCEPTIONS
+    f = Path(folder) / EXCEPTIONS_FILE
+    try: ACTIVE_EXCEPTIONS = json.loads(f.read_text(encoding='utf-8')).get('exceptions', []) if f.exists() else []
+    except ValueError: ACTIVE_EXCEPTIONS = []
+
+
 def requirement_categories():
     """The requirement categories the active profile adds to SDEM's."""
     return [c['id'] for c in (ACTIVE or {}).get('requirement_categories', [])]
 
 
 def applies(rule, inst):
-    """Whether a rule's `when` holds for a record: each named attribute (or lifecycle_status) has the value, or one of the values."""
+    """Whether a rule's `when` holds for a record: each named attribute (or lifecycle_status) has the value, or one of the values; a list
+    attribute (conforms_to …) holds when it contains one of them (PR-10) — so a pattern applies to the records that say they follow it."""
     at = inst.get('attributes') or {}
     for k, want in (rule.get('when') or {}).items():
         have = inst.get(k) if k == 'lifecycle_status' else at.get(k)
-        if have not in (want if isinstance(want, list) else [want]): return False
+        wants = want if isinstance(want, list) else [want]
+        if not (any(h in wants for h in have) if isinstance(have, list) else have in wants): return False
     return True
 
 
@@ -279,7 +393,8 @@ def activate_file(path):
 
 
 def deactivate():
-    global ACTIVE, _ACTIVE_KEY
+    global ACTIVE, _ACTIVE_KEY, ACTIVE_EXCEPTIONS
+    ACTIVE_EXCEPTIONS = []
     if ACTIVE is not None:
         ACTIVE, _ACTIVE_KEY = None, None
         from . import conformance; conformance.model.cache_clear()
@@ -288,7 +403,8 @@ def deactivate():
 def activate_from(folder):
     """Activate the workspace folder's profile if it has one; otherwise SDEM's metamodel alone. Returns the merged profile or None."""
     f = Path(folder) / FILE
-    if f.exists(): return activate_file(f)
+    if f.exists():
+        merged = activate_file(f); _load_exceptions(folder); return merged
     deactivate(); return None
 
 
@@ -296,7 +412,8 @@ def activate_from_paths(paths):
     """Datasets given as files: their folder's profile, when they share one."""
     folders = {Path(p).resolve().parent for p in paths if str(p).endswith('.json')}
     for d in sorted(folders):
-        if (d / FILE).exists(): return activate_file(d / FILE)
+        if (d / FILE).exists():
+            merged = activate_file(d / FILE); _load_exceptions(d); return merged
     deactivate(); return None
 
 
@@ -359,6 +476,51 @@ EXAMPLE_TEAM = {
     'attributes': [{'entity': 'BANK.A3.PaymentsGateway', 'name': 'rail', 'type': 'enum', 'values': ['SWIFT', 'RTGS', 'Visa'], 'required': True, 'description': 'the external rail it connects to'}]}
 
 
+# PR-13…PR-17: a made-up bank's standards and one reference-architecture pattern — synthetic, for the form only
+EXAMPLE_SECURITY = {
+    'format': STANDARD_FORMAT, 'description': "A made-up bank's API security standard (synthetic; not a real organisation's).",
+    'standard': {'id': 'SEC-API', 'title': 'API security standard', 'version': '3.1', 'owner': 'security architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
+    'attributes': [{'entity': 'A3.ApplicationComponent', 'name': 'exposure', 'type': 'enum', 'values': ['internal', 'partner', 'external'], 'description': 'who may call it'},
+                   {'entity': 'A3.ApplicationComponent', 'name': 'authentication', 'type': 'enum', 'values': ['none', 'api-key', 'oauth2-mtls', 'oauth2-pkjwt'], 'description': 'how callers are authenticated'}],
+    'rules': [{'id': 'SEC-API-01', 'entity': 'A3.ApplicationComponent', 'when': {'exposure': ['partner', 'external']}, 'require': ['authentication'],
+               'message': 'an application called from outside the bank authenticates its callers (API security standard §2)'},
+              {'id': 'SEC-API-02', 'entity': 'A3.ApplicationComponent', 'when': {'exposure': 'external'}, 'check': {'attribute': 'authentication', 'op': 'in', 'value': ['oauth2-mtls', 'oauth2-pkjwt']},
+               'message': 'an externally exposed application uses OAuth 2 with mTLS or private-key JWT (API security standard §2.3)'}]}
+EXAMPLE_NETWORK = {
+    'format': STANDARD_FORMAT, 'description': "A made-up bank's network standard (synthetic).",
+    'standard': {'id': 'NET', 'title': 'Network zoning and transport standard', 'version': '2.0', 'owner': 'network architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
+    'attributes': [{'entity': 'A4.InfrastructureComponent', 'name': 'network_zone', 'type': 'enum', 'values': ['restricted', 'internal', 'dmz'], 'description': 'the network zone it sits in'},
+                   {'entity': 'A4.InfrastructureComponent', 'name': 'monitoring', 'type': 'boolean', 'description': 'monitored by the bank\'s security operations'},
+                   {'entity': 'A4.InfrastructureComponent', 'name': 'encryption_in_transit', 'type': 'enum', 'values': ['none', 'tls1.2', 'tls1.3'], 'description': 'transport encryption'}],
+    'rules': [{'id': 'NET-07', 'entity': 'A3.ApplicationComponent', 'when': {'risk_tier': '1'}, 'across': {'relationship': 'DEPLOYED_ON'},
+               'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['restricted']},
+               'message': 'a tier 1 application runs only in the restricted zone (network standard §7)'},
+              {'id': 'NET-09', 'entity': 'A4.InfrastructureComponent', 'when': {'environment': 'production'}, 'check': {'attribute': 'encryption_in_transit', 'op': 'in', 'value': ['tls1.2', 'tls1.3']},
+               'severity': 'warning', 'message': 'production platforms encrypt traffic in transit (network standard §9)'}]}
+EXAMPLE_TECHNOLOGY = {
+    'format': STANDARD_FORMAT, 'description': "A made-up bank's technology lifecycle standard (synthetic).",
+    'standard': {'id': 'TECH-LC', 'title': 'Technology lifecycle standard', 'version': '1.4', 'owner': 'technology architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
+    'rules': [{'id': 'TECH-LC-01', 'entity': 'A4.SystemSoftware', 'when': {'lifecycle_status': 'active'}, 'check': {'attribute': 'end_of_support', 'op': 'after', 'value': 'today+180d'},
+               'severity': 'warning', 'message': 'software in use has at least six months of vendor support left (technology lifecycle standard §3)'}]}
+EXAMPLE_PATTERN = {
+    'format': PATTERN_FORMAT, 'description': "A made-up bank's reference architecture: secure API integration (synthetic).",
+    'pattern': {'id': 'PAT-SECURE-API', 'title': 'Secure API integration', 'version': '2.0', 'owner': 'enterprise architecture', 'source': 'synthetic example',
+                'applies_when': {'entity': 'A3.ApplicationComponent', 'when': {'exposure': 'external'}}},
+    'requires': [{'id': 'PAT-SECURE-API-1', 'rule': 'SEC-API-01'},
+                 {'id': 'PAT-SECURE-API-2', 'rule': 'SEC-API-02'},
+                 {'id': 'PAT-SECURE-API-3', 'within': {'kind': 'composition', 'direction': 'in', 'to': 'BANK.A3.APIGateway', 'min': 1},
+                  'message': 'an externally exposed application sits behind the bank\'s API gateway'},
+                 {'id': 'PAT-SECURE-API-4', 'across': {'relationship': 'DEPLOYED_ON'}, 'check': {'attribute': 'monitoring', 'op': '==', 'value': True},
+                  'message': 'its platform is monitored by security operations'},
+                 {'id': 'PAT-SECURE-API-5', 'across': {'relationship': 'DEPLOYED_ON'}, 'check': {'attribute': 'encryption_in_transit', 'op': '==', 'value': 'tls1.3'},
+                  'message': 'its platform encrypts traffic with TLS 1.3'}]}
+EXAMPLE_STANDARDS_PROFILE = {
+    'format': FORMAT, 'name': 'bank-with-standards', 'version': 1, 'extends': 'bank-base.json',
+    'description': "A team profile that takes the made-up bank's standards and its secure API pattern (synthetic).",
+    'includes': ['standards/example-security.json', 'standards/example-network.json', 'standards/example-technology.json', 'patterns/example-secure-api.json'],
+    'types': [{'type': 'BANK.A3.APIGateway', 'extends': 'A3.ApplicationComponent', 'name': 'API gateway', 'definition': "The bank's API gateway, which fronts external APIs", 'source': 'synthetic example'}]}
+
+
 def adopt(a):
     """LR-03: an existing workspace takes up its sdem-profile.json — each layer the profile adds gets its empty file (recorded in the
     ledger), workspace.json notes the profile, and the decision is on record (adopt_profile, attributed). Existing records are never
@@ -401,7 +563,11 @@ def describe(r):
     if r.get('require'): parts.append('requires ' + ', '.join(r['require']))
     if r.get('link'): l = r['link']; parts.append(f"has ≥{l.get('min', 1)} {l['kind']} link(s) {'from' if l.get('direction') == 'in' else 'to'} {l.get('to', 'any record')}")
     if r.get('compare'): c = r['compare']; parts.append(f"{c['attribute']} must {c['must']} across {c['kind']}")
-    return out + ' ' + '; '.join(parts)
+    if r.get('across'):
+        a = r['across']; parts.append(f"has ≥{a.get('min', 1)} approved {a['relationship']} link(s)" + (f", each with {r['check']['attribute']} {r['check']['op']} {r['check'].get('value')}" if r.get('check') else ''))
+    elif r.get('check'): c = r['check']; parts.append(f"{c['attribute']} {c['op']} {c.get('value')}")
+    tags = [x for x in ((r.get('standard') or {}).get('id'), (r.get('pattern') or {}).get('id')) if x]
+    return out + ' ' + '; '.join(parts) + (f" [{', '.join(tags)}]" if tags else '') + (' (warning)' if r.get('severity') == 'warning' else '')
 
 
 EXAMPLE_LAYERS = {
@@ -438,14 +604,17 @@ def main(argv=None):
     d = sub.add_parser('adopt', help="put the workspace under its sdem-profile.json: the layers it adds start empty, and the adoption is recorded — a person's decision")
     d.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); d.add_argument('--person', required=True, help='your name — a person')
     d.add_argument('--reason', required=True); d.add_argument('--dry-run', action='store_true'); d.add_argument('--json', action='store_true')
-    e = sub.add_parser('example', help='write a synthetic bank base profile and team profiles that extend it (one adds layers)')
+    e = sub.add_parser('example', help='write a synthetic bank base profile, team profiles that extend it (one adds layers), and a team profile with the bank\'s standards and secure API pattern')
     e.add_argument('--out', required=True, metavar='DIR'); e.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     try:
         if a.cmd == 'example':
             from .files import Batch
             out = Path(a.out); b = Batch(); written = []
-            for name, doc in (('bank-base.json', EXAMPLE_BASE), ('payments-team.json', EXAMPLE_TEAM), ('strategy-and-sites-team.json', EXAMPLE_LAYERS)):
+            for name, doc in (('bank-base.json', EXAMPLE_BASE), ('payments-team.json', EXAMPLE_TEAM), ('strategy-and-sites-team.json', EXAMPLE_LAYERS),
+                              ('standards/example-security.json', EXAMPLE_SECURITY), ('standards/example-network.json', EXAMPLE_NETWORK),
+                              ('standards/example-technology.json', EXAMPLE_TECHNOLOGY), ('patterns/example-secure-api.json', EXAMPLE_PATTERN),
+                              ('bank-with-standards.json', EXAMPLE_STANDARDS_PROFILE)):
                 b.json(out / name, doc); written.append(str(out / name))
             b.commit()
             print(json.dumps({'written': written}) if a.json else
@@ -463,7 +632,8 @@ def main(argv=None):
             return 1 if issues else 0
         if a.json: print(json.dumps(merged, indent=2, ensure_ascii=False)); return 0
         print(f"profile {merged['name']} v{merged['version']} — chain: {' → '.join(c['name'] for c in merged['chain'])}")
-        for t in merged['types']: print(f"  type       {t['type']:<36} extends {t['extends']:<28} {t.get('definition', '')[:60]}")
+        for x in merged.get('included', []): print(f"  {x['kind']:<10} {x['id']:<16} v{x['version']:<6} {x['title']} — owner {x['owner']}")
+        for t in merged['types']: print(f"  type       {t['type']:<36} extends {t.get('extends') or '—':<28} {t.get('definition', '')[:60]}")
         for x in merged['attributes']: print(f"  attribute  {x['entity'] + '.' + x['name']:<44} {x['type']:<16} {'required' if x.get('required') else 'optional'}" + (f"  values {x['values']}" if x.get('values') else ''))
         for r in merged['rules']: print(f"  rule       {r['id']:<12} {describe(r)} — {r.get('message', '')}")
         for c in merged['requirement_categories']: print(f"  category   {c['id']:<20} {c.get('description', '')}")

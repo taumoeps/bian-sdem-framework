@@ -1,0 +1,11 @@
+{
+  "format": "sdem-profile/1",
+  "name": "bank-design-specs",
+  "version": 1,
+  "extends": "bank-with-standards.json",
+  "description": "A made-up bank's design specifications for A1\u2013A4 on top of its standards and patterns (synthetic; the full-bank simulation in tests/test_bank_simulation.py).",
+  "includes": [
+    "standards/example-design-spec.json",
+    "patterns/example-resilient-platform.json"
+  ]
+}

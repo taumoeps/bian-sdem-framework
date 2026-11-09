@@ -1,0 +1,184 @@
+{
+  "format": "sdem-standard/1",
+  "description": "A made-up bank's design specification standard (synthetic): what a design states in each layer, and how each layer traces to the one above.",
+  "standard": {
+    "id": "DS",
+    "title": "Solution design specification standard",
+    "version": "1.0",
+    "owner": "architecture practice",
+    "source": "synthetic example",
+    "effective_from": "2026-01-01"
+  },
+  "attributes": [
+    {
+      "entity": "A1.BusinessCapability",
+      "name": "design_scope",
+      "type": "enum",
+      "values": [
+        "in_scope",
+        "out_of_scope",
+        "future"
+      ],
+      "description": "whether the capability is in the scope of the design"
+    },
+    {
+      "entity": "A1.BusinessCapability",
+      "name": "key_decisions",
+      "type": "list<string>",
+      "description": "the business decisions that shaped the design"
+    },
+    {
+      "entity": "A1.BusinessCapability",
+      "name": "design_risks",
+      "type": "list<string>",
+      "description": "business risks the design carries"
+    },
+    {
+      "entity": "A2.ServiceDomain",
+      "name": "adoption_scope",
+      "type": "enum",
+      "values": [
+        "full",
+        "partial",
+        "reference_only"
+      ],
+      "description": "how fully the BIAN service domain is adopted"
+    },
+    {
+      "entity": "A2.ServiceDomain",
+      "name": "deviations",
+      "type": "list<string>",
+      "description": "where the design departs from the BIAN service domain"
+    },
+    {
+      "entity": "A3.ApplicationComponent",
+      "name": "key_decisions",
+      "type": "list<string>",
+      "description": "the application design decisions (ADR ids or statements)"
+    },
+    {
+      "entity": "A3.ApplicationComponent",
+      "name": "design_risks",
+      "type": "list<string>",
+      "description": "risks the application design carries"
+    },
+    {
+      "entity": "A3.ApplicationComponent",
+      "name": "deviations",
+      "type": "list<string>",
+      "description": "departures from the bank's standards or patterns"
+    },
+    {
+      "entity": "A3.ApplicationComponent",
+      "name": "design_scope",
+      "type": "string",
+      "description": "what this design covers for the application"
+    },
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "key_decisions",
+      "type": "list<string>",
+      "description": "the technology design decisions"
+    },
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "design_risks",
+      "type": "list<string>",
+      "description": "risks the technology design carries"
+    },
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "deviations",
+      "type": "list<string>",
+      "description": "departures from the bank's standards or patterns"
+    },
+    {
+      "entity": "A4.InfrastructureComponent",
+      "name": "design_scope",
+      "type": "string",
+      "description": "what this design covers for the platform"
+    }
+  ],
+  "rules": [
+    {
+      "id": "DS-01",
+      "entity": "A3.ApplicationComponent",
+      "when": {
+        "risk_tier": "1"
+      },
+      "require": [
+        "key_decisions",
+        "design_risks",
+        "design_scope"
+      ],
+      "message": "a tier 1 application design states its key decisions, risks and scope (design standard \u00a72)"
+    },
+    {
+      "id": "DS-02",
+      "entity": "A4.InfrastructureComponent",
+      "when": {
+        "environment": "production"
+      },
+      "require": [
+        "key_decisions",
+        "design_scope"
+      ],
+      "message": "a production platform design states its key decisions and scope (design standard \u00a73)"
+    },
+    {
+      "id": "DS-03",
+      "entity": "A4.InfrastructureComponent",
+      "when": {
+        "environment": "production"
+      },
+      "across": {
+        "relationship": "DEPLOYED_ON",
+        "direction": "in",
+        "min": 1
+      },
+      "message": "a production platform hosts at least one approved application \u2014 upstream A4 \u2192 A3 (design standard \u00a74.1)"
+    },
+    {
+      "id": "DS-04",
+      "entity": "A3.ApplicationComponent",
+      "when": {
+        "risk_tier": "1"
+      },
+      "across": {
+        "relationship": "REALIZED_BY",
+        "direction": "in",
+        "min": 1
+      },
+      "check": {
+        "attribute": "adoption_scope",
+        "op": "in",
+        "value": [
+          "full",
+          "partial"
+        ]
+      },
+      "message": "a tier 1 application realises a BIAN service domain the bank adopts \u2014 upstream A3 \u2192 A2 (design standard \u00a74.2)"
+    },
+    {
+      "id": "DS-05",
+      "entity": "A2.ServiceDomain",
+      "when": {
+        "adoption_scope": [
+          "full",
+          "partial"
+        ]
+      },
+      "across": {
+        "relationship": "SUPPORTED_BY",
+        "direction": "in",
+        "min": 1
+      },
+      "check": {
+        "attribute": "design_scope",
+        "op": "==",
+        "value": "in_scope"
+      },
+      "message": "an adopted service domain supports a business capability in the design's scope \u2014 upstream A2 \u2192 A1 (design standard \u00a74.3)"
+    }
+  ]
+}

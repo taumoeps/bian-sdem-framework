@@ -1,0 +1,53 @@
+{
+  "format": "sdem-pattern/1",
+  "description": "A made-up bank's resilient-platform reference pattern (synthetic). It applies to the platforms that say they follow it (conforms_to).",
+  "pattern": {
+    "id": "PAT-RESILIENT-PLATFORM",
+    "title": "Resilient production platform",
+    "version": "1.0",
+    "owner": "technology architecture",
+    "source": "synthetic example",
+    "applies_when": {
+      "entity": "A4.InfrastructureComponent",
+      "when": {
+        "conforms_to": "PAT-RESILIENT-PLATFORM"
+      }
+    }
+  },
+  "requires": [
+    {
+      "id": "PAT-RES-1",
+      "rule": "BANK-DR01"
+    },
+    {
+      "id": "PAT-RES-2",
+      "check": {
+        "attribute": "monitoring",
+        "op": "==",
+        "value": true
+      },
+      "message": "monitored by security operations"
+    },
+    {
+      "id": "PAT-RES-3",
+      "check": {
+        "attribute": "network_zone",
+        "op": "in",
+        "value": [
+          "restricted",
+          "internal"
+        ]
+      },
+      "message": "never in the DMZ"
+    },
+    {
+      "id": "PAT-RES-4",
+      "across": {
+        "relationship": "DEPLOYED_ON",
+        "direction": "in",
+        "min": 1
+      },
+      "message": "it serves at least one approved application"
+    }
+  ]
+}

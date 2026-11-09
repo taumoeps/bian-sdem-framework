@@ -56,6 +56,16 @@ def collect(ws):
               for e in d['changes']['events'] if not (status.get(e['id']) or {}).get('planned')]
     review = [{'id': r['id'], 'link': f"{r['source']} {r['rel']} {r['target']}", 'confidence': r['confidence'], 'evidence_class': r.get('evidence_class'),
                'evidence_needed': r['evidence_needed']} for r in d['review']['rows']]
+    comp = {'findings': [], 'expiring': []}
+    try:
+        from .comply import collect as comply
+        from .exceptions import listing
+        c = comply(ws)
+        if c['profile_active']:
+            comp['findings'] = [{k: f.get(k) for k in ('rule', 'standard', 'pattern', 'layer', 'record', 'outcome', 'severity', 'detail')}
+                                for f in c['findings'] if f['outcome'] in ('non_compliant', 'unresolved')]
+            comp['expiring'] = [e for e in listing(ws) if e['state'] == 'active' and e['days_left'] <= 30]
+    except ValueError: pass   # a profile that does not pass its checks is in check_errors already
     w = str(ws)
     commands = []
     if errors: commands.append(f'sdem check --workspace {w}   # fix what fails first')
@@ -64,14 +74,17 @@ def collect(ws):
     if inferred: commands.append(f'sdem aid confirm <ids> --workspace {w} --person <you>   ·   sdem aid reject <ids> --workspace {w} --person <you>')
     if review: commands.append(f'sdem review <proposals.json> --workspace {w}   then   sdem approve <id> … --reviewer <you> --evidence <kind>:<ref>')
     if duplicates: commands.append('merge or rename each possible duplicate (one record, or two?) through a change set')
+    if comp['findings']: commands.append(f'sdem comply --workspace {w}   # meet each standard, or ask for a time-limited exception: sdem exception grant … --person <you>')
+    if comp['expiring']: commands.append(f'sdem exception list --workspace {w}   # exceptions ending within 30 days')
     if events: commands.append(f"sdem work plan --event {events[0]['id']} --workspace {w} --agent sdem-orchestrator --person <you>")
     return {'workspace': w, 'name': d['name'],
             'summary': {'check_errors': len(errors), 'missing_values': len(missing), 'missing_required': sum(m['required'] for m in missing),
                         'unconfirmed_inferred': len(inferred), 'weak_inferred': sum(x['weak'] for x in inferred), 'links_to_review': len(review),
                         'possible_duplicates': len(duplicates), 'records_without_source': len(unsourced), 'links_without_source': links['total'] - links['with_source'],
-                        'events_to_plan': len(events)},
+                        'events_to_plan': len(events), 'standards_not_met': sum(f['outcome'] == 'non_compliant' for f in comp['findings']),
+                        'standards_unresolved': sum(f['outcome'] == 'unresolved' for f in comp['findings']), 'exceptions_expiring': len(comp['expiring'])},
             'check_errors': errors, 'missing_values': missing, 'unconfirmed_inferred': inferred, 'links_to_review': review,
-            'possible_duplicates': duplicates, 'records_without_source': unsourced, 'links': links, 'events_to_plan': events,
+            'possible_duplicates': duplicates, 'records_without_source': unsourced, 'links': links, 'events_to_plan': events, 'compliance': comp,
             'commands_for_the_person': commands}
 
 
@@ -85,6 +98,9 @@ def render(h):
     sec('Inferred by SDEM, not yet confirmed', h['unconfirmed_inferred'], lambda r: f"{r['layer']} {r['id']} {r['name']!r} — rule {r['rule']}, confidence {r['confidence']}, evidence {r['evidence_class'] or 'not recorded'}" + (' — WEAK: a name or description only' if r['weak'] else ''))
     sec('Links to review', h['links_to_review'], lambda r: f"{r['id']} {r['link']} — confidence {r['confidence']}, evidence {r['evidence_class'] or 'not recorded'}; needs {', '.join(r['evidence_needed']) or '—'}")
     sec('Possible duplicates', h['possible_duplicates'], lambda r: f"{r['layer']} {r['type']}: {', '.join(r['ids'])} ({r['rule']})")
+    sec("Standards and patterns not met or unresolved (sdem comply)", h['compliance']['findings'],
+        lambda r: f"{r['outcome'].replace('_', '-')}: {r['rule']} on {r['layer']} {r['record']} — {r['detail']}")
+    sec('Exceptions ending within 30 days', h['compliance']['expiring'], lambda r: f"{r['id']} {r['rule']} for {', '.join(r['records'])} — until {r['expires']}")
     sec('Change events to plan', h['events_to_plan'], lambda r: f"{r['id']} ({r['layer']}, {r['change_set']})")
     L.append(f"Sources: {s['records_without_source']} record(s) with no source_id; {s['links_without_source']} of {h['links']['total']} link(s) inside the layers with no source_id")
     if h['commands_for_the_person']: L += ['', 'For the person (the agent does not run these):'] + [f'  {c}' for c in h['commands_for_the_person']]

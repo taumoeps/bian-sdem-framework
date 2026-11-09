@@ -112,9 +112,6 @@ def check_level(doc, mm, estate_index=None):
     byid = {i['id']: i for i in doc.get('instances', [])}
     from . import profile as _p
     own_rules = _p.rules()
-    links_out, links_in = {}, {}
-    if own_rules:
-        for r in doc.get('relationships', []): links_out.setdefault((r['source'], r['kind']), []).append(r['target']); links_in.setdefault((r['target'], r['kind']), []).append(r['source'])
     keys = Counter(); loose = {}
     parents = {}
     for r in doc.get('relationships', []):
@@ -183,23 +180,6 @@ def check_level(doc, mm, estate_index=None):
                         n['LC-08 checked'] += 1; t = estate_index['types'].get(x)
                         if not (t and any(mm.is_a(t, r) for r in targets)):
                             n['LC-08 failed'] += 1; warnings.append(f"{who}: attribute {k!r} refers to {x!r}, which is not a {' or '.join(targets)} in the loaded workspace (LC-08)")
-        for rule in own_rules:   # PR-04, PR-10, PR-11: the organisation's own rules — conditional, and across within-layer links
-            if not mm.is_a(i['type'], rule['entity']) or i.get('lifecycle_status') == 'planned' or not _p.applies(rule, i): continue
-            n['profile rule checked'] += 1; say = f"{who}: {rule['id']} — {rule.get('message') or 'required by the organisation profile'}"
-            missing = [x for x in rule.get('require', []) if at.get(x) in (None, '', [])]
-            if missing: n['profile rule failed'] += 1; errors.append(f"{say}: missing {', '.join(missing)}")
-            if rule.get('link'):
-                l = rule['link']; ends = (links_in if l.get('direction') == 'in' else links_out).get((i['id'], l['kind']), [])
-                ends = [e for e in ends if not l.get('to') or (local.get(e) and mm.is_a(local[e], l['to']))]
-                if len(ends) < l.get('min', 1):
-                    n['profile rule failed'] += 1; errors.append(f"{say}: {len(ends)} {l['kind']} link(s){' to ' + l['to'] if l.get('to') else ''}, needs at least {l.get('min', 1)}")
-            if rule.get('compare'):
-                c = rule['compare']; mine = at.get(c['attribute'])
-                for other in links_out.get((i['id'], c['kind']), []):
-                    theirs = ((byid.get(other) or {}).get('attributes') or {}).get(c['attribute'])
-                    if mine is None or theirs is None: continue   # a missing value is a require rule's business
-                    if (c['must'] == 'differ') == (mine == theirs):
-                        n['profile rule failed'] += 1; errors.append(f"{say}: {c['attribute']} is {mine!r} here and {theirs!r} on {other} ({c['kind']}) — must {c['must']}")
         if i.get('lifecycle_status'):
             n['LC-06 checked'] += 1
             if i['lifecycle_status'] not in LIFECYCLE: n['LC-06 failed'] += 1; errors.append(f"{who}: lifecycle_status {i['lifecycle_status']!r} is not one of {list(LIFECYCLE)} (LC-06)")
@@ -212,6 +192,19 @@ def check_level(doc, mm, estate_index=None):
         if key and all(k in vals and (k not in OWNERS or vals[k]) for k in key) and not any(unknown_value(vals[k]) for k in key if k not in OWNERS):
             keys[(i['type'],) + tuple(json.dumps(vals[k], sort_keys=True) for k in key)] += 1
             loose.setdefault((i['type'],) + tuple(json.dumps(natural(vals[k]), sort_keys=True) for k in key), set()).add(tuple(json.dumps(vals[k], sort_keys=True) for k in key))
+    if own_rules:   # PR-04, PR-10, PR-11, PR-15 (sdem/comply.py evaluates; check enforces): the organisation's own rules inside this layer
+        from .comply import evaluate
+        inside = [r for r in own_rules if not r.get('across')]
+        for f in evaluate({doc.get('level'): doc}, [], mm, inside, _p.exceptions()):
+            if f['outcome'] == 'not_applicable': continue
+            n['profile rule checked'] += 1
+            if f['outcome'] != 'non_compliant': continue
+            if (byid.get(f['record']) or {}).get('lifecycle_status') == 'planned': continue
+            rule = next(r for r in inside if r['id'] == f['rule'])
+            say = f"instance {f['record']}: {rule['id']} — {rule.get('message') or 'required by the organisation profile'}"
+            n['profile rule failed'] += 1
+            for part in f.get('parts') or [f['detail']]:
+                (warnings if f['severity'] == 'warning' else errors).append(f"{say}: {part}")
     n['LC-09 checked'] += len(keys)
     for k, c in keys.items():
         if c > 1: n['LC-09 failed'] += c - 1; errors.append(f"{c} instances of {k[0]} share the natural key {', '.join(k[1:])} (LC-09)")

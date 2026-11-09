@@ -8,6 +8,7 @@
 SDEM (the product)                               your workspace repository (private — never shared)
 github.com/…/bian-sdem-framework                 ├── requirements.txt    pins "sdem @ …@v0.17.0"
   tagged releases                ── pip ──▶       ├── sdem-profile.json   your types, rules, layers, names, requires_sdem
+                                                 ├── standards/, patterns/  your standards and reference architectures (PR-13, PR-17)
   (downloaded; nothing uploaded)                 ├── governance.json, .github/, AGENTS.md (your agents, CI)
                                                  └── workspaces/…        your designs
 ```
@@ -26,6 +27,7 @@ github.com/…/bian-sdem-framework                 ├── requirements.txt   
 | UF-06 | **Stable surfaces**: command names and options (removed only after a deprecation), `--json` output (fields added, never renamed), file formats (versioned by `metamodel_version` and `format`), exit codes and error codes. | the agent CLI contract tests |
 | UF-07 | **Nothing leaves**: SDEM never contacts a server; updates are pulled by the architect; feedback to SDEM is by issue with a synthetic reproduction, never data. | SECURITY.md, PRIVACY.md |
 | UF-08 | **Rollback**: pin the previous version and revert the upgrade commit. A migration is one recorded commit (`migrations/MIG-nnn.json`), so reverting it restores the files exactly. | `docs/sdem-administration.md` |
+| UF-09 | **Your standards, patterns and exceptions come with you.** They are files in your repository that a profile includes (PR-13, PR-17) and `exceptions.json` per workspace (PR-18); an upgrade never touches them. `sdem upgrade check` checks the profile with everything it includes under the new version; a rule or attribute the new version no longer accepts — including an attribute SDEM now defines that your profile also declares (PR-14) — blocks the switch with the reason, before anything changes. Run `sdem comply` on your test workspaces in the upgrade branch to see any change in findings. | `test_sdem_s_own_attributes_are_never_redefined`, `test_a_profile_this_version_does_not_meet_blocks` |
 
 ## Still to do (recommended next)
 
