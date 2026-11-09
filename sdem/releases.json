@@ -229,7 +229,7 @@
     },
     {
       "version": "0.18.0",
-      "date": "2026-11-03",
+      "date": "2026-11-10",
       "kind": "minor",
       "metamodel": "0.8.1",
       "migration": {
