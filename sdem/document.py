@@ -13,7 +13,7 @@ from pathlib import Path
 LAYER_TITLES = {'A1': 'A1 Business Architecture', 'A2': 'A2 BIAN Service Domain Architecture',
                 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
 PLACEHOLDER = re.compile(r'\b(TBD|PLACEHOLDER|TODO)\b', re.I)
-SKIP_ATTRS = {'inferred', 'source_id'}   # shown as provenance instead
+SKIP_ATTRS = {'inferred', 'source_id', 'sources'}   # shown as provenance instead
 
 
 def _j(p):
@@ -42,7 +42,8 @@ def _placeholders(rec):
     for k, v in (rec.get('attributes') or {}).items():
         if k in SKIP_ATTRS: continue
         vals = v if isinstance(v, list) else [v]
-        if any(isinstance(x, str) and PLACEHOLDER.search(x) for x in vals) or v == []: out.append(k)
+        from .conformance import unknown_value   # the same reading as `sdem check` (LC-04), plus a placeholder word inside a longer value
+        if unknown_value(v) or any(isinstance(x, str) and PLACEHOLDER.search(x) for x in vals) or v == []: out.append(k)
     return out
 
 
@@ -89,8 +90,8 @@ def document(ws, layer):
     def links(rid):
         out_, in_ = [], []
         for x in rels:
-            if x['source'] == rid: out_.append({'kind': x['kind'], 'id': x['target'], 'name': names.get(x['target'], x['target'])})
-            if x['target'] == rid: in_.append({'kind': x['kind'], 'id': x['source'], 'name': names.get(x['source'], x['source'])})
+            if x['source'] == rid: out_.append({'kind': x['kind'], 'id': x['target'], 'name': names.get(x['target'], x['target']), 'source_id': x.get('source_id')})
+            if x['target'] == rid: in_.append({'kind': x['kind'], 'id': x['source'], 'name': names.get(x['source'], x['source']), 'source_id': x.get('source_id')})
         return out_, in_
 
     def connections(rid):
@@ -118,7 +119,8 @@ def document(ws, layer):
             if ph: gaps['placeholders'].append({'id': r['id'], 'fields': ph})
             items.append({'id': r['id'], 'name': r.get('name') or r['id'], 'type': t, 'version': r.get('version'),
                           'lifecycle_status': r.get('lifecycle_status'), 'description': r.get('description', ''), 'attributes': attrs,
-                          'links_out': o, 'links_in': i, 'connections': c, 'provenance': provenance(r)})
+                          'links_out': o, 'links_in': i, 'connections': c, 'provenance': provenance(r),
+                          'attribute_sources': {k: v for k, v in ((r.get('attributes') or {}).get('sources') or {}).items() if isinstance(v, str)}})   # CA-13
         sections.append({'type': t, 'title': _label(t), 'definition': (mm.entities.get(t) or {}).get('definition', ''), 'records': items})
     layer_reqs = []
     for q in reqs:
@@ -157,10 +159,11 @@ def markdown(doc):
             if r['description']: L += [r['description'], '']
             meta = [f"version {r['version']}" if r['version'] else None, r['lifecycle_status']]
             L += [f"- **Status:** {', '.join(x for x in meta if x) or '—'}", f"- **Source:** {r['provenance']}"]
-            for k, v in r['attributes'].items(): L.append(f"- **{k.replace('_', ' ')}:** {_value(v)}")
+            for k, v in r['attributes'].items(): L.append(f"- **{k.replace('_', ' ')}:** {_value(v)}" + (f" — from {r['attribute_sources'][k]}" if k in r.get('attribute_sources', {}) else ''))
             if r['links_out'] or r['links_in']:
-                L.append('- **Within the layer:** ' + '; '.join([f"{x['kind']} → {x['name']} ({x['id']})" for x in r['links_out']] +
-                                                         [f"{x['name']} ({x['id']}) {x['kind']} → this" for x in r['links_in']]))
+                cite = lambda x: f" — from {x['source_id']}" if x.get('source_id') else ''   # where the link came from (D4)
+                L.append('- **Within the layer:** ' + '; '.join([f"{x['kind']} → {x['name']} ({x['id']}){cite(x)}" for x in r['links_out']] +
+                                                         [f"{x['name']} ({x['id']}) {x['kind']} → this{cite(x)}" for x in r['links_in']]))
             for c in r['connections']:
                 arrow = f"{c['relationship']} → {c['name']} ({c['id']})" if c['direction'] == 'out' else f"{c['name']} ({c['id']}) {c['relationship']} → this"
                 L.append(f"- **Connection ({c['status']}):** {arrow} — {c['mapping_id']}" + (f"; evidence {', '.join(c['evidence'][:2])}" if c['evidence'] else ''))

@@ -1,12 +1,13 @@
 """Data-model conformance: enforce the logical constraints on architecture datasets.
 
 Errors (the architecture dataset does not conform):
-  LC-04 required attribute missing (a warning on a `planned` instance) · LC-05 wrong type · LC-06 value not allowed · LC-07 same-level reference
+  LC-04 required attribute missing — absent, empty, or a placeholder such as TBD (a warning on a `planned` instance) · LC-05 wrong type · LC-06 value not allowed · LC-07 same-level reference
   does not resolve · LC-09 duplicate natural key · LC-10 cardinality maximum exceeded (BIAN / ArchiMate rows).
 Warnings (the architecture dataset is usable but incomplete or dated):
   LC-08 cross-level reference does not resolve in the loaded workspace (a join key the inference engine cannot use)
   · LC-10m cardinality minimum not met (architecture datasets may be partial selections) · LC-13 deprecated attribute in use
-  · attribute not defined in the model.
+  · attribute not defined in the model · LC-04p a placeholder or empty value in an optional attribute · LC-09n two names that differ
+  only in case, spacing or punctuation (a possible duplicate) · LC-14 an attribute source that names no attribute of the record, or is not kind:ref.
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.
 """
 import json, re
@@ -23,6 +24,52 @@ DATE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 
 
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+
+
+@lru_cache(maxsize=1)
+def placeholders():
+    """The words that stand for a value nobody knows yet (metamodel: entity-attributes.json › placeholders; LC-04, owner's decision D1)."""
+    return frozenset(w.casefold() for w in (_j(MM_DIR / 'entity-attributes.json').get('placeholders') or {}).get('values', []))
+
+
+def unknown_value(v, allowed=()):
+    """Why a value says nothing: 'empty', 'placeholder' — or None when it is a value. An allowed enumeration value is always a value."""
+    if isinstance(v, str):
+        t = v.strip()
+        if not t: return 'empty'
+        if t in allowed: return None
+        w = placeholders()
+        if t.casefold() in w: return 'placeholder'
+        if t.startswith('/') and any(seg.strip().casefold() in w for seg in t.split('/') if seg.strip()): return 'placeholder'   # a path such as /TBD or /payments/TBD
+        return None
+    if isinstance(v, list):
+        if not v: return None   # an empty list says 'none' (a BIAN operation with no inputs) — a value
+        kinds = [unknown_value(x, allowed) for x in v]
+        return 'placeholder' if 'placeholder' in kinds else ('empty' if all(kinds) else None)
+    if isinstance(v, dict) and not v: return 'empty'
+    return None
+
+
+def natural(v):
+    """A natural-key value compared as a person reads it: case, spacing and punctuation ignored (LC-09n)."""
+    return ' '.join(re.sub(r'[^0-9a-z]+', ' ', v.casefold()).split()) if isinstance(v, str) else v
+
+
+OWNERS = {'owning interface': 'A3.ApplicationInterface', 'owning service domain': 'A2.ServiceDomain'}   # identifier keys held as a whole-part link, not an attribute
+
+
+def owner_of(iid, want, mm, local, parents, depth=4):
+    """The nearest whole of type `want` above iid, through composition and aggregation (e.g. operation ← group ← service domain)."""
+    seen, frontier = {iid}, [iid]
+    for _ in range(depth):
+        nxt = []
+        for x in frontier:
+            for p in parents.get(x, ()):
+                if p in seen: continue
+                if local.get(p) and mm.is_a(local[p], want): return p
+                seen.add(p); nxt.append(p)
+        frontier = nxt
+    return None
 
 
 @lru_cache(maxsize=2)
@@ -68,7 +115,10 @@ def check_level(doc, mm, estate_index=None):
     links_out, links_in = {}, {}
     if own_rules:
         for r in doc.get('relationships', []): links_out.setdefault((r['source'], r['kind']), []).append(r['target']); links_in.setdefault((r['target'], r['kind']), []).append(r['source'])
-    keys = Counter()
+    keys = Counter(); loose = {}
+    parents = {}
+    for r in doc.get('relationships', []):
+        if r.get('kind') in ('composition', 'aggregation'): parents.setdefault(r['target'], []).append(r['source'])
     to_confirm = 0
     for i in doc.get('instances', []):
         if not mm.known(i['type']): continue  # reported by the graph loader (LC-02)
@@ -81,16 +131,31 @@ def check_level(doc, mm, estate_index=None):
         for k, a in defs.items():
             if a['required'] and a['status'] == 'active':
                 n['LC-04 checked'] += 1
-                if k not in at:
+                why = 'absent' if k not in at else unknown_value(at[k], a.get('values') or ())
+                if why:
+                    said = '' if why == 'absent' else f" — {at[k]!r} is {'a placeholder' if why == 'placeholder' else 'empty'}, not a value"
                     unless = a.get('required_unless') or {}
                     if unless and all(at.get(x) == v for x, v in unless.items()):   # e.g. a BIAN domain whose pattern is not known yet: advise, do not reject
                         n['LC-04 to confirm'] += 1
                         warnings.append(f"{who}: {k!r} not known yet ({', '.join(f'{x} {v}' for x, v in unless.items())}) — give it when known (LC-04)"); continue
                     if i.get('lifecycle_status') == 'planned':  # a planned (target-design) record may not know every fact yet: warn, do not reject
                         n['LC-04 planned'] += 1
-                        if not unconfirmed: warnings.append(f"{who}: planned instance — required attribute {k!r} not yet known (LC-04)")   # inferred: in the summary
+                        if not unconfirmed: warnings.append(f"{who}: planned instance — required attribute {k!r} not yet known{said} (LC-04)")   # inferred: in the summary
                     else:
-                        n['LC-04 failed'] += 1; errors.append(f"{who}: required attribute {k!r} missing (LC-04)")
+                        n['LC-04 failed'] += 1
+                        errors.append(f"{who}: required attribute {k!r} missing (LC-04)" if why == 'absent' else
+                                      f"{who}: required attribute {k!r} has no value{said} — leave it out and mark the record planned until it is known (LC-04)")
+            elif k in at and a['status'] != 'deprecated' and k not in ('inferred', 'sources'):
+                why = unknown_value(at[k], a.get('values') or ())
+                if why: n['LC-04p'] += 1; warnings.append(f"{who}: optional attribute {k!r} is {'a placeholder' if why == 'placeholder' else 'empty'} ({at[k]!r}) — leave it out until it is known (LC-04)")
+        srcs = at.get('sources')
+        if isinstance(srcs, dict):   # LC-14: where single values came from (CA-13) — only the record's own attributes, as kind:ref
+            for k, ref in srcs.items():
+                n['LC-14 checked'] += 1
+                if k not in at and k not in ('name', 'description'):
+                    n['LC-14 failed'] += 1; warnings.append(f"{who}: sources names {k!r}, which the record does not have (LC-14)")
+                elif not (isinstance(ref, str) and all(re.match(r'^[a-z][a-z0-9_-]*:\S', x.strip()) for x in ref.split(','))):
+                    n['LC-14 failed'] += 1; warnings.append(f"{who}: the source of {k!r} is {ref!r} — write it as kind:ref, e.g. document:DESIGN.md#4.2 (LC-14)")
         for k, v in at.items():
             a = defs.get(k)
             if not a:
@@ -139,11 +204,20 @@ def check_level(doc, mm, estate_index=None):
             n['LC-06 checked'] += 1
             if i['lifecycle_status'] not in LIFECYCLE: n['LC-06 failed'] += 1; errors.append(f"{who}: lifecycle_status {i['lifecycle_status']!r} is not one of {list(LIFECYCLE)} (LC-06)")
         key = ((mm.entities.get(i['type']) or {}).get('identifier') or {}).get('key') or []
-        if key and all(k in i or k in at for k in key):
-            keys[(i['type'],) + tuple(json.dumps(i.get(k, at.get(k)), sort_keys=True) for k in key)] += 1
+        vals = {}
+        for k in key:   # LC-09: a key part is a field, an attribute, or the whole the record is part of (OWNERS)
+            if k in OWNERS: vals[k] = owner_of(i['id'], OWNERS[k], mm, local, parents)
+            elif k in i: vals[k] = i[k]
+            elif k in at: vals[k] = at[k]
+        if key and all(k in vals and (k not in OWNERS or vals[k]) for k in key) and not any(unknown_value(vals[k]) for k in key if k not in OWNERS):
+            keys[(i['type'],) + tuple(json.dumps(vals[k], sort_keys=True) for k in key)] += 1
+            loose.setdefault((i['type'],) + tuple(json.dumps(natural(vals[k]), sort_keys=True) for k in key), set()).add(tuple(json.dumps(vals[k], sort_keys=True) for k in key))
     n['LC-09 checked'] += len(keys)
     for k, c in keys.items():
         if c > 1: n['LC-09 failed'] += c - 1; errors.append(f"{c} instances of {k[0]} share the natural key {', '.join(k[1:])} (LC-09)")
+    for k, exact in loose.items():
+        if len(exact) > 1:
+            n['LC-09n'] += 1; warnings.append(f"possible duplicate: {k[0]} keys {' and '.join(sorted(', '.join(e) for e in exact))} differ only in case, spacing or punctuation — one record, or two? (LC-09n)")
     for c in rows:
         if c['level'] != doc['level']: continue
         cd = c['cardinality']
@@ -162,6 +236,26 @@ def check_level(doc, mm, estate_index=None):
                     n['LC-10m failed'] += 1; warnings.append(f"instance {iid}: {cnt} {c['kind']} links with {other}, {c['id']} expects at least {lo} (LC-10m)")
     if to_confirm: warnings.append(f"{to_confirm} inferred record(s) to confirm — review them (marked 'inferred', with source, reasoning and confidence), then `sdem aid confirm` or `sdem aid reject` (CTL-16)")
     return errors, warnings, n
+
+
+def natural_keys(doc, mm):
+    """Each record's natural key (LC-09) as an exact and a loose (LC-09n) value: {id: (exact, loose)}; records whose key is incomplete are left out."""
+    local = {i['id']: i['type'] for i in doc.get('instances', [])}
+    parents = {}
+    for r in doc.get('relationships', []):
+        if r.get('kind') in ('composition', 'aggregation'): parents.setdefault(r['target'], []).append(r['source'])
+    out = {}
+    for i in doc.get('instances', []):
+        key = ((mm.entities.get(i['type']) or {}).get('identifier') or {}).get('key') or []
+        at = i.get('attributes') or {}; vals = {}
+        for k in key:
+            if k in OWNERS: vals[k] = owner_of(i['id'], OWNERS[k], mm, local, parents)
+            elif k in i: vals[k] = i[k]
+            elif k in at: vals[k] = at[k]
+        if key and all(k in vals and (k not in OWNERS or vals[k]) for k in key) and not any(unknown_value(vals[k]) for k in key if k not in OWNERS):
+            out[i['id']] = ((i['type'],) + tuple(json.dumps(vals[k], sort_keys=True) for k in key),
+                            (i['type'],) + tuple(json.dumps(natural(vals[k]), sort_keys=True) for k in key))
+    return out
 
 
 def estate_index(docs):

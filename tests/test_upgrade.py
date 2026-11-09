@@ -5,6 +5,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from sdem.metamodel import Metamodel  # noqa: E402
+CURRENT = Metamodel.load().version   # the metamodel a migration ends at
 from sdem import upgrade as U  # noqa: E402
 from sdem.paths import version  # noqa: E402
 
@@ -60,7 +62,7 @@ class UpgradeCheckTests(unittest.TestCase):
         for w in ('payments', 'cards'): sdem('new', '--workspace', r / 'workspaces' / w, '--person', 'steven', '--example', 'payment-initiation', cwd=self.tmp)
         for f in (r / 'workspaces').glob('*/*.json'):
             d = json.loads(f.read_text())
-            if isinstance(d, dict) and d.get('metamodel_version') == '0.8.0': d['metamodel_version'] = '0.7.0'; f.write_text(json.dumps(d))
+            if isinstance(d, dict) and d.get('metamodel_version') == CURRENT: d['metamodel_version'] = '0.7.0'; f.write_text(json.dumps(d))
         f = r / 'workspaces' / 'payments' / 'mappings.json'; d = json.loads(f.read_text())
         next(m for m in d['mappings'] if m['relationship'] == 'DEPLOYED_ON' and m['status'] == 'approved')['target']['type'] = 'A4.InfrastructureComponent'
         f.write_text(json.dumps(d))

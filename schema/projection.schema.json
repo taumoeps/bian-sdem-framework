@@ -30,7 +30,8 @@
         "source_reference": {"type": "string", "minLength": 1},
         "inferred_from": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
         "reasoning": {"type": "string", "minLength": 1},
-        "confidence": {"type": "number", "minimum": 0, "maximum": 0.6}
+        "confidence": {"type": "number", "minimum": 0, "maximum": 0.6},
+        "evidence_class": {"enum": ["attribute_join", "structural", "pattern", "name_token", "text"], "description": "What kind of evidence the element rests on, strongest first (AID-E01)."}
       }
     },
     "record": {

@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "metamodel_version": "0.8.0",
+      "metamodel_version": "0.8.1",
       "levels": {
         "A1": "2026.10",
         "A2": "2026.10",
@@ -16,9 +16,9 @@
       "registries": [
         {
           "file": "mappings.json",
-          "sha256": "0a1376ffa4f85f8cb001b1b96e64368abdc8f2d89ad7424715699ec0840c58c4",
+          "sha256": "836338cfee4d07d5f1f0b4e05b5ff8e99d55d095e8b64d0fa00b348d4e2e67b8",
           "registry_version": "0.4.0",
-          "metamodel_version": "0.8.0"
+          "metamodel_version": "0.8.1"
         }
       ],
       "statuses": [

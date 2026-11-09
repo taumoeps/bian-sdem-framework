@@ -17,6 +17,21 @@ from .paths import DATA_ROOT
 BAND = {'high': 0.8, 'medium': 0.6, 'low': 0.4}
 DOCUMENT_SOURCES = ('confluence:',)  # entities transformed from a document by sdem transform: links touching them are capped at low (DEC-E-11)
 LOWER = {'high': 'medium', 'medium': 'low', 'low': 'low'}
+EVIDENCE_CLASSES = ('attribute_join', 'structural', 'pattern', 'name_token', 'text')   # strongest first (D3, AID-E01)
+WEAK_CLASSES = ('name_token', 'text')                                                    # a name or a description, nothing more
+NAME_RULES = ('S02', 'S06', 'S07', 'S19', 'S27')                                         # rules that match words in names
+
+
+def strongest(*classes):
+    """The strongest of several evidence classes (a link proposed for more than one reason)."""
+    have = [c for c in classes if c in EVIDENCE_CLASSES]
+    return min(have, key=EVIDENCE_CLASSES.index) if have else None
+
+
+def weakest(*classes):
+    """The weakest of several evidence classes (a link derived from several others is no stronger than the weakest of them)."""
+    have = [c for c in classes if c in EVIDENCE_CLASSES]
+    return max(have, key=EVIDENCE_CLASSES.index) if have else None
 
 
 def _rules():
@@ -190,6 +205,17 @@ class Run:
         if n.get('canonical_id'): r['canonical_id'] = n['canonical_id']
         return r
 
+    @staticmethod
+    def evidence_class(plan_id, step, working):
+        """What kind of evidence a proposal rests on (owner's decision D3; docs/design/aid-spec.md AID-E01): set by the rule and step, never
+        read back from text a person wrote. Strongest first: attribute_join, structural, pattern, name_token, text."""
+        w = str(working)
+        if step == 'design': return 'pattern'
+        if step == 5: return 'text'
+        if step == 1: return 'attribute_join'                                # a field names the other record (deployed_on, hosts …)
+        if plan_id in NAME_RULES or w.startswith(('fallback B', 'S06 ')) or 'verb and noun match' in w: return 'name_token'
+        return 'structural'
+
     def band(self, plan_id, fallback=False):
         b = self.rules[plan_id]['confidence']
         return LOWER[b] if fallback else b
@@ -207,16 +233,18 @@ class Run:
         if doc and b != 'low': return 'low', f'{working} — capped at low: {", ".join(doc)} transformed from a document (DEC-E-11)'
         return b, working
 
-    def propose(self, plan_id, rel, src, tgt, step, working, data_read, fallback=False, band=None):
+    def propose(self, plan_id, rel, src, tgt, step, working, data_read, fallback=False, band=None, ev=None):
         """A catalogue-typed proposal. Skips (and logs) a link already approved or already proposed in this run."""
         k = (src['id'], rel, tgt['id'])
         if k in self.approved:
             self.attempt(plan_id, src['id'], tgt['id'], step, data_read, 'already approved — not re-proposed', outcome='already_approved'); return None
         if k in self.proposed:
-            self.proposed[k]['evidence'].append(f'engine_rationale:{plan_id} step{step} also: {working}'); return self.proposed[k]
+            rec = self.proposed[k]; rec['evidence'].append(f'engine_rationale:{plan_id} step{step} also: {working}')
+            rec['evidence_class'] = strongest(rec.get('evidence_class'), ev or self.evidence_class(plan_id, step, working)); return rec
         b = band or self.band(plan_id, fallback); pid = f'P-{self.uc}-{len(self.proposals) + 1:03d}'
         b, working = self._document_cap(b, working, src, tgt)
         rec = {'mapping_id': pid, 'source': self.ref(src), 'relationship': rel, 'target': self.ref(tgt), 'status': 'proposed', 'confidence': BAND[b],
+               'evidence_class': ev or self.evidence_class(plan_id, step, working),
                'evidence': [f'engine_rationale:{plan_id} step{step} {working}'], 'rationale': working, 'baseline_id': f'ENGINE-RUN-{self.uc}', 'created_by': ENGINE_NAME}
         self.proposals.append(rec); self.proposed[k] = rec
         self._proposed_by_rel.setdefault(rel, []).append(k); self._by_mapping_id[pid] = rec; self._index_link(rel, k[0], k[2], pid)
@@ -234,6 +262,7 @@ class Run:
         b = band or self.band(plan_id, fallback); cid = f'C-{self.uc}-{len(self.candidates) + 1:03d}'
         b, working = self._document_cap(b, working, src, tgt)
         rec = {'mapping_id': cid, 'source': self.ref(src), 'relationship': plan_id, 'target': self.ref(tgt), 'status': 'proposed', 'confidence': BAND[b],
+               'evidence_class': self.evidence_class(plan_id, step, working),
                'evidence': [f'engine_rationale:{plan_id} step{step} {working}'], 'rationale': working, 'created_by': f'candidate_rule:{plan_id}'}
         self.candidates.append(rec); self.reported[k] = rec
         self._reported_by_plan.setdefault(plan_id, []).append(k); self._rix.setdefault((plan_id, k[0]), []).append((k[0], k[2], cid))
@@ -680,17 +709,18 @@ class Run:
                 d = self.domain_of(o)
                 if d: doms.setdefault(d['id'], []).append(f'{o} ({why})')
             for d, why in doms.items():
-                self.propose('S04', 'USES_DOMAIN', prc, self.get(d, 'A2.ServiceDomain'), 3, 'invokes ' + '; '.join(why), why)
+                ev = 'attribute_join' if any(w.endswith('.invokes)') for w in why) else 'name_token'   # an invokes field, or only an S06 name match
+                self.propose('S04', 'USES_DOMAIN', prc, self.get(d, 'A2.ServiceDomain'), 3, 'invokes ' + '; '.join(why), why, ev=ev)
         # S01 SUPPORTED_BY: every process of the capability uses the domain (medium); only some (low)
         for cap in self.of('A1.BusinessCapability'):
             prcs = [e['source'] for e in self.wedges if e['kind'] == 'realization' and e['target'] == cap['id'] and self.get(e['source'], 'A1.BusinessProcess') and not self.get(e['source'], 'A1.BusinessActivity')]
             if not prcs: continue
-            uses = {}
+            uses, basis = {}, {}
             for p_, d, lab in self.links_by('USES_DOMAIN', srcs=list(dict.fromkeys(prcs))):
-                if p_ in prcs: uses.setdefault(d, set()).add(p_)
+                if p_ in prcs: uses.setdefault(d, set()).add(p_); basis.setdefault(d, []).append((self._by_mapping_id.get(lab) or {}).get('evidence_class') or 'structural')   # approved: a person's fact
             for d, ps in uses.items():
                 if len(ps) == len(prcs):
-                    self.propose('S01', 'SUPPORTED_BY', cap, self.get(d, 'A2.ServiceDomain'), 3, f"all {len(prcs)} processes of the capability use the domain", sorted(ps))
+                    self.propose('S01', 'SUPPORTED_BY', cap, self.get(d, 'A2.ServiceDomain'), 3, f"all {len(prcs)} processes of the capability use the domain", sorted(ps), ev=weakest(*basis[d]))
                 else:  # DEC-E-09: partial coverage is not evidence enough for a registry arrow
                     self.attempt('S01', cap['id'], d, 3, sorted(ps), f'only {len(ps)} of {len(prcs)} processes use the domain — no proposal (DEC-E-09)')
         # candidate derivations (reported, never registry records)

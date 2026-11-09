@@ -29,6 +29,21 @@ REGISTRY = 'mappings.json'
 ORCHESTRATOR = 'sdem-orchestrator'
 HUMAN = 'architect'                       # a person working without an agent may change any one layer
 KIND_OF = {'update': 'modify', 'retire': 'retire', 'add': None}
+
+
+def merge_record(old, new):
+    """AG-K08 (owner's decision D5): an update sets the fields and attributes it gives and keeps the rest; a field or attribute given as
+    null is removed. A partial record from an agent no longer drops what it left out."""
+    out = copy.deepcopy(old)
+    for k, v in new.items():
+        if k == 'attributes' and isinstance(v, dict):
+            at = out.setdefault('attributes', {})
+            for ak, av in v.items():
+                if av is None: at.pop(ak, None)
+                else: at[ak] = av
+        elif v is None: out.pop(k, None)
+        else: out[k] = v
+    return out
 TEXT_FIELDS = {'name', 'description'}   # AG-V11: an update that changes only these is documentation — no structural impact
 STRENGTH = {'design_change_required': 3, 'review_required': 2, 'no_impact': 1}
 MAX_ROUNDS = 3                            # AG-S07 / AG-Q02
@@ -93,6 +108,8 @@ class Estate:
     def propose(self, change_set, agent, person, work_ids=(), catalogue=None):
         issues = check_schema(change_set, json.loads(SCHEMA.read_text(encoding='utf-8'))['$defs']['change_set_input'], json.loads(SCHEMA.read_text(encoding='utf-8')))
         if issues: raise CoordinationError('change set format: ' + '; '.join(issues[:5]))
+        rl = change_set.get('relationships') or {}
+        if not change_set['changes'] and not (rl.get('add') or rl.get('remove')): raise CoordinationError('change set format: nothing to change — give at least one record change or link change')
         if not (agent or '').strip() or not is_person(person):
             raise CoordinationError('CTL-20: a change set needs both the agent and the person behind it — the person is a person, never an agent or tool (CTL-21)')
         layer = change_set['layer']
@@ -143,7 +160,7 @@ class Estate:
                 kind = c.get('kind') or KIND_OF[op]
                 if op == 'update':
                     if rec.get('type', old['type']) != old['type']: raise CoordinationError(f'change {n}: {rid} cannot change type — retire it and add a new record')
-                    replacement = {**rec, 'type': old['type']}
+                    replacement = {**rec, 'type': old['type']} if c.get('replace') else merge_record(old, rec)   # AG-K08: merged unless replace
                     differs = {k for k in set(old) | set(replacement) if old.get(k) != replacement.get(k)}
                     if c.get('kind') in (None, 'modify') and differs and differs <= TEXT_FIELDS: kind = 'document'   # AG-V11: an explicit default is no different
                     old.clear(); old.update(replacement)
@@ -152,11 +169,14 @@ class Estate:
                 changed.append((rid, kind))
         rels = change_set.get('relationships', {})
         lay_ids = {i['id'] for i in target['instances']}
+        triple = lambda r: (r['source'], r['kind'], r['target'])   # a link is its ends and kind; source_id and name describe it (D4)
         for r in rels.get('add', []):
             if r['source'] not in lay_ids or r['target'] not in lay_ids: raise CoordinationError(f"CTL-19: relationship {r['source']} → {r['target']} leaves layer {layer}")
-            if r not in target['relationships']: target['relationships'].append(r)
+            same = next((x for x in target['relationships'] if triple(x) == triple(r)), None)
+            if same is None: target['relationships'].append(r)
+            else: same.update({k: v for k, v in r.items() if k in ('source_id', 'name')})   # the same link again: its citation is added, not a second link
         for r in rels.get('remove', []):
-            if r in target['relationships']: target['relationships'].remove(r)
+            target['relationships'][:] = [x for x in target['relationships'] if triple(x) != triple(r)]
         after, fg = self.check(new)
         added_errors = [e for e in after if e not in before]
         if added_errors: raise CoordinationError('the change set breaks the metamodel — nothing was changed:\n  ' + '\n  '.join(added_errors[:10]))
@@ -214,6 +234,70 @@ class Estate:
         event = {'id': ce_id, 'change_set': cs_id, 'layer': layer, 'round': 1, 'at': self.now(), 'agent': agent, 'person': person, 'impact': impact}
         self._save_event(event)
         return cs, event
+
+    def compare(self, incoming, complete=False):
+        """AG-K09 (owner's decisions D5, D6): compare an incoming layer dataset — an agent's or a tool's structured records — with the
+        workspace, and say what would change: records to add, records to update (only the fields that differ), records unchanged,
+        links to add (and, for a complete snapshot, to remove), retirement candidates (complete snapshot only — never an operation),
+        conflicts and possible duplicates. Writes nothing; the result's change set is proposed by a person or agent with `sdem change propose`."""
+        from .conformance import natural_keys
+        mm = Metamodel.load()
+        layer = incoming.get('level')
+        if layer not in FILES: raise CoordinationError(f"the incoming file has no layer — give it 'level': one of {', '.join(FILES)}")
+        ds = self.datasets(); cur = ds.get(layer) or {'instances': [], 'relationships': []}
+        have = {i['id']: i for i in cur.get('instances', [])}
+        elsewhere = {i['id']: l for l, d in ds.items() if l != layer for i in d.get('instances', [])}
+        new_keys = natural_keys({'instances': incoming.get('instances', []), 'relationships': incoming.get('relationships', []) + cur.get('relationships', [])}, mm)
+        old_keys = natural_keys(cur, mm)
+        by_exact = {v[0]: k for k, v in old_keys.items()}; by_loose = {v[1]: k for k, v in old_keys.items()}
+        changes, unchanged, conflicts, duplicates = [], [], [], []
+        seen = set()
+        for r in incoming.get('instances', []):
+            rid = r.get('id')
+            if not rid or not r.get('type'): conflicts.append({'id': rid, 'reason': 'a record needs an id and a type'}); continue
+            if rid in seen: conflicts.append({'id': rid, 'reason': 'the id appears twice in the incoming file'}); continue
+            seen.add(rid)
+            if mm.level(r['type']) not in (layer, None): conflicts.append({'id': rid, 'reason': f"type {r['type']} is not a {layer} type"}); continue
+            if rid in elsewhere: conflicts.append({'id': rid, 'reason': f'the id is already used in {elsewhere[rid]}'}); continue
+            if rid not in have:
+                k = new_keys.get(rid); twin = k and (by_exact.get(k[0]) or by_loose.get(k[1]))
+                if twin:
+                    duplicates.append({'id': rid, 'existing': twin, 'reason': f"same natural key as {twin} ({have[twin].get('name')!r}){'' if by_exact.get(k[0]) else ' but for case, spacing or punctuation'} — the same record under a new id? (LC-09)"}); continue
+                changes.append({'op': 'add', 'record': r}); continue
+            old = have[rid]
+            if r['type'] != old['type']: conflicts.append({'id': rid, 'reason': f"type changes from {old['type']} to {r['type']} — retire it and add a new record"}); continue
+            patch, fields = {k: r[k] for k in ('id', 'type', 'version', 'name') if k in r}, []
+            for k in sorted(set(r) | (set(old) if complete else set())):
+                if k in ('id', 'type', 'attributes'): continue
+                if r.get(k) != old.get(k): patch[k] = r.get(k); fields.append(k)
+            oa, na = old.get('attributes') or {}, r.get('attributes') or {}
+            at = {}
+            for k in sorted(set(na) | (set(oa) if complete else set())):
+                if na.get(k) != oa.get(k): at[k] = na.get(k); fields.append(f'attributes.{k}')   # None: removed (complete snapshot only)
+            if at: patch['attributes'] = at
+            if fields: changes.append({'op': 'update', 'record': patch, 'fields_changed': fields})
+            else: unchanged.append(rid)
+        triple = lambda x: (x['source'], x['kind'], x['target'])
+        cur_rels = {triple(x): x for x in cur.get('relationships', [])}
+        ids = set(have) | {c['record']['id'] for c in changes if c['op'] == 'add'}
+        rel_add, rel_remove = [], []
+        for x in incoming.get('relationships', []):
+            if x['source'] not in ids or x['target'] not in ids: conflicts.append({'id': f"{x['source']} {x['kind']} {x['target']}", 'reason': 'an end of the link is not in this layer'}); continue
+            if triple(x) not in cur_rels or any(x.get(k) and x.get(k) != cur_rels[triple(x)].get(k) for k in ('source_id', 'name')): rel_add.append(x)
+        inc = {i['id'] for i in incoming.get('instances', [])}
+        retire = []
+        if complete:
+            inc_rels = {triple(x) for x in incoming.get('relationships', [])}
+            rel_remove = [x for t, x in cur_rels.items() if t not in inc_rels and (x['source'] in inc or x['target'] in inc)]
+            retire = sorted(i for i, rec in have.items() if i not in inc and rec.get('lifecycle_status') != 'retired')
+        change_set = {'layer': layer, 'reason': f"compared with {incoming.get('model_id') or 'an incoming file'} (sdem change diff)",
+                      'changes': [{k: v for k, v in c.items() if k != 'fields_changed'} for c in changes],
+                      'relationships': {'add': rel_add, 'remove': rel_remove}}
+        return {'layer': layer, 'complete': complete, 'summary': {'add': sum(c['op'] == 'add' for c in changes), 'update': sum(c['op'] == 'update' for c in changes),
+                'unchanged': len(unchanged), 'links_add': len(rel_add), 'links_remove': len(rel_remove), 'retire_candidates': len(retire),
+                'conflicts': len(conflicts), 'possible_duplicates': len(duplicates)},
+                'changes': changes, 'unchanged': unchanged, 'relationships': {'add': rel_add, 'remove': rel_remove}, 'retire_candidates': retire,
+                'conflicts': conflicts, 'possible_duplicates': duplicates, 'change_set': change_set}
 
     def adopt(self, layer, person, reason):
         """AG-S08: record a person's direct edit of a layer's dataset as a change set, so the chain of change sets is whole
@@ -622,6 +706,7 @@ def change_main(argv=None):
                                  epilog='Examples (agent platform):\n  sdem change propose cs-rehost.json --workspace work/est --agent sdem-a4-technology --person jane.architect\n'
                                         '  sdem change propose cs-a3.json --workspace work/est --agent sdem-a3-application --person jane.architect --work WI-001 WI-002\n'
                                         '  sdem change show CS-001 --workspace work/est\n'
+                                        '  sdem change diff drafted-a3.json --workspace work/est -o cs-a3.json   # what would change — nothing is applied\n'
                                         '  sdem change revert CS-002 --workspace work/est --agent sdem-a3-application --person jane.architect --reason "wrong cluster"', formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
     p = sub.add_parser('propose', help='check and apply a change set to its layer; records the change event and its impact')
@@ -630,6 +715,11 @@ def change_main(argv=None):
     p.add_argument('--catalogue', metavar='FILE', help='BIAN catalogue (A2 dataset) — required when an A2 change set adds records')
     s = sub.add_parser('show', help='a change set with its event and impact'); s.add_argument('id'); _common(s, who=False)
     r = sub.add_parser('revert', help='undo the latest change set of a layer — recorded as a new change set (T5)'); r.add_argument('id'); _common(r); r.add_argument('--reason', default='')
+    x = sub.add_parser('diff', help='compare an incoming layer file with the workspace and write the change set it implies — nothing is applied (AG-K09)')
+    x.add_argument('incoming', help="a layer dataset (JSON with 'level', 'instances', 'relationships') — e.g. records an agent drafted from a document")
+    _common(x, who=False)
+    x.add_argument('--complete', action='store_true', help='the file is the whole layer: records it leaves out become retirement candidates (listed, never applied) and its records are compared field by field')
+    x.add_argument('-o', '--out', metavar='FILE', help='write the change set here, for sdem change propose')
     d = sub.add_parser('adopt', help="record a person's direct edit of a layer as a change set (AG-S08)"); _common(d, who=False)
     d.add_argument('--layer', required=True, choices=CODES + ['registry', 'requirements']); d.add_argument('--person', required=True, help='who made the edit'); d.add_argument('--reason', required=True)
     a = ap.parse_args(argv)
@@ -659,6 +749,20 @@ def change_main(argv=None):
                   + (f"; cancelled open work items {', '.join(cancelled)}" if cancelled else ''))
             print(f"next: the orchestrator runs  sdem work plan --event {ev['id']} --workspace {a.estate} --agent {ORCHESTRATOR} --person <name>; rebuild graph stores")
             return 0
+        if a.cmd == 'diff':
+            r = est.compare(_j(a.incoming), a.complete)
+            if a.out: Path(a.out).write_text(json.dumps(r['change_set'], indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+            if a.json: print(json.dumps(r, indent=2, ensure_ascii=False)); return 1 if r['conflicts'] or r['possible_duplicates'] else 0
+            sm = r['summary']
+            print(f"{r['layer']} compared with {a.incoming} ({'complete snapshot' if r['complete'] else 'partial — records it leaves out are unchanged'}): "
+                  f"{sm['add']} to add, {sm['update']} to update, {sm['unchanged']} unchanged; links: {sm['links_add']} to add, {sm['links_remove']} to remove")
+            for c in r['changes']:
+                print(f"  {c['op']:<7} {c['record']['id']}" + (f"  — {', '.join(c['fields_changed'])}" if c.get('fields_changed') else f"  {c['record'].get('name', '')}"))
+            for i in r['retire_candidates']: print(f"  RETIRE? {i}  — not in the complete snapshot; retire it only if that is intended (op retire, in a change set of its own)")
+            for c in r['conflicts']: print(f"  CONFLICT {c['id']}: {c['reason']}")
+            for c in r['possible_duplicates']: print(f"  DUPLICATE? {c['id']}: {c['reason']}")
+            print(f"nothing was changed. {'Change set written to ' + a.out + ' — review it, then: sdem change propose ' + a.out + ' --workspace … --agent … --person …' if a.out else 'Write the change set with -o FILE.'}")
+            return 1 if r['conflicts'] or r['possible_duplicates'] else 0
         if a.cmd == 'adopt':
             cs, ev = est.adopt(a.layer, a.person, a.reason)
             if cs is None:   # AF-07: no change sets yet — accepted in the ledger

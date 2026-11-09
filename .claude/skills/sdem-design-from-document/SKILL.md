@@ -23,14 +23,14 @@ The document is the architect's; SDEM checks everything you draft; **the archite
 | applications and components, services, interfaces and API operations, data entities, events | A3 | `A3.ApplicationComponent`, `A3.ApplicationService`, `A3.ApplicationInterface`, `A3.APIOperation`, `A3.DataEntity`, `A3.Event` |
 | platforms, databases, technology services, environments, deployments, networks, images | A4 | `A4.SystemSoftware`, `A4.Node`, `A4.TechnologyService`, `A4.DeploymentEnvironment`, `A4.Deployment`, `A4.CommunicationNetwork`, `A4.Artifact` |
 
-- Use the document's own names for records, exactly as written (`loan_application` stays `loan_application`). Do not invent what it does not say (API paths, fields, versions); where SDEM needs a value the document lacks, leave the optional field out, or put a placeholder and list it in step 5. **Placeholders are read as data**: use a neutral `TBD` with no business words (`path: "/TBD"`, not `/PLACEHOLDER/record-credit-decision`) — words in paths and names are matched to BIAN domains.
+- Use the document's own names for records, exactly as written (`loan_application` stays `loan_application`). Do not invent what it does not say (API paths, fields, versions); where SDEM needs a value the document lacks, **leave it out and mark the record `planned`** — never write a placeholder: `sdem check` reads `TBD`, `unknown`, `/TBD` or an empty string as missing and fails an active record (LC-04), and words in paths and names are matched to BIAN domains. `sdem handback` lists every value left out, for step 5.
 - Fields that point to another layer (an A3 component's `deployed_on`, a data entity's `stored_in`, an A4 deployment's `component_id`) may name records that do not exist yet; SDEM accepts that and `sdem link` connects them once both layers exist.
-- **Every record cites its section** in `attributes.source_id`: `"document:<file>#<section>"`, e.g. `"document:DESIGN.md#4"` — the same field design onboarding uses for Confluence pages (`confluence:<page>`). A record built from two sections cites both, comma-separated.
-- Links inside a layer (a process *composition* activity, a component *access* data entity …) come from what the document says, with kinds from `sdem types <type>` (`links_out`). Links **between** layers are never written — `sdem link` proposes them.
+- **Every record cites its section** in `attributes.source_id`: `"document:<file>#<section>"`, e.g. `"document:DESIGN.md#4"` — the same field design onboarding uses for Confluence pages (`confluence:<page>`). A record built from two sections cites both, comma-separated. A value stated in another section than the record cites that section in `attributes.sources` (`{"deployed_on": "document:DESIGN.md#6"}`).
+- Links inside a layer (a process *composition* activity, a component *access* data entity …) come from what the document says, with kinds from `sdem types <type>` (`links_out`). Links **between** layers are never written — `sdem link` proposes them. Cite the section on each link too: `"source_id": "document:<file>#<section>"`.
 
 ## 3. One change set per layer, each by its layer's agent
 
-Draft each layer's change set in `<workspace>/coordination/drafts/` (format: `sdem types change-set`; the change set's `reason` names the document), then:
+Draft each layer's change set in `<workspace>/coordination/drafts/` (format: `sdem types change-set`; the change set's `reason` names the document) — or draft the layer as a dataset and let `sdem change diff <drafted.json> --workspace <ws> -o <draft>` write the change set, with any possible duplicates of existing records (AG-K09) — then:
 
 ```
 sdem change propose <draft> --workspace <ws> --agent sdem-a1-business --person <architect> --dry-run --json   # then without --dry-run
@@ -50,14 +50,16 @@ sdem link --workspace <ws> --out <ws>/links --json                   # the one l
 sdem check --workspace <ws> --require-recorded --json
 ```
 
-`NOTE: not added — …` lines from `sdem aid` (in `--json`: the list `projection_ends`) are domains only a name pointed to (AID-M03): pass them on, do not act on them.
+`NOTE: not added — …` lines from `sdem aid` (in `--json`: the list `projection_ends`) are domains only names or descriptions pointed to (AID-M03, AID-E02): pass them on, do not act on them. Every inferred record and proposed link says what kind of evidence it rests on (`evidence_class`: `attribute_join`, `structural`, `pattern`, `name_token`, `text` — strongest first); call out those resting on `name_token` or `text`.
 
 ## 5. Hand back — always this review list
 
+Run `sdem handback --workspace <ws> --json` and build the list from it — it is read from the workspace, so it is complete whichever agent did the work (AG-H01): values nobody knows, unconfirmed inferences with their evidence class, links to review, possible duplicates, unsourced records, failing checks. Add what only you know (items 1 and 3).
+
 1. **What you created**, per layer, each record with the section it came from; the change sets and events.
-2. **What the document did not say** that SDEM needs or would use — missing versions, paths, fields, environments, owners — with the section where it belongs, and every placeholder you used.
+2. **What the document did not say** that SDEM needs or would use — `missing_values` from `sdem handback` (each one left out on a `planned` record), with the section where it belongs.
 3. **Where you interpreted** — a statement you mapped to a type the document did not name, or two statements you merged.
-4. **What SDEM inferred** (with confidence) and the **NOTE** lines; the architect's commands: `sdem aid confirm|reject …`.
+4. **What SDEM inferred** (with confidence and evidence class — weak ones first) and the **NOTE** lines; any **possible duplicates**; the architect's commands: `sdem aid confirm|reject …`.
 5. **Connections to approve**, grouped by type with the evidence each needs — the document section is a good evidence reference; a link type that needs two kinds of evidence takes `--evidence` twice; preview each with `--dry-run` (allowed) to see whether it also needs `--bian-release`: `sdem approve <id> --proposals <ws>/links/proposals.json --workspace <ws> --reviewer <architect> --evidence <kind>:<file>#<section>`.
 6. **Requirements to confirm** once the targets are real: `sdem requirements confirm …`.
 

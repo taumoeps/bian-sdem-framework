@@ -231,11 +231,23 @@
       "version": "0.18.0",
       "date": "2026-11-03",
       "kind": "minor",
-      "metamodel": "0.8.0",
-      "migration": null,
-      "breaking": [],
+      "metamodel": "0.8.1",
+      "migration": {
+        "from": "0.8.0",
+        "to": "0.8.1",
+        "automatic": true,
+        "note": "additive: attribute sources (CA-13) and link citations; a placeholder in a required attribute now fails sdem check (LC-04)"
+      },
+      "breaking": [
+        "sdem check reads TBD, unknown, /TBD or an empty string in a required attribute as missing: an error on an active record — leave the value out and mark the record planned (LC-04)",
+        "a change-set update merges by default; give \"replace\": true for the whole-record replacement (AG-K08)"
+      ],
       "deprecations": [],
       "actions": [
+        {
+          "when": "always",
+          "do": "sdem migrate --workspace <dir> --person <you> --dry-run, then without --dry-run, for every workspace"
+        },
         {
           "when": "always",
           "do": "sdem agents install"
@@ -245,7 +257,7 @@
           "do": "regenerate them (sdem build, view, dashboard, home) — they now link to each other"
         }
       ],
-      "summary": "Architect experience: Home, dashboard and graph linked; graph status shown; architect tasks; sdem new --explore; the README and the Payments walkthrough rewritten."
+      "summary": "Architect experience: Home, dashboard and graph linked; graph status shown; architect tasks; sdem new --explore; the README and the Payments walkthrough rewritten. Then the improvement roadmap (metamodel 0.8.1): placeholders are missing values, natural keys for operations, attribute and link sources, evidence classes, sdem change diff, sdem handback."
     }
   ]
 }

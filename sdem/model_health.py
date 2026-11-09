@@ -131,7 +131,8 @@ def snapshot():
     reg = _j(LINKS)
     links = {r['mapping_type_id']: r.get('status', 'active') for r in reg['relationships'] + reg.get('deprecated_relationships', [])}
     rules = {c['id']: c.get('status', 'active') for c in _j(MM / 'level-relationships.json')['constraints']}
-    attrs = {a['id']: a.get('status', 'active') for a in _j(MM / 'entity-attributes.json')['attributes']}
+    ea = _j(MM / 'entity-attributes.json')
+    attrs = {a['id']: a.get('status', 'active') for a in ea['attributes'] + ea.get('common_attributes', [])}   # common attributes (CA-…) are core too (MS-04)
     return {'metamodel_version': _j(MM / 'a1-business.json')['metamodel_version'], 'entity_types': ents, 'link_types': links, 'within_layer_rules': rules, 'attributes': attrs}
 
 

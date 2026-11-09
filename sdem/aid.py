@@ -20,7 +20,7 @@ from pathlib import Path
 
 from .graph import FederatedGraph, LevelGraph
 from .metamodel import Metamodel
-from .rules_engine import Run, RulesEngine, _list, _rules, stem, stems, tokens
+from .rules_engine import Run, RulesEngine, WEAK_CLASSES, _list, _rules, stem, stems, strongest, tokens, weakest
 from .store import GraphReader
 from .validate import load_registry
 
@@ -32,6 +32,9 @@ CATALOGUE_RULE = 'BIAN catalogue reference'
 PROVENANCE = ('step', 'rule', 'source_reference', 'inferred_from', 'reasoning', 'confidence')
 # AID's own rule names → the metamodel rule whose published basis they rest on (relationship-rules.json `source_reference`)
 RULE_BASIS = {'BIAN container pattern': 'S17', 'BIAN REST mapping': 'S24', 'named by A4': 'S32', 'domain name': 'S01'}
+# AID's own rules → the kind of evidence they rest on (AID-E01); an engine rule brings its proposal's own class
+RULE_CLASS = {'BIAN container pattern': 'pattern', 'BIAN REST mapping': 'pattern', 'domain name': 'pattern', 'service group': 'pattern',
+              'named by A4': 'attribute_join', 'S33 (A4 hosts)': 'attribute_join', 'S32 (deployment component_id)': 'attribute_join', 'name': 'name_token'}
 
 
 def basis(rule, step=None, catalogue=None):
@@ -49,13 +52,25 @@ NAME_ONLY = re.compile(r'fallback|step5|verb and noun match|contains \[.*\], whi
 
 def weak(text):
     """AID-B6: evidence that rests on names alone — an engine fallback (e.g. S17 fallback B: one asset-type word in API
-    paths), a description match (step 5), a verb-and-noun name match, or the id-word fallback. Never above low."""
+    paths), a description match (step 5), a verb-and-noun name match, or the id-word fallback. Never above low.
+    Used only where no evidence class is recorded (a package from before AID-E01)."""
     return bool(NAME_ONLY.search(text or ''))
+
+
+def is_weak(item):
+    """AID-B6 by evidence class (AID-E01): a name or a description, nothing more. Older items without a class: by their text."""
+    c = item.get('evidence_class') or (item.get('projection') or {}).get('evidence_class')
+    return c in WEAK_CLASSES if c else all(weak(e) for e in item.get('evidence') or [(item.get('projection') or {}).get('reasoning', '')])
 
 
 def conf_of(item):
     """An engine proposal's confidence, capped at low when its evidence is name-only (AID-B6)."""
-    return min(item['confidence'], LOW) if all(weak(e) for e in item['evidence']) else item['confidence']
+    return min(item['confidence'], LOW) if is_weak(item) else item['confidence']
+
+
+def class_of(items):
+    """The evidence class of a choice made for several reasons: the strongest (AID-E01)."""
+    return strongest(*[x.get('evidence_class') for x in items])
 
 
 def why_text(items):
@@ -85,21 +100,32 @@ class Projection:
         self.records = {lvl: {} for lvl in FILES}; self.rels = {lvl: [] for lvl in FILES}; self.links = {}; self.ends = []; self.steps = []
         self.cat_by_id = {i['id']: i for i in catalogue['instances']} if catalogue else {}
 
-    def record(self, lvl, rec, step, rule, inferred_from, reasoning, conf):
-        if rec['id'] in self.records[lvl]: return self.records[lvl][rec['id']]
-        r = dict(rec); r['projection'] = {'step': step, 'rule': rule, 'source_reference': basis(rule, step, self.cat), 'inferred_from': inferred_from, 'reasoning': plain(reasoning), 'confidence': min(conf, MEDIUM)}
+    @staticmethod
+    def _prov(prov, ev):
+        ev = ev or RULE_CLASS.get(prov['rule'])
+        if ev: prov['evidence_class'] = ev
+        return prov
+
+    def record(self, lvl, rec, step, rule, inferred_from, reasoning, conf, ev=None):
+        if rec['id'] in self.records[lvl]:
+            r = self.records[lvl][rec['id']]
+            if ev and 'evidence_class' in r['projection']: r['projection']['evidence_class'] = strongest(r['projection']['evidence_class'], ev)
+            return r
+        r = dict(rec); r['projection'] = self._prov({'step': step, 'rule': rule, 'source_reference': basis(rule, step, self.cat), 'inferred_from': inferred_from, 'reasoning': plain(reasoning), 'confidence': min(conf, MEDIUM)}, ev)
         self.records[lvl][rec['id']] = r; return r
 
-    def link(self, rel, src, tgt, step, rule, inferred_from, reasoning, conf):
+    def link(self, rel, src, tgt, step, rule, inferred_from, reasoning, conf, ev=None):
         k = (src['id'], rel, tgt['id'])
         if k in self.links:
-            l = self.links[k]; l['projection']['confidence'] = max(l['projection']['confidence'], min(conf, MEDIUM)); return l
+            l = self.links[k]; l['projection']['confidence'] = max(l['projection']['confidence'], min(conf, MEDIUM))
+            if ev: l['projection']['evidence_class'] = strongest(l['projection'].get('evidence_class'), ev)
+            return l
         l = {'mapping_id': f'PRJ-L-{len(self.links) + 1:03d}', 'source': _ref(src), 'relationship': rel, 'target': _ref(tgt), 'status': 'projected', 'confidence': min(conf, MEDIUM),
-             'rationale': f'PROJECTED DESIGN, not a mapping: {plain(reasoning)}', 'projection': {'step': step, 'rule': rule, 'source_reference': basis(rule, step, self.cat), 'inferred_from': inferred_from, 'reasoning': plain(reasoning), 'confidence': min(conf, MEDIUM)}}
+             'rationale': f'PROJECTED DESIGN, not a mapping: {plain(reasoning)}', 'projection': self._prov({'step': step, 'rule': rule, 'source_reference': basis(rule, step, self.cat), 'inferred_from': inferred_from, 'reasoning': plain(reasoning), 'confidence': min(conf, MEDIUM)}, ev)}
         self.links[k] = l; return l
 
     # -- BIAN references: a selected domain brings its catalogue structure, never anything invented
-    def take_domain(self, dom_id, step, why, conf, evidence=None):
+    def take_domain(self, dom_id, step, why, conf, evidence=None, ev=None):
         cat = self.cat_by_id; rels = self.cat.get('relationships', [])
         keep = [dom_id]; todo = [dom_id]
         while todo:
@@ -108,7 +134,7 @@ class Projection:
                 if r['source'] == x and r['kind'] in ('composition', 'aggregation', 'association') and r['target'] not in keep and cat.get(r['target']) and cat[r['target']]['type'] != 'A2.ServiceDomain':
                     keep.append(r['target']); todo.append(r['target'])
         for x in keep:
-            self.record('A2', cat[x], step, CATALOGUE_RULE, (evidence or [dom_id]) if x == dom_id else [dom_id], why if x == dom_id else f'part of {dom_id} in the BIAN catalogue', conf)
+            self.record('A2', cat[x], step, CATALOGUE_RULE, (evidence or [dom_id]) if x == dom_id else [dom_id], why if x == dom_id else f'part of {dom_id} in the BIAN catalogue', conf, ev)   # a part rests on what its domain rests on
         for r in rels:
             if r['source'] in keep and r['target'] in keep and r not in self.rels['A2']: self.rels['A2'].append(r)
 
@@ -151,12 +177,12 @@ def forward_a2(prj, a1, registry):
         if c['relationship'] == 'S07' and c['target']['id'] in prj.cat_by_id: doms.setdefault(c['target']['id'], []).append(c)
     for d, why in doms.items():
         best = max(conf_of(x) for x in why)
-        prj.take_domain(d, 'F1', 'the business layer points to it — ' + why_text(why), best, sorted({x['source']['id'] for x in why}))
+        prj.take_domain(d, 'F1', 'the business layer points to it — ' + why_text(why), best, sorted({x['source']['id'] for x in why}), class_of(why))
     for m in props:
         if m['target']['id'] in prj.records['A2'] or m['target']['id'] in prj.cat_by_id and m['target']['id'] in doms:
             src = next(i for i in a1['instances'] if i['id'] == m['source']['id']); tgt = prj.cat_by_id[m['target']['id']]
-            if m['target']['id'] not in prj.records['A2']: prj.take_domain(m['target']['id'], 'F1', m['rationale'], m['confidence'])
-            prj.link(m['relationship'], src, tgt, 'F1', m['evidence'][0].split(' ')[0].replace('engine_rationale:', ''), [m['source']['id']], m['rationale'] + (' — name-only evidence, capped low (AID-B6)' if conf_of(m) < m['confidence'] else ''), conf_of(m))
+            if m['target']['id'] not in prj.records['A2']: prj.take_domain(m['target']['id'], 'F1', m['rationale'], m['confidence'], ev=m.get('evidence_class'))
+            prj.link(m['relationship'], src, tgt, 'F1', m['evidence'][0].split(' ')[0].replace('engine_rationale:', ''), [m['source']['id']], m['rationale'] + (' — name-only evidence, capped low (AID-B6)' if conf_of(m) < m['confidence'] else ''), conf_of(m), m.get('evidence_class'))
     prj.steps.append({'step': 'F1', 'domains': sorted(doms)})
     if not doms: prj.ends.append('projection ends at A1: no business record names a BIAN operation or matches a catalogue domain closely enough')
     return sorted(doms)
@@ -170,19 +196,20 @@ def forward_a3_a4(prj, domains, a2, project_a4=True):
         if not dom: continue
         ops = [o for o in run.of('A2.ServiceOperation') if (run.domain_of(o['id']) or {}).get('id') == dom_id]
         if not ops: prj.ends.append(f'{dom_id}: no service operations in the A2 data — no component projected'); continue
+        ev = weakest('pattern', (prj.records['A2'].get(dom_id) or {}).get('projection', {}).get('evidence_class')) or 'pattern'   # no stronger than its domain (AID-E01)
         at = run.get(run.attr(dom, 'asset_type'), 'A2.AssetType') if run.attr(dom, 'asset_type') else None
         base = at['name'] if at else _clean(dom['name']); coll = run._collection(base)
         comp = prj.record('A3', {'id': f'PRJ-APP-{dom_id}', 'type': 'A3.ApplicationComponent', 'version': '1.0', 'name': f'{base} service (projected)', 'lifecycle_status': 'planned',
-                                 'description': f"Projected: one deployable component for {_clean(dom['name'])} (BIAN container pattern)."}, 'F2', 'BIAN container pattern', [dom_id], 'one component per service domain', LOW)
-        comps.append(comp); prj.link('REALIZED_BY', dom, comp, 'F2', 'BIAN container pattern', [dom_id], 'one component per service domain', LOW)
+                                 'description': f"Projected: one deployable component for {_clean(dom['name'])} (BIAN container pattern)."}, 'F2', 'BIAN container pattern', [dom_id], 'one component per service domain', LOW, ev)
+        comps.append(comp); prj.link('REALIZED_BY', dom, comp, 'F2', 'BIAN container pattern', [dom_id], 'one component per service domain', LOW, ev)
         for op in ops:
             method, path, why = run._rest_form(op, coll)
             if not method: prj.ends.append(f"{op['id']}: {why} — no API projected"); continue
             api = prj.record('A3', {'id': f"PRJ-API-{op['id']}", 'type': 'A3.APIOperation', 'version': '1.0', 'name': f'{method} {path}', 'lifecycle_status': 'planned',
                                     'attributes': {'method': method, 'path': path, 'payload_fields': sorted(set(_list(run.attr(op, 'input_attributes')) + _list(run.attr(op, 'output_attributes'))))}},
-                             'F2', 'BIAN REST mapping', [op['id']], why, LOW)
+                             'F2', 'BIAN REST mapping', [op['id']], why, LOW, ev)
             prj.rels['A3'].append({'source': comp['id'], 'kind': 'composition', 'target': api['id']})
-            prj.link('IMPLEMENTED_BY', op, api, 'F2', 'BIAN REST mapping', [op['id']], why, LOW)
+            prj.link('IMPLEMENTED_BY', op, api, 'F2', 'BIAN REST mapping', [op['id']], why, LOW, ev)
     if project_a4: forward_a4(prj, comps)
     prj.steps.append({'step': 'F2', 'components': [c['id'] for c in comps]})
     return comps
@@ -191,8 +218,8 @@ def forward_a3_a4(prj, domains, a2, project_a4=True):
 def forward_a4(prj, comps):
     for comp in comps:
         dep = prj.record('A4', {'id': f"PRJ-DEP-{comp['id'].replace('PRJ-APP-', '')}", 'type': 'A4.Deployment', 'version': '1.0', 'name': f"{comp['name']} — deployment (projected)", 'lifecycle_status': 'planned',
-                                'attributes': {'component_id': comp['id']}}, 'F3', 'BIAN container pattern', [comp['id']], 'one deployment per component; no platform, environment or network is projected', LOW)
-        prj.link('DEPLOYED_AS', comp, dep, 'F3', 'BIAN container pattern', [comp['id']], 'one deployment per component', LOW)
+                                'attributes': {'component_id': comp['id']}}, 'F3', 'BIAN container pattern', [comp['id']], 'one deployment per component; no platform, environment or network is projected', LOW, comp['projection'].get('evidence_class'))
+        prj.link('DEPLOYED_AS', comp, dep, 'F3', 'BIAN container pattern', [comp['id']], 'one deployment per component', LOW, comp['projection'].get('evidence_class'))
     prj.steps.append({'step': 'F3', 'deployments': len(comps)})
 
 
@@ -233,17 +260,17 @@ def reverse_a2(prj, a3, a4=None, registry=None):
         if m['relationship'] == 'REALIZED_BY' and m['source']['id'] in prj.cat_by_id: doms.setdefault(m['source']['id'], []).append(m)
     for d, why in doms.items():
         c = max(conf_of(x) for x in why)
-        prj.take_domain(d, 'R2', 'the application layer points to it — ' + why_text(why) + (' — name-only evidence, capped low (AID-B6)' if c < max(x['confidence'] for x in why) else ''), c, sorted({x['target']['id'] for x in why}))
+        prj.take_domain(d, 'R2', 'the application layer points to it — ' + why_text(why) + (' — name-only evidence, capped low (AID-B6)' if c < max(x['confidence'] for x in why) else ''), c, sorted({x['target']['id'] for x in why}), class_of(why))
     a3_ids = {i['id']: i for i in a3['instances']}
     for m in props:
         s, t = m['source']['id'], m['target']['id']
         if m['relationship'] in ('IMPLEMENTED_BY', 'REALIZED_BY', 'MAPPED_TO') and s in prj.cat_by_id and t in a3_ids:
             if m['relationship'] == 'IMPLEMENTED_BY':
                 dom = Run(_reader({'A2': prj.cat}, prj.mm), 'AID').domain_of(s)
-                if dom and dom['id'] not in prj.records['A2']: prj.take_domain(dom['id'], 'R2', f'its operation {s} is implemented by {t}', m['confidence'])
+                if dom and dom['id'] not in prj.records['A2']: prj.take_domain(dom['id'], 'R2', f'its operation {s} is implemented by {t}', m['confidence'], ev=m.get('evidence_class'))
             if m['relationship'] == 'MAPPED_TO' and s not in prj.records['A2']:
-                prj.record('A2', prj.cat_by_id[s], 'R2', CATALOGUE_RULE, [t], f'business object mapped from data entity {t}', m['confidence'])
-            prj.link(m['relationship'], prj.cat_by_id[s], a3_ids[t], 'R2', m['evidence'][0].split(' ')[0].replace('engine_rationale:', ''), [t], m['rationale'] + (' — name-only evidence, capped low (AID-B6)' if conf_of(m) < m['confidence'] else ''), conf_of(m))
+                prj.record('A2', prj.cat_by_id[s], 'R2', CATALOGUE_RULE, [t], f'business object mapped from data entity {t}', m['confidence'], m.get('evidence_class'))
+            prj.link(m['relationship'], prj.cat_by_id[s], a3_ids[t], 'R2', m['evidence'][0].split(' ')[0].replace('engine_rationale:', ''), [t], m['rationale'] + (' — name-only evidence, capped low (AID-B6)' if conf_of(m) < m['confidence'] else ''), conf_of(m), m.get('evidence_class'))
     stubs = [i for i in a3['instances'] if (prj.records['A3'].get(i['id']) or {}).get('projection', {}).get('step') == 'R1']
     if stubs and not doms: name_fallback(prj, stubs)
     chosen = sorted({i for i, r in prj.records['A2'].items() if r['type'] == 'A2.ServiceDomain'})
@@ -282,7 +309,7 @@ def name_fallback(prj, stubs):
         for c, n, d, shared in found:
             if (c, n) != best: continue
             why = f"its name {st['name']!r} covers {_clean(d['name'])}'s subject ({', '.join(shared)}) — name only"
-            prj.take_domain(d['id'], 'R2', why, LOW, [st['id']])
+            prj.take_domain(d['id'], 'R2', why, LOW, [st['id']], 'name_token')
             prj.link('REALIZED_BY', d, st, 'R2', 'name', [st['id']], why, LOW)
 
 
@@ -332,27 +359,33 @@ def project(have, catalogue=None, registry=None, pid=None, created_at=None, eith
         both = sorted(f & r)
         for d in both:
             fr, rr = fwd.records['A2'][d]['projection'], rev.records['A2'][d]['projection']
-            prj.take_domain(d, 'M', f"supported from both sides. Business side (F1): {fr['reasoning']}. Application side (R2): {rr['reasoning']}", MEDIUM, fr['inferred_from'] + rr['inferred_from'])
+            prj.take_domain(d, 'M', f"supported from both sides. Business side (F1): {fr['reasoning']}. Application side (R2): {rr['reasoning']}", MEDIUM, fr['inferred_from'] + rr['inferred_from'],
+                            strongest(fr.get('evidence_class'), rr.get('evidence_class')))
         if either:   # AID-M02: filling a workspace for a person to review — a domain one side supports is kept too, at that side's confidence
             kept_r = set()
             for side, d in [(fwd, d) for d in sorted(f - r)] + [(rev, d) for d in sorted(r - f)]:
                 x = side.records['A2'][d]['projection']
-                if side is rev and f and x['confidence'] <= LOW:
-                    # AID-M03: the business layer already names its domains; a domain only an application's name points to is a note, not a record
-                    prj.ends.append(f"not added — {d} ({_clean(prj.cat_by_id[d]['name'])}): only application names point to it ({x['reasoning']}). "
+                other = f if side is rev else r
+                weak_only = x['evidence_class'] in WEAK_CLASSES if x.get('evidence_class') else (side is rev and x['confidence'] <= LOW)
+                if other and weak_only:
+                    # AID-M03, by evidence class (AID-E02): the other side already names its domains; a domain only names or descriptions on
+                    # one side point to is a note, not a record
+                    by = 'application' if side is rev else 'business'
+                    prj.ends.append(f"not added — {d} ({_clean(prj.cat_by_id[d]['name'])}): only {by} names or descriptions point to it ({x['reasoning']}; evidence: {x.get('evidence_class', 'name only')}). "
                                     f"If it belongs to this design, name its operations in a process's invokes, or add it: sdem bian custom --workspace <ws> --add \"{_clean(prj.cat_by_id[d]['name'])}\" --person <you>")
                     continue
                 if side is rev: kept_r.add(d)
-                prj.take_domain(d, 'M', f"supported from the {'business' if side is fwd else 'application'} side only: {x['reasoning']}", x['confidence'], x['inferred_from'])
+                prj.take_domain(d, 'M', f"supported from the {'business' if side is fwd else 'application'} side only: {x['reasoning']}", x['confidence'], x['inferred_from'], x.get('evidence_class'))
             both = sorted(f | (r & f) | kept_r)
         for side in (fwd, rev):
             for k, l in side.links.items():
                 ends = {l['source']['id'], l['target']['id']}
                 if ends & set(both) or any(Run(_reader({'A2': catalogue}, mm), 'AID').domain_of(e) and Run(_reader({'A2': catalogue}, mm), 'AID').domain_of(e)['id'] in both for e in ends if e in prj.cat_by_id):
                     src = {'id': l['source']['id'], 'type': l['source']['type'], 'version': l['source']['version']}; tgt = {'id': l['target']['id'], 'type': l['target']['type'], 'version': l['target']['version']}
-                    prj.link(l['relationship'], src, tgt, 'M', l['projection']['rule'], l['projection']['inferred_from'], l['projection']['reasoning'], min(l['confidence'] + 0.2, MEDIUM))
+                    boost = 0 if is_weak(l) else 0.2   # agreement lifts a link — never one that rests on a name alone (AID-B6)
+                    prj.link(l['relationship'], src, tgt, 'M', l['projection']['rule'], l['projection']['inferred_from'], l['projection']['reasoning'], min(l['confidence'] + boost, MEDIUM), l['projection'].get('evidence_class'))
         for x, rec in list(fwd.records['A2'].items()) + list(rev.records['A2'].items()):
-            if rec['type'] == 'A2.BusinessObject' and x not in prj.records['A2']: prj.record('A2', prj.cat_by_id[x], 'M', CATALOGUE_RULE, rec['projection']['inferred_from'], rec['projection']['reasoning'], rec['projection']['confidence'])
+            if rec['type'] == 'A2.BusinessObject' and x not in prj.records['A2']: prj.record('A2', prj.cat_by_id[x], 'M', CATALOGUE_RULE, rec['projection']['inferred_from'], rec['projection']['reasoning'], rec['projection']['confidence'], rec['projection'].get('evidence_class'))
         prj.steps.append({'step': 'M', 'forward_domains': sorted(f), 'reverse_domains': sorted(r), 'kept': both})
         if not both: prj.ends.append('middle gap: the business and application layers point to no common BIAN domain')
         if 'A4' not in H: forward_a4(prj, [])
@@ -399,7 +432,8 @@ def check(pkg, catalogue=None):
             missing = [k for k in PROVENANCE if k not in pr]
             if missing: issues.append(f"{i['id']}: projection provenance missing {missing}")
             if pr.get('confidence', 1) > MEDIUM: issues.append(f"{i['id']}: confidence {pr.get('confidence')} above medium")
-            if pr.get('confidence', 0) > LOW and weak(pr.get('reasoning')) and not re.search(r'\b(implements|invokes|BOM attributes)\b', pr.get('reasoning', '')):
+            name_only = pr['evidence_class'] in WEAK_CLASSES if pr.get('evidence_class') else (weak(pr.get('reasoning')) and not re.search(r'\b(implements|invokes|BOM attributes)\b', pr.get('reasoning', '')))
+            if pr.get('confidence', 0) > LOW and name_only:
                 issues.append(f"{i['id']}: name-only evidence above low confidence (AID-B6)")
             if lvl == 'A2' and (pr.get('rule') != CATALOGUE_RULE or (cat is not None and i['id'] not in cat)): issues.append(f"{i['id']}: an A2 element not taken from the BIAN catalogue")
             if lvl != 'A2' and not i['id'].startswith('PRJ-') and pr.get('step') != 'R1': issues.append(f"{i['id']}: a projected record must be marked PRJ-")
@@ -408,7 +442,7 @@ def check(pkg, catalogue=None):
         if l.get('status') != 'projected': issues.append(f"{l['mapping_id']}: status must be 'projected'")
         if [k for k in PROVENANCE if k not in pr]: issues.append(f"{l['mapping_id']}: projection provenance missing")
         if l.get('confidence', 1) > MEDIUM: issues.append(f"{l['mapping_id']}: confidence above medium")
-        if l.get('confidence', 0) > LOW and weak(pr.get('reasoning')): issues.append(f"{l['mapping_id']}: name-only evidence above low confidence (AID-B6)")
+        if l.get('confidence', 0) > LOW and (pr['evidence_class'] in WEAK_CLASSES if pr.get('evidence_class') else weak(pr.get('reasoning'))): issues.append(f"{l['mapping_id']}: name-only evidence above low confidence (AID-B6)")
     return issues
 
 

@@ -435,6 +435,93 @@
           "edges": 28
         }
       ]
+    },
+    {
+      "build": 6,
+      "at": "2026-11-09T09:31:31+00:00",
+      "inputs": [
+        {
+          "path": "examples/legacy-core-ledger//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-ledger-a1-draft",
+          "model_version": "2026.10",
+          "sha256": "fdc476b3c71ac58ca70b2aa86896a8fce5c08ada29171720aeee6956ab63edfe"
+        },
+        {
+          "path": "examples/legacy-core-ledger//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-ledger-a2",
+          "model_version": "2026.10",
+          "sha256": "1f833a28d6ec8c5bb1be5fe11eeb3b911e70616822049a80d20869a06dc3bd26"
+        },
+        {
+          "path": "examples/legacy-core-ledger//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-ledger-a3",
+          "model_version": "2026.10",
+          "sha256": "c580fa47e364259ad21b51fb3e7ae0a401806f8cbd128e24f23154f63628bdb8"
+        },
+        {
+          "path": "examples/legacy-core-ledger//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-ledger-a4",
+          "model_version": "2026.10",
+          "sha256": "409264d0ee22365982431ecbd54376430ba1e0986b7ee2b9870a82b6789485e6"
+        },
+        {
+          "path": "examples/legacy-core-ledger//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "00b02df9854dbde3574355f21fe21c485adca5add375831eb0d3b6e4349b51ca"
+        }
+      ],
+      "metamodel_version": "0.8.1",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-ledger-a2): instance BD-OPS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BD-REF: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-ACCOUNT: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-POSTING: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PAYMENT-TXN: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "d27fd8e96bee96c29badf20fc9335e54c1f5cd180a05f6431079cc3933a1d33c",
+          "nodes": 6,
+          "edges": 0
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "de38e5101cd6ba531d4e35d0decb8e62f23dd439a0540378e70fd961542a4b0f",
+          "nodes": 42,
+          "edges": 57
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "383337f29217a06a3cad311229706dcea1e6de0574d035aff8644a0cef19b5a8",
+          "nodes": 32,
+          "edges": 32
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "9a787fd7759baa90c32619dcd81596a767af6162a74f6dfddeffae9ca7f3e919",
+          "nodes": 7,
+          "edges": 4
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "56579b2eede343709522e8a2e52d43af29eb843ea94d025b2721bfab0c6b8651",
+          "nodes": 51,
+          "edges": 28
+        }
+      ]
     }
   ]
 }

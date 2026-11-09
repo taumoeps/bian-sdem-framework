@@ -18,17 +18,20 @@ Ask SDEM rather than guess: `sdem types change-set` (this format), `sdem types <
   "reason": "why — one sentence a reviewer understands",
   "changes": [
     { "op": "add",    "record": { "id": "…", "type": "A4.…", "version": "…", "name": "…", "lifecycle_status": "active", "attributes": { } } },
-    { "op": "update", "kind": "rehost", "record": { …the full record, with its changes… } },
+    { "op": "update", "kind": "rehost", "record": { "id": "…", "type": "…", "version": "…", "name": "…", "attributes": { "deployed_on": ["…"] } } },
     { "op": "retire", "record": { "id": "…", "type": "…", "version": "…", "name": "…" } }
   ],
-  "relationships": { "add": [ { "source": "…", "kind": "association", "target": "…" } ], "remove": [ ] }
+  "relationships": { "add": [ { "source": "…", "kind": "association", "target": "…", "source_id": "document:DESIGN.md#4.2" } ], "remove": [ ] }
 }
 ```
 
-- `op`: `add` (a new record), `update` (replace the record — give the **whole** record, same `id` and `type`), `retire` (sets `lifecycle_status` to `retired`).
+- `op`: `add` (a new record), `update`, `retire` (sets `lifecycle_status` to `retired`).
+- **`update` merges** (AG-K08): give `id`, `type`, `version`, `name` and only the fields and attributes that change — the rest is kept. To remove an attribute, give it as `null`. `"replace": true` on the change replaces the whole record instead.
 - `kind` (optional, for impact): `modify` (default for update), `rehost`, `replace`, `retire`. Use `rehost` when only hosting changes, `replace` when the record is replaced.
-- `relationships`: links **inside** the layer only (composition, aggregation, association, assignment …). Never a cross-layer link — those come from the rules engine (`sdem link`).
+- `relationships`: links **inside** the layer only (composition, aggregation, association, assignment …). Never a cross-layer link — those come from the rules engine (`sdem link`). A link is its `source`, `kind` and `target`; cite where it came from in `source_id` (`document:<file>#<section>`). Adding a link that exists only adds its citation. A change set may change links only.
 - Keep `version` as it is unless the real version changed: approved links name the version they point to.
+
+**From a drafted layer file:** when you drafted records as a layer dataset (`level`, `instances`, `relationships`), let SDEM work out the change set: `sdem change diff <drafted.json> --workspace <workspace> -o <change-set.json>` (AG-K09). It lists what to add and update (only the fields that differ), what is unchanged, conflicts and **possible duplicates** (exit 1 — resolve them first), and writes nothing to the workspace. A record the file leaves out is unchanged; with `--complete` (the file is the whole layer) it is listed as a retirement candidate — never retired: a person decides, in a change set of its own.
 
 Worked examples (the rehost in use-case example 3): [A4 rehost](example-a4-rehost.json) · [A3 re-point](example-a3-repoint.json).
 

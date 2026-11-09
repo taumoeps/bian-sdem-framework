@@ -134,6 +134,50 @@ class ReplayEngine:
         return out
 
 
+def calibrate(engine=None, ids=None):
+    """AID-E03 (OPEN-06): how often each confidence band and each evidence class is right — every acceptance case run by the engine, each
+    proposal and candidate looked up in the case's sealed gold. A report, not a setting: the bands stay as the rules give them (D3)."""
+    from .evaluate import key
+    from .rules_engine import BAND, EVIDENCE_CLASSES
+    engine = engine or engines()['rules']()
+    tally = {'band': {}, 'evidence_class': {}}
+    tmp = Path(tempfile.mkdtemp(prefix='sdem-calibrate-'))
+    try:
+        for case in load_cases(ids):
+            e = ROOT / 'examples' / case['estate']
+            res = engine.infer(open_case(case, tmp), case)
+            for part, gold_file, scope in (('proposals', case['gold'], None), ('candidates', case.get('gold_candidates'), set(case.get('candidate_scope') or []))):
+                if not gold_file: continue
+                gold = {key(m) for m in _j(e / gold_file).get('mappings', []) if m.get('status') in (None, 'approved', 'proposed', 'validated')}
+                for m in res.get(part) or []:
+                    if scope is not None and m['relationship'] not in scope: continue
+                    right = key(m) in gold
+                    band = next((b for b, v in BAND.items() if v == m.get('confidence')), str(m.get('confidence')))
+                    for dim, k in (('band', band), ('evidence_class', m.get('evidence_class') or 'unclassified')):
+                        t = tally[dim].setdefault(k, {'proposed': 0, 'right': 0}); t['proposed'] += 1; t['right'] += right
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    order = {'band': ['high', 'medium', 'low'], 'evidence_class': list(EVIDENCE_CLASSES) + ['unclassified']}
+    out = {}
+    for dim, rows in tally.items():
+        out[dim] = [{dim: k, **rows[k], 'precision': round(rows[k]['right'] / rows[k]['proposed'], 3), 'stated': BAND.get(k) if dim == 'band' else None}
+                    for k in order[dim] + sorted(set(rows) - set(order[dim])) if k in rows]
+    out['note'] = ('Observed precision against the sealed golds of the acceptance cases, written by SDEM (OPEN-05): a check that the bands are '
+                   'conservative — a band whose observed precision falls below its stated value is a finding for the owner, not a setting.')
+    return out
+
+
+def render_calibration(r):
+    L = ['Confidence calibration (AID-E03) — the acceptance cases against their sealed golds', '']
+    for dim, title in (('band', 'By confidence band (stated value)'), ('evidence_class', 'By evidence class')):
+        L += [title, f"  {'':<16}{'proposed':>9}{'right':>7}{'precision':>11}"]
+        for row in r[dim]:
+            flag = '  below its stated value' if row.get('stated') is not None and row['precision'] < row['stated'] else ''
+            L.append(f"  {row[dim]:<16}{row['proposed']:>9}{row['right']:>7}{row['precision']:>11.0%}" + (f"  (stated {row['stated']:.0%}){flag}" if row.get('stated') is not None else ''))
+        L.append('')
+    return '\n'.join(L + [r['note']])
+
+
 def engines():
     from .inference import ENGINES
     return {**ENGINES, 'replay': ReplayEngine}

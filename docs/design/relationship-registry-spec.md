@@ -33,6 +33,7 @@ The **Architecture Relationship Registry** holds the actual relationships betwee
 | `valid_from` | string | no | start of validity |
 | `valid_to` | string | no | end of validity; set on supersession |
 | `previous_mapping_id` | string | no | the record this one supersedes (legacy name) |
+| `evidence_class` | attribute_join, structural, pattern, name_token, text | no |  |
 
 ## 3. Entity reference (source, target)
 

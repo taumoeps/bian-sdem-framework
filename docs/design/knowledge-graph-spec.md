@@ -93,6 +93,7 @@ One edge per relationship in the architecture dataset, from `relationship`:
 | `kind` | string | yes |
 | `target` | string | yes |
 | `name` | string | no |
+| `source_id` | string | no |
 
 ### 2.3 Node and edge types per level
 
@@ -157,6 +158,7 @@ One edge per approved mapping record; its fields become the edge's properties (`
 | `valid_from` | string | no |
 | `valid_to` | string | no |
 | `previous_mapping_id` | string | no |
+| `evidence_class` | attribute_join, structural, pattern, name_token, text | no |
 
 Each end (`source`, `target`) is a reference, not a copy: `id`, `type`, `version`, `canonical_id`, `source_system`, `source_entity_id`.
 

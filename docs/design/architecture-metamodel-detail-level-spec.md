@@ -262,6 +262,7 @@ In an architecture dataset's `relationships` list (`schema/level-model.schema.js
 | `kind` | yes | relationship kind; must match a row of §6.1a through inheritance, or be `association` |
 | `target` | yes | id of the target instance in the same architecture dataset |
 | `name` | no | optional label |
+| `source_id` | no |  |
 
 Checked by `sdem check`: both ends in the architecture dataset (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).
 
@@ -335,6 +336,7 @@ Level-skipping traceability is a query over approved edges with provenance (`sde
 | `valid_from` | string | no | start of validity |
 | `valid_to` | string | no | end of validity; set on supersession |
 | `previous_mapping_id` | string | no | the record this one supersedes (legacy name) |
+| `evidence_class` | `attribute_join`, `structural`, `pattern`, `name_token`, `text` | no |  |
 
 **Lifecycle** (`sdem/diff.py`):
 
@@ -444,13 +446,13 @@ Every field of a plan row in `metamodel/relationship-rules.json`.
 
 **Gap G-12** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-9 core fields, 12 common attributes, 137 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](../reference/architecture-attribute-design.md), [`logical-data-model.md`](../reference/logical-data-model.md), [`physical-data-model.md`](../reference/physical-data-model.md).
+9 core fields, 13 common attributes, 137 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](../reference/architecture-attribute-design.md), [`logical-data-model.md`](../reference/logical-data-model.md), [`physical-data-model.md`](../reference/physical-data-model.md).
 
 ## 17. Provenance and confidence
 
 **Gap G-13** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 241 high, 79 medium, 25 low.
+Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 241 high, 79 medium, 26 low.
 
 ## 18. Inference engine
 

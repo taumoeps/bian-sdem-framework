@@ -129,6 +129,17 @@
         "previous_mapping_id": {
           "type": "string",
           "minLength": 1
+        },
+        "evidence_class": {
+          "type": "string",
+          "enum": [
+            "attribute_join",
+            "structural",
+            "pattern",
+            "name_token",
+            "text"
+          ],
+          "description": "What kind of evidence the inference rests on, strongest first: attribute_join (a field names the other record), structural (attributes, operations or approved links agree), pattern (a BIAN pattern applied, not observed), name_token (shared words in names or paths), text (shared words in descriptions). Set by the engine and sdem aid; the strongest of a link's reasons (owner's decision D3, 2026-11-09)."
         }
       }
     },

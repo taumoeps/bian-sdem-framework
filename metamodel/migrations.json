@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.8.0",
+  "metamodel_version": "0.8.1",
   "note": "How a workspace moves from one metamodel (metamodel) version to the next — `sdem migrate --workspace DIR`. Every change to the metamodel that affects data bumps metamodel_version in every metamodel file and adds one entry here, from the old version to the new: its steps are applied to the workspace's datasets and registry, then the workspace is checked; an entry with no steps only moves the version (an additive change — new optional attributes or types). Step kinds: rename_type {from, to}; rename_attribute {type (optional), from, to}; drop_attribute {type (optional), name}; set_attribute {type, name, value} (only where missing); rename_kind {from, to} (a within-architecture link kind); rename_relationship {from, to} (a link type between architectures, in the registry). Policy: docs/sdem-metamodel-versioning.md.",
   "migrations": [
     {
@@ -39,6 +39,14 @@
           "end": "target"
         }
       ]
+    },
+    {
+      "from": "0.8.0",
+      "to": "0.8.1",
+      "date": "2026-11-09",
+      "approved_by": "the SDEM owner",
+      "note": "Owner's decisions D1 and D4 (improvement roadmap, 2026-11-09): every record type may carry `sources` (CA-13) — where single attribute values came from, as kind:ref — and a within-layer link may carry `source_id`; `sdem check` reads a placeholder (TBD, unknown, /TBD …) or an empty string in a required attribute as missing (LC-04). Additive — no steps; a record that holds a placeholder in a required attribute now fails its check: leave the value out and mark the record planned until it is known.",
+      "steps": []
     }
   ]
 }

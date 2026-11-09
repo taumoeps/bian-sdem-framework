@@ -85,7 +85,7 @@ def collect(estate, proposals=None, projection=None, catalogue=None, graph=None,
         if m.get('status', 'proposed') != 'proposed': continue
         review.append({'id': m['mapping_id'], 'source': m['source']['id'], 'source_name': names.get(m['source']['id'], ''), 'rel': m['relationship'],
                        'target': m['target']['id'], 'target_name': names.get(m['target']['id'], ''), 'rule': _rule_of(m), 'confidence': m.get('confidence'),
-                       'reasoning': re.sub(r'\s*\((?:P|C)-[A-Z0-9]+-\d+\)', '', m.get('rationale', '')), 'evidence_needed': _evidence_needed(m['relationship'], m['source']['type'], mm)})
+                       'reasoning': re.sub(r'\s*\((?:P|C)-[A-Z0-9]+-\d+\)', '', m.get('rationale', '')), 'evidence_needed': _evidence_needed(m['relationship'], m['source']['type'], mm), 'evidence_class': m.get('evidence_class')})
     # trace and impact for every record (precomputed: the page does not compute)
     records = {}
     for n in sorted(reader.nodes(), key=lambda n: (n['level'], n['id'])):

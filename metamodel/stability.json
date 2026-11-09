@@ -1,8 +1,8 @@
 {
   "note": "The core of SDEM's metamodel at its last freeze (docs/design/sdem-metamodel-stability.md). Written by `sdem model freeze` after an approved, versioned change; CI fails if the core changes without one.",
   "frozen_by": "the SDEM owner",
-  "frozen_at": "2026-11-02",
-  "metamodel_version": "0.8.0",
+  "frozen_at": "2026-11-09",
+  "metamodel_version": "0.8.1",
   "entity_types": {
     "A1.BusinessCapability": "active",
     "A1.ValueStream": "active",
@@ -335,6 +335,19 @@
     "AT-A4-30": "active",
     "AT-A4-31": "active",
     "AT-A4-32": "active",
-    "AT-A4-33": "active"
+    "AT-A4-33": "active",
+    "CA-01": "active",
+    "CA-02": "active",
+    "CA-03": "active",
+    "CA-04": "active",
+    "CA-05": "active",
+    "CA-06": "active",
+    "CA-07": "active",
+    "CA-08": "active",
+    "CA-09": "active",
+    "CA-10": "active",
+    "CA-11": "active",
+    "CA-12": "active",
+    "CA-13": "active"
   }
 }

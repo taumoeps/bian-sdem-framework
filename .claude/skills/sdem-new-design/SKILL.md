@@ -58,13 +58,13 @@ If the request says to infer the other layers (that is the architect's agreement
 
 ## 5. Hand back — always this review list
 
-Report in this order, with the exact command for each decision (the architect runs them):
+Run `sdem handback --workspace <ws> --json` first and build the list from it — it is read from the workspace, the same whichever agent did the work (AG-H01). Report in this order, with the exact command for each decision (the architect runs them):
 
 1. **What was created**: A1 records per type, links, requirements; the change set and change event ids.
-2. **What SDEM inferred** per layer, with confidence; **name the weak ones** (confidence 0.4, matched on a shared word only) and recommend rejecting the doubtful — `sdem aid confirm <ids>|--all …` / `sdem aid reject <ids> …`.
+2. **What SDEM inferred** per layer, with confidence and evidence class; **name the weak ones** (`evidence_class` `name_token` or `text` — matched on words only) and recommend rejecting the doubtful — `sdem aid confirm <ids>|--all …` / `sdem aid reject <ids> …`.
 3. **Links to approve**, grouped by type with the evidence each needs — `sdem approve <id> --proposals <file> --workspace <ws> --reviewer <architect> --evidence <kind:ref> [--bian-release <release>]`.
 4. **Requirements to confirm** — after the architect sets real targets and adds evidence: `sdem requirements confirm <ids> …`.
 5. **The change event(s)** — impact validation and the architect's acceptance only if work is to be planned from them.
-6. **What is still missing**: A4 platforms (`sdem types A4`), business domains above the service domains, anything you assumed.
+6. **What is still missing**: `missing_values` and `possible_duplicates` from `sdem handback`; A4 platforms (`sdem types A4`), business domains above the service domains, anything you assumed. A value nobody knows is left out on a `planned` record — never a placeholder (LC-04).
 
 Never run `sdem aid confirm|reject`, `sdem approve`, `sdem connect`, `sdem requirements confirm`, `sdem events accept|authorise` or `sdem change adopt` — they are the architect's decisions (CTL-21).

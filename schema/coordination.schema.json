@@ -59,6 +59,10 @@
         },
         "record": {
           "$ref": "#/$defs/record"
+        },
+        "replace": {
+          "type": "boolean",
+          "description": "update only: true replaces the whole record with the one given; by default the record is merged — the fields and attributes given are set, an attribute given as null is removed, the rest is kept (owner's decision D5, 2026-11-09; AG-K08)"
         }
       }
     },
@@ -81,6 +85,11 @@
         "target": {
           "type": "string",
           "minLength": 1
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Where this link came from, as `kind:ref` — the same convention as a record's `source_id` (e.g. `document:DESIGN.md#4.2`, `confluence:12345`); several comma-separated. Optional (owner's decision D4, 2026-11-09)."
         }
       }
     },
@@ -105,10 +114,10 @@
         },
         "changes": {
           "type": "array",
-          "minItems": 1,
           "items": {
             "$ref": "#/$defs/change"
-          }
+          },
+          "description": "the record changes; may be empty when the change set only adds or removes links (e.g. a link's citation) — at least one record or link change is required (AG-K09)"
         },
         "relationships": {
           "type": "object",

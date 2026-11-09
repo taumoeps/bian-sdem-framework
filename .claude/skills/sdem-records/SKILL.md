@@ -19,7 +19,11 @@ Every record in an architecture dataset (`instances` list) has:
 | `description` | no | what the engine reads when names are not enough |
 | `attributes` | depends on type | required attributes per type are checked by `sdem check` (rule LC-04) |
 
-Links **inside** a layer go in the dataset's `relationships` list: `{"source": "…", "kind": "composition", "target": "…"}`; which kinds are allowed between which types is in [`metamodel/level-relationships.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.18.0/metamodel/level-relationships.json).
+**A value nobody knows is left out — never a placeholder.** `sdem check` reads `TBD`, `unknown`, `?`, a path such as `/TBD`, or an empty string as *missing* (LC-04): an error on an `active` record. Leave the attribute out and mark the record `planned` until the value is known; `sdem handback` lists every value still missing. An empty list (`[]`) means *none* and is a value.
+
+**Where it came from:** a record cites its source in `attributes.source_id` (`document:<file>#<section>`, `confluence:<page>`); a value that came from another section or document cites it in `attributes.sources` (`{"integration_type": "document:DESIGN.md#4.2"}`, CA-13, checked by LC-14); a link cites its source in its own `source_id`.
+
+Links **inside** a layer go in the dataset's `relationships` list: `{"source": "…", "kind": "composition", "target": "…", "source_id": "document:DESIGN.md#4"}` (`source_id` optional); which kinds are allowed between which types is in [`metamodel/level-relationships.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.18.0/metamodel/level-relationships.json).
 
 ## Before you write
 

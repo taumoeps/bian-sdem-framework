@@ -314,6 +314,20 @@
           "x-sdem-reasoning": "AID writes the records a workspace is missing into its real layer files, so an architect works in one set of files. A record SDEM inferred must never be mistaken for one a person wrote or confirmed: the mark carries the source, reasoning and confidence, and stays — with who confirmed it — once a person agrees.",
           "x-sdem-confidence": "low"
         },
+        "sources": {
+          "type": "object",
+          "description": "where individual attribute values came from, when they came from somewhere other than the record's own source_id: attribute name → `kind:ref` (e.g. {\"integration_type\": \"document:DESIGN.md#4.2\"}); several refs comma-separated",
+          "x-sdem-id": "CA-13",
+          "x-sdem-group": "common",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "SDEM-defined",
+            "locator": "SDEM decision D4 (owner, 2026-11-09)",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "A record's source_id says where the record came from; a design often gives one fact in another section, or a second document gives it. Recording the source per attribute lets a reviewer check each value against its evidence, in the same dataset — no second store — and with the same `kind:ref` convention as source_id and the registry's evidence.",
+          "x-sdem-confidence": "low"
+        },
         "stages": {
           "type": "array",
           "items": {

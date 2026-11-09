@@ -22,17 +22,18 @@ CONSTRAINTS = [
  ('LC-01', 'Instance identity', '`id` + `version` is unique within an architecture dataset', 'enforced', '`sdem check`'),
  ('LC-02', 'Entity typing', 'every instance\'s `type` is a concrete, non-artefact entity type of the architecture dataset\'s level', 'enforced', '`sdem check`'),
  ('LC-03', 'Within-level relationships', 'every relationship matches a within-level row of its level (through inheritance), or is `association`', 'enforced', '`sdem check`'),
- ('LC-04', 'Required attributes', 'every attribute marked required is present; on an instance whose `lifecycle_status` is `planned` (a target design) a missing one is a warning, not an error', 'enforced', '`sdem check` (error)'),
+ ('LC-04', 'Required attributes', 'every attribute marked required has a value — present, not an empty string, and not a placeholder from the metamodel\'s list (`TBD`, `unknown`, `/TBD`, …); on an instance whose `lifecycle_status` is `planned` (a target design) a missing one is a warning, not an error. A placeholder in an optional attribute is a warning. A value nobody knows is left out (owner\'s decision D1, 2026-11-09)', 'enforced', '`sdem check` (error)'),
  ('LC-05', 'Attribute types', 'every attribute value has its declared type', 'enforced', '`sdem check` (error)'),
  ('LC-06', 'Enumerations', 'every attribute with allowed values, and `lifecycle_status`, takes an allowed value', 'enforced', '`sdem check` (error)'),
  ('LC-07', 'Same-level references', 'a reference attribute whose target is in the same level names an instance of the declared type in the same architecture dataset', 'enforced', '`sdem check` (error)'),
  ('LC-08', 'Cross-level references', 'a reference attribute whose target is in another level names an instance of the declared type in the workspace', 'enforced as a warning', '`sdem check` (warning when the target level is loaded); resolved by the inference engine; never a federated edge'),
- ('LC-09', 'Natural keys', 'no two instances of a type share their identifier key within an architecture dataset', 'enforced', '`sdem check` (error)'),
+ ('LC-09', 'Natural keys', 'no two instances of a type share their identifier key within an architecture dataset; a key part named `owning interface` or `owning service domain` is the whole the record is part of (through composition or aggregation). Two keys that differ only in case, spacing or punctuation are a warning: a possible duplicate (LC-09n)', 'enforced', '`sdem check` (error; LC-09n a warning)'),
  ('LC-10', 'Cardinality — maximum', 'no instance exceeds the stated maximum of a BIAN or ArchiMate-composition row (e.g. a service group in two Service Domains)', 'enforced', '`sdem check` (error)'),
  ('LC-10m', 'Cardinality — minimum (completeness)', 'an instance meets the stated minimum (e.g. a Service Domain has a control record); architecture datasets may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error', 'enforced', '`sdem check` (warning)'),
  ('LC-11', 'Cross-level relationship ends', 'both ends of every registry record resolve to instances of the right type, level and version', 'enforced', '`sdem check`'),
  ('LC-12', 'Registry immutability', 'approved, rejected and superseded registry records are never edited', 'enforced', '`sdem diff`'),
  ('LC-13', 'Deprecated attributes', 'deprecated attributes raise a warning', 'enforced', '`sdem check` (warning)'),
+ ('LC-14', 'Attribute sources', 'a record\'s `sources` (CA-13) names only attributes the record has (or `name`, `description`), each with a `kind:ref` source such as `document:DESIGN.md#4.2` (owner\'s decision D4, 2026-11-09)', 'enforced', '`sdem check` (warning)'),
 ]
 
 

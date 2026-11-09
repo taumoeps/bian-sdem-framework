@@ -59,6 +59,32 @@ def catalogue(first='payment-initiation'):
     ids = {i['id'] for i in inst}
     cat = {'level': 'A2', 'model_id': 'aid-test-bian-catalogue', 'model_version': 'test', 'metamodel_version': Metamodel.load().version, 'source_system': 'combined example A2 layers',
            'instances': inst, 'relationships': [r for r in rels if r['source'] in ids and r['target'] in ids]}
+    # a merged element may now share its natural key with another (LC-09 — e.g. two workspaces' Evaluate operations in one domain): keep the earlier
+    from sdem.conformance import OWNERS, owner_of
+    mm = Metamodel.load()
+    local = {i['id']: i['type'] for i in cat['instances']}
+    parents = {}
+    for r in cat['relationships']:
+        if r['kind'] in ('composition', 'aggregation'): parents.setdefault(r['target'], []).append(r['source'])
+    seen, gone = {}, {}
+    for i in cat['instances']:
+        key = ((mm.entities.get(i['type']) or {}).get('identifier') or {}).get('key') or []
+        at = i.get('attributes') or {}
+        vals = tuple(owner_of(i['id'], OWNERS[k], mm, local, parents) if k in OWNERS else json.dumps(i.get(k, at.get(k))) for k in key)
+        if not key or any(v is None for v in vals): continue
+        k = (i['type'],) + vals
+        if k in seen: gone[i['id']] = seen[k]   # the same BIAN element: merged into the earlier one, as a same-name element is
+        else: seen[k] = i['id']
+    if gone:
+        cat['instances'] = [i for i in cat['instances'] if i['id'] not in gone]
+        fix = lambda v: [gone.get(x, x) for x in v] if isinstance(v, list) else gone.get(v, v) if isinstance(v, str) else v
+        for i in cat['instances']:
+            if i.get('attributes'): i['attributes'] = {k: fix(v) for k, v in i['attributes'].items()}
+        rels = []
+        for r in cat['relationships']:
+            r2 = dict(r, source=gone.get(r['source'], r['source']), target=gone.get(r['target'], r['target']))
+            if r2['source'] != r2['target'] and r2 not in rels: rels.append(r2)
+        cat['relationships'] = rels
     # a merged element may now have more links than the metamodel allows (LC-10): keep the earlier workspace's, drop the later one
     mm, typ, dropped = Metamodel.load(), {i['id']: i['type'] for i in inst}, []
     while True:

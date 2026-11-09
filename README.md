@@ -470,6 +470,89 @@ open work/sdem/index.html
 
 `--explore` builds the graph and writes the pages. Explore capabilities connected to BIAN Service Domains, applications and infrastructure; the approved connections and their evidence; tracing across the four layers; and change impact. Walkthrough: [Explore your architecture](docs/sdem-workbench-user-guide.md#4a-explore-your-architecture--home-dashboard-and-graph). AI agents: `sdem agents install` ([setup](docs/sdem-agent-setup.md)). Developing SDEM: [CONTRIBUTING.md](CONTRIBUTING.md). Troubleshooting: [administration](docs/sdem-administration.md#troubleshooting).
 
+### 9. SDEM Workbench UI
+
+**SDEM Workbench** is the HTML interface for architects: one page per workspace that shows its designs, data, diagrams, knowledge graph, trace and impact, reviews and evidence, and SDEM's own metamodel. It is **generated** by the CLI from the workspace files — nothing to install or host, no server, no database, nothing loaded from the internet — and it is **read-only**: where a person has a decision to make, the page shows the `sdem` command to run, and the CLI records it.
+
+```bash
+sdem workbench --workspace workspaces/payments -o work/workbench.html   # one workspace
+sdem home --root workspaces -o work/sdem                                # SDEM Home + every workspace's workbench
+open work/workbench.html
+```
+
+#### Creating and refreshing the page
+
+You create the page with one of the commands below; no other command writes it. It is a **snapshot**: it shows the workspace as it was when the page was written, and does not update itself.
+
+| Command | Writes the workbench? |
+|---|---|
+| `sdem workbench --workspace workspaces/payments -o work/workbench.html` | **Yes** — one workspace, to the file you name |
+| `sdem home --root workspaces -o work/sdem` | **Yes** — SDEM Home and a workbench for every workspace (`work/sdem/workspaces/<name>-workbench.html`) |
+| `sdem new … --explore` | **Yes** — runs `build`, `view`, `dashboard` and `home`, so the workbench comes with it |
+| `sdem build`, `approve`, `aid confirm`, `change apply`, … | **No** — they change the workspace or the graph, not the page |
+
+**To refresh it** after any change (an approval, a confirmed record, an applied change set):
+
+1. Run the same command again — e.g. `sdem home --root workspaces -o work/sdem`. It takes a second or two.
+2. Reload the page in the browser (⌘R / Ctrl+R). The address is unchanged, so you return to the same view.
+
+The header shows when the page is out of date: **generated** is when it was written, and the **inputs** fingerprint changes whenever the workspace files change.
+
+#### How it is created
+
+```mermaid
+flowchart LR
+    subgraph IN["🗂️ Inputs — the source of truth"]
+        WS["<b>Workspace</b><br/>a1…a4 JSON · mappings.json<br/>requirements · change events · proposals"]
+        MM["<b>SDEM metamodel</b><br/>entity types · relationship rules<br/>diagram templates"]
+    end
+    subgraph ENG["⚙️ sdem workbench — the same engine as the CLI (Python)"]
+        CH["check<br/><i>sdem check</i>"]
+        DOC["documents<br/><i>sdem document</i>"]
+        DG["ArchiMate diagrams<br/><i>sdem diagram</i>"]
+        TR["trace &amp; impact<br/><i>sdem trace · impact</i>"]
+        GS["graph state · reviews<br/><i>sdem build · review</i>"]
+        DATA["<b>page data</b><br/>one JSON object"]
+        CH & DOC & DG & TR & GS --> DATA
+    end
+    TPL["📄 <b>page template</b><br/>sdem/workbench.html<br/>HTML · CSS · JavaScript"]
+    OUT["🖥️ <b>workbench.html</b><br/>one self-contained file<br/>offline · read-only"]
+    WS --> ENG
+    MM --> ENG
+    DATA --> OUT
+    TPL --> OUT
+```
+
+1. **Read** — the workspace's datasets, approved connections, requirements, change events and proposals, and the metamodel.
+2. **Compute** — everything the page shows is worked out in Python by the same functions as the CLI commands, so the page and the CLI always agree: the checks, each layer as a document, the ArchiMate diagrams (from the templates in `sdem/viewpoints.json`, laid out by SDEM), trace and impact for every record, the graph's state and what waits for review.
+3. **Write** — the results go into the page template as one JSON object, giving a single HTML file with its styles, script and diagrams inside it. The same inputs give the same page; regenerate it after every change.
+
+#### How it works
+
+```mermaid
+flowchart TB
+    HOME["🏠 <b>SDEM Home</b> — every workspace<br/><i>sdem home · work/sdem/index.html</i>"]
+    HOME --> W1["payments"] & W2["card-payments"] & W3["…"]
+    W1 --> WB
+    subgraph WB["🖥️ SDEM Workbench — one workspace"]
+        direction LR
+        SW["<b>Solution Workspace</b><br/>Overview — layered diagram, A1–A4 status, what waits on a person<br/>Architecture Designs — per layer: Document · a tab per type · Diagram<br/>Data Architecture — table · exact JSON · schema<br/>Knowledge Graphs — records and links<br/>Traceability &amp; Impact<br/>Reviews &amp; Changes<br/>Documents &amp; Evidence"]
+        FW["<b>SDEM Framework</b><br/>Metamodel Explorer<br/>Schemas &amp; Configuration<br/>Relationship Rules<br/>Engine Health"]
+        SW <-->|"switch at the top"| FW
+    end
+    WB -->|"a decision: the page shows the command"| CLI["⌨️ <b>sdem CLI</b><br/>approve · confirm · migrate …"]
+    CLI -->|"writes the workspace,<br/>then regenerate"| WB
+```
+
+- **Two views, one switch.** *Solution Workspace* is the architecture of this workspace; *SDEM Framework* is what the metamodel allows — entity types, schemas, the relationship rules and the engine's health. A record links to its type's definition, and a type to its records.
+- **Everything is linked.** A name in a table, a document, a diagram or a trace opens that record in full under its type tab: where it came from, its attributes, its links inside the layer, its connections to other layers with their evidence and approver, and the requirements about it.
+- **Diagrams are ArchiMate**, drawn from the same templates for every workspace: the layered view on the Overview, and each layer's views under Architecture Designs → Diagram. Only stored links and approved connections are drawn; gaps are listed above the diagram. Select a shape to open its record ([diagram spec](docs/design/sdem-diagram-spec.md)).
+- **Every view has an address** (e.g. `workbench.html#ws/designs/A1/A1.BusinessCapability/CAP-PAY-010`), so a link to a record or a diagram can be shared or bookmarked.
+- **Read-only by design.** Approving a connection, confirming an inferred record or migrating a workspace is done with the CLI, under a person's name and with evidence; the page shows the exact command, with a Copy button. Rebuild the page afterwards to see the change.
+- **SDEM Home** lists every workspace under `--root`, each opening its own workbench (with a link back). *Not yet:* Home in the workbench's design, replacing the older per-workspace dashboard ([UX spec](docs/design/sdem-workbench-ux-spec.md), step 2).
+
+More: [workbench user guide](docs/sdem-workbench-user-guide.md) · [UX spec](docs/design/sdem-workbench-ux-spec.md).
+
 ## Customising SDEM for your organisation
 
 SDEM's Enterprise Metamodel, built around BIAN Service Domains, is reusable: each organisation extends it for its own environment and keeps its own:

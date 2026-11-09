@@ -55,6 +55,8 @@ JOURNEYS = {
                  'sdem matrix --workspace examples/payment-initiation --md work/matrix.md'),
     'workbench': ('J7', 'the workbench for one workspace: one offline page — the solution workspace (designs, data, knowledge graph, trace and impact, reviews and changes, documents and evidence) and the SDEM framework (metamodel, configuration, rules, health)', 'sdem.workbench', [],
                  'sdem workbench --workspace examples/payment-initiation -o work/workbench.html'),
+    'handback': ('J3', 'what a workspace leaves open for a person — values nobody knows, unconfirmed inferences and the strength of their evidence, links to review, possible duplicates, unsourced records — with the commands the person runs (AG-H01)', 'sdem.handback', [],
+                 'sdem handback --workspace examples/payment-initiation'),
     'diagram':  ('J7', 'ArchiMate diagrams of a workspace from SDEM\'s templates — capabilities and value stream, business process, BIAN service domains, application cooperation, technology and deployment, layered — only stored, approved links drawn', 'sdem.viewpoints', [],
                  'sdem diagram --workspace examples/payment-initiation --template layered -o work/layered.svg'),
     'document': ('J7', "a layer's design as a readable document (Markdown or HTML), generated from the workspace — nothing invented, sources and gaps shown", 'sdem.document', [],
@@ -355,7 +357,7 @@ def explain(argv):
 def model(argv):
     ap = argparse.ArgumentParser(prog='sdem model', description='Maintainer commands: generated documents and schemas, acceptance, evaluation, examples.',
                                  epilog='Examples:\n  sdem model check          # fail if any generated file is stale (as CI)\n  sdem model regenerate\n'
-                                        '  sdem model accept --engine rules\n  sdem model examples       # re-run use-case examples 1 and 2\n'
+                                        '  sdem model accept --engine rules\n  sdem model calibrate       # observed precision per confidence band and evidence class\n  sdem model examples       # re-run use-case examples 1 and 2\n'
                                         '  sdem model status         # what is not yet settled\n  sdem model usage --root workspaces',
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)
@@ -365,6 +367,7 @@ def model(argv):
     sub.add_parser('eval', help='score proposals against approved links (sdem-eval)', add_help=False)
     sub.add_parser('examples', help='re-run use-case examples 1 and 2 (evidence packs and results)')
     sub.add_parser('baseline-pack', help='write the metamodel baseline review pack')
+    sub.add_parser('calibrate', help='how often each confidence band and evidence class is right on the acceptance cases (AID-E03)', add_help=False)
     for c, h in (('status', "every part of SDEM's metamodel not yet settled, with its source and what would settle it"), ('usage', 'what the given workspaces use, and what no workspace uses'),
                  ('stability', 'the core against its last freeze (as CI)'), ('freeze', 'record the core after an approved, versioned change')):
         sub.add_parser(c, help=h, add_help=False)
@@ -378,6 +381,10 @@ def model(argv):
     if not CHECKOUT:
         print('sdem model: maintainer commands need a checkout of the SDEM repository (they read and write docs/, examples/ and scripts/)', file=sys.stderr); return 2
     a, rest = ap.parse_known_args(argv)
+    if a.cmd == 'calibrate':
+        from . import acceptance
+        r = acceptance.calibrate()
+        print(json.dumps(r, indent=2) if '--json' in rest else acceptance.render_calibration(r)); return 0
     if a.cmd in ('accept', 'eval'):
         return _main_of('sdem.acceptance' if a.cmd == 'accept' else 'sdem.evaluate')(rest)
     if rest: ap.error(f"unrecognized arguments: {' '.join(rest)}")

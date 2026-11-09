@@ -6,6 +6,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from sdem.metamodel import Metamodel  # noqa: E402
+CURRENT = Metamodel.load().version   # the metamodel a migration ends at
 from sdem.validate import validate, load_registry  # noqa: E402
 
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
@@ -56,7 +58,7 @@ class B1Tests(unittest.TestCase):
         self.assertEqual(r['changes'].get('narrow_endpoint_type'), 1)
         after = json.loads((self.ws / 'mappings.json').read_text())
         self.assertEqual(next(x for x in after['mappings'] if x['mapping_id'] == m['mapping_id'])['target']['type'], 'A4.SystemSoftware')
-        self.assertEqual(after['metamodel_version'], '0.8.0')
+        self.assertEqual(after['metamodel_version'], CURRENT)   # migrated through 0.8.0 (B1) to the current version
 
     def test_migrate_covers_a_profiles_added_layers(self):
         prof = {'format': 'sdem-profile/1', 'name': 'sites', 'version': 1,   # one added layer, no other rules
@@ -68,7 +70,7 @@ class B1Tests(unittest.TestCase):
         back_to_070(self.ws)
         _, _, r = sdem('migrate', '--workspace', self.ws, '--person', 'steven', '--json', cwd=self.tmp)
         self.assertIn('a5-physical.json', [f['file'] for f in r['files']])
-        self.assertEqual(json.loads((self.ws / 'a5-physical.json').read_text())['metamodel_version'], '0.8.0')
+        self.assertEqual(json.loads((self.ws / 'a5-physical.json').read_text())['metamodel_version'], CURRENT)
 
 
     def test_a_narrowed_endpoint_keeps_an_approved_record_immutable_otherwise(self):   # the registry diff in CI (sdem diff)

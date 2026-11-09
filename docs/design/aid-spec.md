@@ -47,6 +47,14 @@ AID projects the missing architecture layers from the architecture datasets an a
 | AID-M02 | When `sdem aid` fills a workspace (for a person to confirm or reject), a domain that only one side supports is kept too, at that side's confidence; one both sides support stays a band higher. File-based planning (`sdem aid project`) keeps AID-M01. *(Owner's decision, 2026-10-30: AID brings in the domains relevant to the design — an existing design whose applications describe no APIs still gets the domain its business layer names.)* | built |
 | AID-M03 | When `sdem aid` fills a workspace and the business layer already names its domains (forward side, through `invokes` or the engine's A1 rules), a domain that **only** application names point to — name-only evidence, low confidence (AID-S07) — is **not added**: it is reported as a note with how to add it (`invokes`, or `sdem bian custom`). *(Owner's decision, 2026-11-06, from the core-agent validation: three unrelated domains and 91 records inferred from one shared word each; [evidence](../evidence/agent-core-validation.md).)* | tests |
 
+## 5a. Evidence classes (owner's decision D3, 2026-11-09)
+
+| Id | Requirement | Verified by |
+|---|---|---|
+| AID-E01 | Every engine proposal and candidate, every projected record and link, and every record `sdem aid` fills in says **what kind of evidence it rests on** — `evidence_class`, strongest first: `attribute_join` (a field names the other record: `deployed_on`, `invokes`, `hosts` …), `structural` (attributes, operations or approved links agree), `pattern` (a BIAN pattern applied, not observed), `name_token` (shared words in names or paths), `text` (shared words in descriptions). Set by the rule and step that made it, never read back from reasoning text; a link proposed for several reasons takes the strongest. The numeric confidence bands are unchanged. Weak = `name_token` or `text` (AID-B6 reads the class; text matching only for packages made before this rule). | `tests/test_evidence_class.py` |
+| AID-E02 | AID-M03 by evidence class, both ways: when one side names its domains, a domain only **names or descriptions** on the other side point to is a note, not a record (`projection_ends`). Agreement between the sides lifts a link's confidence — never a link that rests on a name or a description alone. | `tests/test_aid_one_list.py`, `tests/test_evidence_class.py` |
+| AID-E03 | `sdem model calibrate` reports, per confidence band and per evidence class, how many proposals the acceptance cases' sealed golds confirm. A report for the owner, not a setting. *Finding (2026-11-09): every band and class is at 100 % on the eight cases — the golds were written by SDEM with the rules known (OPEN-05), so this does not yet calibrate anything; one blind case would.* | `tests/test_evidence_class.py` |
+
 ## 6. Output — the projection package
 
 | ID | Requirement | Status |

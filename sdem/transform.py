@@ -1246,7 +1246,13 @@ class Extraction:
                 if r['modified']: at['modified'] = r['modified']
                 i['attributes'] = at
                 inst.append(i)
-            rels = [{k: l[k] for k in ('source', 'kind', 'target', 'name') if l.get(k)} for l in self.links if l['source'] in ids and l['target'] in ids]
+            rels = []
+            for l in self.links:
+                if l['source'] not in ids or l['target'] not in ids: continue
+                r = {k: l[k] for k in ('source', 'kind', 'target', 'name') if l.get(k)}
+                pages = sorted({str(x['page_id']) for x in l.get('sources') or [] if x.get('page_id')})
+                if pages: r['source_id'] = 'confluence:' + ','.join(pages)   # where the link came from, as for records (D4)
+                rels.append(r)
             out[lvl] = {'level': lvl, 'model_id': f'{model_id}-{lvl}-EXTRACT', 'model_version': datetime.date.today().isoformat(),
                         'metamodel_version': self.mm.version, 'source_system': SOURCE_SYSTEM, 'instances': inst, 'relationships': rels}
         return out

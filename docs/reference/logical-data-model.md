@@ -38,6 +38,7 @@ and these common attributes (approved 2026-10-24; optional):
 | `owner` | string | refers to A1.BusinessActor, A1.BusinessRole | the actor or role accountable for it |
 | `access_classification` | string | public, internal, confidential, restricted | how sensitive it is and who may see it |
 | `inferred` | map<string,string> | — | set on a record SDEM inferred rather than a person wrote: by (sdem aid), run, rule, source, reasoning, confidence, from (the records it was inferred from), at; and, once a person agrees, status confirmed, confirmed_by, confirmed_at |
+| `sources` | map<string,string> | — | where individual attribute values came from, when they came from somewhere other than the record's own source_id: attribute name → `kind:ref` (e.g. {"integration_type": "document:DESIGN.md#4.2"}); several refs comma-separated |
 
 ### How to read a card
 
@@ -1627,17 +1628,18 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-01 | Instance identity | `id` + `version` is unique within an architecture dataset | **enforced** |
 | LC-02 | Entity typing | every instance's `type` is a concrete, non-artefact entity type of the architecture dataset's level | **enforced** |
 | LC-03 | Within-level relationships | every relationship matches a within-level row of its level (through inheritance), or is `association` | **enforced** |
-| LC-04 | Required attributes | every attribute marked required is present; on an instance whose `lifecycle_status` is `planned` (a target design) a missing one is a warning, not an error | **enforced** |
+| LC-04 | Required attributes | every attribute marked required has a value — present, not an empty string, and not a placeholder from the metamodel's list (`TBD`, `unknown`, `/TBD`, …); on an instance whose `lifecycle_status` is `planned` (a target design) a missing one is a warning, not an error. A placeholder in an optional attribute is a warning. A value nobody knows is left out (owner's decision D1, 2026-11-09) | **enforced** |
 | LC-05 | Attribute types | every attribute value has its declared type | **enforced** |
 | LC-06 | Enumerations | every attribute with allowed values, and `lifecycle_status`, takes an allowed value | **enforced** |
 | LC-07 | Same-level references | a reference attribute whose target is in the same level names an instance of the declared type in the same architecture dataset | **enforced** |
 | LC-08 | Cross-level references | a reference attribute whose target is in another level names an instance of the declared type in the workspace | **enforced as a warning** |
-| LC-09 | Natural keys | no two instances of a type share their identifier key within an architecture dataset | **enforced** |
+| LC-09 | Natural keys | no two instances of a type share their identifier key within an architecture dataset; a key part named `owning interface` or `owning service domain` is the whole the record is part of (through composition or aggregation). Two keys that differ only in case, spacing or punctuation are a warning: a possible duplicate (LC-09n) | **enforced** |
 | LC-10 | Cardinality — maximum | no instance exceeds the stated maximum of a BIAN or ArchiMate-composition row (e.g. a service group in two Service Domains) | **enforced** |
 | LC-10m | Cardinality — minimum (completeness) | an instance meets the stated minimum (e.g. a Service Domain has a control record); architecture datasets may legitimately be partial selections of BIAN, so a shortfall is a completeness warning, not an error | **enforced** |
 | LC-11 | Cross-level relationship ends | both ends of every registry record resolve to instances of the right type, level and version | **enforced** |
 | LC-12 | Registry immutability | approved, rejected and superseded registry records are never edited | **enforced** |
 | LC-13 | Deprecated attributes | deprecated attributes raise a warning | **enforced** |
+| LC-14 | Attribute sources | a record's `sources` (CA-13) names only attributes the record has (or `name`, `description`), each with a `kind:ref` source such as `document:DESIGN.md#4.2` (owner's decision D4, 2026-11-09) | **enforced** |
 
 ## Appendix B. How the example data measures up
 
@@ -1650,7 +1652,7 @@ The 7 example workspaces (447 instances) (the generated reference-structure work
 | LC-06 | 586 | 0 |
 | LC-07 | 124 | 0 |
 | LC-08 (warning) | 136 | 0 |
-| LC-09 | 318 | 0 |
+| LC-09 | 444 | 0 |
 | LC-10 | 1106 | 0 |
 | LC-10m (warning) | 1106 | 29 |
 | LC-13 deprecated field in use | — | 0 |
@@ -1675,6 +1677,6 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Layer | Content | Status |
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
-| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 14 of 14 rules enforced |
+| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 15 of 15 rules enforced |
 | Physical | one architecture dataset JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem model regenerate (physical)`); graph store schema not designed yet |
 

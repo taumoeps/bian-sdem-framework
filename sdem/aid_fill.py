@@ -93,7 +93,7 @@ def fill(workspace, person, dry_run=False, now=None):
             rec.setdefault('attributes', {})['inferred'] = {
                 'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': str(pj.get('step', '')), 'rule': str(pj.get('rule', '')),
                 'source': str(pj.get('source_reference') or pj.get('rule') or ''), 'reasoning': str(pj.get('reasoning', '')),
-                'confidence': str(pj.get('confidence', '')), 'from': ', '.join(_ids(pj.get('inferred_from', [])))}
+                'confidence': str(pj.get('confidence', '')), 'evidence_class': str(pj.get('evidence_class', '')), 'from': ', '.join(_ids(pj.get('inferred_from', [])))}   # AID-E01
             doc['instances'].append(rec); present.add(nid); added.setdefault(lvl, []).append(nid)
         have_rels = {(r['source'], r['kind'], r['target']) for r in doc.get('relationships', [])}
         for r in layer.get('relationships', []):

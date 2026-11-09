@@ -1,7 +1,21 @@
 {
-  "metamodel_version": "0.8.0",
+  "metamodel_version": "0.8.1",
   "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Enforced by sdem-graph check (sdem/conformance.py, logical rules LC-04…LC-13) and published as per-entity JSON Schemas (sdem/physical.py); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
   "confidence_rule": "high   — defined by a public standard and checked (BIAN public material, OpenAPI, or a standard concept or\n           relationship confirmed by the open-source Archi oracle); or an SDEM data-contract field, which SDEM defines\n           authoritatively.\n  medium — built on a standard concept or relationship as SDEM chose to model it; or BIAN intent / target only;\n           or an SDEM definition, a login-gated source, or a cited-but-unverified source that was validated against\n           sealed answers; or institution data under an SDEM convention.\n  low    — no standard basis and not validated against sealed answers; or deprecated.",
+  "placeholders": {
+    "rule": "LC-04",
+    "values": [
+      "tbd",
+      "tbc",
+      "todo",
+      "unknown",
+      "n/a",
+      "?",
+      "placeholder",
+      "xxx"
+    ],
+    "note": "Words that stand for a value nobody knows yet. `sdem check` reads an attribute whose value is one of them (any case, or a path segment such as /TBD), or an empty string as missing (LC-04); an empty list says 'none' and is a value: an error on an active record, a warning on a planned one, and a warning on an optional attribute. A value nobody knows is left out, on a planned record — never written as a placeholder (owner's decision D1, 2026-11-09)."
+  },
   "core_fields": [
     {
       "name": "id",
@@ -4267,6 +4281,33 @@
         "review": "Owner's decision — AID fills the workspace (AID redesign)",
         "date": "2026-10-30",
         "draft_id": "DA2-05"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "CA-13",
+      "entity": "all",
+      "name": "sources",
+      "type": "map<string,string>",
+      "required": false,
+      "description": "where individual attribute values came from, when they came from somewhere other than the record's own source_id: attribute name → `kind:ref` (e.g. {\"integration_type\": \"document:DESIGN.md#4.2\"}); several refs comma-separated",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "SDEM decision D4 (owner, 2026-11-09)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved by the owner 2026-11-09",
+      "reasoning": "A record's source_id says where the record came from; a design often gives one fact in another section, or a second document gives it. Recording the source per attribute lets a reviewer check each value against its evidence, in the same dataset — no second store — and with the same `kind:ref` convention as source_id and the registry's evidence.",
+      "confidence": "low",
+      "read_by": "sdem check (LC-14), sdem document, the workbench record panel",
+      "question": "Where did this particular value come from?",
+      "approved": {
+        "review": "Owner's decision — attribute-level evidence (improvement roadmap #3)",
+        "date": "2026-11-09",
+        "draft_id": "D4"
       },
       "kind": "value",
       "confidence_basis": "SDEM field with no standard concept; not validated"
