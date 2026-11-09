@@ -104,6 +104,15 @@ def migrate(estate, person, dry_run=False, migrations=None, now=None):
     errors = [f'{k}: {i}' for k, v in report.items() for i in v]
     if errors: raise MigrateError('the workspace would not pass its checks after migrating — nothing written:\n  ' + '\n  '.join(errors[:20]))
     if dry_run: return res
+    # RV-07: a layer agents change through change sets gets the migration recorded as a change set too, so its chain stays whole
+    # (AG-S08) — only a layer that was in step with its last change set: an earlier edit outside a change set stays the person's to adopt
+    from .agents import Estate, FILES as LAYER_FILES, _file_sha
+    est = Estate(estate); in_step, behind = [], []
+    for layer, fname in LAYER_FILES.items():
+        if not any(x['file'] == fname for x in plan): continue
+        last = est._last_change_set(layer)
+        if not last: continue
+        (in_step if _file_sha(estate / fname) == last['dataset']['after_sha256'] else behind).append(layer)
     from .files import Batch
     b = Batch()
     for p, d in out.items():
@@ -113,6 +122,13 @@ def migrate(estate, person, dry_run=False, migrations=None, now=None):
     res['id'] = f'MIG-{n:03d}'
     b.json(mig / f"{res['id']}.json", {'id': res['id'], 'at': now or datetime.datetime.now().replace(microsecond=0).isoformat(), 'person': person, **{k: res[k] for k in ('current', 'files', 'changes')}})
     b.commit()
+    why = f"metamodel migration {res['id']}: {', '.join(sorted({x['from'] for x in plan}))} → {current} (sdem migrate)"
+    for layer in in_step:
+        cs, _ = est.adopt(layer, person, why)
+        res.setdefault('change_sets', []).append(cs['id'])
+    if behind:
+        res['note'] = (f"{', '.join(behind)} had been changed outside a change set before this migration — the migration is not recorded for "
+                       f"{'it' if len(behind) == 1 else 'them'}: adopt the edit and the migration together, sdem change adopt --workspace {estate} --layer <layer> --person <you> --reason <why>")
     return res
 
 

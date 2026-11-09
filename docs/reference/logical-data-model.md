@@ -1643,18 +1643,18 @@ The rules the data must satisfy, and which the checker enforces today.
 
 ## Appendix B. How the example data measures up
 
-The 7 example workspaces (447 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 29 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
+The 8 example workspaces (827 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 36 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
 
 | Rule | Values checked | Failures |
 |---|---|---|
-| LC-04 | 478 | 0 |
-| LC-05 | 804 | 0 |
-| LC-06 | 586 | 0 |
-| LC-07 | 124 | 0 |
-| LC-08 (warning) | 136 | 0 |
-| LC-09 | 444 | 0 |
-| LC-10 | 1106 | 0 |
-| LC-10m (warning) | 1106 | 29 |
+| LC-04 | 1168 | 0 |
+| LC-05 | 2693 | 0 |
+| LC-06 | 1441 | 0 |
+| LC-07 | 174 | 0 |
+| LC-08 (warning) | 184 | 0 |
+| LC-09 | 771 | 0 |
+| LC-10 | 2309 | 0 |
+| LC-10m (warning) | 2309 | 36 |
 | LC-13 deprecated field in use | — | 0 |
 | fields not in the model | — | 0 |
 

@@ -82,8 +82,23 @@ class CalibrationTests(unittest.TestCase):
         for row in r['band'] + r['evidence_class']:
             self.assertGreater(row['proposed'], 0); self.assertTrue(0 <= row['precision'] <= 1); self.assertLessEqual(row['right'], row['proposed'])
         self.assertIn('not a setting', r['note'])
-        self.assertIn('By evidence class', acceptance.render_calibration(r))
+        self.assertIn('by evidence class', acceptance.render_calibration(r)); self.assertIn('cases', r['blind'])
 
+
+class BlindCaseTests(unittest.TestCase):
+    def test_the_blind_case_is_scored_apart_with_precision_and_recall(self):          # AID-E04
+        cases = acceptance.load_cases(blind=True)
+        self.assertTrue(cases)
+        for c in cases:
+            readme = (ROOT / 'examples' / c['estate'] / 'README.md').read_text(encoding='utf-8')
+            self.assertIn('synthetic', readme.lower())
+            self.assertFalse(any(x['id'] == c['id'] for x in acceptance.load_cases()), 'a blind case is not an acceptance case')
+        r = acceptance.calibrate(ids=[cases[0]['id']])
+        b = r['blind']['cases'][0]
+        self.assertEqual(r['band'], [])                                                  # no acceptance case asked for
+        self.assertGreater(b['gold'], 0); self.assertTrue(0 < b['precision'] <= 1); self.assertTrue(0 < b['recall'] <= 1)
+        self.assertEqual(b['right'] + len(b['missed']), b['gold'])
+        self.assertIn('Blind cases', acceptance.render_calibration(r))
 
 if __name__ == '__main__':
     unittest.main()

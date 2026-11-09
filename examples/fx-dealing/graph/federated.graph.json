@@ -1,0 +1,31 @@
+{
+  "graph": {
+    "id": "sdem:federated",
+    "type": "sdem.federated",
+    "label": "Federated knowledge graph (approved cross-level links)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "metamodel_version": "0.8.1",
+      "levels": {
+        "A1": "2026.11",
+        "A2": "2026.11",
+        "A3": "2026.11",
+        "A4": "2026.11"
+      },
+      "registries": [
+        {
+          "file": "mappings.json",
+          "sha256": "42829950edb52462581f452f120315ca9d98ddf2677d6d39a8a1f8955f548170",
+          "registry_version": "0.4.0",
+          "metamodel_version": "0.8.1"
+        }
+      ],
+      "statuses": [
+        "approved"
+      ]
+    },
+    "nodes": {},
+    "edges": []
+  }
+}

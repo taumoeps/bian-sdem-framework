@@ -1,0 +1,1559 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.8.1",
+  "use_case": "B1 synthetic FX dealing — architect's answer key",
+  "mappings": [
+    {
+      "mapping_id": "FXG-001",
+      "source": {
+        "id": "CAP-FX-100",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-CURRENCY-EXCHANGE",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-CURRENCY-EXCHANGE"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-FX-2026#capability-map",
+        "domain_scope_assessment:DSA-FX-CURRENCY-EXCHANGE"
+      ],
+      "rationale": "Client quoting is Currency Exchange's Quote partition; the capability is that responsibility.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-002",
+      "source": {
+        "id": "CAP-FX-200",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-CURRENCY-EXCHANGE",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-CURRENCY-EXCHANGE"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-FX-2026#capability-map",
+        "domain_scope_assessment:DSA-FX-CURRENCY-EXCHANGE"
+      ],
+      "rationale": "Capturing the client FX transaction is Currency Exchange's FX Transaction Capture partition.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-003",
+      "source": {
+        "id": "CAP-FX-200",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-TRADER-POSITION-OPERATIONS",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADER-POSITION-OPERATIONS"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-FX-2026#capability-map",
+        "domain_scope_assessment:DSA-FX-TRADER-POSITION-OPERATIONS"
+      ],
+      "rationale": "Booking interbank trades and keeping the deal blotter is Trader Position Operations' scope.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-004",
+      "source": {
+        "id": "CAP-FX-300",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-DEALER-DESK",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-DEALER-DESK"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-FX-2026#capability-map",
+        "domain_scope_assessment:DSA-FX-DEALER-DESK"
+      ],
+      "rationale": "Desk-wide consolidated position tracking and desk limits sit with Dealer Desk.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-005",
+      "source": {
+        "id": "CAP-FX-300",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-TRADER-POSITION-OPERATIONS",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADER-POSITION-OPERATIONS"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-FX-2026#capability-map",
+        "domain_scope_assessment:DSA-FX-TRADER-POSITION-OPERATIONS"
+      ],
+      "rationale": "Per-trader trading permissions and limits sit with Trader Position Operations.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-006",
+      "source": {
+        "id": "CAP-FX-400",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-TRADE-CONFIRMATION-MATCHING",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-FX-2026#capability-map",
+        "domain_scope_assessment:DSA-FX-TRADE-CONFIRMATION-MATCHING"
+      ],
+      "rationale": "Confirmation, affirmation and break escalation are Trade Confirmation Matching's whole scope.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-007",
+      "source": {
+        "id": "CAP-FX-500",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-TRADE-SETTLEMENT",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-SETTLEMENT"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-FX-2026#capability-map",
+        "domain_scope_assessment:DSA-FX-TRADE-SETTLEMENT"
+      ],
+      "rationale": "Cash settlement of both legs and settlement confirmation are Trade Settlement's scope.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-008",
+      "source": {
+        "id": "CAP-FX-600",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-COUNTERPARTY-ADMINISTRATION",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-COUNTERPARTY-ADMINISTRATION"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-FX-2026#capability-map",
+        "domain_scope_assessment:DSA-FX-COUNTERPARTY-ADMINISTRATION"
+      ],
+      "rationale": "The counterparty directory and permitted transactions are Counterparty Administration.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-009",
+      "source": {
+        "id": "CAP-FX-700",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-MARKET-DATA-SWITCH-OPERATION",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-MARKET-DATA-SWITCH-OPERATION"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-FX-2026#capability-map",
+        "domain_scope_assessment:DSA-FX-MARKET-DATA-SWITCH-OPERATION"
+      ],
+      "rationale": "Taking in contributor feeds and distributing them internally is Market Data Switch Operation.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-010",
+      "source": {
+        "id": "PRC-FX-01",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-CURRENCY-EXCHANGE",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-CURRENCY-EXCHANGE"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-FX-2026#PRC-FX-01"
+      ],
+      "rationale": "Activities 01b and 01c quote and capture the client FX transaction.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-011",
+      "source": {
+        "id": "PRC-FX-01",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-COUNTERPARTY-ADMINISTRATION",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-COUNTERPARTY-ADMINISTRATION"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-FX-2026#PRC-FX-01"
+      ],
+      "rationale": "Activity 01a checks the counterparty's permitted transactions.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-012",
+      "source": {
+        "id": "PRC-FX-01",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-TRADER-POSITION-OPERATIONS",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADER-POSITION-OPERATIONS"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-FX-2026#PRC-FX-01"
+      ],
+      "rationale": "Activity 01d puts the deal on the trader's deal blotter (not yet recorded in invokes).",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-013",
+      "source": {
+        "id": "PRC-FX-02",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-DEALER-DESK",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-DEALER-DESK"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-FX-2026#PRC-FX-02"
+      ],
+      "rationale": "Activity 02a reads the desk's consolidated position.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-014",
+      "source": {
+        "id": "PRC-FX-02",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-TRADER-POSITION-OPERATIONS",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADER-POSITION-OPERATIONS"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-FX-2026#PRC-FX-02"
+      ],
+      "rationale": "Activities 02b and 02c read dealer limits and capture the interbank cover trade.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-015",
+      "source": {
+        "id": "PRC-FX-03",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-TRADE-CONFIRMATION-MATCHING",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-FX-2026#PRC-FX-03"
+      ],
+      "rationale": "All three activities are confirmation, matching and escalation operations.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-016",
+      "source": {
+        "id": "PRC-FX-04",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-TRADE-SETTLEMENT",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-SETTLEMENT"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-FX-2026#PRC-FX-04"
+      ],
+      "rationale": "Activities 04b and 04c initiate, execute and confirm the cash settlement.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-017",
+      "source": {
+        "id": "PRC-FX-04",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-COUNTERPARTY-ADMINISTRATION",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-COUNTERPARTY-ADMINISTRATION"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-FX-2026#PRC-FX-04"
+      ],
+      "rationale": "Activity 04a reads the counterparty's standing settlement instructions from counterparty reference data.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-018",
+      "source": {
+        "id": "SD-CURRENCY-EXCHANGE",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-CURRENCY-EXCHANGE"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-AURORA",
+        "type": "A3.ApplicationComponent",
+        "version": "4.2"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:AAD-FX-2026#APP-AURORA"
+      ],
+      "rationale": "Aurora implements the Quote partition: it issues and serves client quotes.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-019",
+      "source": {
+        "id": "SD-CURRENCY-EXCHANGE",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-CURRENCY-EXCHANGE"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-LEDGERLINE",
+        "type": "A3.ApplicationComponent",
+        "version": "11.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:AAD-FX-2026#APP-LEDGERLINE"
+      ],
+      "rationale": "Ledgerline implements FX Transaction Capture: it books, reads and amends client deals.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-020",
+      "source": {
+        "id": "SD-TRADER-POSITION-OPERATIONS",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADER-POSITION-OPERATIONS"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-LEDGERLINE",
+        "type": "A3.ApplicationComponent",
+        "version": "11.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:AAD-FX-2026#APP-LEDGERLINE"
+      ],
+      "rationale": "Ledgerline keeps the blotter, books interbank trades and holds dealer limits.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-021",
+      "source": {
+        "id": "SD-DEALER-DESK",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-DEALER-DESK"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-LEDGERLINE",
+        "type": "A3.ApplicationComponent",
+        "version": "11.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:AAD-FX-2026#APP-LEDGERLINE"
+      ],
+      "rationale": "Ledgerline computes the desk's consolidated net open position.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-022",
+      "source": {
+        "id": "SD-TRADE-CONFIRMATION-MATCHING",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-CONFIRMHUB",
+        "type": "A3.ApplicationComponent",
+        "version": "8.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:AAD-FX-2026#APP-CONFIRMHUB"
+      ],
+      "rationale": "ConfirmHub issues, matches and escalates confirmations.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-023",
+      "source": {
+        "id": "SD-TRADE-SETTLEMENT",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-SETTLEMENT"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-FXSM",
+        "type": "A3.ApplicationComponent",
+        "version": "5.7"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:AAD-FX-2026#APP-FXSM"
+      ],
+      "rationale": "Settlement Manager creates, releases and confirms cash settlement.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-024",
+      "source": {
+        "id": "SD-COUNTERPARTY-ADMINISTRATION",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-COUNTERPARTY-ADMINISTRATION"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-CRDS",
+        "type": "A3.ApplicationComponent",
+        "version": "3.1"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:AAD-FX-2026#APP-CRDS"
+      ],
+      "rationale": "CRDS is the counterparty directory with permitted products.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-025",
+      "source": {
+        "id": "SD-MARKET-DATA-SWITCH-OPERATION",
+        "type": "A2.ServiceDomain",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-MARKET-DATA-SWITCH-OPERATION"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-RATEGW",
+        "type": "A3.ApplicationComponent",
+        "version": "2.9"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:AAD-FX-2026#APP-RATEGW"
+      ],
+      "rationale": "The Rates Gateway takes in contributor feeds and distributes them to subscribers.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-026",
+      "source": {
+        "id": "SO-CURRENCY-EXCHANGE-INITIATE-QUOTE",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-CURRENCY-EXCHANGE-INITIATE-QUOTE"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-AUR-01",
+        "type": "A3.APIOperation",
+        "version": "2.3"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:aurora-quotes-v2.3.yaml#createQuote"
+      ],
+      "rationale": "Creating a firm quote is Initiate on the Quote partition.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-027",
+      "source": {
+        "id": "SO-CURRENCY-EXCHANGE-RETRIEVE-QUOTE",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-CURRENCY-EXCHANGE-RETRIEVE-QUOTE"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-AUR-02",
+        "type": "A3.APIOperation",
+        "version": "2.3"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:aurora-quotes-v2.3.yaml#getQuote"
+      ],
+      "rationale": "Reading one quote is Retrieve on the Quote partition.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-028",
+      "source": {
+        "id": "SO-CURRENCY-EXCHANGE-INITIATE-FX-TRANSACTION-CAPTURE",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-CURRENCY-EXCHANGE-INITIATE-FX-TRANSACTION-CAPTURE"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-FXB-01",
+        "type": "A3.APIOperation",
+        "version": "11.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledgerline-deals-11.0.yaml#bookDeal"
+      ],
+      "rationale": "Booking a client deal creates an FX transaction capture.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-029",
+      "source": {
+        "id": "SO-CURRENCY-EXCHANGE-RETRIEVE-FX-TRANSACTION-CAPTURE",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-CURRENCY-EXCHANGE-RETRIEVE-FX-TRANSACTION-CAPTURE"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-FXB-02",
+        "type": "A3.APIOperation",
+        "version": "11.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledgerline-deals-11.0.yaml#getDeal"
+      ],
+      "rationale": "Reading a booked deal is Retrieve on FX Transaction Capture.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-030",
+      "source": {
+        "id": "SO-CURRENCY-EXCHANGE-UPDATE-FX-TRANSACTION-CAPTURE",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-CURRENCY-EXCHANGE-UPDATE-FX-TRANSACTION-CAPTURE"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-FXB-03",
+        "type": "A3.APIOperation",
+        "version": "11.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledgerline-deals-11.0.yaml#amendDeal"
+      ],
+      "rationale": "Amending a booked deal is Update on FX Transaction Capture.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-031",
+      "source": {
+        "id": "SO-TRADER-POSITION-OPERATIONS-INITIATE-TRADE-CAPTUREAND-REPORTING",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADER-POSITION-OPERATIONS-INITIATE-TRADE-CAPTUREAND-REPORTING"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-FXB-04",
+        "type": "A3.APIOperation",
+        "version": "11.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledgerline-deals-11.0.yaml#bookInterbankTrade"
+      ],
+      "rationale": "Recording an interbank trade is Initiate on Trade Capture and Reporting.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-032",
+      "source": {
+        "id": "SO-TRADER-POSITION-OPERATIONS-RETRIEVE-TRADE-DEAL-BLOTTER",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADER-POSITION-OPERATIONS-RETRIEVE-TRADE-DEAL-BLOTTER"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-FXB-05",
+        "type": "A3.APIOperation",
+        "version": "11.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledgerline-deals-11.0.yaml#getBlotter"
+      ],
+      "rationale": "Reading the trader blotter is Retrieve on Trade Deal Blotter.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-033",
+      "source": {
+        "id": "SO-DEALER-DESK-RETRIEVE-DEALER-DESK-CONSOLIDATED-POSITION-TRACKING",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-DEALER-DESK-RETRIEVE-DEALER-DESK-CONSOLIDATED-POSITION-TRACKING"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-FXB-06",
+        "type": "A3.APIOperation",
+        "version": "11.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledgerline-deals-11.0.yaml#getDeskPosition"
+      ],
+      "rationale": "The desk net open position is Retrieve on Consolidated Position Tracking.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-034",
+      "source": {
+        "id": "SO-TRADER-POSITION-OPERATIONS-RETRIEVE-TRADER-TRADING-PERMISSIONSAND-LIMITS",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADER-POSITION-OPERATIONS-RETRIEVE-TRADER-TRADING-PERMISSIONSAND-LIMITS"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-FXB-07",
+        "type": "A3.APIOperation",
+        "version": "11.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:ledgerline-deals-11.0.yaml#getTraderLimits"
+      ],
+      "rationale": "Dealer limit headroom is Retrieve on Trader Trading Permissions and Limits.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-035",
+      "source": {
+        "id": "SO-TRADE-CONFIRMATION-MATCHING-INITIATE-TRANSACTION-CONFIRMATION-AFFIRMATION",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING-INITIATE-TRANSACTION-CONFIRMATION-AFFIRMATION"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-CNF-01",
+        "type": "A3.APIOperation",
+        "version": "8.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:confirmhub-8.4.yaml#issueConfirmation"
+      ],
+      "rationale": "Issuing our confirmation is Initiate on Transaction Confirmation Affirmation.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-036",
+      "source": {
+        "id": "SO-TRADE-CONFIRMATION-MATCHING-EXECUTE-TRANSACTION-CONFIRMATION-AFFIRMATION",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING-EXECUTE-TRANSACTION-CONFIRMATION-AFFIRMATION"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-CNF-02",
+        "type": "A3.APIOperation",
+        "version": "8.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:confirmhub-8.4.yaml#runMatching"
+      ],
+      "rationale": "Running the automated match is Execute on Transaction Confirmation Affirmation.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-037",
+      "source": {
+        "id": "SO-TRADE-CONFIRMATION-MATCHING-RETRIEVE-TRANSACTION-CONFIRMATION-AFFIRMATION",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING-RETRIEVE-TRANSACTION-CONFIRMATION-AFFIRMATION"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-CNF-03",
+        "type": "A3.APIOperation",
+        "version": "8.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:confirmhub-8.4.yaml#getConfirmation"
+      ],
+      "rationale": "Reading a confirmation is Retrieve on Transaction Confirmation Affirmation.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-038",
+      "source": {
+        "id": "SO-TRADE-CONFIRMATION-MATCHING-RETRIEVE-UNMATCHED-MARKET-TRADE-ESCALATION",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING-RETRIEVE-UNMATCHED-MARKET-TRADE-ESCALATION"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-CNF-04",
+        "type": "A3.APIOperation",
+        "version": "8.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:confirmhub-8.4.yaml#getBreak"
+      ],
+      "rationale": "Reading a break case is Retrieve on Unmatched Market Trade Escalation.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-039",
+      "source": {
+        "id": "SO-TRADE-CONFIRMATION-MATCHING-INITIATE-UNMATCHED-MARKET-TRADE-ESCALATION",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING-INITIATE-UNMATCHED-MARKET-TRADE-ESCALATION"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-CNF-05",
+        "type": "A3.APIOperation",
+        "version": "8.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:confirmhub-8.4.yaml#escalateBreak"
+      ],
+      "rationale": "Raising an escalation is Initiate on Unmatched Market Trade Escalation.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-040",
+      "source": {
+        "id": "SO-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-CASH-SETTLEMENT",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-CASH-SETTLEMENT"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-STL-01",
+        "type": "A3.APIOperation",
+        "version": "5.7"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:fxsm-5.7.yaml#createSettlementInstruction"
+      ],
+      "rationale": "Creating the pay-leg instruction is Initiate on Market Trade Cash Settlement.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-041",
+      "source": {
+        "id": "SO-TRADE-SETTLEMENT-EXECUTE-MARKET-TRADE-CASH-SETTLEMENT",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-SETTLEMENT-EXECUTE-MARKET-TRADE-CASH-SETTLEMENT"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-STL-02",
+        "type": "A3.APIOperation",
+        "version": "5.7"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:fxsm-5.7.yaml#releasePayment"
+      ],
+      "rationale": "Releasing the payment is Execute on Market Trade Cash Settlement.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-042",
+      "source": {
+        "id": "SO-TRADE-SETTLEMENT-RETRIEVE-MARKET-TRADE-CASH-SETTLEMENT",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-SETTLEMENT-RETRIEVE-MARKET-TRADE-CASH-SETTLEMENT"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-STL-03",
+        "type": "A3.APIOperation",
+        "version": "5.7"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:fxsm-5.7.yaml#getSettlementInstruction"
+      ],
+      "rationale": "Reading an instruction is Retrieve on Market Trade Cash Settlement.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-043",
+      "source": {
+        "id": "SO-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-SETTLEMENT-CONFIRMATION",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-SETTLEMENT-CONFIRMATION"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-STL-04",
+        "type": "A3.APIOperation",
+        "version": "5.7"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:fxsm-5.7.yaml#recordNostroAdvice"
+      ],
+      "rationale": "Recording the nostro advice creates the settlement confirmation of the receive leg.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-044",
+      "source": {
+        "id": "SO-COUNTERPARTY-ADMINISTRATION-RETRIEVE",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-COUNTERPARTY-ADMINISTRATION-RETRIEVE"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-CRD-01",
+        "type": "A3.APIOperation",
+        "version": "1.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:crds-v1.4.yaml#getCounterparty"
+      ],
+      "rationale": "Reading a counterparty is Retrieve on the Counterparty Directory Entry.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-045",
+      "source": {
+        "id": "SO-COUNTERPARTY-ADMINISTRATION-REGISTER",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-COUNTERPARTY-ADMINISTRATION-REGISTER"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-CRD-02",
+        "type": "A3.APIOperation",
+        "version": "1.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:crds-v1.4.yaml#createCounterparty"
+      ],
+      "rationale": "Onboarding a counterparty is Register on the Counterparty Directory Entry.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-046",
+      "source": {
+        "id": "SO-COUNTERPARTY-ADMINISTRATION-RETRIEVE-COUNTERPARTY-PERMITTED-TRANSACTION",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-COUNTERPARTY-ADMINISTRATION-RETRIEVE-COUNTERPARTY-PERMITTED-TRANSACTION"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-CRD-03",
+        "type": "A3.APIOperation",
+        "version": "1.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:crds-v1.4.yaml#getPermittedProducts"
+      ],
+      "rationale": "Permitted products are Retrieve on Counterparty Permitted Transaction.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-047",
+      "source": {
+        "id": "SO-MARKET-DATA-SWITCH-OPERATION-INITIATE-DISTRIBUTION",
+        "type": "A2.ServiceOperation",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-MARKET-DATA-SWITCH-OPERATION-INITIATE-DISTRIBUTION"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-RGW-01",
+        "type": "A3.APIOperation",
+        "version": "2.9"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:rategw-admin-2.9.yaml#createSubscription"
+      ],
+      "rationale": "Setting up a feed to a consumer is Initiate on Distribution.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "FXG-048",
+      "source": {
+        "id": "APP-AURORA",
+        "type": "A3.ApplicationComponent",
+        "version": "4.2"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-AURORA-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-AURORA-PROD"
+      ],
+      "rationale": "Aurora Pricing Engine runs as this deployment in Markets production.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-049",
+      "source": {
+        "id": "APP-AURORA",
+        "type": "A3.ApplicationComponent",
+        "version": "4.2"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-AURORA-UAT",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-AURORA-UAT"
+      ],
+      "rationale": "Aurora Pricing Engine runs as this deployment in Markets UAT.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-050",
+      "source": {
+        "id": "APP-LEDGERLINE",
+        "type": "A3.ApplicationComponent",
+        "version": "11.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-LEDGERLINE-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-LEDGERLINE-PROD"
+      ],
+      "rationale": "Ledgerline FX Booking runs as this deployment in Markets production.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-051",
+      "source": {
+        "id": "APP-LEDGERLINE",
+        "type": "A3.ApplicationComponent",
+        "version": "11.0"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-LEDGERLINE-UAT",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-LEDGERLINE-UAT"
+      ],
+      "rationale": "Ledgerline FX Booking runs as this deployment in Markets UAT.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-052",
+      "source": {
+        "id": "APP-CRDS",
+        "type": "A3.ApplicationComponent",
+        "version": "3.1"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-CRDS-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-CRDS-PROD"
+      ],
+      "rationale": "Counterparty Reference Data Service runs as this deployment in Markets production.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-053",
+      "source": {
+        "id": "APP-CONFIRMHUB",
+        "type": "A3.ApplicationComponent",
+        "version": "8.4"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-CONFIRMHUB-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-CONFIRMHUB-PROD"
+      ],
+      "rationale": "ConfirmHub runs as this deployment in Markets production.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-054",
+      "source": {
+        "id": "APP-FXSM",
+        "type": "A3.ApplicationComponent",
+        "version": "5.7"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-FXSM-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-FXSM-PROD"
+      ],
+      "rationale": "FX Settlement Manager runs as this deployment in Markets production.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-055",
+      "source": {
+        "id": "APP-RATEGW",
+        "type": "A3.ApplicationComponent",
+        "version": "2.9"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-RATEGW-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-RATEGW-PROD"
+      ],
+      "rationale": "Contributor Rates Gateway runs as this deployment in Markets production.",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-056",
+      "source": {
+        "id": "APP-AURORA",
+        "type": "A3.ApplicationComponent",
+        "version": "4.2"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "SYS-K8S-MKT-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-AURORA-PROD"
+      ],
+      "rationale": "Aurora Pricing Engine runs on Markets container platform (production) (deployment DEP-AURORA-PROD).",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-057",
+      "source": {
+        "id": "APP-AURORA",
+        "type": "A3.ApplicationComponent",
+        "version": "4.2"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "SYS-K8S-MKT-UAT",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-AURORA-UAT"
+      ],
+      "rationale": "Aurora Pricing Engine runs on Markets container platform (UAT) (deployment DEP-AURORA-UAT).",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-058",
+      "source": {
+        "id": "APP-LEDGERLINE",
+        "type": "A3.ApplicationComponent",
+        "version": "11.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "SYS-K8S-MKT-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-LEDGERLINE-PROD"
+      ],
+      "rationale": "Ledgerline FX Booking runs on Markets container platform (production) (deployment DEP-LEDGERLINE-PROD).",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-059",
+      "source": {
+        "id": "APP-LEDGERLINE",
+        "type": "A3.ApplicationComponent",
+        "version": "11.0"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "SYS-K8S-MKT-UAT",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-LEDGERLINE-UAT"
+      ],
+      "rationale": "Ledgerline FX Booking runs on Markets container platform (UAT) (deployment DEP-LEDGERLINE-UAT).",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-060",
+      "source": {
+        "id": "APP-CRDS",
+        "type": "A3.ApplicationComponent",
+        "version": "3.1"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "SYS-K8S-MKT-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.30"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-CRDS-PROD"
+      ],
+      "rationale": "Counterparty Reference Data Service runs on Markets container platform (production) (deployment DEP-CRDS-PROD).",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-061",
+      "source": {
+        "id": "APP-CONFIRMHUB",
+        "type": "A3.ApplicationComponent",
+        "version": "8.4"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "NODE-CONF-01",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-CONFIRMHUB-PROD"
+      ],
+      "rationale": "ConfirmHub runs on lnx-conf-p01 (deployment DEP-CONFIRMHUB-PROD).",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-062",
+      "source": {
+        "id": "APP-FXSM",
+        "type": "A3.ApplicationComponent",
+        "version": "5.7"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "NODE-FXSM-01",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-FXSM-PROD"
+      ],
+      "rationale": "FX Settlement Manager runs on lnx-fxsm-p01 (deployment DEP-FXSM-PROD).",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    },
+    {
+      "mapping_id": "FXG-063",
+      "source": {
+        "id": "APP-RATEGW",
+        "type": "A3.ApplicationComponent",
+        "version": "2.9"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "NODE-RATEGW-01",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-MKT-2026#DEP-RATEGW-PROD"
+      ],
+      "rationale": "Contributor Rates Gateway runs on mdgw-colo-p01 (deployment DEP-RATEGW-PROD).",
+      "baseline_id": "FX-BASE-2026-Q4",
+      "reviewer_id": "fx.domain.architect",
+      "approved_at": "2026-11-10"
+    }
+  ]
+}

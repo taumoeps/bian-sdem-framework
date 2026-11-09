@@ -382,7 +382,7 @@ class Estate:
         recs = sorted(rows.values(), key=lambda x: (x['level'] or '', x['id']))
         doc_only = bool(changed) and all(k == 'document' for _, k in changed)
         return {'records': recs, 'mappings_to_supersede': sorted(supersede), 'changed': [rid for rid, _ in changed],
-                **({'documentation_only': True} if doc_only else {}),
+                **({'documentation_only': True} if doc_only else {}), **({} if changed else {'no_record_change': True}),   # RV-07: e.g. a metamodel migration that moves only the version
                 'coverage': impact_coverage(fg, recs, [rid for rid, _ in changed]), 'basis': basis(self.path, fg)}   # AG-V01, AG-V02
 
     # -- four-layer impact validation (AG-V01…V10; sdem/validation.py)
@@ -629,8 +629,9 @@ class Estate:
             v = self.validation(e['id'])
             out.append({**e, 'work_items': [w['id'] for w in items], 'open_work_items': open_items,
                         'validation': _phase(v) if v else ('not needed — documentation only (AG-V11)' if e['impact'].get('documentation_only') else
+                                                           'not needed — no record changed (RV-07)' if e['impact'].get('no_record_change') else
                                                            'not needed — planned before impact validation existed' if items and 'coverage' not in e['impact'] else 'not requested'),
-                        'planned': bool(items) or bool(e['impact'].get('documentation_only')) or bool(v and _phase(v) == 'implementation_authorised' and not any(
+                        'planned': bool(items) or bool(e['impact'].get('documentation_only')) or bool(e['impact'].get('no_record_change')) or bool(v and _phase(v) == 'implementation_authorised' and not any(
                             r['classification'] == 'design_change_required' and r['level'] != e['layer'] and r['id'] not in e['impact']['changed']
                             and v['acceptance']['final'].get(r['level']) == 'design_change_required' for r in e['impact']['records']))})
         return out
@@ -987,7 +988,7 @@ def check_coordination(estate_dir):
         if e.get('change_set') not in sets: issues.append(f"events/{e.get('id')}: change set {e.get('change_set')} not found")
     for c in sets.values():
         for k in ('layer', 'reason', 'changes', 'agent', 'person', 'event'):
-            if not c.get(k): issues.append(f"change-sets/{c.get('id')}: missing {k}" + (' (CTL-20)' if k in ('agent', 'person') else ''))
+            if (c.get(k) is None) if k == 'changes' else not c.get(k): issues.append(f"change-sets/{c.get('id')}: missing {k}" + (' (CTL-20)' if k in ('agent', 'person') else ''))
         if c.get('event') and c['event'] not in events: issues.append(f"change-sets/{c.get('id')}: event {c['event']} not found")
         for w in c.get('work_items', []):
             if w not in work: issues.append(f"change-sets/{c.get('id')}: work item {w} not found")

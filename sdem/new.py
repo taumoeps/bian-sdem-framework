@@ -223,6 +223,39 @@ def catalogue(workspace):
     if not cat: return own
     if not own or not own.get('instances'): return cat
     have = {i['id'] for i in own['instances']}
+    # WS-07: a catalogue element the workspace already holds under its own id (same type and natural key, LC-09 — e.g. the asset
+    # type 'Consumer Loan' as AT-LO) is that record: it is not added twice, and the catalogue's references point to the workspace's id
+    from .conformance import natural_keys
+    from .metamodel import Metamodel
+    mm = Metamodel.load()
+    mine = {k[0]: rid for rid, k in natural_keys(own, mm).items()}
+    same = {}
+    for _ in range(4):   # in rounds: a matched service domain makes its control record's key (its owner) comparable too
+        rels = [{**r, 'source': same.get(r['source'], r['source']), 'target': same.get(r['target'], r['target'])} for r in cat.get('relationships', [])]
+        ids = [{**i, 'id': same.get(i['id'], i['id'])} for i in cat['instances']]
+        keyed = natural_keys({'instances': own['instances'] + [i for i in ids if i['id'] not in have],
+                              'relationships': own.get('relationships', []) + rels}, mm)
+        more = {}
+        for i in cat['instances']:
+            cid = i['id']
+            if cid in have or cid in same: continue
+            k = keyed.get(cid)
+            if k and k[0] in mine and mine[k[0]] != cid: more[cid] = mine[k[0]]
+        if not more: break
+        same.update(more)
+    fix = lambda v: [same.get(x, x) for x in v] if isinstance(v, list) else same.get(v, v) if isinstance(v, str) else v
+    added = [{**i, 'attributes': {k: fix(v) for k, v in i['attributes'].items()}} if i.get('attributes') else i
+             for i in cat['instances'] if i['id'] not in have and i['id'] not in same]
     keys = {(r['source'], r['kind'], r['target']) for r in own.get('relationships', [])}
-    return {**own, 'instances': own['instances'] + [i for i in cat['instances'] if i['id'] not in have],
-            'relationships': own.get('relationships', []) + [r for r in cat.get('relationships', []) if (r['source'], r['kind'], r['target']) not in keys]}
+    typ = {i['id']: i['type'] for i in own['instances'] + cat['instances']}
+    held = {(r['source'], r['kind'], 'out', typ.get(r['target'])) for r in own.get('relationships', [])} | \
+           {(r['target'], r['kind'], 'in', typ.get(r['source'])) for r in own.get('relationships', [])}
+    rels = []
+    for r in cat.get('relationships', []):
+        r = {**r, 'source': same.get(r['source'], r['source']), 'target': same.get(r['target'], r['target'])}
+        k = (r['source'], r['kind'], r['target'])
+        if r['source'] == r['target'] or k in keys: continue
+        if (r['source'] in have and (r['source'], r['kind'], 'out', typ.get(r['target'])) in held) or \
+           (r['target'] in have and (r['target'], r['kind'], 'in', typ.get(r['source'])) in held): continue   # the workspace's own link of this kind wins (WS-01)
+        keys.add(k); rels.append(r)
+    return {**own, 'instances': own['instances'] + added, 'relationships': own.get('relationships', []) + rels}

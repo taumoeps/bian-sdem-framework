@@ -1,0 +1,463 @@
+{
+  "level": "A4",
+  "model_id": "harbourline-fx-a4",
+  "model_version": "2026.11",
+  "metamodel_version": "0.8.1",
+  "source_system": "SYNTHETIC-CMDB",
+  "instances": [
+    {
+      "id": "ENV-FX-PROD",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "Markets production",
+      "lifecycle_status": "active",
+      "description": "Production runtime for the markets estate, primary data centre.",
+      "attributes": {
+        "environment_kind": "production",
+        "country": "XA",
+        "cloud_deployment_model": "private"
+      }
+    },
+    {
+      "id": "ENV-FX-UAT",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "Markets UAT",
+      "lifecycle_status": "active",
+      "description": "User-acceptance test runtime for the markets estate.",
+      "attributes": {
+        "environment_kind": "test",
+        "country": "XA",
+        "cloud_deployment_model": "private"
+      }
+    },
+    {
+      "id": "SYS-K8S-MKT-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "1.30",
+      "name": "Markets container platform (production)",
+      "lifecycle_status": "active",
+      "description": "Kubernetes cluster shared by the markets applications in production.",
+      "attributes": {
+        "product_version": "1.30",
+        "license": "Apache-2.0",
+        "end_of_support": "2027-06-28",
+        "hosts": [
+          "APP-AURORA",
+          "APP-LEDGERLINE",
+          "APP-CRDS"
+        ]
+      }
+    },
+    {
+      "id": "SYS-K8S-MKT-UAT",
+      "type": "A4.SystemSoftware",
+      "version": "1.30",
+      "name": "Markets container platform (UAT)",
+      "lifecycle_status": "active",
+      "description": "Kubernetes cluster for markets user-acceptance testing.",
+      "attributes": {
+        "product_version": "1.30",
+        "license": "Apache-2.0",
+        "end_of_support": "2027-06-28"
+      }
+    },
+    {
+      "id": "SYS-PG-FX-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "16",
+      "name": "FX trading database (production)",
+      "lifecycle_status": "active",
+      "description": "PostgreSQL cluster for pricing and booking data.",
+      "attributes": {
+        "product_version": "16.4",
+        "license": "PostgreSQL",
+        "end_of_support": "2028-11-09"
+      }
+    },
+    {
+      "id": "SYS-PG-STL-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "15",
+      "name": "Settlement database (production)",
+      "lifecycle_status": "active",
+      "description": "PostgreSQL instance for FX settlement data.",
+      "attributes": {
+        "product_version": "15.8",
+        "license": "PostgreSQL",
+        "end_of_support": "2027-11-11"
+      }
+    },
+    {
+      "id": "SYS-PG-REF-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "16",
+      "name": "Reference data database (production)",
+      "lifecycle_status": "active",
+      "description": "PostgreSQL instance for counterparty reference data.",
+      "attributes": {
+        "product_version": "16.4",
+        "license": "PostgreSQL",
+        "end_of_support": "2028-11-09"
+      }
+    },
+    {
+      "id": "SYS-SQL-CONF-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "19",
+      "name": "Confirmations package database (production)",
+      "lifecycle_status": "active",
+      "description": "Relational database supplied with the confirmations package.",
+      "attributes": {
+        "product_version": "19.3",
+        "license": "LicenseRef-vendor-embedded",
+        "end_of_support": "2027-04-30"
+      }
+    },
+    {
+      "id": "NODE-CONF-01",
+      "type": "A4.Node",
+      "version": "1.0",
+      "name": "lnx-conf-p01",
+      "lifecycle_status": "active",
+      "description": "Linux virtual machine running the confirmations package in production.",
+      "attributes": {
+        "virtualisation": "virtual machine",
+        "hosts": [
+          "APP-CONFIRMHUB"
+        ]
+      }
+    },
+    {
+      "id": "NODE-FXSM-01",
+      "type": "A4.Node",
+      "version": "1.0",
+      "name": "lnx-fxsm-p01",
+      "lifecycle_status": "active",
+      "description": "Linux virtual machine running the settlement manager in production.",
+      "attributes": {
+        "virtualisation": "virtual machine"
+      }
+    },
+    {
+      "id": "NODE-RATEGW-01",
+      "type": "A4.Node",
+      "version": "1.0",
+      "name": "mdgw-colo-p01",
+      "lifecycle_status": "active",
+      "description": "Physical low-latency server in the exchange co-location rack, running the rates gateway.",
+      "attributes": {
+        "virtualisation": "physical",
+        "hosts": [
+          "APP-RATEGW"
+        ]
+      }
+    },
+    {
+      "id": "TS-EVENT-STREAM",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "Markets event streaming",
+      "lifecycle_status": "active",
+      "description": "Managed event-streaming service carrying deal and rate events.",
+      "attributes": {
+        "cloud_service_model": "PaaS"
+      }
+    },
+    {
+      "id": "TS-PAYMENT-GATEWAY",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "Interbank payment messaging gateway",
+      "lifecycle_status": "active",
+      "description": "Shared gateway that sends payment and confirmation messages to other banks.",
+      "attributes": {
+        "cloud_service_model": "PaaS"
+      }
+    },
+    {
+      "id": "NET-MKT-PRIVATE",
+      "type": "A4.CommunicationNetwork",
+      "version": "1.0",
+      "name": "Markets private network",
+      "lifecycle_status": "active",
+      "description": "Private network segment for trading systems.",
+      "attributes": {
+        "address_range": [
+          "10.44.0.0/16"
+        ],
+        "connects": [
+          "NODE-CONF-01",
+          "NODE-FXSM-01"
+        ]
+      }
+    },
+    {
+      "id": "NET-COLO-LL",
+      "type": "A4.CommunicationNetwork",
+      "version": "1.0",
+      "name": "Co-location low-latency network",
+      "lifecycle_status": "active",
+      "description": "Cross-connect from the co-location rack to rate contributors.",
+      "attributes": {
+        "address_range": [
+          "172.30.8.0/24"
+        ],
+        "connects": [
+          "NODE-RATEGW-01"
+        ]
+      }
+    },
+    {
+      "id": "DEP-AURORA-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Aurora Pricing Engine — production",
+      "lifecycle_status": "active",
+      "description": "Aurora Pricing Engine in production.",
+      "attributes": {
+        "component_id": "APP-AURORA",
+        "environment_id": "ENV-FX-PROD",
+        "platform_id": "SYS-K8S-MKT-PROD"
+      }
+    },
+    {
+      "id": "DEP-AURORA-UAT",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Aurora Pricing Engine — UAT",
+      "lifecycle_status": "active",
+      "description": "Aurora Pricing Engine in UAT.",
+      "attributes": {
+        "component_id": "APP-AURORA",
+        "environment_id": "ENV-FX-UAT",
+        "platform_id": "SYS-K8S-MKT-UAT"
+      }
+    },
+    {
+      "id": "DEP-LEDGERLINE-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Ledgerline FX Booking — production",
+      "lifecycle_status": "active",
+      "description": "Ledgerline FX Booking in production.",
+      "attributes": {
+        "component_id": "APP-LEDGERLINE",
+        "environment_id": "ENV-FX-PROD",
+        "platform_id": "SYS-K8S-MKT-PROD"
+      }
+    },
+    {
+      "id": "DEP-LEDGERLINE-UAT",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Ledgerline FX Booking — UAT",
+      "lifecycle_status": "active",
+      "description": "Ledgerline FX Booking in UAT.",
+      "attributes": {
+        "component_id": "APP-LEDGERLINE",
+        "environment_id": "ENV-FX-UAT",
+        "platform_id": "SYS-K8S-MKT-UAT"
+      }
+    },
+    {
+      "id": "DEP-CRDS-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Counterparty Reference Data Service — production",
+      "lifecycle_status": "active",
+      "description": "Counterparty Reference Data Service in production.",
+      "attributes": {
+        "component_id": "APP-CRDS",
+        "environment_id": "ENV-FX-PROD",
+        "platform_id": "SYS-K8S-MKT-PROD"
+      }
+    },
+    {
+      "id": "DEP-CONFIRMHUB-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "ConfirmHub — production",
+      "lifecycle_status": "active",
+      "description": "ConfirmHub in production.",
+      "attributes": {
+        "component_id": "APP-CONFIRMHUB",
+        "environment_id": "ENV-FX-PROD",
+        "platform_id": "NODE-CONF-01"
+      }
+    },
+    {
+      "id": "DEP-FXSM-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "FX Settlement Manager — production",
+      "lifecycle_status": "active",
+      "description": "FX Settlement Manager in production.",
+      "attributes": {
+        "component_id": "APP-FXSM",
+        "environment_id": "ENV-FX-PROD",
+        "platform_id": "NODE-FXSM-01"
+      }
+    },
+    {
+      "id": "DEP-RATEGW-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Contributor Rates Gateway — production",
+      "lifecycle_status": "active",
+      "description": "Contributor Rates Gateway in production.",
+      "attributes": {
+        "component_id": "APP-RATEGW",
+        "environment_id": "ENV-FX-PROD",
+        "platform_id": "NODE-RATEGW-01"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "DEP-AURORA-PROD"
+    },
+    {
+      "source": "SYS-K8S-MKT-PROD",
+      "kind": "assignment",
+      "target": "DEP-AURORA-PROD"
+    },
+    {
+      "source": "ENV-FX-UAT",
+      "kind": "aggregation",
+      "target": "DEP-AURORA-UAT"
+    },
+    {
+      "source": "SYS-K8S-MKT-UAT",
+      "kind": "assignment",
+      "target": "DEP-AURORA-UAT"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "DEP-LEDGERLINE-PROD"
+    },
+    {
+      "source": "SYS-K8S-MKT-PROD",
+      "kind": "assignment",
+      "target": "DEP-LEDGERLINE-PROD"
+    },
+    {
+      "source": "ENV-FX-UAT",
+      "kind": "aggregation",
+      "target": "DEP-LEDGERLINE-UAT"
+    },
+    {
+      "source": "SYS-K8S-MKT-UAT",
+      "kind": "assignment",
+      "target": "DEP-LEDGERLINE-UAT"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "DEP-CRDS-PROD"
+    },
+    {
+      "source": "SYS-K8S-MKT-PROD",
+      "kind": "assignment",
+      "target": "DEP-CRDS-PROD"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "DEP-CONFIRMHUB-PROD"
+    },
+    {
+      "source": "NODE-CONF-01",
+      "kind": "assignment",
+      "target": "DEP-CONFIRMHUB-PROD"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "DEP-FXSM-PROD"
+    },
+    {
+      "source": "NODE-FXSM-01",
+      "kind": "assignment",
+      "target": "DEP-FXSM-PROD"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "DEP-RATEGW-PROD"
+    },
+    {
+      "source": "NODE-RATEGW-01",
+      "kind": "assignment",
+      "target": "DEP-RATEGW-PROD"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "SYS-K8S-MKT-PROD"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "SYS-PG-FX-PROD"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "SYS-PG-STL-PROD"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "SYS-PG-REF-PROD"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "SYS-SQL-CONF-PROD"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "NODE-CONF-01"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "NODE-FXSM-01"
+    },
+    {
+      "source": "ENV-FX-PROD",
+      "kind": "aggregation",
+      "target": "NODE-RATEGW-01"
+    },
+    {
+      "source": "ENV-FX-UAT",
+      "kind": "aggregation",
+      "target": "SYS-K8S-MKT-UAT"
+    },
+    {
+      "source": "NODE-CONF-01",
+      "kind": "assignment",
+      "target": "SYS-SQL-CONF-PROD"
+    },
+    {
+      "source": "TS-EVENT-STREAM",
+      "kind": "serving",
+      "target": "SYS-K8S-MKT-PROD"
+    },
+    {
+      "source": "TS-PAYMENT-GATEWAY",
+      "kind": "serving",
+      "target": "NODE-FXSM-01"
+    },
+    {
+      "source": "TS-PAYMENT-GATEWAY",
+      "kind": "serving",
+      "target": "NODE-CONF-01"
+    }
+  ]
+}

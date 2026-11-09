@@ -64,3 +64,4 @@ A file with no `metamodel_version` is taken to be current. The error SDEM gives 
 | RV-04 | `--dry-run` writes nothing. | `test_dry_run_writes_nothing` |
 | RV-05 | A person migrates; the migration is recorded with the person, files, versions and changes. | `test_a_person_decides`, `test_migrates_checks_and_records` |
 | RV-06 | `metamodel/migrations.json` is well formed and every recorded version reaches the current one. | `test_the_metamodel_record_is_well_formed` |
+| RV-07 | In a workspace whose layers agents change through change sets, the migration of each such layer is recorded as a change set (as `sdem change adopt` does, under the person's name), so the next `sdem check` does not report it as an edit outside a change set (AG-S08). A layer already changed outside a change set before the migration is not recorded: the migration says so, and the person adopts that edit and the migration together. | `tests/test_migrate_change_sets.py` |

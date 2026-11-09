@@ -1,0 +1,1421 @@
+{
+  "level": "A3",
+  "model_id": "harbourline-fx-a3",
+  "model_version": "2026.11",
+  "metamodel_version": "0.8.1",
+  "source_system": "SYNTHETIC-APM",
+  "instances": [
+    {
+      "id": "APP-AURORA",
+      "type": "A3.ApplicationComponent",
+      "version": "4.2",
+      "name": "Aurora Pricing Engine",
+      "lifecycle_status": "active",
+      "description": "In-house engine that builds two-way FX prices from contributor rates, applies client margin tiers and issues firm, time-limited quotes.",
+      "attributes": {
+        "vendor": "in-house",
+        "release_version": "4.2.3",
+        "license": "LicenseRef-proprietary",
+        "hosting_model": "PaaS",
+        "recovery_time_objective": "15m",
+        "recovery_point_objective": "0m",
+        "disposition": "enhance",
+        "owner": "ROLE-FX-SALES",
+        "deployed_as": [
+          "DEP-AURORA-PROD",
+          "DEP-AURORA-UAT"
+        ]
+      }
+    },
+    {
+      "id": "APP-CLEARVIEW",
+      "type": "A3.ApplicationComponent",
+      "version": "2026.3",
+      "name": "ClearView Client Portal",
+      "lifecycle_status": "active",
+      "description": "Vendor-hosted web portal where corporate treasurers request FX prices, accept them and view their deals; calls the bank's pricing and booking APIs.",
+      "attributes": {
+        "vendor": "Synthetic Vendor A",
+        "release_version": "2026.3",
+        "license": "LicenseRef-vendor-subscription",
+        "hosting_model": "SaaS",
+        "recovery_time_objective": "4h",
+        "recovery_point_objective": "1h",
+        "disposition": "keep",
+        "owner": "ROLE-FX-SALES"
+      }
+    },
+    {
+      "id": "APP-LEDGERLINE",
+      "type": "A3.ApplicationComponent",
+      "version": "11.0",
+      "name": "Ledgerline FX Booking",
+      "lifecycle_status": "active",
+      "description": "The FX trade capture system: books client and interbank deals, keeps traders' blotters, the desk's net open position and dealer limits.",
+      "attributes": {
+        "vendor": "in-house",
+        "release_version": "11.0.1",
+        "license": "LicenseRef-proprietary",
+        "hosting_model": "PaaS",
+        "recovery_time_objective": "30m",
+        "recovery_point_objective": "0m",
+        "disposition": "enhance",
+        "owner": "ROLE-FX-DEALER"
+      }
+    },
+    {
+      "id": "APP-CONFIRMHUB",
+      "type": "A3.ApplicationComponent",
+      "version": "8.4",
+      "name": "ConfirmHub",
+      "lifecycle_status": "active",
+      "description": "Vendor package that generates outgoing deal confirmations, matches incoming ones from counterparties and queues breaks for analysts.",
+      "attributes": {
+        "vendor": "Synthetic Vendor B",
+        "release_version": "8.4.0",
+        "license": "LicenseRef-vendor-perpetual",
+        "hosting_model": "on-premises",
+        "recovery_time_objective": "4h",
+        "recovery_point_objective": "15m",
+        "disposition": "keep",
+        "owner": "ROLE-FX-CONF"
+      }
+    },
+    {
+      "id": "APP-FXSM",
+      "type": "A3.ApplicationComponent",
+      "version": "5.7",
+      "name": "FX Settlement Manager",
+      "lifecycle_status": "active",
+      "description": "Creates settlement instructions for each currency leg, releases outgoing payments on value date and books incoming nostro advices against expected receipts.",
+      "attributes": {
+        "vendor": "in-house",
+        "release_version": "5.7.2",
+        "license": "LicenseRef-proprietary",
+        "hosting_model": "on-premises",
+        "recovery_time_objective": "2h",
+        "recovery_point_objective": "5m",
+        "disposition": "replace",
+        "owner": "ROLE-FX-STL"
+      }
+    },
+    {
+      "id": "APP-CRDS",
+      "type": "A3.ApplicationComponent",
+      "version": "3.1",
+      "name": "Counterparty Reference Data Service",
+      "lifecycle_status": "active",
+      "description": "The golden source of counterparties for wholesale markets: legal entity, permitted products and standing settlement instructions.",
+      "attributes": {
+        "vendor": "in-house",
+        "release_version": "3.1.0",
+        "license": "LicenseRef-proprietary",
+        "hosting_model": "PaaS",
+        "recovery_time_objective": "1h",
+        "recovery_point_objective": "5m",
+        "disposition": "keep",
+        "owner": "ROLE-REFDATA"
+      }
+    },
+    {
+      "id": "APP-RATEGW",
+      "type": "A3.ApplicationComponent",
+      "version": "2.9",
+      "name": "Contributor Rates Gateway",
+      "lifecycle_status": "active",
+      "description": "Low-latency gateway that takes in exchange-rate feeds from external contributors, cleans and conflates them, and publishes them to internal subscribers.",
+      "attributes": {
+        "vendor": "in-house",
+        "release_version": "2.9.4",
+        "license": "LicenseRef-proprietary",
+        "hosting_model": "on-premises",
+        "recovery_time_objective": "15m",
+        "recovery_point_objective": "0m",
+        "disposition": "keep",
+        "owner": "ROLE-FX-DEALER"
+      }
+    },
+    {
+      "id": "IFC-AURORA-QUOTES",
+      "type": "A3.ApplicationInterface",
+      "version": "1.0",
+      "name": "Aurora Quotes API v2",
+      "lifecycle_status": "active",
+      "description": "REST interface for indicative and firm FX prices.",
+      "attributes": {
+        "contract_format": "OpenAPI 3.1",
+        "security_scheme": "oauth2",
+        "protocol": "https"
+      }
+    },
+    {
+      "id": "IFC-CLEARVIEW-WEB",
+      "type": "A3.ApplicationInterface",
+      "version": "1.0",
+      "name": "ClearView web front end",
+      "lifecycle_status": "active",
+      "description": "Browser front end for corporate users.",
+      "attributes": {
+        "contract_format": "none",
+        "security_scheme": "openIdConnect",
+        "protocol": "https"
+      }
+    },
+    {
+      "id": "IFC-LEDGERLINE-DEALS",
+      "type": "A3.ApplicationInterface",
+      "version": "1.0",
+      "name": "Ledgerline Deals API",
+      "lifecycle_status": "active",
+      "description": "REST interface for booking and reading FX deals, blotters, positions and limits.",
+      "attributes": {
+        "contract_format": "OpenAPI 3.0",
+        "security_scheme": "mutualTLS",
+        "protocol": "https"
+      }
+    },
+    {
+      "id": "IFC-CONFIRMHUB",
+      "type": "A3.ApplicationInterface",
+      "version": "1.0",
+      "name": "ConfirmHub Integration API",
+      "lifecycle_status": "active",
+      "description": "REST interface for issuing and matching confirmations and working breaks.",
+      "attributes": {
+        "contract_format": "OpenAPI 3.0",
+        "security_scheme": "oauth2",
+        "protocol": "https"
+      }
+    },
+    {
+      "id": "IFC-FXSM",
+      "type": "A3.ApplicationInterface",
+      "version": "1.0",
+      "name": "Settlement Manager API",
+      "lifecycle_status": "active",
+      "description": "REST interface for settlement instructions and nostro advices.",
+      "attributes": {
+        "contract_format": "OpenAPI 3.0",
+        "security_scheme": "mutualTLS",
+        "protocol": "https"
+      }
+    },
+    {
+      "id": "IFC-CRDS",
+      "type": "A3.ApplicationInterface",
+      "version": "1.0",
+      "name": "Counterparty API v1",
+      "lifecycle_status": "active",
+      "description": "REST interface to counterparty reference data.",
+      "attributes": {
+        "contract_format": "OpenAPI 3.1",
+        "security_scheme": "oauth2",
+        "protocol": "https"
+      }
+    },
+    {
+      "id": "IFC-RATEGW-ADMIN",
+      "type": "A3.ApplicationInterface",
+      "version": "1.0",
+      "name": "Rates Gateway admin API",
+      "lifecycle_status": "active",
+      "description": "REST interface to manage rate subscriptions and read snapshots.",
+      "attributes": {
+        "contract_format": "OpenAPI 3.0",
+        "security_scheme": "mutualTLS",
+        "protocol": "https"
+      }
+    },
+    {
+      "id": "API-AUR-01",
+      "type": "A3.APIOperation",
+      "version": "2.3",
+      "name": "Request a firm quote",
+      "lifecycle_status": "active",
+      "description": "Returns a firm price for a client, pair, side, amount and value date, valid for a few seconds.",
+      "attributes": {
+        "method": "POST",
+        "path": "/v2/fx/quotes",
+        "payload_fields": [
+          "client_lei",
+          "currency_pair",
+          "side",
+          "notional_amount",
+          "notional_currency",
+          "value_date",
+          "quote_id",
+          "all_in_rate",
+          "valid_until"
+        ],
+        "operation_id": "createQuote",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-AUR-02",
+      "type": "A3.APIOperation",
+      "version": "2.3",
+      "name": "Read a quote",
+      "lifecycle_status": "active",
+      "description": "Returns a quote and whether it is still valid, accepted or expired.",
+      "attributes": {
+        "method": "GET",
+        "path": "/v2/fx/quotes/{quoteId}",
+        "payload_fields": [
+          "quote_id",
+          "all_in_rate",
+          "valid_until",
+          "quote_status"
+        ],
+        "operation_id": "getQuote",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-AUR-03",
+      "type": "A3.APIOperation",
+      "version": "2.3",
+      "name": "Indicative rate ladder",
+      "lifecycle_status": "active",
+      "description": "Returns non-binding bid and ask rates for a pair across standard amounts.",
+      "attributes": {
+        "method": "GET",
+        "path": "/v2/fx/indicative-rates",
+        "payload_fields": [
+          "currency_pair",
+          "amount_band",
+          "bid",
+          "ask",
+          "timestamp"
+        ],
+        "operation_id": "getIndicativeRates",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-FXB-01",
+      "type": "A3.APIOperation",
+      "version": "11.0",
+      "name": "Book a client deal",
+      "lifecycle_status": "active",
+      "description": "Books a client deal from an accepted quote.",
+      "attributes": {
+        "method": "POST",
+        "path": "/fx-deals",
+        "payload_fields": [
+          "deal_ref",
+          "quote_id",
+          "counterparty_lei",
+          "currency_pair",
+          "buy_sell",
+          "dealt_currency",
+          "dealt_amount",
+          "contra_amount",
+          "rate",
+          "trade_date",
+          "value_date",
+          "product_type",
+          "book_code"
+        ],
+        "operation_id": "bookDeal",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-FXB-02",
+      "type": "A3.APIOperation",
+      "version": "11.0",
+      "name": "Read a deal",
+      "lifecycle_status": "active",
+      "description": "Returns a booked deal and its status.",
+      "attributes": {
+        "method": "GET",
+        "path": "/fx-deals/{dealRef}",
+        "payload_fields": [
+          "deal_ref",
+          "counterparty_lei",
+          "currency_pair",
+          "dealt_amount",
+          "rate",
+          "value_date",
+          "deal_status"
+        ],
+        "operation_id": "getDeal",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-FXB-03",
+      "type": "A3.APIOperation",
+      "version": "11.0",
+      "name": "Amend a deal",
+      "lifecycle_status": "active",
+      "description": "Corrects a booked deal before it is confirmed (book, value date or amount).",
+      "attributes": {
+        "method": "PATCH",
+        "path": "/fx-deals/{dealRef}",
+        "payload_fields": [
+          "deal_ref",
+          "book_code",
+          "value_date",
+          "dealt_amount",
+          "amend_reason"
+        ],
+        "operation_id": "amendDeal",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-FXB-04",
+      "type": "A3.APIOperation",
+      "version": "11.0",
+      "name": "Book an interbank trade",
+      "lifecycle_status": "active",
+      "description": "Records a cover trade the dealer has done with another bank.",
+      "attributes": {
+        "method": "POST",
+        "path": "/interbank-trades",
+        "payload_fields": [
+          "trade_ref",
+          "counterparty_lei",
+          "currency_pair",
+          "buy_sell",
+          "dealt_amount",
+          "rate",
+          "value_date",
+          "trader_id",
+          "book_code",
+          "execution_venue"
+        ],
+        "operation_id": "bookInterbankTrade",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-FXB-05",
+      "type": "A3.APIOperation",
+      "version": "11.0",
+      "name": "Trader blotter",
+      "lifecycle_status": "active",
+      "description": "Lists a trader's deals for a trading day.",
+      "attributes": {
+        "method": "GET",
+        "path": "/blotters/{traderId}",
+        "payload_fields": [
+          "trader_id",
+          "trade_date",
+          "deal_ref",
+          "currency_pair",
+          "dealt_amount",
+          "rate"
+        ],
+        "operation_id": "getBlotter",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-FXB-06",
+      "type": "A3.APIOperation",
+      "version": "11.0",
+      "name": "Desk net open position",
+      "lifecycle_status": "active",
+      "description": "Returns the desk's net open position per currency across all its books.",
+      "attributes": {
+        "method": "GET",
+        "path": "/desks/{deskId}/positions",
+        "payload_fields": [
+          "desk_id",
+          "currency",
+          "net_open_position",
+          "as_of"
+        ],
+        "operation_id": "getDeskPosition",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-FXB-07",
+      "type": "A3.APIOperation",
+      "version": "11.0",
+      "name": "Dealer limit headroom",
+      "lifecycle_status": "active",
+      "description": "Returns a dealer's limits and remaining headroom per currency pair.",
+      "attributes": {
+        "method": "GET",
+        "path": "/traders/{traderId}/limits",
+        "payload_fields": [
+          "trader_id",
+          "currency_pair",
+          "limit_amount",
+          "utilised_amount",
+          "headroom"
+        ],
+        "operation_id": "getTraderLimits",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-CNF-01",
+      "type": "A3.APIOperation",
+      "version": "8.4",
+      "name": "Issue a confirmation",
+      "lifecycle_status": "active",
+      "description": "Creates and sends the bank's confirmation for a booked deal.",
+      "attributes": {
+        "method": "POST",
+        "path": "/confirmations",
+        "payload_fields": [
+          "confirmation_id",
+          "deal_ref",
+          "counterparty_lei",
+          "currency_pair",
+          "dealt_amount",
+          "rate",
+          "value_date"
+        ],
+        "operation_id": "issueConfirmation",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-CNF-02",
+      "type": "A3.APIOperation",
+      "version": "8.4",
+      "name": "Run matching",
+      "lifecycle_status": "active",
+      "description": "Matches a received counterparty confirmation against ours and sets the match status.",
+      "attributes": {
+        "method": "PUT",
+        "path": "/confirmations/{confirmationId}/matching-run",
+        "payload_fields": [
+          "confirmation_id",
+          "inbound_message_ref",
+          "match_status",
+          "mismatched_fields"
+        ],
+        "operation_id": "runMatching",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-CNF-03",
+      "type": "A3.APIOperation",
+      "version": "8.4",
+      "name": "Read a confirmation",
+      "lifecycle_status": "active",
+      "description": "Returns a confirmation and its match status.",
+      "attributes": {
+        "method": "GET",
+        "path": "/confirmations/{confirmationId}",
+        "payload_fields": [
+          "confirmation_id",
+          "deal_ref",
+          "match_status",
+          "sent_at",
+          "matched_at"
+        ],
+        "operation_id": "getConfirmation",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-CNF-04",
+      "type": "A3.APIOperation",
+      "version": "8.4",
+      "name": "Read an unmatched-trade case",
+      "lifecycle_status": "active",
+      "description": "Returns a break case for an unmatched trade with its age and owner.",
+      "attributes": {
+        "method": "GET",
+        "path": "/breaks/{breakId}",
+        "payload_fields": [
+          "break_id",
+          "confirmation_id",
+          "age_days",
+          "assigned_to",
+          "break_status"
+        ],
+        "operation_id": "getBreak",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-CNF-05",
+      "type": "A3.APIOperation",
+      "version": "8.4",
+      "name": "Escalate an unmatched trade",
+      "lifecycle_status": "active",
+      "description": "Raises an escalation for an aged break to the desk head.",
+      "attributes": {
+        "method": "POST",
+        "path": "/breaks/{breakId}/escalations",
+        "payload_fields": [
+          "break_id",
+          "escalation_level",
+          "escalated_to",
+          "reason"
+        ],
+        "operation_id": "escalateBreak",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-STL-01",
+      "type": "A3.APIOperation",
+      "version": "5.7",
+      "name": "Create settlement instruction",
+      "lifecycle_status": "active",
+      "description": "Creates the instruction to pay one currency leg of a matched deal.",
+      "attributes": {
+        "method": "POST",
+        "path": "/settlement-instructions",
+        "payload_fields": [
+          "settlement_ref",
+          "deal_ref",
+          "currency",
+          "amount",
+          "value_date",
+          "beneficiary_bic",
+          "nostro_account"
+        ],
+        "operation_id": "createSettlementInstruction",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-STL-02",
+      "type": "A3.APIOperation",
+      "version": "5.7",
+      "name": "Release payment",
+      "lifecycle_status": "active",
+      "description": "Releases a settlement instruction to the payment gateway on value date.",
+      "attributes": {
+        "method": "PUT",
+        "path": "/settlement-instructions/{settlementRef}/release",
+        "payload_fields": [
+          "settlement_ref",
+          "released_by",
+          "released_at",
+          "settlement_status"
+        ],
+        "operation_id": "releasePayment",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-STL-03",
+      "type": "A3.APIOperation",
+      "version": "5.7",
+      "name": "Read settlement instruction",
+      "lifecycle_status": "active",
+      "description": "Returns a settlement instruction and its status.",
+      "attributes": {
+        "method": "GET",
+        "path": "/settlement-instructions/{settlementRef}",
+        "payload_fields": [
+          "settlement_ref",
+          "deal_ref",
+          "currency",
+          "amount",
+          "settlement_status"
+        ],
+        "operation_id": "getSettlementInstruction",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-STL-04",
+      "type": "A3.APIOperation",
+      "version": "5.7",
+      "name": "Record nostro advice",
+      "lifecycle_status": "active",
+      "description": "Records an incoming nostro credit advice and matches it to the expected receive leg.",
+      "attributes": {
+        "method": "POST",
+        "path": "/nostro-advices",
+        "payload_fields": [
+          "advice_ref",
+          "nostro_account",
+          "currency",
+          "amount",
+          "value_date",
+          "settlement_ref"
+        ],
+        "operation_id": "recordNostroAdvice",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-STL-05",
+      "type": "A3.APIOperation",
+      "version": "5.7",
+      "name": "List nostro breaks",
+      "lifecycle_status": "active",
+      "description": "Lists expected receipts with no matching nostro advice for a value date.",
+      "attributes": {
+        "method": "GET",
+        "path": "/nostro-breaks",
+        "payload_fields": [
+          "value_date",
+          "nostro_account",
+          "settlement_ref",
+          "expected_amount",
+          "break_age_days"
+        ],
+        "operation_id": "listNostroBreaks",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-CRD-01",
+      "type": "A3.APIOperation",
+      "version": "1.4",
+      "name": "Read a counterparty",
+      "lifecycle_status": "active",
+      "description": "Returns the golden record of a counterparty by its legal entity identifier.",
+      "attributes": {
+        "method": "GET",
+        "path": "/v1/counterparties/{lei}",
+        "payload_fields": [
+          "counterparty_lei",
+          "legal_name",
+          "country",
+          "status"
+        ],
+        "operation_id": "getCounterparty",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-CRD-02",
+      "type": "A3.APIOperation",
+      "version": "1.4",
+      "name": "Onboard a counterparty",
+      "lifecycle_status": "active",
+      "description": "Adds a new counterparty after due diligence is complete.",
+      "attributes": {
+        "method": "POST",
+        "path": "/v1/counterparties",
+        "payload_fields": [
+          "counterparty_lei",
+          "legal_name",
+          "country",
+          "onboarded_by"
+        ],
+        "operation_id": "createCounterparty",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-CRD-03",
+      "type": "A3.APIOperation",
+      "version": "1.4",
+      "name": "Permitted products",
+      "lifecycle_status": "active",
+      "description": "Returns the products and tenors a counterparty may trade.",
+      "attributes": {
+        "method": "GET",
+        "path": "/v1/counterparties/{lei}/permitted-products",
+        "payload_fields": [
+          "counterparty_lei",
+          "product_type",
+          "max_tenor",
+          "permitted"
+        ],
+        "operation_id": "getPermittedProducts",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-CRD-04",
+      "type": "A3.APIOperation",
+      "version": "1.4",
+      "name": "Standing settlement instructions",
+      "lifecycle_status": "active",
+      "description": "Returns the counterparty's standing settlement instructions for a currency.",
+      "attributes": {
+        "method": "GET",
+        "path": "/v1/counterparties/{lei}/ssis",
+        "payload_fields": [
+          "counterparty_lei",
+          "currency",
+          "beneficiary_bic",
+          "intermediary_bic",
+          "account_number"
+        ],
+        "operation_id": "getSsis",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-RGW-01",
+      "type": "A3.APIOperation",
+      "version": "2.9",
+      "name": "Subscribe to a rate feed",
+      "lifecycle_status": "active",
+      "description": "Sets up delivery of a conflated rate feed to an internal consumer.",
+      "attributes": {
+        "method": "POST",
+        "path": "/subscriptions",
+        "payload_fields": [
+          "subscription_id",
+          "consumer_id",
+          "currency_pairs",
+          "conflation_ms"
+        ],
+        "operation_id": "createSubscription",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "API-RGW-02",
+      "type": "A3.APIOperation",
+      "version": "2.9",
+      "name": "Rate snapshot",
+      "lifecycle_status": "active",
+      "description": "Returns the latest cleaned rate for a pair from the gateway's cache.",
+      "attributes": {
+        "method": "GET",
+        "path": "/snapshots/{currencyPair}",
+        "payload_fields": [
+          "currency_pair",
+          "bid",
+          "ask",
+          "mid",
+          "source",
+          "timestamp"
+        ],
+        "operation_id": "getSnapshot",
+        "deprecated": false
+      }
+    },
+    {
+      "id": "ENT-FX-QUOTE",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "fx_quote",
+      "lifecycle_status": "active",
+      "description": "Aurora table of quotes issued to clients.",
+      "attributes": {
+        "attributes": [
+          "quote_id",
+          "client_lei",
+          "currency_pair",
+          "side",
+          "notional_amount",
+          "notional_currency",
+          "value_date",
+          "all_in_rate",
+          "valid_until",
+          "quote_status"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "2y",
+        "stored_in": [
+          "SYS-PG-FX-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-FX-DEAL",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "fx_deal",
+      "lifecycle_status": "active",
+      "description": "Ledgerline table of client deals.",
+      "attributes": {
+        "attributes": [
+          "deal_ref",
+          "quote_id",
+          "counterparty_lei",
+          "currency_pair",
+          "buy_sell",
+          "dealt_currency",
+          "dealt_amount",
+          "contra_amount",
+          "rate",
+          "trade_date",
+          "value_date",
+          "product_type",
+          "book_code",
+          "deal_status"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-FX-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-IB-TRADE",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "interbank_trade",
+      "lifecycle_status": "active",
+      "description": "Ledgerline table of interbank cover trades.",
+      "attributes": {
+        "attributes": [
+          "trade_ref",
+          "counterparty_lei",
+          "currency_pair",
+          "buy_sell",
+          "dealt_amount",
+          "rate",
+          "value_date",
+          "trader_id",
+          "book_code",
+          "execution_venue"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-FX-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-DESK-POSITION",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "desk_position",
+      "lifecycle_status": "active",
+      "description": "Ledgerline running net open position per desk and currency.",
+      "attributes": {
+        "attributes": [
+          "desk_id",
+          "currency",
+          "net_open_position",
+          "as_of"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "1y",
+        "stored_in": [
+          "SYS-PG-FX-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-DEALER-LIMIT",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "dealer_limit",
+      "lifecycle_status": "active",
+      "description": "Ledgerline dealer limits and their utilisation.",
+      "attributes": {
+        "attributes": [
+          "trader_id",
+          "currency_pair",
+          "limit_amount",
+          "utilised_amount"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "7y",
+        "stored_in": [
+          "SYS-PG-FX-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-CONFIRMATION",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "CONF_MESSAGE",
+      "lifecycle_status": "active",
+      "description": "ConfirmHub store of outgoing and incoming confirmations.",
+      "attributes": {
+        "attributes": [
+          "confirmation_id",
+          "deal_ref",
+          "counterparty_lei",
+          "direction",
+          "match_status",
+          "sent_at",
+          "matched_at"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-SQL-CONF-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-MATCH-BREAK",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "CONF_BREAK",
+      "lifecycle_status": "active",
+      "description": "ConfirmHub queue of unmatched-trade cases.",
+      "attributes": {
+        "attributes": [
+          "break_id",
+          "confirmation_id",
+          "age_days",
+          "assigned_to",
+          "break_status",
+          "escalation_level"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "7y",
+        "stored_in": [
+          "SYS-SQL-CONF-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-SETTLEMENT-INSTR",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "settlement_instruction",
+      "lifecycle_status": "active",
+      "description": "Settlement Manager instruction per currency leg.",
+      "attributes": {
+        "attributes": [
+          "settlement_ref",
+          "deal_ref",
+          "currency",
+          "amount",
+          "value_date",
+          "beneficiary_bic",
+          "nostro_account",
+          "settlement_status"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-STL-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-NOSTRO-ADVICE",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "nostro_advice",
+      "lifecycle_status": "active",
+      "description": "Settlement Manager record of incoming nostro advices.",
+      "attributes": {
+        "attributes": [
+          "advice_ref",
+          "nostro_account",
+          "currency",
+          "amount",
+          "value_date",
+          "settlement_ref"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-STL-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-COUNTERPARTY",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "counterparty",
+      "lifecycle_status": "active",
+      "description": "CRDS golden record of a wholesale counterparty.",
+      "attributes": {
+        "attributes": [
+          "counterparty_lei",
+          "legal_name",
+          "country",
+          "status",
+          "onboarded_by"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-REF-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-SSI",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "standing_settlement_instruction",
+      "lifecycle_status": "active",
+      "description": "CRDS standing settlement instructions per counterparty and currency.",
+      "attributes": {
+        "attributes": [
+          "counterparty_lei",
+          "currency",
+          "beneficiary_bic",
+          "intermediary_bic",
+          "account_number",
+          "effective_from"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-REF-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-RATE-SNAPSHOT",
+      "type": "A3.DataEntity",
+      "version": "1.0",
+      "name": "rate_snapshot",
+      "lifecycle_status": "active",
+      "description": "Rates Gateway in-memory cache of the latest cleaned rate per pair.",
+      "attributes": {
+        "attributes": [
+          "currency_pair",
+          "bid",
+          "ask",
+          "mid",
+          "source",
+          "timestamp"
+        ],
+        "personal_information": false,
+        "system_of_record": false,
+        "retention_period": "1d"
+      }
+    },
+    {
+      "id": "EVT-FX-DEAL-BOOKED",
+      "type": "A3.Event",
+      "version": "11.0",
+      "name": "FxDealBooked",
+      "lifecycle_status": "active",
+      "description": "Published by Ledgerline when a client or interbank deal is booked or amended.",
+      "attributes": {
+        "event_type": "fx.deal.booked",
+        "event_source": "/ledgerline",
+        "schema_uri": "https://example.org/schemas/fx-deal-booked.json",
+        "published_to": [
+          "TS-EVENT-STREAM"
+        ]
+      }
+    },
+    {
+      "id": "EVT-RATE-TICK",
+      "type": "A3.Event",
+      "version": "2.9",
+      "name": "RateTick",
+      "lifecycle_status": "active",
+      "description": "Conflated rate update published by the Rates Gateway to subscribers.",
+      "attributes": {
+        "event_type": "fx.rate.tick",
+        "event_source": "/rates-gateway",
+        "schema_uri": "https://example.org/schemas/rate-tick.json",
+        "published_to": [
+          "TS-EVENT-STREAM"
+        ]
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "APP-AURORA",
+      "kind": "composition",
+      "target": "IFC-AURORA-QUOTES"
+    },
+    {
+      "source": "APP-CLEARVIEW",
+      "kind": "composition",
+      "target": "IFC-CLEARVIEW-WEB"
+    },
+    {
+      "source": "APP-LEDGERLINE",
+      "kind": "composition",
+      "target": "IFC-LEDGERLINE-DEALS"
+    },
+    {
+      "source": "APP-CONFIRMHUB",
+      "kind": "composition",
+      "target": "IFC-CONFIRMHUB"
+    },
+    {
+      "source": "APP-FXSM",
+      "kind": "composition",
+      "target": "IFC-FXSM"
+    },
+    {
+      "source": "APP-CRDS",
+      "kind": "composition",
+      "target": "IFC-CRDS"
+    },
+    {
+      "source": "APP-RATEGW",
+      "kind": "composition",
+      "target": "IFC-RATEGW-ADMIN"
+    },
+    {
+      "source": "IFC-AURORA-QUOTES",
+      "kind": "composition",
+      "target": "API-AUR-01"
+    },
+    {
+      "source": "IFC-AURORA-QUOTES",
+      "kind": "composition",
+      "target": "API-AUR-02"
+    },
+    {
+      "source": "IFC-AURORA-QUOTES",
+      "kind": "composition",
+      "target": "API-AUR-03"
+    },
+    {
+      "source": "IFC-LEDGERLINE-DEALS",
+      "kind": "composition",
+      "target": "API-FXB-01"
+    },
+    {
+      "source": "IFC-LEDGERLINE-DEALS",
+      "kind": "composition",
+      "target": "API-FXB-02"
+    },
+    {
+      "source": "IFC-LEDGERLINE-DEALS",
+      "kind": "composition",
+      "target": "API-FXB-03"
+    },
+    {
+      "source": "IFC-LEDGERLINE-DEALS",
+      "kind": "composition",
+      "target": "API-FXB-04"
+    },
+    {
+      "source": "IFC-LEDGERLINE-DEALS",
+      "kind": "composition",
+      "target": "API-FXB-05"
+    },
+    {
+      "source": "IFC-LEDGERLINE-DEALS",
+      "kind": "composition",
+      "target": "API-FXB-06"
+    },
+    {
+      "source": "IFC-LEDGERLINE-DEALS",
+      "kind": "composition",
+      "target": "API-FXB-07"
+    },
+    {
+      "source": "IFC-CONFIRMHUB",
+      "kind": "composition",
+      "target": "API-CNF-01"
+    },
+    {
+      "source": "IFC-CONFIRMHUB",
+      "kind": "composition",
+      "target": "API-CNF-02"
+    },
+    {
+      "source": "IFC-CONFIRMHUB",
+      "kind": "composition",
+      "target": "API-CNF-03"
+    },
+    {
+      "source": "IFC-CONFIRMHUB",
+      "kind": "composition",
+      "target": "API-CNF-04"
+    },
+    {
+      "source": "IFC-CONFIRMHUB",
+      "kind": "composition",
+      "target": "API-CNF-05"
+    },
+    {
+      "source": "IFC-FXSM",
+      "kind": "composition",
+      "target": "API-STL-01"
+    },
+    {
+      "source": "IFC-FXSM",
+      "kind": "composition",
+      "target": "API-STL-02"
+    },
+    {
+      "source": "IFC-FXSM",
+      "kind": "composition",
+      "target": "API-STL-03"
+    },
+    {
+      "source": "IFC-FXSM",
+      "kind": "composition",
+      "target": "API-STL-04"
+    },
+    {
+      "source": "IFC-FXSM",
+      "kind": "composition",
+      "target": "API-STL-05"
+    },
+    {
+      "source": "IFC-CRDS",
+      "kind": "composition",
+      "target": "API-CRD-01"
+    },
+    {
+      "source": "IFC-CRDS",
+      "kind": "composition",
+      "target": "API-CRD-02"
+    },
+    {
+      "source": "IFC-CRDS",
+      "kind": "composition",
+      "target": "API-CRD-03"
+    },
+    {
+      "source": "IFC-CRDS",
+      "kind": "composition",
+      "target": "API-CRD-04"
+    },
+    {
+      "source": "IFC-RATEGW-ADMIN",
+      "kind": "composition",
+      "target": "API-RGW-01"
+    },
+    {
+      "source": "IFC-RATEGW-ADMIN",
+      "kind": "composition",
+      "target": "API-RGW-02"
+    },
+    {
+      "source": "APP-AURORA",
+      "kind": "access",
+      "target": "ENT-FX-QUOTE"
+    },
+    {
+      "source": "APP-AURORA",
+      "kind": "access",
+      "target": "ENT-RATE-SNAPSHOT"
+    },
+    {
+      "source": "APP-LEDGERLINE",
+      "kind": "access",
+      "target": "ENT-FX-DEAL"
+    },
+    {
+      "source": "APP-LEDGERLINE",
+      "kind": "access",
+      "target": "ENT-IB-TRADE"
+    },
+    {
+      "source": "APP-LEDGERLINE",
+      "kind": "access",
+      "target": "ENT-DESK-POSITION"
+    },
+    {
+      "source": "APP-LEDGERLINE",
+      "kind": "access",
+      "target": "ENT-DEALER-LIMIT"
+    },
+    {
+      "source": "APP-CONFIRMHUB",
+      "kind": "access",
+      "target": "ENT-CONFIRMATION"
+    },
+    {
+      "source": "APP-CONFIRMHUB",
+      "kind": "access",
+      "target": "ENT-MATCH-BREAK"
+    },
+    {
+      "source": "APP-FXSM",
+      "kind": "access",
+      "target": "ENT-SETTLEMENT-INSTR"
+    },
+    {
+      "source": "APP-FXSM",
+      "kind": "access",
+      "target": "ENT-NOSTRO-ADVICE"
+    },
+    {
+      "source": "APP-CRDS",
+      "kind": "access",
+      "target": "ENT-COUNTERPARTY"
+    },
+    {
+      "source": "APP-CRDS",
+      "kind": "access",
+      "target": "ENT-SSI"
+    },
+    {
+      "source": "APP-RATEGW",
+      "kind": "access",
+      "target": "ENT-RATE-SNAPSHOT"
+    },
+    {
+      "source": "APP-RATEGW",
+      "kind": "flow",
+      "target": "APP-AURORA"
+    },
+    {
+      "source": "APP-CLEARVIEW",
+      "kind": "flow",
+      "target": "APP-AURORA"
+    },
+    {
+      "source": "APP-CLEARVIEW",
+      "kind": "flow",
+      "target": "APP-LEDGERLINE"
+    },
+    {
+      "source": "APP-AURORA",
+      "kind": "flow",
+      "target": "APP-LEDGERLINE"
+    },
+    {
+      "source": "APP-LEDGERLINE",
+      "kind": "flow",
+      "target": "APP-CONFIRMHUB"
+    },
+    {
+      "source": "APP-CONFIRMHUB",
+      "kind": "flow",
+      "target": "APP-FXSM"
+    },
+    {
+      "source": "APP-CRDS",
+      "kind": "serving",
+      "target": "APP-LEDGERLINE"
+    },
+    {
+      "source": "APP-CRDS",
+      "kind": "serving",
+      "target": "APP-FXSM"
+    },
+    {
+      "source": "APP-CRDS",
+      "kind": "serving",
+      "target": "APP-AURORA"
+    },
+    {
+      "source": "APP-LEDGERLINE",
+      "kind": "triggering",
+      "target": "EVT-FX-DEAL-BOOKED"
+    },
+    {
+      "source": "EVT-FX-DEAL-BOOKED",
+      "kind": "triggering",
+      "target": "APP-CONFIRMHUB"
+    },
+    {
+      "source": "APP-RATEGW",
+      "kind": "triggering",
+      "target": "EVT-RATE-TICK"
+    },
+    {
+      "source": "EVT-RATE-TICK",
+      "kind": "triggering",
+      "target": "APP-AURORA"
+    }
+  ]
+}

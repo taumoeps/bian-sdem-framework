@@ -17,11 +17,13 @@ from .store import GraphReader, build
 from .validate import load_registry, load_schema, validate
 
 CASES = ROOT / 'examples' / 'acceptance-cases.json'
+BLIND = ROOT / 'examples' / 'blind-cases.json'   # AID-E04: cases whose data and answer key were written without the engine's rules
 EPS = 1e-9
 
 
-def load_cases(ids=None):
-    cases = json.loads(CASES.read_text(encoding='utf-8'))['cases']
+def load_cases(ids=None, blind=False):
+    f = BLIND if blind else CASES
+    cases = json.loads(f.read_text(encoding='utf-8'))['cases'] if f.exists() else []
     return [c for c in cases if not ids or c['id'] in ids]
 
 
@@ -134,47 +136,77 @@ class ReplayEngine:
         return out
 
 
+def _tally(engine, cases, tmp):
+    from .evaluate import key
+    from .rules_engine import BAND
+    tally = {'band': {}, 'evidence_class': {}}; per_case = []
+    for case in cases:
+        e = ROOT / 'examples' / case['estate']
+        res = engine.infer(open_case(case, tmp), case)
+        for part, gold_file, scope in (('proposals', case['gold'], None), ('candidates', case.get('gold_candidates'), set(case.get('candidate_scope') or []))):
+            if not gold_file: continue
+            gold = {key(m) for m in _j(e / gold_file).get('mappings', []) if m.get('status') in (None, 'approved', 'proposed', 'validated')}
+            got = [m for m in res.get(part) or [] if scope is None or m['relationship'] in scope]
+            if part == 'proposals':
+                hit = sum(key(m) in gold for m in got)
+                per_case.append({'case': case['id'], 'proposed': len(got), 'right': hit, 'gold': len(gold),
+                                 'precision': round(hit / len(got), 3) if got else None, 'recall': round(hit / len(gold), 3) if gold else None,
+                                 'missed': sorted(' '.join(k) for k in gold - {key(m) for m in got}),
+                                 'wrong': sorted(f"{' '.join(key(m))} ({m.get('evidence_class')}, {m.get('confidence')})" for m in got if key(m) not in gold)})
+            for m in got:
+                right = key(m) in gold
+                band = next((b for b, v in BAND.items() if v == m.get('confidence')), str(m.get('confidence')))
+                for dim, k in (('band', band), ('evidence_class', m.get('evidence_class') or 'unclassified')):
+                    t = tally[dim].setdefault(k, {'proposed': 0, 'right': 0}); t['proposed'] += 1; t['right'] += right
+    return tally, per_case
+
+
+def _rows(tally):
+    from .rules_engine import BAND, EVIDENCE_CLASSES
+    order = {'band': ['high', 'medium', 'low'], 'evidence_class': list(EVIDENCE_CLASSES) + ['unclassified']}
+    return {dim: [{dim: k, **rows[k], 'precision': round(rows[k]['right'] / rows[k]['proposed'], 3), 'stated': BAND.get(k) if dim == 'band' else None}
+                  for k in order[dim] + sorted(set(rows) - set(order[dim])) if k in rows] for dim, rows in tally.items()}
+
+
 def calibrate(engine=None, ids=None):
     """AID-E03 (OPEN-06): how often each confidence band and each evidence class is right — every acceptance case run by the engine, each
-    proposal and candidate looked up in the case's sealed gold. A report, not a setting: the bands stay as the rules give them (D3)."""
-    from .evaluate import key
-    from .rules_engine import BAND, EVIDENCE_CLASSES
+    proposal and candidate looked up in the case's sealed gold; and, separately, the blind cases (AID-E04), whose data and answer key were
+    written without the engine's rules. A report, not a setting: the bands stay as the rules give them (D3)."""
     engine = engine or engines()['rules']()
-    tally = {'band': {}, 'evidence_class': {}}
     tmp = Path(tempfile.mkdtemp(prefix='sdem-calibrate-'))
     try:
-        for case in load_cases(ids):
-            e = ROOT / 'examples' / case['estate']
-            res = engine.infer(open_case(case, tmp), case)
-            for part, gold_file, scope in (('proposals', case['gold'], None), ('candidates', case.get('gold_candidates'), set(case.get('candidate_scope') or []))):
-                if not gold_file: continue
-                gold = {key(m) for m in _j(e / gold_file).get('mappings', []) if m.get('status') in (None, 'approved', 'proposed', 'validated')}
-                for m in res.get(part) or []:
-                    if scope is not None and m['relationship'] not in scope: continue
-                    right = key(m) in gold
-                    band = next((b for b, v in BAND.items() if v == m.get('confidence')), str(m.get('confidence')))
-                    for dim, k in (('band', band), ('evidence_class', m.get('evidence_class') or 'unclassified')):
-                        t = tally[dim].setdefault(k, {'proposed': 0, 'right': 0}); t['proposed'] += 1; t['right'] += right
+        sealed, _ = _tally(engine, load_cases(ids), tmp)
+        blind_cases = load_cases(ids, blind=True)
+        blind, per_case = _tally(engine, blind_cases, tmp) if blind_cases else ({'band': {}, 'evidence_class': {}}, [])
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    order = {'band': ['high', 'medium', 'low'], 'evidence_class': list(EVIDENCE_CLASSES) + ['unclassified']}
-    out = {}
-    for dim, rows in tally.items():
-        out[dim] = [{dim: k, **rows[k], 'precision': round(rows[k]['right'] / rows[k]['proposed'], 3), 'stated': BAND.get(k) if dim == 'band' else None}
-                    for k in order[dim] + sorted(set(rows) - set(order[dim])) if k in rows]
+    out = _rows(sealed)
+    out['blind'] = {**_rows(blind), 'cases': per_case}
     out['note'] = ('Observed precision against the sealed golds of the acceptance cases, written by SDEM (OPEN-05): a check that the bands are '
-                   'conservative — a band whose observed precision falls below its stated value is a finding for the owner, not a setting.')
+                   'conservative — a band whose observed precision falls below its stated value is a finding for the owner, not a setting. '
+                   'The blind cases (AID-E04) were written without the engine\'s rules: they are the calibration.')
     return out
 
 
 def render_calibration(r):
-    L = ['Confidence calibration (AID-E03) — the acceptance cases against their sealed golds', '']
-    for dim, title in (('band', 'By confidence band (stated value)'), ('evidence_class', 'By evidence class')):
-        L += [title, f"  {'':<16}{'proposed':>9}{'right':>7}{'precision':>11}"]
-        for row in r[dim]:
-            flag = '  below its stated value' if row.get('stated') is not None and row['precision'] < row['stated'] else ''
-            L.append(f"  {row[dim]:<16}{row['proposed']:>9}{row['right']:>7}{row['precision']:>11.0%}" + (f"  (stated {row['stated']:.0%}){flag}" if row.get('stated') is not None else ''))
+    L = ['Confidence calibration (AID-E03, AID-E04)', '']
+    def table(src, label):
+        for dim, title in (('band', f'{label} — by confidence band (stated value)'), ('evidence_class', f'{label} — by evidence class')):
+            L.extend([title, f"  {'':<16}{'proposed':>9}{'right':>7}{'precision':>11}"])
+            for row in src[dim]:
+                flag = '  BELOW its stated value' if row.get('stated') is not None and row['precision'] < row['stated'] else ''
+                L.append(f"  {row[dim]:<16}{row['proposed']:>9}{row['right']:>7}{row['precision']:>11.0%}" + (f"  (stated {row['stated']:.0%}){flag}" if row.get('stated') is not None else ''))
+            if not src[dim]: L.append('  (none)')
+            L.append('')
+    table(r, 'Acceptance cases (golds written by SDEM)')
+    if r['blind']['cases']:
+        table(r['blind'], 'Blind cases (written without the rules)')
+        for c in r['blind']['cases']:
+            L.append(f"  {c['case']}: precision {c['precision']:.0%}, recall {c['recall']:.0%} — {c['right']} of {c['proposed']} proposed links right, {c['right']} of {c['gold']} true links found")
+            for m in c['wrong'][:20]: L.append(f"    wrong:  {m}")
+            for m in c['missed'][:20]: L.append(f"    missed: {m}")
         L.append('')
+    else: L += ['No blind case yet (examples/blind-cases.json).', '']
     return '\n'.join(L + [r['note']])
 
 

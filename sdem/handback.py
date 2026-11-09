@@ -49,7 +49,11 @@ def collect(ws):
             if len(ids) > 1: duplicates.append({'layer': l, 'type': loose[0], 'ids': ids, 'same_key': any(len(v) > 1 for v in by_exact.values()),
                                                 'rule': 'LC-09' if any(len(v) > 1 for v in by_exact.values()) else 'LC-09n'})
     errors = [{'layer': x['level'], 'text': e} for x in d['layers'] for e in x.get('errors', [])]
-    events = [{'id': e['id'], 'layer': e.get('layer'), 'change_set': e.get('change_set')} for e in d['changes']['events'] if not e.get('planned')]
+    from .agents import Estate, CoordinationError
+    try: status = {r['id']: r for r in Estate(ws).status()}
+    except (CoordinationError, OSError, ValueError): status = {}
+    events = [{'id': e['id'], 'layer': e.get('layer'), 'change_set': e.get('change_set'), 'validation': (status.get(e['id']) or {}).get('validation')}
+              for e in d['changes']['events'] if not (status.get(e['id']) or {}).get('planned')]
     review = [{'id': r['id'], 'link': f"{r['source']} {r['rel']} {r['target']}", 'confidence': r['confidence'], 'evidence_class': r.get('evidence_class'),
                'evidence_needed': r['evidence_needed']} for r in d['review']['rows']]
     w = str(ws)

@@ -1,0 +1,13 @@
+{
+  "$comment": "Blind cases for calibrating the inference engine's confidence (AID-E04, OPEN-05/OPEN-06): the workspace and its answer key were written by an author who did not see SDEM's inference rules, the acceptance cases or their golds, and who did not run the engine. Read by `sdem model calibrate`; not acceptance cases — they set no floor and pass or fail nothing. Add a case only with the same independence; record how it was written in the workspace's README.",
+  "cases": [
+    {
+      "id": "B1",
+      "estate": "fx-dealing",
+      "mode": "registry",
+      "given": "mappings.json",
+      "gold": "b1-gold-mappings.json",
+      "author": "a separate agent session with no access to the engine's rules, cases or golds (2026-11-10) — examples/fx-dealing/README.md"
+    }
+  ]
+}

@@ -1,0 +1,1356 @@
+{
+  "graph": {
+    "id": "sdem:harbourline-fx-a1",
+    "type": "sdem.local",
+    "label": "A1 local knowledge graph (harbourline-fx-a1)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "27ffd446f958da18a62079df1230232225dd4dd01394907f12b100000b284079",
+      "level": "A1",
+      "model_id": "harbourline-fx-a1",
+      "model_version": "2026.11",
+      "metamodel_version": "0.8.1",
+      "source_system": "SYNTHETIC-EA-TOOL"
+    },
+    "nodes": {
+      "A1:CAP-FX-000@1.0": {
+        "label": "Foreign Exchange",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-FX-000",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Buy and sell currencies for corporate clients and for the bank's own book, from price to settled cash.",
+          "attributes": {
+            "level": 1,
+            "strategic_importance": "core",
+            "maturity_current": 3,
+            "maturity_target": 4,
+            "owner": "ROLE-FX-HEAD",
+            "subject": [
+              "foreign exchange"
+            ]
+          }
+        }
+      },
+      "A1:CAP-FX-100@1.0": {
+        "label": "FX Client Pricing",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-FX-100",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Give corporate clients executable spot and forward prices, with a client margin applied to the desk's rate.",
+          "attributes": {
+            "level": 2,
+            "strategic_importance": "differentiating",
+            "maturity_current": 2,
+            "maturity_target": 4,
+            "owner": "ROLE-FX-SALES",
+            "subject": [
+              "foreign exchange"
+            ]
+          }
+        }
+      },
+      "A1:CAP-FX-200@1.0": {
+        "label": "FX Deal Execution and Capture",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-FX-200",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Turn an accepted price into a booked deal and record every client and interbank deal against the right book.",
+          "attributes": {
+            "level": 2,
+            "strategic_importance": "core",
+            "maturity_current": 3,
+            "maturity_target": 4,
+            "owner": "ROLE-FX-SALES",
+            "subject": [
+              "foreign exchange"
+            ]
+          }
+        }
+      },
+      "A1:CAP-FX-300@1.0": {
+        "label": "Desk Position and Limit Control",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-FX-300",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Know the desk's net open position per currency in real time and keep each trader inside their limits.",
+          "attributes": {
+            "level": 2,
+            "strategic_importance": "core",
+            "maturity_current": 2,
+            "maturity_target": 4,
+            "owner": "ROLE-FX-DEALER",
+            "subject": [
+              "foreign exchange"
+            ]
+          }
+        }
+      },
+      "A1:CAP-FX-400@1.0": {
+        "label": "Trade Confirmation",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-FX-400",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Agree the economic terms of every deal with the counterparty and chase any that do not match.",
+          "attributes": {
+            "level": 2,
+            "strategic_importance": "core",
+            "maturity_current": 3,
+            "maturity_target": 3,
+            "owner": "ROLE-FX-CONF",
+            "subject": [
+              "foreign exchange"
+            ]
+          }
+        }
+      },
+      "A1:CAP-FX-500@1.0": {
+        "label": "FX Settlement",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-FX-500",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Pay away and receive both currency legs of a deal on value date and prove the cash arrived.",
+          "attributes": {
+            "level": 2,
+            "strategic_importance": "core",
+            "maturity_current": 3,
+            "maturity_target": 4,
+            "owner": "ROLE-FX-STL",
+            "subject": [
+              "foreign exchange"
+            ]
+          }
+        }
+      },
+      "A1:CAP-FX-600@1.0": {
+        "label": "Counterparty and SSI Reference Data",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-FX-600",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Keep one golden record of each counterparty, what it may trade, and its standing settlement instructions.",
+          "attributes": {
+            "level": 2,
+            "strategic_importance": "supporting",
+            "maturity_current": 2,
+            "maturity_target": 3,
+            "owner": "ROLE-REFDATA",
+            "subject": [
+              "foreign exchange"
+            ]
+          }
+        }
+      },
+      "A1:CAP-FX-700@1.0": {
+        "label": "Market Rate Sourcing",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessCapability",
+          "id": "CAP-FX-700",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Take in exchange-rate feeds from external contributors and hand clean rates to internal consumers.",
+          "attributes": {
+            "level": 2,
+            "strategic_importance": "supporting",
+            "maturity_current": 3,
+            "maturity_target": 3,
+            "owner": "ROLE-FX-DEALER",
+            "subject": [
+              "foreign exchange"
+            ]
+          }
+        }
+      },
+      "A1:VS-FX-CLIENT@1.0": {
+        "label": "Client FX: price to settled cash",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStream",
+          "id": "VS-FX-CLIENT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A corporate client's journey from asking for a rate to seeing both currencies settle on value date.",
+          "attributes": {
+            "stages": [
+              "VSS-FX-1",
+              "VSS-FX-2",
+              "VSS-FX-3",
+              "VSS-FX-4"
+            ],
+            "stakeholder": "corporate treasury client",
+            "value_proposition": "a competitive rate, executed instantly and settled without breaks",
+            "owner": "ROLE-FX-HEAD"
+          }
+        }
+      },
+      "A1:VSS-FX-1@1.0": {
+        "label": "Price",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-FX-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The client asks for a rate and receives a firm, time-limited price.",
+          "attributes": {
+            "value_item": "a firm executable rate",
+            "entrance_criteria": "client requests a rate",
+            "exit_criteria": "price shown to client"
+          }
+        }
+      },
+      "A1:VSS-FX-2@1.0": {
+        "label": "Deal",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-FX-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The client accepts the price and the deal is booked.",
+          "attributes": {
+            "value_item": "a booked deal",
+            "entrance_criteria": "client accepts the price",
+            "exit_criteria": "deal booked to the desk"
+          }
+        }
+      },
+      "A1:VSS-FX-3@1.0": {
+        "label": "Confirm",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-FX-3",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Both sides agree the terms of the deal.",
+          "attributes": {
+            "value_item": "agreed deal terms",
+            "entrance_criteria": "deal booked",
+            "exit_criteria": "confirmation matched"
+          }
+        }
+      },
+      "A1:VSS-FX-4@1.0": {
+        "label": "Settle",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-FX-4",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Both currency legs are paid and received on value date.",
+          "attributes": {
+            "value_item": "settled cash",
+            "entrance_criteria": "confirmation matched and value date reached",
+            "exit_criteria": "both legs settled"
+          }
+        }
+      },
+      "A1:PRC-FX-01@1.0": {
+        "label": "Quote and book a client FX deal",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-FX-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A sales trader checks the client may deal, gives a firm price, and books the deal when the client accepts.",
+          "attributes": {
+            "invokes": [
+              "SO-CURRENCY-EXCHANGE-INITIATE-QUOTE",
+              "SO-CURRENCY-EXCHANGE-INITIATE-FX-TRANSACTION-CAPTURE"
+            ],
+            "level": 2,
+            "triggered_by": "client requests a rate on the portal or by phone",
+            "outcome": "booked client deal",
+            "criticality": "high",
+            "frequency": "continuous",
+            "owner": "ROLE-FX-SALES"
+          }
+        }
+      },
+      "A1:ACT-FX-01a@1.0": {
+        "label": "Check the client may trade FX",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-01a",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Confirm the client is an active counterparty allowed to deal the requested product and tenor.",
+          "attributes": {
+            "invokes": [
+              "SO-COUNTERPARTY-ADMINISTRATION-RETRIEVE-COUNTERPARTY-PERMITTED-TRANSACTION"
+            ],
+            "sequence": 1
+          }
+        }
+      },
+      "A1:ACT-FX-01b@1.0": {
+        "label": "Give the client a firm price",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-01b",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Take the desk rate, add the client's margin and show a price that holds for a few seconds.",
+          "attributes": {
+            "invokes": [
+              "SO-CURRENCY-EXCHANGE-INITIATE-QUOTE"
+            ],
+            "sequence": 2
+          }
+        }
+      },
+      "A1:ACT-FX-01c@1.0": {
+        "label": "Book the accepted deal",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-01c",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Record the deal with its rate, amounts, value date and book.",
+          "attributes": {
+            "invokes": [
+              "SO-CURRENCY-EXCHANGE-INITIATE-FX-TRANSACTION-CAPTURE"
+            ],
+            "sequence": 3
+          }
+        }
+      },
+      "A1:ACT-FX-01d@1.0": {
+        "label": "Put the deal on the sales trader's blotter",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-01d",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The new deal appears on the trader's blotter so the desk sees it at once.",
+          "attributes": {
+            "sequence": 4
+          }
+        }
+      },
+      "A1:PRC-FX-02@1.0": {
+        "label": "Manage the desk position and cover in the interbank market",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-FX-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The interbank dealer watches the desk's net open position and covers it with other banks while staying inside limits.",
+          "attributes": {
+            "level": 2,
+            "triggered_by": "net open position moves past the desk's comfort level",
+            "outcome": "position back within appetite",
+            "criticality": "high",
+            "frequency": "continuous",
+            "owner": "ROLE-FX-DEALER"
+          }
+        }
+      },
+      "A1:ACT-FX-02a@1.0": {
+        "label": "Watch the desk net open position",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-02a",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "See the position per currency pair across every book of the desk.",
+          "attributes": {
+            "invokes": [
+              "SO-DEALER-DESK-RETRIEVE-DEALER-DESK-CONSOLIDATED-POSITION-TRACKING"
+            ],
+            "sequence": 1
+          }
+        }
+      },
+      "A1:ACT-FX-02b@1.0": {
+        "label": "Check the dealer's own limit",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-02b",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Before dealing, check the dealer's remaining limit for the currency pair.",
+          "attributes": {
+            "sequence": 2
+          }
+        }
+      },
+      "A1:ACT-FX-02c@1.0": {
+        "label": "Deal the interbank cover",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-02c",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Deal with another bank to offset the position and record the cover trade.",
+          "attributes": {
+            "invokes": [
+              "SO-TRADER-POSITION-OPERATIONS-INITIATE-TRADE-CAPTUREAND-REPORTING"
+            ],
+            "sequence": 3
+          }
+        }
+      },
+      "A1:PRC-FX-03@1.0": {
+        "label": "Confirm and match FX trades",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-FX-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations send the bank's confirmation, match the counterparty's, and chase any that differ.",
+          "attributes": {
+            "level": 2,
+            "triggered_by": "a deal is booked",
+            "outcome": "matched confirmation",
+            "criticality": "medium",
+            "frequency": "continuous",
+            "owner": "ROLE-FX-CONF"
+          }
+        }
+      },
+      "A1:ACT-FX-03a@1.0": {
+        "label": "Send our confirmation",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-03a",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Produce the bank's confirmation of the deal terms and send it to the counterparty.",
+          "attributes": {
+            "invokes": [
+              "SO-TRADE-CONFIRMATION-MATCHING-INITIATE-TRANSACTION-CONFIRMATION-AFFIRMATION"
+            ],
+            "sequence": 1
+          }
+        }
+      },
+      "A1:ACT-FX-03b@1.0": {
+        "label": "Match the counterparty's confirmation",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-03b",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Compare the counterparty's confirmation field by field with ours.",
+          "attributes": {
+            "invokes": [
+              "SO-TRADE-CONFIRMATION-MATCHING-EXECUTE-TRANSACTION-CONFIRMATION-AFFIRMATION"
+            ],
+            "sequence": 2
+          }
+        }
+      },
+      "A1:ACT-FX-03c@1.0": {
+        "label": "Chase and escalate unmatched trades",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-03c",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "An analyst investigates breaks and escalates old ones to the desk head.",
+          "attributes": {
+            "invokes": [
+              "SO-TRADE-CONFIRMATION-MATCHING-INITIATE-UNMATCHED-MARKET-TRADE-ESCALATION"
+            ],
+            "sequence": 3
+          }
+        }
+      },
+      "A1:PRC-FX-04@1.0": {
+        "label": "Settle FX trades",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-FX-04",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Settlements enrich each deal with the counterparty's settlement instructions, release the payment and confirm receipt on the nostro.",
+          "attributes": {
+            "level": 2,
+            "triggered_by": "a matched deal approaches value date",
+            "outcome": "both legs settled",
+            "criticality": "high",
+            "frequency": "daily",
+            "owner": "ROLE-FX-STL"
+          }
+        }
+      },
+      "A1:ACT-FX-04a@1.0": {
+        "label": "Apply standing settlement instructions",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-04a",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Look up where the counterparty wants each currency paid and attach it to the deal.",
+          "attributes": {
+            "sequence": 1
+          }
+        }
+      },
+      "A1:ACT-FX-04b@1.0": {
+        "label": "Release the outgoing payment",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-04b",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Create the settlement instruction for the pay leg and release it on value date.",
+          "attributes": {
+            "invokes": [
+              "SO-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-CASH-SETTLEMENT",
+              "SO-TRADE-SETTLEMENT-EXECUTE-MARKET-TRADE-CASH-SETTLEMENT"
+            ],
+            "sequence": 2
+          }
+        }
+      },
+      "A1:ACT-FX-04c@1.0": {
+        "label": "Confirm the receive leg arrived",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActivity",
+          "id": "ACT-FX-04c",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Match the nostro advice for the incoming currency against the expected receipt.",
+          "attributes": {
+            "invokes": [
+              "SO-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-SETTLEMENT-CONFIRMATION"
+            ],
+            "sequence": 3
+          }
+        }
+      },
+      "A1:ROLE-FX-HEAD@1.0": {
+        "label": "Head of FX Trading",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRole",
+          "id": "ROLE-FX-HEAD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Accountable for the FX business, its P&L and risk appetite.",
+          "attributes": {
+            "role_kind": "role",
+            "responsibilities": "accountable for the FX business, its P&L and risk appetite"
+          }
+        }
+      },
+      "A1:ROLE-FX-SALES@1.0": {
+        "label": "FX Sales Trader",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRole",
+          "id": "ROLE-FX-SALES",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Prices and books FX deals for corporate clients.",
+          "attributes": {
+            "role_kind": "role",
+            "responsibilities": "prices and books FX deals for corporate clients"
+          }
+        }
+      },
+      "A1:ROLE-FX-DEALER@1.0": {
+        "label": "Interbank FX Dealer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRole",
+          "id": "ROLE-FX-DEALER",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Runs the desk position and deals cover with other banks.",
+          "attributes": {
+            "role_kind": "role",
+            "responsibilities": "runs the desk position and deals cover with other banks"
+          }
+        }
+      },
+      "A1:ROLE-FX-CONF@1.0": {
+        "label": "Confirmations Analyst",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRole",
+          "id": "ROLE-FX-CONF",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Sends, matches and chases trade confirmations.",
+          "attributes": {
+            "role_kind": "role",
+            "responsibilities": "sends, matches and chases trade confirmations"
+          }
+        }
+      },
+      "A1:ROLE-FX-STL@1.0": {
+        "label": "Settlements Officer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRole",
+          "id": "ROLE-FX-STL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Releases FX payments and resolves nostro breaks.",
+          "attributes": {
+            "role_kind": "role",
+            "responsibilities": "releases FX payments and resolves nostro breaks"
+          }
+        }
+      },
+      "A1:ROLE-REFDATA@1.0": {
+        "label": "Reference Data Steward",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRole",
+          "id": "ROLE-REFDATA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Maintains counterparty records and settlement instructions.",
+          "attributes": {
+            "role_kind": "role",
+            "responsibilities": "maintains counterparty records and settlement instructions"
+          }
+        }
+      },
+      "A1:BO-FX-QUOTE@1.0": {
+        "label": "FX Price Quote",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-FX-QUOTE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A firm price offered to a client for a currency pair, amount and value date, valid for a short time.",
+          "attributes": {
+            "attributes": [
+              "quote_id",
+              "client_lei",
+              "currency_pair",
+              "side",
+              "notional_amount",
+              "notional_currency",
+              "value_date",
+              "all_in_rate",
+              "valid_until"
+            ],
+            "personal_information": false,
+            "access_classification": "confidential"
+          }
+        }
+      },
+      "A1:BO-FX-DEAL@1.0": {
+        "label": "FX Deal",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-FX-DEAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "An agreed exchange of one currency for another at a rate on a value date.",
+          "attributes": {
+            "attributes": [
+              "deal_ref",
+              "counterparty_lei",
+              "currency_pair",
+              "buy_sell",
+              "dealt_currency",
+              "dealt_amount",
+              "contra_amount",
+              "rate",
+              "trade_date",
+              "value_date",
+              "product_type",
+              "book_code"
+            ],
+            "personal_information": false,
+            "access_classification": "confidential"
+          }
+        }
+      },
+      "A1:BO-FX-CONFIRMATION@1.0": {
+        "label": "Trade Confirmation",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-FX-CONFIRMATION",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The written record of a deal's terms that both sides agree.",
+          "attributes": {
+            "attributes": [
+              "confirmation_id",
+              "deal_ref",
+              "counterparty_lei",
+              "match_status",
+              "sent_at",
+              "matched_at"
+            ],
+            "personal_information": false,
+            "access_classification": "confidential"
+          }
+        }
+      },
+      "A1:BO-FX-SETTLEMENT@1.0": {
+        "label": "Settlement Instruction",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-FX-SETTLEMENT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The instruction to pay or receive one currency leg of a deal on value date.",
+          "attributes": {
+            "attributes": [
+              "settlement_ref",
+              "deal_ref",
+              "currency",
+              "amount",
+              "value_date",
+              "beneficiary_bic",
+              "nostro_account",
+              "settlement_status"
+            ],
+            "personal_information": false,
+            "access_classification": "confidential"
+          }
+        }
+      },
+      "A1:BO-COUNTERPARTY@1.0": {
+        "label": "Counterparty",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-COUNTERPARTY",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A client or bank the desk deals with, identified by its legal entity identifier.",
+          "attributes": {
+            "attributes": [
+              "counterparty_lei",
+              "legal_name",
+              "country",
+              "status",
+              "permitted_products"
+            ],
+            "personal_information": false,
+            "access_classification": "confidential"
+          }
+        }
+      },
+      "A1:BO-FX-RATE@1.0": {
+        "label": "Exchange Rate",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-FX-RATE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A market rate for a currency pair at a moment, from a named contributor.",
+          "attributes": {
+            "attributes": [
+              "currency_pair",
+              "bid",
+              "ask",
+              "mid",
+              "source",
+              "timestamp"
+            ],
+            "personal_information": false,
+            "access_classification": "internal"
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A1:CAP-FX-000-composition-CAP-FX-100",
+        "source": "A1:CAP-FX-000@1.0",
+        "target": "A1:CAP-FX-100@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-01"
+        }
+      },
+      {
+        "id": "A1:CAP-FX-000-composition-CAP-FX-200",
+        "source": "A1:CAP-FX-000@1.0",
+        "target": "A1:CAP-FX-200@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-01"
+        }
+      },
+      {
+        "id": "A1:CAP-FX-000-composition-CAP-FX-300",
+        "source": "A1:CAP-FX-000@1.0",
+        "target": "A1:CAP-FX-300@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-01"
+        }
+      },
+      {
+        "id": "A1:CAP-FX-000-composition-CAP-FX-400",
+        "source": "A1:CAP-FX-000@1.0",
+        "target": "A1:CAP-FX-400@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-01"
+        }
+      },
+      {
+        "id": "A1:CAP-FX-000-composition-CAP-FX-500",
+        "source": "A1:CAP-FX-000@1.0",
+        "target": "A1:CAP-FX-500@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-01"
+        }
+      },
+      {
+        "id": "A1:CAP-FX-000-composition-CAP-FX-600",
+        "source": "A1:CAP-FX-000@1.0",
+        "target": "A1:CAP-FX-600@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-01"
+        }
+      },
+      {
+        "id": "A1:CAP-FX-000-composition-CAP-FX-700",
+        "source": "A1:CAP-FX-000@1.0",
+        "target": "A1:CAP-FX-700@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-01"
+        }
+      },
+      {
+        "id": "A1:VS-FX-CLIENT-composition-VSS-FX-1",
+        "source": "A1:VS-FX-CLIENT@1.0",
+        "target": "A1:VSS-FX-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-FX-CLIENT-composition-VSS-FX-2",
+        "source": "A1:VS-FX-CLIENT@1.0",
+        "target": "A1:VSS-FX-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-FX-CLIENT-composition-VSS-FX-3",
+        "source": "A1:VS-FX-CLIENT@1.0",
+        "target": "A1:VSS-FX-3@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VS-FX-CLIENT-composition-VSS-FX-4",
+        "source": "A1:VS-FX-CLIENT@1.0",
+        "target": "A1:VSS-FX-4@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-05"
+        }
+      },
+      {
+        "id": "A1:VSS-FX-1-flow-VSS-FX-2",
+        "source": "A1:VSS-FX-1@1.0",
+        "target": "A1:VSS-FX-2@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-07"
+        }
+      },
+      {
+        "id": "A1:VSS-FX-2-flow-VSS-FX-3",
+        "source": "A1:VSS-FX-2@1.0",
+        "target": "A1:VSS-FX-3@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-07"
+        }
+      },
+      {
+        "id": "A1:VSS-FX-3-flow-VSS-FX-4",
+        "source": "A1:VSS-FX-3@1.0",
+        "target": "A1:VSS-FX-4@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-07"
+        }
+      },
+      {
+        "id": "A1:CAP-FX-100-serving-VSS-FX-1",
+        "source": "A1:CAP-FX-100@1.0",
+        "target": "A1:VSS-FX-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        }
+      },
+      {
+        "id": "A1:CAP-FX-200-serving-VSS-FX-2",
+        "source": "A1:CAP-FX-200@1.0",
+        "target": "A1:VSS-FX-2@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        }
+      },
+      {
+        "id": "A1:CAP-FX-400-serving-VSS-FX-3",
+        "source": "A1:CAP-FX-400@1.0",
+        "target": "A1:VSS-FX-3@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        }
+      },
+      {
+        "id": "A1:CAP-FX-500-serving-VSS-FX-4",
+        "source": "A1:CAP-FX-500@1.0",
+        "target": "A1:VSS-FX-4@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        }
+      },
+      {
+        "id": "A1:CAP-FX-000-serving-VS-FX-CLIENT",
+        "source": "A1:CAP-FX-000@1.0",
+        "target": "A1:VS-FX-CLIENT@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-03"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-composition-ACT-FX-01a",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:ACT-FX-01a@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-composition-ACT-FX-01b",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:ACT-FX-01b@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-composition-ACT-FX-01c",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:ACT-FX-01c@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-composition-ACT-FX-01d",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:ACT-FX-01d@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-02-composition-ACT-FX-02a",
+        "source": "A1:PRC-FX-02@1.0",
+        "target": "A1:ACT-FX-02a@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-02-composition-ACT-FX-02b",
+        "source": "A1:PRC-FX-02@1.0",
+        "target": "A1:ACT-FX-02b@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-02-composition-ACT-FX-02c",
+        "source": "A1:PRC-FX-02@1.0",
+        "target": "A1:ACT-FX-02c@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-03-composition-ACT-FX-03a",
+        "source": "A1:PRC-FX-03@1.0",
+        "target": "A1:ACT-FX-03a@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-03-composition-ACT-FX-03b",
+        "source": "A1:PRC-FX-03@1.0",
+        "target": "A1:ACT-FX-03b@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-03-composition-ACT-FX-03c",
+        "source": "A1:PRC-FX-03@1.0",
+        "target": "A1:ACT-FX-03c@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-04-composition-ACT-FX-04a",
+        "source": "A1:PRC-FX-04@1.0",
+        "target": "A1:ACT-FX-04a@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-04-composition-ACT-FX-04b",
+        "source": "A1:PRC-FX-04@1.0",
+        "target": "A1:ACT-FX-04b@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-04-composition-ACT-FX-04c",
+        "source": "A1:PRC-FX-04@1.0",
+        "target": "A1:ACT-FX-04c@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-24"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-realization-CAP-FX-100",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:CAP-FX-100@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-realization-CAP-FX-200",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:CAP-FX-200@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-02-realization-CAP-FX-300",
+        "source": "A1:PRC-FX-02@1.0",
+        "target": "A1:CAP-FX-300@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-03-realization-CAP-FX-400",
+        "source": "A1:PRC-FX-03@1.0",
+        "target": "A1:CAP-FX-400@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-04-realization-CAP-FX-500",
+        "source": "A1:PRC-FX-04@1.0",
+        "target": "A1:CAP-FX-500@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-08"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-triggering-PRC-FX-03",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:PRC-FX-03@1.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-14"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-03-triggering-PRC-FX-04",
+        "source": "A1:PRC-FX-03@1.0",
+        "target": "A1:PRC-FX-04@1.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-14"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-realization-VSS-FX-1",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:VSS-FX-1@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-09"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-realization-VSS-FX-2",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:VSS-FX-2@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-09"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-03-realization-VSS-FX-3",
+        "source": "A1:PRC-FX-03@1.0",
+        "target": "A1:VSS-FX-3@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-09"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-04-realization-VSS-FX-4",
+        "source": "A1:PRC-FX-04@1.0",
+        "target": "A1:VSS-FX-4@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-09"
+        }
+      },
+      {
+        "id": "A1:ROLE-FX-SALES-assignment-PRC-FX-01",
+        "source": "A1:ROLE-FX-SALES@1.0",
+        "target": "A1:PRC-FX-01@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-36"
+        }
+      },
+      {
+        "id": "A1:ROLE-FX-DEALER-assignment-PRC-FX-02",
+        "source": "A1:ROLE-FX-DEALER@1.0",
+        "target": "A1:PRC-FX-02@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-36"
+        }
+      },
+      {
+        "id": "A1:ROLE-FX-CONF-assignment-PRC-FX-03",
+        "source": "A1:ROLE-FX-CONF@1.0",
+        "target": "A1:PRC-FX-03@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-36"
+        }
+      },
+      {
+        "id": "A1:ROLE-FX-STL-assignment-PRC-FX-04",
+        "source": "A1:ROLE-FX-STL@1.0",
+        "target": "A1:PRC-FX-04@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-36"
+        }
+      },
+      {
+        "id": "A1:ROLE-REFDATA-assignment-ACT-FX-04a",
+        "source": "A1:ROLE-REFDATA@1.0",
+        "target": "A1:ACT-FX-04a@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-36"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-access-BO-FX-QUOTE",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:BO-FX-QUOTE@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-access-BO-FX-DEAL",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:BO-FX-DEAL@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-01-access-BO-COUNTERPARTY",
+        "source": "A1:PRC-FX-01@1.0",
+        "target": "A1:BO-COUNTERPARTY@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-02-access-BO-FX-DEAL",
+        "source": "A1:PRC-FX-02@1.0",
+        "target": "A1:BO-FX-DEAL@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-03-access-BO-FX-CONFIRMATION",
+        "source": "A1:PRC-FX-03@1.0",
+        "target": "A1:BO-FX-CONFIRMATION@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-04-access-BO-FX-SETTLEMENT",
+        "source": "A1:PRC-FX-04@1.0",
+        "target": "A1:BO-FX-SETTLEMENT@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      },
+      {
+        "id": "A1:PRC-FX-04-access-BO-COUNTERPARTY",
+        "source": "A1:PRC-FX-04@1.0",
+        "target": "A1:BO-COUNTERPARTY@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      }
+    ]
+  }
+}
