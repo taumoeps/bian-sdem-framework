@@ -1,10 +1,8 @@
-# Structural reference-architecture patterns — roles and connectors (draft for the owner's decision)
+# Structural reference-architecture patterns — roles and connectors
 
-> **Status: DRAFT, 2026-11-10. Nothing is implemented. Nothing in the metamodel changes.** This proposes an addition to the pattern
-> files an organisation profile includes (`sdem-pattern/1`, PR-17) and the rule ids PR-21…PR-26 for the profile spec. It follows the
-> full-bank simulation (`tests/test_bank_simulation.py`). That test showed that today a pattern is a list of rules about one record.
-> An organisation's reference patterns are drawn as **structures**: named parts (nodes), the connectors between them, and the zones
-> they sit in. B5 still holds: a pattern **checks** a design and does not generate one.
+> **Status: approved and built — the owner approved S1–S6 as recommended (2026-11-10); SDEM 0.18.0. Nothing in the metamodel changed.** Built: `structure` in `sdem-pattern/1` (S1), binding from the anchor with a role named in `conforms_to` winning (S2), the pattern's or part's `severity` (S3), `sdem pattern draw` (S4), no generation (S5), and `sdem pattern extract` for draw.io, Visio, PlantUML and Mermaid (S6). The rules are PR-21…PR-31 in [sdem-profile-spec.md](sdem-profile-spec.md); the synthetic example is `examples/profiles/patterns/example-secure-api-edge.json`, extracted from `examples/profiles/patterns/diagrams/secure-api-edge.{drawio,vsdx,puml,mmd}`; tests `tests/test_structural_patterns.py`.
+>
+> Originally: DRAFT, 2026-11-10, following the full-bank simulation (`tests/test_bank_simulation.py`), which showed that a pattern was a list of rules about one record.
 
 ## 1. The problem
 
@@ -88,6 +86,29 @@ The structural part is **checking existing data against an organisation's templa
    - deterministic order;
    - the drawing marks the missing part.
 
+## 4a. From the organisation's diagrams to a pattern file (extraction)
+
+Reference patterns are drawn, not written as JSON. A person never has to type the JSON: `sdem pattern extract` reads the diagram and
+writes a **draft** pattern file plus an **extraction report**. The pattern owner reviews both, and `sdem profile check` validates the
+result before the profile includes it. The organisation's diagrams in this case are **draw.io, PlantUML, Mermaid and Visio**. All four
+are text or XML, so extraction is **deterministic** and needs the standard library only (`xml.etree`, `zipfile`, `zlib`, `re`). No image
+recognition is used.
+
+| Format | What is read | How |
+|---|---|---|
+| **draw.io** (`.drawio`, `.xml`) | each `mxCell`: vertices (shapes, with label and style, e.g. `mxgraph.archimate3…`), edges (`source`/`target`), containers (`parent` = zone or group) | XML; a compressed diagram is base64 + deflate + URL encoding, all in the standard library |
+| **PlantUML** (`.puml`) | elements (`component`, `node`, `database`, `rectangle`, ArchiMate macros such as `Application_Component(id, "label")`), arrows (`-->`, `..>`, `Rel_…`), nesting `{ … }` for zones, `<<stereotypes>>` | a documented subset of the grammar; a line outside it is reported, never skipped silently |
+| **Mermaid** (`.mmd`, a fenced block in Markdown) | `flowchart`/`graph` nodes (`A[label]`, `B[(database)]`), edges (`-->`, `-.->`, with labels), `subgraph` for zones, `classDef`/`:::class` as type hints | a documented subset (flowchart; C4 diagrams later) |
+| **Visio** (`.vsdx`) | each page's shapes (`Shape`, text, master/stencil name), connectors via `Connects` (`FromSheet` and `ToSheet`), containers | zip + XML (Open Packaging Conventions) |
+
+| Id | Proposed requirement |
+|---|---|
+| PR-27 | **One extraction step, for every format:** shape → role, connector → connector, container → zone. The output is a pattern file in the PR-21…PR-24 form. Each role and connector cites its source (`diagram.drawio#cell-17`, `pattern.vsdx#page1/shape-4`, `pattern.puml:12`). |
+| PR-28 | **A mapping table, in the profile**, turns the organisation's shape names, stencils, stereotypes and styles into types (`"API Gateway" → BANK.A3.APIGateway`; `mxgraph.archimate3.application` + `appType=comp` → `A3.ApplicationComponent`), and connector styles or labels into links (`"deployed on" → DEPLOYED_ON`). A shape with no entry is **listed as unmapped**, never guessed. Shapes from ArchiMate stencils map by their ArchiMate type with no table needed. |
+| PR-29 | **Every connector is checked against the metamodel** (PR-22) at extraction. One it does not allow is reported with the reason, never dropped. A zone becomes a role check (`network_zone in [restricted]`) only through the mapping table (`"Restricted zone" → network_zone = restricted`). |
+| PR-30 | **A draft until a person approves it.** `sdem pattern extract … --out draft.json` writes nothing into the profile. The pattern owner reviews, edits if needed, and includes it (a profile change, recorded like any other). An agent may run the extraction and explain the report, never approve. |
+| PR-31 | **Re-extraction shows the difference.** When the diagram changes, extracting again compares with the included pattern: roles and connectors added, removed or changed, so the owner approves a change, not a whole new file. |
+
 ## 5. Decisions for the owner
 
 | # | Decision | Recommendation |
@@ -97,3 +118,4 @@ The structural part is **checking existing data against an organisation's templa
 | S3 | A required role or connector not met: an error (blocks `sdem check`) or a warning? | **The pattern's `severity`**, default error, as for rules. |
 | S4 | Drawing a pattern over a design (PR-25, DG-16): in the same release, or after? | **Same release**: the drawing is how architects read a pattern. |
 | S5 | Generating a design from a pattern? | **Still deferred (B5).** |
+| S6 | Extract patterns from the organisation's diagrams (draw.io, PlantUML, Mermaid, Visio) into draft pattern files (PR-27…PR-31)? | **Yes, all four, deterministic, standard library only**: draw.io and Visio first (their files hold real shapes and connectors), then PlantUML and Mermaid (a documented subset of each grammar). Every unmapped shape or disallowed connector is reported, and a person approves the result. |

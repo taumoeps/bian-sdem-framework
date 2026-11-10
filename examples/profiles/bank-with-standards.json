@@ -18,5 +18,75 @@
       "definition": "The bank's API gateway, which fronts external APIs",
       "source": "synthetic example"
     }
-  ]
+  ],
+  "diagram_map": {
+    "shapes": [
+      {
+        "label": "API Gateway",
+        "type": "BANK.A3.APIGateway"
+      },
+      {
+        "stereotype": "gateway",
+        "type": "BANK.A3.APIGateway"
+      },
+      {
+        "label": "Application",
+        "type": "A3.ApplicationComponent"
+      },
+      {
+        "label": "Container platform",
+        "type": "A4.SystemSoftware"
+      },
+      {
+        "label": "Private network",
+        "type": "A4.CommunicationNetwork"
+      },
+      {
+        "label": "Secrets service",
+        "type": "A4.TechnologyService"
+      }
+    ],
+    "connectors": [
+      {
+        "label": "routes requests to",
+        "kind": "flow"
+      },
+      {
+        "label": "deployed on",
+        "relationship": "DEPLOYED_ON"
+      },
+      {
+        "label": "connected to",
+        "kind": "association"
+      },
+      {
+        "label": "serves",
+        "kind": "serving"
+      }
+    ],
+    "zones": [
+      {
+        "label": "Restricted zone",
+        "entity": "A4.InfrastructureComponent",
+        "check": {
+          "attribute": "network_zone",
+          "op": "in",
+          "value": [
+            "restricted"
+          ]
+        }
+      },
+      {
+        "label": "DMZ",
+        "entity": "A4.InfrastructureComponent",
+        "check": {
+          "attribute": "network_zone",
+          "op": "in",
+          "value": [
+            "dmz"
+          ]
+        }
+      }
+    ]
+  }
 }

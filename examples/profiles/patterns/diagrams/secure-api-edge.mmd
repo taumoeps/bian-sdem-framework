@@ -1,0 +1,21 @@
+---
+title: Secure API edge — reference pattern (synthetic)
+---
+flowchart TB
+  subgraph dmz [DMZ]
+    gw["API Gateway"]:::app
+  end
+  app["Application"]:::app
+  subgraph rz [Restricted zone]
+    k8s["Container platform (1..n)"]:::tech
+    net["Private network (optional)"]:::tech
+  end
+  sec(["Secrets service (optional)"]):::tech
+  gw -->|routes requests to| app
+  app -.->|deployed on| k8s
+  k8s ---|connected to| net
+  sec -->|serves| k8s
+  classDef app fill:#b5ffff,stroke:#1c8fc0
+  classDef tech fill:#c9e7b7,stroke:#2f9e63
+  style dmz stroke-dasharray: 6 4
+  style rz stroke-dasharray: 6 4

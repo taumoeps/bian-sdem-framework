@@ -1,0 +1,10 @@
+{
+  "format": "sdem-profile/1",
+  "name": "bank-with-structures",
+  "version": 1,
+  "extends": "bank-with-standards.json",
+  "description": "The made-up bank's standards and patterns, with its Secure API edge reference pattern as a structure \u2014 extracted from its diagram and approved (synthetic).",
+  "includes": [
+    "patterns/example-secure-api-edge.json"
+  ]
+}

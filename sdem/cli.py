@@ -59,6 +59,8 @@ JOURNEYS = {
                  'sdem handback --workspace examples/payment-initiation'),
     'comply':   ('J1', "the organisation's standards and reference-architecture patterns over a workspace: per rule and record compliant, non-compliant, unresolved or under an exception — separate from sdem check (PR-19)", 'sdem.comply', [],
                  'sdem comply --workspace examples/payment-initiation'),
+    'pattern':  ('J1', "reference-architecture patterns as structures — extract a draft pattern from the organisation's diagram (draw.io, Visio, PlantUML, Mermaid), compare it with the included one, draw it over a design (PR-21…PR-31)", 'sdem.patterns', [],
+                 'sdem pattern extract --from secure-api.drawio --workspace examples/payment-initiation --id PAT-X --anchor Application'),
     'exception': ('J3', "a person's time-limited exception to one of the organisation's rules for named records — a governed decision; list shows them active or expired (PR-18)", 'sdem.exceptions', [],
                  'sdem exception list --workspace examples/payment-initiation'),
     'diagram':  ('J7', 'ArchiMate diagrams of a workspace from SDEM\'s templates — capabilities and value stream, business process, BIAN service domains, application cooperation, technology and deployment, layered — only stored, approved links drawn', 'sdem.viewpoints', [],

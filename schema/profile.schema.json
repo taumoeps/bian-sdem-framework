@@ -453,6 +453,102 @@
         "minLength": 1
       },
       "description": "standards files (format sdem-standard/1) and pattern files (format sdem-pattern/1), paths relative to this profile — merged after the base and before this profile's own additions; standards first, then patterns (PR-13, PR-17)"
+    },
+    "diagram_map": {
+      "type": "object",
+      "description": "PR-28: how sdem pattern extract reads the organisation's pattern diagrams — its shape names, stereotypes and stencils as types, its connector labels as links, its zones as checks; a team's entries are matched before its base's",
+      "properties": {
+        "shapes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "stereotype": {
+                "type": "string"
+              },
+              "stencil": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "connectors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "label"
+            ],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "relationship": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "zones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "label"
+            ],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "entity": {
+                "type": "string"
+              },
+              "check": {
+                "type": "object",
+                "required": [
+                  "attribute",
+                  "op"
+                ],
+                "properties": {
+                  "attribute": {
+                    "type": "string"
+                  },
+                  "op": {
+                    "enum": [
+                      "==",
+                      "!=",
+                      "<",
+                      "<=",
+                      ">",
+                      ">=",
+                      "in",
+                      "not_in",
+                      "before",
+                      "after"
+                    ]
+                  },
+                  "value": {
+                    "description": "a value, a list (in / not_in), a number, or a date: an ISO date, today, today+90d, today-365d"
+                  }
+                },
+                "description": "the attribute compares with a value — on the record, or with across on each record linked across layers (PR-15)"
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -163,18 +163,31 @@ def collect(ws, as_of=None):
     from . import profile as _p
     from .layers import FILES
     from .metamodel import Metamodel
+    from .patterns import evaluate as structures
+    ws = Path(ws)
+    datasets, maps, mm, merged = workspace_data(ws)
+    as_of = as_of or today()
+    findings = evaluate(datasets, maps, mm, _p.rules(), _p.exceptions(), as_of)
+    found, bindings = structures(datasets, maps, mm, _p.structures(), _p.exceptions(), as_of)   # PR-21…PR-24: patterns as structures
+    findings += found
+    s, groups = summary(findings)
+    blocking = [f for f in findings if f['outcome'] == 'non_compliant' and f['severity'] == 'error']
+    return {'workspace': str(ws), 'as_of': as_of.isoformat(), 'profile': _p.record(), 'summary': s, 'groups': groups,
+            'findings': [f for f in findings if f['outcome'] != 'not_applicable'], 'bindings': bindings, 'blocking': len(blocking), 'profile_active': merged is not None}
+
+
+def workspace_data(ws):
+    """The workspace's layer datasets, its APPROVED cross-layer links, the metamodel with its profile, and the merged profile."""
+    from . import profile as _p
+    from .layers import FILES
+    from .metamodel import Metamodel
     ws = Path(ws)
     merged = _p.activate_from(ws)
     mm = Metamodel.load()
     datasets = {l: json.loads((ws / f).read_text(encoding='utf-8')) for l, f in FILES.items() if (ws / f).exists()}
     reg = json.loads((ws / 'mappings.json').read_text(encoding='utf-8')) if (ws / 'mappings.json').exists() else {}
     maps = [(m['source']['id'], m['relationship'], m['target']['id']) for m in reg.get('mappings', []) if m.get('status') == 'approved']
-    as_of = as_of or today()
-    findings = evaluate(datasets, maps, mm, _p.rules(), _p.exceptions(), as_of)
-    s, groups = summary(findings)
-    blocking = [f for f in findings if f['outcome'] == 'non_compliant' and f['severity'] == 'error']
-    return {'workspace': str(ws), 'as_of': as_of.isoformat(), 'profile': _p.record(), 'summary': s, 'groups': groups,
-            'findings': [f for f in findings if f['outcome'] != 'not_applicable'], 'blocking': len(blocking), 'profile_active': merged is not None}
+    return datasets, maps, mm, merged
 
 
 def render(r):

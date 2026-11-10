@@ -33,6 +33,8 @@ This repository holds architecture kept with **SDEM, the Service Domain Enterpri
 | check the data | `sdem check --workspace <dir>` |
 | records drafted as a layer file → the change set they imply | `sdem change diff <drafted.json> --workspace <dir> -o <change-set.json>` — adds, updates (only what differs), conflicts and possible duplicates; writes nothing to the workspace |
 | what is left for a person, at the end of every task | `sdem handback --workspace <dir> --json` |
+| turn the organisation's pattern diagram (draw.io, Visio, PlantUML, Mermaid) into a pattern | `sdem pattern extract --from <diagram> --workspace <dir> --id <id> --owner <owner> --anchor <label> --out draft.json --json` — explain the report (not mapped, refused, not read); the pattern owner reviews and includes the draft, never you |
+| which part of a pattern is missing from the design? | `sdem pattern draw --workspace <dir> --id <id> --anchor <record> --format json` and `sdem comply --json` (findings `<pattern>/<part>`, and `bindings`) |
 | does the design meet the organisation's standards and reference-architecture patterns? | `sdem comply --workspace <dir> --json` — per rule and record: compliant, non-compliant, unresolved, under an exception; separate from `sdem check`. Never claim a standard is met that a rule cannot express — hand it back |
 | fill gaps (inferred, marked) | `sdem aid --workspace <dir> --person <person> --dry-run`, then without `--dry-run` when the person agrees |
 | propose links between layers | `sdem link --workspace <dir> --out <dir>/links` → each proposal's `mapping_id` |

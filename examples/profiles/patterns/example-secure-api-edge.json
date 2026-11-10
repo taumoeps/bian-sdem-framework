@@ -1,0 +1,172 @@
+{
+  "format": "sdem-pattern/1",
+  "description": "A made-up bank's Secure API edge reference pattern as a structure (synthetic): extracted from patterns/diagrams/secure-api-edge.drawio by sdem pattern extract, reviewed and approved by its owner.",
+  "pattern": {
+    "id": "PAT-SECURE-API-EDGE",
+    "title": "Secure API edge",
+    "version": "1.0",
+    "owner": "security architecture",
+    "source": "synthetic example — extracted from secure-api-edge.drawio (sdem pattern extract), approved by the pattern owner",
+    "applies_when": {
+      "entity": "A3.ApplicationComponent",
+      "when": {
+        "conforms_to": "PAT-SECURE-API-EDGE"
+      }
+    }
+  },
+  "structure": {
+    "anchor": "application",
+    "zones": [
+      {
+        "id": "dmz",
+        "label": "DMZ",
+        "source": "secure-api-edge.drawio#dmz",
+        "check": {
+          "attribute": "network_zone",
+          "op": "in",
+          "value": [
+            "dmz"
+          ]
+        },
+        "entity": "A4.InfrastructureComponent"
+      },
+      {
+        "id": "restricted-zone",
+        "label": "Restricted zone",
+        "source": "secure-api-edge.drawio#rz",
+        "check": {
+          "attribute": "network_zone",
+          "op": "in",
+          "value": [
+            "restricted"
+          ]
+        },
+        "entity": "A4.InfrastructureComponent"
+      }
+    ],
+    "roles": [
+      {
+        "id": "api-gateway",
+        "label": "API Gateway",
+        "type": "BANK.A3.APIGateway",
+        "zone": "dmz",
+        "source": "secure-api-edge.drawio#gw"
+      },
+      {
+        "id": "application",
+        "label": "Application",
+        "type": "A3.ApplicationComponent",
+        "source": "secure-api-edge.drawio#app",
+        "require": [
+          "authentication"
+        ]
+      },
+      {
+        "id": "container-platform",
+        "label": "Container platform",
+        "type": "A4.SystemSoftware",
+        "max": null,
+        "zone": "restricted-zone",
+        "source": "secure-api-edge.drawio#k8s"
+      },
+      {
+        "id": "private-network",
+        "label": "Private network",
+        "type": "A4.CommunicationNetwork",
+        "min": 0,
+        "zone": "restricted-zone",
+        "source": "secure-api-edge.drawio#net"
+      },
+      {
+        "id": "secrets-service",
+        "label": "Secrets service",
+        "type": "A4.TechnologyService",
+        "min": 0,
+        "source": "secure-api-edge.drawio#sec"
+      }
+    ],
+    "connectors": [
+      {
+        "id": "C1",
+        "from": "api-gateway",
+        "to": "application",
+        "kind": "flow",
+        "label": "routes requests to",
+        "source": "secure-api-edge.drawio#e1"
+      },
+      {
+        "id": "C2",
+        "from": "application",
+        "to": "container-platform",
+        "relationship": "DEPLOYED_ON",
+        "label": "deployed on",
+        "source": "secure-api-edge.drawio#e2"
+      },
+      {
+        "id": "C3",
+        "from": "container-platform",
+        "to": "private-network",
+        "kind": "association",
+        "label": "connected to",
+        "source": "secure-api-edge.drawio#e3"
+      },
+      {
+        "id": "C4",
+        "from": "secrets-service",
+        "to": "container-platform",
+        "kind": "serving",
+        "label": "serves",
+        "source": "secure-api-edge.drawio#e4"
+      }
+    ],
+    "layout": {
+      "zones": {
+        "dmz": [
+          40.0,
+          70.0,
+          260.0,
+          150.0
+        ],
+        "restricted-zone": [
+          330.0,
+          270.0,
+          560.0,
+          170.0
+        ]
+      },
+      "roles": {
+        "api-gateway": [
+          70.0,
+          120.0,
+          200.0,
+          70.0
+        ],
+        "application": [
+          380.0,
+          120.0,
+          200.0,
+          70.0
+        ],
+        "container-platform": [
+          360.0,
+          330.0,
+          220.0,
+          70.0
+        ],
+        "private-network": [
+          640.0,
+          330.0,
+          220.0,
+          70.0
+        ],
+        "secrets-service": [
+          60.0,
+          330.0,
+          220.0,
+          70.0
+        ]
+      }
+    }
+  },
+  "requires": []
+}

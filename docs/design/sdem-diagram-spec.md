@@ -51,7 +51,7 @@ One standard set of architecture diagrams for **every** workspace: an architect 
 | DG-13 | **Workbench**: each layer's **Diagram** tab offers that layer's templates (A1: T1/T2 and T3; A2: T4; A3: T5; A4: T6); the **Overview** shows T7 under *Architecture designs*, before the A1–A4 cards — a diagram, not the knowledge graph (owner's decision, 2026-11-06); the old Knowledge Graphs link leads there. A layer the workspace does not have says so. Each diagram can be **fitted to the width** of the page or shown at **actual size** with sideways scrolling; the choice is remembered in the browser. |
 | DG-14 | **`sdem diagram --workspace <dir> --template <id> [--focus <id>] --format svg|html|json -o <file>`** — the same drawing for Word, Confluence or a review pack; `--list` names the templates; `--check` checks the templates against the metamodel. |
 | DG-15 | *Not yet:* **ArchiMate Open Exchange Format** (`--format archimate`) — the elements, relationships and views, to open in Archi or another ArchiMate tool. |
-| DG-16 | *Later:* an organisation's own templates in its profile, checked the same way (DG-02). |
+| DG-16 | An organisation's reference patterns, drawn from their structure and over a design: `sdem pattern draw` (PR-25). *Later:* an organisation's own viewpoint templates in its profile, checked the same way (DG-02). |
 
 ## 7. Tests
 

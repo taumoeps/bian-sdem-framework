@@ -30,6 +30,7 @@ PRIVATE = ('chain', 'included', '_issues', '_origin')                   # kept w
 SCHEMA = DATA_ROOT / 'schema' / 'profile.schema.json'
 LEVELS = ('A1', 'A2', 'A3', 'A4')
 ATTR_TYPES = ('string', 'integer', 'number', 'boolean', 'date', 'enum', 'list<string>', 'map<string,string>')
+MAP_KINDS = ('shapes', 'connectors', 'zones')   # PR-28: the diagram mapping table — the organisation's shapes, connector labels and zones
 LISTS = ('layers', 'types', 'attributes', 'rules', 'link_kinds', 'link_types', 'requirement_categories')   # what a profile adds to its base
 ACTIVE = None          # the resolved, merged profile the current command works under (None: SDEM's metamodel alone)
 _ACTIVE_KEY = None     # its content hash — the metamodel cache key
@@ -109,6 +110,20 @@ def _pattern_rules(doc, merged, origin):
     return out
 
 
+def include(merged, ip):
+    """PR-13, PR-17, PR-21: fold one standards or pattern file into a merged profile (a pattern's structure is kept whole)."""
+    ip = Path(ip).resolve()
+    if any(x['file'] == ip.as_posix() for x in merged['included']): return   # included by a base already
+    kind, fd = _fragment(ip)
+    meta = fd[kind]
+    if kind == 'standard': rules = [{**r, 'standard': meta} for r in fd.get('rules', [])]
+    else: rules = _pattern_rules(fd, merged, ip.name)
+    _add(merged, {'attributes': fd.get('attributes', []), 'rules': rules}, ip.name)
+    if kind == 'pattern' and fd.get('structure'):
+        merged['structures'].append({'pattern': meta, 'structure': fd['structure'], 'file': ip.name})
+    merged['included'].append({'file': ip.as_posix(), 'kind': kind, 'id': meta['id'], 'version': meta['version'], 'title': meta['title'], 'owner': meta['owner']})
+
+
 def resolve(path, _seen=()):
     """The profile at `path` with its base profiles folded in (base first), then the standards and patterns it includes, then its
     own additions — as one merged profile; `chain` names every profile file, `included` every standards and pattern file."""
@@ -116,24 +131,21 @@ def resolve(path, _seen=()):
     if path in _seen: raise ProfileError(f'{path}: profiles extend each other in a circle')
     doc = read(path)
     merged = {'format': FORMAT, 'name': doc.get('name', path.stem), 'version': doc.get('version', 1), 'chain': [], 'included': [], '_issues': [], '_origin': {},
-              **{k: [] for k in LISTS}, 'names': {'layers': {}, 'types': {}}}
+              **{k: [] for k in LISTS}, 'names': {'layers': {}, 'types': {}}, 'structures': [], 'diagram_map': {k: [] for k in MAP_KINDS}}
     if doc.get('extends'):
         base = resolve((path.parent / doc['extends']).resolve(), _seen + (path,))
         for k in LISTS: merged[k] = [dict(x) for x in base[k]]
         merged['names'] = {'layers': dict(base['names']['layers']), 'types': dict(base['names']['types'])}
         merged['chain'] = list(base['chain']); merged['included'] = list(base['included'])
         merged['_issues'] = list(base['_issues']); merged['_origin'] = dict(base['_origin'])
+        merged['structures'] = [dict(x) for x in base['structures']]
+        merged['diagram_map'] = {k: list(v) for k, v in base['diagram_map'].items()}
         if base.get('requires_sdem'): merged['requires_sdem'] = base['requires_sdem']
     for inc in doc.get('includes', []):   # PR-13, PR-17: standards and patterns, after the base and before the profile's own additions
-        ip = (path.parent / inc).resolve()
-        if any(x['file'] == ip.as_posix() for x in merged['included']): continue   # included by a base already
-        kind, fd = _fragment(ip)
-        meta = fd[kind]
-        if kind == 'standard': rules = [{**r, 'standard': meta} for r in fd.get('rules', [])]
-        else: rules = _pattern_rules(fd, merged, ip.name)
-        _add(merged, {'attributes': fd.get('attributes', []), 'rules': rules}, ip.name)
-        merged['included'].append({'file': ip.as_posix(), 'kind': kind, 'id': meta['id'], 'version': meta['version'], 'title': meta['title'], 'owner': meta['owner']})
+        include(merged, (path.parent / inc).resolve())
     _add(merged, doc, path.name)
+    own_map = doc.get('diagram_map') or {}   # PR-28: the profile's own entries are matched before its base's
+    merged['diagram_map'] = {k: list(own_map.get(k, [])) + merged['diagram_map'][k] for k in MAP_KINDS}
     for k in LISTS:
         if k not in ('attributes', 'rules'): merged[k] += list(doc.get(k, []))
     for k in ('layers', 'types'): merged['names'][k].update((doc.get('names') or {}).get(k, {}))
@@ -156,7 +168,7 @@ def check(merged, base_mm):
     ArchiMate kinds between types of one layer."""
     from .validate import check_schema
     schema = json.loads(SCHEMA.read_text(encoding='utf-8'))
-    issues = check_schema({k: v for k, v in merged.items() if k not in PRIVATE}, schema)
+    issues = check_schema({k: v for k, v in merged.items() if k not in PRIVATE and k != 'structures'}, schema)
     if issues: return [f'profile: {i}' for i in issues]
     issues += merged.get('_issues', [])   # PR-14, PR-17
     if merged.get('requires_sdem'):   # UF-04
@@ -257,6 +269,12 @@ def check(merged, base_mm):
         if l not in order: issues.append(f"names.layers: {l} is not a layer ({', '.join(order)})")
     for t in merged['names']['types']:
         if t not in all_types: issues.append(f"names.types: {t} is not a type")
+    def known_attr_of(ent, n):
+        return n == 'lifecycle_status' or any((e, n) in attrs for e in [ent] + _ancestors(all_types, ent)) or n in _sdem_attribute_names(ent, all_types, base_mm)
+    from .patterns import structure_issues, map_issues
+    for st in merged.get('structures', []):   # PR-21, PR-22
+        issues += structure_issues(st, all_types, base_mm, merged, known_attr_of)
+    issues += map_issues(merged.get('diagram_map') or {}, all_types, base_mm, merged, known_attr_of)   # PR-28
     return issues
 
 
@@ -346,6 +364,11 @@ def profile_attributes():
 
 def rules():
     return (ACTIVE or {}).get('rules', [])
+
+
+def structures():
+    """The active profile's patterns that carry a structure (PR-21)."""
+    return (ACTIVE or {}).get('structures', [])
 
 
 def exceptions():
@@ -518,7 +541,15 @@ EXAMPLE_STANDARDS_PROFILE = {
     'format': FORMAT, 'name': 'bank-with-standards', 'version': 1, 'extends': 'bank-base.json',
     'description': "A team profile that takes the made-up bank's standards and its secure API pattern (synthetic).",
     'includes': ['standards/example-security.json', 'standards/example-network.json', 'standards/example-technology.json', 'patterns/example-secure-api.json'],
-    'types': [{'type': 'BANK.A3.APIGateway', 'extends': 'A3.ApplicationComponent', 'name': 'API gateway', 'definition': "The bank's API gateway, which fronts external APIs", 'source': 'synthetic example'}]}
+    'types': [{'type': 'BANK.A3.APIGateway', 'extends': 'A3.ApplicationComponent', 'name': 'API gateway', 'definition': "The bank's API gateway, which fronts external APIs", 'source': 'synthetic example'}],
+    'diagram_map': {   # PR-28: how sdem pattern extract reads the bank's pattern diagrams (examples/profiles/patterns/diagrams/)
+        'shapes': [{'label': 'API Gateway', 'type': 'BANK.A3.APIGateway'}, {'stereotype': 'gateway', 'type': 'BANK.A3.APIGateway'},
+                   {'label': 'Application', 'type': 'A3.ApplicationComponent'}, {'label': 'Container platform', 'type': 'A4.SystemSoftware'},
+                   {'label': 'Private network', 'type': 'A4.CommunicationNetwork'}, {'label': 'Secrets service', 'type': 'A4.TechnologyService'}],
+        'connectors': [{'label': 'routes requests to', 'kind': 'flow'}, {'label': 'deployed on', 'relationship': 'DEPLOYED_ON'},
+                       {'label': 'connected to', 'kind': 'association'}, {'label': 'serves', 'kind': 'serving'}],
+        'zones': [{'label': 'Restricted zone', 'entity': 'A4.InfrastructureComponent', 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['restricted']}},
+                  {'label': 'DMZ', 'entity': 'A4.InfrastructureComponent', 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['dmz']}}]}}
 
 
 def adopt(a):
@@ -642,6 +673,12 @@ def main(argv=None):
         for x in merged['link_types']: print(f"  link type  {x['source_type']} {x['relationship']} {x['target_type']}  (evidence: {', '.join(x['required_evidence'])})")
         for l, n in merged['names']['layers'].items(): print(f'  name       {l} → {n}')
         for t, n in merged['names']['types'].items(): print(f'  name       {t} → {n}')
+        for st in merged.get('structures', []):   # PR-21
+            S = st['structure']
+            print(f"  structure  {st['pattern']['id']}: {len(S['roles'])} part(s), {len(S.get('connectors', []))} connector(s), {len(S.get('zones', []))} zone(s), anchor {S.get('anchor')}  ({st['file']})")
+        dm = merged.get('diagram_map') or {}
+        if any(dm.values()):   # PR-28
+            print(f"  diagram    map: {len(dm.get('shapes', []))} shape(s), {len(dm.get('connectors', []))} connector label(s), {len(dm.get('zones', []))} zone(s) — read by sdem pattern extract")
         if issues: print('ISSUES:\n  ' + '\n  '.join(issues))
         return 1 if issues else 0
     except ProfileError as err:

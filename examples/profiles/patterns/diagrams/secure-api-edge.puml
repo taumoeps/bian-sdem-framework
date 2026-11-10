@@ -1,0 +1,19 @@
+@startuml secure-api-edge
+!include <archimate/Archimate>
+title Secure API edge — reference pattern (synthetic)
+
+Grouping(dmz, "DMZ") {
+  Application_Component(gw, "API Gateway")
+}
+Application_Component(app, "Application")
+Grouping(rz, "Restricted zone") {
+  Technology_SystemSoftware(k8s, "Container platform (1..n)")
+  Technology_CommunicationNetwork(net, "Private network (optional)")
+}
+Technology_Service(sec, "Secrets service (optional)")
+
+Rel_Flow(gw, app, "routes requests to")
+Rel(app, k8s, "deployed on")
+Rel_Association(k8s, net, "connected to")
+Rel_Serving_Up(sec, k8s, "serves")
+@enduml
