@@ -362,13 +362,26 @@ sdem --version
 
 The install includes the Enterprise Metamodel, its rules and the BIAN Service Domain catalogue.
 
-### 2. Create a workspace
+### 2. Create your organisation and a workspace
 
 ```bash
-sdem new --workspace workspaces/ledger --person your.name
+sdem new --organisation bank-xyz --person your.name                                # once per organisation
+cd bank-xyz
+sdem new --workspace workspaces/ledger --organisation bank-xyz --person your.name   # each workspace
 ```
 
-SDEM creates the four layer files — A1 Business, A2 BIAN Service Domains, A3 Application, A4 Technology — all empty, plus an empty `mappings.json` for the approved connections. Start with the layer you know; the others can follow.
+```
+bank-xyz/
+├── sdem-organisation.json
+├── profiles/bank-xyz-base.json      ← your organisation's design specification: its types, attributes and rules
+└── workspaces/ledger/
+    ├── a1-business.json  a2-service-domain.json  a3-application.json  a4-technology.json  mappings.json
+    └── sdem-profile.json            ← extends bank-xyz-base.json; the workspace's own additions go here
+```
+
+The organisation's folder holds its **base profile** (it starts empty; [customising SDEM](#customising-sdem-for-your-organisation)) and its workspaces. Each workspace gets the four layer files — A1 Business, A2 BIAN Service Domains, A3 Application, A4 Technology — all empty, plus an empty `mappings.json` for the approved connections, and its own profile that extends the base, so the organisation's rules apply from the start. Inside `bank-xyz/` the organisation is found without `--organisation`. Start with the layer you know; the others can follow.
+
+A workspace on its own, without an organisation, still works: `sdem new --workspace workspaces/ledger --person your.name`.
 
 ### 3. Find the BIAN Service Domains
 
@@ -562,7 +575,7 @@ SDEM's Enterprise Metamodel, built around BIAN Service Domains, is reusable: eac
 - additional architecture layers;
 - governance configuration and approval requirements.
 
-Two organisations can share the same SDEM framework and BIAN catalogue while keeping different application landscapes, technology platforms, standards and governance. Core metamodel rules stay protected; extensions are declared in [organisation profiles](docs/design/sdem-profile-spec.md).
+Two organisations can share the same SDEM framework and BIAN catalogue while keeping different application landscapes, technology platforms, standards and governance. Core metamodel rules stay protected; extensions are declared in [organisation profiles](docs/design/sdem-profile-spec.md). `sdem new --organisation` starts the base profile (step 2); add to it, then `sdem profile check --file profiles/<organisation>-base.json`.
 
 ### Using SDEM on real designs
 

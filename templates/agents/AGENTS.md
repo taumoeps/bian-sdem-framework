@@ -30,6 +30,7 @@ This repository holds architecture kept with **SDEM, the Service Domain Enterpri
 |---|---|
 | **before writing records**: the kinds, fields, allowed values and links | `sdem types <A1…A4 or a type> --workspace <dir> --json` — never guess a field or a value; `sdem types requirement` and `sdem types change-set` give those formats |
 | the BIAN operations a process uses (its `invokes`) | `sdem bian search <words> --json` → the `SO-…` ids, exactly as `sdem aid` writes them — never invent one |
+| start a workspace (a person's decision: prepare the command and ask) | `sdem new --workspace workspaces/<name> --organisation <organisation> --person <person> --dry-run` — always name the organisation when there is one (`sdem-organisation.json` above the workspace); never start an organisation for a person |
 | check the data | `sdem check --workspace <dir>` |
 | records drafted as a layer file → the change set they imply | `sdem change diff <drafted.json> --workspace <dir> -o <change-set.json>` — adds, updates (only what differs), conflicts and possible duplicates; writes nothing to the workspace |
 | what is left for a person, at the end of every task | `sdem handback --workspace <dir> --json` |

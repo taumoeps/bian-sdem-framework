@@ -20,7 +20,7 @@ Use only fields and values `sdem types` lists, and only `SO-…` ids `sdem bian 
 
 ## 1. Start (if the workspace does not exist)
 
-`sdem new --workspace workspaces/<name> --person <architect>` — a person's decision; if it is missing, prepare the command and ask.
+`sdem new --workspace workspaces/<name> --organisation <organisation> --person <architect>` — a person's decision; if it is missing, prepare the command and ask. Name the organisation when the workspaces sit in one (a `sdem-organisation.json` above them); without one, leave `--organisation` out.
 
 ## 2. The A1 design — one change set
 

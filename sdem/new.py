@@ -7,6 +7,13 @@ workspace's A2 layer only the service domains its design needs, and `sdem bian c
 `--bian FILE` starts instead with exactly that BIAN layer in A2.
 
   sdem new --workspace workspaces/payments --person jane.architect
+
+An **organisation** (WS-08…WS-10) is the folder above its workspaces: `sdem new --organisation bank-xyz --person P` starts it with a
+starter base profile (`profiles/bank-xyz-base.json`) and `workspaces/`; a workspace started in it gets its own profile, which extends
+that base, so the organisation's types, attributes and rules apply from the start.
+
+  sdem new --organisation bank-xyz --person jane.architect
+  sdem new --workspace workspaces/ledger --organisation bank-xyz --person jane.architect
 """
 import argparse, datetime, json, re, sys
 from pathlib import Path
@@ -56,7 +63,74 @@ def profile_copy(src, ws):
     return doc
 
 
-def plan(workspace, person, bian_file=None, today=None, no_bian=False, from_dir=None, label=None, profile_file=None):
+ORG_RECORD = 'sdem-organisation.json'
+ORG_FORMAT = 'sdem-organisation/1'
+
+
+def org_files(name, person, today=None):
+    """WS-08: the files of a new organisation — its record and a starter base profile that passes `sdem profile check`."""
+    from .profile import FORMAT as PFORMAT
+    today = today or datetime.date.today().isoformat()
+    base = f'profiles/{name}-base.json'
+    rec = {'format': ORG_FORMAT, 'name': name, 'created': today, 'created_by': person.strip(), 'base_profile': base, 'workspaces': 'workspaces'}
+    prof = {'format': PFORMAT, 'name': f'{name}-base', 'version': 1,
+            'description': f"{name}'s design specification on top of SDEM's metamodel — every workspace's profile extends it. Add the "
+                           "organisation's types, attributes, rules, link kinds and names here, and its standards and patterns under includes; "
+                           f"check with: sdem profile check --file {base}",
+            'types': [], 'attributes': [], 'rules': []}
+    return {ORG_RECORD: rec, base: prof}
+
+
+def _org_at(folder):
+    """The organisation record in `folder`, or None."""
+    f = Path(folder) / ORG_RECORD
+    if not f.is_file(): return None
+    try: rec = json.loads(f.read_text(encoding='utf-8'))
+    except ValueError: return None
+    return rec if rec.get('format') == ORG_FORMAT else None
+
+
+def find_org(start):
+    """WS-09: the nearest organisation folder at `start` or above it, or None."""
+    p = Path(start).resolve()
+    for d in [p, *p.parents]:
+        if _org_at(d): return d
+    return None
+
+
+def resolve_org(name_or_dir):
+    """WS-09: `--organisation` as a folder (bank-xyz, ../bank-xyz), or the name of the organisation the current folder is in."""
+    p = Path(name_or_dir)
+    if _org_at(p): return p
+    here = find_org(Path.cwd())
+    if here and _org_at(here)['name'] == p.name: return here
+    raise NewError(f"--organisation {name_or_dir}: no such organisation — start it with: sdem new --organisation {name_or_dir} --person <you>")
+
+
+def org_workspace(org, workspace):
+    """WS-09: the workspace's folder inside the organisation — a relative path is from the organisation's folder; one outside it is refused."""
+    import os
+    ws = Path(workspace) if Path(workspace).is_absolute() else Path(org) / workspace
+    root, full = Path(org).resolve(), ws.resolve()
+    if full == root or root not in full.parents:
+        raise NewError(f'--workspace {workspace}: not inside the organisation {_org_at(org)["name"]} ({Path(org).as_posix()}) — a workspace of an organisation is a folder inside it, e.g. workspaces/<name>')
+    try: return Path(os.path.relpath(full, Path.cwd()))
+    except ValueError: return full   # another drive (Windows)
+
+
+def org_profile(org, ws):
+    """WS-10: a new workspace's own profile in an organisation — it extends the organisation's base profile and adds nothing yet."""
+    import os
+    rec = _org_at(org); base = (Path(org) / rec['base_profile']).resolve()
+    if not base.is_file(): raise NewError(f"the organisation {rec['name']}'s base profile {rec['base_profile']} is missing — restore it, or give --profile FILE")
+    try: ext = Path(os.path.relpath(base, Path(ws).resolve())).as_posix()
+    except ValueError: ext = base.as_posix()
+    from .profile import FORMAT as PFORMAT
+    return {'format': PFORMAT, 'name': f"{rec['name']}-{Path(ws).name}", 'version': 1, 'extends': ext,
+            'description': f"The {Path(ws).name} workspace's additions to {rec['name']}'s base profile — add its own types, attributes and rules here"}
+
+
+def plan(workspace, person, bian_file=None, today=None, no_bian=False, from_dir=None, label=None, profile_file=None, profile_doc=None, org=None):
     """The files of a new workspace and its record — nothing written here (WS-01, WS-02)."""
     from .connect import estate_errors
     from .load import EMPTY_REGISTRY
@@ -109,6 +183,16 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, from_dir=
         extra['sdem-profile.json'] = profile_copy(profile_file, ws)
         record['profile'] = {'file': 'sdem-profile.json', 'from': 'baseline' if from_dir and Path(profile_file).resolve() == (Path(from_dir) / 'sdem-profile.json').resolve() else Path(profile_file).as_posix(),
                              **(_p.record() or {})}
+    elif profile_doc:  # WS-10: the organisation's base, through the workspace's own profile
+        from . import profile as _p
+        extra['sdem-profile.json'] = profile_doc
+        record['profile'] = {'file': 'sdem-profile.json', 'from': 'organisation', **(_p.record() or {})}
+    if org is not None:
+        import os
+        o = _org_at(org)
+        try: rel = Path(os.path.relpath(Path(org).resolve(), ws.resolve())).as_posix()
+        except ValueError: rel = Path(org).resolve().as_posix()
+        record['organisation'] = {'name': o['name'], 'folder': rel, 'base_profile': o['base_profile']}
     return docs, registry, record, extra
 
 
@@ -116,10 +200,14 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem new', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='Start a workspace — the folder where one area\'s architecture is kept: the four layers (A2 your BIAN layer) '
                                              'and the approved connections between them. Checked before anything is written.',
-                                 epilog='Example:\n  sdem new --workspace workspaces/payments --person jane.architect\n\n'
+                                 epilog='Examples:\n  sdem new --organisation bank-xyz --person jane.architect                                  # once per organisation\n'
+                                        '  sdem new --workspace workspaces/ledger --organisation bank-xyz --person jane.architect    # each workspace\n'
+                                        '  sdem new --workspace workspaces/payments --person jane.architect                         # a workspace on its own\n\n'
                                         'Next: existing designs — sdem transform run … then sdem load work/history --workspace workspaces/payments --person <you>; '
                                         'a new design — sdem aid project --workspace workspaces/payments --out workspaces/payments/plans/<name>.')
-    ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR', help='the folder to start, e.g. workspaces/payments')
+    ap.add_argument('--workspace', dest='estate', metavar='DIR', help='the folder to start, e.g. workspaces/payments — inside an organisation, a path from its folder')
+    ap.add_argument('--organisation', metavar='NAME', help='alone: start an organisation — the folder NAME with a starter base profile (profiles/NAME-base.json) and workspaces/ (WS-08); '
+                    'with --workspace: start the workspace inside that organisation, its profile extending the base (WS-09, WS-10). Inside an organisation\'s folder it is found without this')
     ap.add_argument('--person', required=True, help='your name — a person')
     ap.add_argument('--bian', metavar='FILE', help=f'start with exactly this BIAN layer in A2 (default: A2 empty; sdem aid brings in the domains your design needs from {SHARED} if it exists, else the base BIAN)')
     ap.add_argument('--no-bian', action='store_true', help='start without a BIAN layer (add it later); business then does not connect to applications')
@@ -133,14 +221,27 @@ def main(argv=None):
     ap.add_argument('--dry-run', action='store_true'); ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     from . import profile as _p
+    if not a.estate:
+        if not a.organisation: ap.error('give --workspace DIR (a workspace) or --organisation NAME (an organisation)')
+        return new_org(a)
     try:
+        org = resolve_org(a.organisation) if a.organisation else find_org(Path(a.estate).parent)
+        if org is not None and a.organisation: a.estate = str(org_workspace(org, a.estate))
         if a.no_bian and a.bian: raise NewError('give --bian or --no-bian, not both')
         if a.example and a.source: raise NewError('give --example or --from, not both')
         if a.example: a.source = str(example_dir(a.example))
         pf = a.profile or (str(Path(a.source) / 'sdem-profile.json') if a.source and (Path(a.source) / 'sdem-profile.json').exists() else None)
+        pdoc = org_profile(org, a.estate) if org is not None and not pf else None
         if pf: _p.activate_file(pf)
+        elif pdoc:   # WS-10: checked as it will be kept — a temporary copy whose extends points at the base
+            import tempfile
+            with tempfile.TemporaryDirectory() as t:
+                tf = Path(t) / 'sdem-profile.json'
+                tf.write_text(json.dumps({**pdoc, 'extends': (Path(org) / _org_at(org)['base_profile']).resolve().as_posix()}), encoding='utf-8')
+                _p.activate_file(tf)
         else: _p.deactivate()
-        docs, registry, record, extra = plan(a.estate, a.person, a.bian, no_bian=a.no_bian, from_dir=a.source, label=f'the synthetic example {a.example}' if a.example else None, profile_file=pf)
+        docs, registry, record, extra = plan(a.estate, a.person, a.bian, no_bian=a.no_bian, from_dir=a.source, label=f'the synthetic example {a.example}' if a.example else None,
+                                             profile_file=pf, profile_doc=pdoc, org=org)
     except _p.ProfileError as e:
         print(f'ERROR: {e}', file=sys.stderr); return 2
     except NewError as e:
@@ -149,6 +250,10 @@ def main(argv=None):
         if not (a.explore and not a.dry_run): print(json.dumps(record, indent=2))   # with --explore, one document at the end
     else:
         b_ = record['bian']
+        if record.get('organisation'):
+            pr = record.get('profile') or {}
+            print(f"organisation {record['organisation']['name']} — profile {' → '.join(pr.get('chain') or []) or 'none'}"
+                  + (f" v{pr['version']}" if pr.get('version') is not None else '') + (f" (from {pr['from']})" if pr.get('from') not in (None, 'organisation') else ''))
         if a.source:
             n = {d['level']: len(d['instances']) for d in docs.values()}
             print(f"{'would start' if a.dry_run else 'started'} {a.estate} from the baseline {record['baseline']['from']}: "
@@ -178,6 +283,38 @@ def main(argv=None):
     elif not a.json:
         print(f'Next — write what you have (any of a1…a4), or load existing designs (sdem load work/history --workspace {a.estate} --person <you>); '
               f'then sdem aid --workspace {a.estate} --person <you> fills the gaps, including the BIAN service domains your design needs')
+    return 0
+
+
+def new_org(a):
+    """WS-08: start an organisation — its folder, record, starter base profile (checked) and workspaces/. A person's decision."""
+    from .validate import is_person
+    from . import profile as _p
+    try:
+        if any((a.bian, a.no_bian, a.example, a.source, a.profile, a.explore)): raise NewError('--organisation alone starts an organisation; --bian, --no-bian, --example, --from, --profile and --explore are for a workspace (add --workspace)')
+        if not is_person(a.person): raise NewError(f"--person {a.person!r}: starting an organisation is a person's decision — give your own name (CTL-21)")
+        root = Path(a.organisation); name = root.name
+        if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]*', name): raise NewError(f'--organisation {a.organisation}: a name of letters, digits, ".", "_" and "-", e.g. bank-xyz')
+        if root.exists() and (not root.is_dir() or any(root.iterdir())): raise NewError(f'{root}: already exists and is not empty — an organisation is started once')
+        if find_org(root.resolve().parent): raise NewError(f'{root}: inside the organisation {_org_at(find_org(root.resolve().parent))["name"]} — an organisation is not started inside another')
+        files = org_files(name, a.person)
+        import tempfile
+        with tempfile.TemporaryDirectory() as t:   # the starter base passes its own check
+            tf = Path(t) / 'base.json'; tf.write_text(json.dumps(files[files[ORG_RECORD]['base_profile']]), encoding='utf-8')
+            _p.activate_file(tf); _p.deactivate()
+    except (NewError, _p.ProfileError) as e:
+        print(f'ERROR: {e}', file=sys.stderr); return 2
+    rec = files[ORG_RECORD]
+    out = {**rec, 'folder': root.as_posix(), 'files': sorted(files) + ['workspaces/'], 'dry_run': bool(a.dry_run)}
+    if not a.dry_run:
+        from .files import Batch
+        b = Batch()
+        for f, d in files.items(): b.json(root / f, d)
+        b.commit(); (root / 'workspaces').mkdir(exist_ok=True)
+    if a.json: print(json.dumps(out, indent=2)); return 0
+    print(f"{'would start' if a.dry_run else 'started'} organisation {name} in {root.as_posix()}: {rec['base_profile']} (a starter base profile — checked), workspaces/\n"
+          f"Next — add {name}'s types, attributes and rules to {rec['base_profile']} (check: sdem profile check --file {(root / rec['base_profile']).as_posix()}); "
+          f"start a workspace: sdem new --workspace workspaces/<name> --organisation {a.organisation} --person <you>")
     return 0
 
 
