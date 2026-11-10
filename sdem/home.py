@@ -170,7 +170,7 @@ def components(m, h, workspaces):
         'What may exist in each architecture, how records may be linked inside and between the architectures, and the rules the engine applies — each with its published source, reasoning and confidence.',
         ['metamodel/ (entity types, links inside, rules, attributes)', 'schema/relationship-types.json (links between)', 'docs/design/architecture-metamodel-detail-level-spec.md (governing)'],
         [f"{len(m['entities'])} entity types", f"{len(m['within'])} links allowed inside", f"{len(m['cross'])} link types between", f"{len(m['rules'])} engine rules",
-         f"generated documents {'current' if all(g['current'] for g in h['generators']) else 'STALE'}"], 'Metamodel finding G-A-1 (rule S44 step) — owner decision', ['entities', 'within', 'cross', 'rules', 'entitymap'])
+         f"generated documents {'current' if all(g['current'] for g in h['generators']) else 'STALE'}"], 'Release 0.9.0: remove the link type deprecated in 0.8.0', ['entities', 'within', 'cross', 'rules', 'entitymap'])
     add('engine', 'SDEM Mapping Engine', 'process · information · architecture', 'built', 517, 160,
         'Proposes the links between the architectures by applying the metamodel to the data — rules, not AI — each proposal with rule, reasoning and confidence. Proposals only; a person approves.',
         ['sdem link · sdem review · sdem explain', 'sdem/rules_engine.py', 'acceptance: sdem model accept'],

@@ -1025,10 +1025,10 @@
       "verification": "confirmed_none",
       "source_reference": "[SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review",
       "rule_decision": "institution_only",
-      "fill_step": 1,
+      "fill_step": 3,
       "data_needed": "S43 instances + A4.TechnologyInterface.of_service (export-conventions.json 0.5.10)",
       "confidence": "low",
-      "reasoning": "Application interface→technology service: indirect via S41; not a distinct fact worth storing.",
+      "reasoning": "Application interface→technology service: indirect via S41; not a distinct fact worth storing. Derived from S43's links, so step 3, as S42 and S47 (owner, 2026-11-11; closes finding G-A-1).",
       "basis_confidence": "medium",
       "basis_confidence_reason": "no official source; SDEM rule; validated against sealed answers"
     },

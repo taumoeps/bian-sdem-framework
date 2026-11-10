@@ -309,7 +309,7 @@ Every cross-level pair the relationship rules model considers (`metamodel/relati
 | S41 | ApplicationService → TechnologyService (candidate) | conditional rule | 1 | medium | validated: C3, H1, H2, H2 r2, M1, M2 (3 hits, 0 false) |
 | S42 | ApplicationService → TechnologyInterface (candidate) | derived path | 3 | low | validated with findings: C3 (2 hits, 1 false — fixed) |
 | S43 | ApplicationInterface → TechnologyInterface (candidate) | institution only | 1 | low | validated: C3 (2 hits, 0 false) |
-| S44 | ApplicationInterface → TechnologyService (candidate) | institution only | 1 | low | validated: C3 (2 hits, 0 false) |
+| S44 | ApplicationInterface → TechnologyService (candidate) | institution only | 3 | low | validated: C3 (2 hits, 0 false) |
 | S45 | ApplicationFunction → TechnologyService (candidate) | conditional rule | 1 | medium | validated: C3, M1 (2 hits, 0 false) |
 | S46 | ApplicationFunction → SystemSoftware (candidate) | derived path | 3 | low | validated: C3 (3 hits, 0 false) |
 | S47 | APIOperation → Deployment (candidate) | derived path | 3 | high | validated: C3, H1, H2, H2 r2, M0, M1 (6 hits, 0 false) |

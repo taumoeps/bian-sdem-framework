@@ -20,8 +20,7 @@ ALLOWED = {
     ('S01', 3, 5): "the metamodel's own fallback: 'fallback step 5 requires the full A2 landscape …' (data_needed)",
     ('S24', 2, 'design'): 'design mode — test case M2 (DEC-E-05)',
     ('S32', 1, 'design'): 'design mode — test case M2 (DEC-E-05)',
-    ('S06', 1, 4): 'FINDING G-A-2 (open, for the owner; seen first on the blind case B1, 2026-11-10): S06 matches an activity name to an operation of the asset type, which needs the A2 structure, so the engine applies it in step 4; the metamodel says step 1 — the record or the engine should change',
-    ('S44', 1, 3): 'FINDING G-A-1 (open, for the owner): S44 is derived from S43 instances, so the engine applies it in step 3; the metamodel says step 1 — the record or the engine should change',
+    ('S06', 1, 4): 'by design (owner, 2026-11-11; closes finding G-A-2): an activity whose invokes names an operation is joined in step 1, as fill_step says; one that names none is matched by verb and asset type in step 4, which needs the A2 structure — the split the metamodel record\'s reasoning gives',
 }
 
 

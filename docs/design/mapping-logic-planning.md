@@ -843,7 +843,7 @@ Generated from `metamodel/relationship-rules.json` (every entry carries the offi
 | S41 | `A3.ApplicationService` → `A4.TechnologyService` | — | gap | conditional rule | 1 | **medium** | [AM] normative tables (SSO-gated | Technology service serving an application service is the canonical ArchiMate cross-layer relationship; corroborated in pattern by the secondary sources, primary tables login-gated. Instances come from platform-consumption data. Likely archimate_native once confirmed. |
 | S42 | `A3.ApplicationService` → `A4.TechnologyInterface` | — | gap | derived path | 3 | **low** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Application service→technology interface: reached through the technology service (S41) and its interface. Derived; thin value. Rewritten after C3: derive over S43/S44 (exposure), not S41 + composition (consumption). |
 | S43 | `A3.ApplicationInterface` → `A4.TechnologyInterface` | — | gap | institution only | 1 | **low** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Interface→technology interface: both exist in ArchiMate but with no prescribed one-to-one bridge; in practice an API gateway record. Institution-only. |
-| S44 | `A3.ApplicationInterface` → `A4.TechnologyService` | — | gap | institution only | 1 | **low** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Application interface→technology service: indirect via S41; not a distinct fact worth storing. |
+| S44 | `A3.ApplicationInterface` → `A4.TechnologyService` | — | gap | institution only | 3 | **low** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Application interface→technology service: indirect via S41; not a distinct fact worth storing. Derived from S43's links, so step 3, as S42 and S47 (owner, 2026-11-11; closes finding G-A-1). |
 | S45 | `A3.ApplicationFunction` → `A4.TechnologyService` | — | gap | conditional rule | 1 | **medium** | [AM] normative tables (SSO-gated | As S41 at application-function grain; same ArchiMate pattern, same corroboration status. |
 | S46 | `A3.ApplicationFunction` → `A4.SystemSoftware` | — | gap | derived path | 3 | **low** | [SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review | Function→system software: follows from the component's runtime (S36). Derived. |
 | S47 | `A3.APIOperation` → `A4.Deployment` | — | gap | derived path | 3 | **high** | — | API operation→deployment: an API runs where the component exposing it is deployed. Follows from S24-style composition and S32; derived, never stored. |
@@ -986,7 +986,7 @@ a3_applicationcomponent -[#6A1B9A,dotted]-> a4_device : S35 step 1 low
 a3_applicationcomponent -[#6A1B9A,dotted]-> a4_communicationnetwork : S37 step 1 low
 a3_applicationcomponent -[#6A1B9A,dotted]-> a4_path : S38 step 1 low
 a3_applicationinterface -[#6A1B9A,dotted]-> a4_technologyinterface : S43 step 1 low
-a3_applicationinterface -[#6A1B9A,dotted]-> a4_technologyservice : S44 step 1 low
+a3_applicationinterface -[#6A1B9A,dotted]-> a4_technologyservice : S44 step 3 low
 a3_dataentity -[#6A1B9A,dotted]-> a4_systemsoftware : S50 step 1 medium
 a3_event -[#6A1B9A,dotted]-> a4_technologyservice : S51 step 1 low
 

@@ -124,7 +124,7 @@ a3_applicationcomponent -[#6A1B9A,dotted]-> a4_device : S35 step 1 low
 a3_applicationcomponent -[#6A1B9A,dotted]-> a4_communicationnetwork : S37 step 1 low
 a3_applicationcomponent -[#6A1B9A,dotted]-> a4_path : S38 step 1 low
 a3_applicationinterface -[#6A1B9A,dotted]-> a4_technologyinterface : S43 step 1 low
-a3_applicationinterface -[#6A1B9A,dotted]-> a4_technologyservice : S44 step 1 low
+a3_applicationinterface -[#6A1B9A,dotted]-> a4_technologyservice : S44 step 3 low
 a3_dataentity -[#6A1B9A,dotted]-> a4_systemsoftware : S50 step 1 medium
 a3_event -[#6A1B9A,dotted]-> a4_technologyservice : S51 step 1 low
 

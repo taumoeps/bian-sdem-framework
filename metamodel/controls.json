@@ -218,7 +218,7 @@
       "control": "Engine–metamodel agreement: the inference engine applies only rules that are in the metamodel, each at the step the metamodel assigns (documented exceptions only), and implements every rule the metamodel says it applies",
       "implemented_in": "tests/test_engine_metamodel.py (runs the engine on every example workspace and compares its log with metamodel/relationship-rules.json)",
       "runs": "the test suite, on every push",
-      "outcome_recorded_in": "test result; documented exceptions and open finding G-A-1 in the test",
+      "outcome_recorded_in": "test result; documented exceptions in the test",
       "monitored_by": "GitHub Actions `validate.yml`",
       "status": "built",
       "tested_by": "tests"
@@ -251,7 +251,7 @@
       "id": "G-A",
       "rule_area": "5 Finding links",
       "not_controlled": "How each rule matches is still only in the engine's code — its description in words cannot be checked by machine. (Partly closed 2026-10-28 by CTL-22: which rules the engine applies, at which step, and that every applicable rule is implemented, are checked.)",
-      "risk": "a rule's matching logic could drift from its description; CTL-09 (the acceptance cases) and CTL-22 would catch most drift. Open finding G-A-1: rule S44 is applied in step 3, the metamodel says step 1"
+      "risk": "a rule's matching logic could drift from its description; CTL-09 (the acceptance cases) and CTL-22 would catch most drift. Findings G-A-1 (S44) and G-A-2 (S06) on the step a rule runs in were closed by the owner on 2026-11-11."
     },
     {
       "id": "G-B",

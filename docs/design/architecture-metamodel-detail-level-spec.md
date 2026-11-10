@@ -417,7 +417,7 @@ Later decisions live with the parts they govern: data-model reviews (`metamodel/
 
 **Gap G-11** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-69 plan rows (`metamodel/relationship-rules.json`): bian_internal 14, candidate_rule 5, conditional_rule 5, derived_path 17, historical_method 1, institution_only 14, not_a_mapping 2, not_encodable 1, registry_rule 9, subsumed 1. By fill step: step 0 14, step 1 16, step 2 2, step 3 24, step 4 10, step 5 1, step None 2. Join keys: `metamodel/export-conventions.json`. Specification: [`relationship-rules-spec.md`](relationship-rules-spec.md).
+69 plan rows (`metamodel/relationship-rules.json`): bian_internal 14, candidate_rule 5, conditional_rule 5, derived_path 17, historical_method 1, institution_only 14, not_a_mapping 2, not_encodable 1, registry_rule 9, subsumed 1. By fill step: step 0 14, step 1 15, step 2 2, step 3 25, step 4 10, step 5 1, step None 2. Join keys: `metamodel/export-conventions.json`. Specification: [`relationship-rules-spec.md`](relationship-rules-spec.md).
 
 ### 15a Mapping rule record
 
