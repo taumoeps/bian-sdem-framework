@@ -66,6 +66,17 @@ One shell with a **Solution Workspace / SDEM Framework** switch in the header (t
 | UX-D06 | The layer's **requirements** — owned by it, or about or allocated to its records — with condition and status. | `test_requirements_of_the_layer` |
 | UX-D07 | **Markdown** (for people, and for an agent filling a Word template), **HTML** (self-contained, loads nothing, light and dark) and **JSON**. | `test_html_is_self_contained` |
 | UX-D08 | Read-only: it writes only the output file(s) asked for. | — |
+| UX-D09 | **Structured only — prose is the agent's, checked by SDEM** (owner's decision, 2026-11-11). `sdem document` never writes narrative text. An agent writes a narrative from `sdem document --json` (skill `sdem-design-narrative`), citing `[ID]` for every record and `[SOURCE KIND TARGET]` or the link id for every link. `sdem document verify FILE --workspace DIR` reports as **errors**: a cited id that is not a record or connection (`unknown_id`), a stated link that is neither a link inside a layer nor a connection between layers (`unknown_link`), a connection stated as fact that is not approved (`not_approved`, unless the paragraph says *proposed*), and a text with no citations. | `test_document_verify` |
+| UX-D10 | As **warnings**: a record named but not cited in the same paragraph (longest names first, so a short name inside a longer one is not counted; one-word names matched with their capitals; headings left out), an inferred record not said to be inferred, and a workspace with gaps the text does not mention. Code blocks are not read. | `test_document_verify` |
+| UX-D11 | `verify` is read-only; exit 0 with no errors, 1 with an error, 2 when the file or workspace cannot be read; `--json` for agents. Passing means every citation is real — not that every sentence is right: a person reads the narrative before it is shared, and it is never architecture data. | `test_cli_exit_codes` |
+
+## 4a. The CLI reference and the scenarios guide
+
+| Id | Requirement | Test |
+|---|---|---|
+| CR-01 | **A CLI reference generated from the code**: `docs/reference/cli-reference.md` lists every command and subcommand (the catalogue of `sdem commands --json`), grouped by journey, each with its description, usage, every argument and option (aliases, choices, required), JSON and dry-run support, its example, and 👤 where it takes a person's own name. `sdem model regenerate` writes it (`sdem/clidoc.py`); `sdem model check` fails in CI when it is stale. | `test_the_reference_is_current_and_complete` |
+| CR-02 | **A scenarios guide** (`docs/sdem-scenarios.md`): the jobs end to end — goal, who, the commands in order, and the decisions that are a person's — linking the reference for every option. | `test_every_scenario_names_who_decides_and_links_the_reference` |
+| CR-03 | **The guides cannot drift from the CLI**: every `sdem …` command in a code block of the scenarios guide, the README and the user guide names a command that exists and uses only options it has (`--workspace` where a command takes it in place of its files); a test fails otherwise. | `tests/test_scenarios_doc.py` |
 
 ## 5. Status vocabulary — SDEM's states only
 

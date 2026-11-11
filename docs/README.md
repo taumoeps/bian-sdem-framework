@@ -14,7 +14,9 @@ flowchart LR
 | 1 | [**SDEM — read this first**](sdem-overview.md) | what SDEM is, the five ideas behind it, a worked example |
 | 2 | [**Explore your architecture**](sdem-workbench-user-guide.md#4a-explore-your-architecture--home-dashboard-and-graph) | the synthetic Payments example in five minutes: SDEM Home, the workspace dashboard and the architecture graph; trace, impact, a proposed connection — then [**architect tasks**](sdem-workbench-user-guide.md#4b-architect-tasks--what-you-can-do-by-goal), everything you can do by goal |
 | 3 | [**User guide**](sdem-workbench-user-guide.md) | install, a 15-minute quick start, every task step by step, **the command reference** (§7), troubleshooting |
-| 4 | [**Onboarding your existing designs**](sdem-onboarding-workflow.md) | turning a Confluence export into SDEM data, step by step |
+| 4 | [**Onboarding your existing designs**](sdem-onboarding-workflow.md) | turning a Confluence export, a folder, or Word and Excel designs into SDEM data, step by step |
+| 5 | [**Scenarios**](sdem-scenarios.md) | 15 jobs end to end — set up an organisation, a new design, onboarding, linking, change events, requirements, standards and patterns, narratives, BIAN, upgrades: the commands in order and who decides |
+| — | [**CLI reference**](reference/cli-reference.md) | every command and subcommand with all its options — generated from the code |
 | — | [Glossary](glossary.md) | any word you do not know |
 
 **Running a pilot?** The [first-time architect usability test](sdem-usability-test-plan.md) — five scenarios, a facilitator script and a recording template.

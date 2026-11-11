@@ -244,7 +244,8 @@ def describe(parser):
                 subs[name]['description'] = subs[name]['description'] or helps.get(name)
             continue
         d = {'name': a.option_strings[0] if a.option_strings else a.dest, 'takes_value': a.nargs != 0,
-             'required': bool(a.required), 'help': (a.help or '').replace('%(default)s', str(a.default)) or None}
+             'required': bool(a.required) and not (not a.option_strings and a.nargs in ('*', '?')),   # the same on every Python (3.9 marks nargs='*' required)
+             'help': (a.help or '').replace('%(default)s', str(a.default)) or None}
         if a.option_strings and len(a.option_strings) > 1: d['aliases'] = a.option_strings[1:]
         if a.choices: d['choices'] = list(a.choices)
         if a.nargs in ('*', '+'): d['many'] = True
@@ -274,7 +275,8 @@ def parser_of(fn, argv):
 
 PROBES = {'aid': [('aid', ['--workspace', 'W']), ('aid confirm', ['confirm']), ('aid reject', ['reject']), ('aid', ['project'])],
           'bian': [('bian', []), ('bian inference', ['inference'])],
-          'events': [('events', []), ('events', ['validate'])]}
+          'events': [('events', []), ('events', ['validate'])],
+          'document': [('document', []), ('document verify', ['verify'])]}
 # how to reach each entry point of a command whose parsers one call does not show: (its name, the arguments that reach it)
 
 

@@ -581,7 +581,7 @@ Two organisations can share the same SDEM framework and BIAN catalogue while kee
 
 The public SDEM repository holds synthetic data only. Real architecture belongs in your organisation's **private workspace repository** ([template](templates/workspace-repo/README.md)), with a pinned SDEM release, access control, version history and governance. **v0.18.0 is suitable for evaluation and controlled architect pilots**; production use needs your own security, governance and operational validation.
 
-[Configuration](docs/sdem-configuration.md) · [Operating model](docs/sdem-operating-model.md) · [Pilot plan](docs/sdem-pilot-plan.md)
+[Configuration](docs/sdem-configuration.md) · [Operating model](docs/sdem-operating-model.md) · [Pilot plan](docs/sdem-pilot-plan.md) · [Scenarios](docs/sdem-scenarios.md) · [CLI reference](docs/reference/cli-reference.md)
 
 ## Documentation
 

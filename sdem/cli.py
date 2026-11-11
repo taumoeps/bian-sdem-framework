@@ -45,7 +45,7 @@ JOURNEYS = {
                  'sdem designs --workspace workspaces/history --entity HIS-A3-PAYMENTS-HUB'),
     'bian':     ('J9', "the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files — list, import the service domains you choose (checked), pack", 'sdem.bian', [],
                  'sdem bian import ~/bian/release14.0.0 --only "Payment Order Initiation" -o work/bian/a2-service-domain.json'),
-    'transform': ('J9', 'transform an export of past designs (Confluence) into candidate architecture entities: inspect it, extract (rules; on-device OCR for pictures)', 'sdem.transform', [],
+    'transform': ('J9', 'transform past designs — a Confluence export, a folder, or one Word, Excel, Markdown or CSV file — into candidate architecture entities: inspect it, extract (rules; on-device OCR for pictures)', 'sdem.transform', [],
                  'sdem transform run tests/fixtures/confluence-export-sample -o work/history --known examples/payment-initiation/a3-application.json'),
     'view':     ('J7', 'write the HTML picture of a graph store, optionally with a projection', 'sdem.graph', ['view'],
                  'sdem view --graph examples/card-fraud-alerts/graph -o work/view.html'),
@@ -65,7 +65,7 @@ JOURNEYS = {
                  'sdem exception list --workspace examples/payment-initiation'),
     'diagram':  ('J7', 'ArchiMate diagrams of a workspace from SDEM\'s templates — capabilities and value stream, business process, BIAN service domains, application cooperation, technology and deployment, layered — only stored, approved links drawn', 'sdem.viewpoints', [],
                  'sdem diagram --workspace examples/payment-initiation --template layered -o work/layered.svg'),
-    'document': ('J7', "a layer's design as a readable document (Markdown or HTML), generated from the workspace — nothing invented, sources and gaps shown", 'sdem.document', [],
+    'document': ('J7', "a layer's design as a structured, readable document (Markdown or HTML), generated from the workspace — nothing invented, sources and gaps shown; verify checks an agent's narrative against it", 'sdem.document', [],
                  'sdem document --workspace examples/payment-initiation --layer A3'),
     'dashboard': ('J7', 'one read-only HTML dashboard for a workspace: health, attention, review, trace & impact, matrices, changes, AID, controls', 'sdem.dashboard', [],
                  'sdem dashboard --workspace examples/payment-initiation -o work/dashboard.html'),
@@ -83,7 +83,7 @@ JOURNEYS = {
                  'sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --workspace workspaces/payments --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 --rationale "…"'),
     'migrate':  ('—', 'move a workspace to the current metamodel version — recorded migrations applied, checked, written all-or-nothing, recorded', 'sdem.migrate', [],
                  'sdem migrate --workspace workspaces/history --person jane.architect --dry-run'),
-    'commands': ('AG', 'every command, its options and what it supports, as data for an agent (with --json); --json, --limit and --dry-run work on every command', None, None,
+    'commands': ('AG', 'every command, its options and what it supports, as data for an agent (with --json; give a command\'s name for only that one); --json, --limit and --dry-run work on every command', None, None,
                  'sdem commands --json'),
     'upgrade':  ('J9', 'before you switch SDEM versions: run the new version, installed side by side, against your workspaces — migrations, profile, deprecations, agent files, actions; writes nothing', 'sdem.upgrade', [],
                  'sdem upgrade check --root workspaces'),
@@ -107,7 +107,7 @@ JOURNEYS = {
 
 # generated documents and schemas, in the order CI checks them
 GENERATORS = ['diagram', 'relationships', 'structure', 'spec', 'kgspec', 'catalogue', 'attributes', 'confidence',
-              'logical', 'physical', 'metamodel_spec', 'controls', 'inferences', 'viewpoints']
+              'logical', 'physical', 'metamodel_spec', 'controls', 'inferences', 'viewpoints', 'clidoc', 'scenarioskill']
 
 
 from .layers import DATASET_FILES as ESTATE_FILES   # LR-02: the core four and the profile's layers
@@ -300,10 +300,20 @@ def review(argv):
 def commands(argv):
     ap = argparse.ArgumentParser(prog='sdem commands', description='Every sdem command, its options and what it supports — for an agent, as data with --json (AG-06).',
                                  epilog=f"Example:\n  {JOURNEYS['commands'][4]}", formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument('name', nargs='*', help='one command (e.g. events assess, or "events assess"): only its entry, and its subcommands — a few hundred tokens instead of all (AG-06)')
     ap.add_argument('--json', action='store_true', help='as data: options, choices, required, JSON and dry-run support, exit and error codes')
     a = ap.parse_args(argv)
     from . import agent
     cat = agent.catalogue({k: v for k, v in JOURNEYS.items() if k != 'commands'}, _run)
+    if a.name:
+        want = ' '.join(' '.join(a.name).split())
+        if want.startswith('sdem '): want = want[5:]
+        hit = {k: v for k, v in cat['commands'].items() if k == want or k.startswith(want + ' ')}
+        if not hit:
+            import difflib
+            near = sorted(k for k in cat['commands'] if want.split()[0] in k)[:8] or difflib.get_close_matches(want, list(cat['commands']), n=5, cutoff=0.6)
+            print(f"ERROR: no command 'sdem {want}'" + (f" — did you mean: {', '.join(near)}?" if near else ' — sdem commands lists them all'), file=sys.stderr); return 2
+        cat = {**{k: v for k, v in cat.items() if k != 'commands'}, 'commands': hit}
     if a.json: print(json.dumps(cat, indent=2, ensure_ascii=False)); return 0
     print(f"{'command':<24} {'json':<8} {'dry-run':<8} what it does")
     for n, c in cat['commands'].items():

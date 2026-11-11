@@ -54,7 +54,7 @@ class DocsOperationalTests(unittest.TestCase):
         top = sorted(f.name for f in (ROOT / 'docs').glob('*.md'))
         self.assertEqual(top, sorted(['README.md', 'glossary.md', 'sdem-overview.md', 'sdem-workbench-user-guide.md', 'sdem-onboarding-workflow.md', 'sdem-new-design.md', 'sdem-usability-test-plan.md',
                                       'sdem-metamodel-guide.md', 'sdem-architecture.md', 'sdem-configuration.md', 'sdem-administration.md',
-                                      'sdem-operating-model.md', 'sdem-adoption-checklist.md', 'sdem-licence-and-use.md', 'sdem-repository-protection.md', 'sdem-agent-setup.md', 'sdem-agent-platform-spike.md', 'sdem-pilot-plan.md', 'sdem-planning-with-aid.md', 'sdem-ways-of-working.md']))
+                                      'sdem-operating-model.md', 'sdem-adoption-checklist.md', 'sdem-licence-and-use.md', 'sdem-repository-protection.md', 'sdem-agent-setup.md', 'sdem-agent-platform-spike.md', 'sdem-pilot-plan.md', 'sdem-planning-with-aid.md', 'sdem-ways-of-working.md', 'sdem-scenarios.md']))
         for d in ('design', 'reference', 'evidence', 'history'):
             self.assertTrue((ROOT / 'docs' / d / 'README.md').exists(), d)
 

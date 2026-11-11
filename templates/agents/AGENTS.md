@@ -5,7 +5,7 @@ This repository holds architecture kept with **SDEM, the Service Domain Enterpri
 ## How to run SDEM
 
 - **Always add `--json`.** Every command then answers with one JSON object on stdout, starting with `"sdem": {"version", "command"}`; a list result is `{"count", "items"}`. Notes and warnings go to stderr.
-- **Discover before guessing:** `sdem commands --json` lists every command, its options (choices, which are required), and the exit and error codes. `sdem <command> --help` has a worked example.
+- **Find the job, then the command — never guess an option:** the skill `sdem-scenarios` gives every job's commands in order and who decides (index below). Before running a command, get its exact options from the installed SDEM: `sdem commands <command> --json` (one command and its subcommands, e.g. `sdem commands "events assess" --json` — a few hundred tokens; `sdem commands --json` alone lists all of them and is large) or `sdem <command> --help` (with a worked example).
 - **Failures are JSON too:** `{"error": {"code", "exit", "message", "hint", "details"}}`. Read `code` and follow `hint`. Codes: `usage`, `not_found`, `invalid_input`, `needs_person`, `exists`, `refused`, `input`, `internal`. Exit codes: 0 OK, 1 refused by a check, 2 usage or input error, 3 internal error.
 - **Preview before you change anything:** add `--dry-run` to any command that writes; the answer lists what it would write (`would_write`) and nothing is written.
 - **Keep answers small:** `--limit N` cuts every list to N items (what was cut is under `truncated`); `sdem dashboard --json` gives a summary (`--full` for everything).
@@ -24,6 +24,21 @@ This repository holds architecture kept with **SDEM, the Service Domain Enterpri
 10. **When unsure, say so** and name the command that would settle it.
 11. **End every task with the hand-back:** `sdem handback --workspace <dir> --json` lists what is left for a person — values nobody knows, unconfirmed inferences, links to review, possible duplicates, unsourced records — with the commands the person runs.
 
+## Which skill for which job
+
+| The architect asks you to … | Read the skill |
+|---|---|
+| set up an organisation or workspace, onboard, upgrade, manage BIAN, standards and patterns, requirements — **any job, or when unsure what comes next** | `sdem-scenarios` |
+| design something new from a request | `sdem-new-design` |
+| turn a Markdown or Word design document into records | `sdem-design-from-document` |
+| bring in past designs (Confluence, a folder, Word, Excel) | `sdem-onboard-designs` |
+| write or fix records; write a change set | `sdem-records`, `sdem-change-sets` |
+| prepare links for approval | `sdem-approve-links` |
+| trace dependencies or a change's impact | `sdem-trace-impact` |
+| assess a change event for your layer, or run the four-layer validation | `sdem-impact-validation` |
+| requirements, measurements, risk | `sdem-requirements-risk` |
+| a narrative, summary or write-up of a design | `sdem-design-narrative` |
+
 ## The usual workflow
 
 | Step | Command (add `--json`) |
@@ -32,6 +47,7 @@ This repository holds architecture kept with **SDEM, the Service Domain Enterpri
 | the BIAN operations a process uses (its `invokes`) | `sdem bian search <words> --json` → the `SO-…` ids, exactly as `sdem aid` writes them — never invent one |
 | start a workspace (a person's decision: prepare the command and ask) | `sdem new --workspace workspaces/<name> --organisation <organisation> --person <person> --dry-run` — always name the organisation when there is one (`sdem-organisation.json` above the workspace); never start an organisation for a person |
 | check the data | `sdem check --workspace <dir>` |
+| a narrative of a design (prose for people) | `sdem document --workspace <dir> --layer <A1…A4> --json` → write it citing `[ID]` for every fact → `sdem document verify <file> --workspace <dir> --json` until no errors; it is a document, never architecture data |
 | records drafted as a layer file → the change set they imply | `sdem change diff <drafted.json> --workspace <dir> -o <change-set.json>` — adds, updates (only what differs), conflicts and possible duplicates; writes nothing to the workspace |
 | what is left for a person, at the end of every task | `sdem handback --workspace <dir> --json` |
 | turn the organisation's pattern diagram (draw.io, Visio, PlantUML, Mermaid) into a pattern | `sdem pattern extract --from <diagram> --workspace <dir> --id <id> --owner <owner> --anchor <label> --out draft.json --json` — explain the report (not mapped, refused, not read); the pattern owner reviews and includes the draft, never you |
@@ -54,5 +70,5 @@ This repository holds architecture kept with **SDEM, the Service Domain Enterpri
 ## More
 
 - A workspace with `sdem-profile.json` has the organisation's own types, attributes, rules and names on top of SDEM's — read them with `sdem profile show --workspace <dir> --json`; `sdem check` enforces them. A profile adds; it never changes SDEM's core — propose a core change to the SDEM owner instead. A profile may add **layers** above A1 or below A4 (`sdem profile show` lists them); each has its own agent, `sdem-layer-<code>`, held to that layer like the A1–A4 agents.
-- Skills (step-by-step know-how, the same files for every agent): `sdem-new-design` (a new design from a request — start here), `sdem-design-from-document` (a Markdown or Word design document into all four layers), `sdem-records`, `sdem-trace-impact`, `sdem-impact-validation`, `sdem-requirements-risk`, `sdem-approve-links`, `sdem-change-sets`, `sdem-onboard-designs` — in this repository's skills folder for your agent (`.claude/skills/`, `.agents/skills/` or `.github/skills/`).
-- The commands in full: `docs/sdem-workbench-user-guide.md` §7. What an agent gets from the CLI: `docs/design/sdem-agent-cli-spec.md`. The controls: `docs/reference/controls-register.md`.
+- Skills (step-by-step know-how, the same files for every agent): `sdem-scenarios` (every job's commands in order — start here when unsure), `sdem-new-design` (a new design from a request — start here), `sdem-design-from-document` (a Markdown or Word design document into all four layers), `sdem-records`, `sdem-trace-impact`, `sdem-impact-validation`, `sdem-requirements-risk`, `sdem-approve-links`, `sdem-change-sets`, `sdem-onboard-designs`, `sdem-design-narrative` (prose about a design, every fact cited, checked by `sdem document verify`) — in this repository's skills folder for your agent (`.claude/skills/`, `.agents/skills/` or `.github/skills/`).
+- The commands in full: `sdem commands --json` (as data, for the installed version); for people, SDEM's CLI reference (`docs/reference/cli-reference.md`) and scenarios guide (`docs/sdem-scenarios.md`). What an agent gets from the CLI: `docs/design/sdem-agent-cli-spec.md`. The controls: `docs/reference/controls-register.md`.

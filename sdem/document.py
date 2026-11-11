@@ -216,12 +216,124 @@ def to_html(doc):
             f'<title>{e(doc["title"])} — {e(doc["workspace"])}</title><style>{css}</style></head><body>' + '\n'.join(out) + '</body></html>\n')
 
 
+# ------------------------------------------------------------------ verify an agent's narrative (UX-D09…UX-D11)
+
+CITE = re.compile(r'\[([A-Za-z][\w.-]*(?:\s+[\w.-]+\s+[A-Za-z][\w.-]*)?)\]')
+CAVEAT = re.compile(r'\b(inferred|not yet confirmed|unconfirmed|proposed|suggested|to be confirmed)\b', re.I)
+
+
+def _paragraphs(text):
+    """(first line number, text) of each paragraph — blank lines and headings split them; fenced code is left out."""
+    out, cur, start, fence = [], [], 0, False
+    for n, line in enumerate(text.splitlines(), 1):
+        s = line.strip()
+        if s.startswith(('```', '~~~')): fence = not fence; continue
+        if fence: continue
+        if not s or s.startswith('#') or re.match(r'([-*+]|\d+[.)])\s', s):
+            if cur: out.append((start, ' '.join(cur))); cur = []
+            if s and not s.startswith('#'): start, cur = n, [s]
+            elif s.startswith('#'): out.append((n, s))
+            continue
+        if not cur: start = n
+        cur.append(s)
+    if cur: out.append((start, ' '.join(cur)))
+    return out
+
+
+def verify(text, ws):
+    """UX-D09: check a narrative an agent wrote from `sdem document --json` against the workspace. Every citation `[ID]` must name a
+    record or an approved connection (its link id); a stated link `[SOURCE KIND TARGET]` must be a link inside a layer or an approved
+    connection between layers; a record named in the text must be cited in the same paragraph; an inferred, unconfirmed record must
+    be said to be so; the gaps must be mentioned. Returns {'findings': [...], 'cited': n, 'errors': n, 'warnings': n}."""
+    from .layers import FILES
+    ws = Path(ws)
+    data = {l: _j(ws / f) for l, f in FILES.items() if (ws / f).exists()}
+    if not data: raise ValueError(f'{ws}: no layer datasets — is it a workspace?')
+    recs = {r['id']: r for d in data.values() for r in d.get('instances', [])}
+    rels = {(x['source'], x['kind'].lower(), x['target']) for d in data.values() for x in d.get('relationships', [])}
+    reg = _j(ws / 'mappings.json').get('mappings', []) if (ws / 'mappings.json').exists() else []
+    maps = {m.get('mapping_id'): m for m in reg if m.get('mapping_id')}
+    cross = {}
+    for m in reg: cross.setdefault((m['source']['id'], m['relationship'].upper(), m['target']['id']), []).append(m)
+    unconfirmed = {i for i, r in recs.items() if isinstance((r.get('attributes') or {}).get('inferred'), dict) and r['attributes']['inferred'].get('status') != 'confirmed'}
+    names = {}
+    for i, r in recs.items():
+        n = (r.get('name') or '').strip()
+        if len(n) >= 4 and n.lower() != i.lower(): names.setdefault(n.lower(), set()).add(i)
+    findings, cited_total = [], 0
+    add = lambda line, level, code, msg: findings.append({'line': line, 'level': level, 'code': code, 'message': msg})
+    paras = _paragraphs(text)
+    for line, para in paras:
+        cited = set()
+        for m in CITE.finditer(para):
+            parts = m.group(1).split()
+            if len(parts) == 1:
+                x = parts[0]
+                if x in recs: cited.add(x); cited_total += 1
+                elif x in maps:
+                    cited_total += 1; mp = maps[x]; cited |= {mp['source']['id'], mp['target']['id']}
+                    if mp.get('status') != 'approved' and not CAVEAT.search(para):
+                        add(line, 'error', 'not_approved', f"[{x}] is a {mp.get('status')} connection, not an approved one — say it is proposed, or leave it out")
+                elif re.fullmatch(r'[A-Z][A-Z0-9]*(-[A-Z0-9]+)+', x):
+                    add(line, 'error', 'unknown_id', f'[{x}] is not a record or a connection in {ws.name}')
+                continue
+            a, kind, b = parts; cited_total += 1
+            for x in (a, b):
+                if x not in recs: add(line, 'error', 'unknown_id', f'[{x}] (in [{m.group(1)}]) is not a record in {ws.name}')
+            cited |= {a, b}
+            if a not in recs or b not in recs: continue
+            if (a, kind.lower(), b) in rels: continue
+            ms = cross.get((a, kind.upper(), b)) or cross.get((b, kind.upper(), a)) or []
+            if any(x.get('status') == 'approved' for x in ms): continue
+            if ms and CAVEAT.search(para): continue
+            add(line, 'error', 'not_approved' if ms else 'unknown_link',
+                f"[{m.group(1)}] — " + (f"a {ms[0].get('status')} connection, not an approved one" if ms else f'no such link: neither a link inside a layer nor a connection between layers in {ws.name}'))
+        if not para.startswith('#'):   # a record named but not cited: longest names first, so 'Payments' inside 'Payments Hub' is that one name
+            taken = []
+            for n in sorted(names, key=len, reverse=True):
+                ids = names[n]; one_word = ' ' not in n
+                pat = re.compile(r'(?<![\w-])' + re.escape(recs[sorted(ids)[0]]['name'].strip() if one_word else n) + r'(?![\w-])', 0 if one_word else re.I)
+                for mm in pat.finditer(para):
+                    if any(a <= mm.start() < b for a, b in taken): continue
+                    taken.append((mm.start(), mm.end()))
+                    if not (ids & cited): add(line, 'warning', 'uncited_name', f"names {recs[sorted(ids)[0]]['name']!r} without citing it — add [{'] or ['.join(sorted(ids))}]"); break
+        for x in sorted(cited & unconfirmed):
+            if not CAVEAT.search(para): add(line, 'warning', 'unconfirmed_as_fact', f'[{x}] is inferred and not yet confirmed by a person — say so')
+    if not cited_total: add(1, 'error', 'no_citations', 'no citations — every fact cites its record as [ID]; write it from `sdem document --json`')
+    open_items = any(document(ws, l)['gaps'][k] for l in data if l in FILES for k in ('unconfirmed', 'no_connection', 'placeholders', 'requirements_not_confirmed'))
+    if open_items and not re.search(r'\b(gaps?|open items?|not yet known|still open)\b', text, re.I):
+        add(1, 'warning', 'gaps_not_mentioned', 'the workspace has gaps and open items (sdem document lists them) — the narrative does not mention them')
+    findings.sort(key=lambda f: (f['line'], f['level'] != 'error', f['code']))
+    return {'workspace': ws.name, 'cited': cited_total, 'errors': sum(f['level'] == 'error' for f in findings),
+            'warnings': sum(f['level'] == 'warning' for f in findings), 'findings': findings}
+
+
+def verify_main(argv):
+    ap = argparse.ArgumentParser(prog='sdem document verify', formatter_class=argparse.RawDescriptionHelpFormatter,
+                                 description='Check a narrative an agent wrote from `sdem document --json` against the workspace (UX-D09…D11): every [ID] it cites '
+                                             'is a record or an approved connection, every link it states ([SOURCE KIND TARGET]) exists and is approved, every record it '
+                                             'names is cited, inferred records are said to be inferred, gaps are mentioned. Read-only. Exit 1 when it finds an error.',
+                                 epilog='Example:\n  sdem document verify work/a3-narrative.md --workspace examples/payment-initiation')
+    ap.add_argument('file', help='the narrative (Markdown) an agent wrote'); ap.add_argument('--workspace', required=True, metavar='DIR', help='the workspace the narrative describes'); ap.add_argument('--json', action='store_true', help='the findings as JSON')
+    a = ap.parse_args(argv)
+    try: r = verify(Path(a.file).read_text(encoding='utf-8'), a.workspace)
+    except (OSError, ValueError) as e: print(f'ERROR: {e}', file=sys.stderr); return 2
+    if a.json: print(json.dumps({'file': a.file, **r}, indent=2, ensure_ascii=False)); return 1 if r['errors'] else 0
+    for f in r['findings']: print(f"{f['level'].upper():7} line {f['line']}: {f['message']} ({f['code']})")
+    print(f"{a.file}: {r['cited']} citation(s); {r['errors']} error(s), {r['warnings']} warning(s) — "
+          + ('fix the errors: the text states something the workspace does not hold' if r['errors'] else 'every citation checks out; a person still reads it before it is shared'))
+    return 1 if r['errors'] else 0
+
+
 def main(argv=None):
+    if argv is None: argv = sys.argv[1:]
+    if argv and argv[0] == 'verify': return verify_main(argv[1:])
     ap = argparse.ArgumentParser(prog='sdem document', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description="A layer's design as a readable document, generated from the workspace — deterministic, nothing invented; "
                                              'every record says where it came from, and gaps are listed.',
                                  epilog='Examples:\n  sdem document --workspace examples/payment-initiation --layer A3\n'
-                                        '  sdem document --workspace examples/payment-initiation --layer all --format html -o work/designs/')
+                                        '  sdem document --workspace examples/payment-initiation --layer all --format html -o work/designs/\n'
+                                        '  sdem document verify work/a3-narrative.md --workspace examples/payment-initiation   # check an agent\'s narrative (UX-D09)')
     ap.add_argument('--workspace', required=True, metavar='DIR')
     ap.add_argument('--layer', default='all', help='A1, A2, A3, A4 (or a layer the profile adds), or all (default)')
     ap.add_argument('--format', choices=['md', 'html'], default='md')

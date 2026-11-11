@@ -4,6 +4,7 @@
 
 | Document | Lists |
 |---|---|
+| [CLI reference](cli-reference.md) | every `sdem` command and subcommand: options, required or not, choices, example, and which need a person's name — generated from the CLI itself (`sdem/clidoc.py`) |
 | [Entity design](architecture-entity-design.md) | every kind of thing (44), with its source, reasoning and confidence |
 | [Attribute design](architecture-attribute-design.md) | every attribute of every kind of thing |
 | [Logical data model](logical-data-model.md) | one card per kind of thing: identifiers, fields, allowed values, references, rules |
