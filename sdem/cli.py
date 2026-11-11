@@ -55,6 +55,8 @@ JOURNEYS = {
                  'sdem matrix --workspace examples/payment-initiation --md work/matrix.md'),
     'workbench': ('J7', 'the workbench for one workspace: one offline page — the solution workspace (designs, data, knowledge graph, trace and impact, reviews and changes, documents and evidence) and the SDEM framework (metamodel, configuration, rules, health)', 'sdem.workbench', [],
                  'sdem workbench --workspace examples/payment-initiation -o work/workbench.html'),
+    'status':   ('J3', "where a design is and what to do next: what blocks it, what waits on a value or a person's decision, what is worth a look — with the next commands and who runs each (ST-01)", 'sdem.status', [],
+                 'sdem status --workspace examples/payment-initiation'),
     'handback': ('J3', 'what a workspace leaves open for a person — values nobody knows, unconfirmed inferences and the strength of their evidence, links to review, possible duplicates, unsourced records — with the commands the person runs (AG-H01)', 'sdem.handback', [],
                  'sdem handback --workspace examples/payment-initiation'),
     'comply':   ('J1', "the organisation's standards and reference-architecture patterns over a workspace: per rule and record compliant, non-compliant, unresolved or under an exception — separate from sdem check (PR-19)", 'sdem.comply', [],
@@ -111,6 +113,22 @@ GENERATORS = ['diagram', 'relationships', 'structure', 'spec', 'kgspec', 'catalo
 
 
 from .layers import DATASET_FILES as ESTATE_FILES   # LR-02: the core four and the profile's layers
+from . import helptext as _helptext
+_helptext.install()   # CR-04: no option left without a description
+
+EVERYDAY = [   # CR-05: the ten an architect uses most, in the order of a design's life — the same list opens the CLI reference and the quick start
+    ('new', 'start a workspace (or an organisation) for a design'),
+    ('status', 'where the design is: what blocks it, what waits on you, and what to do next'),
+    ('aid', 'infer the missing layers from the business design — marked inferred until 👤 a person confirms them'),
+    ('check', 'is the design well-formed? — against the metamodel'),
+    ('comply', "does it meet the organisation's standards and reference patterns?"),
+    ('approve', '👤 approve a proposed link between layers, with its evidence'),
+    ('trace', 'what a record depends on, or what depends on it'),
+    ('impact', 'what a change to a record affects: modify, rehost, replace or retire'),
+    ('document', 'the design as a readable document — from the records, nothing invented'),
+    ('workbench', 'everything about the design on one offline page'),
+]
+
 ESTATE_COMMANDS = ('check', 'validate', 'link', 'build', 'trace', 'impact', 'matrix')
 
 
@@ -439,8 +457,11 @@ def _main(argv=None):
             try: stream.reconfigure(encoding='utf-8', errors='replace')
             except (ValueError, OSError): pass
     argv = ['--workspace' if x == '--estate' else x for x in (sys.argv[1:] if argv is None else argv)]   # --estate: the old name, still accepted
-    lines = [f"  {n:<9} {j:<3} {w}" for n, (j, w, *_rest) in JOURNEYS.items()]
-    epilog = ('Journeys (J1–J9; every command with examples: docs/sdem-workbench-user-guide.md §7):\n' + '\n'.join(lines) +
+    every = '\n'.join(f"  {n:<10} {w}" for n, w in EVERYDAY)
+    lines = [f"  {n:<9} {j:<3} {w}" for n, (j, w, *_rest) in JOURNEYS.items() if n not in dict(EVERYDAY)]
+    epilog = ('Everyday (inside a workspace folder, --workspace is found for you; a quick start: docs/sdem-quick-start.md):\n' + every +
+              '\n\n👤 a person decides: SDEM records their own name, never an agent\'s.'
+              '\n\nEverything else (journeys J1–J9; every command with examples: docs/reference/cli-reference.md):\n' + '\n'.join(lines) +
               '\n\nEvery subcommand takes --help with a worked example. Exit codes: 0 OK, 1 issues found, 2 usage or input error, 3 internal error.'
               '\nAG = agent platform (docs/sdem-agent-setup.md). The sdem-* commands (sdem-graph, sdem-infer, sdem-aid, …) remain as aliases.')
     ap = argparse.ArgumentParser(prog='sdem', usage='sdem <command> [options]', epilog=epilog, formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -509,6 +530,48 @@ def _run(argv):
     if name not in JOURNEYS:
         from .errors import SdemError
         raise SdemError('usage', f"unknown command '{name}' — run 'sdem --help' for the list", hint='sdem commands --json lists every command')
+    return _dispatch(name, _found_workspace(name, rest))
+
+
+# WS-11: inside a workspace folder, --workspace is found — never for sdem new (it starts one), never over --root or --graph or files given
+NO_FINDING = ('new', 'commands', 'model', 'releases', 'diff', 'agents', 'copilot')
+
+
+def find_workspace(start=None):
+    """The workspace folder the current folder is in (it, or a folder above it): mappings.json beside at least one layer dataset."""
+    from .layers import FILES
+    here = Path(start or Path.cwd()).resolve()
+    for d in (here, *here.parents):
+        if (d / 'mappings.json').exists() and any((d / f).exists() for f in FILES.values()): return d
+        if (d / 'sdem-organisation.json').exists() or (d / '.git').exists(): return None   # not above the organisation or the repository
+    return None
+
+
+def _takes_workspace(name, rest):
+    if name in ESTATE_COMMANDS: return True
+    from .agent import parser_of
+    p = parser_of(lambda a: _dispatch(name, a), rest)
+    words = [x for x in rest if not x.startswith('-')]
+    while p is not None:
+        subs = [x for x in p._actions if isinstance(x, argparse._SubParsersAction)]
+        nxt = next((s.choices[w] for s in subs for w in words[:1] if w in s.choices), None)
+        if nxt is None: break
+        p, words = nxt, words[1:]
+    return p is not None and any('--workspace' in x.option_strings for x in p._actions)
+
+
+def _found_workspace(name, rest):
+    if name in NO_FINDING or any(f in rest for f in ('--workspace', '--root', '--graph', '-h', '--help')): return rest
+    if any(not x.startswith('-') and x.endswith('.json') and Path(x).is_file() for x in rest) and name != 'review': return rest   # files given (review's proposals file is not the workspace)
+    ws = find_workspace()
+    if ws is None or not _takes_workspace(name, rest): return rest
+    import os
+    rel = os.path.relpath(ws, Path.cwd())
+    print(f"sdem: workspace {rel if rel != '.' else ws.name} — found from the current folder (WS-11)", file=sys.stderr)
+    return rest + ['--workspace', rel]
+
+
+def _dispatch(name, rest):
     _activate_profile(rest)
     rest = _expand(name, rest)
     if name == 'review': return review(rest)

@@ -77,6 +77,18 @@ One shell with a **Solution Workspace / SDEM Framework** switch in the header (t
 | CR-01 | **A CLI reference generated from the code**: `docs/reference/cli-reference.md` lists every command and subcommand (the catalogue of `sdem commands --json`), grouped by journey, each with its description, usage, every argument and option (aliases, choices, required), JSON and dry-run support, its example, and 👤 where it takes a person's own name. `sdem model regenerate` writes it (`sdem/clidoc.py`); `sdem model check` fails in CI when it is stale. | `test_the_reference_is_current_and_complete` |
 | CR-02 | **A scenarios guide** (`docs/sdem-scenarios.md`): the jobs end to end — goal, who, the commands in order, and the decisions that are a person's — linking the reference for every option. | `test_every_scenario_names_who_decides_and_links_the_reference` |
 | CR-03 | **The guides cannot drift from the CLI**: every `sdem …` command in a code block of the scenarios guide, the README and the user guide names a command that exists and uses only options it has (`--workspace` where a command takes it in place of its files); a test fails otherwise. | `tests/test_scenarios_doc.py` |
+| CR-04 | **Every option says what it is**: no option or argument in the reference is left without a description (common options share one text, `sdem/helptext.py`), and no index summary is cut mid-sentence. | `tests/test_architect_everyday.py` |
+| CR-05 | **Everyday commands first**: `sdem --help`, the CLI reference and the architect quick start (`docs/sdem-quick-start.md`) open with the same ten everyday commands — `new`, `status`, `aid`, `check`, `comply`, `approve`, `trace`, `impact`, `document`, `workbench` — in plain words; every other command follows, unchanged. | `tests/test_architect_everyday.py` |
+
+## 4b. `sdem status` — where a design is, and what next
+
+| Id | Requirement | Test |
+|---|---|---|
+| ST-01 | `sdem status --workspace DIR [--json]` (the workspace found from the current folder, WS-11) shows where a design is: its layers, its connections by status, and every item SDEM's own engines report — `sdem check`, `sdem comply` and `sdem handback` — sorted into **blocking** (a check that fails, an error-severity rule not met, an edit made outside SDEM), **unresolved** (a required value unknown, an inference not confirmed, a link to review, a rule that cannot be decided, a change event to plan) and **warnings** (an optional value unknown, a possible duplicate, a warning-severity rule, an exception ending within 30 days, the checks' advice). No score and no rule of its own. | `tests/test_architect_everyday.py` |
+| ST-02 | The **next** commands, in order, each with why and who runs it; a person's decision (`approve`, `aid confirm`, `change adopt`, `work plan` …) is marked and never run for them (CTL-21). | `tests/test_architect_everyday.py` |
+| ST-03 | The state is `blocked`, `open` (waiting on values or decisions) or `clear`; exit 1 when blocked, 0 otherwise, 2 when the folder is not a workspace. | `tests/test_architect_everyday.py` |
+| ST-04 | Read-only: no file in the workspace changes. | `tests/test_architect_everyday.py` |
+| ST-05 | With `--json`, one object in the agent contract (`sdem`, `state`, `counts`, `blocking`, `unresolved`, `warnings`, `next`); `--limit` shortens the lists. `sdem handback` stays the agent's hand-off. | `tests/test_architect_everyday.py` |
 
 ## 5. Status vocabulary — SDEM's states only
 

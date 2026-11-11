@@ -35,6 +35,14 @@ def _md(s):
     return (s or '').replace('|', '\\|').replace('\n', ' ').strip()
 
 
+def _summary(text, most=160):
+    """CR-04: the first part of a description for the index — never cut mid-word or mid-clause."""
+    s = _md((text or '').split(' — ')[0])
+    if len(s) <= most: return s
+    cut = max(s.rfind(x, 0, most) for x in ('; ', ': ', ', ', ' ('))
+    return (s[:cut] if cut > most // 2 else s[:s.rfind(' ', 0, most)]).rstrip(' ,;:') + ' …'
+
+
 def _anchor(name):
     return 'cmd-' + re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')   # not 'sdem-…': that reads as an old command name (doc drift)
 
@@ -67,7 +75,11 @@ def render():
     L += ['', '**Exit codes:** ' + ' · '.join(f'`{k}` {v}' for k, v in cat['exit_codes'].items()) + '. '
           '**Error codes** (with `--json`, in `{"error": {"code", …}}`): ' + ', '.join(f'`{c}`' for c in cat['error_codes']) + '.', '',
           f"**A person's decision:** {_md(cat['decisions_need_a_person'])}. Commands below marked 👤 take such a name.", '',
-          '## Index', '']
+          '## Everyday', '', '*The ten an architect uses most, in the order of a design\'s life (CR-05). Inside a workspace folder, `--workspace` is found for you (WS-11). '
+          'A walk-through: the [quick start](../sdem-quick-start.md).*', '', '| Command | What it does |', '|---|---|']
+    from .cli import EVERYDAY
+    L += [f'| [`sdem {n}`](#{_anchor(n)}) | {_md(w)} |' for n, w in EVERYDAY]
+    L += ['', '## Index', '']
     groups = {j: [] for j, _, _ in JOURNEYS}
     for n, c in cmds.items(): groups.setdefault(c.get('journey') or '—', []).append(n)
     for j, title, what in JOURNEYS:
@@ -77,7 +89,7 @@ def render():
         for n in names:
             c = cmds[n]
             mark = ' 👤' if any(PERSON.match(o['name']) for o in c.get('options', [])) else ''
-            L.append(f"| [`sdem {n}`](#{_anchor(n)}){mark} | {_md((c.get('description') or '').split(' — ')[0])[:160] or '—'} |")
+            L.append(f"| [`sdem {n}`](#{_anchor(n)}){mark} | {_summary(c.get('description')) or '—'} |")
         L.append('')
     L += ['## Commands', '']
     for n in sorted(cmds):

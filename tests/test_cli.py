@@ -68,7 +68,7 @@ class CliTests(unittest.TestCase):
         code, out, _ = run('--help')
         self.assertEqual(code, 0)
         for name in cli.JOURNEYS: self.assertIn(f'  {name} ', out)
-        for j in ('J1', 'J2', 'J3', 'J4', 'J5', 'J6', 'J7', 'J8'): self.assertIn(j, out)
+        self.assertLess(out.index('Everyday'), out.index('Everything else'))   # CR-05: the ten everyday commands first, then every other one with its journey
 
     def test_every_subcommand_help_has_an_example_and_the_sdem_name(self):
         for name in cli.JOURNEYS:
@@ -101,7 +101,7 @@ class CliTests(unittest.TestCase):
 
     def test_python_dash_m_sdem_works_without_installing(self):
         r = subprocess.run([sys.executable, '-m', 'sdem', '--help'], cwd=ROOT, capture_output=True, text=True)
-        self.assertEqual(r.returncode, 0); self.assertIn('Journeys', r.stdout)
+        self.assertEqual(r.returncode, 0); self.assertIn('Everyday', r.stdout)
 
     def test_model_check_matches_ci(self):
         code, out, _ = run('model', 'check')

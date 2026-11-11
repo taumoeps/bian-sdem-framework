@@ -172,14 +172,14 @@ def commands(argv=None):
                                  epilog=__doc__.split('\n\n')[2])
     sub = ap.add_subparsers(dest='cmd', required=True)
     ls = sub.add_parser('list', help='the entries, with values, confidence and status'); ls.add_argument('--status', choices=STATUSES)
-    sh = sub.add_parser('show', help='one entry: values, sources, reasoning, history'); sh.add_argument('id')
+    sh = sub.add_parser('show', help='one entry: values, sources, reasoning, history'); sh.add_argument('id', help='the inference id (e.g. INF-001) — sdem bian inference list shows them')
     for name, hlp in (('accept', 'accept an entry — the import applies it'), ('challenge', 'question an entry — the import stops applying it'),
                       ('change', 'give new values — the entry becomes proposed'), ('reject', 'reject an entry — the import does not apply it')):
-        p = sub.add_parser(name, help=hlp); p.add_argument('id'); p.add_argument('--person', required=True, help='your name — a person')
+        p = sub.add_parser(name, help=hlp); p.add_argument('id', help='the inference id (e.g. INF-001)'); p.add_argument('--person', required=True, help='your name — a person')
         p.add_argument('--reason', required=(name != 'accept'), help='why — kept in the history')
         if name == 'change':
-            p.add_argument('--asset-type'); p.add_argument('--pattern'); p.add_argument('--confidence', choices=CONFIDENCE, default='low')
-            p.add_argument('--source'); p.add_argument('--reasoning')
+            p.add_argument('--asset-type', help="the service domain's asset type, as the BIAN portal shows it"); p.add_argument('--pattern', help='its functional pattern (e.g. Fulfill, Process, Manage)'); p.add_argument('--confidence', choices=CONFIDENCE, default='low')
+            p.add_argument('--source'); p.add_argument('--reasoning', help='why the new value is right — in a sentence or two')
         p.add_argument('--dry-run', action='store_true')
     for p in sub.choices.values():
         p.add_argument('--file', metavar='FILE', help=f'the record (default: bian/{REPO_FILE.name} in this folder, or the installed one to read)')

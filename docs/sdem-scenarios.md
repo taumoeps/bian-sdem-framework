@@ -66,7 +66,7 @@ sdem aid --workspace workspaces/ledger --person your.name       # infers the BIA
 sdem aid confirm SD-FINANCIAL-ACCOUNTING --workspace workspaces/ledger --person your.name
 sdem aid reject APP-LEDGER-X --workspace workspaces/ledger --person your.name --reason "not in scope"
 sdem check --workspace workspaces/ledger
-sdem handback --workspace workspaces/ledger                     # what is left for a person
+sdem status --workspace workspaces/ledger                       # what blocks it, what waits on a person, what next
 ```
 
 **Planning without touching the workspace** — a projection in its own folder, then compared with what exists:

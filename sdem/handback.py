@@ -85,7 +85,11 @@ def collect(ws):
                         'standards_unresolved': sum(f['outcome'] == 'unresolved' for f in comp['findings']), 'exceptions_expiring': len(comp['expiring'])},
             'check_errors': errors, 'missing_values': missing, 'unconfirmed_inferred': inferred, 'links_to_review': review,
             'possible_duplicates': duplicates, 'records_without_source': unsourced, 'links': links, 'events_to_plan': events, 'compliance': comp,
-            'commands_for_the_person': commands}
+            'commands_for_the_person': commands,
+            # read by sdem status (ST-01): the registry's own errors, the checks' advice, edits made outside SDEM, and the layers' size
+            'registry_errors': d['registry']['errors'], 'advice': [{'layer': x['level'], 'text': e} for x in d['layers'] for e in x.get('advice', [])],
+            'direct_edits': d['changes']['direct_edits'], 'layers': [{'level': x['level'], 'title': x['title'], 'records': x['records'], 'relationships': x['relationships']} for x in d['layers']],
+            'missing_layers': d['missing_layers'], 'registry': {'links': d['registry']['links'], 'by_status': d['registry']['by_status']}}
 
 
 def render(h):

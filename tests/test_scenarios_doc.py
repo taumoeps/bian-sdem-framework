@@ -77,6 +77,7 @@ class GuideTests(unittest.TestCase):   # CR-02, CR-03
     def test_scenarios(self): self.check(ROOT / 'docs' / 'sdem-scenarios.md', 80)
     def test_readme(self): self.check(ROOT / 'README.md', 15)
     def test_user_guide(self): self.check(ROOT / 'docs' / 'sdem-workbench-user-guide.md', 30)
+    def test_quick_start(self): self.check(ROOT / 'docs' / 'sdem-quick-start.md', 12)   # CR-05
 
     def test_every_scenario_names_who_decides_and_links_the_reference(self):
         text = (ROOT / 'docs' / 'sdem-scenarios.md').read_text(encoding='utf-8')

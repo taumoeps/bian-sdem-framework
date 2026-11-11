@@ -192,7 +192,7 @@ def main(argv):
         action, argv = argv[0], argv[1:]
         ap = argparse.ArgumentParser(prog=f'sdem aid {action}', description=('Confirm inferred records: you agree with them; the mark stays, with your name.' if action == 'confirm'
                                      else 'Reject inferred records: removed with their links inside the layer, and remembered so they are not inferred again.'))
-        ap.add_argument('ids', nargs='*', metavar='ID'); ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
+        ap.add_argument('ids', nargs='*', metavar='ID', help='the inferred record ids (sdem status or sdem handback lists them)'); ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
         ap.add_argument('--person', required=True, help='your name — a person'); ap.add_argument('--all', action='store_true', help='every inferred record not yet confirmed')
         ap.add_argument('--reason', required=(action == 'reject'), help='why — kept')
         ap.add_argument('--json', action='store_true')

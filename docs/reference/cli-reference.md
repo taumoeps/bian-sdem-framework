@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-118 commands and subcommands.
+119 commands and subcommands.
 
 ## Every command takes
 
@@ -15,6 +15,23 @@
 **Exit codes:** `0` ok · `1` refused by a check · `2` usage or input error · `3` internal error. **Error codes** (with `--json`, in `{"error": {"code", …}}`): `exists`, `input`, `internal`, `invalid_input`, `needs_person`, `not_found`, `refused`, `usage`.
 
 **A person's decision:** approve, load, new, aid confirm/reject and other recorded decisions take --person/--reviewer: a person's own name, never an agent's (CTL-21). Commands below marked 👤 take such a name.
+
+## Everyday
+
+*The ten an architect uses most, in the order of a design's life (CR-05). Inside a workspace folder, `--workspace` is found for you (WS-11). A walk-through: the [quick start](../sdem-quick-start.md).*
+
+| Command | What it does |
+|---|---|
+| [`sdem new`](#cmd-new) | start a workspace (or an organisation) for a design |
+| [`sdem status`](#cmd-status) | where the design is: what blocks it, what waits on you, and what to do next |
+| [`sdem aid`](#cmd-aid) | infer the missing layers from the business design — marked inferred until 👤 a person confirms them |
+| [`sdem check`](#cmd-check) | is the design well-formed? — against the metamodel |
+| [`sdem comply`](#cmd-comply) | does it meet the organisation's standards and reference patterns? |
+| [`sdem approve`](#cmd-approve) | 👤 approve a proposed link between layers, with its evidence |
+| [`sdem trace`](#cmd-trace) | what a record depends on, or what depends on it |
+| [`sdem impact`](#cmd-impact) | what a change to a record affects: modify, rehost, replace or retire |
+| [`sdem document`](#cmd-document) | the design as a readable document — from the records, nothing invented |
+| [`sdem workbench`](#cmd-workbench) | everything about the design on one offline page |
 
 ## Index
 
@@ -29,7 +46,7 @@
 | [`sdem bian custom`](#cmd-bian-custom) 👤 | the old name for `sdem bian add` (--add) and `sdem bian select` (--only, --from, --all) |
 | [`sdem bian impact`](#cmd-bian-impact) | before an update: what in each workspace points at BIAN records the new layer drops, renames or changes |
 | [`sdem bian import`](#cmd-bian-import) | write an A2 dataset for the service domains you choose |
-| [`sdem bian inference`](#cmd-bian-inference) | SDEM's record of inferred BIAN asset types and functional patterns: list, show, accept, challenge, change or reject an entry. Every change names a person and a  |
+| [`sdem bian inference`](#cmd-bian-inference) | SDEM's record of inferred BIAN asset types and functional patterns: list, show, accept, challenge … |
 | [`sdem bian inference accept`](#cmd-bian-inference-accept) 👤 | accept an entry |
 | [`sdem bian inference challenge`](#cmd-bian-inference-challenge) 👤 | question an entry |
 | [`sdem bian inference change`](#cmd-bian-inference-change) 👤 | give new values |
@@ -59,7 +76,7 @@
 | Command | What it does |
 |---|---|
 | [`sdem check`](#cmd-check) | check architecture datasets and registry against the metamodel |
-| [`sdem comply`](#cmd-comply) | the organisation's standards and reference-architecture patterns over a workspace: per rule and record compliant, non-compliant, unresolved or under an exceptio |
+| [`sdem comply`](#cmd-comply) | the organisation's standards and reference-architecture patterns over a workspace: per rule and record compliant, non-compliant … |
 | [`sdem pattern`](#cmd-pattern) | reference-architecture patterns as structures |
 | [`sdem pattern draw`](#cmd-pattern-draw) | draw a pattern (PR-25) |
 | [`sdem pattern extract`](#cmd-pattern-extract) | a diagram → a DRAFT pattern file and a report; nothing enters the profile until a person includes it (PR-30) |
@@ -94,6 +111,7 @@
 | [`sdem governance verify`](#cmd-governance-verify) | every decision record: verified by a signed commit from its approver, or why not |
 | [`sdem handback`](#cmd-handback) | what a workspace leaves open for a person |
 | [`sdem review`](#cmd-review) | list proposed links for review, weakest first |
+| [`sdem status`](#cmd-status) | where a design is and what to do next: what blocks it, what waits on a value or a person's decision, what is worth a look |
 
 ### J4 · Build the knowledge graph
 
@@ -147,7 +165,7 @@
 | [`sdem dashboard`](#cmd-dashboard) | one read-only HTML dashboard for a workspace: health, attention, review, trace & impact, matrices, changes, AID, controls |
 | [`sdem diagram`](#cmd-diagram) | ArchiMate diagrams of a workspace from SDEM's templates |
 | [`sdem document`](#cmd-document) | a layer's design as a structured, readable document (Markdown or HTML), generated from the workspace |
-| [`sdem document verify`](#cmd-document-verify) | Check a narrative an agent wrote from `sdem document --json` against the workspace (UX-D09…D11): every [ID] it cites is a record or an approved connection, ever |
+| [`sdem document verify`](#cmd-document-verify) | Check a narrative an agent wrote from `sdem document --json` against the workspace (UX-D09…D11): every [ID] it cites is a record or an approved connection … |
 | [`sdem home`](#cmd-home) | the main dashboard: the metamodel (entities, links inside and between architectures, engine rules), its picture, health, configuration |
 | [`sdem view`](#cmd-view) | write the HTML picture of a graph store, optionally with a projection |
 | [`sdem workbench`](#cmd-workbench) | the workbench for one workspace: one offline page |
@@ -260,7 +278,7 @@ sdem aid --workspace WORKSPACE --person PERSON [--dry-run]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--person` | yes | your name — a person |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
@@ -283,8 +301,8 @@ sdem aid check <projection> [--catalogue CATALOGUE]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<projection>` | yes | — |
-| `--catalogue` |  | — |
+| `<projection>` | yes | a projection file written by sdem aid project |
+| `--catalogue` |  | an entity catalogue (entities.json): the ids and names records must use |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem aid confirm
@@ -301,8 +319,8 @@ sdem aid confirm [<ids>] --workspace WORKSPACE --person PERSON [--all] [--reason
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<ids>` |  | — |
-| `--workspace` | yes | — |
+| `<ids>` |  | the inferred record ids (sdem status or sdem handback lists them) |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--person` | yes | your name — a person |
 | `--all` |  | every inferred record not yet confirmed |
 | `--reason` |  | why — kept |
@@ -320,9 +338,9 @@ sdem aid gaps <projection> [--workspace WORKSPACE] [--actual ACTUAL …]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<projection>` | yes | — |
+| `<projection>` | yes | a projection file written by sdem aid project |
 | `--workspace` |  | compare with a workspace's real layers and approved connections |
-| `--actual` |  | — |
+| `--actual` |  | the real architecture datasets to compare the plan with |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem aid project
@@ -338,9 +356,9 @@ sdem aid project [--workspace WORKSPACE] [--have HAVE …] [--catalogue CATALOGU
 | Argument | Required | What it is |
 |---|---|---|
 | `--workspace` |  | plan from a workspace: its business layer (and any applications and technology), its BIAN layer and its approved connections |
-| `--have` |  | — |
-| `--catalogue` |  | — |
-| `--registry` |  | — |
+| `--have` |  | the architecture datasets you already have (a1-business.json …) |
+| `--catalogue` |  | an entity catalogue (entities.json): the ids and names records must use |
+| `--registry` |  | the registry of approved connections (mappings.json) |
 | `-o`, `--out` |  | where the planned design goes (default with --workspace: <workspace>/plans/PLAN-nnn) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -358,8 +376,8 @@ sdem aid reject [<ids>] --workspace WORKSPACE --person PERSON [--all] --reason R
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<ids>` |  | — |
-| `--workspace` | yes | — |
+| `<ids>` |  | the inferred record ids (sdem status or sdem handback lists them) |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--person` | yes | your name — a person |
 | `--all` |  | every inferred record not yet confirmed |
 | `--reason` | yes | why — kept |
@@ -380,7 +398,7 @@ sdem approve <ids> --proposals PROPOSALS [--workspace WORKSPACE] [--registry REG
 | Argument | Required | What it is |
 |---|---|---|
 | `<ids>` | yes | proposal id(s) from `sdem review` |
-| `--proposals` | yes | — |
+| `--proposals` | yes | a proposals file written by sdem link (proposals.json) |
 | `--workspace` |  | workspace folder (its mappings.json) |
 | `--registry` |  | the registry, if not <workspace>/mappings.json |
 | `--reviewer`, `--person` | yes | your name — a person (CTL-21); --person works too, as in the other commands |
@@ -412,8 +430,8 @@ sdem baseline <name> --graph GRAPH
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<name>` | yes | — |
-| `--graph` | yes | — |
+| `<name>` | yes | its name |
+| `--graph` | yes | a graph store folder written by sdem build |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 Example:
@@ -447,10 +465,10 @@ sdem bian add <names> [--base BASE] [--folder FOLDER] --workspace WORKSPACE [--p
 | `<names>` | yes | service domains by name, e.g. "Financial Accounting" — find them with sdem bian search |
 | `--base` |  | choose from the base BIAN that ships with SDEM (default) — or, with FILE, your own packed BIAN |
 | `--folder` |  | choose from a downloaded BIAN release instead |
-| `--workspace` | yes | — |
-| `--patterns` |  | — |
-| `--inferences` |  | — |
-| `--no-inferences` |  | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--patterns` |  | a table of service domain → functional pattern, asset type (CSV: Service Domain, pattern, asset type) |
+| `--inferences` |  | SDEM's record of inferred asset types and patterns to apply (default: the one for the BIAN release) |
+| `--no-inferences` |  | do not apply SDEM's accepted inferences |
 | `--person` | yes | your name — a person |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
@@ -475,10 +493,10 @@ sdem bian custom [<folder>] [--base BASE] [--add ADD …] [--only ONLY …] [--f
 | `--only` |  | as sdem bian select --only |
 | `--from` |  | as sdem bian select --from |
 | `--all` |  | as sdem bian select --all |
-| `--workspace` | yes | — |
-| `--patterns` |  | — |
-| `--inferences` |  | — |
-| `--no-inferences` |  | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--patterns` |  | a table of service domain → functional pattern, asset type (CSV: Service Domain, pattern, asset type) |
+| `--inferences` |  | SDEM's record of inferred asset types and patterns to apply (default: the one for the BIAN release) |
+| `--no-inferences` |  | do not apply SDEM's accepted inferences |
 | `--person` | yes | your name — a person |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
@@ -497,7 +515,7 @@ sdem bian impact [--workspace WORKSPACE] [--root ROOT] --a2 A2
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` |  | — |
+| `--workspace` |  | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--root` |  | every workspace in a folder |
 | `--a2` | yes | the new shared BIAN layer, e.g. bian/a2-service-domain.json |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
@@ -518,7 +536,7 @@ sdem bian import [<folder>] [--base BASE] -o O [--only ONLY …] [--from FROM] [
 |---|---|---|
 | `<folder>` |  | a folder of BIAN-format files (e.g. a release downloaded from BIAN's GitHub) |
 | `--base` |  | the base BIAN that ships with SDEM — or, with FILE, your own packed BIAN |
-| `-o`, `--out` | yes | — |
+| `-o`, `--out` | yes | where to write the result (a file or folder) |
 | `--only` |  | service domains by name (or file name) |
 | `--from` |  | a file of service-domain names, one per line |
 | `--all` |  | every service domain in the release (about 3,000 records for release 14) |
@@ -552,7 +570,7 @@ sdem bian inference accept <id> --person PERSON [--reason REASON] [--dry-run] [-
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
+| `<id>` | yes | the inference id (e.g. INF-001) |
 | `--person` | yes | your name — a person |
 | `--reason` |  | why — kept in the history |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
@@ -573,7 +591,7 @@ sdem bian inference challenge <id> --person PERSON --reason REASON [--dry-run] [
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
+| `<id>` | yes | the inference id (e.g. INF-001) |
 | `--person` | yes | your name — a person |
 | `--reason` | yes | why — kept in the history |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
@@ -594,14 +612,14 @@ sdem bian inference change <id> --person PERSON --reason REASON [--asset-type AS
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
+| `<id>` | yes | the inference id (e.g. INF-001) |
 | `--person` | yes | your name — a person |
 | `--reason` | yes | why — kept in the history |
-| `--asset-type` |  | — |
-| `--pattern` |  | — |
-| `--confidence` {high, medium, low} |  | — |
-| `--source` |  | — |
-| `--reasoning` |  | — |
+| `--asset-type` |  | the service domain's asset type, as the BIAN portal shows it |
+| `--pattern` |  | its functional pattern (e.g. Fulfill, Process, Manage) |
+| `--confidence` {high, medium, low} |  | how sure, from 0 to 1 |
+| `--source` |  | where it came from, as kind:reference |
+| `--reasoning` |  | why the new value is right — in a sentence or two |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--file` |  | the record (default: bian/inferences-14.0.0.json in this folder, or the installed one to read) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
@@ -620,7 +638,7 @@ sdem bian inference list [--status {open,proposed,accepted,challenged,rejected}]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--status` {open, proposed, accepted, challenged, rejected} |  | — |
+| `--status` {open, proposed, accepted, challenged, rejected} |  | only those with this status |
 | `--file` |  | the record (default: bian/inferences-14.0.0.json in this folder, or the installed one to read) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -638,7 +656,7 @@ sdem bian inference reject <id> --person PERSON --reason REASON [--dry-run] [--f
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
+| `<id>` | yes | the inference id (e.g. INF-001) |
 | `--person` | yes | your name — a person |
 | `--reason` | yes | why — kept in the history |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
@@ -659,7 +677,7 @@ sdem bian inference show <id> [--file FILE]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
+| `<id>` | yes | the inference id (e.g. INF-001) — sdem bian inference list shows them |
 | `--file` |  | the record (default: bian/inferences-14.0.0.json in this folder, or the installed one to read) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -695,8 +713,8 @@ sdem bian pack <folder> -o O
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<folder>` | yes | — |
-| `-o`, `--out` | yes | — |
+| `<folder>` | yes | a folder of BIAN-format files (e.g. a release downloaded from BIAN's GitHub) |
+| `-o`, `--out` | yes | where to write the result (a file or folder) |
 
 ### sdem bian search
 
@@ -738,10 +756,10 @@ sdem bian select [<folder>] [--base BASE] [--only ONLY …] [--from FROM] [--all
 | `--only` |  | service domains by name — exactly these |
 | `--from` |  | a file of names, one per line — exactly these |
 | `--all` |  | back to every service domain |
-| `--workspace` | yes | — |
-| `--patterns` |  | — |
-| `--inferences` |  | — |
-| `--no-inferences` |  | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--patterns` |  | a table of service domain → functional pattern, asset type (CSV: Service Domain, pattern, asset type) |
+| `--inferences` |  | SDEM's record of inferred asset types and patterns to apply (default: the one for the BIAN release) |
+| `--no-inferences` |  | do not apply SDEM's accepted inferences |
 | `--person` | yes | your name — a person |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
@@ -817,9 +835,9 @@ sdem change adopt --workspace WORKSPACE --layer {A1,A2,A3,A4,registry,requiremen
 |---|---|---|
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--layer` {A1, A2, A3, A4, registry, requirements} | yes | — |
+| `--layer` {A1, A2, A3, A4, registry, requirements} | yes | the layer: A1 business, A2 BIAN, A3 application, A4 technology (or a layer your profile adds) |
 | `--person` | yes | who made the edit |
-| `--reason` | yes | — |
+| `--reason` | yes | why — recorded with the decision |
 
 ### sdem change diff
 
@@ -877,12 +895,12 @@ sdem change revert <id> --workspace WORKSPACE --agent AGENT --person PERSON [--r
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
+| `<id>` | yes | the layer whose latest change set to undo (e.g. A3) |
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--agent` | yes | the agent: sdem-a1-business, sdem-a2-bian, sdem-a3-application, sdem-a4-technology, sdem-orchestrator, or 'architect' for a person working without an agent |
 | `--person` | yes | the person behind the agent (CTL-20) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--reason` |  | — |
+| `--reason` |  | why — recorded with the decision |
 
 ### sdem change show
 
@@ -898,7 +916,7 @@ sdem change show <id> --workspace WORKSPACE
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
+| `<id>` | yes | the change set id (e.g. CS-001) |
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -943,7 +961,7 @@ sdem comply --workspace WORKSPACE [--as-of AS_OF]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--as-of` |  | evaluate dates (effective dates, expiries, `today`) as of this date |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -970,13 +988,13 @@ sdem connect <source> <relationship> <target> --workspace WORKSPACE --reviewer R
 | `<source>` | yes | the record the connection starts from, e.g. a BIAN service domain id |
 | `<relationship>` | yes | one of the nine connection types, e.g. REALIZED_BY, SUPPORTED_BY, DEPLOYED_ON |
 | `<target>` | yes | the record it goes to |
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--reviewer`, `--person` | yes | your name — a person (CTL-21) |
 | `--evidence` |  | the document that proves it (repeatable; every kind the type needs) |
 | `--rationale` | yes | one sentence: why this connection is true |
 | `--bian-release` |  | for a connection resting on BIAN guidance: the BIAN release (e.g. 14.0.0) |
-| `--id` |  | — |
-| `--date` |  | — |
+| `--id` |  | its id |
+| `--date` |  | the date (YYYY-MM-DD) |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -1027,14 +1045,14 @@ sdem dashboard --workspace WORKSPACE [-o O] [--proposals PROPOSALS] [--projectio
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `-o`, `--out` |  | default <workspace>/dashboard.html |
 | `--proposals` |  | show these proposals (default: run the rules engine now) |
 | `--projection` |  | an AID projection package to show beside the real design |
 | `--catalogue` |  | the BIAN catalogue the projection used (for its check) |
 | `--graph` |  | a graph store of this workspace — warn when it is out of date (default: <workspace>/graph when built) |
 | `--view` |  | the graph viewer (sdem view) to link to — default <graph>/view.html; linked only when it shows the current graph |
-| `--title` |  | — |
+| `--title` |  | a title |
 | `--json` |  | print a summary of the computed data instead of writing the page |
 | `--full` |  | with --json: everything the page shows, every record's trace and impact (large) |
 
@@ -1058,8 +1076,8 @@ sdem designs [--workspace WORKSPACE] [--graph GRAPH] [--entity ENTITY] [--gaps] 
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` |  | — |
-| `--graph` |  | — |
+| `--workspace` |  | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--graph` |  | a graph store folder written by sdem build |
 | `--entity` |  | an entity's pages and the gaps about it or found in them |
 | `--gaps` |  | list gap records, not design records |
 | `--category` |  | only gaps of this category, e.g. "no entity type" |
@@ -1086,7 +1104,7 @@ sdem diagram [--workspace WORKSPACE] [--template TEMPLATE] [--focus FOCUS] [--fo
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` |  | — |
+| `--workspace` |  | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--template` |  | the template (sdem diagram --list); default layered |
 | `--focus` |  | draw only this record, what it contains and is inside, and what is linked to them |
 | `--format` {svg, html, json} |  | default from the -o extension, else svg |
@@ -1140,9 +1158,9 @@ sdem document --workspace WORKSPACE [--layer LAYER] [--format {md,html}] [-o O]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--layer` |  | A1, A2, A3, A4 (or a layer the profile adds), or all (default) |
-| `--format` {md, html} |  | — |
+| `--format` {md, html} |  | the output format |
 | `-o`, `--out` |  | a file (one layer) or a folder (all layers); without it, Markdown goes to the screen |
 | `--json` |  | the structured document instead |
 
@@ -1210,10 +1228,10 @@ sdem events accept <event> --workspace WORKSPACE --person PERSON --reason REASON
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<event>` | yes | — |
-| `--workspace` | yes | — |
+| `<event>` | yes | the change event id (e.g. EVT-001) |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--person` | yes | your name — a person; never an agent |
-| `--reason` | yes | — |
+| `--reason` | yes | why — recorded with the decision |
 | `--final` |  | your final classification for a layer (required where a specialist disputed or asked for more investigation) |
 | `--resolve` |  | how you resolved a layer you decided |
 | `--authorise` |  | also authorise implementation now |
@@ -1234,7 +1252,7 @@ sdem events analyse <event> --workspace WORKSPACE --agent AGENT --person PERSON
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<event>` | yes | — |
+| `<event>` | yes | the change event id (e.g. EVT-001) |
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--agent` | yes | the agent: sdem-a1-business, sdem-a2-bian, sdem-a3-application, sdem-a4-technology, sdem-orchestrator, or 'architect' for a person working without an agent |
 | `--person` | yes | the person behind the agent (CTL-20) |
@@ -1254,20 +1272,20 @@ sdem events assess <event> --workspace WORKSPACE --agent AGENT --person PERSON -
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<event>` | yes | — |
+| `<event>` | yes | the change event id (e.g. EVT-001) |
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--agent` | yes | the agent: sdem-a1-business, sdem-a2-bian, sdem-a3-application, sdem-a4-technology, sdem-orchestrator, or 'architect' for a person working without an agent |
 | `--person` | yes | the person behind the agent (CTL-20) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--layer` {A1, A2, A3, A4} | yes | — |
-| `--status` {impact_confirmed, no_impact_confirmed, further_investigation_required, impact_disputed} | yes | — |
+| `--layer` {A1, A2, A3, A4} | yes | the layer: A1 business, A2 BIAN, A3 application, A4 technology (or a layer your profile adds) |
+| `--status` {impact_confirmed, no_impact_confirmed, further_investigation_required, impact_disputed} | yes | only those with this status |
 | `--recommend` {design_change_required, review_required, no_impact} |  | your classification for the layer (implied for the two *_confirmed statuses) |
 | `--evidence` |  | what you checked — a record, a document, a design (required to confirm no impact or to dispute) |
 | `--mapping` |  | the approved links (mapping ids) you relied on |
 | `--record` |  | records of your layer that are affected (required for a disputed design change) |
 | `--missing` |  | links or records that should exist but do not |
 | `--uncertainty` |  | what you could not establish, and why it does or does not change your conclusion |
-| `--confidence` {high, medium, low} |  | — |
+| `--confidence` {high, medium, low} |  | how sure, from 0 to 1 |
 | `--reasoning` | yes | why — in a sentence or two |
 
 ### sdem events authorise
@@ -1284,9 +1302,9 @@ sdem events authorise <event> --workspace WORKSPACE --person PERSON
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<event>` | yes | — |
-| `--workspace` | yes | — |
-| `--person` | yes | — |
+| `<event>` | yes | the change event id (e.g. EVT-001) |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--person` | yes | your name — a person's own, never an agent's (CTL-21) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem events pending
@@ -1305,8 +1323,8 @@ sdem events pending --workspace WORKSPACE [--layer {A1,A2,A3,A4}] [--event EVENT
 |---|---|---|
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--layer` {A1, A2, A3, A4} |  | — |
-| `--event` |  | — |
+| `--layer` {A1, A2, A3, A4} |  | the layer: A1 business, A2 BIAN, A3 application, A4 technology (or a layer your profile adds) |
+| `--event` |  | a change event id (e.g. EVT-001) |
 
 ### sdem events show
 
@@ -1322,7 +1340,7 @@ sdem events show <event> --workspace WORKSPACE
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<event>` | yes | — |
+| `<event>` | yes | the change event id (e.g. EVT-001) |
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -1340,7 +1358,7 @@ sdem events validate <event> --workspace WORKSPACE --agent AGENT --person PERSON
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<event>` | yes | — |
+| `<event>` | yes | the change event id (e.g. EVT-001) |
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--agent` | yes | the agent: sdem-a1-business, sdem-a2-bian, sdem-a3-application, sdem-a4-technology, sdem-orchestrator, or 'architect' for a person working without an agent |
 | `--person` | yes | the person behind the agent (CTL-20) |
@@ -1368,12 +1386,12 @@ sdem exception grant --workspace WORKSPACE --rule RULE --records RECORDS … --e
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
-| `--rule` | yes | — |
-| `--records` | yes | — |
-| `--expires` | yes | — |
-| `--reason` | yes | — |
-| `--person` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--rule` | yes | the rule id |
+| `--records` | yes | the record ids |
+| `--expires` | yes | when it ends (YYYY-MM-DD) — it is time-limited |
+| `--reason` | yes | why — recorded with the decision |
+| `--person` | yes | your name — a person's own, never an agent's (CTL-21) |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -1391,7 +1409,7 @@ sdem exception list --workspace WORKSPACE
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem explain
@@ -1444,7 +1462,7 @@ sdem governance verify --workspace WORKSPACE [--require-verified]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--require-verified` |  | exit 1 unless every decision is verified |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -1462,7 +1480,7 @@ sdem handback --workspace WORKSPACE
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 Example:
@@ -1516,7 +1534,7 @@ sdem impact <entity> [<paths>] [--graph GRAPH] [--status STATUS] --change {modif
 | `--graph` |  | read a graph store (sdem build) instead of architecture datasets |
 | `--status` |  | mapping statuses to treat as arrows |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--change` {modify, rehost, replace, retire} | yes | — |
+| `--change` {modify, rehost, replace, retire} | yes | the kind of change: modify, rehost, replace or retire |
 | `--report` |  | also write a printable impact report (Markdown) |
 | `--workspace` |  | the workspace folder, in place of the list of files (its layer datasets and mappings.json) |
 
@@ -1600,7 +1618,7 @@ sdem matrix [<paths>] [--graph GRAPH] [--md MD]
 | Argument | Required | What it is |
 |---|---|---|
 | `<paths>` |  | architecture datasets and the registry (or --workspace / --graph) |
-| `--graph` |  | — |
+| `--graph` |  | a graph store folder written by sdem build |
 | `--md` |  | write Markdown to FILE |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 | `--workspace` |  | the workspace folder, in place of the list of files (its layer datasets and mappings.json) |
@@ -1625,7 +1643,7 @@ sdem migrate --workspace WORKSPACE --person PERSON [--dry-run]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--person` | yes | your name — a person |
 | `--dry-run` |  | check and show what would change; write nothing |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
@@ -1830,13 +1848,13 @@ sdem pattern draw [--file FILE] [--id ID] [--workspace WORKSPACE] [--profile PRO
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--file` |  | — |
+| `--file` |  | the file to read |
 | `--id` |  | a pattern the workspace's profile includes |
-| `--workspace` |  | — |
-| `--profile` |  | — |
+| `--workspace` |  | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--profile` |  | the organisation profile to use (otherwise the workspace's sdem-profile.json) |
 | `--anchor` |  | draw over the design from this record |
-| `--format` {svg, html, json} |  | — |
-| `-o`, `--out` |  | — |
+| `--format` {svg, html, json} |  | the output format |
+| `-o`, `--out` |  | where to write the result (a file or folder) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem pattern extract
@@ -1853,12 +1871,12 @@ sdem pattern extract --from FROM [--profile PROFILE] [--workspace WORKSPACE] --i
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--from` | yes | — |
-| `--profile` |  | — |
-| `--workspace` |  | — |
-| `--id` | yes | — |
-| `--title` |  | — |
-| `--version` |  | — |
+| `--from` | yes | read from this file or folder |
+| `--profile` |  | the organisation profile to use (otherwise the workspace's sdem-profile.json) |
+| `--workspace` |  | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--id` | yes | its id |
+| `--title` |  | a title |
+| `--version` |  | its version |
 | `--owner` | yes | who owns the pattern (it is theirs to approve) |
 | `--anchor` |  | the part the pattern applies to (its label or role id) |
 | `--out` |  | write the draft here (otherwise only the report) |
@@ -1888,9 +1906,9 @@ sdem profile adopt --workspace WORKSPACE --person PERSON --reason REASON [--dry-
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--person` | yes | your name — a person |
-| `--reason` | yes | — |
+| `--reason` | yes | why — recorded with the decision |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -1908,7 +1926,7 @@ sdem profile check [--workspace WORKSPACE] [--file FILE]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` |  | — |
+| `--workspace` |  | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--file` |  | a profile file instead of a workspace |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -1926,7 +1944,7 @@ sdem profile example --out OUT
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--out` | yes | — |
+| `--out` | yes | where to write the result (a file or folder) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem profile show
@@ -1943,8 +1961,8 @@ sdem profile show [--workspace WORKSPACE] [--file FILE]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` |  | — |
-| `--file` |  | — |
+| `--workspace` |  | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--file` |  | the file to read |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem query
@@ -1961,13 +1979,13 @@ sdem query --graph GRAPH [--level {A1,A2,A3,A4}] [--type TYPE] [--where WHERE] [
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--graph` | yes | — |
-| `--level` {A1, A2, A3, A4} |  | — |
+| `--graph` | yes | a graph store folder written by sdem build |
+| `--level` {A1, A2, A3, A4} |  | only records in this layer |
 | `--type` |  | entity type; subtypes included |
 | `--where` |  | core field or attribute equals value (repeatable) |
 | `--neighbours` |  | within-level neighbours of a record |
 | `--kind` |  | with --neighbours: only this relationship kind |
-| `--direction` {in, out, both} |  | — |
+| `--direction` {in, out, both} |  | down: what it depends on · up: what depends on it |
 | `--unmapped` {A1, A2, A3, A4} |  | records with no approved cross-level link where the catalogue expects one |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -2022,7 +2040,7 @@ sdem requirements check --workspace WORKSPACE
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem requirements confirm
@@ -2039,11 +2057,11 @@ sdem requirements confirm <id> --workspace WORKSPACE --person PERSON [--note NOT
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
-| `--workspace` | yes | — |
+| `<id>` | yes | the requirement ids to confirm |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--person` | yes | — |
-| `--note` |  | — |
+| `--person` | yes | your name — a person's own, never an agent's (CTL-21) |
+| `--note` |  | a note, recorded with it |
 
 ### sdem requirements evaluate
 
@@ -2059,7 +2077,7 @@ sdem requirements evaluate --workspace WORKSPACE [--event EVENT] [--record RECOR
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 | `--event` |  | a change event (its stored impact and the change set it came from) |
 | `--record` |  | or: a record you plan to change |
@@ -2080,10 +2098,10 @@ sdem requirements list --workspace WORKSPACE [--layer {A1,A2,A3,A4}] [--status S
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--layer` {A1, A2, A3, A4} |  | — |
-| `--status` |  | — |
+| `--layer` {A1, A2, A3, A4} |  | the layer: A1 business, A2 BIAN, A3 application, A4 technology (or a layer your profile adds) |
+| `--status` |  | only those with this status |
 
 ### sdem requirements measure
 
@@ -2099,17 +2117,17 @@ sdem requirements measure --workspace WORKSPACE [--from FROM] [--record RECORD] 
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 | `--from` |  | measurements from a file (a list, or {"measurements": [...]}: record, metric, value, unit, state, evidence) — each recorded against you |
-| `--record` |  | — |
-| `--metric` |  | — |
-| `--value` |  | — |
-| `--unit` |  | — |
-| `--state` {current, proposed} |  | — |
-| `--evidence` |  | — |
-| `--person` | yes | — |
-| `--agent` |  | — |
+| `--record` |  | the record id |
+| `--metric` |  | what was measured (e.g. availability) |
+| `--value` |  | the measured value |
+| `--unit` |  | its unit (e.g. %%, ms) |
+| `--state` {current, proposed} |  | current: measured now · proposed: expected in the proposed architecture |
+| `--evidence` |  | the evidence, as kind:reference (e.g. deployment_design:PAY-REHOST#cutover) |
+| `--person` | yes | your name — a person's own, never an agent's (CTL-21) |
+| `--agent` |  | the agent acting, by its name (e.g. sdem-a3-agent) |
 
 ### sdem requirements propose
 
@@ -2126,10 +2144,10 @@ sdem requirements propose <file> --workspace WORKSPACE --person PERSON [--agent 
 | Argument | Required | What it is |
 |---|---|---|
 | `<file>` | yes | a JSON requirement, a list of them, or a registry ({"requirements": [...]}) — version and history are set here |
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--person` | yes | — |
-| `--agent` |  | — |
+| `--person` | yes | your name — a person's own, never an agent's (CTL-21) |
+| `--agent` |  | the agent acting, by its name (e.g. sdem-a3-agent) |
 
 ### sdem requirements retire
 
@@ -2145,11 +2163,11 @@ sdem requirements retire <id> --workspace WORKSPACE --person PERSON --reason REA
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
-| `--workspace` | yes | — |
+| `<id>` | yes | the requirement ids to retire |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--person` | yes | — |
-| `--reason` | yes | — |
+| `--person` | yes | your name — a person's own, never an agent's (CTL-21) |
+| `--reason` | yes | why — recorded with the decision |
 
 ### sdem requirements show
 
@@ -2165,8 +2183,8 @@ sdem requirements show <id> --workspace WORKSPACE
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
-| `--workspace` | yes | — |
+| `<id>` | yes | the requirement id (e.g. REQ-001) |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem requirements trace
@@ -2183,8 +2201,8 @@ sdem requirements trace <id> --workspace WORKSPACE
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
-| `--workspace` | yes | — |
+| `<id>` | yes | the requirement id (e.g. REQ-001) |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem review
@@ -2211,6 +2229,29 @@ Example:
 
 ```bash
 sdem review work/links/proposals.json
+```
+
+### sdem status
+
+<a id="cmd-status"></a>
+
+where a design is and what to do next: what blocks it, what waits on a value or a person's decision, what is worth a look — with the next commands and who runs each (ST-01)
+
+```
+sdem status --workspace WORKSPACE
+```
+
+*JSON: native · dry run: sandbox*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one |
+| `--json` |  | the result as JSON |
+
+Example:
+
+```bash
+sdem status --workspace examples/payment-initiation
 ```
 
 ### sdem trace
@@ -2269,7 +2310,7 @@ sdem transform inspect <export> [--rules RULES] [--anonymous] [--ocr {auto,visio
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<export>` | yes | — |
+| `<export>` | yes | the export folder (e.g. a Confluence space export) |
 | `--rules` |  | your copy of the rules (make one with `sdem transform rules -o FILE`) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 | `--anonymous` |  | folder layout only, names replaced by F1, F2 … — safe to describe to others |
@@ -2305,8 +2346,8 @@ sdem transform run <export> -o O [--rules RULES] [--known KNOWN …] [--model-id
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<export>` | yes | — |
-| `-o`, `--out` | yes | — |
+| `<export>` | yes | the export folder (e.g. a Confluence space export) |
+| `-o`, `--out` | yes | where to write the result (a file or folder) |
 | `--rules` |  | your copy of the rules (make one with `sdem transform rules -o FILE`) |
 | `--known` |  | existing SDEM datasets: their names are found in the text and flagged as the same record |
 | `--model-id` |  | name for the candidate datasets (default: the Confluence space) |
@@ -2359,7 +2400,7 @@ sdem upgrade check [--workspace WORKSPACE] [--root ROOT] [--repo REPO] [--from F
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` |  | — |
+| `--workspace` |  | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--root` |  | every workspace in a folder |
 | `--repo` |  | your workspace repository (requirements.txt, AGENTS.md); default the current folder |
 | `--from` |  | the version you use now (default: read from requirements.txt) |
@@ -2406,7 +2447,7 @@ sdem view --graph GRAPH [-o O] [--projection PROJECTION] [--dashboard DASHBOARD]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--graph` | yes | — |
+| `--graph` | yes | a graph store folder written by sdem build |
 | `-o`, `--out` |  | default <DIR>/view.html |
 | `--projection` |  | overlay an AID projection package, drawn dashed and labelled PROJECTED (AID-O06) |
 | `--dashboard` |  | the workspace dashboard to link back to (default: <workspace>/dashboard.html when the store is the workspace's own graph and that page exists) |
@@ -2441,12 +2482,12 @@ sdem work block <id> --workspace WORKSPACE --agent AGENT --person PERSON [--note
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
+| `<id>` | yes | the work item id (e.g. W-001) — sdem work list shows them |
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--agent` | yes | the agent: sdem-a1-business, sdem-a2-bian, sdem-a3-application, sdem-a4-technology, sdem-orchestrator, or 'architect' for a person working without an agent |
 | `--person` | yes | the person behind the agent (CTL-20) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--note` |  | — |
+| `--note` |  | a note, recorded with it |
 
 ### sdem work cancel
 
@@ -2462,12 +2503,12 @@ sdem work cancel <id> --workspace WORKSPACE --agent AGENT --person PERSON [--not
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
+| `<id>` | yes | the work item id (e.g. W-001) — sdem work list shows them |
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--agent` | yes | the agent: sdem-a1-business, sdem-a2-bian, sdem-a3-application, sdem-a4-technology, sdem-orchestrator, or 'architect' for a person working without an agent |
 | `--person` | yes | the person behind the agent (CTL-20) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--note` |  | — |
+| `--note` |  | a note, recorded with it |
 
 ### sdem work claim
 
@@ -2483,12 +2524,12 @@ sdem work claim <id> --workspace WORKSPACE --agent AGENT --person PERSON [--note
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
+| `<id>` | yes | the work item id (e.g. W-001) — sdem work list shows them |
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--agent` | yes | the agent: sdem-a1-business, sdem-a2-bian, sdem-a3-application, sdem-a4-technology, sdem-orchestrator, or 'architect' for a person working without an agent |
 | `--person` | yes | the person behind the agent (CTL-20) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--note` |  | — |
+| `--note` |  | a note, recorded with it |
 
 ### sdem work list
 
@@ -2506,8 +2547,8 @@ sdem work list --workspace WORKSPACE [--layer {A1,A2,A3,A4}] [--status {open,in_
 |---|---|---|
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--layer` {A1, A2, A3, A4} |  | — |
-| `--status` {open, in_progress, done, blocked, cancelled} |  | — |
+| `--layer` {A1, A2, A3, A4} |  | the layer: A1 business, A2 BIAN, A3 application, A4 technology (or a layer your profile adds) |
+| `--status` {open, in_progress, done, blocked, cancelled} |  | only those with this status |
 
 ### sdem work plan
 
@@ -2523,7 +2564,7 @@ sdem work plan --event EVENT --workspace WORKSPACE --agent AGENT --person PERSON
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--event` | yes | — |
+| `--event` | yes | a change event id (e.g. EVT-001) |
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--agent` | yes | the agent: sdem-a1-business, sdem-a2-bian, sdem-a3-application, sdem-a4-technology, sdem-orchestrator, or 'architect' for a person working without an agent |
 | `--person` | yes | the person behind the agent (CTL-20) |
@@ -2544,12 +2585,12 @@ sdem work reopen <id> --workspace WORKSPACE --agent AGENT --person PERSON [--not
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<id>` | yes | — |
+| `<id>` | yes | the work item id (e.g. W-001) — sdem work list shows them |
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--agent` | yes | the agent: sdem-a1-business, sdem-a2-bian, sdem-a3-application, sdem-a4-technology, sdem-orchestrator, or 'architect' for a person working without an agent |
 | `--person` | yes | the person behind the agent (CTL-20) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--note` |  | — |
+| `--note` |  | a note, recorded with it |
 
 ### sdem workbench
 
@@ -2565,7 +2606,7 @@ sdem workbench --workspace WORKSPACE [-o O]
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--workspace` | yes | — |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `-o`, `--out` |  | the page to write (default work/workbench.html) |
 | `--json` |  | print a summary of what the page shows (the page is written too) |
 

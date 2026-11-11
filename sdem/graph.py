@@ -493,7 +493,7 @@ def main(argv=None):
     sp.add_argument('--json', action='store_true')
     sp = sub.add_parser('query', help='find records in a graph store')
     sp.add_argument('--graph', required=True, metavar='DIR')
-    sp.add_argument('--level', choices=LEVELS)
+    sp.add_argument('--level', choices=LEVELS, help='only records in this layer')
     sp.add_argument('--type', help='entity type; subtypes included')
     sp.add_argument('--where', action='append', default=[], metavar='ATTR=VALUE', help='core field or attribute equals value (repeatable)')
     sp.add_argument('--neighbours', metavar='ID', help='within-level neighbours of a record')

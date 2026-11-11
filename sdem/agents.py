@@ -714,8 +714,8 @@ def change_main(argv=None):
     p.add_argument('change_set', help='change set file (JSON): layer, reason, changes[, relationships]')
     _common(p); p.add_argument('--work', nargs='*', default=[], metavar='WI', help='work item(s) this change set answers (claimed by the same agent)')
     p.add_argument('--catalogue', metavar='FILE', help='BIAN catalogue (A2 dataset) — required when an A2 change set adds records')
-    s = sub.add_parser('show', help='a change set with its event and impact'); s.add_argument('id'); _common(s, who=False)
-    r = sub.add_parser('revert', help='undo the latest change set of a layer — recorded as a new change set (T5)'); r.add_argument('id'); _common(r); r.add_argument('--reason', default='')
+    s = sub.add_parser('show', help='a change set with its event and impact'); s.add_argument('id', help='the change set id (e.g. CS-001)'); _common(s, who=False)
+    r = sub.add_parser('revert', help='undo the latest change set of a layer — recorded as a new change set (T5)'); r.add_argument('id', help='the layer whose latest change set to undo (e.g. A3)'); _common(r); r.add_argument('--reason', default='')
     x = sub.add_parser('diff', help='compare an incoming layer file with the workspace and write the change set it implies — nothing is applied (AG-K09)')
     x.add_argument('incoming', help="a layer dataset (JSON with 'level', 'instances', 'relationships') — e.g. records an agent drafted from a document")
     _common(x, who=False)
@@ -931,7 +931,7 @@ def work_main(argv=None):
     p.add_argument('--max-rounds', type=int, default=MAX_ROUNDS, help=f'stop and ask the architect after this many rounds (default and most {MAX_ROUNDS}; only the architect may raise it)')
     l = sub.add_parser('list', help='work items'); _common(l, who=False); l.add_argument('--layer', choices=CODES); l.add_argument('--status', choices=['open', 'in_progress', 'done', 'blocked', 'cancelled'])
     for name, hlp in (('claim', 'a layer agent takes a work item'), ('block', 'a work item cannot proceed — say why'), ('cancel', 'drop a work item — say why'), ('reopen', 'return a work item to open')):
-        x = sub.add_parser(name, help=hlp); x.add_argument('id'); _common(x); x.add_argument('--note', default='')
+        x = sub.add_parser(name, help=hlp); x.add_argument('id', help='the work item id (e.g. W-001) — sdem work list shows them'); _common(x); x.add_argument('--note', default='')
     a = ap.parse_args(argv)
     try:
         est = Estate(a.estate)
