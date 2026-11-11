@@ -566,7 +566,8 @@ def _found_workspace(name, rest):
     ws = find_workspace()
     if ws is None or not _takes_workspace(name, rest): return rest
     import os
-    rel = os.path.relpath(ws, Path.cwd())
+    try: rel = os.path.relpath(ws, Path.cwd().resolve())   # both resolved: Windows short (8.3) and long names are one folder
+    except ValueError: rel = str(ws)   # another drive
     print(f"sdem: workspace {rel if rel != '.' else ws.name} — found from the current folder (WS-11)", file=sys.stderr)
     return rest + ['--workspace', rel]
 
