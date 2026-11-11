@@ -25,6 +25,7 @@ def anchors(path, cache={}):
         for h in re.findall(r'^#{1,6}\s+(.+?)\s*#*$', text, re.M):
             s = slug(h); n = seen.get(s, 0); seen[s] = n + 1
             out.add(s if n == 0 else f'{s}-{n}')
+        out |= set(re.findall(r'<a id="([^"]+)"></a>', text))   # explicit anchors (the generated CLI reference)
         cache[path] = out
     return cache[path]
 

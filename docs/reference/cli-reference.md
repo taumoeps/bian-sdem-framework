@@ -24,31 +24,31 @@
 
 | Command | What it does |
 |---|---|
-| [`sdem bian`](#sdem-bian) | the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files |
-| [`sdem bian custom`](#sdem-bian-custom) 👤 | narrow one workspace's BIAN layer to the service domains it uses |
-| [`sdem bian impact`](#sdem-bian-impact) | before an update: what in each workspace points at BIAN records the new layer drops, renames or changes |
-| [`sdem bian import`](#sdem-bian-import) | write an A2 dataset for the service domains you choose |
-| [`sdem bian inference`](#sdem-bian-inference) | SDEM's record of inferred BIAN asset types and functional patterns: list, show, accept, challenge, change or reject an entry. Every change names a person and a  |
-| [`sdem bian inference accept`](#sdem-bian-inference-accept) 👤 | accept an entry |
-| [`sdem bian inference challenge`](#sdem-bian-inference-challenge) 👤 | question an entry |
-| [`sdem bian inference change`](#sdem-bian-inference-change) 👤 | give new values |
-| [`sdem bian inference list`](#sdem-bian-inference-list) | the entries, with values, confidence and status |
-| [`sdem bian inference reject`](#sdem-bian-inference-reject) 👤 | reject an entry |
-| [`sdem bian inference show`](#sdem-bian-inference-show) | one entry: values, sources, reasoning, history |
-| [`sdem bian list`](#sdem-bian-list) | the service domains in the base, a pack or a folder; writes nothing |
-| [`sdem bian pack`](#sdem-bian-pack) | pack a folder of BIAN-format files into one file |
-| [`sdem bian search`](#sdem-bian-search) | BIAN service domains and operations for plain words |
-| [`sdem bian update`](#sdem-bian-update) 👤 | replace a workspace's BIAN layer with your shared one |
-| [`sdem designs`](#sdem-designs) | design records and gap records: the pages onboarded designs came from, and what did not fit an entity |
-| [`sdem load`](#sdem-load) 👤 | load reviewed candidate entities from sdem transform into a workspace |
-| [`sdem new`](#sdem-new) 👤 | start a workspace: the four layers (A2 your BIAN layer) and an empty registry of connections |
-| [`sdem releases`](#sdem-releases) | what each SDEM release changed: migrations, breaking changes, deprecations and the actions to take |
-| [`sdem transform`](#sdem-transform) | transform past designs |
-| [`sdem transform inspect`](#sdem-transform-inspect) | what is in the export and which rules read it |
-| [`sdem transform rules`](#sdem-transform-rules) | write a copy of SDEM's transform rules to tune for your organisation's designs (then pass it with --rules) |
-| [`sdem transform run`](#sdem-transform-run) | transform the export: write candidate datasets, extraction.json, design-index.json and extraction-report.md |
-| [`sdem upgrade`](#sdem-upgrade) | before you switch SDEM versions: run the new version, installed side by side, against your workspaces |
-| [`sdem upgrade check`](#sdem-upgrade-check) | what upgrading to this version means for your workspaces: migrations, profile, deprecations, agent files, actions |
+| [`sdem bian`](#cmd-bian) | the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files |
+| [`sdem bian custom`](#cmd-bian-custom) 👤 | narrow one workspace's BIAN layer to the service domains it uses |
+| [`sdem bian impact`](#cmd-bian-impact) | before an update: what in each workspace points at BIAN records the new layer drops, renames or changes |
+| [`sdem bian import`](#cmd-bian-import) | write an A2 dataset for the service domains you choose |
+| [`sdem bian inference`](#cmd-bian-inference) | SDEM's record of inferred BIAN asset types and functional patterns: list, show, accept, challenge, change or reject an entry. Every change names a person and a  |
+| [`sdem bian inference accept`](#cmd-bian-inference-accept) 👤 | accept an entry |
+| [`sdem bian inference challenge`](#cmd-bian-inference-challenge) 👤 | question an entry |
+| [`sdem bian inference change`](#cmd-bian-inference-change) 👤 | give new values |
+| [`sdem bian inference list`](#cmd-bian-inference-list) | the entries, with values, confidence and status |
+| [`sdem bian inference reject`](#cmd-bian-inference-reject) 👤 | reject an entry |
+| [`sdem bian inference show`](#cmd-bian-inference-show) | one entry: values, sources, reasoning, history |
+| [`sdem bian list`](#cmd-bian-list) | the service domains in the base, a pack or a folder; writes nothing |
+| [`sdem bian pack`](#cmd-bian-pack) | pack a folder of BIAN-format files into one file |
+| [`sdem bian search`](#cmd-bian-search) | BIAN service domains and operations for plain words |
+| [`sdem bian update`](#cmd-bian-update) 👤 | replace a workspace's BIAN layer with your shared one |
+| [`sdem designs`](#cmd-designs) | design records and gap records: the pages onboarded designs came from, and what did not fit an entity |
+| [`sdem load`](#cmd-load) 👤 | load reviewed candidate entities from sdem transform into a workspace |
+| [`sdem new`](#cmd-new) 👤 | start a workspace: the four layers (A2 your BIAN layer) and an empty registry of connections |
+| [`sdem releases`](#cmd-releases) | what each SDEM release changed: migrations, breaking changes, deprecations and the actions to take |
+| [`sdem transform`](#cmd-transform) | transform past designs |
+| [`sdem transform inspect`](#cmd-transform-inspect) | what is in the export and which rules read it |
+| [`sdem transform rules`](#cmd-transform-rules) | write a copy of SDEM's transform rules to tune for your organisation's designs (then pass it with --rules) |
+| [`sdem transform run`](#cmd-transform-run) | transform the export: write candidate datasets, extraction.json, design-index.json and extraction-report.md |
+| [`sdem upgrade`](#cmd-upgrade) | before you switch SDEM versions: run the new version, installed side by side, against your workspaces |
+| [`sdem upgrade check`](#cmd-upgrade-check) | what upgrading to this version means for your workspaces: migrations, profile, deprecations, agent files, actions |
 
 ### J1 · Check and specify
 
@@ -56,18 +56,18 @@
 
 | Command | What it does |
 |---|---|
-| [`sdem check`](#sdem-check) | check architecture datasets and registry against the metamodel |
-| [`sdem comply`](#sdem-comply) | the organisation's standards and reference-architecture patterns over a workspace: per rule and record compliant, non-compliant, unresolved or under an exceptio |
-| [`sdem pattern`](#sdem-pattern) | reference-architecture patterns as structures |
-| [`sdem pattern draw`](#sdem-pattern-draw) | draw a pattern (PR-25) |
-| [`sdem pattern extract`](#sdem-pattern-extract) | a diagram → a DRAFT pattern file and a report; nothing enters the profile until a person includes it (PR-30) |
-| [`sdem profile`](#sdem-profile) | the organisation's design specification on top of SDEM's metamodel |
-| [`sdem profile adopt`](#sdem-profile-adopt) 👤 | put the workspace under its sdem-profile.json: the layers it adds start empty, and the adoption is recorded |
-| [`sdem profile check`](#sdem-profile-check) | check the workspace's profile (and the base it extends) against SDEM's metamodel |
-| [`sdem profile example`](#sdem-profile-example) | write a synthetic bank base profile, team profiles that extend it (one adds layers), and a team profile with the bank's standards and secure API pattern |
-| [`sdem profile show`](#sdem-profile-show) | the merged profile: every type, attribute, rule, link kind and name it adds |
-| [`sdem types`](#sdem-types) | what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats |
-| [`sdem validate`](#sdem-validate) | validate a relationship document (registry or proposals) |
+| [`sdem check`](#cmd-check) | check architecture datasets and registry against the metamodel |
+| [`sdem comply`](#cmd-comply) | the organisation's standards and reference-architecture patterns over a workspace: per rule and record compliant, non-compliant, unresolved or under an exceptio |
+| [`sdem pattern`](#cmd-pattern) | reference-architecture patterns as structures |
+| [`sdem pattern draw`](#cmd-pattern-draw) | draw a pattern (PR-25) |
+| [`sdem pattern extract`](#cmd-pattern-extract) | a diagram → a DRAFT pattern file and a report; nothing enters the profile until a person includes it (PR-30) |
+| [`sdem profile`](#cmd-profile) | the organisation's design specification on top of SDEM's metamodel |
+| [`sdem profile adopt`](#cmd-profile-adopt) 👤 | put the workspace under its sdem-profile.json: the layers it adds start empty, and the adoption is recorded |
+| [`sdem profile check`](#cmd-profile-check) | check the workspace's profile (and the base it extends) against SDEM's metamodel |
+| [`sdem profile example`](#cmd-profile-example) | write a synthetic bank base profile, team profiles that extend it (one adds layers), and a team profile with the bank's standards and secure API pattern |
+| [`sdem profile show`](#cmd-profile-show) | the merged profile: every type, attribute, rule, link kind and name it adds |
+| [`sdem types`](#cmd-types) | what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats |
+| [`sdem validate`](#cmd-validate) | validate a relationship document (registry or proposals) |
 
 ### J2 · Link the architectures
 
@@ -75,7 +75,7 @@
 
 | Command | What it does |
 |---|---|
-| [`sdem link`](#sdem-link) | run the inference engine: propose links between the architectures, and show them weakest first for review (--no-review: just write them) |
+| [`sdem link`](#cmd-link) | run the inference engine: propose links between the architectures, and show them weakest first for review (--no-review: just write them) |
 
 ### J3 · Review and approve
 
@@ -83,15 +83,15 @@
 
 | Command | What it does |
 |---|---|
-| [`sdem approve`](#sdem-approve) 👤 | a person approves proposed links into the registry |
-| [`sdem connect`](#sdem-connect) 👤 | a person states a connection the engine did not propose |
-| [`sdem exception`](#sdem-exception) | a person's time-limited exception to one of the organisation's rules for named records |
-| [`sdem exception grant`](#sdem-exception-grant) 👤 | record a person's exception |
-| [`sdem exception list`](#sdem-exception-list) | the workspace's exceptions, active or expired |
-| [`sdem governance`](#sdem-governance) | governed decisions |
-| [`sdem governance verify`](#sdem-governance-verify) | every decision record: verified by a signed commit from its approver, or why not |
-| [`sdem handback`](#sdem-handback) | what a workspace leaves open for a person |
-| [`sdem review`](#sdem-review) | list proposed links for review, weakest first |
+| [`sdem approve`](#cmd-approve) 👤 | a person approves proposed links into the registry |
+| [`sdem connect`](#cmd-connect) 👤 | a person states a connection the engine did not propose |
+| [`sdem exception`](#cmd-exception) | a person's time-limited exception to one of the organisation's rules for named records |
+| [`sdem exception grant`](#cmd-exception-grant) 👤 | record a person's exception |
+| [`sdem exception list`](#cmd-exception-list) | the workspace's exceptions, active or expired |
+| [`sdem governance`](#cmd-governance) | governed decisions |
+| [`sdem governance verify`](#cmd-governance-verify) | every decision record: verified by a signed commit from its approver, or why not |
+| [`sdem handback`](#cmd-handback) | what a workspace leaves open for a person |
+| [`sdem review`](#cmd-review) | list proposed links for review, weakest first |
 
 ### J4 · Build the knowledge graph
 
@@ -99,9 +99,9 @@
 
 | Command | What it does |
 |---|---|
-| [`sdem baseline`](#sdem-baseline) | freeze the current graph store under a name |
-| [`sdem build`](#sdem-build) | check the inputs and write the graph store (knowledge graph) |
-| [`sdem query`](#sdem-query) | find records in a graph store |
+| [`sdem baseline`](#cmd-baseline) | freeze the current graph store under a name |
+| [`sdem build`](#cmd-build) | check the inputs and write the graph store (knowledge graph) |
+| [`sdem query`](#cmd-query) | find records in a graph store |
 
 ### J5 · Trace, impact and requirements
 
@@ -109,19 +109,19 @@
 
 | Command | What it does |
 |---|---|
-| [`sdem impact`](#sdem-impact) | classify what a change to a record affects |
-| [`sdem matrix`](#sdem-matrix) | business → BIAN → application → technology matrices from approved links |
-| [`sdem requirements`](#sdem-requirements) | requirements and constraints the workspace must keep meeting, their measurements, and what a change does to them: in scope, satisfied, breached, not evaluable |
-| [`sdem requirements check`](#sdem-requirements-check) | the registry against its schema and the workspace |
-| [`sdem requirements confirm`](#sdem-requirements-confirm) 👤 | a person confirms proposed requirements |
-| [`sdem requirements evaluate`](#sdem-requirements-evaluate) | what a change does to the requirements: in scope, satisfied, breached, not evaluable |
-| [`sdem requirements list`](#sdem-requirements-list) | the requirements, with status and subject |
-| [`sdem requirements measure`](#sdem-requirements-measure) 👤 | record measurements |
-| [`sdem requirements propose`](#sdem-requirements-propose) 👤 | add requirements, or new versions, as proposed |
-| [`sdem requirements retire`](#sdem-requirements-retire) 👤 | a person retires requirements |
-| [`sdem requirements show`](#sdem-requirements-show) | one requirement: condition, evidence, history and its measurements |
-| [`sdem requirements trace`](#sdem-requirements-trace) | a requirement through the layers: its subject and allocations, what they depend on and serve, and the requirements it derives from |
-| [`sdem trace`](#sdem-trace) | trace what a record depends on (down) or what depends on it (up) |
+| [`sdem impact`](#cmd-impact) | classify what a change to a record affects |
+| [`sdem matrix`](#cmd-matrix) | business → BIAN → application → technology matrices from approved links |
+| [`sdem requirements`](#cmd-requirements) | requirements and constraints the workspace must keep meeting, their measurements, and what a change does to them: in scope, satisfied, breached, not evaluable |
+| [`sdem requirements check`](#cmd-requirements-check) | the registry against its schema and the workspace |
+| [`sdem requirements confirm`](#cmd-requirements-confirm) 👤 | a person confirms proposed requirements |
+| [`sdem requirements evaluate`](#cmd-requirements-evaluate) | what a change does to the requirements: in scope, satisfied, breached, not evaluable |
+| [`sdem requirements list`](#cmd-requirements-list) | the requirements, with status and subject |
+| [`sdem requirements measure`](#cmd-requirements-measure) 👤 | record measurements |
+| [`sdem requirements propose`](#cmd-requirements-propose) 👤 | add requirements, or new versions, as proposed |
+| [`sdem requirements retire`](#cmd-requirements-retire) 👤 | a person retires requirements |
+| [`sdem requirements show`](#cmd-requirements-show) | one requirement: condition, evidence, history and its measurements |
+| [`sdem requirements trace`](#cmd-requirements-trace) | a requirement through the layers: its subject and allocations, what they depend on and serve, and the requirements it derives from |
+| [`sdem trace`](#cmd-trace) | trace what a record depends on (down) or what depends on it (up) |
 
 ### J6 · Infer with AID
 
@@ -129,12 +129,12 @@
 
 | Command | What it does |
 |---|---|
-| [`sdem aid`](#sdem-aid) 👤 | Architecture Inference Design: fill a workspace's gaps |
-| [`sdem aid check`](#sdem-aid-check) | — |
-| [`sdem aid confirm`](#sdem-aid-confirm) 👤 | Confirm inferred records: you agree with them; the mark stays, with your name. |
-| [`sdem aid gaps`](#sdem-aid-gaps) | — |
-| [`sdem aid project`](#sdem-aid-project) | — |
-| [`sdem aid reject`](#sdem-aid-reject) 👤 | Reject inferred records: removed with their links inside the layer, and remembered so they are not inferred again. |
+| [`sdem aid`](#cmd-aid) 👤 | Architecture Inference Design: fill a workspace's gaps |
+| [`sdem aid check`](#cmd-aid-check) | — |
+| [`sdem aid confirm`](#cmd-aid-confirm) 👤 | Confirm inferred records: you agree with them; the mark stays, with your name. |
+| [`sdem aid gaps`](#cmd-aid-gaps) | — |
+| [`sdem aid project`](#cmd-aid-project) | — |
+| [`sdem aid reject`](#cmd-aid-reject) 👤 | Reject inferred records: removed with their links inside the layer, and remembered so they are not inferred again. |
 
 ### J7 · See it
 
@@ -142,13 +142,13 @@
 
 | Command | What it does |
 |---|---|
-| [`sdem dashboard`](#sdem-dashboard) | one read-only HTML dashboard for a workspace: health, attention, review, trace & impact, matrices, changes, AID, controls |
-| [`sdem diagram`](#sdem-diagram) | ArchiMate diagrams of a workspace from SDEM's templates |
-| [`sdem document`](#sdem-document) | a layer's design as a structured, readable document (Markdown or HTML), generated from the workspace |
-| [`sdem document verify`](#sdem-document-verify) | Check a narrative an agent wrote from `sdem document --json` against the workspace (UX-D09…D11): every [ID] it cites is a record or an approved connection, ever |
-| [`sdem home`](#sdem-home) | the main dashboard: the metamodel (entities, links inside and between architectures, engine rules), its picture, health, configuration |
-| [`sdem view`](#sdem-view) | write the HTML picture of a graph store, optionally with a projection |
-| [`sdem workbench`](#sdem-workbench) | the workbench for one workspace: one offline page |
+| [`sdem dashboard`](#cmd-dashboard) | one read-only HTML dashboard for a workspace: health, attention, review, trace & impact, matrices, changes, AID, controls |
+| [`sdem diagram`](#cmd-diagram) | ArchiMate diagrams of a workspace from SDEM's templates |
+| [`sdem document`](#cmd-document) | a layer's design as a structured, readable document (Markdown or HTML), generated from the workspace |
+| [`sdem document verify`](#cmd-document-verify) | Check a narrative an agent wrote from `sdem document --json` against the workspace (UX-D09…D11): every [ID] it cites is a record or an approved connection, ever |
+| [`sdem home`](#cmd-home) | the main dashboard: the metamodel (entities, links inside and between architectures, engine rules), its picture, health, configuration |
+| [`sdem view`](#cmd-view) | write the HTML picture of a graph store, optionally with a projection |
+| [`sdem workbench`](#cmd-workbench) | the workbench for one workspace: one offline page |
 
 ### J8 · Explain
 
@@ -156,7 +156,7 @@
 
 | Command | What it does |
 |---|---|
-| [`sdem explain`](#sdem-explain) | explain one element or link: why it exists, from what, how sure |
+| [`sdem explain`](#cmd-explain) | explain one element or link: why it exists, from what, how sure |
 
 ### AG · Agents and change
 
@@ -164,31 +164,31 @@
 
 | Command | What it does |
 |---|---|
-| [`sdem agents`](#sdem-agents) | put SDEM's instructions and skills for AI agents into your workspace repository |
-| [`sdem agents install`](#sdem-agents-install) | write AGENTS.md, CLAUDE.md, .claude/skills, .agents/skills, .gemini/settings.json and .github/ (Copilot) |
-| [`sdem change`](#sdem-change) | agent platform: propose a change set to one layer |
-| [`sdem change adopt`](#sdem-change-adopt) 👤 | record a person's direct edit of a layer as a change set (AG-S08) |
-| [`sdem change diff`](#sdem-change-diff) | compare an incoming layer file with the workspace and write the change set it implies |
-| [`sdem change propose`](#sdem-change-propose) 👤 | check and apply a change set to its layer; records the change event and its impact |
-| [`sdem change revert`](#sdem-change-revert) 👤 | undo the latest change set of a layer |
-| [`sdem change show`](#sdem-change-show) | a change set with its event and impact |
-| [`sdem copilot`](#sdem-copilot) | put SDEM's Copilot instructions, agents, prompts and skills into your workspace repository, matching this SDEM version |
-| [`sdem copilot install`](#sdem-copilot-install) | write .github/copilot-instructions.md, agents/, prompts/, skills/ into a repository |
-| [`sdem events`](#sdem-events) | agent platform: change events, their impact and open work |
-| [`sdem events accept`](#sdem-events-accept) 👤 | a person accepts the final impact assessment (and, with --authorise, authorises implementation) |
-| [`sdem events analyse`](#sdem-events-analyse) 👤 | recompute the requirements evaluation and risk findings after new evidence, links or requirements (assessments made against other evidence become stale) |
-| [`sdem events assess`](#sdem-events-assess) 👤 | a layer agent records its layer's assessment of the calculated impact |
-| [`sdem events authorise`](#sdem-events-authorise) 👤 | a person authorises implementation of an accepted assessment |
-| [`sdem events pending`](#sdem-events-pending) | layers still to assess |
-| [`sdem events show`](#sdem-events-show) | the calculated impact, every assessment, and what still stops acceptance |
-| [`sdem events validate`](#sdem-events-validate) 👤 | orchestrator or architect: open the impact validation of a change event |
-| [`sdem work`](#sdem-work) | agent platform: plan, list and claim work items |
-| [`sdem work block`](#sdem-work-block) 👤 | a work item cannot proceed |
-| [`sdem work cancel`](#sdem-work-cancel) 👤 | drop a work item |
-| [`sdem work claim`](#sdem-work-claim) 👤 | a layer agent takes a work item |
-| [`sdem work list`](#sdem-work-list) | work items |
-| [`sdem work plan`](#sdem-work-plan) 👤 | orchestrator: turn a change event's impact into work items |
-| [`sdem work reopen`](#sdem-work-reopen) 👤 | return a work item to open |
+| [`sdem agents`](#cmd-agents) | put SDEM's instructions and skills for AI agents into your workspace repository |
+| [`sdem agents install`](#cmd-agents-install) | write AGENTS.md, CLAUDE.md, .claude/skills, .agents/skills, .gemini/settings.json and .github/ (Copilot) |
+| [`sdem change`](#cmd-change) | agent platform: propose a change set to one layer |
+| [`sdem change adopt`](#cmd-change-adopt) 👤 | record a person's direct edit of a layer as a change set (AG-S08) |
+| [`sdem change diff`](#cmd-change-diff) | compare an incoming layer file with the workspace and write the change set it implies |
+| [`sdem change propose`](#cmd-change-propose) 👤 | check and apply a change set to its layer; records the change event and its impact |
+| [`sdem change revert`](#cmd-change-revert) 👤 | undo the latest change set of a layer |
+| [`sdem change show`](#cmd-change-show) | a change set with its event and impact |
+| [`sdem copilot`](#cmd-copilot) | put SDEM's Copilot instructions, agents, prompts and skills into your workspace repository, matching this SDEM version |
+| [`sdem copilot install`](#cmd-copilot-install) | write .github/copilot-instructions.md, agents/, prompts/, skills/ into a repository |
+| [`sdem events`](#cmd-events) | agent platform: change events, their impact and open work |
+| [`sdem events accept`](#cmd-events-accept) 👤 | a person accepts the final impact assessment (and, with --authorise, authorises implementation) |
+| [`sdem events analyse`](#cmd-events-analyse) 👤 | recompute the requirements evaluation and risk findings after new evidence, links or requirements (assessments made against other evidence become stale) |
+| [`sdem events assess`](#cmd-events-assess) 👤 | a layer agent records its layer's assessment of the calculated impact |
+| [`sdem events authorise`](#cmd-events-authorise) 👤 | a person authorises implementation of an accepted assessment |
+| [`sdem events pending`](#cmd-events-pending) | layers still to assess |
+| [`sdem events show`](#cmd-events-show) | the calculated impact, every assessment, and what still stops acceptance |
+| [`sdem events validate`](#cmd-events-validate) 👤 | orchestrator or architect: open the impact validation of a change event |
+| [`sdem work`](#cmd-work) | agent platform: plan, list and claim work items |
+| [`sdem work block`](#cmd-work-block) 👤 | a work item cannot proceed |
+| [`sdem work cancel`](#cmd-work-cancel) 👤 | drop a work item |
+| [`sdem work claim`](#cmd-work-claim) 👤 | a layer agent takes a work item |
+| [`sdem work list`](#cmd-work-list) | work items |
+| [`sdem work plan`](#cmd-work-plan) 👤 | orchestrator: turn a change event's impact into work items |
+| [`sdem work reopen`](#cmd-work-reopen) 👤 | return a work item to open |
 
 ### — · SDEM maintenance
 
@@ -196,34 +196,34 @@
 
 | Command | What it does |
 |---|---|
-| [`sdem diff`](#sdem-diff) | compare two versions of a relationship document |
-| [`sdem migrate`](#sdem-migrate) 👤 | move a workspace to the current metamodel version |
-| [`sdem model`](#sdem-model) | maintainers: regenerate and check generated files, acceptance, evaluation, examples |
-| [`sdem model accept`](#sdem-model-accept) | engine acceptance cases (sdem-accept) |
-| [`sdem model baseline-pack`](#sdem-model-baseline-pack) | write the metamodel baseline review pack |
-| [`sdem model calibrate`](#sdem-model-calibrate) | how often each confidence band and evidence class is right on the acceptance cases (AID-E03) |
-| [`sdem model check`](#sdem-model-check) | fail if any generated file differs from a fresh generation |
-| [`sdem model eval`](#sdem-model-eval) | score proposals against approved links (sdem-eval) |
-| [`sdem model examples`](#sdem-model-examples) | re-run use-case examples 1 and 2 (evidence packs and results) |
-| [`sdem model freeze`](#sdem-model-freeze) | record the core after an approved, versioned change |
-| [`sdem model regenerate`](#sdem-model-regenerate) | regenerate every generated document, diagram and schema |
-| [`sdem model stability`](#sdem-model-stability) | the core against its last freeze (as CI) |
-| [`sdem model status`](#sdem-model-status) | every part of SDEM's metamodel not yet settled, with its source and what would settle it |
-| [`sdem model usage`](#sdem-model-usage) | what the given workspaces use, and what no workspace uses |
+| [`sdem diff`](#cmd-diff) | compare two versions of a relationship document |
+| [`sdem migrate`](#cmd-migrate) 👤 | move a workspace to the current metamodel version |
+| [`sdem model`](#cmd-model) | maintainers: regenerate and check generated files, acceptance, evaluation, examples |
+| [`sdem model accept`](#cmd-model-accept) | engine acceptance cases |
+| [`sdem model baseline-pack`](#cmd-model-baseline-pack) | write the metamodel baseline review pack |
+| [`sdem model calibrate`](#cmd-model-calibrate) | how often each confidence band and evidence class is right on the acceptance cases (AID-E03) |
+| [`sdem model check`](#cmd-model-check) | fail if any generated file differs from a fresh generation |
+| [`sdem model eval`](#cmd-model-eval) | score proposals against approved links |
+| [`sdem model examples`](#cmd-model-examples) | re-run use-case examples 1 and 2 (evidence packs and results) |
+| [`sdem model freeze`](#cmd-model-freeze) | record the core after an approved, versioned change |
+| [`sdem model regenerate`](#cmd-model-regenerate) | regenerate every generated document, diagram and schema |
+| [`sdem model stability`](#cmd-model-stability) | the core against its last freeze (as CI) |
+| [`sdem model status`](#cmd-model-status) | every part of SDEM's metamodel not yet settled, with its source and what would settle it |
+| [`sdem model usage`](#cmd-model-usage) | what the given workspaces use, and what no workspace uses |
 
 ## Commands
 
 ### sdem agents
 
-<a id="sdem-agents"></a>
+<a id="cmd-agents"></a>
 
 put SDEM's instructions and skills for AI agents into your workspace repository — one AGENTS.md for Codex, Claude Code, Gemini CLI and Copilot, the same skills in each one's folder
 
-Subcommands: [`sdem agents install`](#sdem-agents-install)
+Subcommands: [`sdem agents install`](#cmd-agents-install)
 
 ### sdem agents install
 
-<a id="sdem-agents-install"></a>
+<a id="cmd-agents-install"></a>
 
 write AGENTS.md, CLAUDE.md, .claude/skills, .agents/skills, .gemini/settings.json and .github/ (Copilot)
 
@@ -244,11 +244,11 @@ sdem agents install [--to TO] [--platform {copilot,claude,codex,gemini} …] [--
 
 ### sdem aid
 
-<a id="sdem-aid"></a>
+<a id="cmd-aid"></a>
 
 Architecture Inference Design: fill a workspace's gaps — inferred records marked with source, reasoning and confidence; confirm, reject (also project, check, gaps for file-based planning)
 
-Subcommands: [`sdem aid check`](#sdem-aid-check) · [`sdem aid gaps`](#sdem-aid-gaps) · [`sdem aid project`](#sdem-aid-project)
+Subcommands: [`sdem aid check`](#cmd-aid-check) · [`sdem aid gaps`](#cmd-aid-gaps) · [`sdem aid project`](#cmd-aid-project)
 
 ```
 sdem aid --workspace WORKSPACE --person PERSON [--dry-run]
@@ -271,7 +271,7 @@ sdem aid --workspace workspaces/payments --person jane.architect
 
 ### sdem aid check
 
-<a id="sdem-aid-check"></a>
+<a id="cmd-aid-check"></a>
 
 ```
 sdem aid check <projection> [--catalogue CATALOGUE]
@@ -287,7 +287,7 @@ sdem aid check <projection> [--catalogue CATALOGUE]
 
 ### sdem aid confirm
 
-<a id="sdem-aid-confirm"></a>
+<a id="cmd-aid-confirm"></a>
 
 Confirm inferred records: you agree with them; the mark stays, with your name.
 
@@ -308,7 +308,7 @@ sdem aid confirm [<ids>] --workspace WORKSPACE --person PERSON [--all] [--reason
 
 ### sdem aid gaps
 
-<a id="sdem-aid-gaps"></a>
+<a id="cmd-aid-gaps"></a>
 
 ```
 sdem aid gaps <projection> [--workspace WORKSPACE] [--actual ACTUAL …]
@@ -325,7 +325,7 @@ sdem aid gaps <projection> [--workspace WORKSPACE] [--actual ACTUAL …]
 
 ### sdem aid project
 
-<a id="sdem-aid-project"></a>
+<a id="cmd-aid-project"></a>
 
 ```
 sdem aid project [--workspace WORKSPACE] [--have HAVE …] [--catalogue CATALOGUE] [--registry REGISTRY] [-o O]
@@ -344,7 +344,7 @@ sdem aid project [--workspace WORKSPACE] [--have HAVE …] [--catalogue CATALOGU
 
 ### sdem aid reject
 
-<a id="sdem-aid-reject"></a>
+<a id="cmd-aid-reject"></a>
 
 Reject inferred records: removed with their links inside the layer, and remembered so they are not inferred again.
 
@@ -365,7 +365,7 @@ sdem aid reject [<ids>] --workspace WORKSPACE --person PERSON [--all] --reason R
 
 ### sdem approve
 
-<a id="sdem-approve"></a>
+<a id="cmd-approve"></a>
 
 a person approves proposed links into the registry — reviewer, date, required evidence, validated first
 
@@ -398,7 +398,7 @@ sdem approve P-RUN-001 --proposals work/links/proposals.json --workspace work/es
 
 ### sdem baseline
 
-<a id="sdem-baseline"></a>
+<a id="cmd-baseline"></a>
 
 freeze the current graph store under a name
 
@@ -422,15 +422,15 @@ sdem baseline release-1 --graph work/graph
 
 ### sdem bian
 
-<a id="sdem-bian"></a>
+<a id="cmd-bian"></a>
 
 the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files — list, import the service domains you choose (checked), pack
 
-Subcommands: [`sdem bian custom`](#sdem-bian-custom) · [`sdem bian impact`](#sdem-bian-impact) · [`sdem bian import`](#sdem-bian-import) · [`sdem bian inference`](#sdem-bian-inference) · [`sdem bian list`](#sdem-bian-list) · [`sdem bian pack`](#sdem-bian-pack) · [`sdem bian search`](#sdem-bian-search) · [`sdem bian update`](#sdem-bian-update)
+Subcommands: [`sdem bian custom`](#cmd-bian-custom) · [`sdem bian impact`](#cmd-bian-impact) · [`sdem bian import`](#cmd-bian-import) · [`sdem bian inference`](#cmd-bian-inference) · [`sdem bian list`](#cmd-bian-list) · [`sdem bian pack`](#cmd-bian-pack) · [`sdem bian search`](#cmd-bian-search) · [`sdem bian update`](#cmd-bian-update)
 
 ### sdem bian custom
 
-<a id="sdem-bian-custom"></a>
+<a id="cmd-bian-custom"></a>
 
 narrow one workspace's BIAN layer to the service domains it uses — checked; never strands an approved connection
 
@@ -458,7 +458,7 @@ sdem bian custom [<folder>] [--base BASE] --workspace WORKSPACE [--add ADD …] 
 
 ### sdem bian impact
 
-<a id="sdem-bian-impact"></a>
+<a id="cmd-bian-impact"></a>
 
 before an update: what in each workspace points at BIAN records the new layer drops, renames or changes — read-only
 
@@ -477,7 +477,7 @@ sdem bian impact [--workspace WORKSPACE] [--root ROOT] --a2 A2
 
 ### sdem bian import
 
-<a id="sdem-bian-import"></a>
+<a id="cmd-bian-import"></a>
 
 write an A2 dataset for the service domains you choose — checked first
 
@@ -505,15 +505,15 @@ sdem bian import [<folder>] [--base BASE] -o O [--only ONLY …] [--from FROM] [
 
 ### sdem bian inference
 
-<a id="sdem-bian-inference"></a>
+<a id="cmd-bian-inference"></a>
 
 SDEM's record of inferred BIAN asset types and functional patterns: list, show, accept, challenge, change or reject an entry. Every change names a person and a reason and is kept in the entry's history; the import applies accepted entries only.
 
-Subcommands: [`sdem bian inference accept`](#sdem-bian-inference-accept) · [`sdem bian inference challenge`](#sdem-bian-inference-challenge) · [`sdem bian inference change`](#sdem-bian-inference-change) · [`sdem bian inference list`](#sdem-bian-inference-list) · [`sdem bian inference reject`](#sdem-bian-inference-reject) · [`sdem bian inference show`](#sdem-bian-inference-show)
+Subcommands: [`sdem bian inference accept`](#cmd-bian-inference-accept) · [`sdem bian inference challenge`](#cmd-bian-inference-challenge) · [`sdem bian inference change`](#cmd-bian-inference-change) · [`sdem bian inference list`](#cmd-bian-inference-list) · [`sdem bian inference reject`](#cmd-bian-inference-reject) · [`sdem bian inference show`](#cmd-bian-inference-show)
 
 ### sdem bian inference accept
 
-<a id="sdem-bian-inference-accept"></a>
+<a id="cmd-bian-inference-accept"></a>
 
 accept an entry — the import applies it
 
@@ -534,7 +534,7 @@ sdem bian inference accept <id> --person PERSON [--reason REASON] [--dry-run] [-
 
 ### sdem bian inference challenge
 
-<a id="sdem-bian-inference-challenge"></a>
+<a id="cmd-bian-inference-challenge"></a>
 
 question an entry — the import stops applying it
 
@@ -555,7 +555,7 @@ sdem bian inference challenge <id> --person PERSON --reason REASON [--dry-run] [
 
 ### sdem bian inference change
 
-<a id="sdem-bian-inference-change"></a>
+<a id="cmd-bian-inference-change"></a>
 
 give new values — the entry becomes proposed
 
@@ -581,7 +581,7 @@ sdem bian inference change <id> --person PERSON --reason REASON [--asset-type AS
 
 ### sdem bian inference list
 
-<a id="sdem-bian-inference-list"></a>
+<a id="cmd-bian-inference-list"></a>
 
 the entries, with values, confidence and status
 
@@ -599,7 +599,7 @@ sdem bian inference list [--status {open,proposed,accepted,challenged,rejected}]
 
 ### sdem bian inference reject
 
-<a id="sdem-bian-inference-reject"></a>
+<a id="cmd-bian-inference-reject"></a>
 
 reject an entry — the import does not apply it
 
@@ -620,7 +620,7 @@ sdem bian inference reject <id> --person PERSON --reason REASON [--dry-run] [--f
 
 ### sdem bian inference show
 
-<a id="sdem-bian-inference-show"></a>
+<a id="cmd-bian-inference-show"></a>
 
 one entry: values, sources, reasoning, history
 
@@ -638,7 +638,7 @@ sdem bian inference show <id> [--file FILE]
 
 ### sdem bian list
 
-<a id="sdem-bian-list"></a>
+<a id="cmd-bian-list"></a>
 
 the service domains in the base, a pack or a folder; writes nothing
 
@@ -656,7 +656,7 @@ sdem bian list [<folder>] [--base BASE]
 
 ### sdem bian pack
 
-<a id="sdem-bian-pack"></a>
+<a id="cmd-bian-pack"></a>
 
 pack a folder of BIAN-format files into one file — your own base
 
@@ -673,7 +673,7 @@ sdem bian pack <folder> -o O
 
 ### sdem bian search
 
-<a id="sdem-bian-search"></a>
+<a id="cmd-bian-search"></a>
 
 BIAN service domains and operations for plain words — with the ids to use in a process's invokes
 
@@ -694,7 +694,7 @@ sdem bian search <words> [--base BASE] [--folder FOLDER] [--top TOP] [--all-oper
 
 ### sdem bian update
 
-<a id="sdem-bian-update"></a>
+<a id="cmd-bian-update"></a>
 
 replace a workspace's BIAN layer with your shared one — checked; never strands an approved connection
 
@@ -715,7 +715,7 @@ sdem bian update [--workspace WORKSPACE] [--root ROOT] --a2 A2 --person PERSON [
 
 ### sdem build
 
-<a id="sdem-build"></a>
+<a id="cmd-build"></a>
 
 check the inputs and write the graph store (knowledge graph)
 
@@ -741,15 +741,15 @@ sdem build --workspace examples/card-fraud-alerts --out work/graph
 
 ### sdem change
 
-<a id="sdem-change"></a>
+<a id="cmd-change"></a>
 
 agent platform: propose a change set to one layer — checked, then its impact recorded
 
-Subcommands: [`sdem change adopt`](#sdem-change-adopt) · [`sdem change diff`](#sdem-change-diff) · [`sdem change propose`](#sdem-change-propose) · [`sdem change revert`](#sdem-change-revert) · [`sdem change show`](#sdem-change-show)
+Subcommands: [`sdem change adopt`](#cmd-change-adopt) · [`sdem change diff`](#cmd-change-diff) · [`sdem change propose`](#cmd-change-propose) · [`sdem change revert`](#cmd-change-revert) · [`sdem change show`](#cmd-change-show)
 
 ### sdem change adopt
 
-<a id="sdem-change-adopt"></a>
+<a id="cmd-change-adopt"></a>
 
 record a person's direct edit of a layer as a change set (AG-S08)
 
@@ -769,7 +769,7 @@ sdem change adopt --workspace WORKSPACE --layer {A1,A2,A3,A4,registry,requiremen
 
 ### sdem change diff
 
-<a id="sdem-change-diff"></a>
+<a id="cmd-change-diff"></a>
 
 compare an incoming layer file with the workspace and write the change set it implies — nothing is applied (AG-K09)
 
@@ -789,7 +789,7 @@ sdem change diff <incoming> --workspace WORKSPACE [--complete] [-o O]
 
 ### sdem change propose
 
-<a id="sdem-change-propose"></a>
+<a id="cmd-change-propose"></a>
 
 check and apply a change set to its layer; records the change event and its impact
 
@@ -811,7 +811,7 @@ sdem change propose <change_set> --workspace WORKSPACE --agent AGENT --person PE
 
 ### sdem change revert
 
-<a id="sdem-change-revert"></a>
+<a id="cmd-change-revert"></a>
 
 undo the latest change set of a layer — recorded as a new change set (T5)
 
@@ -832,7 +832,7 @@ sdem change revert <id> --workspace WORKSPACE --agent AGENT --person PERSON [--r
 
 ### sdem change show
 
-<a id="sdem-change-show"></a>
+<a id="cmd-change-show"></a>
 
 a change set with its event and impact
 
@@ -850,7 +850,7 @@ sdem change show <id> --workspace WORKSPACE
 
 ### sdem check
 
-<a id="sdem-check"></a>
+<a id="cmd-check"></a>
 
 check architecture datasets and registry against the metamodel
 
@@ -877,7 +877,7 @@ sdem check --workspace examples/payment-initiation
 
 ### sdem comply
 
-<a id="sdem-comply"></a>
+<a id="cmd-comply"></a>
 
 the organisation's standards and reference-architecture patterns over a workspace: per rule and record compliant, non-compliant, unresolved or under an exception — separate from sdem check (PR-19)
 
@@ -901,7 +901,7 @@ sdem comply --workspace examples/payment-initiation
 
 ### sdem connect
 
-<a id="sdem-connect"></a>
+<a id="cmd-connect"></a>
 
 a person states a connection the engine did not propose — the same checks as approve, both ends in the workspace
 
@@ -934,15 +934,15 @@ sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --works
 
 ### sdem copilot
 
-<a id="sdem-copilot"></a>
+<a id="cmd-copilot"></a>
 
 put SDEM's Copilot instructions, agents, prompts and skills into your workspace repository, matching this SDEM version
 
-Subcommands: [`sdem copilot install`](#sdem-copilot-install)
+Subcommands: [`sdem copilot install`](#cmd-copilot-install)
 
 ### sdem copilot install
 
-<a id="sdem-copilot-install"></a>
+<a id="cmd-copilot-install"></a>
 
 write .github/copilot-instructions.md, agents/, prompts/, skills/ into a repository
 
@@ -961,7 +961,7 @@ sdem copilot install [--to TO] [--dry-run] [--force]
 
 ### sdem dashboard
 
-<a id="sdem-dashboard"></a>
+<a id="cmd-dashboard"></a>
 
 one read-only HTML dashboard for a workspace: health, attention, review, trace & impact, matrices, changes, AID, controls
 
@@ -992,7 +992,7 @@ sdem dashboard --workspace examples/payment-initiation -o work/dashboard.html
 
 ### sdem designs
 
-<a id="sdem-designs"></a>
+<a id="cmd-designs"></a>
 
 design records and gap records: the pages onboarded designs came from, and what did not fit an entity
 
@@ -1020,7 +1020,7 @@ sdem designs --workspace workspaces/history --entity HIS-A3-PAYMENTS-HUB
 
 ### sdem diagram
 
-<a id="sdem-diagram"></a>
+<a id="cmd-diagram"></a>
 
 ArchiMate diagrams of a workspace from SDEM's templates — capabilities and value stream, business process, BIAN service domains, application cooperation, technology and deployment, layered — only stored, approved links drawn
 
@@ -1049,7 +1049,7 @@ sdem diagram --workspace examples/payment-initiation --template layered -o work/
 
 ### sdem diff
 
-<a id="sdem-diff"></a>
+<a id="cmd-diff"></a>
 
 compare two versions of a relationship document
 
@@ -1074,7 +1074,7 @@ sdem diff --git HEAD~1 examples/payment-initiation/mappings.json
 
 ### sdem document
 
-<a id="sdem-document"></a>
+<a id="cmd-document"></a>
 
 a layer's design as a structured, readable document (Markdown or HTML), generated from the workspace — nothing invented, sources and gaps shown; verify checks an agent's narrative against it
 
@@ -1100,7 +1100,7 @@ sdem document --workspace examples/payment-initiation --layer A3
 
 ### sdem document verify
 
-<a id="sdem-document-verify"></a>
+<a id="cmd-document-verify"></a>
 
 Check a narrative an agent wrote from `sdem document --json` against the workspace (UX-D09…D11): every [ID] it cites is a record or an approved connection, every link it states ([SOURCE KIND TARGET]) exists and is approved, every record it names is cited, inferred records are said to be inferred, gaps are mentioned. Read-only. Exit 1 when it finds an error.
 
@@ -1118,11 +1118,11 @@ sdem document verify <file> --workspace WORKSPACE
 
 ### sdem events
 
-<a id="sdem-events"></a>
+<a id="cmd-events"></a>
 
 agent platform: change events, their impact and open work
 
-Subcommands: [`sdem events accept`](#sdem-events-accept) · [`sdem events analyse`](#sdem-events-analyse) · [`sdem events assess`](#sdem-events-assess) · [`sdem events authorise`](#sdem-events-authorise) · [`sdem events pending`](#sdem-events-pending) · [`sdem events show`](#sdem-events-show) · [`sdem events validate`](#sdem-events-validate)
+Subcommands: [`sdem events accept`](#cmd-events-accept) · [`sdem events analyse`](#cmd-events-analyse) · [`sdem events assess`](#cmd-events-assess) · [`sdem events authorise`](#cmd-events-authorise) · [`sdem events pending`](#cmd-events-pending) · [`sdem events show`](#cmd-events-show) · [`sdem events validate`](#cmd-events-validate)
 
 ```
 sdem events --workspace WORKSPACE [--open]
@@ -1144,7 +1144,7 @@ sdem events --workspace work/est --open
 
 ### sdem events accept
 
-<a id="sdem-events-accept"></a>
+<a id="cmd-events-accept"></a>
 
 a person accepts the final impact assessment (and, with --authorise, authorises implementation)
 
@@ -1168,7 +1168,7 @@ sdem events accept <event> --workspace WORKSPACE --person PERSON --reason REASON
 
 ### sdem events analyse
 
-<a id="sdem-events-analyse"></a>
+<a id="cmd-events-analyse"></a>
 
 recompute the requirements evaluation and risk findings after new evidence, links or requirements (assessments made against other evidence become stale)
 
@@ -1188,7 +1188,7 @@ sdem events analyse <event> --workspace WORKSPACE --agent AGENT --person PERSON
 
 ### sdem events assess
 
-<a id="sdem-events-assess"></a>
+<a id="cmd-events-assess"></a>
 
 a layer agent records its layer's assessment of the calculated impact
 
@@ -1218,7 +1218,7 @@ sdem events assess <event> --workspace WORKSPACE --agent AGENT --person PERSON -
 
 ### sdem events authorise
 
-<a id="sdem-events-authorise"></a>
+<a id="cmd-events-authorise"></a>
 
 a person authorises implementation of an accepted assessment
 
@@ -1237,7 +1237,7 @@ sdem events authorise <event> --workspace WORKSPACE --person PERSON
 
 ### sdem events pending
 
-<a id="sdem-events-pending"></a>
+<a id="cmd-events-pending"></a>
 
 layers still to assess — for a layer agent: its own
 
@@ -1256,7 +1256,7 @@ sdem events pending --workspace WORKSPACE [--layer {A1,A2,A3,A4}] [--event EVENT
 
 ### sdem events show
 
-<a id="sdem-events-show"></a>
+<a id="cmd-events-show"></a>
 
 the calculated impact, every assessment, and what still stops acceptance
 
@@ -1274,7 +1274,7 @@ sdem events show <event> --workspace WORKSPACE
 
 ### sdem events validate
 
-<a id="sdem-events-validate"></a>
+<a id="cmd-events-validate"></a>
 
 orchestrator or architect: open the impact validation of a change event — all four layers
 
@@ -1294,15 +1294,15 @@ sdem events validate <event> --workspace WORKSPACE --agent AGENT --person PERSON
 
 ### sdem exception
 
-<a id="sdem-exception"></a>
+<a id="cmd-exception"></a>
 
 a person's time-limited exception to one of the organisation's rules for named records — a governed decision; list shows them active or expired (PR-18)
 
-Subcommands: [`sdem exception grant`](#sdem-exception-grant) · [`sdem exception list`](#sdem-exception-list)
+Subcommands: [`sdem exception grant`](#cmd-exception-grant) · [`sdem exception list`](#cmd-exception-list)
 
 ### sdem exception grant
 
-<a id="sdem-exception-grant"></a>
+<a id="cmd-exception-grant"></a>
 
 record a person's exception — never an agent's
 
@@ -1325,7 +1325,7 @@ sdem exception grant --workspace WORKSPACE --rule RULE --records RECORDS … --e
 
 ### sdem exception list
 
-<a id="sdem-exception-list"></a>
+<a id="cmd-exception-list"></a>
 
 the workspace's exceptions, active or expired
 
@@ -1342,7 +1342,7 @@ sdem exception list --workspace WORKSPACE
 
 ### sdem explain
 
-<a id="sdem-explain"></a>
+<a id="cmd-explain"></a>
 
 explain one element or link: why it exists, from what, how sure
 
@@ -1370,15 +1370,15 @@ sdem explain SD-PI --projection work/prj
 
 ### sdem governance
 
-<a id="sdem-governance"></a>
+<a id="cmd-governance"></a>
 
 governed decisions — who was named, and whether a signed commit by that approver verifies it (a typed --person is attribution, not authentication)
 
-Subcommands: [`sdem governance verify`](#sdem-governance-verify)
+Subcommands: [`sdem governance verify`](#cmd-governance-verify)
 
 ### sdem governance verify
 
-<a id="sdem-governance-verify"></a>
+<a id="cmd-governance-verify"></a>
 
 every decision record: verified by a signed commit from its approver, or why not
 
@@ -1396,7 +1396,7 @@ sdem governance verify --workspace WORKSPACE [--require-verified]
 
 ### sdem handback
 
-<a id="sdem-handback"></a>
+<a id="cmd-handback"></a>
 
 what a workspace leaves open for a person — values nobody knows, unconfirmed inferences and the strength of their evidence, links to review, possible duplicates, unsourced records — with the commands the person runs (AG-H01)
 
@@ -1419,7 +1419,7 @@ sdem handback --workspace examples/payment-initiation
 
 ### sdem home
 
-<a id="sdem-home"></a>
+<a id="cmd-home"></a>
 
 the main dashboard: the metamodel (entities, links inside and between architectures, engine rules), its picture, health, configuration — and every project
 
@@ -1445,7 +1445,7 @@ sdem home -o work/sdem
 
 ### sdem impact
 
-<a id="sdem-impact"></a>
+<a id="cmd-impact"></a>
 
 classify what a change to a record affects
 
@@ -1474,7 +1474,7 @@ sdem impact INF-CLOUD-K8S-PROD --change rehost --graph examples/card-fraud-alert
 
 ### sdem link
 
-<a id="sdem-link"></a>
+<a id="cmd-link"></a>
 
 run the inference engine: propose links between the architectures, and show them weakest first for review (--no-review: just write them)
 
@@ -1502,7 +1502,7 @@ sdem link --workspace examples/payment-initiation --out work/links
 
 ### sdem load
 
-<a id="sdem-load"></a>
+<a id="cmd-load"></a>
 
 load reviewed candidate entities from sdem transform into a workspace — selected, checked first, recorded (the L of the ETL)
 
@@ -1533,7 +1533,7 @@ sdem load work/history --workspace workspaces/history --person jane.architect --
 
 ### sdem matrix
 
-<a id="sdem-matrix"></a>
+<a id="cmd-matrix"></a>
 
 business → BIAN → application → technology matrices from approved links
 
@@ -1559,7 +1559,7 @@ sdem matrix --workspace examples/payment-initiation --md work/matrix.md
 
 ### sdem migrate
 
-<a id="sdem-migrate"></a>
+<a id="cmd-migrate"></a>
 
 move a workspace to the current metamodel version — recorded migrations applied, checked, written all-or-nothing, recorded
 
@@ -1584,17 +1584,17 @@ sdem migrate --workspace workspaces/history --person jane.architect --dry-run
 
 ### sdem model
 
-<a id="sdem-model"></a>
+<a id="cmd-model"></a>
 
 maintainers: regenerate and check generated files, acceptance, evaluation, examples
 
-Subcommands: [`sdem model accept`](#sdem-model-accept) · [`sdem model baseline-pack`](#sdem-model-baseline-pack) · [`sdem model calibrate`](#sdem-model-calibrate) · [`sdem model check`](#sdem-model-check) · [`sdem model eval`](#sdem-model-eval) · [`sdem model examples`](#sdem-model-examples) · [`sdem model freeze`](#sdem-model-freeze) · [`sdem model regenerate`](#sdem-model-regenerate) · [`sdem model stability`](#sdem-model-stability) · [`sdem model status`](#sdem-model-status) · [`sdem model usage`](#sdem-model-usage)
+Subcommands: [`sdem model accept`](#cmd-model-accept) · [`sdem model baseline-pack`](#cmd-model-baseline-pack) · [`sdem model calibrate`](#cmd-model-calibrate) · [`sdem model check`](#cmd-model-check) · [`sdem model eval`](#cmd-model-eval) · [`sdem model examples`](#cmd-model-examples) · [`sdem model freeze`](#cmd-model-freeze) · [`sdem model regenerate`](#cmd-model-regenerate) · [`sdem model stability`](#cmd-model-stability) · [`sdem model status`](#cmd-model-status) · [`sdem model usage`](#cmd-model-usage)
 
 ### sdem model accept
 
-<a id="sdem-model-accept"></a>
+<a id="cmd-model-accept"></a>
 
-engine acceptance cases (sdem-accept)
+engine acceptance cases
 
 ```
 sdem model accept
@@ -1604,7 +1604,7 @@ sdem model accept
 
 ### sdem model baseline-pack
 
-<a id="sdem-model-baseline-pack"></a>
+<a id="cmd-model-baseline-pack"></a>
 
 write the metamodel baseline review pack
 
@@ -1616,7 +1616,7 @@ sdem model baseline-pack
 
 ### sdem model calibrate
 
-<a id="sdem-model-calibrate"></a>
+<a id="cmd-model-calibrate"></a>
 
 how often each confidence band and evidence class is right on the acceptance cases (AID-E03)
 
@@ -1628,7 +1628,7 @@ sdem model calibrate
 
 ### sdem model check
 
-<a id="sdem-model-check"></a>
+<a id="cmd-model-check"></a>
 
 fail if any generated file differs from a fresh generation
 
@@ -1640,9 +1640,9 @@ sdem model check
 
 ### sdem model eval
 
-<a id="sdem-model-eval"></a>
+<a id="cmd-model-eval"></a>
 
-score proposals against approved links (sdem-eval)
+score proposals against approved links
 
 ```
 sdem model eval
@@ -1652,7 +1652,7 @@ sdem model eval
 
 ### sdem model examples
 
-<a id="sdem-model-examples"></a>
+<a id="cmd-model-examples"></a>
 
 re-run use-case examples 1 and 2 (evidence packs and results)
 
@@ -1664,7 +1664,7 @@ sdem model examples
 
 ### sdem model freeze
 
-<a id="sdem-model-freeze"></a>
+<a id="cmd-model-freeze"></a>
 
 record the core after an approved, versioned change
 
@@ -1676,7 +1676,7 @@ sdem model freeze
 
 ### sdem model regenerate
 
-<a id="sdem-model-regenerate"></a>
+<a id="cmd-model-regenerate"></a>
 
 regenerate every generated document, diagram and schema
 
@@ -1688,7 +1688,7 @@ sdem model regenerate
 
 ### sdem model stability
 
-<a id="sdem-model-stability"></a>
+<a id="cmd-model-stability"></a>
 
 the core against its last freeze (as CI)
 
@@ -1700,7 +1700,7 @@ sdem model stability
 
 ### sdem model status
 
-<a id="sdem-model-status"></a>
+<a id="cmd-model-status"></a>
 
 every part of SDEM's metamodel not yet settled, with its source and what would settle it
 
@@ -1712,7 +1712,7 @@ sdem model status
 
 ### sdem model usage
 
-<a id="sdem-model-usage"></a>
+<a id="cmd-model-usage"></a>
 
 what the given workspaces use, and what no workspace uses
 
@@ -1724,7 +1724,7 @@ sdem model usage
 
 ### sdem new
 
-<a id="sdem-new"></a>
+<a id="cmd-new"></a>
 
 start a workspace: the four layers (A2 your BIAN layer) and an empty registry of connections — checked, recorded
 
@@ -1756,15 +1756,15 @@ sdem new --workspace workspaces/payments --person jane.architect
 
 ### sdem pattern
 
-<a id="sdem-pattern"></a>
+<a id="cmd-pattern"></a>
 
 reference-architecture patterns as structures — extract a draft pattern from the organisation's diagram (draw.io, Visio, PlantUML, Mermaid), compare it with the included one, draw it over a design (PR-21…PR-31)
 
-Subcommands: [`sdem pattern draw`](#sdem-pattern-draw) · [`sdem pattern extract`](#sdem-pattern-extract)
+Subcommands: [`sdem pattern draw`](#cmd-pattern-draw) · [`sdem pattern extract`](#cmd-pattern-extract)
 
 ### sdem pattern draw
 
-<a id="sdem-pattern-draw"></a>
+<a id="cmd-pattern-draw"></a>
 
 draw a pattern (PR-25) — with --workspace and --anchor, over that design: which part is there, which is missing
 
@@ -1787,7 +1787,7 @@ sdem pattern draw [--file FILE] [--id ID] [--workspace WORKSPACE] [--profile PRO
 
 ### sdem pattern extract
 
-<a id="sdem-pattern-extract"></a>
+<a id="cmd-pattern-extract"></a>
 
 a diagram → a DRAFT pattern file and a report; nothing enters the profile until a person includes it (PR-30)
 
@@ -1814,15 +1814,15 @@ sdem pattern extract --from FROM [--profile PROFILE] [--workspace WORKSPACE] --i
 
 ### sdem profile
 
-<a id="sdem-profile"></a>
+<a id="cmd-profile"></a>
 
 the organisation's design specification on top of SDEM's metamodel — its own types, attributes, rules, link kinds and names (sdem-profile.json, optionally extending a shared base): check, show, example
 
-Subcommands: [`sdem profile adopt`](#sdem-profile-adopt) · [`sdem profile check`](#sdem-profile-check) · [`sdem profile example`](#sdem-profile-example) · [`sdem profile show`](#sdem-profile-show)
+Subcommands: [`sdem profile adopt`](#cmd-profile-adopt) · [`sdem profile check`](#cmd-profile-check) · [`sdem profile example`](#cmd-profile-example) · [`sdem profile show`](#cmd-profile-show)
 
 ### sdem profile adopt
 
-<a id="sdem-profile-adopt"></a>
+<a id="cmd-profile-adopt"></a>
 
 put the workspace under its sdem-profile.json: the layers it adds start empty, and the adoption is recorded — a person's decision
 
@@ -1842,7 +1842,7 @@ sdem profile adopt --workspace WORKSPACE --person PERSON --reason REASON [--dry-
 
 ### sdem profile check
 
-<a id="sdem-profile-check"></a>
+<a id="cmd-profile-check"></a>
 
 check the workspace's profile (and the base it extends) against SDEM's metamodel
 
@@ -1860,7 +1860,7 @@ sdem profile check [--workspace WORKSPACE] [--file FILE]
 
 ### sdem profile example
 
-<a id="sdem-profile-example"></a>
+<a id="cmd-profile-example"></a>
 
 write a synthetic bank base profile, team profiles that extend it (one adds layers), and a team profile with the bank's standards and secure API pattern
 
@@ -1877,7 +1877,7 @@ sdem profile example --out OUT
 
 ### sdem profile show
 
-<a id="sdem-profile-show"></a>
+<a id="cmd-profile-show"></a>
 
 the merged profile: every type, attribute, rule, link kind and name it adds
 
@@ -1895,7 +1895,7 @@ sdem profile show [--workspace WORKSPACE] [--file FILE]
 
 ### sdem query
 
-<a id="sdem-query"></a>
+<a id="cmd-query"></a>
 
 find records in a graph store
 
@@ -1925,7 +1925,7 @@ sdem query --graph examples/card-fraud-alerts/graph --level A3
 
 ### sdem releases
 
-<a id="sdem-releases"></a>
+<a id="cmd-releases"></a>
 
 what each SDEM release changed: migrations, breaking changes, deprecations and the actions to take
 
@@ -1948,15 +1948,15 @@ sdem releases --since 0.15.0
 
 ### sdem requirements
 
-<a id="sdem-requirements"></a>
+<a id="cmd-requirements"></a>
 
 requirements and constraints the workspace must keep meeting, their measurements, and what a change does to them: in scope, satisfied, breached, not evaluable — and the risk findings
 
-Subcommands: [`sdem requirements check`](#sdem-requirements-check) · [`sdem requirements confirm`](#sdem-requirements-confirm) · [`sdem requirements evaluate`](#sdem-requirements-evaluate) · [`sdem requirements list`](#sdem-requirements-list) · [`sdem requirements measure`](#sdem-requirements-measure) · [`sdem requirements propose`](#sdem-requirements-propose) · [`sdem requirements retire`](#sdem-requirements-retire) · [`sdem requirements show`](#sdem-requirements-show) · [`sdem requirements trace`](#sdem-requirements-trace)
+Subcommands: [`sdem requirements check`](#cmd-requirements-check) · [`sdem requirements confirm`](#cmd-requirements-confirm) · [`sdem requirements evaluate`](#cmd-requirements-evaluate) · [`sdem requirements list`](#cmd-requirements-list) · [`sdem requirements measure`](#cmd-requirements-measure) · [`sdem requirements propose`](#cmd-requirements-propose) · [`sdem requirements retire`](#cmd-requirements-retire) · [`sdem requirements show`](#cmd-requirements-show) · [`sdem requirements trace`](#cmd-requirements-trace)
 
 ### sdem requirements check
 
-<a id="sdem-requirements-check"></a>
+<a id="cmd-requirements-check"></a>
 
 the registry against its schema and the workspace
 
@@ -1973,7 +1973,7 @@ sdem requirements check --workspace WORKSPACE
 
 ### sdem requirements confirm
 
-<a id="sdem-requirements-confirm"></a>
+<a id="cmd-requirements-confirm"></a>
 
 a person confirms proposed requirements — only confirmed requirements are evaluated as obligations
 
@@ -1993,7 +1993,7 @@ sdem requirements confirm <id> --workspace WORKSPACE --person PERSON [--note NOT
 
 ### sdem requirements evaluate
 
-<a id="sdem-requirements-evaluate"></a>
+<a id="cmd-requirements-evaluate"></a>
 
 what a change does to the requirements: in scope, satisfied, breached, not evaluable — and the risk findings
 
@@ -2014,7 +2014,7 @@ sdem requirements evaluate --workspace WORKSPACE [--event EVENT] [--record RECOR
 
 ### sdem requirements list
 
-<a id="sdem-requirements-list"></a>
+<a id="cmd-requirements-list"></a>
 
 the requirements, with status and subject
 
@@ -2033,7 +2033,7 @@ sdem requirements list --workspace WORKSPACE [--layer {A1,A2,A3,A4}] [--status S
 
 ### sdem requirements measure
 
-<a id="sdem-requirements-measure"></a>
+<a id="cmd-requirements-measure"></a>
 
 record measurements — stated values with their evidence, current or proposed
 
@@ -2059,7 +2059,7 @@ sdem requirements measure --workspace WORKSPACE [--from FROM] [--record RECORD] 
 
 ### sdem requirements propose
 
-<a id="sdem-requirements-propose"></a>
+<a id="cmd-requirements-propose"></a>
 
 add requirements, or new versions, as proposed
 
@@ -2079,7 +2079,7 @@ sdem requirements propose <file> --workspace WORKSPACE --person PERSON [--agent 
 
 ### sdem requirements retire
 
-<a id="sdem-requirements-retire"></a>
+<a id="cmd-requirements-retire"></a>
 
 a person retires requirements
 
@@ -2099,7 +2099,7 @@ sdem requirements retire <id> --workspace WORKSPACE --person PERSON --reason REA
 
 ### sdem requirements show
 
-<a id="sdem-requirements-show"></a>
+<a id="cmd-requirements-show"></a>
 
 one requirement: condition, evidence, history and its measurements
 
@@ -2117,7 +2117,7 @@ sdem requirements show <id> --workspace WORKSPACE
 
 ### sdem requirements trace
 
-<a id="sdem-requirements-trace"></a>
+<a id="cmd-requirements-trace"></a>
 
 a requirement through the layers: its subject and allocations, what they depend on and serve, and the requirements it derives from
 
@@ -2135,7 +2135,7 @@ sdem requirements trace <id> --workspace WORKSPACE
 
 ### sdem review
 
-<a id="sdem-review"></a>
+<a id="cmd-review"></a>
 
 list proposed links for review, weakest first
 
@@ -2161,7 +2161,7 @@ sdem review work/links/proposals.json
 
 ### sdem trace
 
-<a id="sdem-trace"></a>
+<a id="cmd-trace"></a>
 
 trace what a record depends on (down) or what depends on it (up)
 
@@ -2195,15 +2195,15 @@ sdem trace CAP-310 --graph examples/card-fraud-alerts/graph
 
 ### sdem transform
 
-<a id="sdem-transform"></a>
+<a id="cmd-transform"></a>
 
 transform past designs — a Confluence export, a folder, or one Word, Excel, Markdown or CSV file — into candidate architecture entities: inspect it, extract (rules; on-device OCR for pictures)
 
-Subcommands: [`sdem transform inspect`](#sdem-transform-inspect) · [`sdem transform rules`](#sdem-transform-rules) · [`sdem transform run`](#sdem-transform-run)
+Subcommands: [`sdem transform inspect`](#cmd-transform-inspect) · [`sdem transform rules`](#cmd-transform-rules) · [`sdem transform run`](#cmd-transform-run)
 
 ### sdem transform inspect
 
-<a id="sdem-transform-inspect"></a>
+<a id="cmd-transform-inspect"></a>
 
 what is in the export and which rules read it — structure only
 
@@ -2223,7 +2223,7 @@ sdem transform inspect <export> [--rules RULES] [--anonymous] [--ocr {auto,visio
 
 ### sdem transform rules
 
-<a id="sdem-transform-rules"></a>
+<a id="cmd-transform-rules"></a>
 
 write a copy of SDEM's transform rules to tune for your organisation's designs (then pass it with --rules)
 
@@ -2239,7 +2239,7 @@ sdem transform rules -o O
 
 ### sdem transform run
 
-<a id="sdem-transform-run"></a>
+<a id="cmd-transform-run"></a>
 
 transform the export: write candidate datasets, extraction.json, design-index.json and extraction-report.md
 
@@ -2261,7 +2261,7 @@ sdem transform run <export> -o O [--rules RULES] [--known KNOWN …] [--model-id
 
 ### sdem types
 
-<a id="sdem-types"></a>
+<a id="cmd-types"></a>
 
 what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats — your profile's included with --workspace
 
@@ -2285,15 +2285,15 @@ sdem types A1.BusinessProcess
 
 ### sdem upgrade
 
-<a id="sdem-upgrade"></a>
+<a id="cmd-upgrade"></a>
 
 before you switch SDEM versions: run the new version, installed side by side, against your workspaces — migrations, profile, deprecations, agent files, actions; writes nothing
 
-Subcommands: [`sdem upgrade check`](#sdem-upgrade-check)
+Subcommands: [`sdem upgrade check`](#cmd-upgrade-check)
 
 ### sdem upgrade check
 
-<a id="sdem-upgrade-check"></a>
+<a id="cmd-upgrade-check"></a>
 
 what upgrading to this version means for your workspaces: migrations, profile, deprecations, agent files, actions — writes nothing
 
@@ -2313,7 +2313,7 @@ sdem upgrade check [--workspace WORKSPACE] [--root ROOT] [--repo REPO] [--from F
 
 ### sdem validate
 
-<a id="sdem-validate"></a>
+<a id="cmd-validate"></a>
 
 validate a relationship document (registry or proposals)
 
@@ -2340,7 +2340,7 @@ sdem validate --strict --workspace examples/payment-initiation
 
 ### sdem view
 
-<a id="sdem-view"></a>
+<a id="cmd-view"></a>
 
 write the HTML picture of a graph store, optionally with a projection
 
@@ -2367,15 +2367,15 @@ sdem view --graph examples/card-fraud-alerts/graph -o work/view.html
 
 ### sdem work
 
-<a id="sdem-work"></a>
+<a id="cmd-work"></a>
 
 agent platform: plan, list and claim work items
 
-Subcommands: [`sdem work block`](#sdem-work-block) · [`sdem work cancel`](#sdem-work-cancel) · [`sdem work claim`](#sdem-work-claim) · [`sdem work list`](#sdem-work-list) · [`sdem work plan`](#sdem-work-plan) · [`sdem work reopen`](#sdem-work-reopen)
+Subcommands: [`sdem work block`](#cmd-work-block) · [`sdem work cancel`](#cmd-work-cancel) · [`sdem work claim`](#cmd-work-claim) · [`sdem work list`](#cmd-work-list) · [`sdem work plan`](#cmd-work-plan) · [`sdem work reopen`](#cmd-work-reopen)
 
 ### sdem work block
 
-<a id="sdem-work-block"></a>
+<a id="cmd-work-block"></a>
 
 a work item cannot proceed — say why
 
@@ -2396,7 +2396,7 @@ sdem work block <id> --workspace WORKSPACE --agent AGENT --person PERSON [--note
 
 ### sdem work cancel
 
-<a id="sdem-work-cancel"></a>
+<a id="cmd-work-cancel"></a>
 
 drop a work item — say why
 
@@ -2417,7 +2417,7 @@ sdem work cancel <id> --workspace WORKSPACE --agent AGENT --person PERSON [--not
 
 ### sdem work claim
 
-<a id="sdem-work-claim"></a>
+<a id="cmd-work-claim"></a>
 
 a layer agent takes a work item
 
@@ -2438,7 +2438,7 @@ sdem work claim <id> --workspace WORKSPACE --agent AGENT --person PERSON [--note
 
 ### sdem work list
 
-<a id="sdem-work-list"></a>
+<a id="cmd-work-list"></a>
 
 work items
 
@@ -2457,7 +2457,7 @@ sdem work list --workspace WORKSPACE [--layer {A1,A2,A3,A4}] [--status {open,in_
 
 ### sdem work plan
 
-<a id="sdem-work-plan"></a>
+<a id="cmd-work-plan"></a>
 
 orchestrator: turn a change event's impact into work items
 
@@ -2478,7 +2478,7 @@ sdem work plan --event EVENT --workspace WORKSPACE --agent AGENT --person PERSON
 
 ### sdem work reopen
 
-<a id="sdem-work-reopen"></a>
+<a id="cmd-work-reopen"></a>
 
 return a work item to open
 
@@ -2499,7 +2499,7 @@ sdem work reopen <id> --workspace WORKSPACE --agent AGENT --person PERSON [--not
 
 ### sdem workbench
 
-<a id="sdem-workbench"></a>
+<a id="cmd-workbench"></a>
 
 the workbench for one workspace: one offline page — the solution workspace (designs, data, knowledge graph, trace and impact, reviews and changes, documents and evidence) and the SDEM framework (metamodel, configuration, rules, health)
 

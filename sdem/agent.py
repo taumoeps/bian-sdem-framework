@@ -245,7 +245,7 @@ def describe(parser):
             continue
         d = {'name': a.option_strings[0] if a.option_strings else a.dest, 'takes_value': a.nargs != 0,
              'required': bool(a.required) and not (not a.option_strings and a.nargs in ('*', '?')),   # the same on every Python (3.9 marks nargs='*' required)
-             'help': (a.help or '').replace('%(default)s', str(a.default)) or None}
+             'help': (a.help or '').replace('%(default)s', a.default.as_posix() if hasattr(a.default, 'as_posix') else str(a.default)) or None}   # one text on every platform
         if a.option_strings and len(a.option_strings) > 1: d['aliases'] = a.option_strings[1:]
         if a.choices: d['choices'] = list(a.choices)
         if a.nargs in ('*', '+'): d['many'] = True

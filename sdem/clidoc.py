@@ -36,7 +36,7 @@ def _md(s):
 
 
 def _anchor(name):
-    return 'sdem-' + re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
+    return 'cmd-' + re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')   # not 'sdem-…': that reads as an old command name (doc drift)
 
 
 def _usage(name, c):

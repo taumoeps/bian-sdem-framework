@@ -209,7 +209,7 @@ def main(argv=None):
     ap.add_argument('--organisation', metavar='NAME', help='alone: start an organisation — the folder NAME with a starter base profile (profiles/NAME-base.json) and workspaces/ (WS-08); '
                     'with --workspace: start the workspace inside that organisation, its profile extending the base (WS-09, WS-10). Inside an organisation\'s folder it is found without this')
     ap.add_argument('--person', required=True, help='your name — a person')
-    ap.add_argument('--bian', metavar='FILE', help=f'start with exactly this BIAN layer in A2 (default: A2 empty; sdem aid brings in the domains your design needs from {SHARED} if it exists, else the base BIAN)')
+    ap.add_argument('--bian', metavar='FILE', help=f'start with exactly this BIAN layer in A2 (default: A2 empty; sdem aid brings in the domains your design needs from {SHARED.as_posix()} if it exists, else the base BIAN)')
     ap.add_argument('--no-bian', action='store_true', help='start without a BIAN layer (add it later); business then does not connect to applications')
     ap.add_argument('--example', choices=sorted(EXAMPLES), help='start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder')
     ap.add_argument('--from', dest='source', metavar='DIR', help='start with this content as the baseline: the four layers, mappings.json and requirements.json found in DIR — checked first, '
