@@ -125,7 +125,13 @@ def parse_date(text):
 
 
 # ---------------------------------------------------------------- the export: any folder layout
-CONTENT_EXT = ('.html', '.htm', '.md', '.markdown', '.txt', '.csv')
+CONTENT_EXT = ('.html', '.htm', '.md', '.markdown', '.txt', '.csv', '.tsv', '.docx', '.xlsx')
+OFFICE_EXT = ('.docx', '.xlsx')   # read by sdem/office.py (HI-F01, HI-F02)
+UNREAD_HINT = {'.doc': 'save it as .docx', '.xls': 'save each sheet as .xlsx or .csv', '.ppt': 'export its diagrams as draw.io or its text as .docx',
+               '.pptx': 'export its diagrams as draw.io or its text as .docx', '.pdf': 'use the original .docx, or the Confluence page',
+               '.rtf': 'save it as .docx', '.odt': 'save it as .docx', '.ods': 'save it as .xlsx', '.vsd': 'save it as .vsdx (read by sdem pattern extract)',
+               '.vsdx': 'export it as draw.io, or read it with sdem pattern extract'}
+PROVENANCE_STEMS = ('readme', 'licence', 'license', 'notice', 'changelog', 'source', 'sources', 'manifest', 'index')
 DIAGRAM_EXT = ('', '.drawio', '.dio', '.xml', '.png', '.svg') + ('.puml', '.plantuml', '.pu', '.iuml', '.wsd')
 
 
@@ -145,9 +151,11 @@ def scan(root, rules):
                                    'listed in skip_files (e.g. the space index)' if p.name in skip_files else 'in a skipped folder (styles, icons)'))
             continue
         ext = p.suffix.lower(); in_att = bool({x.lower() for x in parts[:-1]} & att)
-        if len(parts) == 1 and ext not in ('.html', '.htm'):
+        if len(parts) == 1 and ext in UNREAD_HINT:   # a design in a format SDEM does not read is reported, not kept as provenance
+            out['other'].append(rel); kind = 'other'
+        elif len(parts) == 1 and not root_page(p, ext, rules):
             out['provenance'].append(p); kind = 'provenance'
-        elif ext in CONTENT_EXT and not in_att:
+        elif ext in CONTENT_EXT and (not in_att or ext in OFFICE_EXT):
             out['pages'].append(p); kind = 'page'
         else:
             data = p.read_bytes() if ext in DIAGRAM_EXT and p.stat().st_size <= limit else b''
@@ -158,7 +166,35 @@ def scan(root, rules):
             elif ext in IMAGE_EXT: out['pictures'].append(rel); kind = 'picture'
             else: out['other'].append(rel); kind = 'other'
         out['layout'][folder][kind] += 1
+    _root_tables(out, root)
+    out['pages'].sort(key=lambda x: x.relative_to(root).as_posix())
     return out
+
+
+def root_page(p, ext, rules):
+    """HI-F03: a file in the export's top folder is a design page — HTML, Markdown, Word or Excel; a CSV/TSV table is decided after the
+    scan (`_root_tables`); a readme, a licence, a text or JSON file there stays provenance."""
+    if ext in ('.html', '.htm'): return True
+    if p.stem.lower() in PROVENANCE_STEMS: return False
+    return ext in ('.md', '.markdown') + OFFICE_EXT
+
+
+def _root_tables(out, root):
+    """HI-F03: a CSV/TSV in the top folder is a manifest (provenance) when its cells name a page of the export — a file path, file name
+    or file stem, as a manifest row is matched (HI-L02); otherwise it is a design table, read as a page."""
+    keys = set()
+    for pg in out['pages']:
+        rel = pg.relative_to(root).as_posix(); keys |= {norm(rel), norm(pg.name), norm(pg.stem)}
+    keep = []
+    for p in out['provenance']:
+        ext = p.suffix.lower()
+        if ext not in ('.csv', '.tsv') or p.stem.lower() in PROVENANCE_STEMS: keep.append(p); continue
+        try: rows = list(csv.reader(io.StringIO(p.read_text(encoding='utf-8-sig', errors='replace')), delimiter='\t' if ext == '.tsv' else ','))
+        except OSError: keep.append(p); continue
+        if any(norm(c) in keys for r in rows[1:] for c in r if c.strip()): keep.append(p)
+        else:
+            out['pages'].append(p); out['layout']['.']['provenance'] -= 1; out['layout']['.']['page'] += 1
+    out['provenance'] = keep
 
 
 def folder_sections(rel, rules):
@@ -174,6 +210,14 @@ def read_page(path, root, rules=None):
     m = re.search(r'_(\d+)\.html?$', path.name) or re.match(r'(\d+)\.html?$', path.name)
     page = {'page_id': m.group(1) if m else rel, 'id_from': 'file name' if m else 'path', 'title': '', 'space': '', 'file': rel,
             'modified': None, 'breadcrumb': prefix, 'blocks': [], 'links': [], 'attachment_names': {}, 'url': None}
+    if ext in OFFICE_EXT:   # HI-F01, HI-F02: Word and Excel — the same blocks as a Markdown page
+        from . import office
+        import xml.etree.ElementTree as _ET
+        try: page['blocks'], title, page['notes'] = (office.docx_blocks if ext == '.docx' else office.xlsx_blocks)(path.read_bytes(), prefix)
+        except (office.OfficeError, _ET.ParseError, KeyError) as e:   # one unreadable file is reported, the rest are read
+            page['blocks'], title, page['notes'] = [], '', [('file', rel, 'not captured', f'not read: {e}', 'file not read')]
+        page['title'] = title or path.stem
+        return page
     text = path.read_text(encoding='utf-8', errors='replace')
     if ext in ('.html', '.htm'):
         tree = parse_html(text)
@@ -196,8 +240,8 @@ def read_page(path, root, rules=None):
         page['blocks'], page['links'] = md_blocks(text, prefix)
         h = next((x for x in text.splitlines() if re.match(r'#\s', x)), None)
         page['title'] = clean(h[1:]) if h else ''
-    elif ext == '.csv':
-        rows = [r for r in csv.reader(io.StringIO(text.lstrip('﻿'))) if any(c.strip() for c in r)]
+    elif ext in ('.csv', '.tsv'):
+        rows = [r for r in csv.reader(io.StringIO(text.lstrip('﻿')), delimiter='\t' if ext == '.tsv' else ',') if any(c.strip() for c in r)]
         if rows: page['blocks'] = [('table', ' / '.join(prefix), ('grid', [clean(c) for c in rows[0]], rows[1:]))]
     else:  # plain text: PlantUML blocks, then paragraphs split by blank lines
         sec = ' / '.join(prefix)
@@ -761,7 +805,8 @@ class Extraction:
 
     # ---- tables
     def table(self, page, section, data, n):
-        kind, headers, rows = data
+        kind, headers, rows, *rownos = data
+        at = (lambda k: f'sheet row {rownos[0][k - 1]}') if rownos else (lambda k: f'row {k}')   # Excel: the sheet's own row number
         hn = [norm(h) for h in headers]
         where = f"table {n}" + (f" under '{section}'" if section else '')
         if kind == 'keyvalue':  # a heading down the first column: facts about the page (HI-N04)
@@ -784,9 +829,10 @@ class Extraction:
                 if len(row) <= max(si, ti): continue
                 s, _ = first_line(row[si]); t, _ = first_line(row[ti])
                 if not s or not t: continue
-                w = f'{where}, row {k}'
+                w = f'{where}, {at(k)}'
                 a = self.find(s) or self.record(lr['endpoint_type'], s, page, w, lr['id'], 'table_endpoint', f"named as the source in a '{headers[si]}' column — assumed {lr['endpoint_type'].split('.')[1]}")
-                b = self.find(t) or self.record(lr['endpoint_type'], t, page, w, lr['id'], 'table_endpoint', f"named as the target in a '{headers[ti]}' column — assumed {lr['endpoint_type'].split('.')[1]}")
+                tt = lr.get('target_type', lr['endpoint_type'])
+                b = self.find(t) or self.record(tt, t, page, w, lr['id'], 'table_endpoint', f"named as the target in a '{headers[ti]}' column — assumed {tt.split('.')[1]}")
                 lab = first_line(row[li])[0] if li is not None and len(row) > li else ''
                 um = {headers[i]: clean(row[i]) for i in extra if i < len(row) and clean(row[i])}
                 self.link(a, lr.get('kind'), b, page, w, lr['id'], 'table', f"row of a source/target table ('{headers[si]}' → '{headers[ti]}')", lab, um)
@@ -822,7 +868,7 @@ class Extraction:
             if not name: empty += 1; continue
             cell = lambda i: clean(row[i]) if i is not None and i < len(row) else ''
             attrs = {a: cell(i) for a, i in ai.items() if cell(i)}
-            r = self.record(tr['type'], name, page, f'{where}, row {k}', tr['id'], 'table',
+            r = self.record(tr['type'], name, page, f'{where}, {at(k)}', tr['id'], 'table',
                             f"listed in a table whose '{headers[ni]}' column names {tr['type'].split('.')[1]} records",
                             cell(di) or rest, self.lifecycle(cell(li)), attrs)
             if r:
@@ -1093,6 +1139,8 @@ class Extraction:
         for rel in self.diagrams:  # standard Confluence export: attachments/<pageId>/
             if rel.startswith(f"attachments/{p['page_id']}/"): mine.setdefault(rel, p['attachment_names'].get(rel) or Path(rel).stem)
         n_table, texts, sec_of = 0, [], {}
+        for kind, where, status, reason, category in p.pop('notes', []):   # what a Word or Excel file holds that is not read
+            self.account(p, kind, where, status, reason, category)
         for kind, section, x in p['blocks']:
             self.inspect['headings'][(section.split(' / ')[-1] if section else '(no heading)', self.layer_of(section) or '—')] += 1 if kind == 'text' else 0
             if kind == 'table':
@@ -1172,9 +1220,13 @@ class Extraction:
 
     def run(self, root):
         root = Path(root)
-        if not root.is_dir(): raise ValueError(f'{root}: not a folder')
+        if root.is_file():   # HI-F03: one design file — read as a folder holding only it
+            if root.suffix.lower() not in CONTENT_EXT: raise ValueError(f'{root}: SDEM reads designs in ' + ', '.join(CONTENT_EXT) + ' — or give a folder')
+            import shutil, tempfile
+            self._single = tempfile.TemporaryDirectory(); shutil.copy2(root, Path(self._single.name) / root.name); root = Path(self._single.name)
+        if not root.is_dir(): raise ValueError(f'{root}: not a folder or a design file')
         sc = scan(root, self.rules)
-        if not sc['pages']: raise ValueError(f'{root}: no pages found (.html, .md, .txt or .csv) — is this the export folder?')
+        if not sc['pages']: raise ValueError(f'{root}: no designs found (.html, .md, .docx, .xlsx, .csv, .tsv or .txt) — is this the folder of designs?')
         self.root = root; self.layout = sc['layout']; self.diagrams = sc['diagrams']; self.files = set()
         for p in root.rglob('*'):
             if p.is_file(): self.files.add(p.relative_to(root).as_posix())
@@ -1214,7 +1266,8 @@ class Extraction:
         for f in self.provenance_files: self.account(fileitem(f['file']), 'file', f['file'], 'captured', 'a provenance file of the export (fingerprinted' + (f", {f['pages_matched']} page(s) matched" if f.get('pages_matched') else '') + ')')
         for rel in sc['other']:
             ext = Path(rel).suffix.lower() or '(no extension)'
-            self.account(fileitem(rel), 'file', rel, 'not captured', f'a {ext} file — SDEM does not read this type; a person records what it holds', 'file not read')
+            hint = UNREAD_HINT.get(ext)
+            self.account(fileitem(rel), 'file', rel, 'not captured', f'a {ext} file — SDEM does not read this type; ' + (f'{hint} and run again' if hint else 'a person records what it holds'), 'file not read')
         dup = collections.defaultdict(list)
         for r in self.records.values(): dup[norm(r['name'])].append(r)
         for n, rs in dup.items():
@@ -1224,6 +1277,7 @@ class Extraction:
         for r in self.records.values():
             k = self.known.get(norm(r['name']))
             if k: r['same_as_existing'] = {'id': k[0], 'type': k[1], 'file': k[2]}
+        if getattr(self, '_single', None): self._single.cleanup(); self._single = None
         return self
 
     # ---- outputs
@@ -1301,6 +1355,7 @@ def _cross_types():
 
 def _digest(root):
     h = hashlib.sha256()
+    if Path(root).is_file(): h.update(Path(root).name.encode()); h.update(Path(root).read_bytes()); return h.hexdigest()
     for p in sorted(Path(root).rglob('*'), key=lambda x: x.relative_to(root).as_posix()):   # one order on every platform
         if p.is_file(): h.update(p.relative_to(root).as_posix().encode()); h.update(p.read_bytes())
     return h.hexdigest()
@@ -1312,7 +1367,7 @@ def extract(root, out, rules=None, known=(), model_id=None, now=None, ocr='auto'
     from .graph import LevelGraph
     rules_doc = json.loads(Path(rules).read_text(encoding='utf-8')) if rules else None
     x = Extraction(rules_doc, known, ocr=ocr if callable(ocr) else ocr_engine(ocr)).run(root)
-    model_id = model_id or (re.sub(r'[^A-Z0-9]+', '-', (x.pages[0]['space'] or Path(root).name).upper()).strip('-') or 'CONFLUENCE')
+    model_id = model_id or (re.sub(r'[^A-Z0-9]+', '-', (x.pages[0]['space'] or (Path(root).stem if Path(root).is_file() else Path(root).name)).upper()).strip('-') or 'CONFLUENCE')
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     ds = x.datasets(model_id); issues = {}
     for lvl, d in ds.items():
@@ -1476,7 +1531,8 @@ def inspect(root, rules=None, anonymous=False, ocr='auto'):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog='sdem transform', description='Transform an export of past designs (Confluence) into candidate architecture entities — rules only, no network; text in pictures by on-device OCR (--ocr off to disable).')
+    ap = argparse.ArgumentParser(prog='sdem transform', description='Transform past designs — a Confluence export, a folder of designs, or one file (HTML, Markdown, Word .docx, '
+                                 'Excel .xlsx with its tabs, CSV, draw.io, PlantUML) — into candidate architecture entities — rules only, no network; text in pictures by on-device OCR (--ocr off to disable).')
     sub = ap.add_subparsers(dest='cmd', required=True)
     i = sub.add_parser('inspect', help='what is in the export and which rules read it — structure only')
     i.add_argument('export'); i.add_argument('--rules', help='your copy of the rules (make one with `sdem transform rules -o FILE`)'); i.add_argument('--json', action='store_true')

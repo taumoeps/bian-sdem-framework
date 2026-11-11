@@ -330,6 +330,16 @@
       ],
       "endpoint_type": "A3.ApplicationComponent",
       "kind": "flow"
+    },
+    {
+      "id": "HL-02",
+      "source": ["application", "application name", "app", "app name", "component", "system", "system name"],
+      "target": ["runs on", "hosted on", "deployed on", "deployed to", "installed on"],
+      "label": ["environment", "description", "notes"],
+      "endpoint_type": "A3.ApplicationComponent",
+      "target_type": "A4.Node",
+      "kind": "deployed_on",
+      "note": "HI-F02: a deployment table (e.g. an Excel 'Deployment' tab) — only explicit 'runs on / hosted on / deployed on' columns, so an inventory table with a server column is not read as deployments; a name not yet found is assumed an application (source) or a node (target)"
     }
   ],
   "lifecycle_values": {

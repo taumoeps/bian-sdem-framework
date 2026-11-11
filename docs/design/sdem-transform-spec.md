@@ -41,12 +41,20 @@
 
 | ID | Requirement | Status | Test |
 |---|---|---|---|
-| HI-L01 | Pages are found in any folder and format — HTML, Markdown, text, CSV; folder names act as section headings (leading numbers dropped, container folders left out) | built | `test_pages_found_in_any_folder_and_format` |
-| HI-L02 | Files in the root that are not HTML pages are provenance (size, SHA-256); JSON and CSV lists matched to pages fill in page id, link, title, date, space | built | `test_root_files_are_provenance_and_fill_in_the_page` |
+| HI-L01 | Pages are found in any folder and format — HTML, Markdown, text, CSV, TSV, Word, Excel (HI-F01…F03); folder names act as section headings (leading numbers dropped, container folders left out) | built | `test_pages_found_in_any_folder_and_format` |
+| HI-L02 | Files in the root that are not design pages (HI-F03) are provenance (size, SHA-256); JSON and CSV lists matched to pages fill in page id, link, title, date, space | built | `test_root_files_are_provenance_and_fill_in_the_page` |
 | HI-L03 | A diagram is linked to the page that refers to it, resolved from the page's folder (or by unique file name) | built | `test_diagram_the_html_refers_to_is_linked_to_its_page` |
 | HI-L04 | A diagram no page refers to is read with its folder as context and listed for a person; names already found decide a shape's type before label words; label words match whole words | built | `test_unlinked_diagrams_are_read_with_their_folder` |
 | HI-L05 | Pictures shown on a page, and pictures in folders no page shows, are listed for a person | built | `test_pictures_shown_or_not_go_to_a_person` |
 | HI-I02 | `inspect` shows what each folder holds; `--anonymous` replaces folder names and leaves out headings and column names | built | `test_inspect_layout_and_anonymous` |
+
+## 3a′. Word, Excel and single files
+
+| Id | Requirement | Status | Verified by |
+|---|---|---|---|
+| HI-F01 | **Word (`.docx`)** is read as a Markdown page is: headings by the paragraph's style or outline level (the Title style is the page title), paragraphs, tables (cells spanning columns or rows filled). Pictures inside it are counted and reported as *not captured*, never read. Standard library only (a `.docx` is a zip of XML); no macro or embedded object is opened. | built | `test_office_designs.WordTests` |
+| HI-F02 | **Excel (`.xlsx`)**: every visible sheet is a section named after its tab, so tab names place records in a layer as headings do; a sheet's tables are split at blank rows; a single-value line above a table (a title, even merged across columns) is text, not the header; cells are read as Excel last saved them (shared strings, a formula's saved value); merged cells are filled. Each record cites its **sheet row** (`table 1 under 'Applications', sheet row 3`). Names are found across all tabs, so a link tab (HL-01 source/target, **HL-02** application → *runs on*, approved by the owner on 2026-11-11) joins records listed on other tabs. Hidden sheets are listed as *skipped*; a tab no rule reads is reported (*no rule* or *no entity type*), never typed. | built | `test_office_designs.ExcelTests` |
+| HI-F03 | **One file, or design files in the top folder**: `sdem transform run|inspect` takes a single design file (`.docx`, `.xlsx`, `.md`, `.html`, `.csv`, `.tsv`, `.txt`). In the top folder, HTML, Markdown, Word and Excel files are design pages, and a CSV/TSV is a design table unless its cells name a page of the export (then it is a manifest, HI-L02); a readme, licence, JSON or text file stays provenance. A file SDEM cannot read (an older `.doc`/`.xls`, PDF, PowerPoint) is reported with what to save it as; an unreadable Word or Excel file is reported and the rest of the export is still read. | built | `test_office_designs.FilesAndFoldersTests` |
 
 ## 3b. PlantUML and pictures
 
@@ -67,7 +75,7 @@
 | HI-N03 | Columns no rule maps are kept with their entity or link as `unmapped` (column → value) and reported as *column not mapped* | built | `test_unmapped_columns_kept` |
 | HI-N04 | A key-value table is read as the page's **facts** (e.g. owner, review date) in the design index | built | `test_key_value_table_becomes_page_facts` |
 | HI-N05 | A table whose headings contain a `no_entity_type_words` word is reported as *no entity type* (a candidate metamodel gap), never typed | built | `test_no_entity_type_reported_not_forced` |
-| HI-N06 | The report has a *Not captured* section grouped by category; files of types not read (PDF, Word, Excel, Visio …) are listed | built | `test_not_captured_section_and_files` |
+| HI-N06 | The report has a *Not captured* section grouped by category; files of types not read (PDF, older `.doc`/`.xls`, PowerPoint, Visio …) are listed, with what to save them as | built | `test_not_captured_section_and_files` |
 
 ## 4. Candidates
 

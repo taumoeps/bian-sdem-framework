@@ -337,7 +337,7 @@ You write designs as JSON change sets and run the commands below yourself:
 - **Create a new architecture** — start from a business design, find the BIAN Service Domains it needs, let AID infer the missing layers, approve, then build and explore the knowledge graph (steps 1–7).
 - **Explore the bundled example** — the synthetic Payments architecture, ready-made, in one command (steps 1 and 8).
 
-Designs exported from Confluence can be onboarded without AI using `sdem transform` and `sdem load` ([onboarding](docs/sdem-onboarding-workflow.md)).
+Existing designs — a Confluence export, a folder of designs, or a single Word (`.docx`) or Excel (`.xlsx`) file with its tabs — can be onboarded without AI using `sdem transform` and `sdem load` ([onboarding](docs/sdem-onboarding-workflow.md)). SDEM reads their tables, headings and diagrams by rules; free text needs an AI agent (`sdem-design-from-document`).
 
 ### B. Use an AI agent
 

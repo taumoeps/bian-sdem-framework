@@ -11,6 +11,7 @@ The document is the architect's; SDEM checks everything you draft; **the archite
 
 - **Markdown** (`.md`): read it directly.
 - **Word** (`.docx`): convert it to text with what your platform has — e.g. `textutil -convert txt <file>` (macOS), `pandoc -t plain <file>`, or read `word/document.xml` from the file (a `.docx` is a zip) with Python's standard library. Keep the headings: you cite them.
+- **Tables first, by rules:** when the document (Word, Excel with its tabs, Markdown) holds inventory tables — applications, servers, interfaces, deployments — run `sdem transform run <file> -o <dir>/transform --json` and read its `extraction-report.md`: those rows become candidates with their row cited, by rules, not by you. You then map the prose the rules cannot read.
 - Number the sections as the document does (`#2`, `#4.1`) — every record you write cites one.
 
 ## 2. Map what it says to records — and only what it says
