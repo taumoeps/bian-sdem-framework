@@ -623,13 +623,26 @@ def main(argv=None):
     im.add_argument('--previous', metavar='FILE', help='a previous A2 dataset: report what was added, dropped or renamed')
     im.add_argument('--json', action='store_true')
     sub.add_parser('inference', help="SDEM's record of inferred asset types and functional patterns — list, show, accept, challenge, change, reject")
-    cu = sub.add_parser('custom', parents=[src], help="narrow one workspace's BIAN layer to the service domains it uses — checked; never strands an approved connection")
-    cu.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
-    cu.add_argument('--add', nargs='+', metavar='NAME', help='add these service domains from the catalogue to what the workspace holds')
-    cu.add_argument('--only', nargs='+', metavar='NAME', help='service domains by name — exactly these'); cu.add_argument('--from', dest='from_file', metavar='FILE', help='a file of names, one per line')
-    cu.add_argument('--all', action='store_true', help='back to every service domain')
-    cu.add_argument('--patterns', metavar='CSV'); cu.add_argument('--inferences', metavar='FILE'); cu.add_argument('--no-inferences', action='store_true')
-    cu.add_argument('--person', required=True, help='your name — a person'); cu.add_argument('--dry-run', action='store_true'); cu.add_argument('--json', action='store_true')
+    def _ws_change(p):   # WS-04: what adding, selecting and the old `custom` share
+        p.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
+        p.add_argument('--patterns', metavar='CSV'); p.add_argument('--inferences', metavar='FILE'); p.add_argument('--no-inferences', action='store_true')
+        p.add_argument('--person', required=True, help='your name — a person'); p.add_argument('--dry-run', action='store_true'); p.add_argument('--json', action='store_true')
+    ad = sub.add_parser('add', help="add BIAN service domains to one workspace, beside what it holds — checked; what AID inferred keeps its mark")
+    ad.add_argument('names', nargs='+', metavar='NAME', help='service domains by name, e.g. "Financial Accounting" — find them with sdem bian search')
+    ad.add_argument('--base', nargs='?', const='', metavar='FILE', help='choose from the base BIAN that ships with SDEM (default) — or, with FILE, your own packed BIAN')
+    ad.add_argument('--folder', metavar='DIR', help="choose from a downloaded BIAN release instead")
+    _ws_change(ad)
+    sl = sub.add_parser('select', parents=[src], help="set exactly which BIAN service domains one workspace holds — checked; never strands an approved connection")
+    which = sl.add_mutually_exclusive_group(required=True)
+    which.add_argument('--only', nargs='+', metavar='NAME', help='service domains by name — exactly these')
+    which.add_argument('--from', dest='from_file', metavar='FILE', help='a file of names, one per line — exactly these')
+    which.add_argument('--all', action='store_true', help='back to every service domain')
+    _ws_change(sl)
+    cu = sub.add_parser('custom', parents=[src], help="the old name for `sdem bian add` (--add) and `sdem bian select` (--only, --from, --all) — still works")
+    cu.add_argument('--add', nargs='+', metavar='NAME', help='as sdem bian add')
+    cu.add_argument('--only', nargs='+', metavar='NAME', help='as sdem bian select --only'); cu.add_argument('--from', dest='from_file', metavar='FILE', help='as sdem bian select --from')
+    cu.add_argument('--all', action='store_true', help='as sdem bian select --all')
+    _ws_change(cu)
     se = sub.add_parser('search', help='BIAN service domains and operations for plain words — with the ids to use in a process\'s invokes')
     se.add_argument('words', nargs='+', help='e.g. ledger posting')
     se.add_argument('--base', nargs='?', const='', metavar='FILE', help='the base BIAN (default) — or your own pack'); se.add_argument('--folder', metavar='DIR', help='a downloaded BIAN release instead')
@@ -644,7 +657,12 @@ def main(argv=None):
     up.add_argument('--a2', required=True, metavar='FILE', help='your shared BIAN layer, e.g. bian/a2-service-domain.json')
     up.add_argument('--person', required=True, help='your name — a person'); up.add_argument('--dry-run', action='store_true'); up.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
-    if a.cmd == 'custom':   # WS-04: one workspace's own selection
+    if a.cmd == 'custom':   # the old name (WS-04): says what to use instead
+        print('NOTE: sdem bian custom is now sdem bian add (--add) and sdem bian select (--only, --from, --all)', file=sys.stderr)
+        if not (a.add or a.only or a.from_file or a.all): raise BianError('say which: --add, --only, --from or --all')
+    if a.cmd == 'add': a.add, a.only, a.from_file, a.all = a.names, None, None, False
+    if a.cmd == 'select': a.add = None
+    if a.cmd in ('add', 'select', 'custom'):   # WS-04: one workspace's own selection
         ws = Path(a.estate)
         if not (ws / 'mappings.json').exists(): raise BianError(f'{ws}: no workspace here — start one with sdem new')
         if a.base is None and not a.folder: a.base = ''
@@ -680,7 +698,7 @@ def main(argv=None):
             from .files import write_json
             write_json(rec_path, rec)
         if a.json: print(json.dumps(c, indent=2)); return 0
-        verb = ('would add' if a.dry_run else 'added') + f" {len(chosen)} service domain(s)" if a.add else ('would narrow' if a.dry_run else 'narrowed') + ' the BIAN layer'
+        verb = ('would add' if a.dry_run else 'added') + f" {len(chosen)} service domain(s)" if a.add else ('would set' if a.dry_run else 'set') + ' the BIAN layer to exactly the domains chosen'
         print(f"{ws}: {verb} — now {sum(1 for i in dataset['instances'] if i['type'] == 'A2.ServiceDomain')} service domain(s)" + (f" ({c['id']})" if c.get('id') else '')
               + f" — added {len(c['added'])}, dropped {len(c['dropped'])} records; checked" + ('' if a.dry_run else '. Next: commit on a branch and open a pull request.'))
         return 0

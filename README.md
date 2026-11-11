@@ -230,7 +230,7 @@ flowchart BT
 | **⑤ Explore and analyse** | trace, impact, requirements, read-only HTML pages | `trace`, `impact`, `query`, `matrix`, `requirements evaluate`, `home`, `dashboard`, `view` | the knowledge graph — approved connections only |
 | **⑥ Govern** | decisions, history, upgrades, profiles | `events`, `governance verify`, `upgrade check`, `profile` | the workspace record; profiles extend the metamodel, never change it |
 
-Every command takes `--json` and `--help` (with a worked example); writing commands take `--dry-run`. The pages: **SDEM Home** (the framework, metamodel and workspaces), the **workspace dashboard** (health, relationships, changes, governance) and the **architecture graph** (entities and approved connections). In full: [the commands, step by step](docs/sdem-workbench-user-guide.md#4c-from-your-designs-to-the-knowledge-graph--the-commands).
+Every command takes `--json` and `--help` (with a worked example); writing commands take `--dry-run`. The pages: **SDEM Home** (the framework, metamodel and workspaces), the **workspace dashboard** (health, relationships, changes, governance) and the **architecture graph** (entities and approved connections). In full: [the commands, step by step](docs/sdem-workbench-user-guide.md#4c-from-your-designs-to-the-knowledge-graph--the-commands). Every command and option: the [CLI reference](docs/reference/cli-reference.md); the jobs end to end: [scenarios](docs/sdem-scenarios.md).
 
 ### 3 · AI agents — optional architecture assistants
 
@@ -402,7 +402,7 @@ More examples: [BIAN Service Domain Catalogue](#bian-service-domain-catalogue).
 | Method | How |
 |---|---|
 | **Automatic — AID (recommended)** | name the BIAN operations in your business design (step 4); AID brings in the domains that own them, for you to confirm (step 5) |
-| **Manual** | `sdem bian custom --workspace workspaces/ledger --add "Financial Accounting" --person your.name` |
+| **Manual** | `sdem bian add --workspace workspaces/ledger "Financial Accounting" --person your.name` |
 
 The catalogue is a shared reference: each workspace holds only the domains its architecture needs ([choosing BIAN Service Domains](docs/sdem-new-design.md#how-sdem-chooses-the-bian-service-domains)).
 
@@ -593,6 +593,8 @@ The public SDEM repository holds synthetic data only. Real architecture belongs 
 | [Architecture](docs/sdem-architecture.md) | SDEM's data architecture, components and knowledge graph |
 | [Create a new design](docs/sdem-new-design.md) | Authoring and inference |
 | [Onboarding workflow](docs/sdem-onboarding-workflow.md) | Onboarding existing designs |
+| [Scenarios](docs/sdem-scenarios.md) | 15 jobs end to end — the commands in order and who decides |
+| [CLI reference](docs/reference/cli-reference.md) | Every command and subcommand with all its options — generated from the code |
 | [Ways of working](docs/sdem-ways-of-working.md) | CLI only, with an AI agent, and planned document input and output |
 | [AI agent setup](docs/sdem-agent-setup.md) | Configuring AI-agent support |
 | [Configuration](docs/sdem-configuration.md) | Configuring and customising SDEM |

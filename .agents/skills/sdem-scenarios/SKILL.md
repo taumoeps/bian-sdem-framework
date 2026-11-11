@@ -262,7 +262,8 @@ sdem document verify work/a3-narrative.md --workspace workspaces/ledger        #
 ```bash
 sdem bian search loan                                           # domains and operations for plain words
 sdem bian list --base                                           # all 258 service domains
-sdem bian custom --workspace workspaces/ledger --add "Financial Accounting" --person your.name
+sdem bian add --workspace workspaces/ledger "Financial Accounting" --person your.name
+sdem bian select --workspace workspaces/ledger --only "Financial Accounting" --person your.name   # exactly these; never strands an approved connection
 sdem bian impact --workspace workspaces/ledger                  # before an update: what the new layer drops or renames
 sdem bian inference list                                        # inferred asset types and patterns
 sdem bian inference show INF-001

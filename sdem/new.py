@@ -3,7 +3,7 @@
 It creates the four layer datasets — all empty — and an empty registry of connections, checks the workspace, and records who
 started it and which **BIAN catalogue** it uses (workspace.json): your organisation's shared BIAN layer (bian/a2-service-domain.json)
 when there is one, otherwise the base BIAN that ships with SDEM. The catalogue is read, never copied: `sdem aid` brings into the
-workspace's A2 layer only the service domains its design needs, and `sdem bian custom --add` adds one by hand (WS-01).
+workspace's A2 layer only the service domains its design needs, and `sdem bian add` adds one by hand (WS-01).
 `--bian FILE` starts instead with exactly that BIAN layer in A2.
 
   sdem new --workspace workspaces/payments --person jane.architect
@@ -145,7 +145,7 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, from_dir=
     stem = re.sub(r'[^A-Z0-9]+', '-', ws.name.upper()).strip('-') or 'WORKSPACE'
     if no_bian:
         a2, catalogue = None, None
-        source = 'none — business does not connect to applications until a BIAN layer is added (sdem bian custom --add)'
+        source = 'none — business does not connect to applications until a BIAN layer is added (sdem bian add)'
     elif bian_file:   # started with exactly this BIAN layer
         a2 = json.loads(shared.read_text(encoding='utf-8'))
         if a2.get('level') != 'A2': raise NewError(f'{shared}: not an A2 dataset (level {a2.get("level")!r})')

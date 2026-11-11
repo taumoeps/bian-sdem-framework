@@ -29,7 +29,7 @@ class AgentCoverageTests(unittest.TestCase):
         named = lambda k: f'sdem {k}' in self.text
         missing = []
         for k, c in self.cmds.items():
-            if k.split()[0] in ('model',) or named(k): continue
+            if k.split()[0] in ('model',) or named(k) or (c.get('description') or '').startswith('the old name'): continue   # an old name: agents use the new one
             if 'group' in c and all(named(g) for g in c['group']): continue
             missing.append(k)
         self.assertFalse(missing, 'commands no agent instruction or skill names — add them to docs/sdem-scenarios.md (then sdem model regenerate) '

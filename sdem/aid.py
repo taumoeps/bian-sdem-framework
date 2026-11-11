@@ -372,7 +372,7 @@ def project(have, catalogue=None, registry=None, pid=None, created_at=None, eith
                     # one side point to is a note, not a record
                     by = 'application' if side is rev else 'business'
                     prj.ends.append(f"not added — {d} ({_clean(prj.cat_by_id[d]['name'])}): only {by} names or descriptions point to it ({x['reasoning']}; evidence: {x.get('evidence_class', 'name only')}). "
-                                    f"If it belongs to this design, name its operations in a process's invokes, or add it: sdem bian custom --workspace <ws> --add \"{_clean(prj.cat_by_id[d]['name'])}\" --person <you>")
+                                    f"If it belongs to this design, name its operations in a process's invokes, or add it: sdem bian add --workspace <ws> \"{_clean(prj.cat_by_id[d]['name'])}\" --person <you>")
                     continue
                 if side is rev: kept_r.add(d)
                 prj.take_domain(d, 'M', f"supported from the {'business' if side is fwd else 'application'} side only: {x['reasoning']}", x['confidence'], x['inferred_from'], x.get('evidence_class'))

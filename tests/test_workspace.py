@@ -1,5 +1,5 @@
 """Starting and shaping a workspace (docs/design/sdem-workspace-spec.md, WS-*): `sdem new` starts it with a BIAN layer; `sdem load`
-needs it; `sdem bian custom` narrows one workspace's BIAN layer; `sdem bian update --root` keeps a workspace's own selection;
+needs it; `sdem bian add` and `sdem bian select` change one workspace's BIAN layer (`custom`: the old name); `sdem bian update --root` keeps a workspace's own selection;
 `sdem aid project --workspace` plans from it, kept apart in plans/."""
 import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
@@ -52,26 +52,28 @@ class WorkspaceTests(unittest.TestCase):
         code, out = sdem('load', ROOT / 'tests' / 'fixtures', '--workspace', 'workspaces/none', '--person', 'jane.architect', '--all', cwd=self.tmp)
         self.assertNotEqual(code, 0); self.assertIn('sdem new --workspace workspaces/none', out)
 
-    def test_custom_adds_or_narrows_one_workspace(self):  # WS-04
+    def test_add_or_select_one_workspaces_domains(self):  # WS-04
         for w in ('payments', 'lending'): self.assertEqual(sdem('new', '--workspace', f'workspaces/{w}', '--person', 'jane.architect', cwd=self.tmp)[0], 0)
-        code, out = sdem('bian', 'custom', '--workspace', 'workspaces/payments', '--add', 'Payment Order Initiation', 'Term Deposit', '--person', 'jane.architect', cwd=self.tmp)
+        code, out = sdem('bian', 'add', '--workspace', 'workspaces/payments', 'Payment Order Initiation', 'Term Deposit', '--person', 'jane.architect', cwd=self.tmp)
         self.assertEqual(code, 0, out); self.assertIn('added 2 service domain(s)', out)
         self.assertEqual(sorted(i['name'] for i in self.sds('workspaces/payments')), ['Payment Order Initiation', 'Term Deposit'])
         self.assertEqual(self.sds('workspaces/lending'), [])                                   # the other workspace is not affected
         rec = json.loads((self.tmp / 'workspaces' / 'payments' / 'workspace.json').read_text())['bian']
         self.assertEqual((rec['chosen'], rec['changed_by']), (['Payment Order Initiation', 'Term Deposit'], 'jane.architect'))
         self.assertTrue((self.tmp / 'workspaces' / 'payments' / 'bian-updates' / 'BU-001.json').exists())
-        code, out = sdem('bian', 'custom', '--workspace', 'workspaces/payments', '--only', 'Term Deposit', '--person', 'jane.architect', cwd=self.tmp)
+        code, out = sdem('bian', 'select', '--workspace', 'workspaces/payments', '--only', 'Term Deposit', '--person', 'jane.architect', cwd=self.tmp)
         self.assertEqual(code, 0, out); self.assertEqual([i['name'] for i in self.sds('workspaces/payments')], ['Term Deposit'])
         (self.tmp / 'bian').mkdir(); self.assertEqual(sdem('bian', 'import', '--base', '--all', '-o', 'bian/a2-service-domain.json', cwd=self.tmp)[0], 0)
         code, out = sdem('bian', 'update', '--root', 'workspaces', '--a2', 'bian/a2-service-domain.json', '--person', 'sdem.lead', cwd=self.tmp)
         self.assertEqual(code, 0, out); self.assertIn('workspaces/lending: holds no BIAN service domains', out)
         self.assertEqual([i['name'] for i in self.sds('workspaces/payments')], ['Term Deposit'])   # refreshes what it holds; brings in nothing else
 
-    def test_custom_never_strands_an_approved_connection(self):  # WS-04 (BU-03)
+    def test_select_never_strands_an_approved_connection(self):  # WS-04 (BU-03) — through the old name too
         shutil.copytree(EX, self.tmp / 'workspaces' / 'pay', ignore=shutil.ignore_patterns('graph', 'migrations'))
-        code, out = sdem('bian', 'custom', '--workspace', 'workspaces/pay', '--only', 'Term Deposit', '--person', 'jane.architect', cwd=self.tmp)
-        self.assertEqual(code, 1); self.assertIn('approved connection', out)
+        for cmd in ('select', 'custom'):
+            code, out = sdem('bian', cmd, '--workspace', 'workspaces/pay', '--only', 'Term Deposit', '--person', 'jane.architect', cwd=self.tmp)
+            self.assertEqual(code, 1, cmd); self.assertIn('approved connection', out)
+        self.assertIn('sdem bian custom is now sdem bian add', out)                            # the old name says what to use
 
     def test_aid_plans_from_a_workspace_kept_apart(self):  # WS-05
         self.assertEqual(sdem('new', '--workspace', 'ws', '--person', 'jane.architect', '--bian', EX / 'a2-service-domain.json', cwd=self.tmp)[0], 0)

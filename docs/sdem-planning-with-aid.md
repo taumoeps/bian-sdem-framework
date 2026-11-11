@@ -62,7 +62,7 @@ Until a connection is approved, `trace` and `impact` do not follow it.
 
 - **Confidence is honest and low.** Inferred records are a starting point (most are 0.4): BIAN's container pattern gives one application per domain, which your organisation may not follow. That is why every record waits for you.
 - **It works better when activities are named verb + thing** (*Initiate payment order*, not *Payments*), or name the BIAN operation they use (`invokes`).
-- **AID chooses from all of BIAN** and brings in only the best-matching domains; add one it missed with `sdem bian custom --add`.
+- **AID chooses from all of BIAN** and brings in only the best-matching domains; add one it missed with `sdem bian add`.
 - **It never guesses from fragments** of ids or names: a domain needs a name that covers what the domain is about, or matching APIs or data. No AI is used — written rules, the same result every time.
 - **It infers only from what you wrote or confirmed** — never from its own unconfirmed records — so running it again does not pile guesses on guesses.
 - **For existing designs too:** after `sdem load`, run `sdem aid` — the domains your designs point to come in, from the business side or the application side.

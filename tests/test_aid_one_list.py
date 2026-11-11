@@ -48,7 +48,7 @@ class AidOneListTests(unittest.TestCase):
         for l in notes:                                                                  # each one named, and not added
             dom = l.split('not added — ', 1)[1].split(' ', 1)[0]
             self.assertNotIn(dom, self.domains(), l)
-            self.assertIn('sdem bian custom', l)
+            self.assertIn('sdem bian add', l)
         self.assertFalse({d for d in self.domains() if d != 'SD-FINANCIAL-ACCOUNTING'} - {d for d in self.domains() if 'ACCOUNTING' in d}, self.domains())
 
     def test_link_is_the_one_list_and_says_what_it_covers(self):                        # AID-W09

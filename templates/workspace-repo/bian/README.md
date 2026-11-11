@@ -1,6 +1,6 @@
 # Your BIAN layer
 
-`a2-service-domain.json` here is **your BIAN layer** — the BIAN service domains your organisation uses, the **catalogue** every workspace chooses from — read, never copied: `sdem aid` brings into a workspace only the domains its design needs, and `sdem bian custom --workspace <workspace> --add … --person <you>` adds one by hand. Every connection between business and applications passes through it.
+`a2-service-domain.json` here is **your BIAN layer** — the BIAN service domains your organisation uses, the **catalogue** every workspace chooses from — read, never copied: `sdem aid` brings into a workspace only the domains its design needs, and `sdem bian add --workspace <workspace> … --person <you>` adds one by hand. Every connection between business and applications passes through it.
 
 **Make it** (once — whoever owns BIAN for you):
 

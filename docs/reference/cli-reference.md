@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-116 commands and subcommands.
+118 commands and subcommands.
 
 ## Every command takes
 
@@ -25,7 +25,8 @@
 | Command | What it does |
 |---|---|
 | [`sdem bian`](#cmd-bian) | the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files |
-| [`sdem bian custom`](#cmd-bian-custom) 👤 | narrow one workspace's BIAN layer to the service domains it uses |
+| [`sdem bian add`](#cmd-bian-add) 👤 | add BIAN service domains to one workspace, beside what it holds |
+| [`sdem bian custom`](#cmd-bian-custom) 👤 | the old name for `sdem bian add` (--add) and `sdem bian select` (--only, --from, --all) |
 | [`sdem bian impact`](#cmd-bian-impact) | before an update: what in each workspace points at BIAN records the new layer drops, renames or changes |
 | [`sdem bian import`](#cmd-bian-import) | write an A2 dataset for the service domains you choose |
 | [`sdem bian inference`](#cmd-bian-inference) | SDEM's record of inferred BIAN asset types and functional patterns: list, show, accept, challenge, change or reject an entry. Every change names a person and a  |
@@ -38,6 +39,7 @@
 | [`sdem bian list`](#cmd-bian-list) | the service domains in the base, a pack or a folder; writes nothing |
 | [`sdem bian pack`](#cmd-bian-pack) | pack a folder of BIAN-format files into one file |
 | [`sdem bian search`](#cmd-bian-search) | BIAN service domains and operations for plain words |
+| [`sdem bian select`](#cmd-bian-select) 👤 | set exactly which BIAN service domains one workspace holds |
 | [`sdem bian update`](#cmd-bian-update) 👤 | replace a workspace's BIAN layer with your shared one |
 | [`sdem designs`](#cmd-designs) | design records and gap records: the pages onboarded designs came from, and what did not fit an entity |
 | [`sdem load`](#cmd-load) 👤 | load reviewed candidate entities from sdem transform into a workspace |
@@ -424,18 +426,43 @@ sdem baseline release-1 --graph work/graph
 
 <a id="cmd-bian"></a>
 
-the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files — list, import the service domains you choose (checked), pack
+the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files — list, search, import the service domains you choose (checked), add one to a workspace or select exactly which it holds, pack
 
-Subcommands: [`sdem bian custom`](#cmd-bian-custom) · [`sdem bian impact`](#cmd-bian-impact) · [`sdem bian import`](#cmd-bian-import) · [`sdem bian inference`](#cmd-bian-inference) · [`sdem bian list`](#cmd-bian-list) · [`sdem bian pack`](#cmd-bian-pack) · [`sdem bian search`](#cmd-bian-search) · [`sdem bian update`](#cmd-bian-update)
+Subcommands: [`sdem bian add`](#cmd-bian-add) · [`sdem bian custom`](#cmd-bian-custom) · [`sdem bian impact`](#cmd-bian-impact) · [`sdem bian import`](#cmd-bian-import) · [`sdem bian inference`](#cmd-bian-inference) · [`sdem bian list`](#cmd-bian-list) · [`sdem bian pack`](#cmd-bian-pack) · [`sdem bian search`](#cmd-bian-search) · [`sdem bian select`](#cmd-bian-select) · [`sdem bian update`](#cmd-bian-update)
+
+### sdem bian add
+
+<a id="cmd-bian-add"></a>
+
+add BIAN service domains to one workspace, beside what it holds — checked; what AID inferred keeps its mark
+
+```
+sdem bian add <names> [--base BASE] [--folder FOLDER] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run]
+```
+
+*JSON: native · dry run: native · 👤 a person's own name*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `<names>` | yes | service domains by name, e.g. "Financial Accounting" — find them with sdem bian search |
+| `--base` |  | choose from the base BIAN that ships with SDEM (default) — or, with FILE, your own packed BIAN |
+| `--folder` |  | choose from a downloaded BIAN release instead |
+| `--workspace` | yes | — |
+| `--patterns` |  | — |
+| `--inferences` |  | — |
+| `--no-inferences` |  | — |
+| `--person` | yes | your name — a person |
+| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem bian custom
 
 <a id="cmd-bian-custom"></a>
 
-narrow one workspace's BIAN layer to the service domains it uses — checked; never strands an approved connection
+the old name for `sdem bian add` (--add) and `sdem bian select` (--only, --from, --all) — still works
 
 ```
-sdem bian custom [<folder>] [--base BASE] --workspace WORKSPACE [--add ADD …] [--only ONLY …] [--from FROM] [--all] [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run]
+sdem bian custom [<folder>] [--base BASE] [--add ADD …] [--only ONLY …] [--from FROM] [--all] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run]
 ```
 
 *JSON: native · dry run: native · 👤 a person's own name*
@@ -444,11 +471,11 @@ sdem bian custom [<folder>] [--base BASE] --workspace WORKSPACE [--add ADD …] 
 |---|---|---|
 | `<folder>` |  | a folder of BIAN-format files (e.g. a release downloaded from BIAN's GitHub) |
 | `--base` |  | the base BIAN that ships with SDEM — or, with FILE, your own packed BIAN |
+| `--add` |  | as sdem bian add |
+| `--only` |  | as sdem bian select --only |
+| `--from` |  | as sdem bian select --from |
+| `--all` |  | as sdem bian select --all |
 | `--workspace` | yes | — |
-| `--add` |  | add these service domains from the catalogue to what the workspace holds |
-| `--only` |  | service domains by name — exactly these |
-| `--from` |  | a file of names, one per line |
-| `--all` |  | back to every service domain |
 | `--patterns` |  | — |
 | `--inferences` |  | — |
 | `--no-inferences` |  | — |
@@ -690,6 +717,33 @@ sdem bian search <words> [--base BASE] [--folder FOLDER] [--top TOP] [--all-oper
 | `--folder` |  | a downloaded BIAN release instead |
 | `--top` |  | how many service domains (default 5) |
 | `--all-operations` |  | every operation of each domain found, not only those matching the words |
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+
+### sdem bian select
+
+<a id="cmd-bian-select"></a>
+
+set exactly which BIAN service domains one workspace holds — checked; never strands an approved connection
+
+```
+sdem bian select [<folder>] [--base BASE] [--only ONLY …] [--from FROM] [--all] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run]
+```
+
+*JSON: native · dry run: native · 👤 a person's own name*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `<folder>` |  | a folder of BIAN-format files (e.g. a release downloaded from BIAN's GitHub) |
+| `--base` |  | the base BIAN that ships with SDEM — or, with FILE, your own packed BIAN |
+| `--only` |  | service domains by name — exactly these |
+| `--from` |  | a file of names, one per line — exactly these |
+| `--all` |  | back to every service domain |
+| `--workspace` | yes | — |
+| `--patterns` |  | — |
+| `--inferences` |  | — |
+| `--no-inferences` |  | — |
+| `--person` | yes | your name — a person |
+| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem bian update

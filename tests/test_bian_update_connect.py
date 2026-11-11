@@ -19,7 +19,7 @@ class BianUpdateAndConnectTests(unittest.TestCase):
                   ('transform', 'run', 'export', '-o', 'history', '--ocr', 'off'),
                   ('new', '--workspace', 'workspaces/payments', '--person', ME),   # starts from the shared BIAN layer, bian/a2-service-domain.json
                   ('load', 'history', '--workspace', 'workspaces/payments', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER'),
-                  ('bian', 'custom', '--workspace', 'workspaces/payments', '--add', 'Payment Order Initiation', 'Payment Rail', '--person', ME),
+                  ('bian', 'add', '--workspace', 'workspaces/payments', 'Payment Order Initiation', 'Payment Rail', '--person', ME),
                   ('link', '--workspace', 'workspaces/payments', '--out', 'links')):
             r = run(*a); assert r.returncode == 0, (a, r.stdout + r.stderr)
 
