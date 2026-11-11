@@ -105,10 +105,13 @@ def evaluate(datasets, maps, mm, rules, exceptions=(), as_of=None):
                 ends = [e for e in ends if not lk.get('to') or (e in recs and mm.is_a(recs[e][1]['type'], lk['to']))]
                 if len(ends) < lk.get('min', 1): fails.append(f"{len(ends)} {lk['kind']} link(s){' to ' + lk['to'] if lk.get('to') else ''}, needs at least {lk.get('min', 1)}")
             if rule.get('compare'):
-                c = rule['compare']; mine = at.get(c['attribute'])
-                for other in links_out.get((rid, c['kind']), []):
-                    theirs = ((recs.get(other) or (None, {}))[1].get('attributes') or {}).get(c['attribute'])
-                    if mine is None or theirs is None: continue   # a missing value is a require rule's business
+                c = rule['compare']; k = c['attribute']
+                for other in links_out.get((rid, c['kind']), []):   # PR-11a: a value that is missing or a placeholder cannot be compared — unresolved, never compliant
+                    if other not in recs: unknown.append(f'{other} ({c["kind"]}) is not in the workspace'); continue
+                    oat = recs[other][1].get('attributes') or {}
+                    gone = [x for x, a in ((rid, at), (other, oat)) if _unknown(a, k)]
+                    if gone: unknown.append(f"{k} of {' and '.join(gone)} not known — cannot compare ({c['kind']})"); continue
+                    mine, theirs = at[k], oat[k]
                     if (c['must'] == 'differ') == (mine == theirs):
                         fails.append(f"{c['attribute']} is {mine!r} here and {theirs!r} on {other} ({c['kind']}) — must {c['must']}")
             if rule.get('across'):

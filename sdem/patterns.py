@@ -14,6 +14,8 @@ import argparse, base64, html, json, re, sys, urllib.parse, zipfile, zlib
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+MAX_BYTES = 50_000_000   # one diagram file, one part inside a .vsdx, or a compressed draw.io page once inflated — larger is not read (as sdem/office.py)
+
 e = html.escape
 OUTCOMES = ('compliant', 'non_compliant', 'unresolved', 'exception_approved', 'not_applicable')
 
@@ -272,7 +274,9 @@ def read_drawio(path):
     diagram = root.find('diagram') if root.tag == 'mxfile' else None
     model = root if root.tag == 'mxGraphModel' else (diagram.find('mxGraphModel') if diagram is not None else None)
     if model is None and diagram is not None and (diagram.text or '').strip():   # compressed: base64 + raw deflate + URL encoding
-        raw = zlib.decompress(base64.b64decode(diagram.text.strip()), -15).decode('utf-8')
+        inflate = zlib.decompressobj(-15); raw = inflate.decompress(base64.b64decode(diagram.text.strip()), MAX_BYTES)
+        if inflate.unconsumed_tail: raise ValueError(f'{path}: the compressed diagram inflates to more than {MAX_BYTES} bytes — larger than SDEM reads')
+        raw = raw.decode('utf-8')
         model = ET.fromstring(urllib.parse.unquote(raw))
     if model is None: raise ValueError(f'{path}: no draw.io diagram found')
     cells, props = [], {}
@@ -321,20 +325,25 @@ def read_drawio(path):
 VNS = {'v': 'http://schemas.microsoft.com/office/visio/2012/main', 'r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'}
 
 
+def _zread(z, name):
+    if z.getinfo(name).file_size > MAX_BYTES: raise ValueError(f'{name}: {z.getinfo(name).file_size} bytes inside the .vsdx — larger than SDEM reads')
+    return z.read(name)
+
+
 def read_vsdx(path, page=1):
     z = zipfile.ZipFile(path)
     names = set(z.namelist())
     masters = {}
     if 'visio/masters/masters.xml' in names:
-        for m in ET.fromstring(z.read('visio/masters/masters.xml')).findall('v:Master', VNS): masters[m.get('ID')] = m.get('NameU') or m.get('Name') or ''
-    pages = ET.fromstring(z.read('visio/pages/pages.xml'))
-    rels = ET.fromstring(z.read('visio/pages/_rels/pages.xml.rels'))
+        for m in ET.fromstring(_zread(z, 'visio/masters/masters.xml')).findall('v:Master', VNS): masters[m.get('ID')] = m.get('NameU') or m.get('Name') or ''
+    pages = ET.fromstring(_zread(z, 'visio/pages/pages.xml'))
+    rels = ET.fromstring(_zread(z, 'visio/pages/_rels/pages.xml.rels'))
     target = {r.get('Id'): r.get('Target') for r in rels}
     plist = pages.findall('v:Page', VNS)
     if page > len(plist): raise ValueError(f'{path}: has {len(plist)} page(s), not {page}')
     pg = plist[page - 1]
     rid = pg.find('v:Rel', VNS).get('{%s}id' % VNS['r'])
-    doc = ET.fromstring(z.read('visio/pages/' + target[rid]))
+    doc = ET.fromstring(_zread(z, 'visio/pages/' + target[rid]))
     ph = 11.0
     for c in pg.iter('{%s}Cell' % VNS['v']):
         if c.get('N') == 'PageHeight': ph = float(c.get('V'))
@@ -489,7 +498,14 @@ READERS = {'.drawio': read_drawio, '.xml': read_drawio, '.vsdx': read_vsdx, '.pu
 def read(path):
     r = READERS.get(Path(path).suffix.lower())
     if not r: raise ValueError(f"{path}: SDEM reads draw.io (.drawio), Visio (.vsdx), PlantUML (.puml) and Mermaid (.mmd, or a ```mermaid block in .md) — not {Path(path).suffix or 'this file'}")
-    return r(path)
+    size = Path(path).stat().st_size
+    if size > MAX_BYTES: raise ValueError(f'{path}: {size} bytes — larger than SDEM reads ({MAX_BYTES})')
+    try: return r(path)
+    except ValueError as err:
+        if str(path) in str(err): raise
+        raise ValueError(f'{path}: {err}') from None
+    except (zlib.error, zipfile.BadZipFile, ET.ParseError, KeyError, AttributeError, IndexError, TypeError) as err:   # a damaged or unexpected file: say so, never a traceback
+        raise ValueError(f'{path}: not a diagram SDEM can read — damaged, or not what its name says ({type(err).__name__}: {err})') from None
 
 
 # ====================================================================== from a diagram to a draft pattern (PR-27…PR-29)

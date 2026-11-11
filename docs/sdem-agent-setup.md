@@ -88,7 +88,7 @@ The layer agents never talk to each other. A layer agent changes its own layer t
 
 - `--json` on every command: one JSON object, starting with `"sdem": {"version", "command"}`; failures too — `{"error": {"code", "message", "hint"}}`.
 - `sdem commands --json`: every command and option, for the agent to discover.
-- `--dry-run` on every command that writes: what it would write, nothing written.
+- `--dry-run` on every command that writes: what it would write, nothing written — a preview of what SDEM would do, not a sandbox for the agent ([SECURITY.md](../SECURITY.md#human-decisions-and-ai-agents--the-trust-boundary)).
 - `--limit N` to keep answers short; consistent exit codes (0 OK, 1 refused by a check, 2 usage or input error, 3 internal error).
 - Edits made outside `sdem` are noticed (`sdem check` lists them).
 

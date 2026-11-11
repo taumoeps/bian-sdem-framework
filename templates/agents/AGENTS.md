@@ -7,7 +7,7 @@ This repository holds architecture kept with **SDEM, the Service Domain Enterpri
 - **Always add `--json`.** Every command then answers with one JSON object on stdout, starting with `"sdem": {"version", "command"}`; a list result is `{"count", "items"}`. Notes and warnings go to stderr.
 - **Find the job, then the command — never guess an option:** the skill `sdem-scenarios` gives every job's commands in order and who decides (index below). Before running a command, get its exact options from the installed SDEM: `sdem commands <command> --json` (one command and its subcommands, e.g. `sdem commands "events assess" --json` — a few hundred tokens; `sdem commands --json` alone lists all of them and is large) or `sdem <command> --help` (with a worked example).
 - **Failures are JSON too:** `{"error": {"code", "exit", "message", "hint", "details"}}`. Read `code` and follow `hint`. Codes: `usage`, `not_found`, `invalid_input`, `needs_person`, `exists`, `refused`, `input`, `internal`. Exit codes: 0 OK, 1 refused by a check, 2 usage or input error, 3 internal error.
-- **Preview before you change anything:** add `--dry-run` to any command that writes; the answer lists what it would write (`would_write`) and nothing is written.
+- **Preview before you change anything:** add `--dry-run` to any command that writes; the answer lists what it would write (`would_write`) and nothing is written. It previews what SDEM would do — it does not make anything else you run safe.
 - **Keep answers small:** `--limit N` cuts every list to N items (what was cut is under `truncated`); `sdem dashboard --json` gives a summary (`--full` for everything).
 
 ## The rules — SDEM enforces them, and so do you
