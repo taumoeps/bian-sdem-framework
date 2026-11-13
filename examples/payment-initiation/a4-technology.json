@@ -369,6 +369,11 @@
       "source": "DEP-PAYEXEC-PROD",
       "kind": "association",
       "target": "INF-CORE-LEDGER-HOST"
+    },
+    {
+      "source": "INF-APIGW-PAY",
+      "kind": "association",
+      "target": "DEP-PAYHUB-PROD"
     }
   ]
 }
