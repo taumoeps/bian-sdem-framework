@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "synthetic-bank-payments-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.11.0",
+  "metamodel_version": "0.12.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {
@@ -369,11 +369,6 @@
       "source": "DEP-PAYEXEC-PROD",
       "kind": "association",
       "target": "INF-CORE-LEDGER-HOST"
-    },
-    {
-      "source": "INF-APIGW-PAY",
-      "kind": "association",
-      "target": "DEP-PAYHUB-PROD"
     }
   ]
 }

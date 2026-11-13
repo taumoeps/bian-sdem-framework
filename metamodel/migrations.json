@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.11.0",
+  "metamodel_version": "0.12.0",
   "note": "How a workspace moves from one metamodel (metamodel) version to the next — `sdem migrate --workspace DIR`. Every change to the metamodel that affects data bumps metamodel_version in every metamodel file and adds one entry here, from the old version to the new: its steps are applied to the workspace's datasets and registry, then the workspace is checked; an entry with no steps only moves the version (an additive change — new optional attributes or types). Step kinds: rename_type {from, to}; rename_attribute {type (optional), from, to}; drop_attribute {type (optional), name}; set_attribute {type, name, value} (only where missing); rename_kind {from, to} (a within-architecture link kind); rename_relationship {from, to} (a link type between architectures, in the registry). Policy: docs/sdem-metamodel-versioning.md.",
   "migrations": [
     {
@@ -78,6 +78,14 @@
       "date": "2026-11-14",
       "approved_by": "the SDEM owner",
       "note": "Hosting (the owner's decisions H1–H8, 2026-11-14 (hosting)): the hosting signals (metamodel/hosting-signals.json, HS-01…HS-09) and three attributes on A4 shapes — site (AT-A4-37), cloud_provider (AT-A4-38), region (AT-A4-39); a within-layer link may carry an `inferred` mark (H5) — sdem aid proposes zone placements as marked links for a person to confirm (AID-Z01…Z04); checks LC-19 (an inferred placement not yet decided) and LC-20 (a shape placed against strong evidence); the zone connections SDEM works out (ZC-01…ZC-04). Additive — no steps.",
+      "steps": []
+    },
+    {
+      "from": "0.11.0",
+      "to": "0.12.0",
+      "date": "2026-11-14",
+      "approved_by": "the SDEM owner",
+      "note": "Edge exposure (the owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md)): a connection between layers, EXPOSED_THROUGH — an A3 application interface reached from the internet through an A4 edge platform (node, device or system software), approved with network_design evidence; `internet_facing` on A3 interfaces (AT-A3-39); LC-22 (an internet-facing interface exposed through nothing). sdem aid proposes EXPOSED_THROUGH (AID-X01) and, at A4, a connection for every shape linked to nothing (AID-C01…C05), marked inferred for a person to decide. Additive — no steps.",
       "steps": []
     }
   ]

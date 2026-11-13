@@ -419,6 +419,20 @@
           },
           "x-sdem-reasoning": "Answers: Which protocols do our interfaces use? AsyncAPI names protocols this way, covering both request and event interfaces; checked 2026-10-24.",
           "x-sdem-confidence": "high"
+        },
+        "internet_facing": {
+          "type": "boolean",
+          "description": "whether it is reached from the internet — then it is EXPOSED_THROUGH an edge platform in a DMZ (LC-22)",
+          "x-sdem-id": "AT-A3-39",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "SDEM-defined (no open standard)",
+            "locator": "docs/design/sdem-edge-exposure-design.md (X2)",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "Answers: Which APIs are reached from the internet, and through what? The same word as on A4 shapes (AT-A4-36).",
+          "x-sdem-confidence": "low"
         }
       },
       "additionalProperties": true,

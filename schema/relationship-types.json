@@ -258,6 +258,66 @@
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
       "reasoning": "A4.Deployment is SDEM's record of ArchiMate's deployment pattern — an Artifact that realises the Application Component, assigned to the Node or System Software it runs on — made a first-class record so it can carry component, environment and platform and be traced. The pattern is ArchiMate's; the record, and so this link type, are SDEM's own (B1 review, 2026-11-02)."
+    },
+    {
+      "mapping_type_id": "INTERFACE_EXPOSED_THROUGH_NODE",
+      "source_type": "A3.ApplicationInterface",
+      "relationship": "EXPOSED_THROUGH",
+      "target_type": "A4.Node",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application interface is reached from the internet through this edge platform (an API gateway, a reverse proxy, a web server) in a DMZ.",
+      "required_evidence": [
+        "network_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "infrastructure-architecture",
+      "source_reference": "ArchiMate 3.2 application–technology relationship: technology serves an application interface (the edge platform makes the interface reachable); SDEM names the pattern one connection, as it does for DEPLOYED_ON (B1). the owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md).",
+      "verification": "sdem_definition",
+      "confidence": "low",
+      "confidence_basis": "no standard basis; not validated",
+      "reasoning": "What an internet-facing edge component fronts is an API — an application interface — not a platform. The target must be internet facing and in a DMZ (LC-18); sdem aid proposes it when exactly one candidate exists (AID-X01), and a person approves it with network_design evidence."
+    },
+    {
+      "mapping_type_id": "INTERFACE_EXPOSED_THROUGH_DEVICE",
+      "source_type": "A3.ApplicationInterface",
+      "relationship": "EXPOSED_THROUGH",
+      "target_type": "A4.Device",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application interface is reached from the internet through this edge platform (an API gateway, a reverse proxy, a web server) in a DMZ.",
+      "required_evidence": [
+        "network_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "infrastructure-architecture",
+      "source_reference": "ArchiMate 3.2 application–technology relationship: technology serves an application interface (the edge platform makes the interface reachable); SDEM names the pattern one connection, as it does for DEPLOYED_ON (B1). the owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md).",
+      "verification": "sdem_definition",
+      "confidence": "low",
+      "confidence_basis": "no standard basis; not validated",
+      "reasoning": "What an internet-facing edge component fronts is an API — an application interface — not a platform. The target must be internet facing and in a DMZ (LC-18); sdem aid proposes it when exactly one candidate exists (AID-X01), and a person approves it with network_design evidence."
+    },
+    {
+      "mapping_type_id": "INTERFACE_EXPOSED_THROUGH_SYSTEM_SOFTWARE",
+      "source_type": "A3.ApplicationInterface",
+      "relationship": "EXPOSED_THROUGH",
+      "target_type": "A4.SystemSoftware",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application interface is reached from the internet through this edge platform (an API gateway, a reverse proxy, a web server) in a DMZ.",
+      "required_evidence": [
+        "network_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "infrastructure-architecture",
+      "source_reference": "ArchiMate 3.2 application–technology relationship: technology serves an application interface (the edge platform makes the interface reachable); SDEM names the pattern one connection, as it does for DEPLOYED_ON (B1). the owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md).",
+      "verification": "sdem_definition",
+      "confidence": "low",
+      "confidence_basis": "no standard basis; not validated",
+      "reasoning": "What an internet-facing edge component fronts is an API — an application interface — not a platform. The target must be internet facing and in a DMZ (LC-18); sdem aid proposes it when exactly one candidate exists (AID-X01), and a person approves it with network_design evidence."
     }
   ],
   "deprecated_relationships": []

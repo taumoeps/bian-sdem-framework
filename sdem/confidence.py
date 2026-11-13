@@ -129,7 +129,7 @@ def apply(write=True):
     if write: (MM_DIR / 'level-relationships.json').write_text(json.dumps(lr, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     reg = _j(ROOT / 'schema' / 'relationship-types.json')
     for x in reg['relationships']:
-        row = re.match(r'plan row (S\d+)', x.get('source_reference', '')).group(1)
+        m_ = re.match(r'plan row (S\d+)', x.get('source_reference', '')); row = m_.group(1) if m_ else None   # a type added after the plan has no row
         c, b = rel_type(x, val, row); setc(x, 'confidence', c, b, x['mapping_type_id'])
     if write: (ROOT / 'schema' / 'relationship-types.json').write_text(json.dumps(reg, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     for m in rules['mappings']:

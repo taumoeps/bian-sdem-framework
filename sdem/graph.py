@@ -147,6 +147,8 @@ class FederatedGraph:
             report[f'mappings #{n}'] = issues
         lone = self.unconnected()   # LC-21: an A4 shape linked to nothing — inside the layer (its zone aside) or across layers
         if lone: self.warnings.setdefault(f"level A4 ({self.levels['A4'].doc['model_id']})", []).extend(lone)
+        unexposed = self.unexposed()   # LC-22: an internet-facing interface exposed through nothing
+        if unexposed: self.warnings.setdefault(f"level A3 ({self.levels['A3'].doc['model_id']})", []).extend(unexposed)
         from . import profile as _p
         across =[r for r in _p.rules() if r.get('across')]
         if across:   # PR-16: the organisation's rules across layers, over APPROVED links only (sdem/comply.py evaluates; check enforces)
@@ -232,6 +234,16 @@ class FederatedGraph:
             else:
                 out.append(f"instance {x}: is connected to nothing — no link inside A4 besides its zone, and none to another layer (LC-21)")
         return out
+
+    def unexposed(self):
+        """LC-22 (warning; metamodel 0.12.0): an A3 interface marked internet facing with no EXPOSED_THROUGH connection (any status) —
+        something says it is reached from the internet, but nothing says through what."""
+        g = self.levels.get('A3')
+        if not g: return []
+        through = {(m.get('source') or {}).get('id') for d in self.mapping_docs for m in d.get('mappings', []) if m.get('relationship') == 'EXPOSED_THROUGH'}
+        return [f"instance {i['id']}: is internet facing but exposed through nothing — propose EXPOSED_THROUGH an edge platform in a DMZ (sdem aid, AID-X01) (LC-22)"
+                for i in g.doc.get('instances', []) if self.mm.is_a(i['type'], 'A3.ApplicationInterface')
+                and (i.get('attributes') or {}).get('internet_facing') is True and i['id'] not in through]
 
     def network_edges(self):
         """KG-Q-08 (metamodel 0.9.0): a platform depends on the communication network it is connected to (RA4-37) — its own, or that

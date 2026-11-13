@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "57023a67692ea7cd3fedeaa3ce572855aace5c86ce65e1153e91ea520e790bc2",
+      "export_sha256": "14d387d5655b7e55a13bb650fa866913444ad21ce392680069a860e006c331cd",
       "level": "A1",
       "model_id": "synthetic-bank-onboarding-a1",
       "model_version": "2026.10",
-      "metamodel_version": "0.11.0",
+      "metamodel_version": "0.12.0",
       "source_system": "SYNTHETIC-EA-TOOL"
     },
     "nodes": {

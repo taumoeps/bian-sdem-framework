@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "1a491d773de89e56d45f3b9d5729a632198e39b7e5b32e00e09eaa2f4a059c9e",
+      "export_sha256": "df4d29c246ae04bb08f290066b2c1729785a2b64b16d63cf353595aed1a9484b",
       "level": "A4",
       "model_id": "synthetic-bank-payments-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.11.0",
+      "metamodel_version": "0.12.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -550,16 +550,6 @@
         "id": "A4:DEP-PAYEXEC-PROD-association-INF-CORE-LEDGER-HOST",
         "source": "A4:DEP-PAYEXEC-PROD@1.0",
         "target": "A4:INF-CORE-LEDGER-HOST@1.0",
-        "relation": "association",
-        "metadata": {
-          "scope": "within-level",
-          "row": "association"
-        }
-      },
-      {
-        "id": "A4:INF-APIGW-PAY-association-DEP-PAYHUB-PROD",
-        "source": "A4:INF-APIGW-PAY@2.4",
-        "target": "A4:DEP-PAYHUB-PROD@1.0",
         "relation": "association",
         "metadata": {
           "scope": "within-level",

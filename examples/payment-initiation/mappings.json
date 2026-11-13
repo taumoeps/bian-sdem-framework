@@ -1,6 +1,6 @@
 {
   "registry_version": "0.4.0",
-  "metamodel_version": "0.11.0",
+  "metamodel_version": "0.12.0",
   "mappings": [
     {
       "mapping_id": "PAY-001",
@@ -425,6 +425,29 @@
       "baseline_id": "PAY-BASE-2026-Q4",
       "reviewer_id": "sam.infra",
       "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-114",
+      "source": {
+        "id": "IFC-PAY-API",
+        "type": "A3.ApplicationInterface",
+        "version": "2.0"
+      },
+      "relationship": "EXPOSED_THROUGH",
+      "target": {
+        "id": "INF-APIGW-PAY",
+        "type": "A4.SystemSoftware",
+        "version": "2.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "network_design:ND-PAY-2026#edge"
+      ],
+      "rationale": "Payments API v2 is reached from the internet through the managed API gateway in the security zone (DMZ) (made up).",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-14"
     }
   ]
 }

@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "synthetic-bank-onboarding-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.11.0",
+  "metamodel_version": "0.12.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {
@@ -53,6 +53,17 @@
         "component_id": "APP-001",
         "environment_id": "ENV-001",
         "platform_id": "INF-001"
+      }
+    },
+    {
+      "id": "INF-003",
+      "type": "A4.Node",
+      "version": "1.0",
+      "name": "Edge API gateway — channels",
+      "lifecycle_status": "active",
+      "description": "Internet-facing gateway in front of the channel APIs (made up).",
+      "attributes": {
+        "internet_facing": true
       }
     }
   ],

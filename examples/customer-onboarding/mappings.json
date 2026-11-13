@@ -264,7 +264,30 @@
       "baseline_id": "DEMO-BASE-002",
       "reviewer_id": "DEMO-ARCHITECT",
       "approved_at": "2026-03-01"
+    },
+    {
+      "mapping_id": "MAP-012",
+      "source": {
+        "id": "IFC-001",
+        "type": "A3.ApplicationInterface",
+        "version": "2.3"
+      },
+      "relationship": "EXPOSED_THROUGH",
+      "target": {
+        "id": "INF-003",
+        "type": "A4.Node",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "network_design:SYNTHETIC-ND-001"
+      ],
+      "rationale": "The onboarding API is reached from the internet through the channels edge gateway (made up).",
+      "baseline_id": "DEMO-BASE-002",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-11-14"
     }
   ],
-  "metamodel_version": "0.11.0"
+  "metamodel_version": "0.12.0"
 }

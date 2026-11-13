@@ -60,7 +60,7 @@ Artefact types (BOM model, wireframe, Semantic API) and abstract types are not a
 | `A2.BusinessObjectAttribute` | [`A2/BusinessObjectAttribute.schema.json`](../../schema/entities/A2/BusinessObjectAttribute.schema.json) | 8 | 13 | 0 | 3 | 0 | 11 / 3 / 2 |
 | `A3.ApplicationComponent` | [`A3/ApplicationComponent.schema.json`](../../schema/entities/A3/ApplicationComponent.schema.json) | 8 | 13 | 0 | 13 | 0 | 15 / 6 / 5 |
 | `A3.ApplicationService` | [`A3/ApplicationService.schema.json`](../../schema/entities/A3/ApplicationService.schema.json) | 8 | 13 | 0 | 1 | 0 | 9 / 3 / 2 |
-| `A3.ApplicationInterface` | [`A3/ApplicationInterface.schema.json`](../../schema/entities/A3/ApplicationInterface.schema.json) | 8 | 13 | 0 | 5 | 0 | 11 / 5 / 2 |
+| `A3.ApplicationInterface` | [`A3/ApplicationInterface.schema.json`](../../schema/entities/A3/ApplicationInterface.schema.json) | 8 | 13 | 0 | 6 | 0 | 11 / 5 / 3 |
 | `A3.ApplicationFunction` | [`A3/ApplicationFunction.schema.json`](../../schema/entities/A3/ApplicationFunction.schema.json) | 8 | 13 | 0 | 2 | 0 | 9 / 4 / 2 |
 | `A3.APIOperation` | [`A3/APIOperation.schema.json`](../../schema/entities/A3/APIOperation.schema.json) | 8 | 13 | 0 | 5 | 3 | 13 / 3 / 2 |
 | `A3.DataEntity` | [`A3/DataEntity.schema.json`](../../schema/entities/A3/DataEntity.schema.json) | 8 | 13 | 0 | 7 | 1 | 11 / 5 / 4 |
@@ -78,7 +78,7 @@ Artefact types (BOM model, wireframe, Semantic API) and abstract types are not a
 | `A4.Path` | [`A4/Path.schema.json`](../../schema/entities/A4/Path.schema.json) | 8 | 13 | 4 | 6 | 0 | 10 / 6 / 7 |
 | `A4.Artifact` | [`A4/Artifact.schema.json`](../../schema/entities/A4/Artifact.schema.json) | 8 | 13 | 4 | 4 | 0 | 11 / 4 / 6 |
 
-Attribute definitions across all schemas: **425 high, 144 medium, 158 low** (the 11 common attributes are counted in every schema).
+Attribute definitions across all schemas: **425 high, 144 medium, 159 low** (the 11 common attributes are counted in every schema).
 
 ## Using a schema
 

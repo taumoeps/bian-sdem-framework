@@ -99,6 +99,7 @@ class UnconnectedTests(unittest.TestCase):   # LC-21
         tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, tmp, True)
         for f, d in docs.items():
             if f == 'a4-technology.json': d['relationships'] = [r for r in d['relationships'] if r['source'] != 'INF-APIGW-PAY']
+            if f == 'mappings.json': d['mappings'] = [m for m in d['mappings'] if m['target']['id'] != 'INF-APIGW-PAY']   # what it exposes (EXPOSED_THROUGH) goes too
             (tmp / f).write_text(json.dumps(d), encoding='utf-8')
         code, out, err = sdem_in(tmp, 'check', '--workspace', tmp)
         self.assertIn('instance INF-APIGW-PAY: is internet facing but fronts nothing — link it to what it exposes (LC-21)', out + err)

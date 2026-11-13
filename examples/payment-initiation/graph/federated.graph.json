@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "metamodel_version": "0.11.0",
+      "metamodel_version": "0.12.0",
       "levels": {
         "A1": "2026.10",
         "A2": "2026.10",
@@ -16,9 +16,9 @@
       "registries": [
         {
           "file": "mappings.json",
-          "sha256": "0533f95da19cf165e96e1960b842262d12231c6fbbfe0e73bca20f915a422d46",
+          "sha256": "0456822e2c3ad65ba3705d849d1636971592d820f0dca05869b328a1ba14462c",
           "registry_version": "0.4.0",
-          "metamodel_version": "0.11.0"
+          "metamodel_version": "0.12.0"
         }
       ],
       "statuses": [
@@ -308,6 +308,28 @@
           "type": "A4.SystemSoftware",
           "id": "INF-K8S-PAY-UAT",
           "version": "1.29",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A3:IFC-PAY-API@2.0": {
+        "label": "Payments API v2",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-PAY-API",
+          "version": "2.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A4:INF-APIGW-PAY@2.4": {
+        "label": "Managed API gateway — payments",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.SystemSoftware",
+          "id": "INF-APIGW-PAY",
+          "version": "2.4",
           "stub": true,
           "graph": "a4-technology.graph.json"
         }
@@ -844,6 +866,35 @@
           "baseline_id": "PAY-BASE-2026-Q4",
           "reviewer_id": "sam.infra",
           "approved_at": "2026-10-22"
+        }
+      },
+      {
+        "id": "PAY-114",
+        "source": "A3:IFC-PAY-API@2.0",
+        "target": "A4:INF-APIGW-PAY@2.4",
+        "relation": "EXPOSED_THROUGH",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "IFC-PAY-API",
+            "type": "A3.ApplicationInterface",
+            "version": "2.0"
+          },
+          "target_ref": {
+            "id": "INF-APIGW-PAY",
+            "type": "A4.SystemSoftware",
+            "version": "2.4"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "network_design:ND-PAY-2026#edge"
+          ],
+          "rationale": "Payments API v2 is reached from the internet through the managed API gateway in the security zone (DMZ) (made up).",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-14"
         }
       }
     ]

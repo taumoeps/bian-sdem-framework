@@ -2,7 +2,7 @@
   "note": "The core of SDEM's metamodel at its last freeze (docs/design/sdem-metamodel-stability.md). Written by `sdem model freeze` after an approved, versioned change; CI fails if the core changes without one.",
   "frozen_by": "the SDEM owner",
   "frozen_at": "2026-11-14",
-  "metamodel_version": "0.11.0",
+  "metamodel_version": "0.12.0",
   "entity_types": {
     "A1.BusinessCapability": "active",
     "A1.ValueStream": "active",
@@ -61,7 +61,10 @@
     "COMPONENT_DEPLOYED_ON_NODE": "active",
     "COMPONENT_DEPLOYED_ON_DEVICE": "active",
     "COMPONENT_DEPLOYED_ON_SYSTEM_SOFTWARE": "active",
-    "COMPONENT_DEPLOYED_AS_DEPLOYMENT": "active"
+    "COMPONENT_DEPLOYED_AS_DEPLOYMENT": "active",
+    "INTERFACE_EXPOSED_THROUGH_NODE": "active",
+    "INTERFACE_EXPOSED_THROUGH_DEVICE": "active",
+    "INTERFACE_EXPOSED_THROUGH_SYSTEM_SOFTWARE": "active"
   },
   "within_layer_rules": {
     "RA2-01": "active",
@@ -319,6 +322,7 @@
     "AT-A3-36": "active",
     "AT-A3-37": "active",
     "AT-A3-38": "active",
+    "AT-A3-39": "active",
     "AT-A4-15": "active",
     "AT-A4-16": "active",
     "AT-A4-17": "active",

@@ -2,7 +2,7 @@
   "level": "A3",
   "model_id": "synthetic-bank-payments-a3",
   "model_version": "2026.10",
-  "metamodel_version": "0.11.0",
+  "metamodel_version": "0.12.0",
   "source_system": "SYNTHETIC-APM",
   "instances": [
     {
@@ -87,7 +87,8 @@
       "attributes": {
         "contract_format": "OpenAPI 3.1",
         "security_scheme": "oauth2",
-        "protocol": "https"
+        "protocol": "https",
+        "internet_facing": true
       }
     },
     {

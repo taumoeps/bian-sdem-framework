@@ -52,7 +52,7 @@ class CliTests(unittest.TestCase):
     def test_trace_a_whole_layer(self):   # TR-L01…L04
         G = str(ROOT / 'examples' / 'payment-initiation' / 'graph')
         code, out, _ = run('trace', 'A4', '--direction', 'upstream', '--graph', G)
-        self.assertEqual(code, 0); self.assertIn('A4 Technology — 19 record(s), traced up', out); self.assertIn('connected from above: 11 of 19', out)   # the network too, through its platforms (KG-Q-08)
+        self.assertEqual(code, 0); self.assertIn('A4 Technology — 19 record(s), traced up', out); self.assertIn('connected from above: 12 of 19', out)   # the network too, through its platforms (KG-Q-08); the gateway through EXPOSED_THROUGH
         self.assertIn("INF-PG-PAY-PROD 'Managed PostgreSQL — payments'", out)                       # a gap: supports nothing above
         self.assertIn('Payments Hub ← Payment Initiation (synthetic selection) ← Initiate Payment', out)
         code, out, _ = run('trace', 'a2', '--direction', 'up', '--only-gaps', '--graph', G)            # only kinds that can connect up count as gaps

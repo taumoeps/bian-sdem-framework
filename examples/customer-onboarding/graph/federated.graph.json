@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "metamodel_version": "0.11.0",
+      "metamodel_version": "0.12.0",
       "levels": {
         "A1": "2026.10",
         "A2": "2026.10",
@@ -16,9 +16,9 @@
       "registries": [
         {
           "file": "mappings.json",
-          "sha256": "cec2bd17429bd00a013f9d9f3d3e56ff198f102eccad0b01bc54353fe506739f",
+          "sha256": "16061954ed0d6e28b89931cd413e18bbb812f218a3e996e1e949cdd74cc9b0f8",
           "registry_version": "0.4.0",
-          "metamodel_version": "0.11.0"
+          "metamodel_version": "0.12.0"
         }
       ],
       "statuses": [
@@ -142,6 +142,28 @@
           "level": "A4",
           "type": "A4.Deployment",
           "id": "DEP-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A3:IFC-001@2.3": {
+        "label": "Onboarding API v2.3",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationInterface",
+          "id": "IFC-001",
+          "version": "2.3",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A4:INF-003@1.0": {
+        "label": "Edge API gateway — channels",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Node",
+          "id": "INF-003",
           "version": "1.0",
           "stub": true,
           "graph": "a4-technology.graph.json"
@@ -389,6 +411,35 @@
           "baseline_id": "DEMO-BASE-002",
           "reviewer_id": "DEMO-ARCHITECT",
           "approved_at": "2026-03-01"
+        }
+      },
+      {
+        "id": "MAP-012",
+        "source": "A3:IFC-001@2.3",
+        "target": "A4:INF-003@1.0",
+        "relation": "EXPOSED_THROUGH",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "IFC-001",
+            "type": "A3.ApplicationInterface",
+            "version": "2.3"
+          },
+          "target_ref": {
+            "id": "INF-003",
+            "type": "A4.Node",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "network_design:SYNTHETIC-ND-001"
+          ],
+          "rationale": "The onboarding API is reached from the internet through the channels edge gateway (made up).",
+          "baseline_id": "DEMO-BASE-002",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-11-14"
         }
       }
     ]

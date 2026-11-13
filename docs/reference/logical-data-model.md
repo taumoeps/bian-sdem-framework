@@ -907,6 +907,7 @@ erDiagram
         string contract_format
         string security_scheme
         string protocol
+        boolean internet_facing
     }
     A3_ApplicationFunction {
         string id PK
@@ -1062,6 +1063,7 @@ An access point to an application service
 | `contract_format` | text | no | the format of the interface's machine-readable contract | one of: OpenAPI 3.1, OpenAPI 3.0, AsyncAPI 3.0, AsyncAPI 2.6, WSDL, GraphQL, none |
 | `security_scheme` | text | no | how callers authenticate | one of: apiKey, http, mutualTLS, oauth2, openIdConnect |
 | `protocol` | text | no | the protocol the interface uses (e.g. https, amqp, kafka, mqtt) | — |
+| `internet_facing` | boolean | no | whether it is reached from the internet — then it is EXPOSED_THROUGH an edge platform in a DMZ (LC-22) | — |
 
 **Links**
 
@@ -1663,6 +1665,9 @@ The model above covers each architecture on its own. Links **between** architect
 | `DEPLOYED_ON` | `A3.ApplicationComponent` → `A4.Device` | many to many |
 | `DEPLOYED_ON` | `A3.ApplicationComponent` → `A4.SystemSoftware` | many to many |
 | `DEPLOYED_AS` | `A3.ApplicationComponent` → `A4.Deployment` | many to many |
+| `EXPOSED_THROUGH` | `A3.ApplicationInterface` → `A4.Node` | many to many |
+| `EXPOSED_THROUGH` | `A3.ApplicationInterface` → `A4.Device` | many to many |
+| `EXPOSED_THROUGH` | `A3.ApplicationInterface` → `A4.SystemSoftware` | many to many |
 
 ---
 
@@ -1694,21 +1699,22 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-19 | Inferred zone placements decided | a zone placement sdem aid proposed (a link marked inferred, AID-Z01) is confirmed or rejected by a person (the owner's decisions H2, H5, 2026-11-14; metamodel 0.11.0) | **enforced** |
 | LC-20 | Placement agrees with the evidence | a shape is not in a zone that a high-confidence hosting signal contradicts (a mainframe in a cloud zone — metamodel/hosting-signals.json; metamodel 0.11.0) | **enforced** |
 | LC-21 | Every A4 shape connected | an A4 shape (not a network, zone, path or environment) has a link inside A4 other than its zone placement, or a connection to another layer; an internet-facing one fronts nothing without one — checked over the whole workspace (the owner, 2026-11-14) | **enforced** |
+| LC-22 | Every internet-facing interface exposed | an A3 interface marked internet facing has an EXPOSED_THROUGH connection (any status) to an internet-facing edge platform — checked over the whole workspace (the owner, X1–X6, 2026-11-14) | **enforced** |
 
 ## Appendix B. How the example data measures up
 
-The 8 example workspaces (835 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 36 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record); 2 instance(s) still use a deprecated field.
+The 8 example workspaces (836 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 36 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record); 2 instance(s) still use a deprecated field.
 
 | Rule | Values checked | Failures |
 |---|---|---|
 | LC-04 | 1184 | 0 |
-| LC-05 | 2713 | 0 |
-| LC-06 | 1457 | 0 |
+| LC-05 | 2716 | 0 |
+| LC-06 | 1458 | 0 |
 | LC-07 | 169 | 0 |
 | LC-08 (warning) | 184 | 0 |
-| LC-09 | 779 | 0 |
-| LC-10 | 2325 | 0 |
-| LC-10m (warning) | 2325 | 36 |
+| LC-09 | 780 | 0 |
+| LC-10 | 2328 | 0 |
+| LC-10m (warning) | 2328 | 36 |
 | LC-13 deprecated field in use | — | 2 |
 | fields not in the model | — | 0 |
 
@@ -1731,6 +1737,6 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Layer | Content | Status |
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
-| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 22 of 22 rules enforced |
+| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 23 of 23 rules enforced |
 | Physical | one architecture dataset JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem model regenerate (physical)`); graph store schema not designed yet |
 

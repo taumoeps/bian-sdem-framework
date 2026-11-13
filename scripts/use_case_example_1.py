@@ -82,6 +82,7 @@ def run():
         R['tests'].append({'area': area, 'data': data, 'should': should, 'did': did, 'controls': ctl, 'evidence': ev, 'pass': bool(ok), 'kind': kind or mode['kind']})
     try:
         answer = _j(EST / 'mappings.json')
+        answer = {**answer, 'mappings': [m for m in answer['mappings'] if m['relationship'] != 'EXPOSED_THROUGH']}   # sdem aid proposes it (AID-X01), not the rules engine
         # ======== run 1 — good data
         ds = datasets(); errs, warns = check(ds); E['run1-01-check.json'] = {'errors': errs, 'warnings': warns}
         n_rec = sum(len(d['instances']) for d in ds.values()); n_lnk = sum(len(d.get('relationships', [])) for d in ds.values())

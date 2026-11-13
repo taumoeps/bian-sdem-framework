@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "218f8ccc81afbc18f9855115c84dcb286fd21a935b849eaa4f20650322830ebe",
+      "export_sha256": "808f3ca4a1471282356ccfe85d7a2a904a036821d7aec3fb58d87c96ebb667b1",
       "level": "A3",
       "model_id": "synthetic-bank-payments-a3",
       "model_version": "2026.10",
-      "metamodel_version": "0.11.0",
+      "metamodel_version": "0.12.0",
       "source_system": "SYNTHETIC-APM"
     },
     "nodes": {
@@ -113,7 +113,8 @@
           "attributes": {
             "contract_format": "OpenAPI 3.1",
             "security_scheme": "oauth2",
-            "protocol": "https"
+            "protocol": "https",
+            "internet_facing": true
           }
         }
       },

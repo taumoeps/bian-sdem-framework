@@ -78,6 +78,9 @@ From the relationship type catalogue (Architecture Metamodel).
 | `DEPLOYED_ON` (COMPONENT_DEPLOYED_ON_DEVICE) | A3.ApplicationComponent → A4.Device | enterprise_rule | deployment_design |
 | `DEPLOYED_ON` (COMPONENT_DEPLOYED_ON_SYSTEM_SOFTWARE) | A3.ApplicationComponent → A4.SystemSoftware | enterprise_rule | deployment_design |
 | `DEPLOYED_AS` (COMPONENT_DEPLOYED_AS_DEPLOYMENT) | A3.ApplicationComponent → A4.Deployment | enterprise_rule | deployment_design |
+| `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_NODE) | A3.ApplicationInterface → A4.Node | enterprise_rule | network_design |
+| `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_DEVICE) | A3.ApplicationInterface → A4.Device | enterprise_rule | network_design |
+| `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_SYSTEM_SOFTWARE) | A3.ApplicationInterface → A4.SystemSoftware | enterprise_rule | network_design |
 
 ## 6. Validation
 

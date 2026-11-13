@@ -1,6 +1,6 @@
 # What an edge component exposes — the `EXPOSED_THROUGH` connection
 
-> **Status: proposed — for the owner's decision (X1–X5, §6), 2026-11-14.** Nothing is built. It follows network zones and hosting (metamodel 0.10.0 and 0.11.0) and the check LC-21 (an A4 shape connected to nothing), added the same day after the owner found the payment example's API gateway linked to nothing. A metamodel change: it needs the owner's approval, a new `metamodel_version` and a migration.
+> **Status: approved — the owner approved X1–X5 as recommended and added X6 (2026-11-14); being built as metamodel 0.12.0.** It follows network zones and hosting (metamodel 0.10.0 and 0.11.0) and LC-21. A metamodel change: a new `metamodel_version` and a migration.
 
 ## 1. The problem
 
@@ -16,7 +16,7 @@ What a gateway really fronts is an **application interface** (A3) — Payments A
 
 | Id | Source | Relationship | Target | Evidence a person gives to approve it |
 |---|---|---|---|---|
-| `INTERFACE_EXPOSED_THROUGH_EDGE` | `A3.ApplicationInterface` | `EXPOSED_THROUGH` | `A4.Node`, `A4.Device` or `A4.SystemSoftware` that is `internet_facing` | `network_design` (or `api_gateway_configuration`) |
+| `INTERFACE_EXPOSED_THROUGH_NODE`, `…_DEVICE`, `…_SYSTEM_SOFTWARE` | `A3.ApplicationInterface` | `EXPOSED_THROUGH` | `A4.Node`, `A4.Device` or `A4.SystemSoftware` that is `internet_facing` | `network_design` (required; `api_gateway_configuration` may be given too) |
 
 - **Like every connection between layers**: proposed, then approved by a person with its evidence (CTL-21); recorded in `mappings.json`; followed by trace and impact. Retiring the gateway reaches the interface, its API operations, the application and on up to the business; replacing the API reaches the gateway.
 - **Basis:** ArchiMate 3.2 — an application interface is *served by* the technology that makes it reachable, and a technology interface (the gateway's endpoint) is *assigned to* it; SDEM names the pattern one connection, as it does for `DEPLOYED_ON` (B1). An SDEM link type, `enterprise_rule`, like the deployment types.
@@ -50,5 +50,21 @@ The hero and the workbench draw `EXPOSED_THROUGH` like any approved connection b
 | X3 | Evidence kinds: `network_design` and `api_gateway_configuration`? | **yes** |
 | X4 | AID proposes it only with exactly one candidate gateway; otherwise unresolved? | **yes** — never guessed |
 | X5 | The payment example: Payments API v2 marked internet facing, `EXPOSED_THROUGH` the Managed API gateway (approved, made up), the association removed? | **yes** |
+| X6 | *(the owner's addition)* At A4 — the physical deployment level — AID infers a connection for **every** shape that has none (LC-21) | **approved** — the rules are §7 |
 
-Version: metamodel **0.12.0** — a link type, an attribute, an AID rule, LC-22.
+Version: metamodel **0.12.0** — a link type, an attribute, AID rules, LC-22.
+
+## 7. A4: a connection for every shape (X6)
+
+A4 is the physical deployment: every shape there is connected to something. For each A4 shape LC-21 names (linked to nothing besides its zone, and to no other layer), `sdem aid` proposes connections — each a link marked **inferred** (H5) with the rule, what it read and its confidence; a person confirms or rejects them by the shape's id (`sdem aid confirm|reject <shape>`). Nothing is set silently; a shape no rule reaches stays **unresolved**, named, never guessed.
+
+| Rule | For a shape that is | It proposes | From | Confidence |
+|---|---|---|---|---|
+| AID-C01 | a deployment no platform runs (even one with a `DEPLOYED_AS` connection) | `assignment` from the platform its component is `DEPLOYED_ON`, where the component is `DEPLOYED_AS` this deployment | approved connections | high |
+| AID-C02 | a data platform (its name or product says a database) | `association` from each platform that runs a component using a data entity `stored_in` it — else from the platforms that run deployments in its zone | A3 data entities; zones | medium; low |
+| AID-C03 | a technology service | `serving` to each platform that runs deployments in its zone (or the zone it is in) | zones | low |
+| AID-C04 | an artifact | `assignment` from the platform that runs a deployment whose name shares a word with it | names | low |
+| AID-C05 | any other platform | `association` with the platforms that run deployments in its innermost zone | zones | low |
+
+
+AID-X01 proposes `EXPOSED_THROUGH` in the run's proposals file (a person approves it with `sdem approve`); AID-C01…C05 add links marked inferred to `a4-technology.json`. LC-19 counts both kinds of inferred link still to decide.

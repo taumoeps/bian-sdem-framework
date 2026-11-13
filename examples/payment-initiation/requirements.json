@@ -1,6 +1,6 @@
 {
   "format": "sdem-requirements/1",
-  "metamodel_version": "0.11.0",
+  "metamodel_version": "0.12.0",
   "note": "Made-up requirements and measurements for the synthetic payments example — not a real organisation's obligations, targets or figures.",
   "requirements": [
     {

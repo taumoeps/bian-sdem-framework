@@ -104,7 +104,7 @@ def fill(workspace, person, dry_run=False, now=None):
             r = _ids(dict(r)); key = (r['source'], r['kind'], r['target'])
             if key not in have_rels and r['source'] in present and r['target'] in present:
                 doc.setdefault('relationships', []).append(r); have_rels.add(key)
-    zone_unresolved, placements = [], 0
+    zone_unresolved, placements, connections, conn_unresolved, exposure_unresolved = [], 0, 0, [], []
     if after.get('A4', {}).get('instances'):   # AID-Z01…Z04: each A4 shape in no zone gets a proposed zone, marked inferred, for a person to decide (H2, H5)
         from .hosting import propose
         from .metamodel import Metamodel
@@ -117,6 +117,10 @@ def fill(workspace, person, dry_run=False, now=None):
         for r in links:
             if (r['source'], r['kind'], r['target']) not in have and r['source'] in present:
                 after['A4'].setdefault('relationships', []).append(r); placements += 1 if r.get('inferred') else 0
+        from .a4_connect import propose_connections   # AID-C01…C05 (X6): at A4 every shape is connected — proposed, marked inferred
+        crej = {r['id'] for r in _rejected(ws)['rejected'] if '|' in r['id']}
+        clinks, conn_unresolved = propose_connections(after.get('A3') or {}, after['A4'], registry.get('mappings', []), Metamodel.load(), run, person.strip(), now, crej)
+        after['A4'].setdefault('relationships', []).extend(clinks); placements += len(clinks); connections = len(clinks)
         if placements and 'A4' not in added: added['A4'] = []
     approved = {(m['source']['id'], m['relationship'], m['target']['id']) for m in registry.get('mappings', []) if m.get('status') == 'approved'}
     for f in (runs.glob('AID-*-proposals.json') if runs.exists() else []):   # already proposed by an earlier run, still to review: not again
@@ -134,11 +138,22 @@ def fill(workspace, person, dry_run=False, now=None):
                           'confidence': link.get('confidence'), 'evidence': [f"engine_rationale:{run} {pj.get('rule', '')}".strip()],
                           'rationale': re.sub(r'^PROJECTED DESIGN, not a mapping:\s*', 'Inferred by sdem aid: ', link.get('rationale', '')),
                           'baseline_id': run, 'created_by': 'sdem aid'})
+    if after.get('A3') and after.get('A4'):   # AID-X01: an internet-facing interface EXPOSED_THROUGH the one edge platform — for a person to approve
+        from .a4_connect import propose_exposure
+        from .metamodel import Metamodel as _MM
+        pairs, exposure_unresolved = propose_exposure(after['A3'], after['A4'], registry.get('mappings', []) + proposals, _MM.load())
+        for iface, plat in [(a, b) for a, b, _ in pairs]:
+            s_, t_ = by_id[iface], by_id[plat]
+            proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': {'id': iface, 'type': s_['type'], 'version': s_['version']}, 'relationship': 'EXPOSED_THROUGH',
+                              'target': {'id': plat, 'type': t_['type'], 'version': t_['version']}, 'status': 'proposed', 'confidence': 'medium',
+                              'evidence': [f'engine_rationale:{run} AID-X01'], 'rationale': f'Inferred by sdem aid (AID-X01): {iface} is internet facing and {plat} is the one internet-facing edge platform — approve with network_design evidence',
+                              'baseline_id': run, 'created_by': 'sdem aid'})
     errors = estate_errors({DATASETS[l]: d for l, d in after.items()}, registry)
     if errors: raise AidError('the workspace would not pass its checks with the inferred records — nothing written:\n  ' + '\n  '.join(errors[:10]))
     record = {'id': run, 'at': now, 'requested_by': person.strip(), 'added': added, 'proposals': f'{FOLDER}/{run}-proposals.json',
               'proposed_connections': len(proposals), 'projection_ends': pkg['projection'].get('projection_ends', []),
-              'zone_placements': placements, 'zones_unresolved': zone_unresolved,
+              'zone_placements': placements - connections, 'zones_unresolved': zone_unresolved, 'a4_connections': connections, 'a4_unresolved': conn_unresolved,
+              'exposure_unresolved': exposure_unresolved,
               'skipped_rejected': sorted(rejected & {_rid(i['id']) for l in pkg['layers'].values() for i in l['instances']})}
     if dry_run:   # AF: a dry run says what it would write (AGENTS.md) — nothing is written
         record['would_write'] = sorted([(ws / DATASETS[lvl]).as_posix() for lvl in added] + ([(runs / f'{run}-proposals.json').as_posix(), (runs / f'{run}.json').as_posix()] if (added or proposals) else []))
@@ -158,7 +173,10 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
     now = now or datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()   # UTC with its offset, like change sets
     inferred = {i['id']: (lvl, i) for lvl, d in docs.items() for i in d['instances'] if is_inferred(i, confirmed=False if all_ else None)}
     marked = lambda r: isinstance(r.get('inferred'), dict) and (not all_ or r['inferred'].get('status') != 'confirmed')
-    placed = {r['target']: r for r in (docs.get('A4') or {}).get('relationships', []) if marked(r)}   # AID-Z01: a shape's inferred zone placement (H5)
+    placed = {}   # a shape's inferred links (H5): its zone placement (AID-Z01) and its connections at A4 (AID-C01…C05)
+    for r in (docs.get('A4') or {}).get('relationships', []):
+        if marked(r):
+            for end in (r['source'], r['target']): placed.setdefault(end, []).append(r)
     chosen = sorted(set(inferred) | set(placed)) if all_ else list(ids)
     if not chosen: raise AidError('nothing to do — give the ids (see `sdem check` or the dashboard), or --all')
     missing = [i for i in chosen if i not in inferred and i not in placed]
@@ -166,13 +184,14 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
     changed = set()
     plc = [i for i in chosen if i in placed and i not in inferred]; chosen = [i for i in chosen if i not in plc]
     rej = _rejected(ws)
-    for i in plc:   # a zone placement: confirmed with the person's name, or removed and remembered so it is not proposed again
-        r = placed[i]
-        if action == 'confirm':
-            if r['inferred'].get('status') != 'confirmed': r['inferred'].update(status='confirmed', confirmed_by=person.strip(), confirmed_at=now); changed.add('A4')
-        else:
-            docs['A4']['relationships'] = [x for x in docs['A4']['relationships'] if x is not r]; changed.add('A4')
-            rej['rejected'].append({'id': f"{i}@{r['source']}", 'by': person.strip(), 'at': now, 'reason': reason.strip()})
+    for i in plc:   # its inferred links: confirmed with the person's name, or removed and remembered so they are not proposed again
+        for r in placed[i]:
+            if action == 'confirm':
+                if r['inferred'].get('status') != 'confirmed': r['inferred'].update(status='confirmed', confirmed_by=person.strip(), confirmed_at=now); changed.add('A4')
+            elif any(x is r for x in docs['A4']['relationships']):
+                docs['A4']['relationships'] = [x for x in docs['A4']['relationships'] if x is not r]; changed.add('A4')
+                key = f"{r['target']}@{r['source']}" if r['inferred'].get('rule', '').startswith('AID-Z') else f"{r['source']}|{r['kind']}|{r['target']}"
+                rej['rejected'].append({'id': key, 'by': person.strip(), 'at': now, 'reason': reason.strip()})
     every = {i['id']: (lvl, i) for lvl, d in docs.items() for i in d['instances'] if is_inferred(i)}
     def froms(rec): return {x.strip() for x in str(rec['attributes']['inferred'].get('from', '')).split(',') if x.strip()}
     if action == 'confirm' and chosen:
@@ -260,6 +279,11 @@ def main(argv):
     if rec.get('zone_placements'):
         print(f"zones: {rec['zone_placements']} shape(s) {'would be placed' if a.dry_run else 'placed'} in a proposed zone (AID-Z01) — from the hosting signals and the organisation's default; "
               f"decide each: sdem aid confirm|reject <shape> --workspace {a.estate} --person <you>")
+    if rec.get('a4_connections'):
+        print(f"A4: {rec['a4_connections']} connection(s) {'would be proposed' if a.dry_run else 'proposed'} for shapes linked to nothing (AID-C01…C05) — confirm or reject by the shape's id")
+    for u in rec.get('a4_unresolved', []): print(f"A4: {u['id']} not connected — {u['why']}")
+    for u in rec.get('exposure_unresolved', []):
+        print(f"exposure: {u['id']} is internet facing — {'no internet-facing edge platform to expose it through' if not u['candidates'] else 'several candidates: ' + ', '.join(u['candidates'])} (AID-X01): a person decides")
     for u in rec.get('zones_unresolved', []):
         print(f"zones: {u['id']} not placed — its evidence points both ways ({'; '.join(e['id'] + ' ' + e['read'] for e in u['signals'])}): a person places it (AID-Z01)")
     if total and not a.dry_run:

@@ -2,7 +2,7 @@
   "level": "A3",
   "model_id": "synthetic-bank-onboarding-a3",
   "model_version": "2026.10",
-  "metamodel_version": "0.11.0",
+  "metamodel_version": "0.12.0",
   "source_system": "SYNTHETIC-APM",
   "instances": [
     {
@@ -27,7 +27,10 @@
       "version": "2.3",
       "name": "Onboarding API v2.3",
       "lifecycle_status": "active",
-      "description": "REST interface."
+      "description": "REST interface.",
+      "attributes": {
+        "internet_facing": true
+      }
     },
     {
       "id": "API-001",

@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "2a4f6cf4de15f7ec25d0aeb7bfec6ac8aad91fc37ac7d31779741ac7c4918320",
+      "export_sha256": "4d8eb6236dd6106d2e9bbdac148d6c4c1c47d1d7c3ddcd1c2d05821876a646b1",
       "level": "A3",
       "model_id": "synthetic-bank-onboarding-a3",
       "model_version": "2026.10",
-      "metamodel_version": "0.11.0",
+      "metamodel_version": "0.12.0",
       "source_system": "SYNTHETIC-APM"
     },
     "nodes": {
@@ -41,7 +41,10 @@
           "id": "IFC-001",
           "version": "2.3",
           "lifecycle_status": "active",
-          "description": "REST interface."
+          "description": "REST interface.",
+          "attributes": {
+            "internet_facing": true
+          }
         }
       },
       "A3:API-001@2.3": {
