@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.9.0",
+  "metamodel_version": "0.10.0",
   "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Enforced by sdem-graph check (sdem/conformance.py, logical rules LC-04…LC-13) and published as per-entity JSON Schemas (sdem/physical.py); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
   "confidence_rule": "high   — defined by a public standard and checked (BIAN public material, OpenAPI, or a standard concept or\n           relationship confirmed by the open-source Archi oracle); or an SDEM data-contract field, which SDEM defines\n           authoritatively.\n  medium — built on a standard concept or relationship as SDEM chose to model it; or BIAN intent / target only;\n           or an SDEM definition, a login-gated source, or a cited-but-unverified source that was validated against\n           sealed answers; or institution data under an SDEM convention.\n  low    — no standard basis and not validated against sealed answers; or deprecated.",
   "placeholders": {
@@ -805,7 +805,7 @@
       "type": "string",
       "required": false,
       "description": "id of the A4 network it sits in",
-      "status": "active",
+      "status": "deprecated",
       "source": "SDEM",
       "reference": {
         "standard": "SDEM",
@@ -813,10 +813,10 @@
         "uri": "https://github.com/taumoeps/bian-sdem-framework"
       },
       "verification": "SDEM design; exercised by the use-case runs",
-      "reasoning": "No standard field; SDEM's convenience key for S37. A network's connects list is the alternative; the zone wins when they disagree (C3 finding).",
-      "confidence": "medium",
-      "read_by": "S37",
-      "confidence_basis": "SDEM field with no standard concept; validated against sealed answers",
+      "reasoning": "Deprecated in metamodel 0.10.0: a component's zone is the zone of the platform it is deployed on (network zones, Z3) — one source of truth. `sdem check` names each use (LC-13) for the person to place the platform in its zone; the migration never guesses.",
+      "confidence": "low",
+      "read_by": "S37 (until removed)",
+      "confidence_basis": "deprecated",
       "kind": "reference",
       "references": [
         "A4.CommunicationNetwork"
@@ -3938,6 +3938,82 @@
       ],
       "values_source": "ArchiMate 3.2 concept",
       "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+    },
+    {
+      "id": "AT-A4-34",
+      "entity": "A4.NetworkZone",
+      "name": "zone_level",
+      "type": "integer",
+      "required": true,
+      "description": "0 = on premises or cloud; 1 = internal or DMZ inside one; 2 = a private network inside a level-1 zone",
+      "reasoning": "Answers: Which deployment, which network, which sub-network? The level of the zone in the owner's three-level structure.",
+      "question": "Which zones are at each level?",
+      "kind": "value",
+      "minimum": 0,
+      "maximum": 2,
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "docs/design/sdem-network-zones-design.md (M2, M2b)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; the owner's decision, 2026-11-14 (network zones, Z1–Z6)",
+      "confidence": "low",
+      "read_by": "LC-16, LC-17, LC-18; trace and impact (KG-Q-08)",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A4-35",
+      "entity": "A4.NetworkZone",
+      "name": "zone_kind",
+      "type": "string",
+      "required": true,
+      "description": "on_premises or cloud (level 0); internal or dmz (level 1); private (level 2)",
+      "reasoning": "Answers: Is it on premises or in the cloud; internal or internet facing? Checked against zone_level by LC-17.",
+      "question": "Which shapes are in a DMZ?",
+      "kind": "enumeration",
+      "values": [
+        "on_premises",
+        "cloud",
+        "internal",
+        "dmz",
+        "private"
+      ],
+      "values_source": "SDEM",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "docs/design/sdem-network-zones-design.md (M2, M2b)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; the owner's decision, 2026-11-14 (network zones, Z1–Z6)",
+      "confidence": "low",
+      "read_by": "LC-16, LC-17, LC-18; trace and impact (KG-Q-08)",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A4-36",
+      "entity": "A4.InfrastructureComponent",
+      "name": "internet_facing",
+      "type": "boolean",
+      "required": false,
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "reasoning": "Answers: Which shapes are reached from the internet, and are they all in a DMZ?",
+      "question": "Which internet-facing shapes are not in a DMZ?",
+      "kind": "value",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined (no open standard)",
+        "locator": "docs/design/sdem-network-zones-design.md (M2, M2b)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; the owner's decision, 2026-11-14 (network zones, Z1–Z6)",
+      "confidence": "low",
+      "read_by": "LC-16, LC-17, LC-18; trace and impact (KG-Q-08)",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
     }
   ],
   "common_attributes": [

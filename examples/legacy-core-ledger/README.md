@@ -9,7 +9,7 @@ A twenty-year-old core banking ledger ("LedgerMaster"). Its A3 — five modules,
 | `a1-business.json` | 6 | draft capabilities only — two of them (Consumer Lending, Treasury) have nothing in this workspace |
 | `a2-service-domain.json` | 42 | four domains with asset types, patterns, control records, qualifiers, 14 operations with action terms, four BOM objects |
 | `a3-application.json` | 32 | the ledger, five modules, four interfaces, 14 SOAP operations (**every one is POST**) and 3 batch jobs (`method: BATCH`), five tables |
-| `a4-technology.json` | 7 | LPAR, DB2, MQ, scheduler, environment, deployment, network |
+| `a4-technology.json` | 8 | an on-premises zone and its internal zone (the core banking network) holding the LPAR, with DB2, MQ, the scheduler and the deployment on it; an environment |
 
 `h1-mappings-given.json` is **empty**: nothing is known. `h1-gold-mappings.json` (sealed) holds 28 approved connections: 14 `IMPLEMENTED_BY` (every SOAP operation; those whose action term does not fit POST are approved with a recorded deviation), 4 `REALIZED_BY` at **module** level, 4 `MAPPED_TO`, `DEPLOYED_ON` / `DEPLOYED_AS`, and 4 `SUPPORTED_BY` for the capabilities the architect recognised.
 

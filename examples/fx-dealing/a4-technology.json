@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "harbourline-fx-a4",
   "model_version": "2026.11",
-  "metamodel_version": "0.9.0",
+  "metamodel_version": "0.10.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {

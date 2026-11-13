@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.9.0",
+  "metamodel_version": "0.10.0",
   "level": "A4",
   "entities": [
     {
@@ -252,6 +252,34 @@
         ],
         "basis": "SDEM",
         "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A4.NetworkZone",
+      "level": "A4",
+      "abstract": false,
+      "extends": "A4.CommunicationNetwork",
+      "artefact": false,
+      "definition": "A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2)",
+      "definition_source": "sdem_extension",
+      "alignment_kind": "specialization",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Communication Network",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 10 (the concept it specialises)"
+      },
+      "evidence_status": "proposed_extension",
+      "reasoning": "SDEM extension: a Communication Network given a place in the deployment structure (the owner's decision, 2026-11-14 (network zones, Z1–Z6); docs/design/sdem-network-zones-design.md). Zones nest by network composition (RA4-27) and hold the shapes deployed in them (RA4-38); the connections between zones follow from the structure.",
+      "confidence": "medium",
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; a unique name within the architecture dataset"
       }
     },
     {

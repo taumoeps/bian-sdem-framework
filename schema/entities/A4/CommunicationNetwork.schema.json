@@ -328,6 +328,20 @@
           "x-sdem-reasoning": "A record's source_id says where the record came from; a design often gives one fact in another section, or a second document gives it. Recording the source per attribute lets a reviewer check each value against its evidence, in the same dataset — no second store — and with the same `kind:ref` convention as source_id and the registry's evidence.",
           "x-sdem-confidence": "low"
         },
+        "internet_facing": {
+          "type": "boolean",
+          "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+          "x-sdem-id": "AT-A4-36",
+          "x-sdem-group": "inherited",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "SDEM-defined (no open standard)",
+            "locator": "docs/design/sdem-network-zones-design.md (M2, M2b)",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "Answers: Which shapes are reached from the internet, and are they all in a DMZ?",
+          "x-sdem-confidence": "low"
+        },
         "connects": {
           "type": "array",
           "items": {

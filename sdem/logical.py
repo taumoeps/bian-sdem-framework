@@ -35,6 +35,9 @@ CONSTRAINTS = [
  ('LC-13', 'Deprecated attributes', 'deprecated attributes raise a warning', 'enforced', '`sdem check` (warning)'),
  ('LC-14', 'Attribute sources', 'a record\'s `sources` (CA-13) names only attributes the record has (or `name`, `description`), each with a `kind:ref` source such as `document:DESIGN.md#4.2` (owner\'s decision D4, 2026-11-09)', 'enforced', '`sdem check` (warning)'),
  ('LC-15', 'Platforms on a network', 'a platform (node, device or system software) that hosts a deployment, an artifact or system software, or that a deployment environment groups, is connected to at least one communication network (RA4-37) — its own, or that of the node or device it runs on (owner\'s decision, 2026-11-14; metamodel 0.9.0)', 'enforced', '`sdem check` (warning)'),
+ ('LC-16', 'Every shape in a zone', 'every A4 shape — not networks, zones, paths or environments — is in exactly one network zone of level 1 or 2 (RA4-38), directly or through what hosts it; a workspace with no zones is told to record them (the owner\'s decision, 2026-11-14; metamodel 0.10.0)', 'enforced', '`sdem check` (warning)'),
+ ('LC-17', 'Zone structure', 'a level-0 zone is on premises or cloud and inside no other; a level-1 zone is internal or DMZ and part of a level 0; a level-2 zone is private and part of a level 1; each level 0 has one internal zone (none yet is a warning) and at most one DMZ; at most one on-premises and one cloud level 0 (metamodel 0.10.0)', 'enforced', '`sdem check` (error; a missing internal zone a warning)'),
+ ('LC-18', 'Internet-facing shapes in a DMZ', 'a shape with `internet_facing: true` is in a DMZ (or a zone inside one), and a DMZ holds only internet-facing shapes (metamodel 0.10.0)', 'enforced', '`sdem check` (warning)'),
 ]
 
 

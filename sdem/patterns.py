@@ -169,6 +169,10 @@ def evaluate(datasets, maps, mm, structures, exceptions=(), as_of=None):
     for d in datasets.values():
         for r in d.get('relationships', []):
             inside.setdefault((r['source'], r['kind'], 'out'), []).append(r['target']); inside.setdefault((r['target'], r['kind'], 'in'), []).append(r['source'])
+            src, tgt = recs.get(r['source']), recs.get(r['target'])
+            if r['kind'] == 'aggregation' and src and tgt and mm.is_a(src[1]['type'], 'A4.NetworkZone') and not mm.is_a(tgt[1]['type'], 'A4.CommunicationNetwork'):
+                # metamodel 0.10.0 (Z1): a shape a network zone holds (RA4-38) is connected to that network — as RA4-37's association
+                inside.setdefault((r['target'], 'association', 'out'), []).append(r['source']); inside.setdefault((r['source'], 'association', 'in'), []).append(r['target'])
     for s, rel, t in maps:
         across.setdefault((s, rel, 'out'), []).append(t); across.setdefault((t, rel, 'in'), []).append(s)
     exc = {}

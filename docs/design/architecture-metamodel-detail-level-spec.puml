@@ -48,7 +48,7 @@ package "A3 Application  —  detail §5.3, within-level rows: 31 (§6.1, G-01 (
   rectangle "A3.Event\narchimate_aligned / related\nevidence: interpreted from official source" as a3_event #E8F5E9
   rectangle "A3.SolutionBuildingBlock\ntogaf_informed / conceptual\nevidence: interpreted from official source" as a3_solutionbuildingblock #FFE0B2
 }
-package "A4 Technology  [high-level: Infrastructure — G-04 (decided)]  —  detail §5.4, within-level rows: 37 (§6.1, G-01 (decided))" as PA4 {
+package "A4 Technology  [high-level: Infrastructure — G-04 (decided)]  —  detail §5.4, within-level rows: 38 (§6.1, G-01 (decided))" as PA4 {
   rectangle "A4.InfrastructureComponent\n«abstract»\nsdem_extension / none\nevidence: proposed extension" as a4_infrastructurecomponent #EEEEEE
   rectangle "A4.Deployment\nsdem_extension / related\nevidence: proposed extension" as a4_deployment #EEEEEE
   rectangle "A4.DeploymentEnvironment\nsdem_extension / related\nevidence: proposed extension" as a4_deploymentenvironment #EEEEEE
@@ -58,6 +58,7 @@ package "A4 Technology  [high-level: Infrastructure — G-04 (decided)]  —  de
   rectangle "A4.TechnologyService\narchimate_native / exact\nevidence: interpreted from official source" as a4_technologyservice #C8E6C9
   rectangle "A4.TechnologyInterface\narchimate_native / exact\nevidence: interpreted from official source" as a4_technologyinterface #C8E6C9
   rectangle "A4.CommunicationNetwork\narchimate_native / exact\nevidence: interpreted from official source" as a4_communicationnetwork #C8E6C9
+  rectangle "A4.NetworkZone\nsdem_extension / specialization\nevidence: proposed extension" as a4_networkzone #EEEEEE
   rectangle "A4.Path\narchimate_native / exact\nevidence: interpreted from official source" as a4_path #C8E6C9
   rectangle "A4.Artifact\narchimate_native / exact\nevidence: interpreted from official source" as a4_artifact #C8E6C9
 }
@@ -72,6 +73,7 @@ a4_systemsoftware -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 a4_technologyservice -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 a4_technologyinterface -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 a4_communicationnetwork -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
+a4_networkzone -[#9E9E9E,dashed]-|> a4_communicationnetwork
 a4_path -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 a4_artifact -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 
@@ -106,7 +108,7 @@ package "Not built yet — in the high-level spec" as PNB {
 
 package "Beyond the high-level spec — detail §15–19" as PADD {
   rectangle "Relationship Rules Model\n69 plan rows · fill steps · join keys\n§15 — G-11 (decided)" as rules #E1F5FE
-  rectangle "Data model\n9 core · 13 common · 136 specific · 3 derived attributes\n14 logical rules · per-entity JSON Schemas\n§16 — G-12 (decided)" as dm #E1F5FE
+  rectangle "Data model\n9 core · 13 common · 138 specific · 3 derived attributes\n14 logical rules · per-entity JSON Schemas\n§16 — G-12 (decided)" as dm #E1F5FE
   rectangle "Provenance and confidence\nsource · reasoning · confidence on every record\n§17 — G-13 (decided)" as prov #E1F5FE
   rectangle "Inference engine\nsteps 1–5 + design mode\nacceptance 8/8 cases\n§18 — G-14 (decided)" as eng #E1F5FE
   rectangle "Graph store\nJSON Graph Format v2 · load record · baselines\n§19 — G-15 (decided)" as gstore #E1F5FE

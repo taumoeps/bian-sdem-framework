@@ -18,7 +18,7 @@ Generated from the records by `python -m sdem.spec`; the test suite checks it is
 
 ## 2. Vocabulary — the entity catalogue
 
-44 entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: ArchiMate 21, BIAN 17, SDEM extension 5, TOGAF 1. **The entity ID is its type string** (e.g. `A3.ApplicationComponent`); every mapping, relationship row and architecture dataset instance refers to it by that string.
+45 entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: ArchiMate 22, BIAN 17, SDEM extension 5, TOGAF 1. **The entity ID is its type string** (e.g. `A3.ApplicationComponent`); every mapping, relationship row and architecture dataset instance refers to it by that string.
 
 | ID | Level | Kind | Extends | Reference concept |
 |---|---|---|---|---|
@@ -64,19 +64,20 @@ Generated from the records by `python -m sdem.spec`; the test suite checks it is
 | `A4.TechnologyService` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Technology Service |
 | `A4.TechnologyInterface` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Technology Interface |
 | `A4.CommunicationNetwork` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Communication Network |
+| `A4.NetworkZone` | A4 | concrete | A4.CommunicationNetwork | ArchiMate 3.2: Communication Network |
 | `A4.Path` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Path |
 | `A4.Artifact` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Artifact |
 
 ## 3. Within-level structure — what an architecture dataset may contain
 
-133 constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/reference/relationships-planning.md`): A1 Business Architecture 48, A2 Service Domain Architecture 17, A3 Application Architecture 31, A4 Technology Architecture 37. Verification: verified_against_archi 114, verified 16, unverified_togaf 2, sdem_reading 1. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.
+134 constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/reference/relationships-planning.md`): A1 Business Architecture 48, A2 Service Domain Architecture 17, A3 Application Architecture 31, A4 Technology Architecture 38. Verification: verified_against_archi 114, verified 16, unverified_togaf 2, sdem_reading 1, sdem_definition 1. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.
 
 | Level | Derived from | Rows | The structure in one line |
 |---|---|---|---|
 | A1 | ArchiMate 3.2 ch. 6–8 | 48 | capabilities serve value streams; processes (and activities, is-a process) realise capabilities, value streams, services and requirements, access objects, compose activities; actors assigned to roles assigned to processes |
 | A2 | BIAN Service Landscape metamodel (B02–B15) | 17 | area ⊃ domain ⊃ Service Domain; a domain has an asset type, a functional pattern, a control record and service groups of operations; operations act on the control record and may be qualified; scenarios sequence operations; objects type the control record |
 | A3 | ArchiMate 3.2 ch. 9; TOGAF (SBB) | 31 | a component composes interfaces (which compose API operations) and sub-components, is assigned to functions, realises services; interfaces are assigned to services; behaviour accesses data entities and triggers events; a solution building block aggregates components |
-| A4 | ArchiMate 3.2 ch. 10; SDEM deployment extensions | 37 | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |
+| A4 | ArchiMate 3.2 ch. 10; SDEM deployment extensions | 38 | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |
 
 ### 3.1 All within-level rows
 
@@ -217,6 +218,7 @@ Full description, source, reasoning, inference and confidence per row: `docs/ref
 | RA4-35 | — | A4.Deployment | aggregation | A4.Artifact | verified_against_archi |
 | RA4-36 | — | A4.Device | composition | A4.Device | verified_against_archi |
 | RA4-37 | — | A4.InfrastructureComponent | association | A4.CommunicationNetwork | verified_against_archi |
+| RA4-38 | — | A4.NetworkZone | aggregation | A4.InfrastructureComponent | sdem_definition |
 
 | ID | Entity | extends |
 |---|---|---|
@@ -232,6 +234,7 @@ Full description, source, reasoning, inference and confidence per row: `docs/ref
 | XA4-08 | A4.CommunicationNetwork | A4.InfrastructureComponent |
 | XA4-09 | A4.Path | A4.InfrastructureComponent |
 | XA4-10 | A4.Artifact | A4.InfrastructureComponent |
+| XA4-11 | A4.NetworkZone | A4.CommunicationNetwork |
 
 ## 4. Cross-level relationships
 
@@ -424,7 +427,7 @@ The executed runs are the acceptance test (DEC-E-01): the engine, given the curr
 | ACC-06 | M2 | digital-lending (greenfield, no A3/A4) | 12 design arrows | 12 of 12; boundary stated |
 | ACC-07 | C1, C2, C3 | trade-finance (85; one workspace, three level pairs) | 19 registry + 100 candidate | 19 of 19; 100 of 101 (one fixed by rule) |
 
-Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: 133 rows, 130 enforced (the rest are A2 artefact rows, documentation only), 113 verified against the Archi oracle, 0 contradicted.
+Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: 134 rows, 131 enforced (the rest are A2 artefact rows, documentation only), 113 verified against the Archi oracle, 0 contradicted.
 
 **Result (2026-10-25, v0.10).** `sdem model accept` runs the rule-based engine (`sdem/rules_engine.py`) on each scored case from a graph store built from the architecture datasets and the case's given registry only: **all 8 pass at precision and recall 1.00** (catalogue-typed proposals, and candidate reports for C1–C3); M0 and C3 score above the hand-executed runs, whose one error each came from rules since fixed. Every proposal validates. `tests/test_acceptance.py` enforces it. Caveat: OPEN-05.
 

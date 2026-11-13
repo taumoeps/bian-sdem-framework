@@ -64,6 +64,7 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.TechnologyService" as a4_technologyservice
   rectangle "A4.TechnologyInterface" as a4_technologyinterface
   rectangle "A4.CommunicationNetwork" as a4_communicationnetwork
+  rectangle "A4.NetworkZone" as a4_networkzone
   rectangle "A4.Path" as a4_path
   rectangle "A4.Artifact" as a4_artifact
 }

@@ -391,6 +391,7 @@
         "network_zone": {
           "type": "string",
           "description": "id of the A4 network it sits in",
+          "deprecated": true,
           "x-sdem-id": "AT-A3-07",
           "x-sdem-group": "specific",
           "x-sdem-kind": "reference",
@@ -402,8 +403,8 @@
             "locator": "SDEM join key for rule S37; zone-wins precedence from use case C3 finding 3 — docs/use-case-testing.md",
             "uri": "https://github.com/taumoeps/bian-sdem-framework"
           },
-          "x-sdem-reasoning": "No standard field; SDEM's convenience key for S37. A network's connects list is the alternative; the zone wins when they disagree (C3 finding).",
-          "x-sdem-confidence": "medium"
+          "x-sdem-reasoning": "Deprecated in metamodel 0.10.0: a component's zone is the zone of the platform it is deployed on (network zones, Z3) — one source of truth. `sdem check` names each use (LC-13) for the person to place the platform in its zone; the migration never guesses.",
+          "x-sdem-confidence": "low"
         },
         "vendor": {
           "type": "string",

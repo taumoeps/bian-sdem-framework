@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.9.0",
+  "metamodel_version": "0.10.0",
   "note": "How a workspace moves from one metamodel (metamodel) version to the next — `sdem migrate --workspace DIR`. Every change to the metamodel that affects data bumps metamodel_version in every metamodel file and adds one entry here, from the old version to the new: its steps are applied to the workspace's datasets and registry, then the workspace is checked; an entry with no steps only moves the version (an additive change — new optional attributes or types). Step kinds: rename_type {from, to}; rename_attribute {type (optional), from, to}; drop_attribute {type (optional), name}; set_attribute {type, name, value} (only where missing); rename_kind {from, to} (a within-architecture link kind); rename_relationship {from, to} (a link type between architectures, in the registry). Policy: docs/sdem-metamodel-versioning.md.",
   "migrations": [
     {
@@ -63,6 +63,14 @@
           "direction": "to_record"
         }
       ]
+    },
+    {
+      "from": "0.9.0",
+      "to": "0.10.0",
+      "date": "2026-11-14",
+      "approved_by": "the SDEM owner",
+      "note": "Network zones (the owner's decision, 2026-11-14 (network zones, Z1–Z6)): a new record type A4.NetworkZone — level 0 on premises or cloud, level 1 internal or DMZ, level 2 private — that holds the shapes deployed in it (RA4-38); `internet_facing` on A4 shapes; checks LC-16 (every shape in a zone), LC-17 (the structure holds), LC-18 (internet-facing shapes in a DMZ). A component's `network_zone` (AT-A3-07) is deprecated: its zone is its platform's. Additive — no steps: zones are placed by a person, never guessed.",
+      "steps": []
     }
   ]
 }

@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "synthetic-bank-ledger-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.9.0",
+  "metamodel_version": "0.10.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {
@@ -64,12 +64,28 @@
       }
     },
     {
+      "id": "ZONE-LED-ONPREM",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "On premises — core banking data centre",
+      "lifecycle_status": "active",
+      "description": "The core ledger's on-premises deployment (made up).",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "on_premises"
+      }
+    },
+    {
       "id": "NET-CORE",
-      "type": "A4.CommunicationNetwork",
+      "type": "A4.NetworkZone",
       "version": "1.0",
       "name": "Core banking network",
       "lifecycle_status": "active",
-      "description": "Private network for core systems."
+      "description": "Private network for core systems.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
     }
   ],
   "relationships": [
@@ -80,11 +96,6 @@
     },
     {
       "source": "INF-MF-LPAR-PROD",
-      "kind": "association",
-      "target": "NET-CORE"
-    },
-    {
-      "source": "INF-MF-LPAR-PROD",
       "kind": "assignment",
       "target": "INF-DB2-PROD"
     },
@@ -92,6 +103,26 @@
       "source": "INF-MF-LPAR-PROD",
       "kind": "assignment",
       "target": "INF-MQ-PROD"
+    },
+    {
+      "source": "ZONE-LED-ONPREM",
+      "kind": "composition",
+      "target": "NET-CORE"
+    },
+    {
+      "source": "NET-CORE",
+      "kind": "aggregation",
+      "target": "INF-MF-LPAR-PROD"
+    },
+    {
+      "source": "INF-MF-LPAR-PROD",
+      "kind": "assignment",
+      "target": "DEP-LM-PROD"
+    },
+    {
+      "source": "INF-MF-LPAR-PROD",
+      "kind": "realization",
+      "target": "TS-SCHED"
     }
   ]
 }

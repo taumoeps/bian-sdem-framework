@@ -990,7 +990,7 @@ A modular, deployable part of an application
 | `deployed_on` | list | no | ids of the A4 platforms that host it | `A4.InfrastructureComponent` *(join key)* |
 | `deployed_as` | list | no | ids of its A4 deployments | `A4.Deployment` *(join key)* |
 | `built_as` | list | no | ids of the A4 artifacts it is built as | `A4.Artifact` *(join key)* |
-| `network_zone` | text | no | id of the A4 network it sits in | `A4.CommunicationNetwork` *(join key)* |
+| `network_zone` *(deprecated)* | text | no | id of the A4 network it sits in | `A4.CommunicationNetwork` *(join key)* |
 | `vendor` | text | no | the supplier of the component ("in-house" when built by the bank) | — |
 | `accesses` *(deprecated)* | list | no | data entities it accesses | `A3.DataEntity` |
 | `release_version` | text | no | the product release that is in use (not the version of this model record) | — |
@@ -1209,12 +1209,13 @@ An organisation-defined reusable solution grouping
 
 ## 4. A4 Technology Architecture
 
-11 entities. The diagram shows the entities, their key fields and references, and the links between them.
+12 entities. The diagram shows the entities, their key fields and references, and the links between them.
 
 ```mermaid
 erDiagram
     A4_InfrastructureComponent {
         string id PK
+        boolean internet_facing
     }
     A4_Deployment {
         string id PK
@@ -1262,6 +1263,11 @@ erDiagram
         string id PK
         list connects FK
         list address_range
+    }
+    A4_NetworkZone {
+        string id PK
+        integer zone_level
+        string zone_kind
     }
     A4_Path {
         string id PK
@@ -1316,6 +1322,7 @@ erDiagram
     A4_Deployment }o--o{ A4_Artifact : "aggregation"
     A4_Device |o--o{ A4_Device : "composition"
     A4_InfrastructureComponent }o--o{ A4_CommunicationNetwork : "association"
+    A4_NetworkZone }o--o{ A4_InfrastructureComponent : "aggregation"
 ```
 
 ### `A4.InfrastructureComponent`
@@ -1324,13 +1331,18 @@ erDiagram
 
 Abstract supertype of every Technology Architecture entity; retained for compatibility with earlier relationship registries
 
-**Fields:** core fields only.
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `internet_facing` | boolean | no | whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18) | — |
 
 **Links**
 
 | Link | With | How many |
 |---|---|---|
 | association → | `CommunicationNetwork` | any number |
+| ← aggregation | `NetworkZone` | any number |
 
 ### `A4.Deployment`
 
@@ -1554,6 +1566,27 @@ Communication infrastructure
 | composition (with itself) | `CommunicationNetwork` | any number |
 | ← association | `InfrastructureComponent` | any number |
 
+### `A4.NetworkZone`
+
+*entity* · a kind of `A4.CommunicationNetwork` and inherits its fields
+
+A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2)
+
+**Identified by:** `name` — no standard key; a unique name within the architecture dataset
+
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `zone_level` | integer | yes | 0 = on premises or cloud; 1 = internal or DMZ inside one; 2 = a private network inside a level-1 zone | — |
+| `zone_kind` | text | yes | on_premises or cloud (level 0); internal or dmz (level 1); private (level 2) | one of: on_premises, cloud, internal, dmz, private |
+
+**Links**
+
+| Link | With | How many |
+|---|---|---|
+| aggregation → | `InfrastructureComponent` | any number |
+
 ### `A4.Path`
 
 *entity* · a kind of `A4.InfrastructureComponent` and inherits its fields
@@ -1649,22 +1682,25 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-13 | Deprecated attributes | deprecated attributes raise a warning | **enforced** |
 | LC-14 | Attribute sources | a record's `sources` (CA-13) names only attributes the record has (or `name`, `description`), each with a `kind:ref` source such as `document:DESIGN.md#4.2` (owner's decision D4, 2026-11-09) | **enforced** |
 | LC-15 | Platforms on a network | a platform (node, device or system software) that hosts a deployment, an artifact or system software, or that a deployment environment groups, is connected to at least one communication network (RA4-37) — its own, or that of the node or device it runs on (owner's decision, 2026-11-14; metamodel 0.9.0) | **enforced** |
+| LC-16 | Every shape in a zone | every A4 shape — not networks, zones, paths or environments — is in exactly one network zone of level 1 or 2 (RA4-38), directly or through what hosts it; a workspace with no zones is told to record them (the owner's decision, 2026-11-14; metamodel 0.10.0) | **enforced** |
+| LC-17 | Zone structure | a level-0 zone is on premises or cloud and inside no other; a level-1 zone is internal or DMZ and part of a level 0; a level-2 zone is private and part of a level 1; each level 0 has one internal zone (none yet is a warning) and at most one DMZ; at most one on-premises and one cloud level 0 (metamodel 0.10.0) | **enforced** |
+| LC-18 | Internet-facing shapes in a DMZ | a shape with `internet_facing: true` is in a DMZ (or a zone inside one), and a DMZ holds only internet-facing shapes (metamodel 0.10.0) | **enforced** |
 
 ## Appendix B. How the example data measures up
 
-The 8 example workspaces (827 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 36 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
+The 8 example workspaces (832 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 36 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record); 2 instance(s) still use a deprecated field.
 
 | Rule | Values checked | Failures |
 |---|---|---|
-| LC-04 | 1168 | 0 |
-| LC-05 | 2690 | 0 |
-| LC-06 | 1441 | 0 |
+| LC-04 | 1180 | 0 |
+| LC-05 | 2703 | 0 |
+| LC-06 | 1452 | 0 |
 | LC-07 | 169 | 0 |
 | LC-08 (warning) | 184 | 0 |
-| LC-09 | 771 | 0 |
-| LC-10 | 2309 | 0 |
-| LC-10m (warning) | 2309 | 36 |
-| LC-13 deprecated field in use | — | 0 |
+| LC-09 | 776 | 0 |
+| LC-10 | 2318 | 0 |
+| LC-10m (warning) | 2318 | 36 |
+| LC-13 deprecated field in use | — | 2 |
 | fields not in the model | — | 0 |
 
 ## Appendix C. Where the model's decisions come from
@@ -1673,11 +1709,11 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 
 | Decision | Count | Basis |
 |---|---|---|
-| Link counts — SDEM default | 93 | no standard sets a number; left open |
+| Link counts — SDEM default | 94 | no standard sets a number; left open |
 | Link counts — ArchiMate composition semantics | 25 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — BIAN | 14 | stated by BIAN |
 | Link counts — SDEM reading | 1 | SDEM's reading of a BIAN page |
-| Identifiers — SDEM | 34 | SDEM recommendation: a unique name |
+| Identifiers — SDEM | 35 | SDEM recommendation: a unique name |
 | Identifiers — BIAN | 5 | BIAN concept ids and operation naming |
 | Identifiers — OpenAPI | 1 | path and method unique per API |
 
@@ -1686,6 +1722,6 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Layer | Content | Status |
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
-| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 16 of 16 rules enforced |
+| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 19 of 19 rules enforced |
 | Physical | one architecture dataset JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem model regenerate (physical)`); graph store schema not designed yet |
 

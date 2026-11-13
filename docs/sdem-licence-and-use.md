@@ -40,10 +40,10 @@ What SDEM reads, writes and stores, and what optional tools around it may send: 
 
 | Source | Public? | How SDEM uses it |
 |---|---|---|
-| **BIAN** — Service Landscape, Practitioner Guide, release notes (bian.org) | free to read and download; copyright BIAN | cited; BIAN's names and structure; no text copied (15 of 44 kinds of thing) |
-| **ArchiMate 3.2** — The Open Group | **sign-in required** (an Open Group account); copyright The Open Group | concept names and relationship kinds, checked against **Archi**, an open-source ArchiMate tool (MIT licence); no text copied (21 of 44) |
-| **TOGAF 10** — The Open Group | **sign-in required**; copyright The Open Group | one concept informs one kind of thing; no text copied (1 of 44) |
-| **SDEM's own extensions** | — | defined by SDEM (7 of 44) |
+| **BIAN** — Service Landscape, Practitioner Guide, release notes (bian.org) | free to read and download; copyright BIAN | cited; BIAN's names and structure; no text copied (15 of 45 kinds of thing) |
+| **ArchiMate 3.2** — The Open Group | **sign-in required** (an Open Group account); copyright The Open Group | concept names and relationship kinds, checked against **Archi**, an open-source ArchiMate tool (MIT licence); no text copied (21 of 45) |
+| **TOGAF 10** — The Open Group | **sign-in required**; copyright The Open Group | one concept informs one kind of thing; no text copied (1 of 45) |
+| **SDEM's own extensions** | — | defined by SDEM (8 of 45) |
 
 Every kind of thing names its source, reasoning and confidence: [provenance](reference/reference-architecture-provenance.md). ArchiMate and TOGAF items were checked against the open Archi tool rather than the specification text, which needs a sign-in; this is stated with each of them.
 

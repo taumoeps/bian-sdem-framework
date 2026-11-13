@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "synthetic-bank-payments-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.9.0",
+  "metamodel_version": "0.10.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {
@@ -135,8 +135,44 @@
       }
     },
     {
+      "id": "ZONE-PAY-CLOUD",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Cloud — payments",
+      "lifecycle_status": "active",
+      "description": "The payments solution's cloud deployment (made up), in region A.",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "cloud"
+      }
+    },
+    {
+      "id": "ZONE-PAY-INTERNAL",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — payments",
+      "lifecycle_status": "active",
+      "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
+    },
+    {
+      "id": "ZONE-PAY-DMZ",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Security zone (DMZ) — payments",
+      "lifecycle_status": "active",
+      "description": "The internet-facing zone; firewalls form its boundary.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "dmz"
+      }
+    },
+    {
       "id": "NET-PAY-PRIVATE",
-      "type": "A4.CommunicationNetwork",
+      "type": "A4.NetworkZone",
       "version": "1.0",
       "name": "Payments private network",
       "lifecycle_status": "active",
@@ -144,7 +180,9 @@
       "attributes": {
         "address_range": [
           "10.20.0.0/16"
-        ]
+        ],
+        "zone_level": 2,
+        "zone_kind": "private"
       }
     },
     {
@@ -158,6 +196,17 @@
         "artifact_kind": "container image",
         "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
         "purl": "pkg:docker/example/payments-hub@7.1"
+      }
+    },
+    {
+      "id": "INF-APIGW-PAY",
+      "type": "A4.SystemSoftware",
+      "version": "2.4",
+      "name": "Managed API gateway — payments",
+      "lifecycle_status": "active",
+      "description": "The payments API's entry point from the internet (made up).",
+      "attributes": {
+        "internet_facing": true
       }
     }
   ],
@@ -176,11 +225,6 @@
       "source": "ENV-PAY-UAT",
       "kind": "aggregation",
       "target": "DEP-PAYHUB-UAT"
-    },
-    {
-      "source": "INF-K8S-PAY-PROD",
-      "kind": "association",
-      "target": "NET-PAY-PRIVATE"
     },
     {
       "source": "INF-K8S-PAY-PROD",
@@ -228,14 +272,49 @@
       "target": "INF-K8S-PAY-UAT"
     },
     {
-      "source": "INF-PG-PAY-PROD",
-      "kind": "association",
+      "source": "ZONE-PAY-CLOUD",
+      "kind": "composition",
+      "target": "ZONE-PAY-INTERNAL"
+    },
+    {
+      "source": "ZONE-PAY-CLOUD",
+      "kind": "composition",
+      "target": "ZONE-PAY-DMZ"
+    },
+    {
+      "source": "ZONE-PAY-INTERNAL",
+      "kind": "composition",
       "target": "NET-PAY-PRIVATE"
     },
     {
-      "source": "INF-K8S-PAY-UAT",
-      "kind": "association",
-      "target": "NET-PAY-PRIVATE"
+      "source": "NET-PAY-PRIVATE",
+      "kind": "aggregation",
+      "target": "INF-K8S-PAY-PROD"
+    },
+    {
+      "source": "NET-PAY-PRIVATE",
+      "kind": "aggregation",
+      "target": "INF-K8S-PAY-UAT"
+    },
+    {
+      "source": "NET-PAY-PRIVATE",
+      "kind": "aggregation",
+      "target": "INF-PG-PAY-PROD"
+    },
+    {
+      "source": "ZONE-PAY-INTERNAL",
+      "kind": "aggregation",
+      "target": "TS-MQ"
+    },
+    {
+      "source": "ZONE-PAY-INTERNAL",
+      "kind": "aggregation",
+      "target": "TS-SECRETS"
+    },
+    {
+      "source": "ZONE-PAY-DMZ",
+      "kind": "aggregation",
+      "target": "INF-APIGW-PAY"
     }
   ]
 }

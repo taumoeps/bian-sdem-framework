@@ -1,6 +1,6 @@
 # Network zones — where every technology record sits
 
-> **Status: approved — the owner approved Z1–Z6 as recommended (2026-11-14); being built as metamodel 0.10.0.** The zone structure is the owner's (2026-11-14, §2); this page proposes how SDEM records and checks it. It follows metamodel 0.9.0 (a platform's network is a link, RA4-37; LC-15; KG-Q-08). A metamodel change: it needs the owner's approval, a new `metamodel_version` and a migration.
+> **Status: approved and built — the owner approved Z1–Z6 as recommended (2026-11-14); metamodel 0.10.0, SDEM 0.18.0.** Built: `A4.NetworkZone` with `zone_level` and `zone_kind` (AT-A4-34, AT-A4-35), `internet_facing` (AT-A4-36), placement RA4-38, checks LC-16…LC-18 (`sdem/conformance.py`), trace and impact through zones (KG-Q-08), examples payment-initiation (cloud) and legacy-core-ledger (on premises); tests `tests/test_network_zones.py`. Not built: patterns checking zone records (PR-13a) — an organisation's own `network_zone` attribute still works as before. The zone structure is the owner's (2026-11-14, §2); this page proposes how SDEM records and checks it. It follows metamodel 0.9.0 (a platform's network is a link, RA4-37; LC-15; KG-Q-08). A metamodel change: it needs the owner's approval, a new `metamodel_version` and a migration.
 
 ## 1. The problem
 
@@ -49,7 +49,7 @@ SDEM's technology layer (A4) is ArchiMate's: nodes, devices, system software, ne
 | Id | Rule | Severity |
 |---|---|---|
 | LC-16 | every A4 shape is in exactly one zone of level 1 or 2 — directly, or through what hosts it | warning (Z4) |
-| LC-17 | the structure holds: a level-1 zone is in a level 0, a level-2 zone in a level 1; each level 0 has exactly one internal zone and at most one DMZ; at most one on-premises and one cloud level 0 | error |
+| LC-17 | the structure holds: a level-1 zone is in a level 0, a level-2 zone in a level 1; each level 0 has one internal zone and at most one DMZ; at most one on-premises and one cloud level 0 | error — a level 0 with no internal zone yet is a warning (incomplete, not contradictory) |
 | LC-18 | a shape with `internet_facing: true` (M2b) is in a DMZ; a DMZ holds only internet-facing shapes | warning |
 
 ## 5. Trace and impact (extends KG-Q-08)

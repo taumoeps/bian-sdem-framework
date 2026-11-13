@@ -2,7 +2,7 @@
   "note": "The core of SDEM's metamodel at its last freeze (docs/design/sdem-metamodel-stability.md). Written by `sdem model freeze` after an approved, versioned change; CI fails if the core changes without one.",
   "frozen_by": "the SDEM owner",
   "frozen_at": "2026-11-14",
-  "metamodel_version": "0.9.0",
+  "metamodel_version": "0.10.0",
   "entity_types": {
     "A1.BusinessCapability": "active",
     "A1.ValueStream": "active",
@@ -46,6 +46,7 @@
     "A4.TechnologyService": "active",
     "A4.TechnologyInterface": "active",
     "A4.CommunicationNetwork": "active",
+    "A4.NetworkZone": "active",
     "A4.Path": "active",
     "A4.Artifact": "active"
   },
@@ -195,7 +196,8 @@
     "RA4-34": "active",
     "RA4-35": "active",
     "RA4-36": "active",
-    "RA4-37": "active"
+    "RA4-37": "active",
+    "RA4-38": "active"
   },
   "attributes": {
     "AT-A1-01": "active",
@@ -224,7 +226,7 @@
     "AT-A3-04": "active",
     "AT-A3-05": "active",
     "AT-A3-06": "active",
-    "AT-A3-07": "active",
+    "AT-A3-07": "deprecated",
     "AT-A3-08": "active",
     "AT-A3-09": "deprecated",
     "AT-A3-10": "active",
@@ -336,6 +338,9 @@
     "AT-A4-31": "active",
     "AT-A4-32": "active",
     "AT-A4-33": "active",
+    "AT-A4-34": "active",
+    "AT-A4-35": "active",
+    "AT-A4-36": "active",
     "CA-01": "active",
     "CA-02": "active",
     "CA-03": "active",

@@ -215,18 +215,26 @@ class FederatedGraph:
         """KG-Q-08 (metamodel 0.9.0): a platform depends on the communication network it is connected to (RA4-37) — its own, or that
         of the node or device it runs on — as a hop `CONNECTED_TO`, so a trace down from what runs on the platform reaches the network,
         and the impact of a change to the network reaches the platforms on it and everything that depends on them."""
-        from .conformance import networks_of
+        from .conformance import networks_of, zones_of
         out = []
+        def hop(a, b, row):
+            ia, ib = self.instance(a) or {}, self.instance(b) or {}
+            out.append({'mapping_id': row, 'relationship': 'CONNECTED_TO', 'status': 'structural', 'baseline_id': None,
+                        'source': {'id': a, 'type': ia.get('type'), 'version': ia.get('version')}, 'target': {'id': b, 'type': ib.get('type'), 'version': ib.get('version')}})
+        for g in self.levels.values():   # network zones (0.10.0): a shape a zone holds depends on it, and a zone on the zone it is part of
+            if g.doc.get('level') != 'A4': continue
+            _, parent, direct = zones_of(g.doc, self.mm)
+            for x, zs in direct.items():
+                if not any(self.mm.is_a((self.instance(x) or {}).get('type', ''), t) for t in ('A4.Node', 'A4.Device', 'A4.SystemSoftware')):
+                    for z in zs: hop(x, z, 'RA4-38')   # a platform's zone is added below, as its network
+            for z, p in parent.items(): hop(z, p, 'RA4-27')
         for g in self.levels.values():
             if g.doc.get('level') != 'A4': continue
             for p, nets in networks_of(g.doc, self.mm).items():
                 ip = self.instance(p) or {}
                 if not any(self.mm.is_a(ip.get('type', ''), t) for t in ('A4.Node', 'A4.Device', 'A4.SystemSoftware')): continue   # a deployment reaches it through its platform
                 for x in nets:
-                    ix = self.instance(x) or {}
-                    out.append({'mapping_id': 'RA4-37', 'relationship': 'CONNECTED_TO', 'status': 'structural', 'baseline_id': None,
-                                'source': {'id': p, 'type': ip.get('type'), 'version': ip.get('version')},
-                                'target': {'id': x, 'type': ix.get('type'), 'version': ix.get('version')}})
+                    hop(p, x, 'RA4-38' if self.mm.is_a((self.instance(x) or {}).get('type', ''), 'A4.NetworkZone') else 'RA4-37')
         return out
 
     def trace(self, start, direction='down', statuses=('approved',), follow_composition=False):

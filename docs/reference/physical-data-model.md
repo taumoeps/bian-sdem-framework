@@ -30,7 +30,7 @@ The **physical data model** is the logical data model written as files a tool ca
 
 A schema sees one record. These rules need the whole architecture dataset or workspace and are enforced by `sdem check` ([logical rules](logical-data-model.md)): references resolve (LC-07 error, LC-08 warning), natural keys are unique (LC-09), cardinality (LC-10, LC-10m), within-level and cross-level relationships (LC-03, LC-11). Attributes not in the model are accepted by the schema and reported as warnings.
 
-## Schemas (40 entity types)
+## Schemas (41 entity types)
 
 Artefact types (BOM model, wireframe, Semantic API) and abstract types are not architecture dataset instance types and have no schema.
 
@@ -58,7 +58,7 @@ Artefact types (BOM model, wireframe, Semantic API) and abstract types are not a
 | `A2.BusinessScenario` | [`A2/BusinessScenario.schema.json`](../../schema/entities/A2/BusinessScenario.schema.json) | 8 | 13 | 0 | 2 | 1 | 10 / 3 / 2 |
 | `A2.BusinessObject` | [`A2/BusinessObject.schema.json`](../../schema/entities/A2/BusinessObject.schema.json) | 8 | 13 | 0 | 4 | 1 | 13 / 2 / 2 |
 | `A2.BusinessObjectAttribute` | [`A2/BusinessObjectAttribute.schema.json`](../../schema/entities/A2/BusinessObjectAttribute.schema.json) | 8 | 13 | 0 | 3 | 0 | 11 / 3 / 2 |
-| `A3.ApplicationComponent` | [`A3/ApplicationComponent.schema.json`](../../schema/entities/A3/ApplicationComponent.schema.json) | 8 | 13 | 0 | 13 | 0 | 15 / 7 / 4 |
+| `A3.ApplicationComponent` | [`A3/ApplicationComponent.schema.json`](../../schema/entities/A3/ApplicationComponent.schema.json) | 8 | 13 | 0 | 13 | 0 | 15 / 6 / 5 |
 | `A3.ApplicationService` | [`A3/ApplicationService.schema.json`](../../schema/entities/A3/ApplicationService.schema.json) | 8 | 13 | 0 | 1 | 0 | 9 / 3 / 2 |
 | `A3.ApplicationInterface` | [`A3/ApplicationInterface.schema.json`](../../schema/entities/A3/ApplicationInterface.schema.json) | 8 | 13 | 0 | 5 | 0 | 11 / 5 / 2 |
 | `A3.ApplicationFunction` | [`A3/ApplicationFunction.schema.json`](../../schema/entities/A3/ApplicationFunction.schema.json) | 8 | 13 | 0 | 2 | 0 | 9 / 4 / 2 |
@@ -66,18 +66,19 @@ Artefact types (BOM model, wireframe, Semantic API) and abstract types are not a
 | `A3.DataEntity` | [`A3/DataEntity.schema.json`](../../schema/entities/A3/DataEntity.schema.json) | 8 | 13 | 0 | 7 | 1 | 11 / 5 / 4 |
 | `A3.Event` | [`A3/Event.schema.json`](../../schema/entities/A3/Event.schema.json) | 8 | 13 | 0 | 4 | 0 | 12 / 3 / 2 |
 | `A3.SolutionBuildingBlock` | [`A3/SolutionBuildingBlock.schema.json`](../../schema/entities/A3/SolutionBuildingBlock.schema.json) | 8 | 13 | 0 | 1 | 0 | 9 / 3 / 2 |
-| `A4.Deployment` | [`A4/Deployment.schema.json`](../../schema/entities/A4/Deployment.schema.json) | 8 | 13 | 0 | 3 | 3 | 9 / 5 / 2 |
-| `A4.DeploymentEnvironment` | [`A4/DeploymentEnvironment.schema.json`](../../schema/entities/A4/DeploymentEnvironment.schema.json) | 8 | 13 | 0 | 3 | 0 | 10 / 3 / 3 |
-| `A4.Node` | [`A4/Node.schema.json`](../../schema/entities/A4/Node.schema.json) | 8 | 13 | 0 | 2 | 0 | 9 / 4 / 2 |
-| `A4.Device` | [`A4/Device.schema.json`](../../schema/entities/A4/Device.schema.json) | 8 | 13 | 0 | 3 | 0 | 10 / 3 / 3 |
-| `A4.SystemSoftware` | [`A4/SystemSoftware.schema.json`](../../schema/entities/A4/SystemSoftware.schema.json) | 8 | 13 | 0 | 5 | 0 | 12 / 3 / 3 |
-| `A4.TechnologyService` | [`A4/TechnologyService.schema.json`](../../schema/entities/A4/TechnologyService.schema.json) | 8 | 13 | 0 | 1 | 0 | 10 / 2 / 2 |
-| `A4.TechnologyInterface` | [`A4/TechnologyInterface.schema.json`](../../schema/entities/A4/TechnologyInterface.schema.json) | 8 | 13 | 0 | 4 | 0 | 11 / 4 / 2 |
-| `A4.CommunicationNetwork` | [`A4/CommunicationNetwork.schema.json`](../../schema/entities/A4/CommunicationNetwork.schema.json) | 8 | 13 | 0 | 2 | 0 | 10 / 2 / 3 |
-| `A4.Path` | [`A4/Path.schema.json`](../../schema/entities/A4/Path.schema.json) | 8 | 13 | 0 | 6 | 0 | 10 / 6 / 3 |
-| `A4.Artifact` | [`A4/Artifact.schema.json`](../../schema/entities/A4/Artifact.schema.json) | 8 | 13 | 0 | 4 | 0 | 11 / 4 / 2 |
+| `A4.Deployment` | [`A4/Deployment.schema.json`](../../schema/entities/A4/Deployment.schema.json) | 8 | 13 | 1 | 3 | 3 | 9 / 5 / 3 |
+| `A4.DeploymentEnvironment` | [`A4/DeploymentEnvironment.schema.json`](../../schema/entities/A4/DeploymentEnvironment.schema.json) | 8 | 13 | 1 | 3 | 0 | 10 / 3 / 4 |
+| `A4.Node` | [`A4/Node.schema.json`](../../schema/entities/A4/Node.schema.json) | 8 | 13 | 1 | 2 | 0 | 9 / 4 / 3 |
+| `A4.Device` | [`A4/Device.schema.json`](../../schema/entities/A4/Device.schema.json) | 8 | 13 | 1 | 3 | 0 | 10 / 3 / 4 |
+| `A4.SystemSoftware` | [`A4/SystemSoftware.schema.json`](../../schema/entities/A4/SystemSoftware.schema.json) | 8 | 13 | 1 | 5 | 0 | 12 / 3 / 4 |
+| `A4.TechnologyService` | [`A4/TechnologyService.schema.json`](../../schema/entities/A4/TechnologyService.schema.json) | 8 | 13 | 1 | 1 | 0 | 10 / 2 / 3 |
+| `A4.TechnologyInterface` | [`A4/TechnologyInterface.schema.json`](../../schema/entities/A4/TechnologyInterface.schema.json) | 8 | 13 | 1 | 4 | 0 | 11 / 4 / 3 |
+| `A4.CommunicationNetwork` | [`A4/CommunicationNetwork.schema.json`](../../schema/entities/A4/CommunicationNetwork.schema.json) | 8 | 13 | 1 | 2 | 0 | 10 / 2 / 4 |
+| `A4.NetworkZone` | [`A4/NetworkZone.schema.json`](../../schema/entities/A4/NetworkZone.schema.json) | 8 | 13 | 3 | 2 | 2 | 10 / 2 / 6 |
+| `A4.Path` | [`A4/Path.schema.json`](../../schema/entities/A4/Path.schema.json) | 8 | 13 | 1 | 6 | 0 | 10 / 6 / 4 |
+| `A4.Artifact` | [`A4/Artifact.schema.json`](../../schema/entities/A4/Artifact.schema.json) | 8 | 13 | 1 | 4 | 0 | 11 / 4 / 3 |
 
-Attribute definitions across all schemas: **415 high, 143 medium, 108 low** (the 11 common attributes are counted in every schema).
+Attribute definitions across all schemas: **425 high, 144 medium, 125 low** (the 11 common attributes are counted in every schema).
 
 ## Using a schema
 

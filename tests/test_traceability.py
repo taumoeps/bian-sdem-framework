@@ -338,6 +338,8 @@ class AttributeDesignTests(unittest.TestCase):
     def test_every_join_key_is_an_attribute_and_every_used_attribute_is_recorded(self):
         import glob
         from sdem.attributes import load
+        from sdem.metamodel import Metamodel
+        mm = Metamodel.load()
         L = load(); rec = {(a['entity'], a['name']) for a in L['attributes']}; common = {a['name'] for a in L.get('common_attributes', [])}
         conv = json.loads((ROOT / 'metamodel/export-conventions.json').read_text(encoding='utf-8'))['conventions']
         keys = {(e, k) for e, ks in conv.items() for k in ks} - {('A1.BusinessCapability', 'description')}  # a core field
@@ -346,7 +348,8 @@ class AttributeDesignTests(unittest.TestCase):
         for f in glob.glob(str(ROOT / 'examples/*/a[1-4]-*.json')):
             for i in json.loads(Path(f).read_text(encoding='utf-8'))['instances']:
                 used |= {(i['type'], k) for k in (i.get('attributes') or {})}
-        self.assertEqual({u for u in used - rec if u[1] not in common}, set())
+        inherited = lambda t, k: any((a, k) in rec for a in mm.ancestors(t))   # an attribute of a parent type (e.g. internet_facing, address_range)
+        self.assertEqual({u for u in used - rec if u[1] not in common and not inherited(*u)}, set())
 
 
 class SourceReferenceCompletenessTests(unittest.TestCase):

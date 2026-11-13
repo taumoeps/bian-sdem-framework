@@ -88,6 +88,7 @@ All `bian_reference`; all `pending_release_validation` until registered against 
 | `A4.TechnologyService` | ArchiMate Technology layer | Technology Service | `archimate_native` / exact | [AM] ch. 10 |
 | `A4.TechnologyInterface` | ArchiMate Technology layer | Technology Interface | `archimate_native` / exact | [AM] ch. 10 |
 | `A4.CommunicationNetwork` | ArchiMate Technology layer | Communication Network | `archimate_native` / exact | [AM] ch. 10 |
+| `A4.NetworkZone` | SDEM extension of ArchiMate Communication Network (network zones, metamodel 0.10.0) | — (zone in the deployment structure: on premises or cloud, internal or DMZ, private) | `sdmm_extension` / specialization | [AM] ch. 10 (parent) |
 | `A4.Path` | ArchiMate Technology layer | Path | `archimate_native` / exact | [AM] ch. 10 |
 | `A4.Artifact` | ArchiMate Technology layer | Artifact | `archimate_native` / exact | [AM] ch. 10 |
 

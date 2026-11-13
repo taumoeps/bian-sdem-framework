@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "56d374076e7f7f483b4e26084383eec4d1fdf8a41c21d229780f092f729d5b4e",
+      "export_sha256": "35cc46bc582affe8bdbb395081cc89750376dea07adf207a0ce24c572e3893a3",
       "level": "A4",
       "model_id": "reference-structure-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.9.0",
+      "metamodel_version": "0.10.0",
       "source_system": "SDEM-GENERATED-FROM-RECORD"
     },
     "nodes": {
@@ -198,6 +198,36 @@
           "version": "1.0",
           "lifecycle_status": "active",
           "description": "Synthetic instance of A4.CommunicationNetwork carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-NetworkZone-1@1.0": {
+        "label": "NetworkZone 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "RS-NetworkZone-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.NetworkZone carrying one relationship per constraint row of A4; no business meaning.",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "on_premises"
+          }
+        }
+      },
+      "A4:RS-NetworkZone-2@1.0": {
+        "label": "NetworkZone 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "RS-NetworkZone-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.NetworkZone carrying one relationship per constraint row of A4; no business meaning.",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "cloud"
+          }
         }
       },
       "A4:RS-Path-1@1.0": {
@@ -652,6 +682,17 @@
           "row": "RA4-37"
         },
         "label": "RA4-37"
+      },
+      {
+        "id": "A4:RS-NetworkZone-1-aggregation-RS-Artifact-1",
+        "source": "A4:RS-NetworkZone-1@1.0",
+        "target": "A4:RS-Artifact-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        },
+        "label": "RA4-38"
       }
     ]
   }

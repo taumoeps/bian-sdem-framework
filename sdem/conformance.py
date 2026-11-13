@@ -8,7 +8,9 @@ Warnings (the architecture dataset is usable but incomplete or dated):
   · LC-10m cardinality minimum not met (architecture datasets may be partial selections) · LC-13 deprecated attribute in use
   · attribute not defined in the model · LC-04p a placeholder or empty value in an optional attribute · LC-09n two names that differ
   only in case, spacing or punctuation (a possible duplicate) · LC-14 an attribute source that names no attribute of the record, or is not kind:ref
-  · LC-15 a platform that hosts something is on no communication network (RA4-37).
+  · LC-15 a platform that hosts something is on no communication network (RA4-37) · LC-16 a shape in no network zone, or in more than one
+  · LC-18 an internet-facing shape outside a DMZ, or a DMZ shape that is not internet facing · LC-17 a level-0 zone with no internal zone yet.
+  Error: LC-17 the zone structure contradicts itself (a kind wrong for its level, a zone in the wrong parent, two internal zones, two cloud zones).
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.
 """
 import json, re
@@ -229,11 +231,91 @@ def check_level(doc, mm, estate_index=None):
                 if cnt < int(lo):
                     n['LC-10m failed'] += 1; warnings.append(f"instance {iid}: {cnt} {c['kind']} links with {other}, {c['id']} expects at least {lo} (LC-10m)")
     on_network(doc, mm, local, byid, warnings, n)   # LC-15
+    zone_checks(doc, mm, local, byid, errors, warnings, n)   # LC-16…LC-18
     if to_confirm: warnings.append(f"{to_confirm} inferred record(s) to confirm — review them (marked 'inferred', with source, reasoning and confidence), then `sdem aid confirm` or `sdem aid reject` (CTL-16)")
     return errors, warnings, n
 
 
-PLATFORM, NETWORK = 'A4.InfrastructureComponent', 'A4.CommunicationNetwork'
+PLATFORM, NETWORK, ZONE = 'A4.InfrastructureComponent', 'A4.CommunicationNetwork', 'A4.NetworkZone'
+ZONE_KINDS = {0: ('on_premises', 'cloud'), 1: ('internal', 'dmz'), 2: ('private',)}
+UNPLACED = ('A4.CommunicationNetwork', 'A4.DeploymentEnvironment', 'A4.Path')   # networks and zones, environments (they group deployments: Z2) and paths are not placed
+
+
+def zones_of(doc, mm, local=None):
+    """Network zones (metamodel 0.10.0; docs/design/sdem-network-zones-design.md): {shape: [innermost zones it is in]} — directly (RA4-38: the
+    zone holds it) or through what hosts it (a deployment or artifact assigned to a platform, software on a node, a service a platform
+    realises, a part of a whole) — and {zone: parent zone} (RA4-27: the parent is composed of it)."""
+    local = local or {i['id']: i['type'] for i in doc.get('instances', [])}
+    direct, parent, hosts = {}, {}, {}
+    for r in doc.get('relationships', []):
+        a, b, k = r['source'], r['target'], r['kind']
+        if a not in local or b not in local: continue
+        if mm.is_a(local[a], ZONE):
+            if k == 'aggregation' and not mm.is_a(local[b], NETWORK): direct.setdefault(b, []).append(a)
+            elif k == 'composition' and mm.is_a(local[b], ZONE): parent[b] = a
+            continue
+        if mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK) or mm.is_a(local[a], 'A4.DeploymentEnvironment'): continue
+        if k in ('assignment', 'composition', 'aggregation', 'realization'): hosts.setdefault(b, []).append(a)   # b runs on, or is part of, a
+    def find(x, seen):
+        if direct.get(x): return direct[x]
+        for h in hosts.get(x, ()):
+            if h not in seen:
+                got = find(h, seen | {h})
+                if got: return got
+        return []
+    shapes = {x: find(x, {x}) for x, t in local.items() if not any(mm.is_a(t, u) for u in UNPLACED)}
+    return shapes, parent, direct
+
+
+def zone_checks(doc, mm, local, byid, errors, warnings, n):
+    """LC-16 every shape in one zone (warning) · LC-17 the zone structure holds (error) · LC-18 internet-facing shapes in a DMZ (warning)."""
+    if doc.get('level') != 'A4': return
+    zones = {x: (byid[x].get('attributes') or {}) for x, t in local.items() if mm.is_a(t, ZONE)}
+    shapes, parent, direct = zones_of(doc, mm, local)
+    if not zones:
+        if shapes: n['LC-16 checked'] += 1; n['LC-16 failed'] += 1; warnings.append(f"no network zones recorded — place each of the {len(shapes)} shape(s) in a zone: on premises or cloud, internal or DMZ (RA4-38, LC-16)")
+        return
+    lvl = lambda z: zones[z].get('zone_level')
+    for z, at in sorted(zones.items()):   # LC-17
+        n['LC-17 checked'] += 1; bad = []
+        if at.get('zone_level') in ZONE_KINDS and at.get('zone_kind') not in ZONE_KINDS[at['zone_level']]:
+            bad.append(f"a level-{at['zone_level']} zone is {' or '.join(ZONE_KINDS[at['zone_level']])}, not {at.get('zone_kind')!r}")
+        p = parent.get(z)
+        if at.get('zone_level') == 0 and p: bad.append(f'a level-0 zone is inside no other zone, but {p} is composed of it')
+        if at.get('zone_level') in (1, 2) and (not p or p not in zones or lvl(p) != at['zone_level'] - 1):
+            bad.append(f"a level-{at['zone_level']} zone is part of a level-{at['zone_level'] - 1} zone (composition, RA4-27){f' — {p} is level {lvl(p)}' if p in zones else ''}")
+        for b in bad: n['LC-17 failed'] += 1; errors.append(f"instance {z}: {b} (LC-17)")
+    tops = [z for z in zones if lvl(z) == 0]
+    for kind in ('on_premises', 'cloud'):
+        same = sorted(z for z in tops if zones[z].get('zone_kind') == kind)
+        if len(same) > 1: n['LC-17 failed'] += 1; errors.append(f"{len(same)} {kind} level-0 zones ({', '.join(same)}) — one per workspace (LC-17)")
+    for t in tops:
+        kids = [z for z in zones if parent.get(z) == t]
+        inner = [z for z in kids if zones[z].get('zone_kind') == 'internal']; dmz = [z for z in kids if zones[z].get('zone_kind') == 'dmz']
+        if len(inner) > 1: n['LC-17 failed'] += 1; errors.append(f"instance {t}: a level-0 zone has exactly one internal zone, not {len(inner)} (LC-17)")
+        if not inner: n['LC-17 failed'] += 1; warnings.append(f"instance {t}: a level-0 zone has no internal zone yet — every shape belongs at least to an internal or DMZ zone (LC-17)")
+        if len(dmz) > 1: n['LC-17 failed'] += 1; errors.append(f"instance {t}: a level-0 zone has at most one DMZ, not {len(dmz)} (LC-17)")
+    for x, zs in sorted(shapes.items()):   # LC-16
+        if (byid.get(x) or {}).get('lifecycle_status') == 'retired': continue
+        n['LC-16 checked'] += 1
+        inner = sorted(set(zs))
+        if not inner:
+            n['LC-16 failed'] += 1; warnings.append(f"instance {x}: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)")
+        elif len(inner) > 1:
+            n['LC-16 failed'] += 1; warnings.append(f"instance {x}: is in {len(inner)} zones ({', '.join(inner)}) — one innermost zone (LC-16)")
+        elif lvl(inner[0]) == 0:
+            n['LC-16 failed'] += 1; warnings.append(f"instance {x}: is in level-0 zone {inner[0]} — place it in its internal or DMZ zone, or a private zone inside one (LC-16)")
+    def in_dmz(z):
+        while z in zones:
+            if zones[z].get('zone_kind') == 'dmz': return True
+            z = parent.get(z)
+        return False
+    for x, zs in sorted(shapes.items()):   # LC-18
+        facing = ((byid.get(x) or {}).get('attributes') or {}).get('internet_facing') is True
+        if not zs: continue
+        n['LC-18 checked'] += 1
+        if facing and not in_dmz(zs[0]): n['LC-18 failed'] += 1; warnings.append(f"instance {x}: is internet facing but in {zs[0]}, not a DMZ (LC-18)")
+        if x in direct and not facing and in_dmz(zs[0]): n['LC-18 failed'] += 1; warnings.append(f"instance {x}: is in DMZ {zs[0]} but not internet facing — a DMZ holds only internet-facing shapes (LC-18)")
 
 
 def networks_of(doc, mm, local=None):
@@ -246,7 +328,10 @@ def networks_of(doc, mm, local=None):
         if a not in local or b not in local: continue
         if k == 'association':
             for p, x in ((a, b), (b, a)):
-                if mm.is_a(local[p], PLATFORM) and mm.is_a(local[x], NETWORK): own.setdefault(p, []).append(x)
+                if mm.is_a(local[p], PLATFORM) and mm.is_a(local[x], NETWORK) and not mm.is_a(local[p], NETWORK): own.setdefault(p, []).append(x)
+        elif k == 'aggregation' and mm.is_a(local[a], ZONE):   # RA4-38: the zone holds it — it is on that zone (0.10.0)
+            if not mm.is_a(local[b], NETWORK): own.setdefault(b, []).append(a)
+        elif mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK): continue   # network nesting (RA4-27) is not hosting
         elif k in ('assignment', 'composition', 'aggregation') and mm.is_a(local[a], PLATFORM) and mm.is_a(local[b], PLATFORM):
             hosts.setdefault(b, []).append(a)   # b runs on (or is part of) a
     def find(p, seen):

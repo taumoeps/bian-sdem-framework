@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "03c1be72dfe3da5122aa615bd60083321dc7ca0390e8e17aae598d2d4e67935c",
+      "export_sha256": "e6c49bc60f1c2829e09644e3bf1330e7e439c2dec87248fe9dbfe70422f045c4",
       "level": "A4",
       "model_id": "synthetic-bank-ledger-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.9.0",
+      "metamodel_version": "0.10.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -90,15 +90,34 @@
           }
         }
       },
+      "A4:ZONE-LED-ONPREM@1.0": {
+        "label": "On premises — core banking data centre",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-LED-ONPREM",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The core ledger's on-premises deployment (made up).",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "on_premises"
+          }
+        }
+      },
       "A4:NET-CORE@1.0": {
         "label": "Core banking network",
         "metadata": {
           "level": "A4",
-          "type": "A4.CommunicationNetwork",
+          "type": "A4.NetworkZone",
           "id": "NET-CORE",
           "version": "1.0",
           "lifecycle_status": "active",
-          "description": "Private network for core systems."
+          "description": "Private network for core systems.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
         }
       }
     },
@@ -111,16 +130,6 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-31"
-        }
-      },
-      {
-        "id": "A4:INF-MF-LPAR-PROD-association-NET-CORE",
-        "source": "A4:INF-MF-LPAR-PROD@2.0",
-        "target": "A4:NET-CORE@1.0",
-        "relation": "association",
-        "metadata": {
-          "scope": "within-level",
-          "row": "RA4-37"
         }
       },
       {
@@ -141,6 +150,46 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-04"
+        }
+      },
+      {
+        "id": "A4:ZONE-LED-ONPREM-composition-NET-CORE",
+        "source": "A4:ZONE-LED-ONPREM@1.0",
+        "target": "A4:NET-CORE@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:NET-CORE-aggregation-INF-MF-LPAR-PROD",
+        "source": "A4:NET-CORE@1.0",
+        "target": "A4:INF-MF-LPAR-PROD@2.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:INF-MF-LPAR-PROD-assignment-DEP-LM-PROD",
+        "source": "A4:INF-MF-LPAR-PROD@2.0",
+        "target": "A4:DEP-LM-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-11"
+        }
+      },
+      {
+        "id": "A4:INF-MF-LPAR-PROD-realization-TS-SCHED",
+        "source": "A4:INF-MF-LPAR-PROD@2.0",
+        "target": "A4:TS-SCHED@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-08"
         }
       }
     ]

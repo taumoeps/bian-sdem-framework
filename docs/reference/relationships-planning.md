@@ -15,8 +15,8 @@ Generated from `metamodel/level-relationships.json` by `python -m sdem.relations
 | A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 48 | 48 | 0 | 0 |
 | A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 17 | 16 | 0 | 1 |
 | A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations | 31 | 29 | 2 | 0 |
-| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 37 | 37 | 0 | 0 |
-| **Total** | | **133** | 130 | 2 | 1 |
+| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 38 | 37 | 1 | 0 |
+| **Total** | | **134** | 130 | 3 | 1 |
 
 ## A1 Business Architecture
 
@@ -178,6 +178,7 @@ Reference: ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deploy
 | RA4-35 | A4.Deployment | aggregation | A4.Artifact | A deployment carries the artifacts deployed. | Artifact → Artifact | same-concept aggregation | ArchiMate permits composition and aggregation between elements of the same concept (Artifact). One end is an SDEM extension, tested through the ArchiMate concept it extends. | medium | Archi relationship matrix: Artifact → Artifact must list 'g' (aggregation) | verified_against_archi |
 | RA4-36 | A4.Device | composition | A4.Device | Device decomposition. | Device → Device | same-concept composition | ArchiMate permits composition and aggregation between elements of the same concept (Device). | high | Archi relationship matrix: Device → Device must list 'c' (composition) | verified_against_archi |
 | RA4-37 | A4.InfrastructureComponent | association | A4.CommunicationNetwork | A platform — a node, a device or system software — is connected to a communication network. | Node → Communication Network | node connected to a communication network | ArchiMate associates nodes and devices with the communication networks that connect them; system software is a platform SDEM records in a node's place. | high | Archi relationship matrix: Node → Communication Network must list 'o' (association) | verified_against_archi |
+| RA4-38 | A4.NetworkZone | aggregation | A4.InfrastructureComponent | A network zone holds a shape deployed in it. | Grouping → Node | a grouping aggregates the elements placed in it | A network zone holds shapes the way ArchiMate's Grouping aggregates elements of any kind; SDEM records the zone as a Communication Network specialisation so it also keeps the network's own relationships (RA4-27, RA4-37). Not yet checked against the Archi relationship matrix. | medium | Archi relationship matrix: Grouping → Node must list 'g' (aggregation) | sdem_definition |
 
 ## Catalogue inheritance (is-a)
 
@@ -197,6 +198,7 @@ Not relationships in an architecture dataset: the catalogue's `extends` links, t
 | XA4-08 | A4.CommunicationNetwork | A4.InfrastructureComponent | A4.CommunicationNetwork is-a A4.InfrastructureComponent. | SDEM catalogue (metamodel/a*-*.json); ArchiMate specialization | Catalogue inheritance: an SDEM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the architecture dataset's concrete instance through it. | high | sdem_definition |
 | XA4-09 | A4.Path | A4.InfrastructureComponent | A4.Path is-a A4.InfrastructureComponent. | SDEM catalogue (metamodel/a*-*.json); ArchiMate specialization | Catalogue inheritance: an SDEM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the architecture dataset's concrete instance through it. | high | sdem_definition |
 | XA4-10 | A4.Artifact | A4.InfrastructureComponent | A4.Artifact is-a A4.InfrastructureComponent. | SDEM catalogue (metamodel/a*-*.json); ArchiMate specialization | Catalogue inheritance: an SDEM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the architecture dataset's concrete instance through it. | high | sdem_definition |
+| XA4-11 | A4.NetworkZone | A4.CommunicationNetwork | A4.NetworkZone is-a A4.CommunicationNetwork. | SDEM catalogue (metamodel/a*-*.json); ArchiMate specialization | Catalogue inheritance: an SDEM extension (network zones, the owner's decision 2026-11-14); a zone is a network, so every rule and query for a network applies to it. | high | sdem_definition |
 
 ## Verification status
 
@@ -208,6 +210,7 @@ How far each row has been checked, and against what. `verified_against_archi` is
 | verified | 16 | checked against BIAN's public pages (A2) |
 | unverified_togaf | 2 | paraphrased from TOGAF; no public oracle |
 | sdem_reading | 1 | SDEM's reading of a public BIAN page that states no explicit relationship |
+| sdem_definition | 1 | follows from an SDEM extension entity's definition |
 
 **Oracle.** Archi relationship matrix (open-source implementation of the ArchiMate 3.2 relationship tables): `github.com/archimatetool/archi` › `com.archimatetool.model/model/relationships.xml`, read at commit `9e6a014f9ef6a782a7dda604ef7b4d03d2c7819a` (file last changed `6d236081d9460f063076dbb6225f8645c5f5a7a5`, declares version 3.2), 2026-10-23. Nothing from the oracle is stored in this repository; each test-log entry records only the letters listed for the row's concept pair. verified_against_archi = the row's concept pair and kind are listed by the oracle; distinct from verified (specification text), which needs Open Group access. Calibration: every low-confidence inference tested in Phase 2 (7 at the time) was confirmed — the low band was over-cautious for derived dynamic relationships.
 
@@ -216,7 +219,7 @@ How far each row has been checked, and against what. `verified_against_archi` is
 | Inference confidence | Rows | Oracle verdict |
 |---|---|---|
 | high | 67 | confirmed: 67 |
-| medium | 44 | confirmed: 42, not tested: 2 |
+| medium | 45 | confirmed: 42, not tested: 3 |
 | low | 5 | confirmed: 4, confirmed, alternative accepted: 1 |
 
 ## Test history

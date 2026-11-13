@@ -49,7 +49,8 @@ DESIGN = {   # a complete design, in all four layers, that meets every standard 
                                                 'end_of_support': '2028-06-30', 'key_decisions': ['TD-04 a managed Kubernetes service'],
                                                 'design_scope': 'the payments production cluster', 'conforms_to': ['PAT-RESILIENT-PLATFORM']},
                            'INF-K8S-PAY-UAT': {'network_zone': 'restricted', 'monitoring': True, 'encryption_in_transit': 'tls1.3', 'end_of_support': '2028-06-30'},
-                           'INF-PG-PAY-PROD': {'end_of_support': '2029-11-30', 'network_zone': 'restricted'}},
+                           'INF-PG-PAY-PROD': {'end_of_support': '2029-11-30', 'network_zone': 'restricted'},
+                           'INF-APIGW-PAY': {'end_of_support': '2029-06-30'}},   # the example's DMZ gateway (network zones, 0.10.0)
 }
 
 

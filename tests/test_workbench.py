@@ -37,8 +37,8 @@ class WorkbenchTests(unittest.TestCase):
                 for f in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json'))
         self.assertEqual(len(d['records']), n)
         self.assertEqual(d['present'], ['A1', 'A2', 'A3', 'A4']); self.assertEqual(d['missing'], [])
-        self.assertEqual(len(d['framework']['types']), 44)
-        self.assertEqual(len(d['framework']['within']), 133)   # RA4-37 (metamodel 0.9.0)
+        self.assertEqual(len(d['framework']['types']), 45)   # A4.NetworkZone (0.10.0)
+        self.assertEqual(len(d['framework']['within']), 134)   # RA4-37 (metamodel 0.9.0)
         self.assertTrue(d['framework']['cross'] and all(c['required_evidence'] for c in d['framework']['cross']))
         self.assertEqual(len(d['registry']), len(json.loads((self.d / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']))
         self.assertTrue(all(d['docs'][l]['html'] for l in ('A1', 'A2', 'A3', 'A4')))      # the documents (UX-D)
@@ -84,7 +84,7 @@ class WorkbenchTests(unittest.TestCase):
     def test_json_summary_and_not_a_workspace(self):
         code, out, err = sdem('workbench', '--workspace', 'ws', '-o', 'wb.html', '--json', cwd=self.d)
         self.assertEqual(code, 0, err)
-        s = json.loads(out); self.assertEqual(s['framework']['types'], 44); self.assertEqual(s['layers'], ['A1', 'A2', 'A3', 'A4'])
+        s = json.loads(out); self.assertEqual(s['framework']['types'], 45); self.assertEqual(s['layers'], ['A1', 'A2', 'A3', 'A4'])
         (self.d / 'nothing').mkdir()
         self.assertEqual(sdem('workbench', '--workspace', 'nothing', cwd=self.d)[0], 2)
 

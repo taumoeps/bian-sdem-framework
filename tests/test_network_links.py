@@ -70,7 +70,7 @@ class FollowedTests(unittest.TestCase):   # KG-Q-08
         r = self.impact('NET-PAY-PRIVATE'); got = {x['id']: x for x in r['instances']}
         for rid in ('INF-K8S-PAY-PROD', 'INF-K8S-PAY-UAT', 'INF-PG-PAY-PROD', 'APP-PAY-HUB', 'CMP-PAY-EXEC', 'SD-PI', 'CAP-PAY-010'): self.assertIn(rid, got)
         self.assertEqual(got['INF-K8S-PAY-PROD']['classification'], 'design_change_required')
-        self.assertEqual(got['APP-PAY-HUB']['via'], ['RA4-37', 'PAY-108'])
+        self.assertEqual(got['APP-PAY-HUB']['via'], ['RA4-38', 'PAY-108'])   # the private network is a zone that holds the cluster (0.10.0)
         self.assertEqual(r['mappings_to_supersede'], [])   # a network hop is not a mapping
         self.assertEqual(got['INF-K8S-PAY-UAT']['classification'], 'design_change_required')   # UAT is on the same network
 

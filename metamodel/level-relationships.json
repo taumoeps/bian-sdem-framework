@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.9.0",
+  "metamodel_version": "0.10.0",
   "note": "Within-level relationships are held by each level model, never by SDEM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects). 0.5.17: artefact rows flagged enforceable=false; device composition added (relationships test findings 1, 2). 0.5.20: Phase 2 — 113 rows verified_against_archi (112 direct, RA4-31 via its stated alternative); RA3-30/31 (TOGAF) remain unverified_togaf.",
   "kinds": [
     {
@@ -3775,6 +3775,34 @@
         "basis": "SDEM default",
         "reasoning": "a platform may be on several networks and a network connects many platforms; that a hosting platform is on at least one is LC-15 (a warning), which also accepts the network of the node it runs on"
       }
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.NetworkZone",
+      "kind": "aggregation",
+      "target_type": "A4.InfrastructureComponent",
+      "basis": "SDEM extension (A4.NetworkZone = a Communication Network in the deployment structure) — a zone holds the shapes deployed in it",
+      "id": "RA4-38",
+      "reference_source": "SDEM extension (A4.NetworkZone)",
+      "description": "A network zone holds a shape deployed in it.",
+      "reasoning": "Placement (the owner's decision, 2026-11-14 (network zones, Z1–Z6)): every A4 shape is in one zone of level 1 or 2 — directly, or through what hosts it (LC-16). Zones themselves nest by composition (RA4-27), not by this row.",
+      "confidence": "medium",
+      "verification": "sdem_definition",
+      "confidence_basis": "follows from an SDEM extension entity built on a standard concept",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "one innermost zone per shape is LC-16 (a warning), which also accepts the zone of what hosts it"
+      },
+      "inference": {
+        "archimate_source": "Grouping",
+        "archimate_target": "Node",
+        "pattern": "a grouping aggregates the elements placed in it",
+        "reasoning": "A network zone holds shapes the way ArchiMate's Grouping aggregates elements of any kind; SDEM records the zone as a Communication Network specialisation so it also keeps the network's own relationships (RA4-27, RA4-37). Not yet checked against the Archi relationship matrix.",
+        "confidence": "medium",
+        "test": "Archi relationship matrix: Grouping → Node must list 'g' (aggregation)"
+      }
     }
   ],
   "policy": "Every within-level relationship must match a constraint row for its level, or be an association (ArchiMate's generic relationship, permitted between any two entities of one level). A2 rows come from BIAN's Service Landscape metamodel; A1, A3 and A4 rows are derived from ArchiMate 3.2 (ch. 6–10) and TOGAF 10 for the concepts each SDEM entity derives from (see README › Reference architecture provenance). ArchiMate and TOGAF are login-gated: those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations.",
@@ -3908,6 +3936,17 @@
       "description": "A4.Artifact is-a A4.InfrastructureComponent.",
       "reference_source": "SDEM catalogue (metamodel/a*-*.json); ArchiMate specialization",
       "reasoning": "Catalogue inheritance: an SDEM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the architecture dataset's concrete instance through it.",
+      "confidence": "high",
+      "verification": "sdem_definition"
+    },
+    {
+      "id": "XA4-11",
+      "level": "A4",
+      "entity": "A4.NetworkZone",
+      "extends": "A4.CommunicationNetwork",
+      "description": "A4.NetworkZone is-a A4.CommunicationNetwork.",
+      "reference_source": "SDEM catalogue (metamodel/a*-*.json); ArchiMate specialization",
+      "reasoning": "Catalogue inheritance: an SDEM extension (network zones, the owner's decision 2026-11-14); a zone is a network, so every rule and query for a network applies to it.",
       "confidence": "high",
       "verification": "sdem_definition"
     }
