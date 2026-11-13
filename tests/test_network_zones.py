@@ -1,7 +1,7 @@
 """Network zones (metamodel 0.10.0; docs/design/sdem-network-zones-design.md, the owner's decisions Z1–Z6, 2026-11-14): level 0 on premises or
 cloud, level 1 internal or DMZ inside it, level 2 a private network inside that; every shape in one zone (LC-16), the structure checked
 (LC-17), internet-facing shapes in a DMZ (LC-18), and a change to a zone reaching everything in it (KG-Q-08). Synthetic examples only."""
-import copy, json, os, subprocess, sys, unittest
+import copy, json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -91,6 +91,25 @@ class ImpactTests(unittest.TestCase):   # KG-Q-08 with zones
         got = {x['id']: x for x in json.loads(r.stdout)['instances']}
         for rid in ('ZONE-PAY-INTERNAL', 'ZONE-PAY-DMZ', 'NET-PAY-PRIVATE', 'INF-K8S-PAY-PROD', 'TS-MQ', 'INF-APIGW-PAY', 'APP-PAY-HUB', 'CAP-PAY-010'): self.assertIn(rid, got)
         self.assertEqual(got['ZONE-PAY-INTERNAL']['via'], ['RA4-27'])
+
+
+class UnconnectedTests(unittest.TestCase):   # LC-21
+    def test_a_shape_connected_to_nothing_is_named(self):
+        docs = {f: json.loads((PAY / f).read_text(encoding='utf-8')) for f in FILES}
+        tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, tmp, True)
+        for f, d in docs.items():
+            if f == 'a4-technology.json': d['relationships'] = [r for r in d['relationships'] if r['source'] != 'INF-APIGW-PAY']
+            (tmp / f).write_text(json.dumps(d), encoding='utf-8')
+        code, out, err = sdem_in(tmp, 'check', '--workspace', tmp)
+        self.assertIn('instance INF-APIGW-PAY: is internet facing but fronts nothing — link it to what it exposes (LC-21)', out + err)
+        code, out, err = sdem_in(PAY, 'check', '--workspace', PAY)
+        self.assertNotIn('LC-21', out + err)                                                     # every shape in the example is connected
+
+
+def sdem_in(cwd, *args):
+    env = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
+    r = subprocess.run([sys.executable, '-m', 'sdem', *map(str, args)], cwd=cwd, capture_output=True, text=True, env=env)
+    return r.returncode, r.stdout, r.stderr
 
 
 if __name__ == '__main__':

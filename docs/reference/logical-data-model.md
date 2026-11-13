@@ -1693,6 +1693,7 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-18 | Internet-facing shapes in a DMZ | a shape with `internet_facing: true` is in a DMZ (or a zone inside one), and a DMZ holds only internet-facing shapes (metamodel 0.10.0) | **enforced** |
 | LC-19 | Inferred zone placements decided | a zone placement sdem aid proposed (a link marked inferred, AID-Z01) is confirmed or rejected by a person (the owner's decisions H2, H5, 2026-11-14; metamodel 0.11.0) | **enforced** |
 | LC-20 | Placement agrees with the evidence | a shape is not in a zone that a high-confidence hosting signal contradicts (a mainframe in a cloud zone — metamodel/hosting-signals.json; metamodel 0.11.0) | **enforced** |
+| LC-21 | Every A4 shape connected | an A4 shape (not a network, zone, path or environment) has a link inside A4 other than its zone placement, or a connection to another layer; an internet-facing one fronts nothing without one — checked over the whole workspace (the owner, 2026-11-14) | **enforced** |
 
 ## Appendix B. How the example data measures up
 
@@ -1730,6 +1731,6 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Layer | Content | Status |
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
-| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 21 of 21 rules enforced |
+| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 22 of 22 rules enforced |
 | Physical | one architecture dataset JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem model regenerate (physical)`); graph store schema not designed yet |
 

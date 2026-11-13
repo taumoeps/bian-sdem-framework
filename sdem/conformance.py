@@ -10,7 +10,8 @@ Warnings (the architecture dataset is usable but incomplete or dated):
   only in case, spacing or punctuation (a possible duplicate) · LC-14 an attribute source that names no attribute of the record, or is not kind:ref
   · LC-15 a platform that hosts something is on no communication network (RA4-37) · LC-16 a shape in no network zone, or in more than one
   · LC-18 an internet-facing shape outside a DMZ, or a DMZ shape that is not internet facing · LC-17 a level-0 zone with no internal zone yet.
-  · LC-19 an inferred zone placement not yet confirmed or rejected · LC-20 a shape placed against strong hosting evidence.
+  · LC-19 an inferred zone placement not yet confirmed or rejected · LC-20 a shape placed against strong hosting evidence
+  · LC-21 an A4 shape connected to nothing (checked over the whole workspace: sdem/graph.py FederatedGraph.unconnected).
   Error: LC-17 the zone structure contradicts itself (a kind wrong for its level, a zone in the wrong parent, two internal zones, two cloud zones).
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.
 """

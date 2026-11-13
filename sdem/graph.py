@@ -145,8 +145,10 @@ class FederatedGraph:
             warnings = []
             issues = validate(d, self.registry, load_schema(), entity_resolver=self, warnings=warnings, metamodel=self.mm)
             report[f'mappings #{n}'] = issues
+        lone = self.unconnected()   # LC-21: an A4 shape linked to nothing — inside the layer (its zone aside) or across layers
+        if lone: self.warnings.setdefault(f"level A4 ({self.levels['A4'].doc['model_id']})", []).extend(lone)
         from . import profile as _p
-        across = [r for r in _p.rules() if r.get('across')]
+        across =[r for r in _p.rules() if r.get('across')]
         if across:   # PR-16: the organisation's rules across layers, over APPROVED links only (sdem/comply.py evaluates; check enforces)
             from .comply import evaluate
             maps = [(m['source']['id'], m['relationship'], m['target']['id']) for d in self.mapping_docs for m in d.get('mappings', []) if m.get('status') == 'approved']
@@ -210,6 +212,26 @@ class FederatedGraph:
                     if direction == 'down' and r['target'] == iid: hops.append(r['source'])
                     if direction == 'up' and r['source'] == iid: hops.append(r['target'])
         return hops
+
+    def unconnected(self):
+        """LC-21 (warning): an A4 shape — not a network, zone, path or environment — with no link inside the layer other than its zone
+        placement, and no connection across layers (any status: a proposed one is the person's to decide). An internet-facing shape
+        fronts nothing; any other is connected to nothing."""
+        g = self.levels.get('A4')
+        if not g: return []
+        typ = {i['id']: i['type'] for i in g.doc.get('instances', [])}
+        attrs = {i['id']: (i.get('attributes') or {}) for i in g.doc.get('instances', [])}
+        zone = lambda x: self.mm.is_a(typ.get(x, ''), 'A4.NetworkZone')
+        linked = {x for r in g.doc.get('relationships', []) if not (zone(r['source']) or zone(r['target'])) for x in (r['source'], r['target'])}
+        linked |= {x for d in self.mapping_docs for m in d.get('mappings', []) for x in ((m.get('source') or {}).get('id'), (m.get('target') or {}).get('id'))}
+        out = []
+        for x, t in sorted(typ.items()):
+            if x in linked or any(self.mm.is_a(t, s) for s in ('A4.CommunicationNetwork', 'A4.DeploymentEnvironment', 'A4.Path')): continue
+            if attrs[x].get('internet_facing') is True:
+                out.append(f"instance {x}: is internet facing but fronts nothing — link it to what it exposes (LC-21)")
+            else:
+                out.append(f"instance {x}: is connected to nothing — no link inside A4 besides its zone, and none to another layer (LC-21)")
+        return out
 
     def network_edges(self):
         """KG-Q-08 (metamodel 0.9.0): a platform depends on the communication network it is connected to (RA4-37) — its own, or that
