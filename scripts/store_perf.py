@@ -19,13 +19,15 @@ for name, d in src.items():
     out = dict(d, instances=[], relationships=[])
     for c in range(copies):
         sfx = f'-c{c}'
+        zones = {i['id'] for i in d['instances'] if i['type'] == 'A4.NetworkZone'}   # a workspace has one on-premises and one cloud level-0 zone (LC-17)
         for i in d['instances']:
+            if c and i['id'] in zones: continue
             j = json.loads(json.dumps(i)); j['id'] += sfx; j['name'] += sfx
             for k, v in list((j.get('attributes') or {}).items()):
                 if isinstance(v, str) and v.startswith('RS-'): j['attributes'][k] = v + sfx
                 elif isinstance(v, list): j['attributes'][k] = [x + sfx if isinstance(x, str) and x.startswith('RS-') else x for x in v]
             out['instances'].append(j)
-        out['relationships'] += [dict(r, source=r['source'] + sfx, target=r['target'] + sfx) for r in d['relationships']]
+        out['relationships'] += [dict(r, source=r['source'] + sfx, target=r['target'] + sfx) for r in d['relationships'] if not (c and {r['source'], r['target']} & zones)]
     (tmp / name).write_text(json.dumps(out), encoding='utf-8'); paths.append(str(tmp / name))
 (tmp / 'mappings.json').write_text(json.dumps({'registry_version': '0.4.0', 'metamodel_version': Metamodel.load().version, 'mappings': []}), encoding='utf-8'); paths.append(str(tmp / 'mappings.json'))
 nodes = copies * per; edges = copies * sum(len(d['relationships']) for d in src.values())
