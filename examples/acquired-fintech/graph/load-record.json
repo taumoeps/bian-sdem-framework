@@ -462,6 +462,90 @@
           "edges": 41
         }
       ]
+    },
+    {
+      "build": 7,
+      "at": "2026-11-13T12:31:21+00:00",
+      "inputs": [
+        {
+          "path": "examples/acquired-fintech//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-fintech-a2",
+          "model_version": "2026.10",
+          "sha256": "ebfb008ae5008f36cee410ba82f6cd4bc7f5d58cb7b8c8e5871bc7e38c4c22e4"
+        },
+        {
+          "path": "examples/acquired-fintech//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-fintech-a3",
+          "model_version": "2026.10",
+          "sha256": "28b8e86cb4eab1898791037b7e7404de0ade385a0474e5eefde84dcee2558219"
+        },
+        {
+          "path": "examples/acquired-fintech//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-fintech-a4",
+          "model_version": "2026.10",
+          "sha256": "a221fc123a77cbfd88f6962d4d324a46864db1bc47c1a4853923364095d3f91a"
+        },
+        {
+          "path": "examples/acquired-fintech//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "3935ccfe3c2279e97d6735b103b08839ede9bfed624535e5fa9a3bf00aa398be"
+        }
+      ],
+      "metamodel_version": "0.9.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-fintech-a2): instance BD-PAY: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-ACCT: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-REF: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-RISK: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAY-INSTR: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAYMENT-TXN: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-ACCOUNT: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-SAVINGS: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-FRAUD-CASE: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A4 (synthetic-fintech-a4): instance DEP-BUDDIES-PROD: is in environment ENV-ZIPPA-PROD but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (synthetic-fintech-a4): instance DEP-FLOW-PROD: is in environment ENV-ZIPPA-PROD but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (synthetic-fintech-a4): instance DEP-PERKS-PROD: is in environment ENV-ZIPPA-PROD but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (synthetic-fintech-a4): instance DEP-POTS-PROD: is in environment ENV-ZIPPA-PROD but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (synthetic-fintech-a4): instance DEP-SHIELD-PROD: is in environment ENV-ZIPPA-PROD but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (synthetic-fintech-a4): instance DEP-VAULTS-PROD: is in environment ENV-ZIPPA-PROD but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (synthetic-fintech-a4): instance DEP-ZAP-PROD: is in environment ENV-ZIPPA-PROD but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "9e3b723836ca416a70ac370dbbf53ed7bc6db6bed6d4a6474a0b2e6fd5daa8cf",
+          "nodes": 59,
+          "edges": 79
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "431a4ece0e9cbee69c278d128dea452859dcd168e021b63129197ad35255ec62",
+          "nodes": 45,
+          "edges": 39
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "047505395ec36115bde51975b3fcb3849974bb1e386631e31b23f8049fcaf529",
+          "nodes": 12,
+          "edges": 7
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "9e9036b121dc1dd37192e9a92ed52ef10ed022224de5cdd548c7183b3fa75dbd",
+          "nodes": 64,
+          "edges": 41
+        }
+      ]
     }
   ]
 }

@@ -31,10 +31,10 @@ In the payment-initiation example:
 
 | Graph | Nodes | Links |
 |---|---|---|
-| A1 local | 16 | 14 within A1 |
-| A2 local | 24 | 33 within A2 |
-| A3 local | 16 | 17 within A3 |
-| A4 local | 12 | 5 within A4 |
+| A1 local | 16 | 16 within A1 |
+| A2 local | 24 | 34 within A2 |
+| A3 local | 16 | 19 within A3 |
+| A4 local | 12 | 15 within A4 |
 | Federated | — (it points into the four above) | 18 approved cross-architecture links |
 
 ---
@@ -213,6 +213,8 @@ sdem impact APP-PAY-HUB --change replace <architecture datasets> mappings.json
 | records to supersede | PAY-106, PAY-108, PAY-109, PAY-110, PAY-113 | |
 
 The classification follows `schema/impact-rules.json`: the change kinds are modify, replace, retire and rehost.
+
+**Networks (KG-Q-08).** A platform depends on the communication network it is connected to (RA4-37), and so does everything deployed on it. Trace and impact follow that link inside A4 as a hop `CONNECTED_TO` (via `RA4-37`): retiring `NET-PAY-PRIVATE` reaches the production cluster and PostgreSQL on it, the deployments they run, the Payments Hub and Execution Gateway (PAY-108, PAY-111), and up to the capability and processes. A platform recorded on no network is a warning (LC-15).
 
 ### Known limit of path F2
 

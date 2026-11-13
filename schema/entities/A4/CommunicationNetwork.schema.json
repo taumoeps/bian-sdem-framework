@@ -334,6 +334,7 @@
             "type": "string"
           },
           "description": "ids of nodes and devices on the network",
+          "deprecated": true,
           "x-sdem-id": "AT-A4-07",
           "x-sdem-group": "specific",
           "x-sdem-kind": "reference",
@@ -343,11 +344,11 @@
           ],
           "x-sdem-source": {
             "standard": "ArchiMate 3.2 (relationship)",
-            "locator": "association, ch. 10",
+            "locator": "duplicates the A4 network link (RA4-37)",
             "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
           },
-          "x-sdem-reasoning": "ArchiMate associates nodes with networks.",
-          "x-sdem-confidence": "medium"
+          "x-sdem-reasoning": "Duplicates the within-level link a platform has to its network (RA4-37, metamodel 0.9.0); `sdem migrate` turns each listed id into that link. Deprecated: use the link.",
+          "x-sdem-confidence": "low"
         },
         "address_range": {
           "type": "array",

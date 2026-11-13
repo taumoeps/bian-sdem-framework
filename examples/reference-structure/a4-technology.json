@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "reference-structure-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.8.1",
+  "metamodel_version": "0.9.0",
   "source_system": "SDEM-GENERATED-FROM-RECORD",
   "instances": [
     {
@@ -392,6 +392,12 @@
       "kind": "composition",
       "target": "RS-Device-2",
       "name": "RA4-36"
+    },
+    {
+      "source": "RS-Artifact-1",
+      "kind": "association",
+      "target": "RS-CommunicationNetwork-1",
+      "name": "RA4-37"
     }
   ]
 }

@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "955fe602fe4653bb822f1d90c7c4c140794885beaca4b7c4fdeb9ab4afa299f4",
+      "export_sha256": "7988fab9b3a8400898090dc9765d4ea56ce4c457c8598b2667fc6d5f4a36a8af",
       "level": "A1",
       "model_id": "synthetic-bank-payments-a1",
       "model_version": "2026.10",
-      "metamodel_version": "0.8.1",
+      "metamodel_version": "0.9.0",
       "source_system": "SYNTHETIC-EA-TOOL"
     },
     "nodes": {
@@ -458,6 +458,26 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA1-12"
+        }
+      },
+      {
+        "id": "A1:ACT-PAY-01a-access-BO-PAYEE",
+        "source": "A1:ACT-PAY-01a@1.0",
+        "target": "A1:BO-PAYEE@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-12"
+        }
+      },
+      {
+        "id": "A1:BO-PAY-INSTR-aggregation-BO-PAYEE",
+        "source": "A1:BO-PAY-INSTR@1.0",
+        "target": "A1:BO-PAYEE@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-45"
         }
       }
     ]

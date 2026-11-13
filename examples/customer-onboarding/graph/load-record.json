@@ -498,6 +498,90 @@
           "edges": 8
         }
       ]
+    },
+    {
+      "build": 7,
+      "at": "2026-11-13T12:31:21+00:00",
+      "inputs": [
+        {
+          "path": "examples/customer-onboarding//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-onboarding-a1",
+          "model_version": "2026.10",
+          "sha256": "03123ec73f5aee54106403f086c077c757b73679964481127fe19e4c7f5f4f16"
+        },
+        {
+          "path": "examples/customer-onboarding//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-onboarding-a2",
+          "model_version": "2026.10",
+          "sha256": "d60023cdde2f5f494f2478bfd9933bb42e546cc02b4ca7b67a2848091e44dd16"
+        },
+        {
+          "path": "examples/customer-onboarding//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-onboarding-a3",
+          "model_version": "2026.10",
+          "sha256": "6408b07331358deb80fb18fffee6fe27534a3515e271b64acd1e9e7e3ad425df"
+        },
+        {
+          "path": "examples/customer-onboarding//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-onboarding-a4",
+          "model_version": "2026.10",
+          "sha256": "bd225383eafe9ea70dbec49ddffcdc31d728ece9cb8337f4f4296305d0c131de"
+        },
+        {
+          "path": "examples/customer-onboarding//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "c1308051d139daac71a09ce6f8aaa50a323d8629a9a37bb8806d8abfc7c085c7"
+        }
+      ],
+      "metamodel_version": "0.9.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-onboarding-a2): instance SD-001: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-onboarding-a2): instance BBO-001: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A4 (synthetic-bank-onboarding-a4): instance DEP-001: is in environment ENV-001 but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "d762fc8a348ecda803b337f3ad203f840f3aecb3ad4cea4e45864c3e0ac141ba",
+          "nodes": 7,
+          "edges": 6
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "d0b1fea04554e9eba36f5345d154420f5d2108b6d2a6427a16b18443478b163b",
+          "nodes": 9,
+          "edges": 11
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "f27ab4314396b6d897647a08e93c642332fb91083c8d920e0c493d9e58526abc",
+          "nodes": 5,
+          "edges": 4
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "004e6420d7511b4710d863338982312543da32cfb3114f511a29a36300310e20",
+          "nodes": 5,
+          "edges": 1
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "433e178d3e5e81556b11abb8aafa4f68c137580f9502de051d4e08f8536b0308",
+          "nodes": 11,
+          "edges": 8
+        }
+      ]
     }
   ]
 }

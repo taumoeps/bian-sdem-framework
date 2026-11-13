@@ -9,7 +9,7 @@ The business and domain architecture are mapped and approved (`m1-mappings-given
 | `a1-business.json` | 16 | two capabilities, a value stream with four stages, two processes with activities (`invokes`), two business objects, a role |
 | `a2-service-domain.json` | 24 | three Service Domains (initiation, execution, party authentication — so step 5 has a real candidate set), asset types, functional patterns, a control record with attributes, two qualifiers, six operations with action terms, a scenario, two BOM objects |
 | `a3-application.json` | 16 | the hub and three components, a service and interface, six API operations with method/path/payload, three data entities, an event |
-| `a4-technology.json` | 12 | two Kubernetes platforms, PostgreSQL, two technology services, two environments, three deployments, a network, an image |
+| `a4-technology.json` | 12 | two Kubernetes platforms, PostgreSQL, two technology services, two environments, three deployments, a network (every platform on it, RA4-37), an image |
 
 **Planted for the executor:** `API-PI-04` implements a *Retrieve* operation as **POST** (a legacy-channel constraint, recorded in the gold's rationale) — REST rule 2 must fail and be reported as a finding while rules 1, 3, 4 hold. `API-PI-06` (events) implements no operation; `SO-PI-06` (Notify) has no REST form. `CMP-PAY-CAPTURE` and `CMP-PAY-VALIDATE` have no deployment records of their own — no `DEPLOYED_ON` may be proposed for them. `ENT-ACCOUNT-CACHE` matches no BOM object. `SD-PE` and `SD-PA` realise nothing in this workspace.
 

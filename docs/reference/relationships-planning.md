@@ -15,8 +15,8 @@ Generated from `metamodel/level-relationships.json` by `python -m sdem.relations
 | A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 48 | 48 | 0 | 0 |
 | A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 17 | 16 | 0 | 1 |
 | A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations | 31 | 29 | 2 | 0 |
-| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 36 | 36 | 0 | 0 |
-| **Total** | | **132** | 129 | 2 | 1 |
+| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 37 | 37 | 0 | 0 |
+| **Total** | | **133** | 130 | 2 | 1 |
 
 ## A1 Business Architecture
 
@@ -177,6 +177,7 @@ Reference: ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deploy
 | RA4-34 | A4.DeploymentEnvironment | aggregation | A4.SystemSoftware | An environment groups deployments and the platform they run on. | Node → System Software | node aggregates its specialisations | System Software is a specialisation of Node; what holds between nodes holds between a node and its specialisations. One end is an SDEM extension, tested through the ArchiMate concept it extends. | medium | Archi relationship matrix: Node → System Software must list 'g' (aggregation) | verified_against_archi |
 | RA4-35 | A4.Deployment | aggregation | A4.Artifact | A deployment carries the artifacts deployed. | Artifact → Artifact | same-concept aggregation | ArchiMate permits composition and aggregation between elements of the same concept (Artifact). One end is an SDEM extension, tested through the ArchiMate concept it extends. | medium | Archi relationship matrix: Artifact → Artifact must list 'g' (aggregation) | verified_against_archi |
 | RA4-36 | A4.Device | composition | A4.Device | Device decomposition. | Device → Device | same-concept composition | ArchiMate permits composition and aggregation between elements of the same concept (Device). | high | Archi relationship matrix: Device → Device must list 'c' (composition) | verified_against_archi |
+| RA4-37 | A4.InfrastructureComponent | association | A4.CommunicationNetwork | A platform — a node, a device or system software — is connected to a communication network. | Node → Communication Network | node connected to a communication network | ArchiMate associates nodes and devices with the communication networks that connect them; system software is a platform SDEM records in a node's place. | high | Archi relationship matrix: Node → Communication Network must list 'o' (association) | verified_against_archi |
 
 ## Catalogue inheritance (is-a)
 
@@ -203,7 +204,7 @@ How far each row has been checked, and against what. `verified_against_archi` is
 
 | Status | Rows | Meaning |
 |---|---|---|
-| verified_against_archi | 113 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
+| verified_against_archi | 114 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
 | verified | 16 | checked against BIAN's public pages (A2) |
 | unverified_togaf | 2 | paraphrased from TOGAF; no public oracle |
 | sdem_reading | 1 | SDEM's reading of a public BIAN page that states no explicit relationship |
@@ -214,7 +215,7 @@ How far each row has been checked, and against what. `verified_against_archi` is
 
 | Inference confidence | Rows | Oracle verdict |
 |---|---|---|
-| high | 66 | confirmed: 66 |
+| high | 67 | confirmed: 67 |
 | medium | 44 | confirmed: 42, not tested: 2 |
 | low | 5 | confirmed: 4, confirmed, alternative accepted: 1 |
 
@@ -225,5 +226,5 @@ The test plan is `docs/evidence/relationships-testing.md`; its results sections 
 | Phase | What was tested | Result |
 |---|---|---|
 | 1 (2026-10-23) | provenance, grounding, consistency, enforcement probes, coverage, rule dependencies — all 131 rows and 12 inheritance links | 0 fail; 3 artefact rows not enforceable; 6 findings applied in v0.5.17 |
-| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | 112 confirmed, 1 confirmed via stated alternative, 0 contradicted, 2 not testable (TOGAF); applied in v0.5.20 |
+| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | 113 confirmed, 1 confirmed via stated alternative, 0 contradicted, 2 not testable (TOGAF); applied in v0.5.20 |
 

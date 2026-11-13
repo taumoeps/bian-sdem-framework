@@ -2,7 +2,7 @@
   "level": "A1",
   "model_id": "synthetic-bank-payments-a1",
   "model_version": "2026.10",
-  "metamodel_version": "0.8.1",
+  "metamodel_version": "0.9.0",
   "source_system": "SYNTHETIC-EA-TOOL",
   "instances": [
     {
@@ -332,6 +332,16 @@
       "source": "PRC-PAY-01",
       "kind": "access",
       "target": "BO-PAY-INSTR"
+    },
+    {
+      "source": "ACT-PAY-01a",
+      "kind": "access",
+      "target": "BO-PAYEE"
+    },
+    {
+      "source": "BO-PAY-INSTR",
+      "kind": "aggregation",
+      "target": "BO-PAYEE"
     }
   ]
 }

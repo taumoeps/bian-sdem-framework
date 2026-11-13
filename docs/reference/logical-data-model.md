@@ -1315,6 +1315,7 @@ erDiagram
     A4_DeploymentEnvironment }o--o{ A4_SystemSoftware : "aggregation"
     A4_Deployment }o--o{ A4_Artifact : "aggregation"
     A4_Device |o--o{ A4_Device : "composition"
+    A4_InfrastructureComponent }o--o{ A4_CommunicationNetwork : "association"
 ```
 
 ### `A4.InfrastructureComponent`
@@ -1324,6 +1325,12 @@ erDiagram
 Abstract supertype of every Technology Architecture entity; retained for compatibility with earlier relationship registries
 
 **Fields:** core fields only.
+
+**Links**
+
+| Link | With | How many |
+|---|---|---|
+| association → | `CommunicationNetwork` | any number |
 
 ### `A4.Deployment`
 
@@ -1536,7 +1543,7 @@ Communication infrastructure
 
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
-| `connects` | list | no | ids of nodes and devices on the network | `A4.Node`, `A4.Device` |
+| `connects` *(deprecated)* | list | no | ids of nodes and devices on the network | `A4.Node`, `A4.Device` |
 | `address_range` | list | no | the network's address ranges in CIDR notation (e.g. 10.20.0.0/16) | — |
 
 **Links**
@@ -1545,6 +1552,7 @@ Communication infrastructure
 |---|---|---|
 | realization → | `Path` | any number |
 | composition (with itself) | `CommunicationNetwork` | any number |
+| ← association | `InfrastructureComponent` | any number |
 
 ### `A4.Path`
 
@@ -1640,6 +1648,7 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-12 | Registry immutability | approved, rejected and superseded registry records are never edited | **enforced** |
 | LC-13 | Deprecated attributes | deprecated attributes raise a warning | **enforced** |
 | LC-14 | Attribute sources | a record's `sources` (CA-13) names only attributes the record has (or `name`, `description`), each with a `kind:ref` source such as `document:DESIGN.md#4.2` (owner's decision D4, 2026-11-09) | **enforced** |
+| LC-15 | Platforms on a network | a platform (node, device or system software) that hosts a deployment, an artifact or system software, or that a deployment environment groups, is connected to at least one communication network (RA4-37) — its own, or that of the node or device it runs on (owner's decision, 2026-11-14; metamodel 0.9.0) | **enforced** |
 
 ## Appendix B. How the example data measures up
 
@@ -1648,9 +1657,9 @@ The 8 example workspaces (827 instances) (the generated reference-structure work
 | Rule | Values checked | Failures |
 |---|---|---|
 | LC-04 | 1168 | 0 |
-| LC-05 | 2693 | 0 |
+| LC-05 | 2690 | 0 |
 | LC-06 | 1441 | 0 |
-| LC-07 | 174 | 0 |
+| LC-07 | 169 | 0 |
 | LC-08 (warning) | 184 | 0 |
 | LC-09 | 771 | 0 |
 | LC-10 | 2309 | 0 |
@@ -1664,7 +1673,7 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 
 | Decision | Count | Basis |
 |---|---|---|
-| Link counts — SDEM default | 92 | no standard sets a number; left open |
+| Link counts — SDEM default | 93 | no standard sets a number; left open |
 | Link counts — ArchiMate composition semantics | 25 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — BIAN | 14 | stated by BIAN |
 | Link counts — SDEM reading | 1 | SDEM's reading of a BIAN page |
@@ -1677,6 +1686,6 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Layer | Content | Status |
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
-| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 15 of 15 rules enforced |
+| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 16 of 16 rules enforced |
 | Physical | one architecture dataset JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem model regenerate (physical)`); graph store schema not designed yet |
 

@@ -211,8 +211,26 @@ class FederatedGraph:
                     if direction == 'up' and r['source'] == iid: hops.append(r['target'])
         return hops
 
+    def network_edges(self):
+        """KG-Q-08 (metamodel 0.9.0): a platform depends on the communication network it is connected to (RA4-37) — its own, or that
+        of the node or device it runs on — as a hop `CONNECTED_TO`, so a trace down from what runs on the platform reaches the network,
+        and the impact of a change to the network reaches the platforms on it and everything that depends on them."""
+        from .conformance import networks_of
+        out = []
+        for g in self.levels.values():
+            if g.doc.get('level') != 'A4': continue
+            for p, nets in networks_of(g.doc, self.mm).items():
+                ip = self.instance(p) or {}
+                if not any(self.mm.is_a(ip.get('type', ''), t) for t in ('A4.Node', 'A4.Device', 'A4.SystemSoftware')): continue   # a deployment reaches it through its platform
+                for x in nets:
+                    ix = self.instance(x) or {}
+                    out.append({'mapping_id': 'RA4-37', 'relationship': 'CONNECTED_TO', 'status': 'structural', 'baseline_id': None,
+                                'source': {'id': p, 'type': ip.get('type'), 'version': ip.get('version')},
+                                'target': {'id': x, 'type': ix.get('type'), 'version': ix.get('version')}})
+        return out
+
     def trace(self, start, direction='down', statuses=('approved',), follow_composition=False):
-        edges = self.edges(statuses)
+        edges = self.edges(statuses) + self.network_edges()
         if follow_composition:
             # add virtual PART_OF / COMPOSES edges so a chain can pass from a part to its whole (and back)
             seen, frontier, virtual = set(), [start], []
@@ -235,7 +253,7 @@ class FederatedGraph:
     def impact(self, changed, kind, statuses=('approved',)):
         if kind not in IMPACT_RULES:
             raise ValueError(f'unknown change kind {kind!r}; choose from {sorted(IMPACT_RULES)}')
-        edges = self.edges(statuses)
+        edges = self.edges(statuses) + self.network_edges()   # KG-Q-08
         rules = IMPACT_RULES[kind]
         rows, touched = [], []
         def add(iid, relation, path):
@@ -253,7 +271,7 @@ class FederatedGraph:
                     if not any(r['id'] == iid for r in rows):
                         add(iid, relation, [v['mapping_id'] for _, v in p[1:depth + 1]])
         for e in edges:
-            if changed in (e['source']['id'], e['target']['id']) and kind in SUPERSEDE_FOR:
+            if changed in (e['source']['id'], e['target']['id']) and kind in SUPERSEDE_FOR and e['status'] != 'structural':
                 touched.append(e['mapping_id'])
         return {'changed': changed, 'change': kind, 'reason': IMPACT_REASONS[kind], 'rules_version': _IMPACT['$schema_version'], 'instances': rows,
                 'mappings_to_supersede': sorted(set(touched))}

@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "a911ec10e21a37afe558bde84fa541218a030ce2ec04db81d71314156c545b95",
+      "export_sha256": "20a2833e9e0080aa9f72ec84e78bf6f54f71de80786633cb5949d20b322a37ad",
       "level": "A4",
       "model_id": "harbourline-fx-a4",
       "model_version": "2026.11",
-      "metamodel_version": "0.8.1",
+      "metamodel_version": "0.9.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -235,10 +235,6 @@
           "attributes": {
             "address_range": [
               "10.44.0.0/16"
-            ],
-            "connects": [
-              "NODE-CONF-01",
-              "NODE-FXSM-01"
             ]
           }
         }
@@ -255,9 +251,6 @@
           "attributes": {
             "address_range": [
               "172.30.8.0/24"
-            ],
-            "connects": [
-              "NODE-RATEGW-01"
             ]
           }
         }
@@ -680,6 +673,36 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-10"
+        }
+      },
+      {
+        "id": "A4:NODE-CONF-01-association-NET-MKT-PRIVATE",
+        "source": "A4:NODE-CONF-01@1.0",
+        "target": "A4:NET-MKT-PRIVATE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A4:NODE-FXSM-01-association-NET-MKT-PRIVATE",
+        "source": "A4:NODE-FXSM-01@1.0",
+        "target": "A4:NET-MKT-PRIVATE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A4:NODE-RATEGW-01-association-NET-COLO-LL",
+        "source": "A4:NODE-RATEGW-01@1.0",
+        "target": "A4:NET-COLO-LL@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
         }
       }
     ]

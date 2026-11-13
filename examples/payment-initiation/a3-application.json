@@ -2,7 +2,7 @@
   "level": "A3",
   "model_id": "synthetic-bank-payments-a3",
   "model_version": "2026.10",
-  "metamodel_version": "0.8.1",
+  "metamodel_version": "0.9.0",
   "source_system": "SYNTHETIC-APM",
   "instances": [
     {
@@ -376,6 +376,16 @@
       "source": "APP-PAY-HUB",
       "kind": "composition",
       "target": "IFC-PAY-API"
+    },
+    {
+      "source": "EVT-PAY-STATUS",
+      "kind": "access",
+      "target": "ENT-PAY-EVENT"
+    },
+    {
+      "source": "API-PI-06",
+      "kind": "access",
+      "target": "ENT-PAY-EVENT"
     }
   ]
 }

@@ -7,7 +7,8 @@ Warnings (the architecture dataset is usable but incomplete or dated):
   LC-08 cross-level reference does not resolve in the loaded workspace (a join key the inference engine cannot use)
   · LC-10m cardinality minimum not met (architecture datasets may be partial selections) · LC-13 deprecated attribute in use
   · attribute not defined in the model · LC-04p a placeholder or empty value in an optional attribute · LC-09n two names that differ
-  only in case, spacing or punctuation (a possible duplicate) · LC-14 an attribute source that names no attribute of the record, or is not kind:ref.
+  only in case, spacing or punctuation (a possible duplicate) · LC-14 an attribute source that names no attribute of the record, or is not kind:ref
+  · LC-15 a platform that hosts something is on no communication network (RA4-37).
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.
 """
 import json, re
@@ -227,8 +228,58 @@ def check_level(doc, mm, estate_index=None):
                     n['LC-10 failed'] += 1; errors.append(f"instance {iid}: {cnt} {c['kind']} links with {other}, at most {hi} allowed by {c['id']} (LC-10)")
                 if cnt < int(lo):
                     n['LC-10m failed'] += 1; warnings.append(f"instance {iid}: {cnt} {c['kind']} links with {other}, {c['id']} expects at least {lo} (LC-10m)")
+    on_network(doc, mm, local, byid, warnings, n)   # LC-15
     if to_confirm: warnings.append(f"{to_confirm} inferred record(s) to confirm — review them (marked 'inferred', with source, reasoning and confidence), then `sdem aid confirm` or `sdem aid reject` (CTL-16)")
     return errors, warnings, n
+
+
+PLATFORM, NETWORK = 'A4.InfrastructureComponent', 'A4.CommunicationNetwork'
+
+
+def networks_of(doc, mm, local=None):
+    """Each platform's communication networks (RA4-37: platform association network, either way round) — its own, or else the
+    networks of the node or device it runs on (assigned to it, or a part of it), the nearest first."""
+    local = local or {i['id']: i['type'] for i in doc.get('instances', [])}
+    own, hosts = {}, {}
+    for r in doc.get('relationships', []):
+        a, b, k = r['source'], r['target'], r['kind']
+        if a not in local or b not in local: continue
+        if k == 'association':
+            for p, x in ((a, b), (b, a)):
+                if mm.is_a(local[p], PLATFORM) and mm.is_a(local[x], NETWORK): own.setdefault(p, []).append(x)
+        elif k in ('assignment', 'composition', 'aggregation') and mm.is_a(local[a], PLATFORM) and mm.is_a(local[b], PLATFORM):
+            hosts.setdefault(b, []).append(a)   # b runs on (or is part of) a
+    def find(p, seen):
+        if own.get(p): return own[p]
+        for h in hosts.get(p, ()):
+            if h not in seen:
+                got = find(h, seen | {h})
+                if got: return got
+        return []
+    return {p: find(p, {p}) for p in local if mm.is_a(local[p], PLATFORM)}
+
+
+def on_network(doc, mm, local, byid, warnings, n):
+    """LC-15 (metamodel 0.9.0): a platform that hosts something — a deployment, an artifact or system software assigned to it — or
+    that a deployment environment groups is on at least one communication network, its own or that of the node it runs on.
+    A warning: a design may not have recorded its networks yet."""
+    if doc.get('level') != 'A4': return
+    nets = networks_of(doc, mm, local)
+    why = {}
+    for r in doc.get('relationships', []):
+        a, b, k = r['source'], r['target'], r['kind']
+        if a not in local or b not in local: continue
+        if k == 'assignment' and a in nets and any(mm.is_a(local[b], t) for t in ('A4.Deployment', 'A4.Artifact', 'A4.SystemSoftware')):
+            why.setdefault(a, f'hosts {b}')
+        if k == 'aggregation' and b in nets and mm.is_a(local[a], 'A4.DeploymentEnvironment'):
+            why.setdefault(b, f'is in environment {a}')
+    for p, reason in sorted(why.items()):
+        if (byid.get(p) or {}).get('lifecycle_status') == 'retired': continue
+        if not any(mm.is_a(local[p], t) for t in ('A4.Node', 'A4.Device', 'A4.SystemSoftware')): continue   # a deployment is on its platform's network
+        n['LC-15 checked'] += 1
+        if not nets[p]:
+            n['LC-15 failed'] += 1
+            warnings.append(f"instance {p}: {reason} but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)")
 
 
 def natural_keys(doc, mm):

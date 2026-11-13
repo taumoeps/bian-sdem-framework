@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "24fce5f60b486e989839cfc8e9912b27954e12a6e867d2a2614afa72b89c08d8",
+      "export_sha256": "1389bcb373275a32be61743d4da9cb68c407287d1ef3415419ebf9d4bea91ea3",
       "level": "A3",
       "model_id": "synthetic-bank-payments-a3",
       "model_version": "2026.10",
-      "metamodel_version": "0.8.1",
+      "metamodel_version": "0.9.0",
       "source_system": "SYNTHETIC-APM"
     },
     "nodes": {
@@ -517,6 +517,26 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A3:EVT-PAY-STATUS-access-ENT-PAY-EVENT",
+        "source": "A3:EVT-PAY-STATUS@2.0",
+        "target": "A3:ENT-PAY-EVENT@7.1",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-26"
+        }
+      },
+      {
+        "id": "A3:API-PI-06-access-ENT-PAY-EVENT",
+        "source": "A3:API-PI-06@2.0",
+        "target": "A3:ENT-PAY-EVENT@7.1",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-29"
         }
       }
     ]

@@ -581,6 +581,90 @@
           "edges": 7
         }
       ]
+    },
+    {
+      "build": 8,
+      "at": "2026-11-13T12:31:21+00:00",
+      "inputs": [
+        {
+          "path": "examples/card-fraud-alerts//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-a1",
+          "model_version": "2026.10",
+          "sha256": "febeb76c86d451cb17e3001d78931a8299e570e12f5aecf56f892e07b3a10c01"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-a2",
+          "model_version": "2026.10",
+          "sha256": "8240f8e88baebd8fede56a66b69bf693b026db70538a52466db048728d161e16"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-a3",
+          "model_version": "2026.10",
+          "sha256": "6a3dd807119968d3ad82bfbfcf89b1b6630027e614dfbb244f0b28554e0eaa16"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-a4",
+          "model_version": "2026.10",
+          "sha256": "b2ef1d086e09d494703c0beb444dc45c2a9bb4825881ee411d367b87597eadd4"
+        },
+        {
+          "path": "examples/card-fraud-alerts//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "f1310c4f5eadc806010f260560d6f93863d2f119d2d25a3dcd213a8d7c47546b"
+        }
+      ],
+      "metamodel_version": "0.9.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-a2): instance BD-FRAUD: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-a2): instance SO-044-07: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)",
+        "level A4 (synthetic-bank-a4): instance DEP-FRAUD-PROD: is in environment ENV-PROD but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "5afd34cf6668bd99f5a354aa0888b57d0f279419cc860ebeca1dc06c9d1a31e9",
+          "nodes": 9,
+          "edges": 7
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "0d7c007ab2d95f43389fd67ab3a5c122bcced3fbc0dfd7a2b208b622eedc43d9",
+          "nodes": 8,
+          "edges": 7
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "de063da77c260d535cbd040f1403ab56fb5ec5f66d24f56319e512b9c00a70d9",
+          "nodes": 4,
+          "edges": 3
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "1a302d2268d71b2c128df9603354e874cb941c75911e8c5fda9325d8e19d6fbe",
+          "nodes": 5,
+          "edges": 3
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "497e65c0df5da25a4316d90f0192353cb3885724ffbab14e40fe32f8253900af",
+          "nodes": 10,
+          "edges": 7
+        }
+      ]
     }
   ]
 }

@@ -480,6 +480,89 @@
           "edges": 24
         }
       ]
+    },
+    {
+      "build": 7,
+      "at": "2026-11-13T12:31:22+00:00",
+      "inputs": [
+        {
+          "path": "examples/trade-finance//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-trade-a1",
+          "model_version": "2026.10",
+          "sha256": "b62c06a13f03b1e32c6f4d44e50428256939fc46a37da7578eb36d6eff734039"
+        },
+        {
+          "path": "examples/trade-finance//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-trade-a2",
+          "model_version": "2026.10",
+          "sha256": "8fe48c1041183aa922b13741ada4420e2a91be938103492ca36fd81c5879317e"
+        },
+        {
+          "path": "examples/trade-finance//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-trade-a3",
+          "model_version": "2026.10",
+          "sha256": "026d10b3cfe25d8a330a21ea3d72a8778ea5e17b36504e6f7704b57e31133855"
+        },
+        {
+          "path": "examples/trade-finance//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-trade-a4",
+          "model_version": "2026.10",
+          "sha256": "a064ed88f11dcd212480e85d6ae559f8e4fcee4c114f0e13b25ae803c3068160"
+        },
+        {
+          "path": "examples/trade-finance//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "dbefa3ecbc23efef17a7a29bf46275cc4f75b2d7d7ee6428d619d232172d5af0"
+        }
+      ],
+      "metamodel_version": "0.9.0",
+      "errors": [],
+      "warnings": [
+        "level A4 (synthetic-bank-trade-a4): instance DEP-DOC-PROD: is in environment ENV-TF-PROD but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (synthetic-bank-trade-a4): instance DEP-LC-PROD: is in environment ENV-TF-PROD but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "40b71e2c4ba049039016e5dcd58722c196939590013c74c1e0566e1d90c3b2b4",
+          "nodes": 20,
+          "edges": 19
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "194037f2125b116f60597c10691339c0526d48a5f7579bf7f700c1667bad9313",
+          "nodes": 27,
+          "edges": 35
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "79c82ebaffcdceb0b74f75bbe814e725f93a7d899951aac135e9f632d48adbc0",
+          "nodes": 20,
+          "edges": 25
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "8aed29300d06d1f2bf774007b69b7bb7b76d0dd7ab5bb52cd90801db07215772",
+          "nodes": 18,
+          "edges": 11
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "cfc5c65a2fefff65db73a67eef7275e85c676e347f91f51e9395276f05f357eb",
+          "nodes": 32,
+          "edges": 24
+        }
+      ]
     }
   ]
 }

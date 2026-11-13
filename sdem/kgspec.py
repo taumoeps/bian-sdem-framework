@@ -130,7 +130,8 @@ def render():
          ('Unmapped', 'list nodes of a level with no approved cross-level edge where the plan expects one — the engine\'s work list', '`sdem query --unmapped` (GS-Q-04)', 'built'),
          ('History', 'for an edge or a node, list its superseded predecessors and the baselines it appeared in', 'mapping-set history', 'not built'),
          ('Stats', 'counts of nodes, edges and statuses per level', '`sdem stats`', 'built'),
-         ('Climb to the whole', 'an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation\'s operation to its Service Domain), so a trace from an API reaches the capability', 'knowledge-graph-design.md, limit of path F2', 'not built')]
+         ('Climb to the whole', 'an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation\'s operation to its Service Domain), so a trace from an API reaches the capability', 'knowledge-graph-design.md, limit of path F2', 'not built'),
+         ('Networks', 'a platform depends on the communication network it is connected to (RA4-37) — its own, or that of the node it runs on — so a trace down reaches the network and the impact of a change to a network reaches the platforms on it, what is deployed on them and on up to A1; each such hop is `CONNECTED_TO` via RA4-37 (owner\'s decision, 2026-11-14; metamodel 0.9.0)', '`FederatedGraph.network_edges`, `sdem trace`, `sdem impact`', 'built')]
     out += ['| Query | Must answer | Implemented by | Status |', '|---|---|---|---|']
     for name, text, impl, st in Q:
         rid = req('Q', f"{name}: {text}.", impl, st); out.append(f"| {rid} {name} | {text} | {impl} | {st} |")

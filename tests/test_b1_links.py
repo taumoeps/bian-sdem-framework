@@ -40,14 +40,13 @@ class B1Tests(unittest.TestCase):
         self.assertTrue(all(r['verification'] == 'verified_against_archi' and r['confidence'] == 'high' for r in reg['relationships'] if r['relationship'] == 'DEPLOYED_ON'))
         self.assertEqual(next(r for r in reg['relationships'] if r['mapping_type_id'] == 'VALUE_STREAM_ALIGNED_TO_SCENARIO')['authority'], 'enterprise_rule')
 
-    def test_a_connection_to_a_technology_service_warns_until_0_9_0(self):
+    def test_a_connection_to_a_technology_service_is_refused_from_0_9_0(self):   # deprecated in 0.8.0, removed in 0.9.0 as scheduled
         doc = json.loads((self.ws / 'mappings.json').read_text())
         m = next(x for x in doc['mappings'] if x['relationship'] == 'DEPLOYED_ON' and x['status'] == 'approved')
         m['target'] = {**m['target'], 'id': 'TS-MQ', 'type': 'A4.TechnologyService', 'version': '1'}
         warnings = []
         issues = [i for i in validate({'mappings': [m]}, warnings=warnings) if 'TS-MQ' in i or 'TechnologyService' in i]
-        self.assertEqual(issues, [])
-        self.assertTrue(any('allowed only by the deprecated link type COMPONENT_DEPLOYED_ON_INFRASTRUCTURE' in w and '0.9.0' in w for w in warnings))
+        self.assertTrue(any('(A3.ApplicationComponent, DEPLOYED_ON, A4.TechnologyService) is not in the registry' in i for i in issues), issues)
 
     def test_the_migration_gives_a_supertype_connection_its_records_type(self):
         doc = json.loads((self.ws / 'mappings.json').read_text())

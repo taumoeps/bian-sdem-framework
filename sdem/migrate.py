@@ -48,6 +48,17 @@ def _apply_dataset(doc, steps, counts):
         if kind == 'rename_kind':
             for r in doc.get('relationships', []):
                 if r['kind'] == st['from']: r['kind'] = st['to']; counts[kind] += 1
+        if kind == 'attribute_to_links':   # a list of ids held as an attribute becomes links (0.8.1 → 0.9.0: a network's `connects` → RA4-37)
+            rels, ids = doc.setdefault('relationships', []), {i['id'] for i in doc.get('instances', [])}
+            for i in doc.get('instances', []):
+                at = i.get('attributes') or {}
+                if i['type'] != st['type'] or st['name'] not in at: continue
+                listed = at.pop(st['name']); listed = listed if isinstance(listed, list) else [listed]
+                for x in listed:
+                    if x not in ids: continue   # not in this dataset: nothing to link to (it was never a valid reference here)
+                    link = {'source': x, 'kind': st['kind'], 'target': i['id']} if st.get('direction') == 'to_record' else {'source': i['id'], 'kind': st['kind'], 'target': x}
+                    if not any(r['source'] == link['source'] and r['kind'] == link['kind'] and r['target'] == link['target'] for r in rels):
+                        rels.append(link); counts[kind] += 1
 
 
 def _apply_registry(doc, steps, counts, records=None):

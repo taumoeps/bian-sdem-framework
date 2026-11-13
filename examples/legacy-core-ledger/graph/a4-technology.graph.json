@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "409264d0ee22365982431ecbd54376430ba1e0986b7ee2b9870a82b6789485e6",
+      "export_sha256": "03c1be72dfe3da5122aa615bd60083321dc7ca0390e8e17aae598d2d4e67935c",
       "level": "A4",
       "model_id": "synthetic-bank-ledger-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.8.1",
+      "metamodel_version": "0.9.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -120,7 +120,7 @@
         "relation": "association",
         "metadata": {
           "scope": "within-level",
-          "row": "association"
+          "row": "RA4-37"
         }
       },
       {

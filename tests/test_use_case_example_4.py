@@ -126,7 +126,7 @@ class UseCaseExample4(unittest.TestCase):
 
     def test_9_build(self):
         o = self.out['build'][1]
-        for part in ('a2-service-domain.graph.json (24 nodes, 33 edges)', 'a3-application.graph.json (5 nodes, 5 edges)', 'a4-technology.graph.json (8 nodes, 2 edges)',
+        for part in ('a2-service-domain.graph.json (24 nodes, 34 edges)', 'a3-application.graph.json (5 nodes, 5 edges)', 'a4-technology.graph.json (8 nodes, 2 edges)',
                      'designs.graph.json (24 nodes, 42 edges)', 'federated.graph.json (4 nodes, 2 edges)'):
             self.assertIn(part, o)
         code, o = self.out['build_candidates']; self.assertNotEqual(code, 0); self.assertIn('CTL-23', o)

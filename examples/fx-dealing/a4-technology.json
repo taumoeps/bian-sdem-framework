@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "harbourline-fx-a4",
   "model_version": "2026.11",
-  "metamodel_version": "0.8.1",
+  "metamodel_version": "0.9.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {
@@ -185,10 +185,6 @@
       "attributes": {
         "address_range": [
           "10.44.0.0/16"
-        ],
-        "connects": [
-          "NODE-CONF-01",
-          "NODE-FXSM-01"
         ]
       }
     },
@@ -202,9 +198,6 @@
       "attributes": {
         "address_range": [
           "172.30.8.0/24"
-        ],
-        "connects": [
-          "NODE-RATEGW-01"
         ]
       }
     },
@@ -458,6 +451,21 @@
       "source": "TS-PAYMENT-GATEWAY",
       "kind": "serving",
       "target": "NODE-CONF-01"
+    },
+    {
+      "source": "NODE-CONF-01",
+      "kind": "association",
+      "target": "NET-MKT-PRIVATE"
+    },
+    {
+      "source": "NODE-FXSM-01",
+      "kind": "association",
+      "target": "NET-MKT-PRIVATE"
+    },
+    {
+      "source": "NODE-RATEGW-01",
+      "kind": "association",
+      "target": "NET-COLO-LL"
     }
   ]
 }

@@ -171,6 +171,9 @@ class Design(Base):
                   monitoring=True, encryption_in_transit='tls1.3', end_of_support='2028-06-30')
         self.set4('INF-K8S-PAY-UAT', network_zone='restricted', monitoring=True, encryption_in_transit='tls1.3', end_of_support='2028-06-30')
         self.set4('NET-PAY-PRIVATE', network_zone='restricted')
+        d = _j(self.ws / 'a4-technology.json')   # the scenario starts with no technology service serving a platform; tests add one
+        d['relationships'] = [r for r in d['relationships'] if not (r['kind'] == 'serving' and r['source'].startswith('TS-'))]
+        _w(self.ws / 'a4-technology.json', d)
 
     def set4(self, rid, **kv):
         d = _j(self.ws / 'a4-technology.json')

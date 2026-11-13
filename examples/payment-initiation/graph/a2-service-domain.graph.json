@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "b42340e3c8ad434afee071346d87316b3aca1e3a4cce10aff7e45c6120f636b3",
+      "export_sha256": "73d8e1ea5e64c8a648752adaf47328c53ef4b5efed8d5c79d1f286bf647996f0",
       "level": "A2",
       "model_id": "synthetic-bank-payments-a2",
       "model_version": "2026.10",
-      "metamodel_version": "0.8.1",
+      "metamodel_version": "0.9.0",
       "source_system": "SYNTHETIC-BIAN-WORKBENCH"
     },
     "nodes": {
@@ -783,6 +783,16 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA2-14"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PARTY",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PARTY@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
         }
       }
     ]

@@ -77,7 +77,7 @@ a2_servicedomain -[#1565C0,bold]-> a3_applicationcomponent : S17 REALIZED_BY (st
 a2_serviceoperation -[#1565C0,bold]-> a3_apioperation : S24 IMPLEMENTED_BY (step 2)
 a2_businessobject -[#1565C0,bold]-> a3_dataentity : S30 MAPPED_TO (step 4)
 a3_applicationcomponent -[#1565C0,bold]-> a4_deployment : S32 DEPLOYED_AS (step 1)
-a3_applicationcomponent -[#1565C0,bold]-> a4_infrastructurecomponent : S33 DEPLOYED_ON (step 1)
+a3_applicationcomponent -[#1565C0,bold]-> a4_infrastructurecomponent : S33 step 1 high
 
 ' --- candidate rule (proposed for the relationship type catalogue) (5)
 a2_controlrecord -[#2E7D32]-> a3_dataentity : S20 step 4 high

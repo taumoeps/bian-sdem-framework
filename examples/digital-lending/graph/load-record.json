@@ -336,6 +336,62 @@
           "edges": 8
         }
       ]
+    },
+    {
+      "build": 7,
+      "at": "2026-11-13T12:31:21+00:00",
+      "inputs": [
+        {
+          "path": "examples/digital-lending//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-lending-a1",
+          "model_version": "2026.10",
+          "sha256": "2f38bb671a56fc3f34f8258dc6fb1c2d07c562b33169fe9d484c10d4aa14bc69"
+        },
+        {
+          "path": "examples/digital-lending//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-lending-a2",
+          "model_version": "2026.10",
+          "sha256": "fa961bdbd7b7c77eba607c3db6a6c734a3089d4a053b258928bdc1baf64746d0"
+        },
+        {
+          "path": "examples/digital-lending//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "491847e34d630e966796864f56073096642fefaf0e7ebcc4e991de2ac2eceb27"
+        }
+      ],
+      "metamodel_version": "0.9.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-lending-a2): instance BD-LEND: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-LOAN-APP: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-CREDIT-ASSESS: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "975e1172d82192f7ef1a8fd10cde854ec9d258b1e91dde9899eaaf01f35a6627",
+          "nodes": 15,
+          "edges": 13
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "f69a28dfeb4ec1f6ea04401d3339303604e7022becad096f32635880b6580d00",
+          "nodes": 24,
+          "edges": 35
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "97a94bfb3745ea34189ba647e9eeacaab3cdb09eacc844060a0f067050044fd4",
+          "nodes": 13,
+          "edges": 8
+        }
+      ]
     }
   ]
 }

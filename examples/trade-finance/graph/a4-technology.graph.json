@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "72333430b22f04322c99124baf941c42c4ed8da18381d70df5b70ec9b6bf3ef4",
+      "export_sha256": "a064ed88f11dcd212480e85d6ae559f8e4fcee4c114f0e13b25ae803c3068160",
       "level": "A4",
       "model_id": "synthetic-bank-trade-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.8.1",
+      "metamodel_version": "0.9.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -161,12 +161,7 @@
           "version": "1.0",
           "lifecycle_status": "active",
           "description": "Private segment for trade systems.",
-          "attributes": {
-            "connects": [
-              "NODE-TF-PROD",
-              "DEV-SCAN-01"
-            ]
-          }
+          "attributes": {}
         }
       },
       "A4:PATH-TF-01@1.0": {
@@ -329,7 +324,7 @@
         "relation": "association",
         "metadata": {
           "scope": "within-level",
-          "row": "association"
+          "row": "RA4-37"
         }
       },
       {
@@ -339,7 +334,7 @@
         "relation": "association",
         "metadata": {
           "scope": "within-level",
-          "row": "association"
+          "row": "RA4-37"
         }
       },
       {

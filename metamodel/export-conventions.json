@@ -99,7 +99,7 @@
       "hosts": "list of A3.ApplicationComponent ids (S35; DEPLOYED_ON with a Device target)"
     },
     "A4.CommunicationNetwork": {
-      "connects": "list of A4.Node / A4.Device ids on the network (S37 with the component's network_zone)"
+      "connects": "deprecated (metamodel 0.9.0): record each platform's network as a link — platform association network (RA4-37); sdem migrate converts the list"
     },
     "A4.Path": {
       "from": "A4 endpoint id",

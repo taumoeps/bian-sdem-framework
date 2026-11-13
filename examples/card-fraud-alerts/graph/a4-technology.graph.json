@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "2669407d7f1775a063f53826489d718efbd66eb4c586c5e33e31c87f48af4f26",
+      "export_sha256": "b2ef1d086e09d494703c0beb444dc45c2a9bb4825881ee411d367b87597eadd4",
       "level": "A4",
       "model_id": "synthetic-bank-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.8.1",
+      "metamodel_version": "0.9.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -98,7 +98,7 @@
         "relation": "association",
         "metadata": {
           "scope": "within-level",
-          "row": "association"
+          "row": "RA4-37"
         },
         "label": "runs on"
       },

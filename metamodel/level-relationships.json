@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.8.1",
+  "metamodel_version": "0.9.0",
   "note": "Within-level relationships are held by each level model, never by SDEM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects). 0.5.17: artefact rows flagged enforceable=false; device composition added (relationships test findings 1, 2). 0.5.20: Phase 2 — 113 rows verified_against_archi (112 direct, RA4-31 via its stated alternative); RA3-30/31 (TOGAF) remain unverified_togaf.",
   "kinds": [
     {
@@ -3745,6 +3745,35 @@
         "target_per_source": "0..*",
         "basis": "ArchiMate composition semantics",
         "reasoning": "decomposition: a part has at most one parent of the same type"
+      }
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.InfrastructureComponent",
+      "kind": "association",
+      "target_type": "A4.CommunicationNetwork",
+      "basis": "[AM] ArchiMate 3.2 — login-gated, unverified ch. 10 Technology — a communication network connects nodes and devices; SDEM extends it to system software, which SDEM records managed platforms as",
+      "id": "RA4-37",
+      "reference_source": "[AM] ArchiMate 3.2",
+      "description": "A platform — a node, a device or system software — is connected to a communication network.",
+      "reasoning": "A network is what a platform runs on, physically: what is deployed on the platform reaches the network through it, so a change to the network reaches them (KG-Q-08). Recorded as a link, checked by LC-15; it replaces the network's `connects` attribute (AT-A4-07, deprecated in 0.9.0).",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "Node",
+        "archimate_target": "Communication Network",
+        "pattern": "node connected to a communication network",
+        "reasoning": "ArchiMate associates nodes and devices with the communication networks that connect them; system software is a platform SDEM records in a node's place.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Node → Communication Network must list 'o' (association)",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "a platform may be on several networks and a network connects many platforms; that a hosting platform is on at least one is LC-15 (a warning), which also accepts the network of the node it runs on"
       }
     }
   ],

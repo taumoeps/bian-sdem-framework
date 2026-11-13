@@ -39,7 +39,8 @@ def render(metamodel=None, level_rels=None):
         inst = [{"id": f"RS-{short(t)}-{n}", "type": t, "version": "1.0", "name": f"{short(t)} {n} (structure conformance)", "lifecycle_status": "active",
                  "description": f"Synthetic instance of {t} carrying one relationship per constraint row of {lvl}; no business meaning.",
                  **({"attributes": req} if (req := required_values(mm, t, short, n)) else {})} for t in ents for n in (1, 2)]
-        rels = [{"source": f"RS-{short(c['source_type'])}-1", "kind": c['kind'], "target": f"RS-{short(c['target_type'])}-{2 if c['source_type'] == c['target_type'] else 1}", "name": c['id']}
+        concrete = lambda want: want if want in ents else next(t for t in sorted(ents) if mm.is_a(t, want))   # a row may name a parent type (RA4-37)
+        rels = [{"source": f"RS-{short(concrete(c['source_type']))}-1", "kind": c['kind'], "target": f"RS-{short(concrete(c['target_type']))}-{2 if c['source_type'] == c['target_type'] else 1}", "name": c['id']}
                 for c in lr['constraints'] if c['level'] == lvl and c.get('enforceable') is not False]
         docs[lvl] = {"level": lvl, "model_id": f"reference-structure-{lvl.lower()}", "model_version": "2026.10", "metamodel_version": mm.version, "source_system": "SDEM-GENERATED-FROM-RECORD", "instances": inst, "relationships": rels}
     return docs

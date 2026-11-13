@@ -211,7 +211,7 @@ Catalogue check: 41 entity rows read from high-level §5; 1 differs (A4.Deployme
 
 **Gap G-01** (contradiction; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed — detail §6.1 supersedes high-level §6.1) — **this section supersedes high-level §6.1.** Within-level relationships are in scope: each architecture's allowed links come from its own reference architecture and are enforced by `sdem check` (LC-03).
 
-132 rows + 12 inheritance rows (A1 48, A2 17, A3 31, A4 36); 129 enforced (A2 artefact rows are documentation only). Verification: sdem_reading 1, unverified_togaf 2, verified 16, verified_against_archi 113. Every row carries cardinality, source reference, reasoning and confidence. Detail: [`relationships-planning.md`](../reference/relationships-planning.md).
+133 rows + 12 inheritance rows (A1 48, A2 17, A3 31, A4 37); 130 enforced (A2 artefact rows are documentation only). Verification: sdem_reading 1, unverified_togaf 2, verified 16, verified_against_archi 114. Every row carries cardinality, source reference, reasoning and confidence. Detail: [`relationships-planning.md`](../reference/relationships-planning.md).
 
 #### 6.1a Within-level relationship row — the allowed link
 
@@ -219,22 +219,22 @@ One row per (source type, kind, target type) an architecture allows. **Gap G-01*
 
 | Field | Required | In records | Values | Meaning |
 |---|---|---|---|---|
-| `id` | yes | 132 of 132 | text | permanent row ID (RA<level>-nn) |
-| `level` | yes | 132 of 132 | `A1`, `A2`, `A3`, `A4` | the architecture the row belongs to |
-| `source_type` | yes | 132 of 132 | text | entity type the link starts from (subtypes included, is-a) |
-| `kind` | yes | 132 of 132 | `access`, `aggregation`, `assignment`, `association`, `composition`, `flow`, `realization`, `serving`, `specialization`, `triggering` | relationship kind (ArchiMate / BIAN vocabulary) |
-| `target_type` | yes | 132 of 132 | text | entity type the link points to (subtypes included) |
-| `cardinality` | yes | 132 of 132 | object | {source_per_target, target_per_source, basis, reasoning} — e.g. 1..1 / 0..*; checked by LC-10 (maximum, error) and LC-10m (minimum, warning) where the basis is BIAN or ArchiMate |
-| `basis` | yes | 132 of 132 | text | the reference architecture the row comes from |
-| `official_id` | no | 17 of 132 | text | the BIAN structural row (B-row) it encodes, if any |
-| `description` | yes | 132 of 132 | text | what the link means |
-| `reference_source` | yes | 132 of 132 | text | source reference (standard, section) |
-| `verification` | yes | 132 of 132 | `sdem_reading`, `unverified_togaf`, `verified`, `verified_against_archi` | how it was checked |
-| `enforceable` | no | 3 of 132 | `False` | `false` only for documentation rows (A2 artefacts); otherwise enforced by `sdem check` (LC-03) |
-| `inference` | no | 115 of 132 | object | how the row was first inferred, before checking {pattern, reasoning, confidence} |
-| `reasoning` | yes | 132 of 132 | text | why the link is allowed |
-| `confidence` | yes | 132 of 132 | `high`, `low`, `medium` | high / medium / low (single rule) |
-| `confidence_basis` | yes | 132 of 132 | text | which clause of the rule applied |
+| `id` | yes | 133 of 133 | text | permanent row ID (RA<level>-nn) |
+| `level` | yes | 133 of 133 | `A1`, `A2`, `A3`, `A4` | the architecture the row belongs to |
+| `source_type` | yes | 133 of 133 | text | entity type the link starts from (subtypes included, is-a) |
+| `kind` | yes | 133 of 133 | `access`, `aggregation`, `assignment`, `association`, `composition`, `flow`, `realization`, `serving`, `specialization`, `triggering` | relationship kind (ArchiMate / BIAN vocabulary) |
+| `target_type` | yes | 133 of 133 | text | entity type the link points to (subtypes included) |
+| `cardinality` | yes | 133 of 133 | object | {source_per_target, target_per_source, basis, reasoning} — e.g. 1..1 / 0..*; checked by LC-10 (maximum, error) and LC-10m (minimum, warning) where the basis is BIAN or ArchiMate |
+| `basis` | yes | 133 of 133 | text | the reference architecture the row comes from |
+| `official_id` | no | 17 of 133 | text | the BIAN structural row (B-row) it encodes, if any |
+| `description` | yes | 133 of 133 | text | what the link means |
+| `reference_source` | yes | 133 of 133 | text | source reference (standard, section) |
+| `verification` | yes | 133 of 133 | `sdem_reading`, `unverified_togaf`, `verified`, `verified_against_archi` | how it was checked |
+| `enforceable` | no | 3 of 133 | `False` | `false` only for documentation rows (A2 artefacts); otherwise enforced by `sdem check` (LC-03) |
+| `inference` | no | 116 of 133 | object | how the row was first inferred, before checking {pattern, reasoning, confidence} |
+| `reasoning` | yes | 133 of 133 | text | why the link is allowed |
+| `confidence` | yes | 133 of 133 | `high`, `low`, `medium` | high / medium / low (single rule) |
+| `confidence_basis` | yes | 133 of 133 | text | which clause of the rule applied |
 
 #### 6.1b Inheritance row
 
@@ -446,13 +446,13 @@ Every field of a plan row in `metamodel/relationship-rules.json`.
 
 **Gap G-12** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-9 core fields, 13 common attributes, 137 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](../reference/architecture-attribute-design.md), [`logical-data-model.md`](../reference/logical-data-model.md), [`physical-data-model.md`](../reference/physical-data-model.md).
+9 core fields, 13 common attributes, 136 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](../reference/architecture-attribute-design.md), [`logical-data-model.md`](../reference/logical-data-model.md), [`physical-data-model.md`](../reference/physical-data-model.md).
 
 ## 17. Provenance and confidence
 
 **Gap G-13** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 241 high, 79 medium, 26 low.
+Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 242 high, 78 medium, 26 low.
 
 ## 18. Inference engine
 

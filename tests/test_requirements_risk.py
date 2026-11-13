@@ -48,7 +48,7 @@ class Base(unittest.TestCase):
                 self.e.assess('CE-001', l, 'no_impact_confirmed', AGENT[l], P, 'no structural change in this layer; requirements reviewed separately',
                               evidence=[f'design_review:{l}'], uncertainty='records without links are not on the changed path', missing=list(a2_missing) if l == 'A2' else [])
             else:
-                recs = [r['id'] for r in c['records']] + (list(extra_a4) if l == 'A4' else [])
+                recs = [r['id'] for r in c['records'] if r['classification'] != 'no_impact'] + (list(extra_a4) if l == 'A4' else [])   # as calculated: what changes
                 self.e.assess('CE-001', l, 'impact_confirmed', AGENT[l], P, 'as calculated', evidence=[f'design_review:{l}'], records=recs)
 
     def breaches(self): return [f['id'] for f in self.e.validation('CE-001')['analysis']['risks'] if f['type'] == 'confirmed_breach']

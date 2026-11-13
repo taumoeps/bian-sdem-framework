@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "75dcb3e863d7bfca531960112a6ec99b78afd94753d9afefb59bf9614110d25f",
+      "export_sha256": "56d374076e7f7f483b4e26084383eec4d1fdf8a41c21d229780f092f729d5b4e",
       "level": "A4",
       "model_id": "reference-structure-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.8.1",
+      "metamodel_version": "0.9.0",
       "source_system": "SDEM-GENERATED-FROM-RECORD"
     },
     "nodes": {
@@ -641,6 +641,17 @@
           "row": "RA4-36"
         },
         "label": "RA4-36"
+      },
+      {
+        "id": "A4:RS-Artifact-1-association-RS-CommunicationNetwork-1",
+        "source": "A4:RS-Artifact-1@1.0",
+        "target": "A4:RS-CommunicationNetwork-1@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
+        },
+        "label": "RA4-37"
       }
     ]
   }

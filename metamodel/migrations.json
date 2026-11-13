@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.8.1",
+  "metamodel_version": "0.9.0",
   "note": "How a workspace moves from one metamodel (metamodel) version to the next — `sdem migrate --workspace DIR`. Every change to the metamodel that affects data bumps metamodel_version in every metamodel file and adds one entry here, from the old version to the new: its steps are applied to the workspace's datasets and registry, then the workspace is checked; an entry with no steps only moves the version (an additive change — new optional attributes or types). Step kinds: rename_type {from, to}; rename_attribute {type (optional), from, to}; drop_attribute {type (optional), name}; set_attribute {type, name, value} (only where missing); rename_kind {from, to} (a within-architecture link kind); rename_relationship {from, to} (a link type between architectures, in the registry). Policy: docs/sdem-metamodel-versioning.md.",
   "migrations": [
     {
@@ -47,6 +47,22 @@
       "approved_by": "the SDEM owner",
       "note": "Owner's decisions D1 and D4 (improvement roadmap, 2026-11-09): every record type may carry `sources` (CA-13) — where single attribute values came from, as kind:ref — and a within-layer link may carry `source_id`; `sdem check` reads a placeholder (TBD, unknown, /TBD …) or an empty string in a required attribute as missing (LC-04). Additive — no steps; a record that holds a placeholder in a required attribute now fails its check: leave the value out and mark the record planned until it is known.",
       "steps": []
+    },
+    {
+      "from": "0.8.1",
+      "to": "0.9.0",
+      "date": "2026-11-14",
+      "approved_by": "the SDEM owner",
+      "note": "Owner's decision, 2026-11-14: a platform's network is a link, not an attribute. New within-layer rule RA4-37 — a platform (node, device or system software) is connected to a communication network — and the network's `connects` attribute (AT-A4-07) is deprecated: each id it lists becomes that link. A hosting platform on no network is a warning (LC-15); trace and impact follow a platform's network (KG-Q-08). The link type COMPONENT_DEPLOYED_ON_INFRASTRUCTURE, deprecated in 0.8.0, is removed as scheduled: a component DEPLOYED_ON a technology service, interface, network, path, artifact or environment is refused — re-point it to the node, device or system software it runs on, or supersede it (a person's decision; the migration cannot choose).",
+      "steps": [
+        {
+          "step": "attribute_to_links",
+          "type": "A4.CommunicationNetwork",
+          "name": "connects",
+          "kind": "association",
+          "direction": "to_record"
+        }
+      ]
     }
   ]
 }

@@ -679,12 +679,11 @@
       "source": "A3.ApplicationComponent",
       "target": "A4.InfrastructureComponent",
       "official_coverage": "SDEM mapping only; no official equivalent",
-      "sdem_rule": "DEPLOYED_ON",
       "guidance": "Abstract compatibility supertype only",
       "authority": "sdem",
       "verification": "sdem_definition",
       "verification_note": "n/a — SDEM definition, no external claim",
-      "disposition": "**deprecated** in metamodel 0.8.0 (B1): narrowed to S34, S35, S36 — removed in 0.9.0"
+      "disposition": "**removed** in metamodel 0.9.0, as scheduled: deprecated in 0.8.0 (B1) and narrowed to S34, S35, S36"
     },
     {
       "id": "S34",

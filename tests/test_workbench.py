@@ -38,7 +38,7 @@ class WorkbenchTests(unittest.TestCase):
         self.assertEqual(len(d['records']), n)
         self.assertEqual(d['present'], ['A1', 'A2', 'A3', 'A4']); self.assertEqual(d['missing'], [])
         self.assertEqual(len(d['framework']['types']), 44)
-        self.assertEqual(len(d['framework']['within']), 132)
+        self.assertEqual(len(d['framework']['within']), 133)   # RA4-37 (metamodel 0.9.0)
         self.assertTrue(d['framework']['cross'] and all(c['required_evidence'] for c in d['framework']['cross']))
         self.assertEqual(len(d['registry']), len(json.loads((self.d / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']))
         self.assertTrue(all(d['docs'][l]['html'] for l in ('A1', 'A2', 'A3', 'A4')))      # the documents (UX-D)

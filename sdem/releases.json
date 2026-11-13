@@ -231,18 +231,25 @@
       "version": "0.18.0",
       "date": "2026-11-10",
       "kind": "minor",
-      "metamodel": "0.8.1",
+      "metamodel": "0.9.0",
       "migration": {
         "from": "0.8.0",
-        "to": "0.8.1",
+        "to": "0.9.0",
         "automatic": true,
-        "note": "additive: attribute sources (CA-13) and link citations; a placeholder in a required attribute now fails sdem check (LC-04)"
+        "note": "0.8.0 → 0.8.1, additive: attribute sources (CA-13) and link citations; a placeholder in a required attribute now fails sdem check (LC-04). 0.8.1 → 0.9.0: a platform's network is a link (RA4-37) — a network's `connects` list becomes those links; a hosting platform on no network is a warning (LC-15); trace and impact follow networks (KG-Q-08)"
       },
       "breaking": [
         "sdem check reads TBD, unknown, /TBD or an empty string in a required attribute as missing: an error on an active record — leave the value out and mark the record planned (LC-04)",
-        "a change-set update merges by default; give \"replace\": true for the whole-record replacement (AG-K08)"
+        "a change-set update merges by default; give \"replace\": true for the whole-record replacement (AG-K08)",
+        "the link type COMPONENT_DEPLOYED_ON_INFRASTRUCTURE (deprecated in 0.15.0, metamodel 0.8.0) is removed in metamodel 0.9.0: a component DEPLOYED_ON anything but a node, device or system software is refused — re-point or supersede it before upgrading (sdem check reports each one)"
       ],
-      "deprecations": [],
+      "deprecations": [
+        {
+          "item": "attribute connects of A4.CommunicationNetwork (AT-A4-07)",
+          "removed_in_metamodel": "1.0.0",
+          "do": "record each platform's network as a link — platform association network (RA4-37); sdem migrate converts the list"
+        }
+      ],
       "actions": [
         {
           "when": "always",
@@ -257,7 +264,7 @@
           "do": "regenerate them (sdem build, view, dashboard, home) — they now link to each other"
         }
       ],
-      "summary": "Architect experience: Home, dashboard and graph linked; graph status shown; architect tasks; sdem new --explore; the README and the Payments walkthrough rewritten. Then the improvement roadmap (metamodel 0.8.1): placeholders are missing values, natural keys for operations, attribute and link sources, evidence classes, sdem change diff, sdem handback."
+      "summary": "Architect experience: Home, dashboard and graph linked; graph status shown; architect tasks; sdem new --explore; the README and the Payments walkthrough rewritten. Then the improvement roadmap (metamodel 0.8.1): placeholders are missing values, natural keys for operations, attribute and link sources, evidence classes, sdem change diff, sdem handback. A platform's network is a link, and a network change reaches what runs on it (metamodel 0.9.0)."
     }
   ]
 }

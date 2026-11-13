@@ -34,6 +34,7 @@ CONSTRAINTS = [
  ('LC-12', 'Registry immutability', 'approved, rejected and superseded registry records are never edited', 'enforced', '`sdem diff`'),
  ('LC-13', 'Deprecated attributes', 'deprecated attributes raise a warning', 'enforced', '`sdem check` (warning)'),
  ('LC-14', 'Attribute sources', 'a record\'s `sources` (CA-13) names only attributes the record has (or `name`, `description`), each with a `kind:ref` source such as `document:DESIGN.md#4.2` (owner\'s decision D4, 2026-11-09)', 'enforced', '`sdem check` (warning)'),
+ ('LC-15', 'Platforms on a network', 'a platform (node, device or system software) that hosts a deployment, an artifact or system software, or that a deployment environment groups, is connected to at least one communication network (RA4-37) — its own, or that of the node or device it runs on (owner\'s decision, 2026-11-14; metamodel 0.9.0)', 'enforced', '`sdem check` (warning)'),
 ]
 
 

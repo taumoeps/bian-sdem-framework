@@ -39,12 +39,13 @@ class ReleaseNotesTests(unittest.TestCase):
         from sdem.metamodel import Metamodel
         doc = json.loads(U.NOTES.read_text())
         self.assertEqual(doc['releases'][-1]['metamodel'], Metamodel.base().version)
-        migs = {(m['from'], m['to']) for m in json.loads((ROOT / 'metamodel' / 'migrations.json').read_text())['migrations']}
+        from sdem.migrate import chain
+        migs = json.loads((ROOT / 'metamodel' / 'migrations.json').read_text())['migrations']
         prev = None
         for r in doc['releases']:
             if prev and r['metamodel'] != prev:
                 self.assertEqual((r['migration']['from'], r['migration']['to']), (prev, r['metamodel']), r['version'])   # a metamodel change is announced
-                self.assertIn((prev, r['metamodel']), migs); self.assertEqual(r['kind'], 'minor')                         # …recorded, and never a patch
+                self.assertTrue(chain(prev, r['metamodel'], migs)); self.assertEqual(r['kind'], 'minor')                # …recorded (one migration or a chain), and never a patch
             elif r['kind'] == 'patch': self.assertIsNone(r['migration'], r['version'])
             prev = r['metamodel']
 
@@ -95,8 +96,10 @@ class UpgradeCheckTests(unittest.TestCase):
         f = ws / 'mappings.json'; d = json.loads(f.read_text())
         next(m for m in d['mappings'] if m['relationship'] == 'DEPLOYED_ON' and m['status'] == 'approved')['target'].update(id='TS-MQ', type='A4.TechnologyService', version='1.0')
         f.write_text(json.dumps(d))
-        _, _, r = sdem('upgrade', 'check', '--workspace', ws, '--repo', self.tmp, '--from', '0.15.0', '--json', cwd=self.tmp)
-        self.assertTrue(any('deprecated link type' in x for x in r['workspaces'][0]['warnings']))
+        _, _, r = sdem('upgrade', 'check', '--workspace', ws, '--repo', self.tmp, '--from', '0.15.0', '--json', cwd=self.tmp, ok=(1,))
+        # deprecated in 0.15.0 (metamodel 0.8.0), removed in metamodel 0.9.0 as scheduled: now it blocks, naming the connection
+        self.assertEqual(r['verdict'], 'blocked')
+        self.assertTrue(any('PAY-108' in x and '(A3.ApplicationComponent, DEPLOYED_ON, A4.TechnologyService) is not in the registry' in x for x in r['workspaces'][0]['blocking']))
 
     def test_releases_since(self):
         _, _, d = sdem('releases', '--since', '0.15.0', '--json', cwd=self.tmp)
